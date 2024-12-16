@@ -1,0 +1,19 @@
+targets:
+  $default:
+    sources:
+      - "$package$"
+      - "node/**"
+      - "lib/**"
+      - "js/**"
+    builders:
+      build_node_compilers|entrypoint:
+        generate_for:
+        - node/**
+        options:
+          compiler: dart2js
+          # List any dart2js specific args here, or omit it.
+          dart2js_args:
+            - -O0
+      json_serializable:
+        options:
+          explicit_to_json: true

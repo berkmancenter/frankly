@@ -1,0 +1,10 @@
+node_modules/
+build/
+.env
+.runtimeconfig.json
+*.log
+# Ignore personal emulator snapshots
+emulators_exports_local/
+.dart_tool
+# Auto-generated Firestore Coverage HTML file
+firestore-coverage.html

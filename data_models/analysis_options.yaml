@@ -1,0 +1,10 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/**.freezed.dart
+    - lib/**.g.dart
+    - build/packages/**
+  errors:
+    # invalid_annotation_target is recommended in the Freezed package documentation.
+    invalid_annotation_target: ignore

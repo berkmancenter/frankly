@@ -1,0 +1,45 @@
+{
+  "functions": {
+    "on_firestore": {
+      "min_instances": "0"
+    },
+    "update_live_stream_participant_count": {
+      "min_instances": "0"
+    }
+  },
+  "app": {
+    "no_reply_email": "no-reply@frankly.org",
+    "unsubscribe_encryption_key": "<value>",
+    "domain": "localhost:5000",
+    "legal_entity_name": "the <a href=https://asml.cyber.harvard.edu>Applied Social Media Lab</a> at the <a href=https://cyber.harvard.edu>Berkman Klein Center for Internet & Society<a>",
+    "banner_image_url": "https://res.cloudinary.com/dh0vegjku/image/upload/v1725488218/frankly_assets/Frankly-Open-Graph_l1b9ui.png",
+    "privacy_policy_url": "https://frankly.org/privacy",
+    "mailing_address": "1557 Massachusetts Ave, Cambridge, MA 02138",
+    "alt_email_domain": "cyber.harvard.edu",
+    "project_id": "dev",
+    "name": "Frankly",
+    "functions_url_prefix": "http://127.0.0.1:5001/dev/us-central1",
+    "full_url": "http://localhost:5000",
+    "copyright": "2024 President and Fellows of Harvard College"
+  },
+  "mux": {
+    "secret": "<value>",
+    "token_id": "<value>"
+  },
+  "agora": {
+    "rest_secret": "<value>",
+    "app_id": "<value>",
+    "rest_key": "<value>",
+    "app_certificate": "<value>",
+    "storage_secret_key": "<value>",
+    "storage_access_key": "<value>",
+    "storage_bucket_name": "<value>"
+  },
+  "ics": {
+    "prod_id": "Frankly"
+  },
+  "xmlns": {
+    "url": "https://www.app.frankly.org/xmlns",
+    "media_url": "http://search.yahoo.com/mrss/"
+  }
+}
