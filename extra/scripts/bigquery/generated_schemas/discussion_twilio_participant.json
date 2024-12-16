@@ -1,0 +1,32 @@
+{
+  "fields": [
+    {
+      "name": "duration",
+      "type": "number"
+    },
+    {
+      "name": "joinTime",
+      "type": "timestamp"
+    },
+    {
+      "name": "leaveTime",
+      "type": "timestamp"
+    },
+    {
+      "name": "participantIdentity",
+      "type": "string"
+    },
+    {
+      "name": "participantSid",
+      "type": "string"
+    },
+    {
+      "name": "roomId",
+      "type": "string"
+    },
+    {
+      "name": "roomName",
+      "type": "string"
+    }
+  ]
+}

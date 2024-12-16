@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html style="height:100%">
+    <head>
+        <style>
+            html, body, #typeform-widget {
+                height: 100%;
+                width: 100%;
+            }
+
+            body {
+                margin: 0;
+            }
+        </style>
+        <script src="https://embed.typeform.com/embed.js"></script>
+    </head>
+
+    <body>
+        <div id="typeform-widget"></div>
+        <script>
+            const embedElement = document.querySelector('#typeform-widget');
+            const link = new URLSearchParams(window.location.search).get('link');
+            typeformEmbed.makeWidget(
+              embedElement,
+              decodeURIComponent(link),
+              {
+                onSubmit: function (event) {
+                // TODO: TYPEFORM submitted was called twice so pass in the response ID to dedupe.
+                  window.parent.postMessage(event);
+                }
+              }
+            );
+        </script>
+    </body>
+</html>

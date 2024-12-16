@@ -1,0 +1,93 @@
+name: Deploy Client to Staging
+concurrency: staging
+on: 
+  push:
+    branches:
+      - staging 
+  workflow_dispatch:
+ 
+jobs: 
+  deploy_client_staging: 
+    name: Deploy Client To Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+        run: 
+          working-directory: client
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            client:
+              - 'client/lib/**'
+              - 'client/web/**'
+
+      - name: Set Up Flutter
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+          channel: "stable" 
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: '/home/runner/.pub-cache' #hardcoded not ideal, but no way to reference $HOME 
+      
+      - name: Install Dependencies
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        run: flutter pub get
+      
+      - name: Create Sentry release tag off latest git commit hash
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        env:
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        run: |
+          curl -sL https://sentry.io/get-cli | bash
+          sentry-cli releases new -p $SENTRY_PROJECT $(sentry-cli releases propose-version)
+          echo "CURRENT_RELEASE=$(sentry-cli releases propose-version)" >> "$GITHUB_ENV"
+
+      - name: Update Product Version
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        run: |
+          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
+
+      - name: Build the Flutter App
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        run: flutter build web --release --source-maps --web-renderer html -t lib/dev_main.dart --dart-define=SENTRY_RELEASE=$CURRENT_RELEASE
+
+      - name: Upload sourcemaps to Sentry
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        env:
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        run: flutter packages pub run sentry_dart_plugin --sentry-define=release=$CURRENT_RELEASE
+      
+      - name: Set Firebase Hosting Deploy Target
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        uses: w9jds/firebase-action@v13.22.1
+        with:
+          args: target:apply hosting staging ${{ secrets.APP_STAGING_PROJECT_ID }}
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: client
+          PROJECT_ID: staging
+      
+      - name: Deploy to Firebase Hosting
+        if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
+        uses: w9jds/firebase-action@v13.22.1
+        with:
+          args: deploy --only hosting:staging
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: client
+          PROJECT_ID: staging
+
+

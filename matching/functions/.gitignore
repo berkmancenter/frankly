@@ -1,0 +1,5 @@
+node_modules/
+*.local
+
+.google_credentials.json
+.encoded_credentials.txt

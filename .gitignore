@@ -1,0 +1,5 @@
+node_modules/
+logs/
+.idea/
+client/.runtimeconfig.json
+.vscode/launch.json

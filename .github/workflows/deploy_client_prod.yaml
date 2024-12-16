@@ -1,0 +1,63 @@
+name: Deploy Client to Production
+concurrency: production
+on: workflow_dispatch
+ 
+jobs: 
+  deploy_client_prod: 
+    name: Deploy Client To Production
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+        run: 
+          working-directory: client
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+          channel: "stable" 
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: '/home/runner/.pub-cache' #hardcoded not ideal, but no way to reference $HOME 
+      
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Update Product Version
+        run: |
+          sed -i 's/__VERSION__/${{ github.ref_name }}/g' ${{ github.workspace }}/client/web/index.html
+          sed -i 's/__VERSION__/${{ github.ref_name }}/g' ${{ github.workspace }}/client/web/index-prod.html
+      - name: Build the Flutter App
+        run: flutter build web --release --source-maps --web-renderer html --dart-define=SENTRY_RELEASE=${{ github.ref_name }}
+
+      - name: Upload sourcemaps to Sentry
+        env:
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        run: flutter packages pub run sentry_dart_plugin --sentry-define=release=${{ github.ref_name }}
+
+      - name: Set Firebase Hosting Deploy Target
+        uses: w9jds/firebase-action@v13.22.1
+        with:
+          args: target:apply hosting prod ${{ secrets.APP_PROD_PROJECT_ID }}
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: client
+          PROJECT_ID: prod
+      
+      - name: Deploy to Firebase Hosting
+        uses: w9jds/firebase-action@v13.22.1
+        with:
+          args: deploy --only hosting:prod
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: client
+          PROJECT_ID: prod
+
+

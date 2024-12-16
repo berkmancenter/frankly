@@ -1,0 +1,74 @@
+name: Client Test
+on: 
+  pull_request:
+    branches:
+      - "**"
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+jobs: 
+  build_and_test: 
+    name: Build & Unit Test
+    runs-on: ubuntu-latest
+    defaults:
+        run: 
+          working-directory: client
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            client:
+              - 'client/lib/**'
+              - 'client/web/**'
+
+      - name: Set Up Flutter
+        if: steps.changes.outputs.client == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+            flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+            channel: "stable" 
+            cache: true
+            cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+            cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+            pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+            pub-cache-path: '/home/runner/.pub-cache' 
+      
+      - name: Install Dependencies
+        if: steps.changes.outputs.client == 'true'
+        run: flutter pub get
+      
+      - name: Generate Test Dependencies
+        if: steps.changes.outputs.client == 'true'
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+      
+      - name: Run Tests
+        if: steps.changes.outputs.client == 'true'
+        id: test
+        run: flutter test --platform chrome
+
+      - name: Update Product Version
+        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
+        run: |
+          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html  
+
+      - name: Build App
+        if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
+        id: build_app
+        run: flutter build web --release web-renderer html -t lib/dev_main.dart
+       
+      - name: Deploy to Preview Channel
+        if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
+        uses: FirebaseExtended/action-hosting-deploy@v0.9.0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount:  ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GEN_HLS_BKC_7627 }}
+          expires: 14d
+          projectId: ${{secrets.STAGING_PROJECT_ID}}
+          target: staging
+          entryPoint: client
+     

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html style="height:100%">
+    <head>
+        <style>
+            html, body, #live-stream {
+                height: 100%;
+                width: 100%;
+            }
+
+            body {
+                margin: 0;
+            }
+        </style>
+        <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+    </head>
+
+    <body>
+
+        <video
+                id="live-stream"
+                class="video-js vjs-big-play-centered"
+                controls
+                preload="auto"
+                data-setup="{}"
+        >
+            <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank"
+                >supports HTML5 video</a
+                >
+            </p>
+        </video>
+
+        <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+        <script>
+          (function(){
+            const params = new URLSearchParams(window.location.search);
+            const url = params.get('url');
+            const urlType = params.get('urlType');
+            const showControls = params.get('showControls') == 'true';
+            const autoplay = params.get('autoplay') == 'true';
+            const loop = params.get('loop') == 'true';
+            const posterUrl = params.get('posterUrl');
+            const legacy = params.get('legacy') == 'true';
+            const currentTime = params.get('currentTime');
+
+            if (!showControls && !legacy) {
+              var sheet = window.document.styleSheets[0];
+              sheet.insertRule('.video-js.vjs-playing { pointer-events: none;}', sheet.cssRules.length);
+            }
+
+            var video = videojs('live-stream', {
+              fill: true,
+              autoplay: autoplay,
+              loop: loop,
+              controlBar: {
+                fullscreenToggle: false,
+                pictureInPictureToggle: false,
+                progressControl: {
+                  seekBar: showControls
+                },
+                playToggle: showControls || legacy,
+              }
+            });
+            if (posterUrl) {
+              video.poster(posterUrl);
+            }
+            video.src({
+              type: urlType,
+              src: url
+            });
+
+            var startTimeInitialized = false;
+            if (currentTime) {
+              video.on('loadedmetadata', function() {
+                video.currentTime(currentTime);
+              });
+
+              // iPhone/iPad need to play first, then set the time
+              // events: https://www.w3.org/TR/html5/embedded-content-0.html#mediaevents
+              video.on('canplaythrough', function() {
+                 if(!startTimeInitialized) {
+                    video.currentTime(currentTime);
+                    startTimeInitialized = true;
+                 }
+              });
+            }
+            video.ready(function(){
+              var player = this;
+
+              if (currentTime) {
+                player.currentTime(player);
+              }
+
+              function makeMessage(type){
+                  return {
+                      source: 'videojs',
+                      type: type,
+                      currentTime: player.currentTime(),
+                      videoDuration: player.duration()
+                  };
+              }
+
+              console.log('dispatching ready event to parent');
+              window.parent.postMessage(makeMessage('video-ready'), "*");
+
+              player.on('ended', function() {
+                console.log('dispatching ended event to parent');
+                window.parent.postMessage(makeMessage('video-ended'), "*");
+              });
+
+              player.on('error', function() {
+                console.log('dispatching error event to parent');
+                window.parent.postMessage(makeMessage('video-error'), "*");
+              });
+
+              player.on('timeupdate', function() {
+                  window.parent.postMessage(makeMessage('video-update'), "*");
+              });
+
+              player.on('durationchange', function() {
+                  window.parent.postMessage(makeMessage('video-update'), "*");
+              });
+            });
+          })();
+        </script>
+    </body>
+</html>

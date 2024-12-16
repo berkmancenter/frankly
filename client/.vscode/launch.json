@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Prod",
+            "request": "launch",
+            "type": "dart", 
+            "args": ["--web-port=5000"]      
+        },
+        {
+            "name": "Staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/dev_main.dart",
+            "args": ["--web-port=5000"]
+            
+        },
+        {
+            "name": "Dev (Emulators)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/dev_emulators_main.dart",
+            "args": ["--web-port=5000"]
+            
+        },
+        {
+            "name": "Prod (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Prod (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+    ]
+}

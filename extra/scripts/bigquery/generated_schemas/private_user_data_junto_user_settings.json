@@ -1,0 +1,20 @@
+{
+  "fields": [
+    {
+      "name": "juntoId",
+      "type": "string"
+    },
+    {
+      "name": "notifyAnnouncements",
+      "type": "string"
+    },
+    {
+      "name": "notifyEvents",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fields": [
+    {
+      "name": "createdDate",
+      "type": "timestamp"
+    },
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "image",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "url",
+      "type": "string"
+    }
+  ]
+}

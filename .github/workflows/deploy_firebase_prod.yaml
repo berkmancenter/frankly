@@ -1,0 +1,67 @@
+name: Deploy Firebase Components to Production
+concurrency: production
+on: workflow_dispatch
+ 
+jobs: 
+  deploy_firebase_prod: 
+    name: Deploy Firebase Components to Production
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+        run: 
+          working-directory: client/functions
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install NPM Dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+          channel: "stable" 
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: '/home/runner/.pub-cache' #hardcoded not ideal, but no way to reference $HOME 
+      
+      
+      - name: Install Dart Dependencies
+        run: flutter pub get
+      
+      - name: Build Functions
+        run: dart run build_runner build --output=build
+
+      - name: Deploy Rules and Indexes
+        uses: w9jds/firebase-action@v13.22.1
+        with:
+          args: deploy --only firestore:rules,firestore:indexes --force
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: client
+          PROJECT_ID: prod
+
+      - name: Build Deployment Command
+        id: build-deployment-cmd
+        uses: jencompgeek/firebase-function-mapper@main
+        with:
+          force: true
+          mapping-file: ${{ github.workspace }}/.github/workflows/function-mapping.json
+
+      - name: Deploy Functions
+        uses: w9jds/firebase-action@v13.22.1
+        with:
+          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd.outputs.deploy-command}} 
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: client
+          PROJECT_ID: prod
+     
+

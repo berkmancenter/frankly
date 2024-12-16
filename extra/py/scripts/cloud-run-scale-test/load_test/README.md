@@ -1,0 +1,1 @@
+node . --num-users 10 --ramp-up 10

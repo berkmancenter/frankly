@@ -1,0 +1,12 @@
+{
+  "fields": [
+    {
+      "name": "documentPath",
+      "type": "string"
+    },
+    {
+      "name": "featuredType",
+      "type": "string"
+    }
+  ]
+}

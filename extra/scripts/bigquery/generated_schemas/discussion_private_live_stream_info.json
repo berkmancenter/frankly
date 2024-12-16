@@ -1,0 +1,12 @@
+{
+  "fields": [
+    {
+      "name": "streamKey",
+      "type": "string"
+    },
+    {
+      "name": "streamServerUrl",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "fields": [
+    {
+      "name": "meetingId",
+      "type": "string"
+    },
+    {
+      "name": "meetingProvider",
+      "type": "string"
+    },
+    {
+      "name": "meetingProviderId",
+      "type": "string"
+    },
+    {
+      "name": "participants",
+      "type": "array"
+    }
+  ]
+}
