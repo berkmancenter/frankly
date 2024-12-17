@@ -4,7 +4,7 @@ import 'package:client/app/community/events/event_page/widgets/event_info.dart';
 import 'package:client/common_widgets/confirm_dialog.dart';
 import 'package:client/app.dart';
 import 'package:client/routing/locations.dart';
-import 'package:client/services/firestore/firestore_scale_test_service.dart';
+import 'firestore_scale_test_service.dart';
 
 import 'utils.dart';
 
