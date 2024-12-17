@@ -17,10 +17,10 @@ import 'package:client/styles/app_styles.dart';
 
 import 'package:client/utils/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
 
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 

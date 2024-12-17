@@ -7,10 +7,10 @@ import 'package:client/common_widgets/visible_exception.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/platform_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 

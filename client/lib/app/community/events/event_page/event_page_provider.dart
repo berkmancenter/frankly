@@ -15,8 +15,8 @@ import 'package:client/app.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community_tag.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community_tag.dart';
 
 import '../../../../routing/locations.dart';
 

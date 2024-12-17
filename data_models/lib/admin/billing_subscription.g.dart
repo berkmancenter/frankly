@@ -11,9 +11,7 @@ _$_BillingSubscription _$$_BillingSubscriptionFromJson(
     _$_BillingSubscription(
       stripeSubscriptionId: json['stripeSubscriptionId'] as String,
       type: json['type'] as String,
-      activeUntil: json['activeUntil'] == null
-          ? null
-          : DateTime.parse(json['activeUntil'] as String),
+      activeUntil: dateTimeFromTimestamp(json['activeUntil']),
       canceled: json['canceled'] as bool,
       willCancelAtPeriodEnd: json['willCancelAtPeriodEnd'] as bool,
       appliedCommunityId: json['appliedCommunityId'] as String?,
@@ -24,7 +22,7 @@ Map<String, dynamic> _$$_BillingSubscriptionToJson(
     <String, dynamic>{
       'stripeSubscriptionId': instance.stripeSubscriptionId,
       'type': instance.type,
-      'activeUntil': instance.activeUntil?.toIso8601String(),
+      'activeUntil': timestampFromDateTime(instance.activeUntil),
       'canceled': instance.canceled,
       'willCancelAtPeriodEnd': instance.willCancelAtPeriodEnd,
       'appliedCommunityId': instance.appliedCommunityId,

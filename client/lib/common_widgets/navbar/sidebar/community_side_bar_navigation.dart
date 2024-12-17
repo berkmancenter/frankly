@@ -4,7 +4,7 @@ import 'package:client/common_widgets/navbar/sidebar/side_bar_navigation_button.
 import 'package:client/routing/locations.dart';
 import 'package:client/services/user_data_service.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 class CommunitySideBarNavigation extends StatelessWidget {

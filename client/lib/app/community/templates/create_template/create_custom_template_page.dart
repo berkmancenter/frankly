@@ -17,8 +17,8 @@ import 'package:client/app/community/community_permissions_provider.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 enum TemplateActionType {

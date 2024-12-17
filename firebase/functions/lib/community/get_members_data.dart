@@ -4,10 +4,10 @@ import '../on_call_function.dart';
 import '../utils/firestore_utils.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/member_details.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/member_details.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:quiver/iterables.dart';
 
 class GetMembersData extends OnCallMethod<GetMembersDataRequest> {

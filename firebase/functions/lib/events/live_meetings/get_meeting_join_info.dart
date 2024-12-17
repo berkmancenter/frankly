@@ -6,9 +6,9 @@ import 'live_meeting_utils.dart';
 import '../../on_call_function.dart';
 import '../../utils/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/public_user_info.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/user/public_user_info.dart';
+import 'package:data_models/utils/utils.dart';
 
 class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
   GetMeetingJoinInfo()

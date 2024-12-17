@@ -180,6 +180,8 @@ abstract class $CreateAnnouncementRequestCopyWith<$Res> {
       {String communityId,
       @JsonKey(toJson: Announcement.toJsonForCloudFunction)
       Announcement? announcement});
+
+  $AnnouncementCopyWith<$Res>? get announcement;
 }
 
 /// @nodoc
@@ -210,6 +212,18 @@ class _$CreateAnnouncementRequestCopyWithImpl<$Res,
               as Announcement?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AnnouncementCopyWith<$Res>? get announcement {
+    if (_value.announcement == null) {
+      return null;
+    }
+
+    return $AnnouncementCopyWith<$Res>(_value.announcement!, (value) {
+      return _then(_value.copyWith(announcement: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -225,6 +239,9 @@ abstract class _$$_CreateAnnouncementRequestCopyWith<$Res>
       {String communityId,
       @JsonKey(toJson: Announcement.toJsonForCloudFunction)
       Announcement? announcement});
+
+  @override
+  $AnnouncementCopyWith<$Res>? get announcement;
 }
 
 /// @nodoc
@@ -284,14 +301,13 @@ class _$_CreateAnnouncementRequest implements _CreateAnnouncementRequest {
             other is _$_CreateAnnouncementRequest &&
             (identical(other.communityId, communityId) ||
                 other.communityId == communityId) &&
-            const DeepCollectionEquality()
-                .equals(other.announcement, announcement));
+            (identical(other.announcement, announcement) ||
+                other.announcement == announcement));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId,
-      const DeepCollectionEquality().hash(announcement));
+  int get hashCode => Object.hash(runtimeType, communityId, announcement);
 
   @JsonKey(ignore: true)
   @override
@@ -359,6 +375,8 @@ abstract class $SendEventMessageRequestCopyWith<$Res> {
       String eventId,
       @JsonKey(toJson: EventMessage.toJsonForCloudFunction)
       EventMessage eventMessage});
+
+  $EventMessageCopyWith<$Res> get eventMessage;
 }
 
 /// @nodoc
@@ -378,7 +396,7 @@ class _$SendEventMessageRequestCopyWithImpl<$Res,
     Object? communityId = null,
     Object? templateId = null,
     Object? eventId = null,
-    Object? eventMessage = freezed,
+    Object? eventMessage = null,
   }) {
     return _then(_value.copyWith(
       communityId: null == communityId
@@ -393,11 +411,19 @@ class _$SendEventMessageRequestCopyWithImpl<$Res,
           ? _value.eventId
           : eventId // ignore: cast_nullable_to_non_nullable
               as String,
-      eventMessage: freezed == eventMessage
+      eventMessage: null == eventMessage
           ? _value.eventMessage
           : eventMessage // ignore: cast_nullable_to_non_nullable
               as EventMessage,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $EventMessageCopyWith<$Res> get eventMessage {
+    return $EventMessageCopyWith<$Res>(_value.eventMessage, (value) {
+      return _then(_value.copyWith(eventMessage: value) as $Val);
+    });
   }
 }
 
@@ -415,6 +441,9 @@ abstract class _$$_SendEventMessageRequestCopyWith<$Res>
       String eventId,
       @JsonKey(toJson: EventMessage.toJsonForCloudFunction)
       EventMessage eventMessage});
+
+  @override
+  $EventMessageCopyWith<$Res> get eventMessage;
 }
 
 /// @nodoc
@@ -432,7 +461,7 @@ class __$$_SendEventMessageRequestCopyWithImpl<$Res>
     Object? communityId = null,
     Object? templateId = null,
     Object? eventId = null,
-    Object? eventMessage = freezed,
+    Object? eventMessage = null,
   }) {
     return _then(_$_SendEventMessageRequest(
       communityId: null == communityId
@@ -447,7 +476,7 @@ class __$$_SendEventMessageRequestCopyWithImpl<$Res>
           ? _value.eventId
           : eventId // ignore: cast_nullable_to_non_nullable
               as String,
-      eventMessage: freezed == eventMessage
+      eventMessage: null == eventMessage
           ? _value.eventMessage
           : eventMessage // ignore: cast_nullable_to_non_nullable
               as EventMessage,
@@ -493,14 +522,14 @@ class _$_SendEventMessageRequest implements _SendEventMessageRequest {
             (identical(other.templateId, templateId) ||
                 other.templateId == templateId) &&
             (identical(other.eventId, eventId) || other.eventId == eventId) &&
-            const DeepCollectionEquality()
-                .equals(other.eventMessage, eventMessage));
+            (identical(other.eventMessage, eventMessage) ||
+                other.eventMessage == eventMessage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId, templateId, eventId,
-      const DeepCollectionEquality().hash(eventMessage));
+  int get hashCode =>
+      Object.hash(runtimeType, communityId, templateId, eventId, eventMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -917,12 +946,12 @@ class _$CreateSubscriptionCheckoutSessionRequestCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? appliedCommunityId = null,
     Object? returnRedirectPath = null,
   }) {
     return _then(_value.copyWith(
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -964,12 +993,12 @@ class __$$_CreateSubscriptionCheckoutSessionRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? appliedCommunityId = null,
     Object? returnRedirectPath = null,
   }) {
     return _then(_$_CreateSubscriptionCheckoutSessionRequest(
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -1015,7 +1044,7 @@ class _$_CreateSubscriptionCheckoutSessionRequest
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CreateSubscriptionCheckoutSessionRequest &&
-            const DeepCollectionEquality().equals(other.type, type) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.appliedCommunityId, appliedCommunityId) ||
                 other.appliedCommunityId == appliedCommunityId) &&
             (identical(other.returnRedirectPath, returnRedirectPath) ||
@@ -1024,11 +1053,8 @@ class _$_CreateSubscriptionCheckoutSessionRequest
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      appliedCommunityId,
-      returnRedirectPath);
+  int get hashCode =>
+      Object.hash(runtimeType, type, appliedCommunityId, returnRedirectPath);
 
   @JsonKey(ignore: true)
   @override
@@ -7278,14 +7304,14 @@ class _$_UpdateBreakoutRoomFlagStatusRequest
             (identical(other.breakoutSessionId, breakoutSessionId) ||
                 other.breakoutSessionId == breakoutSessionId) &&
             (identical(other.roomId, roomId) || other.roomId == roomId) &&
-            const DeepCollectionEquality()
-                .equals(other.flagStatus, flagStatus));
+            (identical(other.flagStatus, flagStatus) ||
+                other.flagStatus == flagStatus));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, eventPath, breakoutSessionId,
-      roomId, const DeepCollectionEquality().hash(flagStatus));
+  int get hashCode => Object.hash(
+      runtimeType, eventPath, breakoutSessionId, roomId, flagStatus);
 
   @JsonKey(ignore: true)
   @override
@@ -7359,6 +7385,8 @@ abstract class $CreateCommunityRequestCopyWith<$Res> {
   $Res call(
       {@JsonKey(toJson: Community.toJsonForCloudFunction) Community? community,
       String? agreementId});
+
+  $CommunityCopyWith<$Res>? get community;
 }
 
 /// @nodoc
@@ -7389,6 +7417,18 @@ class _$CreateCommunityRequestCopyWithImpl<$Res,
               as String?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CommunityCopyWith<$Res>? get community {
+    if (_value.community == null) {
+      return null;
+    }
+
+    return $CommunityCopyWith<$Res>(_value.community!, (value) {
+      return _then(_value.copyWith(community: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -7402,6 +7442,9 @@ abstract class _$$_CreateCommunityRequestCopyWith<$Res>
   $Res call(
       {@JsonKey(toJson: Community.toJsonForCloudFunction) Community? community,
       String? agreementId});
+
+  @override
+  $CommunityCopyWith<$Res>? get community;
 }
 
 /// @nodoc
@@ -7458,15 +7501,15 @@ class _$_CreateCommunityRequest implements _CreateCommunityRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CreateCommunityRequest &&
-            const DeepCollectionEquality().equals(other.community, community) &&
+            (identical(other.community, community) ||
+                other.community == community) &&
             (identical(other.agreementId, agreementId) ||
                 other.agreementId == agreementId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(community), agreementId);
+  int get hashCode => Object.hash(runtimeType, community, agreementId);
 
   @JsonKey(ignore: true)
   @override
@@ -7672,6 +7715,8 @@ abstract class $UpdateCommunityRequestCopyWith<$Res> {
   $Res call(
       {@JsonKey(toJson: Community.toJsonForCloudFunction) Community community,
       List<String> keys});
+
+  $CommunityCopyWith<$Res> get community;
 }
 
 /// @nodoc
@@ -7688,11 +7733,11 @@ class _$UpdateCommunityRequestCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? community = freezed,
+    Object? community = null,
     Object? keys = null,
   }) {
     return _then(_value.copyWith(
-      community: freezed == community
+      community: null == community
           ? _value.community
           : community // ignore: cast_nullable_to_non_nullable
               as Community,
@@ -7701,6 +7746,14 @@ class _$UpdateCommunityRequestCopyWithImpl<$Res,
           : keys // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CommunityCopyWith<$Res> get community {
+    return $CommunityCopyWith<$Res>(_value.community, (value) {
+      return _then(_value.copyWith(community: value) as $Val);
+    });
   }
 }
 
@@ -7715,6 +7768,9 @@ abstract class _$$_UpdateCommunityRequestCopyWith<$Res>
   $Res call(
       {@JsonKey(toJson: Community.toJsonForCloudFunction) Community community,
       List<String> keys});
+
+  @override
+  $CommunityCopyWith<$Res> get community;
 }
 
 /// @nodoc
@@ -7729,11 +7785,11 @@ class __$$_UpdateCommunityRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? community = freezed,
+    Object? community = null,
     Object? keys = null,
   }) {
     return _then(_$_UpdateCommunityRequest(
-      community: freezed == community
+      community: null == community
           ? _value.community
           : community // ignore: cast_nullable_to_non_nullable
               as Community,
@@ -7772,16 +7828,15 @@ class _$_UpdateCommunityRequest implements _UpdateCommunityRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UpdateCommunityRequest &&
-            const DeepCollectionEquality().equals(other.community, community) &&
+            (identical(other.community, community) ||
+                other.community == community) &&
             const DeepCollectionEquality().equals(other.keys, keys));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(community),
-      const DeepCollectionEquality().hash(keys));
+      runtimeType, community, const DeepCollectionEquality().hash(keys));
 
   @JsonKey(ignore: true)
   @override
@@ -10718,7 +10773,7 @@ class _$UpdateStripeSubscriptionPlanRequestCopyWithImpl<$Res,
   $Res call({
     Object? communityId = null,
     Object? stripePriceId = null,
-    Object? type = freezed,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
       communityId: null == communityId
@@ -10729,7 +10784,7 @@ class _$UpdateStripeSubscriptionPlanRequestCopyWithImpl<$Res,
           ? _value.stripePriceId
           : stripePriceId // ignore: cast_nullable_to_non_nullable
               as String,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -10764,7 +10819,7 @@ class __$$_UpdateStripeSubscriptionPlanRequestCopyWithImpl<$Res>
   $Res call({
     Object? communityId = null,
     Object? stripePriceId = null,
-    Object? type = freezed,
+    Object? type = null,
   }) {
     return _then(_$_UpdateStripeSubscriptionPlanRequest(
       communityId: null == communityId
@@ -10775,7 +10830,7 @@ class __$$_UpdateStripeSubscriptionPlanRequestCopyWithImpl<$Res>
           ? _value.stripePriceId
           : stripePriceId // ignore: cast_nullable_to_non_nullable
               as String,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -10819,13 +10874,13 @@ class _$_UpdateStripeSubscriptionPlanRequest
                 other.communityId == communityId) &&
             (identical(other.stripePriceId, stripePriceId) ||
                 other.stripePriceId == stripePriceId) &&
-            const DeepCollectionEquality().equals(other.type, type));
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId, stripePriceId,
-      const DeepCollectionEquality().hash(type));
+  int get hashCode =>
+      Object.hash(runtimeType, communityId, stripePriceId, type);
 
   @JsonKey(ignore: true)
   @override
@@ -11064,10 +11119,10 @@ class _$GetStripeSubscriptionPlanInfoRequestCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -11100,10 +11155,10 @@ class __$$_GetStripeSubscriptionPlanInfoRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
   }) {
     return _then(_$_GetStripeSubscriptionPlanInfoRequest(
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -11134,13 +11189,12 @@ class _$_GetStripeSubscriptionPlanInfoRequest
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GetStripeSubscriptionPlanInfoRequest &&
-            const DeepCollectionEquality().equals(other.type, type));
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(type));
+  int get hashCode => Object.hash(runtimeType, type);
 
   @JsonKey(ignore: true)
   @override
@@ -11223,13 +11277,13 @@ class _$GetStripeSubscriptionPlanInfoResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? plan = freezed,
+    Object? plan = null,
     Object? priceInCents = null,
     Object? stripePriceId = null,
     Object? name = null,
   }) {
     return _then(_value.copyWith(
-      plan: freezed == plan
+      plan: null == plan
           ? _value.plan
           : plan // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -11275,13 +11329,13 @@ class __$$_GetStripeSubscriptionPlanInfoResponseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? plan = freezed,
+    Object? plan = null,
     Object? priceInCents = null,
     Object? stripePriceId = null,
     Object? name = null,
   }) {
     return _then(_$_GetStripeSubscriptionPlanInfoResponse(
-      plan: freezed == plan
+      plan: null == plan
           ? _value.plan
           : plan // ignore: cast_nullable_to_non_nullable
               as PlanType,
@@ -11336,7 +11390,7 @@ class _$_GetStripeSubscriptionPlanInfoResponse
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GetStripeSubscriptionPlanInfoResponse &&
-            const DeepCollectionEquality().equals(other.plan, plan) &&
+            (identical(other.plan, plan) || other.plan == plan) &&
             (identical(other.priceInCents, priceInCents) ||
                 other.priceInCents == priceInCents) &&
             (identical(other.stripePriceId, stripePriceId) ||
@@ -11346,12 +11400,8 @@ class _$_GetStripeSubscriptionPlanInfoResponse
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(plan),
-      priceInCents,
-      stripePriceId,
-      name);
+  int get hashCode =>
+      Object.hash(runtimeType, plan, priceInCents, stripePriceId, name);
 
   @JsonKey(ignore: true)
   @override

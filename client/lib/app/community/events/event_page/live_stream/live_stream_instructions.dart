@@ -7,7 +7,7 @@ import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/common_widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class LiveStreamInstructions extends StatelessWidget {
   const LiveStreamInstructions({this.whiteBackground = true});

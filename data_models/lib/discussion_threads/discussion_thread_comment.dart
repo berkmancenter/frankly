@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/emotion.dart';
-import 'package:data_models/firestore/utils.dart';
+import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/utils/firestore_utils.dart';
 
 part 'discussion_thread_comment.freezed.dart';
 part 'discussion_thread_comment.g.dart';

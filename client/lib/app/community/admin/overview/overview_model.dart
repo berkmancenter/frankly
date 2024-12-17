@@ -1,4 +1,4 @@
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class OverviewModel {
   OnboardingStep? expandedOnboardingStep;

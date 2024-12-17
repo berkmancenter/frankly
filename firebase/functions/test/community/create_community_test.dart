@@ -1,7 +1,7 @@
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:test/test.dart';
 import 'package:functions/community/create_community.dart';
 import 'package:data_models/cloud_functions/requests.dart';

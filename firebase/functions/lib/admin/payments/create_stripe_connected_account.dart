@@ -5,7 +5,7 @@ import '../../utils/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 
 class CreateStripeConnectedAccount
     extends OnCallMethod<CreateStripeConnectedAccountRequest> {

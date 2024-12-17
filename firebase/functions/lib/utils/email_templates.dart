@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 import 'calendar_link_util.dart';
 import 'timezone_utils.dart';
 import 'utils.dart';
-import 'package:data_models/firestore/announcement.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_message.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/announcements/announcement.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_message.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:timezone/standalone.dart' as tz;
 
 final privacyPolicyUrl =

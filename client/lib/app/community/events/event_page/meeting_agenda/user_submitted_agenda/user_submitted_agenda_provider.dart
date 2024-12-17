@@ -5,7 +5,7 @@ import 'package:client/app/community/events/event_page/event_tabs/event_tabs_mod
 import 'package:client/app.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 /*
 -Rank should be upvotes, then oldest first

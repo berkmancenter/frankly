@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/chat.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/chat/chat.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 /// A class that keeps track of the user's permissions in relation to the current community.

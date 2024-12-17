@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:data_models/firestore/utils.dart';
+import 'package:data_models/utils/firestore_utils.dart';
 
 part 'email_digest_record.freezed.dart';
 part 'email_digest_record.g.dart';

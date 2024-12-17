@@ -5,7 +5,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/membership_request.dart';
+import 'package:data_models/community/membership_request.dart';
 
 class FirestoreCommunityJoinRequestsService {
   BehaviorSubjectWrapper<List<MembershipRequest>> getRequestsForCommunityId({

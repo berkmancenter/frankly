@@ -8,7 +8,7 @@ import 'package:client/routing/locations.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 /// This widget either shows the app icon or a logo of the selected community, if one is selected.

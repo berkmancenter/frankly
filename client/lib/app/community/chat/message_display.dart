@@ -11,8 +11,8 @@ import 'package:client/common_widgets/user_profile_chip.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/chat.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/chat/chat.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 
 class MessageDisplay extends StatefulWidget {

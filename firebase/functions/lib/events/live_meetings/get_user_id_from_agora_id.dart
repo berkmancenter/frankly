@@ -4,7 +4,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_call_function.dart';
 import '../../utils/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/user/public_user_info.dart';
 
 import '../../utils/utils.dart';
 

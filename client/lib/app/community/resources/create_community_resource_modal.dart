@@ -15,7 +15,7 @@ import 'package:client/services/media_helper_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community_resource.dart';
+import 'package:data_models/resources/community_resource.dart';
 import 'package:provider/provider.dart';
 
 class CreateCommunityResourceModal extends StatelessWidget {

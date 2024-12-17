@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/custom_text_field.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class CreateCommunityTextFields extends StatefulWidget {
   final bool showChooseCustomDisplayId;

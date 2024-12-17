@@ -5,7 +5,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../firestore_event_function.dart';
 import '../on_firestore_function.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 import '../utils/firestore_utils.dart';
 

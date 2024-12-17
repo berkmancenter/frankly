@@ -6,7 +6,7 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 
 class EditCommunityButton extends StatefulWidget {

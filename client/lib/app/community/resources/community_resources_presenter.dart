@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_resource.dart';
-import 'package:data_models/firestore/community_tag.dart';
+import 'package:data_models/resources/community_resource.dart';
+import 'package:data_models/community/community_tag.dart';
 
 class CommunityResourcesPresenter with ChangeNotifier {
   final CommunityProvider communityProvider;

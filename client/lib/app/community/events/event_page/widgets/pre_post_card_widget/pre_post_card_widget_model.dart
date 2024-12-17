@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_page.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/templates/template.dart';
 
 class PrePostCardWidgetModel {
   PrePostCardType _prePostCardType;

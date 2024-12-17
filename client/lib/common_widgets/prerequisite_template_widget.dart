@@ -6,7 +6,7 @@ import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/routing/locations.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 /// This is a Widget that displays event Prerequisite template

@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/firestore/pre_post_card_attribute.dart';
-import 'package:data_models/firestore/pre_post_url_params.dart';
+import 'package:data_models/events/pre_post_card_attribute.dart';
+import 'package:data_models/events/pre_post_url_params.dart';
 
 part 'pre_post_card.freezed.dart';
 part 'pre_post_card.g.dart';

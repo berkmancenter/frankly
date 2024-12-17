@@ -14,9 +14,7 @@ _$_EmailDigestRecord _$$_EmailDigestRecordFromJson(Map<String, dynamic> json) =>
       type: $enumDecodeNullable(_$DigestTypeEnumMap, json['type'],
               unknownValue: DigestType.weekly) ??
           DigestType.weekly,
-      sentAt: json['sentAt'] == null
-          ? null
-          : DateTime.parse(json['sentAt'] as String),
+      sentAt: dateTimeFromTimestamp(json['sentAt']),
     );
 
 Map<String, dynamic> _$$_EmailDigestRecordToJson(
@@ -26,7 +24,7 @@ Map<String, dynamic> _$$_EmailDigestRecordToJson(
       'userId': instance.userId,
       'communityId': instance.communityId,
       'type': _$DigestTypeEnumMap[instance.type]!,
-      'sentAt': instance.sentAt?.toIso8601String(),
+      'sentAt': serverTimestamp(instance.sentAt),
     };
 
 const _$DigestTypeEnumMap = {

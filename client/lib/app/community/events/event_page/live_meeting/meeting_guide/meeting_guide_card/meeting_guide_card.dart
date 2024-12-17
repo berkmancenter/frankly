@@ -36,7 +36,7 @@ import 'package:client/utils/dialog_provider.dart';
 import 'package:client/utils/extensions.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/periodic_builder.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:skeleton_text/skeleton_text.dart';

@@ -9,11 +9,11 @@ import 'firestore_utils.dart';
 import 'send_email_client.dart';
 import 'utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/community_user_settings.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/community_user_settings.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/templates/template.dart';
 
 final noReplyEmailAddr = functions.config.get('app.no_reply_email') as String;
 

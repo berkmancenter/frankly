@@ -11,9 +11,7 @@ _$_Membership _$$_MembershipFromJson(Map<String, dynamic> json) =>
       userId: json['userId'] as String,
       communityId: json['communityId'] as String,
       status: $enumDecodeNullable(_$MembershipStatusEnumMap, json['status']),
-      firstJoined: json['firstJoined'] == null
-          ? null
-          : DateTime.parse(json['firstJoined'] as String),
+      firstJoined: dateTimeFromTimestamp(json['firstJoined']),
       invisible: json['invisible'] as bool? ?? false,
     );
 
@@ -22,7 +20,7 @@ Map<String, dynamic> _$$_MembershipToJson(_$_Membership instance) =>
       'userId': instance.userId,
       'communityId': instance.communityId,
       'status': _$MembershipStatusEnumMap[instance.status],
-      'firstJoined': instance.firstJoined?.toIso8601String(),
+      'firstJoined': serverTimestamp(instance.firstJoined),
       'invisible': instance.invisible,
     };
 

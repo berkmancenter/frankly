@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_tag_definition.dart';
+import 'package:data_models/community/community_tag_definition.dart';
 
 /// holds logic for community definition lookups
 class FutureAndResult<T> {

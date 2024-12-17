@@ -5,7 +5,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import '../../cloud_function.dart';
 import '../../utils/firestore_utils.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 /// Generic logic for returning a calendar feed. Functions that implement this should expect the
 /// space id to be present as the second request path parameter, as in '/space/[space_id]/xyz'.

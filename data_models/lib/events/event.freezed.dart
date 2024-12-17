@@ -136,6 +136,8 @@ abstract class $EventCopyWith<$Res> {
   $WaitingRoomInfoCopyWith<$Res>? get waitingRoomInfo;
   $BreakoutRoomDefinitionCopyWith<$Res>? get breakoutRoomDefinition;
   $LiveStreamInfoCopyWith<$Res>? get liveStreamInfo;
+  $PrePostCardCopyWith<$Res>? get preEventCardData;
+  $PrePostCardCopyWith<$Res>? get postEventCardData;
   $PlatformItemCopyWith<$Res>? get externalPlatform;
   $EventSettingsCopyWith<$Res>? get eventSettings;
 }
@@ -363,6 +365,30 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
 
   @override
   @pragma('vm:prefer-inline')
+  $PrePostCardCopyWith<$Res>? get preEventCardData {
+    if (_value.preEventCardData == null) {
+      return null;
+    }
+
+    return $PrePostCardCopyWith<$Res>(_value.preEventCardData!, (value) {
+      return _then(_value.copyWith(preEventCardData: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PrePostCardCopyWith<$Res>? get postEventCardData {
+    if (_value.postEventCardData == null) {
+      return null;
+    }
+
+    return $PrePostCardCopyWith<$Res>(_value.postEventCardData!, (value) {
+      return _then(_value.copyWith(postEventCardData: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $PlatformItemCopyWith<$Res>? get externalPlatform {
     if (_value.externalPlatform == null) {
       return null;
@@ -440,6 +466,10 @@ abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
   $BreakoutRoomDefinitionCopyWith<$Res>? get breakoutRoomDefinition;
   @override
   $LiveStreamInfoCopyWith<$Res>? get liveStreamInfo;
+  @override
+  $PrePostCardCopyWith<$Res>? get preEventCardData;
+  @override
+  $PrePostCardCopyWith<$Res>? get postEventCardData;
   @override
   $PlatformItemCopyWith<$Res>? get externalPlatform;
   @override
@@ -824,10 +854,10 @@ class _$_Event extends _Event {
                 other.isLocked == isLocked) &&
             (identical(other.liveStreamInfo, liveStreamInfo) ||
                 other.liveStreamInfo == liveStreamInfo) &&
-            const DeepCollectionEquality()
-                .equals(other.preEventCardData, preEventCardData) &&
-            const DeepCollectionEquality()
-                .equals(other.postEventCardData, postEventCardData) &&
+            (identical(other.preEventCardData, preEventCardData) ||
+                other.preEventCardData == preEventCardData) &&
+            (identical(other.postEventCardData, postEventCardData) ||
+                other.postEventCardData == postEventCardData) &&
             (identical(other.externalPlatform, externalPlatform) ||
                 other.externalPlatform == externalPlatform) &&
             (identical(other.eventSettings, eventSettings) ||
@@ -877,8 +907,8 @@ class _$_Event extends _Event {
         breakoutRoomDefinition,
         isLocked,
         liveStreamInfo,
-        const DeepCollectionEquality().hash(preEventCardData),
-        const DeepCollectionEquality().hash(postEventCardData),
+        preEventCardData,
+        postEventCardData,
         externalPlatform,
         eventSettings,
         durationInMinutes,
@@ -4658,6 +4688,9 @@ abstract class $WaitingRoomInfoCopyWith<$Res> {
       MediaItem? introMediaItem,
       bool enableChat,
       bool loopWaitingVideo});
+
+  $MediaItemCopyWith<$Res>? get waitingMediaItem;
+  $MediaItemCopyWith<$Res>? get introMediaItem;
 }
 
 /// @nodoc
@@ -4712,6 +4745,30 @@ class _$WaitingRoomInfoCopyWithImpl<$Res, $Val extends WaitingRoomInfo>
               as bool,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MediaItemCopyWith<$Res>? get waitingMediaItem {
+    if (_value.waitingMediaItem == null) {
+      return null;
+    }
+
+    return $MediaItemCopyWith<$Res>(_value.waitingMediaItem!, (value) {
+      return _then(_value.copyWith(waitingMediaItem: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MediaItemCopyWith<$Res>? get introMediaItem {
+    if (_value.introMediaItem == null) {
+      return null;
+    }
+
+    return $MediaItemCopyWith<$Res>(_value.introMediaItem!, (value) {
+      return _then(_value.copyWith(introMediaItem: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -4730,6 +4787,11 @@ abstract class _$$_WaitingRoomInfoCopyWith<$Res>
       MediaItem? introMediaItem,
       bool enableChat,
       bool loopWaitingVideo});
+
+  @override
+  $MediaItemCopyWith<$Res>? get waitingMediaItem;
+  @override
+  $MediaItemCopyWith<$Res>? get introMediaItem;
 }
 
 /// @nodoc
@@ -4835,10 +4897,10 @@ class _$_WaitingRoomInfo extends _WaitingRoomInfo {
                     waitingMediaBufferSeconds) ||
                 other.waitingMediaBufferSeconds == waitingMediaBufferSeconds) &&
             (identical(other.content, content) || other.content == content) &&
-            const DeepCollectionEquality()
-                .equals(other.waitingMediaItem, waitingMediaItem) &&
-            const DeepCollectionEquality()
-                .equals(other.introMediaItem, introMediaItem) &&
+            (identical(other.waitingMediaItem, waitingMediaItem) ||
+                other.waitingMediaItem == waitingMediaItem) &&
+            (identical(other.introMediaItem, introMediaItem) ||
+                other.introMediaItem == introMediaItem) &&
             (identical(other.enableChat, enableChat) ||
                 other.enableChat == enableChat) &&
             (identical(other.loopWaitingVideo, loopWaitingVideo) ||
@@ -4852,8 +4914,8 @@ class _$_WaitingRoomInfo extends _WaitingRoomInfo {
       durationSeconds,
       waitingMediaBufferSeconds,
       content,
-      const DeepCollectionEquality().hash(waitingMediaItem),
-      const DeepCollectionEquality().hash(introMediaItem),
+      waitingMediaItem,
+      introMediaItem,
       enableChat,
       loopWaitingVideo);
 

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/utils.dart';
+import 'package:data_models/utils/firestore_utils.dart';
 
 part 'event_message.freezed.dart';
 part 'event_message.g.dart';

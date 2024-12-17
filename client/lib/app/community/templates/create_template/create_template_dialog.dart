@@ -6,7 +6,7 @@ import 'package:client/app/community/templates/create_template/create_custom_tem
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/common_widgets/create_dialog_ui_migration.dart';
 import 'package:client/routing/locations.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 class CreateTemplateDialog extends StatelessWidget {

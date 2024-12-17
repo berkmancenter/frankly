@@ -285,8 +285,8 @@ class _$_ChatMessage extends _ChatMessage {
             (identical(other.collectionPath, collectionPath) ||
                 other.collectionPath == collectionPath) &&
             (identical(other.message, message) || other.message == message) &&
-            const DeepCollectionEquality()
-                .equals(other.emotionType, emotionType) &&
+            (identical(other.emotionType, emotionType) ||
+                other.emotionType == emotionType) &&
             (identical(other.creatorId, creatorId) ||
                 other.creatorId == creatorId) &&
             (identical(other.createdDate, createdDate) ||
@@ -307,7 +307,7 @@ class _$_ChatMessage extends _ChatMessage {
       id,
       collectionPath,
       message,
-      const DeepCollectionEquality().hash(emotionType),
+      emotionType,
       creatorId,
       createdDate,
       messageStatus,

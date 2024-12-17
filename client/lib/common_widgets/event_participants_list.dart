@@ -5,7 +5,7 @@ import 'package:client/app/community/events/event_page/event_provider.dart';
 import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/common_widgets/participants_list.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 /// This is a list of participants for a event card that relies on the event provider
 class EventPageParticipantsList extends StatelessWidget {

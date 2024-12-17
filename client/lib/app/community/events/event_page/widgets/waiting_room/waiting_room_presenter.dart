@@ -4,7 +4,7 @@ import 'package:client/app/community/events/event_page/live_meeting/live_meeting
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/media_item.dart';
+import 'package:data_models/events/media_item.dart';
 
 class WaitingRoomPresenter with ChangeNotifier {
   final CommunityProvider communityProvider;

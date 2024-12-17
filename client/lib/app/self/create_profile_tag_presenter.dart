@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_tag.dart';
+import 'package:data_models/community/community_tag.dart';
 
 class CreateProfileTagPresenter with ChangeNotifier {
   final String currentUserId;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/common_widgets/proxied_image.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class MeetingGuideCardItemImage extends StatelessWidget {
   final AgendaItem agendaItem;

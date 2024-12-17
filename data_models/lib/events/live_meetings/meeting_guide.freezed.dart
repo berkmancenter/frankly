@@ -679,7 +679,7 @@ class _$ParticipantAgendaItemDetailsMetaCopyWithImpl<$Res,
   $Res call({
     Object? documentPath = null,
     Object? voterId = null,
-    Object? likeType = freezed,
+    Object? likeType = null,
     Object? userSuggestionId = null,
   }) {
     return _then(_value.copyWith(
@@ -691,7 +691,7 @@ class _$ParticipantAgendaItemDetailsMetaCopyWithImpl<$Res,
           ? _value.voterId
           : voterId // ignore: cast_nullable_to_non_nullable
               as String,
-      likeType: freezed == likeType
+      likeType: null == likeType
           ? _value.likeType
           : likeType // ignore: cast_nullable_to_non_nullable
               as LikeType,
@@ -734,7 +734,7 @@ class __$$_ParticipantAgendaItemDetailsMetaCopyWithImpl<$Res>
   $Res call({
     Object? documentPath = null,
     Object? voterId = null,
-    Object? likeType = freezed,
+    Object? likeType = null,
     Object? userSuggestionId = null,
   }) {
     return _then(_$_ParticipantAgendaItemDetailsMeta(
@@ -746,7 +746,7 @@ class __$$_ParticipantAgendaItemDetailsMetaCopyWithImpl<$Res>
           ? _value.voterId
           : voterId // ignore: cast_nullable_to_non_nullable
               as String,
-      likeType: freezed == likeType
+      likeType: null == likeType
           ? _value.likeType
           : likeType // ignore: cast_nullable_to_non_nullable
               as LikeType,
@@ -794,15 +794,16 @@ class _$_ParticipantAgendaItemDetailsMeta
             (identical(other.documentPath, documentPath) ||
                 other.documentPath == documentPath) &&
             (identical(other.voterId, voterId) || other.voterId == voterId) &&
-            const DeepCollectionEquality().equals(other.likeType, likeType) &&
+            (identical(other.likeType, likeType) ||
+                other.likeType == likeType) &&
             (identical(other.userSuggestionId, userSuggestionId) ||
                 other.userSuggestionId == userSuggestionId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, documentPath, voterId,
-      const DeepCollectionEquality().hash(likeType), userSuggestionId);
+  int get hashCode => Object.hash(
+      runtimeType, documentPath, voterId, likeType, userSuggestionId);
 
   @JsonKey(ignore: true)
   @override

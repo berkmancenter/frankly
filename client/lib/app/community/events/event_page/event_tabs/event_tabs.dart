@@ -8,7 +8,7 @@ import 'package:client/app/community/events/event_page/meeting_agenda/meeting_ag
 import 'package:client/app/community/events/event_page/meeting_agenda/user_submitted_agenda/user_submitted_agenda_provider.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/app/community/utils.dart';
-import 'package:data_models/firestore/event_message.dart';
+import 'package:data_models/events/event_message.dart';
 import 'package:provider/provider.dart';
 
 enum TabType {

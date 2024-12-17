@@ -7,12 +7,12 @@ import '../../on_call_function.dart';
 import '../../utils/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/chat.dart';
-import 'package:data_models/firestore/chat_suggestion_data.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/chat/chat.dart';
+import 'package:data_models/chat/chat_suggestion_data.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/user/public_user_info.dart';
 
 class GetMeetingChatSuggestionData
     extends OnCallMethod<GetMeetingChatsSuggestionsDataRequest> {

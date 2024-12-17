@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/media_item.dart';
+import 'package:data_models/events/media_item.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/utils.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/utils/firestore_utils.dart';
 import 'package:uuid/uuid.dart';
 
 part 'event.freezed.dart';

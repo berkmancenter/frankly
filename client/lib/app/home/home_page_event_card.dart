@@ -11,9 +11,9 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/memoized_builder.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/templates/template.dart';
 
 class HomePageEventCard extends StatefulWidget {
   final Event event;

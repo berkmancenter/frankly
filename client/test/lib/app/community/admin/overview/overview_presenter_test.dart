@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/app/community/admin/overview/overview_model.dart';
 import 'package:client/app/community/admin/overview/overview_presenter.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../../mocked_classes.mocks.dart';
 

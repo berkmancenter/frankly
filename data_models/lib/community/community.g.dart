@@ -17,9 +17,7 @@ _$_Community _$$_CommunityFromJson(Map<String, dynamic> json) => _$_Community(
       creatorId: json['creatorId'] as String?,
       profileImageUrl: json['profileImageUrl'] as String?,
       bannerImageUrl: json['bannerImageUrl'] as String?,
-      createdDate: json['createdDate'] == null
-          ? null
-          : DateTime.parse(json['createdDate'] as String),
+      createdDate: dateTimeFromTimestamp(json['createdDate']),
       isPublic: json['isPublic'] as bool?,
       description: json['description'] as String?,
       tagLine: json['tagLine'] as String?,
@@ -55,7 +53,7 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) =>
       'creatorId': instance.creatorId,
       'profileImageUrl': instance.profileImageUrl,
       'bannerImageUrl': instance.bannerImageUrl,
-      'createdDate': instance.createdDate?.toIso8601String(),
+      'createdDate': serverTimestamp(instance.createdDate),
       'isPublic': instance.isPublic,
       'description': instance.description,
       'tagLine': instance.tagLine,

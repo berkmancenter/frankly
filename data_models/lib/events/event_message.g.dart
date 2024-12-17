@@ -9,9 +9,7 @@ part of 'event_message.dart';
 _$_EventMessage _$$_EventMessageFromJson(Map<String, dynamic> json) =>
     _$_EventMessage(
       creatorId: json['creatorId'] as String,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
+      createdAt: dateTimeFromTimestamp(json['createdAt']),
       createdAtMillis: json['createdAtMillis'] as int?,
       message: json['message'] as String,
     );
@@ -19,7 +17,7 @@ _$_EventMessage _$$_EventMessageFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_EventMessageToJson(_$_EventMessage instance) =>
     <String, dynamic>{
       'creatorId': instance.creatorId,
-      'createdAt': instance.createdAt?.toIso8601String(),
+      'createdAt': timestampFromDateTime(instance.createdAt),
       'createdAtMillis': instance.createdAtMillis,
       'message': instance.message,
     };

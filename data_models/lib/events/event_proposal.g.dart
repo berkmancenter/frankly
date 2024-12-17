@@ -34,12 +34,8 @@ _$_EventProposal _$$_EventProposalFromJson(Map<String, dynamic> json) =>
       votes: (json['votes'] as List<dynamic>?)
           ?.map((e) => EventProposalVote.fromJson(e as Map<String, dynamic>))
           .toList(),
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      closedAt: json['closedAt'] == null
-          ? null
-          : DateTime.parse(json['closedAt'] as String),
+      createdAt: dateTimeFromTimestamp(json['createdAt']),
+      closedAt: dateTimeFromTimestamp(json['closedAt']),
     );
 
 Map<String, dynamic> _$$_EventProposalToJson(_$_EventProposal instance) =>
@@ -50,8 +46,8 @@ Map<String, dynamic> _$$_EventProposalToJson(_$_EventProposal instance) =>
       'initiatingUserId': instance.initiatingUserId,
       'targetUserId': instance.targetUserId,
       'votes': instance.votes?.map((e) => e.toJson()).toList(),
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'closedAt': instance.closedAt?.toIso8601String(),
+      'createdAt': timestampFromDateTime(instance.createdAt),
+      'closedAt': timestampFromDateTime(instance.closedAt),
     };
 
 const _$EventProposalTypeEnumMap = {

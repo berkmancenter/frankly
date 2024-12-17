@@ -82,6 +82,8 @@ abstract class $TemplateCopyWith<$Res> {
       PrePostCard? postEventCardData});
 
   $EventSettingsCopyWith<$Res>? get eventSettings;
+  $PrePostCardCopyWith<$Res>? get preEventCardData;
+  $PrePostCardCopyWith<$Res>? get postEventCardData;
 }
 
 /// @nodoc
@@ -198,6 +200,30 @@ class _$TemplateCopyWithImpl<$Res, $Val extends Template>
       return _then(_value.copyWith(eventSettings: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PrePostCardCopyWith<$Res>? get preEventCardData {
+    if (_value.preEventCardData == null) {
+      return null;
+    }
+
+    return $PrePostCardCopyWith<$Res>(_value.preEventCardData!, (value) {
+      return _then(_value.copyWith(preEventCardData: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PrePostCardCopyWith<$Res>? get postEventCardData {
+    if (_value.postEventCardData == null) {
+      return null;
+    }
+
+    return $PrePostCardCopyWith<$Res>(_value.postEventCardData!, (value) {
+      return _then(_value.copyWith(postEventCardData: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -232,6 +258,10 @@ abstract class _$$_TemplateCopyWith<$Res> implements $TemplateCopyWith<$Res> {
 
   @override
   $EventSettingsCopyWith<$Res>? get eventSettings;
+  @override
+  $PrePostCardCopyWith<$Res>? get preEventCardData;
+  @override
+  $PrePostCardCopyWith<$Res>? get postEventCardData;
 }
 
 /// @nodoc
@@ -447,10 +477,10 @@ class _$_Template extends _Template {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality()
                 .equals(other.agendaItems, agendaItems) &&
-            const DeepCollectionEquality()
-                .equals(other.preEventCardData, preEventCardData) &&
-            const DeepCollectionEquality()
-                .equals(other.postEventCardData, postEventCardData));
+            (identical(other.preEventCardData, preEventCardData) ||
+                other.preEventCardData == preEventCardData) &&
+            (identical(other.postEventCardData, postEventCardData) ||
+                other.postEventCardData == postEventCardData));
   }
 
   @JsonKey(ignore: true)
@@ -472,8 +502,8 @@ class _$_Template extends _Template {
       isOfficial,
       status,
       const DeepCollectionEquality().hash(agendaItems),
-      const DeepCollectionEquality().hash(preEventCardData),
-      const DeepCollectionEquality().hash(postEventCardData));
+      preEventCardData,
+      postEventCardData);
 
   @JsonKey(ignore: true)
   @override

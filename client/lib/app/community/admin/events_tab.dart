@@ -15,7 +15,7 @@ import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/platform_utils.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:universal_html/html.dart' as html;
 
 class EventsTab extends StatefulWidget {

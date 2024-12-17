@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/utils.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/utils/firestore_utils.dart';
 
 part 'meeting_guide.freezed.dart';
 part 'meeting_guide.g.dart';

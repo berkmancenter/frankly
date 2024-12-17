@@ -32,10 +32,10 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialogs.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_message.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_message.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 /// Class that defines our event tabs and their associated content.

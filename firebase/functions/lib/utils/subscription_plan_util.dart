@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'firestore_utils.dart';
 import 'utils.dart';
-import 'package:data_models/firestore/billing_subscription.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
+import 'package:data_models/admin/billing_subscription.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/admin/partner_agreement.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
 
 const kShowStripeFeatures = false;
 var subscriptionPlanUtil = SubscriptionPlanUtil();

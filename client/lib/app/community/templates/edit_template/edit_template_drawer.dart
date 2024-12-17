@@ -14,8 +14,8 @@ import 'package:client/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialogs.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/community_tag.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/community_tag.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_template_contract.dart';

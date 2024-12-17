@@ -10,7 +10,7 @@ import 'package:client/routing/locations.dart';
 import 'package:client/services/user_data_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
 /// This is the card for the upcoming events shown on the Home page.

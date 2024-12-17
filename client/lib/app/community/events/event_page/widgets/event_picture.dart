@@ -5,8 +5,8 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/editable_image.dart';
 import 'package:client/common_widgets/proxied_image.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/templates/template.dart';
 
 class EventOrTemplatePicture extends HookWidget {
   final Event? event;

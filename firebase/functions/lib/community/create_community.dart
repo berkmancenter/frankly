@@ -6,11 +6,11 @@ import '../on_call_function.dart';
 import '../utils/firestore_utils.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/admin/partner_agreement.dart';
+import 'package:data_models/utils/utils.dart';
 
 class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
   CreateCommunity()

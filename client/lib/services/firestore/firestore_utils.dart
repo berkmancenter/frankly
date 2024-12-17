@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/utils.dart';
+import 'package:data_models/utils/firestore_utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// Wrap streams in a data type that keeps track of the last value that arrived

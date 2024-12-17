@@ -11,7 +11,7 @@ import 'package:client/routing/locations.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 import 'custom_ink_well.dart';
 

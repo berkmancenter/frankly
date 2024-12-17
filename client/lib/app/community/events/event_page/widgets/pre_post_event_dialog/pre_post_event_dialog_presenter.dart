@@ -4,7 +4,7 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/user_admin_details_builder.dart';
 import 'package:client/services/responsive_layout_service.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/pre_post_url_params.dart';
+import 'package:data_models/events/pre_post_url_params.dart';
 
 import 'pre_post_event_dialog_model.dart';
 

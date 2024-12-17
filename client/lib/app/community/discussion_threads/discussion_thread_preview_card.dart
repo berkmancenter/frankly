@@ -10,9 +10,9 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialogs.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
-import 'package:data_models/firestore/emotion.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
+import 'package:data_models/chat/emotion.dart';
 
 class DiscussionThreadPreviewCard extends StatelessWidget {
   final DiscussionThread discussionThread;

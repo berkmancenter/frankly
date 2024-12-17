@@ -8,9 +8,9 @@ import 'package:client/services/services.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/utils/extensions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/pre_post_card_attribute.dart';
-import 'package:data_models/firestore/pre_post_url_params.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/events/pre_post_card_attribute.dart';
+import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:provider/provider.dart';
 
 import 'pre_post_card_widget_contract.dart';

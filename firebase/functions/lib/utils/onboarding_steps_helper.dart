@@ -2,7 +2,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'firestore_helper.dart';
 import 'firestore_utils.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class OnboardingStepsHelper {
   /// Updates [Community.onboardingSteps].
