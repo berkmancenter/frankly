@@ -7,7 +7,7 @@ analyzer:
         avoid_print: ignore
         unawaited_futures: error
         unnecessary_null_comparison: error
-        dead_null_aware_expression: error
+        dead_null_aware_expression: warning
         missing_required_param: error
         unused_import: warning
 
