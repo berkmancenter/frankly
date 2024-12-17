@@ -4,10 +4,9 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:intl/intl.dart';
-import 'package:functions/functions/on_scheduled/trigger_email_digests.dart';
-import 'package:functions/utils/calendar_link_util.dart';
-import 'package:functions/utils/timezone_utils.dart';
-import 'package:functions/utils/utils.dart';
+import 'calendar_link_util.dart';
+import 'timezone_utils.dart';
+import 'utils.dart';
 import 'package:data_models/firestore/announcement.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/event_message.dart';
@@ -24,6 +23,13 @@ final appName = functions.config.get('app.name') as String;
 final copyright = functions.config.get('app.copyright') as String;
 final legalStatement = '$appName is operated by $orgName.';
 final copyrightStatement = '© $copyright';
+
+class EventWithTemplate {
+  final Event event;
+  final Template template;
+
+  const EventWithTemplate(this.event, this.template);
+}
 
 String generateEmailEventInfo({
   required String actionTitle,

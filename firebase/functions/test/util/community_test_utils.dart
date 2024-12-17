@@ -1,6 +1,6 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:functions/functions/on_call/create_community.dart';
+import 'package:functions/community/create_community.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/community.dart';
 import 'package:data_models/firestore/membership.dart';

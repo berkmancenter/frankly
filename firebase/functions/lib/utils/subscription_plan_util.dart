@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:functions/utils/firestore_utils.dart';
-import 'package:functions/utils/utils.dart';
+import 'firestore_utils.dart';
+import 'utils.dart';
 import 'package:data_models/firestore/billing_subscription.dart';
 import 'package:data_models/firestore/membership.dart';
 import 'package:data_models/firestore/partner_agreement.dart';

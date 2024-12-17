@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:functions/functions/on_request/extend_cloud_task_scheduler.dart';
-import 'package:functions/interop/cloud_tasks_client.dart' as tasks;
+import 'extend_cloud_task_scheduler.dart';
+import 'cloud_tasks_client.dart' as tasks;
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:node_interop/util.dart';
 

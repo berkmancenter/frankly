@@ -1,7 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
-import 'package:functions/functions/firestore_helper.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'firestore_helper.dart';
+import 'firestore_utils.dart';
 import 'package:data_models/firestore/community.dart';
 
 class OnboardingStepsHelper {

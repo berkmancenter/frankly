@@ -1,7 +1,7 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:functions/functions/on_call/initiate_breakouts.dart';
-import 'package:functions/utils/agora_api.dart';
+import 'package:functions/events/live_meetings/breakouts/initiate_breakouts.dart';
+import 'package:functions/events/live_meetings/agora_api.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/live_meeting.dart';
