@@ -27,7 +27,7 @@ class MuxApi {
           'reduced_latency': true,
           'new_asset_settings': {
             'playback_policy': 'public',
-          }
+          },
         },
       ),
     );

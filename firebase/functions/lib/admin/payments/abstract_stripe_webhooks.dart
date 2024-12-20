@@ -6,7 +6,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_request_method.dart';
 import 'stripe_client.dart';
 import 'analytics_util.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
