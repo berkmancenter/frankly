@@ -157,6 +157,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               height: 22,
             ),
           ),
+          backgroundColor: Colors.white,
           text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
         ),
       ThickOutlineButton(
@@ -170,6 +171,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             size: 22,
           ),
         ),
+        backgroundColor: Colors.white,
         onPressed: () => setState(() => _emailSelected = true),
         text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
       ),

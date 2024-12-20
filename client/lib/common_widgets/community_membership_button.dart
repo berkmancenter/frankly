@@ -82,7 +82,7 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
             ),
           ),
           text: _hovered ? 'Unfollow' : 'Followed',
-          whiteBackground: false,
+          backgroundColor: Colors.white,
           minWidth: widget.minWidth,
         ),
       );
