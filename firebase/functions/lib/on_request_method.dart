@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import 'cloud_function.dart';
-import 'utils/scheduled_functions.dart';
+import 'utils/infra/scheduled_functions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 
 /// Class for onRequest methods. These are HTTP requests that are mostly called
@@ -16,6 +16,7 @@ abstract class OnRequestMethod<T extends SerializeableRequest>
   @override
   final String functionName;
 
+  /// Function that converts request JSON into a request object.
   T Function(dynamic body) requestFromBody;
 
   final RuntimeOptions? runWithOptions;
