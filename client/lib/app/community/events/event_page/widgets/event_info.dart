@@ -41,7 +41,7 @@ import 'package:client/utils/dialogs.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/periodic_builder.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
-import 'package:data_models/analytics/share_type.dart';
+import 'package:data_models/utils/share_type.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';

@@ -25,7 +25,7 @@ import 'package:client/utils/extensions.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
-import 'package:data_models/analytics/share_type.dart';
+import 'package:data_models/utils/share_type.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
