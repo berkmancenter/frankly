@@ -13,6 +13,7 @@ void enableDriverBinding() {}
 
 bool checkCanAutoplay() => true;
 
+// WKWebview is an embedded web view in apps.
 bool get isWKWebView => false;
 
 class CustomPointerInterceptor extends StatelessWidget {
