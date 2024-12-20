@@ -3,7 +3,7 @@ import 'package:data_models/firestore/utils_web.dart';
 
 /// Singleton firebase app that is set by main().
 ///
-/// We usually use getit but it was failing do to null safety issues.
+/// We usually use getit, but it was failing due to null safety issues.
 late App Function() _firebaseAppFactory;
 App? _firebaseAppSingleton;
 
