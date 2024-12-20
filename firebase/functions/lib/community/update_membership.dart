@@ -31,7 +31,8 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
     final communityId = request.communityId;
     final targetUserId = request.userId;
     final targetStatus = request.status;
-    final invisible = request.invisible;
+    // Currently unused variable.
+    // final invisible = request.invisible;
 
     // Get needed data.
     final communitySnapshot =
