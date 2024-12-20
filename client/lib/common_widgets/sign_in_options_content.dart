@@ -13,6 +13,15 @@ import 'package:client/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 
 class SignInOptionsContent extends StatefulWidget {
+  const SignInOptionsContent({
+    this.isNewUser = true,
+    this.isInitializedOnEmailPassword = false,
+    this.isPurchasingSubscription = false,
+    this.onComplete,
+    this.showHeader = true,
+    Key? key,
+  }) : super(key: key);
+
   static const emailSignInKey = Key('email-sign-in');
   static const newUserToggleKey = Key('new-user-toggle');
   static const nameTextFieldKey = Key('input-name');
@@ -24,14 +33,7 @@ class SignInOptionsContent extends StatefulWidget {
   final bool isInitializedOnEmailPassword;
   final bool isPurchasingSubscription;
   final void Function()? onComplete;
-
-  const SignInOptionsContent({
-    this.isNewUser = true,
-    this.isInitializedOnEmailPassword = false,
-    this.isPurchasingSubscription = false,
-    this.onComplete,
-    Key? key,
-  }) : super(key: key);
+  final bool showHeader;
 
   @override
   State<SignInOptionsContent> createState() => _SignInOptionsContentState();
