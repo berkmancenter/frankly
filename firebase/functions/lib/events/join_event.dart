@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
-import 'event_emails.dart';
+import 'notifications/event_emails.dart';
 import '../utils/infra/firestore_utils.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/community.dart';

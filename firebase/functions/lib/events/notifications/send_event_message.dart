@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     as functions_interop;
-import '../on_call_function.dart';
-import '../utils/email_templates.dart';
-import '../utils/infra/firestore_utils.dart';
-import '../utils/notifications_utils.dart';
-import '../utils/utils.dart';
+import '../../on_call_function.dart';
+import '../../utils/email_templates.dart';
+import '../../utils/infra/firestore_utils.dart';
+import '../../utils/notifications_utils.dart';
+import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 
-import '../utils/template_utils.dart';
+import '../../utils/template_utils.dart';
 
 class SendEventMessage extends OnCallMethod<SendEventMessageRequest> {
   static const String kSendEventMessageApi = 'sendEventMessage';

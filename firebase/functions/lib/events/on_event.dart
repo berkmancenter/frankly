@@ -7,7 +7,7 @@ import '../utils/infra/firestore_event_function.dart';
 import '../utils/infra/on_firestore_helper.dart';
 import 'live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import '../on_firestore_function.dart';
-import 'event_emails.dart';
+import 'notifications/event_emails.dart';
 import '../utils/infra/firestore_utils.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/community.dart';
