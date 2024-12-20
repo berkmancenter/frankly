@@ -7,10 +7,10 @@ import 'cloud_function.dart';
 import 'utils/scheduled_functions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 
-/// Class for onRequest methods. These are http requests that are mostly called
-/// from the function scheduler.
+/// Class for onRequest methods. These are HTTP requests that are mostly called
+/// from the Cloud Function scheduler.
 ///
-/// Request types should be defined in the shared cloudfunctions folder.
+/// Request types should be defined in the data_models floder.
 abstract class OnRequestMethod<T extends SerializeableRequest>
     implements CloudFunction {
   @override

@@ -9,7 +9,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 /// Class for onCall methods. These are requests that are mostly called from
 /// our client apps.
 ///
-/// Request types should be defined in the shared cloudfunctions folder.
+/// Request types should be defined in data_models.
 abstract class OnCallMethod<T extends SerializeableRequest>
     implements CloudFunction {
   @override

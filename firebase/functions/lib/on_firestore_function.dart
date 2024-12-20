@@ -8,7 +8,10 @@ import 'utils/firestore_helper.dart';
 import 'utils/onboarding_steps_helper.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 
-/// Parent class for functions in the '/on_firestore' directory. This does not get deployed as a standalone firebase function.
+/// Parent class for functions in the '/on_firestore' directory. These are
+/// triggered based on changes in Firestore documents.
+///
+/// This does not get deployed as a standalone Cloud Function.
 abstract class OnFirestoreFunction<T extends SerializeableRequest>
     implements FirestoreEventFunction {
   @override
