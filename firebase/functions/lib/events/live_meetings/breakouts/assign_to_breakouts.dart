@@ -6,7 +6,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import 'package:get_it/get_it.dart';
 import 'package:frankly_matching/matching.dart' as matching;
-import '../../../utils/firestore_utils.dart';
+import '../../../utils/infra/firestore_utils.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/live_meeting.dart';
 import 'package:data_models/firestore/membership.dart';

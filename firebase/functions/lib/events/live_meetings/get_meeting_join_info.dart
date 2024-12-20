@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'live_meeting_utils.dart';
 import '../../on_call_function.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/public_user_info.dart';

@@ -1,13 +1,12 @@
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart' as admin;
 import '../on_call_function.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/member_details.dart';
 import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/public_user_info.dart';
 import 'package:quiver/iterables.dart';
 
 class GetMembersData extends OnCallMethod<GetMembersDataRequest> {

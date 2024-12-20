@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:enum_to_string/enum_to_string.dart';
-import 'firestore_utils.dart';
+import 'infra/firestore_utils.dart';
 import 'utils.dart';
 import 'package:data_models/firestore/billing_subscription.dart';
 import 'package:data_models/firestore/membership.dart';

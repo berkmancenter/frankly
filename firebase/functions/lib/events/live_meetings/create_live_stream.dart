@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_call_function.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'mux_client.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/membership.dart';
