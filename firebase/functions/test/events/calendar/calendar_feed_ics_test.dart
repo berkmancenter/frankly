@@ -5,7 +5,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/calendar/calendar_feed_ics.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import '../../util/community_test_utils.dart';

@@ -5,7 +5,7 @@ import 'package:functions/events/live_meetings/agora_api.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/live_meeting.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:mocktail/mocktail.dart';
 
 class LiveMeetingTestUtils {

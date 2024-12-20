@@ -4,7 +4,7 @@ import 'package:data_models/firestore/community.dart';
 import 'package:functions/events/join_event.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import '../util/community_test_utils.dart';
@@ -75,7 +75,7 @@ void main() {
         emailType: EventEmailType.initialSignUp,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final eventJoiner = JoinEvent(eventEmailUtils: eventEmails);
@@ -134,7 +134,7 @@ void main() {
         emailType: EventEmailType.initialSignUp,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final eventJoiner = JoinEvent(eventEmailUtils: eventEmails);
@@ -193,7 +193,7 @@ void main() {
         emailType: EventEmailType.initialSignUp,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final eventJoiner = JoinEvent(eventEmailUtils: eventEmails);

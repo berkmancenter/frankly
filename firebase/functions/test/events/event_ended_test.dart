@@ -5,7 +5,7 @@ import 'package:functions/events/event_ended.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop hide EventType;
 import '../util/community_test_utils.dart';
@@ -76,7 +76,7 @@ void main() {
         generateMessage: any(named: 'generateMessage'),
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final eventEnded = EventEnded(notificationsUtils: notificationsUtils);
