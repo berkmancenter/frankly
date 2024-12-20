@@ -94,12 +94,13 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ),
           ),
         Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (_emailSelected)
               ..._buildEmailWidgets()
             else
               ..._buildSignInProviderButtons(),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
             _buildTermsOfService(),
           ],
         ),
@@ -130,22 +131,24 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   List<Widget> _buildSignInProviderButtons() {
     const minWidth = 260.0;
     return [
-      Align(
-        alignment: Alignment.centerLeft,
-        child: HeightConstrainedText(
-          _getTitleText(),
-          style: AppTextStyle.headline3,
-        ),
-      ),
-      SizedBox(height: 9),
-      if (_getMessageText().isNotEmpty)
+      if (widget.showHeader) ...[
         Align(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            _getMessageText(),
-            style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            _getTitleText(),
+            style: AppTextStyle.headline3,
           ),
         ),
+        SizedBox(height: 9),
+        if (_getMessageText().isNotEmpty)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: HeightConstrainedText(
+              _getMessageText(),
+              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            ),
+          ),
+      ],
       SizedBox(height: 9),
       if (!isWKWebView)
         ThickOutlineButton(
