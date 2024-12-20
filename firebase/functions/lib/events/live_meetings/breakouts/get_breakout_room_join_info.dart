@@ -51,7 +51,7 @@ class GetBreakoutRoomJoinInfo
         )
         .get();
     final membership = Membership.fromJson(
-      firestoreUtils.fromFirestoreJson(membershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(membershipDoc.data.toMap()),
     );
     final isModOrCreator =
         event.creatorId == context.authUid || membership.isMod;

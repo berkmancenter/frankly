@@ -54,8 +54,7 @@ class ResetParticipantAgendaItems
         await firestore.document(membershipDoc).get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     if (!membership.isAdmin && event.creatorId != context.authUid) {

@@ -48,8 +48,7 @@ class SubscriptionPlanUtil {
           await firestore.document(membershipDoc).get();
 
       final membership = Membership.fromJson(
-        firestoreUtils
-            .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
       );
       isMod = membership.isMod;
     }

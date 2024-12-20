@@ -547,7 +547,7 @@ class AssignToBreakouts {
     var presentParticipants = participantSnapshots
         .map(
           (doc) => Participant.fromJson(
-            firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
           ),
         )
         .toList();

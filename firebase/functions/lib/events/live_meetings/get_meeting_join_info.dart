@@ -43,7 +43,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       final userSnapshot =
           await firestore.document('publicUser/${context.authUid}').get();
       final publicUserInfo = PublicUserInfo.fromJson(
-        firestoreUtils.fromFirestoreJson(userSnapshot.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(userSnapshot.data.toMap()),
       );
       var displayName = publicUserInfo.displayName;
       print('Public user display name: $displayName');

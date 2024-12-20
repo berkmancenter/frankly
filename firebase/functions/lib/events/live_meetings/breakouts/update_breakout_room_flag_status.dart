@@ -31,8 +31,7 @@ class UpdateBreakoutRoomFlagStatus
         .get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     final isAuthorizedParticipant =
@@ -63,7 +62,7 @@ class UpdateBreakoutRoomFlagStatus
           .get();
 
       final requestedBreakoutRoom = BreakoutRoom.fromJson(
-        firestoreUtils.fromFirestoreJson(breakoutRoomDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(breakoutRoomDoc.data.toMap()),
       );
 
       await _verifyCallerIsAuthorized(

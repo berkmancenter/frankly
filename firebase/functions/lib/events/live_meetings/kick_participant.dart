@@ -37,8 +37,7 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
           .get();
 
       final membership = Membership.fromJson(
-        firestoreUtils
-            .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
       );
 
       if (event.creatorId != context.authUid && !membership.isMod) {

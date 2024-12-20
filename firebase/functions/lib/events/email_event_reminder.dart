@@ -69,7 +69,7 @@ class EmailEventReminder extends OnRequestMethod<EmailEventReminderRequest> {
       final participantsSnapshot =
           await firestore.collection('$eventPath/event-participants').get();
       final participants = participantsSnapshot.documents
-          .map((doc) => Participant.fromJson(doc.data.toMap() ?? {}))
+          .map((doc) => Participant.fromJson(doc.data.toMap()))
           .where(
             (participant) => participant.status == ParticipantStatus.active,
           )

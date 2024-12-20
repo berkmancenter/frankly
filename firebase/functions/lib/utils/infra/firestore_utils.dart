@@ -40,7 +40,7 @@ class FirestoreUtils {
     final ref = firestore.document(path);
     final snapshot =
         transaction == null ? await ref.get() : await transaction.get(ref);
-    return constructor(fromFirestoreJson(snapshot.data.toMap() ?? {}));
+    return constructor(fromFirestoreJson(snapshot.data.toMap()));
   }
 
   Map<String, dynamic> fromFirestoreJson(Map<String, dynamic> json) {

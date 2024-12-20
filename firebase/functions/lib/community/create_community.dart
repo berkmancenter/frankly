@@ -83,7 +83,7 @@ class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
       final agreementDoc = await agreementRef.get();
       orElseUnauthorized(agreementDoc.exists);
       final agreement = PartnerAgreement.fromJson(
-        firestoreUtils.fromFirestoreJson(agreementDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(agreementDoc.data.toMap()),
       );
       agreementUpdated =
           agreement.copyWith(communityId: communityDocRef.documentID);

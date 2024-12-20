@@ -31,8 +31,7 @@ class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
         await firestore.document(adminMembershipDocRef).get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     if (!membership.isAdmin) {
@@ -82,7 +81,7 @@ class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
     // Get memberId user membership details
     final membershipDetails = membershipDoc.exists
         ? Membership.fromJson(
-            firestoreUtils.fromFirestoreJson(membershipDoc.data.toMap() ?? {}),
+            firestoreUtils.fromFirestoreJson(membershipDoc.data.toMap()),
           )
         : Membership(
             userId: memberId,

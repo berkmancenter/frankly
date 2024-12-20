@@ -30,8 +30,7 @@ class ReassignBreakoutRoom extends OnCallMethod<ReassignBreakoutRoomRequest> {
         .get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     final isAuthorized = event.creatorId == context.authUid || membership.isMod;

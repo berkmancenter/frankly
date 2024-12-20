@@ -41,7 +41,7 @@ class GetCommunityCalendarLink
     final communitySnapshot =
         await firestore.document('community/${event.communityId}').get();
     final community = Community.fromJson(
-      firestoreUtils.fromFirestoreJson(communitySnapshot.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communitySnapshot.data.toMap()),
     );
 
     final templatePath =

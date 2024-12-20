@@ -28,8 +28,7 @@ class CreateStripeConnectedAccount
 
     orElseUnauthorized(agreementDoc.exists);
 
-    final agreement =
-        PartnerAgreement.fromJson(agreementDoc.data.toMap() ?? {});
+    final agreement = PartnerAgreement.fromJson(agreementDoc.data.toMap());
     orElseUnauthorized(agreement.allowPayments);
     orElseUnauthorized(agreement.stripeConnectedAccountId == null);
     orElseUnauthorized(agreement.initialUserId == null);

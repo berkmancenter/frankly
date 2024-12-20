@@ -25,8 +25,7 @@ class CreateLiveStream extends OnCallMethod<CreateLiveStreamRequest> {
         await firestore.document(membershipDoc).get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     if (!membership.isAdmin) {

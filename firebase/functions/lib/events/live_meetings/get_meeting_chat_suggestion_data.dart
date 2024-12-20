@@ -50,8 +50,7 @@ class GetMeetingChatSuggestionData
     final communityMembershipDoc =
         await firestore.document(membershipDoc).get();
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     orElseUnauthorized(

@@ -40,7 +40,7 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
         ),
       );
       final userMembershipRequest = MembershipRequest.fromJson(
-        userMembershipRequestSnapshot.data.toMap() ?? {},
+        userMembershipRequestSnapshot.data.toMap(),
       );
       final hasActiveRequest =
           userMembershipRequest.status == MembershipRequestStatus.requested;
@@ -53,7 +53,7 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
       final userMembership = userMembershipSnapshot.exists
           ? Membership.fromJson(
               firestoreUtils
-                  .fromFirestoreJson(userMembershipSnapshot.data.toMap() ?? {}),
+                  .fromFirestoreJson(userMembershipSnapshot.data.toMap()),
             )
           : Membership(
               userId: request.userId,

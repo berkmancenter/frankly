@@ -50,8 +50,7 @@ class UpdateCommunity extends OnCallMethod<UpdateCommunityRequest> {
         )
         .get();
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
     if (!membership.isAdmin) {
       throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);

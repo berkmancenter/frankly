@@ -136,7 +136,7 @@ class CheckAdvanceMeetingGuide
     final registeredParticipants = participantsSnapshot.documents
         .map(
           (doc) => Participant.fromJson(
-            firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
           ),
         )
         .where((participant) => participant.status == ParticipantStatus.active)

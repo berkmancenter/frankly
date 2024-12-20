@@ -29,7 +29,7 @@ class LiveMeetingUtils {
       firestore.document('$liveMeetingCollectionPath/$meetingId'),
     );
     var liveMeeting = LiveMeeting.fromJson(
-      firestoreUtils.fromFirestoreJson(liveMeetingSnapshot.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(liveMeetingSnapshot.data.toMap()),
     );
     if (isNullOrEmpty(liveMeeting.meetingId)) {
       fieldsToUpdate.add(LiveMeeting.kFieldMeetingId);
