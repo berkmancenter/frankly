@@ -1,1 +1,1 @@
-flutter pub run tool/build_node.dart $@
+dart pub run tool/build_node.dart $@

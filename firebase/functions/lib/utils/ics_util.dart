@@ -3,7 +3,7 @@ library ics;
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'firestore_utils.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/community.dart';
 import 'package:node_interop/node.dart';

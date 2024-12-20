@@ -1,7 +1,7 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:functions/interop/calendar_link_lib.dart' as cl;
+import 'calendar_link_lib.dart' as cl;
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/community.dart';
 import 'package:data_models/firestore/template.dart';

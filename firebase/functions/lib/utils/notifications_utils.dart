@@ -5,9 +5,9 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:functions/utils/firestore_utils.dart';
-import 'package:functions/utils/send_email_client.dart';
-import 'package:functions/utils/utils.dart';
+import 'firestore_utils.dart';
+import 'send_email_client.dart';
+import 'utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/community.dart';
