@@ -37,7 +37,7 @@ class GetUserIdFromAgoraId extends OnCallMethod<GetUserIdFromAgoraIdRequest> {
     }
 
     final userInfo = PublicUserInfo.fromJson(
-      firestoreUtils.fromFirestoreJson(userDoc?.data.toMap()),
+      firestoreUtils.fromFirestoreJson(userDoc!.data.toMap()),
     );
 
     return GetUserIdFromAgoraIdResponse(
