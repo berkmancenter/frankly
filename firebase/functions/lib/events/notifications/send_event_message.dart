@@ -11,6 +11,7 @@ import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 
+
 import '../../utils/template_utils.dart';
 
 class SendEventMessage extends OnCallMethod<SendEventMessageRequest> {

@@ -7,6 +7,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 
+
 /// This request method is called from our scheduled task queue.
 ///
 /// It checks to see if this type of event email has been sent to this user
