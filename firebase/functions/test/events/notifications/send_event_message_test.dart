@@ -3,15 +3,15 @@ import 'package:data_models/firestore/event_message.dart';
 import 'package:data_models/firestore/template.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:data_models/firestore/community.dart';
-import 'package:functions/events/send_event_message.dart';
+import 'package:functions/events/notifications/send_event_message.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop hide EventType;
-import '../util/community_test_utils.dart';
-import '../util/event_test_utils.dart';
+import '../../util/community_test_utils.dart';
+import '../../util/event_test_utils.dart';
 
 void main() {
   String communityId = '';
@@ -109,7 +109,7 @@ void main() {
         generateMessage: any(named: 'generateMessage'),
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final eventMsgr = SendEventMessage(notificationsUtils: notificationsUtils);

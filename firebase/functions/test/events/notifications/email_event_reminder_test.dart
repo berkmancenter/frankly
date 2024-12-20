@@ -2,14 +2,14 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/firestore/event.dart';
 import 'package:data_models/firestore/community.dart';
 
-import 'package:functions/events/email_event_reminder.dart';
+import 'package:functions/events/notifications/email_event_reminder.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:functions/utils/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
-import '../util/community_test_utils.dart';
-import '../util/event_test_utils.dart';
+import '../../util/community_test_utils.dart';
+import '../../util/event_test_utils.dart';
 
 void main() {
   String communityId = '';
@@ -79,7 +79,7 @@ void main() {
         emailType: EventEmailType.oneDayReminder,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final emailReminder = EmailEventReminder(eventEmailUtils: eventEmails);
@@ -150,7 +150,7 @@ void main() {
         emailType: EventEmailType.oneHourReminder,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final emailReminder = EmailEventReminder(eventEmailUtils: eventEmails);
@@ -221,7 +221,7 @@ void main() {
         emailType: EventEmailType.oneHourReminder,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final emailReminder = EmailEventReminder(eventEmailUtils: eventEmails);
@@ -293,7 +293,7 @@ void main() {
         emailType: EventEmailType.oneHourReminder,
       ),
     ).thenAnswer((_) async {
-      return null;
+      return;
     });
 
     final emailReminder = EmailEventReminder(eventEmailUtils: eventEmails);
