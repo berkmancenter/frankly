@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:data_models/firestore/announcement.dart';
-import 'package:data_models/firestore/chat_suggestion_data.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_message.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/member_details.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
+import 'package:data_models/announcements/announcement.dart';
+import 'package:data_models/chat/chat_suggestion_data.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_message.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/community/member_details.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
 
 part 'requests.freezed.dart';
 part 'requests.g.dart';

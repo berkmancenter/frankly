@@ -10,7 +10,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/custom_form_builder_choice_chips.dart';
 import 'package:client/utils/custom_drag_scroll_behaviour.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 /// Widget that shows all templates within the community and lets you search through

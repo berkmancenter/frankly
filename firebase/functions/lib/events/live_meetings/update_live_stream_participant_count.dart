@@ -5,7 +5,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import '../../cloud_function.dart';
 import '../../utils/firestore_utils.dart';
-import 'package:data_models/firestore/event.dart' as $models;
+import 'package:data_models/events/event.dart' as $models;
 
 class UpdateLiveStreamParticipantCount implements CloudFunction {
   @override

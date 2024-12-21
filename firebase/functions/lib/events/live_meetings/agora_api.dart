@@ -3,7 +3,7 @@ library agora_api;
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:js/js.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:node_interop/node.dart';
 import 'package:node_http/node_http.dart' as http;
 import 'dart:convert' as convert;

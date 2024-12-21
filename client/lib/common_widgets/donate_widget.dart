@@ -12,7 +12,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialog_provider.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class DonateWidget extends StatefulWidget {
   final Community community;

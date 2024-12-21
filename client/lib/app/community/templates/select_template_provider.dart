@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_tag.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/community/community_tag.dart';
+import 'package:data_models/templates/template.dart';
 
 class SelectTemplateProvider with ChangeNotifier {
   final String communityId;

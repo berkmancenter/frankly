@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_model.dart';
 import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_page.dart';
 import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_presenter.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/pre_post_card_attribute.dart';
-import 'package:data_models/firestore/pre_post_url_params.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/events/pre_post_card_attribute.dart';
+import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';

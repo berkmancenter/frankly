@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/public_user_info.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/user/public_user_info.dart';
+import 'package:data_models/utils/utils.dart';
 
 import 'firestore_utils.dart';
 

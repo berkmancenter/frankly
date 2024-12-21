@@ -15,8 +15,8 @@ import 'package:client/app/community/templates/template_page_provider.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/visible_exception.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 import 'agenda_item_contract.dart';

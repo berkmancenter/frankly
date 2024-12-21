@@ -12,9 +12,9 @@ import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/services/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 import '../../../routing/locations.dart';

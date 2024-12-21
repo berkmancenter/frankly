@@ -7,8 +7,8 @@ import 'notifications/event_emails.dart';
 import '../utils/emulator_utils.dart';
 import '../utils/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/membership.dart';
 
 /// This function handles events after event creation
 class CreateEvent extends OnCallMethod<CreateEventRequest> {

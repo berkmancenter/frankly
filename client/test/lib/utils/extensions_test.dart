@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/utils/extensions.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 void main() {
   group('DateTimeExtension', () {

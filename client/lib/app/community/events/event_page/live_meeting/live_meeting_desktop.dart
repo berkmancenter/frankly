@@ -29,9 +29,9 @@ import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/periodic_builder.dart';
 import 'package:client/utils/platform_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/chat.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/chat/chat.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 
 class LiveMeetingDesktopLayout extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_resource.dart';
+import 'package:data_models/resources/community_resource.dart';
 
 import 'firestore_utils.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/app/community/community_permissions_provider.dart';
 import 'package:client/app/community/events/event_page/event_permissions_provider.dart';
 import 'package:client/app/community/events/event_page/meeting_agenda/meeting_agenda_provider.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 import 'agenda_item_user_suggestions_contract.dart';

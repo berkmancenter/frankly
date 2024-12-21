@@ -1,5 +1,5 @@
 import 'package:client/app/community/community_provider.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
 
 class ManipulateDiscussionThreadModel {
   final CommunityProvider communityProvider;

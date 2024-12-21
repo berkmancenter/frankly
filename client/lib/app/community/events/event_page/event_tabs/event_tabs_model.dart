@@ -9,8 +9,8 @@ import 'package:client/app.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event_message.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event_message.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 /// This class holds logic defining what tabs should be shown on a event.

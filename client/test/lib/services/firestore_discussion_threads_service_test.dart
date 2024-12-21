@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:client/services/firestore/firestore_database.dart';
 import 'package:client/services/firestore/firestore_discussion_threads_service.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:mockito/mockito.dart';
 import '../../mocked_classes.mocks.dart';
 

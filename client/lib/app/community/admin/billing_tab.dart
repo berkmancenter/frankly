@@ -18,9 +18,9 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/billing_subscription.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/admin/billing_subscription.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 

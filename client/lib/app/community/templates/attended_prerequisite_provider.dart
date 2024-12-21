@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 
 class AttendedPrerequisiteProvider extends ChangeNotifier {
   final Template template;

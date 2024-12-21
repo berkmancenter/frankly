@@ -3,7 +3,7 @@ import 'package:client/app/home/creation_dialog/theme_creation_utility.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/proxied_image.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:pedantic/pedantic.dart';
 
 enum PreviewContainerField {

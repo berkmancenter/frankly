@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/environment.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 const _kDefaultLogoImageUrl = Environment.logoUrl;

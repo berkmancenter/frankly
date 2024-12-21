@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/community/membership.dart';
 
 class FirestoreMembershipService {
   CollectionReference<Map<String, dynamic>> _userMembershipsCollection(

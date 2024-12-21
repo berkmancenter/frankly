@@ -8,9 +8,9 @@ import 'package:client/services/firestore/firestore_discussion_threads_service.d
 import 'package:client/services/responsive_layout_service.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/utils/models_helper.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
-import 'package:data_models/firestore/emotion.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
+import 'package:data_models/chat/emotion.dart';
 import 'package:provider/provider.dart';
 
 import 'discussion_thread_contract.dart';

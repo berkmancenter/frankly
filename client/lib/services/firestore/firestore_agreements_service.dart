@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 
 class FirestoreAgreementsService {
   static const String agreements = 'partner-agreements';

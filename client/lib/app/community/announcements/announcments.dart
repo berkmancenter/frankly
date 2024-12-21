@@ -13,7 +13,7 @@ import 'package:client/common_widgets/thick_outline_button.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/announcement.dart';
+import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
 
 class Announcements extends StatefulWidget {

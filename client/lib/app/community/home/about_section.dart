@@ -4,7 +4,7 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/custom_ink_well.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 /// Section of the CommunityHomePage with a description of the community. It constrains the description
 /// to a certain size and, if the text overflows, allows the user to expand the widget to see more

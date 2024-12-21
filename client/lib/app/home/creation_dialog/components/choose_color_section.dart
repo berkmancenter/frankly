@@ -9,8 +9,8 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
 /// either from a preset list of color combinations or by entering custom 6-digit color strings

@@ -1,7 +1,7 @@
 import 'package:client/app/community/utils.dart';
 import 'package:client/services/cloud_functions_service.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 import 'package:universal_html/html.dart' as universal_html;
 
 class PaymentUtils {

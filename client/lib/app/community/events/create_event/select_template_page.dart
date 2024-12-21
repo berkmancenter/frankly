@@ -6,7 +6,7 @@ import 'package:client/common_widgets/action_button.dart';
 import 'package:client/common_widgets/custom_list_view.dart';
 import 'package:client/app/community/community_permissions_provider.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 class SelectTemplatePage extends StatefulWidget {

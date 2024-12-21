@@ -6,7 +6,7 @@ import 'package:client/common_widgets/user_profile_chip.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:provider/src/provider.dart';
 
 /// This is a list indicating the number of users registered for an event.

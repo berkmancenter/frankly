@@ -1,4 +1,4 @@
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 
 class EditTemplateModel {
   late Template template;

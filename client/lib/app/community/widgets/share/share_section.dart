@@ -7,7 +7,7 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/custom_ink_well.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/analytics/share_type.dart';
+import 'package:data_models/utils/share_type.dart';
 
 class ShareSection extends StatefulWidget {
   final String url;

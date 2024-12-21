@@ -7,8 +7,8 @@ import '../firestore_event_function.dart';
 import '../utils/firestore_helper.dart';
 import '../on_firestore_function.dart';
 import '../utils/firestore_utils.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership.dart';
 
 class OnCommunityMembership extends OnFirestoreFunction<Membership> {
   OnCommunityMembership()

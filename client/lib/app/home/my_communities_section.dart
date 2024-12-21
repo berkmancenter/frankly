@@ -15,8 +15,8 @@ import 'package:client/routing/locations.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/user/public_user_info.dart';
 
 import 'creation_dialog/theme_creation_utility.dart';
 

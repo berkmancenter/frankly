@@ -4,7 +4,7 @@ import '../../utils/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/billing_subscription.dart';
+import 'package:data_models/admin/billing_subscription.dart';
 
 /// Cancel a Stripe subscription. Ends benefits and refunds prorated balance immediately
 class CancelStripeSubscriptionPlan

@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:client/app/community/events/event_page/event_settings/event_settings_drawer.dart';
 import 'package:client/app/community/events/event_page/event_settings/event_settings_model.dart';
 import 'package:client/app/community/events/event_page/event_settings/event_settings_presenter.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../../../mocked_classes.mocks.dart';
 

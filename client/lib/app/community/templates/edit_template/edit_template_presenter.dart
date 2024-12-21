@@ -10,8 +10,8 @@ import 'package:client/services/logging_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialogs.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_template_contract.dart';

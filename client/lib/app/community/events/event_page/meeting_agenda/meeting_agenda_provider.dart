@@ -13,9 +13,9 @@ import 'package:client/services/logging_service.dart';
 import 'package:client/services/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 List<AgendaItem> defaultAgendaItems(String communityId) => <AgendaItem>[

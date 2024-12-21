@@ -12,8 +12,8 @@ import 'package:client/common_widgets/community_tag_builder.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community_tag.dart';
-import 'package:data_models/firestore/community_tag_definition.dart';
+import 'package:data_models/community/community_tag.dart';
+import 'package:data_models/community/community_tag_definition.dart';
 
 /// This is a widget that shows the create tag section
 /// displays existing tags and add tag field

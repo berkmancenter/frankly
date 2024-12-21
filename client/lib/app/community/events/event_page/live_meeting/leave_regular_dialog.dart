@@ -6,7 +6,7 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class LeaveRegularDialog extends StatefulWidget {
   final Community? community;

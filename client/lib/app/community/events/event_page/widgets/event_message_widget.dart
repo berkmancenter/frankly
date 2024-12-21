@@ -6,7 +6,7 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/extensions.dart';
-import 'package:data_models/firestore/event_message.dart';
+import 'package:data_models/events/event_message.dart';
 
 class EventMessageWidget extends StatelessWidget {
   final EventMessage eventMessage;

@@ -4,9 +4,9 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
 import '../utils/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/membership_request.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/community/membership_request.dart';
 
 class GetUserAdminDetails extends OnCallMethod<GetUserAdminDetailsRequest> {
   GetUserAdminDetails()

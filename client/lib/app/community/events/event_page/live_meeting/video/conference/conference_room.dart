@@ -15,7 +15,7 @@ import 'package:client/common_widgets/confirm_dialog.dart';
 import 'package:client/app.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart' hide Participant;
+import 'package:data_models/events/event.dart' hide Participant;
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';

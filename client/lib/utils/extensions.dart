@@ -5,14 +5,14 @@ import 'package:client/common_widgets/proxied_image.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/emotion.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 
-export 'package:data_models/firestore/event.dart';
-export 'package:data_models/firestore/emotion.dart';
+export 'package:data_models/events/event.dart';
+export 'package:data_models/chat/emotion.dart';
 
 extension DateTimeExtension on DateTime {
   /// More references for date formats - https://www.journaldev.com/17899/java-simpledateformat-java-date-format

@@ -1,5 +1,5 @@
 import 'package:client/environment.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 /// list of available video platforms
 List<PlatformItem> allowedVideoPlatforms = [

@@ -5,8 +5,8 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../firestore_event_function.dart';
 import '../../utils/firestore_helper.dart';
 import '../../on_firestore_function.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 
 import '../../utils/firestore_utils.dart';
 

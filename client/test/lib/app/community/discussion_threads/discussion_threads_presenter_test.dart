@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:client/app/community/discussion_threads/discussion_threads_model.dart';
 import 'package:client/app/community/discussion_threads/discussion_threads_presenter.dart';
 import 'package:client/utils/extensions.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../mocked_classes.mocks.dart';
 

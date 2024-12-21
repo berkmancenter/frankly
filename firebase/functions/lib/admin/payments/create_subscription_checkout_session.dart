@@ -5,8 +5,8 @@ import '../../utils/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/billing_subscription.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/admin/billing_subscription.dart';
+import 'package:data_models/community/community.dart';
 
 /// Create a checkout session for the purchase of a given subscription type for a given community.
 /// Returns a session id which should be handed off to Stripe client library which will handle the

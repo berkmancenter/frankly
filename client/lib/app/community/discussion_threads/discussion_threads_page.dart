@@ -9,8 +9,8 @@ import 'package:client/common_widgets/ui_migration.dart';
 import 'package:client/routing/locations.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/utils/stream_utils.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:provider/provider.dart';
 
 import 'discussion_threads_contract.dart';

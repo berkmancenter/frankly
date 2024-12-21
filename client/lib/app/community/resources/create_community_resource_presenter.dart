@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:client/app/community/resources/community_resources_presenter.dart';
 import 'package:client/environment.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_resource.dart';
-import 'package:data_models/firestore/community_tag.dart';
-import 'package:data_models/firestore/community_tag_definition.dart';
-import 'package:data_models/firestore/link_preview_response.dart';
+import 'package:data_models/resources/community_resource.dart';
+import 'package:data_models/community/community_tag.dart';
+import 'package:data_models/community/community_tag_definition.dart';
+import 'package:data_models/resources/link_preview_response.dart';
 
 class CreateCommunityResourcePresenter with ChangeNotifier {
   final CommunityResourcesPresenter resourcesPresenter;

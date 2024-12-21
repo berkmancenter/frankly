@@ -4,11 +4,11 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/platform_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
+import 'package:data_models/utils/utils.dart';
 
 import 'firestore/firestore_utils.dart';
 

@@ -10,10 +10,10 @@ import '../../utils/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
-import 'package:data_models/firestore/billing_subscription.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
-import 'package:data_models/firestore/payment_record.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/admin/billing_subscription.dart';
+import 'package:data_models/admin/partner_agreement.dart';
+import 'package:data_models/admin/payment_record.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:node_interop/util.dart';
 
 abstract class AbstractStripeWebhooks extends OnRequestMethod<JsonMap> {

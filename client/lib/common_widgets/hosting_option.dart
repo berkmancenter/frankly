@@ -6,8 +6,8 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/plan_capability_list.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 
 class HostingOption extends StatefulWidget {

@@ -6,8 +6,8 @@ import '../../../on_call_function.dart';
 import 'check_hostless_go_to_breakouts_server.dart';
 import '../../../utils/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 
 class CheckHostlessGoToBreakouts
     extends OnCallMethod<CheckHostlessGoToBreakoutsRequest> {

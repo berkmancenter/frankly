@@ -3,8 +3,8 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/app/self/social_media/social_media_item_data.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/user/public_user_info.dart';
 
 class ProfileTabController extends ChangeNotifier {
   PublicUserInfo userInfo;

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 part 'discussion_thread_comment_ui.g.dart';
 
 @JsonSerializable(createFactory: false)

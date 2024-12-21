@@ -9,8 +9,8 @@ import 'package:client/services/firestore/firestore_database.dart';
 import 'package:client/services/logging_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/dialogs.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 import 'event_settings_contract.dart';

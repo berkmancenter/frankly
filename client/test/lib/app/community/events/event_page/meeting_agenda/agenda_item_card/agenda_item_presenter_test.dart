@@ -9,7 +9,7 @@ import 'package:client/app/community/events/event_page/meeting_agenda/agenda_ite
 import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/word_cloud/agenda_item_word_cloud_data.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/visible_exception.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';

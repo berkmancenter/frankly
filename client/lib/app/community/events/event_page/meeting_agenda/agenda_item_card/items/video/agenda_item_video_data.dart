@@ -1,4 +1,4 @@
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class AgendaItemVideoData {
   String title;

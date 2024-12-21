@@ -10,9 +10,9 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/routing/locations.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/templates/template.dart';
 
 /// Receives community and corresponding events and templates pre-loaded from the carousel_initializer,
 /// arranges the components of the carousel in a stack, and keeps track of the animation controllers

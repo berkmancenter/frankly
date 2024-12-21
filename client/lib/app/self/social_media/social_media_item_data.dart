@@ -1,4 +1,4 @@
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/user/public_user_info.dart';
 
 /// list of allowed social media platforms
 List<SocialMediaItem> allowedSocialPlatforms = [

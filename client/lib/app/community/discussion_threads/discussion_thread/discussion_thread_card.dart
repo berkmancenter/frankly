@@ -10,7 +10,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/extensions.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
 
 class DiscussionThreadCard extends StatelessWidget {
   final DiscussionThread discussionThread;

@@ -5,7 +5,7 @@ import 'package:client/common_widgets/custom_ink_well.dart';
 import 'package:client/common_widgets/community_tag_builder.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community_tag.dart';
+import 'package:data_models/community/community_tag.dart';
 
 class TagFilterWidget extends StatelessWidget {
   /// Tags to choose from

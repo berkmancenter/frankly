@@ -5,7 +5,7 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/app.dart';
 import 'package:client/services/logging_service.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 enum BreakoutCardViewType {
   overview,

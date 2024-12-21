@@ -5,7 +5,7 @@ import 'package:client/app/community/events/event_page/edit_event/edit_event_pre
 import 'package:client/app/community/utils.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/utils/extensions.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
