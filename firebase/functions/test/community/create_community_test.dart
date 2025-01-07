@@ -5,7 +5,7 @@ import 'package:data_models/community/membership.dart';
 import 'package:test/test.dart';
 import 'package:functions/community/create_community.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 
 void main() {

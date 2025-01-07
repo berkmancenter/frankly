@@ -1,8 +1,7 @@
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 
-/**
- * Helper classes and an enum for functions in the '/on_firestore' directory. This does not get deployed as a standalone firebase function.
- */
+/// Helper classes and an enum for on_firestore triggered functions.
+/// This does not get deployed as a standalone Cloud Function.
 
 enum FirestoreEventType {
   onCreate,

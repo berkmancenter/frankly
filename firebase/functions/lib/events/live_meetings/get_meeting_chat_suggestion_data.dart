@@ -4,7 +4,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     as functions_interop;
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import '../../on_call_function.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/chat/chat.dart';
@@ -50,8 +50,7 @@ class GetMeetingChatSuggestionData
     final communityMembershipDoc =
         await firestore.document(membershipDoc).get();
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     orElseUnauthorized(

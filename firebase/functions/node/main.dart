@@ -2,7 +2,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import 'package:get_it/get_it.dart';
-import 'package:functions/firestore_event_function.dart';
+import 'package:functions/utils/infra/firestore_event_function.dart';
 import 'package:functions/cloud_function.dart';
 import 'package:functions/admin/payments/cancel_stripe_subscription_plan.dart';
 import 'package:functions/events/live_meetings/breakouts/check_advance_meeting_guide.dart';
@@ -59,14 +59,14 @@ import 'package:functions/events/calendar/calendar_feed_rss.dart';
 import 'package:functions/events/live_meetings/breakouts/check_assign_to_breakouts_server.dart';
 import 'package:functions/events/live_meetings/breakouts/check_hostless_go_to_breakouts_server.dart';
 import 'package:functions/events/notifications/email_event_reminder.dart';
-import 'package:functions/utils/extend_cloud_task_scheduler.dart';
+import 'package:functions/utils/infra/extend_cloud_task_scheduler.dart';
 import 'package:functions/events/live_meetings/mux_webhooks.dart';
 import 'package:functions/utils/share_link.dart';
 import 'package:functions/admin/payments/stripe_connected_account_webhooks.dart';
 import 'package:functions/admin/payments/stripe_webhooks.dart';
 import 'package:functions/community/trigger_email_digests.dart';
 import 'package:functions/events/live_meetings/update_live_stream_participant_count.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:node_interop/node.dart';
 import 'package:uuid/uuid.dart';
 

@@ -1,7 +1,5 @@
-/**
- * Helper for functions in the '/on_firestore' directory. This does not get deployed as a standalone firebase function. 
- */
-
+/// Helper for functions in the '/on_firestore' directory.
+/// This does not get deployed as a standalone Cloud Function.
 class FirestoreHelper {
   static const _kCommunity = 'community';
   static const kCommunityId = 'communityId';
@@ -13,7 +11,7 @@ class FirestoreHelper {
   static const kDiscussionThreadCommentId = 'discussionThreadCommentId';
   // ---
   static const kMembership = 'membership';
-  // Under membership. Very important - collection name is `community-membership` not `community-membershipS`.
+  // Under membership. Very important: collection name is `community-membership` not `community-membershipS`.
   static const kCommunityMemberships = 'community-membership';
 
   String getPathToCommunityTrigger() {

@@ -1,7 +1,7 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:data_models/templates/template.dart';
 
-import 'firestore_utils.dart';
+import 'infra/firestore_utils.dart';
 
 class TemplateUtils {
   static Template templateFromSnapshot(DocumentSnapshot snapshot) {

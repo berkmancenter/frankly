@@ -4,18 +4,19 @@ import 'dart:convert';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import 'cloud_function.dart';
-import 'utils/scheduled_functions.dart';
+import 'utils/infra/scheduled_functions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 
-/// Class for onRequest methods. These are http requests that are mostly called
-/// from the function scheduler.
+/// Class for onRequest methods. These are HTTP requests that are mostly called
+/// from the Cloud Function scheduler.
 ///
-/// Request types should be defined in the shared cloudfunctions folder.
+/// Request types should be defined in the data_models floder.
 abstract class OnRequestMethod<T extends SerializeableRequest>
     implements CloudFunction {
   @override
   final String functionName;
 
+  /// Function that converts request JSON into a request object.
   T Function(dynamic body) requestFromBody;
 
   final RuntimeOptions? runWithOptions;

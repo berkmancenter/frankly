@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../../on_request_method.dart';
 import 'event_emails.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
@@ -70,7 +70,7 @@ class EmailEventReminder extends OnRequestMethod<EmailEventReminderRequest> {
       final participantsSnapshot =
           await firestore.collection('$eventPath/event-participants').get();
       final participants = participantsSnapshot.documents
-          .map((doc) => Participant.fromJson(doc.data.toMap() ?? {}))
+          .map((doc) => Participant.fromJson(doc.data.toMap()))
           .where(
             (participant) => participant.status == ParticipantStatus.active,
           )

@@ -7,7 +7,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import '../cloud_function.dart';
 import '../utils/email_templates.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import '../utils/notifications_utils.dart';
 import '../utils/send_email_client.dart';
 import '../utils/utils.dart';

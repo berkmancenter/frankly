@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -83,7 +83,7 @@ class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
       final agreementDoc = await agreementRef.get();
       orElseUnauthorized(agreementDoc.exists);
       final agreement = PartnerAgreement.fromJson(
-        firestoreUtils.fromFirestoreJson(agreementDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(agreementDoc.data.toMap()),
       );
       agreementUpdated =
           agreement.copyWith(communityId: communityDocRef.documentID);

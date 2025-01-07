@@ -1,5 +1,5 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
-import 'firestore_utils.dart';
+import 'infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:quiver/iterables.dart';
 

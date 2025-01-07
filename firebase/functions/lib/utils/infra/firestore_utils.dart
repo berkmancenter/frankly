@@ -3,7 +3,7 @@ import 'package:data_models/utils/utils_web.dart';
 
 /// Singleton firebase app that is set by main().
 ///
-/// We usually use getit but it was failing do to null safety issues.
+/// We usually use getit, but it was failing due to null safety issues.
 late App Function() _firebaseAppFactory;
 App? _firebaseAppSingleton;
 
@@ -40,7 +40,7 @@ class FirestoreUtils {
     final ref = firestore.document(path);
     final snapshot =
         transaction == null ? await ref.get() : await transaction.get(ref);
-    return constructor(fromFirestoreJson(snapshot.data.toMap() ?? {}));
+    return constructor(fromFirestoreJson(snapshot.data.toMap()));
   }
 
   Map<String, dynamic> fromFirestoreJson(Map<String, dynamic> json) {

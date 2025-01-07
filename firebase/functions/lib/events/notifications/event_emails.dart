@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'email_event_reminder.dart';
 import '../../utils/calendar_link_util.dart';
 import '../../utils/email_templates.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import '../../utils/send_email_client.dart';
 import '../../utils/subscription_plan_util.dart';
 import '../../utils/timezone_utils.dart';

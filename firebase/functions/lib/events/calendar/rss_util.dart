@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:intl/intl.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import '../../utils/timezone_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';

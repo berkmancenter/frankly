@@ -6,7 +6,7 @@ import 'package:data_models/community/community.dart';
 import 'package:functions/events/notifications/email_event_reminder.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:functions/utils/firestore_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import '../../util/community_test_utils.dart';

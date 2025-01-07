@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'live_meeting_utils.dart';
 import '../../on_call_function.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/user/public_user_info.dart';
@@ -43,7 +43,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       final userSnapshot =
           await firestore.document('publicUser/${context.authUid}').get();
       final publicUserInfo = PublicUserInfo.fromJson(
-        firestoreUtils.fromFirestoreJson(userSnapshot.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(userSnapshot.data.toMap()),
       );
       var displayName = publicUserInfo.displayName;
       print('Public user display name: $displayName');

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'stripe_client.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'package:node_http/node_http.dart' as http;
 
 final stripeUtil = StripeUtil();
