@@ -11,8 +11,8 @@ import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/responsive_layout_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/dialogs.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_event_contract.dart';

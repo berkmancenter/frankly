@@ -9,8 +9,8 @@ import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/visible_exception.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 
 class MeetingGuideCardStore with ChangeNotifier {

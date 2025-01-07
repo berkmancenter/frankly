@@ -4,7 +4,7 @@ import 'package:client/app/community/events/event_page/event_permissions_provide
 import 'package:client/app/community/events/event_page/template_provider.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
 enum EventPopUpMenuSelection {

@@ -13,6 +13,15 @@ import 'package:client/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 
 class SignInOptionsContent extends StatefulWidget {
+  const SignInOptionsContent({
+    this.isNewUser = true,
+    this.isInitializedOnEmailPassword = false,
+    this.isPurchasingSubscription = false,
+    this.onComplete,
+    this.showHeader = true,
+    Key? key,
+  }) : super(key: key);
+
   static const emailSignInKey = Key('email-sign-in');
   static const newUserToggleKey = Key('new-user-toggle');
   static const nameTextFieldKey = Key('input-name');
@@ -24,14 +33,7 @@ class SignInOptionsContent extends StatefulWidget {
   final bool isInitializedOnEmailPassword;
   final bool isPurchasingSubscription;
   final void Function()? onComplete;
-
-  const SignInOptionsContent({
-    this.isNewUser = true,
-    this.isInitializedOnEmailPassword = false,
-    this.isPurchasingSubscription = false,
-    this.onComplete,
-    Key? key,
-  }) : super(key: key);
+  final bool showHeader;
 
   @override
   State<SignInOptionsContent> createState() => _SignInOptionsContentState();
@@ -92,12 +94,13 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ),
           ),
         Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (_emailSelected)
               ..._buildEmailWidgets()
             else
               ..._buildSignInProviderButtons(),
-            SizedBox(height: 8),
+            SizedBox(height: 12),
             _buildTermsOfService(),
           ],
         ),
@@ -128,24 +131,44 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   List<Widget> _buildSignInProviderButtons() {
     const minWidth = 260.0;
     return [
-      Align(
-        alignment: Alignment.centerLeft,
-        child: HeightConstrainedText(
-          _getTitleText(),
-          style: AppTextStyle.headline3,
-        ),
-      ),
-      SizedBox(height: 9),
-      if (_getMessageText().isNotEmpty)
+      if (widget.showHeader) ...[
         Align(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            _getMessageText(),
-            style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            _getTitleText(),
+            style: AppTextStyle.headline3,
           ),
         ),
+        SizedBox(height: 9),
+        if (_getMessageText().isNotEmpty)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: HeightConstrainedText(
+              _getMessageText(),
+              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            ),
+          ),
+      ],
       SizedBox(height: 9),
-      if (!isWKWebView)
+      // Google sign-in is not supported in WKWebView. Prompt user to open
+      // browser to sign in with Google. See https://developers.googleblog.com/en/modernizing-oauth-interactions-in-native-apps-for-better-usability-and-security/
+      if (isWKWebView)
+        ThickOutlineButton(
+          minWidth: minWidth,
+          onPressed: () => launch('app.frankly.org'),
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+            child: Image.asset(
+              'media/googleLogo.png',
+              width: 22,
+              height: 22,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          text:
+              'Open browser for\nGoogle ${widget.isNewUser ? 'signup' : 'login'}',
+        )
+      else
         ThickOutlineButton(
           minWidth: minWidth,
           onPressed: () => context.read<UserService>().signInWithGoogle(),
@@ -157,6 +180,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               height: 22,
             ),
           ),
+          backgroundColor: Colors.white,
           text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
         ),
       ThickOutlineButton(
@@ -170,6 +194,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             size: 22,
           ),
         ),
+        backgroundColor: Colors.white,
         onPressed: () => setState(() => _emailSelected = true),
         text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
       ),

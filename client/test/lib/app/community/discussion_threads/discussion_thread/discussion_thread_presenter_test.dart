@@ -5,9 +5,9 @@ import 'package:client/app/community/discussion_threads/discussion_thread/discus
 import 'package:client/app/community/discussion_threads/discussion_thread/discussion_thread_model.dart';
 import 'package:client/app/community/discussion_threads/discussion_thread/discussion_thread_presenter.dart';
 import 'package:client/app/community/utils.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
-import 'package:data_models/firestore/emotion.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
+import 'package:data_models/chat/emotion.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mocked_classes.mocks.dart';

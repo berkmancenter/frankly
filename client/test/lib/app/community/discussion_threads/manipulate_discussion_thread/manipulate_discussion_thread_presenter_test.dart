@@ -5,7 +5,7 @@ import 'package:client/app/community/discussion_threads/manipulate_discussion_th
 import 'package:client/app/community/discussion_threads/manipulate_discussion_thread/manipulate_discussion_thread_presenter.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/utils/extensions.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mocked_classes.mocks.dart';

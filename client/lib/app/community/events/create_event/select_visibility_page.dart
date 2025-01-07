@@ -6,7 +6,7 @@ import 'package:client/app/community/events/create_event/dialog_button.dart';
 import 'package:client/common_widgets/featured_toggle_button.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 enum _VisibilityType {

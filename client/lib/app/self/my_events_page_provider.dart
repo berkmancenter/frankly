@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class MyEventsPageProvider extends ChangeNotifier {
   late Future<List<Event>> _upcomingEvents;

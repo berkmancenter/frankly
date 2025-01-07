@@ -9,8 +9,8 @@ import 'package:client/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
-import 'package:data_models/firestore/emotion.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
+import 'package:data_models/chat/emotion.dart';
 
 class DiscussionThreadCommentCard extends StatelessWidget {
   final DiscussionThreadCommentUI discussionThreadCommentUI;

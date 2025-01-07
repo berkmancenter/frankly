@@ -1,8 +1,8 @@
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_message.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_message.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:data_models/firestore/community.dart';
 import 'package:functions/events/notifications/send_event_message.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';

@@ -1,5 +1,5 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
-import 'package:data_models/firestore/utils_web.dart';
+import 'package:data_models/utils/utils_web.dart';
 
 /// Singleton firebase app that is set by main().
 ///

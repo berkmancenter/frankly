@@ -8,7 +8,7 @@ import 'package:client/services/logging_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event_proposal.dart';
+import 'package:data_models/events/event_proposal.dart';
 
 void useKickProposalListeners(BuildContext context) {
   final liveMeetingProvider = LiveMeetingProvider.watch(context);

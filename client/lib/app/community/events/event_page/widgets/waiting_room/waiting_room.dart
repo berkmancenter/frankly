@@ -13,8 +13,8 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/periodic_builder.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/media_item.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/media_item.dart';
 import 'package:provider/provider.dart';
 
 /// Displays images or videos to the user before meetings start.

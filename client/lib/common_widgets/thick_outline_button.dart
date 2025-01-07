@@ -6,10 +6,10 @@ class ThickOutlineButton extends StatelessWidget {
   final Function()? onPressed;
   final String? text;
   final Color? textColor;
+  final Color? backgroundColor;
   final Widget? icon;
   final double? minWidth;
   final double thickness;
-  final bool whiteBackground;
   final bool expand;
   final String? eventName;
 
@@ -18,33 +18,34 @@ class ThickOutlineButton extends StatelessWidget {
     this.onPressed,
     this.text,
     this.textColor,
+    this.backgroundColor,
     this.icon,
     this.expand = false,
     this.minWidth = 0,
     this.thickness = 1,
-    this.whiteBackground = true,
     this.eventName,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final color = textColor ??
+    final lineColor = textColor ??
         DefaultTextStyle.of(context).style.color ??
-        (whiteBackground ? Theme.of(context).primaryColor : AppColor.white);
+        Theme.of(context).primaryColor;
     return ActionButton(
       onPressed: onPressed,
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       type: ActionButtonType.outline,
       borderSide: BorderSide(
-        color: color,
+        color: lineColor,
         width: thickness,
       ),
       minWidth: minWidth,
-      textColor: color,
+      textColor: lineColor,
       expand: expand,
       eventName: eventName,
       icon: icon,
       text: text,
+      color: backgroundColor,
     );
   }
 }

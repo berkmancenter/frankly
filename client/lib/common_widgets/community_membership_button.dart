@@ -9,8 +9,8 @@ import 'package:client/services/user_data_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/utils/memoized_builder.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership_request.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership_request.dart';
 import 'package:provider/provider.dart';
 
 class CommunityMembershipButton extends StatefulWidget {
@@ -82,7 +82,7 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
             ),
           ),
           text: _hovered ? 'Unfollow' : 'Followed',
-          whiteBackground: false,
+          backgroundColor: Colors.white,
           minWidth: widget.minWidth,
         ),
       );

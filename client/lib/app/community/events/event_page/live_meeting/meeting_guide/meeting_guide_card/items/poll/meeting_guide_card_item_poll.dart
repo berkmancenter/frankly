@@ -12,7 +12,7 @@ import 'package:client/services/services.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 
 import 'meeting_guide_card_item_poll_contract.dart';

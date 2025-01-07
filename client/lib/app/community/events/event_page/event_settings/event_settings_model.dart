@@ -1,5 +1,5 @@
 import 'package:client/app/community/events/event_page/event_settings/event_settings_drawer.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class EventSettingsModel {
   final EventSettingsDrawerType eventSettingsDrawerType;

@@ -4,8 +4,9 @@ import '../../on_request_method.dart';
 import 'event_emails.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+
 
 /// This request method is called from our scheduled task queue.
 ///

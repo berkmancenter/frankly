@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:client/services/firestore/firestore_event_service.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_proposal.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_proposal.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/utils/utils.dart';
 
 class FirestoreLiveMeetingService {
   String getLiveMeetingPath(Event event) =>

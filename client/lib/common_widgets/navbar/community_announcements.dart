@@ -8,7 +8,7 @@ import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/common_widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialog_provider.dart';
-import 'package:data_models/firestore/announcement.dart';
+import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
 
 class AnnouncementsIcon extends StatelessWidget {

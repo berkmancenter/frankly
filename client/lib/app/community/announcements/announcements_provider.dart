@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/announcement.dart';
+import 'package:data_models/announcements/announcement.dart';
 
 class AnnouncementsProvider with ChangeNotifier {
   final String communityId;

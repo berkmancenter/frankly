@@ -6,10 +6,10 @@ import 'agora_api.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_proposal.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_proposal.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/utils/utils.dart';
 
 /// Cast a vote for or against kicking a user from a hostless meeting
 class VoteToKick extends OnCallMethod<VoteToKickRequest> {

@@ -4,9 +4,9 @@ import 'package:client/app/community/events/event_page/event_provider.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/chat.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/chat/chat.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 
 /// This class provides the user's permissions in relation to a particular event

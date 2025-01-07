@@ -6,10 +6,10 @@ import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import '../../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/utils/utils.dart';
 
 class CheckAdvanceMeetingGuide
     extends OnCallMethod<CheckAdvanceMeetingGuideRequest> {

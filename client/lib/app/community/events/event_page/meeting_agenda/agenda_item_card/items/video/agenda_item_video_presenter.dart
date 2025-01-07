@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/video/agenda_item_video.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/services/media_helper_service.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
 import 'agenda_item_video_contract.dart';

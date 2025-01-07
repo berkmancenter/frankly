@@ -26,8 +26,8 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialogs.dart';
 import 'package:client/utils/extensions.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 
 class ProfileTab extends StatelessWidget {

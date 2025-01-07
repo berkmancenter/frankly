@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:data_models/analytics/share_type.dart';
+import 'package:data_models/utils/share_type.dart';
 part 'analytics_entities.g.dart';
 
 abstract class AnalyticsEvent {

@@ -3,9 +3,9 @@ import 'package:get_it/get_it.dart';
 import 'package:functions/events/live_meetings/breakouts/get_breakout_room_join_info.dart';
 import 'package:functions/events/live_meetings/live_meeting_utils.dart';
 
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/live_meeting.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'package:test/test.dart';

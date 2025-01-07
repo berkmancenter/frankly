@@ -1,9 +1,9 @@
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import 'package:functions/events/create_event.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';

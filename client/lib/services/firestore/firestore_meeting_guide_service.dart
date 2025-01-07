@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 

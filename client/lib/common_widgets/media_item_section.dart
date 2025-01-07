@@ -8,7 +8,7 @@ import 'package:client/common_widgets/custom_ink_well.dart';
 import 'package:client/services/media_helper_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/media_item.dart';
+import 'package:data_models/events/media_item.dart';
 
 class MediaItemSection extends StatelessWidget {
   final MediaItem? mediaItem;

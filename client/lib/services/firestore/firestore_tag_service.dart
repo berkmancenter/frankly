@@ -4,8 +4,8 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community_tag.dart';
-import 'package:data_models/firestore/community_tag_definition.dart';
+import 'package:data_models/community/community_tag.dart';
+import 'package:data_models/community/community_tag_definition.dart';
 
 class FirestoreTagService {
   static const String communityTagDefinitions = 'community-tag-definitions';

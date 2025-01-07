@@ -3,9 +3,9 @@ import 'package:client/app/community/home/carousel/community_carousel.dart';
 import 'package:client/app/community/home/community_home_provider.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/common_widgets/custom_stream_builder.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/templates/template.dart';
 
 /// Loads data required for the community carousel, including featured items and the urls to the images
 /// for those items.

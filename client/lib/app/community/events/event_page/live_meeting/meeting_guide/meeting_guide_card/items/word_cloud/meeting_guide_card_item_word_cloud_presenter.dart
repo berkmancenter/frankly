@@ -7,8 +7,8 @@ import 'package:client/app/community/events/event_page/meeting_agenda/meeting_ag
 import 'package:client/services/firestore/firestore_meeting_guide_service.dart';
 import 'package:client/services/responsive_layout_service.dart';
 import 'package:client/services/user_service.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 
 import 'meeting_guide_card_item_word_cloud_contract.dart';

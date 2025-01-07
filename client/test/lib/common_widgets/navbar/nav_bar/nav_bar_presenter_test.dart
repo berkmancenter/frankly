@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/common_widgets/navbar/nav_bar/nav_bar_model.dart';
 import 'package:client/common_widgets/navbar/nav_bar/nav_bar_presenter.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../mocked_classes.mocks.dart';
 

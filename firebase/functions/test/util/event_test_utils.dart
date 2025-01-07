@@ -1,9 +1,9 @@
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:functions/events/notifications/event_emails.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:functions/utils/notifications_utils.dart';
 import 'package:mocktail/mocktail.dart';
 

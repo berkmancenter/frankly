@@ -18,7 +18,7 @@ import 'package:client/services/user_data_service.dart';
 import 'package:client/services/services.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 class CommunityPage extends StatefulWidget {

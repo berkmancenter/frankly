@@ -14,9 +14,9 @@ import 'package:client/routing/locations.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/keyboard_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/public_user_info.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/user/public_user_info.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class InstantEvent extends StatefulHookWidget {

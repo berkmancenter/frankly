@@ -1,6 +1,6 @@
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 import 'package:functions/events/event_ended.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';

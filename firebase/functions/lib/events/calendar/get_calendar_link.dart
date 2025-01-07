@@ -6,8 +6,8 @@ import '../../utils/calendar_link_util.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
 
 import '../../utils/template_utils.dart';
 

@@ -1,3 +1,4 @@
+import 'package:client/common_widgets/sign_in_options_content.dart';
 import 'package:flutter/material.dart';
 import 'package:client/common_widgets/proxied_image.dart';
 import 'package:client/common_widgets/custom_ink_well.dart';
@@ -39,67 +40,16 @@ class _HomePageSignInSectionState extends State<HomePageSignInSection> {
                 'Sign up to get started.',
                 style: AppTextStyle.body.copyWith(color: AppColor.gray2),
               ),
-              SizedBox(height: 30),
-              _buildSignInButton(
-                text: 'Sign up with email',
-                image: 'media/social-email.png',
-                onTap: () =>
-                    SignInDialog.show(isInitializedOnEmailPassword: true),
-                iconSize: 40,
-                padding: 2,
+              SizedBox(
+                width: 300,
+                child: SignInOptionsContent(
+                  isNewUser: true,
+                  showHeader: false,
+                ),
               ),
-              SizedBox(height: 10),
-              _buildSignInButton(
-                text: 'Sign up with Google',
-                image: 'media/googleLogo.png',
-                onTap: () => userService.signInWithGoogle(),
-                leftPadding: 16,
-                padding: 12,
-              ),
-              SizedBox(height: 100),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSignInButton({
-    String? image,
-    required String text,
-    required onTap,
-    double iconSize = 20,
-    double padding = 8.0,
-    double leftPadding = 0.0,
-  }) {
-    return CustomInkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: onTap,
-      child: Container(
-        height: 48,
-        width: 311,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: AppColor.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(width: leftPadding),
-            if (image != null)
-              ProxiedImage(
-                null,
-                asset: AppAsset(image),
-                width: iconSize,
-              ),
-            SizedBox(width: padding),
-            HeightConstrainedText(
-              text,
-              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
-            ),
-          ],
-        ),
       ),
     );
   }

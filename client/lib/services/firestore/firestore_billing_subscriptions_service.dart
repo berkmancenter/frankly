@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/billing_subscription.dart';
+import 'package:data_models/admin/billing_subscription.dart';
 
 class FirestoreBillingSubscriptionsService {
   _subscriptionDocReference({

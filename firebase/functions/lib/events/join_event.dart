@@ -4,8 +4,8 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
 import 'notifications/event_emails.dart';
 import '../utils/infra/firestore_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
 
 /// This function handles events after event creation
 class JoinEvent extends OnCallMethod<Event> {

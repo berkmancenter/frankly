@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/app/community/events/event_page/event_provider.dart';
 import 'package:client/app/community/community_provider.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class SurveyPresenter extends ChangeNotifier {
   final CommunityProvider communityProvider;

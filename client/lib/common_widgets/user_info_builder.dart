@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 
 class UserInfoProvider extends ChangeNotifier {

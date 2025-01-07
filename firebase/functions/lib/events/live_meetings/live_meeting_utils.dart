@@ -3,9 +3,9 @@ import 'agora_api.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/utils/utils.dart';
 
 class LiveMeetingUtils {
   bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;

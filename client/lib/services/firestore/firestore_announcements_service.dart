@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/announcement.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/announcements/announcement.dart';
+import 'package:data_models/utils/utils.dart';
 
 class FirestoreAnnouncementsService {
   static const announcements = 'announcements';

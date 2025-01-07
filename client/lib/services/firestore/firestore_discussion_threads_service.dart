@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:client/services/services.dart';
 import 'package:client/utils/extensions.dart';
 import 'package:client/utils/models_helper.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'firestore_utils.dart';

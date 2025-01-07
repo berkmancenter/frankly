@@ -12,11 +12,11 @@ import '../utils/notifications_utils.dart';
 import '../utils/send_email_client.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/email_digest_record.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/community_user_settings.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/email_digest_record.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/community_user_settings.dart';
+import 'package:data_models/community/membership.dart';
 
 import '../utils/template_utils.dart';
 

@@ -2,8 +2,8 @@ import 'package:client/app/community/events/event_page/widgets/waiting_room_widg
 import 'package:client/app/community/events/event_page/widgets/waiting_room_widget/waiting_room_widget_model.dart';
 import 'package:client/common_widgets/visible_exception.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/media_item.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/media_item.dart';
 
 class WaitingRoomWidgetPresenter {
   final WaitingRoomWidgetView _view;

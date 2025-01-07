@@ -6,8 +6,8 @@ import '../utils/infra/firestore_event_function.dart';
 import '../utils/infra/on_firestore_helper.dart';
 import '../on_firestore_function.dart';
 import '../utils/infra/firestore_utils.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
-import 'package:data_models/firestore/discussion_thread_comment.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 
 class OnDiscussionThreadComment
     extends OnFirestoreFunction<DiscussionThreadComment> {

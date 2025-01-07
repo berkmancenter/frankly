@@ -8,10 +8,10 @@ import '../../../on_call_function.dart';
 import 'check_assign_to_breakouts_server.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:meta/meta.dart';
 
 class InitiateBreakouts extends OnCallMethod<InitiateBreakoutsRequest> {

@@ -17,10 +17,10 @@ import 'package:client/services/services.dart';
 import 'package:client/services/shared_preferences_service.dart';
 import 'package:client/services/user_service.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/event_message.dart';
-import 'package:data_models/firestore/member_details.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event_message.dart';
+import 'package:data_models/community/member_details.dart';
+import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
 class EventPagePresenter {

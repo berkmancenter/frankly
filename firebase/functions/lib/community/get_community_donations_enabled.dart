@@ -6,8 +6,8 @@ import '../utils/infra/firestore_utils.dart';
 import '../utils/subscription_plan_util.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 
 class GetCommunityDonationsEnabled
     extends OnCallMethod<GetCommunityDonationsEnabledRequest> {

@@ -11,7 +11,7 @@ import 'package:client/common_widgets/ui_migration.dart';
 import 'package:client/common_widgets/media_item_section.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/event.dart';
+import 'package:data_models/events/event.dart';
 
 class WaitingRoomWidget extends StatefulWidget {
   final Event event;

@@ -7,10 +7,10 @@ import '../utils/email_templates.dart';
 import '../utils/infra/firestore_utils.dart';
 import '../utils/send_email_client.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership.dart';
-import 'package:data_models/firestore/membership_request.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership.dart';
+import 'package:data_models/community/membership_request.dart';
+import 'package:data_models/utils/utils.dart';
 
 class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
   ResolveJoinRequest()

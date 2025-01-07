@@ -9,8 +9,8 @@ import 'live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import '../on_firestore_function.dart';
 import 'notifications/event_emails.dart';
 import '../utils/infra/firestore_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
 
 class OnEvent extends OnFirestoreFunction<Event> {
   EventEmails eventEmails;

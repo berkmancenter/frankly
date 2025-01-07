@@ -1,6 +1,6 @@
 import 'package:client/common_widgets/visible_exception.dart';
 import 'package:client/services/media_helper_service.dart';
-import 'package:data_models/firestore/discussion_thread.dart';
+import 'package:data_models/discussion_threads/discussion_thread.dart';
 
 class DiscussionThreadsHelper {
   Future<DiscussionThread?> addNewDiscussionThread({

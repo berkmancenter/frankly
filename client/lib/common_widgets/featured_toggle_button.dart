@@ -5,7 +5,7 @@ import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/services/firestore/firestore_utils.dart';
 import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class FeaturedToggleButton extends StatefulWidget {
   final String? communityId;

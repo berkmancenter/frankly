@@ -6,8 +6,8 @@ import 'package:client/services/cloud_functions_service.dart';
 import 'package:client/services/firestore/firestore_agreements_service.dart';
 import 'package:client/services/responsive_layout_service.dart';
 import 'package:client/utils/payment_utils.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/partner_agreement.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
 
 import 'overview_contract.dart';

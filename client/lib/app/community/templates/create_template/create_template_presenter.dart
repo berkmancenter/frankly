@@ -5,7 +5,7 @@ import 'package:client/app/community/community_provider.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 
 class CreateTemplatePresenter extends ChangeNotifier {
   final CommunityProvider communityProvider;

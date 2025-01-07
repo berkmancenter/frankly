@@ -9,8 +9,8 @@ import 'package:client/common_widgets/action_button.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 

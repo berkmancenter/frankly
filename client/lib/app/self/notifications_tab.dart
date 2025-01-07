@@ -9,9 +9,9 @@ import 'package:client/services/services.dart';
 import 'package:client/services/user_service.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:client/utils/stream_utils.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/community_user_settings.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/community_user_settings.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsTab extends StatefulHookWidget {

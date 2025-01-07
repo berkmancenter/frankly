@@ -5,7 +5,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/utils.dart';
+import 'package:data_models/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_html/html.dart';
 

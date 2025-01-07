@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/app/community/community_permissions_provider.dart';
 import 'package:client/routing/locations.dart';
 import 'package:client/services/services.dart';
-import 'package:data_models/firestore/community.dart';
+import 'package:data_models/community/community.dart';
 
 class NavBarProvider extends ChangeNotifier {
   bool _hideNav = false;

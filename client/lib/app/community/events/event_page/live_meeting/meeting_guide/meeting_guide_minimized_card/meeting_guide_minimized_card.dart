@@ -12,7 +12,7 @@ import 'package:client/common_widgets/custom_stream_builder.dart';
 import 'package:client/services/user_data_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 
 import 'meeting_guide_minimized_card_contract.dart';

@@ -23,8 +23,8 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart' as event;
-import 'package:data_models/firestore/live_meeting.dart';
+import 'package:data_models/events/event.dart' as event;
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 

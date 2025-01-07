@@ -7,9 +7,9 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialog_provider.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/pre_post_url_params.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/events/pre_post_url_params.dart';
 
 import 'pre_post_event_dialog_contract.dart';
 import 'pre_post_event_dialog_model.dart';

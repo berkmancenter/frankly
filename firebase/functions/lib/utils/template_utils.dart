@@ -1,5 +1,5 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
-import 'package:data_models/firestore/template.dart';
+import 'package:data_models/templates/template.dart';
 
 import 'infra/firestore_utils.dart';
 

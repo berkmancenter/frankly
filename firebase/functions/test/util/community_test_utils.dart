@@ -2,8 +2,8 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/community/create_community.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 
 class CommunityTestUtils {

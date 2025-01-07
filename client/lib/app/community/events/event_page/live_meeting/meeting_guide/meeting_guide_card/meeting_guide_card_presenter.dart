@@ -10,10 +10,10 @@ import 'package:client/app/community/community_provider.dart';
 import 'package:client/services/user_data_service.dart';
 import 'package:client/services/responsive_layout_service.dart';
 import 'package:client/services/user_service.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/community.dart';
-import 'package:data_models/firestore/meeting_guide.dart';
-import 'package:data_models/firestore/membership.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/community/community.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 
 import 'meeting_guide_card_contract.dart';

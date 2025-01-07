@@ -14,8 +14,8 @@ import 'package:client/services/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/dialog_provider.dart';
 import 'package:client/utils/height_constained_text.dart';
-import 'package:data_models/firestore/live_meeting.dart';
-import 'package:data_models/firestore/public_user_info.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 
 class ReassignResult {

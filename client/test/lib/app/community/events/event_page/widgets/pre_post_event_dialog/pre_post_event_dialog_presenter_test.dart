@@ -3,9 +3,9 @@ import 'package:get_it/get_it.dart';
 import 'package:client/app/community/events/event_page/widgets/pre_post_event_dialog/pre_post_event_dialog_presenter.dart';
 import 'package:client/services/user_service.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/firestore/event.dart';
-import 'package:data_models/firestore/pre_post_card.dart';
-import 'package:data_models/firestore/pre_post_url_params.dart';
+import 'package:data_models/events/event.dart';
+import 'package:data_models/events/pre_post_card.dart';
+import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';
