@@ -55,6 +55,7 @@ void enableDriverBinding() {
   DriverBinding();
 }
 
+// WKWebview is an embedded web view in apps.
 bool get isWKWebView => browser.isWKWebView;
 
 class CustomPointerInterceptor extends StatelessWidget {
