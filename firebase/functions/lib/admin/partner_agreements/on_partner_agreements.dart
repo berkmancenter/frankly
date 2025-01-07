@@ -73,9 +73,7 @@ class OnPartnerAgreements extends OnFirestoreFunction<PartnerAgreement> {
 
     final String communityId =
         documentSnapshot.data.getString(FirestoreHelper.kCommunityId);
-    // Currently unused field.
-    // final String stripeId = documentSnapshot.data
-    //     .getString(PartnerAgreement.kFieldStripeConnectedAccountId);
+
     await onboardingStepsHelper.updateOnboardingSteps(
       communityId,
       documentSnapshot,
