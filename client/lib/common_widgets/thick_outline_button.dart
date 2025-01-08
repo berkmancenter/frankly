@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:client/common_widgets/action_button.dart';
-import 'package:client/styles/app_styles.dart';
 
 class ThickOutlineButton extends StatelessWidget {
   final Function()? onPressed;
@@ -9,7 +8,7 @@ class ThickOutlineButton extends StatelessWidget {
   final Color? backgroundColor;
   final Widget? icon;
   final double? minWidth;
-  final double thickness;
+  final double borderWidth;
   final bool expand;
   final String? eventName;
 
@@ -22,7 +21,7 @@ class ThickOutlineButton extends StatelessWidget {
     this.icon,
     this.expand = false,
     this.minWidth = 0,
-    this.thickness = 1,
+    this.borderWidth = 1,
     this.eventName,
   }) : super(key: key);
 
@@ -37,7 +36,7 @@ class ThickOutlineButton extends StatelessWidget {
       type: ActionButtonType.outline,
       borderSide: BorderSide(
         color: lineColor,
-        width: thickness,
+        width: borderWidth,
       ),
       minWidth: minWidth,
       textColor: lineColor,
