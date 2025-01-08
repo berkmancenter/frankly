@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/common_widgets/colorful_meter_v2.dart';
+import 'package:client/common_widgets/colorful_meter.dart';
 
 import '../../test_utils.dart';
 
@@ -18,7 +18,7 @@ void main() {
   }
 
   testWidgets('regular', (tester) async {
-    await tester.pumpWidget(MaterialApp(home: ColorfulMeterV2(value: 0)));
+    await tester.pumpWidget(MaterialApp(home: ColorfulMeter(value: 0)));
 
     expect(getSizedBoxFinder(800, 800), findsOneWidget);
   });
@@ -26,7 +26,7 @@ void main() {
   testWidgets('regular, size larger than max width', (tester) async {
     TestUtils.updateScreenSize(tester, 600, 900);
     await tester
-        .pumpWidget(MaterialApp(home: ColorfulMeterV2(size: 750, value: 0)));
+        .pumpWidget(MaterialApp(home: ColorfulMeter(size: 750, value: 0)));
 
     expect(getSizedBoxFinder(600, 600), findsOneWidget);
   });
@@ -34,7 +34,7 @@ void main() {
   testWidgets('regular, size larger than max height', (tester) async {
     TestUtils.updateScreenSize(tester, 600, 900);
     await tester
-        .pumpWidget(MaterialApp(home: ColorfulMeterV2(size: 1000, value: 0)));
+        .pumpWidget(MaterialApp(home: ColorfulMeter(size: 1000, value: 0)));
 
     expect(getSizedBoxFinder(600, 600), findsOneWidget);
   });
@@ -42,7 +42,7 @@ void main() {
   testWidgets('regular, size lower than max width', (tester) async {
     TestUtils.updateScreenSize(tester, 600, 900);
     await tester
-        .pumpWidget(MaterialApp(home: ColorfulMeterV2(size: 500, value: 0)));
+        .pumpWidget(MaterialApp(home: ColorfulMeter(size: 500, value: 0)));
 
     expect(getSizedBoxFinder(500, 500), findsOneWidget);
   });
@@ -50,7 +50,7 @@ void main() {
   testWidgets('regular, size lower than max height', (tester) async {
     TestUtils.updateScreenSize(tester, 600, 900);
     await tester
-        .pumpWidget(MaterialApp(home: ColorfulMeterV2(size: 700, value: 0)));
+        .pumpWidget(MaterialApp(home: ColorfulMeter(size: 700, value: 0)));
 
     expect(getSizedBoxFinder(600, 600), findsOneWidget);
   });
@@ -64,7 +64,7 @@ void main() {
         home: Row(
           children: const [
             Spacer(),
-            Expanded(child: ColorfulMeterV2(value: 0)),
+            Expanded(child: ColorfulMeter(value: 0)),
             Spacer(),
           ],
         ),
@@ -83,7 +83,7 @@ void main() {
         home: Row(
           children: const [
             Spacer(),
-            Expanded(child: ColorfulMeterV2(value: 0)),
+            Expanded(child: ColorfulMeter(value: 0)),
             Spacer(),
           ],
         ),
@@ -103,7 +103,7 @@ void main() {
         home: Column(
           children: const [
             Spacer(),
-            Expanded(child: ColorfulMeterV2(value: 0.5)),
+            Expanded(child: ColorfulMeter(value: 0.5)),
             Spacer(),
           ],
         ),
@@ -123,7 +123,7 @@ void main() {
         home: Column(
           children: const [
             Spacer(),
-            Expanded(child: ColorfulMeterV2(value: 0.5)),
+            Expanded(child: ColorfulMeter(value: 0.5)),
             Spacer(),
           ],
         ),
@@ -137,9 +137,9 @@ void main() {
     Future<void> testAssertion(double value, bool doesPass) async {
       test('Value $value', () {
         if (doesPass) {
-          expect(() => ColorfulMeterV2(value: value), returnsNormally);
+          expect(() => ColorfulMeter(value: value), returnsNormally);
         } else {
-          expect(() => ColorfulMeterV2(value: value), throwsAssertionError);
+          expect(() => ColorfulMeter(value: value), throwsAssertionError);
         }
       });
     }
