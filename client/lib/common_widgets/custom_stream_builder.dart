@@ -4,18 +4,6 @@ import 'package:client/services/logging_service.dart';
 import 'package:client/services/services.dart';
 
 class CustomStreamBuilder<T> extends StatelessWidget {
-  final Widget Function(BuildContext, T?) builder;
-  final String entryFrom;
-  final String errorMessage;
-  final WidgetBuilder? errorBuilder;
-  final String? loadingMessage;
-  final TextStyle? textStyle;
-  final double height;
-  final double? width;
-  final bool showLoading;
-  final bool buildWhileLoading;
-  final Stream<T>? stream;
-
   const CustomStreamBuilder({
     Key? key,
     required this.builder,
@@ -30,6 +18,20 @@ class CustomStreamBuilder<T> extends StatelessWidget {
     this.buildWhileLoading = false,
     this.stream,
   }) : super(key: key);
+
+  final Widget Function(BuildContext, T?) builder;
+
+  /// For logging purposes, the widget/function that this is called from.
+  final String entryFrom;
+  final String errorMessage;
+  final WidgetBuilder? errorBuilder;
+  final String? loadingMessage;
+  final TextStyle? textStyle;
+  final double height;
+  final double? width;
+  final bool showLoading;
+  final bool buildWhileLoading;
+  final Stream<T>? stream;
 
   @override
   Widget build(BuildContext context) {
