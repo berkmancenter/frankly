@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_presenter.dart';
+import 'package:client/features/events/features/event_page/presentation/pre_post_card_widget_presenter.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:mockito/mockito.dart';
 
@@ -8,8 +8,8 @@ import '../../../../../../../mocked_classes.mocks.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  final MockCloudFunctionsService mockCloudFunctionsService =
-      MockCloudFunctionsService();
+  final MockCloudFunctionsCommunityService mockCloudFunctionsService =
+      MockCloudFunctionsCommunityService();
   final MockUserService mockUserService = MockUserService();
   final PrePostCardWidgetPresenterHelper helper =
       PrePostCardWidgetPresenterHelper();

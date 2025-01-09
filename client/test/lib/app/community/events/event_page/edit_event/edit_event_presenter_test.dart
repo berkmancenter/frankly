@@ -1,10 +1,11 @@
+import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/events/event_page/edit_event/edit_event_model.dart';
-import 'package:client/app/community/events/event_page/edit_event/edit_event_presenter.dart';
-import 'package:client/app/community/utils.dart';
-import 'package:client/services/firestore/firestore_utils.dart';
-import 'package:client/utils/extensions.dart';
+import 'package:client/features/events/features/edit_event/data/models/edit_event_model.dart';
+import 'package:client/features/events/features/edit_event/presentation/edit_event_presenter.dart';
+import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/utils/firestore_utils.dart';
+import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 

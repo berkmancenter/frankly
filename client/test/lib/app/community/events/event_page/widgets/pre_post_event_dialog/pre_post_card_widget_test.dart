@@ -1,10 +1,10 @@
+import 'package:client/features/community/data/services/cloud_functions_community_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_page.dart';
-import 'package:client/common_widgets/action_button.dart';
-import 'package:client/services/cloud_functions_service.dart';
-import 'package:client/services/user_service.dart';
+import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
+import 'package:client/core/widgets/action_button.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
@@ -26,7 +26,7 @@ void main() {
   late MockUserServiceNullable mockUserService;
 
   setUpAll(() {
-    GetIt.instance.registerSingleton(CloudFunctionsService());
+    GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
   });
 
   tearDownAll(() async {

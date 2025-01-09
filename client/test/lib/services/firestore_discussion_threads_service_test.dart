@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:client/services/firestore/firestore_database.dart';
-import 'package:client/services/firestore/firestore_discussion_threads_service.dart';
-import 'package:client/services/firestore/firestore_utils.dart';
+import 'package:client/core/data/services/firestore_database.dart';
+import 'package:client/features/discussion_threads/data/services/firestore_discussion_threads_service.dart';
+import 'package:client/core/utils/firestore_utils.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:mockito/mockito.dart';
 import '../../mocked_classes.mocks.dart';

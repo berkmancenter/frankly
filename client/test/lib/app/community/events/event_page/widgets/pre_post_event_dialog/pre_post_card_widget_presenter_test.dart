@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_model.dart';
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_page.dart';
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_presenter.dart';
+import 'package:client/features/events/features/event_page/data/models/pre_post_card_widget_model.dart';
+import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
+import 'package:client/features/events/features/event_page/presentation/pre_post_card_widget_presenter.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_card_attribute.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
@@ -14,8 +14,8 @@ void main() {
 
   final MockBuildContext mockBuildContext = MockBuildContext();
   final MockPrePostCardWidgetView mockView = MockPrePostCardWidgetView();
-  final MockCloudFunctionsService mockCloudFunctionsService =
-      MockCloudFunctionsService();
+  final MockCloudFunctionsCommunityService mockCloudFunctionsService =
+      MockCloudFunctionsCommunityService();
   final MockPrePostCardWidgetPresenterHelper mockHelper =
       MockPrePostCardWidgetPresenterHelper();
   final MockUserService mockUserService = MockUserService();

@@ -1,10 +1,11 @@
 import 'dart:math';
 
+import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/discussion_threads/manipulate_discussion_thread/manipulate_discussion_thread_model.dart';
-import 'package:client/app/community/discussion_threads/manipulate_discussion_thread/manipulate_discussion_thread_presenter.dart';
-import 'package:client/app/community/utils.dart';
-import 'package:client/utils/extensions.dart';
+import 'package:client/features/discussion_threads/data/models/manipulate_discussion_thread_model.dart';
+import 'package:client/features/discussion_threads/presentation/manipulate_discussion_thread_presenter.dart';
+import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:mockito/mockito.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/utils/stream_utils.dart';
+import 'package:client/core/widgets/stream_utils.dart';
 
 /// Build app with Text widget inside a CustomStreamGetterBuilder
 Widget makeWidgets({required String text, required List<String> keys}) =>

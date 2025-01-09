@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/events/event_page/live_meeting/video/conference/brady_bunch/layout/brady_bunch_layout.dart';
+import 'package:client/features/events/features/live_meeting/features/video/utils/brady_bunch_layout.dart';
 
 main() {
   double getMaxDeadspace(int participantCount) {

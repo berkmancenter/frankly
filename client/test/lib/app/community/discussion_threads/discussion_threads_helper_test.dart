@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/discussion_threads/discussion_threads_helper.dart';
+import 'package:client/features/discussion_threads/data/services/discussion_threads_helper.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:mockito/mockito.dart';
 

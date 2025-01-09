@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/services/responsive_layout_service.dart';
+import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../mocked_classes.mocks.dart';

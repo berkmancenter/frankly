@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/discussion_threads/discussion_thread/discussion_thread_comment_ui.dart';
-import 'package:client/app/community/discussion_threads/discussion_thread/discussion_thread_model.dart';
-import 'package:client/app/community/discussion_threads/discussion_thread/discussion_thread_presenter.dart';
-import 'package:client/app/community/utils.dart';
+import 'package:client/features/discussion_threads/data/models/discussion_thread_model.dart';
+import 'package:client/features/discussion_threads/presentation/discussion_thread_presenter.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:data_models/chat/emotion.dart';

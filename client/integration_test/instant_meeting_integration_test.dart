@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:client/app/community/events/event_page/live_meeting/meeting_dialog.dart';
+import 'package:client/features/events/features/live_meeting/presentation/views/meeting_dialog.dart';
 import 'package:client/app.dart';
-import 'package:client/routing/locations.dart';
-import 'package:client/services/services.dart';
+import 'package:client/core/routing/locations.dart';
+import 'package:client/services.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

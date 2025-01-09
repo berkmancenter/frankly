@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/common_widgets/colorful_meter_v2.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/colorful_meter_v2.dart';
 
 import '../../test_utils.dart';
 

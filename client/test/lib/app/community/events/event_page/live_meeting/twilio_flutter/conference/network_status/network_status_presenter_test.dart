@@ -4,9 +4,9 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:client/app/community/events/event_page/live_meeting/video/conference/networking_status/networking_status_model.dart';
-import 'package:client/app/community/events/event_page/live_meeting/video/conference/networking_status/networking_status_presenter.dart';
-import 'package:client/services/clock_service.dart';
+import 'package:client/features/events/features/live_meeting/features/video/data/models/networking_status_model.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/networking_status_presenter.dart';
+import 'package:client/core/data/services/clock_service.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../../../../mocked_classes.mocks.dart';

@@ -4,161 +4,176 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i38;
-import 'dart:convert' as _i116;
-import 'dart:typed_data' as _i85;
+import 'dart:convert' as _i120;
+import 'dart:typed_data' as _i89;
 import 'dart:ui' as _i10;
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart' as _i11;
-import 'package:client/app/community/admin/overview/overview_contract.dart'
-    as _i101;
-import 'package:client/app/community/community_permissions_provider.dart'
-    as _i30;
-import 'package:client/app/community/community_provider.dart' as _i24;
-import 'package:client/app/community/discussion_threads/discussion_thread/discussion_thread_contract.dart'
-    as _i77;
-import 'package:client/app/community/discussion_threads/discussion_threads_contract.dart'
-    as _i80;
-import 'package:client/app/community/discussion_threads/discussion_threads_helper.dart'
-    as _i78;
-import 'package:client/app/community/discussion_threads/manipulate_discussion_thread/manipulate_discussion_thread_contract.dart'
-    as _i97;
-import 'package:client/app/community/events/event_page/edit_event/edit_event_contract.dart'
-    as _i83;
-import 'package:client/app/community/events/event_page/edit_event/edit_event_model.dart'
-    as _i82;
-import 'package:client/app/community/events/event_page/edit_event/edit_event_presenter.dart'
-    as _i81;
-import 'package:client/app/community/events/event_page/event_page_provider.dart'
-    as _i29;
-import 'package:client/app/community/events/event_page/event_permissions_provider.dart'
-    as _i72;
-import 'package:client/app/community/events/event_page/event_provider.dart'
-    as _i12;
-import 'package:client/app/community/events/event_page/event_settings/event_settings_contract.dart'
-    as _i76;
-import 'package:client/app/community/events/event_page/event_settings/event_settings_model.dart'
-    as _i75;
-import 'package:client/app/community/events/event_page/event_settings/event_settings_presenter.dart'
-    as _i74;
-import 'package:client/app/community/events/event_page/live_meeting/live_meeting_provider.dart'
-    as _i13;
-import 'package:client/app/community/events/event_page/live_meeting/meeting_guide/meeting_guide_card/items/user_suggestions/meeting_guide_card_item_user_suggestions_contract.dart'
-    as _i98;
-import 'package:client/app/community/events/event_page/live_meeting/meeting_guide/meeting_guide_card_store.dart'
-    as _i26;
-import 'package:client/app/community/events/event_page/live_meeting/video/conference/agora_room.dart'
-    as _i27;
-import 'package:client/app/community/events/event_page/live_meeting/video/conference/conference_room.dart'
-    as _i14;
-import 'package:client/app/community/events/event_page/live_meeting/video/conference/networking_status/networking_status_contract.dart'
-    as _i100;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/agenda_item_contract.dart'
-    as _i64;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/agenda_item_model.dart'
-    as _i54;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/agenda_item_presenter.dart'
-    as _i53;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/image/agenda_item_image_contract.dart'
-    as _i57;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/image/agenda_item_image_data.dart'
-    as _i5;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/image/agenda_item_image_model.dart'
-    as _i56;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/image/agenda_item_image_presenter.dart'
-    as _i55;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/poll/agenda_item_poll_contract.dart'
-    as _i60;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/poll/agenda_item_poll_data.dart'
-    as _i6;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/poll/agenda_item_poll_model.dart'
-    as _i59;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/poll/agenda_item_poll_presenter.dart'
-    as _i58;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/text/agenda_item_text_data.dart'
-    as _i3;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/user_suggestions/agenda_item_user_suggestions_data.dart'
-    as _i8;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/video/agenda_item_video_contract.dart'
-    as _i63;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/video/agenda_item_video_data.dart'
-    as _i4;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/video/agenda_item_video_model.dart'
-    as _i62;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/video/agenda_item_video_presenter.dart'
-    as _i61;
-import 'package:client/app/community/events/event_page/meeting_agenda/agenda_item_card/items/word_cloud/agenda_item_word_cloud_data.dart'
-    as _i7;
-import 'package:client/app/community/events/event_page/meeting_agenda/meeting_agenda_provider.dart'
-    as _i9;
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_contract.dart'
-    as _i107;
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_model.dart'
+import 'package:client/core/data/services/clock_service.dart' as _i67;
+import 'package:client/core/data/services/firestore_database.dart' as _i91;
+import 'package:client/core/data/services/logging_service.dart' as _i100;
+import 'package:client/core/data/services/media_helper_service.dart' as _i83;
+import 'package:client/core/data/services/responsive_layout_service.dart'
+    as _i116;
+import 'package:client/core/data/services/shared_preferences_service.dart'
+    as _i117;
+import 'package:client/core/utils/dialogs.dart' as _i66;
+import 'package:client/core/utils/extensions.dart' as _i33;
+import 'package:client/core/utils/firestore_utils.dart' as _i39;
+import 'package:client/core/utils/toast_utils.dart' as _i65;
+import 'package:client/core/widgets/navbar/nav_bar/nav_bar_contract.dart'
     as _i103;
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_page.dart'
-    as _i104;
-import 'package:client/app/community/events/event_page/widgets/pre_post_card_widget/pre_post_card_widget_presenter.dart'
-    as _i105;
-import 'package:client/app/community/events/event_page/widgets/pre_post_event_dialog/pre_post_event_dialog_contract.dart'
-    as _i110;
-import 'package:client/app/community/events/event_page/widgets/pre_post_event_dialog/pre_post_event_dialog_model.dart'
-    as _i108;
-import 'package:client/app/community/events/event_page/widgets/pre_post_event_dialog/pre_post_event_dialog_presenter.dart'
-    as _i109;
-import 'package:client/app/community/events/event_page/widgets/smart_match_survey/survey_dialog.dart'
-    as _i89;
-import 'package:client/app/community/templates/template_page_provider.dart'
-    as _i114;
-import 'package:client/app/community/utils.dart' as _i65;
-import 'package:client/common_widgets/navbar/nav_bar/nav_bar_contract.dart'
-    as _i99;
-import 'package:client/common_widgets/navbar/nav_bar_provider.dart' as _i28;
-import 'package:client/common_widgets/user_admin_details_builder.dart' as _i115;
-import 'package:client/services/clock_service.dart' as _i67;
-import 'package:client/services/cloud_functions_service.dart' as _i68;
-import 'package:client/services/firestore/firestore_agreements_service.dart'
-    as _i86;
-import 'package:client/services/firestore/firestore_database.dart' as _i87;
-import 'package:client/services/firestore/firestore_discussion_thread_comments_service.dart'
+import 'package:client/core/widgets/navbar/nav_bar_provider.dart' as _i28;
+import 'package:client/features/admin/data/services/cloud_functions_payments_service.dart'
+    as _i68;
+import 'package:client/features/admin/data/services/firestore_agreements_service.dart'
     as _i90;
-import 'package:client/services/firestore/firestore_discussion_threads_service.dart'
-    as _i91;
-import 'package:client/services/firestore/firestore_event_service.dart' as _i88;
-import 'package:client/services/firestore/firestore_meeting_guide_service.dart'
+import 'package:client/features/admin/presentation/views/overview_contract.dart'
+    as _i105;
+import 'package:client/features/admin/utils/payment_utils.dart' as _i106;
+import 'package:client/features/announcements/data/services/cloud_functions_announcements_service.dart'
+    as _i72;
+import 'package:client/features/community/data/providers/community_permissions_provider.dart'
+    as _i30;
+import 'package:client/features/community/data/providers/community_provider.dart'
+    as _i24;
+import 'package:client/features/community/data/providers/user_admin_details_builder.dart'
+    as _i119;
+import 'package:client/features/community/data/services/cloud_functions_community_service.dart'
+    as _i69;
+import 'package:client/features/discussion_threads/data/services/discussion_threads_helper.dart'
+    as _i82;
+import 'package:client/features/discussion_threads/data/services/firestore_discussion_thread_comments_service.dart'
+    as _i94;
+import 'package:client/features/discussion_threads/data/services/firestore_discussion_threads_service.dart'
+    as _i95;
+import 'package:client/features/discussion_threads/data/services/models_helper.dart'
+    as _i88;
+import 'package:client/features/discussion_threads/presentation/views/discussion_thread_contract.dart'
+    as _i81;
+import 'package:client/features/discussion_threads/presentation/views/discussion_threads_contract.dart'
+    as _i84;
+import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_contract.dart'
+    as _i101;
+import 'package:client/features/events/data/services/cloud_functions_event_service.dart'
+    as _i70;
+import 'package:client/features/events/data/services/firestore_event_service.dart'
     as _i92;
-import 'package:client/services/firestore/firestore_utils.dart' as _i39;
-import 'package:client/services/logging_service.dart' as _i96;
-import 'package:client/services/media_helper_service.dart' as _i79;
-import 'package:client/services/responsive_layout_service.dart' as _i112;
-import 'package:client/services/shared_preferences_service.dart' as _i113;
-import 'package:client/services/user_service.dart' as _i106;
-import 'package:client/utils/dialogs.dart' as _i66;
-import 'package:client/utils/extensions.dart' as _i33;
-import 'package:client/utils/models_helper.dart' as _i84;
-import 'package:client/utils/payment_utils.dart' as _i102;
+import 'package:client/features/events/features/edit_event/data/models/edit_event_model.dart'
+    as _i86;
+import 'package:client/features/events/features/edit_event/presentation/edit_event_presenter.dart'
+    as _i85;
+import 'package:client/features/events/features/edit_event/presentation/views/edit_event_contract.dart'
+    as _i87;
+import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart'
+    as _i79;
+import 'package:client/features/events/features/event_page/data/models/pre_post_card_widget_model.dart'
+    as _i107;
+import 'package:client/features/events/features/event_page/data/models/pre_post_event_dialog_model.dart'
+    as _i112;
+import 'package:client/features/events/features/event_page/data/providers/event_page_provider.dart'
+    as _i29;
+import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart'
+    as _i76;
+import 'package:client/features/events/features/event_page/data/providers/event_provider.dart'
+    as _i12;
+import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart'
+    as _i78;
+import 'package:client/features/events/features/event_page/presentation/pre_post_card_widget_presenter.dart'
+    as _i109;
+import 'package:client/features/events/features/event_page/presentation/pre_post_event_dialog_presenter.dart'
+    as _i113;
+import 'package:client/features/events/features/event_page/presentation/views/event_settings_contract.dart'
+    as _i80;
+import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_contract.dart'
+    as _i111;
+import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart'
+    as _i108;
+import 'package:client/features/events/features/event_page/presentation/views/pre_post_event_dialog_contract.dart'
+    as _i114;
+import 'package:client/features/events/features/event_page/presentation/views/survey_dialog.dart'
+    as _i93;
+import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart'
+    as _i13;
+import 'package:client/features/events/features/live_meeting/data/services/cloud_functions_live_meeting_service.dart'
+    as _i71;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_data.dart'
+    as _i5;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_model.dart'
+    as _i56;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_model.dart'
+    as _i54;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_poll_data.dart'
+    as _i6;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_poll_model.dart'
+    as _i59;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_text_data.dart'
+    as _i3;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_user_suggestions_data.dart'
+    as _i8;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_video_data.dart'
+    as _i4;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_video_model.dart'
+    as _i62;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_word_cloud_data.dart'
+    as _i7;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart'
+    as _i9;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_image_presenter.dart'
+    as _i55;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_poll_presenter.dart'
+    as _i58;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_presenter.dart'
+    as _i53;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_video_presenter.dart'
+    as _i61;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_contract.dart'
+    as _i64;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_image_contract.dart'
+    as _i57;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_poll_contract.dart'
+    as _i60;
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video_contract.dart'
+    as _i63;
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart'
+    as _i26;
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/services/firestore_meeting_guide_service.dart'
+    as _i96;
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_user_suggestions_contract.dart'
+    as _i102;
+import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart'
+    as _i27;
+import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart'
+    as _i14;
+import 'package:client/features/events/features/live_meeting/features/video/presentation/views/networking_status_contract.dart'
+    as _i104;
+import 'package:client/features/templates/data/providers/template_page_provider.dart'
+    as _i118;
+import 'package:client/features/user/data/services/user_service.dart' as _i110;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i23;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     as _i37;
 import 'package:cloudinary_public/cloudinary_public.dart' as _i22;
 import 'package:data_models/admin/partner_agreement.dart' as _i44;
 import 'package:data_models/admin/plan_capability_list.dart' as _i19;
-import 'package:data_models/chat/chat.dart' as _i70;
+import 'package:data_models/chat/chat.dart' as _i74;
 import 'package:data_models/cloud_functions/requests.dart' as _i18;
 import 'package:data_models/community/community.dart' as _i25;
-import 'package:data_models/community/community_tag.dart' as _i71;
+import 'package:data_models/community/community_tag.dart' as _i75;
 import 'package:data_models/community/community_user_settings.dart' as _i51;
-import 'package:data_models/community/member_details.dart' as _i73;
-import 'package:data_models/community/membership.dart' as _i69;
+import 'package:data_models/community/member_details.dart' as _i77;
+import 'package:data_models/community/membership.dart' as _i73;
 import 'package:data_models/discussion_threads/discussion_thread.dart' as _i31;
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart'
     as _i32;
 import 'package:data_models/events/event.dart' as _i2;
-import 'package:data_models/events/event_proposal.dart' as _i95;
+import 'package:data_models/events/event_proposal.dart' as _i99;
 import 'package:data_models/events/live_meetings/live_meeting.dart' as _i20;
 import 'package:data_models/events/live_meetings/meeting_guide.dart' as _i43;
 import 'package:data_models/events/pre_post_card.dart' as _i45;
-import 'package:data_models/events/pre_post_card_attribute.dart' as _i111;
+import 'package:data_models/events/pre_post_card_attribute.dart' as _i115;
 import 'package:data_models/events/pre_post_url_params.dart' as _i46;
-import 'package:data_models/resources/community_resource.dart' as _i94;
+import 'package:data_models/resources/community_resource.dart' as _i98;
 import 'package:data_models/templates/template.dart' as _i40;
 import 'package:data_models/user/public_user_info.dart' as _i50;
 import 'package:dio/dio.dart' as _i21;
@@ -172,14 +187,14 @@ import 'package:flutter/gestures.dart' as _i42;
 import 'package:flutter/material.dart' as _i48;
 import 'package:flutter/rendering.dart' as _i47;
 import 'package:flutter/scheduler.dart' as _i49;
-import 'package:image_picker/image_picker.dart' as _i93;
+import 'package:image_picker/image_picker.dart' as _i97;
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart'
     as _i41;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i52;
 import 'package:rxdart/rxdart.dart' as _i15;
 
-import 'mock_function.dart' as _i117;
+import 'mock_function.dart' as _i121;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -425,53 +440,9 @@ class _FakeDateTime_19 extends _i1.SmartFake implements DateTime {
         );
 }
 
-class _FakeCreateDonationCheckoutSessionResponse_20 extends _i1.SmartFake
-    implements _i18.CreateDonationCheckoutSessionResponse {
-  _FakeCreateDonationCheckoutSessionResponse_20(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakePlanCapabilityList_21 extends _i1.SmartFake
-    implements _i19.PlanCapabilityList {
-  _FakePlanCapabilityList_21(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetCommunityCalendarLinkResponse_22 extends _i1.SmartFake
-    implements _i18.GetCommunityCalendarLinkResponse {
-  _FakeGetCommunityCalendarLinkResponse_22(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeCreateSubscriptionCheckoutSessionResponse_23 extends _i1.SmartFake
-    implements _i18.CreateSubscriptionCheckoutSessionResponse {
-  _FakeCreateSubscriptionCheckoutSessionResponse_23(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetStripeBillingPortalLinkResponse_24 extends _i1.SmartFake
+class _FakeGetStripeBillingPortalLinkResponse_20 extends _i1.SmartFake
     implements _i18.GetStripeBillingPortalLinkResponse {
-  _FakeGetStripeBillingPortalLinkResponse_24(
+  _FakeGetStripeBillingPortalLinkResponse_20(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -480,9 +451,9 @@ class _FakeGetStripeBillingPortalLinkResponse_24 extends _i1.SmartFake
         );
 }
 
-class _FakeGetStripeConnectedAccountLinkResponse_25 extends _i1.SmartFake
+class _FakeGetStripeConnectedAccountLinkResponse_21 extends _i1.SmartFake
     implements _i18.GetStripeConnectedAccountLinkResponse {
-  _FakeGetStripeConnectedAccountLinkResponse_25(
+  _FakeGetStripeConnectedAccountLinkResponse_21(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -491,129 +462,173 @@ class _FakeGetStripeConnectedAccountLinkResponse_25 extends _i1.SmartFake
         );
 }
 
-class _FakeCreateCommunityResponse_26 extends _i1.SmartFake
-    implements _i18.CreateCommunityResponse {
-  _FakeCreateCommunityResponse_26(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetMeetingJoinInfoResponse_27 extends _i1.SmartFake
-    implements _i18.GetMeetingJoinInfoResponse {
-  _FakeGetMeetingJoinInfoResponse_27(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetMeetingChatsSuggestionsDataResponse_28 extends _i1.SmartFake
-    implements _i18.GetMeetingChatsSuggestionsDataResponse {
-  _FakeGetMeetingChatsSuggestionsDataResponse_28(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetMembersDataResponse_29 extends _i1.SmartFake
-    implements _i18.GetMembersDataResponse {
-  _FakeGetMembersDataResponse_29(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeCreateLiveStreamResponse_30 extends _i1.SmartFake
-    implements _i18.CreateLiveStreamResponse {
-  _FakeCreateLiveStreamResponse_30(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetUserAdminDetailsResponse_31 extends _i1.SmartFake
-    implements _i18.GetUserAdminDetailsResponse {
-  _FakeGetUserAdminDetailsResponse_31(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetUserIdFromAgoraIdResponse_32 extends _i1.SmartFake
-    implements _i18.GetUserIdFromAgoraIdResponse {
-  _FakeGetUserIdFromAgoraIdResponse_32(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetBreakoutRoomAssignmentResponse_33 extends _i1.SmartFake
-    implements _i18.GetBreakoutRoomAssignmentResponse {
-  _FakeGetBreakoutRoomAssignmentResponse_33(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeBreakoutRoom_34 extends _i1.SmartFake implements _i20.BreakoutRoom {
-  _FakeBreakoutRoom_34(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetCommunityDonationsEnabledResponse_35 extends _i1.SmartFake
-    implements _i18.GetCommunityDonationsEnabledResponse {
-  _FakeGetCommunityDonationsEnabledResponse_35(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetCommunityPrePostEnabledResponse_36 extends _i1.SmartFake
-    implements _i18.GetCommunityPrePostEnabledResponse {
-  _FakeGetCommunityPrePostEnabledResponse_36(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGetStripeSubscriptionPlanInfoResponse_37 extends _i1.SmartFake
+class _FakeGetStripeSubscriptionPlanInfoResponse_22 extends _i1.SmartFake
     implements _i18.GetStripeSubscriptionPlanInfoResponse {
-  _FakeGetStripeSubscriptionPlanInfoResponse_37(
+  _FakeGetStripeSubscriptionPlanInfoResponse_22(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateDonationCheckoutSessionResponse_23 extends _i1.SmartFake
+    implements _i18.CreateDonationCheckoutSessionResponse {
+  _FakeCreateDonationCheckoutSessionResponse_23(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateSubscriptionCheckoutSessionResponse_24 extends _i1.SmartFake
+    implements _i18.CreateSubscriptionCheckoutSessionResponse {
+  _FakeCreateSubscriptionCheckoutSessionResponse_24(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateCommunityResponse_25 extends _i1.SmartFake
+    implements _i18.CreateCommunityResponse {
+  _FakeCreateCommunityResponse_25(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakePlanCapabilityList_26 extends _i1.SmartFake
+    implements _i19.PlanCapabilityList {
+  _FakePlanCapabilityList_26(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetMembersDataResponse_27 extends _i1.SmartFake
+    implements _i18.GetMembersDataResponse {
+  _FakeGetMembersDataResponse_27(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetUserAdminDetailsResponse_28 extends _i1.SmartFake
+    implements _i18.GetUserAdminDetailsResponse {
+  _FakeGetUserAdminDetailsResponse_28(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetCommunityDonationsEnabledResponse_29 extends _i1.SmartFake
+    implements _i18.GetCommunityDonationsEnabledResponse {
+  _FakeGetCommunityDonationsEnabledResponse_29(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetCommunityPrePostEnabledResponse_30 extends _i1.SmartFake
+    implements _i18.GetCommunityPrePostEnabledResponse {
+  _FakeGetCommunityPrePostEnabledResponse_30(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetCommunityCalendarLinkResponse_31 extends _i1.SmartFake
+    implements _i18.GetCommunityCalendarLinkResponse {
+  _FakeGetCommunityCalendarLinkResponse_31(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetMeetingJoinInfoResponse_32 extends _i1.SmartFake
+    implements _i18.GetMeetingJoinInfoResponse {
+  _FakeGetMeetingJoinInfoResponse_32(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetMeetingChatsSuggestionsDataResponse_33 extends _i1.SmartFake
+    implements _i18.GetMeetingChatsSuggestionsDataResponse {
+  _FakeGetMeetingChatsSuggestionsDataResponse_33(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCreateLiveStreamResponse_34 extends _i1.SmartFake
+    implements _i18.CreateLiveStreamResponse {
+  _FakeCreateLiveStreamResponse_34(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetBreakoutRoomAssignmentResponse_35 extends _i1.SmartFake
+    implements _i18.GetBreakoutRoomAssignmentResponse {
+  _FakeGetBreakoutRoomAssignmentResponse_35(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeBreakoutRoom_36 extends _i1.SmartFake implements _i20.BreakoutRoom {
+  _FakeBreakoutRoom_36(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGetUserIdFromAgoraIdResponse_37 extends _i1.SmartFake
+    implements _i18.GetUserIdFromAgoraIdResponse {
+  _FakeGetUserIdFromAgoraIdResponse_37(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -2916,65 +2931,6 @@ class MockClockService extends _i1.Mock implements _i67.ClockService {
       ) as _i38.Future<void>);
 
   @override
-  DateTime now() => (super.noSuchMethod(
-        Invocation.method(
-          #now,
-          [],
-        ),
-        returnValue: _FakeDateTime_19(
-          this,
-          Invocation.method(
-            #now,
-            [],
-          ),
-        ),
-        returnValueForMissingStub: _FakeDateTime_19(
-          this,
-          Invocation.method(
-            #now,
-            [],
-          ),
-        ),
-      ) as DateTime);
-}
-
-/// A class which mocks [CloudFunctionsService].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockCloudFunctionsService extends _i1.Mock
-    implements _i68.CloudFunctionsService {
-  @override
-  _i38.Future<void> initialize() => (super.noSuchMethod(
-        Invocation.method(
-          #initialize,
-          [],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<Map<String, dynamic>> callFunction(
-    String? function,
-    Map<String, dynamic>? data, {
-    bool? isWeb = true,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #callFunction,
-          [
-            function,
-            data,
-          ],
-          {#isWeb: isWeb},
-        ),
-        returnValue:
-            _i38.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-        returnValueForMissingStub:
-            _i38.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-      ) as _i38.Future<Map<String, dynamic>>);
-
-  @override
   _i38.Future<DateTime> getServerTimestamp() => (super.noSuchMethod(
         Invocation.method(
           #getServerTimestamp,
@@ -2997,120 +2953,33 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<DateTime>);
 
   @override
-  _i38.Future<void> createAnnouncement(
-          _i18.CreateAnnouncementRequest? request) =>
-      (super.noSuchMethod(
+  DateTime now() => (super.noSuchMethod(
         Invocation.method(
-          #createAnnouncement,
-          [request],
+          #now,
+          [],
         ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<void> sendEventMessage(_i18.SendEventMessageRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #sendEventMessage,
-          [request],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<_i18.CreateDonationCheckoutSessionResponse>
-      createDonationCheckoutSession(
-              _i18.CreateDonationCheckoutSessionRequest? request) =>
-          (super.noSuchMethod(
-            Invocation.method(
-              #createDonationCheckoutSession,
-              [request],
-            ),
-            returnValue:
-                _i38.Future<_i18.CreateDonationCheckoutSessionResponse>.value(
-                    _FakeCreateDonationCheckoutSessionResponse_20(
-              this,
-              Invocation.method(
-                #createDonationCheckoutSession,
-                [request],
-              ),
-            )),
-            returnValueForMissingStub:
-                _i38.Future<_i18.CreateDonationCheckoutSessionResponse>.value(
-                    _FakeCreateDonationCheckoutSessionResponse_20(
-              this,
-              Invocation.method(
-                #createDonationCheckoutSession,
-                [request],
-              ),
-            )),
-          ) as _i38.Future<_i18.CreateDonationCheckoutSessionResponse>);
-
-  @override
-  _i38.Future<void> createEvent(_i2.Event? event) => (super.noSuchMethod(
-        Invocation.method(
-          #createEvent,
-          [event],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<_i19.PlanCapabilityList> getCommunityCapabilities(
-          _i18.GetCommunityCapabilitiesRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getCommunityCapabilities,
-          [request],
-        ),
-        returnValue: _i38.Future<_i19.PlanCapabilityList>.value(
-            _FakePlanCapabilityList_21(
+        returnValue: _FakeDateTime_19(
           this,
           Invocation.method(
-            #getCommunityCapabilities,
-            [request],
+            #now,
+            [],
           ),
-        )),
-        returnValueForMissingStub: _i38.Future<_i19.PlanCapabilityList>.value(
-            _FakePlanCapabilityList_21(
-          this,
-          Invocation.method(
-            #getCommunityCapabilities,
-            [request],
-          ),
-        )),
-      ) as _i38.Future<_i19.PlanCapabilityList>);
-
-  @override
-  _i38.Future<_i18.GetCommunityCalendarLinkResponse> getCommunityCalendarLink(
-          _i18.GetCommunityCalendarLinkRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getCommunityCalendarLink,
-          [request],
         ),
-        returnValue: _i38.Future<_i18.GetCommunityCalendarLinkResponse>.value(
-            _FakeGetCommunityCalendarLinkResponse_22(
+        returnValueForMissingStub: _FakeDateTime_19(
           this,
           Invocation.method(
-            #getCommunityCalendarLink,
-            [request],
+            #now,
+            [],
           ),
-        )),
-        returnValueForMissingStub:
-            _i38.Future<_i18.GetCommunityCalendarLinkResponse>.value(
-                _FakeGetCommunityCalendarLinkResponse_22(
-          this,
-          Invocation.method(
-            #getCommunityCalendarLink,
-            [request],
-          ),
-        )),
-      ) as _i38.Future<_i18.GetCommunityCalendarLinkResponse>);
+        ),
+      ) as DateTime);
+}
 
+/// A class which mocks [CloudFunctionsPaymentsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCloudFunctionsPaymentsService extends _i1.Mock
+    implements _i68.CloudFunctionsPaymentsService {
   @override
   _i38.Future<void> createStripeConnectedAccount(
           _i18.CreateStripeConnectedAccountRequest? request) =>
@@ -3124,35 +2993,6 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
-  _i38.Future<_i18.CreateSubscriptionCheckoutSessionResponse>
-      createSubscriptionCheckoutSession(
-              _i18.CreateSubscriptionCheckoutSessionRequest? request) =>
-          (super.noSuchMethod(
-            Invocation.method(
-              #createSubscriptionCheckoutSession,
-              [request],
-            ),
-            returnValue: _i38
-                .Future<_i18.CreateSubscriptionCheckoutSessionResponse>.value(
-                _FakeCreateSubscriptionCheckoutSessionResponse_23(
-              this,
-              Invocation.method(
-                #createSubscriptionCheckoutSession,
-                [request],
-              ),
-            )),
-            returnValueForMissingStub: _i38
-                .Future<_i18.CreateSubscriptionCheckoutSessionResponse>.value(
-                _FakeCreateSubscriptionCheckoutSessionResponse_23(
-              this,
-              Invocation.method(
-                #createSubscriptionCheckoutSession,
-                [request],
-              ),
-            )),
-          ) as _i38.Future<_i18.CreateSubscriptionCheckoutSessionResponse>);
-
-  @override
   _i38.Future<_i18.GetStripeBillingPortalLinkResponse>
       getStripeBillingPortalLink(
               _i18.GetStripeBillingPortalLinkRequest? request) =>
@@ -3163,7 +3003,7 @@ class MockCloudFunctionsService extends _i1.Mock
             ),
             returnValue:
                 _i38.Future<_i18.GetStripeBillingPortalLinkResponse>.value(
-                    _FakeGetStripeBillingPortalLinkResponse_24(
+                    _FakeGetStripeBillingPortalLinkResponse_20(
               this,
               Invocation.method(
                 #getStripeBillingPortalLink,
@@ -3172,7 +3012,7 @@ class MockCloudFunctionsService extends _i1.Mock
             )),
             returnValueForMissingStub:
                 _i38.Future<_i18.GetStripeBillingPortalLinkResponse>.value(
-                    _FakeGetStripeBillingPortalLinkResponse_24(
+                    _FakeGetStripeBillingPortalLinkResponse_20(
               this,
               Invocation.method(
                 #getStripeBillingPortalLink,
@@ -3192,7 +3032,7 @@ class MockCloudFunctionsService extends _i1.Mock
             ),
             returnValue:
                 _i38.Future<_i18.GetStripeConnectedAccountLinkResponse>.value(
-                    _FakeGetStripeConnectedAccountLinkResponse_25(
+                    _FakeGetStripeConnectedAccountLinkResponse_21(
               this,
               Invocation.method(
                 #getStripeConnectedAccountLink,
@@ -3201,7 +3041,7 @@ class MockCloudFunctionsService extends _i1.Mock
             )),
             returnValueForMissingStub:
                 _i38.Future<_i18.GetStripeConnectedAccountLinkResponse>.value(
-                    _FakeGetStripeConnectedAccountLinkResponse_25(
+                    _FakeGetStripeConnectedAccountLinkResponse_21(
               this,
               Invocation.method(
                 #getStripeConnectedAccountLink,
@@ -3211,6 +3051,123 @@ class MockCloudFunctionsService extends _i1.Mock
           ) as _i38.Future<_i18.GetStripeConnectedAccountLinkResponse>);
 
   @override
+  _i38.Future<void> cancelStripeSubscriptionPlan(
+          _i18.CancelStripeSubscriptionPlanRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #cancelStripeSubscriptionPlan,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> updateStripeSubscriptionPlan(
+          _i18.UpdateStripeSubscriptionPlanRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateStripeSubscriptionPlan,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>
+      getStripeSubscriptionPlanInfo(
+              _i18.GetStripeSubscriptionPlanInfoRequest? request) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #getStripeSubscriptionPlanInfo,
+              [request],
+            ),
+            returnValue:
+                _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>.value(
+                    _FakeGetStripeSubscriptionPlanInfoResponse_22(
+              this,
+              Invocation.method(
+                #getStripeSubscriptionPlanInfo,
+                [request],
+              ),
+            )),
+            returnValueForMissingStub:
+                _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>.value(
+                    _FakeGetStripeSubscriptionPlanInfoResponse_22(
+              this,
+              Invocation.method(
+                #getStripeSubscriptionPlanInfo,
+                [request],
+              ),
+            )),
+          ) as _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>);
+
+  @override
+  _i38.Future<_i18.CreateDonationCheckoutSessionResponse>
+      createDonationCheckoutSession(
+              _i18.CreateDonationCheckoutSessionRequest? request) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #createDonationCheckoutSession,
+              [request],
+            ),
+            returnValue:
+                _i38.Future<_i18.CreateDonationCheckoutSessionResponse>.value(
+                    _FakeCreateDonationCheckoutSessionResponse_23(
+              this,
+              Invocation.method(
+                #createDonationCheckoutSession,
+                [request],
+              ),
+            )),
+            returnValueForMissingStub:
+                _i38.Future<_i18.CreateDonationCheckoutSessionResponse>.value(
+                    _FakeCreateDonationCheckoutSessionResponse_23(
+              this,
+              Invocation.method(
+                #createDonationCheckoutSession,
+                [request],
+              ),
+            )),
+          ) as _i38.Future<_i18.CreateDonationCheckoutSessionResponse>);
+
+  @override
+  _i38.Future<_i18.CreateSubscriptionCheckoutSessionResponse>
+      createSubscriptionCheckoutSession(
+              _i18.CreateSubscriptionCheckoutSessionRequest? request) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #createSubscriptionCheckoutSession,
+              [request],
+            ),
+            returnValue: _i38
+                .Future<_i18.CreateSubscriptionCheckoutSessionResponse>.value(
+                _FakeCreateSubscriptionCheckoutSessionResponse_24(
+              this,
+              Invocation.method(
+                #createSubscriptionCheckoutSession,
+                [request],
+              ),
+            )),
+            returnValueForMissingStub: _i38
+                .Future<_i18.CreateSubscriptionCheckoutSessionResponse>.value(
+                _FakeCreateSubscriptionCheckoutSessionResponse_24(
+              this,
+              Invocation.method(
+                #createSubscriptionCheckoutSession,
+                [request],
+              ),
+            )),
+          ) as _i38.Future<_i18.CreateSubscriptionCheckoutSessionResponse>);
+}
+
+/// A class which mocks [CloudFunctionsCommunityService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCloudFunctionsCommunityService extends _i1.Mock
+    implements _i69.CloudFunctionsCommunityService {
+  @override
   _i38.Future<_i18.CreateCommunityResponse> createCommunity(
           _i18.CreateCommunityRequest? request) =>
       (super.noSuchMethod(
@@ -3219,7 +3176,7 @@ class MockCloudFunctionsService extends _i1.Mock
           [request],
         ),
         returnValue: _i38.Future<_i18.CreateCommunityResponse>.value(
-            _FakeCreateCommunityResponse_26(
+            _FakeCreateCommunityResponse_25(
           this,
           Invocation.method(
             #createCommunity,
@@ -3228,7 +3185,7 @@ class MockCloudFunctionsService extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.CreateCommunityResponse>.value(
-                _FakeCreateCommunityResponse_26(
+                _FakeCreateCommunityResponse_25(
           this,
           Invocation.method(
             #createCommunity,
@@ -3249,6 +3206,226 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
+  _i38.Future<_i19.PlanCapabilityList> getCommunityCapabilities(
+          _i18.GetCommunityCapabilitiesRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCommunityCapabilities,
+          [request],
+        ),
+        returnValue: _i38.Future<_i19.PlanCapabilityList>.value(
+            _FakePlanCapabilityList_26(
+          this,
+          Invocation.method(
+            #getCommunityCapabilities,
+            [request],
+          ),
+        )),
+        returnValueForMissingStub: _i38.Future<_i19.PlanCapabilityList>.value(
+            _FakePlanCapabilityList_26(
+          this,
+          Invocation.method(
+            #getCommunityCapabilities,
+            [request],
+          ),
+        )),
+      ) as _i38.Future<_i19.PlanCapabilityList>);
+
+  @override
+  _i38.Future<_i18.GetMembersDataResponse> getMembersData(
+          {required _i18.GetMembersDataRequest? request}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getMembersData,
+          [],
+          {#request: request},
+        ),
+        returnValue: _i38.Future<_i18.GetMembersDataResponse>.value(
+            _FakeGetMembersDataResponse_27(
+          this,
+          Invocation.method(
+            #getMembersData,
+            [],
+            {#request: request},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i38.Future<_i18.GetMembersDataResponse>.value(
+                _FakeGetMembersDataResponse_27(
+          this,
+          Invocation.method(
+            #getMembersData,
+            [],
+            {#request: request},
+          ),
+        )),
+      ) as _i38.Future<_i18.GetMembersDataResponse>);
+
+  @override
+  _i38.Future<_i18.GetUserAdminDetailsResponse> getUserAdminDetails(
+          _i18.GetUserAdminDetailsRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getUserAdminDetails,
+          [request],
+        ),
+        returnValue: _i38.Future<_i18.GetUserAdminDetailsResponse>.value(
+            _FakeGetUserAdminDetailsResponse_28(
+          this,
+          Invocation.method(
+            #getUserAdminDetails,
+            [request],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i38.Future<_i18.GetUserAdminDetailsResponse>.value(
+                _FakeGetUserAdminDetailsResponse_28(
+          this,
+          Invocation.method(
+            #getUserAdminDetails,
+            [request],
+          ),
+        )),
+      ) as _i38.Future<_i18.GetUserAdminDetailsResponse>);
+
+  @override
+  _i38.Future<void> resolveJoinRequest(
+          _i18.ResolveJoinRequestRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #resolveJoinRequest,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> updateMembership(_i18.UpdateMembershipRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateMembership,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<_i18.GetCommunityDonationsEnabledResponse>
+      getCommunityDonationsEnabled(
+              _i18.GetCommunityDonationsEnabledRequest? request) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #getCommunityDonationsEnabled,
+              [request],
+            ),
+            returnValue:
+                _i38.Future<_i18.GetCommunityDonationsEnabledResponse>.value(
+                    _FakeGetCommunityDonationsEnabledResponse_29(
+              this,
+              Invocation.method(
+                #getCommunityDonationsEnabled,
+                [request],
+              ),
+            )),
+            returnValueForMissingStub:
+                _i38.Future<_i18.GetCommunityDonationsEnabledResponse>.value(
+                    _FakeGetCommunityDonationsEnabledResponse_29(
+              this,
+              Invocation.method(
+                #getCommunityDonationsEnabled,
+                [request],
+              ),
+            )),
+          ) as _i38.Future<_i18.GetCommunityDonationsEnabledResponse>);
+
+  @override
+  _i38.Future<_i18.GetCommunityPrePostEnabledResponse>
+      getCommunityPrePostEnabled(
+              _i18.GetCommunityPrePostEnabledRequest? request) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #getCommunityPrePostEnabled,
+              [request],
+            ),
+            returnValue:
+                _i38.Future<_i18.GetCommunityPrePostEnabledResponse>.value(
+                    _FakeGetCommunityPrePostEnabledResponse_30(
+              this,
+              Invocation.method(
+                #getCommunityPrePostEnabled,
+                [request],
+              ),
+            )),
+            returnValueForMissingStub:
+                _i38.Future<_i18.GetCommunityPrePostEnabledResponse>.value(
+                    _FakeGetCommunityPrePostEnabledResponse_30(
+              this,
+              Invocation.method(
+                #getCommunityPrePostEnabled,
+                [request],
+              ),
+            )),
+          ) as _i38.Future<_i18.GetCommunityPrePostEnabledResponse>);
+
+  @override
+  _i38.Future<void> unsubscribeFromCommunityNotifications(
+          {required _i18.UnsubscribeFromCommunityNotificationsRequest?
+              request}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #unsubscribeFromCommunityNotifications,
+          [],
+          {#request: request},
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  Map<String, dynamic> getDecodedData(
+    dynamic data, {
+    bool? isWeb = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getDecodedData,
+          [data],
+          {#isWeb: isWeb},
+        ),
+        returnValue: <String, dynamic>{},
+        returnValueForMissingStub: <String, dynamic>{},
+      ) as Map<String, dynamic>);
+}
+
+/// A class which mocks [CloudFunctionsEventService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCloudFunctionsEventService extends _i1.Mock
+    implements _i70.CloudFunctionsEventService {
+  @override
+  _i38.Future<void> sendEventMessage(_i18.SendEventMessageRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendEventMessage,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> createEvent(_i2.Event? event) => (super.noSuchMethod(
+        Invocation.method(
+          #createEvent,
+          [event],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
   _i38.Future<void> joinEvent(_i2.Event? event) => (super.noSuchMethod(
         Invocation.method(
           #joinEvent,
@@ -3259,6 +3436,50 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
+  _i38.Future<void> eventEnded(_i18.EventEndedRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #eventEnded,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<_i18.GetCommunityCalendarLinkResponse> getCommunityCalendarLink(
+          _i18.GetCommunityCalendarLinkRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCommunityCalendarLink,
+          [request],
+        ),
+        returnValue: _i38.Future<_i18.GetCommunityCalendarLinkResponse>.value(
+            _FakeGetCommunityCalendarLinkResponse_31(
+          this,
+          Invocation.method(
+            #getCommunityCalendarLink,
+            [request],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i38.Future<_i18.GetCommunityCalendarLinkResponse>.value(
+                _FakeGetCommunityCalendarLinkResponse_31(
+          this,
+          Invocation.method(
+            #getCommunityCalendarLink,
+            [request],
+          ),
+        )),
+      ) as _i38.Future<_i18.GetCommunityCalendarLinkResponse>);
+}
+
+/// A class which mocks [CloudFunctionsLiveMeetingService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCloudFunctionsLiveMeetingService extends _i1.Mock
+    implements _i71.CloudFunctionsLiveMeetingService {
+  @override
   _i38.Future<_i18.GetMeetingJoinInfoResponse> getMeetingJoinInfo(
           _i18.GetMeetingJoinInfoRequest? request) =>
       (super.noSuchMethod(
@@ -3267,7 +3488,7 @@ class MockCloudFunctionsService extends _i1.Mock
           [request],
         ),
         returnValue: _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-            _FakeGetMeetingJoinInfoResponse_27(
+            _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getMeetingJoinInfo,
@@ -3276,7 +3497,7 @@ class MockCloudFunctionsService extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-                _FakeGetMeetingJoinInfoResponse_27(
+                _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getMeetingJoinInfo,
@@ -3297,7 +3518,7 @@ class MockCloudFunctionsService extends _i1.Mock
             ),
             returnValue:
                 _i38.Future<_i18.GetMeetingChatsSuggestionsDataResponse>.value(
-                    _FakeGetMeetingChatsSuggestionsDataResponse_28(
+                    _FakeGetMeetingChatsSuggestionsDataResponse_33(
               this,
               Invocation.method(
                 #getMeetingChatSuggestionData,
@@ -3307,7 +3528,7 @@ class MockCloudFunctionsService extends _i1.Mock
             )),
             returnValueForMissingStub:
                 _i38.Future<_i18.GetMeetingChatsSuggestionsDataResponse>.value(
-                    _FakeGetMeetingChatsSuggestionsDataResponse_28(
+                    _FakeGetMeetingChatsSuggestionsDataResponse_33(
               this,
               Invocation.method(
                 #getMeetingChatSuggestionData,
@@ -3318,36 +3539,6 @@ class MockCloudFunctionsService extends _i1.Mock
           ) as _i38.Future<_i18.GetMeetingChatsSuggestionsDataResponse>);
 
   @override
-  _i38.Future<_i18.GetMembersDataResponse> getMembersData(
-          {required _i18.GetMembersDataRequest? request}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getMembersData,
-          [],
-          {#request: request},
-        ),
-        returnValue: _i38.Future<_i18.GetMembersDataResponse>.value(
-            _FakeGetMembersDataResponse_29(
-          this,
-          Invocation.method(
-            #getMembersData,
-            [],
-            {#request: request},
-          ),
-        )),
-        returnValueForMissingStub:
-            _i38.Future<_i18.GetMembersDataResponse>.value(
-                _FakeGetMembersDataResponse_29(
-          this,
-          Invocation.method(
-            #getMembersData,
-            [],
-            {#request: request},
-          ),
-        )),
-      ) as _i38.Future<_i18.GetMembersDataResponse>);
-
-  @override
   _i38.Future<_i18.GetMeetingJoinInfoResponse> getBreakoutRoomJoinInfo(
           _i18.GetBreakoutRoomJoinInfoRequest? request) =>
       (super.noSuchMethod(
@@ -3356,7 +3547,7 @@ class MockCloudFunctionsService extends _i1.Mock
           [request],
         ),
         returnValue: _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-            _FakeGetMeetingJoinInfoResponse_27(
+            _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getBreakoutRoomJoinInfo,
@@ -3365,7 +3556,7 @@ class MockCloudFunctionsService extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-                _FakeGetMeetingJoinInfoResponse_27(
+                _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getBreakoutRoomJoinInfo,
@@ -3384,7 +3575,7 @@ class MockCloudFunctionsService extends _i1.Mock
           {#communityId: communityId},
         ),
         returnValue: _i38.Future<_i18.CreateLiveStreamResponse>.value(
-            _FakeCreateLiveStreamResponse_30(
+            _FakeCreateLiveStreamResponse_34(
           this,
           Invocation.method(
             #createLiveStream,
@@ -3394,7 +3585,7 @@ class MockCloudFunctionsService extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.CreateLiveStreamResponse>.value(
-                _FakeCreateLiveStreamResponse_30(
+                _FakeCreateLiveStreamResponse_34(
           this,
           Invocation.method(
             #createLiveStream,
@@ -3405,75 +3596,6 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<_i18.CreateLiveStreamResponse>);
 
   @override
-  Map<String, dynamic> getDecodedData(
-    dynamic data, {
-    bool? isWeb = true,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getDecodedData,
-          [data],
-          {#isWeb: isWeb},
-        ),
-        returnValue: <String, dynamic>{},
-        returnValueForMissingStub: <String, dynamic>{},
-      ) as Map<String, dynamic>);
-
-  @override
-  _i38.Future<_i18.GetUserAdminDetailsResponse> getUserAdminDetails(
-          _i18.GetUserAdminDetailsRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getUserAdminDetails,
-          [request],
-        ),
-        returnValue: _i38.Future<_i18.GetUserAdminDetailsResponse>.value(
-            _FakeGetUserAdminDetailsResponse_31(
-          this,
-          Invocation.method(
-            #getUserAdminDetails,
-            [request],
-          ),
-        )),
-        returnValueForMissingStub:
-            _i38.Future<_i18.GetUserAdminDetailsResponse>.value(
-                _FakeGetUserAdminDetailsResponse_31(
-          this,
-          Invocation.method(
-            #getUserAdminDetails,
-            [request],
-          ),
-        )),
-      ) as _i38.Future<_i18.GetUserAdminDetailsResponse>);
-
-  @override
-  _i38.Future<_i18.GetUserIdFromAgoraIdResponse> getUserIdFromAgoraId(
-          _i18.GetUserIdFromAgoraIdRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getUserIdFromAgoraId,
-          [request],
-        ),
-        returnValue: _i38.Future<_i18.GetUserIdFromAgoraIdResponse>.value(
-            _FakeGetUserIdFromAgoraIdResponse_32(
-          this,
-          Invocation.method(
-            #getUserIdFromAgoraId,
-            [request],
-          ),
-        )),
-        returnValueForMissingStub:
-            _i38.Future<_i18.GetUserIdFromAgoraIdResponse>.value(
-                _FakeGetUserIdFromAgoraIdResponse_32(
-          this,
-          Invocation.method(
-            #getUserIdFromAgoraId,
-            [request],
-          ),
-        )),
-      ) as _i38.Future<_i18.GetUserIdFromAgoraIdResponse>);
-
-  @override
   _i38.Future<_i18.GetBreakoutRoomAssignmentResponse> getBreakoutRoomAssignment(
           _i18.GetBreakoutRoomAssignmentRequest? request) =>
       (super.noSuchMethod(
@@ -3482,7 +3604,7 @@ class MockCloudFunctionsService extends _i1.Mock
           [request],
         ),
         returnValue: _i38.Future<_i18.GetBreakoutRoomAssignmentResponse>.value(
-            _FakeGetBreakoutRoomAssignmentResponse_33(
+            _FakeGetBreakoutRoomAssignmentResponse_35(
           this,
           Invocation.method(
             #getBreakoutRoomAssignment,
@@ -3491,7 +3613,7 @@ class MockCloudFunctionsService extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.GetBreakoutRoomAssignmentResponse>.value(
-                _FakeGetBreakoutRoomAssignmentResponse_33(
+                _FakeGetBreakoutRoomAssignmentResponse_35(
           this,
           Invocation.method(
             #getBreakoutRoomAssignment,
@@ -3514,50 +3636,11 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
-  _i38.Future<void> resolveJoinRequest(
-          _i18.ResolveJoinRequestRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #resolveJoinRequest,
-          [request],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
   _i38.Future<void> updateBreakoutRoomFlagStatus(
           {required _i18.UpdateBreakoutRoomFlagStatusRequest? request}) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateBreakoutRoomFlagStatus,
-          [],
-          {#request: request},
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<void> resetParticipantAgendaItems(
-          {required _i18.ResetParticipantAgendaItemsRequest? request}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #resetParticipantAgendaItems,
-          [],
-          {#request: request},
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<void> unsubscribeFromCommunityNotifications(
-          {required _i18.UnsubscribeFromCommunityNotificationsRequest?
-              request}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #unsubscribeFromCommunityNotifications,
           [],
           {#request: request},
         ),
@@ -3620,7 +3703,7 @@ class MockCloudFunctionsService extends _i1.Mock
           #reassignBreakoutRoom,
           [reassignBreakoutRoomRequest],
         ),
-        returnValue: _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_34(
+        returnValue: _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_36(
           this,
           Invocation.method(
             #reassignBreakoutRoom,
@@ -3628,7 +3711,7 @@ class MockCloudFunctionsService extends _i1.Mock
           ),
         )),
         returnValueForMissingStub:
-            _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_34(
+            _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_36(
           this,
           Invocation.method(
             #reassignBreakoutRoom,
@@ -3638,11 +3721,52 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<_i20.BreakoutRoom>);
 
   @override
-  _i38.Future<void> updateMembership(_i18.UpdateMembershipRequest? request) =>
+  _i38.Future<void> toggleLikeDislikeOnMeetingUserSuggestion(
+          _i43.ParticipantAgendaItemDetailsMeta? request) =>
       (super.noSuchMethod(
         Invocation.method(
-          #updateMembership,
+          #toggleLikeDislikeOnMeetingUserSuggestion,
           [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<_i18.GetUserIdFromAgoraIdResponse> getUserIdFromAgoraId(
+          _i18.GetUserIdFromAgoraIdRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getUserIdFromAgoraId,
+          [request],
+        ),
+        returnValue: _i38.Future<_i18.GetUserIdFromAgoraIdResponse>.value(
+            _FakeGetUserIdFromAgoraIdResponse_37(
+          this,
+          Invocation.method(
+            #getUserIdFromAgoraId,
+            [request],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i38.Future<_i18.GetUserIdFromAgoraIdResponse>.value(
+                _FakeGetUserIdFromAgoraIdResponse_37(
+          this,
+          Invocation.method(
+            #getUserIdFromAgoraId,
+            [request],
+          ),
+        )),
+      ) as _i38.Future<_i18.GetUserIdFromAgoraIdResponse>);
+
+  @override
+  _i38.Future<void> resetParticipantAgendaItems(
+          {required _i18.ResetParticipantAgendaItemsRequest? request}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #resetParticipantAgendaItems,
+          [],
+          {#request: request},
         ),
         returnValue: _i38.Future<void>.value(),
         returnValueForMissingStub: _i38.Future<void>.value(),
@@ -3660,133 +3784,32 @@ class MockCloudFunctionsService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
-  _i38.Future<void> eventEnded(_i18.EventEndedRequest? request) =>
+  Map<String, dynamic> getDecodedData(
+    dynamic data, {
+    bool? isWeb = true,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #eventEnded,
-          [request],
+          #getDecodedData,
+          [data],
+          {#isWeb: isWeb},
         ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
+        returnValue: <String, dynamic>{},
+        returnValueForMissingStub: <String, dynamic>{},
+      ) as Map<String, dynamic>);
+}
 
+/// A class which mocks [CloudFunctionsAnnouncementsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCloudFunctionsAnnouncementsService extends _i1.Mock
+    implements _i72.CloudFunctionsAnnouncementsService {
   @override
-  _i38.Future<_i18.GetCommunityDonationsEnabledResponse>
-      getCommunityDonationsEnabled(
-              _i18.GetCommunityDonationsEnabledRequest? request) =>
-          (super.noSuchMethod(
-            Invocation.method(
-              #getCommunityDonationsEnabled,
-              [request],
-            ),
-            returnValue:
-                _i38.Future<_i18.GetCommunityDonationsEnabledResponse>.value(
-                    _FakeGetCommunityDonationsEnabledResponse_35(
-              this,
-              Invocation.method(
-                #getCommunityDonationsEnabled,
-                [request],
-              ),
-            )),
-            returnValueForMissingStub:
-                _i38.Future<_i18.GetCommunityDonationsEnabledResponse>.value(
-                    _FakeGetCommunityDonationsEnabledResponse_35(
-              this,
-              Invocation.method(
-                #getCommunityDonationsEnabled,
-                [request],
-              ),
-            )),
-          ) as _i38.Future<_i18.GetCommunityDonationsEnabledResponse>);
-
-  @override
-  _i38.Future<_i18.GetCommunityPrePostEnabledResponse>
-      getCommunityPrePostEnabled(
-              _i18.GetCommunityPrePostEnabledRequest? request) =>
-          (super.noSuchMethod(
-            Invocation.method(
-              #getCommunityPrePostEnabled,
-              [request],
-            ),
-            returnValue:
-                _i38.Future<_i18.GetCommunityPrePostEnabledResponse>.value(
-                    _FakeGetCommunityPrePostEnabledResponse_36(
-              this,
-              Invocation.method(
-                #getCommunityPrePostEnabled,
-                [request],
-              ),
-            )),
-            returnValueForMissingStub:
-                _i38.Future<_i18.GetCommunityPrePostEnabledResponse>.value(
-                    _FakeGetCommunityPrePostEnabledResponse_36(
-              this,
-              Invocation.method(
-                #getCommunityPrePostEnabled,
-                [request],
-              ),
-            )),
-          ) as _i38.Future<_i18.GetCommunityPrePostEnabledResponse>);
-
-  @override
-  _i38.Future<void> cancelStripeSubscriptionPlan(
-          _i18.CancelStripeSubscriptionPlanRequest? request) =>
+  _i38.Future<void> createAnnouncement(
+          _i18.CreateAnnouncementRequest? request) =>
       (super.noSuchMethod(
         Invocation.method(
-          #cancelStripeSubscriptionPlan,
-          [request],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<void> updateStripeSubscriptionPlan(
-          _i18.UpdateStripeSubscriptionPlanRequest? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #updateStripeSubscriptionPlan,
-          [request],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>
-      getStripeSubscriptionPlanInfo(
-              _i18.GetStripeSubscriptionPlanInfoRequest? request) =>
-          (super.noSuchMethod(
-            Invocation.method(
-              #getStripeSubscriptionPlanInfo,
-              [request],
-            ),
-            returnValue:
-                _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>.value(
-                    _FakeGetStripeSubscriptionPlanInfoResponse_37(
-              this,
-              Invocation.method(
-                #getStripeSubscriptionPlanInfo,
-                [request],
-              ),
-            )),
-            returnValueForMissingStub:
-                _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>.value(
-                    _FakeGetStripeSubscriptionPlanInfoResponse_37(
-              this,
-              Invocation.method(
-                #getStripeSubscriptionPlanInfo,
-                [request],
-              ),
-            )),
-          ) as _i38.Future<_i18.GetStripeSubscriptionPlanInfoResponse>);
-
-  @override
-  _i38.Future<void> toggleLikeDislikeOnMeetingUserSuggestion(
-          _i43.ParticipantAgendaItemDetailsMeta? request) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #toggleLikeDislikeOnMeetingUserSuggestion,
+          #createAnnouncement,
           [request],
         ),
         returnValue: _i38.Future<void>.value(),
@@ -4952,11 +4975,11 @@ class MockCommunityPermissionsProvider extends _i1.Mock
       ) as _i24.CommunityProvider);
 
   @override
-  _i69.MembershipStatus get membershipStatus => (super.noSuchMethod(
+  _i73.MembershipStatus get membershipStatus => (super.noSuchMethod(
         Invocation.getter(#membershipStatus),
-        returnValue: _i69.MembershipStatus.banned,
-        returnValueForMissingStub: _i69.MembershipStatus.banned,
-      ) as _i69.MembershipStatus);
+        returnValue: _i73.MembershipStatus.banned,
+        returnValueForMissingStub: _i73.MembershipStatus.banned,
+      ) as _i73.MembershipStatus);
 
   @override
   bool get canRequestToJoin => (super.noSuchMethod(
@@ -5102,7 +5125,7 @@ class MockCommunityPermissionsProvider extends _i1.Mock
       ) as bool);
 
   @override
-  bool canDeleteChatMessage(_i70.ChatMessage? message) => (super.noSuchMethod(
+  bool canDeleteChatMessage(_i74.ChatMessage? message) => (super.noSuchMethod(
         Invocation.method(
           #canDeleteChatMessage,
           [message],
@@ -5912,11 +5935,11 @@ class MockEventPageProvider extends _i1.Mock implements _i29.EventPageProvider {
       ) as bool);
 
   @override
-  List<_i71.CommunityTag> get tags => (super.noSuchMethod(
+  List<_i75.CommunityTag> get tags => (super.noSuchMethod(
         Invocation.getter(#tags),
-        returnValue: <_i71.CommunityTag>[],
-        returnValueForMissingStub: <_i71.CommunityTag>[],
-      ) as List<_i71.CommunityTag>);
+        returnValue: <_i75.CommunityTag>[],
+        returnValueForMissingStub: <_i75.CommunityTag>[],
+      ) as List<_i75.CommunityTag>);
 
   @override
   bool get hasListeners => (super.noSuchMethod(
@@ -6038,7 +6061,7 @@ class MockEventPageProvider extends _i1.Mock implements _i29.EventPageProvider {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEventPermissionsProvider extends _i1.Mock
-    implements _i72.EventPermissionsProvider {
+    implements _i76.EventPermissionsProvider {
   @override
   _i12.EventProvider get eventProvider => (super.noSuchMethod(
         Invocation.getter(#eventProvider),
@@ -6244,7 +6267,7 @@ class MockEventPermissionsProvider extends _i1.Mock
       ) as bool);
 
   @override
-  bool canDeleteEventMessage(_i70.ChatMessage? message) => (super.noSuchMethod(
+  bool canDeleteEventMessage(_i74.ChatMessage? message) => (super.noSuchMethod(
         Invocation.method(
           #canDeleteEventMessage,
           [message],
@@ -6641,7 +6664,7 @@ class MockEventProvider extends _i1.Mock implements _i12.EventProvider {
 
   @override
   _i38.Future<void> generateRegistrationDataCsvFile({
-    required List<_i73.MemberDetails>? registrationData,
+    required List<_i77.MemberDetails>? registrationData,
     required String? eventId,
   }) =>
       (super.noSuchMethod(
@@ -6707,9 +6730,9 @@ class MockEventProvider extends _i1.Mock implements _i12.EventProvider {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEventSettingsPresenterHelper extends _i1.Mock
-    implements _i74.EventSettingsPresenterHelper {
+    implements _i78.EventSettingsPresenterHelper {
   @override
-  bool wereChangesMade(_i75.EventSettingsModel? model) => (super.noSuchMethod(
+  bool wereChangesMade(_i79.EventSettingsModel? model) => (super.noSuchMethod(
         Invocation.method(
           #wereChangesMade,
           [model],
@@ -6722,7 +6745,7 @@ class MockEventSettingsPresenterHelper extends _i1.Mock
 /// A class which mocks [EventSettingsView].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEventSettingsView extends _i1.Mock implements _i76.EventSettingsView {
+class MockEventSettingsView extends _i1.Mock implements _i80.EventSettingsView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -6994,7 +7017,7 @@ class MockDiscussionThreadComment extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDiscussionThreadView extends _i1.Mock
-    implements _i77.DiscussionThreadView {
+    implements _i81.DiscussionThreadView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -7032,14 +7055,14 @@ class MockDiscussionThreadView extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDiscussionThreadsHelper extends _i1.Mock
-    implements _i78.DiscussionThreadsHelper {
+    implements _i82.DiscussionThreadsHelper {
   @override
   _i38.Future<_i31.DiscussionThread?> addNewDiscussionThread({
     required String? discussionThreadContent,
     required String? userId,
     String? pickedImageUrl,
     required String? documentId,
-    required _i79.MediaHelperService? mediaHelperService,
+    required _i83.MediaHelperService? mediaHelperService,
     required void Function(String)? onError,
   }) =>
       (super.noSuchMethod(
@@ -7064,7 +7087,7 @@ class MockDiscussionThreadsHelper extends _i1.Mock
     required _i31.DiscussionThread? existingDiscussionThread,
     required String? discussionThreadContent,
     String? pickedImageUrl,
-    required _i79.MediaHelperService? generalHelperService,
+    required _i83.MediaHelperService? generalHelperService,
     required void Function(String)? onError,
   }) =>
       (super.noSuchMethod(
@@ -7088,7 +7111,7 @@ class MockDiscussionThreadsHelper extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDiscussionThreadsView extends _i1.Mock
-    implements _i80.DiscussionThreadsView {
+    implements _i84.DiscussionThreadsView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -7390,7 +7413,7 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEditEventPresenterHelper extends _i1.Mock
-    implements _i81.EditEventPresenterHelper {
+    implements _i85.EditEventPresenterHelper {
   @override
   String? areChangesValid(_i2.Event? event) => (super.noSuchMethod(
         Invocation.method(
@@ -7401,7 +7424,7 @@ class MockEditEventPresenterHelper extends _i1.Mock
       ) as String?);
 
   @override
-  bool wereChangesMade(_i82.EditEventModel? model) => (super.noSuchMethod(
+  bool wereChangesMade(_i86.EditEventModel? model) => (super.noSuchMethod(
         Invocation.method(
           #wereChangesMade,
           [model],
@@ -7414,7 +7437,7 @@ class MockEditEventPresenterHelper extends _i1.Mock
 /// A class which mocks [EditEventView].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEditEventView extends _i1.Mock implements _i83.EditEventView {
+class MockEditEventView extends _i1.Mock implements _i87.EditEventView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -7499,7 +7522,7 @@ class MockEmotion extends _i1.Mock implements _i33.Emotion {
 /// A class which mocks [EmotionHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEmotionHelper extends _i1.Mock implements _i84.EmotionHelper {
+class MockEmotionHelper extends _i1.Mock implements _i88.EmotionHelper {
   @override
   _i33.Emotion? getMyEmotion(
     List<_i33.Emotion>? emotions,
@@ -8401,7 +8424,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i23.FirebaseFirestore {
       ) as _i38.Future<void>);
 
   @override
-  _i23.LoadBundleTask loadBundle(_i85.Uint8List? bundle) => (super.noSuchMethod(
+  _i23.LoadBundleTask loadBundle(_i89.Uint8List? bundle) => (super.noSuchMethod(
         Invocation.method(
           #loadBundle,
           [bundle],
@@ -8720,7 +8743,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i23.FirebaseFirestore {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFirestoreAgreementsService extends _i1.Mock
-    implements _i86.FirestoreAgreementsService {
+    implements _i90.FirestoreAgreementsService {
   @override
   _i39.BehaviorSubjectWrapper<_i44.PartnerAgreement?> getAgreementStream(
           String? agreementId) =>
@@ -8762,7 +8785,7 @@ class MockFirestoreAgreementsService extends _i1.Mock
 /// A class which mocks [FirestoreDatabase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFirestoreDatabase extends _i1.Mock implements _i87.FirestoreDatabase {
+class MockFirestoreDatabase extends _i1.Mock implements _i91.FirestoreDatabase {
   @override
   _i23.FirebaseFirestore get firestore => (super.noSuchMethod(
         Invocation.getter(#firestore),
@@ -9292,7 +9315,7 @@ class MockFirestoreDatabase extends _i1.Mock implements _i87.FirestoreDatabase {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFirestoreEventService extends _i1.Mock
-    implements _i88.FirestoreEventService {
+    implements _i92.FirestoreEventService {
   @override
   _i38.Future<DateTime> get currentTimeAsync => (super.noSuchMethod(
         Invocation.getter(#currentTimeAsync),
@@ -9816,7 +9839,7 @@ class MockFirestoreEventService extends _i1.Mock
     required String? eventId,
     String? externalCommunityId,
     bool? setAttendeeStatus = true,
-    _i89.SurveyDialogResult? breakoutRoomSurveyResults,
+    _i93.SurveyDialogResult? breakoutRoomSurveyResults,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -9953,7 +9976,7 @@ class MockFirestoreEventService extends _i1.Mock
   _i38.Future<void> updateParticipantBreakoutSurveyAnswers({
     required _i2.Event? event,
     bool? lockRoom = false,
-    required _i89.SurveyDialogResult? surveyDialogResult,
+    required _i93.SurveyDialogResult? surveyDialogResult,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -9974,7 +9997,7 @@ class MockFirestoreEventService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFirestoreDiscussionThreadCommentsService extends _i1.Mock
-    implements _i90.FirestoreDiscussionThreadCommentsService {
+    implements _i94.FirestoreDiscussionThreadCommentsService {
   @override
   String getPathToCollection({
     required String? communityId,
@@ -10181,7 +10204,7 @@ class MockFirestoreDiscussionThreadCommentsService extends _i1.Mock
     required String? communityId,
     required String? discussionThreadId,
     required _i32.DiscussionThreadComment? discussionThreadComment,
-    required _i84.EmotionHelper? emotionHelper,
+    required _i88.EmotionHelper? emotionHelper,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -10204,7 +10227,7 @@ class MockFirestoreDiscussionThreadCommentsService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFirestoreDiscussionThreadsService extends _i1.Mock
-    implements _i91.FirestoreDiscussionThreadsService {
+    implements _i95.FirestoreDiscussionThreadsService {
   @override
   String getPathToCollection({required String? communityId}) =>
       (super.noSuchMethod(
@@ -10404,7 +10427,7 @@ class MockFirestoreDiscussionThreadsService extends _i1.Mock
     required _i33.Emotion? existingEmotion,
     required String? communityId,
     required _i31.DiscussionThread? discussionThread,
-    required _i84.EmotionHelper? emotionHelper,
+    required _i88.EmotionHelper? emotionHelper,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -10426,7 +10449,7 @@ class MockFirestoreDiscussionThreadsService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFirestoreMeetingGuideService extends _i1.Mock
-    implements _i92.FirestoreMeetingGuideService {
+    implements _i96.FirestoreMeetingGuideService {
   @override
   _i38.Stream<List<_i43.ParticipantAgendaItemDetails>>
       participantAgendaItemDetailsStream({
@@ -10639,7 +10662,7 @@ class MockGlobalKey<T extends _i16.State<_i16.StatefulWidget>> extends _i1.Mock
 /// A class which mocks [ImagePicker].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockImagePicker extends _i1.Mock implements _i93.ImagePicker {
+class MockImagePicker extends _i1.Mock implements _i97.ImagePicker {
   @override
   _i38.Future<_i41.XFile?> pickImage({
     required _i41.ImageSource? source,
@@ -10871,20 +10894,20 @@ class MockCommunityProvider extends _i1.Mock implements _i24.CommunityProvider {
       ) as _i38.Stream<List<_i25.Featured>>);
 
   @override
-  _i39.BehaviorSubjectWrapper<List<_i94.CommunityResource>>
+  _i39.BehaviorSubjectWrapper<List<_i98.CommunityResource>>
       get resourcesStream => (super.noSuchMethod(
             Invocation.getter(#resourcesStream),
             returnValue:
-                _FakeBehaviorSubjectWrapper_71<List<_i94.CommunityResource>>(
+                _FakeBehaviorSubjectWrapper_71<List<_i98.CommunityResource>>(
               this,
               Invocation.getter(#resourcesStream),
             ),
             returnValueForMissingStub:
-                _FakeBehaviorSubjectWrapper_71<List<_i94.CommunityResource>>(
+                _FakeBehaviorSubjectWrapper_71<List<_i98.CommunityResource>>(
               this,
               Invocation.getter(#resourcesStream),
             ),
-          ) as _i39.BehaviorSubjectWrapper<List<_i94.CommunityResource>>);
+          ) as _i39.BehaviorSubjectWrapper<List<_i98.CommunityResource>>);
 
   @override
   List<_i25.Featured> get featuredItems => (super.noSuchMethod(
@@ -11357,12 +11380,12 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as bool);
 
   @override
-  _i38.Stream<List<_i95.EventProposal>> get proposals => (super.noSuchMethod(
+  _i38.Stream<List<_i99.EventProposal>> get proposals => (super.noSuchMethod(
         Invocation.getter(#proposals),
-        returnValue: _i38.Stream<List<_i95.EventProposal>>.empty(),
+        returnValue: _i38.Stream<List<_i99.EventProposal>>.empty(),
         returnValueForMissingStub:
-            _i38.Stream<List<_i95.EventProposal>>.empty(),
-      ) as _i38.Stream<List<_i95.EventProposal>>);
+            _i38.Stream<List<_i99.EventProposal>>.empty(),
+      ) as _i38.Stream<List<_i99.EventProposal>>);
 
   @override
   bool get audioTemporarilyDisabled => (super.noSuchMethod(
@@ -11426,7 +11449,7 @@ class MockLiveMeetingProvider extends _i1.Mock
           [],
         ),
         returnValue: _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-            _FakeGetMeetingJoinInfoResponse_27(
+            _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getMeetingJoinInfo,
@@ -11435,7 +11458,7 @@ class MockLiveMeetingProvider extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-                _FakeGetMeetingJoinInfoResponse_27(
+                _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getMeetingJoinInfo,
@@ -11458,7 +11481,7 @@ class MockLiveMeetingProvider extends _i1.Mock
             #newRoomNumber: newRoomNumber,
           },
         ),
-        returnValue: _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_34(
+        returnValue: _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_36(
           this,
           Invocation.method(
             #reassignBreakoutRoom,
@@ -11470,7 +11493,7 @@ class MockLiveMeetingProvider extends _i1.Mock
           ),
         )),
         returnValueForMissingStub:
-            _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_34(
+            _i38.Future<_i20.BreakoutRoom>.value(_FakeBreakoutRoom_36(
           this,
           Invocation.method(
             #reassignBreakoutRoom,
@@ -11557,7 +11580,7 @@ class MockLiveMeetingProvider extends _i1.Mock
           {#roomId: roomId},
         ),
         returnValue: _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-            _FakeGetMeetingJoinInfoResponse_27(
+            _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getBreakoutRoomFuture,
@@ -11567,7 +11590,7 @@ class MockLiveMeetingProvider extends _i1.Mock
         )),
         returnValueForMissingStub:
             _i38.Future<_i18.GetMeetingJoinInfoResponse>.value(
-                _FakeGetMeetingJoinInfoResponse_27(
+                _FakeGetMeetingJoinInfoResponse_32(
           this,
           Invocation.method(
             #getBreakoutRoomFuture,
@@ -11667,11 +11690,11 @@ class MockLiveMeetingProvider extends _i1.Mock
 /// A class which mocks [LoggingService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLoggingService extends _i1.Mock implements _i96.LoggingService {
+class MockLoggingService extends _i1.Mock implements _i100.LoggingService {
   @override
   void log(
     Object? message, {
-    _i96.LogType? logType = _i96.LogType.debug,
+    _i100.LogType? logType = _i100.LogType.debug,
     dynamic error,
     StackTrace? stackTrace,
   }) =>
@@ -11693,7 +11716,7 @@ class MockLoggingService extends _i1.Mock implements _i96.LoggingService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockManipulateDiscussionThreadView extends _i1.Mock
-    implements _i97.ManipulateDiscussionThreadView {
+    implements _i101.ManipulateDiscussionThreadView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -11740,7 +11763,7 @@ class MockManipulateDiscussionThreadView extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockMediaHelperService extends _i1.Mock
-    implements _i79.MediaHelperService {
+    implements _i83.MediaHelperService {
   @override
   _i38.Future<String?> pickVideoViaCloudinary() => (super.noSuchMethod(
         Invocation.method(
@@ -12269,7 +12292,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockMeetingGuideCardItemUserSuggestionsView extends _i1.Mock
-    implements _i98.MeetingGuideCardItemUserSuggestionsView {
+    implements _i102.MeetingGuideCardItemUserSuggestionsView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -12583,7 +12606,7 @@ class MockMeetingUserSuggestion extends _i1.Mock
 /// A class which mocks [NavBarView].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNavBarView extends _i1.Mock implements _i99.NavBarView {
+class MockNavBarView extends _i1.Mock implements _i103.NavBarView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -12598,7 +12621,7 @@ class MockNavBarView extends _i1.Mock implements _i99.NavBarView {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNetworkingStatusView extends _i1.Mock
-    implements _i100.NetworkingStatusView {
+    implements _i104.NetworkingStatusView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -12612,7 +12635,7 @@ class MockNetworkingStatusView extends _i1.Mock
 /// A class which mocks [OverviewView].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockOverviewView extends _i1.Mock implements _i101.OverviewView {
+class MockOverviewView extends _i1.Mock implements _i105.OverviewView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -12697,7 +12720,7 @@ class MockPartnerAgreement extends _i1.Mock implements _i44.PartnerAgreement {
 /// A class which mocks [PaymentUtils].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPaymentUtils extends _i1.Mock implements _i102.PaymentUtils {
+class MockPaymentUtils extends _i1.Mock implements _i106.PaymentUtils {
   @override
   bool isStripeAccountAlreadyCreated(_i44.PartnerAgreement? partnerAgreement) =>
       (super.noSuchMethod(
@@ -12713,7 +12736,7 @@ class MockPaymentUtils extends _i1.Mock implements _i102.PaymentUtils {
   _i38.Future<void> proceedToConnectWithStripePage(
     _i44.PartnerAgreement? partnerAgreement,
     String? partnerAgreementId,
-    _i68.CloudFunctionsService? cloudFunctionsService,
+    _i68.CloudFunctionsPaymentsService? cloudFunctionsService,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -12866,7 +12889,7 @@ class MockPrePostCard extends _i1.Mock implements _i45.PrePostCard {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostCardWidgetModel extends _i1.Mock
-    implements _i103.PrePostCardWidgetModel {
+    implements _i107.PrePostCardWidgetModel {
   @override
   _i45.PrePostCard get prePostCard => (super.noSuchMethod(
         Invocation.getter(#prePostCard),
@@ -12890,15 +12913,15 @@ class MockPrePostCardWidgetModel extends _i1.Mock
       );
 
   @override
-  _i104.PrePostCardWidgetType get prePostCardWidgetType => (super.noSuchMethod(
+  _i108.PrePostCardWidgetType get prePostCardWidgetType => (super.noSuchMethod(
         Invocation.getter(#prePostCardWidgetType),
-        returnValue: _i104.PrePostCardWidgetType.overview,
-        returnValueForMissingStub: _i104.PrePostCardWidgetType.overview,
-      ) as _i104.PrePostCardWidgetType);
+        returnValue: _i108.PrePostCardWidgetType.overview,
+        returnValueForMissingStub: _i108.PrePostCardWidgetType.overview,
+      ) as _i108.PrePostCardWidgetType);
 
   @override
   set prePostCardWidgetType(
-          _i104.PrePostCardWidgetType? _prePostCardWidgetType) =>
+          _i108.PrePostCardWidgetType? _prePostCardWidgetType) =>
       super.noSuchMethod(
         Invocation.setter(
           #prePostCardWidgetType,
@@ -12996,7 +13019,7 @@ class MockPrePostCardWidgetModel extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostCardWidgetPresenterHelper extends _i1.Mock
-    implements _i105.PrePostCardWidgetPresenterHelper {
+    implements _i109.PrePostCardWidgetPresenterHelper {
   @override
   _i38.Future<void> launchUrlFromUtils(String? url) => (super.noSuchMethod(
         Invocation.method(
@@ -13009,8 +13032,8 @@ class MockPrePostCardWidgetPresenterHelper extends _i1.Mock
 
   @override
   _i38.Future<String?> getEmail(
-    _i106.UserService? userService,
-    _i68.CloudFunctionsService? cloudFunctionsService,
+    _i110.UserService? userService,
+    _i69.CloudFunctionsCommunityService? cloudFunctionsService,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -13029,7 +13052,7 @@ class MockPrePostCardWidgetPresenterHelper extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostCardWidgetView extends _i1.Mock
-    implements _i107.PrePostCardWidgetView {
+    implements _i111.PrePostCardWidgetView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -13053,7 +13076,7 @@ class MockPrePostCardWidgetView extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostEventDialogModel extends _i1.Mock
-    implements _i108.PrePostEventDialogModel {
+    implements _i112.PrePostEventDialogModel {
   @override
   _i45.PrePostCard get prePostCard => (super.noSuchMethod(
         Invocation.getter(#prePostCard),
@@ -13085,7 +13108,7 @@ class MockPrePostEventDialogModel extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostEventDialogPresenterHelper extends _i1.Mock
-    implements _i109.PrePostEventDialogPresenterHelper {
+    implements _i113.PrePostEventDialogPresenterHelper {
   @override
   _i38.Future<void> launchUrl(
     String? surveyUrl,
@@ -13108,18 +13131,18 @@ class MockPrePostEventDialogPresenterHelper extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostEventDialogView extends _i1.Mock
-    implements _i110.PrePostEventDialogView {}
+    implements _i114.PrePostEventDialogView {}
 
 /// A class which mocks [PrePostUrlParams].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPrePostUrlParams extends _i1.Mock implements _i46.PrePostUrlParams {
   @override
-  List<_i111.PrePostCardAttribute> get attributes => (super.noSuchMethod(
+  List<_i115.PrePostCardAttribute> get attributes => (super.noSuchMethod(
         Invocation.getter(#attributes),
-        returnValue: <_i111.PrePostCardAttribute>[],
-        returnValueForMissingStub: <_i111.PrePostCardAttribute>[],
-      ) as List<_i111.PrePostCardAttribute>);
+        returnValue: <_i115.PrePostCardAttribute>[],
+        returnValueForMissingStub: <_i115.PrePostCardAttribute>[],
+      ) as List<_i115.PrePostCardAttribute>);
 
   @override
   _i46.$PrePostUrlParamsCopyWith<_i46.PrePostUrlParams> get copyWith =>
@@ -15066,7 +15089,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockResponsiveLayoutService extends _i1.Mock
-    implements _i112.ResponsiveLayoutService {
+    implements _i116.ResponsiveLayoutService {
   @override
   bool isMobile(_i16.BuildContext? context) => (super.noSuchMethod(
         Invocation.method(
@@ -15583,7 +15606,7 @@ class MockScaffoldState extends _i1.Mock implements _i48.ScaffoldState {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSharedPreferencesService extends _i1.Mock
-    implements _i113.SharedPreferencesService {
+    implements _i117.SharedPreferencesService {
   @override
   _i38.Future<void> initialize() => (super.noSuchMethod(
         Invocation.method(
@@ -16611,7 +16634,7 @@ class MockTemplate extends _i1.Mock implements _i40.Template {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTemplatePageProvider extends _i1.Mock
-    implements _i114.TemplatePageProvider {
+    implements _i118.TemplatePageProvider {
   @override
   String get communityId => (super.noSuchMethod(
         Invocation.getter(#communityId),
@@ -16654,11 +16677,11 @@ class MockTemplatePageProvider extends _i1.Mock
       ) as _i38.Future<List<_i40.Template>>);
 
   @override
-  List<_i71.CommunityTag> get tags => (super.noSuchMethod(
+  List<_i75.CommunityTag> get tags => (super.noSuchMethod(
         Invocation.getter(#tags),
-        returnValue: <_i71.CommunityTag>[],
-        returnValueForMissingStub: <_i71.CommunityTag>[],
-      ) as List<_i71.CommunityTag>);
+        returnValue: <_i75.CommunityTag>[],
+        returnValueForMissingStub: <_i75.CommunityTag>[],
+      ) as List<_i75.CommunityTag>);
 
   @override
   _i38.Stream<List<_i2.Event>> get events => (super.noSuchMethod(
@@ -16763,7 +16786,7 @@ class MockTemplatePageProvider extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUserAdminDetailsProvider extends _i1.Mock
-    implements _i115.UserAdminDetailsProvider {
+    implements _i119.UserAdminDetailsProvider {
   @override
   String get userId => (super.noSuchMethod(
         Invocation.getter(#userId),
@@ -16851,7 +16874,7 @@ class MockUserAdminDetailsProvider extends _i1.Mock
 /// A class which mocks [UserService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserService extends _i1.Mock implements _i106.UserService {
+class MockUserService extends _i1.Mock implements _i110.UserService {
   @override
   _i38.Stream<String> get currentUserChanges => (super.noSuchMethod(
         Invocation.getter(#currentUserChanges),
@@ -16880,11 +16903,11 @@ class MockUserService extends _i1.Mock implements _i106.UserService {
       ) as bool);
 
   @override
-  _i106.SignInState get signInState => (super.noSuchMethod(
+  _i110.SignInState get signInState => (super.noSuchMethod(
         Invocation.getter(#signInState),
-        returnValue: _i106.SignInState.loading,
-        returnValueForMissingStub: _i106.SignInState.loading,
-      ) as _i106.SignInState);
+        returnValue: _i110.SignInState.loading,
+        returnValueForMissingStub: _i110.SignInState.loading,
+      ) as _i110.SignInState);
 
   @override
   bool get hasListeners => (super.noSuchMethod(
@@ -17101,7 +17124,7 @@ class MockUserService extends _i1.Mock implements _i106.UserService {
       ) as _i38.Future<void>);
 
   @override
-  _i38.Future<List<_i73.MemberDetails>> getMemberDetails({
+  _i38.Future<List<_i77.MemberDetails>> getMemberDetails({
     required List<String>? membersList,
     required String? communityId,
     String? eventPath,
@@ -17117,10 +17140,10 @@ class MockUserService extends _i1.Mock implements _i106.UserService {
           },
         ),
         returnValue:
-            _i38.Future<List<_i73.MemberDetails>>.value(<_i73.MemberDetails>[]),
+            _i38.Future<List<_i77.MemberDetails>>.value(<_i77.MemberDetails>[]),
         returnValueForMissingStub:
-            _i38.Future<List<_i73.MemberDetails>>.value(<_i73.MemberDetails>[]),
-      ) as _i38.Future<List<_i73.MemberDetails>>);
+            _i38.Future<List<_i77.MemberDetails>>.value(<_i77.MemberDetails>[]),
+      ) as _i38.Future<List<_i77.MemberDetails>>);
 
   @override
   void addListener(_i10.VoidCallback? listener) => super.noSuchMethod(
@@ -17269,7 +17292,7 @@ class MockXFile extends _i1.Mock implements _i41.XFile {
 
   @override
   _i38.Future<String> readAsString(
-          {_i116.Encoding? encoding = const _i116.Utf8Codec()}) =>
+          {_i120.Encoding? encoding = const _i120.Utf8Codec()}) =>
       (super.noSuchMethod(
         Invocation.method(
           #readAsString,
@@ -17296,18 +17319,18 @@ class MockXFile extends _i1.Mock implements _i41.XFile {
       ) as _i38.Future<String>);
 
   @override
-  _i38.Future<_i85.Uint8List> readAsBytes() => (super.noSuchMethod(
+  _i38.Future<_i89.Uint8List> readAsBytes() => (super.noSuchMethod(
         Invocation.method(
           #readAsBytes,
           [],
         ),
-        returnValue: _i38.Future<_i85.Uint8List>.value(_i85.Uint8List(0)),
+        returnValue: _i38.Future<_i89.Uint8List>.value(_i89.Uint8List(0)),
         returnValueForMissingStub:
-            _i38.Future<_i85.Uint8List>.value(_i85.Uint8List(0)),
-      ) as _i38.Future<_i85.Uint8List>);
+            _i38.Future<_i89.Uint8List>.value(_i89.Uint8List(0)),
+      ) as _i38.Future<_i89.Uint8List>);
 
   @override
-  _i38.Stream<_i85.Uint8List> openRead([
+  _i38.Stream<_i89.Uint8List> openRead([
     int? start,
     int? end,
   ]) =>
@@ -17319,9 +17342,9 @@ class MockXFile extends _i1.Mock implements _i41.XFile {
             end,
           ],
         ),
-        returnValue: _i38.Stream<_i85.Uint8List>.empty(),
-        returnValueForMissingStub: _i38.Stream<_i85.Uint8List>.empty(),
-      ) as _i38.Stream<_i85.Uint8List>);
+        returnValue: _i38.Stream<_i89.Uint8List>.empty(),
+        returnValueForMissingStub: _i38.Stream<_i89.Uint8List>.empty(),
+      ) as _i38.Stream<_i89.Uint8List>);
 
   @override
   _i38.Future<DateTime> lastModified() => (super.noSuchMethod(
@@ -17349,7 +17372,7 @@ class MockXFile extends _i1.Mock implements _i41.XFile {
 /// A class which mocks [FunctionMock].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFunction extends _i1.Mock implements _i117.FunctionMock {
+class MockFunction extends _i1.Mock implements _i121.FunctionMock {
   @override
   void call() => super.noSuchMethod(
         Invocation.method(
@@ -17372,7 +17395,7 @@ class MockFunction extends _i1.Mock implements _i117.FunctionMock {
 /// A class which mocks [UserService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserServiceNullable extends _i1.Mock implements _i106.UserService {
+class MockUserServiceNullable extends _i1.Mock implements _i110.UserService {
   @override
   _i38.Stream<String> get currentUserChanges => (super.noSuchMethod(
         Invocation.getter(#currentUserChanges),
@@ -17401,11 +17424,11 @@ class MockUserServiceNullable extends _i1.Mock implements _i106.UserService {
       ) as bool);
 
   @override
-  _i106.SignInState get signInState => (super.noSuchMethod(
+  _i110.SignInState get signInState => (super.noSuchMethod(
         Invocation.getter(#signInState),
-        returnValue: _i106.SignInState.loading,
-        returnValueForMissingStub: _i106.SignInState.loading,
-      ) as _i106.SignInState);
+        returnValue: _i110.SignInState.loading,
+        returnValueForMissingStub: _i110.SignInState.loading,
+      ) as _i110.SignInState);
 
   @override
   bool get hasListeners => (super.noSuchMethod(
@@ -17622,7 +17645,7 @@ class MockUserServiceNullable extends _i1.Mock implements _i106.UserService {
       ) as _i38.Future<void>);
 
   @override
-  _i38.Future<List<_i73.MemberDetails>> getMemberDetails({
+  _i38.Future<List<_i77.MemberDetails>> getMemberDetails({
     required List<String>? membersList,
     required String? communityId,
     String? eventPath,
@@ -17638,10 +17661,10 @@ class MockUserServiceNullable extends _i1.Mock implements _i106.UserService {
           },
         ),
         returnValue:
-            _i38.Future<List<_i73.MemberDetails>>.value(<_i73.MemberDetails>[]),
+            _i38.Future<List<_i77.MemberDetails>>.value(<_i77.MemberDetails>[]),
         returnValueForMissingStub:
-            _i38.Future<List<_i73.MemberDetails>>.value(<_i73.MemberDetails>[]),
-      ) as _i38.Future<List<_i73.MemberDetails>>);
+            _i38.Future<List<_i77.MemberDetails>>.value(<_i77.MemberDetails>[]),
+      ) as _i38.Future<List<_i77.MemberDetails>>);
 
   @override
   void addListener(_i10.VoidCallback? listener) => super.noSuchMethod(

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/common_widgets/navbar/nav_bar/nav_bar_model.dart';
-import 'package:client/common_widgets/navbar/nav_bar/nav_bar_presenter.dart';
+import 'package:client/core/widgets/navbar/nav_bar/nav_bar_model.dart';
+import 'package:client/core/widgets/navbar/nav_bar/nav_bar_presenter.dart';
 import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../mocked_classes.mocks.dart';
@@ -20,7 +20,7 @@ void main() {
   final mockGlobalKey = MockGlobalKey();
   final mockRenderBox = MockRenderBox();
   final mockPaymentUtils = MockPaymentUtils();
-  final mockCloudFunctionsService = MockCloudFunctionsService();
+  final mockCloudFunctionsService = MockCloudFunctionsPaymentsService();
   final mockFirestoreAgreementsService = MockFirestoreAgreementsService();
   final mockPartnerAgreement = MockPartnerAgreement();
   final mockCommunitySettings = MockCommunitySettings();

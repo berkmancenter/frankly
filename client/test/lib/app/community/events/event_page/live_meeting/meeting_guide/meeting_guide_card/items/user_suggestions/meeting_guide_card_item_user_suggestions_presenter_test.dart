@@ -1,11 +1,12 @@
 import 'dart:math';
 
+import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/events/event_page/live_meeting/meeting_guide/meeting_guide_card/items/user_suggestions/meeting_guide_card_item_user_suggestions_model.dart';
-import 'package:client/app/community/events/event_page/live_meeting/meeting_guide/meeting_guide_card/items/user_suggestions/meeting_guide_card_item_user_suggestions_presenter.dart';
-import 'package:client/app/community/utils.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/models/meeting_guide_card_item_user_suggestions_model.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/meeting_guide_card_item_user_suggestions_presenter.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/utils/extensions.dart';
+import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:mockito/mockito.dart';

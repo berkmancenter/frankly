@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/app/community/events/event_page/event_settings/event_settings_drawer.dart';
-import 'package:client/app/community/events/event_page/event_settings/event_settings_model.dart';
-import 'package:client/app/community/events/event_page/event_settings/event_settings_presenter.dart';
+import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
+import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
+import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:mockito/mockito.dart';
