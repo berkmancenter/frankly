@@ -5,20 +5,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:client/common_widgets/ui_migration.dart';
-import 'package:client/common_widgets/navbar/nav_bar_provider.dart';
-import 'package:client/environment.dart';
-import 'package:client/routing/locations.dart';
-import 'package:client/services/logging_service.dart';
-import 'package:client/services/services.dart';
+import 'package:client/core/widgets/ui_migration.dart';
+import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
+import 'package:client/config/environment.dart';
+import 'package:client/core/routing/locations.dart';
+import 'package:client/core/data/services/logging_service.dart';
+import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:client/utils/transitions.dart';
-import 'package:client/utils/platform_utils.dart';
+import 'package:client/core/utils/transitions.dart';
+import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry/sentry.dart';
 import 'package:uuid/uuid.dart';
 
-import 'firebase_options.dart';
+import 'config/firebase_options.dart';
 
 bool kShowStripeFeatures = false;
 bool useBotControls = false;
@@ -29,8 +29,6 @@ Map<String, String>? botJoinParameters;
 const String sentryRelease =
     String.fromEnvironment('SENTRY_RELEASE', defaultValue: '');
 bool enableSentry = sentryRelease != '';
-
-NavigatorState get navigatorState => routerDelegate.navigatorKey.currentState!;
 
 final uuid = Uuid();
 

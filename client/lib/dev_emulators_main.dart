@@ -1,11 +1,11 @@
-import 'package:client/environment.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
-import 'package:client/services/cloud_functions_service.dart';
-import 'package:client/services/firestore/firestore_database.dart';
-import 'package:client/services/logging_service.dart';
-import 'package:client/services/services.dart';
-import 'package:client/services/user_data_service.dart';
-import 'package:client/services/user_service.dart';
+import 'package:client/core/data/services/cloud_functions.dart';
+import 'package:client/core/data/services/firestore_database.dart';
+import 'package:client/core/data/services/logging_service.dart';
+import 'package:client/services.dart';
+import 'package:client/features/user/data/services/user_data_service.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 
 void main() async {
   loggingService.log('Running in dev emulator mode');
@@ -16,7 +16,7 @@ void main() async {
     switch (emulator) {
       case ('functions'):
         loggingService.log('Enabling functions emulator');
-        CloudFunctionsService.usingEmulator = true;
+        CloudFunctions.usingEmulator = true;
         break;
       case ('firestore'):
         loggingService.log('Enabling firestore emulator');

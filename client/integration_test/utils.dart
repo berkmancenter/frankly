@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:client/common_widgets/custom_text_field.dart';
-import 'package:client/common_widgets/sign_in_options_content.dart';
-import 'package:client/common_widgets/sign_in_widget.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
+import 'package:client/features/auth/presentation/widgets/sign_in_widget.dart';
 
 Future<void> signUpForApp(
   WidgetTester tester, {

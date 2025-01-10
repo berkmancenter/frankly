@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:client/app.dart';
-import 'package:client/routing/locations.dart';
+import 'package:client/core/routing/locations.dart';
 
 import 'utils.dart';
 
