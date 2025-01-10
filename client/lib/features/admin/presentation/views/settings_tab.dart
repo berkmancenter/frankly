@@ -1,19 +1,17 @@
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/content_horizontal_padding.dart';
+import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
-import 'package:client/core/utils/dialogs.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
@@ -416,7 +414,7 @@ class _SettingsTabState extends State<SettingsTab> {
         _buildSettingsSection(),
         SizedBox(height: 80),
         if (Environment.enableDevAdminSettings)
-          ContentHorizontalPadding(child: _buildDevSettingsSection()),
+          ConstrainedBody(child: _buildDevSettingsSection()),
       ],
     );
   }

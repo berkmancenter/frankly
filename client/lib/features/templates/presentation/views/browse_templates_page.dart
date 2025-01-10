@@ -1,11 +1,10 @@
-import 'package:client/core/widgets/content_horizontal_padding.dart';
+import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/features/templates/presentation/widgets/select_template.dart';
 import 'package:client/features/templates/data/providers/select_template_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +24,7 @@ class _BrowseTemplatesPageState extends State<BrowseTemplatesPage> {
     return CustomListView(
       children: [
         SizedBox(height: 30),
-        ContentHorizontalPadding(
+        ConstrainedBody(
           child: ChangeNotifierProvider(
             create: (_) => SelectTemplateProvider(
               communityId: communityProvider.communityId,
