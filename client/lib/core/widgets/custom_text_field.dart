@@ -213,16 +213,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-        child: RawKeyboardListener(
+        child: KeyboardListener(
           focusNode: FocusNode(),
-          onKey: (event) {
-            if (_shiftPressed != event.isShiftPressed) {
-              setState(() => _shiftPressed = event.isShiftPressed);
+          onKeyEvent: (event) {
+            final isEventShiftKey =
+                event.logicalKey == LogicalKeyboardKey.shiftLeft ||
+                    event.logicalKey == LogicalKeyboardKey.shiftRight;
+            if (_shiftPressed != isEventShiftKey) {
+              setState(() => _shiftPressed = isEventShiftKey);
             }
 
             if (widget.onEditingComplete != null &&
-                event.runtimeType == RawKeyDownEvent &&
-                !event.isShiftPressed &&
+                event.runtimeType == KeyDownEvent &&
+                !isEventShiftKey &&
                 event.logicalKey == LogicalKeyboardKey.enter) {
               widget.onEditingComplete!();
               if (widget.unfocusOnSubmit) {
