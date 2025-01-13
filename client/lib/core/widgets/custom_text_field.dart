@@ -133,7 +133,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextEditingController(text: widget.initialValue ?? '');
   }
 
-  InputBorder _buildBorder({bool isError = false}) {
+  InputBorder _getBorder({bool isError = false}) {
     if (widget.borderType == BorderType.outline) {
       return OutlineInputBorder(
         borderSide: BorderSide(
@@ -205,8 +205,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final localOnEditingComplete = widget.onEditingComplete;
-
     return Padding(
       padding: widget.padding,
       child: Container(
@@ -222,11 +220,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
               setState(() => _shiftPressed = event.isShiftPressed);
             }
 
-            if (localOnEditingComplete != null &&
+            if (widget.onEditingComplete != null &&
                 event.runtimeType == RawKeyDownEvent &&
                 !event.isShiftPressed &&
                 event.logicalKey == LogicalKeyboardKey.enter) {
-              localOnEditingComplete();
+              widget.onEditingComplete!();
               if (widget.unfocusOnSubmit) {
                 _unfocus();
               }
@@ -294,10 +292,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 validator: widget.validator,
                 decoration: InputDecoration(
                   contentPadding: widget.contentPadding,
-                  border: _buildBorder(),
-                  focusedBorder: _buildBorder(),
-                  enabledBorder: _buildBorder(),
-                  errorBorder: _buildBorder(isError: true),
+                  border: _getBorder(),
+                  focusedBorder: _getBorder(),
+                  enabledBorder: _getBorder(),
+                  errorBorder: _getBorder(isError: true),
                   labelText: widget.labelText,
                   labelStyle: _buildLabelStyle(),
                   errorStyle: _buildTextStyle(isError: true),
