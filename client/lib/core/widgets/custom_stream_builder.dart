@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 
+/// Provides loading and error utilities for StreamBuilder.
 class CustomStreamBuilder<T> extends StatelessWidget {
   const CustomStreamBuilder({
     Key? key,
@@ -30,7 +31,11 @@ class CustomStreamBuilder<T> extends StatelessWidget {
   final double height;
   final double? width;
   final bool showLoading;
+
+  /// If true, the builder will be called even if the snapshot is still loading.
+  /// Defaults to false, i.e. a loading indicator / placeholder will be shown.
   final bool buildWhileLoading;
+
   final Stream<T>? stream;
 
   @override
