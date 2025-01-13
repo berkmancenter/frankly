@@ -63,10 +63,7 @@ class CustomStreamBuilder<T> extends StatelessWidget {
             width: width,
             child: Text(
               errorMessage,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.merge(textStyle ?? TextStyle()),
+              style: textStyle ?? Theme.of(context).textTheme.bodyLarge,
             ),
           );
         } else if (!buildWhileLoading &&
@@ -85,11 +82,8 @@ class CustomStreamBuilder<T> extends StatelessWidget {
                     (loadingMessage?.isNotEmpty ?? false)) ...[
                   SizedBox(height: 16),
                   Text(
-                    localLoadingMessage,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.merge(textStyle ?? TextStyle()),
+                    loadingMessage!,
+                    style: textStyle ?? Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ],
