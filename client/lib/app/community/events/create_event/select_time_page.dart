@@ -1,7 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:client/app/community/events/create_event/create_event_dialog_model.dart';
-import 'package:client/app/community/events/create_event/dialog_button.dart';
+import 'package:client/app/community/events/create_event/event_dialog_buttons.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/custom_time_picker.dart';
 import 'package:client/common_widgets/ui_migration.dart';

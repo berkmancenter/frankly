@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/app/community/events/create_event/create_event_dialog_model.dart';
-import 'package:client/app/community/events/create_event/dialog_button.dart';
+import 'package:client/app/community/events/create_event/event_dialog_buttons.dart';
 import 'package:client/common_widgets/hosting_option.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/utils/height_constained_text.dart';

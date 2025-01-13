@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/app/community/events/create_event/choose_platform_presenter.dart';
 import 'package:client/app/community/events/create_event/create_event_dialog_model.dart';
-import 'package:client/app/community/events/create_event/dialog_button.dart';
+import 'package:client/app/community/events/create_event/event_dialog_buttons.dart';
 import 'package:client/app/community/events/platform_data.dart';
 import 'package:client/app/community/utils.dart';
 import 'package:client/common_widgets/action_button.dart';
