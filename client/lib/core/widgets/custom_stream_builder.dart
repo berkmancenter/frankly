@@ -40,7 +40,7 @@ class CustomStreamBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stackTraceCurrent = StackTrace.current;
+    final currentStackTrace = StackTrace.current;
 
     return StreamBuilder<T>(
       stream: stream,
@@ -51,7 +51,7 @@ class CustomStreamBuilder<T> extends StatelessWidget {
             'CustomStreamBuilder.build : $entryFrom',
             logType: LogType.error,
             error: error,
-            stackTrace: error is Error ? error.stackTrace : stackTraceCurrent,
+            stackTrace: error is Error ? error.stackTrace : currentStackTrace,
           );
           loggingService.log(errorMessage);
 
