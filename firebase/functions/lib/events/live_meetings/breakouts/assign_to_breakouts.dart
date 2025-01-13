@@ -6,7 +6,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import 'package:get_it/get_it.dart';
 import 'package:frankly_matching/matching.dart' as matching;
-import '../../../utils/firestore_utils.dart';
+import '../../../utils/infra/firestore_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
@@ -547,7 +547,7 @@ class AssignToBreakouts {
     var presentParticipants = participantSnapshots
         .map(
           (doc) => Participant.fromJson(
-            firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
           ),
         )
         .toList();

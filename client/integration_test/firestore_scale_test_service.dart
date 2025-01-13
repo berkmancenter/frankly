@@ -1,7 +1,7 @@
-import 'package:client/services/services.dart';
+import 'package:client/services.dart';
 import 'scale_test.dart';
 
-import 'package:client/services/firestore/firestore_utils.dart';
+import 'package:client/core/utils/firestore_utils.dart';
 
 class FirestoreScaleTestService {
   Future<ScaleTest> getScaleTestInfo() async {

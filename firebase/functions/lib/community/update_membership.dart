@@ -2,7 +2,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import '../utils/subscription_plan_util.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -31,7 +31,6 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
     final communityId = request.communityId;
     final targetUserId = request.userId;
     final targetStatus = request.status;
-    final invisible = request.invisible;
 
     // Get needed data.
     final communitySnapshot =

@@ -1,6 +1,6 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'agora_api.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -29,7 +29,7 @@ class LiveMeetingUtils {
       firestore.document('$liveMeetingCollectionPath/$meetingId'),
     );
     var liveMeeting = LiveMeeting.fromJson(
-      firestoreUtils.fromFirestoreJson(liveMeetingSnapshot.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(liveMeetingSnapshot.data.toMap()),
     );
     if (isNullOrEmpty(liveMeeting.meetingId)) {
       fieldsToUpdate.add(LiveMeeting.kFieldMeetingId);

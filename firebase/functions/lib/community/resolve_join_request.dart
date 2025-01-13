@@ -4,7 +4,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
 import '../utils/email_templates.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import '../utils/send_email_client.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
@@ -40,7 +40,7 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
         ),
       );
       final userMembershipRequest = MembershipRequest.fromJson(
-        userMembershipRequestSnapshot.data.toMap() ?? {},
+        userMembershipRequestSnapshot.data.toMap(),
       );
       final hasActiveRequest =
           userMembershipRequest.status == MembershipRequestStatus.requested;
@@ -53,7 +53,7 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
       final userMembership = userMembershipSnapshot.exists
           ? Membership.fromJson(
               firestoreUtils
-                  .fromFirestoreJson(userMembershipSnapshot.data.toMap() ?? {}),
+                  .fromFirestoreJson(userMembershipSnapshot.data.toMap()),
             )
           : Membership(
               userId: request.userId,

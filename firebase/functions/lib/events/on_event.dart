@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import '../firestore_event_function.dart';
-import '../utils/firestore_helper.dart';
+import '../utils/infra/firestore_event_function.dart';
+import '../utils/infra/on_firestore_helper.dart';
 import 'live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import '../on_firestore_function.dart';
 import 'notifications/event_emails.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 

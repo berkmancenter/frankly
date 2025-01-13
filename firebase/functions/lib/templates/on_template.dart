@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import '../firestore_event_function.dart';
-import '../utils/firestore_helper.dart';
+import '../utils/infra/firestore_event_function.dart';
+import '../utils/infra/on_firestore_helper.dart';
 import '../on_firestore_function.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/templates/template.dart';

@@ -6,7 +6,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'assign_to_breakouts.dart';
 import '../../../on_call_function.dart';
 import 'check_assign_to_breakouts_server.dart';
-import '../../../utils/firestore_utils.dart';
+import '../../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -60,8 +60,7 @@ class InitiateBreakouts extends OnCallMethod<InitiateBreakoutsRequest> {
         .get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     final isAuthorized = event.creatorId == context.authUid || membership.isMod;

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import '../../on_request_method.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/events/event.dart';
 

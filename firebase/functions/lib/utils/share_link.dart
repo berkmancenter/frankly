@@ -4,7 +4,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import 'package:intl/intl.dart';
 import '../cloud_function.dart';
-import 'firestore_utils.dart';
+import 'infra/firestore_utils.dart';
 import 'timezone_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';

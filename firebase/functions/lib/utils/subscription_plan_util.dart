@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:enum_to_string/enum_to_string.dart';
-import 'firestore_utils.dart';
+import 'infra/firestore_utils.dart';
 import 'utils.dart';
 import 'package:data_models/admin/billing_subscription.dart';
 import 'package:data_models/community/membership.dart';
@@ -48,8 +48,7 @@ class SubscriptionPlanUtil {
           await firestore.document(membershipDoc).get();
 
       final membership = Membership.fromJson(
-        firestoreUtils
-            .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
       );
       isMod = membership.isMod;
     }

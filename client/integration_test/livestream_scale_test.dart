@@ -1,9 +1,9 @@
+import 'package:client/core/utils/random_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:client/app/community/events/event_page/widgets/event_info.dart';
-import 'package:client/app/community/utils.dart';
+import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/app.dart';
-import 'package:client/routing/locations.dart';
+import 'package:client/core/routing/locations.dart';
 
 import 'utils.dart';
 

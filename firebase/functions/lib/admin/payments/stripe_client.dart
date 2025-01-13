@@ -19,5 +19,8 @@ abstract class StripeClient {
 @anonymous
 abstract class Webhooks {
   external dynamic constructEvent(
-      String body, String signature, String endpointSecret);
+    String body,
+    String signature,
+    String endpointSecret,
+  );
 }

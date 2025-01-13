@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../../on_call_function.dart';
-import '../../../utils/firestore_utils.dart';
+import '../../../utils/infra/firestore_utils.dart';
 import '../../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -136,7 +136,7 @@ class CheckAdvanceMeetingGuide
     final registeredParticipants = participantsSnapshot.documents
         .map(
           (doc) => Participant.fromJson(
-            firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+            firestoreUtils.fromFirestoreJson(doc.data.toMap()),
           ),
         )
         .where((participant) => participant.status == ParticipantStatus.active)

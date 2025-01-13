@@ -3,18 +3,19 @@ import 'dart:async';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import 'cloud_function.dart';
-import 'utils/firestore_utils.dart';
+import 'utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 
 /// Class for onCall methods. These are requests that are mostly called from
 /// our client apps.
 ///
-/// Request types should be defined in the shared cloudfunctions folder.
+/// Request types should be defined in data_models.
 abstract class OnCallMethod<T extends SerializeableRequest>
     implements CloudFunction {
   @override
   final String functionName;
 
+  /// Function that converts request JSON into a request object.
   T Function(dynamic data) requestFromData;
 
   final RuntimeOptions? runWithOptions;

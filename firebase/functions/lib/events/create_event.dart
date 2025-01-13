@@ -4,8 +4,8 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import '../on_call_function.dart';
 import 'notifications/event_emails.dart';
-import '../utils/emulator_utils.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/emulator_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/membership.dart';
@@ -42,7 +42,7 @@ class CreateEvent extends OnCallMethod<CreateEventRequest> {
         )
         .get();
     final membership = Membership.fromJson(
-      firestoreUtils.fromFirestoreJson(membershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(membershipDoc.data.toMap()),
     );
     final isModOrCreator =
         event.creatorId == context.authUid || membership.isMod;

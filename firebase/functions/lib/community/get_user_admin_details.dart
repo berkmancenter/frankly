@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/membership.dart';
@@ -34,8 +34,7 @@ class GetUserAdminDetails extends OnCallMethod<GetUserAdminDetailsRequest> {
           .get();
 
       final membership = Membership.fromJson(
-        firestoreUtils
-            .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+        firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
       );
 
       if (!authorized && request.eventPath != null) {
@@ -52,7 +51,7 @@ class GetUserAdminDetails extends OnCallMethod<GetUserAdminDetailsRequest> {
         final allUsersAreParticipants = eventParticipantDocs
             .map(
               (doc) => Participant.fromJson(
-                firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+                firestoreUtils.fromFirestoreJson(doc.data.toMap()),
               ),
             )
             .every(
@@ -88,7 +87,7 @@ class GetUserAdminDetails extends OnCallMethod<GetUserAdminDetailsRequest> {
             .where((doc) => doc.exists)
             .map(
               (doc) => Membership.fromJson(
-                firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+                firestoreUtils.fromFirestoreJson(doc.data.toMap()),
               ),
             )
             .where((membership) => membership.isMember || membership.isAttendee)
@@ -100,7 +99,7 @@ class GetUserAdminDetails extends OnCallMethod<GetUserAdminDetailsRequest> {
             .where((d) => d.data.toMap()['userId'] != null)
             .map(
               (doc) => MembershipRequest.fromJson(
-                firestoreUtils.fromFirestoreJson(doc.data.toMap() ?? {}),
+                firestoreUtils.fromFirestoreJson(doc.data.toMap()),
               ),
             )
             .map((request) => request.userId);

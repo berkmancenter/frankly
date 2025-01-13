@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_call_function.dart';
-import '../../utils/firestore_utils.dart';
+import '../../utils/infra/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -28,8 +28,7 @@ class GetStripeConnectedAccountLink
     final agreementDoc = await agreementRef.get();
     orElseUnauthorized(agreementDoc.exists);
 
-    final agreement =
-        PartnerAgreement.fromJson(agreementDoc.data.toMap() ?? {});
+    final agreement = PartnerAgreement.fromJson(agreementDoc.data.toMap());
     orElseUnauthorized(agreement.allowPayments == true);
     orElseUnauthorized(agreement.stripeConnectedAccountId != null);
     orElseUnauthorized(agreement.initialUserId == context.authUid);

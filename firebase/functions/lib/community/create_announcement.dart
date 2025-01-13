@@ -4,7 +4,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
 import '../utils/email_templates.dart';
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 import '../utils/notifications_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community_user_settings.dart';
@@ -32,8 +32,7 @@ class CreateAnnouncement extends OnCallMethod<CreateAnnouncementRequest> {
         .get();
 
     final membership = Membership.fromJson(
-      firestoreUtils
-          .fromFirestoreJson(communityMembershipDoc.data.toMap() ?? {}),
+      firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
     );
 
     if (!membership.isAdmin) {

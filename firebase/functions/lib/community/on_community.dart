@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import '../firestore_event_function.dart';
+import '../utils/infra/firestore_event_function.dart';
 import '../on_firestore_function.dart';
 import 'package:data_models/community/community.dart';
 
-import '../utils/firestore_utils.dart';
+import '../utils/infra/firestore_utils.dart';
 
 class OnCommunity extends OnFirestoreFunction<Community> {
   OnCommunity()
