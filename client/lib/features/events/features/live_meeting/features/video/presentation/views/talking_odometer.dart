@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/talking_odometer_contract.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/models/talking_odometer_model.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/talking_odometer_presenter.dart';
-import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/colorful_meter_v2.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/colorful_meter.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/extensions.dart';
 
@@ -72,7 +72,7 @@ class _TalkingOdometerState extends State<TalkingOdometer>
           borderRadius: BorderRadius.circular(10),
           color: AppColor.white,
         ),
-        child: ColorfulMeterV2(
+        child: ColorfulMeter(
           value: applyWarning ? adjustedValue : value,
           title: _presenter.userTotalTalkingTime
               .getFormattedTime(showHours: false),
