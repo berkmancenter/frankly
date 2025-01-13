@@ -40,8 +40,6 @@ class CustomStreamBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localErrorBuilder = errorBuilder;
-    final localLoadingMessage = loadingMessage;
     final stackTraceCurrent = StackTrace.current;
 
     return StreamBuilder<T>(
@@ -57,8 +55,8 @@ class CustomStreamBuilder<T> extends StatelessWidget {
           );
           loggingService.log(errorMessage);
 
-          if (localErrorBuilder != null) {
-            return localErrorBuilder(context);
+          if (errorBuilder != null) {
+            return errorBuilder!(context);
           }
           return SizedBox(
             height: height,
@@ -83,8 +81,8 @@ class CustomStreamBuilder<T> extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomLoadingIndicator(),
-                if (localLoadingMessage != null &&
-                    localLoadingMessage.isNotEmpty) ...[
+                if (loadingMessage != null &&
+                    (loadingMessage?.isNotEmpty ?? false)) ...[
                   SizedBox(height: 16),
                   Text(
                     localLoadingMessage,
