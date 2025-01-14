@@ -111,7 +111,7 @@ class ActionButton extends StatefulWidget {
         super(key: key);
 
   @override
-  _ActionButtonState createState() => _ActionButtonState();
+  State<ActionButton> createState() => _ActionButtonState();
 }
 
 class _ActionButtonState extends State<ActionButton> {
