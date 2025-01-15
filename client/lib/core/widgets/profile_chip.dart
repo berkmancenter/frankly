@@ -73,10 +73,11 @@ class ProfileChip extends StatelessWidget {
                 name,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ).merge(textStyle ?? TextStyle()),
+                style: textStyle ??
+                    TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
             ),
           ),
