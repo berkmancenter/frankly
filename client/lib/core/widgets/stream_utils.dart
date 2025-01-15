@@ -53,27 +53,6 @@ class MemoizedStreamBuilder<T> extends HookWidget {
   }
 }
 
-/// This class wraps a stream with BehaviorSubject (internally using `wrapInBehaviorSubject`), and
-/// handles renewing it if its dependent parameters change and disposing it when no longer needed.
-class BehaviorSubjectWrapperWidget<T> extends HookWidget {
-  const BehaviorSubjectWrapperWidget({
-    required this.streamGetter,
-    required this.builder,
-    required this.keys,
-    Key? key,
-  }) : super(key: key);
-
-  final Stream<T> Function() streamGetter;
-  final Widget Function(BuildContext, BehaviorSubjectWrapper<T>?) builder;
-  final List<Object> keys;
-
-  @override
-  Widget build(BuildContext context) {
-    final stream = useBehaviorSubjectWrapper<T>(streamGetter, keys);
-    return builder(context, stream);
-  }
-}
-
 /// Hook which wraps a Stream in BehaviorSubjectWrapper, and disposes and recreates as needed,
 /// consistent with changes to `keys`
 BehaviorSubjectWrapper<T> useBehaviorSubjectWrapper<T>(
