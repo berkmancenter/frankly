@@ -57,8 +57,6 @@ class ProxiedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localAsset = asset;
-
     // ignore: prefer_function_declarations_over_variables
     ImageFrameBuilder frameBuilder =
         (context, child, frame, loadedSynchronously) {
@@ -79,9 +77,9 @@ class ProxiedImage extends StatelessWidget {
           ),
         );
 
-    final image = localAsset != null
+    final image = asset != null
         ? Image.asset(
-            localAsset.path,
+            asset!.path,
             height: height,
             width: width,
             fit: fit ?? BoxFit.cover,
