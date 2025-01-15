@@ -3,10 +3,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/styles/app_styles.dart';
 
 class ProfilePicture extends StatelessWidget {
-  final BoxShadow shadow;
-  final double borderRadius;
-  final String imageUrl;
-
   const ProfilePicture({
     required this.imageUrl,
     this.shadow = const BoxShadow(
@@ -16,6 +12,10 @@ class ProfilePicture extends StatelessWidget {
     ),
     this.borderRadius = 8,
   });
+
+  final BoxShadow shadow;
+  final double borderRadius;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
