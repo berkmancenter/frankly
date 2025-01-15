@@ -24,49 +24,11 @@ class ProfileChip extends StatelessWidget {
     this.showName = true,
   }) : super(key: key);
 
-  Widget _buildNotFoundWidget() {
-    return Container(
-      alignment: Alignment.center,
-      height: imageHeight ?? 80,
-      width: imageHeight ?? 80,
-      decoration: BoxDecoration(
-        color: AppColor.darkBlue,
-      ),
-      child: Text(
-        name.isNotEmpty ? name[0].toUpperCase() : '',
-        style: AppTextStyle.body.copyWith(color: AppColor.brightGreen),
-      ),
-    );
-  }
-
-  Widget _buildImageWidget() {
+  Widget _buildImageAndName() {
     final localImageUrl = imageUrl;
 
     final notFound = localImageUrl == null || localImageUrl.trim().isEmpty;
 
-    return ClipOval(
-      child: notFound
-          ? _buildNotFoundWidget()
-          : ProxiedImage(
-              localImageUrl,
-              height: imageHeight ?? 80,
-              width: imageHeight ?? 80,
-            ),
-    );
-  }
-
-  Widget _buildProfileImage() {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColor.white.withOpacity(0.2),
-      ),
-      padding: showBorder ? const EdgeInsets.all(2) : EdgeInsets.zero,
-      child: _buildImageWidget(),
-    );
-  }
-
-  Widget _buildImageAndName() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -75,7 +37,34 @@ class ProfileChip extends StatelessWidget {
           height: imageHeight ?? 42,
           child: AspectRatio(
             aspectRatio: 1.0,
-            child: _buildProfileImage(),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColor.white.withOpacity(0.2),
+              ),
+              padding: showBorder ? const EdgeInsets.all(2) : EdgeInsets.zero,
+              child: ClipOval(
+                child: notFound
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: imageHeight ?? 80,
+                        width: imageHeight ?? 80,
+                        decoration: BoxDecoration(
+                          color: AppColor.darkBlue,
+                        ),
+                        child: Text(
+                          name.isNotEmpty ? name[0].toUpperCase() : '',
+                          style: AppTextStyle.body
+                              .copyWith(color: AppColor.brightGreen),
+                        ),
+                      )
+                    : ProxiedImage(
+                        localImageUrl,
+                        height: imageHeight ?? 80,
+                        width: imageHeight ?? 80,
+                      ),
+              ),
+            ),
           ),
         ),
         if (showName)
