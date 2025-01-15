@@ -7,19 +7,6 @@ import 'package:rxdart/rxdart.dart';
 /// This class wraps CustomStreamBuilder, and manages the lifecycle of the stream including
 /// rebuilding if any parameter within `keys` changes
 class CustomStreamGetterBuilder<T> extends HookWidget {
-  final String errorMessage;
-  final WidgetBuilder? errorBuilder;
-  final String? loadingMessage;
-  final TextStyle? textStyle;
-  final double height;
-  final double? width;
-  final bool showLoading;
-  final String entryFrom;
-
-  final Stream<T> Function() streamGetter;
-  final Widget Function(BuildContext, T?) builder;
-  final List<Object> keys;
-
   const CustomStreamGetterBuilder({
     required this.streamGetter,
     required this.builder,
@@ -34,6 +21,19 @@ class CustomStreamGetterBuilder<T> extends HookWidget {
     this.entryFrom = 'CustomStreamGetterBuilder.build',
     this.showLoading = true,
   }) : super(key: key);
+
+  final String errorMessage;
+  final WidgetBuilder? errorBuilder;
+  final String? loadingMessage;
+  final TextStyle? textStyle;
+  final double height;
+  final double? width;
+  final bool showLoading;
+  final String entryFrom;
+
+  final Stream<T> Function() streamGetter;
+  final Widget Function(BuildContext, T?) builder;
+  final List<Object> keys;
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +55,16 @@ class CustomStreamGetterBuilder<T> extends HookWidget {
 /// This class wraps a stream with BehaviorSubject (internally using `wrapInBehaviorSubject`), and
 /// handles renewing it if its dependent parameters change and disposing it when no longer needed.
 class BehaviorSubjectWrapperWidget<T> extends HookWidget {
-  final Stream<T> Function() streamGetter;
-  final Widget Function(BuildContext, BehaviorSubjectWrapper<T>?) builder;
-  final List<Object> keys;
-
   const BehaviorSubjectWrapperWidget({
     required this.streamGetter,
     required this.builder,
     required this.keys,
     Key? key,
   }) : super(key: key);
+
+  final Stream<T> Function() streamGetter;
+  final Widget Function(BuildContext, BehaviorSubjectWrapper<T>?) builder;
+  final List<Object> keys;
 
   @override
   Widget build(BuildContext context) {
