@@ -492,7 +492,7 @@ If you'd prefer to set secrets individually, such as for testing certain subsyst
     2. Select **More Actions** > **SDK Manager** 
     3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.** 
     4. Click **Apply** to proceed with installation.
-* When running Step 1.3 in the Flutter doc (`dart pub global activate flutterfire_cli`), you may see a prompt to update the path:
+* When activating the FlutterFire CLI (step 1.3 in the Flutter doc: `dart pub global activate flutterfire_cli`), you may see a prompt to update your path:
   ```
   Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
   ```
