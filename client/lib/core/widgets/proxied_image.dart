@@ -47,14 +47,6 @@ class ProxiedImage extends StatelessWidget {
     return processedUrl;
   }
 
-  Widget _buildLoadingWidget() {
-    return Container(
-      height: height,
-      width: width,
-      color: loadingColor,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget frameBuilder(
@@ -64,7 +56,11 @@ class ProxiedImage extends StatelessWidget {
       bool loadedSynchronously,
     ) {
       if (!loadedSynchronously && frame == null) {
-        return _buildLoadingWidget();
+        return Container(
+          height: height,
+          width: width,
+          color: loadingColor,
+        );
       }
 
       return child;
