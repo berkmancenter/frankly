@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:client/styles/app_styles.dart';
 
-class OnboardingOverviewProgressIndicator extends StatelessWidget {
-  const OnboardingOverviewProgressIndicator({
+class StepProgressIndicator extends StatelessWidget {
+  const StepProgressIndicator({
     Key? key,
     required this.completedStepCount,
     required this.totalSteps,

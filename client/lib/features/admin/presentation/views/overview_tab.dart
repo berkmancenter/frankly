@@ -17,7 +17,7 @@ import 'package:client/features/community/presentation/widgets/share_section.dar
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/overview_progress_indicator.dart';
+import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/styles/app_asset.dart';
@@ -234,7 +234,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           Row(
             children: [
               Expanded(
-                child: OnboardingOverviewProgressIndicator(
+                child: StepProgressIndicator(
                   completedStepCount: completedStepCount,
                   totalSteps: totalSteps,
                 ),
@@ -247,7 +247,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
       return Row(
         children: [
           Expanded(
-            child: OnboardingOverviewProgressIndicator(
+            child: StepProgressIndicator(
               completedStepCount: completedStepCount,
               totalSteps: totalSteps,
             ),
