@@ -25,9 +25,7 @@ class ProfileChip extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildImageAndName() {
-    final localImageUrl = imageUrl;
-
-    final notFound = localImageUrl == null || localImageUrl.trim().isEmpty;
+    final notFound = imageUrl == null || (imageUrl?.trim().isEmpty ?? true);
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -59,7 +57,7 @@ class ProfileChip extends StatelessWidget {
                         ),
                       )
                     : ProxiedImage(
-                        localImageUrl,
+                        imageUrl,
                         height: imageHeight ?? 80,
                         width: imageHeight ?? 80,
                       ),
@@ -88,12 +86,10 @@ class ProfileChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localOnTap = onTap;
-
-    return localOnTap == null
+    return onTap == null
         ? _buildImageAndName()
         : CustomInkWell(
-            onTap: localOnTap,
+            onTap: onTap,
             hoverColor: Colors.transparent,
             child: _buildImageAndName(),
           );
