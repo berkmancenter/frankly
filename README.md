@@ -57,20 +57,6 @@ This section covers setting up a new computer for Flutter development.
     2. **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
     3. **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
 
-  >  ⚠️ If you install Android and you see this output when running `flutter doctor`:
-  >
-  > `[!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)`
-  > `✗ cmdline-tools component is missing`
-  > `Run path/to/sdkmanager --install "cmdline-tools;latest`
-  >
-  > Run the following steps: 
-  > 
-  > 1. Open **Android Studio** 
-  > 2. Select **More Actions** 
-  > **SDK Manager** 
-  > 3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.** 
-  > 4. Click **Apply** to proceed with installation.
-
 6.  Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
     `export PATH=$HOME/development/flutter/bin:$PATH`
     Restart terminal sessions to see the changes.
@@ -84,11 +70,6 @@ This section covers setting up a new computer for Flutter development.
     For more information, you can read this Stack Overflow [post](https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules).
 
 9.  Activate the Firebase CLI for Flutter by following the steps [here](https://firebase.google.com/docs/flutter/setup?platform=ios). Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports.
-    1. ⚠️ When running Step 1.3 in the Flutter doc (`dart pub global activate flutterfire_cli`), you may see a prompt to update the path:
-    `Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.`
-    You can fix that by adding this to your shell's config file (.zshrc, .bashrc, .bash_profile, etc.):
-    `export PATH="$PATH":"$HOME/.pub-cache/bin"`
-    After adding the recommended export to your **~/.zshrc** file, restart all terminal windows.
 
 
 These are the steps for getting started with developing Frankly:
@@ -499,6 +480,27 @@ If you'd prefer to set secrets individually, such as for testing certain subsyst
 
 # ❓ Troubleshooting and FAQ
 
+### Flutter installation
+* If you install Android and you see this output when running `flutter doctor`:
+  ``` 
+  [!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
+  ✗ cmdline-tools component is missing
+  Run path/to/sdkmanager --install "cmdline-tools;latest 
+  ```
+  Run the following steps: 
+    1. Open **Android Studio** 
+    2. Select **More Actions** > **SDK Manager** 
+    3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.** 
+    4. Click **Apply** to proceed with installation.
+* When running Step 1.3 in the Flutter doc (`dart pub global activate flutterfire_cli`), you may see a prompt to update the path:
+  ```
+  Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
+  ```
+  You can fix that by adding this to your shell's config file (.zshrc, .bashrc, .bash_profile, etc.):
+  ```
+  export PATH="$PATH":"$HOME/.pub-cache/bin"
+  ```
+  After adding the recommended export to your **~/.zshrc** file, restart all terminal windows.
 ### Cloud Functions Emulator
 
 - **Functions fail to emulate**: If you run `firebase emulators:start --only ...` and you get a message saying that function emulation failed to start, you may need to run `firebase init functions` on first launch. Use the following selections after running:
