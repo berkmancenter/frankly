@@ -57,15 +57,18 @@ class ProxiedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_function_declarations_over_variables
-    ImageFrameBuilder frameBuilder =
-        (context, child, frame, loadedSynchronously) {
+    Widget frameBuilder(
+      BuildContext context,
+      Widget child,
+      int? frame,
+      bool loadedSynchronously,
+    ) {
       if (!loadedSynchronously && frame == null) {
         return _buildLoadingWidget();
       }
 
       return child;
-    };
+    }
 
     Widget errorBuilder(_, __, ___) => Container(
           height: height,
