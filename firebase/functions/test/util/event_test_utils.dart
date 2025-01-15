@@ -4,7 +4,6 @@ import 'package:functions/events/notifications/event_emails.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:functions/utils/notifications_utils.dart';
 import 'package:mocktail/mocktail.dart';
 
 class EventTestUtils {
@@ -215,5 +214,3 @@ class EventTestUtils {
 }
 
 class MockEventEmails extends Mock implements EventEmails {}
-
-class MockNotificationsUtils extends Mock implements NotificationsUtils {}

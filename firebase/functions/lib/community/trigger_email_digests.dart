@@ -36,7 +36,7 @@ class TriggerEmailDigests extends CloudFunction {
   TriggerEmailDigests({NotificationsUtils? notificationsUtils})
       : notificationsUtils = notificationsUtils ?? NotificationsUtils();
 
-  FutureOr<void> _action(EventContext context) async {
+  FutureOr<void> action(EventContext context) async {
     // events are included that fall between 'now' and 'endTime'
     // digest is discarded if one was already sent after 'prevCutoffTime'
     final now = DateTime.now();
@@ -280,6 +280,6 @@ class TriggerEmailDigests extends CloudFunction {
         )
         .pubsub
         .schedule('every tuesday 17:00') // Tuesday 8pm EST, converted to PST
-        .onRun((_, context) => _action(context));
+        .onRun((_, context) => action(context));
   }
 }

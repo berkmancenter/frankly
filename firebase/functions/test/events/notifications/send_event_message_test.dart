@@ -11,6 +11,7 @@ import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop hide EventType;
 import '../../util/community_test_utils.dart';
+import '../../util/email_test_utils.dart';
 import '../../util/event_test_utils.dart';
 
 void main() {
@@ -154,5 +155,3 @@ void main() {
 }
 
 class MockCommunity extends Mock implements Community {}
-
-class MockUserRecord extends Mock implements admin_interop.UserRecord {}
