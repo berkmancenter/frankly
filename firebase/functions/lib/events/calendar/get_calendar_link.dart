@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_call_function.dart';
 import '../../utils/calendar_link_util.dart';
+import '../../utils/infra/firebase_auth_utils.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -33,7 +34,7 @@ class GetCommunityCalendarLink
       path: request.eventPath,
       constructor: (map) => Event.fromJson(map),
     );
-    final users = await firestoreUtils.getUsers([event.creatorId]);
+    final users = await firebaseAuthUtils.getUsers([event.creatorId]);
     if (users.length != 1) {
       throw Exception('Organizer not found');
     }

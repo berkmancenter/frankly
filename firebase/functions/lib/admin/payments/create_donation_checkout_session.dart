@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_call_function.dart';
+import '../../utils/infra/firebase_auth_utils.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'stripe_util.dart';
 import '../../utils/subscription_plan_util.dart';
@@ -92,7 +93,7 @@ class CreateDonationCheckoutSession
         takeRate < 1;
 
     final user =
-        (await firestoreUtils.getUsers([context.authUid!].toList())).first;
+        (await firebaseAuthUtils.getUsers([context.authUid!].toList())).first;
 
     final Map<String, String> params = {
       'success_url': 'https://$domain/space/$communityId?donation=success',

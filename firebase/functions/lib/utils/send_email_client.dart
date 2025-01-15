@@ -3,7 +3,7 @@ import 'infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:quiver/iterables.dart';
 
-final sendEmailClient = SendEmailClient();
+SendEmailClient sendEmailClient = SendEmailClient();
 
 class SendEmailClient {
   Future<void> sendEmail(

@@ -2,6 +2,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:intl/intl.dart';
+import '../../utils/infra/firebase_auth_utils.dart';
 import 'email_event_reminder.dart';
 import '../../utils/calendar_link_util.dart';
 import '../../utils/email_templates.dart';
@@ -165,7 +166,7 @@ class EventEmails {
       idsToEmail.remove(log.userId);
     }
 
-    var lookedUpUsers = await firestoreUtils.getUsers(idsToEmail.toList());
+    var lookedUpUsers = await firebaseAuthUtils.getUsers(idsToEmail.toList());
     print('Looked up users: ${lookedUpUsers.map((e) => e.uid).toList()}');
     if (lookedUpUsers.isEmpty) {
       print('No looked up users found.');
@@ -174,7 +175,7 @@ class EventEmails {
 
     admin_interop.UserRecord? organizer;
     final organizerLookup =
-        await firestoreUtils.getUsers([eventLocal.creatorId]);
+        await firebaseAuthUtils.getUsers([eventLocal.creatorId]);
     if (organizerLookup.isNotEmpty) {
       organizer = organizerLookup[0];
     }

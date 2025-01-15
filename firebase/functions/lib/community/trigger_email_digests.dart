@@ -7,6 +7,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import '../cloud_function.dart';
 import '../utils/email_templates.dart';
+import '../utils/infra/firebase_auth_utils.dart';
 import '../utils/infra/firestore_utils.dart';
 import '../utils/notifications_utils.dart';
 import '../utils/send_email_client.dart';
@@ -143,7 +144,7 @@ class TriggerEmailDigests extends CloudFunction {
             try {
               final List<admin.UserRecord> user =
                   await (userLookups[membership.userId] ??=
-                      firestoreUtils.getUsers([membership.userId]));
+                      firebaseAuthUtils.getUsers([membership.userId]));
               if (user.isEmpty || isNullOrEmpty(user[0].email)) {
                 print('Email not found for user: ${membership.userId}');
                 return;
