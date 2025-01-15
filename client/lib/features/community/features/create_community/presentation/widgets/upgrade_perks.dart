@@ -1,7 +1,6 @@
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
