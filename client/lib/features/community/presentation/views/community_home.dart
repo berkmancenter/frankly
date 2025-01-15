@@ -67,7 +67,7 @@ class _CommunityHomeState extends State<CommunityHome> {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      child: CustomStreamGetterBuilder<bool>(
+      child: MemoizedStreamBuilder<bool>(
         streamGetter: () =>
             context.read<CommunityProvider>().donationsEnabled().asStream(),
         keys: [community.id],
@@ -312,7 +312,7 @@ class _CommunityHomeState extends State<CommunityHome> {
     );
   }
 
-  Widget _buildEmptyEventAdminButton() => CustomStreamGetterBuilder<bool>(
+  Widget _buildEmptyEventAdminButton() => MemoizedStreamBuilder<bool>(
         keys: [community.id],
         streamGetter: () => firestoreEventService.communityHasEvents(
           communityId: community.id,

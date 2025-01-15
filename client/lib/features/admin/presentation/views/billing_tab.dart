@@ -73,7 +73,7 @@ class _AdminBillingTabState extends State<AdminBillingTab> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: CustomStreamGetterBuilder<BillingSubscription?>(
+        child: MemoizedStreamBuilder<BillingSubscription?>(
           streamGetter: () =>
               firestoreBillingSubscriptionsService.getActiveSubscription(
             userId: userService.currentUserId!,

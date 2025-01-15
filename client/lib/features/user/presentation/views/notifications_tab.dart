@@ -132,7 +132,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
     required String communityId,
     String? communityDisplay,
   }) {
-    return CustomStreamGetterBuilder<CommunityUserSettings>(
+    return MemoizedStreamBuilder<CommunityUserSettings>(
       streamGetter: () => firestorePrivateUserDataService
           .getCommunityUserSettings(userId: _userId, communityId: communityId),
       entryFrom: '_NotificationsTabState._buildActiveCommunitySettings',
@@ -281,7 +281,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
       alignment: Alignment.topLeft,
       child: Container(
         constraints: BoxConstraints(minWidth: 280, maxWidth: 540),
-        child: CustomStreamGetterBuilder<void>(
+        child: MemoizedStreamBuilder<void>(
           entryFrom: '_NotificationsTabState.build',
           streamGetter: () => _setInitialCommunity().asStream(),
           builder: (_, __) => _buildContent(),

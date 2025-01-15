@@ -59,7 +59,7 @@ class _DiscussionThreadsPageState extends State<DiscussionThreadsPage>
     context.watch<CommunityProvider>();
     final communityId = _presenter.getCommunityId();
 
-    return CustomStreamGetterBuilder<List<DiscussionThread>>(
+    return MemoizedStreamBuilder<List<DiscussionThread>>(
       streamGetter: () => _presenter.getDiscussionThreadsStream(communityId),
       keys: [communityId],
       builder: (context, discussionThreads) {
@@ -106,7 +106,7 @@ class _DiscussionThreadsPageState extends State<DiscussionThreadsPage>
         final discussionThread = discussionThreads[index];
         final communityDisplayId = _presenter.getCommunityDisplayId();
 
-        return CustomStreamGetterBuilder<DiscussionThreadComment?>(
+        return MemoizedStreamBuilder<DiscussionThreadComment?>(
           streamGetter: () {
             return _presenter.getMostRecentDiscussionThreadCommentStream(
               discussionThread.id,
@@ -192,7 +192,7 @@ class _DiscussionThreadsPageState extends State<DiscussionThreadsPage>
           final discussionThread = discussionThreads[index];
           final communityDisplayId = _presenter.getCommunityDisplayId();
 
-          return CustomStreamGetterBuilder<DiscussionThreadComment?>(
+          return MemoizedStreamBuilder<DiscussionThreadComment?>(
             streamGetter: () {
               return _presenter.getMostRecentDiscussionThreadCommentStream(
                 discussionThread.id,

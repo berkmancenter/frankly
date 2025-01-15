@@ -25,7 +25,7 @@ class _EditCommunityButtonState extends State<EditCommunityButton> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomStreamGetterBuilder<PlanCapabilityList>(
+    return MemoizedStreamBuilder<PlanCapabilityList>(
       entryFrom: 'EditCommunityButton._buildEditButton',
       showLoading: false,
       streamGetter: () => cloudFunctionsCommunityService

@@ -5,9 +5,10 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// This class wraps CustomStreamBuilder, and manages the lifecycle of the stream including
-/// rebuilding if any parameter within `keys` changes
-class CustomStreamGetterBuilder<T> extends HookWidget {
-  const CustomStreamGetterBuilder({
+/// rebuilding if any parameter within `keys` changes. This is done by
+/// wrapping the streamGetter with useMemoized.
+class MemoizedStreamBuilder<T> extends HookWidget {
+  const MemoizedStreamBuilder({
     required this.streamGetter,
     required this.builder,
     this.keys = const [],
@@ -18,7 +19,7 @@ class CustomStreamGetterBuilder<T> extends HookWidget {
     this.textStyle,
     this.height = 200,
     this.width,
-    this.entryFrom = 'CustomStreamGetterBuilder.build',
+    this.entryFrom = 'MemoizedStreamBuilder.build',
     this.showLoading = true,
   }) : super(key: key);
 

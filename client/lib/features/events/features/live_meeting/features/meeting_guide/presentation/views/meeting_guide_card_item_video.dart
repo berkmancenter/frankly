@@ -101,7 +101,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
       final currentAgendaItemId = currentAgendaItem.id;
 
       return Center(
-        child: CustomStreamGetterBuilder<List<ParticipantAgendaItemDetails>>(
+        child: MemoizedStreamBuilder<List<ParticipantAgendaItemDetails>>(
           streamGetter: () => _presenter.getParticipantAgendaItemDetailsStream(
             currentAgendaItemId,
             liveMeetingPath,

@@ -120,7 +120,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: CustomStreamGetterBuilder<DiscussionThread>(
+      child: MemoizedStreamBuilder<DiscussionThread>(
         streamGetter: () => _presenter.getDiscussionThreadStream(),
         keys: [_model.discussionThreadId],
         builder: (context, discussionThread) {
@@ -142,7 +142,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             );
           }
 
-          return CustomStreamGetterBuilder<List<DiscussionThreadComment>>(
+          return MemoizedStreamBuilder<List<DiscussionThreadComment>>(
             streamGetter: () => _presenter.getDiscussionThreadCommentsStream(),
             keys: const [],
             builder: (context, discussionThreadComments) {

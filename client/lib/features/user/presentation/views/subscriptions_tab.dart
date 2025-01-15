@@ -100,7 +100,7 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
       alignment: Alignment.topLeft,
       child: Container(
         constraints: BoxConstraints(minWidth: 280, maxWidth: 540),
-        child: CustomStreamGetterBuilder<List<Community>>(
+        child: MemoizedStreamBuilder<List<Community>>(
           entryFrom: '_SubscriptionsTabState.build',
           streamGetter: () =>
               firestoreDatabase.communitiesUserIsOwnerOf(_userId),
