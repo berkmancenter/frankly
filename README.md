@@ -48,7 +48,7 @@ Most components of Frankly can be run on your local machine. This section descri
 
 This section covers setting up a new computer for Flutter development.
 
-> #### ⚠️ Important: Frankly runs on Flutter `3.22.2.` 
+> ### ⚠️ Important: Frankly runs on Flutter `3.22.2.` 
 > **Please use this version of Flutter in order to avoid any unexpected errors.** 
 
 1.  Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
