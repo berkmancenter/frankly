@@ -2,7 +2,7 @@
 
 Welcome to the Frankly repo!
 
-[WIP] Frankly is an online deliberations platform that allows anyone to host video-enabled conversations about any topic. Key functionalities include:
+Frankly is an online deliberations platform that allows anyone to host video-enabled conversations about any topic. Key functionalities include:
 
 - Matching participants into breakout rooms based on survey questions
 - Creating structured event templates with different activities to take participants through
@@ -48,23 +48,17 @@ Most components of Frankly can be run on your local machine. This section descri
 
 This section covers setting up a new computer for Flutter development.
 
+> ### ⚠️ Important: Frankly runs on Flutter `3.22.2.` 
+> **Please use this version of Flutter in order to avoid any unexpected errors.** 
+
 1.  Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
 2.  Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
 3.  Install VSCode [here](https://code.visualstudio.com/download).
 4.  Optional but recommended: Install Homebrew [here](https://brew.sh/).
 5.  Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
-
-        1. This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
-        2. Recommended: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
-        3. Recommended: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
-
-        > ⚠️ (Optional) If you install Android and you see this output when running `flutter doctor`:
-        >
-        > `[!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
-
-    ✗ cmdline-tools component is missing
-    Run path/to/sdkmanager --install "cmdline-tools;latest"
-    See https://developer.android.com/studio/command-line for more details.` > > Run the following steps: > > 1. Open **Android Studio** > 2. Select **More Actions** > **SDK Manager** > 3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.** > 4. Click **Apply** to proceed with installation.
+    1. This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
+    2. **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
+    3. **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
 
 6.  Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
     `export PATH=$HOME/development/flutter/bin:$PATH`
@@ -80,26 +74,20 @@ This section covers setting up a new computer for Flutter development.
 
 9.  Activate the Firebase CLI for Flutter by following the steps [here](https://firebase.google.com/docs/flutter/setup?platform=ios). Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports.
 
-        > ⚠️ When running Step 1.3 in the Flutter doc (`dart pub global activate flutterfire_cli`), you may see a prompt to update the path:
-        >
-        > `Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
+> Please check **❓Troubleshooting / FAQ** at the end of the README for suggested resolutions to common Flutter installation errors.
 
-    You can fix that by adding this to your shell's config file (.zshrc, .bashrc, .bash_profile, etc.):` >
-
-    > `export PATH="$PATH":"$HOME/.pub-cache/bin"` >
-    > `Activated flutterfire_cli 1.0.0.` > > Add the recommended export to your **~/.zshrc** file. Then restart all terminal windows.
-
-
+## Developing Frankly
 These are the steps for getting started with developing Frankly:
 
 1. 🔥 Setting up and connecting to the Firebase emulators
 2. 🔌 Connecting to third-party services
 3. 🐦 Running the frontend Flutter app
 
-The following section will cover these steps for running the app for the first time. Please check **Troubleshooting/FAQ** at the end of the README for additional guidance.
+The following section will cover these steps for running the app for the first time. 
 
 
-## Data Models
+
+## 📦 Data Models
 
 The first step in running the app is to build the data_models package. Some code in this package is auto-generated by [Freezed](https://pub.dev/packages/freezed). Run the following steps in the `data_models` directory to generate code and make the package available to the client and Firebase functions:
 
@@ -498,6 +486,27 @@ If you'd prefer to set secrets individually, such as for testing certain subsyst
 
 # ❓ Troubleshooting and FAQ
 
+### Flutter installation
+* If you install Android and you see this output when running `flutter doctor`:
+  ``` 
+  [!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
+  ✗ cmdline-tools component is missing
+  Run path/to/sdkmanager --install "cmdline-tools;latest 
+  ```
+  Run the following steps: 
+    1. Open **Android Studio** 
+    2. Select **More Actions** > **SDK Manager** 
+    3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.** 
+    4. Click **Apply** to proceed with installation.
+* When activating the FlutterFire CLI (step 1.3 in the Flutter doc: `dart pub global activate flutterfire_cli`), you may see a prompt to update your path:
+  ```
+  Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
+  ```
+  You can fix that by adding this to your shell's config file (.zshrc, .bashrc, .bash_profile, etc.):
+  ```
+  export PATH="$PATH":"$HOME/.pub-cache/bin"
+  ```
+  After adding the recommended export to your **~/.zshrc** file, restart all terminal windows.
 ### Cloud Functions Emulator
 
 - **Functions fail to emulate**: If you run `firebase emulators:start --only ...` and you get a message saying that function emulation failed to start, you may need to run `firebase init functions` on first launch. Use the following selections after running:
