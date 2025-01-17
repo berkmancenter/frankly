@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:node_http/node_http.dart' as http;
 
-final muxApi = MuxApi();
+MuxApi muxApi = MuxApi();
 
 class MuxApi {
   static final _muxTokenId = functions.config.get('mux.token_id') as String;

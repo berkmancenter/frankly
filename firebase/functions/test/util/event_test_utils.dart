@@ -103,6 +103,7 @@ class EventTestUtils {
     bool isPresent = true,
     bool setAttendeeStatus = true,
     ParticipantStatus? participantStatus = ParticipantStatus.active,
+    MembershipStatus? participantMembershipStatus = MembershipStatus.attendee,
   }) async {
     final reference = eventReference(
       communityId: communityId,
@@ -123,7 +124,7 @@ class EventTestUtils {
       scheduledTime: event.scheduledTime,
       availableForBreakoutSessionId: breakoutSessionId,
       isPresent: isPresent,
-      membershipStatus: MembershipStatus.attendee,
+      membershipStatus: participantMembershipStatus,
       /**joinParameters: queryParametersService.mostRecentQueryParameters,
       breakoutRoomSurveyQuestions: breakoutRoomSurveyResults?.questions ?? [],
       zipCode: breakoutRoomSurveyResults?.zipCode,**/

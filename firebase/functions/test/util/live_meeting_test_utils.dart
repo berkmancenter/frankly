@@ -1,3 +1,6 @@
+import 'package:data_models/chat/chat.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/breakouts/initiate_breakouts.dart';
@@ -5,6 +8,7 @@ import 'package:functions/events/live_meetings/agora_api.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:functions/events/live_meetings/mux_client.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -121,6 +125,75 @@ class LiveMeetingTestUtils {
     return room;
   }
 
+  Future<void> addPublicUser({required PublicUserInfo publicUser}) async {
+    await firestore.runTransaction((transaction) async {
+      transaction.set(
+        firestore.document('publicUser/${publicUser.id}'),
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            publicUser.toJson(),
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> addParticipantAgendaItemDetails({
+    required Event event,
+    required ParticipantAgendaItemDetails participantAgendaItemDetails,
+    required String agendaItemId,
+  }) async {
+    await firestore.runTransaction((transaction) async {
+      transaction.set(
+        firestore
+            .collection(
+                '${getLiveMeetingPath(event)}/participant-agenda-item-details/$agendaItemId/participant-details')
+            .document(participantAgendaItemDetails.userId),
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            participantAgendaItemDetails.toJson(),
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> addChatMessage({
+    required ChatMessage message,
+    required String parentPath,
+  }) async {
+    await firestore.runTransaction((transaction) async {
+      transaction.set(
+        firestore
+            .collection('$parentPath/chats/community_chat/messages')
+            .document(message.id),
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            message.toJson(),
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> addSuggestedAgendaItem({
+    required SuggestedAgendaItem suggestion,
+    required String parentPath,
+  }) async {
+    await firestore.runTransaction((transaction) async {
+      transaction.set(
+        firestore
+            .collection('$parentPath/user-suggestions')
+            .document(suggestion.id),
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            suggestion.toJson(),
+          ),
+        ),
+      );
+    });
+  }
+
   // Live Meeting
   int uidToInt(String uid) {
     int base =
@@ -137,3 +210,5 @@ class LiveMeetingTestUtils {
 }
 
 class MockAgoraUtils extends Mock implements AgoraUtils {}
+
+class MockMuxApi extends Mock implements MuxApi {}
