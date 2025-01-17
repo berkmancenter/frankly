@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 
 class EmptyPageContent extends StatelessWidget {
   final void Function()? onButtonPress;
@@ -63,7 +62,7 @@ class EmptyPageContent extends StatelessWidget {
           ),
           SizedBox(height: 10),
           HeightConstrainedText(
-            titleText ?? 'No ${EnumToString.convertToString(type)}',
+            titleText ?? 'No ${type.name}',
             style: AppTextStyle.headline4.copyWith(color: _getColor()),
           ),
           SizedBox(height: 20),
@@ -71,7 +70,7 @@ class EmptyPageContent extends StatelessWidget {
             width: 205,
             child: HeightConstrainedText(
               subtitleText ??
-                  'When new ${EnumToString.convertToString(type)} are added, you\'ll see them here.',
+                  'When new ${type.name} are added, you\'ll see them here.',
               style: AppTextStyle.eyebrowSmall
                   .copyWith(color: _getColor(subtitle: true)),
               textAlign: TextAlign.center,
