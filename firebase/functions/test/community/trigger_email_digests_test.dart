@@ -21,7 +21,6 @@ import '../util/function_test_fixture.dart';
 
 void main() {
   const memberId = 'memberUser';
-  const adminUserId = 'adminUser';
   const templateId = '123777';
   String communityId = '';
   final mockFirebaseAuthUtils = MockFirebaseAuthUtils();

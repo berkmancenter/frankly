@@ -1,7 +1,6 @@
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/community/community.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -12,8 +11,7 @@ import '../../../util/function_test_fixture.dart';
 import '../../../util/live_meeting_test_utils.dart';
 
 void main() {
-  String communityId = '';
-  const userId = 'fakeAuthId';
+  late String communityId;
   const templateId = '9654';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
@@ -21,19 +19,7 @@ void main() {
   setupTestFixture();
 
   setUp(() async {
-    final testCommunity = Community(
-      id: '1234',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Breakouts are initiated for a hostless event', () async {
@@ -42,7 +28,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hostless,
       collectionPath: '',
       agendaItems: [
@@ -57,7 +43,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
     await liveMeetingTestUtils.addMeetingEvent(
       liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
@@ -73,7 +59,7 @@ void main() {
     try {
       await checker.action(
         req,
-        CallableContext(userId, null, 'fakeInstanceId'),
+        CallableContext(adminUserId, null, 'fakeInstanceId'),
       );
     } catch (e) {
       //Expect enqueuing to fail, can proceed with validating that the data was updated

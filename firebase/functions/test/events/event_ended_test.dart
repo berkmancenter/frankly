@@ -11,27 +11,14 @@ import '../util/event_test_utils.dart';
 import '../util/function_test_fixture.dart';
 
 void main() {
-  String communityId = '';
-  const userId = 'fakeAuthId';
+  late String communityId;
   const templateId = '9654988';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
   setupTestFixture();
 
   setUp(() async {
-    final testCommunity = Community(
-      id: '123496953333999',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Email sent when event has ended', () async {
@@ -40,7 +27,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -53,7 +40,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     registerFallbackValue(event);
@@ -79,14 +66,14 @@ void main() {
 
     await eventEnded.action(
       req,
-      CallableContext(userId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     final capturedMessage = verify(
       () => notificationsUtils.sendEventEndedEmail(
         event: any(named: 'event'),
         communityId: communityId,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.ended,
         generateMessage: captureAny(named: 'generateMessage'),
       ),

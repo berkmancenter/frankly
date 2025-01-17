@@ -12,23 +12,14 @@ import '../util/email_test_utils.dart';
 import '../util/function_test_fixture.dart';
 
 void main() {
-  const adminUserId = 'adminUser';
   const nonAdminUserId = 'nonAdminUser';
-  String communityId = 'testCommunityId';
+  late String communityId;
   final communityTestUtils = CommunityTestUtils();
   setupTestFixture();
 
   setUp(() async {
     // Create test community
-    final communityResult = await communityTestUtils.createCommunity(
-      community: Community(
-        id: '199212322222911',
-        name: 'Testing Community',
-        isPublic: true,
-      ),
-      userId: adminUserId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
     await communityTestUtils.addCommunityMember(
       communityId: communityId,
       userId: nonAdminUserId,

@@ -1,6 +1,5 @@
 import 'package:data_models/community/membership.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:data_models/community/community.dart';
 import 'package:functions/community/update_membership.dart';
 import 'package:functions/utils/subscription_plan_util.dart';
 import 'package:mocktail/mocktail.dart';
@@ -13,28 +12,15 @@ import '../util/function_test_fixture.dart';
 import '../util/subscription_test_utils.dart';
 
 void main() {
-  const ownerId = 'ownerUserId';
   const adminId = 'adminUserId';
   const memberId = 'memberUserId';
   const member2Id = 'memberUser2Id';
   String communityId = '';
   final communityTestUtils = CommunityTestUtils();
-  final subscriptionTestUtils = SubscriptionTestUtils();
   setupTestFixture();
 
   setUp(() async {
-    Community testCommunity = Community(
-      id: '19999999',
-      name: 'Testing Community',
-      isPublic: true,
-      creatorId: ownerId,
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: ownerId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
 
     // Set up initial memberships
     await communityTestUtils.addCommunityMember(
@@ -64,7 +50,7 @@ void main() {
 
     await membershipUpdater.action(
       req,
-      CallableContext(ownerId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     final membershipSnapshot = await firestore
@@ -103,7 +89,7 @@ void main() {
     final membershipUpdater = UpdateMembership();
     final req = UpdateMembershipRequest(
       communityId: communityId,
-      userId: ownerId,
+      userId: adminUserId,
       status: MembershipStatus.admin,
     );
 
@@ -186,7 +172,7 @@ void main() {
         () async {
           await membershipUpdater.action(
             req,
-            CallableContext(ownerId, null, 'fakeInstanceId'),
+            CallableContext(adminUserId, null, 'fakeInstanceId'),
           );
         },
         throwsA(
@@ -209,7 +195,7 @@ void main() {
       );
       await membershipUpdater.action(
         req,
-        CallableContext(ownerId, null, 'fakeInstanceId'),
+        CallableContext(adminUserId, null, 'fakeInstanceId'),
       );
 
       final req2 = UpdateMembershipRequest(
@@ -222,7 +208,7 @@ void main() {
         () async {
           await membershipUpdater.action(
             req2,
-            CallableContext(ownerId, null, 'fakeInstanceId'),
+            CallableContext(adminUserId, null, 'fakeInstanceId'),
           );
         },
         throwsA(

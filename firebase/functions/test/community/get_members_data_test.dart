@@ -1,4 +1,3 @@
-import 'package:data_models/community/community.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/utils/infra/firebase_auth_utils.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,9 +11,8 @@ import '../util/event_test_utils.dart';
 import '../util/function_test_fixture.dart';
 
 void main() {
-  const adminUserId = 'adminUser';
   const regularUserId = 'regularUser';
-  String communityId = '';
+  late String communityId;
   final mockFirebaseAuthUtils = MockFirebaseAuthUtils();
   firebaseAuthUtils = mockFirebaseAuthUtils;
   final communityTestUtils = CommunityTestUtils();
@@ -23,15 +21,7 @@ void main() {
 
   setUp(() async {
     // Create test community
-    final communityResult = await communityTestUtils.createCommunity(
-      community: Community(
-        id: '19921239',
-        name: 'Testing Community',
-        isPublic: true,
-      ),
-      userId: adminUserId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
 
     // Add regular member
     await communityTestUtils.addCommunityMember(

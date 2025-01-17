@@ -10,7 +10,20 @@ import 'package:functions/utils/infra/firebase_auth_utils.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:mocktail/mocktail.dart';
 
+const adminUserId = 'adminUser';
+
 class CommunityTestUtils {
+  static final testCommunity = Community(
+    id: '1999',
+    name: 'Testing Community',
+    isPublic: true,
+  );
+  Future<String> createTestCommunity() async {
+    final result =
+        await createCommunity(community: testCommunity, userId: adminUserId);
+    return result['communityId'];
+  }
+
   Future<Map<String, dynamic>> createCommunity({
     required Community community,
     required String userId,

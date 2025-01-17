@@ -1,5 +1,4 @@
 import 'package:data_models/admin/plan_capability_list.dart';
-import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:test/test.dart';
@@ -12,22 +11,13 @@ import '../util/function_test_fixture.dart';
 import '../util/subscription_test_utils.dart';
 
 void main() {
-  const userId = 'fakeAuthId';
   const memberId = 'memberFooId';
-  String communityId = '';
+  late String communityId;
   final communityTestUtils = CommunityTestUtils();
   setupTestFixture();
 
   setUp(() async {
-    final communityResult = await communityTestUtils.createCommunity(
-      community: Community(
-        id: '1999',
-        name: 'Testing Community',
-        isPublic: true,
-      ),
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
     await communityTestUtils.addCommunityMember(
       communityId: communityId,
       userId: memberId,
@@ -44,7 +34,7 @@ void main() {
 
     final result = await capabilitiesGetter.action(
       req,
-      CallableContext(userId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     final capabilitiesResult = PlanCapabilityList.fromJson(

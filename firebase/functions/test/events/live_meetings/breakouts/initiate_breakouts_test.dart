@@ -2,7 +2,6 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:get_it/get_it.dart';
 import 'package:functions/events/live_meetings/breakouts/initiate_breakouts.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/community/community.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -15,8 +14,7 @@ import '../../../util/function_test_fixture.dart';
 import '../../../util/live_meeting_test_utils.dart';
 
 void main() {
-  String communityId = '';
-  const userId = 'fakeAuthId';
+  late String communityId;
   const templateId = '9654';
   const uuid = Uuid();
   final breakoutSessionId = uuid.v1().toString();
@@ -27,19 +25,7 @@ void main() {
   setupTestFixture();
 
   setUp(() async {
-    final testCommunity = Community(
-      id: '9966',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Breakouts are initiated for a hosted event', () async {
@@ -48,7 +34,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -61,7 +47,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     // add 4 participants
@@ -88,7 +74,10 @@ void main() {
     );
     final assigner = InitiateBreakouts();
 
-    await assigner.action(req, CallableContext(userId, null, 'fakeInstanceId'));
+    await assigner.action(
+      req,
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
+    );
 
     // Verify breakout room session was created
     final breakoutSessionPath = liveMeetingTestUtils.getBreakoutSessionDoc(
@@ -132,7 +121,7 @@ void main() {
     final expectedRoom1 = BreakoutRoom(
       roomId: room1.roomId,
       roomName: '1',
-      creatorId: userId,
+      creatorId: adminUserId,
       createdDate: room1.createdDate,
       orderingPriority: 0,
       participantIds: ['333', '555'],
@@ -151,7 +140,7 @@ void main() {
     final expectedRoom2 = BreakoutRoom(
       roomId: room2.roomId,
       roomName: '2',
-      creatorId: userId,
+      creatorId: adminUserId,
       createdDate: room2.createdDate,
       orderingPriority: 1,
       participantIds: ['444', '666'],
@@ -166,7 +155,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hostless,
       collectionPath: '',
       agendaItems: [
@@ -179,7 +168,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
     await liveMeetingTestUtils.addMeetingEvent(
       liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
@@ -202,7 +191,7 @@ void main() {
     try {
       await assigner.action(
         req,
-        CallableContext(userId, null, 'fakeInstanceId'),
+        CallableContext(adminUserId, null, 'fakeInstanceId'),
       );
     } catch (e) {
       //Expect enqueuing to fail, can proceed with validating that the data was updated
@@ -238,7 +227,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hostless,
       collectionPath: '',
       agendaItems: [
@@ -251,7 +240,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     final expectedBreakout = BreakoutRoomSession(
@@ -281,7 +270,10 @@ void main() {
     final assigner = InitiateBreakouts();
 
     // no exception currently means it didn't try to enqueue request to initiate breakouts since already initiated
-    await assigner.action(req, CallableContext(userId, null, 'fakeInstanceId'));
+    await assigner.action(
+      req,
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
+    );
   });
 
   test(
@@ -292,7 +284,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hostless,
       collectionPath: '',
       agendaItems: [
@@ -305,7 +297,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     final currentBreakout = BreakoutRoomSession(
@@ -338,7 +330,7 @@ void main() {
     try {
       await assigner.action(
         req,
-        CallableContext(userId, null, 'fakeInstanceId'),
+        CallableContext(adminUserId, null, 'fakeInstanceId'),
       );
     } catch (e) {
       //Expect enqueuing to fail, can proceed with validating that the data was updated

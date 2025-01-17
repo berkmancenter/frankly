@@ -15,24 +15,13 @@ import '../util/function_test_fixture.dart';
 
 void main() {
   const testUserId = 'testUser123';
-  const adminUserId = 'admin1';
-  String testCommunityId1 = 'community1';
-  String testCommunityId2 = 'community2';
   final mockNotificationsUtils = MockNotificationsUtils();
   final communityTestUtils = CommunityTestUtils();
   setupTestFixture();
 
   test('Should unsubscribe user from all community notifications', () async {
     // Create test community
-    final communityResult = await communityTestUtils.createCommunity(
-      community: Community(
-        id: '19921239',
-        name: 'Testing Community',
-        isPublic: true,
-      ),
-      userId: adminUserId,
-    );
-    testCommunityId1 = communityResult['communityId'];
+    final testCommunityId1 = await communityTestUtils.createTestCommunity();
 
     // Add regular member
     await communityTestUtils.addCommunityMember(
@@ -48,7 +37,7 @@ void main() {
       ),
       userId: adminUserId,
     );
-    testCommunityId2 = community2Result['communityId'];
+    final testCommunityId2 = community2Result['communityId'];
     // Add regular member
     await communityTestUtils.addCommunityMember(
       communityId: testCommunityId2,

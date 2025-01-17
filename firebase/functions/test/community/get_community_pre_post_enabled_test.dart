@@ -1,4 +1,3 @@
-import 'package:data_models/community/community.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/community/get_community_pre_post_enabled.dart';
 import 'package:test/test.dart';
@@ -9,21 +8,12 @@ import '../util/community_test_utils.dart';
 import '../util/function_test_fixture.dart';
 
 void main() {
-  const userId = 'fakeAuthId';
-  String communityId = '';
+  late String communityId;
   final communityTestUtils = CommunityTestUtils();
   setupTestFixture();
 
   setUp(() async {
-    final communityResult = await communityTestUtils.createCommunity(
-      community: Community(
-        id: '19954439',
-        name: 'Testing Community',
-        isPublic: true,
-      ),
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Should return true since Stripe is disabled', () async {
@@ -34,7 +24,7 @@ void main() {
 
     final result = await enabledGetter.action(
       req,
-      CallableContext(userId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     final prePostResult = GetCommunityPrePostEnabledResponse.fromJson(
