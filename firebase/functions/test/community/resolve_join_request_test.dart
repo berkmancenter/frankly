@@ -6,14 +6,13 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    as admin_interop;
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:functions/utils/send_email_client.dart';
 import 'package:functions/community/resolve_join_request.dart';
 
 import '../util/community_test_utils.dart';
 import '../util/email_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const adminUserId = 'adminUser';
@@ -25,6 +24,7 @@ void main() {
   firebaseAuthUtils = mockFirebaseAuthUtils;
   sendEmailClient = mockSendEmailClient;
   final communityTestUtils = CommunityTestUtils();
+  setupTestFixture();
 
   setUpAll(() {
     // Register fallback values for SendGridEmail and its dependencies
@@ -33,10 +33,6 @@ void main() {
   });
 
   setUp(() async {
-    setFirebaseAppFactory(
-      () => admin_interop.FirebaseAdmin.instance.initializeApp()!,
-    );
-
     // Create test community
     final communityResult = await communityTestUtils.createCommunity(
       community: Community(
@@ -54,10 +50,6 @@ void main() {
       userId: regularUserId,
       status: MembershipStatus.member,
     );
-  });
-
-  tearDown(() async {
-    resetMocktailState();
   });
 
   test('Should allow admin to approve join request', () async {

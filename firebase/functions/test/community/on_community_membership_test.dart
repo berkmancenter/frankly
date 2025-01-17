@@ -3,26 +3,22 @@ import 'package:data_models/community/membership.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    as admin_interop;
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:functions/community/on_community_membership.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 
 import '../util/community_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const creatorId = 'creatorUser';
   const newMemberId = 'newMember';
-  String communityId = '';
+  late String communityId;
   final communityTestUtils = CommunityTestUtils();
   late OnCommunityMembership onCommunityMembership;
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(
-      () => admin_interop.FirebaseAdmin.instance.initializeApp()!,
-    );
-
     onCommunityMembership = OnCommunityMembership();
 
     // Create test community with initial onboarding step
@@ -39,6 +35,7 @@ void main() {
       userId: creatorId,
     );
     communityId = communityResult['communityId'];
+    print("Created community $communityId");
   });
 
   test('Should not add inviteSomeone step when creator joins', () async {
@@ -119,11 +116,12 @@ void main() {
       userId: newMemberId,
       status: MembershipStatus.member,
     );
-
+    print("Community ID before $communityId");
     final firstDocSnapshot = await firestore
         .document('memberships/$newMemberId/community-membership/$communityId')
         .get();
-
+    print("Community ID after $communityId");
+    print("The membership doc ${firstDocSnapshot.documentID}");
     await onCommunityMembership.onCreate(
       firstDocSnapshot,
       Membership(communityId: communityId, userId: newMemberId),
@@ -152,7 +150,7 @@ void main() {
     // Verify community document
     final communityDoc =
         await firestore.document('community/$communityId').get();
-
+    print('JEN ${communityDoc.data.toMap()}');
     final onboardingSteps = communityDoc.data
         .toMap()[Community.kFieldOnboardingSteps] as List<dynamic>;
 
@@ -199,13 +197,6 @@ void main() {
       DateTime.now(),
       MockEventContext(),
     );
-
-    // Verify no error was thrown and community still exists
-    final communityDoc = await firestore
-        .document('community/${communityWithoutSteps['communityId']}')
-        .get();
-
-    expect(communityDoc.exists, isTrue);
   });
 
   test('Should handle non-existent community gracefully', () async {

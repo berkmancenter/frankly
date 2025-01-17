@@ -2,7 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
-    "test": "dart test",
+    "test": "dart test --concurrency=1",
     "postinstall": "patch-package"
   },
   "engines": {

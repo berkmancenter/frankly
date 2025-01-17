@@ -6,12 +6,11 @@ import 'package:test/test.dart';
 import 'package:functions/community/create_community.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart';
+
+import '../util/function_test_fixture.dart';
 
 void main() {
-  setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-  });
+  setupTestFixture();
 
   test('Community should be created without partner agreement', () async {
     const userId = 'fakeAuthId';

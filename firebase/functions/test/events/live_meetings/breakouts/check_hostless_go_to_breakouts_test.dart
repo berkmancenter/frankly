@@ -6,10 +6,9 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    hide EventType;
 import '../../../util/community_test_utils.dart';
 import '../../../util/event_test_utils.dart';
+import '../../../util/function_test_fixture.dart';
 import '../../../util/live_meeting_test_utils.dart';
 
 void main() {
@@ -19,10 +18,9 @@ void main() {
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
   final liveMeetingTestUtils = LiveMeetingTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-
     final testCommunity = Community(
       id: '1234',
       name: 'Testing Community',

@@ -1,6 +1,8 @@
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
+import 'package:functions/utils/subscription_plan_util.dart';
+import 'package:mocktail/mocktail.dart';
 
 class SubscriptionTestUtils {
   static final unrestrictedPlan = PlanCapabilityList(
@@ -50,3 +52,5 @@ class SubscriptionTestUtils {
     }
   }
 }
+
+class MockSubscriptionPlanUtil extends Mock implements SubscriptionPlanUtil {}

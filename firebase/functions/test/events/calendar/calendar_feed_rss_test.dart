@@ -5,11 +5,9 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/calendar/calendar_feed_rss.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    hide EventType;
 import '../../util/community_test_utils.dart';
 import '../../util/event_test_utils.dart';
+import '../../util/function_test_fixture.dart';
 
 void main() {
   String communityId = '';
@@ -17,10 +15,9 @@ void main() {
   const templateId = '9654988';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-
     final testCommunity = Community(
       id: '2921159966669',
       name: 'Testing Community',

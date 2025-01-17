@@ -8,11 +8,10 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/community/unsubscribe_from_community_notifications.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    as admin_interop;
 
 import '../util/community_test_utils.dart';
 import '../util/email_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const testUserId = 'testUser123';
@@ -21,16 +20,7 @@ void main() {
   String testCommunityId2 = 'community2';
   final mockNotificationsUtils = MockNotificationsUtils();
   final communityTestUtils = CommunityTestUtils();
-
-  setUp(() async {
-    setFirebaseAppFactory(
-      () => admin_interop.FirebaseAdmin.instance.initializeApp()!,
-    );
-  });
-
-  tearDown(() {
-    resetMocktailState();
-  });
+  setupTestFixture();
 
   test('Should unsubscribe user from all community notifications', () async {
     // Create test community

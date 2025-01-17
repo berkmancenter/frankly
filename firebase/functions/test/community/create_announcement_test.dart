@@ -2,7 +2,6 @@ import 'package:data_models/announcements/announcement.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/community/create_announcement.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,15 +9,16 @@ import 'package:test/test.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import '../util/community_test_utils.dart';
 import '../util/email_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const adminUserId = 'adminUser';
   const nonAdminUserId = 'nonAdminUser';
   String communityId = 'testCommunityId';
   final communityTestUtils = CommunityTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
     // Create test community
     final communityResult = await communityTestUtils.createCommunity(
       community: Community(
@@ -34,10 +34,6 @@ void main() {
       userId: nonAdminUserId,
       status: MembershipStatus.member,
     );
-  });
-
-  tearDown(() async {
-    resetMocktailState();
   });
 
   test('Should allow admin to create an announcement', () async {

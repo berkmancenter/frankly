@@ -62,65 +62,6 @@ class CommunityTestUtils {
       );
     });
   }
-
-  Future<void> deleteAllCommunities() async {
-    // Clean up all test data
-
-    // Delete all communities
-    final communityDocs = await firestore.collection('community').get();
-    await Future.wait(
-      communityDocs.documents.map((doc) async {
-        // First delete all subcollections
-        final commId = doc.documentID;
-
-        // Delete join requests
-        final joinRequestDocs =
-            await firestore.collection('community/$commId/join-requests').get();
-        await Future.wait(
-          joinRequestDocs.documents.map((d) => d.reference.delete()),
-        );
-
-        // Delete events
-        final eventDocs = await firestore
-            .collectionGroup('events')
-            .where('communityId', isEqualTo: commId)
-            .get();
-        await Future.wait(
-          eventDocs.documents.map((d) => d.reference.delete()),
-        );
-
-        // Delete templates
-        final templateDocs =
-            await firestore.collection('community/$commId/templates').get();
-        await Future.wait(
-          templateDocs.documents.map((d) => d.reference.delete()),
-        );
-
-        // Delete the community document itself
-        await doc.reference.delete();
-      }),
-    );
-
-    // Delete all memberships
-    final membershipDocs =
-        await firestore.collectionGroup('community-membership').get();
-    await Future.wait(
-      membershipDocs.documents.map((doc) => doc.reference.delete()),
-    );
-
-    // Delete all user settings
-    final settingsDocs =
-        await firestore.collectionGroup('communityUserSettings').get();
-    await Future.wait(
-      settingsDocs.documents.map((doc) => doc.reference.delete()),
-    );
-
-    // Delete all email digests
-    final digestDocs = await firestore.collectionGroup('emailDigests').get();
-    await Future.wait(
-      digestDocs.documents.map((doc) => doc.reference.delete()),
-    );
-  }
 }
 
 class MockFirebaseAuthUtils extends Mock implements FirebaseAuthUtils {}

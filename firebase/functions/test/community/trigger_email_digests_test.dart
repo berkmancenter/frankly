@@ -17,6 +17,7 @@ import 'package:functions/utils/infra/firestore_utils.dart';
 import '../util/community_test_utils.dart';
 import '../util/email_test_utils.dart';
 import '../util/event_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const memberId = 'memberUser';
@@ -30,12 +31,9 @@ void main() {
   sendEmailClient = mockSendEmailClient;
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(
-      () => admin_interop.FirebaseAdmin.instance.initializeApp()!,
-    );
-    await communityTestUtils.deleteAllCommunities();
     // Create test community
     final communityResult = await communityTestUtils.createCommunity(
       community: Community(
@@ -56,15 +54,6 @@ void main() {
       userId: memberId,
       status: MembershipStatus.member,
     );
-
-    // Reset mocks
-    reset(mockSendEmailClient);
-    reset(mockNotificationsUtils);
-    reset(mockFirebaseAuthUtils);
-  });
-
-  tearDown(() async {
-    resetMocktailState();
   });
 
   test('Should send digest emails for upcoming events to subscribed members',

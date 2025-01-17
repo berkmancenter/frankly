@@ -6,19 +6,17 @@ import 'package:functions/community/update_community.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 
 import '../util/community_test_utils.dart';
-import '../util/subscription_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const userId = 'fakeAuthId';
   String communityId = '';
   final communityTestUtils = CommunityTestUtils();
-  final subscriptionTestUtils = SubscriptionTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
     Community testCommunity = Community(
       id: '1999',
       name: 'Testing Community',
@@ -152,113 +150,101 @@ void main() {
     );
   });
 
-  group("Unrestricted plan capabilities tests", () {
-    setUp(() async {
-      await subscriptionTestUtils.addUnrestrictedPlanCapabilities(
-        planCapabilities: SubscriptionTestUtils.unrestrictedPlan,
-      );
-    });
+  test('Error thrown when display name already in use', () async {
+    Community testCommunity2 = Community(
+      id: '1939',
+      name: 'Testing Community Number Two',
+      isPublic: true,
+      profileImageUrl: 'http://someimage.com',
+      bannerImageUrl: 'http://mybanner.com',
+    );
 
-    tearDown(() async {
-      await subscriptionTestUtils.removeUnrestrictedPlanCapabilities();
-    });
+    final secondCommResult = await communityTestUtils.createCommunity(
+      community: testCommunity2,
+      userId: userId,
+    );
+    final secondCommunityId = secondCommResult['communityId'];
+    final communityUpdater = UpdateCommunity();
+    testCommunity2 = Community(
+      id: secondCommunityId,
+      name: 'Testing Community Number Two',
+      isPublic: true,
+      profileImageUrl: 'http://someimage.com',
+      bannerImageUrl: 'http://mybanner.com',
+      displayIds: ['testing', 'tester', 'testy'],
+    );
+    final req = UpdateCommunityRequest(
+      community: testCommunity2,
+      keys: [Community.kFieldDisplayIds],
+    );
+    await communityUpdater.action(
+      req,
+      CallableContext(userId, null, 'fakeInstanceId'),
+    );
+    final testCommunity = Community(
+      id: communityId,
+      name: 'Testing Community',
+      isPublic: false,
+      displayIds: ['tested', 'testy'],
+      description: 'A community of testers',
+      tagLine: 'Test It!',
+    );
+    final req2 = UpdateCommunityRequest(
+      community: testCommunity,
+      keys: [Community.kFieldDisplayIds],
+    );
 
-    test('Error thrown when display name already in use', () async {
-      Community testCommunity2 = Community(
-        id: '1939',
-        name: 'Testing Community Number Two',
-        isPublic: true,
-        profileImageUrl: 'http://someimage.com',
-        bannerImageUrl: 'http://mybanner.com',
-      );
-
-      final secondCommResult = await communityTestUtils.createCommunity(
-        community: testCommunity2,
-        userId: userId,
-      );
-      final secondCommunityId = secondCommResult['communityId'];
-      final communityUpdater = UpdateCommunity();
-      testCommunity2 = Community(
-        id: secondCommunityId,
-        name: 'Testing Community Number Two',
-        isPublic: true,
-        profileImageUrl: 'http://someimage.com',
-        bannerImageUrl: 'http://mybanner.com',
-        displayIds: ['testing', 'tester', 'testy'],
-      );
-      final req = UpdateCommunityRequest(
-        community: testCommunity2,
-        keys: [Community.kFieldDisplayIds],
-      );
-      await communityUpdater.action(
-        req,
-        CallableContext(userId, null, 'fakeInstanceId'),
-      );
-      final testCommunity = Community(
-        id: communityId,
-        name: 'Testing Community',
-        isPublic: false,
-        displayIds: ['tested', 'testy'],
-        description: 'A community of testers',
-        tagLine: 'Test It!',
-      );
-      final req2 = UpdateCommunityRequest(
-        community: testCommunity,
-        keys: [Community.kFieldDisplayIds],
-      );
-
-      expect(
-        () async {
-          await communityUpdater.action(
-            req2,
-            CallableContext(userId, null, 'fakeInstanceId'),
-          );
-        },
-        throwsA(
-          predicate(
-            (e) =>
-                e is HttpsError &&
-                e.code == HttpsError.failedPrecondition &&
-                e.message == 'The URL display name testy is already taken.',
-          ),
+    expect(
+      () async {
+        await communityUpdater.action(
+          req2,
+          CallableContext(userId, null, 'fakeInstanceId'),
+        );
+      },
+      throwsA(
+        predicate(
+          (e) =>
+              e is HttpsError &&
+              e.code == HttpsError.failedPrecondition &&
+              e.message == 'The URL display name testy is already taken.',
         ),
-      );
-    });
-    test('Display IDs updated when custom URLs allowed', () async {
-      final communityUpdater = UpdateCommunity();
-      final Community testCommunity = Community(
-        id: communityId,
-        name: 'Testing Community',
-        isPublic: true,
-        profileImageUrl: 'http://someimage.com',
-        bannerImageUrl: 'http://mybanner.com',
-        displayIds: ['testing-community'],
-      );
-      final req = UpdateCommunityRequest(
-        community: testCommunity,
-        keys: [
-          Community.kFieldDisplayIds,
-        ],
-      );
-      final result = await communityUpdater.action(
-        req,
-        CallableContext(userId, null, 'fakeInstanceId'),
-      );
-      expect(result, equals(''));
+      ),
+    );
+  });
+  test('Display IDs updated when custom URLs allowed', () async {
+    final communityUpdater = UpdateCommunity();
+    final Community testCommunity = Community(
+      id: communityId,
+      name: 'Testing Community',
+      isPublic: true,
+      profileImageUrl: 'http://someimage.com',
+      bannerImageUrl: 'http://mybanner.com',
+      displayIds: ['testing-community'],
+    );
+    final req = UpdateCommunityRequest(
+      community: testCommunity,
+      keys: [
+        Community.kFieldDisplayIds,
+      ],
+    );
+    final result = await communityUpdater.action(
+      req,
+      CallableContext(userId, null, 'fakeInstanceId'),
+    );
+    expect(result, equals(''));
 
-      final communitySnapshot =
-          await firestore.document('community/$communityId').get();
-      final updatedCommunity = Community.fromJson(
-        firestoreUtils.fromFirestoreJson(communitySnapshot.data.toMap()),
-      );
+    final communitySnapshot =
+        await firestore.document('community/$communityId').get();
+    final updatedCommunity = Community.fromJson(
+      firestoreUtils.fromFirestoreJson(communitySnapshot.data.toMap()),
+    );
 
-      expect(
-        updatedCommunity.displayIds,
-        unorderedEquals(
-          [communityId, communityId.toLowerCase(), 'testing-community'],
-        ),
-      );
-    });
+    expect(
+      updatedCommunity.displayIds,
+      unorderedEquals(
+        [communityId, communityId.toLowerCase(), 'testing-community'],
+      ),
+    );
   });
 
   test('Error thrown when no allowed update fields specified', () async {

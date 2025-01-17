@@ -8,12 +8,11 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/events/event.dart';
 import 'package:functions/community/get_user_admin_details.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    as admin_interop hide EventType;
 import 'package:functions/utils/infra/firestore_utils.dart';
 
 import '../util/community_test_utils.dart';
 import '../util/event_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
   const adminUserId = 'adminUser';
@@ -25,12 +24,9 @@ void main() {
   firebaseAuthUtils = mockFirebaseAuthUtils;
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(
-      () => admin_interop.FirebaseAdmin.instance.initializeApp()!,
-    );
-
     // Create test community
     final communityResult = await communityTestUtils.createCommunity(
       community: Community(
@@ -48,10 +44,6 @@ void main() {
       userId: regularUserId,
       status: MembershipStatus.member,
     );
-  });
-
-  tearDown(() async {
-    resetMocktailState();
   });
 
   test('Should allow user to request their own admin details', () async {
