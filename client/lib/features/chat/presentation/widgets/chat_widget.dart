@@ -120,7 +120,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
 
   Widget _buildDefaultMessage() => Center(
         child: EmptyPageContent(
-          type: EmptyPageType.chat,
+          type: EmptyPageType.chats,
           titleText: 'Welcome!',
           subtitleText: 'Introduce yourself to help break the ice 😉',
           showContainer: false,

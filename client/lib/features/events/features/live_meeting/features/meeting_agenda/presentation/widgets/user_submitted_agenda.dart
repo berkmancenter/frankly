@@ -180,7 +180,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
 
   Widget _buildEmptySuggestions() => Center(
         child: EmptyPageContent(
-          type: EmptyPageType.suggestion,
+          type: EmptyPageType.suggestions,
           titleText: 'Make a suggestion',
           subtitleText: 'You can suggest an agenda item and everyone can vote',
           showContainer: false,

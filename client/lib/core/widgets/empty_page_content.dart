@@ -100,8 +100,8 @@ enum EmptyPageType {
   announcements,
   resources,
   templates,
-  chat,
-  suggestion,
+  chats,
+  suggestions,
 }
 
 extension EmptyPageTypeData on EmptyPageType {
@@ -117,9 +117,9 @@ extension EmptyPageTypeData on EmptyPageType {
         return '📋';
       case EmptyPageType.templates:
         return '📒';
-      case EmptyPageType.chat:
+      case EmptyPageType.chats:
         return '👋';
-      case EmptyPageType.suggestion:
+      case EmptyPageType.suggestions:
         return '👍';
     }
   }
@@ -136,9 +136,9 @@ extension EmptyPageTypeData on EmptyPageType {
         return 'Create a resource';
       case EmptyPageType.templates:
         return 'Create a template';
-      case EmptyPageType.chat:
+      case EmptyPageType.chats:
         throw UnimplementedError('No empty page chat button');
-      case EmptyPageType.suggestion:
+      case EmptyPageType.suggestions:
         throw UnimplementedError('No empty page suggestion button');
     }
   }
