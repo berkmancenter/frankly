@@ -18,20 +18,6 @@ Firestore get firestore => firebaseApp.firestore();
 FirestoreUtils firestoreUtils = FirestoreUtils();
 
 class FirestoreUtils {
-  Future<UserRecord> getUser(String uid) async {
-    // Get user record
-    var user = await firebaseApp.auth().getUser(uid);
-
-    return user;
-  }
-
-  Future<List<UserRecord>> getUsers(List<String> uids) async {
-    // Get emails of every user we want to email
-    final getUserFutures = uids.map((id) => firebaseApp.auth().getUser(id));
-
-    return Future.wait(getUserFutures);
-  }
-
   Future<T> getFirestoreObject<T>({
     required String path,
     required T Function(Map<String, dynamic>) constructor,

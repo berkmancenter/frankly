@@ -151,6 +151,7 @@ class SubscriptionPlanUtil {
         ),
       );
     } else {
+      print('Using default capabilities');
       return getDefaultCapabilities();
     }
   }

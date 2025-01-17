@@ -1,38 +1,21 @@
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/community/community.dart';
 import 'package:functions/events/join_event.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    hide EventType;
 import '../util/community_test_utils.dart';
 import '../util/event_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
-  String communityId = '';
-  const userId = 'fakeAuthId';
+  late String communityId;
   const templateId = '9654988';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-
-    final testCommunity = Community(
-      id: '123492115999',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Registration email sent when user joins event', () async {
@@ -42,7 +25,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -55,7 +38,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEvent(
@@ -100,7 +83,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -113,7 +96,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEvent(
@@ -159,7 +142,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -173,7 +156,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEvent(

@@ -8,36 +8,20 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    as admin_interop hide EventType;
 import '../../util/community_test_utils.dart';
+import '../../util/email_test_utils.dart';
 import '../../util/event_test_utils.dart';
+import '../../util/function_test_fixture.dart';
 
 void main() {
   String communityId = '';
-  const userId = 'fakeAuthId';
   const templateId = '9654988';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(
-      () => admin_interop.FirebaseAdmin.instance.initializeApp()!,
-    );
-
-    final testCommunity = Community(
-      id: '123496953333999ddddd',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Event message sent and stored in database', () async {
@@ -47,7 +31,7 @@ void main() {
     template = await eventTestUtils.createTemplate(
       communityId: communityId,
       template: template,
-      creatorId: userId,
+      creatorId: adminUserId,
     );
 
     var event = Event(
@@ -55,7 +39,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       scheduledTime: DateTime.now(),
@@ -69,7 +53,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     registerFallbackValue(event);
@@ -88,7 +72,7 @@ void main() {
 
     const msg = 'Something Important has happened';
     final eventMessage = EventMessage(
-      creatorId: userId,
+      creatorId: adminUserId,
       createdAt: DateTime.now(),
       message: msg,
     );
@@ -116,7 +100,7 @@ void main() {
 
     await eventMsgr.action(
       req,
-      CallableContext(userId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     final capturedMessage = verify(
@@ -154,5 +138,3 @@ void main() {
 }
 
 class MockCommunity extends Mock implements Community {}
-
-class MockUserRecord extends Mock implements admin_interop.UserRecord {}

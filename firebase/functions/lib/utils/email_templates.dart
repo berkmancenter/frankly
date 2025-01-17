@@ -357,6 +357,7 @@ String makeNewAnnouncementBody({
   Announcement? announcement,
 }) {
   const htmlEscape = HtmlEscape();
+  print('Got mock instance: ${community.hashCode}');
   final communityName = htmlEscape.convert(community.name ?? community.id);
   final title = htmlEscape.convert(announcement?.title ?? '');
   final message = htmlEscape.convert(announcement?.message ?? '');

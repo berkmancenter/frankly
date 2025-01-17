@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import '../../utils/infra/firebase_auth_utils.dart';
 import 'stripe_client.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'package:node_http/node_http.dart' as http;
@@ -16,7 +17,7 @@ class StripeUtil {
   StripeClient getClient() => _client ??= createStripeClient(_secretKey);
 
   Future<String> getOrCreateCustomerStripeId({required String uid}) async {
-    final users = await firestoreUtils.getUsers([uid]);
+    final users = await firebaseAuthUtils.getUsers([uid]);
     if (users.length != 1) {
       throw Exception('User not found');
     }

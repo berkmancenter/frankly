@@ -4,6 +4,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../on_call_function.dart';
 import '../utils/email_templates.dart';
+import '../utils/infra/firebase_auth_utils.dart';
 import '../utils/infra/firestore_utils.dart';
 import '../utils/send_email_client.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -158,7 +159,7 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
     required String userId,
     required String communityId,
   }) async {
-    final users = await firestoreUtils.getUsers([userId]);
+    final users = await firebaseAuthUtils.getUsers([userId]);
     final community = await firestoreUtils.getFirestoreObject(
       path: 'community/$communityId',
       constructor: (map) => Community.fromJson(map),

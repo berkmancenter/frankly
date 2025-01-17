@@ -4,6 +4,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     as functions_interop;
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import '../../on_call_function.dart';
+import '../../utils/infra/firebase_auth_utils.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -115,7 +116,7 @@ class GetMeetingChatSuggestionData
       var doc = ChatMessage.fromJson(
         firestoreUtils.fromFirestoreJson(document.data.toMap()),
       );
-      final memberInfo = await firestoreUtils.getUser(doc.creatorId!);
+      final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
       String memberName;
       if (isNullOrEmpty(memberInfo.displayName)) {
@@ -160,7 +161,7 @@ class GetMeetingChatSuggestionData
       var doc = SuggestedAgendaItem.fromJson(
         firestoreUtils.fromFirestoreJson(document.data.toMap()),
       );
-      final memberInfo = await firestoreUtils.getUser(doc.creatorId!);
+      final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
       String memberName;
       if (isNullOrEmpty(memberInfo.displayName)) {
@@ -245,7 +246,7 @@ class GetMeetingChatSuggestionData
     DocumentSnapshot document,
     ParticipantAgendaItemDetails details,
   ) async {
-    final memberInfo = await firestoreUtils.getUser(details.userId!);
+    final memberInfo = await firebaseAuthUtils.getUser(details.userId!);
 
     String memberName;
     if (isNullOrEmpty(memberInfo.displayName)) {

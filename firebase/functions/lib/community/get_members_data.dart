@@ -1,13 +1,13 @@
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart' as admin;
 import '../on_call_function.dart';
+import '../utils/infra/firebase_auth_utils.dart';
 import '../utils/infra/firestore_utils.dart';
 import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/member_details.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:data_models/user/public_user_info.dart';
 import 'package:quiver/iterables.dart';
 
 class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
@@ -92,7 +92,7 @@ class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
     admin.UserRecord? memberInfo;
     try {
       // Get memberId user info
-      memberInfo = await firestoreUtils.getUser(memberId);
+      memberInfo = await firebaseAuthUtils.getUser(memberId);
     } catch (e) {
       print('Error getting user info for $memberId: $e');
     }

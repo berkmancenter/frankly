@@ -5,6 +5,7 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import 'infra/firebase_auth_utils.dart';
 import 'infra/firestore_utils.dart';
 import 'send_email_client.dart';
 import 'utils.dart';
@@ -92,7 +93,7 @@ class NotificationsUtils {
 
     print('user IDs filtered');
     // Get email addresses from auth and queue emails
-    final users = await firestoreUtils.getUsers(usersIdsFiltered);
+    final users = await firebaseAuthUtils.getUsers(usersIdsFiltered);
 
     print('Got users');
     final usersWithoutEmail =
@@ -161,7 +162,7 @@ class NotificationsUtils {
 
     // Get email addresses from these participants. Some of them might not have an email
     // therefore ignore them.
-    final users = await firestoreUtils.getUsers(eventParticipantIds);
+    final users = await firebaseAuthUtils.getUsers(eventParticipantIds);
     final usersWithoutEmail =
         users.where((u) => isNullOrEmpty(u.email)).toList();
     if (usersWithoutEmail.isNotEmpty) {
@@ -225,7 +226,7 @@ class NotificationsUtils {
     }
 
     if (userIds.isEmpty) return;
-    final lookedUpUsers = await firestoreUtils.getUsers(userIds.toList());
+    final lookedUpUsers = await firebaseAuthUtils.getUsers(userIds.toList());
     print('Looked up users: ${lookedUpUsers.map((e) => e.uid).toList()}');
     if (lookedUpUsers.isEmpty) {
       print('No looked up users found.');

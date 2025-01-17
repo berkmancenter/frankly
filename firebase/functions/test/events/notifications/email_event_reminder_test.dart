@@ -1,40 +1,22 @@
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/community/community.dart';
-
 
 import 'package:functions/events/notifications/email_event_reminder.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    hide EventType;
 import '../../util/community_test_utils.dart';
 import '../../util/event_test_utils.dart';
+import '../../util/function_test_fixture.dart';
 
 void main() {
-  String communityId = '';
-  const userId = 'fakeAuthId';
+  late String communityId;
   const templateId = '9654988';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-
-    final testCommunity = Community(
-      id: '292115999',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('One day reminder email sent to registered participants', () async {
@@ -44,7 +26,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       scheduledTime: DateTime.now().add(const Duration(hours: 24)),
@@ -58,7 +40,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEventMultiple(
@@ -101,7 +83,7 @@ void main() {
         eventPath: event.fullPath,
         userIds: any(
           named: 'userIds',
-          that: unorderedEquals([...participantIds, userId]),
+          that: unorderedEquals([...participantIds, adminUserId]),
         ),
         emailType: EventEmailType.oneDayReminder,
       ),
@@ -115,7 +97,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       scheduledTime: DateTime.now().add(const Duration(hours: 1)),
@@ -129,7 +111,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEventMultiple(
@@ -172,7 +154,7 @@ void main() {
         eventPath: event.fullPath,
         userIds: any(
           named: 'userIds',
-          that: unorderedEquals([...participantIds, userId]),
+          that: unorderedEquals([...participantIds, adminUserId]),
         ),
         emailType: EventEmailType.oneHourReminder,
       ),
@@ -186,7 +168,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       scheduledTime: DateTime.now().add(const Duration(hours: 3)),
@@ -200,7 +182,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEventMultiple(
@@ -243,7 +225,7 @@ void main() {
         eventPath: event.fullPath,
         userIds: any(
           named: 'userIds',
-          that: unorderedEquals([...participantIds, userId]),
+          that: unorderedEquals([...participantIds, adminUserId]),
         ),
         emailType: EventEmailType.oneHourReminder,
       ),
@@ -257,7 +239,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       scheduledTime: DateTime.now().add(const Duration(hours: 1)),
@@ -272,7 +254,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     await eventTestUtils.joinEventMultiple(
@@ -315,7 +297,7 @@ void main() {
         eventPath: event.fullPath,
         userIds: any(
           named: 'userIds',
-          that: unorderedEquals([...participantIds, userId]),
+          that: unorderedEquals([...participantIds, adminUserId]),
         ),
         emailType: EventEmailType.oneHourReminder,
       ),

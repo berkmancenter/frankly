@@ -38,7 +38,8 @@ jobs:
               - 'firebase/firestore/**'
             shared:
               - 'data_models/lib/**'
-              - 'firebase/functions/lib/utils/firestore_utils.dart'
+              - 'firebase/functions/lib/utils/infra/firestore_utils.dart'
+              - 'firebase/functions/lib/utils/infra/firebase_auth_utils.dart'
               - 'firebase/functions/lib/utils/utils.dart'
 
       - name: Setup Node

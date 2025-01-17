@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import '../../utils/infra/firebase_auth_utils.dart';
 import 'live_meeting_utils.dart';
 import '../../on_call_function.dart';
 import '../../utils/infra/firestore_utils.dart';
@@ -49,7 +50,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       print('Public user display name: $displayName');
 
       if (displayName == null || displayName.trim().isEmpty) {
-        final userLookup = await firestoreUtils.getUsers([context.authUid!]);
+        final userLookup = await firebaseAuthUtils.getUsers([context.authUid!]);
         displayName =
             firstAndLastInitial(userLookup.firstOrNull?.displayName) ??
                 'User-${context.authUid!.substring(0, 4)}';

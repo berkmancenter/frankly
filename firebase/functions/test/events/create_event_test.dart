@@ -3,39 +3,22 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/breakouts/check_hostless_go_to_breakouts.dart';
 import 'package:functions/events/create_event.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/community/community.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:firebase_admin_interop/firebase_admin_interop.dart'
-    hide EventType;
 import '../util/community_test_utils.dart';
 import '../util/event_test_utils.dart';
+import '../util/function_test_fixture.dart';
 
 void main() {
-  String communityId = '';
-  const userId = 'fakeAuthId';
+  late String communityId;
   const templateId = '9654988';
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  setupTestFixture();
 
   setUp(() async {
-    setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-
-    final testCommunity = Community(
-      id: '12349695999',
-      name: 'Testing Community',
-      isPublic: true,
-      profileImageUrl: 'http://someimage.com',
-      bannerImageUrl: 'http://mybanner.com',
-    );
-
-    final communityResult = await communityTestUtils.createCommunity(
-      community: testCommunity,
-      userId: userId,
-    );
-    communityId = communityResult['communityId'];
+    communityId = await communityTestUtils.createTestCommunity();
   });
 
   test('Emails are sent and reminders queued on event creation', () async {
@@ -44,7 +27,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -57,7 +40,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     registerFallbackValue(event);
@@ -70,7 +53,7 @@ void main() {
     when(
       () => eventEmails.sendEmailsToUsers(
         eventPath: event.fullPath,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.initialSignUp,
       ),
     ).thenAnswer((_) async {
@@ -89,13 +72,13 @@ void main() {
 
     await eventCreator.action(
       req,
-      CallableContext(userId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     verify(
       () => eventEmails.sendEmailsToUsers(
         eventPath: event.fullPath,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.initialSignUp,
       ),
     ).called(1);
@@ -121,7 +104,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -134,7 +117,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     registerFallbackValue(event);
@@ -147,7 +130,7 @@ void main() {
     when(
       () => eventEmails.sendEmailsToUsers(
         eventPath: event.fullPath,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.initialSignUp,
       ),
     ).thenAnswer((_) async {
@@ -172,7 +155,7 @@ void main() {
     verify(
       () => eventEmails.sendEmailsToUsers(
         eventPath: event.fullPath,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.initialSignUp,
       ),
     ).called(1);
@@ -190,7 +173,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hostless,
       collectionPath: '',
       agendaItems: [
@@ -203,7 +186,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     final req = CreateEventRequest(
@@ -221,7 +204,7 @@ void main() {
     when(
       () => eventEmails.sendEmailsToUsers(
         eventPath: event.fullPath,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.initialSignUp,
       ),
     ).thenAnswer((_) async {
@@ -243,13 +226,13 @@ void main() {
 
     await eventCreator.action(
       req,
-      CallableContext(userId, null, 'fakeInstanceId'),
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
     );
 
     verify(
       () => eventEmails.sendEmailsToUsers(
         eventPath: event.fullPath,
-        userIds: [userId],
+        userIds: [adminUserId],
         emailType: EventEmailType.initialSignUp,
       ),
     ).called(1);
@@ -279,7 +262,7 @@ void main() {
       status: EventStatus.active,
       communityId: communityId,
       templateId: templateId,
-      creatorId: userId,
+      creatorId: adminUserId,
       nullableEventType: EventType.hosted,
       collectionPath: '',
       agendaItems: [
@@ -292,7 +275,7 @@ void main() {
     );
     event = await eventTestUtils.createEvent(
       event: event,
-      userId: userId,
+      userId: adminUserId,
     );
 
     registerFallbackValue(event);
