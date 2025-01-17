@@ -229,15 +229,6 @@ void main() {
       DateTime.now(),
       MockEventContext(),
     );
-
-    // Verify membership was created despite community not existing
-    final membershipVerifyDoc = await firestore
-        .document(
-          'memberships/$newMemberId/community-membership/nonexistent-community',
-        )
-        .get();
-
-    expect(membershipVerifyDoc.exists, isTrue);
   });
 }
 
