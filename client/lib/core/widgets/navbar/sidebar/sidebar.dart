@@ -222,6 +222,12 @@ class _SideBarState extends State<SideBar> {
               ],
             ),
           SideBarNavigationButton(
+            text: 'Help Center',
+            onTap: () => launch(Environment.helpCenterUrl),
+            style: AppTextStyle.eyebrowSmall,
+            verticalPadding: 6,
+          ),
+          SideBarNavigationButton(
             text: 'About ${Environment.appName}',
             onTap: () => launch(Environment.aboutUrl),
             style: AppTextStyle.eyebrowSmall,

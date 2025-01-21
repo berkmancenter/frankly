@@ -58,6 +58,7 @@ jobs:
           envkey_PRICING_URL: https://frankly.org/pricing
           envkey_ABOUT_URL: https://frankly.org
           envkey_PRIVACY_POLICY_URL: https://frankly.org/privacy
+          envkey_HELP_CENTER_URL: https://rebootingsocialmedia.notion.site/Frankly-Help-Center-23b4f9a120a344d4af2b2ce44b2ae229
           envkey_CREATE_TEMPLATE_HELP_URL: https://rebootingsocialmedia.notion.site/Creating-and-Managing-Events-552a42e4a09549b788e1901536a25965
           envkey_CREATE_EVENT_HELP_URL: https://rebootingsocialmedia.notion.site/Creating-and-Managing-Events-552a42e4a09549b788e1901536a25965
           envkey_TROUBLESHOOTING_GUIDE_URL: https://rebootingsocialmedia.notion.site/Troubleshooting-c6f922b816a742a9bba4bf000e84565d
