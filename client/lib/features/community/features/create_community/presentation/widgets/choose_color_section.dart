@@ -145,7 +145,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomStreamGetterBuilder<PlanCapabilityList>(
+    return MemoizedStreamBuilder<PlanCapabilityList>(
       entryFrom: 'CreateCommunityDialog.ChooseColorSection',
       streamGetter: () => cloudFunctionsCommunityService
           .getCommunityCapabilities(

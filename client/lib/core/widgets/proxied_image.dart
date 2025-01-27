@@ -47,27 +47,24 @@ class ProxiedImage extends StatelessWidget {
     return processedUrl;
   }
 
-  Widget _buildLoadingWidget() {
-    return Container(
-      height: height,
-      width: width,
-      color: loadingColor,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final localAsset = asset;
-
-    // ignore: prefer_function_declarations_over_variables
-    ImageFrameBuilder frameBuilder =
-        (context, child, frame, loadedSynchronously) {
+    Widget frameBuilder(
+      BuildContext context,
+      Widget child,
+      int? frame,
+      bool loadedSynchronously,
+    ) {
       if (!loadedSynchronously && frame == null) {
-        return _buildLoadingWidget();
+        return Container(
+          height: height,
+          width: width,
+          color: loadingColor,
+        );
       }
 
       return child;
-    };
+    }
 
     Widget errorBuilder(_, __, ___) => Container(
           height: height,
@@ -79,9 +76,9 @@ class ProxiedImage extends StatelessWidget {
           ),
         );
 
-    final image = localAsset != null
+    final image = asset != null
         ? Image.asset(
-            localAsset.path,
+            asset!.path,
             height: height,
             width: width,
             fit: fit ?? BoxFit.cover,

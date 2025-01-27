@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:client/styles/app_styles.dart';
 
-class OnboardingOverviewProgressIndicator extends StatelessWidget {
-  final int completedStepCount;
-  final int totalSteps;
-  final Color backgroundColor;
-  final Color progressColor;
-
-  const OnboardingOverviewProgressIndicator({
+class StepProgressIndicator extends StatelessWidget {
+  const StepProgressIndicator({
     Key? key,
     required this.completedStepCount,
     required this.totalSteps,
     this.backgroundColor = AppColor.gray5,
     this.progressColor = AppColor.darkBlue,
   }) : super(key: key);
+
+  final int completedStepCount;
+  final int totalSteps;
+  final Color backgroundColor;
+  final Color progressColor;
 
   @override
   Widget build(BuildContext context) {

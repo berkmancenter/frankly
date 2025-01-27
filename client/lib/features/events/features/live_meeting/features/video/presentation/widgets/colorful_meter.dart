@@ -14,16 +14,16 @@ import 'package:rainbow_color/rainbow_color.dart';
 /// [size] is the optional size of the widget. If [size] is not provided, it will take parent's size.
 /// [title] is the title of the gauge.
 /// [subtitle] is the subtitle of the gauge.
-class ColorfulMeterV2 extends StatefulWidget {
+class ColorfulMeter extends StatefulWidget {
   final double value;
   final double? size;
   final String? title;
   final String? subtitle;
 
   @override
-  _ColorfulMeterV2State createState() => _ColorfulMeterV2State();
+  _ColorfulMeterState createState() => _ColorfulMeterState();
 
-  const ColorfulMeterV2({
+  const ColorfulMeter({
     Key? key,
     required this.value,
     this.size,
@@ -33,7 +33,7 @@ class ColorfulMeterV2 extends StatefulWidget {
         super(key: key);
 }
 
-class _ColorfulMeterV2State extends State<ColorfulMeterV2> {
+class _ColorfulMeterState extends State<ColorfulMeter> {
   /// Default size of the widget.
   static const double kDefaultSize = 100;
 
@@ -176,7 +176,7 @@ class _GaugeIndicatorClipper extends CustomClipper<Path> {
   }
 }
 
-/// Painter which draws the gradient line of the [ColorfulMeterV2].
+/// Painter which draws the gradient line of the [ColorfulMeter].
 class _ArcPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

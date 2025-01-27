@@ -109,7 +109,7 @@ class CustomTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
@@ -133,7 +133,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextEditingController(text: widget.initialValue ?? '');
   }
 
-  InputBorder _buildBorder({bool isError = false}) {
+  InputBorder _getBorder({bool isError = false}) {
     if (widget.borderType == BorderType.outline) {
       return OutlineInputBorder(
         borderSide: BorderSide(
@@ -205,8 +205,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final localOnEditingComplete = widget.onEditingComplete;
-
     return Padding(
       padding: widget.padding,
       child: Container(
@@ -215,18 +213,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-        child: RawKeyboardListener(
+        child: KeyboardListener(
           focusNode: FocusNode(),
-          onKey: (event) {
-            if (_shiftPressed != event.isShiftPressed) {
-              setState(() => _shiftPressed = event.isShiftPressed);
+          onKeyEvent: (event) {
+            final isEventShiftKey =
+                event.logicalKey == LogicalKeyboardKey.shiftLeft ||
+                    event.logicalKey == LogicalKeyboardKey.shiftRight;
+            if (_shiftPressed != isEventShiftKey) {
+              setState(() => _shiftPressed = isEventShiftKey);
             }
 
-            if (localOnEditingComplete != null &&
-                event.runtimeType == RawKeyDownEvent &&
-                !event.isShiftPressed &&
+            if (widget.onEditingComplete != null &&
+                event.runtimeType == KeyDownEvent &&
+                !isEventShiftKey &&
                 event.logicalKey == LogicalKeyboardKey.enter) {
-              localOnEditingComplete();
+              widget.onEditingComplete!();
               if (widget.unfocusOnSubmit) {
                 _unfocus();
               }
@@ -294,10 +295,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 validator: widget.validator,
                 decoration: InputDecoration(
                   contentPadding: widget.contentPadding,
-                  border: _buildBorder(),
-                  focusedBorder: _buildBorder(),
-                  enabledBorder: _buildBorder(),
-                  errorBorder: _buildBorder(isError: true),
+                  border: _getBorder(),
+                  focusedBorder: _getBorder(),
+                  enabledBorder: _getBorder(),
+                  errorBorder: _getBorder(isError: true),
                   labelText: widget.labelText,
                   labelStyle: _buildLabelStyle(),
                   errorStyle: _buildTextStyle(isError: true),

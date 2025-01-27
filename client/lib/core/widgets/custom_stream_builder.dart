@@ -3,19 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 
+/// Provides loading and error utilities for StreamBuilder.
 class CustomStreamBuilder<T> extends StatelessWidget {
-  final Widget Function(BuildContext, T?) builder;
-  final String entryFrom;
-  final String errorMessage;
-  final WidgetBuilder? errorBuilder;
-  final String? loadingMessage;
-  final TextStyle? textStyle;
-  final double height;
-  final double? width;
-  final bool showLoading;
-  final bool buildWhileLoading;
-  final Stream<T>? stream;
-
   const CustomStreamBuilder({
     Key? key,
     required this.builder,
@@ -31,11 +20,27 @@ class CustomStreamBuilder<T> extends StatelessWidget {
     this.stream,
   }) : super(key: key);
 
+  final Widget Function(BuildContext, T?) builder;
+
+  /// For logging purposes, the widget/function that this is called from.
+  final String entryFrom;
+  final String errorMessage;
+  final WidgetBuilder? errorBuilder;
+  final String? loadingMessage;
+  final TextStyle? textStyle;
+  final double height;
+  final double? width;
+  final bool showLoading;
+
+  /// If true, the builder will be called even if the snapshot is still loading.
+  /// Defaults to false, i.e. a loading indicator / placeholder will be shown.
+  final bool buildWhileLoading;
+
+  final Stream<T>? stream;
+
   @override
   Widget build(BuildContext context) {
-    final localErrorBuilder = errorBuilder;
-    final localLoadingMessage = loadingMessage;
-    final stackTraceCurrent = StackTrace.current;
+    final currentStackTrace = StackTrace.current;
 
     return StreamBuilder<T>(
       stream: stream,
@@ -46,22 +51,19 @@ class CustomStreamBuilder<T> extends StatelessWidget {
             'CustomStreamBuilder.build : $entryFrom',
             logType: LogType.error,
             error: error,
-            stackTrace: error is Error ? error.stackTrace : stackTraceCurrent,
+            stackTrace: error is Error ? error.stackTrace : currentStackTrace,
           );
           loggingService.log(errorMessage);
 
-          if (localErrorBuilder != null) {
-            return localErrorBuilder(context);
+          if (errorBuilder != null) {
+            return errorBuilder!(context);
           }
           return SizedBox(
             height: height,
             width: width,
             child: Text(
               errorMessage,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.merge(textStyle ?? TextStyle()),
+              style: textStyle ?? Theme.of(context).textTheme.bodyLarge,
             ),
           );
         } else if (!buildWhileLoading &&
@@ -76,15 +78,12 @@ class CustomStreamBuilder<T> extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomLoadingIndicator(),
-                if (localLoadingMessage != null &&
-                    localLoadingMessage.isNotEmpty) ...[
+                if (loadingMessage != null &&
+                    (loadingMessage?.isNotEmpty ?? false)) ...[
                   SizedBox(height: 16),
                   Text(
-                    localLoadingMessage,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.merge(textStyle ?? TextStyle()),
+                    loadingMessage!,
+                    style: textStyle ?? Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ],

@@ -116,7 +116,7 @@ class CommunitySidebarNavLinks extends StatelessWidget {
         CommunityPermissionsProvider.canEditCommunityFromId(community.id);
 
     if (userIsMember) {
-      return CustomStreamGetterBuilder<bool>(
+      return MemoizedStreamBuilder<bool>(
         streamGetter: () => firestoreCommunityResourceService
             .communityHasResources(communityId: community.id),
         keys: const [],

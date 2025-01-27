@@ -1,6 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/keyboard_utils.dart';
+import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 

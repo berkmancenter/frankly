@@ -191,7 +191,7 @@ class _TemplatePageState extends State<TemplatePage>
 
   Widget _buildTemplateContents(Template template) {
     final prerequisiteTemplateId = template.prerequisiteTemplateId;
-    return CustomStreamGetterBuilder<bool?>(
+    return MemoizedStreamBuilder<bool?>(
       key: Key('template-page-pre-post-enabled-$isAdmin${template.id}'),
       keys: [isAdmin],
       streamGetter: () => isAdmin

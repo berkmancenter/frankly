@@ -462,7 +462,7 @@ class _MembersTabState extends State<MembersTab> {
       entryFrom: '_MembersTabState._buildMembersSection',
       errorMessage: 'Something went wrong loading memberships. Please refresh.',
       builder: (context, allMembershipDocs) =>
-          CustomStreamGetterBuilder<PlanCapabilityList>(
+          MemoizedStreamBuilder<PlanCapabilityList>(
         streamGetter: () => cloudFunctionsCommunityService
             .getCommunityCapabilities(
               GetCommunityCapabilitiesRequest(

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 
-/// Build app with Text widget inside a CustomStreamGetterBuilder
+/// Build app with Text widget inside a MemoizedStreamBuilder
 Widget makeWidgets({required String text, required List<String> keys}) =>
     MaterialApp(
-      home: CustomStreamGetterBuilder<String>(
+      home: MemoizedStreamBuilder<String>(
         streamGetter: () => Stream.value(text),
         keys: keys,
         builder: (_, v) => Text(v!, key: Key('text')),

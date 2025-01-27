@@ -11,7 +11,6 @@ import 'package:client/core/utils/platform_utils.dart';
 
 class _DismissNotifier with ChangeNotifier {
   @override
-  // ignore: unnecessary_overrides
   void notifyListeners() => super.notifyListeners();
 }
 

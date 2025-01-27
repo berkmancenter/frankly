@@ -14,19 +14,21 @@ class UpgradeIcon extends StatelessWidget {
   Color get _iconColor {
     if (isDisabledColor) {
       return AppColor.white;
-    } else if (isColorInverted)
+    } else if (isColorInverted) {
       return AppColor.darkBlue;
-    else
+    } else {
       return AppColor.brightGreen;
+    }
   }
 
   Color get _containerColor {
     if (isDisabledColor) {
       return AppColor.gray1.withOpacity(.5);
-    } else if (isColorInverted)
+    } else if (isColorInverted) {
       return AppColor.brightGreen;
-    else
+    } else {
       return AppColor.darkBlue;
+    }
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:client/core/widgets/navbar/nav_bar/nav_bar.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/sidebar.dart';
 import 'package:client/styles/app_styles.dart';
-import 'package:client/core/widgets/keyboard_utils.dart';
+import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:provider/provider.dart';
 
 class CustomScaffold extends StatefulWidget {

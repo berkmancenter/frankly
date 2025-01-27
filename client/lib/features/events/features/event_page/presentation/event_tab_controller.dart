@@ -64,7 +64,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
   Widget build(BuildContext context) {
     final enablePrePostEvent =
         context.watch<EventTabsControllerState>().widget.enablePrePostEvent;
-    return CustomStreamGetterBuilder<bool?>(
+    return MemoizedStreamBuilder<bool?>(
       streamGetter: enablePrePostEvent
           ? () => Provider.of<CommunityProvider>(context)
               .prePostEnabled()

@@ -34,7 +34,7 @@ class _HostingOptionState extends State<HostingOption> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomStreamGetterBuilder<PlanCapabilityList>(
+    return MemoizedStreamBuilder<PlanCapabilityList>(
       entryFrom: '_HostingOptionState._buildContent',
       streamGetter: () => cloudFunctionsCommunityService
           .getCommunityCapabilities(

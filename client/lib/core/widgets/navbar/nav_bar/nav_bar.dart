@@ -19,7 +19,7 @@ import 'package:client/core/widgets/navbar/nav_bar/nav_bar_presenter.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/profile_or_login.dart';
 import 'package:client/core/widgets/navbar/selectable_navigation_icon.dart';
-import 'package:client/core/widgets/overview_progress_indicator.dart';
+import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
@@ -369,7 +369,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: OnboardingOverviewProgressIndicator(
+                      child: StepProgressIndicator(
                         completedStepCount: completedStepCount,
                         totalSteps: totalSteps,
                         backgroundColor: AppColor.gray3,
@@ -498,7 +498,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                   Spacer(),
                   SizedBox(
                     width: 300,
-                    child: OnboardingOverviewProgressIndicator(
+                    child: StepProgressIndicator(
                       completedStepCount: completedStepCount,
                       totalSteps: totalSteps,
                       backgroundColor: AppColor.gray3,

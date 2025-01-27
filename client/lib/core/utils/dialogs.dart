@@ -11,7 +11,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/core/widgets/keyboard_utils.dart';
+import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:provider/provider.dart';
 
 class Dialogs {

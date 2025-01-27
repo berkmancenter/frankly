@@ -24,50 +24,10 @@ class EditableImage extends StatefulWidget {
   });
 
   @override
-  _EditableImageState createState() => _EditableImageState();
+  State<EditableImage> createState() => _EditableImageState();
 }
 
 class _EditableImageState extends State<EditableImage> {
-  Widget _buildEditPhotoOverlay({double? aspectRatio}) {
-    final onImageSelect = widget.onImageSelect;
-
-    return Positioned.fill(
-      child: Material(
-        color: Colors.transparent,
-        child: CustomInkWell(
-          borderRadius: widget.borderRadius,
-          onTap: () => alertOnError(context, () async {
-            String? url = await GetIt.instance<MediaHelperService>()
-                .pickImageViaCloudinary();
-            url = url?.trim();
-
-            if (onImageSelect != null &&
-                url != null &&
-                url.isNotEmpty &&
-                url != widget.initialUrl) {
-              await onImageSelect(url);
-            }
-          }),
-          child: Align(
-            alignment: Alignment.center,
-            child: Semantics(
-              label: 'Edit Image',
-              child: widget.icon ??
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: SvgPicture.asset(AppAsset.kAddPhotoSvg.path),
-                  ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -75,8 +35,40 @@ class _EditableImageState extends State<EditableImage> {
         children: [
           Positioned.fill(child: widget.child),
           if (widget.allowEdit == true)
-            _buildEditPhotoOverlay(
-              aspectRatio: constraints.biggest.aspectRatio,
+            Positioned.fill(
+              child: Material(
+                color: Colors.transparent,
+                child: CustomInkWell(
+                  borderRadius: widget.borderRadius,
+                  onTap: () => alertOnError(context, () async {
+                    String? url = await GetIt.instance<MediaHelperService>()
+                        .pickImageViaCloudinary();
+                    url = url?.trim();
+
+                    if (widget.onImageSelect != null &&
+                        url != null &&
+                        url.isNotEmpty &&
+                        url != widget.initialUrl) {
+                      await widget.onImageSelect!(url);
+                    }
+                  }),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Semantics(
+                      label: 'Edit Image',
+                      child: widget.icon ??
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: SvgPicture.asset(AppAsset.kAddPhotoSvg.path),
+                          ),
+                    ),
+                  ),
+                ),
+              ),
             ),
         ],
       ),
