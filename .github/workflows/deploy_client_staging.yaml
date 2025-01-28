@@ -58,7 +58,7 @@ jobs:
           sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
 
       - name: Update Google Auth Client ID
-        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
+        if: steps.changes.outputs.client == 'true'  || github.event_name== 'workflow_dispatch'
         run: |
           sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
 
