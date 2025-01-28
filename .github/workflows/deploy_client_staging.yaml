@@ -62,6 +62,11 @@ jobs:
         run: |
           sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
 
+      - name: Update Analytics Domain
+        if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
+        run: |
+          sed -i 's/__ANALYTICS_DOMAIN__/${{ secrets.ANALYTICS_DOMAIN }}/g' ${{ github.workspace }}/client/web/index.html
+
       - name: Create .env file
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
         uses: SpicyPizza/create-envfile@v2.0
