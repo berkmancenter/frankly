@@ -25,7 +25,8 @@ class AnalyticsService {
     try {
       if (props != null) {
         loggingService.log('Analytics Event $eventName with some props $props');
-        _plausible(eventName, props.jsify());
+        final data = {'props': props};
+        _plausible(eventName, data.jsify());
       } else {
         loggingService.log('Analytics Event $eventName');
         _plausible(eventName);
