@@ -65,7 +65,7 @@ jobs:
       - name: Update Analytics Domain
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
         run: |
-          sed -i 's/__ANALYTICS_DOMAIN__/${{ secrets.ANALYTICS_DOMAIN }}/g' ${{ github.workspace }}/client/web/index.html
+          sed -i 's|__ANALYTICS_DOMAIN__|${{ secrets.ANALYTICS_DOMAIN }}|g' ${{ github.workspace }}/client/web/index.html
 
       - name: Create .env file
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
