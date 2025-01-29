@@ -80,3 +80,5 @@ class CommunityTestUtils {
 class MockFirebaseAuthUtils extends Mock implements FirebaseAuthUtils {}
 
 class MockUserRecord extends Mock implements admin_interop.UserRecord {}
+
+class MockEventContext extends Mock implements EventContext {}

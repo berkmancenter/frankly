@@ -1,7 +1,5 @@
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:functions/community/on_community_membership.dart';
@@ -222,5 +220,3 @@ void main() {
     );
   });
 }
-
-class MockEventContext extends Mock implements EventContext {}

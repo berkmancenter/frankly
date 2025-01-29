@@ -1,8 +1,6 @@
 @Timeout(Duration(seconds: 90))
-import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/update_live_stream_participant_count.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:data_models/events/event.dart';
 import 'package:uuid/uuid.dart';
@@ -223,5 +221,3 @@ void main() {
     expect(updatedFutureEvent.presentParticipantCountEstimate, equals(0));
   });
 }
-
-class MockEventContext extends Mock implements EventContext {}

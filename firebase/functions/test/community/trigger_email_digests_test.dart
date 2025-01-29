@@ -367,5 +367,3 @@ void main() {
     verify(() => sendEmailClient.sendEmails([])).called(1);
   });
 }
-
-class MockEventContext extends Mock implements EventContext {}
