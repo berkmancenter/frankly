@@ -39,4 +39,21 @@ Future<void> deleteAllCollections() async {
       );
     }
   }
+  // The above doesn't delete subcollections. Do some additional cleanup of collectionGroups where needed
+  final knownCollectionIds = [
+    'events',
+    'event-participants',
+    'participant-details'
+  ];
+
+  for (final collectionId in knownCollectionIds) {
+    final collectionGroup = firestore.collectionGroup(collectionId);
+    final documents = await collectionGroup.get();
+
+    await Future.wait(
+      documents.documents.map((doc) async {
+        await doc.reference.delete();
+      }),
+    );
+  }
 }

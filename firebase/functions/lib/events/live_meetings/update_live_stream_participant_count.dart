@@ -15,7 +15,7 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
   final Duration _updateInterval =
       Duration(seconds: (60.0 / _timesPerMinute).round());
 
-  FutureOr<void> _action(EventContext context) async {
+  FutureOr<void> action(EventContext context) async {
     try {
       // Do a first pass to only check for active livestreams in the next day.
       // If not, we can skip the rest of this action.
@@ -146,6 +146,6 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
         )
         .pubsub
         .schedule('every 1 minutes')
-        .onRun((_, context) => _action(context));
+        .onRun((_, context) => action(context));
   }
 }

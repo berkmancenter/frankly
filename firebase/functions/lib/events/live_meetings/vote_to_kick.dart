@@ -13,8 +13,10 @@ import 'package:data_models/utils/utils.dart';
 
 /// Cast a vote for or against kicking a user from a hostless meeting
 class VoteToKick extends OnCallMethod<VoteToKickRequest> {
-  VoteToKick()
-      : super('VoteToKick', (json) => VoteToKickRequest.fromJson(json));
+  AgoraUtils agoraUtils;
+  VoteToKick({AgoraUtils? agoraUtils})
+      : agoraUtils = agoraUtils ?? AgoraUtils(),
+        super('VoteToKick', (json) => VoteToKickRequest.fromJson(json));
 
   @override
   Future<void> action(
@@ -172,8 +174,10 @@ class VoteToKick extends OnCallMethod<VoteToKickRequest> {
       print('Current user location is: ${participant.currentBreakoutRoomId}');
       // Kick participant
       final roomId = participant.currentBreakoutRoomId ?? liveMeetingId;
-      await AgoraUtils()
-          .kickParticipant(roomId: roomId, userId: request.targetUserId);
+      await agoraUtils.kickParticipant(
+        roomId: roomId,
+        userId: request.targetUserId,
+      );
     }
   }
 }

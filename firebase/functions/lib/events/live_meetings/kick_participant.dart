@@ -10,8 +10,10 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 
 class KickParticipant extends OnCallMethod<KickParticipantRequest> {
-  KickParticipant()
-      : super(
+  AgoraUtils agoraUtils;
+  KickParticipant({AgoraUtils? agoraUtils})
+      : agoraUtils = agoraUtils ?? AgoraUtils(),
+        super(
           'KickParticipant',
           (json) => KickParticipantRequest.fromJson(json),
         );
@@ -52,8 +54,8 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
 
       // Kick participant
       final roomId = request.breakoutRoomId ?? liveMeeting.meetingId ?? '';
-      await AgoraUtils()
-          .kickParticipant(roomId: roomId, userId: request.userToKickId);
+      await agoraUtils.kickParticipant(
+          roomId: roomId, userId: request.userToKickId);
     });
 
     return '';

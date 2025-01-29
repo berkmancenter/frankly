@@ -12,9 +12,11 @@ import 'package:data_models/user/public_user_info.dart';
 import 'package:data_models/utils/utils.dart';
 
 class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
-  GetMeetingJoinInfo()
-      : super(
-          'GetMeetingJoinInfo',
+  LiveMeetingUtils liveMeetingUtils;
+  GetMeetingJoinInfo({LiveMeetingUtils? liveMeetingUtils})
+      : liveMeetingUtils = liveMeetingUtils ?? LiveMeetingUtils(),
+        super(
+          'GetBreakoutRoomJoinInfo',
           (jsonMap) => GetMeetingJoinInfoRequest.fromJson(jsonMap),
         );
 
@@ -57,7 +59,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         print('Public user display name: $displayName');
       }
 
-      final joinInfo = await LiveMeetingUtils().getMeetingJoinInfo(
+      final joinInfo = await liveMeetingUtils.getMeetingJoinInfo(
         transaction: transaction,
         event: event,
         communityId: event.communityId,
@@ -65,7 +67,6 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         meetingId: event.id,
         userId: context.authUid!,
       );
-
       return joinInfo.toJson();
     });
   }
