@@ -87,7 +87,6 @@ void main() {
     await liveMeetingTestUtils.addPublicUser(publicUser: publicUserInfo2);
 
     // Add some test chat messages
-    print("creating chat with ${event.fullPath}");
     await liveMeetingTestUtils.addChatMessage(
       parentPath: event.fullPath,
       message: ChatMessage(
@@ -153,7 +152,6 @@ void main() {
     final suggestions = (result['chatsSuggestionsList'] as List)
         .map((item) => ChatSuggestionData.fromJson(item))
         .toList();
-    print("hi $suggestions");
     expect(suggestions.length, equals(3));
 
     // Verify chat message
