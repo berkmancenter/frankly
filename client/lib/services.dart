@@ -167,6 +167,7 @@ void createServices() {
 
 Future<void> initializeServices() async {
   await Future.wait([
+    analytics.initialize(),
     userService.initialize(),
     firestoreDatabase.initialize(),
     userDataService.initialize(),

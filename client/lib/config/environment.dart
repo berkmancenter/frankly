@@ -28,6 +28,9 @@ class Environment {
   static const sentryDSN = String.fromEnvironment('SENTRY_DSN');
   static const sentryEnvironment = String.fromEnvironment('SENTRY_ENVIRONMENT');
 
+  static const matomoURL = String.fromEnvironment('MATOMO_URL');
+  static const matomoSiteId = String.fromEnvironment('MATOMO_SITE_ID');
+
   // App branding and URL properties
   static const appName = String.fromEnvironment('APP_NAME');
   static const sidebarFooter = String.fromEnvironment('SIDEBAR_FOOTER');
