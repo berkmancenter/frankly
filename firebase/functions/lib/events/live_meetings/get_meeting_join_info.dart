@@ -16,7 +16,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
   GetMeetingJoinInfo({LiveMeetingUtils? liveMeetingUtils})
       : liveMeetingUtils = liveMeetingUtils ?? LiveMeetingUtils(),
         super(
-          'GetBreakoutRoomJoinInfo',
+          'GetMeetingJoinInfo',
           (jsonMap) => GetMeetingJoinInfoRequest.fromJson(jsonMap),
         );
 
