@@ -7,7 +7,7 @@ class AnalyticsService {
   bool enableMatomo = Environment.matomoURL != '';
 
   Future<void> initialize() async {
-    if (enableMatomo) {
+    if (enableMatomo && !MatomoTracker.instance.initialized) {
       await MatomoTracker.instance.initialize(
         siteId: Environment.matomoSiteId,
         url: Environment.matomoURL,
