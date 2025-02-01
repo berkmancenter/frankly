@@ -8,18 +8,21 @@ class SignInDialog extends StatefulWidget {
   final bool isNewUser;
   final bool isPurchasingSubscription;
   final bool isDismissable;
+  final bool showEmailFormOnly;
 
   const SignInDialog({
     Key? key,
     required this.isNewUser,
     this.isPurchasingSubscription = false,
     this.isDismissable = true,
+    this.showEmailFormOnly = false,
   }) : super(key: key);
 
   static Future<void> show({
     bool newUser = true,
     bool isPurchasingSubscription = false,
     bool isDismissable = true,
+    bool showEmailFormOnly = false,
     BuildContext? context,
   }) async {
     await showCustomDialog<void>(
@@ -29,6 +32,7 @@ class SignInDialog extends StatefulWidget {
         isNewUser: newUser,
         isPurchasingSubscription: isPurchasingSubscription,
         isDismissable: isDismissable,
+        showEmailFormOnly: showEmailFormOnly,
       ),
     );
   }
@@ -53,11 +57,12 @@ class _SignInDialogState extends State<SignInDialog> {
                 SignInOptionsContent(
                   isPurchasingSubscription: widget.isPurchasingSubscription,
                   isNewUser: widget.isNewUser,
+                  showEmailFormOnly: widget.showEmailFormOnly,
                 ),
                 if (isWKWebView) ...[
                   SizedBox(height: 8),
                   Text(
-                    'To sign in with Google open this page in Safari',
+                    'To sign in with Google, please open this page in your browser.',
                     textAlign: TextAlign.center,
                   ),
                 ],

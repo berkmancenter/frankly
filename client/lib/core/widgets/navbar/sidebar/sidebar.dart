@@ -4,7 +4,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
@@ -131,6 +130,7 @@ class _SideBarState extends State<SideBar> {
     } else {
       return SignInOptionsContent(
         onComplete: () => Navigator.of(context).pop(),
+        openDialogOnEmailProviderSelected: true,
       );
     }
   }

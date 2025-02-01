@@ -1,4 +1,5 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -17,6 +18,8 @@ class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
     this.isNewUser = true,
     this.isPurchasingSubscription = false,
+    this.openDialogOnEmailProviderSelected = false,
+    this.showEmailFormOnly = false,
     this.onComplete,
     Key? key,
   }) : super(key: key);
@@ -30,6 +33,8 @@ class SignInOptionsContent extends StatefulWidget {
 
   final bool isNewUser;
   final bool isPurchasingSubscription;
+  final bool openDialogOnEmailProviderSelected;
+  final bool showEmailFormOnly;
   final void Function()? onComplete;
 
   @override
@@ -37,7 +42,7 @@ class SignInOptionsContent extends StatefulWidget {
 }
 
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
-  late bool _showEmailFormFields = false;
+  late bool _showEmailFormFields = widget.showEmailFormOnly;
   late bool _newUser = widget.isNewUser;
 
   final _displayNameController = TextEditingController();
@@ -83,7 +88,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (_showEmailFormFields)
+        if (_showEmailFormFields && !widget.showEmailFormOnly)
           Align(
             alignment: Alignment.topLeft,
             child: GestureDetector(
@@ -191,7 +196,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
-        onPressed: () => setState(() => _showEmailFormFields = true),
+        onPressed: () => widget.openDialogOnEmailProviderSelected
+            ? SignInDialog.show(showEmailFormOnly: true)
+            : setState(() => _showEmailFormFields = true),
         text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
       ),
     ];
