@@ -71,6 +71,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Future<void> _resetPassword() {
     return alertOnError(context, () async {
       await userService.resetPassword(email: _emailController.text);
+      if (!mounted) return;
       await showAlert(
         context,
         'Password reset link sent to ${_emailController.text}',
