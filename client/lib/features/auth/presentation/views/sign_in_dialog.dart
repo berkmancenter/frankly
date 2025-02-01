@@ -6,21 +6,18 @@ import 'package:client/core/utils/platform_utils.dart';
 
 class SignInDialog extends StatefulWidget {
   final bool isNewUser;
-  final bool isInitializedOnEmailPassword;
   final bool isPurchasingSubscription;
   final bool isDismissable;
 
   const SignInDialog({
     Key? key,
     required this.isNewUser,
-    this.isInitializedOnEmailPassword = false,
     this.isPurchasingSubscription = false,
     this.isDismissable = true,
   }) : super(key: key);
 
   static Future<void> show({
     bool newUser = true,
-    bool isInitializedOnEmailPassword = false,
     bool isPurchasingSubscription = false,
     bool isDismissable = true,
     BuildContext? context,
@@ -30,7 +27,6 @@ class SignInDialog extends StatefulWidget {
       isDismissible: isDismissable,
       builder: (_) => SignInDialog(
         isNewUser: newUser,
-        isInitializedOnEmailPassword: isInitializedOnEmailPassword,
         isPurchasingSubscription: isPurchasingSubscription,
         isDismissable: isDismissable,
       ),
@@ -57,8 +53,6 @@ class _SignInDialogState extends State<SignInDialog> {
                 SignInOptionsContent(
                   isPurchasingSubscription: widget.isPurchasingSubscription,
                   isNewUser: widget.isNewUser,
-                  isInitializedOnEmailPassword:
-                      widget.isInitializedOnEmailPassword,
                 ),
                 if (isWKWebView) ...[
                   SizedBox(height: 8),
