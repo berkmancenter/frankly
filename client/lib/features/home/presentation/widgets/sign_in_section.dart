@@ -22,29 +22,16 @@ class _HomePageSignInSectionState extends State<HomePageSignInSection> {
     return SingleChildScrollView(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 45),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: HeightConstrainedText(
-                  'New to ${Environment.appName}?',
-                  style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
-                ),
-              ),
-              SizedBox(height: 10),
-              HeightConstrainedText(
-                'Sign up to get started.',
-                style: AppTextStyle.body.copyWith(color: AppColor.gray2),
-              ),
               SizedBox(
                 width: 300,
                 child: SignInOptionsContent(
                   isNewUser: true,
-                  showHeader: false,
                 ),
               ),
             ],
