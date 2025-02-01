@@ -18,7 +18,6 @@ class SignInOptionsContent extends StatefulWidget {
     this.isNewUser = true,
     this.isPurchasingSubscription = false,
     this.onComplete,
-    this.showHeader = true,
     Key? key,
   }) : super(key: key);
 
@@ -32,7 +31,6 @@ class SignInOptionsContent extends StatefulWidget {
   final bool isNewUser;
   final bool isPurchasingSubscription;
   final void Function()? onComplete;
-  final bool showHeader;
 
   @override
   State<SignInOptionsContent> createState() => _SignInOptionsContentState();
@@ -121,7 +119,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     if (widget.isPurchasingSubscription) {
       return 'Sign up (or sign in using an existing account) to continue.';
     } else if (widget.isNewUser) {
-      return 'Sign up to enjoy meaningful conversation!';
+      return 'Sign up to get started.';
     } else {
       return '';
     }
@@ -130,24 +128,22 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   List<Widget> _buildSignInProviderButtons() {
     const minWidth = 260.0;
     return [
-      if (widget.showHeader) ...[
+      Align(
+        alignment: Alignment.centerLeft,
+        child: HeightConstrainedText(
+          _getTitleText(),
+          style: AppTextStyle.headline4,
+        ),
+      ),
+      SizedBox(height: 9),
+      if (_getMessageText().isNotEmpty)
         Align(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            _getTitleText(),
-            style: AppTextStyle.headline3,
+            _getMessageText(),
+            style: AppTextStyle.body,
           ),
         ),
-        SizedBox(height: 9),
-        if (_getMessageText().isNotEmpty)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: HeightConstrainedText(
-              _getMessageText(),
-              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
-            ),
-          ),
-      ],
       SizedBox(height: 9),
       // Google sign-in is not supported in WKWebView. Prompt user to open
       // browser to sign in with Google. See https://developers.googleblog.com/en/modernizing-oauth-interactions-in-native-apps-for-better-usability-and-security/
