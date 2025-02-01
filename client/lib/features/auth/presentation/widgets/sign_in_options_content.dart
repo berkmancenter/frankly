@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
     this.isNewUser = true,
-    this.isInitializedOnEmailPassword = false,
     this.isPurchasingSubscription = false,
     this.onComplete,
     this.showHeader = true,
@@ -31,7 +30,6 @@ class SignInOptionsContent extends StatefulWidget {
   static const signInSubmitKey = Key('sign-in-submit');
 
   final bool isNewUser;
-  final bool isInitializedOnEmailPassword;
   final bool isPurchasingSubscription;
   final void Function()? onComplete;
   final bool showHeader;
@@ -41,7 +39,6 @@ class SignInOptionsContent extends StatefulWidget {
 }
 
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
-  late bool _emailSelected = widget.isInitializedOnEmailPassword;
   late bool _newUser = widget.isNewUser;
 
   final _displayNameController = TextEditingController();
@@ -86,18 +83,15 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (_emailSelected)
           Align(
             alignment: Alignment.topLeft,
             child: GestureDetector(
               child: Icon(Icons.arrow_back),
-              onTap: () => setState(() => _emailSelected = false),
             ),
           ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_emailSelected)
               ..._buildEmailWidgets()
             else
               ..._buildSignInProviderButtons(),
@@ -196,7 +190,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
-        onPressed: () => setState(() => _emailSelected = true),
         text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
       ),
     ];
