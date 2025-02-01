@@ -39,6 +39,7 @@ class SignInOptionsContent extends StatefulWidget {
 }
 
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
+  late bool _showEmailFormFields = false;
   late bool _newUser = widget.isNewUser;
 
   final _displayNameController = TextEditingController();
@@ -83,15 +84,18 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        if (_showEmailFormFields)
           Align(
             alignment: Alignment.topLeft,
             child: GestureDetector(
               child: Icon(Icons.arrow_back),
+              onTap: () => setState(() => _showEmailFormFields = false),
             ),
           ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (_showEmailFormFields)
               ..._buildEmailWidgets()
             else
               ..._buildSignInProviderButtons(),
@@ -190,6 +194,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
+        onPressed: () => setState(() => _showEmailFormFields = true),
         text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
       ),
     ];
