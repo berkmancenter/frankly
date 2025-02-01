@@ -32,6 +32,7 @@ class _HomePageSignInSectionState extends State<HomePageSignInSection> {
                 width: 300,
                 child: SignInOptionsContent(
                   isNewUser: true,
+                  openDialogOnEmailProviderSelected: true,
                 ),
               ),
             ],
