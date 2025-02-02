@@ -35,7 +35,7 @@ class AnalyticsService {
 
     MatomoTracker.instance.trackEvent(
       eventInfo: EventInfo(
-        category: 'eventCategory',
+        category: event.getEventCategory(),
         action: event.getEventType(),
         name: eventProps['name'] ?? eventId ?? templateId ?? communityId,
         value: eventProps['value'],
