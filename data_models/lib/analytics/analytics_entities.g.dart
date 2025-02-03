@@ -9,11 +9,15 @@ part of 'analytics_entities.dart';
 AnalyticsAgreeToTermsAndConditionsEvent
     _$AnalyticsAgreeToTermsAndConditionsEventFromJson(
             Map<String, dynamic> json) =>
-        AnalyticsAgreeToTermsAndConditionsEvent();
+        AnalyticsAgreeToTermsAndConditionsEvent(
+          userId: json['userId'] as String,
+        );
 
 Map<String, dynamic> _$AnalyticsAgreeToTermsAndConditionsEventToJson(
         AnalyticsAgreeToTermsAndConditionsEvent instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'userId': instance.userId,
+    };
 
 AnalyticsLinkStripeAccountEvent _$AnalyticsLinkStripeAccountEventFromJson(
         Map<String, dynamic> json) =>

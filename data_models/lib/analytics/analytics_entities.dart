@@ -16,12 +16,14 @@ abstract class AnalyticsEvent {
 
 @JsonSerializable()
 class AnalyticsAgreeToTermsAndConditionsEvent implements AnalyticsEvent {
+  final String userId;
+
   @override
   String getEventType() {
     return 'agree_to_tac';
   }
 
-  AnalyticsAgreeToTermsAndConditionsEvent();
+  AnalyticsAgreeToTermsAndConditionsEvent({required this.userId});
 
   @override
   Map<String, dynamic> toJson() =>
@@ -34,8 +36,7 @@ class AnalyticsAgreeToTermsAndConditionsEvent implements AnalyticsEvent {
 
   @override
   String getEventName() {
-    // TODO: implement getEventName
-    throw UnimplementedError();
+    return userId;
   }
 
   @override

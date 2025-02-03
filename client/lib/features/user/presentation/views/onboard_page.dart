@@ -125,7 +125,11 @@ class _OnboardPageState extends State<OnboardPage> {
   }
 
   void _finishAgreementToTerms() {
-    analytics.logEvent(AnalyticsAgreeToTermsAndConditionsEvent());
+    analytics.logEvent(
+      AnalyticsAgreeToTermsAndConditionsEvent(
+        userId: Provider.of<UserService>(context).currentUserId!,
+      ),
+    );
     setState(() => _step = OnboardStep.paymentSetup);
   }
 
