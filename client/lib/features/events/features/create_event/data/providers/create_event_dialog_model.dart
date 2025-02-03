@@ -243,7 +243,7 @@ class CreateEventDialogModel with ChangeNotifier {
       AnalyticsCreateEventEvent(
         communityId: communityProvider.community.id,
         eventId: _event.id,
-        guideId: _event.templateId,
+        templateId: _event.templateId,
       ),
     );
 
@@ -257,7 +257,7 @@ class CreateEventDialogModel with ChangeNotifier {
           communityId: communityProvider.community.id,
           eventId: _event.id,
           daysFromNow: today.difference(scheduledDay).inDays,
-          guideId: _event.templateId,
+          templateId: _event.templateId,
         ),
       );
     }
@@ -332,7 +332,7 @@ class CreateEventDialogModel with ChangeNotifier {
       AnalyticsEditEventEvent(
         communityId: communityProvider.community.id,
         eventId: _event.id,
-        guideId: _event.templateId,
+        templateId: _event.templateId,
       ),
     );
   }

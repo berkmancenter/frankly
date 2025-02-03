@@ -122,9 +122,9 @@ class _NewEventCardState extends State<NewEventCard> {
         color: AppColor.darkBlue,
         onPressed: () {
           analytics.logEvent(
-            AnalyticsPressCreateEventFromGuideEvent(
+            AnalyticsPressCreateEventFromTemplateEvent(
               communityId: widget.template.communityId,
-              guideId: widget.template.id,
+              templateId: widget.template.id,
             ),
           );
           if (onTap != null) {
