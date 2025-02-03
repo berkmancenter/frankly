@@ -262,18 +262,6 @@ class CreateEventDialogModel with ChangeNotifier {
       );
     }
 
-    final analyticsEvent = _event.eventType == EventType.livestream
-        ? 'create_event'
-        : 'create_live_stream';
-    unawaited(
-      swallowErrors(
-        () => firebaseAnalytics.logEvent(
-          name: analyticsEvent,
-          parameters: {'public': _event.isPublic.toString()},
-        ),
-      ),
-    );
-
     return _event;
   }
 

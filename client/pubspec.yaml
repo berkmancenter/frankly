@@ -29,7 +29,6 @@ dependencies:
   agora_rtc_engine:
     git:
       url: https://github.com/berkmancenter/Agora-Flutter-SDK.git
-  firebase_analytics: ^10.8.8
   firebase_auth: ^4.17.7
   firebase_core: ^2.26.0
   firebase_database: ^10.4.8
