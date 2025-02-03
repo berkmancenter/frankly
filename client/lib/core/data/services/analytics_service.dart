@@ -23,7 +23,6 @@ class AnalyticsService {
     final eventProps = event.toJson();
     final communityId = eventProps['communityId'];
     final eventId = eventProps['eventId'];
-    final templateId = eventProps['guideId'];
 
     // TODO unclear if any reason to make event a dimension but community and user def
     final dimensions = {
@@ -37,8 +36,8 @@ class AnalyticsService {
       eventInfo: EventInfo(
         category: event.getEventCategory(),
         action: event.getEventType(),
-        name: eventProps['name'] ?? eventId ?? templateId ?? communityId,
-        value: eventProps['value'],
+        name: event.getEventName(),
+        value: event.getMetricValue(),
       ),
       dimensions: dimensions,
     );

@@ -5,6 +5,8 @@ part 'analytics_entities.g.dart';
 abstract class AnalyticsEvent {
   String getEventType();
   String getEventCategory();
+  String? getEventName();
+  num? getMetricValue();
   Map<String, dynamic> toJson();
   static const String userCategory = 'user';
   static const String communityCategory = 'community';
@@ -29,6 +31,17 @@ class AnalyticsAgreeToTermsAndConditionsEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.userCategory;
   }
+
+  @override
+  String getEventName() {
+    // TODO: implement getEventName
+    throw UnimplementedError();
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -47,6 +60,16 @@ class AnalyticsLinkStripeAccountEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.userCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return null;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -69,6 +92,16 @@ class AnalyticsCreateCommunityEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -93,6 +126,16 @@ class AnalyticsUpdateCommunityImageEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.communityCategory;
   }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -115,6 +158,16 @@ class AnalyticsUpdateCommunityMetadataEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -141,6 +194,80 @@ class AnalyticsPressShareCommunityLinkEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.communityCategory;
   }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'join_community';
+  }
+
+  final String communityId;
+
+  AnalyticsJoinCommunityEvent({
+    required this.communityId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsJoinCommunityEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'leave_community';
+  }
+
+  final String communityId;
+
+  AnalyticsLeaveCommunityEvent({
+    required this.communityId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsLeaveCommunityEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -162,6 +289,16 @@ class AnalyticsPressAddNewGuideEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.templateCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -186,6 +323,16 @@ class AnalyticsCompleteNewGuideEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.templateCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return guideId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -212,6 +359,16 @@ class AnalyticsPressCreateEventFromGuideEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
   }
+
+  @override
+  String? getEventName() {
+    return guideId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -237,6 +394,16 @@ class AnalyticsCreateEventEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -266,6 +433,16 @@ class AnalyticsScheduleEventEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
   }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -291,6 +468,16 @@ class AnalyticsEditEventEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -320,6 +507,16 @@ class AnalyticsPressShareEventEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
   }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -347,6 +544,16 @@ class AnalyticsEnterEventEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -376,6 +583,16 @@ class AnalyticsCompleteEventEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
   }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -404,6 +621,16 @@ class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
   }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
@@ -430,49 +657,15 @@ class AnalyticsRsvpEventEvent implements AnalyticsEvent {
   String getEventCategory() {
     return AnalyticsEvent.eventCategory;
   }
-}
 
-@JsonSerializable()
-class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
   @override
-  String getEventType() {
-    return 'join_community';
+  String? getEventName() {
+    return eventId;
   }
 
-  final String communityId;
-
-  AnalyticsJoinCommunityEvent({
-    required this.communityId,
-  });
-
   @override
-  Map<String, dynamic> toJson() => _$AnalyticsJoinCommunityEventToJson(this);
-
-  @override
-  String getEventCategory() {
-    return AnalyticsEvent.communityCategory;
-  }
-}
-
-@JsonSerializable()
-class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'leave_community';
-  }
-
-  final String communityId;
-
-  AnalyticsLeaveCommunityEvent({
-    required this.communityId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsLeaveCommunityEventToJson(this);
-
-  @override
-  String getEventCategory() {
-    return AnalyticsEvent.communityCategory;
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -497,6 +690,16 @@ class AnalyticsDonateEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }
 
@@ -526,5 +729,15 @@ class AnalyticsUpdateCommunitySubscriptionEvent implements AnalyticsEvent {
   @override
   String getEventCategory() {
     return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
   }
 }

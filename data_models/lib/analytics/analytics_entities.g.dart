@@ -83,6 +83,30 @@ const _$ShareTypeEnumMap = {
   ShareType.link: 'link',
 };
 
+AnalyticsJoinCommunityEvent _$AnalyticsJoinCommunityEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsJoinCommunityEvent(
+      communityId: json['communityId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsJoinCommunityEventToJson(
+        AnalyticsJoinCommunityEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+    };
+
+AnalyticsLeaveCommunityEvent _$AnalyticsLeaveCommunityEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsLeaveCommunityEvent(
+      communityId: json['communityId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsLeaveCommunityEventToJson(
+        AnalyticsLeaveCommunityEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+    };
+
 AnalyticsPressAddNewGuideEvent _$AnalyticsPressAddNewGuideEventFromJson(
         Map<String, dynamic> json) =>
     AnalyticsPressAddNewGuideEvent(
@@ -260,30 +284,6 @@ Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'guideId': instance.guideId,
-    };
-
-AnalyticsJoinCommunityEvent _$AnalyticsJoinCommunityEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsJoinCommunityEvent(
-      communityId: json['communityId'] as String,
-    );
-
-Map<String, dynamic> _$AnalyticsJoinCommunityEventToJson(
-        AnalyticsJoinCommunityEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-    };
-
-AnalyticsLeaveCommunityEvent _$AnalyticsLeaveCommunityEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsLeaveCommunityEvent(
-      communityId: json['communityId'] as String,
-    );
-
-Map<String, dynamic> _$AnalyticsLeaveCommunityEventToJson(
-        AnalyticsLeaveCommunityEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
     };
 
 AnalyticsDonateEvent _$AnalyticsDonateEventFromJson(
