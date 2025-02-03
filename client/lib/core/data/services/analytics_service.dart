@@ -22,11 +22,8 @@ class AnalyticsService {
 
     final eventProps = event.toJson();
     final communityId = eventProps['communityId'];
-    final eventId = eventProps['eventId'];
 
-    // TODO unclear if any reason to make event a dimension but community and user def
     final dimensions = {
-      if (eventId != null) 'dimension2': eventId.toString(),
       if (communityId != null) 'dimension1': communityId.toString(),
       if (userService.currentUserId != null)
         'dimension3': userService.currentUserId!,
