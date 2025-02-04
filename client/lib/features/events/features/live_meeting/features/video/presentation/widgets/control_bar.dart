@@ -438,17 +438,18 @@ class _ChatInputState extends State<ChatInput> {
 }
 
 class _IconButton extends StatefulWidget {
-  final Future<void> Function() onTap;
-  final String text;
-  final IconData icon;
-  final Color iconColor;
-
   const _IconButton({
+    super.key,
     required this.onTap,
     required this.text,
     required this.icon,
     this.iconColor = AppColor.white,
   });
+
+  final Future<void> Function() onTap;
+  final String text;
+  final IconData icon;
+  final Color iconColor;
 
   @override
   _IconButtonState createState() => _IconButtonState();
