@@ -4,7 +4,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
-import 'firestore_scale_test_service.dart';
+import 'scale_test_service.dart';
 
 import 'utils.dart';
 
@@ -19,8 +19,8 @@ void main() {
     await tester.pump();
 
     await wait(tester, timeout: Duration(seconds: 10));
-    final scaleTestInfo = await FirestoreScaleTestService().getScaleTestInfo();
-    print(scaleTestInfo);
+
+    final scaleTestInfo = ScaleTestService().getScaleTestInfo();
 
     final testerId = uuid.v4();
 
