@@ -30,6 +30,8 @@ import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart' as js_util;
 
 class ControlBar extends StatefulWidget {
+  static const Key videoToggleButtonKey = Key('video-toggle-button');
+
   @override
   State<ControlBar> createState() => _ControlBarState();
 }
@@ -66,6 +68,7 @@ class _ControlBarState extends State<ControlBar> {
 
   Widget _buildVideoToggle() {
     return _IconButton(
+      key: ControlBar.videoToggleButtonKey,
       onTap: () => AudioVideoErrorDialog.showOnError(
         context,
         () => _conferenceRoomRead.toggleVideoEnabled(),
