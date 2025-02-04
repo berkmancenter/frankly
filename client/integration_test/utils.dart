@@ -9,8 +9,6 @@ Future<void> signUpForApp(
   required String name,
   required String password,
 }) async {
-  await waitAndTap(tester, find.byKey(SignInWidget.signUpKey));
-
   await waitAndTap(tester, find.byKey(SignInOptionsContent.emailSignInKey));
 
   // Note: Putting in text by setting hte controller directly due to flutter bug:
