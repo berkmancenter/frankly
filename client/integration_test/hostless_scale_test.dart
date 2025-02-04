@@ -56,6 +56,12 @@ void main() {
 
     await waitAndTap(
       tester,
+      find.byKey(ControlBar.videoToggleButtonKey),
+      timeout: Duration(minutes: 20),
+    );
+
+    await waitAndTap(
+      tester,
       find.byKey(ConfirmDialog.confirmButtonKey),
       timeout: Duration(minutes: 20),
     );
