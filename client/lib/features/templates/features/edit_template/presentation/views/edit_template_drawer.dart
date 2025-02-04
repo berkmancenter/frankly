@@ -112,10 +112,6 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
                 SizedBox(height: 20),
                 _buildDescriptionSection(),
                 SizedBox(height: 20),
-                if (_presenter.showFeatureToggle) ...[
-                  _buildFeaturedSection(),
-                  SizedBox(height: 20),
-                ],
                 _buildTagsSection(),
                 SizedBox(height: 20),
                 _buildBottomButtonsSection(),
@@ -176,27 +172,6 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
       labelText: 'Description',
       initialValue: _model.template.description,
       onChanged: (value) => _presenter.updateDescription(value),
-    );
-  }
-
-  Widget _buildFeaturedSection() {
-    final community = _presenter.getCommunity();
-
-    return CustomStreamBuilder<List<Featured>>(
-      entryFrom: 'EditTemplateDrawer._buildFeaturedSection',
-      stream: _presenter.getFeaturedStream(),
-      showLoading: false,
-      builder: (_, featuredItems) {
-        // Initialise only first time
-        _model.isFeatured ??= _presenter.isFeatured(featuredItems);
-        _model.initialFeatured ??= _presenter.isFeatured(featuredItems);
-
-        return CustomSwitchTile(
-          val: _model.isFeatured ?? false,
-          text: 'Feature on ${community.name} homepage',
-          onUpdate: (value) => _presenter.updateIsFeatured(value),
-        );
-      },
     );
   }
 
