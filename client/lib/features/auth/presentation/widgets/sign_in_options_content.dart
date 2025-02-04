@@ -1,4 +1,5 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -16,10 +17,10 @@ import 'package:provider/provider.dart';
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
     this.isNewUser = true,
-    this.isInitializedOnEmailPassword = false,
     this.isPurchasingSubscription = false,
+    this.openDialogOnEmailProviderSelected = false,
+    this.showEmailFormOnly = false,
     this.onComplete,
-    this.showHeader = true,
     Key? key,
   }) : super(key: key);
 
@@ -31,17 +32,17 @@ class SignInOptionsContent extends StatefulWidget {
   static const signInSubmitKey = Key('sign-in-submit');
 
   final bool isNewUser;
-  final bool isInitializedOnEmailPassword;
   final bool isPurchasingSubscription;
+  final bool openDialogOnEmailProviderSelected;
+  final bool showEmailFormOnly;
   final void Function()? onComplete;
-  final bool showHeader;
 
   @override
   State<SignInOptionsContent> createState() => _SignInOptionsContentState();
 }
 
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
-  late bool _emailSelected = widget.isInitializedOnEmailPassword;
+  late bool _showEmailFormFields = widget.showEmailFormOnly;
   late bool _newUser = widget.isNewUser;
 
   final _displayNameController = TextEditingController();
@@ -75,6 +76,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Future<void> _resetPassword() {
     return alertOnError(context, () async {
       await userService.resetPassword(email: _emailController.text);
+      if (!mounted) return;
       await showAlert(
         context,
         'Password reset link sent to ${_emailController.text}',
@@ -86,18 +88,18 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (_emailSelected)
+        if (_showEmailFormFields && !widget.showEmailFormOnly)
           Align(
             alignment: Alignment.topLeft,
             child: GestureDetector(
               child: Icon(Icons.arrow_back),
-              onTap: () => setState(() => _emailSelected = false),
+              onTap: () => setState(() => _showEmailFormFields = false),
             ),
           ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_emailSelected)
+            if (_showEmailFormFields)
               ..._buildEmailWidgets()
             else
               ..._buildSignInProviderButtons(),
@@ -123,7 +125,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     if (widget.isPurchasingSubscription) {
       return 'Sign up (or sign in using an existing account) to continue.';
     } else if (widget.isNewUser) {
-      return 'Sign up to enjoy meaningful conversation!';
+      return 'Sign up to get started.';
     } else {
       return '';
     }
@@ -132,24 +134,22 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   List<Widget> _buildSignInProviderButtons() {
     const minWidth = 260.0;
     return [
-      if (widget.showHeader) ...[
+      Align(
+        alignment: Alignment.centerLeft,
+        child: HeightConstrainedText(
+          _getTitleText(),
+          style: AppTextStyle.headline4,
+        ),
+      ),
+      SizedBox(height: 9),
+      if (_getMessageText().isNotEmpty)
         Align(
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
-            _getTitleText(),
-            style: AppTextStyle.headline3,
+            _getMessageText(),
+            style: AppTextStyle.body,
           ),
         ),
-        SizedBox(height: 9),
-        if (_getMessageText().isNotEmpty)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: HeightConstrainedText(
-              _getMessageText(),
-              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
-            ),
-          ),
-      ],
       SizedBox(height: 9),
       // Google sign-in is not supported in WKWebView. Prompt user to open
       // browser to sign in with Google. See https://developers.googleblog.com/en/modernizing-oauth-interactions-in-native-apps-for-better-usability-and-security/
@@ -196,7 +196,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
-        onPressed: () => setState(() => _emailSelected = true),
+        onPressed: () => widget.openDialogOnEmailProviderSelected
+            ? SignInDialog.show(showEmailFormOnly: true)
+            : setState(() => _showEmailFormFields = true),
         text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
       ),
     ];
