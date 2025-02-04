@@ -31,7 +31,7 @@ import 'package:universal_html/js_util.dart' as js_util;
 
 class ControlBar extends StatefulWidget {
   @override
-  _ControlBarState createState() => _ControlBarState();
+  State<ControlBar> createState() => _ControlBarState();
 }
 
 class _ControlBarState extends State<ControlBar> {
@@ -287,7 +287,7 @@ class EmojiButton extends StatefulWidget {
   const EmojiButton({required this.emoji});
 
   @override
-  _EmojiButtonState createState() => _EmojiButtonState();
+  State<EmojiButton> createState() => _EmojiButtonState();
 }
 
 class _EmojiButtonState extends State<EmojiButton> {
@@ -349,7 +349,7 @@ class ChatInput extends StatefulWidget {
   });
 
   @override
-  _ChatInputState createState() => _ChatInputState();
+  State<ChatInput> createState() => _ChatInputState();
 }
 
 class _ChatInputState extends State<ChatInput> {
