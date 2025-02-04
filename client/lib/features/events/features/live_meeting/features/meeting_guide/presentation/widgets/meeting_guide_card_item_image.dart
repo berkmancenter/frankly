@@ -13,7 +13,7 @@ class MeetingGuideCardItemImage extends StatelessWidget {
     return Center(
       child: ProxiedImage(
         agendaItem.imageUrl,
-        fit: BoxFit.none,
+        fit: BoxFit.contain,
       ),
     );
   }
