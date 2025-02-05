@@ -42,7 +42,7 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
         firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
       );
 
-      if (event.creatorId != context.authUid && !membership.isMod) {
+      if (event.creatorId != context.authUid && !membership.isFacilitator) {
         throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
       }
 
@@ -55,7 +55,9 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
       // Kick participant
       final roomId = request.breakoutRoomId ?? liveMeeting.meetingId ?? '';
       await agoraUtils.kickParticipant(
-          roomId: roomId, userId: request.userToKickId);
+        roomId: roomId,
+        userId: request.userToKickId,
+      );
     });
 
     return '';
