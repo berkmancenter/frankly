@@ -6,7 +6,7 @@
 
 import * as path from "path";
 import { firestore } from "firebase-admin/lib/firestore";
-import { CommunityRulesHelper, Membership } from "../firestore-rules-helper";
+import { CommunityRulesHelper, Membership } from "./firestore-rules-helper";
 import "mocha";
 
 const firebase = require("@firebase/rules-unit-testing");
@@ -1093,8 +1093,10 @@ describe("Firestore security rules", async () => {
                 case Membership.attendee:
                   await firebase.assertFails(userColRef.add(originalDataMap));
                   await firebase.assertSucceeds(userDocRef.get());
-                  await firebase.assertFails(userDocRef.set(originalDataMap));
-                  await firebase.assertFails(userDocRef.update(updateDataMap));
+                  await firebase.assertFails(userDocRef.set(updateDataMap));
+                  await firebase.assertFails(
+                    userDocRef.update({ someField: "adiffvalue" })
+                  );
                   await firebase.assertFails(userDocRef.delete());
                   break;
               }
@@ -1153,6 +1155,41 @@ describe("Firestore security rules", async () => {
               await firebase.assertFails(userDocRef.update(updateDataMap));
               await firebase.assertFails(userDocRef.delete());
             });
+          });
+
+          it("facilitator updating status to banned", async () => {
+            const statusDataMap = { status: "banned" };
+            await communityRulesHelper
+              .getDocumentRef(dbAdmin)
+              .set(statusDataMap);
+
+            const user = getAuthedFirestore("alice");
+            const userColRef = communityRulesHelper.getCollectionRef(user);
+            const userDocRef = communityRulesHelper.getDocumentRef(user);
+
+            await communityRulesHelper.createMembership("alice", "facilitator");
+
+            await firebase.assertFails(userColRef.add(originalDataMap));
+            await firebase.assertSucceeds(userDocRef.get());
+            await firebase.assertSucceeds(userDocRef.set(statusDataMap));
+            await firebase.assertFails(userDocRef.delete());
+          });
+          it("facilitator updating lastUpdatedTime and status to banned ", async () => {
+            const statusDataMap = { status: "banned", lastUpdatedTime: "123" };
+            await communityRulesHelper
+              .getDocumentRef(dbAdmin)
+              .set(statusDataMap);
+
+            const user = getAuthedFirestore("alice");
+            const userColRef = communityRulesHelper.getCollectionRef(user);
+            const userDocRef = communityRulesHelper.getDocumentRef(user);
+
+            await communityRulesHelper.createMembership("alice", "facilitator");
+
+            await firebase.assertFails(userColRef.add(originalDataMap));
+            await firebase.assertSucceeds(userDocRef.get());
+            await firebase.assertSucceeds(userDocRef.update(statusDataMap));
+            await firebase.assertFails(userDocRef.delete());
           });
 
           it("!isLiveStream", async () => {

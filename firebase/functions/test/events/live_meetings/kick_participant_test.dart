@@ -88,13 +88,13 @@ void main() {
     ).called(1);
   });
 
-  test('Moderator can successfully kick participant', () async {
-    // Create moderator user
-    const modUserId = 'modUser';
+  test('Facilitator can successfully kick participant', () async {
+    // Create faciliator user
+    const facUserId = 'faciliatorUser';
     await communityUtils.addCommunityMember(
       communityId: communityId,
-      userId: modUserId,
-      status: MembershipStatus.mod,
+      userId: facUserId,
+      status: MembershipStatus.facilitator,
     );
 
     final req = KickParticipantRequest(
@@ -107,7 +107,7 @@ void main() {
 
     await kickParticipant.action(
       req,
-      CallableContext(modUserId, null, 'fakeInstanceId'),
+      CallableContext(facUserId, null, 'fakeInstanceId'),
     );
 
     verify(
