@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import 'package:functions/utils/utils.dart';
 import '../../on_call_function.dart';
 import 'agora_api.dart';
 import '../../utils/infra/firestore_utils.dart';
@@ -45,6 +46,11 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
       if (event.creatorId != context.authUid && !membership.isFacilitator) {
         throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
       }
+
+      orElseUnauthorized(
+        request.userToKickId != event.creatorId,
+        logMessage: 'Event creator cannot be kicked from event.',
+      );
 
       final liveMeeting = await firestoreUtils.getFirestoreObject(
         transaction: transaction,
