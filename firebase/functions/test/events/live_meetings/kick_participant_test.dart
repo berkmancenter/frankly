@@ -151,6 +151,46 @@ void main() {
     );
   });
 
+  test('Event creator cannot be kicked', () async {
+    const regularUserId = 'regularUser';
+    var testEvent2 = Event(
+      id: '56789',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hostless,
+      collectionPath: '',
+    );
+    testEvent2 = await eventUtils.createEvent(
+      event: testEvent2,
+      userId: regularUserId,
+    );
+
+    final req = KickParticipantRequest(
+      eventPath: testEvent2.fullPath,
+      userToKickId: regularUserId,
+      breakoutRoomId: null,
+    );
+
+    final kickParticipant = KickParticipant();
+
+    expect(
+      () => kickParticipant.action(
+        req,
+        CallableContext(adminUserId, null, 'fakeInstanceId'),
+      ),
+      throwsA(
+        predicate(
+          (e) =>
+              e is HttpsError &&
+              e.code == HttpsError.failedPrecondition &&
+              e.message == 'unauthorized',
+        ),
+      ),
+    );
+  });
+
   test('Successfully kicks participant from breakout room', () async {
     const breakoutRoomId = 'breakoutRoom123';
     final req = KickParticipantRequest(

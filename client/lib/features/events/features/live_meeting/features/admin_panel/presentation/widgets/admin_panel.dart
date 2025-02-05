@@ -695,6 +695,9 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
           if (!(confirmResult?.kickParticipant ?? false)) return;
 
           final event = EventProvider.read(context).event;
+          if (event.creatorId == widget.kickedUserId) {
+            throw VisibleException('Can\'t kick the event creator.');
+          }
           final breakoutRoomId = widget.breakoutRoomId;
 
           await swallowErrors(
