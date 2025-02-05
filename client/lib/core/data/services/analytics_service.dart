@@ -12,6 +12,7 @@ class AnalyticsService {
         siteId: Environment.matomoSiteId,
         url: Environment.matomoURL,
         cookieless: true,
+        dispatchSettings: const DispatchSettings.persistent(),
       );
     }
   }
