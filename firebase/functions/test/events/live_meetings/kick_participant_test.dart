@@ -88,13 +88,13 @@ void main() {
     ).called(1);
   });
 
-  test('Moderator can successfully kick participant', () async {
-    // Create moderator user
-    const modUserId = 'modUser';
+  test('Facilitator can successfully kick participant', () async {
+    // Create faciliator user
+    const facUserId = 'faciliatorUser';
     await communityUtils.addCommunityMember(
       communityId: communityId,
-      userId: modUserId,
-      status: MembershipStatus.mod,
+      userId: facUserId,
+      status: MembershipStatus.facilitator,
     );
 
     final req = KickParticipantRequest(
@@ -107,7 +107,7 @@ void main() {
 
     await kickParticipant.action(
       req,
-      CallableContext(modUserId, null, 'fakeInstanceId'),
+      CallableContext(facUserId, null, 'fakeInstanceId'),
     );
 
     verify(
@@ -139,6 +139,46 @@ void main() {
       () => kickParticipant.action(
         req,
         CallableContext(regularUserId, null, 'fakeInstanceId'),
+      ),
+      throwsA(
+        predicate(
+          (e) =>
+              e is HttpsError &&
+              e.code == HttpsError.failedPrecondition &&
+              e.message == 'unauthorized',
+        ),
+      ),
+    );
+  });
+
+  test('Event creator cannot be kicked', () async {
+    const regularUserId = 'regularUser';
+    var testEvent2 = Event(
+      id: '56789',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hostless,
+      collectionPath: '',
+    );
+    testEvent2 = await eventUtils.createEvent(
+      event: testEvent2,
+      userId: regularUserId,
+    );
+
+    final req = KickParticipantRequest(
+      eventPath: testEvent2.fullPath,
+      userToKickId: regularUserId,
+      breakoutRoomId: null,
+    );
+
+    final kickParticipant = KickParticipant();
+
+    expect(
+      () => kickParticipant.action(
+        req,
+        CallableContext(adminUserId, null, 'fakeInstanceId'),
       ),
       throwsA(
         predicate(

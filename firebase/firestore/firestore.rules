@@ -47,6 +47,10 @@ service cloud.firestore {
             return status in ['owner', 'admin', 'mod'];
         }
 
+        function isFacilitator(status) {
+            return status in ['owner', 'admin', 'mod', 'facilitator'];
+        }
+
         function requiresApprovalToJoin(communityId) {
             return 'requireApprovalToJoin' in getOrDefault(get(/databases/$(database)/documents/community/$(communityId)), 'enabledFeatureFlags', []);
         }
@@ -131,6 +135,9 @@ service cloud.firestore {
                 return hasAuth() && getMembershipStatus(communityId) in memberSet;
             }
 
+             function isCommunityFacilitator() {
+                return hasAuth() && isFacilitator(getMembershipStatus(communityId));
+            }
             function isCommunityMod() {
                 return hasAuth() && isMod(getMembershipStatus(communityId));
             }
@@ -274,6 +281,7 @@ service cloud.firestore {
                         allow write: if isCommunityMod()
                                         || isDocCreator(getEventDataAfter())
                                         || request.auth.uid == participantId;
+                        allow update: if isCommunityFacilitator() && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','lastUpdatedTime']));
 
                         allow read: if hasAuth() && (isHosted() || isCommunityMod() || request.auth.uid == participantId);
                     }

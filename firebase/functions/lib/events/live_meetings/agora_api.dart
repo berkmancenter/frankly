@@ -168,7 +168,7 @@ class AgoraUtils {
       headers: _getAuthHeaders(),
       body: convert.json.encode(
         {
-          "appId": _agoraAppId,
+          "appid": _agoraAppId,
           "cname": roomId,
           "uid": uidToInt(userId),
           "time": 1440,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import 'package:functions/utils/utils.dart';
 import '../../on_call_function.dart';
 import 'agora_api.dart';
 import '../../utils/infra/firestore_utils.dart';
@@ -42,9 +43,14 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
         firestoreUtils.fromFirestoreJson(communityMembershipDoc.data.toMap()),
       );
 
-      if (event.creatorId != context.authUid && !membership.isMod) {
+      if (event.creatorId != context.authUid && !membership.isFacilitator) {
         throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
       }
+
+      orElseUnauthorized(
+        request.userToKickId != event.creatorId,
+        logMessage: 'Event creator cannot be kicked from event.',
+      );
 
       final liveMeeting = await firestoreUtils.getFirestoreObject(
         transaction: transaction,
@@ -55,7 +61,9 @@ class KickParticipant extends OnCallMethod<KickParticipantRequest> {
       // Kick participant
       final roomId = request.breakoutRoomId ?? liveMeeting.meetingId ?? '';
       await agoraUtils.kickParticipant(
-          roomId: roomId, userId: request.userToKickId);
+        roomId: roomId,
+        userId: request.userToKickId,
+      );
     });
 
     return '';
