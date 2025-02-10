@@ -392,6 +392,18 @@ class AgendaProvider with ChangeNotifier {
         );
         return;
       }
+      final LiveMeetingEvent? firstAgendaItem = currentLiveMeeting?.events
+          .where((e) => e.event == LiveMeetingEventType.agendaItemStarted)
+          .firstOrNull;
+      final DateTime? startTime = firstAgendaItem?.timestamp;
+      if (startTime == null) {
+        loggingService.log(
+          'Error determining event start time when logging analytics. Duration will be set to zero.',
+          logType: LogType.error,
+        );
+      }
+      final int durationInSeconds =
+          startTime == null ? 0 : serverTime.difference(startTime).inSeconds;
 
       analytics.logEvent(
         AnalyticsCompleteEventEvent(
@@ -400,6 +412,7 @@ class AgendaProvider with ChangeNotifier {
           asHost: (event?.eventType != EventType.hostless) &&
               event?.creatorId == userService.currentUserId,
           templateId: templateId,
+          duration: durationInSeconds,
         ),
       );
     }

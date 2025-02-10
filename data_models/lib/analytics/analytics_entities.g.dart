@@ -244,6 +244,7 @@ AnalyticsCompleteEventEvent _$AnalyticsCompleteEventEventFromJson(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
       asHost: json['asHost'] as bool,
+      duration: json['duration'] as int,
       templateId: json['templateId'] as String?,
     );
 
@@ -253,6 +254,7 @@ Map<String, dynamic> _$AnalyticsCompleteEventEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'asHost': instance.asHost,
+      'duration': instance.duration,
       'templateId': instance.templateId,
     };
 

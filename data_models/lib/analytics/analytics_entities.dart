@@ -570,12 +570,14 @@ class AnalyticsCompleteEventEvent implements AnalyticsEvent {
   final String communityId;
   final String eventId;
   final bool asHost;
+  final int duration;
   final String? templateId;
 
   AnalyticsCompleteEventEvent({
     required this.communityId,
     required this.eventId,
     required this.asHost,
+    required this.duration,
     this.templateId,
   });
 
@@ -594,7 +596,7 @@ class AnalyticsCompleteEventEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return duration;
   }
 }
 
