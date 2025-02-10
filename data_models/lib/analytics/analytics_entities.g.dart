@@ -127,14 +127,14 @@ AnalyticsCompleteNewTemplateEvent _$AnalyticsCompleteNewTemplateEventFromJson(
         Map<String, dynamic> json) =>
     AnalyticsCompleteNewTemplateEvent(
       communityId: json['communityId'] as String,
-      guideId: json['guideId'] as String,
+      templateId: json['templateId'] as String,
     );
 
 Map<String, dynamic> _$AnalyticsCompleteNewTemplateEventToJson(
         AnalyticsCompleteNewTemplateEvent instance) =>
     <String, dynamic>{
       'communityId': instance.communityId,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsPressCreateEventFromTemplateEvent
@@ -142,14 +142,14 @@ AnalyticsPressCreateEventFromTemplateEvent
             Map<String, dynamic> json) =>
         AnalyticsPressCreateEventFromTemplateEvent(
           communityId: json['communityId'] as String,
-          guideId: json['guideId'] as String,
+          templateId: json['templateId'] as String,
         );
 
 Map<String, dynamic> _$AnalyticsPressCreateEventFromTemplateEventToJson(
         AnalyticsPressCreateEventFromTemplateEvent instance) =>
     <String, dynamic>{
       'communityId': instance.communityId,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsCreateEventEvent _$AnalyticsCreateEventEventFromJson(
@@ -157,7 +157,7 @@ AnalyticsCreateEventEvent _$AnalyticsCreateEventEventFromJson(
     AnalyticsCreateEventEvent(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsCreateEventEventToJson(
@@ -165,7 +165,7 @@ Map<String, dynamic> _$AnalyticsCreateEventEventToJson(
     <String, dynamic>{
       'communityId': instance.communityId,
       'eventId': instance.eventId,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsScheduleEventEvent _$AnalyticsScheduleEventEventFromJson(
@@ -174,7 +174,7 @@ AnalyticsScheduleEventEvent _$AnalyticsScheduleEventEventFromJson(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
       daysFromNow: json['daysFromNow'] as int,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsScheduleEventEventToJson(
@@ -183,7 +183,7 @@ Map<String, dynamic> _$AnalyticsScheduleEventEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'daysFromNow': instance.daysFromNow,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsEditEventEvent _$AnalyticsEditEventEventFromJson(
@@ -191,7 +191,7 @@ AnalyticsEditEventEvent _$AnalyticsEditEventEventFromJson(
     AnalyticsEditEventEvent(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsEditEventEventToJson(
@@ -199,7 +199,7 @@ Map<String, dynamic> _$AnalyticsEditEventEventToJson(
     <String, dynamic>{
       'communityId': instance.communityId,
       'eventId': instance.eventId,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsPressShareEventEvent _$AnalyticsPressShareEventEventFromJson(
@@ -207,7 +207,7 @@ AnalyticsPressShareEventEvent _$AnalyticsPressShareEventEventFromJson(
     AnalyticsPressShareEventEvent(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
       shareType: $enumDecode(_$ShareTypeEnumMap, json['shareType']),
     );
 
@@ -216,7 +216,7 @@ Map<String, dynamic> _$AnalyticsPressShareEventEventToJson(
     <String, dynamic>{
       'communityId': instance.communityId,
       'eventId': instance.eventId,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
       'shareType': _$ShareTypeEnumMap[instance.shareType]!,
     };
 
@@ -226,7 +226,7 @@ AnalyticsEnterEventEvent _$AnalyticsEnterEventEventFromJson(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
       asHost: json['asHost'] as bool,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsEnterEventEventToJson(
@@ -235,7 +235,7 @@ Map<String, dynamic> _$AnalyticsEnterEventEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'asHost': instance.asHost,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsCompleteEventEvent _$AnalyticsCompleteEventEventFromJson(
@@ -244,7 +244,7 @@ AnalyticsCompleteEventEvent _$AnalyticsCompleteEventEventFromJson(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
       asHost: json['asHost'] as bool,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsCompleteEventEventToJson(
@@ -253,7 +253,7 @@ Map<String, dynamic> _$AnalyticsCompleteEventEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'asHost': instance.asHost,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsPressEventHelpEvent _$AnalyticsPressEventHelpEventFromJson(
@@ -262,7 +262,7 @@ AnalyticsPressEventHelpEvent _$AnalyticsPressEventHelpEventFromJson(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
       asHost: json['asHost'] as bool,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsPressEventHelpEventToJson(
@@ -271,7 +271,7 @@ Map<String, dynamic> _$AnalyticsPressEventHelpEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'asHost': instance.asHost,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsRsvpEventEvent _$AnalyticsRsvpEventEventFromJson(
@@ -279,7 +279,7 @@ AnalyticsRsvpEventEvent _$AnalyticsRsvpEventEventFromJson(
     AnalyticsRsvpEventEvent(
       communityId: json['communityId'] as String,
       eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
+      templateId: json['templateId'] as String?,
     );
 
 Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
@@ -287,7 +287,7 @@ Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
     <String, dynamic>{
       'communityId': instance.communityId,
       'eventId': instance.eventId,
-      'guideId': instance.guideId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsDonateEvent _$AnalyticsDonateEventFromJson(

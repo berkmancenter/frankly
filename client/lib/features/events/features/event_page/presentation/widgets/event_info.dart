@@ -443,7 +443,7 @@ class _EventInfoState extends State<EventInfo> {
 
         final communityId = widget.event.communityId;
         final eventId = widget.event.id;
-        final guideId = widget.event.templateId;
+        final templateId = widget.event.templateId;
         final isHost = (widget.event.eventType != EventType.hostless) &&
             widget.event.creatorId == userService.currentUserId;
         analytics.logEvent(
@@ -451,7 +451,7 @@ class _EventInfoState extends State<EventInfo> {
             communityId: communityId,
             eventId: eventId,
             asHost: isHost,
-            guideId: guideId,
+            templateId: templateId,
           ),
         );
       }),
@@ -721,13 +721,13 @@ class _EventInfoState extends State<EventInfo> {
         shareCallback: (ShareType type) {
           final communityId = widget.event.communityId;
           final eventId = widget.event.id;
-          final guideId = widget.event.templateId;
+          final templateId = widget.event.templateId;
           analytics.logEvent(
             AnalyticsPressShareEventEvent(
               communityId: communityId,
               eventId: eventId,
               shareType: type,
-              guideId: guideId,
+              templateId: templateId,
             ),
           );
         },

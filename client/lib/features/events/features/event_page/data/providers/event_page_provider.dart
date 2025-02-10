@@ -125,7 +125,7 @@ class EventPageProvider with ChangeNotifier {
             AnalyticsRsvpEventEvent(
               communityId: eventProvider.communityId,
               eventId: eventProvider.eventId,
-              guideId: eventProvider.templateId,
+              templateId: eventProvider.templateId,
             ),
           );
 

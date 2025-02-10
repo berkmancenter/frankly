@@ -11,7 +11,7 @@ abstract class AnalyticsEvent {
   static const String userCategory = 'user';
   static const String communityCategory = 'community';
   static const String eventCategory = 'event';
-  static const String guideCategory = 'guide';
+  static const String templateCategory = 'template';
 }
 
 @JsonSerializable()
@@ -290,7 +290,7 @@ class AnalyticsPressAddNewTemplateEvent implements AnalyticsEvent {
 
   @override
   String getEventCategory() {
-    return AnalyticsEvent.guideCategory;
+    return AnalyticsEvent.templateCategory;
   }
 
   @override
@@ -312,11 +312,11 @@ class AnalyticsCompleteNewTemplateEvent implements AnalyticsEvent {
   }
 
   final String communityId;
-  final String guideId;
+  final String templateId;
 
   AnalyticsCompleteNewTemplateEvent({
     required this.communityId,
-    required this.guideId,
+    required this.templateId,
   });
 
   @override
@@ -325,12 +325,12 @@ class AnalyticsCompleteNewTemplateEvent implements AnalyticsEvent {
 
   @override
   String getEventCategory() {
-    return AnalyticsEvent.guideCategory;
+    return AnalyticsEvent.templateCategory;
   }
 
   @override
   String? getEventName() {
-    return guideId;
+    return templateId;
   }
 
   @override
@@ -347,11 +347,11 @@ class AnalyticsPressCreateEventFromTemplateEvent implements AnalyticsEvent {
   }
 
   final String communityId;
-  final String guideId;
+  final String templateId;
 
   AnalyticsPressCreateEventFromTemplateEvent({
     required this.communityId,
-    required this.guideId,
+    required this.templateId,
   });
 
   @override
@@ -365,7 +365,7 @@ class AnalyticsPressCreateEventFromTemplateEvent implements AnalyticsEvent {
 
   @override
   String? getEventName() {
-    return guideId;
+    return templateId;
   }
 
   @override
@@ -383,12 +383,12 @@ class AnalyticsCreateEventEvent implements AnalyticsEvent {
 
   final String communityId;
   final String eventId;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsCreateEventEvent({
     required this.communityId,
     required this.eventId,
-    this.guideId,
+    this.templateId,
   });
 
   @override
@@ -420,13 +420,13 @@ class AnalyticsScheduleEventEvent implements AnalyticsEvent {
   final String communityId;
   final String eventId;
   final int daysFromNow;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsScheduleEventEvent({
     required this.communityId,
     required this.eventId,
     required this.daysFromNow,
-    this.guideId,
+    this.templateId,
   });
 
   @override
@@ -457,12 +457,12 @@ class AnalyticsEditEventEvent implements AnalyticsEvent {
 
   final String communityId;
   final String eventId;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsEditEventEvent({
     required this.communityId,
     required this.eventId,
-    this.guideId,
+    this.templateId,
   });
 
   @override
@@ -493,13 +493,13 @@ class AnalyticsPressShareEventEvent implements AnalyticsEvent {
 
   final String communityId;
   final String eventId;
-  final String? guideId;
+  final String? templateId;
   final ShareType shareType;
 
   AnalyticsPressShareEventEvent({
     required this.communityId,
     required this.eventId,
-    this.guideId,
+    this.templateId,
     required this.shareType,
   });
 
@@ -532,13 +532,13 @@ class AnalyticsEnterEventEvent implements AnalyticsEvent {
   final String communityId;
   final String eventId;
   final bool asHost;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsEnterEventEvent({
     required this.communityId,
     required this.eventId,
     required this.asHost,
-    this.guideId,
+    this.templateId,
   });
 
   @override
@@ -570,13 +570,13 @@ class AnalyticsCompleteEventEvent implements AnalyticsEvent {
   final String communityId;
   final String eventId;
   final bool asHost;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsCompleteEventEvent({
     required this.communityId,
     required this.eventId,
     required this.asHost,
-    this.guideId,
+    this.templateId,
   });
 
   @override
@@ -608,13 +608,13 @@ class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
   final String communityId;
   final String eventId;
   final bool asHost;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsPressEventHelpEvent({
     required this.communityId,
     required this.eventId,
     required this.asHost,
-    this.guideId,
+    this.templateId,
   });
 
   @override
@@ -645,12 +645,12 @@ class AnalyticsRsvpEventEvent implements AnalyticsEvent {
 
   final String communityId;
   final String eventId;
-  final String? guideId;
+  final String? templateId;
 
   AnalyticsRsvpEventEvent({
     required this.communityId,
     required this.eventId,
-    this.guideId,
+    this.templateId,
   });
 
   @override

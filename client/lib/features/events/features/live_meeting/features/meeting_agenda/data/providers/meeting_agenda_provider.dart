@@ -383,7 +383,7 @@ class AgendaProvider with ChangeNotifier {
     if (nextAgendaItem == null) {
       final communityId = event?.communityId;
       final eventId = event?.id;
-      final guideId = event?.templateId;
+      final templateId = event?.templateId;
 
       if (communityId == null || eventId == null) {
         loggingService.log(
@@ -399,7 +399,7 @@ class AgendaProvider with ChangeNotifier {
           eventId: eventId,
           asHost: (event?.eventType != EventType.hostless) &&
               event?.creatorId == userService.currentUserId,
-          guideId: guideId,
+          templateId: templateId,
         ),
       );
     }
