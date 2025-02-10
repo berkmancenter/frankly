@@ -429,7 +429,6 @@ class _EventInfoState extends State<EventInfo> {
           joinResults = await widget.onJoinEvent(showConfirm: false);
           if (!joinResults.isJoined) return;
         }
-        unawaited(firebaseAnalytics.logEvent(name: 'event_enter'));
         await alertOnError(context, () {
           if (externalPlatform.platformKey == PlatformKey.community ||
               !isPlatformSelectionEnabled) {
