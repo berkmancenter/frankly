@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:client/services.dart';
 import 'package:data_models/user/public_user_info.dart';
@@ -55,6 +56,10 @@ class FirestoreUserService {
         return _convertPublicUserInfoAsync(snapshot);
       } else {
         transaction.set(docRef, toFirestoreJson(defaultUserInfo.toJson()));
+        // New user signed up
+        analytics.logEvent(
+          AnalyticsUserRegistrationEvent(userId: defaultUserInfo.id),
+        );
         return defaultUserInfo;
       }
     });

@@ -46,6 +46,36 @@ class AnalyticsAgreeToTermsAndConditionsEvent implements AnalyticsEvent {
 }
 
 @JsonSerializable()
+class AnalyticsUserRegistrationEvent implements AnalyticsEvent {
+  final String userId;
+
+  @override
+  String getEventType() {
+    return 'Register User';
+  }
+
+  AnalyticsUserRegistrationEvent({required this.userId});
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsUserRegistrationEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.userCategory;
+  }
+
+  @override
+  String getEventName() {
+    return userId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
+}
+
+@JsonSerializable()
 class AnalyticsLinkStripeAccountEvent implements AnalyticsEvent {
   @override
   String getEventType() {

@@ -19,6 +19,18 @@ Map<String, dynamic> _$AnalyticsAgreeToTermsAndConditionsEventToJson(
       'userId': instance.userId,
     };
 
+AnalyticsUserRegistrationEvent _$AnalyticsUserRegistrationEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsUserRegistrationEvent(
+      userId: json['userId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsUserRegistrationEventToJson(
+        AnalyticsUserRegistrationEvent instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+    };
+
 AnalyticsLinkStripeAccountEvent _$AnalyticsLinkStripeAccountEventFromJson(
         Map<String, dynamic> json) =>
     AnalyticsLinkStripeAccountEvent();
