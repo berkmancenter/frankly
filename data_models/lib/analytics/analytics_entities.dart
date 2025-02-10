@@ -20,7 +20,7 @@ class AnalyticsAgreeToTermsAndConditionsEvent implements AnalyticsEvent {
 
   @override
   String getEventType() {
-    return 'agree_to_tac';
+    return 'Agree to TAC';
   }
 
   AnalyticsAgreeToTermsAndConditionsEvent({required this.userId});
@@ -51,7 +51,7 @@ class AnalyticsUserRegistrationEvent implements AnalyticsEvent {
 
   @override
   String getEventType() {
-    return 'register_user';
+    return 'Register User';
   }
 
   AnalyticsUserRegistrationEvent({required this.userId});
@@ -79,7 +79,7 @@ class AnalyticsUserRegistrationEvent implements AnalyticsEvent {
 class AnalyticsLinkStripeAccountEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'link_stripe_account';
+    return 'Link Stripe Account';
   }
 
   AnalyticsLinkStripeAccountEvent();
@@ -108,7 +108,7 @@ class AnalyticsLinkStripeAccountEvent implements AnalyticsEvent {
 class AnalyticsCreateCommunityEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'create_community';
+    return 'Create Community';
   }
 
   final String communityId;
@@ -140,7 +140,7 @@ class AnalyticsCreateCommunityEvent implements AnalyticsEvent {
 class AnalyticsUpdateCommunityImageEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'update_community_image';
+    return 'Update Community Image';
   }
 
   final String communityId;
@@ -173,7 +173,7 @@ class AnalyticsUpdateCommunityImageEvent implements AnalyticsEvent {
 class AnalyticsUpdateCommunityMetadataEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'update_community_metadata';
+    return 'Update Community Metadata';
   }
 
   final String communityId;
@@ -206,7 +206,7 @@ class AnalyticsUpdateCommunityMetadataEvent implements AnalyticsEvent {
 class AnalyticsPressShareCommunityLinkEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'press_share_community_link';
+    return 'Press Share Community Link';
   }
 
   final String communityId;
@@ -241,7 +241,7 @@ class AnalyticsPressShareCommunityLinkEvent implements AnalyticsEvent {
 class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'join_community';
+    return 'Join Community';
   }
 
   final String communityId;
@@ -273,7 +273,7 @@ class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
 class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'leave_community';
+    return 'Leave Community';
   }
 
   final String communityId;
@@ -305,7 +305,7 @@ class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
 class AnalyticsPressAddNewTemplateEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'press_add_new_template';
+    return 'Press Add New Template';
   }
 
   final String communityId;
@@ -338,7 +338,7 @@ class AnalyticsPressAddNewTemplateEvent implements AnalyticsEvent {
 class AnalyticsCompleteNewTemplateEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'complete_new_template';
+    return 'Complete New Template';
   }
 
   final String communityId;
@@ -373,7 +373,7 @@ class AnalyticsCompleteNewTemplateEvent implements AnalyticsEvent {
 class AnalyticsPressCreateEventFromTemplateEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'press_create_event_from_template';
+    return 'Press Create Event from Template';
   }
 
   final String communityId;
@@ -408,7 +408,7 @@ class AnalyticsPressCreateEventFromTemplateEvent implements AnalyticsEvent {
 class AnalyticsCreateEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'create_event';
+    return 'Create Event';
   }
 
   final String communityId;
@@ -444,7 +444,7 @@ class AnalyticsCreateEventEvent implements AnalyticsEvent {
 class AnalyticsScheduleEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'schedule_event';
+    return 'Schedule Event';
   }
 
   final String communityId;
@@ -482,7 +482,7 @@ class AnalyticsScheduleEventEvent implements AnalyticsEvent {
 class AnalyticsEditEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'edit_event';
+    return 'Edit Event';
   }
 
   final String communityId;
@@ -518,7 +518,7 @@ class AnalyticsEditEventEvent implements AnalyticsEvent {
 class AnalyticsPressShareEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'press_share_event';
+    return 'Press Share Event';
   }
 
   final String communityId;
@@ -556,7 +556,7 @@ class AnalyticsPressShareEventEvent implements AnalyticsEvent {
 class AnalyticsEnterEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'enter_event';
+    return 'Enter Event';
   }
 
   final String communityId;
@@ -594,7 +594,7 @@ class AnalyticsEnterEventEvent implements AnalyticsEvent {
 class AnalyticsCompleteEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'complete_event';
+    return 'Complete Event';
   }
 
   final String communityId;
@@ -634,7 +634,7 @@ class AnalyticsCompleteEventEvent implements AnalyticsEvent {
 class AnalyticsRateEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'rate_event';
+    return 'Rate Event';
   }
 
   final String communityId;
@@ -672,7 +672,7 @@ class AnalyticsRateEventEvent implements AnalyticsEvent {
 class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'press_event_help';
+    return 'Press Event Help';
   }
 
   final String communityId;
@@ -710,7 +710,7 @@ class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
 class AnalyticsRsvpEventEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'rsvp_event';
+    return 'RSVP Event';
   }
 
   final String communityId;
@@ -746,7 +746,7 @@ class AnalyticsRsvpEventEvent implements AnalyticsEvent {
 class AnalyticsDonateEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'donate';
+    return 'Donate';
   }
 
   final String communityId;
@@ -780,7 +780,7 @@ class AnalyticsDonateEvent implements AnalyticsEvent {
 class AnalyticsUpdateCommunitySubscriptionEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'update_community_subscription';
+    return 'Update Community Subscription';
   }
 
   final String? communityId;
