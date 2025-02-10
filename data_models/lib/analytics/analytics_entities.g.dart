@@ -83,42 +83,66 @@ const _$ShareTypeEnumMap = {
   ShareType.link: 'link',
 };
 
-AnalyticsPressAddNewGuideEvent _$AnalyticsPressAddNewGuideEventFromJson(
+AnalyticsJoinCommunityEvent _$AnalyticsJoinCommunityEventFromJson(
         Map<String, dynamic> json) =>
-    AnalyticsPressAddNewGuideEvent(
+    AnalyticsJoinCommunityEvent(
       communityId: json['communityId'] as String,
     );
 
-Map<String, dynamic> _$AnalyticsPressAddNewGuideEventToJson(
-        AnalyticsPressAddNewGuideEvent instance) =>
+Map<String, dynamic> _$AnalyticsJoinCommunityEventToJson(
+        AnalyticsJoinCommunityEvent instance) =>
     <String, dynamic>{
       'communityId': instance.communityId,
     };
 
-AnalyticsCompleteNewGuideEvent _$AnalyticsCompleteNewGuideEventFromJson(
+AnalyticsLeaveCommunityEvent _$AnalyticsLeaveCommunityEventFromJson(
         Map<String, dynamic> json) =>
-    AnalyticsCompleteNewGuideEvent(
+    AnalyticsLeaveCommunityEvent(
+      communityId: json['communityId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsLeaveCommunityEventToJson(
+        AnalyticsLeaveCommunityEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+    };
+
+AnalyticsPressAddNewTemplateEvent _$AnalyticsPressAddNewTemplateEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsPressAddNewTemplateEvent(
+      communityId: json['communityId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsPressAddNewTemplateEventToJson(
+        AnalyticsPressAddNewTemplateEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+    };
+
+AnalyticsCompleteNewTemplateEvent _$AnalyticsCompleteNewTemplateEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsCompleteNewTemplateEvent(
       communityId: json['communityId'] as String,
       guideId: json['guideId'] as String,
     );
 
-Map<String, dynamic> _$AnalyticsCompleteNewGuideEventToJson(
-        AnalyticsCompleteNewGuideEvent instance) =>
+Map<String, dynamic> _$AnalyticsCompleteNewTemplateEventToJson(
+        AnalyticsCompleteNewTemplateEvent instance) =>
     <String, dynamic>{
       'communityId': instance.communityId,
       'guideId': instance.guideId,
     };
 
-AnalyticsPressCreateEventFromGuideEvent
-    _$AnalyticsPressCreateEventFromGuideEventFromJson(
+AnalyticsPressCreateEventFromTemplateEvent
+    _$AnalyticsPressCreateEventFromTemplateEventFromJson(
             Map<String, dynamic> json) =>
-        AnalyticsPressCreateEventFromGuideEvent(
+        AnalyticsPressCreateEventFromTemplateEvent(
           communityId: json['communityId'] as String,
           guideId: json['guideId'] as String,
         );
 
-Map<String, dynamic> _$AnalyticsPressCreateEventFromGuideEventToJson(
-        AnalyticsPressCreateEventFromGuideEvent instance) =>
+Map<String, dynamic> _$AnalyticsPressCreateEventFromTemplateEventToJson(
+        AnalyticsPressCreateEventFromTemplateEvent instance) =>
     <String, dynamic>{
       'communityId': instance.communityId,
       'guideId': instance.guideId,
@@ -260,30 +284,6 @@ Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
       'communityId': instance.communityId,
       'eventId': instance.eventId,
       'guideId': instance.guideId,
-    };
-
-AnalyticsJoinCommunityEvent _$AnalyticsJoinCommunityEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsJoinCommunityEvent(
-      communityId: json['communityId'] as String,
-    );
-
-Map<String, dynamic> _$AnalyticsJoinCommunityEventToJson(
-        AnalyticsJoinCommunityEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-    };
-
-AnalyticsLeaveCommunityEvent _$AnalyticsLeaveCommunityEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsLeaveCommunityEvent(
-      communityId: json['communityId'] as String,
-    );
-
-Map<String, dynamic> _$AnalyticsLeaveCommunityEventToJson(
-        AnalyticsLeaveCommunityEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
     };
 
 AnalyticsDonateEvent _$AnalyticsDonateEventFromJson(
