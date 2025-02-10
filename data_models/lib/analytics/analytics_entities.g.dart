@@ -270,6 +270,24 @@ Map<String, dynamic> _$AnalyticsCompleteEventEventToJson(
       'templateId': instance.templateId,
     };
 
+AnalyticsRateEventEvent _$AnalyticsRateEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsRateEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      rating: (json['rating'] as num).toDouble(),
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsRateEventEventToJson(
+        AnalyticsRateEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'rating': instance.rating,
+      'templateId': instance.templateId,
+    };
+
 AnalyticsPressEventHelpEvent _$AnalyticsPressEventHelpEventFromJson(
         Map<String, dynamic> json) =>
     AnalyticsPressEventHelpEvent(

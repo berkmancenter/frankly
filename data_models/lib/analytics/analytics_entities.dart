@@ -631,6 +631,44 @@ class AnalyticsCompleteEventEvent implements AnalyticsEvent {
 }
 
 @JsonSerializable()
+class AnalyticsRateEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Rate Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final double rating;
+  final String? templateId;
+
+  AnalyticsRateEventEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.rating,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsRateEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return rating;
+  }
+}
+
+@JsonSerializable()
 class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
   @override
   String getEventType() {

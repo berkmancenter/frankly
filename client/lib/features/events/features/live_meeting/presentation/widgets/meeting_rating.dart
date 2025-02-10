@@ -1,5 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -114,10 +115,18 @@ class _MeetingRatingState extends State<MeetingRating> {
             unratedColor: AppColor.white.withOpacity(0.5),
             onRatingUpdate: (rating) => alertOnError(context, () async {
               setState(() => _currentRating = rating);
+              final event = context.read<EventProvider>().event;
 
               await firestoreLiveMeetingService.updateRating(
-                context.read<EventProvider>().event,
+                event,
                 rating,
+              );
+              analytics.logEvent(
+                AnalyticsRateEventEvent(
+                  communityId: event.communityId,
+                  eventId: event.id,
+                  rating: rating,
+                ),
               );
             }),
           ),
