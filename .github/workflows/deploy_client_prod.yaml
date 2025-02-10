@@ -52,6 +52,8 @@ jobs:
           envkey_SENTRY_RELEASE: ${{ github.ref_name }}
           envkey_SENTRY_ENVIRONMENT: production
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          envkey_MATOMO_URL: ${{ secrets.MATOMO_URL}}
+          envkey_MATOMO_SITE_ID: ${{ secrets.MATOMO_SITE_ID}}
           envkey_APP_NAME: Frankly
           envkey_TERMS_URL: https://frankly.org/terms
           envkey_PRICING_URL: https://frankly.org/pricing
