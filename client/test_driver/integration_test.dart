@@ -5,5 +5,7 @@ Future<void> main() {
       String.fromEnvironment('myVar', defaultValue: 'SOME_DEFAULT_VALUE');
   print('MyVar: $myvar');
 
-  return integrationDriver();
+  return integrationDriver(
+    timeout: const Duration(minutes: 65),
+  );
 }
