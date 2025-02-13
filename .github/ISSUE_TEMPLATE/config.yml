@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Email the team
+    url: mailto:hello@frankly.org
+    about: If you don't have a bug report or a feature request, you can email us directly.
