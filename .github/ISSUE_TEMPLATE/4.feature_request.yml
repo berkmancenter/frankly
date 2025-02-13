@@ -1,0 +1,19 @@
+name: Feature Request
+description: I have a suggestion for a feature
+labels: ['triage', 'feature request']
+body:
+  - type: markdown
+    attributes:
+      value: Please use a descriptive title for this issue.
+  - type: textarea
+    attributes:
+      label: Pitch
+      description: Describe your idea for a feature! Please include as much detail as possible. What would it look like? How would it work?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Motivation
+      description: What problem does this feature solve? Why do you think it's needed? Who would benefit from it?
+    validations:
+      required: true

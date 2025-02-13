@@ -1,0 +1,54 @@
+name: Bug Report
+description: You found a bug? Let us know!
+labels: ['triage', 'bug']
+body:
+  - type: markdown
+    attributes:
+      value: Please use a descriptive title for this issue.
+  - type: textarea
+    attributes:
+      label: Steps to reproduce the problem
+      description: What were you trying to do? Try detailing each button press, input, or menu selection.
+      value: |
+        1. 
+        2. 
+        3. 
+        ...
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+      placeholder: "Ex: I should have been able to create a new account"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Actual behavior
+      description: What happened?
+      placeholder: "Ex: I got an error message when trying to create a new account"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional details
+      description: "_Hint: you can drag and drop files and screenshots here, or use the attachment button._"
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Web browser information (if applicable)
+      description: |
+        What browser are you using when getting this bug? Please go to [What's My Browser](https://www.whatsmybrowser.org/) and copy and paste the link here.
+      placeholder: Firefox 131.0.0
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Operating system
+      description: |
+        What OS are you running? Please specify the version as well.
+      placeholder: macOS 15.0.1
+    validations:
+      required: false
