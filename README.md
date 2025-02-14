@@ -481,7 +481,9 @@ firebase functions:config:set \
 
 If you'd prefer to set secrets individually, such as for testing certain subsystems in isolation, you can run the commands above individually for each service. For example, you can run `firebase functions:config:set agora.storage_access_key="<YOUR_VALUE_HERE>"` to set only the Agora storage access key.
 
+**Configure the Flutter client**
 
+You will need to connect the Flutter client to your hosted instance by modifying the values in the .env file. See the example file `client/.env.hosted.example` for a the names and descriptions of environment variables used in a hosted environment. Most of them are the same as those used in local development, with the addition of properties used to connect to your Firebase and Google Cloud Functions, as well as some optional connection properties for connecting to Sentry and Matomo for reporting and analytics.
 
 
 # ❓ Troubleshooting and FAQ
