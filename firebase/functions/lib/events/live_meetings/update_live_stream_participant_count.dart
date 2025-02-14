@@ -27,12 +27,14 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
           )
           .where(
             $models.Event.kFieldScheduledTime,
-            isGreaterThanOrEqualTo: Timestamp.fromDateTime(DateTime.now()),
+            isGreaterThanOrEqualTo: Timestamp.fromDateTime(
+              DateTime.now().subtract(const Duration(hours: 12)),
+            ),
           )
           .where(
             $models.Event.kFieldScheduledTime,
             isLessThan: Timestamp.fromDateTime(
-              DateTime.now().add(const Duration(days: 1)),
+              DateTime.now().add(const Duration(hours: 12)),
             ),
           )
           .select([]).get();
