@@ -165,7 +165,7 @@ class AnalyticsUpdateCommunityImageEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -198,7 +198,7 @@ class AnalyticsUpdateCommunityMetadataEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -233,7 +233,7 @@ class AnalyticsPressShareCommunityLinkEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -265,7 +265,7 @@ class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -297,7 +297,7 @@ class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -330,7 +330,7 @@ class AnalyticsPressAddNewTemplateEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -400,7 +400,7 @@ class AnalyticsPressCreateEventFromTemplateEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -474,7 +474,7 @@ class AnalyticsScheduleEventEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -510,7 +510,7 @@ class AnalyticsEditEventEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -548,7 +548,7 @@ class AnalyticsPressShareEventEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -586,7 +586,7 @@ class AnalyticsEnterEventEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -702,7 +702,7 @@ class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
@@ -738,7 +738,7 @@ class AnalyticsRsvpEventEvent implements AnalyticsEvent {
 
   @override
   num? getMetricValue() {
-    return null;
+    return 1;
   }
 }
 
