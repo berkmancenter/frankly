@@ -12,7 +12,8 @@ class MatchingRequest {
     required this.googleSheetId,
   });
 
-  factory MatchingRequest.fromJson(Map<String, dynamic> json) => _$MatchingRequestFromJson(json);
+  factory MatchingRequest.fromJson(Map<String, dynamic> json) =>
+      _$MatchingRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$MatchingRequestToJson(this);
 }

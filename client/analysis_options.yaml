@@ -16,13 +16,12 @@ analyzer:
     - test/**.mocks.dart
   errors:
     unnecessary_null_comparison: error
-    dead_null_aware_expression: error
+    dead_null_aware_expression: warning
     missing_required_param: error
     unawaited_futures: error
-    unused_import: error
+    unused_import: warning
 
-    # TODO(null-safety)
-    import_of_legacy_library_into_null_safe: ignore
+    # invalid_annotation_target is recommended in the Freezed package documentation.
     invalid_annotation_target: ignore
 
 linter:
@@ -33,6 +32,5 @@ linter:
     prefer_const_constructors: false
     unawaited_futures: true
     require_trailing_commas: true
-
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

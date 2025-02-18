@@ -11,7 +11,8 @@ const kRowNumberIdKey = 'GOOGLE_SHEET_ROW_NUMBER';
 Map<String, dynamic> getGoogleSheetCredentials() {
   final base64key = Platform.environment['GOOGLE_SHEETS_CREDENTIAL'];
   if (base64key == null) {
-    throw Exception('No Google sheet credentials found in environment variables.');
+    throw Exception(
+        'No Google sheet credentials found in environment variables.');
   }
   String jsonCredentials = utf8.decode(base64.decode(base64key));
   return jsonDecode(jsonCredentials);
@@ -133,7 +134,8 @@ Future<bool> writeMatchResultsToGoogleSheet({
       matchRows.add(
         [
           'Group ${i + 1}',
-          for (var i = 0; i < group.length; i++) '=Responses!$nameColumn${group[i]}',
+          for (var i = 0; i < group.length; i++)
+            '=Responses!$nameColumn${group[i]}',
         ],
       );
     }
@@ -196,7 +198,8 @@ void normalizeSurveyAnswerStrings({
 
   if (!hasQuestions && surveyAnswerStrings.values.isNotEmpty) {
     // If breakouts didn't specify a number of questions, get the max answer mask length.
-    numQuestions = surveyAnswerStrings.values.map((s) => s.length).reduce(math.max);
+    numQuestions =
+        surveyAnswerStrings.values.map((s) => s.length).reduce(math.max);
   }
 
   // Update all values to be numberOfQuestions in length.
@@ -207,8 +210,10 @@ void normalizeSurveyAnswerStrings({
       } else if (value.length < numQuestions) {
         final paddingLength = numQuestions - value.length;
 
-        final padding =
-            [for (int i = 0; i < paddingLength; i++) math.Random().nextBool() ? 0 : 1].join();
+        final padding = [
+          for (int i = 0; i < paddingLength; i++)
+            math.Random().nextBool() ? 0 : 1
+        ].join();
 
         return '$value$padding';
       }
@@ -217,7 +222,8 @@ void normalizeSurveyAnswerStrings({
   );
 }
 
-int calculateAdjustedTargetParticipants(int numParticipants, int targetGroupSize) {
+int calculateAdjustedTargetParticipants(
+    int numParticipants, int targetGroupSize) {
   if (targetGroupSize < 4) {
     return targetGroupSize;
   }

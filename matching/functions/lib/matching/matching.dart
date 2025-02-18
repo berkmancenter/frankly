@@ -60,13 +60,14 @@ Map<String, int> _distanceMatrix(List<String> samples) {
   };
 }
 
-List<List<String>> _pairsAtThreshold(
-    Map<String, int> distances, Map<String, List<String>> buckets, int threshold) {
+List<List<String>> _pairsAtThreshold(Map<String, int> distances,
+    Map<String, List<String>> buckets, int threshold) {
   List<List<String>> pairs = [];
   List<String> sortedBucketKeys =
       buckets.keys.toList().where((k) => (buckets[k]!.length > 0)).toList();
 
-  int countRemaining = sortedBucketKeys.fold(0, (s, bk) => s + buckets[bk]!.length);
+  int countRemaining =
+      sortedBucketKeys.fold(0, (s, bk) => s + buckets[bk]!.length);
   final skipBuckets = <String>{};
   bool finished() {
     // Helper fn for end conditions
@@ -96,8 +97,9 @@ List<List<String>> _pairsAtThreshold(
     if (k2 == null) {
       skipBuckets.add(k1); // No solutions for k1
     } else {
-      final matchcount =
-          min(1 + buckets[k1]!.length - buckets[sortedBucketKeys[1]]!.length, buckets[k2]!.length);
+      final matchcount = min(
+          1 + buckets[k1]!.length - buckets[sortedBucketKeys[1]]!.length,
+          buckets[k2]!.length);
       for (var i = 0; i < matchcount; i++) {
         pairs.add([buckets[k1]!.removeLast(), buckets[k2]!.removeLast()]);
         countRemaining -= 2;
@@ -123,7 +125,8 @@ List<List<String>> bucketMatch({
   var pairs = <List<String>>[];
   final buckets = _bucketSamples(samples);
   final distances = _distanceMatrix(buckets.keys.toList());
-  final thresholds = [idealDistance] + List<int>.generate(minDistance, (idx) => minDistance - idx);
+  final thresholds = [idealDistance] +
+      List<int>.generate(minDistance, (idx) => minDistance - idx);
   thresholds.forEach((threshold) {
     if (pairs.length * 2 < samples.length) {
       final newPairs = _pairsAtThreshold(distances, buckets, threshold);
@@ -149,7 +152,8 @@ List<List<String>> randomGroups(List<String> items, int targetGroupSize) {
   items.shuffle();
   var groups = <List<String>>[];
   while (items.length >= targetGroupSize) {
-    groups.add([for (var i = 0; i < targetGroupSize; i += 1) items.removeLast()]);
+    groups
+        .add([for (var i = 0; i < targetGroupSize; i += 1) items.removeLast()]);
   }
   int r = items.length;
   for (var i = 0; i < r; i++) {
@@ -171,8 +175,8 @@ Map<String, List<String>> createGraph(
   };
 }
 
-List<String> getNextCluster(
-    Map<String, List<String>> buckets, Map<String, List<String>> G, int clusterSize) {
+List<String> getNextCluster(Map<String, List<String>> buckets,
+    Map<String, List<String>> G, int clusterSize) {
   // Make a graph --> BFS from largest bucket until cluster is full
   List<String> cluster = [];
   List<String> sortedBucketKeys = buckets.keys // Sort remaining by size
@@ -240,7 +244,8 @@ List<List<String>> groupMatch({
   }
   var groups = [
     // Each group is composed to contain 1 p from each cluster
-    for (var i = 0; i < clusterSize; i++) clusters.map((c) => c.removeLast()).toList()
+    for (var i = 0; i < clusterSize; i++)
+      clusters.map((c) => c.removeLast()).toList()
   ];
   for (int i = 0; i < remainder; i++) {
     // Remainders are added as extras to existing groups
@@ -272,7 +277,8 @@ void _printPairs(List<List<String>> pairs, Map<String, String> samples) {
   });
 }
 
-void _printPairsDistribution(List<List<String>> pairs, Map<String, String> samples) {
+void _printPairsDistribution(
+    List<List<String>> pairs, Map<String, String> samples) {
   int maxDist = samples[pairs[0][0]]!.length;
   final dists = List<int>.filled(maxDist + 1, 0);
   int nonPairs = 0;
@@ -292,7 +298,8 @@ void _printPairsDistribution(List<List<String>> pairs, Map<String, String> sampl
   print(s);
 }
 
-void _printGroupsDistribution(List<List<String>> groups, Map<String, String> samples) {
+void _printGroupsDistribution(
+    List<List<String>> groups, Map<String, String> samples) {
   Map<int, int> groupCounts = {};
   groups.forEach((g) {
     groupCounts[g.length] ??= 0;
@@ -301,9 +308,11 @@ void _printGroupsDistribution(List<List<String>> groups, Map<String, String> sam
   groupCounts.forEach((k, v) => print('${k}: ${v} groups'));
 }
 
-List<List<String>> _runExperiment(Map<String, String> samples, int idealDistance, int minDistance) {
+List<List<String>> _runExperiment(
+    Map<String, String> samples, int idealDistance, int minDistance) {
   // Run experiment on samples, log results and time
-  String logstring = 'n:${samples.length}, q:${samples[samples.keys.toList()[0]]!.length}';
+  String logstring =
+      'n:${samples.length}, q:${samples[samples.keys.toList()[0]]!.length}';
   final stopwatch = Stopwatch()..start();
   List<List<String>> pairs = bucketMatch(
     samples: samples,
@@ -320,8 +329,11 @@ List<List<String>> _runExperiment(Map<String, String> samples, int idealDistance
   return pairs;
 }
 
-void _runSimulation(int nParticipants, int nQuestions, double pDeviation, double pFlipped,
-    {bool printPairs = false, bool printDistribution = false, int targetGroupSize = 2}) {
+void _runSimulation(
+    int nParticipants, int nQuestions, double pDeviation, double pFlipped,
+    {bool printPairs = false,
+    bool printDistribution = false,
+    int targetGroupSize = 2}) {
   print(
       '\nn:${nParticipants}, q:${nQuestions}, gs:${targetGroupSize}, r:${nParticipants % targetGroupSize}, pDev:${pDeviation.toStringAsFixed(2)}, pFlipped:${pFlipped.toStringAsFixed(2)}');
   // Simulate data and run matching experiment
@@ -337,7 +349,8 @@ void _runSimulation(int nParticipants, int nQuestions, double pDeviation, double
 
   if (targetGroupSize == 2) {
     // Run matching
-    List<List<String>> pairs = _runExperiment(samples, _idealDistance, _minDistance);
+    List<List<String>> pairs =
+        _runExperiment(samples, _idealDistance, _minDistance);
     if (printPairs) {
       _printPairs(pairs, samples);
     }
@@ -346,7 +359,9 @@ void _runSimulation(int nParticipants, int nQuestions, double pDeviation, double
     }
   } else {
     List<List<String>> groups = groupMatch(
-        participantResponses: samples, targetGroupSize: targetGroupSize, logclusters: false);
+        participantResponses: samples,
+        targetGroupSize: targetGroupSize,
+        logclusters: false);
     if (printDistribution) {
       _printGroupsDistribution(groups, samples);
     }
@@ -362,7 +377,9 @@ Map<String, int> _groupsToMap(List<List<String>> groups) {
 }
 
 void _testGroupMatchFromCsv(String csvpath, pidIdx, amIdx,
-    {targetGroupSize = 6, bool printPairs = false, bool printDistribution = false}) async {
+    {targetGroupSize = 6,
+    bool printPairs = false,
+    bool printDistribution = false}) async {
   // Read CSV
   final fields = await new File(csvpath)
       .openRead()
@@ -371,22 +388,27 @@ void _testGroupMatchFromCsv(String csvpath, pidIdx, amIdx,
       .toList();
   fields.removeAt(0);
   // Format Data
-  Map<String, String> samples =
-      Map.fromIterable(fields, key: (e) => e[pidIdx].toString(), value: (e) => e[amIdx].toString());
+  Map<String, String> samples = Map.fromIterable(fields,
+      key: (e) => e[pidIdx].toString(), value: (e) => e[amIdx].toString());
 
   int nParticipants = samples.length;
-  int nQuestions = samples[samples.keys.elementAt(new Random().nextInt(samples.length))]!.length;
+  int nQuestions =
+      samples[samples.keys.elementAt(new Random().nextInt(samples.length))]!
+          .length;
   print(samples[samples.keys.elementAt(new Random().nextInt(samples.length))]);
   print(
       '\nn:${nParticipants}, q:${nQuestions}, gs:${targetGroupSize}, r:${nParticipants % targetGroupSize}');
 
   List<List<String>> groups = groupMatch(
-      participantResponses: samples, targetGroupSize: targetGroupSize, logclusters: true);
+      participantResponses: samples,
+      targetGroupSize: targetGroupSize,
+      logclusters: true);
   Map<String, int> pidToGroup = _groupsToMap(groups);
   if (printDistribution) {
     _printGroupsDistribution(groups, samples);
   }
-  writeCsv(fields.map((r) => [r[pidIdx], r[amIdx], pidToGroup[r[pidIdx]]]).toList(),
+  writeCsv(
+      fields.map((r) => [r[pidIdx], r[amIdx], pidToGroup[r[pidIdx]]]).toList(),
       csvpath.split('.')[0] + '_results.csv');
 }
 
@@ -398,14 +420,16 @@ void writeCsv(List<List<dynamic>> lines, String filepath) async {
 
 void main(List<String> arguments) {
   const csvInput = 'csvInput';
-  final parser = ArgParser()..addFlag(csvInput, defaultsTo: false, negatable: true);
+  final parser = ArgParser()
+    ..addFlag(csvInput, defaultsTo: false, negatable: true);
   ArgResults argResults = parser.parse(arguments);
   final paths = argResults.rest;
 
   if (argResults[csvInput]) {
     // Run a test over csvInputs instead
     for (String path in paths) {
-      _testGroupMatchFromCsv(path, 7, 6, targetGroupSize: 6, printDistribution: true);
+      _testGroupMatchFromCsv(path, 7, 6,
+          targetGroupSize: 6, printDistribution: true);
     }
   } else {
     int nQuestions = 7;
@@ -415,10 +439,12 @@ void main(List<String> arguments) {
     bool hammertime = true;
 
     // Testing groups
-    _runSimulation(1000, nQuestions, pDeviation, rPercent, targetGroupSize: targetGroupSize);
+    _runSimulation(1000, nQuestions, pDeviation, rPercent,
+        targetGroupSize: targetGroupSize);
 
     // Test with variable inputs
-    print("\nSimulate R vs D with ${rPercent} R and p(deviation) = ${pDeviation}...");
+    print(
+        "\nSimulate R vs D with ${rPercent} R and p(deviation) = ${pDeviation}...");
     [1001, 2005, 10311, 20001].forEach((n) {
       _runSimulation(n, nQuestions, pDeviation, rPercent,
           printDistribution: true, targetGroupSize: targetGroupSize);
@@ -428,12 +454,14 @@ void main(List<String> arguments) {
       var rnd = new Random();
       for (int i = 0; i < 100; i++) {
         // Test small numbers
-        _runSimulation(rnd.nextInt(10), rnd.nextInt(10), rnd.nextDouble(), rnd.nextDouble(),
+        _runSimulation(rnd.nextInt(10), rnd.nextInt(10), rnd.nextDouble(),
+            rnd.nextDouble(),
             printDistribution: true, targetGroupSize: rnd.nextInt(13) + 1);
       }
       for (int i = 0; i < 100; i++) {
         // Test bigger
-        _runSimulation(rnd.nextInt(100000), rnd.nextInt(10), rnd.nextDouble(), rnd.nextDouble(),
+        _runSimulation(rnd.nextInt(100000), rnd.nextInt(10), rnd.nextDouble(),
+            rnd.nextDouble(),
             printDistribution: true, targetGroupSize: rnd.nextInt(13) + 1);
       }
     }

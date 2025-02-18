@@ -32,10 +32,10 @@
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/png" href="favicon.png" />
 
-  <title>Frankly Dev</title>
+  <title>Frankly</title>
 
   <meta name="google-signin-client_id"
-    content="12851330326-d9ols9m2j8bcv9oek9ednq45tefbp05b.apps.googleusercontent.com" />
+    content="__GOOGLE_ID__" />
 
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 
@@ -73,7 +73,7 @@
 
   <script src="//media.twiliocdn.com/sdk/js/video/releases/2.17.1/twilio-video.min.js"></script>
   <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
-  <script src="./utils/junto-utils.js"></script>
+  <script src="./utils/app-utils.js"></script>
   <script src="./utils/hark.bundle.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/can-autoplay@3.0.0/build/can-autoplay.min.js"></script>
@@ -82,7 +82,7 @@
 
   <script type="application/javascript">
     window.stripe = Stripe(
-      "pk_test_51ILa87Bi3zOOCRfT4nLMjUCYWWCoMd1vXLqC3pxYZvzCkXzq3bcbvOxemx4lHsbJDnnnPJ6ov5P5FRNYHMbCDNgg00JCWgQF64"
+      "__STRIPE_KEY__"
     );
   </script>
   <script src="./agora/iris-web-rtc.js"></script>
@@ -93,7 +93,13 @@
     window.platformVersion = '__VERSION__';
   </script>
   <script src="main.dart.js?version=__VERSION__" type="application/javascript"></script>
-
+  
+  <script>
+    if (window.location.hostname == 'localhost') {
+      // needed to make the auth emulator work correctly
+      window.indexedDB.deleteDatabase('firebaseLocalStorageDb');
+    }
+  </script>
 </body>
 
 </html>

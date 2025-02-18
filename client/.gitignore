@@ -20,8 +20,10 @@
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
 .vscode/*
-# Include launch.json so team can share run/debug configs
+# Include launch.json so team can share run/debug configs.
 !.vscode/launch.json
+# Include settings.json for custom settings.
+!.vscode/settings.json
 
 
 # Flutter/Dart/Pub related
@@ -34,6 +36,7 @@
 .pub-cache/
 .pub/
 /build/
+.env
 
 # Web related
 
@@ -64,3 +67,4 @@ app.*.map.json
 #Firebase functions config
 .runtimeconfig.json 
 
+shared/build

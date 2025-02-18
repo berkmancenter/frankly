@@ -1,9 +1,9 @@
 name: Deploy Firebase Components to Staging
 concurrency: staging
-on: 
+on:
   push:
     branches:
-      - staging 
+      - staging
   workflow_dispatch:
     inputs:
       function-names:
@@ -12,15 +12,15 @@ on:
       groups:
         required: false
         description: "A space-separated list of firebase function groups to deploy"
- 
-jobs: 
-  deploy_firebase_staging: 
+
+jobs:
+  deploy_firebase_staging:
     name: Deploy Firebase to Staging
     runs-on: ubuntu-latest
     environment: staging
     defaults:
-        run: 
-          working-directory: client/functions
+      run:
+        working-directory: firebase/functions
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -31,47 +31,47 @@ jobs:
           list-files: shell
           filters: |
             functions:
-              - 'client/functions/js/**'
-              - 'client/functions/lib/**'
+              - 'firebase/functions/js/**'
+              - 'firebase/functions/lib/**'
               - 'matching/lib/**'
             firestore:
-              - 'client/firestore/**'
+              - 'firebase/firestore/**'
             shared:
-              - 'client/shared/lib/**'
-              - 'client/functions/lib/utils/firestore_utils.dart'
-              - 'client/functions/lib/utils/utils.dart'
-              
+              - 'data_models/lib/**'
+              - 'firebase/functions/lib/utils/infra/firestore_utils.dart'
+              - 'firebase/functions/lib/utils/infra/firebase_auth_utils.dart'
+              - 'firebase/functions/lib/utils/utils.dart'
 
       - name: Setup Node
-        if:  steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-      
+          cache: "npm"
+          cache-dependency-path: ./firebase/functions/package-lock.json
+
       - name: Install NPM Dependencies
-        if:  steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: npm ci
 
       - name: Set Up Flutter
-        if:  steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
-          channel: "stable" 
+          channel: "stable"
           cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
           pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
-          pub-cache-path: '/home/runner/.pub-cache' #hardcoded not ideal, but no way to reference $HOME 
-      
-      
+          pub-cache-path: "/home/runner/.pub-cache" #hardcoded not ideal, but no way to reference $HOME
+
       - name: Install Dart Dependencies
-        if:  steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: flutter pub get
-      
+
       - name: Build Functions
-        if:  steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: dart run build_runner build --output=build
 
       - name: Deploy Rules and Indexes
@@ -81,8 +81,7 @@ jobs:
           args: deploy --only firestore:rules,firestore:indexes --force
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_PATH: client
-          PROJECT_ID: staging
+          PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
 
       - name: Build Deployment Command
         if: steps.changes.outputs.functions == 'true' && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
@@ -92,16 +91,15 @@ jobs:
           force: true
           mapping-file: ${{ github.workspace }}/.github/workflows/function-mapping.json
           files: ${{ steps.changes.outputs.functions_files }}
-      
+
       - name: Deploy Functions
         if: steps.changes.outputs.functions == 'true' && github.event_name == 'push' && steps.changes.outputs.shared == 'false'
         uses: w9jds/firebase-action@v13.22.1
         with:
-          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd.outputs.deploy-command}} 
+          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd.outputs.deploy-command}}
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_PATH: client
-          PROJECT_ID: staging
+          PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
 
         # Updates to the data model or widely used utils should deploy all functions
       - name: Build Deployment Command for Workflow Dispatch or Shared Code Update
@@ -115,11 +113,10 @@ jobs:
           groups: ${{ inputs.groups}}
 
       - name: Deploy Functions for Workflow Dispatch or Shared Code Update
-        if:  github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         uses: w9jds/firebase-action@v13.22.1
         with:
-          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd-manual.outputs.deploy-command}} 
+          args: functions:config:set "${{ secrets.FIREBASE_CONFIG }}" ; ${{ steps.build-deployment-cmd-manual.outputs.deploy-command}}
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_PATH: client
-          PROJECT_ID: staging
+          PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}

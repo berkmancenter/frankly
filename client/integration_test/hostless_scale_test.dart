@@ -1,21 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:junto/app/junto/discussions/discussion_page/widgets/discussion_info.dart';
-import 'package:junto/common_widgets/confirm_dialog.dart';
-import 'package:junto/dev_main.dart' as dev_main;
-import 'package:junto/junto_app.dart';
-import 'package:junto/routing/locations.dart';
-import 'package:junto/services/firestore/firestore_scale_test_service.dart';
+import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
+import 'package:client/core/widgets/confirm_dialog.dart';
+import 'package:client/app.dart';
+import 'package:client/core/routing/locations.dart';
+import 'firestore_scale_test_service.dart';
 
 import 'utils.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Run discussion scale test', (WidgetTester tester) async {
+  testWidgets('Run event scale test', (WidgetTester tester) async {
     useBotControls = true;
 
-    dev_main.main();
+    await runClient();
 
     await tester.pump();
 
@@ -26,7 +25,7 @@ void main() {
     final testerId = uuid.v4();
 
     final name = 'Test ${testerId.substring(0, 4)}';
-    final email = '$testerId@myjunto.test';
+    final email = '$testerId@mycommunity.test';
     const password = 'tester123';
 
     await signUpForApp(
@@ -38,18 +37,28 @@ void main() {
 
     await wait(tester, timeout: Duration(seconds: 10));
 
-    routerDelegate.beamTo(JuntoPageRoutes(juntoDisplayId: scaleTestInfo.juntoId).discussionPage(
-      topicId: scaleTestInfo.topicId,
-      discussionId: scaleTestInfo.discussionId,
-    ));
+    routerDelegate.beamTo(
+      CommunityPageRoutes(communityDisplayId: scaleTestInfo.communityId)
+          .eventPage(
+        templateId: scaleTestInfo.templateId,
+        eventId: scaleTestInfo.eventId,
+      ),
+    );
 
     await wait(tester, timeout: Duration(seconds: 10));
 
-    await waitAndTap(tester, find.byKey(DiscussionInfo.rsvpButtonKey));
+    await waitAndTap(tester, find.byKey(EventInfo.rsvpButtonKey));
 
-    await waitAndTap(tester, find.byKey(DiscussionInfo.enterConversationButtonKey));
+    await waitAndTap(
+      tester,
+      find.byKey(EventInfo.enterEventButtonKey),
+    );
 
-    await waitAndTap(tester, find.byKey(ConfirmDialog.confirmButtonKey), timeout: Duration(minutes: 20));
+    await waitAndTap(
+      tester,
+      find.byKey(ConfirmDialog.confirmButtonKey),
+      timeout: Duration(minutes: 20),
+    );
 
     await wait(tester, timeout: Duration(minutes: 40));
   });

@@ -14,8 +14,10 @@ class AppAsset {
   static const AppAsset kImagePng = AppAsset('media/image.png');
   static const AppAsset kWordCloudSvg = AppAsset('media/word-cloud.svg');
   static const AppAsset kWordCloudPng = AppAsset('media/word-cloud.png');
-  static const AppAsset kWordCloudEmptyPng = AppAsset('media/wordcloud-empty.png');
-  static const AppAsset kWordCloudPlaceholderPng = AppAsset('media/wordcloud-placeholder.png');
+  static const AppAsset kWordCloudEmptyPng =
+      AppAsset('media/wordcloud-empty.png');
+  static const AppAsset kWordCloudPlaceholderPng =
+      AppAsset('media/wordcloud-placeholder.png');
   static const AppAsset kThumbSvg = AppAsset('media/thumb.svg');
   static const AppAsset kThumbPng = AppAsset('media/thumb.png');
   static const AppAsset kMoveForwardPng = AppAsset('media/arrow_forward.png');
@@ -24,7 +26,8 @@ class AppAsset {
   static const AppAsset kWavingHand = AppAsset('media/waving_hand.png');
   static const AppAsset kLikeSelectedPng = AppAsset('media/like-selected.png');
   static const AppAsset kLikeNotSelectedPng = AppAsset('media/like.png');
-  static const AppAsset kDislikeSelectedPng = AppAsset('media/dislike-selected.png');
+  static const AppAsset kDislikeSelectedPng =
+      AppAsset('media/dislike-selected.png');
   static const AppAsset kDislikeNotSelectedPng = AppAsset('media/dislike.png');
   static const AppAsset kArrowBackPng = AppAsset('media/arrow-back.png');
   static const AppAsset kMorePng = AppAsset('media/more-gray.png');
@@ -32,44 +35,60 @@ class AppAsset {
   static const AppAsset kChatBubblePng = AppAsset('media/chatBubble.png');
   static const AppAsset kChatBubble2Png = AppAsset('media/chatBubble2.png');
   static const AppAsset kXPng = AppAsset('media/x.png');
-  static const AppAsset kEmptyStateStatusPng = AppAsset('media/empty-state-status.png');
+  static const AppAsset kEmptyStateStatusPng =
+      AppAsset('media/empty-state-status.png');
   static const AppAsset kTrashPng = AppAsset('media/trash.png');
   static const AppAsset kRoleModPng = AppAsset('media/role-mod.png');
-  static const AppAsset kRoleFacilitatorPng = AppAsset('media/role-facilitator.png');
+  static const AppAsset kRoleFacilitatorPng =
+      AppAsset('media/role-facilitator.png');
   static const AppAsset kRoleAdminPng = AppAsset('media/role-admin.png');
-  static const AppAsset kRoleNonMemberPng = AppAsset('media/role-nonmember.png');
+  static const AppAsset kRoleNonMemberPng =
+      AppAsset('media/role-nonmember.png');
   static const AppAsset kRoleMemberPng = AppAsset('media/role-member.png');
   static const AppAsset kTrashWhitePng = AppAsset('media/trash_white.png');
   static const AppAsset kCheckPng = AppAsset('media/check.png');
   static const AppAsset kStarPng = AppAsset('media/starIcon.png');
-  static const AppAsset kEmojiCalendarPng = AppAsset('media/emoji-calendar.png');
+  static const AppAsset kEmojiCalendarPng =
+      AppAsset('media/emoji-calendar.png');
   static const AppAsset kEmojiSparklePng = AppAsset('media/emoji-sparkle.png');
-  static const AppAsset kEmojiMegaphonePng = AppAsset('media/emoji-megaphone.png');
+  static const AppAsset kEmojiMegaphonePng =
+      AppAsset('media/emoji-megaphone.png');
   static const AppAsset kEmojiNotepadPng = AppAsset('media/emoji-notepad.png');
-  static const AppAsset kEmojiYellowHeartPng = AppAsset('media/emoji-yellow-heart.png');
+  static const AppAsset kEmojiYellowHeartPng =
+      AppAsset('media/emoji-yellow-heart.png');
   static const AppAsset kEmojiPartyPng = AppAsset('media/emoji-party.png');
   static const AppAsset kFliterIcon = AppAsset('media/filter.png');
   static const AppAsset kSocialEmail2Png = AppAsset('media/social-email2.png');
-  static const AppAsset kSocialFacebook2Png = AppAsset('media/social-facebook2.png');
+  static const AppAsset kSocialFacebook2Png =
+      AppAsset('media/social-facebook2.png');
   static const AppAsset kSocialLinkedIn2Png = AppAsset('media/social-li2.png');
   static const AppAsset kSocialLink2Png = AppAsset('media/social-link2.png');
-  static const AppAsset kSocialTwitter2Png = AppAsset('media/social-twitter2.png');
+  static const AppAsset kSocialTwitter2Png =
+      AppAsset('media/social-twitter2.png');
   // Logo images
   static const AppAsset kLogoIconPng = AppAsset('media/logo-icon.png');
-  static const AppAsset kLogoHorizontalDarkPng = AppAsset('media/logo-horizontal-dark.png');
-  static const AppAsset kLogoHorizontalLightPng = AppAsset('media/logo-horizontal-light.png');
-  static const AppAsset kSpokenCheckMark = AppAsset('media/spoken_check_mark.png');
-  static const AppAsset kConversationsIcon = AppAsset('media/conversations_icon.png');
-  static const AppAsset kStartConversationCardImage =
-      AppAsset('media/start-conversation-card-image.png');
+  static const AppAsset kLogoHorizontalDarkPng =
+      AppAsset('media/logo-horizontal-dark.png');
+  static const AppAsset kLogoHorizontalLightPng =
+      AppAsset('media/logo-horizontal-light.png');
+  static const AppAsset kSpokenCheckMark =
+      AppAsset('media/spoken_check_mark.png');
+  static const AppAsset kEventsIcon = AppAsset('media/events_icon.png');
+  static const AppAsset kStartEventCardImage =
+      AppAsset('media/start-event-card-image.png');
   static const AppAsset kCalendarGreyPng = AppAsset('media/calendar_grey.png');
   static const AppAsset kCalendarBluePng = AppAsset('media/calendar_blue.png');
-  static const AppAsset kChatBubbleGreyPng = AppAsset('media/chat_bubble_grey.png');
-  static const AppAsset kChatBubbleBluePng = AppAsset('media/chat_bubble_blue.png');
-  static const AppAsset kDocumentsGreyPng = AppAsset('media/documents_grey.png');
-  static const AppAsset kDocumentsBluePng = AppAsset('media/documents_blue.png');
+  static const AppAsset kChatBubbleGreyPng =
+      AppAsset('media/chat_bubble_grey.png');
+  static const AppAsset kChatBubbleBluePng =
+      AppAsset('media/chat_bubble_blue.png');
+  static const AppAsset kDocumentsGreyPng =
+      AppAsset('media/documents_grey.png');
+  static const AppAsset kDocumentsBluePng =
+      AppAsset('media/documents_blue.png');
   static const AppAsset kAudioOffPng = AppAsset('media/audio-off.png');
-  static const AppAsset kAudioOffPngWhite = AppAsset('media/audio-off-white.png');
+  static const AppAsset kAudioOffPngWhite =
+      AppAsset('media/audio-off-white.png');
   static const AppAsset kAudioOnPngWhite = AppAsset('media/audio-on-white.png');
   static const AppAsset kCameraPng = AppAsset('media/camera.png');
   static const AppAsset kCameraOffPng = AppAsset('media/camera-off.png');
@@ -83,8 +102,10 @@ class AppAsset {
   static const AppAsset kPlayScreenPng = AppAsset('media/play-screen.png');
   static const AppAsset kLockPng = AppAsset('media/lock.png');
   static const AppAsset kHostlessPng = AppAsset('media/hostless.png');
-  static const AppAsset kCheckCircleGreen = AppAsset('media/checkCircle-green.png');
-  static const AppAsset kCheckCircleGray = AppAsset('media/checkCircle-gray.png');
+  static const AppAsset kCheckCircleGreen =
+      AppAsset('media/checkCircle-green.png');
+  static const AppAsset kCheckCircleGray =
+      AppAsset('media/checkCircle-gray.png');
   static const AppAsset kEditPng = AppAsset('media/edit.png');
   static const AppAsset kGearPng = AppAsset('media/gear.png');
   static const AppAsset kHandRaise = AppAsset('media/hand-raise.png');
@@ -95,7 +116,8 @@ class AppAsset {
       AppAsset('media/user-suggestion-agenda-cover.png');
   static const AppAsset kAirplaneWhite = AppAsset('media/airplane-white.png');
 
-  static const AppAsset kSmileyWithPlusPng = AppAsset('media/smiley-with-plus.png');
+  static const AppAsset kSmileyWithPlusPng =
+      AppAsset('media/smiley-with-plus.png');
 
   final String path;
   final bool isSvg;
@@ -103,7 +125,8 @@ class AppAsset {
   @Deprecated('Use dedicated constructor')
   const AppAsset(this.path) : isSvg = false;
 
-  const AppAsset.clock([this.isSvg = false]) : path = isSvg ? 'media/clock.svg' : 'media/clock.png';
+  const AppAsset.clock([this.isSvg = false])
+      : path = isSvg ? 'media/clock.svg' : 'media/clock.png';
   const AppAsset.raisedHand([this.isSvg = false])
       : path = isSvg ? 'media/raised_hand.svg' : 'media/raised_hand.png';
   const AppAsset.arrowLeft([this.isSvg = false])
@@ -114,7 +137,8 @@ class AppAsset {
       : path = isSvg ? 'media/arrow-right.svg' : 'media/arrow-right-blue.png';
   const AppAsset.dotsVertical([this.isSvg = false])
       : path = isSvg ? 'media/dots-vertical.svg' : 'media/dots-vertical.png';
-  const AppAsset.video([this.isSvg = false]) : path = isSvg ? 'media/video.svg' : 'media/video.png';
+  const AppAsset.video([this.isSvg = false])
+      : path = isSvg ? 'media/video.svg' : 'media/video.png';
   const AppAsset.video2([this.isSvg = false])
       : path = isSvg ? 'media/video2.svg' : 'media/video2.png';
   const AppAsset.microphone([this.isSvg = false])

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:junto/app/junto/discussions/discussion_page/live_meeting/meeting_dialog.dart';
-import 'package:junto/dev_main.dart' as dev_main;
-import 'package:junto/routing/locations.dart';
-import 'package:junto/services/services.dart';
+import 'package:client/features/events/features/live_meeting/presentation/views/meeting_dialog.dart';
+import 'package:client/app.dart';
+import 'package:client/core/routing/locations.dart';
+import 'package:client/services.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -43,15 +43,20 @@ void main() {
   }
 
   testWidgets('sign in to the app', (WidgetTester tester) async {
-    dev_main.main();
+    await runClient();
 
     await tester.pump();
 
     routerDelegate.beamTo(
-        JuntoPageRoutes(juntoDisplayId: 'danny-test').instantPage(meetingId: 'drive-instant-test')
-          ..update((state) => state));
+      CommunityPageRoutes(communityDisplayId: 'danny-test')
+          .instantPage(meetingId: 'drive-instant-test')
+        ..update((state) => state),
+    );
 
-    await waitAndTap(tester, find.byKey(MeetingDialog.enterMeetingPromptButton));
+    await waitAndTap(
+      tester,
+      find.byKey(MeetingDialog.enterMeetingPromptButton),
+    );
 
     await wait(tester, timeout: Duration(minutes: 10));
 

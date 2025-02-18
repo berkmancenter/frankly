@@ -1,0 +1,20 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+    exclude:
+        - build/**
+    errors:
+        avoid_print: ignore
+        unawaited_futures: error
+        unnecessary_null_comparison: error
+        dead_null_aware_expression: warning
+        missing_required_param: error
+        unused_import: warning
+
+linter:
+    rules:
+        unawaited_futures: true
+        avoid_relative_lib_imports: true
+        cast_nullable_to_non_nullable: true
+        unnecessary_null_checks: true
+        require_trailing_commas: true

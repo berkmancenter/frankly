@@ -29,7 +29,8 @@ Router app = Router()
 
     final options = await formOptions(spreadsheetId: googleSheetId);
     // Convert to list instead of set for JSON serialization
-    final listOptions = options.map((key, value) => MapEntry(key, value.toList()));
+    final listOptions =
+        options.map((key, value) => MapEntry(key, value.toList()));
 
     return Response.ok(jsonEncode(listOptions));
   })
@@ -103,8 +104,8 @@ Future<int?> submitForm({
     final gsheets = GSheets(googleSheetsCredential);
     final spreadsheet = await gsheets.spreadsheet(spreadsheetId);
 
-    final returnedRowNumber =
-        await writeResponseToGoogleSheet(spreadsheet: spreadsheet, response: response);
+    final returnedRowNumber = await writeResponseToGoogleSheet(
+        spreadsheet: spreadsheet, response: response);
 
     if (returnedRowNumber == null) {
       throw Exception('Failed to submit response.');
@@ -116,7 +117,8 @@ Future<int?> submitForm({
   }
 }
 
-Future<Map<String, Set<String>>> formOptions({required String spreadsheetId}) async {
+Future<Map<String, Set<String>>> formOptions(
+    {required String spreadsheetId}) async {
   try {
     final googleSheetsCredential = getGoogleSheetCredentials();
     final gsheets = GSheets(googleSheetsCredential);
@@ -159,22 +161,28 @@ Future<List<List<String>>> processMatches(MatchingRequest request) async {
         skipColumns: _kSkipColumns,
         answerKeys: answerKeys,
       );
-      participantSurveyResponsesLookup[response[kRowNumberIdKey]] = joinParameters;
+      participantSurveyResponsesLookup[response[kRowNumberIdKey]] =
+          joinParameters;
     }
 
     final allParticipantIds = participantSurveyResponsesLookup.keys.toSet();
 
-    normalizeSurveyAnswerStrings(surveyAnswerStrings: participantSurveyResponsesLookup);
+    normalizeSurveyAnswerStrings(
+        surveyAnswerStrings: participantSurveyResponsesLookup);
 
-    final nonNullSurveyResponsesLength =
-        participantSurveyResponsesLookup.entries.where((e) => e.value.isNotEmpty).length;
+    final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
+        .entries
+        .where((e) => e.value.isNotEmpty)
+        .length;
 
-    print('Starting smart matching with $nonNullSurveyResponsesLength participants...');
+    print(
+        'Starting smart matching with $nonNullSurveyResponsesLength participants...');
 
     // Smart match users who had valid survey responses
     List<List<String>> smartMatches;
     if (targetGroupSize <= 2 || participantSurveyResponsesLookup.length <= 2) {
-      smartMatches = matching.bucketMatch(samples: participantSurveyResponsesLookup);
+      smartMatches =
+          matching.bucketMatch(samples: participantSurveyResponsesLookup);
     } else {
       final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
           participantSurveyResponsesLookup.length, targetGroupSize);
@@ -194,7 +202,8 @@ Future<List<List<String>>> processMatches(MatchingRequest request) async {
     // Flatten the smart matched IDs for checking against all participants.
     final smartMatchedIds = smartMatches.expand((p) => p).toSet();
     allParticipantIds.removeWhere((id) => smartMatchedIds.contains(id));
-    print('Smart matches: ${smartMatches.length}. Unmatched: ${allParticipantIds.length}');
+    print(
+        'Smart matches: ${smartMatches.length}. Unmatched: ${allParticipantIds.length}');
 
     // Match any leftover unmatched participants.
     print('Beginning leftover matching...');

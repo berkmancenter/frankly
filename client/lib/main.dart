@@ -1,5 +1,5 @@
-import 'package:junto/junto_app.dart';
+import 'package:client/app.dart';
 
 void main() {
-  runJunto();
+  runClient();
 }

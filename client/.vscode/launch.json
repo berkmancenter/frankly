@@ -5,38 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Prod",
+            "name": "Client",
             "request": "launch",
             "type": "dart", 
-            "args": ["--web-port=5000"]      
+            "args": ["--web-port=5000", "--dart-define-from-file=.env"]      
         },
         {
-            "name": "Staging",
-            "request": "launch",
-            "type": "dart",
-            "program": "lib/dev_main.dart",
-            "args": ["--web-port=5000"]
-            
-        },
-        {
-            "name": "Dev (Emulators)",
+            "name": "Client Dev (Emulators)",
             "request": "launch",
             "type": "dart",
             "program": "lib/dev_emulators_main.dart",
-            "args": ["--web-port=5000"]
+            "args": ["--web-port=5000", "--dart-define-from-file=.env"]
             
         },
         {
-            "name": "Prod (profile mode)",
+            "name": "Client (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": ["--web-port=5000", "--dart-define-from-file=.env"]
         },
         {
-            "name": "Prod (release mode)",
+            "name": "Client(release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": ["--web-port=5000", "--dart-define-from-file=.env"]
         },
     ]
 }

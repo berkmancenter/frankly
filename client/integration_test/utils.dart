@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:junto/common_widgets/junto_text_field.dart';
-import 'package:junto/common_widgets/sign_in_options_content.dart';
-import 'package:junto/common_widgets/sign_in_widget.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
+import 'package:client/features/auth/presentation/widgets/sign_in_widget.dart';
 
 Future<void> signUpForApp(
   WidgetTester tester, {
@@ -19,7 +19,8 @@ Future<void> signUpForApp(
   final nameFieldFinder = find.byKey(SignInOptionsContent.nameTextFieldKey);
   await waitAndAction(tester, nameFieldFinder, () async {
     print('putting in name: $name');
-    (tester.firstWidget(nameFieldFinder) as JuntoTextField).controller?.text = name;
+    (tester.firstWidget(nameFieldFinder) as CustomTextField).controller?.text =
+        name;
   });
   await wait(tester, timeout: Duration(seconds: 1));
 
@@ -27,14 +28,18 @@ Future<void> signUpForApp(
   final emailFieldFinder = find.byKey(SignInOptionsContent.emailTextFieldKey);
   await waitAndAction(tester, emailFieldFinder, () async {
     print('putting in email: $email');
-    (tester.firstWidget(emailFieldFinder) as JuntoTextField).controller?.text = email;
+    (tester.firstWidget(emailFieldFinder) as CustomTextField).controller?.text =
+        email;
   });
 
   await wait(tester, timeout: Duration(seconds: 2));
-  final passwordFieldFinder = find.byKey(SignInOptionsContent.passwordTextFieldKey);
+  final passwordFieldFinder =
+      find.byKey(SignInOptionsContent.passwordTextFieldKey);
   await waitAndAction(tester, passwordFieldFinder, () async {
     print('putting in password: $password');
-    (tester.firstWidget(passwordFieldFinder) as JuntoTextField).controller?.text = password;
+    (tester.firstWidget(passwordFieldFinder) as CustomTextField)
+        .controller
+        ?.text = password;
   });
 
   await wait(tester, timeout: Duration(seconds: 1));
@@ -46,7 +51,12 @@ Future<bool> waitAndTap(
   Finder finder, {
   Duration timeout = const Duration(seconds: 20),
 }) async {
-  return await waitAndAction(tester, finder, () => tester.tap(finder), timeout: timeout);
+  return await waitAndAction(
+    tester,
+    finder,
+    () => tester.tap(finder),
+    timeout: timeout,
+  );
 }
 
 Future<bool> waitAndAction(

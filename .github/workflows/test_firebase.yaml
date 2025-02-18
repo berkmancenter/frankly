@@ -1,16 +1,16 @@
 name: Firebase Test
-on: 
+on:
   pull_request:
     branches:
-      - main
- 
-jobs: 
-  build: 
+      - "**"
+
+jobs:
+  build:
     name: Build & Unit Test
     runs-on: ubuntu-latest
     defaults:
-        run: 
-          working-directory: client/functions
+      run:
+        working-directory: firebase/functions
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -20,62 +20,66 @@ jobs:
         with:
           filters: |
             functions:
-              - 'client/functions/**'
+              - 'firebase/functions/**'
               - 'matching/lib/**'
             firestore:
-              - 'client/firestore/**'
+              - 'firebase/firestore/**'
 
       - name: Setup Node
-        if:  steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true'
+        if: steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-            
-      - name: Install NPM Dependencies
-        if:  steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true'
+          cache-dependency-path: ./firebase/functions/package-lock.json
+          cache: "npm"
+
+      - name: Install Functions NPM Dependencies
+        if: steps.changes.outputs.functions == 'true'
         run: npm ci
-      
+
+      - name: Install Firestore NPM Dependencies
+        if: steps.changes.outputs.firestore == 'true'
+        run: npm ci
+        working-directory: "firebase/firestore"
+
       - name: Set Up Flutter
-        if:  steps.changes.outputs.functions == 'true'
+        if: steps.changes.outputs.functions == 'true'
         uses: subosito/flutter-action@v2
         with:
-            flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
-            channel: "stable" 
-            cache: true
-            cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
-            cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
-            pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
-            pub-cache-path: '/home/runner/.pub-cache' #hardcoded not ideal, but no way to reference $HOME 
-            
-            
+          flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+          channel: "stable"
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: "/home/runner/.pub-cache" #hardcoded not ideal, but no way to reference $HOME
+
       - name: Install Dart Dependencies
-        if:  steps.changes.outputs.functions == 'true'
+        if: steps.changes.outputs.functions == 'true'
         run: flutter pub get
-            
+
       - name: Build Functions
-        if:  steps.changes.outputs.functions == 'true'
+        if: steps.changes.outputs.functions == 'true'
         run: dart run build_runner build --output=build
 
       - name: Cache Firebase Emulators
-        if:  steps.changes.outputs.firestore == 'true'
+        if: steps.changes.outputs.firestore == 'true'
         uses: actions/cache@v4
         with:
           path: ~/.cache/firebase/emulators
           key: ${{ runner.os }}-firebase-emulators-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-firebase-emulators-
-        
+
       - name: Install Firebase Tools
-        if:  steps.changes.outputs.firestore == 'true' || steps.changes.outputs.functions == 'true'
+        if: steps.changes.outputs.firestore == 'true' || steps.changes.outputs.functions == 'true'
         run: npm install -g firebase-tools
 
       - name: Test Rules
-        if:  steps.changes.outputs.firestore == 'true' 
-        run: firebase emulators:exec --only firestore --project fake-project-id 'npm run test-firestore-rules'
+        if: steps.changes.outputs.firestore == 'true'
+        run: firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
+        working-directory: "firebase/firestore"
 
       - name: Test Functions
-        if:  steps.changes.outputs.functions == 'true' 
-        run: firebase emulators:exec --only firestore --project fake-project-id 'npm run test-functions'
-      
-      
+        if: steps.changes.outputs.functions == 'true'
+        run: CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
