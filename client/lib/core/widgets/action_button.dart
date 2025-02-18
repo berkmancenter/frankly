@@ -135,18 +135,6 @@ class _ActionButtonState extends State<ActionButton> {
 
     setState(() => _isSending = true);
 
-    final eventName = widget.eventName;
-    if (eventName != null && eventName.isNotEmpty) {
-      unawaited(
-        swallowErrors(
-          () => firebaseAnalytics.logEvent(
-            name: eventName,
-            parameters: widget.eventParameters ?? {},
-          ),
-        ),
-      );
-    }
-
     // Errors should be handled in the passed in [onPressed].
     final onPressed = widget.onPressed;
     if (onPressed != null) {

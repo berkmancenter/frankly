@@ -272,14 +272,10 @@ class UserService with ChangeNotifier {
     // to set the users name as.
     _emailRegistrationDisplayName = displayName;
     try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final user = userCredential.user;
-      if (user != null) {
-        await _handleUserSignedIn(user);
-      }
     } catch (e) {
       _emailRegistrationDisplayName = null;
       rethrow;

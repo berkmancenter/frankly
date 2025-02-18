@@ -167,7 +167,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       joinResults = await _joinEvent(showConfirm: false);
       if (!joinResults.isJoined) return;
     }
-    unawaited(firebaseAnalytics.logEvent(name: 'event_start'));
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(

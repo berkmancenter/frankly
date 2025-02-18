@@ -108,7 +108,11 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
   /// Returns true if UI should move to next step
   Future<bool> _nextButtonAction() async {
     if (_onStep == 1) {
-      analytics.logEvent(AnalyticsAgreeToTermsAndConditionsEvent());
+      analytics.logEvent(
+        AnalyticsAgreeToTermsAndConditionsEvent(
+          userId: userService.currentUserId!,
+        ),
+      );
     } else if (_onStep == 2) {
       final contactEmail = _community.contactEmail;
       if (contactEmail != null &&

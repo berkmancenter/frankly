@@ -4,7 +4,6 @@ import 'package:client/features/announcements/data/services/cloud_functions_anno
 import 'package:client/features/community/data/services/cloud_functions_community_service.dart';
 import 'package:client/features/events/data/services/cloud_functions_event_service.dart';
 import 'package:client/features/events/features/live_meeting/data/services/cloud_functions_live_meeting_service.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/data/services/analytics_service.dart';
 import 'package:client/core/data/services/clock_service.dart';
@@ -114,7 +113,6 @@ FirestoreTagService get firestoreTagService =>
 DialogProvider get dialogProvider => services.get<DialogProvider>();
 
 AnalyticsService get analytics => services.get<AnalyticsService>();
-FirebaseAnalytics get firebaseAnalytics => services.get<FirebaseAnalytics>();
 PaymentUtils get paymentUtils => services.get<PaymentUtils>();
 
 /// This file initializes all of our "services" inside of GetIt. This is basically
@@ -157,7 +155,6 @@ void createServices() {
   services.registerSingleton(UserService());
 
   services.registerSingleton(AnalyticsService());
-  services.registerSingleton(FirebaseAnalytics.instance);
 
   services.registerSingleton(DialogProvider());
   services.registerSingleton(MediaHelperService());
@@ -167,6 +164,7 @@ void createServices() {
 
 Future<void> initializeServices() async {
   await Future.wait([
+    analytics.initialize(),
     userService.initialize(),
     firestoreDatabase.initialize(),
     userDataService.initialize(),

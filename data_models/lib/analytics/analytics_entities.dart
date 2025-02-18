@@ -4,28 +4,82 @@ part 'analytics_entities.g.dart';
 
 abstract class AnalyticsEvent {
   String getEventType();
+  String getEventCategory();
+  String? getEventName();
+  num? getMetricValue();
   Map<String, dynamic> toJson();
+  static const String userCategory = 'user';
+  static const String communityCategory = 'community';
+  static const String eventCategory = 'event';
+  static const String templateCategory = 'template';
 }
 
 @JsonSerializable()
 class AnalyticsAgreeToTermsAndConditionsEvent implements AnalyticsEvent {
+  final String userId;
+
   @override
   String getEventType() {
-    return 'agree_to_tac';
+    return 'Agree to TAC';
   }
 
-  AnalyticsAgreeToTermsAndConditionsEvent();
+  AnalyticsAgreeToTermsAndConditionsEvent({required this.userId});
 
   @override
   Map<String, dynamic> toJson() =>
       _$AnalyticsAgreeToTermsAndConditionsEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.userCategory;
+  }
+
+  @override
+  String getEventName() {
+    return userId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsUserRegistrationEvent implements AnalyticsEvent {
+  final String userId;
+
+  @override
+  String getEventType() {
+    return 'Register User';
+  }
+
+  AnalyticsUserRegistrationEvent({required this.userId});
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsUserRegistrationEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.userCategory;
+  }
+
+  @override
+  String getEventName() {
+    return userId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsLinkStripeAccountEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'link_stripe_account';
+    return 'Link Stripe Account';
   }
 
   AnalyticsLinkStripeAccountEvent();
@@ -33,13 +87,28 @@ class AnalyticsLinkStripeAccountEvent implements AnalyticsEvent {
   @override
   Map<String, dynamic> toJson() =>
       _$AnalyticsLinkStripeAccountEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.userCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return null;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsCreateCommunityEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'create_community';
+    return 'Create Community';
   }
 
   final String communityId;
@@ -50,13 +119,28 @@ class AnalyticsCreateCommunityEvent implements AnalyticsEvent {
 
   @override
   Map<String, dynamic> toJson() => _$AnalyticsCreateCommunityEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsUpdateCommunityImageEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'update_community_image';
+    return 'Update Community Image';
   }
 
   final String communityId;
@@ -68,13 +152,28 @@ class AnalyticsUpdateCommunityImageEvent implements AnalyticsEvent {
   @override
   Map<String, dynamic> toJson() =>
       _$AnalyticsUpdateCommunityImageEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsUpdateCommunityMetadataEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'update_community_metadata';
+    return 'Update Community Metadata';
   }
 
   final String communityId;
@@ -86,13 +185,28 @@ class AnalyticsUpdateCommunityMetadataEvent implements AnalyticsEvent {
   @override
   Map<String, dynamic> toJson() =>
       _$AnalyticsUpdateCommunityMetadataEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsPressShareCommunityLinkEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'press_share_community_link';
+    return 'Press Share Community Link';
   }
 
   final String communityId;
@@ -106,247 +220,28 @@ class AnalyticsPressShareCommunityLinkEvent implements AnalyticsEvent {
   @override
   Map<String, dynamic> toJson() =>
       _$AnalyticsPressShareCommunityLinkEventToJson(this);
-}
 
-@JsonSerializable()
-class AnalyticsPressAddNewGuideEvent implements AnalyticsEvent {
   @override
-  String getEventType() {
-    return 'press_add_new_guide';
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
   }
 
-  final String communityId;
-
-  AnalyticsPressAddNewGuideEvent({
-    required this.communityId,
-  });
-
   @override
-  Map<String, dynamic> toJson() => _$AnalyticsPressAddNewGuideEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsCompleteNewGuideEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'complete_new_guide';
+  String? getEventName() {
+    return communityId;
   }
 
-  final String communityId;
-  final String guideId;
-
-  AnalyticsCompleteNewGuideEvent({
-    required this.communityId,
-    required this.guideId,
-  });
-
   @override
-  Map<String, dynamic> toJson() => _$AnalyticsCompleteNewGuideEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsPressCreateEventFromGuideEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'press_create_event_from_guide';
+  num? getMetricValue() {
+    return 1;
   }
-
-  final String communityId;
-  final String guideId;
-
-  AnalyticsPressCreateEventFromGuideEvent({
-    required this.communityId,
-    required this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() =>
-      _$AnalyticsPressCreateEventFromGuideEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsCreateEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'create_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final String? guideId;
-
-  AnalyticsCreateEventEvent({
-    required this.communityId,
-    required this.eventId,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsCreateEventEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsScheduleEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'schedule_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final int daysFromNow;
-  final String? guideId;
-
-  AnalyticsScheduleEventEvent({
-    required this.communityId,
-    required this.eventId,
-    required this.daysFromNow,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsScheduleEventEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsEditEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'edit_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final String? guideId;
-
-  AnalyticsEditEventEvent({
-    required this.communityId,
-    required this.eventId,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsEditEventEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsPressShareEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'press_share_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final String? guideId;
-  final ShareType shareType;
-
-  AnalyticsPressShareEventEvent({
-    required this.communityId,
-    required this.eventId,
-    this.guideId,
-    required this.shareType,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsPressShareEventEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsEnterEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'enter_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final bool asHost;
-  final String? guideId;
-
-  AnalyticsEnterEventEvent({
-    required this.communityId,
-    required this.eventId,
-    required this.asHost,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsEnterEventEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsCompleteEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'complete_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final bool asHost;
-  final String? guideId;
-
-  AnalyticsCompleteEventEvent({
-    required this.communityId,
-    required this.eventId,
-    required this.asHost,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsCompleteEventEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'press_event_help';
-  }
-
-  final String communityId;
-  final String eventId;
-  final bool asHost;
-  final String? guideId;
-
-  AnalyticsPressEventHelpEvent({
-    required this.communityId,
-    required this.eventId,
-    required this.asHost,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsPressEventHelpEventToJson(this);
-}
-
-@JsonSerializable()
-class AnalyticsRsvpEventEvent implements AnalyticsEvent {
-  @override
-  String getEventType() {
-    return 'rsvp_event';
-  }
-
-  final String communityId;
-  final String eventId;
-  final String? guideId;
-
-  AnalyticsRsvpEventEvent({
-    required this.communityId,
-    required this.eventId,
-    this.guideId,
-  });
-
-  @override
-  Map<String, dynamic> toJson() => _$AnalyticsRsvpEventEventToJson(this);
 }
 
 @JsonSerializable()
 class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'join_community';
+    return 'Join Community';
   }
 
   final String communityId;
@@ -357,13 +252,28 @@ class AnalyticsJoinCommunityEvent implements AnalyticsEvent {
 
   @override
   Map<String, dynamic> toJson() => _$AnalyticsJoinCommunityEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'leave_community';
+    return 'Leave Community';
   }
 
   final String communityId;
@@ -374,13 +284,469 @@ class AnalyticsLeaveCommunityEvent implements AnalyticsEvent {
 
   @override
   Map<String, dynamic> toJson() => _$AnalyticsLeaveCommunityEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsPressAddNewTemplateEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Press Add New Template';
+  }
+
+  final String communityId;
+
+  AnalyticsPressAddNewTemplateEvent({
+    required this.communityId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AnalyticsPressAddNewTemplateEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.templateCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsCompleteNewTemplateEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Complete New Template';
+  }
+
+  final String communityId;
+  final String templateId;
+
+  AnalyticsCompleteNewTemplateEvent({
+    required this.communityId,
+    required this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AnalyticsCompleteNewTemplateEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.templateCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return templateId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsPressCreateEventFromTemplateEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Press Create Event from Template';
+  }
+
+  final String communityId;
+  final String templateId;
+
+  AnalyticsPressCreateEventFromTemplateEvent({
+    required this.communityId,
+    required this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AnalyticsPressCreateEventFromTemplateEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return templateId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsCreateEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Create Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final String? templateId;
+
+  AnalyticsCreateEventEvent({
+    required this.communityId,
+    required this.eventId,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsCreateEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsScheduleEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Schedule Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final int daysFromNow;
+  final String? templateId;
+
+  AnalyticsScheduleEventEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.daysFromNow,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsScheduleEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsEditEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Edit Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final String? templateId;
+
+  AnalyticsEditEventEvent({
+    required this.communityId,
+    required this.eventId,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsEditEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsPressShareEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Press Share Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final String? templateId;
+  final ShareType shareType;
+
+  AnalyticsPressShareEventEvent({
+    required this.communityId,
+    required this.eventId,
+    this.templateId,
+    required this.shareType,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsPressShareEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsEnterEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Enter Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final bool asHost;
+  final String? templateId;
+
+  AnalyticsEnterEventEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.asHost,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsEnterEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsCompleteEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Complete Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final bool asHost;
+  final int duration;
+  final String? templateId;
+
+  AnalyticsCompleteEventEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.asHost,
+    required this.duration,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsCompleteEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return duration;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsRateEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Rate Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final double rating;
+  final String? templateId;
+
+  AnalyticsRateEventEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.rating,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsRateEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return rating;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsPressEventHelpEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Press Event Help';
+  }
+
+  final String communityId;
+  final String eventId;
+  final bool asHost;
+  final String? templateId;
+
+  AnalyticsPressEventHelpEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.asHost,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsPressEventHelpEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
+}
+
+@JsonSerializable()
+class AnalyticsRsvpEventEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'RSVP Event';
+  }
+
+  final String communityId;
+  final String eventId;
+  final String? templateId;
+
+  AnalyticsRsvpEventEvent({
+    required this.communityId,
+    required this.eventId,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => _$AnalyticsRsvpEventEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return 1;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsDonateEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'donate';
+    return 'Donate';
   }
 
   final String communityId;
@@ -393,13 +759,28 @@ class AnalyticsDonateEvent implements AnalyticsEvent {
 
   @override
   Map<String, dynamic> toJson() => _$AnalyticsDonateEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }
 
 @JsonSerializable()
 class AnalyticsUpdateCommunitySubscriptionEvent implements AnalyticsEvent {
   @override
   String getEventType() {
-    return 'update_community_subscription';
+    return 'Update Community Subscription';
   }
 
   final String? communityId;
@@ -417,4 +798,19 @@ class AnalyticsUpdateCommunitySubscriptionEvent implements AnalyticsEvent {
   @override
   Map<String, dynamic> toJson() =>
       _$AnalyticsUpdateCommunitySubscriptionEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.communityCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return communityId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return null;
+  }
 }

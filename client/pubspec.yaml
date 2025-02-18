@@ -16,6 +16,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.7.0
   json_serializable: ^6.6.2
   linkify: ^5.0.0
+  matomo_tracker: ^5.1.0
   normal: ^0.6.0
   platform_detect: ^2.0.11
 
@@ -28,7 +29,6 @@ dependencies:
   agora_rtc_engine:
     git:
       url: https://github.com/berkmancenter/Agora-Flutter-SDK.git
-  firebase_analytics: ^10.8.8
   firebase_auth: ^4.17.7
   firebase_core: ^2.26.0
   firebase_database: ^10.4.8
@@ -40,7 +40,7 @@ dependencies:
   intl: ^0.19.0
   freezed_annotation: ^2.4.1
   get_it: ^7.6.0
-  http: ^0.13.6
+  http: ^1.2.1
   url_launcher: ^6.1.11
   responsive_builder: ^0.7.0
   datetime_picker_formfield: ^2.0.1

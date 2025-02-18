@@ -63,9 +63,9 @@ class _TemplateFabState extends State<TemplateFab> {
             isCloseButtonVisible: false,
             builder: (_) {
               analytics.logEvent(
-                AnalyticsPressCreateEventFromGuideEvent(
+                AnalyticsPressCreateEventFromTemplateEvent(
                   communityId: template.communityId,
-                  guideId: template.id,
+                  templateId: template.id,
                 ),
               );
 

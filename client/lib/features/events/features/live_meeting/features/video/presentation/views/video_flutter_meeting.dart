@@ -474,7 +474,7 @@ class GetHelpButton extends StatefulWidget {
         communityId: eventProvider.communityId,
         eventId: eventProvider.eventId,
         asHost: liveMeetingProvider.isHost,
-        guideId: eventProvider.templateId,
+        templateId: eventProvider.templateId,
       ),
     );
 

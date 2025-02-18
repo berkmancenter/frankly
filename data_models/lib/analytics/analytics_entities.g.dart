@@ -9,11 +9,27 @@ part of 'analytics_entities.dart';
 AnalyticsAgreeToTermsAndConditionsEvent
     _$AnalyticsAgreeToTermsAndConditionsEventFromJson(
             Map<String, dynamic> json) =>
-        AnalyticsAgreeToTermsAndConditionsEvent();
+        AnalyticsAgreeToTermsAndConditionsEvent(
+          userId: json['userId'] as String,
+        );
 
 Map<String, dynamic> _$AnalyticsAgreeToTermsAndConditionsEventToJson(
         AnalyticsAgreeToTermsAndConditionsEvent instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'userId': instance.userId,
+    };
+
+AnalyticsUserRegistrationEvent _$AnalyticsUserRegistrationEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsUserRegistrationEvent(
+      userId: json['userId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsUserRegistrationEventToJson(
+        AnalyticsUserRegistrationEvent instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+    };
 
 AnalyticsLinkStripeAccountEvent _$AnalyticsLinkStripeAccountEventFromJson(
         Map<String, dynamic> json) =>
@@ -83,185 +99,6 @@ const _$ShareTypeEnumMap = {
   ShareType.link: 'link',
 };
 
-AnalyticsPressAddNewGuideEvent _$AnalyticsPressAddNewGuideEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsPressAddNewGuideEvent(
-      communityId: json['communityId'] as String,
-    );
-
-Map<String, dynamic> _$AnalyticsPressAddNewGuideEventToJson(
-        AnalyticsPressAddNewGuideEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-    };
-
-AnalyticsCompleteNewGuideEvent _$AnalyticsCompleteNewGuideEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsCompleteNewGuideEvent(
-      communityId: json['communityId'] as String,
-      guideId: json['guideId'] as String,
-    );
-
-Map<String, dynamic> _$AnalyticsCompleteNewGuideEventToJson(
-        AnalyticsCompleteNewGuideEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsPressCreateEventFromGuideEvent
-    _$AnalyticsPressCreateEventFromGuideEventFromJson(
-            Map<String, dynamic> json) =>
-        AnalyticsPressCreateEventFromGuideEvent(
-          communityId: json['communityId'] as String,
-          guideId: json['guideId'] as String,
-        );
-
-Map<String, dynamic> _$AnalyticsPressCreateEventFromGuideEventToJson(
-        AnalyticsPressCreateEventFromGuideEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsCreateEventEvent _$AnalyticsCreateEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsCreateEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsCreateEventEventToJson(
-        AnalyticsCreateEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsScheduleEventEvent _$AnalyticsScheduleEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsScheduleEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      daysFromNow: json['daysFromNow'] as int,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsScheduleEventEventToJson(
-        AnalyticsScheduleEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'daysFromNow': instance.daysFromNow,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsEditEventEvent _$AnalyticsEditEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsEditEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsEditEventEventToJson(
-        AnalyticsEditEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsPressShareEventEvent _$AnalyticsPressShareEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsPressShareEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
-      shareType: $enumDecode(_$ShareTypeEnumMap, json['shareType']),
-    );
-
-Map<String, dynamic> _$AnalyticsPressShareEventEventToJson(
-        AnalyticsPressShareEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'guideId': instance.guideId,
-      'shareType': _$ShareTypeEnumMap[instance.shareType]!,
-    };
-
-AnalyticsEnterEventEvent _$AnalyticsEnterEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsEnterEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      asHost: json['asHost'] as bool,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsEnterEventEventToJson(
-        AnalyticsEnterEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'asHost': instance.asHost,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsCompleteEventEvent _$AnalyticsCompleteEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsCompleteEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      asHost: json['asHost'] as bool,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsCompleteEventEventToJson(
-        AnalyticsCompleteEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'asHost': instance.asHost,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsPressEventHelpEvent _$AnalyticsPressEventHelpEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsPressEventHelpEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      asHost: json['asHost'] as bool,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsPressEventHelpEventToJson(
-        AnalyticsPressEventHelpEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'asHost': instance.asHost,
-      'guideId': instance.guideId,
-    };
-
-AnalyticsRsvpEventEvent _$AnalyticsRsvpEventEventFromJson(
-        Map<String, dynamic> json) =>
-    AnalyticsRsvpEventEvent(
-      communityId: json['communityId'] as String,
-      eventId: json['eventId'] as String,
-      guideId: json['guideId'] as String?,
-    );
-
-Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
-        AnalyticsRsvpEventEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'guideId': instance.guideId,
-    };
-
 AnalyticsJoinCommunityEvent _$AnalyticsJoinCommunityEventFromJson(
         Map<String, dynamic> json) =>
     AnalyticsJoinCommunityEvent(
@@ -284,6 +121,205 @@ Map<String, dynamic> _$AnalyticsLeaveCommunityEventToJson(
         AnalyticsLeaveCommunityEvent instance) =>
     <String, dynamic>{
       'communityId': instance.communityId,
+    };
+
+AnalyticsPressAddNewTemplateEvent _$AnalyticsPressAddNewTemplateEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsPressAddNewTemplateEvent(
+      communityId: json['communityId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsPressAddNewTemplateEventToJson(
+        AnalyticsPressAddNewTemplateEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+    };
+
+AnalyticsCompleteNewTemplateEvent _$AnalyticsCompleteNewTemplateEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsCompleteNewTemplateEvent(
+      communityId: json['communityId'] as String,
+      templateId: json['templateId'] as String,
+    );
+
+Map<String, dynamic> _$AnalyticsCompleteNewTemplateEventToJson(
+        AnalyticsCompleteNewTemplateEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsPressCreateEventFromTemplateEvent
+    _$AnalyticsPressCreateEventFromTemplateEventFromJson(
+            Map<String, dynamic> json) =>
+        AnalyticsPressCreateEventFromTemplateEvent(
+          communityId: json['communityId'] as String,
+          templateId: json['templateId'] as String,
+        );
+
+Map<String, dynamic> _$AnalyticsPressCreateEventFromTemplateEventToJson(
+        AnalyticsPressCreateEventFromTemplateEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsCreateEventEvent _$AnalyticsCreateEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsCreateEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsCreateEventEventToJson(
+        AnalyticsCreateEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsScheduleEventEvent _$AnalyticsScheduleEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsScheduleEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      daysFromNow: json['daysFromNow'] as int,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsScheduleEventEventToJson(
+        AnalyticsScheduleEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'daysFromNow': instance.daysFromNow,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsEditEventEvent _$AnalyticsEditEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsEditEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsEditEventEventToJson(
+        AnalyticsEditEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsPressShareEventEvent _$AnalyticsPressShareEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsPressShareEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      templateId: json['templateId'] as String?,
+      shareType: $enumDecode(_$ShareTypeEnumMap, json['shareType']),
+    );
+
+Map<String, dynamic> _$AnalyticsPressShareEventEventToJson(
+        AnalyticsPressShareEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'templateId': instance.templateId,
+      'shareType': _$ShareTypeEnumMap[instance.shareType]!,
+    };
+
+AnalyticsEnterEventEvent _$AnalyticsEnterEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsEnterEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      asHost: json['asHost'] as bool,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsEnterEventEventToJson(
+        AnalyticsEnterEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'asHost': instance.asHost,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsCompleteEventEvent _$AnalyticsCompleteEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsCompleteEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      asHost: json['asHost'] as bool,
+      duration: json['duration'] as int,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsCompleteEventEventToJson(
+        AnalyticsCompleteEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'asHost': instance.asHost,
+      'duration': instance.duration,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsRateEventEvent _$AnalyticsRateEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsRateEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      rating: (json['rating'] as num).toDouble(),
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsRateEventEventToJson(
+        AnalyticsRateEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'rating': instance.rating,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsPressEventHelpEvent _$AnalyticsPressEventHelpEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsPressEventHelpEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      asHost: json['asHost'] as bool,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsPressEventHelpEventToJson(
+        AnalyticsPressEventHelpEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'asHost': instance.asHost,
+      'templateId': instance.templateId,
+    };
+
+AnalyticsRsvpEventEvent _$AnalyticsRsvpEventEventFromJson(
+        Map<String, dynamic> json) =>
+    AnalyticsRsvpEventEvent(
+      communityId: json['communityId'] as String,
+      eventId: json['eventId'] as String,
+      templateId: json['templateId'] as String?,
+    );
+
+Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
+        AnalyticsRsvpEventEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'templateId': instance.templateId,
     };
 
 AnalyticsDonateEvent _$AnalyticsDonateEventFromJson(

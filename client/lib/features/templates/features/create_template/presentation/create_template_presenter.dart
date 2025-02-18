@@ -58,9 +58,9 @@ class CreateTemplatePresenter extends ChangeNotifier {
     var communityId = template.communityId;
     var templateId = template.id;
     analytics.logEvent(
-      AnalyticsCompleteNewGuideEvent(
+      AnalyticsCompleteNewTemplateEvent(
         communityId: communityId,
-        guideId: templateId,
+        templateId: templateId,
       ),
     );
     return template;

@@ -457,8 +457,6 @@ class FirestoreEventService {
   }) async {
     final uid = userService.currentUserId!;
 
-    unawaited(firebaseAnalytics.logEvent(name: 'event_join'));
-
     final reference = eventReference(
       communityId: communityId,
       templateId: templateId,
