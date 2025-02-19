@@ -49,7 +49,6 @@ We will then take care of the issue as soon as possible.
 <!--
 You might want to create a separate issue tag for questions and include it in this description. People should then tag their issues accordingly.
 
-
 ## I Want To Contribute
 
 > ### Legal Notice <!-- omit in toc -->
