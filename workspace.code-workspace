@@ -1,0 +1,32 @@
+{
+    "settings": {
+        "editor.formatOnSave": true,
+        "debug.internalConsoleOptions": "neverOpen",
+    },
+    "folders": [
+        {
+            "name": "Client",
+            "path": "./client"
+        },
+        {
+            "name": "Functions",
+            "path": "./firebase/functions"
+        },
+        {
+            "name": "Models",
+            "path": "./data_models"
+        },
+        {
+            "name": "Rules",
+            "path": "./firebase/firestore/firestore.rules"
+        },
+        {
+            "name": "Matching",
+            "path": "./matching"
+        },
+        {
+            "path": ".",
+            "name": "./"
+        }
+    ],
+}

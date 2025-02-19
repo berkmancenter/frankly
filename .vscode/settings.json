@@ -2,5 +2,5 @@
   "dart.lineLength": 80,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
-}
+  },
 }
