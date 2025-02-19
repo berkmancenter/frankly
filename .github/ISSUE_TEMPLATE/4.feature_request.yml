@@ -1,6 +1,6 @@
 name: Feature Request
 description: I have a suggestion for a feature
-labels: ['triage', 'feature request']
+labels: ['feature request']
 body:
   - type: markdown
     attributes:
