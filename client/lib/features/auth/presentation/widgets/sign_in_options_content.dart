@@ -156,7 +156,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       if (isWKWebView)
         ThickOutlineButton(
           minWidth: minWidth,
-          onPressed: () => launch('app.frankly.org'),
+          onPressed: () => launch(Environment.appUrl),
           icon: Padding(
             padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
             child: Image.asset(
