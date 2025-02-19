@@ -38,7 +38,6 @@ to <support@frankly.org>.
 
 > Before you ask a question, it is best to search both the [Help Center](https://rebootingsocialmedia.notion.site/Frankly-Help-Center-23b4f9a120a344d4af2b2ce44b2ae229) and our existing [Issues](https://github.com/berkmancenter/frankly/issues) to see if your question has been answered there.
 
-
 If you then still feel the need to ask a question and need clarification, we recommend the following:
 
 - Open an [Issue](https://github.com/berkmancenter/frankly/issues/new).
