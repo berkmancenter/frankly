@@ -93,9 +93,6 @@ If you have any questions about the instructions, please feel free to [submit an
 ### Commit Messages
 We prefer longform commit messages where possible! Check out [this article](https://meedan.com/post/how-to-write-longform-git-commits-for-better-software-development) for more on longform commits.
 
-## Join The Project Team
-<!-- TODO -->
-
 <!-- omit in toc -->
 ## Attribution
 This guide is based on the [contributing.md](https://contributing.md/generator)!
