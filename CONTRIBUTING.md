@@ -80,10 +80,6 @@ Once it's filed:
 - The project team will triage the issue accordingly.
 
 ### Your First Code Contribution
-<!-- TODO
-include Setup of env, IDE and typical getting started instructions?
-
--->
 
 ### Improving The Documentation
 <!-- TODO
