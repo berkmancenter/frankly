@@ -73,6 +73,7 @@ A good bug report shouldn't leave others needing to chase you up for more inform
 <!-- You may add a PGP key to allow the messages to be sent encrypted as well. -->
 
 We use GitHub issues to track bugs and errors. Open an [Issue](https://github.com/berkmancenter/frankly/issues/new/choose) and select the appropriate issue type, then follow the prompts.
+
 Once it's filed:
 
 - The project team will label the issue accordingly.
