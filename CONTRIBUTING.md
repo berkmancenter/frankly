@@ -80,12 +80,14 @@ Once it's filed:
 - The project team will triage the issue accordingly.
 
 ### Your First Code Contribution
+
 We would love for you to contribute to Frankly! To get started with setting up your development environment so you can start contributing, please refer to our [README](https://github.com/berkmancenter/frankly). The instructions there should allow you to run Frankly locally on your machine. 
+
+Everything the Frankly team is working on is in the [Frankly Public Workstream](https://github.com/orgs/berkmancenter/projects/3). We would love your help, and that's the place to start. Look for anything in our backlog with the [help welcome](https://github.com/orgs/berkmancenter/projects/3/views/1?filterQuery=-status%3A%22Won%27t+Do%22%2C%22Consider+Later%22+label%3A%22help+welcome%22) label especially, and we also have a [good first issue](https://github.com/orgs/berkmancenter/projects/3/views/1?filterQuery=-status%3A%22Won%27t+Do%22%2C%22Consider+Later%22+label%3A%22good+first+issue%22+) label if you are a first time contributor looking for something to help with.
 
 If the feature you want to work on requires third-party services (e.g. Agora for video calling, or Mux for running livestreams), please follow the instructions in the README to set up your own accounts. The free tiers of these services should allow for testing development use cases.
 
-If you have any questions about the instructions, please feel free to submit an issue with a **question** tag or a PR directly to our documentation. We welcome any suggestions for improvements to the README from contributors and thank you for your interest!
-### Improving The Documentation
+If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the documentation itself. Thank you for your interest!
 <!-- TODO
 Updating, improving and correcting the documentation
 
