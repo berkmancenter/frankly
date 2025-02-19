@@ -80,7 +80,11 @@ Once it's filed:
 - The project team will triage the issue accordingly.
 
 ### Your First Code Contribution
+We would love for you to contribute to Frankly! To get started with setting up your development environment so you can start contributing, please refer to our [README](https://github.com/berkmancenter/frankly). The instructions there should allow you to run Frankly locally on your machine. 
 
+If the feature you want to work on requires third-party services (e.g. Agora for video calling, or Mux for running livestreams), please follow the instructions in the README to set up your own accounts. The free tiers of these services should allow for testing development use cases.
+
+If you have any questions about the instructions, please feel free to submit an issue with a **question** tag or a PR directly to our documentation. We welcome any suggestions for improvements to the README from contributors and thank you for your interest!
 ### Improving The Documentation
 <!-- TODO
 Updating, improving and correcting the documentation
