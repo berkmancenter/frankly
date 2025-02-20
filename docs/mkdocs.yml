@@ -1,0 +1,11 @@
+site_name: Frankly 💬
+docs_dir: pages
+site_dir: output
+strict: true
+theme:
+  name: material
+  features: 
+    - content.code.copy
+    - navigation.sections
+markdown_extensions:
+  - tables
