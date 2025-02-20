@@ -33,7 +33,8 @@ class Environment {
 
   // App branding and URL properties
   static const appName = String.fromEnvironment('APP_NAME');
-  static const appUrl = String.fromEnvironment('APP_URL');
+  static const appUrl =
+      String.fromEnvironment('APP_URL', defaultValue: 'http://localhost:5000');
   static const sidebarFooter = String.fromEnvironment('SIDEBAR_FOOTER');
   static const copyrightStatement =
       String.fromEnvironment('COPYRIGHT_STATEMENT');
