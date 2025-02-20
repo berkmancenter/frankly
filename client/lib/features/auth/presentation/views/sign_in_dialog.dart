@@ -59,13 +59,6 @@ class _SignInDialogState extends State<SignInDialog> {
                   isNewUser: widget.isNewUser,
                   showEmailFormOnly: widget.showEmailFormOnly,
                 ),
-                if (isWKWebView) ...[
-                  SizedBox(height: 8),
-                  Text(
-                    'To sign in with Google, please open this page in your browser.',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
               ],
             ),
           ),

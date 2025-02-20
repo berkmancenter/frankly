@@ -151,39 +151,20 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
       SizedBox(height: 9),
-      // Google sign-in is not supported in WKWebView. Prompt user to open
-      // browser to sign in with Google. See https://developers.googleblog.com/en/modernizing-oauth-interactions-in-native-apps-for-better-usability-and-security/
-      if (isWKWebView)
-        ThickOutlineButton(
-          minWidth: minWidth,
-          onPressed: () => launch('app.frankly.org'),
-          icon: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-            child: Image.asset(
-              'media/googleLogo.png',
-              width: 22,
-              height: 22,
-            ),
+      ThickOutlineButton(
+        minWidth: minWidth,
+        onPressed: () => context.read<UserService>().signInWithGoogle(),
+        icon: Padding(
+          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+          child: Image.asset(
+            'media/googleLogo.png',
+            width: 22,
+            height: 22,
           ),
-          backgroundColor: Colors.white,
-          text:
-              'Open browser for\nGoogle ${widget.isNewUser ? 'signup' : 'login'}',
-        )
-      else
-        ThickOutlineButton(
-          minWidth: minWidth,
-          onPressed: () => context.read<UserService>().signInWithGoogle(),
-          icon: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-            child: Image.asset(
-              'media/googleLogo.png',
-              width: 22,
-              height: 22,
-            ),
-          ),
-          backgroundColor: Colors.white,
-          text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
         ),
+        backgroundColor: Colors.white,
+        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
+      ),
       ThickOutlineButton(
         key: SignInOptionsContent.emailSignInKey,
         minWidth: minWidth,
