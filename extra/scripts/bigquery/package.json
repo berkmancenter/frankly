@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@firebaseextensions/fs-bq-import-collection": "^0.1.12",
-    "@firebaseextensions/fs-bq-schema-views": "^0.4.1"
-  }
-}

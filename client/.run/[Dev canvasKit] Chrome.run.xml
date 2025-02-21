@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="[Dev canvaskit] Chrome" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="additionalArgs" value="-d chrome --web-renderer canvaskit" />
-    <option name="filePath" value="$PROJECT_DIR$/lib/dev_main.dart" />
-    <method v="2" />
-  </configuration>
-</component>

@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="[Emulator] Chrome" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="additionalArgs" value="-d chrome" />
-    <option name="filePath" value="$PROJECT_DIR$/lib/dev_emulators_main.dart" />
-    <method v="2" />
-  </configuration>
-</component>

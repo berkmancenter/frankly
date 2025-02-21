@@ -1,1 +1,0 @@
-bool get isEmulator => false;

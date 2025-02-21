@@ -1,6 +1,0 @@
-# requirements.txt
-
-Flask==2.0.3
-gunicorn==19.9.0
-selenium==3.141.0
-chromedriver-binary==95.0.4638.17.0
