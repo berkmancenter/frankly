@@ -160,15 +160,26 @@ Once you have the keys set up, you can follow the below checklist to test that k
 
 Mux streaming is used when a customer wants to stream video from a third party streaming service, such as Zoom, to Frankly. Essentially the customer will record video from the third party platform, the data is sent to Mux, which will then notify Frankly's MuxWebhook Firebase function that a stream has started. Once the stream has started, the Frankly event page will display the streaming video.
 
-1. Using [Mux's instructions](https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token), get a new access token. Use the environment of your choice and set the permission level to "Mux Video".
-2. Set up Mux secrets for your local development environment by replacing values in the following command. As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+1.  Using [Mux's instructions](https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token), get a new access token. Use the environment of your choice and set the permission level to "Mux Video".
 
-```
-firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"
-```
+2.  Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
 
-3. To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/73687b331ffa7bebcc488bb2eac64eecd4c52c0f/client/functions/lib/functions/on_request/mux_webhooks.dart#L4), the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.
-4. Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.”For the URL to Notify field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
+    === "Command Line"
+        As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+        ```
+        firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"
+        ```
+    === "Copy/Paste"
+        Or, paste your token and secret into the `.runtimeconfig.json` file where the `mux` field is.
+        ```
+          "mux": {
+            "secret": "...",
+            "token_id": "..."
+          },
+        ```
+
+3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/73687b331ffa7bebcc488bb2eac64eecd4c52c0f/client/functions/lib/functions/on_request/mux_webhooks.dart#L4), the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.
+4.  Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.”For the URL to Notify field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
 #### 👾 Testing your setup
 
@@ -226,7 +237,9 @@ Stripe is currently disabled for the platform. The following instructions will a
 - Set your Stripe secret key in functions config by replacing placeholder values in the following command:
 
 ```
+
 firebase functions:config:set stripe.connected_account_webhook_key="<YOUR_CONNECTED_ACCOUNT_WEBHOOK_SECRET_KEY>" stripe.pub_key="<YOUR_STRIPE_PUBLISHABLE_KEY>" stripe.secret_key="<YOUR_STRIPE_SECRET_KEY>" stripe.webhook_key="<YOUR_WEBHOOK_SECRET_KEY>"
+
 ```
 
 - Set up products for each type with a metadata field "plan_type" of individual, club, pro and prices for each one
@@ -276,19 +289,37 @@ The `client/test` directory holds Flutter unit and widget tests.
 To run existing tests, you can run the following command from the `client/test` directory:
 
 ```
+
 flutter pub run build_runner build
 cd ../
 flutter test --platform chrome
+
 ```
 
 To run newly added tests:
 
 ```
+
 flutter test <optional path to test files>
+
 ```
 
 To run unit tests with locally generated HTML coverage report:
 
 ```
+
 flutter test --coverage && format_coverage --in=coverage && genhtml coverage/lcov.info -o coverage/html
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
 ```
