@@ -9,3 +9,6 @@ theme:
     - navigation.sections
 markdown_extensions:
   - tables
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true 

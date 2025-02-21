@@ -1,4 +1,4 @@
-# End-to-End Testing with Playwright
+# 🧰 End-to-End Testing with Playwright
 
 This directory contains [Playwright](https://playwright.dev/) tests for some of the product [test scenarios](https://www.notion.so/rebootingsocialmedia/Kazm-Test-Scenarios-13896de35e1748578285ad8a80f8331d).
 

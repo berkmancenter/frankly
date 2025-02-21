@@ -174,9 +174,9 @@ firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR
 
 You can verify the integration is working by manually triggering a new call directly from Mux.
 
-1. Visit your Google Cloud Platform Logging page so you can scan for any errors and expected logs during the live stream test.
-2. In the Mux dashboard, go to Video > Live Streams. Click "Create your first live stream."
-3. Run the default request.
+- [ ] Visit your Google Cloud Platform Logging page so you can scan for any errors and expected logs during the live stream test.
+- [ ] In the Mux dashboard, go to Video > Live Streams. Click "Create your first live stream."
+- [ ] Run the default request.
 
 The following should be true if your Mux setup works as expected:
 The logs displayed on the Logging page should indicate that the MuxWebhook Firebase function was called. You can filter the logs by function name in the Google Cloud Console to find logs associated to this function. When viewing the logs, you will likely observe the following error message: `"Error: Unexpected number of documents matching livestream ID"`. This is due to the liveStreamId not matching an id associated to an existing LiveStreamInfo.kFieldMuxId value in the database. This is an expected error. For more thorough testing, we recommend the steps below.
@@ -233,7 +233,7 @@ firebase functions:config:set stripe.connected_account_webhook_key="<YOUR_CONNEC
 
 ## 🐦 Running and building the Client
 
-:grey_question: But first, have you setup and run the [emulators](?id=emulators)?
+❔ But first, if using, have you setup and run the [emulators](#emulators)?
 
 **Recommended instructions (debug configs)**
 
