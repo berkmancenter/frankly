@@ -1,14 +1,31 @@
-site_name: Frankly 💬
+site_name: Frankly
 docs_dir: pages
 site_dir: output
 strict: true
+repo_url: https://github.com/berkmancenter/frankly
+plugins:
+  - search
 theme:
   name: material
+  palette:
+    primary: custom
+  icon:
+    logo: material/chat-processing-outline
+    annotation: material/information-outline
   features: 
     - content.code.copy
     - navigation.sections
+    - search.suggest
+extra_css:
+  - style/extra.css
 markdown_extensions:
   - tables
+  - admonition
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
   - pymdownx.tasklist:
       custom_checkbox: true
       clickable_checkbox: true 

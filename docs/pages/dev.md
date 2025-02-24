@@ -104,6 +104,30 @@ We recommend using the emulators [import and export](https://firebase.google.com
 
 > Please refer to the Cloud Functions Emulator section under **❓Troubleshooting / FAQ** for common issues and resolutions!
 
+### Optional: Setup Firebase Cloud Project
+
+In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Functions, Auth, Realtime Database, etc.) suffice for most development task.
+
+If you plan on using [Mux](#optional-mux) within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send [webhooks :octicons-link-external-24:](https://en.wikipedia.org/wiki/Webhook) to. You will need a Firebase project of your own. 
+
+1. Create a new Firebase project [here :octicons-link-external-24:](https://console.firebase.google.com/).
+2. Make a note of the unique ID that is created for your project. It will be in the format of `my-dev-project-d2f8c`.
+3. From your command line within the `firebase/functions` directory, run:
+    ```
+    firebase login
+    ```
+
+    !!! warning "Logging In"
+        When the login window appears, ensure you are logging in as the same user that created your project.
+
+4. Now run:
+  ```
+  firebase use <project_id>
+  ```
+  You should see a message like `Now using project my-dev-project-d2f8c`
+
+You can follow the official [documentation :octicons-link-external-24:](https://firebase.google.com/docs/functions/get-started?gen=1st#initialize-your-project_1) to find out how to deploy, but you might use a command like this: `firebase deploy --only functions`.
+
 ## 🔌 Third Party Services
 
 The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.
@@ -156,7 +180,9 @@ Once you have the keys set up, you can follow the below checklist to test that k
 - [ ] **Show participant info**: In the right side bar, click on a participant to show their user info. Verify that user details show as expected.
 - [ ] **Kicking a user**: In a hosted meeting, kick a user. Verify that the host sees the user disappear, and the user should see that they are banned if they try to navigate back to the event.
 
-### Mux
+### Optional: Mux
+
+#### **🔧 Setting up the integration**
 
 Mux streaming is used when a customer wants to stream video from a third party streaming service, such as Zoom, to Frankly. Essentially the customer will record video from the third party platform, the data is sent to Mux, which will then notify Frankly's MuxWebhook Firebase function that a stream has started. Once the stream has started, the Frankly event page will display the streaming video.
 
@@ -178,7 +204,7 @@ Mux streaming is used when a customer wants to stream video from a third party s
           },
         ```
 
-3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/73687b331ffa7bebcc488bb2eac64eecd4c52c0f/client/functions/lib/functions/on_request/mux_webhooks.dart#L4), the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.
+3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.
 4.  Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.”For the URL to Notify field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
 #### 👾 Testing your setup
