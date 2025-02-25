@@ -6,6 +6,8 @@ import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/features/user/data/services/user_service.dart';
+//import 'package:logging/logging.dart' as lg;
+//import 'package:super_editor/super_editor.dart';
 
 void main() async {
   loggingService.log('Running in dev emulator mode');
@@ -38,5 +40,19 @@ void main() async {
     }
   }
 
+  /** TODO remove this - just showing you to configure SuperEditor loggers if you need them */
+  /** 
+  initLoggers(lg.Level.FINEST, {
+    editorGesturesLog,
+    // editorImeLog,
+    // editorKeyLog,
+    // editorOpsLog,
+    // editorLayoutLog,
+    editorPoliciesLog,
+    editorDocLog,
+    // editorStyleLog,
+    // textFieldLog,
+  });
+*/
   await runClient();
 }
