@@ -16,8 +16,8 @@ theme:
     - content.code.copy
     - navigation.sections
     - search.suggest
-extra_css:
-  - style/extra.css
+# extra_css:
+#   - style/extra.css
 markdown_extensions:
   - tables
   - admonition
