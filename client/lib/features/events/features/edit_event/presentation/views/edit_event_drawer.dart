@@ -144,10 +144,6 @@ class _EditEventDrawerState extends State<EditEventDrawer>
                 SizedBox(height: 30),
                 _buildDurationSection(),
                 SizedBox(height: 20),
-                if (_presenter.showFeatureToggle) ...[
-                  _buildFeaturedSection(),
-                  SizedBox(height: 20),
-                ],
                 if (isPlatformSelectionFeatureEnabled) ...[
                   _buildPlatformSelectionSection(),
                   SizedBox(height: 20),
@@ -362,25 +358,6 @@ class _EditEventDrawerState extends State<EditEventDrawer>
             ),
           ),
       ],
-    );
-  }
-
-  Widget _buildFeaturedSection() {
-    return CustomStreamBuilder<List<Featured>>(
-      entryFrom: 'EditEventDrawer._buildFeaturedSection',
-      stream: _presenter.getFeaturedStream(),
-      showLoading: false,
-      builder: (_, featuredItems) {
-        // Initialise only first time
-        _model.isFeatured ??= _presenter.isFeatured(featuredItems);
-        _model.initialFeatured ??= _presenter.isFeatured(featuredItems);
-
-        return CustomSwitchTile(
-          val: _model.isFeatured ?? false,
-          text: 'Feature on homepage',
-          onUpdate: (value) => _presenter.updateIsFeatured(value),
-        );
-      },
     );
   }
 

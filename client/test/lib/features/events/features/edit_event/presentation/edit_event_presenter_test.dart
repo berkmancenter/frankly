@@ -246,18 +246,6 @@ void main() {
     expect(result, isTrue);
   });
 
-  group('showFeatureToggle', () {
-    test('true', () {
-      when(mockCommunityPermissionsProvider.canFeatureItems).thenReturn(true);
-      expect(presenter.showFeatureToggle, isTrue);
-    });
-
-    test('false', () {
-      when(mockCommunityPermissionsProvider.canFeatureItems).thenReturn(false);
-      expect(presenter.showFeatureToggle, isFalse);
-    });
-  });
-
   group('isPlatformSelectionFeatureEnabled', () {
     test('true', () {
       final settings = CommunitySettings(enablePlatformSelection: true);
