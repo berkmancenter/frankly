@@ -24,10 +24,10 @@ class CustomScaffold extends StatefulWidget {
   });
 
   @override
-  _CustomScaffoldState createState() => _CustomScaffoldState();
+  CustomScaffoldState createState() => CustomScaffoldState();
 }
 
-class _CustomScaffoldState extends State<CustomScaffold> {
+class CustomScaffoldState extends State<CustomScaffold> {
   final _subtreeKey = GlobalKey();
 
   Widget _buildMainContent(NavBarProvider provider) {
