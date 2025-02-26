@@ -4,6 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 // Single source of truth for our styles
 // https://flutter.dev/docs/development/ui/layout/building-adaptive-apps#single-source-of-truth-for-styling
 class AppColor {
+  static const Color black = Color(0xFF000000);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color red200 = Color(0xFFF7C5C5);
+  static const Color red500 = Color(0xFFC41C1C);
+  static const Color gray50 = Color(0xFFFAFAFA);
+  static const Color gray100 = Color(0xFFF5F5F5);
+  static const Color gray200 = Color(0xFFE5E5E5);
+  static const Color gray300 = Color(0xFFD4D4D4);
+  static const Color gray400 = Color(0xFFA3A3A3);
+  static const Color gray500 = Color(0xFF737373);
+  static const Color gray600 = Color(0xFF525252);
+  static const Color gray700 = Color(0xFF404040);
+  static const Color gray800 = Color(0xFF262626);
+  static const Color gray900 = Color(0xFF171717);
   static const Color darkBlue = Color(0xFF303B5F);
   static const Color darkGreen = Color(0xFF4E7E61);
   static const Color brightGreen = Color(0xFF9BFBC2);
@@ -22,8 +36,6 @@ class AppColor {
   static const Color gray6 = Color(0xFFEBEDF1);
   static const Color grayTransparent = Color(0x88757584);
   static const Color transparent = Color(0x00000000);
-  static const Color black = Color(0xFF000000);
-  static const Color white = Color(0xFFFFFFFF);
   static const Color lightRed = Color(0xFFFFDFDF);
   static const Color darkRed = Color(0xFF350F18);
   static const Color lightYellow = Color(0xFFFFF9E8);
