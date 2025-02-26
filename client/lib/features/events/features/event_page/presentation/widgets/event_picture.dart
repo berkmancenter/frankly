@@ -56,9 +56,7 @@ class EventOrTemplatePicture extends HookWidget {
           future: imageFuture,
           builder: (_, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
-                  ? CustomLoadingIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
-                    )
+                  ? CustomLoadingIndicator()
                   : EditableImage(
                       initialUrl: snapshot.data ?? '',
                       allowEdit: onEdit != null,

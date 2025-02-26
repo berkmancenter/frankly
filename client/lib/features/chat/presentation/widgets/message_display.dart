@@ -129,10 +129,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 height: 14,
                                 width: 14,
                                 alignment: Alignment.center,
-                                child: CustomLoadingIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.blueGrey,
-                                ),
+                                child: CustomLoadingIndicator(),
                               ),
                           ],
                         ),
