@@ -120,6 +120,7 @@ class _AppState extends State<App> {
           routeInformationParser: BeamerParser(),
           theme: ThemeData(
             useMaterial3: true,
+            primaryColor: AppColor.black,
             colorScheme: ColorScheme(
               brightness: Brightness.light,
               primary: AppColor.black,
