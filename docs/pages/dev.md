@@ -244,39 +244,49 @@ The following should be true if your Mux setup works as expected:
 
 ### Cloudinary
 
-1. [Sign up](https://cloudinary.com/users/register_free) for cloudinary
+1. [Sign up](https://cloudinary.com/users/register_free) for Cloudinary.
 2. Create two upload presets [here](https://console.cloudinary.com/settings/upload/presets), one for images and one for videos.
 
     !!! info ""
         You can learn about upload presets [here](https://cloudinary.com/documentation/upload_presets#use_cases).
 
-    1. Image Preset configuration:
+    1. On the _General_ panel, use this configuration for images:
         ```
-        - Use filename:true
-        - Unique filename:true
-        - Type:upload
-        - Access mode:public
-        - Transformation:c_crop,g_custom (note: this is achieved by going to Upload Manipulations->Incoming Transformations and setting Mode to Crop and Gravity to custom. These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).
+        - Name: "frankly-image-default" (or whatever you'd like)
+        - Signing mode: Unsigned
+        - Disallow public ID: ✔️
+        - Asset folder: empty
+        - Generated public ID: Auto-generate
+        - Generated display name: Use the last segment of the public ID
         ```
+        1.  Now, on the _Transform_ panel, under "Incoming transformation", enter `c_crop,g_custom` and click Save. 
+     
+        !!! note "" 
+            These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).
 
-    2.  Video Preset configuration:
+    2. On the _General_ panel, use this configuration for videos:
         ```
-        - Use filename:true
-        - Unique filename:true
-        - Type:upload
-        - Access mode:public
-        - Folder:videos/uploads (this value doesn't matter, just somewhere unique to store your videos)
+        - Name: "frankly-video-default" (or whatever you'd like)
+        - Signing mode: Unsigned
+        - Disallow public ID: ✔️
+        - Asset folder: "videos/uploads" (this value doesn't matter, just somewhere unique to store your videos)
+        - Generated public ID: Auto-generate
+        - Generated display name: Use the last segment of the public ID
         ```
-
+        1. Click Save.
+         
 3. Now update the following in `client/.env`:
+    
+    !!! note "" 
+        Your `CLOUDINARY_CLOUD_NAME` is found [here](https://console.cloudinary.com/settings/account) under "Product environment cloud name".
+
   ```
-  CLOUDINARY_IMAGE_PRESET=<value>
-  CLOUDINARY_VIDEO_PRESET=<value>
-  CLOUDINARY_DEFAULT_PRESET=<value>
+  CLOUDINARY_IMAGE_PRESET=frankly-image-default (or name you used)
+  CLOUDINARY_VIDEO_PRESET=frankly-video-default
+  CLOUDINARY_DEFAULT_PRESET=frankly-video-default
   CLOUDINARY_CLOUD_NAME=<value>
   ```
 
- <!-- Replace `defaultMediaPreset` (video), `uploadPreset` (image), and `cloudName` at `client/lib/services/media_helper_service.dart`. -->
 
 ### SendGrid
 
@@ -303,31 +313,36 @@ firebase functions:config:set stripe.connected_account_webhook_key="<YOUR_CONNEC
 
 **Recommended instructions (debug configs)**
 
-In general, you can use the configs defined in .vscode/launch.json to run **debug mode**. We have defined 2 environments for you:
+In general, you can use the configs defined in `.vscode/launch.json` to run **debug mode**. We have defined 2 environments for you:
 
 1. Client
-2. Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators
+2. 🌟 Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators 
 
-**💡 Tip:** The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.
+!!! note
+    The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.
 
 ### .env File
 
-You will need to create a .env file for client configuration. Copy `client/.env.example.local` file to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
+You will need to create a **.env** file for client configuration. Copy `client/.env.example.local` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
 
-You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `'firestore, auth, functions, database'` Set the value to any desired combination of emulators.
+You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `firestore, auth, functions, database`. Set the value to any desired combination of emulators.
 
-**Manual instructions**
+#### Manual instructions
 If you want to use emulators, ensure you start the emulators first. Then run the following commands in the `/client` directory.
 
 To run the app with backend pointing at staging.
-`flutter run -d chrome --release --web-renderer html -t lib/main.dart --dart-define-from-file=.env`
+```
+flutter run -d chrome --release --web-renderer html -t lib/main.dart --dart-define-from-file=.env
+```
 
 To run the app with locally running functions, firestore, and auth emulators
-`flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env`
+```
+flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env
+```
 
 ### Supported browsers
 
-The client app only runs on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production [Web FAQ | Flutter](https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter) -- Chrome, Firefox, Safari, and Edge.
+The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production [Web FAQ | Flutter](https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter); Chrome, Firefox, Safari, Edge.
 
 # Testing
 
@@ -342,37 +357,17 @@ The `client/test` directory holds Flutter unit and widget tests.
 To run existing tests, you can run the following command from the `client/test` directory:
 
 ```
-
 flutter pub run build_runner build
 cd ../
 flutter test --platform chrome
-
 ```
 
 To run newly added tests:
-
 ```
-
 flutter test <optional path to test files>
-
 ```
 
 To run unit tests with locally generated HTML coverage report:
-
 ```
-
 flutter test --coverage && format_coverage --in=coverage && genhtml coverage/lcov.info -o coverage/html
-
-```
-
-```
-
-```
-
-```
-
-```
-
-```
-
 ```
