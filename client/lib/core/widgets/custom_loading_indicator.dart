@@ -6,7 +6,7 @@ class CustomLoadingIndicator extends StatelessWidget {
 
   const CustomLoadingIndicator({
     this.strokeWidth = 4.0,
-    this.color = Colors.blue,
+    this.color,
   });
 
   @override
