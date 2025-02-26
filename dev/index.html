@@ -1,0 +1,1266 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../e2e/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>⚙️ Running Local Development Version - Frankly</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg>');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#running-local-development-version" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Frankly" class="md-header__button md-logo" aria-label="Frankly" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.58 2 11a7.22 7.22 0 0 0 2.75 5.5c0 .6-.42 2.17-2.75 4.5 2.37-.11 4.64-1 6.47-2.5 1.14.33 2.34.5 3.53.5 5.5 0 10-3.58 10-8s-4.5-8-10-8m0 14c-4.42 0-8-2.69-8-6s3.58-6 8-6 8 2.69 8 6-3.58 6-8 6m5-5v-2h-2v2zm-4 0v-2h-2v2zm-4 0v-2H7v2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Frankly
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ⚙️ Running Local Development Version
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/berkmancenter/frankly" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Frankly" class="md-nav__button md-logo" aria-label="Frankly" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.58 2 11a7.22 7.22 0 0 0 2.75 5.5c0 .6-.42 2.17-2.75 4.5 2.37-.11 4.64-1 6.47-2.5 1.14.33 2.34.5 3.53.5 5.5 0 10-3.58 10-8s-4.5-8-10-8m0 14c-4.42 0-8-2.69-8-6s3.58-6 8-6 8 2.69 8 6-3.58 6-8 6m5-5v-2h-2v2zm-4 0v-2h-2v2zm-4 0v-2H7v2z"/></svg>
+
+    </a>
+    Frankly
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/berkmancenter/frankly" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    🐣 Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ⚙️ Running Local Development Version
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    ⚙️ Running Local Development Version
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tools-and-flutter-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools and Flutter Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Data Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firebase" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥 Firebase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔥 Firebase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firebase-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firebase CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firebase-functions-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firebase Functions Installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emulators
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-setup-firebase-cloud-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: Setup Firebase Cloud Project
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#third-party-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔌 Third Party Services
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔌 Third Party Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agora" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agora
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agora">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Setting up the integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      👾 Testing the integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-mux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: Mux
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optional: Mux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-the-integration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Setting up the integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-your-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      👾 Testing your setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sendgrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      SendGrid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stripe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stripe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-and-building-the-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      🐦 Running and building the Client
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐦 Running and building the Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#env-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      .env File
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=".env File">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual instructions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-browsers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported browsers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    🧰 End-to-End Testing with Playwright
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ❓ Troubleshooting and FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tools-and-flutter-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools and Flutter Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Data Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firebase" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥 Firebase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔥 Firebase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firebase-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firebase CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firebase-functions-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firebase Functions Installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emulators
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-setup-firebase-cloud-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: Setup Firebase Cloud Project
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#third-party-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔌 Third Party Services
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔌 Third Party Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agora" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agora
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agora">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Setting up the integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      👾 Testing the integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-mux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: Mux
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optional: Mux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-the-integration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Setting up the integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-your-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      👾 Testing your setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sendgrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      SendGrid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stripe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stripe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-and-building-the-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      🐦 Running and building the Client
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐦 Running and building the Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#env-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      .env File
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=".env File">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual instructions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-browsers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported browsers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="running-local-development-version">⚙️ Running Local Development Version</h1>
+<p>Most components of Frankly can be run on your local machine. This section describes how to setup and run the Flutter client app and the Firebase emulators (which can be setup in place of a Firebase/GCP project). The app still connects to several third-party services, which are also described below.</p>
+<h2 id="tools-and-flutter-setup">Tools and Flutter Setup</h2>
+<p>This section covers setting up a new computer for Flutter development.</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>Frankly runs on Flutter <code>3.22.2.</code> <strong>Please use this version of Flutter in order to avoid any unexpected errors.</strong></p>
+</div>
+<ol>
+<li>Download and install Google Chrome <a href="https://www.google.com/chrome/">here</a> if it’s not already pre-installed. This is used for live debugging on web.</li>
+<li>Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.</li>
+<li>Install VSCode <a href="https://code.visualstudio.com/download">here</a>.</li>
+<li>Optional, but recommended: Install Homebrew <a href="https://brew.sh/">here</a>.</li>
+<li>
+<p>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform.</p>
+<ol>
+<li>This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors.</li>
+<li><strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>.</li>
+<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
+</ol>
+</li>
+<li>
+<p>Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open ~/.zshenv and add this line:
+    <div class="highlight"><pre><span></span><code>export PATH=$HOME/development/flutter/bin:$PATH
+</code></pre></div>
+    Restart terminal sessions to see the changes.</p>
+</li>
+<li>Install Node.js and npm <a href="https://nodejs.org/en">here</a>.</li>
+<li>
+<p>Install Firebase CLI Tools using the command <code>npm install -g firebase-tools</code> (<a href="https://www.npmjs.com/package/firebase-tools">documentation</a>).</p>
+<ol>
+<li>You will likely run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running <code>npm install</code> :
+   <div class="highlight"><pre><span></span><code> sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
+</code></pre></div></li>
+</ol>
+<p>For more information, you can read this Stack Overflow <a href="https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules">post</a>.</p>
+</li>
+<li>
+<p>Activate the Firebase CLI for Flutter by following the steps <a href="https://firebase.google.com/docs/flutter/setup?platform=ios">here</a>. Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports.</p>
+</li>
+</ol>
+<div class="admonition question">
+<p>Please check <a href="/faq"><strong>❓Troubleshooting / FAQ</strong></a> for suggested resolutions to common Flutter installation errors.</p>
+</div>
+<h2 id="environment-setup">Environment Setup</h2>
+<p>These are the steps for getting started with developing Frankly:</p>
+<ol>
+<li>📦 Build the data models</li>
+<li>🔥 Setting up and connecting to the Firebase emulators</li>
+<li>🔌 Connecting to third-party services</li>
+<li>🐦 Running the frontend Flutter app</li>
+</ol>
+<p>The following section will cover these steps for running the app for the first time.</p>
+<h3 id="data-models">📦 Data Models</h3>
+<p>The first step in running the app is to build the data_models package. Some code in this package is auto-generated by <a href="https://pub.dev/packages/freezed">Freezed</a>. Run the following steps in the <code>data_models</code> directory to generate code and make the package available to the client and Firebase functions:</p>
+<ol>
+<li>To install all Dart dependencies run <code>flutter pub get</code>.</li>
+<li>Run: <code>dart run build_runner build --delete-conflicting-outputs</code></li>
+</ol>
+<p>You can also just run <code>./build.sh</code>.</p>
+<h3 id="firebase">🔥 Firebase</h3>
+<h4 id="firebase-cli">Firebase CLI</h4>
+<p>Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.</p>
+<p>Run the following steps once:</p>
+<ul>
+<li>Install Firebase CLI using <code>npm install -g firebase-tools</code></li>
+<li>You should be able to use the CLI for local development without signing in</li>
+</ul>
+<h3 id="firebase-functions-installation">Firebase Functions Installation</h3>
+<p>Firebase Functions are built on top of Cloud Functions (GCP's serverless functions product), which is why there are references to Cloud Functions tooling below. Functions are written in <code>dart</code> and are compiled to <code>javascript</code> with <code>dart2js</code>.</p>
+<p>For the following sub-section, switch to the <code>firebase/functions</code> directory to run all commands.</p>
+<ul>
+<li>To install all Javascript dependencies, run <code>npm install</code>.</li>
+<li>To install all Dart dependencies run <code>flutter pub get</code>.</li>
+</ul>
+<p>You don't need to run <code>npm install</code> again unless you've added new dependencies or made updates to existing ones. Same applies to <code>flutter pub get</code>, but for changes to any function dependencies.</p>
+<h3 id="emulators">Emulators</h3>
+<p>Firebase has a full suite of emulators called Firebase Local Emulator Suite. You can find the full description of the Firebase Local Emulator Suite and its capabilities <a href="https://firebase.google.com/docs/emulator-suite">here</a>.</p>
+<p>You should emulate services locally for development purposes, and set up the client to use these emulators instead of connecting to a live Firebase project. By default, the emulators will run against the default project "dev," specified in the <code>.firebaserc</code> file.</p>
+<p><strong>Using config in emulators</strong></p>
+<p>You do not need to run <code>functions:config:set.</code> as the emulators are configured by a file.</p>
+<ul>
+<li>To configure the emulators, create the file <code>firebase/functions/.runtimeconfig.json</code>.</li>
+<li>A sample file containing the config properties described above can be found in <code>firebase/functions/.runtimeconfig.json.local.example</code>.</li>
+</ul>
+<p><strong>Running the emulators</strong></p>
+<div class="admonition info">
+<p class="admonition-title">Important</p>
+<p>Do this before running the <a href="#running-and-building-the-frontend-web-client">client</a>.</p>
+</div>
+<p>To run the emulators locally, run the following <em>while</em> in the <code>firebase/functions</code> directory:</p>
+<div class="highlight"><pre><span></span><code>dart run build_runner build --output=build
+firebase emulators:start --only firestore,functions,auth,pubsub,database
+</code></pre></div>
+<p>We recommend using the emulators <a href="https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data">import and export</a> functionality to make development easier.</p>
+<div class="admonition question">
+<p>Please refer to the Cloud Functions Emulator <a href="/faq/#cloud-functions-emulator">section</a> at <a href="/faq"><strong>❓Troubleshooting / FAQ</strong></a> for common issues and resolutions!</p>
+</div>
+<h3 id="optional-setup-firebase-cloud-project">Optional: Setup Firebase Cloud Project</h3>
+<p>In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Functions, Auth, Realtime Database, etc.) suffice for most development task.</p>
+<p>If you plan on using <a href="#optional-mux">Mux</a> within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send <a href="https://en.wikipedia.org/wiki/Webhook">webhooks <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a> to. You will need a Firebase project of your own. </p>
+<ol>
+<li>Create a new Firebase project <a href="https://console.firebase.google.com/">here <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a>.</li>
+<li>Make a note of the unique ID that is created for your project. It will be in the format of <code>my-dev-project-d2f8c</code>.</li>
+<li>You may need to create a default <a href="https://firebase.google.com/docs/database/web/start">realtime database</a>. </li>
+<li>
+<p>From your command line within the <code>firebase/functions</code> directory, run:
+    <div class="highlight"><pre><span></span><code>firebase login
+</code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Logging In</p>
+<p>When the login window appears, ensure you are logging in as the same user that created your project.</p>
+</div>
+</li>
+<li>
+<p>Now run:
+  <div class="highlight"><pre><span></span><code>firebase use &lt;project_id&gt;
+</code></pre></div>
+  You should see a message like <code>Now using project my-dev-project-d2f8c</code></p>
+</li>
+</ol>
+<p>You can follow the official <a href="https://firebase.google.com/docs/functions/get-started?gen=1st#initialize-your-project_1">documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a> to find out how to deploy, but you might use a command like this: <code>firebase deploy --only functions</code>.</p>
+<h2 id="third-party-services">🔌 Third Party Services</h2>
+<p>The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.</p>
+<h3 id="agora">Agora</h3>
+<p>Sign up for Agora and open the <a href="https://console.agora.io/v2/">Agora console</a>. The following instructions are geared towards using V2 of the Agora console.</p>
+<p>The following instructions will guide you through retrieving the values to fill in the following command for setting Agora-related values in your Functions configuration:</p>
+<div class="highlight"><pre><span></span><code>agora.app_id=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.app_certificate=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.rest_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.rest_secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.storage_bucket_name=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.storage_access_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+</code></pre></div>
+<h4 id="setting-up-the-integration"><strong>🔧 Setting up the integration</strong></h4>
+<ul>
+<li>
+<p><strong>Agora</strong>
+  Create a new project in the Agora console. For Authentication Mode, select <strong>Secure Mode: App ID + Token</strong>.</p>
+</li>
+<li>
+<p><code>app_id</code>: Copy the App ID from the Projects list in the console home.</p>
+</li>
+<li><code>app_certificate</code>: Select <strong>Configure</strong> on your project. Copy the value under <strong>Security &gt; Primary Certificate</strong>.</li>
+<li><code>rest_key</code>: In the left navigation panel, select <strong>Restful API</strong> under either <strong>Developer Toolkit</strong> or <strong>Developer Resources</strong>, depending on your screen size. Click <strong>Add a Secret</strong>. Download the Customer Secret, and input the value for <strong>Key</strong>.</li>
+<li>
+<p><code>rest_secret</code>: From the Customer Secret file, input the value for <strong>Secret</strong>.</p>
+</li>
+<li>
+<p><strong>Google Cloud Storage</strong>
+  Create a Google Cloud Storage bucket to store event recordings. Navigate to <a href="https://console.cloud.google.com/storage/">Google Cloud Storage</a> and select <strong>Create a Bucket</strong>. Provide a bucket name. Then, configure the bucket with your desired settings for the remaining options.</p>
+</li>
+<li><code>storage_bucket_name</code>: Enter the bucket name you selected.</li>
+<li><code>storage_access_key</code>: Select <strong>Settings</strong> under the Cloud Storage left-side settings panel. Click on the <strong>Interopability</strong> tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select <strong>Create a Key</strong>. Then, paste the generated <strong>Access key</strong> here.</li>
+<li><code>storage_secret_key</code>: From the generated key, paste the <strong>Secret</strong>.</li>
+<li><strong>In the codebase</strong>
+  In <code>client/lib/app/community/admin/conversations_tab.dart</code>, change the URIs in the <code>_buildRecordingSection</code> method (replacing the ASML values appearing ahead of <code>/us-central1/downloadRecording</code>) to reflect your staging and prod Firebase project IDs.</li>
+</ul>
+<h4 id="testing-the-integration">👾 Testing the integration</h4>
+<p>Once you have the keys set up, you can follow the below checklist to test that key behaviors that depend on Agora are working successfully.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Basic video functionality</strong>: Create a community, start an event, and join the event from two different browser windows with two different users. Verify that when video and audio are enabled, both parties can see and hear each other.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Mobile size</strong>: Verify that video still works on mobile size.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Adjusting AV settings:</strong> In the bottom navigation bar, adjust your microphone and video input. Verify that the change occurs successfully.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Breakout rooms</strong>: Start breakout rooms. Verify that users are assigned to breakout rooms and video still works.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Recording</strong>: Record the meeting by going into Settings and toggling the "Recording" option on before joining the event. After joining the meeting, verify that the top right corner says "Recording".</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Go to your Settings view, select Conversations, and select 'Download'. Verify that a .zip file should be downloaded with several different files, including audio and video.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Bottom navigation</strong>: Interact with everything on the bottom navigation bar, including chat and emoji reactions. Verify that behavior works as expected.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Show participant info</strong>: In the right side bar, click on a participant to show their user info. Verify that user details show as expected.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Kicking a user</strong>: In a hosted meeting, kick a user. Verify that the host sees the user disappear, and the user should see that they are banned if they try to navigate back to the event.</li>
+</ul>
+<h3 id="optional-mux">Optional: Mux</h3>
+<h4 id="setting-up-the-integration_1"><strong>🔧 Setting up the integration</strong></h4>
+<p>Mux streaming is used when a customer wants to stream video from a third party streaming service, such as Zoom, to Frankly. Essentially the customer will record video from the third party platform, the data is sent to Mux, which will then notify Frankly's MuxWebhook Firebase function that a stream has started. Once the stream has started, the Frankly event page will display the streaming video.</p>
+<ol>
+<li>
+<p>Using <a href="https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token">Mux's instructions</a>, get a new access token. Use the environment of your choice and set the permission level to "Mux Video".</p>
+</li>
+<li>
+<p>Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Command Line</label><label for="__tabbed_1_2">Copy/Paste</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+<div class="highlight"><pre><span></span><code>firebase functions:config:set mux.secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot; mux.token_id=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+</code></pre></div></p>
+</div>
+<div class="tabbed-block">
+<p>Or, paste your token and secret into the <code>.runtimeconfig.json</code> file where the <code>mux</code> field is.
+<div class="highlight"><pre><span></span><code>  &quot;mux&quot;: {
+    &quot;secret&quot;: &quot;...&quot;,
+    &quot;token_id&quot;: &quot;...&quot;
+  },
+</code></pre></div></p>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>To connect Mux to the <a href="https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart">MuxWebhooks cloud function</a>, the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.</p>
+</li>
+<li>Login to Mux and go to Settings &gt; Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.”For the URL to Notify field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."</li>
+</ol>
+<h4 id="testing-your-setup">👾 Testing your setup</h4>
+<p>You can verify the integration is working by manually triggering a new call directly from Mux.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Visit your Google Cloud Platform Logging page so you can scan for any errors and expected logs during the live stream test.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> In the Mux dashboard, go to Video &gt; Live Streams. Click "Create your first live stream."</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Run the default request.</li>
+</ul>
+<p>The following should be true if your Mux setup works as expected:
+The logs displayed on the Logging page should indicate that the MuxWebhook Firebase function was called. You can filter the logs by function name in the Google Cloud Console to find logs associated to this function. When viewing the logs, you will likely observe the following error message: <code>"Error: Unexpected number of documents matching livestream ID"</code>. This is due to the liveStreamId not matching an id associated to an existing LiveStreamInfo.kFieldMuxId value in the database. This is an expected error. For more thorough testing, we recommend the steps below.</p>
+<p>(Recommended) You can also use the following steps to set up a live stream in Zoom and test your Mux integration end-to-end:</p>
+<ol>
+<li>Create a new event in Frankly and configure it for livestreaming using steps 1-2 in <a href="https://www.notion.so/Livestreams-4332e73273954776a46c86b091dbe708?pvs=21">these instructions</a>.</li>
+<li>Open Zoom and verify you have livestreaming enabled using <a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0064210#h_4b4ded3d-3f6b-4965-baaa-3692f947e36c">these</a> steps. Then follow <a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0064210#h_62b792dc-3cf9-4b62-848d-93ee9e412a7c">these</a> steps to setup your livestreaming event on Zoom. Use the following values:</li>
+<li>For Stream URL, use the Stream URL provided on the Frankly event page.</li>
+<li>For Stream Key, use the Stream Key provided on the Frankly event page.</li>
+<li>For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: https://gen-hls-bkc-7627.web.app/space/<ids>/discuss/<more ids>?status=joined</li>
+<li>Visit your Google Cloud Platform Logging page so you can scan for any errors during the live stream test.</li>
+<li>When you are ready, start the live stream on Zoom using <a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0064210#h_0cd3b33b-0172-4199-bd19-88ba6b57f173">these</a> steps</li>
+</ol>
+<p>The following should be true if your Mux setup works as expected:</p>
+<ul>
+<li>The live streaming page on Frankly is now showing your streaming video from Zoom</li>
+<li>The logs displayed on the Logging page should not display any errors related to the MuxWebhook function. Be sure to query logs from the past 1 hour or longer. You can also use <a href="https://cloudlogging.app.goo.gl/J22AmCfDfEB1F82P9">this</a> query to include only Errors.</li>
+</ul>
+<h3 id="cloudinary">Cloudinary</h3>
+<ol>
+<li><a href="https://cloudinary.com/users/register_free">Sign up</a> for Cloudinary.</li>
+<li>
+<p>Create two upload presets <a href="https://console.cloudinary.com/settings/upload/presets">here</a>, one for images and one for videos.</p>
+<div class="admonition info">
+<p>You can learn about upload presets <a href="https://cloudinary.com/documentation/upload_presets#use_cases">here</a>.</p>
+</div>
+<ol>
+<li>
+<p>On the <em>General</em> panel, use this configuration for images:
+    <div class="highlight"><pre><span></span><code>- Name: &quot;frankly-image-default&quot; (or whatever you&#39;d like)
+- Signing mode: Unsigned
+- Disallow public ID: ✔️
+- Asset folder: empty
+- Generated public ID: Auto-generate
+- Generated display name: Use the last segment of the public ID
+</code></pre></div></p>
+<ol>
+<li>Now, on the <em>Transform</em> panel, under "Incoming transformation", enter <code>c_crop,g_custom</code> and click Save. </li>
+</ol>
+<div class="admonition note">
+<p>These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).</p>
+</div>
+</li>
+<li>
+<p>On the <em>General</em> panel, use this configuration for videos:
+    <div class="highlight"><pre><span></span><code>- Name: &quot;frankly-video-default&quot; (or whatever you&#39;d like)
+- Signing mode: Unsigned
+- Disallow public ID: ✔️
+- Asset folder: &quot;videos/uploads&quot; (this value doesn&#39;t matter, just somewhere unique to store your videos)
+- Generated public ID: Auto-generate
+- Generated display name: Use the last segment of the public ID
+</code></pre></div></p>
+<ol>
+<li>Click Save.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>Now update the following in <code>client/.env</code>:</p>
+<div class="admonition note">
+<p>Your <code>CLOUDINARY_CLOUD_NAME</code> is found <a href="https://console.cloudinary.com/settings/account">here</a> under "Product environment cloud name".</p>
+</div>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>CLOUDINARY_IMAGE_PRESET=frankly-image-default (or name you used)
+CLOUDINARY_VIDEO_PRESET=frankly-video-default
+CLOUDINARY_DEFAULT_PRESET=frankly-video-default
+CLOUDINARY_CLOUD_NAME=&lt;value&gt;
+</code></pre></div>
+<h3 id="sendgrid">SendGrid</h3>
+<ul>
+<li>Uses a Firestore extension. Emails definitions are written to the firestore collection sendgridemail.</li>
+<li>Configure the firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your sendgrid info</li>
+</ul>
+<h3 id="stripe">Stripe</h3>
+<p>Stripe is currently disabled for the platform. The following instructions will apply if you choose to enable Stripe:</p>
+<ul>
+<li>Set your Stripe secret key in functions config by replacing placeholder values in the following command:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>firebase functions:config:set stripe.connected_account_webhook_key=&quot;&lt;YOUR_CONNECTED_ACCOUNT_WEBHOOK_SECRET_KEY&gt;&quot; stripe.pub_key=&quot;&lt;YOUR_STRIPE_PUBLISHABLE_KEY&gt;&quot; stripe.secret_key=&quot;&lt;YOUR_STRIPE_SECRET_KEY&gt;&quot; stripe.webhook_key=&quot;&lt;YOUR_WEBHOOK_SECRET_KEY&gt;&quot;
+</code></pre></div>
+<ul>
+<li>Set up products for each type with a metadata field "plan_type" of individual, club, pro and prices for each one</li>
+</ul>
+<h2 id="running-and-building-the-client">🐦 Running and building the Client</h2>
+<p>❔ But first, if using, have you setup and run the <a href="#emulators">emulators</a>?</p>
+<p><strong>Recommended instructions (debug configs)</strong></p>
+<p>In general, you can use the configs defined in <code>.vscode/launch.json</code> to run <strong>debug mode</strong>. We have defined 2 environments for you:</p>
+<ol>
+<li>Client</li>
+<li>🌟 Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators </li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.</p>
+</div>
+<h3 id="env-file">.env File</h3>
+<p>You will need to create a <strong>.env</strong> file for client configuration. Copy <code>client/.env.example.local</code> to <code>client/.env</code> and update the missing secrets marked with <code>&lt;value&gt;</code> accordingly. The VSCode profiles assume the .env file lives in the <code>client</code> directory.</p>
+<p>You can also add an <code>EMULATORS</code> environment variable to override the default Emulators profile behavior of running <code>firestore, auth, functions, database</code>. Set the value to any desired combination of emulators.</p>
+<h4 id="manual-instructions">Manual instructions</h4>
+<p>If you want to use emulators, ensure you start the emulators first. Then run the following commands in the <code>/client</code> directory.</p>
+<p>To run the app with backend pointing at staging.
+<div class="highlight"><pre><span></span><code>flutter run -d chrome --release --web-renderer html -t lib/main.dart --dart-define-from-file=.env
+</code></pre></div></p>
+<p>To run the app with locally running functions, firestore, and auth emulators
+<div class="highlight"><pre><span></span><code>flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env
+</code></pre></div></p>
+<h3 id="supported-browsers">Supported browsers</h3>
+<p>The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production <a href="https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter">Web FAQ | Flutter</a>; Chrome, Firefox, Safari, Edge.</p>
+<h1 id="testing">Testing</h1>
+<h3 id="end-to-end-tests">End-to-End Tests</h3>
+<p>See instructions <a href="../e2e/">here</a> for developing and running end-to-end Playwright tests.</p>
+<h3 id="flutter-unit-tests">Flutter Unit Tests</h3>
+<p>The <code>client/test</code> directory holds Flutter unit and widget tests.</p>
+<p>To run existing tests, you can run the following command from the <code>client/test</code> directory:</p>
+<div class="highlight"><pre><span></span><code>flutter pub run build_runner build
+cd ../
+flutter test --platform chrome
+</code></pre></div>
+<p>To run newly added tests:
+<div class="highlight"><pre><span></span><code>flutter test &lt;optional path to test files&gt;
+</code></pre></div></p>
+<p>To run unit tests with locally generated HTML coverage report:
+<div class="highlight"><pre><span></span><code>flutter test --coverage &amp;&amp; format_coverage --in=coverage &amp;&amp; genhtml coverage/lcov.info -o coverage/html
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.sections", "search.suggest"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+    
+  </body>
+</html>
