@@ -146,9 +146,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                     .canCreateEvent;
 
                         return CustomScaffold(
-                          bgColor: enableCustomColors
-                              ? lightThemeColor
-                              : AppColor.gray6,
+                          bgColor: enableCustomColors ? lightThemeColor : null,
                           fillViewport: widget.fillViewport,
                           bottomNavigationBar: _showBottomNav
                               ? CommunityBottomNavBar(
