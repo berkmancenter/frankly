@@ -89,7 +89,7 @@ class _CommunityPageState extends State<CommunityPage> {
           final enableCustomColors = !isOnPageWithDefaultColors;
           final lightThemeColor =
               ThemeUtils.parseColor(community?.themeLightColor) ??
-                  AppColor.gray6;
+                  Theme.of(context).colorScheme.surface;
           return Consumer<UserService>(
             builder: (_, __, ___) => Consumer<UserDataService>(
               builder: (_, __, ___) {
