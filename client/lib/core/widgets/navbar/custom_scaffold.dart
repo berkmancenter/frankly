@@ -13,14 +13,14 @@ class CustomScaffold extends StatefulWidget {
   final bool fillViewport;
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
-  final Color bgColor;
+  final Color? bgColor;
 
   const CustomScaffold({
     required this.child,
     this.fillViewport = false,
     this.floatingActionButton,
     this.bottomNavigationBar,
-    this.bgColor = AppColor.white,
+    this.bgColor,
   });
 
   @override
