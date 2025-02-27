@@ -5,19 +5,16 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class UIMigration extends StatelessWidget {
-  final bool whiteBackground;
   final Widget child;
 
   const UIMigration({
-    this.whiteBackground = false,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    final textColor = whiteBackground ? AppColor.darkBlue : AppColor.white;
     final mobile = responsiveLayoutService.isMobile(context);
-
+    final textColor = Theme.of(context).primaryColor;
     return Theme(
       data: Theme.of(context).copyWith(
         textTheme: GoogleFonts.poppinsTextTheme(
