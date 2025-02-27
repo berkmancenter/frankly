@@ -1,6 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:intl/intl.dart';
