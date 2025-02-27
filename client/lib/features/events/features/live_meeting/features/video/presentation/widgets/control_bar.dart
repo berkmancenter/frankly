@@ -87,7 +87,6 @@ class _ControlBarState extends State<ControlBar> {
 
     final mediaDevices = html.window.navigator.mediaDevices;
     return UIMigration(
-      whiteBackground: true,
       child: CustomInkWell(
         hoverColor: AppColor.white.withOpacity(0.15),
         forceHighlightOnHover: true,

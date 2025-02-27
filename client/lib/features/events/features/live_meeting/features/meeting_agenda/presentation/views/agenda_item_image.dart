@@ -82,7 +82,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
 
     if (isEditMode) {
       return UIMigration(
-        whiteBackground: true,
         child: Column(
           children: [
             CustomTextField(
@@ -128,7 +127,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
       );
     } else {
       return UIMigration(
-        whiteBackground: true,
         child: Column(
           children: [
             if (imageUrl.isEmpty)

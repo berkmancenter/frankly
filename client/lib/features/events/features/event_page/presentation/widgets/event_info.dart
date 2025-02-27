@@ -761,7 +761,6 @@ class _EventInfoState extends State<EventInfo> {
               ],
       ),
       child: UIMigration(
-        whiteBackground: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

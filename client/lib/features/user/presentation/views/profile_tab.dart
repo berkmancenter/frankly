@@ -544,7 +544,6 @@ class _ProfileTabState extends State<_ProfileTab> {
       return Material(
         color: AppColor.white,
         child: UIMigration(
-          whiteBackground: true,
           child: Column(
             children: [
               Expanded(

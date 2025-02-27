@@ -61,7 +61,6 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
   Widget build(BuildContext context) {
     if (_model.isEditMode) {
       return UIMigration(
-        whiteBackground: true,
         child: Column(
           key: Key('poll-${_model.pollStateKey}'),
           children: [
@@ -79,7 +78,6 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
       );
     } else {
       return UIMigration(
-        whiteBackground: true,
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           shrinkWrap: true,

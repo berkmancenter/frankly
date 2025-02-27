@@ -25,7 +25,6 @@ class WarningInfo extends StatelessWidget {
       ),
       child: Center(
         child: UIMigration(
-          whiteBackground: true,
           child: Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [

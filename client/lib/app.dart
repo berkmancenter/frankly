@@ -143,7 +143,6 @@ class _AppState extends State<App> {
             pageTransitionsTheme: NoTransitionsOnWeb(),
           ),
           builder: (_, child) => UIMigration(
-            whiteBackground: true,
             child: child!,
           ),
         ),

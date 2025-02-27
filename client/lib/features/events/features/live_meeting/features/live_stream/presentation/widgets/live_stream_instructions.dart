@@ -117,7 +117,6 @@ class LiveStreamInstructions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UIMigration(
-      whiteBackground: whiteBackground,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(12),

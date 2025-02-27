@@ -340,7 +340,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     final event = eventProvider.event;
 
     return UIMigration(
-      whiteBackground: true,
       child: Align(
         alignment: Alignment.topCenter,
         child: Column(

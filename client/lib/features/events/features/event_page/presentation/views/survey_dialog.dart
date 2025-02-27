@@ -72,7 +72,6 @@ class SurveyDialog extends StatelessWidget {
         'Please answer a few questions so we can match you with the right group.';
 
     return UIMigration(
-      whiteBackground: true,
       child: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(

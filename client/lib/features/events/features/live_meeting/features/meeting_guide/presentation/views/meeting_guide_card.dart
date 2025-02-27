@@ -85,7 +85,6 @@ class _MeetingGuideCardState extends State<MeetingGuideCard> {
     context.watch<MeetingGuideCardStore>();
 
     return UIMigration(
-      whiteBackground: true,
       child: Center(
         child: Container(
           decoration: BoxDecoration(

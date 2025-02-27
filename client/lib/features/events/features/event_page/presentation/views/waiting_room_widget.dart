@@ -77,7 +77,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
     );
 
     return UIMigration(
-      whiteBackground: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(

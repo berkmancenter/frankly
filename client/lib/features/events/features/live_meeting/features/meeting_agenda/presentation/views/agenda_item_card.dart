@@ -372,7 +372,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final isCardUnsaved = _presenter.isCardUnsaved();
 
     return UIMigration(
-      whiteBackground: true,
       child: Row(
         children: [
           if (!isCardUnsaved)
@@ -436,7 +435,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
 
   Widget _buildPreviewBottomSection() {
     return UIMigration(
-      whiteBackground: true,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,

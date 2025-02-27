@@ -58,7 +58,6 @@ class AgendaItemText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           UIMigration(
-            whiteBackground: true,
             child: MarkdownBody(
               data: agendaItemTextData.content.replaceAll('\n', '\n\n'),
               shrinkWrap: true,

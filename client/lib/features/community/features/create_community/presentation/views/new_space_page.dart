@@ -42,7 +42,6 @@ class _NewSpacePageState extends State<NewSpacePage> {
       );
     }
     return UIMigration(
-      whiteBackground: true,
       child: CustomScaffold(
         child: FreemiumDialogFlow(showAppNameOnMobile: false),
       ),

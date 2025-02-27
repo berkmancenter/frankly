@@ -36,7 +36,6 @@ class _PleaseAcceptPermissionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UIMigration(
-      whiteBackground: true,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

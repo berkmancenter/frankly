@@ -23,7 +23,6 @@ class AgendaItemWordCloud extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isEditMode) {
       return UIMigration(
-        whiteBackground: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,7 +46,6 @@ class AgendaItemWordCloud extends StatelessWidget {
       );
     } else {
       return UIMigration(
-        whiteBackground: true,
         child: ProxiedImage(
           null,
           asset: AppAsset.kWordCloudPlaceholderPng,

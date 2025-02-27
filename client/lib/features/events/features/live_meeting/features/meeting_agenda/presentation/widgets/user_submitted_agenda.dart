@@ -81,7 +81,6 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
         color: AppColor.white,
       ),
       child: UIMigration(
-        whiteBackground: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

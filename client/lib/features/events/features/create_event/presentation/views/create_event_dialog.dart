@@ -129,7 +129,6 @@ class CreateEventDialog extends StatelessWidget {
     final lastIndex = context.watch<CreateEventDialogModel>().allPages.length;
 
     return UIMigration(
-      whiteBackground: true,
       child: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(

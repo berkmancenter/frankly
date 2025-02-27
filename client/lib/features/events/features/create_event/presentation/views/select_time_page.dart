@@ -37,7 +37,6 @@ class _SelectTimePageState extends State<SelectTimePage> {
         ),
         SizedBox(height: 2),
         UIMigration(
-          whiteBackground: true,
           child: CustomTimePickerDialog(
             helpText: '',
             initialTime: TimeOfDay.fromDateTime(scheduledTime),

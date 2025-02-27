@@ -30,7 +30,6 @@ class SelectDatePage extends StatelessWidget {
           width: 380,
           height: responsiveLayoutService.isMobile(context) ? 600 : 300,
           child: UIMigration(
-            whiteBackground: true,
             child: CustomDatePickerDialog(
               initialDate: dialogModel.event.scheduledTime ?? timeNow,
               firstDate: timeNow,

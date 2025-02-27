@@ -50,7 +50,6 @@ class ParticipantsDialog extends StatelessWidget {
         child: GestureDetector(
           onTap: () => Navigator.of(context).pop(),
           child: UIMigration(
-            whiteBackground: true,
             child: Container(
               padding: const EdgeInsets.all(40),
               child: Align(

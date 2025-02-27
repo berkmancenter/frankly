@@ -695,7 +695,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         _presenter.getParticipantAgendaItemDetailsStream();
 
     return UIMigration(
-      whiteBackground: true,
       child: CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
         entryFrom: '_MeetingGuideCard._buildBottomSection',
         stream: participantAgendaItemDetailsStream,
@@ -719,7 +718,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           return Container(
             color: AppColor.white,
             child: UIMigration(
-              whiteBackground: true,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -768,7 +766,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 10),
                         UIMigration(
-                          whiteBackground: true,
                           child: PopupMenuButton<FutureOr<void> Function()>(
                             itemBuilder: (context) {
                               return [
@@ -1033,7 +1030,6 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
               ),
             Expanded(
               child: UIMigration(
-                whiteBackground: true,
                 child: _buildSelectedContent(context),
               ),
             ),
@@ -1064,7 +1060,6 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
       );
     } else if (selectedTab == TabType.admin) {
       return UIMigration(
-        whiteBackground: false,
         child: AdminPanel(
           padding: EdgeInsets.symmetric(horizontal: 6),
         ),

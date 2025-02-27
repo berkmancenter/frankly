@@ -65,7 +65,6 @@ class _BreakoutRoomDefinitionCardState
         context.read<CommunityPermissionsProvider>().canModerateContent;
     final communityId = _presenter.eventProvider.communityId;
     return UIMigration(
-      whiteBackground: true,
       child: Center(
         child: CustomStreamBuilder<PlanCapabilityList?>(
           entryFrom: '__BreakoutRoomsDialogState._buildContent',
@@ -365,7 +364,6 @@ class _QuestionCardState extends State<QuestionCard> {
         : surveyQuestion.title;
 
     return UIMigration(
-      whiteBackground: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: ExpansionTile(

@@ -269,7 +269,6 @@ class _DonateWidgetState extends State<DonateWidget> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         backgroundColor: AppColor.darkBlue,
         child: UIMigration(
-          whiteBackground: true,
           child: Stack(
             children: [
               Container(

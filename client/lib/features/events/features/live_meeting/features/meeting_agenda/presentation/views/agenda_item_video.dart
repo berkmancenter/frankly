@@ -130,7 +130,6 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
     if (_model.isEditMode) {
       return UIMigration(
-        whiteBackground: true,
         child: Column(
           children: [
             CustomTextField(

@@ -93,7 +93,6 @@ class _MeetingGuideCardItemWordCloudState
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 200),
                       child: UIMigration(
-                        whiteBackground: true,
                         child: CustomTextField(
                           padding: EdgeInsets.zero,
                           borderRadius: 10,

@@ -152,7 +152,6 @@ class _TemplatePageState extends State<TemplatePage>
   Widget _buildEvents(Template template, bool hasAttendedPrerequisite) {
     return ConstrainedBody(
       child: UIMigration(
-        whiteBackground: true,
         child: CustomStreamBuilder<List<Event>?>(
           entryFrom: '_TemplatePageState._buildEvents',
           stream: Provider.of<TemplatePageProvider>(context).events,
@@ -268,7 +267,6 @@ class _TemplatePageState extends State<TemplatePage>
         child: Column(
           children: [
             UIMigration(
-              whiteBackground: true,
               child: Container(
                 decoration: BoxDecoration(
                   border: Border(

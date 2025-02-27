@@ -304,7 +304,6 @@ class _PrerequisiteTemplateWidgetPageState
 
     return Material(
       child: UIMigration(
-        whiteBackground: widget.isWhiteBackground,
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(

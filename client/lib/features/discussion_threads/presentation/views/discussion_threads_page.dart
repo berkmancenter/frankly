@@ -89,7 +89,6 @@ class _DiscussionThreadsPageState extends State<DiscussionThreadsPage>
       );
     } else {
       return UIMigration(
-        whiteBackground: true,
         child: isMobile
             ? _buildMobileUI(discussionThreads)
             : _buildDesktopUI(discussionThreads, totalWidth),

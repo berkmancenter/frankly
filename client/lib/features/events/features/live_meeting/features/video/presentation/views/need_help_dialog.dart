@@ -128,7 +128,6 @@ class NeedHelpDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UIMigration(
-      whiteBackground: true,
       child: Align(
         alignment: Alignment.center,
         child: Builder(

@@ -184,7 +184,6 @@ class AudioVideoSettingsDialog extends HookWidget {
           borderRadius: BorderRadius.circular(6),
         ),
         child: UIMigration(
-          whiteBackground: true,
           child: Container(
             constraints: BoxConstraints(maxWidth: 500),
             child: Stack(

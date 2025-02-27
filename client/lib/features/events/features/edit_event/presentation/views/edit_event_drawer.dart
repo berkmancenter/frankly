@@ -83,7 +83,6 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         _presenter.canBuildParticipantCountSection();
 
     return UIMigration(
-      whiteBackground: true,
       child: Column(
         children: [
           SizedBox(height: 30),

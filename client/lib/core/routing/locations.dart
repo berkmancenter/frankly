@@ -67,7 +67,6 @@ BeamPage _buildBeamPage({
   required Widget child,
 }) {
   Widget tempWidget = UIMigration(
-    whiteBackground: true,
     child: InitialLoadingWidget(
       child: child,
     ),

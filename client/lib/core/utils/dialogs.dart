@@ -78,7 +78,6 @@ class Dialogs {
                 Form(
                   key: formKey,
                   child: UIMigration(
-                    whiteBackground: true,
                     child: CustomTextField(
                       minLines: 3,
                       autofocus: true,

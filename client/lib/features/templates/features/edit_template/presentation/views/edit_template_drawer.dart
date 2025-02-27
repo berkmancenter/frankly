@@ -67,7 +67,6 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildBody() {
     return UIMigration(
-      whiteBackground: true,
       child: Column(
         children: [
           SizedBox(height: 30),

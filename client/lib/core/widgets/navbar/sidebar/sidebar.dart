@@ -47,7 +47,6 @@ class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     return UIMigration(
-      whiteBackground: true,
       child: Container(
         width: AppSize.kSidebarWidth,
         color: AppColor.white,

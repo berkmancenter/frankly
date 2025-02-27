@@ -49,7 +49,6 @@ class _CreateDialogUiMigrationState<T>
         responsiveLayoutService.isMobile(context);
 
     return UIMigration(
-      whiteBackground: true,
       child: GestureDetector(
         onTap: widget.onDismissBarrier ?? () => Navigator.of(context).pop(),
         child: Container(
