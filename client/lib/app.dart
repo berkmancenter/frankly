@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
-import 'package:client/core/utils/theme.dart';
+import 'package:client/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
@@ -118,9 +118,6 @@ class _AppState extends State<App> {
               BeamerBackButtonDispatcher(delegate: routerDelegate),
           routeInformationParser: BeamerParser(),
           theme: appTheme,
-          builder: (_, child) => UIMigration(
-            child: child!,
-          ),
         ),
       ),
     );
