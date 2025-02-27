@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';

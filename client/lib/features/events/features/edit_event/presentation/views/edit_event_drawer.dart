@@ -17,9 +17,7 @@ import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
@@ -27,7 +25,6 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_event_contract.dart';

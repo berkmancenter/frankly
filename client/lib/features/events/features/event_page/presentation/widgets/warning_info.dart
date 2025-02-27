@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 
 class WarningInfo extends StatelessWidget {

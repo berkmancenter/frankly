@@ -1,6 +1,5 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/core/widgets/custom_list_view.dart';

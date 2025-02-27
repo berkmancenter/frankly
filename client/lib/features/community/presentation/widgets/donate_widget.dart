@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';

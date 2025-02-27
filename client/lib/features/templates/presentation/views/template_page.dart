@@ -27,7 +27,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/templates/presentation/widgets/prerequisite_template_widget.dart';
 import 'package:client/core/widgets/tabs/tab_bar.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';

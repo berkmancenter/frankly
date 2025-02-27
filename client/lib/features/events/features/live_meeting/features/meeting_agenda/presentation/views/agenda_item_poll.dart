@@ -5,7 +5,6 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_poll_presenter.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/survey_answer_tile.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 
 class AgendaItemPoll extends StatefulWidget {
   final bool isEditMode;

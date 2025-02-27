@@ -8,7 +8,6 @@ import 'package:client/features/discussion_threads/presentation/views/manipulate
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/stream_utils.dart';
