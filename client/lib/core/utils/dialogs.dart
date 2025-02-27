@@ -77,14 +77,12 @@ class Dialogs {
                 SizedBox(height: 16),
                 Form(
                   key: formKey,
-                  child: UIMigration(
-                    child: CustomTextField(
-                      minLines: 3,
-                      autofocus: true,
-                      controller: textEditingController,
-                      validator: validator,
-                      labelText: labelText,
-                    ),
+                  child: CustomTextField(
+                    minLines: 3,
+                    autofocus: true,
+                    controller: textEditingController,
+                    validator: validator,
+                    labelText: labelText,
                   ),
                 ),
                 SizedBox(height: 16),

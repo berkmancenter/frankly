@@ -55,34 +55,32 @@ class EventPage extends StatefulWidget {
   }) : super(key: key);
 
   Widget create() {
-    return UIMigration(
+    return ChangeNotifierProvider(
+      create: (context) => EventProvider(
+        communityProvider: context.read<CommunityProvider>(),
+        templateId: templateId,
+        eventId: eventId,
+      ),
       child: ChangeNotifierProvider(
-        create: (context) => EventProvider(
-          communityProvider: context.read<CommunityProvider>(),
+        create: (context) => TemplateProvider(
+          communityId: context.read<CommunityProvider>().communityId,
           templateId: templateId,
-          eventId: eventId,
         ),
         child: ChangeNotifierProvider(
-          create: (context) => TemplateProvider(
-            communityId: context.read<CommunityProvider>().communityId,
-            templateId: templateId,
+          create: (context) => EventPageProvider(
+            eventProvider: context.read<EventProvider>(),
+            communityProvider: context.read<CommunityProvider>(),
+            navBarProvider: context.read<NavBarProvider>(),
+            cancelParam: cancel,
           ),
           child: ChangeNotifierProvider(
-            create: (context) => EventPageProvider(
+            create: (context) => EventPermissionsProvider(
               eventProvider: context.read<EventProvider>(),
+              communityPermissions:
+                  context.read<CommunityPermissionsProvider>(),
               communityProvider: context.read<CommunityProvider>(),
-              navBarProvider: context.read<NavBarProvider>(),
-              cancelParam: cancel,
             ),
-            child: ChangeNotifierProvider(
-              create: (context) => EventPermissionsProvider(
-                eventProvider: context.read<EventProvider>(),
-                communityPermissions:
-                    context.read<CommunityPermissionsProvider>(),
-                communityProvider: context.read<CommunityProvider>(),
-              ),
-              child: this,
-            ),
+            child: this,
           ),
         ),
       ),
@@ -339,54 +337,52 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     final eventProvider = EventProvider.watch(context);
     final event = eventProvider.event;
 
-    return UIMigration(
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          children: [
-            if (_presenter.isEditTemplateTooltipShown)
-              _buildEditTemplateMessage(),
-            if (isMobile) ...[
-              Container(
-                alignment: Alignment.topCenter,
-                child: EventInfo(
-                  eventPagePresenter: _presenter,
-                  event: event,
-                  onMessagePressed: () => _showSendMessageDialog(),
-                  onJoinEvent: _joinEvent,
-                ),
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        children: [
+          if (_presenter.isEditTemplateTooltipShown)
+            _buildEditTemplateMessage(),
+          if (isMobile) ...[
+            Container(
+              alignment: Alignment.topCenter,
+              child: EventInfo(
+                eventPagePresenter: _presenter,
+                event: event,
+                onMessagePressed: () => _showSendMessageDialog(),
+                onJoinEvent: _joinEvent,
               ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _buildEventTabsWrappedGuide(),
-              ),
-            ] else ...[
-              SizedBox(height: 40),
-              ConstrainedBody(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 400,
-                      alignment: Alignment.topCenter,
-                      child: EventInfo(
-                        eventPagePresenter: _presenter,
-                        event: event,
-                        onMessagePressed: () => _showSendMessageDialog(),
-                        onJoinEvent: _joinEvent,
-                      ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: _buildEventTabsWrappedGuide(),
+            ),
+          ] else ...[
+            SizedBox(height: 40),
+            ConstrainedBody(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    alignment: Alignment.topCenter,
+                    child: EventInfo(
+                      eventPagePresenter: _presenter,
+                      event: event,
+                      onMessagePressed: () => _showSendMessageDialog(),
+                      onJoinEvent: _joinEvent,
                     ),
-                    SizedBox(width: 40),
-                    Expanded(
-                      child: _buildEventTabsWrappedGuide(),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(width: 40),
+                  Expanded(
+                    child: _buildEventTabsWrappedGuide(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
     );
   }

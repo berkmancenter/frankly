@@ -46,19 +46,17 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      child: Container(
-        width: AppSize.kSidebarWidth,
-        color: AppColor.white,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxHeight < 750) {
-              return _buildMobileLayout();
-            } else {
-              return _buildDesktopLayout();
-            }
-          },
-        ),
+    return Container(
+      width: AppSize.kSidebarWidth,
+      color: AppColor.white,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxHeight < 750) {
+            return _buildMobileLayout();
+          } else {
+            return _buildDesktopLayout();
+          }
+        },
       ),
     );
   }

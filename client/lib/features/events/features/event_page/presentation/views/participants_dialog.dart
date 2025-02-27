@@ -46,23 +46,19 @@ class ParticipantsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: eventProvider,
-      builder: (context, _) => UIMigration(
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: UIMigration(
-            child: Container(
-              padding: const EdgeInsets.all(40),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Material(
-                  color: Colors.transparent,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: eventProvider.useParticipantCountEstimate
-                        ? _buildLivestreamEventLayout(context)
-                        : _buildRegularEventLayout(context),
-                  ),
-                ),
+      builder: (context, _) => GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          padding: const EdgeInsets.all(40),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Material(
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTap: () {},
+                child: eventProvider.useParticipantCountEstimate
+                    ? _buildLivestreamEventLayout(context)
+                    : _buildRegularEventLayout(context),
               ),
             ),
           ),

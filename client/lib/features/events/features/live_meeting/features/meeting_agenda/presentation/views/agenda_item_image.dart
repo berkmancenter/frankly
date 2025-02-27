@@ -81,63 +81,59 @@ class _AgendaItemImageState extends State<AgendaItemImage>
     final isImageUploaded = _presenter.isValidImage();
 
     if (isEditMode) {
-      return UIMigration(
-        child: Column(
-          children: [
-            CustomTextField(
-              initialValue: _model.agendaItemImageData.title,
-              labelText: 'Title',
-              hintText: 'Enter Image title',
-              maxLength: agendaTitleCharactersLength,
-              counterStyle: AppTextStyle.bodySmall.copyWith(
-                color: AppColor.darkBlue,
+      return Column(
+        children: [
+          CustomTextField(
+            initialValue: _model.agendaItemImageData.title,
+            labelText: 'Title',
+            hintText: 'Enter Image title',
+            maxLength: agendaTitleCharactersLength,
+            counterStyle: AppTextStyle.bodySmall.copyWith(
+              color: AppColor.darkBlue,
+            ),
+            maxLines: 1,
+            onChanged: (value) => _presenter.updateImageTitle(value),
+          ),
+          SizedBox(height: 20),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                color: AppColor.gray5,
+                height: kImageHeight,
+                child: isImageUploaded ? ProxiedImage(imageUrl) : null,
               ),
-              maxLines: 1,
-              onChanged: (value) => _presenter.updateImageTitle(value),
-            ),
-            SizedBox(height: 20),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  color: AppColor.gray5,
-                  height: kImageHeight,
-                  child: isImageUploaded ? ProxiedImage(imageUrl) : null,
+              if (!isImageUploaded) _buildUploadImage('Upload Image'),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  controller: _textEditingController,
+                  labelText: 'Image URL',
+                  maxLines: null,
+                  onChanged: (value) => _presenter.updateImageUrl(value),
                 ),
-                if (!isImageUploaded) _buildUploadImage('Upload Image'),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomTextField(
-                    controller: _textEditingController,
-                    labelText: 'Image URL',
-                    maxLines: null,
-                    onChanged: (value) => _presenter.updateImageUrl(value),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            if (isImageUploaded) _buildUploadImage('Upload New Image'),
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          if (isImageUploaded) _buildUploadImage('Upload New Image'),
+        ],
       );
     } else {
-      return UIMigration(
-        child: Column(
-          children: [
-            if (imageUrl.isEmpty)
-              HeightConstrainedText('(Image URL is not set.)')
-            else
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: ProxiedImage(imageUrl, height: kImageHeight),
-              ),
-          ],
-        ),
+      return Column(
+        children: [
+          if (imageUrl.isEmpty)
+            HeightConstrainedText('(Image URL is not set.)')
+          else
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: ProxiedImage(imageUrl, height: kImageHeight),
+            ),
+        ],
       );
     }
   }

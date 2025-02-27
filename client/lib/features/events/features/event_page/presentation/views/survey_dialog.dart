@@ -71,46 +71,44 @@ class SurveyDialog extends StatelessWidget {
     const String description =
         'Please answer a few questions so we can match you with the right group.';
 
-    return UIMigration(
-      child: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 40),
-            HeightConstrainedText(
-              'Finish RSVP',
-              style: AppTextStyle.headline1,
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 40),
+          HeightConstrainedText(
+            'Finish RSVP',
+            style: AppTextStyle.headline1,
+          ),
+          SizedBox(height: spacerHeight),
+          HeightConstrainedText(
+            description,
+            style: AppTextStyle.bodyMedium,
+          ),
+          SizedBox(height: spacerHeight),
+          for (var questionData in surveyPresenter.surveyQuestions)
+            _buildQuestionInfo(context, questionData),
+          SizedBox(height: spacerHeight),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ActionButton(
+              color: surveyPresenter.checkSurveyCompleted()
+                  ? AppColor.brightGreen
+                  : AppColor.gray4,
+              onPressed: () => surveyPresenter.checkSurveyCompleted()
+                  ? Navigator.of(context).pop(
+                      SurveyDialogResult(
+                        questions: surveyPresenter.surveyQuestions,
+                        zipCode: surveyPresenter.zipCodeController.text,
+                      ),
+                    )
+                  : null,
+              text: 'Finish',
             ),
-            SizedBox(height: spacerHeight),
-            HeightConstrainedText(
-              description,
-              style: AppTextStyle.bodyMedium,
-            ),
-            SizedBox(height: spacerHeight),
-            for (var questionData in surveyPresenter.surveyQuestions)
-              _buildQuestionInfo(context, questionData),
-            SizedBox(height: spacerHeight),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ActionButton(
-                color: surveyPresenter.checkSurveyCompleted()
-                    ? AppColor.brightGreen
-                    : AppColor.gray4,
-                onPressed: () => surveyPresenter.checkSurveyCompleted()
-                    ? Navigator.of(context).pop(
-                        SurveyDialogResult(
-                          questions: surveyPresenter.surveyQuestions,
-                          zipCode: surveyPresenter.zipCodeController.text,
-                        ),
-                      )
-                    : null,
-                text: 'Finish',
-              ),
-            ),
-            SizedBox(height: spacerHeight),
-          ],
-        ),
+          ),
+          SizedBox(height: spacerHeight),
+        ],
       ),
     );
   }

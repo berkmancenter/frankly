@@ -41,10 +41,8 @@ class _NewSpacePageState extends State<NewSpacePage> {
         ),
       );
     }
-    return UIMigration(
-      child: CustomScaffold(
-        child: FreemiumDialogFlow(showAppNameOnMobile: false),
-      ),
+    return CustomScaffold(
+      child: FreemiumDialogFlow(showAppNameOnMobile: false),
     );
   }
 }

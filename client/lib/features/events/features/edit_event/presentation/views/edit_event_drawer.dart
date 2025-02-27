@@ -82,84 +82,82 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     final canBuildParticipantCountSection =
         _presenter.canBuildParticipantCountSection();
 
-    return UIMigration(
-      child: Column(
-        children: [
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Edit event',
-                  style: AppTextStyle.headlineSmall
-                      .copyWith(fontSize: 16, color: AppColor.black),
-                ),
-                Semantics(
-                  label: 'Close Edit',
-                  child: AppClickableWidget(
-                    child: ProxiedImage(
-                      null,
-                      asset: AppAsset.kXPng,
-                      width: 24,
-                      height: 24,
-                    ),
-                    onTap: () {
-                      if (_presenter.wereChangesMade()) {
-                        _presenter.showConfirmChangesDialog();
-                      } else {
-                        closeDrawer();
-                      }
-                    },
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Edit event',
+                style: AppTextStyle.headlineSmall
+                    .copyWith(fontSize: 16, color: AppColor.black),
+              ),
+              Semantics(
+                label: 'Close Edit',
+                child: AppClickableWidget(
+                  child: ProxiedImage(
+                    null,
+                    asset: AppAsset.kXPng,
+                    width: 24,
+                    height: 24,
                   ),
+                  onTap: () {
+                    if (_presenter.wereChangesMade()) {
+                      _presenter.showConfirmChangesDialog();
+                    } else {
+                      closeDrawer();
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              controller: _scrollController,
-              children: [
-                _buildEventTypeSection(),
-                SizedBox(height: 20),
-                _buildImageSection(),
-                SizedBox(height: 20),
-                _buildTitleSection(),
-                SizedBox(height: 20),
-                _buildDescriptionSection(),
-                SizedBox(height: 20),
-                _buildIsPublicSection(),
-                SizedBox(height: 20),
-                _buildDateSection(),
-                SizedBox(height: 20),
-                _buildTimeSection(),
-                // Have slightly higher spacing, because for some reason,
-                // widget above have less spacing around itself. Thus by having more spacing all
-                // spacing visually looks equal.
-                SizedBox(height: 30),
-                _buildDurationSection(),
-                SizedBox(height: 20),
-                if (isPlatformSelectionFeatureEnabled) ...[
-                  _buildPlatformSelectionSection(),
-                  SizedBox(height: 20),
-                ],
-                if (canBuildParticipantCountSection) ...[
-                  _buildParticipantCountSection(),
-                  SizedBox(height: 20),
-                ],
-                _buildParticipantsSection(),
-                SizedBox(height: 20),
-                _buildBottomButtonsSection(),
+        ),
+        SizedBox(height: 20),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            controller: _scrollController,
+            children: [
+              _buildEventTypeSection(),
+              SizedBox(height: 20),
+              _buildImageSection(),
+              SizedBox(height: 20),
+              _buildTitleSection(),
+              SizedBox(height: 20),
+              _buildDescriptionSection(),
+              SizedBox(height: 20),
+              _buildIsPublicSection(),
+              SizedBox(height: 20),
+              _buildDateSection(),
+              SizedBox(height: 20),
+              _buildTimeSection(),
+              // Have slightly higher spacing, because for some reason,
+              // widget above have less spacing around itself. Thus by having more spacing all
+              // spacing visually looks equal.
+              SizedBox(height: 30),
+              _buildDurationSection(),
+              SizedBox(height: 20),
+              if (isPlatformSelectionFeatureEnabled) ...[
+                _buildPlatformSelectionSection(),
                 SizedBox(height: 20),
               ],
-            ),
+              if (canBuildParticipantCountSection) ...[
+                _buildParticipantCountSection(),
+                SizedBox(height: 20),
+              ],
+              _buildParticipantsSection(),
+              SizedBox(height: 20),
+              _buildBottomButtonsSection(),
+              SizedBox(height: 20),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

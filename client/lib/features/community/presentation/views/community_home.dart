@@ -41,9 +41,7 @@ class CommunityHome extends StatefulWidget {
       create: (context) => CommunityHomeProvider(
         communityProvider: context.read<CommunityProvider>(),
       ),
-      child: UIMigration(
-        child: CommunityHome._(),
-      ),
+      child: CommunityHome._(),
     );
   }
 

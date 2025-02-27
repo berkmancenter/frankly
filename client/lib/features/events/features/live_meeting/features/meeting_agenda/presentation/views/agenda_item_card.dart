@@ -371,97 +371,93 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final hasBeenEdited = _presenter.hasBeenEdited();
     final isCardUnsaved = _presenter.isCardUnsaved();
 
-    return UIMigration(
-      child: Row(
-        children: [
-          if (!isCardUnsaved)
-            FloatingActionButton(
-              tooltip: 'Delete Agenda Item',
-              elevation: 0,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              backgroundColor: AppColor.gray6,
-              child: Icon(
-                CupertinoIcons.delete,
-                color: AppColor.darkBlue,
-              ),
-              onPressed: () => _showDeleteDialog(),
-            ),
-          Spacer(),
+    return Row(
+      children: [
+        if (!isCardUnsaved)
           FloatingActionButton(
-            tooltip: 'Cancel',
+            tooltip: 'Delete Agenda Item',
+            elevation: 0,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: AppColor.gray6,
-            elevation: 0,
             child: Icon(
-              Icons.close,
+              CupertinoIcons.delete,
               color: AppColor.darkBlue,
             ),
-            onPressed: () async {
-              if (hasBeenEdited) {
-                final isDiscardChangesConfirmed = await ConfirmDialog(
-                  mainText: 'Are you sure you want to discard changes?',
-                ).show(context: context);
+            onPressed: () => _showDeleteDialog(),
+          ),
+        Spacer(),
+        FloatingActionButton(
+          tooltip: 'Cancel',
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          backgroundColor: AppColor.gray6,
+          elevation: 0,
+          child: Icon(
+            Icons.close,
+            color: AppColor.darkBlue,
+          ),
+          onPressed: () async {
+            if (hasBeenEdited) {
+              final isDiscardChangesConfirmed = await ConfirmDialog(
+                mainText: 'Are you sure you want to discard changes?',
+              ).show(context: context);
 
-                if (isDiscardChangesConfirmed) {
-                  _presenter.cancelChanges();
-                }
-              } else {
+              if (isDiscardChangesConfirmed) {
                 _presenter.cancelChanges();
               }
-            },
+            } else {
+              _presenter.cancelChanges();
+            }
+          },
+        ),
+        SizedBox(width: 10),
+        FloatingActionButton(
+          tooltip: 'Save Agenda Item',
+          elevation: 0,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          backgroundColor: hasBeenEdited || isCardUnsaved
+              ? AppColor.darkBlue
+              : AppColor.gray6,
+          onPressed: hasBeenEdited || isCardUnsaved
+              ? () => alertOnError(context, () => _presenter.saveContent())
+              : null,
+          child: Icon(
+            Icons.check,
+            color: hasBeenEdited || isCardUnsaved
+                ? AppColor.white
+                : AppColor.gray4,
           ),
-          SizedBox(width: 10),
-          FloatingActionButton(
-            tooltip: 'Save Agenda Item',
-            elevation: 0,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            backgroundColor: hasBeenEdited || isCardUnsaved
-                ? AppColor.darkBlue
-                : AppColor.gray6,
-            onPressed: hasBeenEdited || isCardUnsaved
-                ? () => alertOnError(context, () => _presenter.saveContent())
-                : null,
-            child: Icon(
-              Icons.check,
-              color: hasBeenEdited || isCardUnsaved
-                  ? AppColor.white
-                  : AppColor.gray4,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildPreviewBottomSection() {
-    return UIMigration(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          FloatingActionButton(
-            tooltip: 'Duplicate Item',
-            backgroundColor: AppColor.gray6,
-            elevation: 0,
-            child: Icon(
-              Icons.copy,
-              color: AppColor.darkBlue,
-            ),
-            onPressed: () => _presenter.duplicateCard(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        FloatingActionButton(
+          tooltip: 'Duplicate Item',
+          backgroundColor: AppColor.gray6,
+          elevation: 0,
+          child: Icon(
+            Icons.copy,
+            color: AppColor.darkBlue,
           ),
-          SizedBox(width: 10),
-          FloatingActionButton(
-            tooltip: 'Edit Item',
-            elevation: 0,
-            backgroundColor: AppColor.gray6,
-            child: Icon(
-              Icons.edit,
-              color: AppColor.darkBlue,
-            ),
-            onPressed: () => _presenter.toggleEditMode(),
+          onPressed: () => _presenter.duplicateCard(),
+        ),
+        SizedBox(width: 10),
+        FloatingActionButton(
+          tooltip: 'Edit Item',
+          elevation: 0,
+          backgroundColor: AppColor.gray6,
+          child: Icon(
+            Icons.edit,
+            color: AppColor.darkBlue,
           ),
-        ],
-      ),
+          onPressed: () => _presenter.toggleEditMode(),
+        ),
+      ],
     );
   }
 

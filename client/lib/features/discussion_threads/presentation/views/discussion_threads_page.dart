@@ -88,11 +88,9 @@ class _DiscussionThreadsPageState extends State<DiscussionThreadsPage>
         ),
       );
     } else {
-      return UIMigration(
-        child: isMobile
-            ? _buildMobileUI(discussionThreads)
-            : _buildDesktopUI(discussionThreads, totalWidth),
-      );
+      return isMobile
+          ? _buildMobileUI(discussionThreads)
+          : _buildDesktopUI(discussionThreads, totalWidth);
     }
   }
 

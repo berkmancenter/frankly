@@ -86,45 +86,43 @@ class _ControlBarState extends State<ControlBar> {
     const enableScreenshare = false;
 
     final mediaDevices = html.window.navigator.mediaDevices;
-    return UIMigration(
-      child: CustomInkWell(
-        hoverColor: AppColor.white.withOpacity(0.15),
-        forceHighlightOnHover: true,
-        child: PopupMenuButton<FutureOr<void> Function()>(
-          itemBuilder: (context) => [
+    return CustomInkWell(
+      hoverColor: AppColor.white.withOpacity(0.15),
+      forceHighlightOnHover: true,
+      child: PopupMenuButton<FutureOr<void> Function()>(
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: () =>
+                AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
+                    .show(),
+            child: HeightConstrainedText(
+              'Audio/Video Settings',
+            ),
+          ),
+          if (enableScreenshare &&
+              !responsiveLayoutService.isMobile(context) &&
+              mediaDevices != null &&
+              js_util.hasProperty(mediaDevices, 'getDisplayMedia') &&
+              context.read<EventProvider>().enableScreenshare)
             PopupMenuItem(
-              value: () =>
-                  AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
-                      .show(),
-              child: HeightConstrainedText(
-                'Audio/Video Settings',
-              ),
+              enabled: enabled,
+              value: enabled
+                  ? () => alertOnError(
+                        context,
+                        () => _conferenceRoomRead.toggleScreenShare(),
+                      )
+                  : null,
+              child: _buildScreenShareButton(),
             ),
-            if (enableScreenshare &&
-                !responsiveLayoutService.isMobile(context) &&
-                mediaDevices != null &&
-                js_util.hasProperty(mediaDevices, 'getDisplayMedia') &&
-                context.read<EventProvider>().enableScreenshare)
-              PopupMenuItem(
-                enabled: enabled,
-                value: enabled
-                    ? () => alertOnError(
-                          context,
-                          () => _conferenceRoomRead.toggleScreenShare(),
-                        )
-                    : null,
-                child: _buildScreenShareButton(),
-              ),
-          ],
-          onSelected: (itemAction) => itemAction(),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.more_horiz,
-              size: 32,
-              color: AppColor.white,
-            ),
+        ],
+        onSelected: (itemAction) => itemAction(),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.more_horiz,
+            size: 32,
+            color: AppColor.white,
           ),
         ),
       ),

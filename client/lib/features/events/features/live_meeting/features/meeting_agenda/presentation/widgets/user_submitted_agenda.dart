@@ -80,99 +80,97 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
         borderRadius: BorderRadius.circular(10),
         color: AppColor.white,
       ),
-      child: UIMigration(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10) - EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: [
-                  UserProfileChip(
-                    userId: item.creatorId,
-                    textStyle: TextStyle(
-                      color: AppColor.darkBlue,
-                      fontSize: 16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10) - EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                UserProfileChip(
+                  userId: item.creatorId,
+                  textStyle: TextStyle(
+                    color: AppColor.darkBlue,
+                    fontSize: 16,
+                  ),
+                  showBorder: false,
+                  showName: true,
+                  imageHeight: 30,
+                ),
+                Spacer(),
+                _buildVotingButton(
+                  numVotes: item.upvotedUserIds.length,
+                  icon: Icons.thumb_up_outlined,
+                  itemId: item.id ?? '',
+                  upvote: true,
+                  selected: item.upvotedUserIds.contains(userId),
+                ),
+                _buildVotingButton(
+                  numVotes: item.downvotedUserIds.length,
+                  icon: Icons.thumb_down_outlined,
+                  itemId: item.id ?? '',
+                  upvote: false,
+                  selected: item.downvotedUserIds.contains(userId),
+                ),
+                if (canDelete)
+                  AppClickableWidget(
+                    child: ProxiedImage(
+                      null,
+                      asset: AppAsset.kXPng,
+                      width: 24,
+                      height: 24,
                     ),
-                    showBorder: false,
-                    showName: true,
-                    imageHeight: 30,
+                    onTap: () => readProvider.delete(item.id ?? ''),
                   ),
-                  Spacer(),
-                  _buildVotingButton(
-                    numVotes: item.upvotedUserIds.length,
-                    icon: Icons.thumb_up_outlined,
-                    itemId: item.id ?? '',
-                    upvote: true,
-                    selected: item.upvotedUserIds.contains(userId),
-                  ),
-                  _buildVotingButton(
-                    numVotes: item.downvotedUserIds.length,
-                    icon: Icons.thumb_down_outlined,
-                    itemId: item.id ?? '',
-                    upvote: false,
-                    selected: item.downvotedUserIds.contains(userId),
-                  ),
-                  if (canDelete)
-                    AppClickableWidget(
-                      child: ProxiedImage(
-                        null,
-                        asset: AppAsset.kXPng,
-                        width: 24,
-                        height: 24,
-                      ),
-                      onTap: () => readProvider.delete(item.id ?? ''),
-                    ),
-                ],
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Builder(
-                        builder: (context) {
-                          return SelectableLinkify(
-                            text: item.content ?? '',
-                            textAlign: TextAlign.left,
-                            style: AppTextStyle.eyebrow
-                                .copyWith(color: AppColor.gray1),
-                            options: LinkifyOptions(looseUrl: true),
-                            onOpen: (link) => launch(link.url),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        return SelectableLinkify(
+                          text: item.content ?? '',
+                          textAlign: TextAlign.left,
+                          style: AppTextStyle.eyebrow
+                              .copyWith(color: AppColor.gray1),
+                          options: LinkifyOptions(looseUrl: true),
+                          onOpen: (link) => launch(link.url),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(Icons.copy),
+                        splashRadius: 20,
+                        padding: const EdgeInsets.all(8),
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(text: item.content!),
+                          );
+                          showRegularToast(
+                            context,
+                            'Text copied!',
+                            toastType: ToastType.success,
                           );
                         },
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: IconButton(
-                          icon: Icon(Icons.copy),
-                          splashRadius: 20,
-                          padding: const EdgeInsets.all(8),
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(text: item.content!),
-                            );
-                            showRegularToast(
-                              context,
-                              'Text copied!',
-                              toastType: ToastType.success,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

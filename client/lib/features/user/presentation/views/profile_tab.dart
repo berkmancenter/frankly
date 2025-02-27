@@ -543,20 +543,18 @@ class _ProfileTabState extends State<_ProfileTab> {
     } else {
       return Material(
         color: AppColor.white,
-        child: UIMigration(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _buildContentList(controller.userInfo),
-                  ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _buildContentList(controller.userInfo),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }

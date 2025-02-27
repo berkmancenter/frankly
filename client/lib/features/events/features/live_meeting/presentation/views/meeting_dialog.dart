@@ -268,9 +268,7 @@ class _MeetingDialogState extends State<MeetingDialog> {
       child: Material(
         color: AppColor.darkBlue,
         child: SizedBox.expand(
-          child: UIMigration(
-            child: _buildLoading(),
-          ),
+          child: _buildLoading(),
         ),
       ),
     );

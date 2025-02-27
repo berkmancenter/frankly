@@ -227,8 +227,6 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      child: _buildContent(),
-    );
+    return _buildContent();
   }
 }

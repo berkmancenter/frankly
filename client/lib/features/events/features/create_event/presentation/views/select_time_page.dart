@@ -36,16 +36,14 @@ class _SelectTimePageState extends State<SelectTimePage> {
           ),
         ),
         SizedBox(height: 2),
-        UIMigration(
-          child: CustomTimePickerDialog(
-            helpText: '',
-            initialTime: TimeOfDay.fromDateTime(scheduledTime),
-            selectedTimeOfDay: (selectedTime) {
-              final selectedDateTime =
-                  DateTimeField.combine(scheduledTime, selectedTime);
-              dialogModel.updateScheduledTime(selectedDateTime);
-            },
-          ),
+        CustomTimePickerDialog(
+          helpText: '',
+          initialTime: TimeOfDay.fromDateTime(scheduledTime),
+          selectedTimeOfDay: (selectedTime) {
+            final selectedDateTime =
+                DateTimeField.combine(scheduledTime, selectedTime);
+            dialogModel.updateScheduledTime(selectedDateTime);
+          },
         ),
         HeightConstrainedText(
           isNullOrEmpty(timezone) ? '' : 'Time shown in $timezone',

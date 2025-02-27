@@ -22,35 +22,31 @@ class AgendaItemWordCloud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isEditMode) {
-      return UIMigration(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTextField(
-              initialValue: wordCloudData.prompt,
-              labelText: 'Word Cloud Prompt',
-              hintText: 'Enter Word Cloud prompt',
-              maxLines: null,
-              onChanged: (value) {
-                wordCloudData.prompt = value;
-                onChanged(wordCloudData);
-              },
-            ),
-            SizedBox(height: 20),
-            HeightConstrainedText(
-              'Participants will be asked to respond with a list of words or short phrases',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
-            ),
-          ],
-        ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomTextField(
+            initialValue: wordCloudData.prompt,
+            labelText: 'Word Cloud Prompt',
+            hintText: 'Enter Word Cloud prompt',
+            maxLines: null,
+            onChanged: (value) {
+              wordCloudData.prompt = value;
+              onChanged(wordCloudData);
+            },
+          ),
+          SizedBox(height: 20),
+          HeightConstrainedText(
+            'Participants will be asked to respond with a list of words or short phrases',
+            style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          ),
+        ],
       );
     } else {
-      return UIMigration(
-        child: ProxiedImage(
-          null,
-          asset: AppAsset.kWordCloudPlaceholderPng,
-          fit: BoxFit.cover,
-        ),
+      return ProxiedImage(
+        null,
+        asset: AppAsset.kWordCloudPlaceholderPng,
+        fit: BoxFit.cover,
       );
     }
   }

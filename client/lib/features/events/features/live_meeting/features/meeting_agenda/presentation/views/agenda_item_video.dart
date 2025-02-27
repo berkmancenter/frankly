@@ -129,78 +129,76 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         _presenter.isMultipleVideoTypesEnabled();
 
     if (_model.isEditMode) {
-      return UIMigration(
-        child: Column(
-          children: [
-            CustomTextField(
-              initialValue: _model.agendaItemVideoData.title,
-              labelText: 'Title',
-              hintText: 'Enter Video title',
-              maxLines: 1,
-              maxLength: agendaTitleCharactersLength,
-              counterStyle: AppTextStyle.bodySmall.copyWith(
-                color: AppColor.darkBlue,
-              ),
-              onChanged: (value) => _presenter.updateVideoTitle(value),
+      return Column(
+        children: [
+          CustomTextField(
+            initialValue: _model.agendaItemVideoData.title,
+            labelText: 'Title',
+            hintText: 'Enter Video title',
+            maxLines: 1,
+            maxLength: agendaTitleCharactersLength,
+            counterStyle: AppTextStyle.bodySmall.copyWith(
+              color: AppColor.darkBlue,
             ),
-            SizedBox(height: 40),
-            Row(
-              children: List.generate(_agendaItemVideoTabTypes.length, (index) {
-                final agendaItemVideoTabType = _agendaItemVideoTabTypes[index];
-                final isSelected =
-                    _model.agendaItemVideoTabType == agendaItemVideoTabType;
-                final color = isSelected ? AppColor.darkBlue : AppColor.gray4;
-                final tabName = _presenter.getTabName(agendaItemVideoTabType);
+            onChanged: (value) => _presenter.updateVideoTitle(value),
+          ),
+          SizedBox(height: 40),
+          Row(
+            children: List.generate(_agendaItemVideoTabTypes.length, (index) {
+              final agendaItemVideoTabType = _agendaItemVideoTabTypes[index];
+              final isSelected =
+                  _model.agendaItemVideoTabType == agendaItemVideoTabType;
+              final color = isSelected ? AppColor.darkBlue : AppColor.gray4;
+              final tabName = _presenter.getTabName(agendaItemVideoTabType);
 
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        _presenter.updateVideoType(agendaItemVideoTabType);
-                        _tabController.animateTo(index);
-                      },
-                      child: Column(
-                        children: [
-                          Text(
-                            tabName,
-                            style: AppTextStyle.eyebrow.copyWith(color: color),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(height: 4, color: color),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _presenter.updateVideoType(agendaItemVideoTabType);
+                      _tabController.animateTo(index);
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          tabName,
+                          style: AppTextStyle.eyebrow.copyWith(color: color),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(height: 4, color: color),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }).toList(),
+                ),
+              );
+            }).toList(),
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: kMaxHeight),
+            child: TabBarView(
+              controller: _tabController,
+              physics: NeverScrollableScrollPhysics(),
+              children: isMultipleVideoTypesEnabled
+                  ? [
+                      _buildLocalVideo(videoUrl),
+                      _buildYoutube(videoUrl),
+                      _buildVimeo(videoUrl),
+                      _buildUrlVideo(videoUrl),
+                    ]
+                  : [
+                      _buildLocalVideo(videoUrl),
+                      _buildUrlVideo(videoUrl),
+                    ],
             ),
-            ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: kMaxHeight),
-              child: TabBarView(
-                controller: _tabController,
-                physics: NeverScrollableScrollPhysics(),
-                children: isMultipleVideoTypesEnabled
-                    ? [
-                        _buildLocalVideo(videoUrl),
-                        _buildYoutube(videoUrl),
-                        _buildVimeo(videoUrl),
-                        _buildUrlVideo(videoUrl),
-                      ]
-                    : [
-                        _buildLocalVideo(videoUrl),
-                        _buildUrlVideo(videoUrl),
-                      ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       );
     } else {
       return _buildInitializedVideo(videoUrl);

@@ -84,15 +84,13 @@ class _MeetingGuideCardState extends State<MeetingGuideCard> {
     context.watch<AgendaProvider>();
     context.watch<MeetingGuideCardStore>();
 
-    return UIMigration(
-      child: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: MeetingGuideCardContent(onMinimizeCard: widget.onMinimizeCard),
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(20),
         ),
+        child: MeetingGuideCardContent(onMinimizeCard: widget.onMinimizeCard),
       ),
     );
   }

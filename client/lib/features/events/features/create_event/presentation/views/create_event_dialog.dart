@@ -128,20 +128,18 @@ class CreateEventDialog extends StatelessWidget {
         context.watch<CreateEventDialogModel>().currentPageIndex + 1;
     final lastIndex = context.watch<CreateEventDialogModel>().allPages.length;
 
-    return UIMigration(
-      child: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (currentIndex > 1 && lastIndex > 1)
-              HeightConstrainedText(
-                'STEP $currentIndex OF $lastIndex',
-                style: AppTextStyle.eyebrow,
-              ),
-            _buildCurrentPage(context),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (currentIndex > 1 && lastIndex > 1)
+            HeightConstrainedText(
+              'STEP $currentIndex OF $lastIndex',
+              style: AppTextStyle.eyebrow,
+            ),
+          _buildCurrentPage(context),
+        ],
       ),
     );
   }

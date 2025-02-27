@@ -57,17 +57,15 @@ class AgendaItemText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          UIMigration(
-            child: MarkdownBody(
-              data: agendaItemTextData.content.replaceAll('\n', '\n\n'),
-              shrinkWrap: true,
-              selectable: true,
-              onTapLink: (text, href, _) {
-                if (href != null) {
-                  launch(href);
-                }
-              },
-            ),
+          MarkdownBody(
+            data: agendaItemTextData.content.replaceAll('\n', '\n\n'),
+            shrinkWrap: true,
+            selectable: true,
+            onTapLink: (text, href, _) {
+              if (href != null) {
+                launch(href);
+              }
+            },
           ),
         ],
       );

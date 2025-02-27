@@ -38,13 +38,13 @@ class CustomScaffoldState extends State<CustomScaffold> {
     return widget.fillViewport
         ? Column(
             children: [
-              UIMigration(child: NavBar()),
+              NavBar(),
               Expanded(child: keyedChild),
             ],
           )
         : CustomListView(
             children: [
-              UIMigration(child: NavBar()),
+              NavBar(),
               keyedChild,
             ],
           );

@@ -153,12 +153,10 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      child: Align(
-        alignment: Alignment.center,
-        child: Builder(
-          builder: (context) => _buildDialog(context),
-        ),
+    return Align(
+      alignment: Alignment.center,
+      child: Builder(
+        builder: (context) => _buildDialog(context),
       ),
     );
   }

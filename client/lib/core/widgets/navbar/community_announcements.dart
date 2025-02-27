@@ -103,9 +103,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
                     constraints:
                         BoxConstraints(maxHeight: halfSize ? 200 : 400),
                     color: AppColor.white,
-                    child: UIMigration(
-                      child: Announcements.create(),
-                    ),
+                    child: Announcements.create(),
                   ),
                 ),
               ),

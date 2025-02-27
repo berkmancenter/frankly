@@ -35,16 +35,14 @@ class _PleaseAcceptPermissionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            CircularProgressIndicator(),
-            SizedBox(height: 30),
-            TroubleshootIssuesButton(),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(height: 30),
+          TroubleshootIssuesButton(),
+        ],
       ),
     );
   }
@@ -64,12 +62,10 @@ class _AvCheckPageState extends State<_AvCheckPage> {
   Widget build(BuildContext context) {
     final error = context.watch<AvCheckProvider>().errorText;
     if (error != null) {
-      return UIMigration(
-        child: Center(
-          child: AudioVideoErrorDisplay(
-            error: error,
-            textColor: AppColor.gray1,
-          ),
+      return Center(
+        child: AudioVideoErrorDisplay(
+          error: error,
+          textColor: AppColor.gray1,
         ),
       );
     }
@@ -118,9 +114,8 @@ class _AvCheckPageState extends State<_AvCheckPage> {
     );
   }
 
-  Widget _buildDiagnoseIssuesButton() => UIMigration(
-        child: TroubleshootIssuesButton(linkColor: AppColor.brightGreen),
-      );
+  Widget _buildDiagnoseIssuesButton() =>
+      TroubleshootIssuesButton(linkColor: AppColor.brightGreen);
 
   Widget _buildVideoContainer(String image) {
     return Container(

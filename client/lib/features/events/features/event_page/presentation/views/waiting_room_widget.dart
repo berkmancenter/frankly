@@ -76,66 +76,135 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           .add(introLengthDuration),
     );
 
-    return UIMigration(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeightConstrainedText(
-              'Intro Text',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
-            ),
-            CustomTextField(
-              minLines: 3,
-              borderType: BorderType.outline,
-              borderRadius: 10,
-              initialValue: _model.waitingRoomInfo.content,
-              onChanged: (value) => _presenter.updateWaitingText(value),
-              hintText: 'Enter waiting room text (optional)',
-              textStyle: AppTextStyle.body.copyWith(color: AppColor.gray1),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HeightConstrainedText(
+            'Intro Text',
+            style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+          ),
+          CustomTextField(
+            minLines: 3,
+            borderType: BorderType.outline,
+            borderRadius: 10,
+            initialValue: _model.waitingRoomInfo.content,
+            onChanged: (value) => _presenter.updateWaitingText(value),
+            hintText: 'Enter waiting room text (optional)',
+            textStyle: AppTextStyle.body.copyWith(color: AppColor.gray1),
+          ),
+          SizedBox(height: 20),
+          Text(
+            'Waiting Room Image/Video',
+            style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+          ),
+          SizedBox(height: 10),
+          MediaItemSection(
+            mediaItem: waitingMediaItem,
+            onDelete: () => _presenter.deleteWaitingMedia(),
+            onUpdate: (mediaItem) => _presenter.updateWaitingMedia(mediaItem),
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Checkbox(
+                activeColor: AppColor.darkBlue,
+                checkColor: AppColor.brightGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(color: AppColor.darkBlue),
+                ),
+                side: BorderSide(color: AppColor.darkBlue),
+                value: _model.waitingRoomInfo.loopWaitingVideo,
+                onChanged: (bool? value) =>
+                    _presenter.updateLoopWaitingVideo(value ?? false),
+              ),
+              HeightConstrainedText('Loop Video'),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 50,
+                child: CustomTextField(
+                  padding: EdgeInsets.zero,
+                  maxLines: 1,
+                  initialValue: waitingBufferMinutesInString,
+                  onChanged: (value) =>
+                      _presenter.updateWaitingBufferMinutesInString(value),
+                  isOnlyDigits: true,
+                  useDarkMode: false,
+                  numberThreshold: 60,
+                ),
+              ),
+              SizedBox(width: 4),
+              HeightConstrainedText(
+                ':',
+                style:
+                    AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+              ),
+              SizedBox(width: 4),
+              SizedBox(
+                width: 50,
+                child: CustomTextField(
+                  padding: EdgeInsets.zero,
+                  maxLines: 1,
+                  initialValue: waitingBufferSecondsInString,
+                  onChanged: (value) =>
+                      _presenter.updateWaitingBufferSecondsInString(value),
+                  isOnlyDigits: true,
+                  useDarkMode: false,
+                  numberThreshold: 59,
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: HeightConstrainedText(
+                  'Buffer: Allow $waitingBufferDurationDescription for people to filter in',
+                  style: AppTextStyle.body,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          if (_presenter.enableIntroVideo) ...[
+            RichText(
+              text: TextSpan(
+                text: 'Intro Image/Video',
+                style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+                children: [
+                  TextSpan(
+                    text: ' (Plays at $introStartTime)',
+                    style: AppTextStyle.bodyMedium,
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Waiting Room Image/Video',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
-            ),
-            SizedBox(height: 10),
             MediaItemSection(
-              mediaItem: waitingMediaItem,
-              onDelete: () => _presenter.deleteWaitingMedia(),
-              onUpdate: (mediaItem) => _presenter.updateWaitingMedia(mediaItem),
+              mediaItem: introMediaItem,
+              onDelete: () => _presenter.deleteIntroMedia(),
+              onUpdate: (mediaItem) => _presenter.updateIntroMedia(mediaItem),
+            ),
+            SizedBox(height: 10),
+            HeightConstrainedText(
+              'Intro Length',
+              style: AppTextStyle.subhead,
             ),
             SizedBox(height: 10),
             Row(
-              children: [
-                Checkbox(
-                  activeColor: AppColor.darkBlue,
-                  checkColor: AppColor.brightGreen,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(color: AppColor.darkBlue),
-                  ),
-                  side: BorderSide(color: AppColor.darkBlue),
-                  value: _model.waitingRoomInfo.loopWaitingVideo,
-                  onChanged: (bool? value) =>
-                      _presenter.updateLoopWaitingVideo(value ?? false),
-                ),
-                HeightConstrainedText('Loop Video'),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 50,
                   child: CustomTextField(
                     padding: EdgeInsets.zero,
                     maxLines: 1,
-                    initialValue: waitingBufferMinutesInString,
+                    initialValue: minutesInString,
                     onChanged: (value) =>
-                        _presenter.updateWaitingBufferMinutesInString(value),
+                        _presenter.updateMinutesInString(value),
                     isOnlyDigits: true,
                     useDarkMode: false,
                     numberThreshold: 60,
@@ -153,9 +222,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   child: CustomTextField(
                     padding: EdgeInsets.zero,
                     maxLines: 1,
-                    initialValue: waitingBufferSecondsInString,
+                    initialValue: secondsInString,
                     onChanged: (value) =>
-                        _presenter.updateWaitingBufferSecondsInString(value),
+                        _presenter.updateSecondsInString(value),
                     isOnlyDigits: true,
                     useDarkMode: false,
                     numberThreshold: 59,
@@ -164,134 +233,62 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 SizedBox(width: 20),
                 Expanded(
                   child: HeightConstrainedText(
-                    'Buffer: Allow $waitingBufferDurationDescription for people to filter in',
+                    '$introLengthDurationDescription intro before participants are sent to breakouts',
                     style: AppTextStyle.body,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            if (_presenter.enableIntroVideo) ...[
-              RichText(
-                text: TextSpan(
-                  text: 'Intro Image/Video',
-                  style:
-                      AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+          ],
+          SizedBox(height: 18),
+          HeightConstrainedText(
+            'Participants will be sent into rooms at $breakoutsInitiationTime '
+            '($waitingBufferDurationDescription buffer + $introLengthDurationDescription intro)',
+            style: AppTextStyle.subhead,
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (showChatOption) ...[
+                Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextSpan(
-                      text: ' (Plays at $introStartTime)',
+                    Switch(
+                      value: _model.waitingRoomInfo.enableChat,
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                      activeTrackColor: Theme.of(context).primaryColor,
+                      onChanged: _presenter.enableChat,
+                    ),
+                    SizedBox(width: 10),
+                    HeightConstrainedText(
+                      'Enable Chat',
                       style: AppTextStyle.bodyMedium,
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20),
-              MediaItemSection(
-                mediaItem: introMediaItem,
-                onDelete: () => _presenter.deleteIntroMedia(),
-                onUpdate: (mediaItem) => _presenter.updateIntroMedia(mediaItem),
-              ),
-              SizedBox(height: 10),
-              HeightConstrainedText(
-                'Intro Length',
-                style: AppTextStyle.subhead,
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: CustomTextField(
-                      padding: EdgeInsets.zero,
-                      maxLines: 1,
-                      initialValue: minutesInString,
-                      onChanged: (value) =>
-                          _presenter.updateMinutesInString(value),
-                      isOnlyDigits: true,
-                      useDarkMode: false,
-                      numberThreshold: 60,
-                    ),
-                  ),
-                  SizedBox(width: 4),
-                  HeightConstrainedText(
-                    ':',
-                    style: AppTextStyle.bodyMedium
-                        .copyWith(color: AppColor.darkBlue),
-                  ),
-                  SizedBox(width: 4),
-                  SizedBox(
-                    width: 50,
-                    child: CustomTextField(
-                      padding: EdgeInsets.zero,
-                      maxLines: 1,
-                      initialValue: secondsInString,
-                      onChanged: (value) =>
-                          _presenter.updateSecondsInString(value),
-                      isOnlyDigits: true,
-                      useDarkMode: false,
-                      numberThreshold: 59,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: HeightConstrainedText(
-                      '$introLengthDurationDescription intro before participants are sent to breakouts',
-                      style: AppTextStyle.body,
-                    ),
-                  ),
-                ],
+              ] else
+                SizedBox.shrink(),
+              ActionButton(
+                loadingHeight: 10.0,
+                color: AppColor.darkBlue,
+                textColor: AppColor.brightGreen,
+                text: 'Save',
+                onPressed: () => alertOnError(
+                  context,
+                  () async {
+                    await _presenter.save();
+                    showRegularToast(
+                      context,
+                      'Waiting Room Changes Saved',
+                      toastType: ToastType.success,
+                    );
+                  },
+                ),
               ),
             ],
-            SizedBox(height: 18),
-            HeightConstrainedText(
-              'Participants will be sent into rooms at $breakoutsInitiationTime '
-              '($waitingBufferDurationDescription buffer + $introLengthDurationDescription intro)',
-              style: AppTextStyle.subhead,
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (showChatOption) ...[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Switch(
-                        value: _model.waitingRoomInfo.enableChat,
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                        activeTrackColor: Theme.of(context).primaryColor,
-                        onChanged: _presenter.enableChat,
-                      ),
-                      SizedBox(width: 10),
-                      HeightConstrainedText(
-                        'Enable Chat',
-                        style: AppTextStyle.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ] else
-                  SizedBox.shrink(),
-                ActionButton(
-                  loadingHeight: 10.0,
-                  color: AppColor.darkBlue,
-                  textColor: AppColor.brightGreen,
-                  text: 'Save',
-                  onPressed: () => alertOnError(
-                    context,
-                    () async {
-                      await _presenter.save();
-                      showRegularToast(
-                        context,
-                        'Waiting Room Changes Saved',
-                        toastType: ToastType.success,
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

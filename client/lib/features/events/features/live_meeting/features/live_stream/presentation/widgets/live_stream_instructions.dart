@@ -116,17 +116,15 @@ class LiveStreamInstructions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: whiteBackground ? AppColor.white : AppColor.darkerBlue,
-        ),
-        alignment: Alignment.center,
-        child: _buildInstructions(context),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: whiteBackground ? AppColor.white : AppColor.darkerBlue,
       ),
+      alignment: Alignment.center,
+      child: _buildInstructions(context),
     );
   }
 }

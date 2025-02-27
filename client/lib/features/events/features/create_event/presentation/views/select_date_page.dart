@@ -29,16 +29,14 @@ class SelectDatePage extends StatelessWidget {
         SizedBox(
           width: 380,
           height: responsiveLayoutService.isMobile(context) ? 600 : 300,
-          child: UIMigration(
-            child: CustomDatePickerDialog(
-              initialDate: dialogModel.event.scheduledTime ?? timeNow,
-              firstDate: timeNow,
-              lastDate: DateTime(2101),
-              handleDate: (selectedDate) => dialogModel.updateScheduledTime(
-                DateTimeField.combine(
-                  selectedDate,
-                  TimeOfDay.fromDateTime(dialogModel.scheduledTime!),
-                ),
+          child: CustomDatePickerDialog(
+            initialDate: dialogModel.event.scheduledTime ?? timeNow,
+            firstDate: timeNow,
+            lastDate: DateTime(2101),
+            handleDate: (selectedDate) => dialogModel.updateScheduledTime(
+              DateTimeField.combine(
+                selectedDate,
+                TimeOfDay.fromDateTime(dialogModel.scheduledTime!),
               ),
             ),
           ),

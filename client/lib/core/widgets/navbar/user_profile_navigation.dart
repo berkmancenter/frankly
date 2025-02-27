@@ -87,9 +87,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
               child: Container(
                 constraints: BoxConstraints(maxHeight: 400),
                 color: AppColor.white,
-                child: UIMigration(
-                  child: ProfileNavigationList(),
-                ),
+                child: ProfileNavigationList(),
               ),
             ),
           ),
