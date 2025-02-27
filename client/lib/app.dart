@@ -121,6 +121,7 @@ class _AppState extends State<App> {
           theme: ThemeData(
             useMaterial3: true,
             primaryColor: AppColor.black,
+            brightness: Brightness.light,
             colorScheme: ColorScheme(
               brightness: Brightness.light,
               primary: AppColor.black,

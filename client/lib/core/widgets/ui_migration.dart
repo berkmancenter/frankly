@@ -20,7 +20,6 @@ class UIMigration extends StatelessWidget {
 
     return Theme(
       data: Theme.of(context).copyWith(
-        brightness: whiteBackground ? Brightness.light : Brightness.dark,
         textTheme: GoogleFonts.poppinsTextTheme(
           TextTheme(
             headlineLarge: TextStyle(
