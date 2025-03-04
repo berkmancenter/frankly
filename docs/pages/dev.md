@@ -4,40 +4,84 @@ Most components of Frankly can be run on your local machine. This section descri
 
 ## Tools and Flutter Setup
 
-This section covers setting up a new computer for Flutter development.
 
 !!! warning "Important"
     Frankly runs on Flutter `3.22.2.` **Please use this version of Flutter in order to avoid any unexpected errors.**
 
-1.  Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
-2.  Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
-3.  Install VSCode [here](https://code.visualstudio.com/download).
-4.  Optional, but recommended: Install Homebrew [here](https://brew.sh/).
-5.  Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
+This section covers setting up a new computer for Flutter development.
 
-    1. This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
-    2. **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
-    3. **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+### Part 1: Platform-specific
 
-6.  Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
-    ```
-    export PATH=$HOME/development/flutter/bin:$PATH
-    ```
-    Restart terminal sessions to see the changes.
-7.  Install Node.js and npm [here](https://nodejs.org/en).
-8.  Install Firebase CLI Tools using the command `npm install -g firebase-tools` ([documentation](https://www.npmjs.com/package/firebase-tools)).
+=== "macOS"
+    1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
+    2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
+    3. Optional, but recommended: Install Homebrew [here](https://brew.sh/).
+    4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
+      ```
+      brew install git
+      ```
+    5. Clone the Frankly repo in a directory where you prefer your projects to live:
+      ```
+      git clone https://github.com/berkmancenter/frankly && cd frankly
+      ```
+    6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
+        - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
+        - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+    7.  Install VSCode [here](https://code.visualstudio.com/download).
+        - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
+    8.  Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
+        ```
+        export PATH=$HOME/dev/flutter/bin:$PATH
+        ```
+        Restart terminal sessions to see the changes.
+=== "Linux"
+    1.  Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
+      ```
+      sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
+      ```
+    2. Clone the Frankly repo in a directory where you prefer your projects to live:
+      ```
+      git clone https://github.com/berkmancenter/frankly && cd frankly
+      ```
+    3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform.
+    4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
 
-    1. You will likely run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running `npm install` :
+        !!! info ""
+            You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
+            
+        - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
+        - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+    5. You will probably need to add both flutter and dart to your PATH. Run:
+        ```
+        export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
+        ```
+            
+### Part 2
+
+1.  Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest end cleanest way to do so.
+2. Once nvm is installed and sourced to your CLI profile, run:
+  ```
+  nvm install --lts
+  ```
+3. Install the [Firebase CLI Tools](https://www.npmjs.com/package/firebase-tools):
+  ```
+  npm install -g firebase-tools
+  ```
+    - You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running `npm install` :
        ```
         sudo chown -R $USER /usr/local/bin/ && sudo chown -R $USER /usr/local/lib/node_modules
        ```
 
-    For more information, you can read this Stack Overflow [post](https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules).
+        !!! info ""
+            For more information, you can read this Stack Overflow [post](https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules).
 
 9.  Activate the Firebase CLI for Flutter by following the steps [here](https://firebase.google.com/docs/flutter/setup?platform=ios). Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports.
 
-!!! question ""
-    Please check [**❓Troubleshooting / FAQ**](/faq) for suggested resolutions to common Flutter installation errors.
+    !!! info ""
+        If step 2 complains about not finding a project, make sure that you're running from within `client`.
+
+    !!! question ""
+        Please check [**❓Troubleshooting / FAQ**](/faq) for suggested resolutions to common Flutter installation errors.
 
 ## Environment Setup
 
@@ -214,7 +258,7 @@ Mux streaming is used when a customer wants to stream video from a third party s
         ```
 
 3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.
-4.  Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.”For the URL to Notify field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
+4.  Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
 #### 👾 Testing your setup
 
