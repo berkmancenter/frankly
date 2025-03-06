@@ -343,15 +343,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Edit event',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          Icons.edit_outlined,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: Icons.edit_outlined,
     );
   }
 
@@ -375,15 +367,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Event Settings',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          CupertinoIcons.gear_alt,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: CupertinoIcons.gear_alt,
     );
   }
 
@@ -883,11 +867,7 @@ class _EventInfoState extends State<EventInfo> {
                         CircleIconButton(
                           onPressed: widget.onMessagePressed,
                           toolTipText: 'Message',
-                          icon: SizedBox(
-                            width: isMobile ? 30 : 20,
-                            height: isMobile ? 30 : 20,
-                            child: Icon(CupertinoIcons.paperplane),
-                          ),
+                          icon: CupertinoIcons.paperplane,
                         ),
                     ],
                   ),
