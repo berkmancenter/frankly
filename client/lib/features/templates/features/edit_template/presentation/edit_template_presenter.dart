@@ -86,8 +86,6 @@ class EditTemplatePresenter {
     _view.updateView();
   }
 
-  bool get showFeatureToggle => _communityPermissionsProvider.canEditCommunity;
-
   Future<void> saveChanges() async {
     final validationError = _helper.areChangesValid(_model.template);
     if (validationError != null) {
