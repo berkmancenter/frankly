@@ -1,10 +1,10 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
+import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';

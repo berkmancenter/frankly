@@ -6,7 +6,7 @@ import 'package:client/features/events/features/create_event/presentation/views/
 import 'package:client/features/templates/data/providers/template_page_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/presentation/widgets/hosting_option.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/templates/presentation/widgets/prerequisite_badge.dart';

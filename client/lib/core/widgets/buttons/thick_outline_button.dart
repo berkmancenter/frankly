@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 
 class ThickOutlineButton extends StatelessWidget {
   final Function()? onPressed;

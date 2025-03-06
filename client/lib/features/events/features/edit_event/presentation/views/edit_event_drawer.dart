@@ -10,8 +10,8 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/events/features/edit_event/presentation/widgets/app_radio_list_tile.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/services.dart';

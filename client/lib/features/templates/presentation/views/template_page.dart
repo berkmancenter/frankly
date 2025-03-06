@@ -8,7 +8,7 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/circle_icon_button.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_picture.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
 import 'package:client/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart';
