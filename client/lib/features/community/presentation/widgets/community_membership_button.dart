@@ -3,11 +3,8 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/core/utils/firestore_utils.dart';
-import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
@@ -34,8 +31,6 @@ class CommunityMembershipButton extends StatefulWidget {
 }
 
 class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
-  final bool _hovered = false;
-
   Future<void> _requestCommunityMembership() async {
     await guardSignedIn(
       () => alertOnError(context, () async {
@@ -61,30 +56,10 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
   @override
   Widget build(BuildContext context) {
     final communityId = widget.community.id;
-    final isMember = Provider.of<UserDataService>(context)
-        .isMember(communityId: communityId);
     final userId = context.watch<UserService>().currentUserId!;
     final requiresApproval =
         widget.community.settingsMigration.requireApprovalToJoin;
-
-    if (isMember) {
-      return CustomInkWell(
-        onHover: (hovered) => setState(() => _hovered = hovered),
-        hoverColor: Colors.transparent,
-        child: ThickOutlineButton(
-          onPressed: () => alertOnError(
-            context,
-            () => userDataService.requestChangeCommunityMembership(
-              community: widget.community,
-              join: false,
-            ),
-          ),
-          text: _hovered ? 'Unfollow' : 'Followed',
-          backgroundColor: Colors.white,
-          minWidth: widget.minWidth,
-        ),
-      );
-    } else if (requiresApproval) {
+    if (requiresApproval) {
       return MemoizedBuilder<BehaviorSubjectWrapper<MembershipRequest?>>(
         getter: () =>
             firestoreCommunityJoinRequestsService.getUserRequestForCommunityId(
