@@ -306,6 +306,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Tools and Flutter Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-1-platform-specific" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 1: Platform-specific
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 2
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -338,20 +362,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#firebase-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      Firebase CLI
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#firebase-functions-installation" class="md-nav__link">
     <span class="md-ellipsis">
       Firebase Functions Installation
@@ -366,6 +376,11 @@
       Emulators
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -622,6 +637,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Tools and Flutter Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-1-platform-specific" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 1: Platform-specific
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 2
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -654,20 +693,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#firebase-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      Firebase CLI
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#firebase-functions-installation" class="md-nav__link">
     <span class="md-ellipsis">
       Firebase Functions Installation
@@ -682,6 +707,11 @@
       Emulators
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -877,44 +907,106 @@
 <h1 id="running-local-development-version">⚙️ Running Local Development Version</h1>
 <p>Most components of Frankly can be run on your local machine. This section describes how to setup and run the Flutter client app and the Firebase emulators (which can be setup in place of a Firebase/GCP project). The app still connects to several third-party services, which are also described below.</p>
 <h2 id="tools-and-flutter-setup">Tools and Flutter Setup</h2>
-<p>This section covers setting up a new computer for Flutter development.</p>
 <div class="admonition warning">
 <p class="admonition-title">Important</p>
 <p>Frankly runs on Flutter <code>3.22.2.</code> <strong>Please use this version of Flutter in order to avoid any unexpected errors.</strong></p>
 </div>
+<p>This section covers setting up a new computer for Flutter development.</p>
+<h3 id="part-1-platform-specific">Part 1: Platform-specific</h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS</label><label for="__tabbed_1_2">Linux</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <ol>
 <li>Download and install Google Chrome <a href="https://www.google.com/chrome/">here</a> if it’s not already pre-installed. This is used for live debugging on web.</li>
 <li>Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.</li>
-<li>Install VSCode <a href="https://code.visualstudio.com/download">here</a>.</li>
 <li>Optional, but recommended: Install Homebrew <a href="https://brew.sh/">here</a>.</li>
-<li>
-<p>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform.</p>
-<ol>
-<li>This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors.</li>
-<li><strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>.</li>
-<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
-</ol>
-</li>
-<li>
-<p>Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open ~/.zshenv and add this line:
-    <div class="highlight"><pre><span></span><code>export PATH=$HOME/development/flutter/bin:$PATH
-</code></pre></div>
-    Restart terminal sessions to see the changes.</p>
-</li>
-<li>Install Node.js and npm <a href="https://nodejs.org/en">here</a>.</li>
-<li>
-<p>Install Firebase CLI Tools using the command <code>npm install -g firebase-tools</code> (<a href="https://www.npmjs.com/package/firebase-tools">documentation</a>).</p>
-<ol>
-<li>You will likely run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running <code>npm install</code> :
-   <div class="highlight"><pre><span></span><code> sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
+<li>Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
+  <div class="highlight"><pre><span></span><code>brew install git
 </code></pre></div></li>
+<li>Clone the Frankly repo in a directory where you prefer your projects to live:
+  <div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
+</code></pre></div></li>
+<li>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform.<ul>
+<li>This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors.</li>
+<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
+</ul>
+</li>
+<li>Install VSCode <a href="https://code.visualstudio.com/download">here</a>.<ul>
+<li><strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>.</li>
+</ul>
+</li>
+<li>Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open ~/.zshenv and add this line:
+    <div class="highlight"><pre><span></span><code>export PATH=$HOME/dev/flutter/bin:$PATH
+</code></pre></div>
+    Restart terminal sessions to see the changes.</li>
 </ol>
-<p>For more information, you can read this Stack Overflow <a href="https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules">post</a>.</p>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
+  <div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade &amp;&amp; sudo apt-get install -y chromium git
+</code></pre></div></li>
+<li>Clone the Frankly repo in a directory where you prefer your projects to live:
+  <div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
+</code></pre></div></li>
+<li>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter dependencies on your machine. You can choose web as your target platform.</li>
+<li>
+<p>Install VSCode <a href="https://code.visualstudio.com/docs/setup/linux">here</a>.</p>
+<div class="admonition info">
+<p>You may need to download the binary for your specific architecture <a href="https://code.visualstudio.com/Download">here</a></p>
+</div>
+<ul>
+<li><strong>Recommended</strong>: Install the <a href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk">install Flutter via VSCode</a>.</li>
+<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
+</ul>
 </li>
 <li>
-<p>Activate the Firebase CLI for Flutter by following the steps <a href="https://firebase.google.com/docs/flutter/setup?platform=ios">here</a>. Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports.</p>
+<p>You will probably need to add both flutter and dart to your PATH. Run:
+    <div class="highlight"><pre><span></span><code>export PATH=&quot;$PATH:$HOME/[path to flutter]/flutter/bin&quot;
+</code></pre></div></p>
 </li>
 </ol>
+</div>
+</div>
+</div>
+<h3 id="part-2">Part 2</h3>
+<ol>
+<li>Install Node.js and npm. We strongly recommend that you do this via <code>nvm</code> (steps <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating">here</a>) since it is the easiest end cleanest way to do so.</li>
+<li>Once nvm is installed and sourced to your CLI profile, run:
+  <div class="highlight"><pre><span></span><code>nvm install --lts
+</code></pre></div></li>
+<li>
+<p>Install the <a href="https://www.npmjs.com/package/firebase-tools">Firebase CLI Tools</a>: Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.
+  <div class="highlight"><pre><span></span><code>npm install -g firebase-tools
+</code></pre></div></p>
+<ul>
+<li>
+<p>You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running <code>npm install</code> :
+   <div class="highlight"><pre><span></span><code> sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
+</code></pre></div></p>
+<div class="admonition info">
+<p>For more information, you can read this Stack Overflow <a href="https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules">post</a>.</p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>Activate the Firebase CLI for Flutter by following these steps. </p>
+<p>a. <a href="https://console.firebase.google.com/">Sign into Firebase</a> using your Google account and create a new project. Use a name like "frankly-dev".</p>
+<p>b. Log into Firebase. Run:
+  <div class="highlight"><pre><span></span><code>firebase login
+</code></pre></div>
+c. Install the FlutterFire CLI by running:
+  <div class="highlight"><pre><span></span><code>dart pub global activate flutterfire_cli
+</code></pre></div>
+d. From your Flutter project directory (<code>client</code>), run the to start the app configuration workflow:
+  <div class="highlight"><pre><span></span><code>flutterfire configure
+</code></pre></div>
+  - You can choose <em>web</em> as the platform for now.</p>
+</li>
+</ol>
+<!-- Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports. -->
+
 <div class="admonition question">
 <p>Please check <a href="/faq"><strong>❓Troubleshooting / FAQ</strong></a> for suggested resolutions to common Flutter installation errors.</p>
 </div>
@@ -930,27 +1022,28 @@
 <h3 id="data-models">📦 Data Models</h3>
 <p>The first step in running the app is to build the data_models package. Some code in this package is auto-generated by <a href="https://pub.dev/packages/freezed">Freezed</a>. Run the following steps in the <code>data_models</code> directory to generate code and make the package available to the client and Firebase functions:</p>
 <ol>
-<li>To install all Dart dependencies run <code>flutter pub get</code>.</li>
-<li>Run: <code>dart run build_runner build --delete-conflicting-outputs</code></li>
+<li>To install all Dart dependencies run:
+  <div class="highlight"><pre><span></span><code>flutter pub get
+</code></pre></div></li>
+<li>Run: 
+  <div class="highlight"><pre><span></span><code>dart run build_runner build --delete-conflicting-outputs
+</code></pre></div></li>
 </ol>
 <p>You can also just run <code>./build.sh</code>.</p>
 <h3 id="firebase">🔥 Firebase</h3>
-<h4 id="firebase-cli">Firebase CLI</h4>
-<p>Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.</p>
-<p>Run the following steps once:</p>
-<ul>
-<li>Install Firebase CLI using <code>npm install -g firebase-tools</code></li>
-<li>You should be able to use the CLI for local development without signing in</li>
-</ul>
-<h3 id="firebase-functions-installation">Firebase Functions Installation</h3>
+<h4 id="firebase-functions-installation">Firebase Functions Installation</h4>
 <p>Firebase Functions are built on top of Cloud Functions (GCP's serverless functions product), which is why there are references to Cloud Functions tooling below. Functions are written in <code>dart</code> and are compiled to <code>javascript</code> with <code>dart2js</code>.</p>
 <p>For the following sub-section, switch to the <code>firebase/functions</code> directory to run all commands.</p>
 <ul>
-<li>To install all Javascript dependencies, run <code>npm install</code>.</li>
-<li>To install all Dart dependencies run <code>flutter pub get</code>.</li>
+<li>To install all Javascript dependencies, run:
+  <div class="highlight"><pre><span></span><code>npm install
+</code></pre></div></li>
+<li>To install all Dart dependencies, run:
+  <div class="highlight"><pre><span></span><code>flutter pub get
+</code></pre></div></li>
 </ul>
 <p>You don't need to run <code>npm install</code> again unless you've added new dependencies or made updates to existing ones. Same applies to <code>flutter pub get</code>, but for changes to any function dependencies.</p>
-<h3 id="emulators">Emulators</h3>
+<h4 id="emulators">Emulators</h4>
 <p>Firebase has a full suite of emulators called Firebase Local Emulator Suite. You can find the full description of the Firebase Local Emulator Suite and its capabilities <a href="https://firebase.google.com/docs/emulator-suite">here</a>.</p>
 <p>You should emulate services locally for development purposes, and set up the client to use these emulators instead of connecting to a live Firebase project. By default, the emulators will run against the default project "dev," specified in the <code>.firebaserc</code> file.</p>
 <p><strong>Using config in emulators</strong></p>
@@ -1055,7 +1148,7 @@ agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 </li>
 <li>
 <p>Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Command Line</label><label for="__tabbed_1_2">Copy/Paste</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Command Line</label><label for="__tabbed_2_2">Copy/Paste</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
@@ -1076,7 +1169,7 @@ agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 <li>
 <p>To connect Mux to the <a href="https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart">MuxWebhooks cloud function</a>, the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.</p>
 </li>
-<li>Login to Mux and go to Settings &gt; Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.”For the URL to Notify field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."</li>
+<li>Login to Mux and go to Settings &gt; Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the <em>URL to Notify</em> field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."</li>
 </ol>
 <h4 id="testing-your-setup">👾 Testing your setup</h4>
 <p>You can verify the integration is working by manually triggering a new call directly from Mux.</p>
