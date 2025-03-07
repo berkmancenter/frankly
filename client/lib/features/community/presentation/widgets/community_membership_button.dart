@@ -1,4 +1,5 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -19,16 +20,12 @@ class CommunityMembershipButton extends StatefulWidget {
   final double? height;
   final double? minWidth;
   final String? text;
-  final Color? bgColor;
-  final Color textColor;
 
   const CommunityMembershipButton(
     this.community, {
     this.height,
     this.minWidth,
     this.text,
-    this.bgColor,
-    this.textColor = Colors.white,
   });
 
   @override
@@ -104,10 +101,9 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
             if (request == null) {
               return ActionButton(
                 text: 'Request To Follow',
-                textColor: widget.textColor,
+                color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                color: widget.bgColor,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: () => _requestCommunityMembership(),
               );
@@ -117,20 +113,18 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
             ].contains(request.status)) {
               return ActionButton(
                 text: 'Follow Request Sent',
-                textColor: widget.textColor,
+                color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                color: widget.bgColor,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: null,
               );
             } else {
               return ActionButton(
                 text: widget.text ?? 'Follow',
-                textColor: widget.textColor,
+                color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                color: widget.bgColor,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: () => alertOnError(
                   context,
@@ -147,10 +141,9 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
     } else {
       return ActionButton(
         text: 'Follow',
-        textColor: widget.textColor,
+        color: context.theme.colorScheme.primary,
         minWidth: widget.minWidth,
         height: widget.height,
-        color: widget.bgColor,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         onPressed: () => alertOnError(
           context,
