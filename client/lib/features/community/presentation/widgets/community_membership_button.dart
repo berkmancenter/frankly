@@ -29,12 +29,12 @@ class CommunityMembershipButton extends StatefulWidget {
   });
 
   @override
-  _CommunityMembershipButtonState createState() =>
-      _CommunityMembershipButtonState();
+  CommunityMembershipButtonState createState() =>
+      CommunityMembershipButtonState();
 }
 
-class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
-  bool _hovered = false;
+class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
+  final bool _hovered = false;
 
   Future<void> _requestCommunityMembership() async {
     await guardSignedIn(
