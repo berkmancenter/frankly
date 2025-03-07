@@ -173,7 +173,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           Expanded(
             child: CommunityMembershipButton(
               currentCommunity,
-              bgColor: Theme.of(context).colorScheme.primary,
             ),
           ),
         ] else
@@ -235,7 +234,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         SizedBox(width: 20),
         CommunityMembershipButton(
           community,
-          bgColor: Theme.of(context).colorScheme.primary,
         ),
       ];
     }

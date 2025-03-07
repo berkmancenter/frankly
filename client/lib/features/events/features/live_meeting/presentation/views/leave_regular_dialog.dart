@@ -176,7 +176,6 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
     return CommunityMembershipButton(
       community,
       text: 'Follow ${community.name}',
-      textColor: AppColor.darkBlue,
     );
   }
 

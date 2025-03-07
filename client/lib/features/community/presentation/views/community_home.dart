@@ -188,7 +188,6 @@ class _CommunityHomeState extends State<CommunityHome> {
           if (!userDataService.isMember(communityId: community.id)) ...[
             CommunityMembershipButton(
               community,
-              bgColor: Theme.of(context).colorScheme.primary,
             ),
             SizedBox(width: 12),
           ],
