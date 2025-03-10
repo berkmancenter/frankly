@@ -35,5 +35,11 @@
             "program": "client/lib/main.dart",
             "args": ["--web-port=5000", "--dart-define-from-file=.env"]
         },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Functions",
+            "port": 9229
+        }
     ]
 }
