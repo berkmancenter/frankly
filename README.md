@@ -9,4 +9,4 @@ Frankly is an online deliberations platform that allows anyone to host video-ena
 
 # Documentation
 
-Please visit our [documentation site](https://frankly.github.io).
+Please visit our [documentation site](https://berkmancenter.github.io/frankly).

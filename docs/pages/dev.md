@@ -39,6 +39,10 @@ This section covers setting up a new computer for Flutter development.
       ```
       sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
       ```
+      a. Set the path to chromium so flutter can find it:
+      ```
+      export CHROME_EXECUTABLE=$(which chromium)
+      ```
     2. Clone the Frankly repo in a directory where you prefer your projects to live:
       ```
       git clone https://github.com/berkmancenter/frankly && cd frankly
@@ -159,7 +163,7 @@ You do not need to run `functions:config:set.` as the emulators are configured b
 **Running the emulators**
 
 !!! info "Important"
-    Do this before running the [client](#running-and-building-the-frontend-web-client).
+    Do this before running the [client](#running-and-building-the-client).
 
 To run the emulators locally, run the following _while_ in the `firebase/functions` directory:
 
@@ -168,11 +172,13 @@ dart run build_runner build --output=build
 firebase emulators:start --only firestore,functions,auth,pubsub,database
 ```
 
+You can also just run `./emulators.sh`.
+
 We recommend using the emulators [import and export](https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data) functionality to make development easier.
 
 
 !!! question ""
-    Please refer to the Cloud Functions Emulator [section](/faq/#cloud-functions-emulator) at [**❓Troubleshooting / FAQ**](/faq) for common issues and resolutions!
+    Please refer to the Cloud Functions Emulator [section](/faq#cloud-functions-emulator) at [**❓Troubleshooting / FAQ**](/faq) for common issues and resolutions!
 
 ### Optional: Setup Firebase Cloud Project
 
