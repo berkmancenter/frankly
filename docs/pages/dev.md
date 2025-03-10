@@ -172,7 +172,7 @@ dart run build_runner build --output=build
 firebase emulators:start --only firestore,functions,auth,pubsub,database
 ```
 
-You can also just run `./emulators.sh`.
+You can also just run `npm run emulators`.
 
 We recommend using the emulators [import and export](https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data) functionality to make development easier.
 
