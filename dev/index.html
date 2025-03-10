@@ -945,6 +945,9 @@
 <ol>
 <li>Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
   <div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade &amp;&amp; sudo apt-get install -y chromium git
+</code></pre></div>
+  a. Set the path to chromium so flutter can find it:
+  <div class="highlight"><pre><span></span><code>export CHROME_EXECUTABLE=$(which chromium)
 </code></pre></div></li>
 <li>Clone the Frankly repo in a directory where you prefer your projects to live:
   <div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
@@ -1055,15 +1058,16 @@ d. From your Flutter project directory (<code>client</code>), run the to start t
 <p><strong>Running the emulators</strong></p>
 <div class="admonition info">
 <p class="admonition-title">Important</p>
-<p>Do this before running the <a href="#running-and-building-the-frontend-web-client">client</a>.</p>
+<p>Do this before running the <a href="#running-and-building-the-client">client</a>.</p>
 </div>
 <p>To run the emulators locally, run the following <em>while</em> in the <code>firebase/functions</code> directory:</p>
 <div class="highlight"><pre><span></span><code>dart run build_runner build --output=build
 firebase emulators:start --only firestore,functions,auth,pubsub,database
 </code></pre></div>
+<p>You can also just run <code>./emulators.sh</code>.</p>
 <p>We recommend using the emulators <a href="https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data">import and export</a> functionality to make development easier.</p>
 <div class="admonition question">
-<p>Please refer to the Cloud Functions Emulator <a href="/faq/#cloud-functions-emulator">section</a> at <a href="/faq"><strong>❓Troubleshooting / FAQ</strong></a> for common issues and resolutions!</p>
+<p>Please refer to the Cloud Functions Emulator <a href="/faq#cloud-functions-emulator">section</a> at <a href="/faq"><strong>❓Troubleshooting / FAQ</strong></a> for common issues and resolutions!</p>
 </div>
 <h3 id="optional-setup-firebase-cloud-project">Optional: Setup Firebase Cloud Project</h3>
 <p>In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Functions, Auth, Realtime Database, etc.) suffice for most development task.</p>
