@@ -8,12 +8,10 @@ import 'package:provider/provider.dart';
 /// The widget that contains the list of selectable tab titles
 class CustomTabBar extends StatelessWidget {
   final EdgeInsets? padding;
-  final bool isWhiteBackground;
 
   const CustomTabBar({
     Key? key,
     this.padding,
-    this.isWhiteBackground = false,
     x,
   });
 
@@ -40,7 +38,6 @@ class CustomTabBar extends StatelessWidget {
                   child: _CustomTab(
                     tab: tabController.tabs[i],
                     index: i,
-                    isWhiteBackground: isWhiteBackground,
                   ),
                 ),
               ),
@@ -54,12 +51,10 @@ class _CustomTab extends StatefulWidget {
   final CustomTabAndContent tab;
   final int index;
   final int? unreadCount;
-  final bool isWhiteBackground;
 
   const _CustomTab({
     required this.tab,
     required this.index,
-    required this.isWhiteBackground,
     this.unreadCount,
   });
 
@@ -71,25 +66,21 @@ class _CustomTabState extends State<_CustomTab> {
   bool _hovered = false;
 
   TextStyle get getTextStyle {
-    final style = _hovered && widget.isWhiteBackground
-        ? AppTextStyle.bodyMedium
-        : AppTextStyle.body;
+    final style = AppTextStyle.body;
     return style.copyWith(color: currentColor);
   }
 
-  bool get _bold => _hovered && widget.isWhiteBackground;
+  bool get _bold => _hovered;
 
   Color get currentColor {
     final Color color;
 
     if (isSelected) {
       color = selectedColor;
-    } else if (widget.isWhiteBackground) {
-      color = AppColor.gray2.withOpacity(.75);
     } else if (_hovered) {
       color = AppColor.white;
     } else {
-      color = AppColor.white.withOpacity(.75);
+      color = AppColor.gray2.withOpacity(.75);
     }
 
     if (widget.tab.isGated) {
@@ -104,8 +95,7 @@ class _CustomTabState extends State<_CustomTab> {
     return widget.index == controller.currentTab;
   }
 
-  Color get selectedColor =>
-      widget.isWhiteBackground ? AppColor.darkBlue : AppColor.brightGreen;
+  Color get selectedColor => AppColor.darkBlue;
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +121,11 @@ class _CustomTabState extends State<_CustomTab> {
                     alignment: Alignment.center,
                     children: [
                       // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
-                      if (widget.isWhiteBackground)
-                        HeightConstrainedText(
-                          widget.tab.tab.toUpperCase(),
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: Colors.transparent),
-                        ),
+                      HeightConstrainedText(
+                        widget.tab.tab.toUpperCase(),
+                        style: AppTextStyle.bodyMedium
+                            .copyWith(color: Colors.transparent),
+                      ),
                       HeightConstrainedText(
                         widget.tab.tab.toUpperCase(),
                         style: getTextStyle,
