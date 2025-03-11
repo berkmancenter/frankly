@@ -273,7 +273,7 @@ class _TemplatePageState extends State<TemplatePage>
                   ConstrainedBody(
                     child: Align(
                       alignment: Alignment.bottomLeft,
-                      child: CustomTabBar(isWhiteBackground: true),
+                      child: CustomTabBar(),
                     ),
                   ),
                 ],

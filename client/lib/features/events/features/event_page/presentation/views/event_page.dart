@@ -289,7 +289,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
         ],
         CustomTabBar(
           padding: EdgeInsets.zero,
-          isWhiteBackground: true,
         ),
         SizedBox(height: 16),
         CustomTabBarView(keepAlive: !responsiveLayoutService.isMobile(context)),
