@@ -13,7 +13,6 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/time_input_form.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
@@ -371,99 +370,93 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final hasBeenEdited = _presenter.hasBeenEdited();
     final isCardUnsaved = _presenter.isCardUnsaved();
 
-    return UIMigration(
-      whiteBackground: true,
-      child: Row(
-        children: [
-          if (!isCardUnsaved)
-            FloatingActionButton(
-              tooltip: 'Delete Agenda Item',
-              elevation: 0,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              backgroundColor: AppColor.gray6,
-              child: Icon(
-                CupertinoIcons.delete,
-                color: AppColor.darkBlue,
-              ),
-              onPressed: () => _showDeleteDialog(),
-            ),
-          Spacer(),
+    return Row(
+      children: [
+        if (!isCardUnsaved)
           FloatingActionButton(
-            tooltip: 'Cancel',
+            tooltip: 'Delete Agenda Item',
+            elevation: 0,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: AppColor.gray6,
-            elevation: 0,
             child: Icon(
-              Icons.close,
+              CupertinoIcons.delete,
               color: AppColor.darkBlue,
             ),
-            onPressed: () async {
-              if (hasBeenEdited) {
-                final isDiscardChangesConfirmed = await ConfirmDialog(
-                  mainText: 'Are you sure you want to discard changes?',
-                ).show(context: context);
+            onPressed: () => _showDeleteDialog(),
+          ),
+        Spacer(),
+        FloatingActionButton(
+          tooltip: 'Cancel',
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          backgroundColor: AppColor.gray6,
+          elevation: 0,
+          child: Icon(
+            Icons.close,
+            color: AppColor.darkBlue,
+          ),
+          onPressed: () async {
+            if (hasBeenEdited) {
+              final isDiscardChangesConfirmed = await ConfirmDialog(
+                mainText: 'Are you sure you want to discard changes?',
+              ).show(context: context);
 
-                if (isDiscardChangesConfirmed) {
-                  _presenter.cancelChanges();
-                }
-              } else {
+              if (isDiscardChangesConfirmed) {
                 _presenter.cancelChanges();
               }
-            },
+            } else {
+              _presenter.cancelChanges();
+            }
+          },
+        ),
+        SizedBox(width: 10),
+        FloatingActionButton(
+          tooltip: 'Save Agenda Item',
+          elevation: 0,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          backgroundColor: hasBeenEdited || isCardUnsaved
+              ? AppColor.darkBlue
+              : AppColor.gray6,
+          onPressed: hasBeenEdited || isCardUnsaved
+              ? () => alertOnError(context, () => _presenter.saveContent())
+              : null,
+          child: Icon(
+            Icons.check,
+            color: hasBeenEdited || isCardUnsaved
+                ? AppColor.white
+                : AppColor.gray4,
           ),
-          SizedBox(width: 10),
-          FloatingActionButton(
-            tooltip: 'Save Agenda Item',
-            elevation: 0,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            backgroundColor: hasBeenEdited || isCardUnsaved
-                ? AppColor.darkBlue
-                : AppColor.gray6,
-            onPressed: hasBeenEdited || isCardUnsaved
-                ? () => alertOnError(context, () => _presenter.saveContent())
-                : null,
-            child: Icon(
-              Icons.check,
-              color: hasBeenEdited || isCardUnsaved
-                  ? AppColor.white
-                  : AppColor.gray4,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildPreviewBottomSection() {
-    return UIMigration(
-      whiteBackground: true,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          FloatingActionButton(
-            tooltip: 'Duplicate Item',
-            backgroundColor: AppColor.gray6,
-            elevation: 0,
-            child: Icon(
-              Icons.copy,
-              color: AppColor.darkBlue,
-            ),
-            onPressed: () => _presenter.duplicateCard(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        FloatingActionButton(
+          tooltip: 'Duplicate Item',
+          backgroundColor: AppColor.gray6,
+          elevation: 0,
+          child: Icon(
+            Icons.copy,
+            color: AppColor.darkBlue,
           ),
-          SizedBox(width: 10),
-          FloatingActionButton(
-            tooltip: 'Edit Item',
-            elevation: 0,
-            backgroundColor: AppColor.gray6,
-            child: Icon(
-              Icons.edit,
-              color: AppColor.darkBlue,
-            ),
-            onPressed: () => _presenter.toggleEditMode(),
+          onPressed: () => _presenter.duplicateCard(),
+        ),
+        SizedBox(width: 10),
+        FloatingActionButton(
+          tooltip: 'Edit Item',
+          elevation: 0,
+          backgroundColor: AppColor.gray6,
+          child: Icon(
+            Icons.edit,
+            color: AppColor.darkBlue,
           ),
-        ],
-      ),
+          onPressed: () => _presenter.toggleEditMode(),
+        ),
+      ],
     );
   }
 

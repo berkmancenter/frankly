@@ -31,7 +31,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/templates/presentation/widgets/prerequisite_template_widget.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
@@ -50,7 +49,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/templates/template.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -760,177 +758,174 @@ class _EventInfoState extends State<EventInfo> {
                 ),
               ],
       ),
-      child: UIMigration(
-        whiteBackground: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              // Specific padding for sides. at 20 iPhone X (375 width) overflows with
-              // `Add to calendar` button.
-              margin: EdgeInsets.only(left: 19, right: 19, top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      VerticalTimeAndDateIndicator(
-                        shadow: false,
-                        padding:
-                            EdgeInsets.only(left: isMobile ? 0 : 16, right: 16),
-                        time: DateTime.fromMillisecondsSinceEpoch(
-                          (eventProvider.event.scheduledTime
-                                  ?.millisecondsSinceEpoch ??
-                              0),
-                        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            // Specific padding for sides. at 20 iPhone X (375 width) overflows with
+            // `Add to calendar` button.
+            margin: EdgeInsets.only(left: 19, right: 19, top: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    VerticalTimeAndDateIndicator(
+                      shadow: false,
+                      padding:
+                          EdgeInsets.only(left: isMobile ? 0 : 16, right: 16),
+                      time: DateTime.fromMillisecondsSinceEpoch(
+                        (eventProvider
+                                .event.scheduledTime?.millisecondsSinceEpoch ??
+                            0),
                       ),
-                      SizedBox(
-                        height: isMobile ? 90 : 100,
-                        width: isMobile ? 90 : 100,
-                        child: CustomStreamBuilder<Template>(
-                          entryFrom: '_EventInfoState.build',
-                          stream: Provider.of<TemplateProvider>(context)
-                              .templateFuture
-                              .asStream(),
-                          builder: (_, template) => ProxiedImage(
-                            eventProvider.event.image ?? template?.image,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                      if (_canEditEvent)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _buildOptionsIcon(),
-                            SizedBox(width: 5),
-                            _buildSettingIcon(),
-                            SizedBox(width: 5),
-                            _buildEditEvent(),
-                          ],
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: isMobile ? 0 : 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _buildEventVisibility(),
-                      _buildEventTypeName(),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: HeightConstrainedText(
-                          _event.title ?? '',
-                          maxLines: 3,
-                          style: AppTextStyle.headline2Light.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            decoration: _event.status == EventStatus.canceled
-                                ? TextDecoration.lineThrough
-                                : null,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  if (eventPageProvider.tags.isNotEmpty) ...[
-                    Wrap(
-                      children: [
-                        for (var tag in eventPageProvider.tags)
-                          CommunityTagBuilder(
-                            tagDefinitionId: tag.definitionId,
-                            builder: (_, isLoading, definition) {
-                              if (definition == null) {
-                                return const SizedBox.shrink();
-                              }
-                              return Text(
-                                '#${definition.title} ',
-                                style: AppTextStyle.body
-                                    .copyWith(color: AppColor.gray3),
-                              );
-                            },
-                          ),
-                      ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(
+                      height: isMobile ? 90 : 100,
+                      width: isMobile ? 90 : 100,
+                      child: CustomStreamBuilder<Template>(
+                        entryFrom: '_EventInfoState.build',
+                        stream: Provider.of<TemplateProvider>(context)
+                            .templateFuture
+                            .asStream(),
+                        builder: (_, template) => ProxiedImage(
+                          eventProvider.event.image ?? template?.image,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    if (_canEditEvent)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildOptionsIcon(),
+                          SizedBox(width: 5),
+                          _buildSettingIcon(),
+                          SizedBox(width: 5),
+                          _buildEditEvent(),
+                        ],
+                      ),
                   ],
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: CustomInkWell(
-                              onTap: canAccessParticipantListDetails
-                                  ? () => ParticipantsDialog(
-                                        eventProvider:
-                                            EventProvider.read(context),
-                                        eventPermissions: context
-                                            .read<EventPermissionsProvider>(),
-                                      ).show(context)
-                                  : null,
-                              child: EventPageParticipantsList(_event),
-                            ),
-                          ),
+                ),
+                SizedBox(height: isMobile ? 0 : 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildEventVisibility(),
+                    _buildEventTypeName(),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Flexible(
+                      child: HeightConstrainedText(
+                        _event.title ?? '',
+                        maxLines: 3,
+                        style: AppTextStyle.headline2Light.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          decoration: _event.status == EventStatus.canceled
+                              ? TextDecoration.lineThrough
+                              : null,
                         ),
-                        if (_canEditEvent)
-                          CircleIconButton(
-                            onPressed: widget.onMessagePressed,
-                            toolTipText: 'Message',
-                            icon: SizedBox(
-                              width: isMobile ? 30 : 20,
-                              height: isMobile ? 30 : 20,
-                              child: Icon(CupertinoIcons.paperplane),
-                            ),
-                          ),
-                      ],
+                      ),
                     ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                if (eventPageProvider.tags.isNotEmpty) ...[
+                  Wrap(
+                    children: [
+                      for (var tag in eventPageProvider.tags)
+                        CommunityTagBuilder(
+                          tagDefinitionId: tag.definitionId,
+                          builder: (_, isLoading, definition) {
+                            if (definition == null) {
+                              return const SizedBox.shrink();
+                            }
+                            return Text(
+                              '#${definition.title} ',
+                              style: AppTextStyle.body
+                                  .copyWith(color: AppColor.gray3),
+                            );
+                          },
+                        ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  _buildJoinEventButton(),
-                  Row(
+                  SizedBox(height: 20),
+                ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (canCancelParticipation || _canEditEvent)
-                        Expanded(child: _buildAddToCalendar()),
-                      if (canCancelParticipation) ...[
-                        Expanded(child: _buildCancelParticipationButton()),
-                      ] else if (context
-                              .watch<EventPermissionsProvider>()
-                              .canCancelEvent &&
-                          _event.status != EventStatus.canceled) ...[
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: _buildCancelEventButton(),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomInkWell(
+                            onTap: canAccessParticipantListDetails
+                                ? () => ParticipantsDialog(
+                                      eventProvider:
+                                          EventProvider.read(context),
+                                      eventPermissions: context
+                                          .read<EventPermissionsProvider>(),
+                                    ).show(context)
+                                : null,
+                            child: EventPageParticipantsList(_event),
+                          ),
                         ),
-                      ],
+                      ),
+                      if (_canEditEvent)
+                        CircleIconButton(
+                          onPressed: widget.onMessagePressed,
+                          toolTipText: 'Message',
+                          icon: SizedBox(
+                            width: isMobile ? 30 : 20,
+                            height: isMobile ? 30 : 20,
+                            child: Icon(CupertinoIcons.paperplane),
+                          ),
+                        ),
                     ],
                   ),
-                  if (showPrerequisiteWarning) ...[
-                    SizedBox(height: 10),
-                    PrerequisiteTemplateWidget(
-                      communityId: widget.event.communityId,
-                      prerequisiteTemplateId:
-                          widget.event.prerequisiteTemplateId!,
-                    ),
+                ),
+                SizedBox(height: 10),
+                _buildJoinEventButton(),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (canCancelParticipation || _canEditEvent)
+                      Expanded(child: _buildAddToCalendar()),
+                    if (canCancelParticipation) ...[
+                      Expanded(child: _buildCancelParticipationButton()),
+                    ] else if (context
+                            .watch<EventPermissionsProvider>()
+                            .canCancelEvent &&
+                        _event.status != EventStatus.canceled) ...[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _buildCancelEventButton(),
+                      ),
+                    ],
                   ],
+                ),
+                if (showPrerequisiteWarning) ...[
+                  SizedBox(height: 10),
+                  PrerequisiteTemplateWidget(
+                    communityId: widget.event.communityId,
+                    prerequisiteTemplateId:
+                        widget.event.prerequisiteTemplateId!,
+                  ),
                 ],
-              ),
+              ],
             ),
-            if (!showPrerequisiteWarning) _buildShareSection(),
-          ],
-        ),
+          ),
+          if (!showPrerequisiteWarning) _buildShareSection(),
+        ],
       ),
     );
   }
