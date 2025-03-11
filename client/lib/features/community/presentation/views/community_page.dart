@@ -113,48 +113,50 @@ class _CommunityPageState extends State<CommunityPage> {
                                   .watch<CommunityPermissionsProvider>()
                                   .canCreateEvent;
 
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          colorScheme: Theme.of(context).colorScheme.copyWith(
-                                primary: primaryColor,
-                                secondary: secondaryColor,
-                              ),
-                          switchTheme: SwitchTheme.of(context).copyWith(
-                            thumbColor: WidgetStateColor.resolveWith((states) {
-                              if (states.contains(WidgetState.selected)) {
-                                return secondaryColor;
-                              } else {
-                                return primaryColor;
-                              }
-                            }),
-                            trackColor: WidgetStateColor.resolveWith((states) {
-                              if (states.contains(WidgetState.selected)) {
-                                return primaryColor;
-                              } else {
-                                return AppColor.gray4;
-                              }
-                            }),
+                      return CustomScaffold(
+                        bgColor: enableCustomColors ? lightThemeColor : null,
+                        fillViewport: widget.fillViewport,
+                        bottomNavigationBar: _showBottomNav
+                            ? CommunityBottomNavBar(
+                                showCreateMeetingButton:
+                                    isCreateMeetingAvailable,
+                              )
+                            : null,
+                        floatingActionButton: _buildFab(context),
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: Theme.of(context).colorScheme.copyWith(
+                                  primary: primaryColor,
+                                  secondary: secondaryColor,
+                                ),
+                            switchTheme: SwitchTheme.of(context).copyWith(
+                              thumbColor:
+                                  WidgetStateColor.resolveWith((states) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return secondaryColor;
+                                } else {
+                                  return primaryColor;
+                                }
+                              }),
+                              trackColor:
+                                  WidgetStateColor.resolveWith((states) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return primaryColor;
+                                } else {
+                                  return AppColor.gray4;
+                                }
+                              }),
+                            ),
+                            radioTheme: RadioTheme.of(context).copyWith(
+                              fillColor: WidgetStateColor.resolveWith((states) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return primaryColor;
+                                } else {
+                                  return AppColor.gray4;
+                                }
+                              }),
+                            ),
                           ),
-                          radioTheme: RadioTheme.of(context).copyWith(
-                            fillColor: WidgetStateColor.resolveWith((states) {
-                              if (states.contains(WidgetState.selected)) {
-                                return primaryColor;
-                              } else {
-                                return AppColor.gray4;
-                              }
-                            }),
-                          ),
-                        ),
-                        child: CustomScaffold(
-                          bgColor: enableCustomColors ? lightThemeColor : null,
-                          fillViewport: widget.fillViewport,
-                          bottomNavigationBar: _showBottomNav
-                              ? CommunityBottomNavBar(
-                                  showCreateMeetingButton:
-                                      isCreateMeetingAvailable,
-                                )
-                              : null,
-                          floatingActionButton: _buildFab(context),
                           child: widget.content,
                         ),
                       );
