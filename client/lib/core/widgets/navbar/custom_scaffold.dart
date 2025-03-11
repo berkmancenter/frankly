@@ -13,12 +13,18 @@ class CustomScaffold extends StatefulWidget {
   final Widget? bottomNavigationBar;
   final Color? bgColor;
 
+  /// This allows a different theme to be provided to child widgets
+  /// without affecting the theme of global/nav elements.
+  /// This feature is used in community pages to customize theme.
+  final ThemeData? childTheme;
+
   const CustomScaffold({
     required this.child,
     this.fillViewport = false,
     this.floatingActionButton,
     this.bottomNavigationBar,
     this.bgColor,
+    this.childTheme,
   });
 
   @override
@@ -54,12 +60,23 @@ class CustomScaffoldState extends State<CustomScaffold> {
     return FocusFixer(
       child: Scaffold(
         backgroundColor: widget.bgColor,
-        floatingActionButton: widget.floatingActionButton,
+
+        // Floating action buttons should follow the theme of the scaffold
+        // instead of other nav elements.
+        floatingActionButton: widget.floatingActionButton != null
+            ? Theme(
+                data: widget.childTheme ?? Theme.of(context),
+                child: widget.floatingActionButton!,
+              )
+            : null,
         endDrawer: SideBar(),
         body: Column(
           children: [
             Expanded(
-              child: _buildMainContent(navBarProvider),
+              child: Theme(
+                data: widget.childTheme ?? Theme.of(context),
+                child: _buildMainContent(navBarProvider),
+              ),
             ),
             if (widget.bottomNavigationBar != null) widget.bottomNavigationBar!,
           ],
