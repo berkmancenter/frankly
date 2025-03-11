@@ -138,7 +138,6 @@ class CommunitySidebarNavLinks extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: CommunityMembershipButton(
           community,
-          bgColor: AppColor.darkBlue,
           minWidth: 315,
         ),
       );
