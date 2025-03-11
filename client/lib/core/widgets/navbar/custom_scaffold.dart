@@ -43,13 +43,21 @@ class CustomScaffoldState extends State<CustomScaffold> {
         ? Column(
             children: [
               NavBar(),
-              Expanded(child: keyedChild),
+              Expanded(
+                child: Theme(
+                  data: widget.childTheme ?? Theme.of(context),
+                  child: keyedChild,
+                ),
+              ),
             ],
           )
         : CustomListView(
             children: [
               NavBar(),
-              keyedChild,
+              Theme(
+                data: widget.childTheme ?? Theme.of(context),
+                child: keyedChild,
+              ),
             ],
           );
   }
@@ -73,10 +81,7 @@ class CustomScaffoldState extends State<CustomScaffold> {
         body: Column(
           children: [
             Expanded(
-              child: Theme(
-                data: widget.childTheme ?? Theme.of(context),
-                child: _buildMainContent(navBarProvider),
-              ),
+              child: _buildMainContent(navBarProvider),
             ),
             if (widget.bottomNavigationBar != null) widget.bottomNavigationBar!,
           ],
