@@ -345,7 +345,6 @@ class _TemplatePageState extends State<TemplatePage>
         HeightConstrainedText(
           'Description',
           style: AppTextStyle.headlineSmall.copyWith(
-            color: AppColor.darkBlue,
             fontSize: 16,
           ),
         ),
@@ -395,7 +394,6 @@ class _TemplatePageState extends State<TemplatePage>
             HeightConstrainedText(
               'More from ${community.name}',
               style: AppTextStyle.headlineSmall.copyWith(
-                color: AppColor.darkBlue,
                 fontSize: 16,
               ),
             ),
@@ -437,7 +435,6 @@ class _TemplatePageState extends State<TemplatePage>
             HeightConstrainedText(
               'Upcoming Events',
               style: AppTextStyle.headlineSmall.copyWith(
-                color: AppColor.darkBlue,
                 fontSize: 16,
               ),
             ),
@@ -447,8 +444,7 @@ class _TemplatePageState extends State<TemplatePage>
                 onTap: () => tabController.currentTab = 3,
                 child: HeightConstrainedText(
                   'See all',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.darkBlue),
+                  style: AppTextStyle.bodyMedium,
                 ),
               ),
           ],
@@ -825,7 +821,6 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.headline2.copyWith(
-                      color: AppColor.darkBlue,
                       decoration:
                           widget.template.status == TemplateStatus.removed
                               ? TextDecoration.lineThrough
@@ -897,7 +892,6 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline1.copyWith(
-                                color: AppColor.darkBlue,
                                 fontSize: 40,
                                 decoration: widget.template.status ==
                                         TemplateStatus.removed
