@@ -107,7 +107,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
   }
 
   /// Create a semantically-wrapped button with label for the community membership button
-  Widget _semanticMembershipButton(Community currentCommunity) {
+  Widget _buildMembershipButton(Community currentCommunity) {
     return Semantics(
         label:'Follow Community Button', 
         identifier: 'follow_community_button',
@@ -184,7 +184,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         if (showCommunityMembershipButton) ...[
           SizedBox(width: 20),
           Expanded(
-            child: _semanticMembershipButton(currentCommunity),
+            child: _buildMembershipButton(currentCommunity),
           ),
         ] else
           Spacer(),
@@ -243,7 +243,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     if (!canViewCommunityLinks) {
       return [
         SizedBox(width: 20),
-        _semanticMembershipButton(community),
+        _buildMembershipButton(community),
       ];
     }
     return [
