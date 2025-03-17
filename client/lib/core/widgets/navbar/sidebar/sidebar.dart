@@ -305,7 +305,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
         return Column(
           children: [
             for (final community in widget.communities) ...[
-              if (community != widget.communities.first) _buildDivider(),
+              if (community != widget.communities.first) themedDivider,
               NavListItem(
                 community: community,
                 isOpenByDefault: (community == widget.communities.first) &&
@@ -313,7 +313,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
               ),
             ],
             if (owner || Uri.base.origin.contains('localhost')) ...[
-              _buildDivider(),
+              themedDivider,
               _buildStartCommunity(),
             ],
           ],
@@ -321,14 +321,6 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
       },
     );
   }
-
-  Widget _buildDivider() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Container(
-          color: AppColor.gray5,
-          height: 1,
-        ),
-      );
 
   Widget _buildStartCommunity() => GestureDetector(
         onTap: _startCommunityTapped,
