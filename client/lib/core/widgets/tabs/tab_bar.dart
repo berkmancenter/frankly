@@ -69,19 +69,21 @@ class _CustomTabState extends State<_CustomTab> {
 
   @override
   Widget build(BuildContext context) {
+    final shouldHighlight = isSelected || _hovered;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: Container(
         constraints: BoxConstraints(minWidth: 100),
-        padding: EdgeInsets.only(bottom: _hovered ? 7 : 8),
+        padding: EdgeInsets.only(bottom: _hovered ? 6 : 8),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: isSelected || _hovered
+              color: shouldHighlight
                   ? context.theme.colorScheme.primary
                   : AppColor.textTertiary,
-              width: _hovered ? 5 : 4,
+              width: shouldHighlight ? 5 : 3,
             ),
           ),
         ),
@@ -106,7 +108,7 @@ class _CustomTabState extends State<_CustomTab> {
                     maxLines: 1,
                     softWrap: false,
                     style: AppTextStyle.bodyMedium.copyWith(
-                      color: isSelected || _hovered
+                      color: shouldHighlight
                           ? context.theme.colorScheme.primary
                           : AppColor.textTertiary,
                     ),
