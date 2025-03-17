@@ -1,4 +1,5 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -325,28 +326,10 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
         onTap: _startCommunityTapped,
         child: Row(
           children: [
-            CustomInkWell(
-              boxShape: BoxShape.circle,
-              onTap: _startCommunityTapped,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColor.darkBlue,
-                ),
-                height: 40,
-                width: 40,
-                child: DottedBorder(
-                  borderType: BorderType.Circle,
-                  dashPattern: const [3, 3],
-                  color: AppColor.gray2,
-                  child: Center(
-                    child: Icon(
-                      Icons.add,
-                      color: AppColor.white,
-                    ),
-                  ),
-                ),
-              ),
+            CircleIconButton(
+              onPressed: _startCommunityTapped,
+              icon: Icons.add,
+              toolTipText: 'Start a community',
             ),
             SizedBox(width: 11),
             HeightConstrainedText(
