@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/survey_presenter.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/app.dart';
 import 'package:client/services.dart';

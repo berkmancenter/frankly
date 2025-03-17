@@ -86,7 +86,6 @@ class _CommunityAdminState extends State<CommunityAdmin>
               alignment: Alignment.bottomLeft,
               child: CustomTabBar(
                 padding: null,
-                isWhiteBackground: true,
               ),
             ),
           ],
