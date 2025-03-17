@@ -80,7 +80,7 @@ class _CustomTabState extends State<_CustomTab> {
             bottom: BorderSide(
               color: isSelected || _hovered
                   ? context.theme.colorScheme.primary
-                  : AppColor.primaryPlainColor,
+                  : AppColor.textTertiary,
               width: _hovered ? 5 : 4,
             ),
           ),
@@ -108,7 +108,7 @@ class _CustomTabState extends State<_CustomTab> {
                     style: AppTextStyle.bodyMedium.copyWith(
                       color: isSelected || _hovered
                           ? context.theme.colorScheme.primary
-                          : AppColor.primaryPlainColor,
+                          : AppColor.textTertiary,
                     ),
                   ),
                 ],
