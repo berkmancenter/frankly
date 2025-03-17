@@ -95,6 +95,15 @@ class _CustomTabState extends State<_CustomTab> {
       onExit: (_) => setState(() => _hovered = false),
       child: Container(
         constraints: BoxConstraints(minWidth: 100),
+        padding: EdgeInsets.only(bottom: _bold ? 7 : 8),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: currentColor,
+              width: _bold ? 5 : 4,
+            ),
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
