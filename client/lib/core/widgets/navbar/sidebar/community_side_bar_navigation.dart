@@ -36,20 +36,20 @@ class CommunitySideBarNavigation extends StatelessWidget {
         SideBarNavigationButton(
           text: 'Events',
           onTap: () => routerDelegate.beamTo(initialCommunityRoute.eventsPage),
-          style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+          style: AppTextStyle.body,
         ),
         if (enableDiscussionThreads) ...[
           SideBarNavigationButton(
             text: 'Posts',
             onTap: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
-            style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.body,
           ),
         ],
         if (showResources) ...[
           SideBarNavigationButton(
             text: 'Resources',
-            style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.body,
             onTap: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
           ),
@@ -58,7 +58,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
           text: 'Templates',
           onTap: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
-          style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+          style: AppTextStyle.body,
         ),
         if (showLeaveCommunity)
           SideBarNavigationButton(
@@ -77,7 +77,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
             text: 'Admin',
             onTap: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
-            style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.body,
           ),
         ],
       ],
