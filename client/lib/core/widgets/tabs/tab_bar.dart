@@ -50,12 +50,10 @@ class CustomTabBar extends StatelessWidget {
 class _CustomTab extends StatefulWidget {
   final CustomTabAndContent tab;
   final int index;
-  final int? unreadCount;
 
   const _CustomTab({
     required this.tab,
     required this.index,
-    this.unreadCount,
   });
 
   @override
@@ -99,8 +97,6 @@ class _CustomTabState extends State<_CustomTab> {
 
   @override
   Widget build(BuildContext context) {
-    final localUnreadCount = widget.unreadCount;
-
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -132,25 +128,6 @@ class _CustomTabState extends State<_CustomTab> {
                       ),
                     ],
                   ),
-                  if (localUnreadCount != null && localUnreadCount > 0) ...[
-                    SizedBox(width: 4),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.brightGreen,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      height: 25,
-                      width: 25,
-                      child: Text(
-                        widget.unreadCount.toString(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
                   SizedBox(width: 10),
                 ],
               ),
