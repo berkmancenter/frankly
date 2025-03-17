@@ -1,5 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/theme.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
@@ -47,7 +48,7 @@ class _SideBarState extends State<SideBar> {
   Widget build(BuildContext context) {
     return Container(
       width: AppSize.kSidebarWidth,
-      color: AppColor.white,
+      color: context.theme.colorScheme.secondary,
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxHeight < 750) {
@@ -66,18 +67,15 @@ class _SideBarState extends State<SideBar> {
       children: [
         _builSidebardHeader(),
         Expanded(
-          child: Container(
-            color: AppColor.gray6,
-            child: CustomListView(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  color: AppColor.white,
-                  child: _buildNavigationOrSignIn(),
-                ),
-                _buildBottomSidebarButtons(),
-              ],
-            ),
+          child: CustomListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                color: AppColor.white,
+                child: _buildNavigationOrSignIn(),
+              ),
+              _buildBottomSidebarButtons(),
+            ],
           ),
         ),
       ],
@@ -192,7 +190,7 @@ class _SideBarState extends State<SideBar> {
     final version =
         js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
