@@ -32,9 +32,7 @@ class CustomTabBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 12),
                 child: CustomInkWell(
                   hoverColor: Colors.transparent,
-                  onTap: !tabController.tabs[i].isGated
-                      ? () => tabController.currentTab = i
-                      : null,
+                  onTap: () => tabController.currentTab = i,
                   child: _CustomTab(
                     tab: tabController.tabs[i],
                     index: i,
@@ -80,12 +78,7 @@ class _CustomTabState extends State<_CustomTab> {
     } else {
       color = AppColor.gray2.withOpacity(.75);
     }
-
-    if (widget.tab.isGated) {
-      return color.withOpacity(.5);
-    } else {
-      return color;
-    }
+    return color;
   }
 
   bool get isSelected {
