@@ -76,7 +76,7 @@ class _CustomTabState extends State<_CustomTab> {
       onExit: (_) => setState(() => _hovered = false),
       child: Container(
         constraints: BoxConstraints(minWidth: 100),
-        padding: EdgeInsets.only(bottom: _hovered ? 6 : 8),
+        padding: EdgeInsets.only(bottom: shouldHighlight ? 6 : 8),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
