@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
@@ -268,76 +267,73 @@ class _DonateWidgetState extends State<DonateWidget> {
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         backgroundColor: AppColor.darkBlue,
-        child: UIMigration(
-          whiteBackground: true,
-          child: Stack(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                constraints: BoxConstraints(maxWidth: 600),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 25),
-                      if (!isNullOrEmpty(widget.subHeader)) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                          child: HeightConstrainedText(
-                            widget.subHeader.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                            ),
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              constraints: BoxConstraints(maxWidth: 600),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 25),
+                    if (!isNullOrEmpty(widget.subHeader)) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                        child: HeightConstrainedText(
+                          widget.subHeader.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColor.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
                           ),
                         ),
-                        SizedBox(height: 18),
-                      ],
-                      HeightConstrainedText(
-                        widget.headline,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.headline1.copyWith(
-                          color: AppColor.white,
-                        ),
                       ),
                       SizedBox(height: 18),
-                      HeightConstrainedText(
-                        widget.community.donationDialogText ??
-                            'If you enjoyed this event, support ${widget.community.name}.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColor.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(height: 18),
-                      _buildCommunityDescriptor(),
-                      SizedBox(height: 18),
-                      _buildDonationButtons(),
-                      if (_isOtherSelected) ...[
-                        SizedBox(height: 18),
-                        _buildOtherTextInput(),
-                      ],
-                      SizedBox(height: 18),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildSkip(),
-                          _buildDonate(),
-                        ],
-                      ),
                     ],
-                  ),
+                    HeightConstrainedText(
+                      widget.headline,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.headline1.copyWith(
+                        color: AppColor.white,
+                      ),
+                    ),
+                    SizedBox(height: 18),
+                    HeightConstrainedText(
+                      widget.community.donationDialogText ??
+                          'If you enjoyed this event, support ${widget.community.name}.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColor.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 18),
+                    _buildCommunityDescriptor(),
+                    SizedBox(height: 18),
+                    _buildDonationButtons(),
+                    if (_isOtherSelected) ...[
+                      SizedBox(height: 18),
+                      _buildOtherTextInput(),
+                    ],
+                    SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSkip(),
+                        _buildDonate(),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Positioned.fill(
-                child: _buildExitButton(),
-              ),
-            ],
-          ),
+            ),
+            Positioned.fill(
+              child: _buildExitButton(),
+            ),
+          ],
         ),
       ),
     );

@@ -19,7 +19,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/user/public_user_info.dart';
 
-import '../../../community/utils/theme_creation_utility.dart';
+import '../../../community/utils/community_theme_utils.dart.dart';
 
 /// This is the top section of the home page that displays a carousel of images which link to the community home pages
 class MyCommunitiesSection extends StatefulWidget {

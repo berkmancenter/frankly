@@ -8,7 +8,6 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
@@ -46,24 +45,19 @@ class ParticipantsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: eventProvider,
-      builder: (context, _) => UIMigration(
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: UIMigration(
-            whiteBackground: true,
-            child: Container(
-              padding: const EdgeInsets.all(40),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Material(
-                  color: Colors.transparent,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: eventProvider.useParticipantCountEstimate
-                        ? _buildLivestreamEventLayout(context)
-                        : _buildRegularEventLayout(context),
-                  ),
-                ),
+      builder: (context, _) => GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          padding: const EdgeInsets.all(40),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Material(
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTap: () {},
+                child: eventProvider.useParticipantCountEstimate
+                    ? _buildLivestreamEventLayout(context)
+                    : _buildRegularEventLayout(context),
               ),
             ),
           ),

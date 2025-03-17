@@ -1,5 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/theme.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
@@ -8,7 +9,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/nav_list_tile.dart';
 import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
@@ -46,20 +46,17 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      whiteBackground: true,
-      child: Container(
-        width: AppSize.kSidebarWidth,
-        color: AppColor.white,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxHeight < 750) {
-              return _buildMobileLayout();
-            } else {
-              return _buildDesktopLayout();
-            }
-          },
-        ),
+    return Container(
+      width: AppSize.kSidebarWidth,
+      color: context.theme.colorScheme.secondary,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxHeight < 750) {
+            return _buildMobileLayout();
+          } else {
+            return _buildDesktopLayout();
+          }
+        },
       ),
     );
   }
@@ -70,18 +67,15 @@ class _SideBarState extends State<SideBar> {
       children: [
         _builSidebardHeader(),
         Expanded(
-          child: Container(
-            color: AppColor.gray6,
-            child: CustomListView(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  color: AppColor.white,
-                  child: _buildNavigationOrSignIn(),
-                ),
-                _buildBottomSidebarButtons(),
-              ],
-            ),
+          child: CustomListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                color: AppColor.white,
+                child: _buildNavigationOrSignIn(),
+              ),
+              _buildBottomSidebarButtons(),
+            ],
           ),
         ),
       ],
@@ -196,7 +190,7 @@ class _SideBarState extends State<SideBar> {
     final version =
         js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -311,7 +305,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
         return Column(
           children: [
             for (final community in widget.communities) ...[
-              if (community != widget.communities.first) _buildDivider(),
+              if (community != widget.communities.first) themedDivider,
               NavListItem(
                 community: community,
                 isOpenByDefault: (community == widget.communities.first) &&
@@ -319,7 +313,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
               ),
             ],
             if (owner || Uri.base.origin.contains('localhost')) ...[
-              _buildDivider(),
+              themedDivider,
               _buildStartCommunity(),
             ],
           ],
@@ -327,14 +321,6 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
       },
     );
   }
-
-  Widget _buildDivider() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Container(
-          color: AppColor.gray5,
-          height: 1,
-        ),
-      );
 
   Widget _buildStartCommunity() => GestureDetector(
         onTap: _startCommunityTapped,
