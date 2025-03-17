@@ -101,28 +101,27 @@ class _CustomTabState extends State<_CustomTab> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(width: 10),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
-                      HeightConstrainedText(
-                        widget.tab.tab.toUpperCase(),
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: Colors.transparent),
-                      ),
-                      HeightConstrainedText(
-                        widget.tab.tab.toUpperCase(),
-                        style: getTextStyle,
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 10),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
+                    HeightConstrainedText(
+                      widget.tab.tab.toUpperCase(),
+                      maxLines: 1,
+                      softWrap: false,
+                      style: AppTextStyle.bodyMedium
+                          .copyWith(color: Colors.transparent),
+                    ),
+                    HeightConstrainedText(
+                      widget.tab.tab.toUpperCase(),
+                      maxLines: 1,
+                      softWrap: false,
+                      style: getTextStyle,
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: _bold ? 7 : 8),
               Container(
