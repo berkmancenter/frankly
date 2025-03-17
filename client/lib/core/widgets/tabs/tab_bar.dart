@@ -93,43 +93,34 @@ class _CustomTabState extends State<_CustomTab> {
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
-      child: ConstrainedBox(
+      child: Container(
         constraints: BoxConstraints(minWidth: 100),
-        child: IntrinsicWidth(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
-                    HeightConstrainedText(
-                      widget.tab.tab.toUpperCase(),
-                      maxLines: 1,
-                      softWrap: false,
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: Colors.transparent),
-                    ),
-                    HeightConstrainedText(
-                      widget.tab.tab.toUpperCase(),
-                      maxLines: 1,
-                      softWrap: false,
-                      style: getTextStyle,
-                    ),
-                  ],
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
+                  HeightConstrainedText(
+                    widget.tab.tab.toUpperCase(),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: AppTextStyle.bodyMedium
+                        .copyWith(color: Colors.transparent),
+                  ),
+                  HeightConstrainedText(
+                    widget.tab.tab.toUpperCase(),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: getTextStyle,
+                  ),
+                ],
               ),
-              SizedBox(height: _bold ? 7 : 8),
-              Container(
-                height: _bold ? 5 : 4,
-                color: currentColor,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
