@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/tabs/tab_controller.dart';
@@ -61,32 +62,10 @@ class _CustomTab extends StatefulWidget {
 class _CustomTabState extends State<_CustomTab> {
   bool _hovered = false;
 
-  TextStyle get getTextStyle {
-    final style = AppTextStyle.body;
-    return style.copyWith(color: currentColor);
-  }
-
-  bool get _bold => _hovered;
-
-  Color get currentColor {
-    final Color color;
-
-    if (isSelected) {
-      color = selectedColor;
-    } else if (_hovered) {
-      color = AppColor.white;
-    } else {
-      color = AppColor.gray2.withOpacity(.75);
-    }
-    return color;
-  }
-
   bool get isSelected {
     final controller = Provider.of<CustomTabControllerState>(context);
     return widget.index == controller.currentTab;
   }
-
-  Color get selectedColor => AppColor.darkBlue;
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +74,14 @@ class _CustomTabState extends State<_CustomTab> {
       onExit: (_) => setState(() => _hovered = false),
       child: Container(
         constraints: BoxConstraints(minWidth: 100),
-        padding: EdgeInsets.only(bottom: _bold ? 7 : 8),
+        padding: EdgeInsets.only(bottom: _hovered ? 7 : 8),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: currentColor,
-              width: _bold ? 5 : 4,
+              color: isSelected || _hovered
+                  ? context.theme.colorScheme.primary
+                  : AppColor.primaryPlainColor,
+              width: _hovered ? 5 : 4,
             ),
           ),
         ),
@@ -124,7 +105,11 @@ class _CustomTabState extends State<_CustomTab> {
                     widget.tab.tab.toUpperCase(),
                     maxLines: 1,
                     softWrap: false,
-                    style: getTextStyle,
+                    style: AppTextStyle.bodyMedium.copyWith(
+                      color: isSelected || _hovered
+                          ? context.theme.colorScheme.primary
+                          : AppColor.primaryPlainColor,
+                    ),
                   ),
                 ],
               ),
