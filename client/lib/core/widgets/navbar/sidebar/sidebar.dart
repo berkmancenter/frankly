@@ -1,6 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
-import 'package:client/styles/theme.dart';
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
@@ -19,7 +19,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/user/public_user_info.dart';

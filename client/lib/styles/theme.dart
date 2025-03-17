@@ -66,10 +66,6 @@ final iconTheme = IconThemeData(
 
 const hoverColor = AppColor.gray700;
 
-extension ThemeExtension on BuildContext {
-  ThemeData get theme => Theme.of(this);
-}
-
 final themedDivider = Divider(
   color: AppColor.gray200,
 );
