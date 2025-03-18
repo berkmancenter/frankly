@@ -25,6 +25,7 @@ final appTheme = ThemeData(
     surfaceContainer: AppColor.white,
     surfaceDim: AppColor.gray400,
     onSurface: AppColor.black,
+    outline: AppColor.gray400,
   ),
   textTheme: textTheme,
   pageTransitionsTheme: NoTransitionsOnWeb(),

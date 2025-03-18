@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -16,45 +17,40 @@ class AddMoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      color: AppColor.gray4,
-      dashPattern: const [10, 10],
-      child: CustomInkWell(
-        onTap: onPressed,
-        child: Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: isWhiteBackground ? AppColor.gray6 : Colors.transparent,
+    return CustomInkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          color: context.theme.colorScheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: context.theme.colorScheme.outline,
           ),
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Container(
-                width: 25,
-                height: 25,
-                decoration: ShapeDecoration(
-                  color: isWhiteBackground
-                      ? AppColor.darkBlue
-                      : AppColor.brightGreen,
-                  shape: CircleBorder(),
-                ),
-                child: Icon(
-                  Icons.add,
-                  size: 12,
-                  color: isWhiteBackground
-                      ? AppColor.lightGreen
-                      : AppColor.darkBlue,
-                ),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              decoration: ShapeDecoration(
+                color: context.theme.colorScheme.primary,
+                shape: CircleBorder(),
               ),
-              SizedBox(width: 5),
-              HeightConstrainedText(
-                label,
-                style: AppTextStyle.subhead.copyWith(
-                  color: isWhiteBackground ? AppColor.darkBlue : AppColor.white,
-                ),
+              child: Icon(
+                Icons.add,
+                size: 12,
+                color: context.theme.colorScheme.onPrimary,
               ),
-            ],
-          ),
+            ),
+            SizedBox(width: 12),
+            HeightConstrainedText(
+              label,
+              style: AppTextStyle.subhead,
+            ),
+          ],
         ),
       ),
     );
