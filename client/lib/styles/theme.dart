@@ -64,8 +64,6 @@ final iconTheme = IconThemeData(
   color: AppColor.black,
 );
 
-const hoverColor = AppColor.gray700;
-
 final themedDivider = Divider(
   color: AppColor.gray200,
 );
