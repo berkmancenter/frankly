@@ -22,11 +22,13 @@ final appTheme = ThemeData(
     error: AppColor.red200,
     onError: AppColor.white,
     surface: AppColor.gray50,
+    surfaceContainer: AppColor.white,
     surfaceDim: AppColor.gray400,
     onSurface: AppColor.black,
   ),
   textTheme: textTheme,
   pageTransitionsTheme: NoTransitionsOnWeb(),
+  dividerTheme: dividerTheme,
 );
 
 final textTheme = GoogleFonts.poppinsTextTheme(
@@ -64,6 +66,7 @@ final iconTheme = IconThemeData(
   color: AppColor.black,
 );
 
-final themedDivider = Divider(
+final dividerTheme = DividerThemeData(
   color: AppColor.gray200,
+  space: 0.0,
 );

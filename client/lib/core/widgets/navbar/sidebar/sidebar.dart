@@ -305,7 +305,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
         return Column(
           children: [
             for (final community in widget.communities) ...[
-              if (community != widget.communities.first) themedDivider,
+              if (community != widget.communities.first) Divider(height: 16),
               NavListItem(
                 community: community,
                 isOpenByDefault: (community == widget.communities.first) &&
@@ -313,7 +313,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
               ),
             ],
             if (owner || Uri.base.origin.contains('localhost')) ...[
-              themedDivider,
+              Divider(height: 16),
               _buildStartCommunity(),
             ],
           ],
