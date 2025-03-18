@@ -29,6 +29,8 @@ final appTheme = ThemeData(
   textTheme: textTheme,
   pageTransitionsTheme: NoTransitionsOnWeb(),
   dividerTheme: dividerTheme,
+  iconButtonTheme: iconButtonTheme,
+  disabledColor: AppColor.gray100,
 );
 
 final textTheme = GoogleFonts.poppinsTextTheme(
@@ -69,4 +71,41 @@ final iconTheme = IconThemeData(
 final dividerTheme = DividerThemeData(
   color: AppColor.gray200,
   space: 0.0,
+);
+
+final iconButtonTheme = IconButtonThemeData(
+  style: ButtonStyle(
+    overlayColor: WidgetStateProperty.all(AppColor.gray700),
+    elevation: WidgetStateProperty.all(0),
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    shape: WidgetStateProperty.all(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+    backgroundColor:
+        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColor.gray100;
+      }
+      return AppColor.black; // Defer to the widget's default.
+    }),
+
+    /// Setting a custom disabled text color must be done explicitly as of 2020.
+    /// See official Flutter doc here for detail: https://docs.google.com/document/d/1yohSuYrvyya5V1hB6j9pJskavCdVq9sVeTqSoEPsWH0/edit?tab=t.0
+    /// The below method is taken from the docs.
+    foregroundColor:
+        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColor.gray400;
+      }
+      return AppColor.white; // Defer to the widget's default.
+    }),
+  ),
+);
+
+final floatingActionButtonTheme = FloatingActionButtonThemeData(
+  backgroundColor: AppColor.black,
+  foregroundColor: AppColor.white,
+  hoverColor: AppColor.gray700,
 );
