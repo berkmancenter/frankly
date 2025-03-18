@@ -56,7 +56,6 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       );
     } else {
       return AddMoreButton(
-        isWhiteBackground: true,
         label: 'Define Breakouts (Optional)',
         onPressed: () => alertOnError(context, () async {
           final updatedEvent = event.copyWith(

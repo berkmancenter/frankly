@@ -108,7 +108,6 @@ class _TemplatePageState extends State<TemplatePage>
     } else {
       return AddMoreButton(
         label: 'Add a prerequisite template',
-        isWhiteBackground: true,
         onPressed: () {
           templatePageProvider.isNewPrerequisite = true;
         },
@@ -631,7 +630,6 @@ class _TemplatePageState extends State<TemplatePage>
     } else {
       return AddMoreButton(
         label: addNewTitle,
-        isWhiteBackground: true,
         onPressed: () {
           final prePostCard = PrePostCard.newCard(prePostCardType);
           final Template updatedTemplate;

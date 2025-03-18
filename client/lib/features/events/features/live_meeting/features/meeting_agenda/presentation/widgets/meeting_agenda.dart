@@ -147,7 +147,6 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
           if (canEditAgenda && !hasAnyUnsavedItems) ...[
             SizedBox(height: 20),
             AddMoreButton(
-              isWhiteBackground: true,
               label: 'Add agenda item',
               onPressed: () => agendaProvider.addNewUnsavedItem(),
             ),

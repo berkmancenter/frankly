@@ -581,7 +581,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     } else {
       return AddMoreButton(
         label: addNewTitle,
-        isWhiteBackground: true,
         onPressed: () async {
           final prePostCard = PrePostCard.newCard(prePostCardType);
           final Event updatedEvent;
@@ -649,7 +648,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     } else {
       return AddMoreButton(
         label: 'Add a prerequisite template',
-        isWhiteBackground: true,
         onPressed: () {
           eventTabsModelState.isNewPrerequisite = true;
         },

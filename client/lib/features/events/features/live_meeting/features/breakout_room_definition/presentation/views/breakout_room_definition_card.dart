@@ -232,7 +232,6 @@ class _BreakoutRoomDefinitionCardState
         if (_questions.isNotEmpty) SizedBox(height: 20),
         if (_questions.length < _maxSmartMatchQuestionsCount)
           AddMoreButton(
-            isWhiteBackground: true,
             onPressed: () =>
                 context.read<BreakoutRoomPresenter>().addQuestion(),
             label: 'Add a question',

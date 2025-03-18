@@ -7,13 +7,11 @@ import 'package:client/core/widgets/height_constained_text.dart';
 class AddMoreButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;
-  final bool isWhiteBackground;
 
   const AddMoreButton({
     Key? key,
     required this.onPressed,
     required this.label,
-    this.isWhiteBackground = false,
   }) : super(key: key);
 
   @override

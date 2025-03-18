@@ -285,7 +285,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               ],
               AddMoreButton(
                 onPressed: () => _presenter.addNewActionLink(),
-                isWhiteBackground: widget.isWhiteBackground,
                 label: 'Add action link',
               ),
             ],
