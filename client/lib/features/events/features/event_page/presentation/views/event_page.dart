@@ -162,14 +162,17 @@ class _EventPageState extends State<EventPage> implements EventPageView {
 
   Future<void> _startMeeting() async {
     final eventPageProvider = context.read<EventPageProvider>();
-    JoinEventResults? joinResults = await _joinEvent(showConfirm: false);
-    if (!joinResults.isJoined) return;
+    JoinEventResults? joinResults;
+    if (!EventProvider.read(context).isParticipant) {
+      joinResults = await _joinEvent(showConfirm: false);
+      if (!joinResults.isJoined) return;
+    }
 
     if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
-        surveyQuestions: joinResults.surveyQuestions,
+        surveyQuestions: joinResults?.surveyQuestions,
       ),
     );
   }
