@@ -165,6 +165,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     JoinEventResults? joinResults = await _joinEvent(showConfirm: false);
     if (!joinResults.isJoined) return;
 
+    if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
