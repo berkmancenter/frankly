@@ -9,6 +9,8 @@ Frankly is an online deliberations platform that allows anyone to host video-ena
 
 Frankly is a **Flutter** app with a **Firebase** backend.
 
+The Frankly codebase is AGPL 3.0 licensed (see LICENSE.txt). Dependencies distributed with Frankly (external and vendored) are AGPL compatible and should be consulted as needed.
+
 # Overview
 
 🪧 This README includes the following sections:
