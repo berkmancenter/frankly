@@ -136,11 +136,18 @@ class CommunitySidebarNavLinks extends StatelessWidget {
     } else {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: CommunityMembershipButton(
-          community,
-          bgColor: AppColor.darkBlue,
-          minWidth: 315,
-        ),
+        child: 
+        Semantics(
+          label:'Sidebar Follow Community Button', 
+          identifier: 'sidebar_follow_community_button',
+          button: true,
+          child:
+            CommunityMembershipButton(
+              community,
+              bgColor: AppColor.darkBlue,
+              minWidth: 315,
+            ),
+          ),
       );
     }
   }
