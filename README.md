@@ -9,6 +9,8 @@ Frankly is an online deliberations platform that allows anyone to host video-ena
 
 Frankly is a **Flutter** app with a **Firebase** backend.
 
+The Frankly codebase is AGPL 3.0 licensed (see LICENSE.txt). Dependencies distributed with Frankly (external and vendored) are AGPL compatible and should be consulted as needed.
+
 # Overview
 
 🪧 This README includes the following sections:
@@ -28,17 +30,16 @@ This subsection provides a description of the contents of major directories in t
   The main Flutter app.
 
 - `data_models`
-    These are the data models used by both the client and Firestore.
+  These are the data models used by both the client and Firestore.
 
 - `firebase/functions`
-    These are the Firebase Functions which are deployed on Google Cloud and called by the Flutter app. Firebase functions are built on top of Cloud Functions.
+  These are the Firebase Functions which are deployed on Google Cloud and called by the Flutter app. Firebase functions are built on top of Cloud Functions.
 
 - `firestore/firestore.rules`
-    This is a Firestore security rules file which defines which Firestore documents are readable by which users.
+  This is a Firestore security rules file which defines which Firestore documents are readable by which users.
 
 - `matching`
   Contains `lib/matching.dart`, which is the logic for matching participants into breakout rooms. See the README in this directory for links to helpful documentation on matching.
-
 
 # Running Frankly Locally For Development
 
@@ -48,14 +49,16 @@ Most components of Frankly can be run on your local machine. This section descri
 
 This section covers setting up a new computer for Flutter development.
 
-> ### ⚠️ Important: Frankly runs on Flutter `3.22.2.` 
-> **Please use this version of Flutter in order to avoid any unexpected errors.** 
+> ### ⚠️ Important: Frankly runs on Flutter `3.22.2.`
+>
+> **Please use this version of Flutter in order to avoid any unexpected errors.**
 
 1.  Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web.
 2.  Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.
 3.  Install VSCode [here](https://code.visualstudio.com/download).
 4.  Optional but recommended: Install Homebrew [here](https://brew.sh/).
 5.  Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform.
+
     1. This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via homebrew instead by running `brew install cocoapods`, which should alleviate those errors.
     2. **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter).
     3. **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
@@ -77,15 +80,14 @@ This section covers setting up a new computer for Flutter development.
 > Please check **❓Troubleshooting / FAQ** at the end of the README for suggested resolutions to common Flutter installation errors.
 
 ## Developing Frankly
+
 These are the steps for getting started with developing Frankly:
 
 1. 🔥 Setting up and connecting to the Firebase emulators
 2. 🔌 Connecting to third-party services
 3. 🐦 Running the frontend Flutter app
 
-The following section will cover these steps for running the app for the first time. 
-
-
+The following section will cover these steps for running the app for the first time.
 
 ## 📦 Data Models
 
@@ -96,15 +98,14 @@ The first step in running the app is to build the data_models package. Some code
 
 ## 🔥 Firebase
 
-
 ### Firebase CLI
+
 Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI [here](https://firebaseopensource.com/projects/firebase/firebase-tools/).
 
 Run the following steps once:
 
 - Install Firebase CLI using `npm install -g firebase-tools`
 - You should be able to use the CLI for local development without signing in
-
 
 ### Firebase Functions
 
@@ -121,7 +122,7 @@ You don't need to run `npm install` again unless you've added new dependencies o
 
 #### Firebase Config
 
-The functions are currenty 1st Gen Firebase Functions. Their config properties are set by running `firebase functions:config:set` from the CLI. 
+The functions are currenty 1st Gen Firebase Functions. Their config properties are set by running `firebase functions:config:set` from the CLI.
 
 You will need to set config properties that are specific to your application, such as domains and brand names. Below is a list of properties you will need to set and what each are for:
 
@@ -138,14 +139,14 @@ You will need to set config properties that are specific to your application, su
 - app.project_id : The Firebase project id for your project
 - ics.prod_id: The ID of the entity that generates ICS calendar data for events. Can be set to anything. Product name is generally recommended.
 - xmlns.url: Your app URL appended by "/xmlns"
-- xmlns.media_url: The Media RSS namespace. We recommend using http://search.yahoo.com/mrss/, as the specification is currently maintained by Yahoo. 
+- xmlns.media_url: The Media RSS namespace. We recommend using http://search.yahoo.com/mrss/, as the specification is currently maintained by Yahoo.
 - app.unsubscribe_encryption_key: Any randomly generated string
 - functions.on_firestore.min_instances: The minInstances for all functions that deal with firestore updates
 - functions.update_live_stream_participant_count.min_instances=The minInstances for the function that updates event participation count
   (NOTE: All other functions have minInstances set to 0 in the codebase. These are functions we identified as needing different configuation in staging and production environments).
 
-
 ### Emulators
+
 Firebase has a full suite of emulators called Firebase Local Emulator Suite. You can find the full description of the Firebase Local Emulator Suite and its capabilities [here](https://firebase.google.com/docs/emulator-suite).
 
 You should emulate services locally for development purposes, and set up the client to use these emulators instead of connecting to a live Firebase project. By default, the emulators will run against the default project "dev," specified in the `.firebaserc` file.
@@ -157,14 +158,15 @@ The emulators are configured with a file, rather than running `functions:config:
 ** Running the emulators **
 
 To run the emulators locally, run the following in `firebase/functions`:
+
 ```
 dart run build_runner build --output=build
 firebase emulators:start --only firestore,functions,auth,pubsub,database
 ```
+
 We recommend using the emulators [import and export](https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data) functionality to make development easier.
 
 > Please refer to the Cloud Functions Emulator section under **❓Troubleshooting / FAQ** for common issues and resolutions!
-
 
 ## 🔌 Third Party Services
 
@@ -179,9 +181,9 @@ The following instructions will guide you through retrieving the values to fill 
 ```
 agora.app_id="<YOUR_VALUE_HERE>"
 agora.app_certificate="<YOUR_VALUE_HERE>"
-agora.rest_key="<YOUR_VALUE_HERE>" 
+agora.rest_key="<YOUR_VALUE_HERE>"
 agora.rest_secret="<YOUR_VALUE_HERE>"
-agora.storage_bucket_name="<YOUR_VALUE_HERE>" 
+agora.storage_bucket_name="<YOUR_VALUE_HERE>"
 agora.storage_access_key="<YOUR_VALUE_HERE>"
 agora.storage_secret_key="<YOUR_VALUE_HERE>"
 ```
@@ -292,7 +294,6 @@ The following should be true if your Mux setup works as expected:
 - Uses a Firestore extension. Emails definitions are written to the firestore collection sendgridemail.
 - Configure the firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your sendgrid info
 
-
 ## 🐦 Running and building the frontend web client
 
 **Recommended instructions (debug configs)**
@@ -319,10 +320,9 @@ To run the app with backend pointing at staging.
 To run the app with locally running functions, firestore, and auth emulators
 `flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env`
 
+### Supported browsers
 
-### Supported browsers ###
 The client app only runs on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production [Web FAQ | Flutter](https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter) -- Chrome, Firefox, Safari, and Edge.
-
 
 # Testing
 
@@ -353,11 +353,13 @@ To run unit tests with locally generated HTML coverage report:
 ```
 flutter test --coverage && format_coverage --in=coverage && genhtml coverage/lcov.info -o coverage/html
 ```
+
 ### Firebase Functions Tests
 
 Firebase functions tests, located in the `firebase/functions/test` directory, execute functions directly using an emulated Firestore database.
 
 To run these tests, execute the following command from the `firebase/functions` directory:
+
 ```
 CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
 ```
@@ -366,7 +368,7 @@ CLOUD_RUNTIME_CONFIG=./test/test_config.json firebase emulators:exec --only fire
 
 Firestore rules tests verify that our firestore rules are enforcing the correct access limits on firestore documents. The tests are located in the `firebase/firestore/test` directory.
 
-Rules tests are written in TypeScript. If you make any changes to the tests, you must compile tests so they are translated to JavaScript prior to execution. 
+Rules tests are written in TypeScript. If you make any changes to the tests, you must compile tests so they are translated to JavaScript prior to execution.
 
 **Compiling Tests**
 Run `tsc` from the `firebase/firestore` directory.
@@ -378,6 +380,7 @@ Once you change the logic - `firestore.spec.js` will be recompiled.
 **Running Tests**
 
 To run tests for rules, go to `firebase/firestore` and run:
+
 ```
 npm install
 firebase emulators:exec --only firestore "npm run test".
@@ -439,7 +442,7 @@ We have included a checklist here for components of the application that need to
   - Deploy Firestore security rules via CLI using the command `firebase deploy --only firestore:rules`.
   - Deploy Realtime Database rules using the command `firebase deploy --only database`.
   - Deploy Firestore indexes using the command `firestore deploy --only firestore:indexes`.
-  
+
 This project uses `firebase functions:config` to manage secrets used in Firebase Functions. There are several subcommands which we'll explain below.
 
 > **Note:** Repeat these processes for each environment you want to support. For example, if you have a staging and production environment, you will complete setup processes twice -- once for each environment.
@@ -485,22 +488,22 @@ If you'd prefer to set secrets individually, such as for testing certain subsyst
 
 You will need to connect the Flutter client to your hosted instance by modifying the values in the .env file. See the example file `client/.env.hosted.example` for a the names and descriptions of environment variables used in a hosted environment. Most of them are the same as those used in local development, with the addition of properties used to connect to your Firebase and Google Cloud Functions, as well as some optional connection properties for connecting to Sentry and Matomo for reporting and analytics.
 
-
 # ❓ Troubleshooting and FAQ
 
 ### Flutter installation
-* If you install Android and you see this output when running `flutter doctor`:
-  ``` 
+
+- If you install Android and you see this output when running `flutter doctor`:
+  ```
   [!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
   ✗ cmdline-tools component is missing
-  Run path/to/sdkmanager --install "cmdline-tools;latest 
+  Run path/to/sdkmanager --install "cmdline-tools;latest
   ```
-  Run the following steps: 
-    1. Open **Android Studio** 
-    2. Select **More Actions** > **SDK Manager** 
-    3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.** 
-    4. Click **Apply** to proceed with installation.
-* When activating the FlutterFire CLI (step 1.3 in the Flutter doc: `dart pub global activate flutterfire_cli`), you may see a prompt to update your path:
+  Run the following steps:
+  1. Open **Android Studio**
+  2. Select **More Actions** > **SDK Manager**
+  3. Under the **SDK Tools** tab, select **Android SDK Command-line Tools (latest)** (see screenshot below)**.**
+  4. Click **Apply** to proceed with installation.
+- When activating the FlutterFire CLI (step 1.3 in the Flutter doc: `dart pub global activate flutterfire_cli`), you may see a prompt to update your path:
   ```
   Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
   ```
@@ -509,6 +512,7 @@ You will need to connect the Flutter client to your hosted instance by modifying
   export PATH="$PATH":"$HOME/.pub-cache/bin"
   ```
   After adding the recommended export to your **~/.zshrc** file, restart all terminal windows.
+
 ### Cloud Functions Emulator
 
 - **Functions fail to emulate**: If you run `firebase emulators:start --only ...` and you get a message saying that function emulation failed to start, you may need to run `firebase init functions` on first launch. Use the following selections after running:
@@ -546,5 +550,3 @@ Error: Could not start Pub/Sub Emulator, port taken.
 ```
 
 - **Integrations not working:** Third-party services will not work the Functions Emulator unless you have created the file `firebase/functions/.runtimeconfig.json`. Please refer to the sub-section **🔑 Using Config in Emulators** for further detail.
-
-
