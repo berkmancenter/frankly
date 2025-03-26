@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -165,6 +167,20 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       context,
       () => eventPageProvider.enterMeeting(
         surveyQuestions: joinResults.surveyQuestions,
+      ),
+    );
+
+    final communityId = event.communityId;
+    final eventId = event.id;
+    final templateId = event.templateId;
+    final isHost = (event.eventType != EventType.hostless) &&
+        event.creatorId == userService.currentUserId;
+    analytics.logEvent(
+      AnalyticsEnterEventEvent(
+        communityId: communityId,
+        eventId: eventId,
+        asHost: isHost,
+        templateId: templateId,
       ),
     );
   }
