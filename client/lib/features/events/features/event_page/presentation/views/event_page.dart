@@ -146,33 +146,25 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     if (mounted) setState(() {});
   }
 
-  Future<JoinEventResults> _joinEvent({
+  Future<void> _joinEvent({
     bool showConfirm = true,
     bool joinCommunity = false,
   }) async {
-    return await alertOnError<JoinEventResults>(
+    final eventPageProvider = context.read<EventPageProvider>();
+    JoinEventResults joinResults = await alertOnError<JoinEventResults>(
           context,
-          () => context.read<EventPageProvider>().joinEvent(
-                showConfirm: showConfirm,
-                joinCommunity: joinCommunity,
-              ),
+          () => eventPageProvider.joinEvent(
+            showConfirm: showConfirm,
+            joinCommunity: joinCommunity,
+          ),
         ) ??
         JoinEventResults(isJoined: false);
-  }
-
-  Future<void> _startMeeting() async {
-    final eventPageProvider = context.read<EventPageProvider>();
-    JoinEventResults? joinResults;
-    if (!EventProvider.read(context).isParticipant) {
-      joinResults = await _joinEvent(showConfirm: false);
-      if (!joinResults.isJoined) return;
-    }
 
     if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
-        surveyQuestions: joinResults?.surveyQuestions,
+        surveyQuestions: joinResults.surveyQuestions,
       ),
     );
   }
@@ -250,7 +242,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       children: [
         if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
           CustomInkWell(
-            onTap: _startMeeting,
+            onTap: _joinEvent,
             child: SizedBox(
               height: 380,
               child: Stack(
@@ -279,7 +271,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                         SizedBox(height: 10),
                         ActionButton(
                           text: 'Enter Event',
-                          onPressed: _startMeeting,
+                          onPressed: _joinEvent,
                           height: 65,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,
