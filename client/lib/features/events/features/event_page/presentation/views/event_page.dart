@@ -153,6 +153,9 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     bool joinCommunity = false,
   }) async {
     final eventPageProvider = context.read<EventPageProvider>();
+    final event = eventPageProvider.eventProvider.event;
+    final communityProvider =
+        Provider.of<CommunityProvider>(context, listen: false);
     JoinEventResults joinResults = await alertOnError<JoinEventResults>(
           context,
           () => eventPageProvider.joinEvent(
@@ -166,7 +169,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     final externalPlatform = event.externalPlatform ??
         PlatformItem(platformKey: PlatformKey.community);
     final platformSelectionEnabled =
-        eventPageProvider.communityProvider.settings.enablePlatformSelection;
+        communityProvider.settings.enablePlatformSelection;
 
     if (platformSelectionEnabled &&
         externalPlatform.platformKey != PlatformKey.community) {
