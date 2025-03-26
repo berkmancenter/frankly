@@ -162,13 +162,25 @@ class _EventPageState extends State<EventPage> implements EventPageView {
         ) ??
         JoinEventResults(isJoined: false);
 
-    if (!mounted) return;
-    await alertOnError(
-      context,
-      () => eventPageProvider.enterMeeting(
-        surveyQuestions: joinResults.surveyQuestions,
-      ),
-    );
+    // Check if the event is using an external platform.
+    final externalPlatform = event.externalPlatform ??
+        PlatformItem(platformKey: PlatformKey.community);
+    final platformSelectionEnabled =
+        eventPageProvider.communityProvider.settings.enablePlatformSelection;
+
+    if (platformSelectionEnabled &&
+        externalPlatform.platformKey != PlatformKey.community) {
+      await launch(externalPlatform.url ?? '');
+    } else {
+      // Not using an external platform. Enter the meeting normally.
+      if (!mounted) return;
+      await alertOnError(
+        context,
+        () => eventPageProvider.enterMeeting(
+          surveyQuestions: joinResults.surveyQuestions,
+        ),
+      );
+    }
 
     final communityId = event.communityId;
     final eventId = event.id;
