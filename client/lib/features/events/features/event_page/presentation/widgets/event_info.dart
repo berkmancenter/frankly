@@ -66,7 +66,7 @@ class EventInfo extends StatefulHookWidget {
   final Event event;
   final void Function() onMessagePressed;
   final EventPagePresenter eventPagePresenter;
-  final Future<JoinEventResults> Function({
+  final Future<void> Function({
     bool showConfirm,
     bool joinCommunity,
   }) onJoinEvent;
@@ -233,7 +233,7 @@ class _EventInfoState extends State<EventInfo> {
           Navigator.pop(context);
         });
       },
-      cancelText: 'No, nevermind',
+      cancelText: 'No, never mind',
     ).show();
   }
 
@@ -422,9 +422,7 @@ class _EventInfoState extends State<EventInfo> {
           : Theme.of(context).colorScheme.primary,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () => alertOnError(context, () async {
-        await widget.onJoinEvent(showConfirm: false);
-      }),
+      onPressed: () async => await widget.onJoinEvent(showConfirm: false),
       text: text,
     );
   }
