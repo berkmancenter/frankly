@@ -40,6 +40,16 @@ Future<bool> verifyAvailableForEvent(Event event) async {
     confirmText: 'I\'ll be there!',
     cancelText: 'No, cancel',
   ).show();
+
+  // Log RSVP event.
+  analytics.logEvent(
+    AnalyticsRsvpEventEvent(
+      communityId: event.communityId,
+      eventId: event.id,
+      templateId: event.templateId,
+    ),
+  );
+
   return cancel;
 }
 
@@ -119,14 +129,6 @@ class EventPageProvider with ChangeNotifier {
             templateId: eventProvider.templateId,
             eventId: eventProvider.eventId,
             breakoutRoomSurveyResults: surveyDialogResult,
-          );
-
-          analytics.logEvent(
-            AnalyticsRsvpEventEvent(
-              communityId: eventProvider.communityId,
-              eventId: eventProvider.eventId,
-              templateId: eventProvider.templateId,
-            ),
           );
 
           if (joinCommunity) {
