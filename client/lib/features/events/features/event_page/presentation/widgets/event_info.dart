@@ -423,36 +423,7 @@ class _EventInfoState extends State<EventInfo> {
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () => alertOnError(context, () async {
-        final eventPageProvider = context.read<EventPageProvider>();
-        JoinEventResults? joinResults;
-        if (!EventProvider.read(context).isParticipant) {
-          joinResults = await widget.onJoinEvent(showConfirm: false);
-          if (!joinResults.isJoined) return;
-        }
-        await alertOnError(context, () {
-          if (externalPlatform.platformKey == PlatformKey.community ||
-              !isPlatformSelectionEnabled) {
-            return eventPageProvider.enterMeeting(
-              surveyQuestions: joinResults?.surveyQuestions,
-            );
-          } else {
-            return launch(externalPlatform.url ?? '');
-          }
-        });
-
-        final communityId = widget.event.communityId;
-        final eventId = widget.event.id;
-        final templateId = widget.event.templateId;
-        final isHost = (widget.event.eventType != EventType.hostless) &&
-            widget.event.creatorId == userService.currentUserId;
-        analytics.logEvent(
-          AnalyticsEnterEventEvent(
-            communityId: communityId,
-            eventId: eventId,
-            asHost: isHost,
-            templateId: templateId,
-          ),
-        );
+        await widget.onJoinEvent(showConfirm: false);
       }),
       text: text,
     );
