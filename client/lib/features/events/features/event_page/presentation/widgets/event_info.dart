@@ -395,10 +395,7 @@ class _EventInfoState extends State<EventInfo> {
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
     String text;
-    final externalPlatform = _event.externalPlatform ??
-        PlatformItem(platformKey: PlatformKey.community);
-    final isPlatformSelectionEnabled =
-        CommunityProvider.watch(context).settings.enablePlatformSelection;
+
     if (daysDifference > 1) {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
