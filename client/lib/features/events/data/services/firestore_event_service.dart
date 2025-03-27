@@ -357,15 +357,6 @@ class FirestoreEventService {
       scheduledTimeZone: timeZone,
     );
 
-    final newParticipant = Participant(
-      id: userService.currentUserId!,
-      communityId: event.communityId,
-      templateId: event.templateId,
-      status: ParticipantStatus.active,
-    );
-    final participantRef =
-        eventRef.collection('event-participants').doc(newParticipant.id);
-
     return firestoreDatabase.firestore.runTransaction((transaction) async {
       if (!isNullOrEmpty(event.id)) {
         final snapshot = await transaction.get(eventRef);
@@ -377,10 +368,6 @@ class FirestoreEventService {
       }
 
       transaction.set(eventRef, toFirestoreJson(newEvent.toJson()));
-      transaction.set(participantRef, {
-        ...toFirestoreJson(newParticipant.toJson()),
-        Participant.kFieldCreatedDate: FieldValue.serverTimestamp(),
-      });
 
       await userDataService.changeCommunityMembership(
         userId: userService.currentUserId!,
