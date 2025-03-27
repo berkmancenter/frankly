@@ -85,17 +85,28 @@ class EventPageProvider with ChangeNotifier {
   }) async {
     final prePostEnabledFuture =
         eventProvider.communityProvider.prePostEnabled();
+    // Determines whether this is the user's first time joining the event.
+    // If is the user's first time, show the pre-event CTA.
+    bool hasJoinedBefore = false;
 
     final joinResults = await guardSignedIn<JoinEventResults>(() async {
           // Wait for self participant stream to load
           await eventProvider.selfParticipantStream?.first;
+
+          // The user is already a participant, so has previously joined.
+          // The "join event" code below will cause isParticipant to be true on
+          // future runs as it creates a new Participant for the event.
           if (eventProvider.isParticipant) {
+            hasJoinedBefore = true;
             return JoinEventResults(isJoined: true);
           }
           if (eventProvider.isBanned) {
+            hasJoinedBefore = true;
             return JoinEventResults(isJoined: false);
           }
 
+          // This is a new user.
+          // Show RSVP dialog on hosted events.
           if (eventProvider.event.eventType == EventType.hosted &&
               showConfirm) {
             final confirmed = await verifyAvailableForEvent(
@@ -152,7 +163,10 @@ class EventPageProvider with ChangeNotifier {
 
     final prePostEnabled = await prePostEnabledFuture;
     final preEventCardData = eventProvider.event.preEventCardData;
-    if (prePostEnabled && joinResults.isJoined && preEventCardData != null) {
+    if (prePostEnabled &&
+        joinResults.isJoined &&
+        !hasJoinedBefore &&
+        preEventCardData != null) {
       if (preEventCardData.hasData) {
         await PrePostEventDialogPage.show(
           prePostCardData: preEventCardData,
