@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:client/core/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -84,7 +86,9 @@ class _ParticipantsListState extends State<ParticipantsList> {
         ...prefixParticipants,
         ...widget.participantIds
             .where((p) => !prefixParticipants.contains(p))
-            .take(widget.numberOfIconsToShow - prefixParticipants.length),
+            .take(
+              max(widget.numberOfIconsToShow - prefixParticipants.length, 0),
+            ),
       ];
       chipWidgets = [
         for (final id in participantIds) _buildUserProfileChip(id),
