@@ -419,7 +419,7 @@ class _EventInfoState extends State<EventInfo> {
           : Theme.of(context).colorScheme.primary,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () async => await widget.onJoinEvent(showConfirm: false),
+      onPressed: () async => await widget.onJoinEvent(),
       text: text,
     );
   }
