@@ -257,14 +257,11 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   }
 
   bool _isEnterEventGraphicShown(DateTime scheduled) {
-    final isParticipant = EventProvider.watch(context).isParticipant;
     final now = clockService.now();
     final beforeMeetingCutoff = scheduled.subtract(Duration(minutes: 10));
     final afterMeetingCutoff = scheduled.add(Duration(hours: 2));
 
-    return isParticipant &&
-        now.isAfter(beforeMeetingCutoff) &&
-        now.isBefore(afterMeetingCutoff);
+    return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
   }
 
   Widget _buildGuide() {
