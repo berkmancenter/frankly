@@ -53,14 +53,16 @@ class _ParticipantsListState extends State<ParticipantsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Stack(children: _buildUserIcons()),
-        SizedBox(width: 5),
-        Flexible(child: _buildParticipantCount()),
-      ],
-    );
+    return _participantCount > 0
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(children: _buildUserIcons()),
+              SizedBox(width: 5),
+              Flexible(child: _buildParticipantCount()),
+            ],
+          )
+        : SizedBox.shrink();
   }
 
   List<Widget> _buildUserIcons() {
