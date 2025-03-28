@@ -271,7 +271,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       children: [
         if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
           CustomInkWell(
-            onTap: _joinEvent,
+            onTap: () => _joinEvent(showConfirm: false),
             child: SizedBox(
               height: 380,
               child: Stack(
@@ -300,7 +300,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                         SizedBox(height: 10),
                         ActionButton(
                           text: 'Enter Event',
-                          onPressed: _joinEvent,
+                          onPressed: () => _joinEvent(showConfirm: false),
                           height: 65,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,
