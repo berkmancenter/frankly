@@ -66,7 +66,7 @@ class EventInfo extends StatefulHookWidget {
   final Event event;
   final void Function() onMessagePressed;
   final EventPagePresenter eventPagePresenter;
-  final Future<JoinEventResults> Function({
+  final Future<void> Function({
     bool showConfirm,
     bool joinCommunity,
   }) onJoinEvent;
@@ -233,7 +233,7 @@ class _EventInfoState extends State<EventInfo> {
           Navigator.pop(context);
         });
       },
-      cancelText: 'No, nevermind',
+      cancelText: 'No, never mind',
     ).show();
   }
 
@@ -395,10 +395,7 @@ class _EventInfoState extends State<EventInfo> {
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
     String text;
-    final externalPlatform = _event.externalPlatform ??
-        PlatformItem(platformKey: PlatformKey.community);
-    final isPlatformSelectionEnabled =
-        CommunityProvider.watch(context).settings.enablePlatformSelection;
+
     if (daysDifference > 1) {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
@@ -422,38 +419,8 @@ class _EventInfoState extends State<EventInfo> {
           : Theme.of(context).colorScheme.primary,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () => alertOnError(context, () async {
-        final eventPageProvider = context.read<EventPageProvider>();
-        JoinEventResults? joinResults;
-        if (!EventProvider.read(context).isParticipant) {
-          joinResults = await widget.onJoinEvent(showConfirm: false);
-          if (!joinResults.isJoined) return;
-        }
-        await alertOnError(context, () {
-          if (externalPlatform.platformKey == PlatformKey.community ||
-              !isPlatformSelectionEnabled) {
-            return eventPageProvider.enterMeeting(
-              surveyQuestions: joinResults?.surveyQuestions,
-            );
-          } else {
-            return launch(externalPlatform.url ?? '');
-          }
-        });
-
-        final communityId = widget.event.communityId;
-        final eventId = widget.event.id;
-        final templateId = widget.event.templateId;
-        final isHost = (widget.event.eventType != EventType.hostless) &&
-            widget.event.creatorId == userService.currentUserId;
-        analytics.logEvent(
-          AnalyticsEnterEventEvent(
-            communityId: communityId,
-            eventId: eventId,
-            asHost: isHost,
-            templateId: templateId,
-          ),
-        );
-      }),
+      onPressed: () async =>
+          await widget.onJoinEvent(showConfirm: difference.inMinutes >= 10),
       text: text,
     );
   }

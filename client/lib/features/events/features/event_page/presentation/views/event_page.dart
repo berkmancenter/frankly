@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -146,31 +148,60 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     if (mounted) setState(() {});
   }
 
-  Future<JoinEventResults> _joinEvent({
+  Future<void> _joinEvent({
     bool showConfirm = true,
     bool joinCommunity = false,
   }) async {
-    return await alertOnError<JoinEventResults>(
+    final eventPageProvider = context.read<EventPageProvider>();
+    final event = eventPageProvider.eventProvider.event;
+    final communityProvider =
+        Provider.of<CommunityProvider>(context, listen: false);
+    JoinEventResults joinResults = await alertOnError<JoinEventResults>(
           context,
-          () => context.read<EventPageProvider>().joinEvent(
-                showConfirm: showConfirm,
-                joinCommunity: joinCommunity,
-              ),
+          () => eventPageProvider.joinEvent(
+            showConfirm: showConfirm,
+            joinCommunity: joinCommunity,
+          ),
         ) ??
         JoinEventResults(isJoined: false);
-  }
 
-  Future<void> _startMeeting() async {
-    final eventPageProvider = context.read<EventPageProvider>();
-    JoinEventResults? joinResults;
-    if (EventProvider.read(context).isParticipant) {
-      joinResults = await _joinEvent(showConfirm: false);
-      if (!joinResults.isJoined) return;
+    if (!joinResults.isJoined) {
+      // Don't join the meeting if joinEvent returns false.
+      return;
     }
+
+    // Check if the event is using an external platform.
+    final externalPlatform = event.externalPlatform ??
+        PlatformItem(platformKey: PlatformKey.community);
+    final platformSelectionEnabled =
+        communityProvider.settings.enablePlatformSelection;
+
+    if (platformSelectionEnabled &&
+        externalPlatform.platformKey != PlatformKey.community) {
+      await launch(externalPlatform.url ?? '');
+    }
+
+    // Not using an external platform. Enter the meeting normally.
+    if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
-        surveyQuestions: joinResults?.surveyQuestions,
+        surveyQuestions: joinResults.surveyQuestions,
+      ),
+    );
+
+    // Log enter event in analytics.
+    final communityId = event.communityId;
+    final eventId = event.id;
+    final templateId = event.templateId;
+    final isHost = (event.eventType != EventType.hostless) &&
+        event.creatorId == userService.currentUserId;
+    analytics.logEvent(
+      AnalyticsEnterEventEvent(
+        communityId: communityId,
+        eventId: eventId,
+        asHost: isHost,
+        templateId: templateId,
       ),
     );
   }
@@ -231,14 +262,11 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   }
 
   bool _isEnterEventGraphicShown(DateTime scheduled) {
-    final isParticipant = EventProvider.watch(context).isParticipant;
     final now = clockService.now();
     final beforeMeetingCutoff = scheduled.subtract(Duration(minutes: 10));
     final afterMeetingCutoff = scheduled.add(Duration(hours: 2));
 
-    return isParticipant &&
-        now.isAfter(beforeMeetingCutoff) &&
-        now.isBefore(afterMeetingCutoff);
+    return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
   }
 
   Widget _buildGuide() {
@@ -248,7 +276,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       children: [
         if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
           CustomInkWell(
-            onTap: _startMeeting,
+            onTap: () => _joinEvent(showConfirm: false),
             child: SizedBox(
               height: 380,
               child: Stack(
@@ -277,7 +305,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                         SizedBox(height: 10),
                         ActionButton(
                           text: 'Enter Event',
-                          onPressed: _startMeeting,
+                          onPressed: () => _joinEvent(showConfirm: false),
                           height: 65,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,
