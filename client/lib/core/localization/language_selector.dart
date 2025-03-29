@@ -20,7 +20,11 @@ class LanguageSelector extends StatelessWidget {
       itemBuilder: (BuildContext context) => [
         PopupMenuItem<Locale>(
           value: const Locale('en'),
-          child: Text(l10n.locale_en),
+          child: const Text('English'),
+        ),
+        PopupMenuItem<Locale>(
+          value: const Locale('zh'),
+          child: const Text('简体中文'),
         ),
         PopupMenuItem<Locale>(
           value: const Locale.fromSubtags(
@@ -28,11 +32,11 @@ class LanguageSelector extends StatelessWidget {
             scriptCode: 'Hant',
             countryCode: 'TW',
           ),
-          child: Text(l10n.locale_zh_Hant_TW),
+          child: const Text('華文（臺灣）'),
         ),
         PopupMenuItem<Locale>(
           value: const Locale('es'),
-          child: Text(l10n.locale_es),
+          child: const Text('Español'),
         ),
       ],
     );

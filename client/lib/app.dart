@@ -120,6 +120,7 @@ class _AppState extends State<App> {
               ],
               supportedLocales: const [
                 Locale('en'), // English
+                Locale('zh'), // Simplified Chinese
                 Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'), // Traditional Chinese (Taiwan)
                 Locale('es'), // Spanish
               ],

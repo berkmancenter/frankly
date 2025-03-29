@@ -31,8 +31,5 @@
   "errorOccurred": "An error occurred",
   "tryAgain": "Please try again",
   "selectLanguage": "Select Language",
-  "locale_en": "English",
-  "locale_zh_Hant_TW": "Mandarin (Taiwan)",
-  "locale_es": "Spanish",
   "changeLanguage": "Change Language"
 }
