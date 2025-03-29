@@ -30,6 +30,10 @@ class LanguageSelector extends StatelessWidget {
           ),
           child: Text(l10n.locale_zh_Hant_TW),
         ),
+        PopupMenuItem<Locale>(
+          value: const Locale('es'),
+          child: Text(l10n.locale_es),
+        ),
       ],
     );
   }

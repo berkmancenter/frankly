@@ -33,5 +33,6 @@
   "selectLanguage": "选择语言",
   "locale_en": "英文",
   "locale_zh_Hant_TW": "华文（台湾）",
+  "locale_es": "西班牙文",
   "changeLanguage": "更改语言"
 }
