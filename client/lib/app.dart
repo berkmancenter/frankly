@@ -119,10 +119,10 @@ class _AppState extends State<App> {
                 GlobalCupertinoLocalizations.delegate,
               ],
               supportedLocales: const [
-                Locale('en'), // English
-                Locale('zh'), // Simplified Chinese
-                Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'), // Traditional Chinese (Taiwan)
-                Locale('es'), // Spanish
+                Locale('en'),
+                Locale('es'),
+                Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+                Locale('zh'),
               ],
               shortcuts: {
                 ...WidgetsApp.defaultShortcuts,
