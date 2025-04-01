@@ -177,9 +177,6 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
   }
 
   Widget _buildDisplayLayout(BuildContext context) {
-    final templatePresenter = context.read<CreateTemplatePresenter>();
-    final canEditCommunity =
-        Provider.of<CommunityPermissionsProvider>(context).canEditCommunity;
     if (responsiveLayoutService.isMobile(context)) {
       return Column(
         children: [
@@ -187,11 +184,6 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
           _buildImage(),
           SizedBox(height: 10),
           ..._buildTextFields(),
-          if (templatePresenter.templateActionType == TemplateActionType.edit &&
-              canEditCommunity) ...[
-            SizedBox(width: 10),
-            _buildFeaturedToggle(),
-          ],
           SizedBox(height: 10),
           _buildAddTagsSection(),
         ],
@@ -215,11 +207,6 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
             ),
           ],
         ),
-        if (templatePresenter.templateActionType == TemplateActionType.edit &&
-            canEditCommunity) ...[
-          SizedBox(height: 20),
-          _buildFeaturedToggle(),
-        ],
         SizedBox(height: 20),
         _buildAddTagsSection(),
       ],
@@ -275,24 +262,6 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
         ),
       ),
     ];
-  }
-
-  Widget _buildFeaturedToggle() {
-    final templatePresenter = context.watch<CreateTemplatePresenter>();
-    return FeaturedToggleButton(
-      controlAffinity: ListTileControlAffinity.leading,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      textColor: AppColor.darkBlue,
-      communityId: templatePresenter.communityProvider.communityId,
-      label:
-          'Feature on ${templatePresenter.communityProvider.community.name} homepage',
-      documentId: templatePresenter.updatedTemplate.id,
-      documentPath:
-          '/community/${templatePresenter.communityProvider.communityId}/templates/${templatePresenter.updatedTemplate.id}',
-      featuredType: FeaturedType.template,
-    );
   }
 
   @override

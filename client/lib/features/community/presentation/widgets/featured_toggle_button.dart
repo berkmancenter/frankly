@@ -75,10 +75,7 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
               child: FormBuilderSwitch(
                 title: Text(
                   widget.label,
-                  style: TextStyle(
-                    color: widget.textColor ?? AppColor.darkBlue,
-                    fontSize: 15,
-                  ),
+                  style: AppTextStyle.body.copyWith(color: widget.textColor),
                 ),
                 controlAffinity:
                     widget.controlAffinity ?? ListTileControlAffinity.trailing,
