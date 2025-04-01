@@ -580,7 +580,6 @@ class _TemplatePageState extends State<TemplatePage>
       return PrePostCardWidgetPage(
         prePostCardType: prePostCardType,
         prePostCard: eventCardData,
-        isWhiteBackground: true,
         template: template,
         onUpdate: (prePostCard) {
           final Template updatedTemplate;

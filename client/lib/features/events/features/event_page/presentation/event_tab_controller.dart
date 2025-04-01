@@ -533,7 +533,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       return PrePostCardWidgetPage(
         prePostCardType: prePostCardType,
         prePostCard: eventCardData,
-        isWhiteBackground: true,
         event: event,
         onUpdate: (prePostCard) async {
           final Event updatedEvent;
