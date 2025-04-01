@@ -1,4 +1,5 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _NewEventCardState extends State<NewEventCard> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainer,
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -87,10 +88,7 @@ class _NewEventCardState extends State<NewEventCard> {
         Flexible(
           child: HeightConstrainedText(
             'Create an event ${isMobile ? '' : '\n'}from this template',
-            style: AppTextStyle.headline1.copyWith(
-              fontSize: 18,
-              color: AppColor.darkBlue,
-            ),
+            style: AppTextStyle.headline4,
           ),
         ),
         SizedBox(width: 10),
@@ -119,7 +117,7 @@ class _NewEventCardState extends State<NewEventCard> {
       alignment: Alignment.centerRight,
       child: ActionButton(
         expand: !isMod,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         onPressed: () {
           analytics.logEvent(
             AnalyticsPressCreateEventFromTemplateEvent(
@@ -138,7 +136,6 @@ class _NewEventCardState extends State<NewEventCard> {
           }
         },
         text: 'Create event',
-        textColor: AppColor.brightGreen,
       ),
     );
   }
@@ -153,57 +150,48 @@ class _NewEventCardState extends State<NewEventCard> {
       minWidth: 200,
       maxWidth: !isMobile ? 280 : null,
       arrowLength: 15,
-      borderColor: AppColor.gray6,
-      borderWidth: 1,
+      backgroundColor: context.theme.colorScheme.surfaceContainer,
       ballonPadding: EdgeInsets.all(0),
+      borderWidth: 0,
       minimumOutSidePadding: 40,
-      customShadows: const [
-        BoxShadow(color: AppColor.gray3, blurRadius: 5, spreadRadius: 2),
-      ],
       animationDuration: Duration(milliseconds: 500),
       show: templatePageProvider.isHelpExpanded,
       tooltipDirection:
           isMobile ? TooltipDirection.horizontal : TooltipDirection.up,
-      content: Material(
-        color: AppColor.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 16.0,
-                  left: 20,
-                  bottom: 20,
-                ),
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Quickly create interactive events using templates. ',
-                    style: AppTextStyle.body.copyWith(
-                      color: AppColor.gray2,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Learn more',
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => launch(helpDocLink),
-                        style: AppTextStyle.body.copyWith(
-                          color: AppColor.accentBlue,
-                          decoration: TextDecoration.underline,
-                        ),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 16.0,
+                left: 20,
+                bottom: 20,
+              ),
+              child: RichText(
+                text: TextSpan(
+                  text: 'Quickly create interactive events using templates. ',
+                  style: AppTextStyle.body,
+                  children: [
+                    TextSpan(
+                      text: 'Learn more',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => launch(helpDocLink),
+                      style: AppTextStyle.body.copyWith(
+                        decoration: TextDecoration.underline,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            IconButton(
-              onPressed: () => templatePageProvider.isHelpExpanded = false,
-              icon: Icon(Icons.close),
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            onPressed: () => templatePageProvider.isHelpExpanded = false,
+            icon: Icon(Icons.close),
+          ),
+        ],
       ),
       child: CustomInkWell(
         onTap: () => templatePageProvider.isHelpExpanded = true,
@@ -211,7 +199,7 @@ class _NewEventCardState extends State<NewEventCard> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               width: 1.5,
             ),
           ),
@@ -220,7 +208,7 @@ class _NewEventCardState extends State<NewEventCard> {
             child: Icon(
               CupertinoIcons.question,
               size: 11,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
             ),
           ),
         ),
