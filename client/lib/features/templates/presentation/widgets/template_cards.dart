@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -49,13 +50,14 @@ class AdditionalTemplatesCard extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0x44000000),
+                color: context.theme.colorScheme.primary,
               ),
             ),
             HeightConstrainedText(
               '+${templates.length - numShown}',
-              style: AppTextStyle.body
-                  .copyWith(color: AppColor.white, fontSize: 22),
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onPrimary,
+              ),
             ),
           ],
         ),
@@ -103,8 +105,7 @@ class TemplateCard extends StatelessWidget {
             width: 90,
             child: HeightConstrainedText(
               template.title ?? '',
-              style: AppTextStyle.body
-                  .copyWith(fontSize: 14, color: AppColor.gray1),
+              style: AppTextStyle.body,
               overflow: TextOverflow.ellipsis,
             ),
           ),

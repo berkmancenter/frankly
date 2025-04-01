@@ -198,7 +198,6 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
           expand: true,
           text: 'Save template',
           color: context.theme.colorScheme.primary,
-          textColor: context.theme.colorScheme.onPrimary,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
@@ -209,7 +208,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
           ActionButton(
             expand: true,
             type: ActionButtonType.outline,
-            textColor: context.theme.colorScheme.error,
+            color: context.theme.colorScheme.error,
             text: templateToggleButtonText,
             onPressed: () => alertOnError(
               context,

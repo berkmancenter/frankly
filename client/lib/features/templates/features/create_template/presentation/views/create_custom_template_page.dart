@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:client/features/community/utils/guard_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_presenter.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_tag_presenter.dart';
@@ -9,16 +10,13 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/editable_image.dart';
-import 'package:client/features/community/presentation/widgets/featured_toggle_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:data_models/community/community.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
@@ -136,10 +134,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
       children: [
         HeightConstrainedText(
           title,
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                fontSize: 30,
-                color: AppColor.darkBlue,
-              ),
+          style: Theme.of(context).textTheme.headlineLarge,
         ),
         SizedBox(height: 25),
         _buildDisplayLayout(context),
@@ -218,7 +213,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainer,
         width: 160,
         height: 160,
         child: EditableImage(

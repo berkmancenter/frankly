@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
@@ -259,7 +260,7 @@ class _TemplatePageState extends State<TemplatePage>
           children: [
             Container(
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainer,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -346,7 +347,7 @@ class _TemplatePageState extends State<TemplatePage>
         SizedBox(height: 10),
         HeightConstrainedText(
           template.description ?? 'No description for this event',
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body,
         ),
       ],
     );
@@ -457,9 +458,7 @@ class _TemplatePageState extends State<TemplatePage>
                   padding: const EdgeInsets.only(top: 10),
                   child: HeightConstrainedText(
                     'No upcoming events.',
-                    style: AppTextStyle.body.copyWith(
-                      color: AppColor.gray2,
-                    ),
+                    style: AppTextStyle.body,
                   ),
                 ),
               );
@@ -831,8 +830,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                                 ? SizedBox.shrink()
                                 : Text(
                                     '#${definition.title} ',
-                                    style: AppTextStyle.bodyMedium
-                                        .copyWith(color: AppColor.gray3),
+                                    style: AppTextStyle.bodyMedium,
                                   ),
                           ),
                       ],
@@ -911,15 +909,13 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                             for (var tag in templateTags)
                               CommunityTagBuilder(
                                 tagDefinitionId: tag.definitionId,
-                                builder: (_, __, definition) => definition ==
-                                        null
-                                    ? SizedBox.shrink()
-                                    : Text(
-                                        '#${definition.title} ',
-                                        style: AppTextStyle.bodyMedium.copyWith(
-                                          color: AppColor.gray3,
-                                        ),
-                                      ),
+                                builder: (_, __, definition) =>
+                                    definition == null
+                                        ? SizedBox.shrink()
+                                        : Text(
+                                            '#${definition.title} ',
+                                            style: AppTextStyle.bodyMedium,
+                                          ),
                               ),
                           ],
                         ),
