@@ -16,7 +16,7 @@ class MeetingGuideCardItemText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MarkdownBody(
-      data: (agendaItem.content ?? '').replaceAll('\n', '\n\n'),
+      data: (agendaItem.content ?? ''),
       shrinkWrap: true,
       selectable: true,
       styleSheet: _computeUpdatedStyleSheet(context),

@@ -24,7 +24,7 @@ jobs:
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+          flutter-version: "3.27.4" # could read version from pubspec file, but would need to be exact
           channel: "stable"
           cache: true
           cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
