@@ -110,7 +110,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: context.theme.colorScheme.surface,
+                  color: context.theme.colorScheme.surfaceContainer,
                   border: Border.all(
                     width: 1,
                     color: context.theme.colorScheme.outline,
@@ -197,45 +197,41 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     return Column(
       key: Key('prePostCardWidget-editablePrePostCard'),
       children: [
-        Container(
-          color: context.theme.colorScheme.surface,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'What message do you want to show participants $beforeAfter the event?',
-                style: AppTextStyle.subhead,
-              ),
-              SizedBox(height: 30),
-              CustomTextField(
-                hintText: 'Enter Headline',
-                initialValue: _model.prePostCard.headline,
-                borderType: BorderType.outline,
-                borderRadius: 10,
-                maxLines: 1,
-                maxLength: 50,
-                onChanged: (text) => _presenter.updateEnteredHeadline(text),
-                validator: (text) => _presenter.validateHeadline(text),
-              ),
-              SizedBox(height: 14),
-              CustomTextField(
-                hintText:
-                    'Enter Message. Eg, Take this survey $beforeAfter the event',
-                initialValue: _model.prePostCard.message,
-                borderType: BorderType.outline,
-                borderRadius: 10,
-                maxLength: 200,
-                minLines: 3,
-                onChanged: (text) => _presenter.updateEnteredMessage(text),
-                validator: (text) => _presenter.validateMessage(text),
-              ),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'What message do you want to show participants $beforeAfter the event?',
+              style: AppTextStyle.subhead,
+            ),
+            SizedBox(height: 30),
+            CustomTextField(
+              hintText: 'Enter Headline',
+              initialValue: _model.prePostCard.headline,
+              borderType: BorderType.outline,
+              borderRadius: 10,
+              maxLines: 1,
+              maxLength: 50,
+              onChanged: (text) => _presenter.updateEnteredHeadline(text),
+              validator: (text) => _presenter.validateHeadline(text),
+            ),
+            SizedBox(height: 14),
+            CustomTextField(
+              hintText:
+                  'Enter Message. Eg, Take this survey $beforeAfter the event',
+              initialValue: _model.prePostCard.message,
+              borderType: BorderType.outline,
+              borderRadius: 10,
+              maxLength: 200,
+              minLines: 3,
+              onChanged: (text) => _presenter.updateEnteredMessage(text),
+              validator: (text) => _presenter.validateMessage(text),
+            ),
+          ],
         ),
         SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
-          color: context.theme.colorScheme.surface,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -32,7 +32,6 @@ class SelectHostingOptionPage extends StatelessWidget {
                 .enableHostless,
             initialHostingOption:
                 context.read<CreateEventDialogModel>().event.eventType,
-            isWhiteBackground: true,
           ),
         ),
         SizedBox(height: 20),
