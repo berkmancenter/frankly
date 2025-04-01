@@ -259,9 +259,6 @@ class _TemplatePageState extends State<TemplatePage>
           children: [
             Container(
               decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: AppColor.gray5, width: 2),
-                ),
                 color: AppColor.white,
               ),
               child: Column(
