@@ -99,7 +99,6 @@ class _NewEventCardState extends State<NewEventCard> {
 
   Widget _buildHostingOption() => Center(
         child: HostingOption(
-          isWhiteBackground: true,
           selectedEventType: (eventType) {
             setState(() {
               _selectedHostingOption = eventType;
