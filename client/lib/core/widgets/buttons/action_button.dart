@@ -261,8 +261,6 @@ class _ActionButtonState extends State<ActionButton> {
     } else if (widget.type == ActionButtonType.outline) {
       button = OutlinedButton(
         style: ButtonStyle(
-          backgroundColor:
-              WidgetStateProperty.all(widget.color ?? Colors.transparent),
           overlayColor: overlayColor,
           side: WidgetStateProperty.all(
             widget.borderSide ?? BorderSide(color: _getTextColor()),
