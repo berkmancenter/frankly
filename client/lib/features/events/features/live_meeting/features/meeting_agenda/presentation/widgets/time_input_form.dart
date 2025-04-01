@@ -6,14 +6,12 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class TimeInputForm extends StatefulWidget {
-  final bool isWhiteBackground;
   final Duration duration;
   final void Function(Duration) onUpdate;
   final bool isClockShowing;
 
   const TimeInputForm({
     Key? key,
-    required this.isWhiteBackground,
     required this.duration,
     required this.onUpdate,
     this.isClockShowing = false,
@@ -79,7 +77,6 @@ class _TimeInputFormState extends State<TimeInputForm> {
         },
         isOnlyDigits: true,
         numberThreshold: 59,
-        useDarkMode: !widget.isWhiteBackground,
       ),
     );
   }

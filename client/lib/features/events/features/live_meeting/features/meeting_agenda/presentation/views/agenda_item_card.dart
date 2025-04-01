@@ -210,7 +210,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               children: [
                 _buildDropDownButton(),
                 TimeInputForm(
-                  isWhiteBackground: true,
                   duration: Duration(
                     seconds: _model.agendaItem.timeInSeconds ??
                         AgendaItem.kDefaultTimeInSeconds,
