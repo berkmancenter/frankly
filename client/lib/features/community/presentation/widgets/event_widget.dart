@@ -8,7 +8,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -140,74 +140,70 @@ class EventWidget extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: _buildCardText(isDisabled),
-          ),
-        ],
-      );
-
-  Widget _buildCardText(bool disabled) => Padding(
-        padding: const EdgeInsets.all(12),
-        child: _buildCardTextContent(disabled),
-      );
-
-  Widget _buildCardTextContent(bool isDisabled) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HeightConstrainedText(
-            event.title ?? 'Scheduled event',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.headline4.copyWith(
-              color: isDisabled
-                  ? AppColor.darkBlue.withOpacity(0.5)
-                  : AppColor.darkBlue,
-            ),
-          ),
-          SizedBox(height: 20.0),
-          if (isDisabled)
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: AppColor.pink,
-              ),
-              child: Row(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CircleAvatar(
-                    radius: 12,
-                    backgroundColor: AppColor.redLightMode,
-                    child: Icon(
-                      Icons.school_outlined,
-                      size: 20,
-                      color: AppColor.white,
+                  HeightConstrainedText(
+                    event.title ?? 'Scheduled event',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyle.headline4.copyWith(
+                      color: isDisabled
+                          ? context.theme.colorScheme.primary.withOpacity(0.5)
+                          : context.theme.colorScheme.primary,
                     ),
                   ),
-                  SizedBox(width: 10),
-                  HeightConstrainedText(
-                    'Prerequisite',
-                    style: AppTextStyle.eyebrowSmall
-                        .copyWith(color: AppColor.redLightMode),
-                  ),
+                  SizedBox(height: 20.0),
+                  if (isDisabled)
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: AppColor.pink,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: 12,
+                            backgroundColor: AppColor.redLightMode,
+                            child: Icon(
+                              Icons.school_outlined,
+                              size: 20,
+                              color: AppColor.white,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          HeightConstrainedText(
+                            'Prerequisite',
+                            style: AppTextStyle.eyebrowSmall
+                                .copyWith(color: AppColor.redLightMode),
+                          ),
+                        ],
+                      ),
+                    )
+                  else ...[
+                    if (event.isLiveStream)
+                      HeightConstrainedText(
+                        'Livestream',
+                        style: AppTextStyle.bodySmall.copyWith(
+                          color: AppColor.gray3,
+                        ),
+                      ),
+                    EventPageParticipantsList(
+                      event,
+                      iconSize: 30,
+                      showFullParticipantCount: true,
+                    ),
+                  ],
                 ],
               ),
-            )
-          else ...[
-            if (event.isLiveStream)
-              HeightConstrainedText(
-                'Livestream',
-                style: AppTextStyle.bodySmall.copyWith(
-                  color: AppColor.gray3,
-                ),
-              ),
-            EventPageParticipantsList(
-              event,
-              iconSize: 30,
-              showFullParticipantCount: true,
             ),
-          ],
+          ),
         ],
       );
 }
