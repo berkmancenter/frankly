@@ -170,19 +170,13 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Color _getTextColor() {
-    Color defaultTextColor = widget.type == ActionButtonType.outline
-        ? AppColor.white
-        : Theme.of(context).primaryColor;
+    Color defaultTextColor = context.theme.colorScheme.primary;
     if (widget.color == context.theme.colorScheme.primary) {
       defaultTextColor = context.theme.colorScheme.onPrimary;
-    } else if (widget.color == Theme.of(context).colorScheme.secondary) {
-      defaultTextColor = Theme.of(context).primaryColor;
-    } else if (widget.color == AppColor.redLightMode) {
-      defaultTextColor = AppColor.white;
-    } else {
-      if (widget.color == AppColor.redDarkMode) {
-        defaultTextColor = Theme.of(context).primaryColor;
-      }
+    } else if (widget.color == context.theme.colorScheme.secondary) {
+      defaultTextColor = context.theme.colorScheme.primary;
+    } else if (widget.color == context.theme.colorScheme.errorContainer) {
+      defaultTextColor = context.theme.colorScheme.onErrorContainer;
     }
 
     return widget.textColor ?? defaultTextColor;
@@ -253,10 +247,10 @@ class _ActionButtonState extends State<ActionButton> {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return widget.disabledColor ?? Color(0xFFB2B9C5);
+              return widget.disabledColor ??
+                  context.theme.colorScheme.onSurface.withOpacity(0.38);
             }
-
-            return widget.color ?? Theme.of(context).colorScheme.secondary;
+            return widget.color ?? context.theme.colorScheme.secondary;
           }),
           overlayColor: overlayColor,
           minimumSize: minimumSize,
