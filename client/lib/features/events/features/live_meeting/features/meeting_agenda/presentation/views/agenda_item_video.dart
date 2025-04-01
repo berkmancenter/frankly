@@ -1,4 +1,5 @@
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/utils/agenda_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/live_stream/presentation/widgets/url_video_widget.dart';
@@ -135,9 +136,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             hintText: 'Enter Video title',
             maxLines: 1,
             maxLength: agendaTitleCharactersLength,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: AppTextStyle.bodySmall,
             onChanged: (value) => _presenter.updateVideoTitle(value),
           ),
           SizedBox(height: 40),
@@ -146,7 +145,9 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               final agendaItemVideoTabType = _agendaItemVideoTabTypes[index];
               final isSelected =
                   _model.agendaItemVideoTabType == agendaItemVideoTabType;
-              final color = isSelected ? AppColor.darkBlue : AppColor.gray4;
+              final color = isSelected
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onSurface.withOpacity(0.38);
               final tabName = _presenter.getTabName(agendaItemVideoTabType);
 
               return Expanded(
@@ -210,8 +211,6 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   Widget _buildVideoPicker(String text) {
     return ActionButton(
-      color: AppColor.darkBlue,
-      textColor: AppColor.brightGreen,
       text: text,
       onPressed: () async {
         final url =
@@ -303,10 +302,6 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 controller: _textEditingController,
                 labelText: 'YouTube URL',
                 maxLines: null,
-                textStyle:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
-                hintStyle:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),
@@ -360,10 +355,6 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 controller: _textEditingController,
                 labelText: 'Vimeo URL',
                 maxLines: null,
-                textStyle:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
-                hintStyle:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),
@@ -408,10 +399,6 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 controller: _textEditingController,
                 labelText: 'Link must be MP4',
                 maxLines: null,
-                textStyle:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
-                hintStyle:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),

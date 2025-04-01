@@ -239,7 +239,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         SizedBox(width: 8),
         HeightConstrainedText(
           agendaItemType.text,
-          style: AppTextStyle.body.copyWith(color: AppColor.darkerBlue),
+          style: AppTextStyle.body,
         ),
       ],
     );

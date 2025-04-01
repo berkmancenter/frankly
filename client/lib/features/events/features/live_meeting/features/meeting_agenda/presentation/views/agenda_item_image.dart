@@ -87,9 +87,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
             labelText: 'Title',
             hintText: 'Enter Image title',
             maxLength: agendaTitleCharactersLength,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: AppTextStyle.bodySmall,
             maxLines: 1,
             onChanged: (value) => _presenter.updateImageTitle(value),
           ),
@@ -144,8 +142,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
 
   Widget _buildUploadImage(String text) {
     return ActionButton(
-      color: AppColor.darkBlue,
-      textColor: AppColor.brightGreen,
       text: text,
       onPressed: () async {
         await alertOnError(context, () async {

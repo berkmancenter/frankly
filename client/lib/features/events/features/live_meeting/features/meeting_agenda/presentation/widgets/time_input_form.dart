@@ -49,10 +49,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
         SizedBox(width: 4),
         HeightConstrainedText(
           ':',
-          style: AppTextStyle.bodyMedium.copyWith(
-            color:
-                widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white,
-          ),
+          style: AppTextStyle.bodyMedium,
         ),
         SizedBox(width: 4),
         _buildNumberInput(

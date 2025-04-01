@@ -28,9 +28,7 @@ class AgendaItemText extends StatelessWidget {
             labelText: 'Title',
             maxLength: agendaTitleCharactersLength,
             maxLines: 1,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: AppTextStyle.bodySmall,
             onChanged: (value) {
               agendaItemTextData.title = value;
               onChanged(agendaItemTextData);
