@@ -49,7 +49,7 @@ Most components of Frankly can be run on your local machine. This section descri
 
 This section covers setting up a new computer for Flutter development.
 
-> ### ⚠️ Important: Frankly runs on Flutter `3.22.2.`
+> ### ⚠️ Important: Frankly runs on Flutter `3.29.2.`
 >
 > **Please use this version of Flutter in order to avoid any unexpected errors.**
 
