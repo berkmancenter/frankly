@@ -159,32 +159,8 @@ class EventWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 20.0),
                   if (isDisabled)
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: AppColor.pink,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: AppColor.redLightMode,
-                            child: Icon(
-                              Icons.school_outlined,
-                              size: 20,
-                              color: AppColor.white,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          HeightConstrainedText(
-                            'Prerequisite',
-                            style: AppTextStyle.eyebrowSmall
-                                .copyWith(color: AppColor.redLightMode),
-                          ),
-                        ],
-                      ),
+                    PrerequisiteBadge(
+                      textStyle: AppTextStyle.eyebrowSmall,
                     )
                   else ...[
                     if (event.isLiveStream)
