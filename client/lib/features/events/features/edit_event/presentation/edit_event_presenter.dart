@@ -186,8 +186,6 @@ class EditEventPresenter {
     return _responsiveLayoutService.isMobile(context);
   }
 
-  bool get showFeatureToggle => _communityPermissionsProvider.canFeatureItems;
-
   bool isPlatformSelectionFeatureEnabled() {
     return _communityProvider.settings.enablePlatformSelection;
   }
