@@ -98,7 +98,6 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       template: templateProvider.template,
       event: event,
       isLivestream: event.isLiveStream,
-      backgroundColor: AppColor.darkerBlue,
       agendaStartsCollapsed: true,
       child: Column(
         children: [

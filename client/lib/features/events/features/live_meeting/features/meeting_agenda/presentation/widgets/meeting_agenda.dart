@@ -22,7 +22,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    this.backgroundColor = AppColor.darkerBlue,
     this.labelColor,
     this.isLivestream = false,
     this.child,
@@ -34,7 +33,7 @@ class MeetingAgendaWrapper extends StatelessWidget {
   final Template? template;
   final bool allowButtonForUserSubmittedAgenda;
   final SubmitNotifier? saveNotifier;
-  final Color backgroundColor;
+
   final Color? labelColor;
   final bool isLivestream;
   final bool agendaStartsCollapsed;
@@ -50,7 +49,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
       allowButtonForUserSubmittedAgenda: allowButtonForUserSubmittedAgenda,
       agendaStartsCollapsed: agendaStartsCollapsed,
       saveNotifier: saveNotifier,
-      backgroundColor: backgroundColor,
       isLivestream: isLivestream,
       labelColor: labelColor,
     );

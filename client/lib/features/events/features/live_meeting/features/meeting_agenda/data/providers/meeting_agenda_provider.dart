@@ -41,7 +41,7 @@ class AgendaProviderParams {
   final bool allowButtonForUserSubmittedAgenda;
   final bool agendaStartsCollapsed;
   final SubmitNotifier? saveNotifier;
-  final Color backgroundColor;
+
   final Color? labelColor;
   final bool isLivestream;
   final Color? highlightColor;
@@ -54,7 +54,6 @@ class AgendaProviderParams {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    required this.backgroundColor,
     required this.labelColor,
     required this.isLivestream,
     this.highlightColor,

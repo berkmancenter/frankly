@@ -132,7 +132,6 @@ class _TemplatePageState extends State<TemplatePage>
             communityId: Provider.of<CommunityProvider>(context).communityId,
             template: template,
             allowButtonForUserSubmittedAgenda: false,
-            backgroundColor: AppColor.gray6,
             child: MeetingAgenda(
               canUserEditAgenda: context
                   .watch<CommunityPermissionsProvider>()

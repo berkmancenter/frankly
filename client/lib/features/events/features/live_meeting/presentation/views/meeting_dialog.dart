@@ -181,7 +181,6 @@ class _MeetingDialogState extends State<MeetingDialog> {
     return MeetingAgendaWrapper(
       communityId: eventProvider.communityId,
       event: event,
-      backgroundColor: AppColor.darkerBlue,
       labelColor: Colors.white60,
       child: Builder(
         builder: (context) {
