@@ -184,15 +184,6 @@ class EditTemplatePresenter {
     }
   }
 
-  Color getTemplateButtonToggleColor() {
-    switch (_model.template.status) {
-      case TemplateStatus.active:
-        return AppColor.redLightMode;
-      case TemplateStatus.removed:
-        return Color(0xFFFFC138);
-    }
-  }
-
   bool canDeleteTemplate() {
     return _communityPermissionsProvider.canDeleteTemplate(_model.template);
   }

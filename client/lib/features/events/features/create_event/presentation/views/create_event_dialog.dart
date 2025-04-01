@@ -13,9 +13,7 @@ import 'package:client/features/events/features/create_event/presentation/views/
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
@@ -128,21 +126,18 @@ class CreateEventDialog extends StatelessWidget {
         context.watch<CreateEventDialogModel>().currentPageIndex + 1;
     final lastIndex = context.watch<CreateEventDialogModel>().allPages.length;
 
-    return UIMigration(
-      whiteBackground: true,
-      child: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (currentIndex > 1 && lastIndex > 1)
-              HeightConstrainedText(
-                'STEP $currentIndex OF $lastIndex',
-                style: AppTextStyle.eyebrow,
-              ),
-            _buildCurrentPage(context),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (currentIndex > 1 && lastIndex > 1)
+            HeightConstrainedText(
+              'STEP $currentIndex OF $lastIndex',
+              style: AppTextStyle.eyebrow,
+            ),
+          _buildCurrentPage(context),
+        ],
       ),
     );
   }

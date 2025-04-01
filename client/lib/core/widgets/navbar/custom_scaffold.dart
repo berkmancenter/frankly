@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar/nav_bar.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/sidebar.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +13,18 @@ class CustomScaffold extends StatefulWidget {
   final Widget? bottomNavigationBar;
   final Color? bgColor;
 
+  /// This allows a different theme to be provided to child widgets
+  /// without affecting the theme of global/nav elements.
+  /// This feature is used in community pages to customize theme.
+  final ThemeData? childTheme;
+
   const CustomScaffold({
     required this.child,
     this.fillViewport = false,
     this.floatingActionButton,
     this.bottomNavigationBar,
     this.bgColor,
+    this.childTheme,
   });
 
   @override
@@ -38,14 +42,22 @@ class CustomScaffoldState extends State<CustomScaffold> {
     return widget.fillViewport
         ? Column(
             children: [
-              UIMigration(child: NavBar()),
-              Expanded(child: keyedChild),
+              NavBar(),
+              Expanded(
+                child: Theme(
+                  data: widget.childTheme ?? Theme.of(context),
+                  child: keyedChild,
+                ),
+              ),
             ],
           )
         : CustomListView(
             children: [
-              UIMigration(child: NavBar()),
-              keyedChild,
+              NavBar(),
+              Theme(
+                data: widget.childTheme ?? Theme.of(context),
+                child: keyedChild,
+              ),
             ],
           );
   }
@@ -56,7 +68,15 @@ class CustomScaffoldState extends State<CustomScaffold> {
     return FocusFixer(
       child: Scaffold(
         backgroundColor: widget.bgColor,
-        floatingActionButton: widget.floatingActionButton,
+
+        // Floating action buttons should follow the theme of the scaffold
+        // instead of other nav elements.
+        floatingActionButton: widget.floatingActionButton != null
+            ? Theme(
+                data: widget.childTheme ?? Theme.of(context),
+                child: widget.floatingActionButton!,
+              )
+            : null,
         endDrawer: SideBar(),
         body: Column(
           children: [

@@ -1,12 +1,10 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
 import 'package:client/core/utils/firestore_utils.dart';
-import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
@@ -19,26 +17,20 @@ class CommunityMembershipButton extends StatefulWidget {
   final double? height;
   final double? minWidth;
   final String? text;
-  final Color? bgColor;
-  final Color textColor;
 
   const CommunityMembershipButton(
     this.community, {
     this.height,
     this.minWidth,
     this.text,
-    this.bgColor,
-    this.textColor = Colors.white,
   });
 
   @override
-  _CommunityMembershipButtonState createState() =>
-      _CommunityMembershipButtonState();
+  CommunityMembershipButtonState createState() =>
+      CommunityMembershipButtonState();
 }
 
-class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
-  bool _hovered = false;
-
+class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
   Future<void> _requestCommunityMembership() async {
     await guardSignedIn(
       () => alertOnError(context, () async {
@@ -64,30 +56,10 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
   @override
   Widget build(BuildContext context) {
     final communityId = widget.community.id;
-    final isMember = Provider.of<UserDataService>(context)
-        .isMember(communityId: communityId);
     final userId = context.watch<UserService>().currentUserId!;
     final requiresApproval =
         widget.community.settingsMigration.requireApprovalToJoin;
-
-    if (isMember) {
-      return CustomInkWell(
-        onHover: (hovered) => setState(() => _hovered = hovered),
-        hoverColor: Colors.transparent,
-        child: ThickOutlineButton(
-          onPressed: () => alertOnError(
-            context,
-            () => userDataService.requestChangeCommunityMembership(
-              community: widget.community,
-              join: false,
-            ),
-          ),
-          text: _hovered ? 'Unfollow' : 'Followed',
-          backgroundColor: Colors.white,
-          minWidth: widget.minWidth,
-        ),
-      );
-    } else if (requiresApproval) {
+    if (requiresApproval) {
       return MemoizedBuilder<BehaviorSubjectWrapper<MembershipRequest?>>(
         getter: () =>
             firestoreCommunityJoinRequestsService.getUserRequestForCommunityId(
@@ -104,10 +76,9 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
             if (request == null) {
               return ActionButton(
                 text: 'Request To Follow',
-                textColor: widget.textColor,
+                color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                color: widget.bgColor,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: () => _requestCommunityMembership(),
               );
@@ -117,20 +88,18 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
             ].contains(request.status)) {
               return ActionButton(
                 text: 'Follow Request Sent',
-                textColor: widget.textColor,
+                color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                color: widget.bgColor,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: null,
               );
             } else {
               return ActionButton(
                 text: widget.text ?? 'Follow',
-                textColor: widget.textColor,
+                color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                color: widget.bgColor,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: () => alertOnError(
                   context,
@@ -147,10 +116,9 @@ class _CommunityMembershipButtonState extends State<CommunityMembershipButton> {
     } else {
       return ActionButton(
         text: 'Follow',
-        textColor: widget.textColor,
+        color: context.theme.colorScheme.primary,
         minWidth: widget.minWidth,
         height: widget.height,
-        color: widget.bgColor,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         onPressed: () => alertOnError(
           context,

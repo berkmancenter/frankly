@@ -5,10 +5,10 @@ import 'package:client/features/community/features/create_community/presentation
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/private_community_checkbox.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/features/create_community/data/providers/community_tag_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -445,7 +445,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       stream: createCommunityTagProvider.communityTagsStream,
       builder: (context, _) => CreateTagWidget(
         titleText: 'Add Tags',
-        titleTextStyle: AppTextStyle.body.copyWith(fontSize: 24),
         showIcon: false,
         tags: Provider.of<CreateCommunityTagProvider>(context).tags,
         onAddTag: (title) => alertOnError(

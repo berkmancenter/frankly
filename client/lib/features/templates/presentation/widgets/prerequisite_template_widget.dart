@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -27,9 +28,7 @@ class PrerequisiteTemplateWidget extends StatelessWidget {
       children: [
         HeightConstrainedText(
           'Attend this first:',
-          style: AppTextStyle.headline4.copyWith(
-            color: AppColor.darkBlue,
-          ),
+          style: AppTextStyle.headline4,
         ),
         SizedBox(height: 10),
         ChangeNotifierProvider<TemplateProvider>(
@@ -53,7 +52,8 @@ class PrerequisiteTemplateWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColor.gray3),
+                    border:
+                        Border.all(color: context.theme.colorScheme.outline),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -69,9 +69,7 @@ class PrerequisiteTemplateWidget extends StatelessWidget {
                           children: [
                             HeightConstrainedText(
                               template?.title ?? '',
-                              style: AppTextStyle.headline4.copyWith(
-                                color: AppColor.gray1,
-                              ),
+                              style: AppTextStyle.headline4,
                             ),
                             HeightConstrainedText(
                               'Find an event with this template.',

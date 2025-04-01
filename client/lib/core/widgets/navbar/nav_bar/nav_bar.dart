@@ -7,7 +7,7 @@ import 'package:client/features/events/features/create_event/presentation/views/
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -173,7 +173,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           Expanded(
             child: CommunityMembershipButton(
               currentCommunity,
-              bgColor: Theme.of(context).colorScheme.primary,
             ),
           ),
         ] else
@@ -191,14 +190,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
 
     return [
       if (!showBottomNav)
-        Theme(
-          data: ThemeData(
-            textTheme:
-                Theme.of(context).textTheme.apply(bodyColor: AppColor.gray1),
-          ),
-          child: ProfileOrLogin(
-            showMenuAboveIcon: false,
-          ),
+        ProfileOrLogin(
+          showMenuAboveIcon: false,
         ),
       if (showBottomNav) ...[
         if (currentCommunity != null && isCommunityLocation) ...[
@@ -235,7 +228,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         SizedBox(width: 20),
         CommunityMembershipButton(
           community,
-          bgColor: Theme.of(context).colorScheme.primary,
         ),
       ];
     }

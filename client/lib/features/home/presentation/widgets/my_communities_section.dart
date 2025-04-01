@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/user/public_user_info.dart';
 
-import '../../../community/utils/theme_creation_utility.dart';
+import '../../../community/utils/community_theme_utils.dart.dart';
 
 /// This is the top section of the home page that displays a carousel of images which link to the community home pages
 class MyCommunitiesSection extends StatefulWidget {
@@ -93,20 +94,10 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
           Semantics(
             label: 'Start a community',
             button: true,
-            child: CustomInkWell(
-              onTap: _createCommunityPressed,
-              boxShape: BoxShape.circle,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColor.white,
-                ),
-                child: DottedBorder(
-                  dashPattern: const [3, 3],
-                  borderType: BorderType.Circle,
-                  child: Icon(Icons.add),
-                ),
-              ),
+            child: CircleIconButton(
+              onPressed: _createCommunityPressed,
+              icon: Icons.add,
+              toolTipText: 'Start a community',
             ),
           ),
           if (!responsiveLayoutService.isMobile(context)) ...[
