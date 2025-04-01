@@ -409,8 +409,6 @@ class _ProfileTabState extends State<_ProfileTab> {
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),
           onTapTag: (tag) =>
               alertOnError(context, () => createTagPresenter.onTapTag(tag)),
-          tagBackgroundColor: AppColor.brightGreen,
-          tagTextColor: AppColor.darkBlue,
         );
       },
     );

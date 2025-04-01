@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart' as dotted_border;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,6 @@ class CreateTagWidget extends StatefulWidget {
   final bool showIcon;
   final String? titleText;
   final TextStyle? titleTextStyle;
-  final Color tagBackgroundColor;
-  final Color tagTextColor;
 
   const CreateTagWidget({
     Key? key,
@@ -48,8 +47,6 @@ class CreateTagWidget extends StatefulWidget {
     this.showIcon = true,
     this.titleText,
     this.titleTextStyle,
-    this.tagBackgroundColor = AppColor.darkBlue,
-    this.tagTextColor = AppColor.white,
   }) : super(key: key);
 
   @override
@@ -99,8 +96,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
         ],
         HeightConstrainedText(
           widget.titleText ?? (widget.isFeaturedTag ? 'Featured Tags' : 'Tags'),
-          style: widget.titleTextStyle ??
-              AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+          style: AppTextStyle.body,
         ),
         SizedBox(width: 15),
         Expanded(
@@ -117,8 +113,8 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
                       label: snapshot.title,
                       isSelected: widget.checkIsSelected(tag),
                       onPressed: () => widget.onTapTag(tag),
-                      tagBackgroundColor: widget.tagBackgroundColor,
-                      tagTextColor: widget.tagTextColor,
+                      tagBackgroundColor: context.theme.colorScheme.primary,
+                      tagTextColor: context.theme.colorScheme.onPrimary,
                     );
                   },
                 ),
@@ -141,7 +137,6 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
       children: [
         HeightConstrainedText(
           'Add a new tag',
-          style: TextStyle(color: AppColor.gray3),
         ),
         Row(
           children: [
@@ -157,7 +152,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppColor.accentBlue,
+                          color: context.theme.colorScheme.outline,
                           width: 1.0,
                         ),
                         borderRadius: BorderRadius.circular(5),
@@ -204,22 +199,15 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
               Semantics(
                 button: true,
                 label: 'Submit Tag Button',
-                child: CustomInkWell(
-                  boxShape: BoxShape.circle,
-                  onTap: _hasValidInput
+                child: IconButton(
+                  onPressed: _hasValidInput
                       ? () {
                           widget.onAddTag(_controller.text);
                           _controller.clear();
                         }
                       : null,
-                  child: CircleAvatar(
-                    backgroundColor: _hasValidInput
-                        ? AppColor.darkBlue
-                        : AppColor.darkBlue.withOpacity(0.5),
-                    child: Icon(
-                      Icons.check,
-                      color: AppColor.brightGreen,
-                    ),
+                  icon: Icon(
+                    Icons.check,
                   ),
                 ),
               ),
@@ -249,15 +237,11 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
             borderRadius: BorderRadius.circular(30),
             icon: Icon(
               Icons.add,
-              color: AppColor.darkBlue,
             ),
             type: ActionButtonType.outline,
             color: AppColor.white,
             onPressed: () => _onTapAddButton(),
-            child: HeightConstrainedText(
-              'Add tag',
-              style: TextStyle(color: AppColor.darkBlue),
-            ),
+            text: 'Add tag',
           ),
         ],
       ),

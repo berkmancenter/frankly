@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_tag_presenter.dart';
@@ -47,7 +48,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainer,
       child: _buildBody(),
     );
   }
@@ -74,8 +75,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
             children: [
               Text(
                 'Edit template',
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall,
               ),
               AppClickableWidget(
                 child: ProxiedImage(
@@ -128,7 +128,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body,
         ),
         Spacer(),
         InkWell(
