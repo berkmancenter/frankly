@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
@@ -284,7 +285,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
               height: size,
               width: size,
@@ -302,7 +303,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
         if (isIndicatorShown) _buildIndicator(),
         HeightConstrainedText(
           text,
-          style: AppTextStyle.body.copyWith(color: AppColor.gray1),
+          style: AppTextStyle.body,
           maxLines: 2,
         ),
       ],
