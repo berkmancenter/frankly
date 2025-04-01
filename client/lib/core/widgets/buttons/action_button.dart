@@ -170,7 +170,7 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Color _getTextColor() {
-    Color defaultTextColor = context.theme.colorScheme.primary;
+    Color defaultTextColor = context.theme.colorScheme.onPrimary;
     if (widget.color == context.theme.colorScheme.primary) {
       defaultTextColor = context.theme.colorScheme.onPrimary;
     } else if (widget.color == context.theme.colorScheme.secondary) {
@@ -250,7 +250,7 @@ class _ActionButtonState extends State<ActionButton> {
               return widget.disabledColor ??
                   context.theme.colorScheme.onSurface.withOpacity(0.38);
             }
-            return widget.color ?? context.theme.colorScheme.secondary;
+            return widget.color ?? context.theme.colorScheme.primary;
           }),
           overlayColor: overlayColor,
           minimumSize: minimumSize,

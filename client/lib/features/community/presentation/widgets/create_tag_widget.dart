@@ -233,13 +233,13 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
           ],
           SizedBox(height: 20),
           ActionButton(
-            borderSide: BorderSide(color: AppColor.black, width: 1),
             borderRadius: BorderRadius.circular(30),
             icon: Icon(
               Icons.add,
             ),
             type: ActionButtonType.outline,
-            color: AppColor.white,
+            color: context.theme.colorScheme.primary,
+            textColor: context.theme.colorScheme.primary,
             onPressed: () => _onTapAddButton(),
             text: 'Add tag',
           ),
