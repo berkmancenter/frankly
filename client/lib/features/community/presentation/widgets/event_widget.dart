@@ -1,3 +1,4 @@
+import 'package:client/features/templates/presentation/widgets/prerequisite_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_picture.dart';
@@ -77,8 +78,9 @@ class EventWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: isDisabled
-                                ? AppColor.white.withOpacity(0.8)
-                                : AppColor.white,
+                                ? context.theme.colorScheme.surfaceContainer
+                                    .withOpacity(0.8)
+                                : context.theme.colorScheme.surfaceContainer,
                             boxShadow: [
                               if (!isDisabled) AppDecoration.lightBoxShadow,
                             ],
@@ -132,10 +134,9 @@ class EventWidget extends StatelessWidget {
                 ),
               ),
               if (isDisabled)
-                Container(
+                SizedBox(
                   width: 90,
                   height: 90,
-                  color: Colors.white.withOpacity(0.5),
                 ),
             ],
           ),
@@ -167,7 +168,8 @@ class EventWidget extends StatelessWidget {
                       HeightConstrainedText(
                         'Livestream',
                         style: AppTextStyle.bodySmall.copyWith(
-                          color: AppColor.gray3,
+                          color: context.theme.colorScheme.onSurface
+                              .withOpacity(0.38),
                         ),
                       ),
                     EventPageParticipantsList(
