@@ -175,8 +175,8 @@ class _ActionButtonState extends State<ActionButton> {
       defaultTextColor = context.theme.colorScheme.onPrimary;
     } else if (widget.color == context.theme.colorScheme.secondary) {
       defaultTextColor = context.theme.colorScheme.primary;
-    } else if (widget.color == context.theme.colorScheme.errorContainer) {
-      defaultTextColor = context.theme.colorScheme.onErrorContainer;
+    } else if (widget.color == context.theme.colorScheme.error) {
+      defaultTextColor = context.theme.colorScheme.onError;
     }
 
     return widget.textColor ?? defaultTextColor;
