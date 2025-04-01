@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -16,24 +17,25 @@ class PrerequisiteBadge extends StatelessWidget {
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.redLightMode,
+          color: context.theme.colorScheme.error,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               radius: 12,
-              backgroundColor: AppColor.lightRed,
+              backgroundColor: context.theme.colorScheme.errorContainer,
               child: Icon(
                 Icons.school_outlined,
-                color: AppColor.darkRed,
+                color: context.theme.colorScheme.onErrorContainer,
                 size: 20,
               ),
             ),
             SizedBox(width: 10),
             HeightConstrainedText(
               'Prerequisite Required',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.lightRed),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onError),
             ),
           ],
         ),
