@@ -130,17 +130,23 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                             ),
                           ),
                           if (isEditIconShown)
-                            IconButton(
-                              key: Key('prePostCardWidgetPage-deleteCard'),
-                              icon: Icon(
-                                CupertinoIcons.delete,
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: IconButton(
+                                key: Key('prePostCardWidgetPage-deleteCard'),
+                                icon: Icon(
+                                  CupertinoIcons.delete,
+                                ),
+                                onPressed: () => _showDeleteDialog(),
                               ),
-                              onPressed: () => _showDeleteDialog(),
                             ),
                           if (isEditIconShown)
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () => _presenter.toggleCardType(),
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => _presenter.toggleCardType(),
+                              ),
                             ),
                           IconButton(
                             icon: Icon(
