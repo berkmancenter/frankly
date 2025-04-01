@@ -190,7 +190,6 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildBottomButtonsSection() {
     final templateToggleButtonText = _presenter.getTemplateButtonToggleText();
-    final templateToggleButtonColor = _presenter.getTemplateButtonToggleColor();
     final canToggleTemplate = _presenter.canDeleteTemplate();
 
     return Column(
@@ -198,8 +197,8 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
         ActionButton(
           expand: true,
           text: 'Save template',
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Theme.of(context).colorScheme.secondary,
+          color: context.theme.colorScheme.primary,
+          textColor: context.theme.colorScheme.onPrimary,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
@@ -210,7 +209,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
           ActionButton(
             expand: true,
             type: ActionButtonType.outline,
-            textColor: templateToggleButtonColor,
+            textColor: context.theme.colorScheme.error,
             text: templateToggleButtonText,
             onPressed: () => alertOnError(
               context,
