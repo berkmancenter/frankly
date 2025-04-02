@@ -51,18 +51,15 @@ class _HostingOptionState extends State<HostingOption> {
         List<_HostingOptionType> hostingTypes = [
           _HostingOptionType(
             title: 'Hosted',
-            isGated: false,
             eventType: EventType.hosted,
           ),
           if (widget.isHostlessEnabled)
             _HostingOptionType(
               title: 'Hostless',
-              isGated: !(caps?.hasLivestreams ?? false),
               eventType: EventType.hostless,
             ),
           _HostingOptionType(
             title: 'Livestream',
-            isGated: !(caps?.hasLivestreams ?? false),
             eventType: EventType.livestream,
           ),
         ];
@@ -74,7 +71,6 @@ class _HostingOptionState extends State<HostingOption> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 for (final type in hostingTypes)
-                  if (!type.isGated)
                     _HostingRadioOption(
                       isWhiteBackground: widget.isWhiteBackground,
                       onSelected: () {
@@ -82,7 +78,6 @@ class _HostingOptionState extends State<HostingOption> {
                         setState(() => _hostingOption = type.eventType);
                       },
                       isSelected: type.eventType == _hostingOption,
-                      isGated: type.isGated,
                       title: type.title,
                     ),
               ].intersperse(SizedBox(height: 14)).toList(),
@@ -96,18 +91,15 @@ class _HostingOptionState extends State<HostingOption> {
 
 class _HostingOptionType {
   final String title;
-  final bool isGated;
   final EventType eventType;
 
   _HostingOptionType({
     required this.title,
-    required this.isGated,
     required this.eventType,
   });
 }
 
 class _HostingRadioOption extends StatefulWidget {
-  final bool isGated;
   final bool isSelected;
   final void Function() onSelected;
   final String title;
@@ -115,7 +107,6 @@ class _HostingRadioOption extends StatefulWidget {
 
   const _HostingRadioOption({
     Key? key,
-    this.isGated = true,
     required this.title,
     required this.isSelected,
     required this.onSelected,
@@ -129,17 +120,9 @@ class _HostingRadioOption extends StatefulWidget {
 class _HostingRadioOptionState extends State<_HostingRadioOption> {
   Color get color {
     if (widget.isWhiteBackground) {
-      if (!widget.isGated) {
-        return AppColor.darkBlue;
-      } else {
-        return AppColor.darkBlue.withOpacity(.5);
-      }
+      return AppColor.darkBlue;
     } else {
-      if (!widget.isGated) {
-        return AppColor.white;
-      } else {
-        return AppColor.white.withOpacity(.5);
-      }
+      return AppColor.white;
     }
   }
 

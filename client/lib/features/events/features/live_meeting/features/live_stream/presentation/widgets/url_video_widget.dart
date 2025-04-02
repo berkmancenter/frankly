@@ -120,9 +120,9 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
         final subscription = html.window.onMessage.listen((event) {
           final messageObj = event.data;
 
+          print(messageObj);
           if (messageObj['source'] == 'videojs') {
             final String messageType = messageObj['type'];
-            print(messageObj);
             print(
               'currentTime type: ${messageObj['currentTime']?.runtimeType}',
             );
