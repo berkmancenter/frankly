@@ -23,7 +23,7 @@ class MeetingRating extends StatefulWidget {
   }) {
     return showCustomDialog<void>(
       builder: (innerContext) => Dialog(
-        backgroundColor: context.theme.colorScheme.primary,
+        backgroundColor: innerContext.theme.colorScheme.primary,
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ConstrainedBox(
@@ -58,7 +58,7 @@ class MeetingRating extends StatefulWidget {
                           ActionButtonSendingIndicatorAlign.none,
                       text: 'NEXT',
                       color: AppColor.brightGreen,
-                      textColor: context.theme.colorScheme.primary,
+                      textColor: innerContext.theme.colorScheme.primary,
                     ),
                   ],
                 ),
