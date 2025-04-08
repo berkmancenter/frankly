@@ -448,10 +448,11 @@ class _ProfileTabState extends State<_ProfileTab> {
   }
 
   Widget _buildFAIcon(
+    BuildContext context,
     IconData icon, {
     required void Function() onTap,
   }) {
-    const foregroundColor = context.theme.colorScheme.primary;
+    final foregroundColor = context.theme.colorScheme.primary;
 
     final size = responsiveLayoutService.getDynamicSize(context, 35.0);
     final iconSize = responsiveLayoutService.getDynamicSize(context, 20.0);
@@ -485,21 +486,25 @@ class _ProfileTabState extends State<_ProfileTab> {
     switch (key) {
       case SocialMediaKey.facebook:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.facebookF,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.instagram:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.instagram,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.linkedin:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.linkedin,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.twitter:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.twitter,
           onTap: () => launch(item.url!),
         );
