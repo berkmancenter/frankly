@@ -7,13 +7,13 @@ class StepProgressIndicator extends StatelessWidget {
     required this.completedStepCount,
     required this.totalSteps,
     this.backgroundColor = AppColor.gray5,
-    this.progressColor = context.theme.colorScheme.primary,
+    this.progressColor,
   }) : super(key: key);
 
   final int completedStepCount;
   final int totalSteps;
   final Color backgroundColor;
-  final Color progressColor;
+  final Color? progressColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class StepProgressIndicator extends StatelessWidget {
                 duration: kTabScrollDuration,
                 height: 4,
                 width: completedStepCount * widthStep,
-                color: progressColor,
+                color: progressColor ?? context.theme.colorScheme.primary,
               );
             },
           ),
