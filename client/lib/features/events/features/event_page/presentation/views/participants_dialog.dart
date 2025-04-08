@@ -79,7 +79,7 @@ class ParticipantsDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildCloseDialogIcon(context),
-            _buildDialogTitle(),
+            _buildDialogTitle(context),
             Flexible(
               child: _buildLiveStreamEventParticipants(context),
             ),
@@ -106,7 +106,7 @@ class ParticipantsDialog extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   _buildCloseDialogIcon(context),
-                  _buildDialogTitle(),
+                  _buildDialogTitle(context),
                   ..._buildEventParticipants(context),
                 ],
               ),
@@ -137,7 +137,7 @@ class ParticipantsDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildDialogTitle() {
+  Widget _buildDialogTitle(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
