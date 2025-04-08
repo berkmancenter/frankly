@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 

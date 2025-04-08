@@ -1,6 +1,5 @@
 import 'dart:math';
-import 'dart:ui';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class PresetColorTheme {

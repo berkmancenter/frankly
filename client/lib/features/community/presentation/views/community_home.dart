@@ -20,7 +20,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';

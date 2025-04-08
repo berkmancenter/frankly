@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialogue.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';

@@ -4,7 +4,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';

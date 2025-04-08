@@ -5,7 +5,7 @@ import 'package:client/features/events/features/live_meeting/features/video/pres
 import 'package:client/features/events/features/live_meeting/features/video/data/models/talking_odometer_model.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/talking_odometer_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/colorful_meter.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 
 /// Shows a meter indicating to the user if they have been speaking more, less, or the same as

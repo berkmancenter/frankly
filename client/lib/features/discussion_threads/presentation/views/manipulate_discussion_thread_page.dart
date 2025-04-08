@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -8,7 +9,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
@@ -159,7 +159,8 @@ class _ManipulateDiscussionThreadPageState
                         HeightConstrainedText(
                           'Image',
                           style: AppTextStyle.bodyMedium.copyWith(
-                              color: context.theme.colorScheme.primary),
+                            color: context.theme.colorScheme.primary,
+                          ),
                         ),
                       ],
                     ),

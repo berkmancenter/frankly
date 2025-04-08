@@ -20,7 +20,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';

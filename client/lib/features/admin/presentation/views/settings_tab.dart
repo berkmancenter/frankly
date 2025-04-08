@@ -14,7 +14,7 @@ import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';

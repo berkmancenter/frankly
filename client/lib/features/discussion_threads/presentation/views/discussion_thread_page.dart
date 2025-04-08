@@ -1,6 +1,7 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/discussion_threads/presentation/views/discussion_thread_card.dart';
 import 'package:client/features/discussion_threads/presentation/views/discussion_thread_comment_card.dart';
@@ -15,7 +16,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -329,7 +329,8 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                           child: Text(
                             'Update Post',
                             style: AppTextStyle.bodyMedium.copyWith(
-                                color: context.theme.colorScheme.primary),
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                         PopupMenuItem(
@@ -337,7 +338,8 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                           child: Text(
                             'Delete Post',
                             style: AppTextStyle.bodyMedium.copyWith(
-                                color: context.theme.colorScheme.primary),
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                       ];

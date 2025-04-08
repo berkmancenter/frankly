@@ -9,7 +9,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/events/presentation/widgets/participants_list.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 

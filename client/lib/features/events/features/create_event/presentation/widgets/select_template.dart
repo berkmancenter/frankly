@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart' as dotted_border;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -6,7 +7,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/custom_form_builder_choice_chips.dart';
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:client/core/widgets/height_constained_text.dart';

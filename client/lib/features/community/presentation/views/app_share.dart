@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -7,7 +8,6 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';

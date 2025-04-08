@@ -10,7 +10,7 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/app.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';

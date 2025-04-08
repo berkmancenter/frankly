@@ -11,7 +11,6 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -21,8 +20,7 @@ import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
-import 'package:client/core/utils/dialogs.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';

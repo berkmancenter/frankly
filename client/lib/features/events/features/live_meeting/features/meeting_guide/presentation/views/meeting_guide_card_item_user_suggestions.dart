@@ -11,7 +11,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';

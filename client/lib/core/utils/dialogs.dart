@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
@@ -57,7 +57,8 @@ class Dialogs {
                                 color: context.theme.colorScheme.primary,
                               )
                             : AppTextStyle.headline1.copyWith(
-                                color: context.theme.colorScheme.primary),
+                                color: context.theme.colorScheme.primary,
+                              ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

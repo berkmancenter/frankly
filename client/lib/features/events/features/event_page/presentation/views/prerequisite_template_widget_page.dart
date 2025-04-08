@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_contract.dart';
@@ -6,7 +7,6 @@ import 'package:client/features/events/features/event_page/data/models/prerequis
 import 'package:client/features/events/features/event_page/presentation/prerequisite_template_widget_presenter.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';

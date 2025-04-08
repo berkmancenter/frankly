@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -28,7 +29,6 @@ import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -86,10 +86,10 @@ class EventPage extends StatefulWidget {
   }
 
   @override
-  _EventPageState createState() => _EventPageState();
+  EventPageState createState() => EventPageState();
 }
 
-class _EventPageState extends State<EventPage> implements EventPageView {
+class EventPageState extends State<EventPage> implements EventPageView {
   EventProvider get _eventProvider => EventProvider.watch(context);
 
   Event get event => _eventProvider.event;

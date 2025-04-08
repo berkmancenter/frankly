@@ -4,7 +4,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 

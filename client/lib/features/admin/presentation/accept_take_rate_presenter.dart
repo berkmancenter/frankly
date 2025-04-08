@@ -2,7 +2,7 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:flutter/material.dart';
 

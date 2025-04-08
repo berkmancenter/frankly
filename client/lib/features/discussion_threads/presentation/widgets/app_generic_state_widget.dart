@@ -1,9 +1,9 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 
 /// Supplementary model to be passed to [AppGenericStateWidget].
 class AppGenericStateData {

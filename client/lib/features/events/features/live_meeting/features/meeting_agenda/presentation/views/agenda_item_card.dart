@@ -16,7 +16,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/time_input_form.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';

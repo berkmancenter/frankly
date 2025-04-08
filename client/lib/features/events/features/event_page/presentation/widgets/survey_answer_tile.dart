@@ -1,5 +1,5 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
 
 class SurveyAnswerTile extends StatelessWidget {
   final String answer;
@@ -54,7 +54,8 @@ class SurveyAnswerTile extends StatelessWidget {
                         height: kIndicatorHeight,
                         width: step * answeredParticipants,
                         decoration: _getBoxDecoration(
-                            context.theme.colorScheme.primary),
+                          context.theme.colorScheme.primary,
+                        ),
                         duration: kTabScrollDuration,
                       ),
                     ],

@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/presentation/choose_platform_presenter.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
@@ -9,7 +10,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +86,9 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                         color: Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(
-                            width: 1, color: context.theme.colorScheme.primary),
+                          width: 1,
+                          color: context.theme.colorScheme.primary,
+                        ),
                       ),
                       child: Icon(
                         Icons.circle,
@@ -218,7 +220,8 @@ class LinkField extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: Colors.transparent,
                           border: Border.all(
-                              color: context.theme.colorScheme.primary),
+                            color: context.theme.colorScheme.primary,
+                          ),
                         ),
                         child: Icon(
                           Icons.close,

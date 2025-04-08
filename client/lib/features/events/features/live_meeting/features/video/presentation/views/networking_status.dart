@@ -6,7 +6,7 @@ import 'package:client/features/events/features/live_meeting/features/video/data
 import 'package:client/features/events/features/live_meeting/features/video/presentation/networking_status_presenter.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
 
 class NetworkingStatus extends StatefulWidget {

@@ -25,7 +25,6 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -452,7 +451,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     IconData icon, {
     required void Function() onTap,
   }) {
-    const foregroundColor = AppColor.darkBlue;
+    const foregroundColor = context.theme.colorScheme.primary;
 
     final size = responsiveLayoutService.getDynamicSize(context, 35.0);
     final iconSize = responsiveLayoutService.getDynamicSize(context, 20.0);

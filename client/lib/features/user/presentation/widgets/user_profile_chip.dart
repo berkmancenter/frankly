@@ -5,7 +5,7 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/profile_chip.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:provider/provider.dart';
 

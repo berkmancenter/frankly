@@ -5,10 +5,8 @@ import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:data_models/utils/share_type.dart';
 
 class ShareSection extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:pedantic/pedantic.dart';
 

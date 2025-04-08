@@ -14,7 +14,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/cloud_functions/requests.dart';

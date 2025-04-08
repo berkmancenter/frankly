@@ -1,5 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -9,9 +10,7 @@ import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 
 class SignInOptionsContent extends StatefulWidget {

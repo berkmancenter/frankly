@@ -1,12 +1,12 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -27,7 +27,6 @@ import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
@@ -591,7 +590,9 @@ class _SelectableNavigationButton extends StatelessWidget {
             ? BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: context.theme.colorScheme.primary, width: 1.5),
+                    color: context.theme.colorScheme.primary,
+                    width: 1.5,
+                  ),
                 ),
               )
             : null,

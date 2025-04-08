@@ -1,5 +1,6 @@
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,6 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -35,10 +35,10 @@ class EditEventDrawer extends StatefulWidget {
   const EditEventDrawer({Key? key}) : super(key: key);
 
   @override
-  _EditEventDrawerState createState() => _EditEventDrawerState();
+  EditEventDrawerState createState() => EditEventDrawerState();
 }
 
-class _EditEventDrawerState extends State<EditEventDrawer>
+class EditEventDrawerState extends State<EditEventDrawer>
     implements EditEventView {
   final ScrollController _scrollController = ScrollController();
   late final EditEventModel _model;

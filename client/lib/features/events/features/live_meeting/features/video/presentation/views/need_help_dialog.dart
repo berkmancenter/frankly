@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 
 const _kTroubleshootingGuideUrl = Environment.troubleshootingGuideUrl;

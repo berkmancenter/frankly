@@ -1,5 +1,6 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
@@ -16,7 +17,6 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
 import 'package:data_models/analytics/analytics_entities.dart';

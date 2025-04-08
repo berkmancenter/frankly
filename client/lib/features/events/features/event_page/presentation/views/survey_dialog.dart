@@ -1,4 +1,5 @@
 import 'package:client/core/utils/random_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -8,7 +9,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/app.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';

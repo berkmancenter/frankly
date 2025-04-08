@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 /// These are the play / pause  and forward / backward buttons that control the image carousel.
 class CommunityCarouselControls extends StatelessWidget {
