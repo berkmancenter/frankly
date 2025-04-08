@@ -170,6 +170,12 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Color _getTextColor() {
+    if (widget.type == ActionButtonType.outline) {
+      return widget.textColor ??
+          widget.borderSide?.color ??
+          context.theme.colorScheme.primary;
+    }
+
     Color defaultTextColor = context.theme.colorScheme.onPrimary;
     if (widget.color == context.theme.colorScheme.primary) {
       defaultTextColor = context.theme.colorScheme.onPrimary;
@@ -263,7 +269,10 @@ class _ActionButtonState extends State<ActionButton> {
         style: ButtonStyle(
           overlayColor: overlayColor,
           side: WidgetStateProperty.all(
-            widget.borderSide ?? BorderSide(color: _getTextColor()),
+            widget.borderSide ??
+                BorderSide(
+                  color: _getTextColor(),
+                ),
           ),
           padding: WidgetStateProperty.all(EdgeInsets.zero),
           minimumSize: minimumSize,

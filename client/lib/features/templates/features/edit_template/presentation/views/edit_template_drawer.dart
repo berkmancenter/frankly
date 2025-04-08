@@ -208,7 +208,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
           ActionButton(
             expand: true,
             type: ActionButtonType.outline,
-            color: context.theme.colorScheme.error,
+            textColor: context.theme.colorScheme.error,
             text: templateToggleButtonText,
             onPressed: () => alertOnError(
               context,
