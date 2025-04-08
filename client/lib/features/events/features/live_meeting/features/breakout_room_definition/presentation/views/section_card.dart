@@ -18,27 +18,23 @@ class SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: _buildExpansionTile(),
-    );
-  }
-
-  Widget _buildExpansionTile() {
-    return ExpansionTile(
-      initiallyExpanded: expanded,
-      backgroundColor: context.theme.colorScheme.primary,
-      collapsedBackgroundColor: context.theme.colorScheme.primary,
-      title: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        child: HeightConstrainedText(
-          title,
-          style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+      child: ExpansionTile(
+        initiallyExpanded: expanded,
+        backgroundColor: context.theme.colorScheme.primary,
+        collapsedBackgroundColor: context.theme.colorScheme.primary,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          child: HeightConstrainedText(
+            title,
+            style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+          ),
         ),
+        iconColor: AppColor.white,
+        collapsedIconColor: AppColor.white,
+        children: [
+          body,
+        ],
       ),
-      iconColor: AppColor.white,
-      collapsedIconColor: AppColor.white,
-      children: [
-        body,
-      ],
     );
   }
 }
