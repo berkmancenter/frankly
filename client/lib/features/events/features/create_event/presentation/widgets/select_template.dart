@@ -103,41 +103,6 @@ class _SelectTemplateState extends State<SelectTemplate> {
     );
   }
 
-  Widget _buildAddNewTemplate() {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      width: 156,
-      height: 156,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: AppColor.brightGreen,
-        ),
-        onPressed: widget.onAddNew,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Padding(
-              padding: EdgeInsets.only(left: 5, top: 10, right: 5),
-              child: Icon(Icons.add, color: context.theme.colorScheme.primary),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
-              child: HeightConstrainedText(
-                'Create a new template',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: context.theme.colorScheme.primary,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildTemplates() {
     final provider = Provider.of<SelectTemplateProvider>(context);
 
@@ -173,7 +138,10 @@ class _SelectTemplateState extends State<SelectTemplate> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 children: [
-                  if (widget.onAddNew != null) _buildAddNewTemplate(),
+                  if (widget.onAddNew != null)
+                    _AddNewTemplateButton(
+                      onAddNew: widget.onAddNew,
+                    ),
                   for (final template in provider.displayTemplates)
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -219,6 +187,50 @@ class _SelectTemplateState extends State<SelectTemplate> {
   @override
   Widget build(BuildContext context) {
     return _buildTemplatesLoading();
+  }
+}
+
+class _AddNewTemplateButton extends StatelessWidget {
+  const _AddNewTemplateButton({
+    required this.onAddNew,
+  });
+
+  final void Function()? onAddNew;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      width: 156,
+      height: 156,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: AppColor.brightGreen,
+        ),
+        onPressed: onAddNew,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 5, top: 10, right: 5),
+              child: Icon(Icons.add, color: context.theme.colorScheme.primary),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
+              child: HeightConstrainedText(
+                'Create a new template',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.theme.colorScheme.primary,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
