@@ -28,29 +28,29 @@ class PreviewContainer extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Color get _containerColor => finalPreview
+  Color _containerColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeLightColor) ?? AppColor.gray6)
       : AppColor.gray6;
 
-  Color get _carouselColor => finalPreview
+  Color _carouselColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : AppColor.gray4;
 
-  Color get _nameColor => finalPreview
+  Color _nameColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.name)
           ? context.theme.colorScheme.primary
           : AppColor.gray4;
 
-  Color get _taglineColor => finalPreview
+  Color _taglineColor(BuildContext context) => finalPreview
       ? AppColor.white
       : !isNullOrEmpty(community.tagLine)
           ? AppColor.white
           : AppColor.gray3;
 
-  Color get _aboutColor => finalPreview
+  Color _aboutColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.description)
@@ -63,7 +63,7 @@ class PreviewContainer extends StatelessWidget {
       width: previewContainerSize.width,
       height: previewContainerSize.height,
       decoration: BoxDecoration(
-        color: _containerColor,
+        color: _containerColor(context),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -73,13 +73,61 @@ class PreviewContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 10),
-              _buildNameAndLogo(),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildLogo(),
+                  SizedBox(width: 5),
+                  _checkEmphasis(
+                    emphasize: fieldToEmphasize == PreviewContainerField.name,
+                    child: _buildLineMock(24, color: _nameColor(context)),
+                  ),
+                ],
+              ),
               SizedBox(height: 6),
-              _buildCarousel(),
+              Container(
+                height: carouselContainerSize,
+                width: carouselContainerSize,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: _carouselColor(context),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  fit: StackFit.expand,
+                  children: [
+                    if (!isNullOrEmpty(community.bannerImageUrl)) ...[
+                      ProxiedImage(
+                        community.bannerImageUrl,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    ],
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildLogo(color: AppColor.gray3),
+                        SizedBox(height: 10),
+                        _checkEmphasis(
+                          emphasize:
+                              fieldToEmphasize == PreviewContainerField.tagline,
+                          child: _buildTagline(context),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 9),
               _checkEmphasis(
                 emphasize: fieldToEmphasize == PreviewContainerField.about,
-                child: _buildAbout(),
+                child: _buildAbout(context),
               ),
             ],
           ),
@@ -105,18 +153,6 @@ class PreviewContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildNameAndLogo() => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildLogo(),
-          SizedBox(width: 5),
-          _checkEmphasis(
-            emphasize: fieldToEmphasize == PreviewContainerField.name,
-            child: _buildLineMock(24, color: _nameColor),
-          ),
-        ],
-      );
-
   Widget _buildLogo({Color color = AppColor.gray4}) =>
       !isNullOrEmpty(community.profileImageUrl)
           ? ProxiedImage(
@@ -127,65 +163,26 @@ class PreviewContainer extends StatelessWidget {
             )
           : _buildCircleMock(color: color);
 
-  Widget _buildCarousel() => Container(
-        height: carouselContainerSize,
-        width: carouselContainerSize,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: _carouselColor,
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            if (!isNullOrEmpty(community.bannerImageUrl)) ...[
-              ProxiedImage(
-                community.bannerImageUrl,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-            ],
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildLogo(color: AppColor.gray3),
-                SizedBox(height: 10),
-                _checkEmphasis(
-                  emphasize: fieldToEmphasize == PreviewContainerField.tagline,
-                  child: _buildTagline(),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-
-  Widget _buildAbout() => Column(
+  Widget _buildAbout(context) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLineMock(50, color: _aboutColor),
+          _buildLineMock(50, color: _aboutColor(context)),
           SizedBox(height: 5),
-          _buildLineMock(43, color: _aboutColor),
+          _buildLineMock(43, color: _aboutColor(context)),
           SizedBox(height: 5),
-          _buildLineMock(48, color: _aboutColor),
+          _buildLineMock(48, color: _aboutColor(context)),
         ],
       );
 
-  Widget _buildTagline() => Column(
+  Widget _buildTagline(context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildLineMock(50, color: _taglineColor),
+          _buildLineMock(50, color: _taglineColor(context)),
           SizedBox(height: 8),
-          _buildLineMock(43, color: _taglineColor),
+          _buildLineMock(43, color: _taglineColor(context)),
           SizedBox(height: 8),
-          _buildLineMock(48, color: _taglineColor),
+          _buildLineMock(48, color: _taglineColor(context)),
         ],
       );
 
