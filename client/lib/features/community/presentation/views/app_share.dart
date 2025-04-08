@@ -41,20 +41,20 @@ class AppShareData {
 }
 
 class AppShareDialog extends StatefulWidget {
-  final String? title;
-  final String content;
-  final AppShareData appShareData;
-  final Color iconColor;
-  final Color? iconBackgroundColor;
-
   const AppShareDialog({
     Key? key,
     this.title,
     required this.content,
     required this.appShareData,
-    this.iconColor = context.theme.colorScheme.primary,
+    this.iconColor,
     this.iconBackgroundColor,
   }) : super(key: key);
+
+  final String? title;
+  final String content;
+  final AppShareData appShareData;
+  final Color? iconColor;
+  final Color? iconBackgroundColor;
 
   @override
   State<AppShareDialog> createState() => _AppShareDialogState();
@@ -181,7 +181,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 );
               }
             },
-            iconColor: widget.iconColor,
+            iconColor: widget.iconColor ?? context.theme.colorScheme.primary,
             iconBackgroundColor: widget.iconBackgroundColor,
             buttonPadding: padding,
             size: size,
