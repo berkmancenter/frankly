@@ -75,11 +75,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     final currentDarkColor = ThemeUtils.parseColor(_currentCommunityDarkColor);
     final currentLightColor =
         ThemeUtils.parseColor(_currentCommunityLightColor);
-    _selectedPresetIndex = ThemeUtils.presetColorThemes.indexWhere(
-      (theme) =>
-          theme.darkColor == currentDarkColor &&
-          theme.lightColor == currentLightColor,
-    );
+    _selectedPresetIndex = ThemeUtils().presetColorThemes(context).indexWhere(
+          (theme) =>
+              theme.darkColor == currentDarkColor &&
+              theme.lightColor == currentLightColor,
+        );
     final customColorsSpecified = _currentCommunityDarkColor != null &&
         _currentCommunityLightColor != null;
     _isPresetSelected =
@@ -136,9 +136,10 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     _checkChosenColorConstraints();
   }
 
-  void _selectPreset(int index) {
-    widget.setDarkColor(ThemeUtils.darkColorStringFromTheme(index));
-    widget.setLightColor(ThemeUtils.lightColorStringFromTheme(index));
+  void _selectPreset(BuildContext context, int index) {
+    widget.setDarkColor(ThemeUtils().darkColorStringFromTheme(context, index));
+    widget
+        .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
     setState(() => _selectedPresetIndex = index);
   }
 
@@ -255,11 +256,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             children: <Widget>[
-              for (var i = 0; i < ThemeUtils.presetColorThemes.length; i++)
+              for (var i = 0;
+                  i < ThemeUtils().presetColorThemes(context).length;
+                  i++)
                 ThemePreview(
-                  selectedTheme: ThemeUtils.presetColorThemes[i],
+                  selectedTheme: ThemeUtils().presetColorThemes(context)[i],
                   isSelected: i == _selectedPresetIndex,
-                  onTap: () => _selectPreset(i),
+                  onTap: () => _selectPreset(context, i),
                   compact: true,
                 ),
             ].intersperse(SizedBox(width: 13)).toList(),
