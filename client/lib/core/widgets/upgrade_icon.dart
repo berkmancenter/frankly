@@ -11,7 +11,7 @@ class UpgradeIcon extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Color get _iconColor {
+  Color _iconColor(BuildContext context) {
     if (isDisabledColor) {
       return AppColor.white;
     } else if (isColorInverted) {
@@ -21,7 +21,7 @@ class UpgradeIcon extends StatelessWidget {
     }
   }
 
-  Color get _containerColor {
+  Color _containerColor(BuildContext context) {
     if (isDisabledColor) {
       return AppColor.gray1.withOpacity(.5);
     } else if (isColorInverted) {
@@ -38,12 +38,12 @@ class UpgradeIcon extends StatelessWidget {
       height: 20,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _containerColor,
+        color: _containerColor(context),
       ),
       alignment: Alignment.center,
       child: Icon(
         Icons.star,
-        color: _iconColor,
+        color: _iconColor(context),
         size: 12,
       ),
     );
