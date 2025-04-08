@@ -8,11 +8,12 @@ import 'package:url_launcher/url_launcher.dart';
 const _kTroubleshootingGuideUrl = Environment.troubleshootingGuideUrl;
 
 class TroubleshootIssuesButton extends StatelessWidget {
-  final Color linkColor;
+  const TroubleshootIssuesButton({
+    this.linkColor,
+    Key? key,
+  }) : super(key: key);
 
-  const TroubleshootIssuesButton(
-      {this.linkColor = context.theme.colorScheme.primary, Key? key})
-      : super(key: key);
+  final Color? linkColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class TroubleshootIssuesButton extends StatelessWidget {
             'Troubleshoot',
             style: AppTextStyle.body.copyWith(
               decoration: TextDecoration.underline,
-              color: linkColor,
+              color: linkColor ?? context.theme.colorScheme.primary,
             ),
           ),
         ),
