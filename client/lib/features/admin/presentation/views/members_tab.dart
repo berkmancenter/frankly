@@ -42,8 +42,6 @@ const _adminStatusMap = <MembershipStatus, String>{
   MembershipStatus.mod: 'Moderator',
 };
 
-final blueBackground = context.theme.colorScheme.primary.withOpacity(0.1);
-
 class MembersTab extends StatefulWidget {
   @override
   _MembersTabState createState() => _MembersTabState();
@@ -213,7 +211,9 @@ class _MembersTabState extends State<MembersTab> {
     return Container(
       key: Key(membership.userId),
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-      color: index.isEven ? blueBackground : Colors.white70,
+      color: index.isEven
+          ? context.theme.colorScheme.primary.withOpacity(0.1)
+          : Colors.white70,
       child: Wrap(
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -303,7 +303,9 @@ class _MembersTabState extends State<MembersTab> {
     return Container(
       key: Key(request.userId),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
-      color: index.isEven ? blueBackground : Colors.white70,
+      color: index.isEven
+          ? context.theme.colorScheme.primary.withOpacity(0.1)
+          : Colors.white70,
       child: Wrap(
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
