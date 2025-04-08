@@ -35,10 +35,7 @@ class SettingsTab extends StatefulHookWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  final blueBackground = context.theme.colorScheme.primary.withOpacity(0.1);
-
   final whiteBackground = Colors.white70;
-
   Community get community => Provider.of<CommunityProvider>(context).community;
 
   Widget _buildSettingsToggle(
@@ -95,7 +92,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           !settings.dontAllowMembersToCreateMeetings,
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Allow members to create templates',
@@ -116,7 +113,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       requireApprovalToJoin: !settings.requireApprovalToJoin,
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Enable weekly email digests of upcoming events',
@@ -139,7 +136,7 @@ class _SettingsTabState extends State<SettingsTab> {
                         allowDonations: !settings.allowDonations,
                       ),
                     ),
-                    blueBackground,
+                    context.theme.colorScheme.primary.withOpacity(0.1),
                     hasWarning: donationWarning,
                   ),
                   if (donationWarning)
@@ -176,7 +173,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           !(eventSettings.showChatMessagesInRealTime ?? true),
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Record',
@@ -196,7 +193,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       talkingTimer: !(eventSettings.talkingTimer ?? true),
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Agenda preview',
@@ -281,7 +278,9 @@ class _SettingsTabState extends State<SettingsTab> {
               _devCommunitySettingsToggle(
                 settings[i],
                 settingsMap,
-                i.isEven ? whiteBackground : blueBackground,
+                i.isEven
+                    ? whiteBackground
+                    : context.theme.colorScheme.primary.withOpacity(0.1),
               ),
             SizedBox(height: 20),
             Text(
@@ -293,7 +292,9 @@ class _SettingsTabState extends State<SettingsTab> {
               _devEventSettingsToggle(
                 eventSettings[i],
                 eventSettingsMap,
-                i.isEven ? whiteBackground : blueBackground,
+                i.isEven
+                    ? whiteBackground
+                    : context.theme.colorScheme.primary.withOpacity(0.1),
               ),
             SizedBox(height: 80),
           ],
