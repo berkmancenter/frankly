@@ -163,6 +163,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
       joinResults = await _joinEvent(showConfirm: false);
       if (!joinResults.isJoined) return;
     }
+    if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
@@ -184,6 +185,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
       positiveButtonText: 'Send',
     );
 
+    if (!mounted) return;
     if (message != null) {
       await alertOnError(context, () => _presenter.sendMessage(message));
     }
@@ -218,6 +220,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
               textColor: AppColor.brightGreen,
               onPressed: () => alertOnError(context, () async {
                 await _presenter.removeMessage(eventMessage);
+                if (!context.mounted) return;
                 Navigator.pop(context);
               }),
             ),
@@ -300,7 +303,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
   Widget _buildEventTabsWrappedGuide() {
     final eventProvider = EventProvider.watch(context);
-    final communityProvider = CommunityProvider.watch(context);
     final isInBreakouts =
         LiveMeetingProvider.watchOrNull(context)?.isInBreakout ?? false;
     final isParticipant = eventProvider.isParticipant;
@@ -446,7 +448,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
   @override
   Widget build(BuildContext context) {
     final eventProvider = context.watch<EventProvider>();
-    final eventPermissions = context.watch<EventPermissionsProvider>();
 
     if (context.watch<EventPageProvider>().isEnteredMeeting) {
       final isInstant = context.watch<EventPageProvider>().isInstant;
