@@ -19,7 +19,7 @@ class RoundedButton extends StatelessWidget {
         shape: WidgetStateProperty.all<OutlinedBorder>(StadiumBorder()),
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
-            return AppColor.darkBlue;
+            return context.theme.colorScheme.primary;
           }
           return AppColor.gray5;
         }),

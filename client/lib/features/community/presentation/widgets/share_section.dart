@@ -33,7 +33,7 @@ class ShareSection extends StatefulWidget {
     this.buttonPadding = 10.0,
     this.size,
     this.iconSize,
-    this.iconColor = AppColor.darkBlue,
+    this.iconColor = context.theme.colorScheme.primary,
     this.iconBackgroundColor,
     this.onItemTap,
     this.shareCallback,

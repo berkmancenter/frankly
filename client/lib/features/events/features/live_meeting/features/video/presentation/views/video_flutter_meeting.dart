@@ -268,7 +268,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -548,7 +548,7 @@ class _GetHelpButtonState extends State<GetHelpButton> {
                   fontWeight: FontWeight.w300,
                   color: Theme.of(context).isDark
                       ? AppColor.brightGreen
-                      : AppColor.darkBlue,
+                      : context.theme.colorScheme.primary,
                 ),
               ),
             ),

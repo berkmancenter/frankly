@@ -34,7 +34,7 @@ class PrePostEventDialogPage extends StatefulWidget {
         return Dialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: AppColor.darkBlue,
+          backgroundColor: context.theme.colorScheme.primary,
           child: PrePostEventDialogPage._(
             prePostCard: prePostCardData,
             event: event,

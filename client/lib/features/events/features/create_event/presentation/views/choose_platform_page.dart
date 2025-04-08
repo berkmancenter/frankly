@@ -85,13 +85,14 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(width: 1, color: AppColor.darkBlue),
+                        border: Border.all(
+                            width: 1, color: context.theme.colorScheme.primary),
                       ),
                       child: Icon(
                         Icons.circle,
                         size: 12,
                         color: presenter.isSelectedPlatform(platform)
-                            ? AppColor.darkBlue
+                            ? context.theme.colorScheme.primary
                             : Colors.transparent,
                       ),
                     ),
@@ -169,7 +170,7 @@ class LinkField extends StatelessWidget {
                   labelText: 'Paste a link',
                   labelStyle: AppTextStyle.bodySmall.copyWith(
                     color: isNullOrEmpty(error)
-                        ? AppColor.darkBlue
+                        ? context.theme.colorScheme.primary
                         : AppColor.redLightMode,
                   ),
                   onEditingComplete: () => onSubmit(),
@@ -194,7 +195,7 @@ class LinkField extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
-                              ? AppColor.darkBlue
+                              ? context.theme.colorScheme.primary
                               : AppColor.gray4,
                         ),
                         child: Icon(
@@ -216,7 +217,8 @@ class LinkField extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.transparent,
-                          border: Border.all(color: AppColor.darkBlue),
+                          border: Border.all(
+                              color: context.theme.colorScheme.primary),
                         ),
                         child: Icon(
                           Icons.close,

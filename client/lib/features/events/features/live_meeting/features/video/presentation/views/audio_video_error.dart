@@ -47,7 +47,7 @@ class AudioVideoErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.darkBlue,
+      backgroundColor: context.theme.colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6),
       ),

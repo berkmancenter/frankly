@@ -25,8 +25,8 @@ class SectionCard extends StatelessWidget {
   Widget _buildExpansionTile() {
     return ExpansionTile(
       initiallyExpanded: expanded,
-      backgroundColor: AppColor.darkBlue,
-      collapsedBackgroundColor: AppColor.darkBlue,
+      backgroundColor: context.theme.colorScheme.primary,
+      collapsedBackgroundColor: context.theme.colorScheme.primary,
       title: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         child: HeightConstrainedText(

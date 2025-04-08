@@ -36,7 +36,7 @@ class ThemePreview extends StatelessWidget {
   Color get _selectedDarkColor =>
       selectedTheme?.darkColor ??
       ThemeUtils.parseColor(darkColorString) ??
-      AppColor.darkBlue;
+      context.theme.colorScheme.primary;
 
   Color get _selectedLightColor =>
       selectedTheme?.lightColor ??

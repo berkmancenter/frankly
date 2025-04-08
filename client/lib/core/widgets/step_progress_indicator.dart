@@ -7,7 +7,7 @@ class StepProgressIndicator extends StatelessWidget {
     required this.completedStepCount,
     required this.totalSteps,
     this.backgroundColor = AppColor.gray5,
-    this.progressColor = AppColor.darkBlue,
+    this.progressColor = context.theme.colorScheme.primary,
   }) : super(key: key);
 
   final int completedStepCount;

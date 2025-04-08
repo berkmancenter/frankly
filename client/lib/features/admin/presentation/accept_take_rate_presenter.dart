@@ -28,8 +28,8 @@ class AcceptTakeRatePresenter {
             children: [
               Text(
                 'Payment terms',
-                style:
-                    AppTextStyle.headline3.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.headline3
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
               SizedBox(height: 10),
               Text(
@@ -39,7 +39,7 @@ class AcceptTakeRatePresenter {
               SizedBox(height: 20),
               ActionButton(
                 text: 'Agree and continue',
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 textColor: AppColor.brightGreen,
                 expand: true,
                 onPressed: () => Navigator.pop(context, true),
@@ -48,7 +48,7 @@ class AcceptTakeRatePresenter {
               ActionButton(
                 text: 'Not now',
                 color: Colors.transparent,
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
                 expand: true,
                 onPressed: () => Navigator.pop(context, false),
               ),

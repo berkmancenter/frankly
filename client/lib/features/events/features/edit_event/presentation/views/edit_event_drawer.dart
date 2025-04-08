@@ -313,7 +313,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       ),
       icon: Icon(
         CupertinoIcons.chevron_down,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
       ),
       iconSize: 20,
       elevation: 16,
@@ -331,7 +331,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
           borderSide: BorderSide(color: AppColor.gray4),
         ),
       ),
-      iconEnabledColor: AppColor.darkBlue,
+      iconEnabledColor: context.theme.colorScheme.primary,
       onChanged: (value) {
         if (value != null) {
           _presenter.updateEventDuration(value);
@@ -347,7 +347,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
               alignment: Alignment.centerLeft,
               child: Text(
                 durationString(duration, readAsHuman: true),
-                style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
             ),
           ),

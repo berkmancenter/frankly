@@ -69,7 +69,7 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
           constraints: BoxConstraints(maxWidth: 600),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
           padding: const EdgeInsets.all(40),
           child: CustomListView(
@@ -137,8 +137,8 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
                     ),
                     color: AppColor.brightGreen,
                     text: widget.confirmText,
-                    textStyle:
-                        AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                    textStyle: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.primary),
                     onPressed: (_textInput != '') ? _confirm : null,
                   ),
                 ],

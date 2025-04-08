@@ -111,7 +111,7 @@ class _MeetingGuideCardItemWordCloudState
                   ActionButton(
                     height: 55,
                     minWidth: 20,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     sendingIndicatorAlign:
                         ActionButtonSendingIndicatorAlign.none,
                     onPressed: _wordCloudResponseController.text != ''
@@ -154,7 +154,7 @@ class _MeetingGuideCardItemWordCloudState
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
@@ -162,7 +162,7 @@ class _MeetingGuideCardItemWordCloudState
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -178,7 +178,7 @@ class _MeetingGuideCardItemWordCloudState
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.list
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
@@ -186,7 +186,7 @@ class _MeetingGuideCardItemWordCloudState
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.list
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -202,7 +202,7 @@ class _MeetingGuideCardItemWordCloudState
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
@@ -210,7 +210,7 @@ class _MeetingGuideCardItemWordCloudState
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -372,7 +372,8 @@ class _MeetingGuideCardItemWordCloudState
                   (1.5 + prominence) /
                   math.sqrt(math.sqrt(math.max(words.length, 6)));
 
-              final color = AppColor.darkBlue.withOpacity(.5 + prominence * .5);
+              final color = context.theme.colorScheme.primary
+                  .withOpacity(.5 + prominence * .5);
               if (currentResponses.contains(e.key)) {
                 return HeightConstrainedText(
                   ' ${e.key} ',

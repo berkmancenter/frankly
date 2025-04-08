@@ -70,7 +70,7 @@ class _CollapsibleBottomEventContentState
         ),
         Expanded(
           child: Container(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
             child: CustomTabBarView(),
           ),
         ),

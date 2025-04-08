@@ -54,7 +54,7 @@ class UrlFieldWidget extends StatelessWidget {
                 borderColor: (isNullOrEmpty(error)
                         ? borderColor
                         : AppColor.redDarkMode) ??
-                    AppColor.darkBlue,
+                    context.theme.colorScheme.primary,
                 onChanged: onUrlChange,
               ),
             ),
@@ -67,7 +67,7 @@ class UrlFieldWidget extends StatelessWidget {
                   radius: 25,
                   backgroundColor:
                       (isNullOrEmpty(error) ? buttonColor : AppColor.gray3) ??
-                          AppColor.darkBlue,
+                          context.theme.colorScheme.primary,
                   child: Icon(
                     Icons.check,
                     color: iconColor ?? AppColor.brightGreen,

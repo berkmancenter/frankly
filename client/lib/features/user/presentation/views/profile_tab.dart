@@ -1,6 +1,7 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:client/features/admin/presentation/views/members_tab.dart';
@@ -208,7 +209,7 @@ class _ProfileTabState extends State<_ProfileTab> {
         HeightConstrainedText(
           changeRecord.displayName ?? '',
           style: AppTextStyle.headline3.copyWith(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
         ),
         if (profileIsSelf || adminViewingUser) ..._buildEmail(userInfo.id),
@@ -284,7 +285,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                 color: AppColor.brightGreen,
                 text: 'Preview',
                 expand: false,
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
               ),
             ActionButton(
               height: 48,
@@ -376,7 +377,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                     HeightConstrainedText(
                       'Tags',
                       style: AppTextStyle.headline4.copyWith(
-                        color: AppColor.darkBlue,
+                        color: context.theme.colorScheme.primary,
                       ),
                     ),
                     SizedBox(height: 10),

@@ -35,7 +35,7 @@ class SettingsTab extends StatefulHookWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  final blueBackground = AppColor.darkBlue.withOpacity(0.1);
+  final blueBackground = context.theme.colorScheme.primary.withOpacity(0.1);
 
   final whiteBackground = Colors.white70;
 

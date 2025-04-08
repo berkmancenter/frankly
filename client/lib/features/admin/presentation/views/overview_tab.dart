@@ -369,9 +369,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: 'Edit your Community',
           icon: Icon(Icons.edit, size: 20),
           iconSide: ActionButtonIconSide.right,
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () {
             final community = _presenter.getCommunity();
 
@@ -383,9 +383,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: 'New template',
           icon: Icon(Icons.add, size: 20),
           iconSide: ActionButtonIconSide.right,
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () {
             CreateTemplateDialog.show(
               communityProvider: context.read<CommunityProvider>(),
@@ -399,9 +399,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: 'New event',
           icon: Icon(Icons.add, size: 20),
           iconSide: ActionButtonIconSide.right,
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () {
             CreateEventDialog.show(context);
           },
@@ -418,7 +418,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         );
 
         return ShareSection(
-          iconColor: AppColor.darkBlue,
+          iconColor: context.theme.colorScheme.primary,
           iconBackgroundColor: AppColor.white,
           url: shareData.pathToPage,
           body: body,
@@ -431,9 +431,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: isOnboardingStepCompleted
               ? 'Update Stripe Account'
               : 'Connect to Stripe',
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () async {
             // Show dialog only if user has not created an account
             if (!isOnboardingStepCompleted) {

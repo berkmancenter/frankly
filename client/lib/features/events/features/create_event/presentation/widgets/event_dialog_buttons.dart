@@ -22,12 +22,13 @@ class DialogBackButton extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.chevron_left,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                   ),
                   SizedBox(width: 10),
                   Text(
                     'Back',
-                    style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                    style: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ],
               ),

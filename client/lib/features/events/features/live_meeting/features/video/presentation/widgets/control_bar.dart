@@ -412,7 +412,7 @@ class _ChatInputState extends State<ChatInput> {
                 button: true,
                 child: ActionButton(
                   minWidth: 20,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
                   disabledColor: AppColor.white.withOpacity(0.3),

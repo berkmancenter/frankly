@@ -10,7 +10,8 @@ const _kTroubleshootingGuideUrl = Environment.troubleshootingGuideUrl;
 class TroubleshootIssuesButton extends StatelessWidget {
   final Color linkColor;
 
-  const TroubleshootIssuesButton({this.linkColor = AppColor.darkBlue, Key? key})
+  const TroubleshootIssuesButton(
+      {this.linkColor = context.theme.colorScheme.primary, Key? key})
       : super(key: key);
 
   @override

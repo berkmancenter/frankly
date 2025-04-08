@@ -267,7 +267,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
     return Align(
       alignment: Alignment.centerRight,
       child: ActionButton(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         textColor: AppColor.brightGreen,
         onPressed: _isNextPageAvailable
             ? () async {
@@ -430,7 +430,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           children: [
             ActionButton(
               text: 'Finish',
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.brightGreen,
               borderRadius: BorderRadius.circular(10),
               padding: const EdgeInsets.all(20),

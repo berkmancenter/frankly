@@ -87,7 +87,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
                 alignment: Alignment.centerLeft,
                 child: ActionButton(
                   text: 'Show Results',
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   textColor: AppColor.brightGreen,
                   onPressed: currentVote != null
                       ? () => _presenter.showResults(currentCardAgendaItemId)
@@ -133,8 +133,9 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
                   color: Colors.transparent,
                   onPressed: () =>
                       _presenter.showQuestions(currentCardAgendaItemId),
-                  borderSide: BorderSide(color: AppColor.darkBlue),
-                  textColor: AppColor.darkBlue,
+                  borderSide:
+                      BorderSide(color: context.theme.colorScheme.primary),
+                  textColor: context.theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -156,7 +157,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
       child: Row(
         children: [
           Radio<String>(
-            activeColor: AppColor.darkBlue,
+            activeColor: context.theme.colorScheme.primary,
             value: value,
             groupValue: vote,
             onChanged: (newVote) async {
@@ -176,7 +177,8 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
           Expanded(
             child: HeightConstrainedText(
               value,
-              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+              style: AppTextStyle.body
+                  .copyWith(color: context.theme.colorScheme.primary),
             ),
           ),
         ],

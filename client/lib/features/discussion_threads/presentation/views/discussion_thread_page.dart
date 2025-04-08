@@ -169,13 +169,13 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     if (isMobile) {
       return FloatingActionButton(
         isExtended: isMobile,
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
         child: Icon(Icons.add, color: AppColor.brightGreen, size: 30),
       );
     } else {
       return FloatingActionButton.extended(
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
         label: Row(
           children: [
@@ -328,16 +328,16 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                           value: DiscussionThreadOptionType.update,
                           child: Text(
                             'Update Post',
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.darkBlue),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                                color: context.theme.colorScheme.primary),
                           ),
                         ),
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.delete,
                           child: Text(
                             'Delete Post',
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.darkBlue),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                                color: context.theme.colorScheme.primary),
                           ),
                         ),
                       ];
@@ -492,7 +492,8 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             SizedBox(width: 10),
             Text(
               'Reply',
-              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+              style: AppTextStyle.bodyMedium
+                  .copyWith(color: context.theme.colorScheme.primary),
             ),
           ],
         ),

@@ -172,7 +172,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
           child: Icon(
             Icons.email,
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
             size: 22,
           ),
         ),

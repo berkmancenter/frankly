@@ -263,7 +263,7 @@ class _MeetingDialogState extends State<MeetingDialog> {
         return Future.value(false);
       },
       child: Material(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         child: SizedBox.expand(
           child: _buildLoading(),
         ),

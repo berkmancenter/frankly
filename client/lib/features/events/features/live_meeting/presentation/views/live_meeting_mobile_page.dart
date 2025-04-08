@@ -189,7 +189,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: isBottomSheetPresent && isRaisedHandVisible
           ? FloatingActionButton(
-              backgroundColor: AppColor.darkBlue,
+              backgroundColor: context.theme.colorScheme.primary,
               child: ProxiedImage(
                 null,
                 asset: AppAsset.raisedHand(),
@@ -217,7 +217,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: Container(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -790,7 +790,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             width: 40,
                             height: 40,
                             child: FloatingActionButton(
-                              backgroundColor: AppColor.darkBlue,
+                              backgroundColor:
+                                  context.theme.colorScheme.primary,
                               child: ProxiedImage(
                                 null,
                                 asset: AppAsset.raisedHand(),
@@ -834,7 +835,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             width: 40,
                             height: 40,
                             child: FloatingActionButton(
-                              backgroundColor: AppColor.darkBlue,
+                              backgroundColor:
+                                  context.theme.colorScheme.primary,
                               child: ProxiedImage(
                                 null,
                                 asset: readyToAdvance
@@ -967,7 +969,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
       backgroundColor = AppColor.gray6;
     } else if (isAdmin) {
-      backgroundColor = AppColor.darkBlue;
+      backgroundColor = context.theme.colorScheme.primary;
     } else {
       backgroundColor = AppColor.white;
     }

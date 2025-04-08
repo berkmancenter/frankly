@@ -91,7 +91,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).isDark
                                     ? AppColor.gray5
-                                    : AppColor.darkBlue,
+                                    : context.theme.colorScheme.primary,
                               ),
                             ),
                             SelectableText(
@@ -102,7 +102,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).isDark
                                     ? AppColor.gray5
-                                    : AppColor.darkBlue,
+                                    : context.theme.colorScheme.primary,
                               ),
                             ),
                             if (isMod)
@@ -157,7 +157,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontSize: 15,
                                 color: Theme.of(context).isDark
                                     ? AppColor.white
-                                    : AppColor.darkBlue,
+                                    : context.theme.colorScheme.primary,
                               ),
                               options: LinkifyOptions(looseUrl: true),
                               onOpen: (link) async {
@@ -182,7 +182,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                           Icons.close,
                           color: Theme.of(context).isDark
                               ? AppColor.gray6
-                              : AppColor.darkBlue,
+                              : context.theme.colorScheme.primary,
                           size: 20,
                         ),
                       ),

@@ -200,7 +200,8 @@ class SurveyDialog extends StatelessWidget {
           ),
       expand: expand,
       color: _getButtonColor(isAnswerSelected: isAnswerSelected, invert: false),
-      borderSide: BorderSide(color: AppColor.darkBlue, width: 1),
+      borderSide:
+          BorderSide(color: context.theme.colorScheme.primary, width: 1),
       borderRadius: BorderRadius.circular(30),
       textColor:
           _getButtonColor(isAnswerSelected: isAnswerSelected, invert: true),
@@ -234,6 +235,6 @@ class SurveyDialog extends StatelessWidget {
       isDarkColor = !isDarkColor;
     }
 
-    return isDarkColor ? AppColor.white : AppColor.darkBlue;
+    return isDarkColor ? AppColor.white : context.theme.colorScheme.primary;
   }
 }

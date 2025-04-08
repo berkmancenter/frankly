@@ -28,7 +28,7 @@ void showRegularToast(
       iconPath = AppAsset.kCheckCircleSvg;
       break;
     case ToastType.neutral:
-      backgroundColor = AppColor.darkBlue;
+      backgroundColor = context.theme.colorScheme.primary;
       textColor = AppColor.white;
       break;
     case ToastType.failed:

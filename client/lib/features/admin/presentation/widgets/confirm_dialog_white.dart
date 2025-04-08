@@ -95,14 +95,15 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                   HeightConstrainedText(
                     widget.title,
                     style: AppTextStyle.headline3
-                        .copyWith(color: AppColor.darkBlue),
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                   SizedBox(height: 10),
                 ],
                 if (!isNullOrEmpty(widget.mainText)) ...[
                   HeightConstrainedText(
                     widget.mainText,
-                    style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                    style: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                   SizedBox(height: 10),
                 ],
@@ -112,7 +113,7 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                   expand: true,
                   height: 48,
                   text: widget.confirmText,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   textStyle: AppTextStyle.bodyMedium
                       .copyWith(color: AppColor.brightGreen),
                   onPressed: onConfirm != null
@@ -128,7 +129,7 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                     color: Colors.transparent,
                     text: widget.cancelText,
                     textStyle: AppTextStyle.bodyMedium
-                        .copyWith(color: AppColor.darkBlue),
+                        .copyWith(color: context.theme.colorScheme.primary),
                     onPressed: onCancel != null
                         ? () => onCancel(context)
                         : () => Navigator.of(context).pop(false),

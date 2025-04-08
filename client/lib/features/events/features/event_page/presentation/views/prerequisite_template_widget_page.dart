@@ -116,13 +116,14 @@ class _PrerequisiteTemplateWidgetPageState
               }
             },
             backgroundColor: widget.isWhiteBackground
-                ? AppColor.darkBlue
+                ? context.theme.colorScheme.primary
                 : AppColor.brightGreen,
             child: Icon(
               Icons.check,
               size: 16,
-              color:
-                  widget.isWhiteBackground ? AppColor.white : AppColor.darkBlue,
+              color: widget.isWhiteBackground
+                  ? AppColor.white
+                  : context.theme.colorScheme.primary,
             ),
           ),
         ),
@@ -143,8 +144,9 @@ class _PrerequisiteTemplateWidgetPageState
           HeightConstrainedText(
             'Template',
             style: AppTextStyle.subhead.copyWith(
-              color:
-                  widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white,
+              color: widget.isWhiteBackground
+                  ? context.theme.colorScheme.primary
+                  : AppColor.white,
             ),
           ),
           SizedBox(height: 10),
@@ -179,7 +181,7 @@ class _PrerequisiteTemplateWidgetPageState
                         icon: Icon(
                           CupertinoIcons.chevron_down,
                           color: widget.isWhiteBackground
-                              ? AppColor.darkBlue
+                              ? context.theme.colorScheme.primary
                               : AppColor.white,
                         ),
                         iconSize: 24,
@@ -187,7 +189,7 @@ class _PrerequisiteTemplateWidgetPageState
                         style: TextStyle(color: AppColor.white),
                         borderRadius: BorderRadius.circular(10),
                         underline: SizedBox.shrink(),
-                        iconEnabledColor: AppColor.darkBlue,
+                        iconEnabledColor: context.theme.colorScheme.primary,
                         onChanged: (templateId) =>
                             _presenter.onChangedTemplate(templateId),
                         items: [
@@ -204,7 +206,7 @@ class _PrerequisiteTemplateWidgetPageState
                                       ? 'No Templates Available'
                                       : 'Choose Template',
                                   style: AppTextStyle.body.copyWith(
-                                    color: AppColor.darkBlue,
+                                    color: context.theme.colorScheme.primary,
                                   ),
                                 ),
                               ),
@@ -220,7 +222,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   child: Text(
                                     template.title ?? '',
                                     style: AppTextStyle.body.copyWith(
-                                      color: AppColor.darkBlue,
+                                      color: context.theme.colorScheme.primary,
                                     ),
                                   ),
                                 ),
@@ -242,7 +244,7 @@ class _PrerequisiteTemplateWidgetPageState
                                       : 'Choose Template',
                                   style: AppTextStyle.body.copyWith(
                                     color: widget.isWhiteBackground
-                                        ? AppColor.darkBlue
+                                        ? context.theme.colorScheme.primary
                                         : AppColor.white,
                                   ),
                                 ),
@@ -260,7 +262,7 @@ class _PrerequisiteTemplateWidgetPageState
                                     template.title ?? '',
                                     style: AppTextStyle.body.copyWith(
                                       color: widget.isWhiteBackground
-                                          ? AppColor.darkBlue
+                                          ? context.theme.colorScheme.primary
                                           : AppColor.white,
                                     ),
                                   ),
@@ -286,7 +288,9 @@ class _PrerequisiteTemplateWidgetPageState
       key: Key('prePostCardWidget-overviewPrePostCard'),
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        color: widget.isWhiteBackground ? AppColor.gray6 : AppColor.darkBlue,
+        color: widget.isWhiteBackground
+            ? AppColor.gray6
+            : context.theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -310,12 +314,12 @@ class _PrerequisiteTemplateWidgetPageState
               decoration: BoxDecoration(
                 color: widget.isWhiteBackground
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
                 border: Border.all(
                   width: 1,
                   color: widget.isWhiteBackground
                       ? AppColor.gray5
-                      : AppColor.darkBlue,
+                      : context.theme.colorScheme.primary,
                 ),
               ),
               child: Column(
@@ -330,7 +334,7 @@ class _PrerequisiteTemplateWidgetPageState
                             'Prerequisite Template',
                             style: AppTextStyle.subhead.copyWith(
                               color: widget.isWhiteBackground
-                                  ? AppColor.darkBlue
+                                  ? context.theme.colorScheme.primary
                                   : AppColor.white,
                             ),
                           ),
@@ -343,7 +347,7 @@ class _PrerequisiteTemplateWidgetPageState
                             icon: Icon(
                               Icons.delete,
                               color: widget.isWhiteBackground
-                                  ? AppColor.darkBlue
+                                  ? context.theme.colorScheme.primary
                                   : AppColor.white,
                             ),
                             onPressed: () => _showDeleteDialog(),
@@ -353,7 +357,7 @@ class _PrerequisiteTemplateWidgetPageState
                             icon: Icon(
                               Icons.edit,
                               color: widget.isWhiteBackground
-                                  ? AppColor.darkBlue
+                                  ? context.theme.colorScheme.primary
                                   : AppColor.white,
                             ),
                             onPressed: () => _presenter.updateCardType(),
@@ -364,7 +368,7 @@ class _PrerequisiteTemplateWidgetPageState
                                 ? Icons.expand_less
                                 : Icons.expand_more,
                             color: widget.isWhiteBackground
-                                ? AppColor.darkBlue
+                                ? context.theme.colorScheme.primary
                                 : AppColor.white,
                           ),
                           onPressed: () => _presenter.toggleExpansion(),

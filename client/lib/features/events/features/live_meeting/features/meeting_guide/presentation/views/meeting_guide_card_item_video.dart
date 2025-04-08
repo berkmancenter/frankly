@@ -176,7 +176,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
     final secondsFormatted = seconds.toString().padLeft(2, '0');
 
     return Container(
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       padding: EdgeInsets.all(5),
       child: Stack(
         children: [

@@ -81,7 +81,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                       child: HeightConstrainedText(
                         text,
                         style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.darkBlue),
+                            .copyWith(color: context.theme.colorScheme.primary),
                       ),
                     ),
                   );

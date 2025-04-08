@@ -82,7 +82,7 @@ class _CommunityPageState extends State<CommunityPage> {
         builder: (_, community) {
           final darkThemeColor =
               ThemeUtils.parseColor(community?.themeDarkColor) ??
-                  AppColor.darkBlue;
+                  context.theme.colorScheme.primary;
           final isOnPageWithDefaultColors =
               CheckCurrentLocation.isTemplatePage ||
                   CheckCurrentLocation.isEventPage ||

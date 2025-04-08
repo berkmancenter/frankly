@@ -54,7 +54,7 @@ class UpgradePerks extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ActionButton(
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
                 text: 'Explore plans',
                 expand: true,
                 type: ActionButtonType.outline,
@@ -66,7 +66,7 @@ class UpgradePerks extends StatelessWidget {
               if (onUpgradeTap != null) ...[
                 SizedBox(height: 20),
                 ActionButton(
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   textColor: AppColor.brightGreen,
                   text: 'Upgrade',
                   expand: true,

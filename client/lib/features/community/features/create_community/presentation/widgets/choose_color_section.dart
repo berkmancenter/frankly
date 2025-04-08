@@ -94,8 +94,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           ThemeUtils.isColorValid(_currentDarkColor)) {
         final firstColor =
             ThemeUtils.parseColor(_currentLightColor) ?? AppColor.gray6;
-        final secondColor =
-            ThemeUtils.parseColor(_currentDarkColor) ?? AppColor.darkBlue;
+        final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
+            context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
           _selectedColorErrorMessage = 'Light color must be lighter';
@@ -205,7 +205,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required bool selected,
     required void Function() onTap,
   }) {
-    final color = selected ? AppColor.darkBlue : AppColor.gray4;
+    final color = selected ? context.theme.colorScheme.primary : AppColor.gray4;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -373,7 +373,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
                 : null,
             border: Border.all(
               color: _isSelectedColorComboValid
-                  ? AppColor.darkBlue
+                  ? context.theme.colorScheme.primary
                   : AppColor.gray3,
             ),
           ),

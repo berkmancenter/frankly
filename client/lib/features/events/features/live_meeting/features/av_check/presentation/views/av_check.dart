@@ -75,7 +75,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
 
     return Container(
       alignment: Alignment.center,
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: UserInfoBuilder(
         userId: userService.currentUserId,
         builder: (context, loading, user) {
@@ -296,7 +296,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
           decoration: BoxDecoration(
             border: Border.all(color: AppColor.gray6),
             borderRadius: BorderRadius.circular(10),
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
           child: Builder(
             builder: (context) {

@@ -215,7 +215,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       ),
     ];
     return Container(
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       width: isMobile ? null : _iconWidth,
       height: isMobile ? _iconWidth : null,
       child: isMobile

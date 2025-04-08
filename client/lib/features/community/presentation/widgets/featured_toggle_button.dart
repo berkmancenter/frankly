@@ -85,10 +85,12 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
                 activeTrackColor: Theme.of(context).colorScheme.secondary,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.darkBlue, width: 1),
+                    borderSide: BorderSide(
+                        color: context.theme.colorScheme.primary, width: 1),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.darkBlue, width: 1),
+                    borderSide: BorderSide(
+                        color: context.theme.colorScheme.primary, width: 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),

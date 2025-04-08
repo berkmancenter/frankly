@@ -48,7 +48,7 @@ class _SelectParticipantsNumberState extends State<SelectParticipantsNumber> {
               borderSide: BorderSide(color: Colors.transparent, width: 0),
             ),
             border: const OutlineInputBorder(),
-            labelStyle: TextStyle(color: AppColor.darkBlue),
+            labelStyle: TextStyle(color: context.theme.colorScheme.primary),
           ),
           initialValue: editProvider.event.maxParticipants?.toDouble() ?? 8,
           min: 2,

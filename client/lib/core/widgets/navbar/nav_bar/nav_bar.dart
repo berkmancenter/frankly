@@ -590,14 +590,16 @@ class _SelectableNavigationButton extends StatelessWidget {
         decoration: isSelected
             ? BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: AppColor.darkBlue, width: 1.5),
+                  bottom: BorderSide(
+                      color: context.theme.colorScheme.primary, width: 1.5),
                 ),
               )
             : null,
         child: HeightConstrainedText(
           title,
           style: AppTextStyle.bodyMedium.copyWith(
-            color: isSelected ? AppColor.darkBlue : AppColor.gray3,
+            color:
+                isSelected ? context.theme.colorScheme.primary : AppColor.gray3,
           ),
         ),
       ),

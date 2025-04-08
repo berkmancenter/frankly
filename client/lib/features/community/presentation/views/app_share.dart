@@ -52,7 +52,7 @@ class AppShareDialog extends StatefulWidget {
     this.title,
     required this.content,
     required this.appShareData,
-    this.iconColor = AppColor.darkBlue,
+    this.iconColor = context.theme.colorScheme.primary,
     this.iconBackgroundColor,
   }) : super(key: key);
 
@@ -73,7 +73,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: AppColor.darkBlue,
+      backgroundColor: context.theme.colorScheme.primary,
       child: Container(
         padding: EdgeInsets.all(isMobile ? 20 : 40),
         width: responsiveLayoutService.getDynamicSize(context, 600),
@@ -147,7 +147,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         text: 'Finish',
         color: AppColor.brightGreen,
-        textColor: AppColor.darkBlue,
+        textColor: context.theme.colorScheme.primary,
       );
 
   Widget _buildShareSection() => LayoutBuilder(

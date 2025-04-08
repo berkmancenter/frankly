@@ -15,7 +15,7 @@ class UpgradeIcon extends StatelessWidget {
     if (isDisabledColor) {
       return AppColor.white;
     } else if (isColorInverted) {
-      return AppColor.darkBlue;
+      return context.theme.colorScheme.primary;
     } else {
       return AppColor.brightGreen;
     }
@@ -27,7 +27,7 @@ class UpgradeIcon extends StatelessWidget {
     } else if (isColorInverted) {
       return AppColor.brightGreen;
     } else {
-      return AppColor.darkBlue;
+      return context.theme.colorScheme.primary;
     }
   }
 

@@ -61,8 +61,9 @@ class _SelectTemplateState extends State<SelectTemplate> {
     return CustomTextField(
       padding: EdgeInsets.zero,
       labelText: 'Search templates',
-      labelStyle: TextStyle(color: AppColor.darkBlue),
-      textStyle: TextStyle(color: AppColor.darkBlue, fontSize: 16),
+      labelStyle: TextStyle(color: context.theme.colorScheme.primary),
+      textStyle:
+          TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
       borderType: BorderType.outline,
       backgroundColor: AppColor.gray4.withOpacity(0.2),
       borderRadius: 10,
@@ -83,7 +84,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
         initialValue: const [],
         elevation: 0,
         padding: EdgeInsets.all(0),
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         selectedColor: AppColor.brightGreen,
         direction: Axis.horizontal,
         labelStyle: TextStyle(
@@ -118,7 +119,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
           children: const [
             Padding(
               padding: EdgeInsets.only(left: 5, top: 10, right: 5),
-              child: Icon(Icons.add, color: AppColor.darkBlue),
+              child: Icon(Icons.add, color: context.theme.colorScheme.primary),
             ),
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
@@ -126,7 +127,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
                 'Create a new template',
                 style: TextStyle(
                   fontSize: 13,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   fontWeight: FontWeight.w900,
                 ),
               ),

@@ -53,7 +53,8 @@ class SurveyAnswerTile extends StatelessWidget {
                       AnimatedContainer(
                         height: kIndicatorHeight,
                         width: step * answeredParticipants,
-                        decoration: _getBoxDecoration(AppColor.darkBlue),
+                        decoration: _getBoxDecoration(
+                            context.theme.colorScheme.primary),
                         duration: kTabScrollDuration,
                       ),
                     ],

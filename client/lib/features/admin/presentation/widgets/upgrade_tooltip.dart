@@ -64,8 +64,8 @@ class _UpgradeTooltipContentsState extends State<_UpgradeTooltipContents> {
               SizedBox(width: 8),
               HeightConstrainedText(
                 'Upgrade for access',
-                style:
-                    AppTextStyle.headline4.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.headline4
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
             ],
           ),
@@ -77,8 +77,9 @@ class _UpgradeTooltipContentsState extends State<_UpgradeTooltipContents> {
                   child: ActionButton(
                     type: ActionButtonType.outline,
                     text: 'Explore Plans',
-                    borderSide: BorderSide(color: AppColor.darkBlue),
-                    textColor: AppColor.darkBlue,
+                    borderSide:
+                        BorderSide(color: context.theme.colorScheme.primary),
+                    textColor: context.theme.colorScheme.primary,
                     onPressed: _launchBilling,
                   ),
                 ),
@@ -226,7 +227,7 @@ class _TooltipContainerState extends State<_TooltipContainer> {
           child: IconButton(
             icon: Icon(Icons.close),
             onPressed: widget.onClose,
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
         ),
       ],

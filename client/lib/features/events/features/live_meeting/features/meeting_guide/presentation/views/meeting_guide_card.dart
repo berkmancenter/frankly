@@ -315,7 +315,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline3.copyWith(
                                 fontSize: isMobile ? 18 : 24,
-                                color: AppColor.darkBlue,
+                                color: context.theme.colorScheme.primary,
                               ),
                             );
                           }
@@ -327,14 +327,14 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                           'This is your agenda. Prompts will appear here. Ready to get started?',
                           style: AppTextStyle.subhead.copyWith(
                             fontSize: isMobile ? 15 : 18,
-                            color: AppColor.darkBlue,
+                            color: context.theme.colorScheme.primary,
                           ),
                         ),
                         SizedBox(height: 20),
                         ActionButton(
                           color: Colors.transparent,
                           type: ActionButtonType.outline,
-                          textColor: AppColor.darkBlue,
+                          textColor: context.theme.colorScheme.primary,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,
                           onPressed: () => alertOnError(context, () async {
@@ -349,7 +349,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                           'This is your agenda. Prompts will appear here. Waiting for host to start...',
                           style: AppTextStyle.subhead.copyWith(
                             fontSize: isMobile ? 15 : 18,
-                            color: AppColor.darkBlue,
+                            color: context.theme.colorScheme.primary,
                           ),
                         ),
                     ],
@@ -490,7 +490,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     if (isBackButtonShown)
                       ActionButton(
                         color: Colors.transparent,
-                        textColor: AppColor.darkBlue,
+                        textColor: context.theme.colorScheme.primary,
                         sendingIndicatorAlign:
                             ActionButtonSendingIndicatorAlign.none,
                         icon: Icons.arrow_back_ios,
@@ -519,15 +519,15 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                             'are ready to move on.',
                         child: Text(
                           '$readyToMoveOnCount/${presentParticipantIds.length}',
-                          style: AppTextStyle.body
-                              .copyWith(color: AppColor.darkBlue),
+                          style: AppTextStyle.body.copyWith(
+                              color: context.theme.colorScheme.primary),
                         ),
                       ),
                     ),
                     if (readyToAdvance)
                       ActionButton(
                         type: ActionButtonType.outline,
-                        textColor: AppColor.darkBlue,
+                        textColor: context.theme.colorScheme.primary,
                         sendingIndicatorAlign:
                             ActionButtonSendingIndicatorAlign.none,
                         text: 'Ready',
@@ -574,8 +574,8 @@ class CountdownWidget extends StatelessWidget {
               Expanded(
                 child: HeightConstrainedText(
                   'Moving to the next agenda item...',
-                  style:
-                      AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+                  style: AppTextStyle.subhead
+                      .copyWith(color: context.theme.colorScheme.primary),
                 ),
               ),
               SizedBox(width: 10),
@@ -606,7 +606,7 @@ class _ReadyButton extends HookWidget {
       tooltipText: 'Click Next when you’re ready to move on.',
       color: Colors.transparent,
       type: ActionButtonType.outline,
-      textColor: AppColor.darkBlue,
+      textColor: context.theme.colorScheme.primary,
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       icon: Icons.arrow_forward_ios,
       iconSide: ActionButtonIconSide.right,

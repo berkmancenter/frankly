@@ -41,7 +41,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
     required IconData icon,
     required bool selected,
   }) {
-    final color = selected ? AppColor.brightGreen : AppColor.darkBlue;
+    final color =
+        selected ? AppColor.brightGreen : context.theme.colorScheme.primary;
     return TextButton(
       onPressed: () => readProvider.vote(upvote: upvote, itemId: itemId),
       child: Padding(
@@ -89,7 +90,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                 UserProfileChip(
                   userId: item.creatorId,
                   textStyle: TextStyle(
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     fontSize: 16,
                   ),
                   showBorder: false,
@@ -235,7 +236,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             onPressed: canSubmit
                 ? () => alertOnError(context, () => readProvider.submit())
                 : null,
-            color: canSubmit ? AppColor.darkBlue : AppColor.gray4,
+            color:
+                canSubmit ? context.theme.colorScheme.primary : AppColor.gray4,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,

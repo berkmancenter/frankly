@@ -60,7 +60,7 @@ class MediaItemSection extends StatelessWidget {
                 SizedBox.fromSize(
                   size: kMediaSectionSize,
                   child: Container(
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     child: Icon(
                       Icons.add,
                       size: 18,
@@ -96,7 +96,7 @@ class MediaItemSection extends StatelessWidget {
             ),
             Spacer(),
             Material(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               shape: CircleBorder(),
               child: InkWell(
                 customBorder: CircleBorder(),
@@ -109,7 +109,7 @@ class MediaItemSection extends StatelessWidget {
             ),
             SizedBox(width: 20),
             Material(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               shape: CircleBorder(),
               child: InkWell(
                 customBorder: CircleBorder(),

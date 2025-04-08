@@ -80,7 +80,7 @@ class _WaitingRoom extends StatelessWidget {
   Widget _buildDesktopLayout(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(30.0),
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: Row(
         children: [
           Expanded(
@@ -96,7 +96,7 @@ class _WaitingRoom extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: Column(
         children: [
           _buildMeetingInfo(context),

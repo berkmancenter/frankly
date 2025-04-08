@@ -200,12 +200,13 @@ class _EventPageState extends State<EventPage> implements EventPageView {
           backgroundColor: AppColor.white,
           title: Text(
             'Are you sure you want to remove this message?',
-            style: AppTextStyle.headline3.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.headline3
+                .copyWith(color: context.theme.colorScheme.primary),
           ),
           actions: [
             ActionButton(
               text: 'No',
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.brightGreen,
               onPressed: () {
                 Navigator.pop(context);
@@ -213,7 +214,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
             ),
             ActionButton(
               text: 'Yes',
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.brightGreen,
               onPressed: () => alertOnError(context, () async {
                 await _presenter.removeMessage(eventMessage);
@@ -433,7 +434,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
               onPressed: () => _presenter.hideEditTooltip(),
               icon: Icon(
                 Icons.close,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
             ),
           ],

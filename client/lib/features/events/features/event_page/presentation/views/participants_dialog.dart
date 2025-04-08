@@ -130,7 +130,7 @@ class ParticipantsDialog extends StatelessWidget {
         icon: Icon(
           Icons.close,
           size: 40,
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
         ),
         onPressed: () => Navigator.of(context).pop(false),
       ),
@@ -145,7 +145,7 @@ class ParticipantsDialog extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
         ),
         textAlign: TextAlign.center,
       ),

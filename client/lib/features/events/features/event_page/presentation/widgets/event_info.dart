@@ -660,7 +660,7 @@ class _EventInfoState extends State<EventInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Checkbox(
-          activeColor: AppColor.darkBlue,
+          activeColor: context.theme.colorScheme.primary,
           checkColor: AppColor.brightGreen,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {

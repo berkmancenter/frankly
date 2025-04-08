@@ -46,7 +46,7 @@ class EventButton extends HookWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyle.headline4.copyWith(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
             ),
           ),
           SizedBox(height: 10.0),

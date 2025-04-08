@@ -191,7 +191,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
                       community.bannerImageUrl!.trim().isEmpty) ...[
                     Container(
                       color: ThemeUtils.parseColor(community.themeDarkColor) ??
-                          AppColor.darkBlue,
+                          context.theme.colorScheme.primary,
                     ),
                   ] else ...[
                     ProxiedImage(

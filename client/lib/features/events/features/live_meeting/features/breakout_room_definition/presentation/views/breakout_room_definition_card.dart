@@ -172,7 +172,7 @@ class _BreakoutRoomDefinitionCardState
                 ),
               ),
               FormBuilderSlider(
-                activeColor: AppColor.darkBlue,
+                activeColor: context.theme.colorScheme.primary,
                 inactiveColor: AppColor.gray6,
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
@@ -208,7 +208,8 @@ class _BreakoutRoomDefinitionCardState
         SizedBox(height: 30),
         HeightConstrainedText(
           'Matching questions',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.primary),
         ),
         SizedBox(height: 20),
         ListView.builder(
@@ -296,7 +297,7 @@ class _BreakoutRoomDefinitionCardState
               if (categories.isNotEmpty) SizedBox(height: 20),
               if (categories.length < _maxBreakoutCategoryCount)
                 Container(
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   child: AddMoreButton(
                     onPressed: () =>
                         context.read<BreakoutRoomPresenter>().addCategory(),
@@ -386,8 +387,8 @@ class _QuestionCardState extends State<QuestionCard> {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 child: HeightConstrainedText(
                   questionText,
-                  style:
-                      AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+                  style: AppTextStyle.subhead
+                      .copyWith(color: context.theme.colorScheme.primary),
                 ),
               ),
             ),
@@ -395,8 +396,8 @@ class _QuestionCardState extends State<QuestionCard> {
               _buildEditButton(),
           ],
         ),
-        iconColor: AppColor.darkBlue,
-        collapsedIconColor: AppColor.darkBlue,
+        iconColor: context.theme.colorScheme.primary,
+        collapsedIconColor: context.theme.colorScheme.primary,
         onExpansionChanged: (expanded) => _isExpanded.value = expanded,
         children: [
           Container(
@@ -494,7 +495,7 @@ class _QuestionCardState extends State<QuestionCard> {
     return ActionButton(
       type: ActionButtonType.outline,
       color: AppColor.white,
-      textColor: AppColor.darkBlue,
+      textColor: context.theme.colorScheme.primary,
       onPressed: () {
         _isExpanded.value = true;
         _toggleCardViewType();
@@ -502,7 +503,8 @@ class _QuestionCardState extends State<QuestionCard> {
       text: 'Edit',
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
-        child: Icon(Icons.edit, color: AppColor.darkBlue, size: 20),
+        child: Icon(Icons.edit,
+            color: context.theme.colorScheme.primary, size: 20),
       ),
       iconSide: ActionButtonIconSide.right,
     );

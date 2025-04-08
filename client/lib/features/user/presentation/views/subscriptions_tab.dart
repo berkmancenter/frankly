@@ -80,8 +80,9 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
                             communityDisplayId: communities[i].displayId,
                           ).communityAdmin(tab: 'billing'),
                         ),
-                        textColor: AppColor.darkBlue,
-                        borderSide: BorderSide(color: AppColor.darkBlue),
+                        textColor: context.theme.colorScheme.primary,
+                        borderSide: BorderSide(
+                            color: context.theme.colorScheme.primary),
                       ),
                       SizedBox(width: 10),
                     ],

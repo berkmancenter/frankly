@@ -43,7 +43,7 @@ const _adminStatusMap = <MembershipStatus, String>{
   MembershipStatus.mod: 'Moderator',
 };
 
-final blueBackground = AppColor.darkBlue.withOpacity(0.1);
+final blueBackground = context.theme.colorScheme.primary.withOpacity(0.1);
 
 class MembersTab extends StatefulWidget {
   @override
@@ -515,7 +515,7 @@ class _MembersTabState extends State<MembersTab> {
                       onPressed: () => _downloadMembersData(membershipList),
                       borderRadius: BorderRadius.circular(15),
                       padding: EdgeInsets.zero,
-                      color: AppColor.darkBlue,
+                      color: context.theme.colorScheme.primary,
                       icon: Icon(
                         Icons.download,
                         color: AppColor.white,
@@ -837,7 +837,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                   color: disableDropdown ? AppColor.gray4 : AppColor.black,
                 ),
                 underline: SizedBox.shrink(),
-                iconEnabledColor: AppColor.darkBlue,
+                iconEnabledColor: context.theme.colorScheme.primary,
                 onChanged: disableDropdown ? null : _updateMembership,
                 selectedItemBuilder: (BuildContext context) => [
                   if (widget.membership.status == MembershipStatus.owner)

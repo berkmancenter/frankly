@@ -54,7 +54,7 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
                 isPublic: value == _VisibilityType.public,
               );
             },
-            activeColor: AppColor.darkBlue,
+            activeColor: context.theme.colorScheme.primary,
             separator: null,
             options: [
               for (final entry in _visibilityTypeDescriptionLookup.entries)
@@ -62,7 +62,8 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
                   value: entry.key,
                   child: HeightConstrainedText(
                     entry.value,
-                    style: TextStyle(color: AppColor.darkBlue, fontSize: 15),
+                    style: TextStyle(
+                        color: context.theme.colorScheme.primary, fontSize: 15),
                   ),
                 ),
             ],
@@ -80,7 +81,7 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
               color: AppColor.white,
               borderRadius: BorderRadius.circular(12),
             ),
-            textColor: AppColor.darkBlue,
+            textColor: context.theme.colorScheme.primary,
             communityId: dialogModel.communityProvider.communityId,
             label:
                 'Feature on ${dialogModel.communityProvider.community.name} homepage',

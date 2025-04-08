@@ -113,7 +113,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                       child: Text(
                         text,
                         style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.darkBlue),
+                            .copyWith(color: context.theme.colorScheme.primary),
                       ),
                     ),
                   ],

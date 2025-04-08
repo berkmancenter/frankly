@@ -131,7 +131,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             await _presenter.addSuggestion(_textEditingController.text);
             _textEditingController.clear();
           }),
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
           child: ProxiedImage(
             null,
             asset: AppAsset.kAirplaneWhite,
@@ -179,7 +179,9 @@ class _MeetingGuideCardItemUserSuggestionsState
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppColor.gray6,
-          border: isMySuggestion ? Border.all(color: AppColor.darkBlue) : null,
+          border: isMySuggestion
+              ? Border.all(color: context.theme.colorScheme.primary)
+              : null,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

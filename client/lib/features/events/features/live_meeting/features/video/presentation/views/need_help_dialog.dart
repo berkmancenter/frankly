@@ -68,7 +68,7 @@ class NeedHelpDialog extends StatelessWidget {
                   icon: Icon(
                     Icons.close,
                     size: 40,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                   ),
                   onPressed: () => Navigator.of(context).pop(false),
                 ),

@@ -48,7 +48,7 @@ class ProfileChip extends StatelessWidget {
                         height: imageHeight ?? 80,
                         width: imageHeight ?? 80,
                         decoration: BoxDecoration(
-                          color: AppColor.darkBlue,
+                          color: context.theme.colorScheme.primary,
                         ),
                         child: Text(
                           name.isNotEmpty ? name[0].toUpperCase() : '',

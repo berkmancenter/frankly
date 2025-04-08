@@ -158,8 +158,9 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                   type: ActionButtonType.outline,
                   onPressed: _showSendMessageDialog,
                   text: '+ Add New',
-                  borderSide: BorderSide(color: AppColor.darkBlue),
-                  textColor: AppColor.darkBlue,
+                  borderSide:
+                      BorderSide(color: context.theme.colorScheme.primary),
+                  textColor: context.theme.colorScheme.primary,
                 ),
               ),
             ListView.builder(
@@ -225,8 +226,8 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (description != null && description.isNotEmpty) ...[
           HeightConstrainedText(
             'Description',
-            style: AppTextStyle.headlineSmall
-                .copyWith(color: AppColor.darkBlue, fontSize: 16),
+            style: AppTextStyle.headlineSmall.copyWith(
+                color: context.theme.colorScheme.primary, fontSize: 16),
           ),
           HeightConstrainedText(
             description,
@@ -240,7 +241,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
               HeightConstrainedText(
                 'Announcements',
                 style: AppTextStyle.headlineSmall.copyWith(
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   fontSize: 16,
                 ),
               ),
@@ -251,7 +252,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                   child: HeightConstrainedText(
                     'See all',
                     style: AppTextStyle.bodyMedium
-                        .copyWith(color: AppColor.darkBlue),
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ),
             ],
@@ -264,7 +265,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           HeightConstrainedText(
             'More Upcoming Events',
             style: AppTextStyle.headlineSmall.copyWith(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               fontSize: 16,
             ),
           ),
@@ -317,7 +318,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             HeightConstrainedText(
               'More from ${community.name}',
               style: AppTextStyle.headlineSmall.copyWith(
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 fontSize: 16,
               ),
             ),

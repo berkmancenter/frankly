@@ -117,7 +117,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       label: 'event-tabs-content',
       child: Container(
         width: 400,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -390,7 +390,7 @@ class _FloatingChatState extends State<FloatingChat> {
         position: _getPositionTransition(animation),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(

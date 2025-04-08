@@ -61,7 +61,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
             boxShape: BoxShape.circle,
             onTap: () => createResourcePresenter.onTapEditTitle(),
             child: CircleAvatar(
-              backgroundColor: AppColor.darkBlue,
+              backgroundColor: context.theme.colorScheme.primary,
               child: Icon(
                 Icons.check,
                 color: AppColor.brightGreen,
@@ -105,7 +105,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
                 child: Icon(
                   Icons.edit,
                   size: 15,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -194,7 +194,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
                         Navigator.pop(context);
                       })
                   : null,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.white,
             ),
           ),

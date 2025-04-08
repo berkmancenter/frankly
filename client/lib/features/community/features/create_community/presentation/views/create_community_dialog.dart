@@ -213,7 +213,8 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     }
     if (!ThemeUtils.isColorValid(dark)) {
       _community = _community.copyWith(
-        themeDarkColor: ThemeUtils.convertToHexString(AppColor.darkBlue),
+        themeDarkColor:
+            ThemeUtils.convertToHexString(context.theme.colorScheme.primary),
       );
     }
 

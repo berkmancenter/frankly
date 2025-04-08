@@ -519,7 +519,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
                   }),
           child: HeightConstrainedText(
             isPinned ? 'Unpin' : 'Pin',
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.primary),
           ),
         ),
       if (widget.showMute)
@@ -530,7 +531,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
           child: HeightConstrainedText(
             'Mute',
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.primary),
           ),
         ),
       if (widget.showKick)
@@ -561,7 +563,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
         ),
         child: HeightConstrainedText(
           isCurrentUser ? 'Edit Profile' : 'View Profile',
-          style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+          style: AppTextStyle.bodyMedium
+              .copyWith(color: context.theme.colorScheme.primary),
         ),
       ),
     ];

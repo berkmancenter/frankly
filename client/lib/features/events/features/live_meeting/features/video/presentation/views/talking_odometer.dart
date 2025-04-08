@@ -64,7 +64,8 @@ class _TalkingOdometerState extends State<TalkingOdometer>
         key: _model.tooltipKey,
         triggerMode: TooltipTriggerMode.manual,
         message: message,
-        textStyle: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+        textStyle: AppTextStyle.body
+            .copyWith(color: context.theme.colorScheme.primary),
         verticalOffset: 40,
         preferBelow: false,
         padding: const EdgeInsets.all(30),

@@ -158,8 +158,8 @@ class _ManipulateDiscussionThreadPageState
                         SizedBox(width: 10),
                         HeightConstrainedText(
                           'Image',
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: AppColor.darkBlue),
+                          style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.primary),
                         ),
                       ],
                     ),

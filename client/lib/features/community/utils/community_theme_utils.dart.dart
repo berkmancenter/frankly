@@ -16,7 +16,7 @@ class ThemeUtils {
   static List<PresetColorTheme> presetColorThemes = const [
     PresetColorTheme(
       lightColor: AppColor.gray6,
-      darkColor: AppColor.darkBlue,
+      darkColor: context.theme.colorScheme.primary,
     ),
     PresetColorTheme(
       lightColor: Color(0xFFDEF8FF),

@@ -298,7 +298,7 @@ class CustomFormBuilderChoiceChip<T> extends FormBuilderField<T> {
                             materialTapTargetSize: materialTapTargetSize,
                             labelStyle: field.value == option.value
                                 ? labelStyle.copyWith(
-                                    color: AppColor.darkBlue,
+                                    color: context.theme.colorScheme.primary,
                                   )
                                 : labelStyle,
                             labelPadding: labelPadding,

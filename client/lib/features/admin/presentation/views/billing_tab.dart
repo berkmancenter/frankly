@@ -259,7 +259,7 @@ class _AdminBillingContainerContentState
               SizedBox(width: 10),
               ActionButton(
                 text: 'Update Plan',
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 textColor: AppColor.brightGreen,
                 onPressed: _newPlanSelected
                     ? () => alertOnError(context, _updatePlanPressed)
@@ -277,8 +277,8 @@ class _AdminBillingContainerContentState
 
     return HeightConstrainedText(
       '${community.name ?? 'This Community'} is on the $planType Plan',
-      style:
-          AppTextStyle.subhead.copyWith(fontSize: 22, color: AppColor.darkBlue),
+      style: AppTextStyle.subhead
+          .copyWith(fontSize: 22, color: context.theme.colorScheme.primary),
     );
   }
 
@@ -407,7 +407,7 @@ class _AdminBillingContainerContentState
               color: Colors.transparent,
               textStyle: TextStyle(
                 decoration: TextDecoration.underline,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
               onPressed: () async {

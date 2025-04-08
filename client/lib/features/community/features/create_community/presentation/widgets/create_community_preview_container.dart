@@ -33,13 +33,15 @@ class PreviewContainer extends StatelessWidget {
       : AppColor.gray6;
 
   Color get _carouselColor => finalPreview
-      ? (ThemeUtils.parseColor(community.themeDarkColor) ?? AppColor.darkBlue)
+      ? (ThemeUtils.parseColor(community.themeDarkColor) ??
+          context.theme.colorScheme.primary)
       : AppColor.gray4;
 
   Color get _nameColor => finalPreview
-      ? (ThemeUtils.parseColor(community.themeDarkColor) ?? AppColor.darkBlue)
+      ? (ThemeUtils.parseColor(community.themeDarkColor) ??
+          context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.name)
-          ? AppColor.darkBlue
+          ? context.theme.colorScheme.primary
           : AppColor.gray4;
 
   Color get _taglineColor => finalPreview
@@ -49,9 +51,10 @@ class PreviewContainer extends StatelessWidget {
           : AppColor.gray3;
 
   Color get _aboutColor => finalPreview
-      ? (ThemeUtils.parseColor(community.themeDarkColor) ?? AppColor.darkBlue)
+      ? (ThemeUtils.parseColor(community.themeDarkColor) ??
+          context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.description)
-          ? AppColor.darkBlue
+          ? context.theme.colorScheme.primary
           : AppColor.gray4;
 
   @override
