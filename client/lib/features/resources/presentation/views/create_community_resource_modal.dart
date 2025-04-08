@@ -42,37 +42,6 @@ class CreateCommunityResourceModal extends StatelessWidget {
     ).show();
   }
 
-  Widget _buildEditTitle(
-    CreateCommunityResourcePresenter createResourcePresenter,
-  ) {
-    return Row(
-      children: [
-        Expanded(
-          child: CustomTextField(
-            maxLines: 3,
-            initialValue: createResourcePresenter.resource.title,
-            onChanged: (value) => createResourcePresenter.updateTitle(value),
-            onEditingComplete: () => createResourcePresenter.onTapEditTitle(),
-          ),
-        ),
-        if (createResourcePresenter.isEditingTitle) ...[
-          SizedBox(width: 10),
-          CustomInkWell(
-            boxShape: BoxShape.circle,
-            onTap: () => createResourcePresenter.onTapEditTitle(),
-            child: CircleAvatar(
-              backgroundColor: context.theme.colorScheme.primary,
-              child: Icon(
-                Icons.check,
-                color: AppColor.brightGreen,
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
   Widget _buildResource(
     BuildContext context,
     CreateCommunityResourcePresenter createResourcePresenter,
@@ -113,7 +82,36 @@ class CreateCommunityResourceModal extends StatelessWidget {
         ),
         SizedBox(width: 10),
         if (createResourcePresenter.showTitleField)
-          Expanded(child: _buildEditTitle(createResourcePresenter))
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomTextField(
+                    maxLines: 3,
+                    initialValue: createResourcePresenter.resource.title,
+                    onChanged: (value) =>
+                        createResourcePresenter.updateTitle(value),
+                    onEditingComplete: () =>
+                        createResourcePresenter.onTapEditTitle(),
+                  ),
+                ),
+                if (createResourcePresenter.isEditingTitle) ...[
+                  SizedBox(width: 10),
+                  CustomInkWell(
+                    boxShape: BoxShape.circle,
+                    onTap: () => createResourcePresenter.onTapEditTitle(),
+                    child: CircleAvatar(
+                      backgroundColor: context.theme.colorScheme.primary,
+                      child: Icon(
+                        Icons.check,
+                        color: AppColor.brightGreen,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          )
         else
           Expanded(
             child: Wrap(

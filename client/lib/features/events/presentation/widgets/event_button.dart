@@ -36,34 +36,6 @@ class EventButton extends HookWidget {
     );
   }
 
-  Widget _buildCardContent() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HeightConstrainedText(
-            event.title ?? 'Scheduled event',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.headline4.copyWith(
-              color: context.theme.colorScheme.primary,
-            ),
-          ),
-          SizedBox(height: 10.0),
-          if (_isLiveStream)
-            HeightConstrainedText(
-              'Livestream',
-              style: AppTextStyle.bodySmall.copyWith(
-                color: AppColor.gray3,
-              ),
-            ),
-          SizedBox(height: 10),
-          _ParticipantsList(
-            event: event,
-          ),
-        ],
-      );
-
   @override
   Widget build(BuildContext context) {
     const height = 100.0;
@@ -104,7 +76,33 @@ class EventButton extends HookWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _buildCardContent(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      event.title ?? 'Scheduled event',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.headline4.copyWith(
+                        color: context.theme.colorScheme.primary,
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    if (_isLiveStream)
+                      HeightConstrainedText(
+                        'Livestream',
+                        style: AppTextStyle.bodySmall.copyWith(
+                          color: AppColor.gray3,
+                        ),
+                      ),
+                    SizedBox(height: 10),
+                    _ParticipantsList(
+                      event: event,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
