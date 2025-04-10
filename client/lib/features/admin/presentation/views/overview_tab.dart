@@ -14,8 +14,8 @@ import 'package:client/features/templates/features/create_template/presentation/
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';

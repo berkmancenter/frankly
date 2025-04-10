@@ -5,7 +5,7 @@ import 'package:client/features/resources/presentation/create_community_resource
 import 'package:client/features/resources/presentation/community_resources_presenter.dart';
 import 'package:client/features/resources/presentation/widgets/url_field_widget.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
