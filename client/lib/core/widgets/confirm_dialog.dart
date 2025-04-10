@@ -2,7 +2,6 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
@@ -207,12 +206,10 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      child: Align(
-        alignment: Alignment.center,
-        child: Builder(
-          builder: (context) => _buildDialog(context),
-        ),
+    return Align(
+      alignment: Alignment.center,
+      child: Builder(
+        builder: (context) => _buildDialog(context),
       ),
     );
   }

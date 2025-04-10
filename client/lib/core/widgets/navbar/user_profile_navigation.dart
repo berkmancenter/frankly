@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
@@ -87,10 +86,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
               child: Container(
                 constraints: BoxConstraints(maxHeight: 400),
                 color: AppColor.white,
-                child: UIMigration(
-                  whiteBackground: true,
-                  child: ProfileNavigationList(),
-                ),
+                child: ProfileNavigationList(),
               ),
             ),
           ),

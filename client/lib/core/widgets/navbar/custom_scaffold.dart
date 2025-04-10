@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar/nav_bar.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/sidebar.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -38,13 +36,13 @@ class CustomScaffoldState extends State<CustomScaffold> {
     return widget.fillViewport
         ? Column(
             children: [
-              UIMigration(child: NavBar()),
+              NavBar(),
               Expanded(child: keyedChild),
             ],
           )
         : CustomListView(
             children: [
-              UIMigration(child: NavBar()),
+              NavBar(),
               keyedChild,
             ],
           );

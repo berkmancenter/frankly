@@ -5,7 +5,6 @@ import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
@@ -77,15 +76,12 @@ class Dialogs {
                 SizedBox(height: 16),
                 Form(
                   key: formKey,
-                  child: UIMigration(
-                    whiteBackground: true,
-                    child: CustomTextField(
-                      minLines: 3,
-                      autofocus: true,
-                      controller: textEditingController,
-                      validator: validator,
-                      labelText: labelText,
-                    ),
+                  child: CustomTextField(
+                    minLines: 3,
+                    autofocus: true,
+                    controller: textEditingController,
+                    validator: validator,
+                    labelText: labelText,
                   ),
                 ),
                 SizedBox(height: 16),

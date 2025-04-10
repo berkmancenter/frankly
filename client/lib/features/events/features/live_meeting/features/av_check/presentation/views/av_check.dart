@@ -6,10 +6,8 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/av_check/data/providers/av_check_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/troubleshoot_av.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/services.dart';
@@ -35,17 +33,14 @@ class _PleaseAcceptPermissionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      whiteBackground: true,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            CircularProgressIndicator(),
-            SizedBox(height: 30),
-            TroubleshootIssuesButton(),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(height: 30),
+          TroubleshootIssuesButton(),
+        ],
       ),
     );
   }
@@ -65,12 +60,10 @@ class _AvCheckPageState extends State<_AvCheckPage> {
   Widget build(BuildContext context) {
     final error = context.watch<AvCheckProvider>().errorText;
     if (error != null) {
-      return UIMigration(
-        child: Center(
-          child: AudioVideoErrorDisplay(
-            error: error,
-            textColor: AppColor.gray1,
-          ),
+      return Center(
+        child: AudioVideoErrorDisplay(
+          error: error,
+          textColor: AppColor.gray1,
         ),
       );
     }
@@ -119,9 +112,8 @@ class _AvCheckPageState extends State<_AvCheckPage> {
     );
   }
 
-  Widget _buildDiagnoseIssuesButton() => UIMigration(
-        child: TroubleshootIssuesButton(linkColor: AppColor.brightGreen),
-      );
+  Widget _buildDiagnoseIssuesButton() =>
+      TroubleshootIssuesButton(linkColor: AppColor.brightGreen);
 
   Widget _buildVideoContainer(String image) {
     return Container(
