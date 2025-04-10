@@ -4,7 +4,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:provider/src/provider.dart';
 import 'package:quiver/strings.dart';
 

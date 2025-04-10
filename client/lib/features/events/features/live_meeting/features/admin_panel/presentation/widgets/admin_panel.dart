@@ -24,7 +24,7 @@ import 'package:client/config/environment.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';

@@ -2,7 +2,6 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';

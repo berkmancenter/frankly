@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/app.dart';
 import 'package:client/core/utils/firestore_utils.dart';

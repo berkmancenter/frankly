@@ -21,7 +21,7 @@ import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/hostless_action_fallback_controller.dart';
 import 'package:client/core/utils/platform_utils.dart';

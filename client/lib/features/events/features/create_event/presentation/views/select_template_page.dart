@@ -5,7 +5,7 @@ import 'package:client/features/templates/features/create_template/presentation/
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 

@@ -1,12 +1,8 @@
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
-import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community_tag.dart';
 
 class TagFilterWidget extends StatelessWidget {

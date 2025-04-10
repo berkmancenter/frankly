@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/templates/data/providers/template_page_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/presentation/widgets/hosting_option.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -14,7 +13,6 @@ import 'package:client/features/templates/presentation/widgets/prerequisite_badg
 import 'package:client/config/environment.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/events/event.dart';

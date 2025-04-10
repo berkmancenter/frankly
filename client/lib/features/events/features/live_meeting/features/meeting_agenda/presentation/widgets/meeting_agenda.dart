@@ -8,7 +8,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';

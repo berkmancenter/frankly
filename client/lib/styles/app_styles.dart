@@ -34,7 +34,6 @@ class AppColor {
   static const Color primaryPlainHover = gray100;
 
   /// Legacy colors.
-  static const Color darkBlue = Color.fromARGB(255, 17, 251, 0);
   static const Color darkGreen = Color(0xFF4E7E61);
   static const Color brightGreen = Color(0xFF9BFBC2);
   static const Color lightGreen = Color(0xFFDEF5E7);

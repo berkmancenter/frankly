@@ -27,11 +27,10 @@ class CanvasKitUrlVideoWidget extends StatefulWidget {
   }) : super(key: Key(playbackUrl));
 
   @override
-  _CanvasKitUrlVideoWidgetState createState() =>
-      _CanvasKitUrlVideoWidgetState();
+  CanvasKitUrlVideoWidgetState createState() => CanvasKitUrlVideoWidgetState();
 }
 
-class _CanvasKitUrlVideoWidgetState extends State<CanvasKitUrlVideoWidget> {
+class CanvasKitUrlVideoWidgetState extends State<CanvasKitUrlVideoWidget> {
   final _viewType = 'video-js-canvas-kit/${uuid.v1()}';
 
   html.DivElement? _div;

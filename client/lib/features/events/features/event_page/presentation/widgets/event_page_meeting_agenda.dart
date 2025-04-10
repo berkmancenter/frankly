@@ -15,7 +15,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -192,12 +192,16 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildClearAllButton() {
     return ActionButton(
       color: Colors.transparent,
-      textColor: AppColor.darkBlue,
+      textColor: context.theme.colorScheme.primary,
       onPressed: () => _showClearAgendaItemsDialog(),
       text: 'Clear all',
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
-        child: Icon(Icons.close, color: AppColor.darkBlue, size: 20),
+        child: Icon(
+          Icons.close,
+          color: context.theme.colorScheme.primary,
+          size: 20,
+        ),
       ),
       iconSide: ActionButtonIconSide.right,
       padding: EdgeInsets.zero,

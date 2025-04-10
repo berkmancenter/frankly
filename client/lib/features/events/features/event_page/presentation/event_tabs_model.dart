@@ -6,7 +6,6 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/tabs/tab_controller.dart';
-import 'package:client/app.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/cloud_functions/requests.dart';

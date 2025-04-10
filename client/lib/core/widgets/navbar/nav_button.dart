@@ -1,7 +1,7 @@
 import 'package:client/styles/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class NavButton extends StatefulWidget {

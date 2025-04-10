@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';

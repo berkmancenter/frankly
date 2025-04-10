@@ -13,7 +13,6 @@ import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/pre_post_card.dart';

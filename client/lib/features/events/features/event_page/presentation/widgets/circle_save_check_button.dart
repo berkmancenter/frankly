@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
 
 class CircleSaveCheckButton extends StatelessWidget {
   const CircleSaveCheckButton({

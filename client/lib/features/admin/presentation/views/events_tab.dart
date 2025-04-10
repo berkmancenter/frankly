@@ -1,10 +1,9 @@
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:client/features/admin/presentation/views/members_tab.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
@@ -159,7 +158,9 @@ class _EventsTabState extends State<EventsTab> {
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
 
     return Container(
-      color: index.isEven ? blueBackground : Colors.white70,
+      color: index.isEven
+          ? context.theme.colorScheme.primary.withOpacity(0.1)
+          : Colors.white70,
       child: Row(
         children: [
           _buildRowEntry(

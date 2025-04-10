@@ -17,7 +17,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +41,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
     required IconData icon,
     required bool selected,
   }) {
-    final color = selected ? AppColor.brightGreen : AppColor.darkBlue;
+    final color =
+        selected ? AppColor.brightGreen : context.theme.colorScheme.primary;
     return TextButton(
       onPressed: () => readProvider.vote(upvote: upvote, itemId: itemId),
       child: Padding(
@@ -89,7 +90,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                 UserProfileChip(
                   userId: item.creatorId,
                   textStyle: TextStyle(
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     fontSize: 16,
                   ),
                   showBorder: false,
@@ -235,7 +236,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             onPressed: canSubmit
                 ? () => alertOnError(context, () => readProvider.submit())
                 : null,
-            color: canSubmit ? AppColor.darkBlue : AppColor.gray4,
+            color:
+                canSubmit ? context.theme.colorScheme.primary : AppColor.gray4,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,

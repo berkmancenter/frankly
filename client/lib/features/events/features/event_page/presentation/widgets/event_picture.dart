@@ -2,7 +2,6 @@ import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/editable_image.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';

@@ -1,10 +1,9 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 

@@ -38,7 +38,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -660,7 +660,7 @@ class _EventInfoState extends State<EventInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Checkbox(
-          activeColor: AppColor.darkBlue,
+          activeColor: context.theme.colorScheme.primary,
           checkColor: AppColor.brightGreen,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {
