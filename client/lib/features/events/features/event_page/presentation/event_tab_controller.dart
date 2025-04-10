@@ -93,7 +93,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (eventTabsModel.enableUserSubmittedAgenda)
           CustomTabAndContent(
             tab: 'Suggest',
-            content: (_) => _buildSuggestSection(),
+            content: (_) => _buildSuggestSection(context),
             unreadCount: Provider.of<UserSubmittedAgendaProvider>(context)
                 .numUnreadSuggestions,
           ),
@@ -106,7 +106,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (eventTabsModel.enableMessages)
           CustomTabAndContent(
             tab: 'Announcements',
-            content: (_) => _buildAnnouncements(),
+            content: (context) => _buildAnnouncements(context),
           ),
         if (eventTabsModel.enableAdminPanel)
           CustomTabAndContent(
@@ -124,7 +124,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     );
   }
 
-  Widget _buildAnnouncements({bool compact = false}) {
+  Widget _buildAnnouncements(BuildContext context, {bool compact = false}) {
     return CustomStreamBuilder<List<EventMessage>>(
       entryFrom: '_EventPageState._buildGuide',
       stream: context.watch<EventTabsControllerState>().eventMessagesStream,
@@ -214,7 +214,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     }
   }
 
-  Widget _buildAboutSection(context) {
+  Widget _buildAboutSection(BuildContext context) {
     final tabsController = Provider.of<EventTabsControllerState>(context);
     final hasAnnouncements = tabsController.announcementsCount > 1;
     final description = Provider.of<EventProvider>(context).event.description;
@@ -227,7 +227,9 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           HeightConstrainedText(
             'Description',
             style: AppTextStyle.headlineSmall.copyWith(
-                color: context.theme.colorScheme.primary, fontSize: 16),
+              color: context.theme.colorScheme.primary,
+              fontSize: 16,
+            ),
           ),
           HeightConstrainedText(
             description,
@@ -258,7 +260,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             ],
           ),
           SizedBox(height: 10),
-          _buildAnnouncements(compact: true),
+          _buildAnnouncements(context, compact: true),
           SizedBox(height: 40),
         ],
         ...[
@@ -431,7 +433,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     );
   }
 
-  Widget _buildSuggestSection() => LayoutBuilder(
+  Widget _buildSuggestSection(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           margin: const EdgeInsets.only(bottom: 10),
