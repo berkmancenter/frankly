@@ -4,7 +4,6 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/custom_time_picker.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -36,17 +35,14 @@ class _SelectTimePageState extends State<SelectTimePage> {
           ),
         ),
         SizedBox(height: 2),
-        UIMigration(
-          whiteBackground: true,
-          child: CustomTimePickerDialog(
-            helpText: '',
-            initialTime: TimeOfDay.fromDateTime(scheduledTime),
-            selectedTimeOfDay: (selectedTime) {
-              final selectedDateTime =
-                  DateTimeField.combine(scheduledTime, selectedTime);
-              dialogModel.updateScheduledTime(selectedDateTime);
-            },
-          ),
+        CustomTimePickerDialog(
+          helpText: '',
+          initialTime: TimeOfDay.fromDateTime(scheduledTime),
+          selectedTimeOfDay: (selectedTime) {
+            final selectedDateTime =
+                DateTimeField.combine(scheduledTime, selectedTime);
+            dialogModel.updateScheduledTime(selectedDateTime);
+          },
         ),
         HeightConstrainedText(
           isNullOrEmpty(timezone) ? '' : 'Time shown in $timezone',

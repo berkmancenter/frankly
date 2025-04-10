@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 
 class WarningInfo extends StatelessWidget {
@@ -24,34 +23,31 @@ class WarningInfo extends StatelessWidget {
         color: AppColor.pink,
       ),
       child: Center(
-        child: UIMigration(
-          whiteBackground: true,
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              icon,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Builder(
-                  builder: (context) => RichText(
-                    text: TextSpan(
-                      text: '$title  ',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColor.redLightMode,
-                            fontWeight: FontWeight.w700,
-                          ),
-                      children: [
-                        TextSpan(
-                          text: message,
-                          style: Theme.of(context).textTheme.bodyLarge,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            icon,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Builder(
+                builder: (context) => RichText(
+                  text: TextSpan(
+                    text: '$title  ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColor.redLightMode,
+                          fontWeight: FontWeight.w700,
                         ),
-                      ],
-                    ),
+                    children: [
+                      TextSpan(
+                        text: message,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
