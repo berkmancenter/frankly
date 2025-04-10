@@ -48,7 +48,7 @@ class DiscussionThreadPage extends StatefulWidget {
 
 class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     implements DiscussionThreadView {
-  static const _kBackgroundColor = AppColor.gray6;
+  static const _kBackgroundColor = context.theme.colorScheme.surface;
 
   /// Key for `comments` section start. It is used for auto-scrolling if [widget.scrollToComments]
   /// is true.

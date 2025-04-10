@@ -91,8 +91,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     setState(() {
       if (ThemeUtils.isColorValid(_currentLightColor) &&
           ThemeUtils.isColorValid(_currentDarkColor)) {
-        final firstColor =
-            ThemeUtils.parseColor(_currentLightColor) ?? AppColor.gray6;
+        final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
+            context.theme.colorScheme.surface;
         final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
             context.theme.colorScheme.primary;
 
@@ -108,7 +108,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           _selectedColorErrorMessage = 'Light color must be lighter';
         } else if (!ThemeUtils.isContrastRatioValid(
           secondColor,
-          AppColor.gray6,
+          context.theme.colorScheme.surface,
         )) {
           _selectedColorErrorMessage = 'Dark color must be darker';
         }

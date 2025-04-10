@@ -178,7 +178,7 @@ class _MeetingGuideCardItemUserSuggestionsState
         padding: EdgeInsets.all(isMobile ? 10 : 20.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.gray6,
+          color: context.theme.colorScheme.surface,
           border: isMySuggestion
               ? Border.all(color: context.theme.colorScheme.primary)
               : null,

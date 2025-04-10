@@ -94,7 +94,7 @@ class ThemeUtils {
     );
 
     final darkColorIsDarkEnough =
-        isContrastRatioValid(darkColor, AppColor.gray6);
+        isContrastRatioValid(darkColor, context.theme.colorScheme.surface);
     final lightColorIsLightEnough =
         isContrastRatioValid(lightColor, AppColor.gray1);
 

@@ -29,7 +29,7 @@ class EmptyPageContent extends StatelessWidget {
 
   Color _getColor({bool subtitle = false}) {
     if (isBackgroundDark) {
-      return AppColor.gray6;
+      return context.theme.colorScheme.surface;
     } else if (isBackgroundPrimaryColor) {
       return AppColor.gray1;
     } else if (subtitle) {

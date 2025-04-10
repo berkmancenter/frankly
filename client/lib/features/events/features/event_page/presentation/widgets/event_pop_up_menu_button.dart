@@ -80,7 +80,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
           shape: CircleBorder(),
           color: _isHovered
               ? AppColor.grayTransparent.withOpacity(0.45)
-              : AppColor.gray6,
+              : context.theme.colorScheme.surface,
           child: Padding(
             padding: EdgeInsets.all(iconPadding),
             child: Icon(
