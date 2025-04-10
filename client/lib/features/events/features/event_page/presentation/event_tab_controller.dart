@@ -19,7 +19,7 @@ import 'package:client/features/events/features/event_page/presentation/views/pr
 import 'package:client/features/community/presentation/widgets/event_widget.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -533,7 +533,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       return PrePostCardWidgetPage(
         prePostCardType: prePostCardType,
         prePostCard: eventCardData,
-        isWhiteBackground: true,
         event: event,
         onUpdate: (prePostCard) async {
           final Event updatedEvent;
@@ -581,7 +580,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     } else {
       return AddMoreButton(
         label: addNewTitle,
-        isWhiteBackground: true,
         onPressed: () async {
           final prePostCard = PrePostCard.newCard(prePostCardType);
           final Event updatedEvent;
@@ -649,7 +647,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     } else {
       return AddMoreButton(
         label: 'Add a prerequisite template',
-        isWhiteBackground: true,
         onPressed: () {
           eventTabsModelState.isNewPrerequisite = true;
         },

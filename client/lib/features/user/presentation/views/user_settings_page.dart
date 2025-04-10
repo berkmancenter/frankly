@@ -124,7 +124,6 @@ class _UserSettingsPageState extends State<UserSettingsPage>
               );
               return CustomTabBar(
                 padding: padding,
-                isWhiteBackground: true,
               );
             },
           ),

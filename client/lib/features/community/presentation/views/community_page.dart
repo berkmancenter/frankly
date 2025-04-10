@@ -1,4 +1,5 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -93,72 +94,72 @@ class _CommunityPageState extends State<CommunityPage> {
           return Consumer<UserService>(
             builder: (_, __, ___) => Consumer<UserDataService>(
               builder: (_, __, ___) {
-                final primaryColor =
-                    enableCustomColors ? darkThemeColor : AppColor.darkBlue;
-                final secondaryColor =
-                    enableCustomColors ? lightThemeColor : AppColor.brightGreen;
+                final primaryColor = enableCustomColors
+                    ? darkThemeColor
+                    : context.theme.colorScheme.primary;
+                final secondaryColor = enableCustomColors
+                    ? lightThemeColor
+                    : context.theme.colorScheme.secondary;
 
-                return Theme(
-                  data: Theme.of(context).copyWith(
-                    colorScheme: Theme.of(context).colorScheme.copyWith(
-                          primary: primaryColor,
-                          secondary: secondaryColor,
+                return ChangeNotifierProvider<CommunityPermissionsProvider>(
+                  create: (context) => CommunityPermissionsProvider(
+                    communityProvider: Provider.of<CommunityProvider>(
+                      context,
+                      listen: false,
+                    ),
+                  )..initialize(),
+                  child: Builder(
+                    builder: (context) {
+                      final isCreateMeetingAvailable =
+                          widget.isCreateEventFabVisible &&
+                              context
+                                  .watch<CommunityPermissionsProvider>()
+                                  .canCreateEvent;
+
+                      return CustomScaffold(
+                        bgColor: enableCustomColors ? lightThemeColor : null,
+                        fillViewport: widget.fillViewport,
+                        bottomNavigationBar: _showBottomNav
+                            ? CommunityBottomNavBar(
+                                showCreateMeetingButton:
+                                    isCreateMeetingAvailable,
+                              )
+                            : null,
+                        floatingActionButton: _buildFab(context),
+                        childTheme: Theme.of(context).copyWith(
+                          colorScheme: Theme.of(context).colorScheme.copyWith(
+                                primary: primaryColor,
+                                secondary: secondaryColor,
+                              ),
+                          switchTheme: SwitchTheme.of(context).copyWith(
+                            thumbColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return secondaryColor;
+                              } else {
+                                return primaryColor;
+                              }
+                            }),
+                            trackColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return primaryColor;
+                              } else {
+                                return AppColor.gray4;
+                              }
+                            }),
+                          ),
+                          radioTheme: RadioTheme.of(context).copyWith(
+                            fillColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return primaryColor;
+                              } else {
+                                return AppColor.gray4;
+                              }
+                            }),
+                          ),
                         ),
-                    switchTheme: SwitchTheme.of(context).copyWith(
-                      thumbColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return secondaryColor;
-                        } else {
-                          return primaryColor;
-                        }
-                      }),
-                      trackColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return primaryColor;
-                        } else {
-                          return AppColor.gray4;
-                        }
-                      }),
-                    ),
-                    radioTheme: RadioTheme.of(context).copyWith(
-                      fillColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return primaryColor;
-                        } else {
-                          return AppColor.gray4;
-                        }
-                      }),
-                    ),
-                  ),
-                  child: ChangeNotifierProvider<CommunityPermissionsProvider>(
-                    create: (context) => CommunityPermissionsProvider(
-                      communityProvider: Provider.of<CommunityProvider>(
-                        context,
-                        listen: false,
-                      ),
-                    )..initialize(),
-                    child: Builder(
-                      builder: (context) {
-                        final isCreateMeetingAvailable =
-                            widget.isCreateEventFabVisible &&
-                                context
-                                    .watch<CommunityPermissionsProvider>()
-                                    .canCreateEvent;
-
-                        return CustomScaffold(
-                          bgColor: enableCustomColors ? lightThemeColor : null,
-                          fillViewport: widget.fillViewport,
-                          bottomNavigationBar: _showBottomNav
-                              ? CommunityBottomNavBar(
-                                  showCreateMeetingButton:
-                                      isCreateMeetingAvailable,
-                                )
-                              : null,
-                          floatingActionButton: _buildFab(context),
-                          child: widget.content,
-                        );
-                      },
-                    ),
+                        child: widget.content,
+                      );
+                    },
                   ),
                 );
               },

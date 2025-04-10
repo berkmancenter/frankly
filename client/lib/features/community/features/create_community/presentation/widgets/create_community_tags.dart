@@ -24,7 +24,6 @@ class CreateCommunityTags extends StatelessWidget {
           stream: createCommunityTagProvider.communityTagsStream,
           builder: (context, _) => CreateTagWidget(
             titleText: 'Add Tags',
-            titleTextStyle: AppTextStyle.body.copyWith(fontSize: 24),
             showIcon: false,
             tags: Provider.of<CreateCommunityTagProvider>(context).tags,
             onAddTag: (title) => alertOnError(

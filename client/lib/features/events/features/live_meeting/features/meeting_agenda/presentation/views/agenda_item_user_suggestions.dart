@@ -78,9 +78,7 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
             hintText: 'Suggestions',
             maxLength: agendaSuggestionCharactersLength,
             maxLines: 1,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: AppTextStyle.bodySmall,
             onChanged: (value) => _presenter.updateTitle(value),
           ),
           SizedBox(height: 20),
