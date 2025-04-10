@@ -76,6 +76,7 @@ class ThemeUtils {
       RegExp(r'^[0-9a-fA-F]*$').hasMatch(color);
 
   static bool isColorComboValid(
+    BuildContext context,
     String? lightColorString,
     String? darkColorString,
   ) {
@@ -87,16 +88,16 @@ class ThemeUtils {
     final lightColor = parseColor(lightColorString)!;
     final darkColor = parseColor(darkColorString)!;
 
-    bool validRatio = isContrastRatioValid(lightColor, darkColor);
+    bool validRatio = isContrastRatioValid(context, lightColor, darkColor);
     bool lightDarkCorrect = isFirstColorLighter(
       parseColor(lightColorString)!,
       parseColor(darkColorString)!,
     );
 
-    final darkColorIsDarkEnough =
-        isContrastRatioValid(darkColor, context.theme.colorScheme.surface);
+    final darkColorIsDarkEnough = isContrastRatioValid(
+        context, darkColor, context.theme.colorScheme.surface);
     final lightColorIsLightEnough =
-        isContrastRatioValid(lightColor, AppColor.gray1);
+        isContrastRatioValid(context, lightColor, AppColor.gray1);
 
     return validRatio &&
         lightDarkCorrect &&
@@ -107,7 +108,8 @@ class ThemeUtils {
   static bool isFirstColorLighter(Color firstColor, Color secondColor) =>
       firstColor.computeLuminance() > secondColor.computeLuminance();
 
-  static bool isContrastRatioValid(Color firstColor, Color secondColor) {
+  static bool isContrastRatioValid(
+      BuildContext context, Color firstColor, Color secondColor) {
     final val = calculateContrastRatio(
       firstColor,
       secondColor,
