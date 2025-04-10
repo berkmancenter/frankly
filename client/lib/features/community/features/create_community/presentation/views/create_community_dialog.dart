@@ -220,6 +220,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     }
 
     final valid = ThemeUtils.isColorComboValid(
+      context,
       _community.themeLightColor,
       _community.themeDarkColor,
     );

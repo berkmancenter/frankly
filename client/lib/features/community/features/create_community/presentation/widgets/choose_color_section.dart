@@ -47,8 +47,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   String get _currentDarkColor => _customDarkColorController.text;
 
-  bool get _isSelectedColorComboValid =>
-      ThemeUtils.isColorComboValid(_currentLightColor, _currentDarkColor);
+  bool get _isSelectedColorComboValid => ThemeUtils.isColorComboValid(
+        context,
+        _currentLightColor,
+        _currentDarkColor,
+      );
 
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
 
@@ -98,15 +101,21 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
           _selectedColorErrorMessage = 'Light color must be lighter';
-        } else if (!ThemeUtils.isContrastRatioValid(firstColor, secondColor)) {
+        } else if (!ThemeUtils.isContrastRatioValid(
+          context,
+          firstColor,
+          secondColor,
+        )) {
           _selectedColorErrorMessage =
               'Contrast ratio must be greater than 4.5';
         } else if (!ThemeUtils.isContrastRatioValid(
+          context,
           firstColor,
           AppColor.gray1,
         )) {
           _selectedColorErrorMessage = 'Light color must be lighter';
         } else if (!ThemeUtils.isContrastRatioValid(
+          context,
           secondColor,
           context.theme.colorScheme.surface,
         )) {
