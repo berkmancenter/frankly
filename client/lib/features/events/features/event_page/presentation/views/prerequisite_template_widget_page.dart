@@ -136,7 +136,9 @@ class _PrerequisiteTemplateWidgetPageState
       padding: const EdgeInsets.all(14.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: widget.isWhiteBackground ? AppColor.gray6 : AppColor.darkerBlue,
+        color: widget.isWhiteBackground
+            ? context.theme.colorScheme.surface
+            : AppColor.darkerBlue,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -289,7 +291,7 @@ class _PrerequisiteTemplateWidgetPageState
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: widget.isWhiteBackground
-            ? AppColor.gray6
+            ? context.theme.colorScheme.surface
             : context.theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(10),
       ),

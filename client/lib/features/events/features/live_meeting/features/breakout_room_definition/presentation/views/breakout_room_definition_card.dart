@@ -173,7 +173,7 @@ class _BreakoutRoomDefinitionCardState
               ),
               FormBuilderSlider(
                 activeColor: context.theme.colorScheme.primary,
-                inactiveColor: AppColor.gray6,
+                inactiveColor: context.theme.colorScheme.surface,
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent, width: 0),

@@ -59,7 +59,8 @@ class _ManipulateDiscussionThreadPageState
     final isMobile = _presenter.isMobile(context);
 
     return Scaffold(
-      backgroundColor: isMobile ? AppColor.white : AppColor.gray6,
+      backgroundColor:
+          isMobile ? AppColor.white : context.theme.colorScheme.surface,
       body: _buildBody(isMobile),
     );
   }

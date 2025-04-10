@@ -294,7 +294,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.gray6),
+            border: Border.all(color: context.theme.colorScheme.surface),
             borderRadius: BorderRadius.circular(10),
             color: context.theme.colorScheme.primary,
           ),
@@ -321,7 +321,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
                     quarterTurns: 1,
                     child: Icon(
                       Icons.arrow_forward_ios,
-                      color: AppColor.gray6,
+                      color: context.theme.colorScheme.surface,
                       size: 20,
                     ),
                   ),

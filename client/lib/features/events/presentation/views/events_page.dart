@@ -86,8 +86,8 @@ class _EventsPageState extends State<EventsPage> {
                 !Provider.of<EventsPageProvider>(context, listen: false)
                     .dateHasEvent(date),
             defaultDecoration: decoration.copyWith(color: AppColor.white),
-            disabledDecoration:
-                decoration.copyWith(color: AppColor.gray6.withOpacity(.7)),
+            disabledDecoration: decoration.copyWith(
+                color: context.theme.colorScheme.surface.withOpacity(.7)),
             weekDayTextStyle: textStyle.copyWith(color: AppColor.black),
             dateTextStyle: dateTextStyle.copyWith(color: AppColor.black),
             monthTextStyle: textStyle.copyWith(color: AppColor.black),

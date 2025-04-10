@@ -29,8 +29,9 @@ class PreviewContainer extends StatelessWidget {
   }) : super(key: key);
 
   Color _containerColor(BuildContext context) => finalPreview
-      ? (ThemeUtils.parseColor(community.themeLightColor) ?? AppColor.gray6)
-      : AppColor.gray6;
+      ? (ThemeUtils.parseColor(community.themeLightColor) ??
+          context.theme.colorScheme.surface)
+      : context.theme.colorScheme.surface;
 
   Color _carouselColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??

@@ -54,7 +54,7 @@ class MediaItemSection extends StatelessWidget {
         child: CustomInkWell(
           onTap: () => _showMediaPickerDialog(context),
           child: Container(
-            color: AppColor.gray6,
+            color: context.theme.colorScheme.surface,
             child: Row(
               children: [
                 SizedBox.fromSize(

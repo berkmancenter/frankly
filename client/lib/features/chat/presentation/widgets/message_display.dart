@@ -181,7 +181,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                         child: Icon(
                           Icons.close,
                           color: Theme.of(context).isDark
-                              ? AppColor.gray6
+                              ? context.theme.colorScheme.surface
                               : context.theme.colorScheme.primary,
                           size: 20,
                         ),
