@@ -87,27 +87,27 @@ final textTheme = GoogleFonts.interTextTheme(
       height: 16 / 11,
       letterSpacing: 0.5,
     ),
-    /// headlineLarge: displayColor
-    headlineLarge: AppTextStyle.headline1,
-
-    /// headlineMedium: displayColor
-    headlineMedium: AppTextStyle.headline2,
-    headlineSmall: AppTextStyle.headline3,
-    titleLarge: AppTextStyle.headline4,
-    titleMedium: AppTextStyle.headlineSmall,
-    titleSmall: AppTextStyle.subhead,
-    bodyLarge: AppTextStyle.eyebrow,
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      height: 24 / 16,
+      letterSpacing: 0.5,
+    ),
 
     /// bodyMedium is the default text style for Material.
     /// https://api.flutter.dev/flutter/material/TextTheme/bodyMedium.html
-    bodyMedium: AppTextStyle.body,
-
-    /// bodySmall: displayColor
-    bodySmall: AppTextStyle.bodySmall,
-    labelMedium: AppTextStyle.bodySmall,
-  ).apply(
-    displayColor: AppColor.black,
-    bodyColor: AppColor.black,
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      height: 20 / 14,
+      letterSpacing: 0.25,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      height: 16 / 12,
+      letterSpacing: 0.4,
+    ),
   ),
 );
 
