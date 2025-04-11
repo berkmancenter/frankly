@@ -48,6 +48,24 @@ final textTheme = GoogleFonts.interTextTheme(
       height: 32 / 24,
       letterSpacing: 0,
     ),
+    titleLarge: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.normal,
+      height: 28 / 22,
+      letterSpacing: 0,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 24 / 16,
+      letterSpacing: 0.15,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      height: 20 / 14,
+      letterSpacing: 0.1,
+    ),
 
     /// headlineLarge: displayColor
     headlineLarge: AppTextStyle.headline1,
