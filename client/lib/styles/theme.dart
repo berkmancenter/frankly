@@ -12,9 +12,24 @@ final appTheme = ThemeData(
 final textTheme = GoogleFonts.interTextTheme(
   TextTheme(
     /// displayColor is used for all display styles
-    displayLarge: null,
-    displayMedium: null,
-    displaySmall: null,
+    displayLarge: TextStyle(
+      fontSize: 57,
+      fontWeight: FontWeight.normal,
+      height: 64 / 57,
+      letterSpacing: -0.25,
+    ),
+    displayMedium: TextStyle(
+      fontSize: 45,
+      fontWeight: FontWeight.normal,
+      height: 52 / 45,
+      letterSpacing: 0,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 36,
+      fontWeight: FontWeight.normal,
+      height: 44 / 36,
+      letterSpacing: 0,
+    ),
 
     /// headlineLarge: displayColor
     headlineLarge: AppTextStyle.headline1,
