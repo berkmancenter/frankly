@@ -30,6 +30,7 @@ final textTheme = GoogleFonts.interTextTheme(
       height: 44 / 36,
       letterSpacing: 0,
     ),
+
     headlineLarge: TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.normal,
@@ -48,6 +49,7 @@ final textTheme = GoogleFonts.interTextTheme(
       height: 32 / 24,
       letterSpacing: 0,
     ),
+
     titleLarge: TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.normal,
@@ -67,6 +69,24 @@ final textTheme = GoogleFonts.interTextTheme(
       letterSpacing: 0.1,
     ),
 
+    labelLarge: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      height: 20 / 14,
+      letterSpacing: 0.1,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 16 / 12,
+      letterSpacing: 0.5,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      height: 16 / 11,
+      letterSpacing: 0.5,
+    ),
     /// headlineLarge: displayColor
     headlineLarge: AppTextStyle.headline1,
 
