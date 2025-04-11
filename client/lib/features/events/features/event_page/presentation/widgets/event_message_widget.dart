@@ -32,7 +32,7 @@ class EventMessageWidget extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

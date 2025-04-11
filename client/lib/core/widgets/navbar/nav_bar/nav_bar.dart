@@ -91,7 +91,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                 : _buildOnboardingOverviewTooltip(onboardingStep),
           ),
         Container(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           alignment: Alignment.center,
           child: _buildHeaderContent(),
         ),
@@ -518,7 +518,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           if (settingsXPosition != null)
             Container(
               // Making optical illusion that `triangle` is overlapping app bar.
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               height: 10,
               child: Stack(
                 children: [

@@ -188,7 +188,7 @@ class _OnboardPageState extends State<OnboardPage> {
       height: 48,
       expand: true,
       borderRadius: BorderRadius.circular(10),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       textStyle: body.copyWith(
         fontWeight: FontWeight.w600,
         color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
@@ -497,7 +497,7 @@ class _OnboardPageState extends State<OnboardPage> {
             : Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(

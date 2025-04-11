@@ -58,7 +58,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: _buildBody(),
     );
   }
@@ -318,7 +318,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       iconSize: 20,
       elevation: 16,
       decoration: InputDecoration(
-        fillColor: AppColor.white,
+        fillColor: context.theme.colorScheme.surfaceContainerLowest,
         filled: true,
         label: HeightConstrainedText(
           'Length',

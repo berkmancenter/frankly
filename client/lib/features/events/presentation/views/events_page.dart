@@ -85,9 +85,11 @@ class _EventsPageState extends State<EventsPage> {
             isDateDisabled: (date) =>
                 !Provider.of<EventsPageProvider>(context, listen: false)
                     .dateHasEvent(date),
-            defaultDecoration: decoration.copyWith(color: AppColor.white),
+            defaultDecoration: decoration.copyWith(
+                color: context.theme.colorScheme.surfaceContainerLowest),
             disabledDecoration: decoration.copyWith(
-                color: context.theme.colorScheme.surface.withOpacity(.7)),
+              color: context.theme.colorScheme.surface.withOpacity(.7),
+            ),
             weekDayTextStyle: textStyle.copyWith(color: AppColor.black),
             dateTextStyle: dateTextStyle.copyWith(color: AppColor.black),
             monthTextStyle: textStyle.copyWith(color: AppColor.black),
@@ -109,7 +111,7 @@ class _EventsPageState extends State<EventsPage> {
   Widget _buildSearchBarField() {
     return TextField(
       decoration: InputDecoration(
-        fillColor: AppColor.white,
+        fillColor: context.theme.colorScheme.surfaceContainerLowest,
         hintText: 'Search events',
         border: InputBorder.none,
       ),
@@ -121,7 +123,7 @@ class _EventsPageState extends State<EventsPage> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       padding: const EdgeInsets.only(left: 12, right: 32),
       constraints: BoxConstraints(maxWidth: 450),

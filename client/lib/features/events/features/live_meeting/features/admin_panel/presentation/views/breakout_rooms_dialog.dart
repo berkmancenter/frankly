@@ -269,7 +269,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),

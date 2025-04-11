@@ -297,8 +297,8 @@ class _ProfileTabState extends State<_ProfileTab> {
               text: 'Update Profile',
               expand: false,
               textColor: controller.changeKeys.isNotEmpty
-                  ? Theme.of(context).colorScheme.secondary
-                  : AppColor.white,
+                  ? context.theme.colorScheme.secondary
+                  : context.theme.colorScheme.surfaceContainerLowest,
             ),
           ],
         ),
@@ -544,7 +544,7 @@ class _ProfileTabState extends State<_ProfileTab> {
       );
     } else {
       return Material(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         child: Column(
           children: [
             Expanded(

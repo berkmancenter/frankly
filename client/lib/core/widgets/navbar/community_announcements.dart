@@ -101,7 +101,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
                     padding: const EdgeInsets.all(12),
                     constraints:
                         BoxConstraints(maxHeight: halfSize ? 200 : 400),
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     child: Announcements.create(),
                   ),
                 ),

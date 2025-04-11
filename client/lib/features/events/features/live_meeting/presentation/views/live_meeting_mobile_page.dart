@@ -398,7 +398,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       margin: const EdgeInsets.all(16),
       alignment: Alignment.center,
@@ -714,7 +714,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -971,7 +971,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     } else if (isAdmin) {
       backgroundColor = context.theme.colorScheme.primary;
     } else {
-      backgroundColor = AppColor.white;
+      backgroundColor = context.theme.colorScheme.surfaceContainerLowest;
     }
     return PointerInterceptor(
       child: Container(

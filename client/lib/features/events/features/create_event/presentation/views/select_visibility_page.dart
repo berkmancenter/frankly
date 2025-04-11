@@ -80,7 +80,7 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
           FeaturedToggleButton(
             controlAffinity: ListTileControlAffinity.leading,
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(12),
             ),
             textColor: context.theme.colorScheme.primary,

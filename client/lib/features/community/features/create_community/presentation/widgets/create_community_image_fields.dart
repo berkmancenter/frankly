@@ -118,7 +118,7 @@ class CreateCommunityImageField extends StatelessWidget {
     );
   }
 
-  Widget _buildInkWellWidget() {
+  Widget _buildInkWellWidget(BuildContext context) {
     if (!showImage) {
       return CustomInkWell(
         onTap: onTap,
@@ -128,7 +128,7 @@ class CreateCommunityImageField extends StatelessWidget {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
             border: Border.all(
               color: AppColor.gray2,
@@ -171,7 +171,11 @@ class CreateCommunityImageField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Semantics(button: true, label: text, child: _buildInkWellWidget()),
+        Semantics(
+          button: true,
+          label: text,
+          child: _buildInkWellWidget(context),
+        ),
         SizedBox(width: 10),
         if (showImage) ...[
           Expanded(

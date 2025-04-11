@@ -99,7 +99,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
   Widget _buildMainCard() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

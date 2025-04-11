@@ -558,7 +558,7 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -583,7 +583,7 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelParticipation,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -694,8 +694,8 @@ class _EventInfoState extends State<EventInfo> {
         url: _getShareUrl(),
         body: _getShareBody(),
         subject: 'Join my event on ${Environment.appName}!',
-        iconColor: Theme.of(context).colorScheme.primary,
-        iconBackgroundColor: AppColor.white,
+        iconColor: context.theme.colorScheme.primary,
+        iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         size: 40,
         iconSize: 20,
         wrapIcons: false,
@@ -730,7 +730,7 @@ class _EventInfoState extends State<EventInfo> {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         borderRadius: isMobile ? null : BorderRadius.circular(20),
         boxShadow: isMobile
             ? null

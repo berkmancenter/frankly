@@ -315,7 +315,7 @@ class _PrerequisiteTemplateWidgetPageState
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
                 color: widget.isWhiteBackground
-                    ? AppColor.white
+                    ? context.theme.colorScheme.surfaceContainerLowest
                     : context.theme.colorScheme.primary,
                 border: Border.all(
                   width: 1,

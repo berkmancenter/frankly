@@ -143,7 +143,7 @@ class PreviewContainer extends StatelessWidget {
                   height: 29,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                   ),
                 ),
               ],

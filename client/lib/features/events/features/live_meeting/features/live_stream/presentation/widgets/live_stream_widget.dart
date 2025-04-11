@@ -54,7 +54,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       alignment: Alignment.center,
       child: Column(

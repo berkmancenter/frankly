@@ -79,7 +79,7 @@ class CustomTextField extends StatefulWidget {
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
     this.borderRadius = 5,
-    this.backgroundColor = AppColor.white,
+    this.backgroundColor,
     this.focusNode,
     this.textFieldPadding,
     this.borderColor,
@@ -186,7 +186,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Container(
         padding: widget.textFieldPadding,
         decoration: BoxDecoration(
-          color: widget.backgroundColor,
+          color: widget.backgroundColor ??
+              context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
         child: KeyboardListener(

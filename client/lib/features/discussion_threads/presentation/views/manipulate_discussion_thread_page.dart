@@ -59,8 +59,9 @@ class _ManipulateDiscussionThreadPageState
     final isMobile = _presenter.isMobile(context);
 
     return Scaffold(
-      backgroundColor:
-          isMobile ? AppColor.white : context.theme.colorScheme.surface,
+      backgroundColor: isMobile
+          ? context.theme.colorScheme.surfaceContainerLowest
+          : context.theme.colorScheme.surface,
       body: _buildBody(isMobile),
     );
   }
@@ -97,7 +98,7 @@ class _ManipulateDiscussionThreadPageState
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Column(
         children: [

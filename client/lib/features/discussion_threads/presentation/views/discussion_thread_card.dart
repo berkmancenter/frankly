@@ -60,7 +60,7 @@ class DiscussionThreadCard extends StatelessWidget {
     final localImageURL = discussionThread.imageUrl;
 
     return Container(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

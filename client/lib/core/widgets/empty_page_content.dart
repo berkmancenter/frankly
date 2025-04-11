@@ -50,7 +50,7 @@ class EmptyPageContent extends StatelessWidget {
       decoration: showContainer
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             )
           : null,
       child: Column(

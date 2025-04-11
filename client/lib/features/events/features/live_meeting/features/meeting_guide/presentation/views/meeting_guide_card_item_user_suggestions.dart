@@ -117,7 +117,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             maxLines: 1,
             borderRadius: 40,
             borderColor: AppColor.gray3,
-            fillColor: AppColor.white,
+            fillColor: context.theme.colorScheme.surfaceContainerLowest,
             hintText: 'Suggest',
           ),
         ),

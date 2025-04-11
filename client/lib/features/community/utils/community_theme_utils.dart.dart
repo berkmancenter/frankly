@@ -95,7 +95,10 @@ class ThemeUtils {
     );
 
     final darkColorIsDarkEnough = isContrastRatioValid(
-        context, darkColor, context.theme.colorScheme.surface);
+      context,
+      darkColor,
+      context.theme.colorScheme.surface,
+    );
     final lightColorIsLightEnough =
         isContrastRatioValid(context, lightColor, AppColor.gray1);
 
@@ -109,7 +112,10 @@ class ThemeUtils {
       firstColor.computeLuminance() > secondColor.computeLuminance();
 
   static bool isContrastRatioValid(
-      BuildContext context, Color firstColor, Color secondColor) {
+    BuildContext context,
+    Color firstColor,
+    Color secondColor,
+  ) {
     final val = calculateContrastRatio(
       firstColor,
       secondColor,

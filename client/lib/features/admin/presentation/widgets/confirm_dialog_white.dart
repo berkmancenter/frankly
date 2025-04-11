@@ -85,7 +85,7 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
             constraints: BoxConstraints(maxWidth: 523),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: const EdgeInsets.all(40),
             child: CustomListView(

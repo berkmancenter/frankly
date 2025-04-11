@@ -70,7 +70,7 @@ class _SideBarState extends State<SideBar> {
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: _buildNavigationOrSignIn(),
               ),
               _buildBottomSidebarButtons(),

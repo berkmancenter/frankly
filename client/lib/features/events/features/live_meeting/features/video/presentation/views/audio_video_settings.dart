@@ -174,7 +174,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return AnimatedBuilder(
       animation: conferenceRoom,
       builder: (_, __) => Dialog(
-        backgroundColor: AppColor.white,
+        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Color(0xFF5568FF),

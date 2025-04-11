@@ -189,7 +189,7 @@ class _InstantEventState extends State<InstantEvent> {
     return FocusFixer(
       resizeForKeyboard: true,
       child: Material(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         child: _buildContent(),
       ),
     );

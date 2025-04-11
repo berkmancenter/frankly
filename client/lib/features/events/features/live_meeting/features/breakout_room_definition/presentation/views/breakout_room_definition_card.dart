@@ -158,7 +158,7 @@ class _BreakoutRoomDefinitionCardState
         SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           padding: EdgeInsets.all(15),
@@ -365,8 +365,9 @@ class _QuestionCardState extends State<QuestionCard> {
       child: ExpansionTile(
         key: Key(_isExpanded.value.toString()),
         initiallyExpanded: _isExpanded.value,
-        backgroundColor: AppColor.white,
-        collapsedBackgroundColor: AppColor.white,
+        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+        collapsedBackgroundColor:
+            context.theme.colorScheme.surfaceContainerLowest,
         title: Row(
           children: [
             ReorderableListener(
@@ -402,7 +403,7 @@ class _QuestionCardState extends State<QuestionCard> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             padding: EdgeInsets.all(20),
@@ -493,7 +494,7 @@ class _QuestionCardState extends State<QuestionCard> {
   Widget _buildEditButton() {
     return ActionButton(
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       textColor: context.theme.colorScheme.primary,
       onPressed: () {
         _isExpanded.value = true;

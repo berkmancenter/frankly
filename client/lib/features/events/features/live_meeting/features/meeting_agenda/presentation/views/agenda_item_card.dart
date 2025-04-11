@@ -103,7 +103,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

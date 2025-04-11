@@ -208,7 +208,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             slivers: [
               SliverAppBar(
                 backgroundColor: isMobile
-                    ? AppColor.white
+                    ? context.theme.colorScheme.surfaceContainerLowest
                     : context.theme.colorScheme.surface,
                 automaticallyImplyLeading: false,
                 expandedHeight: 50,
@@ -403,7 +403,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Container(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             child: Column(
               children: [
                 SizedBox(height: 20),

@@ -167,7 +167,7 @@ class _MembersTabState extends State<MembersTab> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
               ),
               child: Row(
                 children: [
@@ -436,7 +436,7 @@ class _MembersTabState extends State<MembersTab> {
         return Container(
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -498,7 +498,7 @@ class _MembersTabState extends State<MembersTab> {
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -814,7 +814,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,

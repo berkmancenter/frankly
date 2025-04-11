@@ -55,7 +55,7 @@ class EventButton extends HookWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(

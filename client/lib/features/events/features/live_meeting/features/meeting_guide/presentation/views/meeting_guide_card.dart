@@ -86,7 +86,7 @@ class _MeetingGuideCardState extends State<MeetingGuideCard> {
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(20),
         ),
         child: MeetingGuideCardContent(onMinimizeCard: widget.onMinimizeCard),
@@ -199,7 +199,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                 tooltipText: 'Hide Agenda Item',
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: widget.onMinimizeCard,
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 padding: EdgeInsets.zero,
                 child: ProxiedImage(
                   null,
@@ -457,7 +457,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
           ),
           child: CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
             entryFrom: '_MeetingGuideCard._buildBottomSection',
@@ -520,7 +520,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         child: Text(
                           '$readyToMoveOnCount/${presentParticipantIds.length}',
                           style: AppTextStyle.body.copyWith(
-                              color: context.theme.colorScheme.primary),
+                            color: context.theme.colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),

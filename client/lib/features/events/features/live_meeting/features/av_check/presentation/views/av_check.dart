@@ -99,7 +99,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
               SizedBox(height: 16),
               _buildSelectVideo(),
               SizedBox(height: 36),
-              _buildJoinNowButton(),
+              _buildJoinNowButton(context),
               SizedBox(height: 20),
               if (!responsiveLayoutService.isMobile(context)) ...[
                 _buildDiagnoseIssuesButton(),
@@ -247,8 +247,8 @@ class _AvCheckPageState extends State<_AvCheckPage> {
         asset: AppAsset.kCameraPng,
       );
 
-  Widget _buildJoinNowButton() => ActionButton(
-        color: AppColor.white,
+  Widget _buildJoinNowButton(BuildContext context) => ActionButton(
+        color: context.theme.colorScheme.surfaceContainerLowest,
         minWidth: 335,
         height: 68,
         text: 'Join Now',

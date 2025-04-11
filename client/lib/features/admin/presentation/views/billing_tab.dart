@@ -286,7 +286,7 @@ class _AdminBillingContainerContentState
         constraints: BoxConstraints(maxWidth: 270),
         padding: const EdgeInsets.only(left: 15, right: 10),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 1,

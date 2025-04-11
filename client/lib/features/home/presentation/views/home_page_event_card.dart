@@ -58,7 +58,7 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
         child: Container(
           height: responsiveLayoutService.isMobile(context) ? 130 : 118,
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(10),
             boxShadow: const [AppDecoration.lightBoxShadow],
           ),

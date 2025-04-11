@@ -54,7 +54,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: _buildBody(),
     );
   }
@@ -66,7 +66,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
         _presenter.isDefaultSettingsButtonEnabled;
     return Container(
       width: AppSize.kSidebarWidth,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: CustomListView(
         padding: const EdgeInsets.all(30),
         children: [

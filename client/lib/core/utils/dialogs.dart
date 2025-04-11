@@ -37,7 +37,7 @@ class Dialogs {
             constraints: BoxConstraints(maxHeight: 600, maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: EdgeInsets.all(isMobile ? 20 : 40),
             child: Column(
@@ -132,7 +132,7 @@ class Dialogs {
             constraints: BoxConstraints(maxHeight: 600, maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: EdgeInsets.all(isMobile ? 20 : 40),
             child: Column(

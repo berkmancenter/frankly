@@ -35,8 +35,9 @@ class RaisingHandToggle extends StatelessWidget {
           liveMeetingPath: AgendaProvider.read(context).liveMeetingPath,
           isHandRaised: !isHandRaised,
         ),
-        color:
-            isHandRaised ? context.theme.colorScheme.primary : AppColor.white,
+        color: isHandRaised
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.surfaceContainerLowest,
         padding: isCardMinimized
             ? EdgeInsets.zero
             : EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -46,7 +47,9 @@ class RaisingHandToggle extends StatelessWidget {
               )
             : RoundedRectangleBorder(
                 side: BorderSide(
-                    width: 2.0, color: context.theme.colorScheme.primary),
+                  width: 2.0,
+                  color: context.theme.colorScheme.primary,
+                ),
                 borderRadius: BorderRadius.circular(30),
               ),
         child: ProxiedImage(

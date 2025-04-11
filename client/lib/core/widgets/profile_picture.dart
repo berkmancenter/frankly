@@ -17,7 +17,7 @@ class ProfilePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: [
           boxShadow ??

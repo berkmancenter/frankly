@@ -466,7 +466,7 @@ class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       margin: const EdgeInsets.all(16),
       alignment: Alignment.center,

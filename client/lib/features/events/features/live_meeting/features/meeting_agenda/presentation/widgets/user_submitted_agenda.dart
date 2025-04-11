@@ -78,7 +78,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

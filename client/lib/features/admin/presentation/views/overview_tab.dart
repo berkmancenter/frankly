@@ -69,7 +69,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           Container(
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -133,7 +133,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                 return Container(
                   padding: const EdgeInsets.all(40),
                   decoration: BoxDecoration(
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(

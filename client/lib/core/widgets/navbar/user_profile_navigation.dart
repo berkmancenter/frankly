@@ -85,7 +85,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
             child: MouseRegion(
               child: Container(
                 constraints: BoxConstraints(maxHeight: 400),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: ProfileNavigationList(),
               ),
             ),

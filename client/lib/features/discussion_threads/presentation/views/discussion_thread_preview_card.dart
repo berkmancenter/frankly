@@ -71,7 +71,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
     final localImageUrl = discussionThread.imageUrl;
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: InkWell(
         onTap: onCardTap,
         child: Column(
@@ -270,7 +270,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Material(
         borderRadius: borderRadius,
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         child: InkWell(
           borderRadius: borderRadius,
           onTap: () async {

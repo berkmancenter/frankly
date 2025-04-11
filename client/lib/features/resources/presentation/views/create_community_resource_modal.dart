@@ -70,7 +70,8 @@ class CreateCommunityResourceModal extends StatelessWidget {
               ),
               CircleAvatar(
                 maxRadius: 10,
-                backgroundColor: AppColor.white,
+                backgroundColor:
+                    context.theme.colorScheme.surfaceContainerLowest,
                 child: Icon(
                   Icons.edit,
                   size: 15,

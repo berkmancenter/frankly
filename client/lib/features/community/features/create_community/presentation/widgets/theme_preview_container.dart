@@ -104,7 +104,7 @@ class ThemePreview extends StatelessWidget {
                   for (var i = 0; i < 3; i++)
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColor.white,
+                        color: context.theme.colorScheme.surfaceContainerLowest,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       width: compact ? 50 : 70,

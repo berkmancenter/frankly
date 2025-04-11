@@ -199,7 +199,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: AppColor.white,
+          backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
           title: Text(
             'Are you sure you want to remove this message?',
             style: AppTextStyle.headline3

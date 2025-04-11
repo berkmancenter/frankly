@@ -253,7 +253,7 @@ class _ReassignBreakoutRoomDialogState
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),
