@@ -9,7 +9,7 @@ final appTheme = ThemeData(
   pageTransitionsTheme: NoTransitionsOnWeb(),
 );
 
-final textTheme = GoogleFonts.poppinsTextTheme(
+final textTheme = GoogleFonts.interTextTheme(
   TextTheme(
     /// displayColor is used for all display styles
     displayLarge: null,
