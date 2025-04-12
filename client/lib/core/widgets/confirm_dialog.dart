@@ -177,7 +177,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                         onPressed: onCancel != null
                             ? () => onCancel(context)
                             : () => Navigator.of(context).pop(false),
-                      )
+                      ),
 
                     ActionButton(
                       key: ConfirmDialog.confirmButtonKey,

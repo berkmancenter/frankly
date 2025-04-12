@@ -246,7 +246,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             ],
             SizedBox(height: 18),
             HeightConstrainedText(
-              'Participants will be sent into rooms at $breakoutsInitiationTime '
+              'Participants will be sent into rooms at $breakoutsInitiationTime ' +
               context.l10n.bufferAndIntroTime(waitingBufferDurationDescription, introLengthDurationDescription),
               style: AppTextStyle.subhead,
             ),
