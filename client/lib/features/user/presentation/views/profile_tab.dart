@@ -32,6 +32,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class ProfileTab extends StatelessWidget {
   final bool showTitle;
@@ -64,7 +65,7 @@ class ProfileTab extends StatelessWidget {
       builder: (_, userInfo) {
         if (userInfo == null) {
           return HeightConstrainedText(
-            'There was an error loading profile info.',
+            context.l10n.errorLoadingProfileInfo,
           );
         }
         return ChangeNotifierProvider(
@@ -135,7 +136,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           }
           final email = detailsSnapshot.data?.email;
           if (detailsSnapshot.hasError || email == null || email.isEmpty) {
-            return Text('Error loading email.');
+            return Text(context.l10n.errorLoadingEmail);
           }
           return SelectableText(
             email,

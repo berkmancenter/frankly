@@ -383,7 +383,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
             removeImage: _removeImage,
           ),
         CustomTextField(
-          hintText: 'Contact email',
+          hintText: context.l10n.contactEmail,
           labelText: 'Contact email',
           initialValue: _community.contactEmail,
           onChanged: (value) => setState(

@@ -148,7 +148,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
             Expanded(
               child: Semantics(
                 textField: true,
-                label: 'Tag',
+                label: context.l10n.tag,
                 child: TypeAheadFormField<CommunityTagDefinition>(
                   textFieldConfiguration: TextFieldConfiguration(
                     autofocus: true,
@@ -203,7 +203,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
               SizedBox(width: 10),
               Semantics(
                 button: true,
-                label: 'Submit Tag Button',
+                label: context.l10n.submitTagButton,
                 child: CustomInkWell(
                   boxShape: BoxShape.circle,
                   onTap: _hasValidInput

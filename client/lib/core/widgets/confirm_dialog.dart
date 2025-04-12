@@ -8,6 +8,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class _DismissNotifier with ChangeNotifier {
   @override
@@ -37,15 +38,18 @@ class ConfirmDialog extends StatefulWidget {
     this.title = '',
     this.mainText = '',
     this.subText = '',
-    this.confirmText = 'Yes',
+    String? confirmText,
     this.onConfirm,
-    this.cancelText = 'No',
+    String? cancelText,
     this.onCancel,
     this.textAlign = TextAlign.center,
     this.isWhiteBackground = true,
   });
 
   static final confirmDialogDismisser = ConfirmDialogDismisser();
+  
+  String _getConfirmText(BuildContext context) => confirmText ?? context.l10n.yes;
+  String _getCancelText(BuildContext context) => cancelText ?? context.l10n.no;
 
   Future<bool> show({BuildContext? context}) async {
     return (await showCustomDialog(builder: (_) => this)) ?? false;
@@ -159,13 +163,12 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (!isNullOrEmpty(widget.cancelText))
-                      ActionButton(
+                    ActionButton(
                         height: 55,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         minWidth: 100,
                         color: Colors.transparent,
-                        text: widget.cancelText,
+                        text: widget._getCancelText(context),
                         textStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -175,8 +178,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                             ? () => onCancel(context)
                             : () => Navigator.of(context).pop(false),
                       )
-                    else
-                      SizedBox.shrink(),
+
                     ActionButton(
                       key: ConfirmDialog.confirmButtonKey,
                       height: 55,
@@ -185,7 +187,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                         vertical: 12,
                       ),
                       color: buttonColor,
-                      text: widget.confirmText,
+                      text: widget._getConfirmText(context),
                       textStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

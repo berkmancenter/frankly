@@ -199,7 +199,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           ],
           if (showDonation)
             ThickOutlineButton(
-              text: 'Donate',
+              text: context.l10n.donate,
               eventName: 'donate_pressed',
               backgroundColor: Colors.white,
               onPressed: () => guardSignedIn(

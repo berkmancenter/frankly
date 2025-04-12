@@ -22,6 +22,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class UserSubmittedAgenda extends StatefulWidget {
   @override
@@ -161,7 +162,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                             );
                             showRegularToast(
                               context,
-                              'Text copied!',
+                              context.l10n.textCopied,
                               toastType: ToastType.success,
                             );
                           },
@@ -181,8 +182,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
   Widget _buildEmptySuggestions() => Center(
         child: EmptyPageContent(
           type: EmptyPageType.suggestions,
-          titleText: 'Make a suggestion',
-          subtitleText: 'You can suggest an agenda item and everyone can vote',
+          titleText: context.l10n.makeASuggestion,
+          subtitleText: context.l10n.suggestAgendaItemHint,
           showContainer: false,
           isBackgroundDark: Theme.of(context).isDark,
         ),
@@ -225,7 +226,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
               maxLines: 1,
               borderType: BorderType.none,
               borderRadius: 30,
-              hintText: 'Add something here',
+              hintText: context.l10n.addSomethingHere,
               onChanged: (_) => setState(() {}),
             ),
           ),

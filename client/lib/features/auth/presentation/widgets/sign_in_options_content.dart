@@ -13,6 +13,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
@@ -79,7 +80,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       if (!mounted) return;
       await showAlert(
         context,
-        'Password reset link sent to ${_emailController.text}',
+        context.l10n.passwordResetLinkSent(_emailController.text),
       );
     });
   }
@@ -113,19 +114,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   String _getTitleText() {
     if (widget.isPurchasingSubscription) {
-      return 'New Subscription';
+      return context.l10n.newSubscription;
     } else if (widget.isNewUser) {
-      return 'New to ${Environment.appName}?';
+      return context.l10n.newToApp(Environment.appName);
     } else {
-      return 'Sign in to ${Environment.appName}';
+      return context.l10n.signInToApp(Environment.appName);
     }
   }
 
   String _getMessageText() {
     if (widget.isPurchasingSubscription) {
-      return 'Sign up (or sign in using an existing account) to continue.';
+      return context.l10n.signUpOrSignInToContinue;
     } else if (widget.isNewUser) {
-      return 'Sign up to get started.';
+      return context.l10n.signUpToGetStarted;
     } else {
       return '';
     }
@@ -163,7 +164,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
-        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
+        text: widget.isNewUser ? context.l10n.signUpWithGoogle : context.l10n.signInWithGoogle,
       ),
       ThickOutlineButton(
         key: SignInOptionsContent.emailSignInKey,
@@ -180,7 +181,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         onPressed: () => widget.openDialogOnEmailProviderSelected
             ? SignInDialog.show(showEmailFormOnly: true)
             : setState(() => _showEmailFormFields = true),
-        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
+        text: widget.isNewUser ? context.l10n.signUpWithEmail : context.l10n.signInWithEmail,
       ),
     ];
   }
@@ -189,7 +190,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     return [
       Center(
         child: Text(
-          _newUser ? 'Create an account' : 'Sign In',
+          _newUser ? context.l10n.createAccount : context.l10n.signIn,
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -200,18 +201,18 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         CustomTextField(
           key: SignInOptionsContent.nameTextFieldKey,
           controller: _displayNameController,
-          labelText: 'Your Name',
+          labelText: context.l10n.yourName,
         ),
       CustomTextField(
         key: SignInOptionsContent.emailTextFieldKey,
         controller: _emailController,
-        labelText: 'Email',
+        labelText: context.l10n.email,
       ),
       CustomTextField(
         key: SignInOptionsContent.passwordTextFieldKey,
         controller: _passwordController,
         onEditingComplete: () => _submitController.submit(),
-        labelText: 'Password',
+        labelText: context.l10n.password,
         maxLines: 1,
         obscureText: true,
       ),
@@ -222,7 +223,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           key: SignInOptionsContent.signInSubmitKey,
           controller: _submitController,
           onPressed: () => alertOnError(context, _onSubmit),
-          text: _newUser ? 'Register' : 'Sign In',
+          text: _newUser ? context.l10n.register : context.l10n.signIn,
         ),
       ),
       if (!_newUser)
@@ -233,7 +234,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             onPressed: _resetPassword,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
-              child: Text('Forgot Password'),
+              child: Text(context.l10n.forgotPassword),
             ),
           ),
         ),
@@ -243,7 +244,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         child: ThickOutlineButton(
           key: SignInOptionsContent.newUserToggleKey,
           onPressed: () => setState(() => _newUser = !_newUser),
-          text: _newUser ? 'Already a user? Sign In' : 'New user? Register',
+          text: _newUser ? context.l10n.alreadyUserSignIn : context.l10n.newUserRegister,
         ),
       ),
     ];
@@ -255,11 +256,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         style: body.copyWith(fontSize: 12),
         children: [
           TextSpan(
-            text:
-                'By signing in, registering, or using ${Environment.appName}, I agree to be bound by the ',
+            text: context.l10n.termsAgreementPrefix(Environment.appName),
           ),
           TextSpan(
-            text: '${Environment.appName} Terms of Service',
+            text: context.l10n.termsOfService(Environment.appName),
             recognizer: TapGestureRecognizer()
               ..onTap = () => launch(Environment.termsUrl),
             style: TextStyle(

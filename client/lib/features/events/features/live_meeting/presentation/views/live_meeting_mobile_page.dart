@@ -19,6 +19,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_settings.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
@@ -392,7 +393,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         break;
     }
 
-    return GlobalKeyedSubtree(label: 'primary-content', child: child);
+    return GlobalKeyedSubtree(label: context.l10n.primaryContent, child: child);
   }
 
   Widget _buildWaitingRoom() {
@@ -676,6 +677,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       participantAgendaItemDetailsList,
       presentParticipantIds,
     );
+    // Still using the format directly as it's just displaying numbers with a divider
+    // No specific localization string needed as this is a counter format
     return Text('$readyToMoveOnCount/${presentParticipantIds.length}');
   }
 

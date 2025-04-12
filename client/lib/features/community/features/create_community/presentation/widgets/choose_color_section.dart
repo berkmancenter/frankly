@@ -329,13 +329,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           child: Column(
             children: [
               _buildChooseColorTextField(
-                label: 'Light Color HEX#',
+                label: context.l10n.lightColorHex,
                 onChanged: _changeLightColorTextField,
                 controller: _customLightColorController,
               ),
               _buildChooseColorTextField(
                 onChanged: _changeDarkColorTextField,
-                label: 'Dark Color HEX#',
+                label: context.l10n.darkColorHex,
                 controller: _customDarkColorController,
               ),
             ],

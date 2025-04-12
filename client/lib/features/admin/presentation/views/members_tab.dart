@@ -29,7 +29,9 @@ import 'package:data_models/community/membership_request.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/iterables.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:client/core/localization/localization_helper.dart';
 
 extension StringExtension on String {
   String capitalize() {
@@ -39,8 +41,8 @@ extension StringExtension on String {
   }
 }
 
-const _adminStatusMap = <MembershipStatus, String>{
-  MembershipStatus.mod: 'Moderator',
+Map<MembershipStatus, String> _getAdminStatusMap(BuildContext context) => {
+  MembershipStatus.mod: context.l10n.moderator,
 };
 
 final blueBackground = AppColor.darkBlue.withOpacity(0.1);
@@ -142,7 +144,7 @@ class _MembersTabState extends State<MembersTab> {
   Widget _buildSearchBarField(List<Membership> memberships) {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Search',
+        hintText: context.l10n.search,
         border: InputBorder.none,
       ),
       onChanged: (value) {
@@ -443,8 +445,8 @@ class _MembersTabState extends State<MembersTab> {
             children: [
               HeightConstrainedText(
                 requestList!.isEmpty
-                    ? 'No Pending Join Requests'
-                    : 'Manage Join Requests (${requestList.length})',
+                    ? context.l10n.noPendingJoinRequests
+                    : context.l10n.manageJoinRequests(requestList.length),
                 style: AppTextStyle.headline4,
               ),
               SizedBox(height: 8),
@@ -508,7 +510,7 @@ class _MembersTabState extends State<MembersTab> {
                     style: AppTextStyle.headline4,
                   ),
                   Tooltip(
-                    message: 'Download members data',
+                    message: context.l10n.downloadMembersData,
                     child: ActionButton(
                       height: 40,
                       minWidth: 60,
@@ -548,7 +550,7 @@ class _MembersTabState extends State<MembersTab> {
                             !isNullOrEmpty(_currentSearch)) {
                           return Padding(
                             padding: const EdgeInsets.all(8),
-                            child: Text('No matching members found.'),
+                            child: Text(context.l10n.noMatchingMembersFound),
                           );
                         }
 
@@ -652,37 +654,37 @@ class _MembersTabState extends State<MembersTab> {
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Owner',
+          title: context.l10n.roleOwner,
           icon: MembershipStatus.owner.icon,
           permissions: MembershipStatus.owner.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Admin',
+          title: context.l10n.roleAdmin,
           icon: MembershipStatus.admin.icon,
           permissions: MembershipStatus.admin.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Moderator',
+          title: context.l10n.roleModerator,
           icon: MembershipStatus.mod.icon,
           permissions: MembershipStatus.mod.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Facilitator',
+          title: context.l10n.roleFacilitator,
           icon: MembershipStatus.facilitator.icon,
           permissions: MembershipStatus.facilitator.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Member',
+          title: context.l10n.roleMember,
           icon: MembershipStatus.member.icon,
           permissions: MembershipStatus.member.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Attendee',
+          title: context.l10n.roleAttendee,
           icon: MembershipStatus.member.icon,
           permissions: MembershipStatus.attendee.permissions,
         ),
@@ -858,7 +860,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                             value.icon,
                             SizedBox(width: 4),
                             Text(
-                              _adminStatusMap[value] ??
+                              _getAdminStatusMap(context)[value] ??
                                   value
                                       .toString()
                                       .replaceFirst('MembershipStatus.', '')
@@ -909,7 +911,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 HeightConstrainedText(
-                                  _adminStatusMap[value] ??
+                                  _getAdminStatusMap(context)[value] ??
                                       value
                                           .toString()
                                           .replaceFirst('MembershipStatus.', '')

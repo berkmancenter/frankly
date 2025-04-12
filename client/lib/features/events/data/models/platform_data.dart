@@ -1,5 +1,6 @@
 import 'package:client/config/environment.dart';
 import 'package:data_models/events/event.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// list of available video platforms
 List<PlatformItem> allowedVideoPlatforms = [
@@ -22,6 +23,7 @@ extension PlatformKeysExtension on PlatformKey {
 
 extension VideoPlatformInfoExtension on PlatformKey {
   VideoPlatformInfo get info {
+    final l10n = appLocalizationService.getLocalization();
     switch (this) {
       case PlatformKey.community:
         return VideoPlatformInfo(
@@ -31,25 +33,25 @@ extension VideoPlatformInfoExtension on PlatformKey {
         );
       case PlatformKey.zoom:
         return VideoPlatformInfo(
-          title: 'Zoom',
+          title: l10n.zoom,
           description: 'Web conference',
           logoUrl: 'media/zoom.png',
         );
       case PlatformKey.maps:
         return VideoPlatformInfo(
-          title: 'Maps',
+          title: l10n.maps,
           description: 'In-person meeting',
           logoUrl: 'media/map.png',
         );
       case PlatformKey.microsoftTeam:
         return VideoPlatformInfo(
-          title: 'Microsoft Teams',
+          title: l10n.microsoftTeams,
           description: 'Web conference',
           logoUrl: 'media/ms-team.png',
         );
       case PlatformKey.googleMeet:
         return VideoPlatformInfo(
-          title: 'Google Meet',
+          title: l10n.googleMeet,
           description: 'Web conference',
           logoUrl: 'media/google-meet.png',
         );

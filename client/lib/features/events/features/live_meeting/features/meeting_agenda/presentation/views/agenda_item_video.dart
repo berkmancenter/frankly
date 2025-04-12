@@ -18,6 +18,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum AgendaItemVideoTabType {
   /// Locally picked video from a file.
@@ -136,7 +137,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             CustomTextField(
               initialValue: _model.agendaItemVideoData.title,
               labelText: 'Title',
-              hintText: 'Enter Video title',
+              hintText: context.l10n.enterVideoTitle,
               maxLines: 1,
               maxLength: agendaTitleCharactersLength,
               counterStyle: AppTextStyle.bodySmall.copyWith(
@@ -248,7 +249,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             },
           );
         } else {
-          return Text('Sorry, youtube video lookup failed.');
+          return Text(context.l10n.youtubeVideoLookupFailed);
         }
       case AgendaItemVideoType.vimeo:
         final vimeoVideoId = _presenter.getVimeoVideoId(videoUrl);
@@ -259,7 +260,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             child: VimeoVideoWidget(vimeoId: vimeoVideoId),
           );
         } else {
-          return Text('Sorry, vimeo video lookup failed.');
+          return Text(context.l10n.vimeoVideoLookupFailed);
         }
       case AgendaItemVideoType.url:
         return AspectRatio(

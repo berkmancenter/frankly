@@ -24,6 +24,7 @@ import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Shows subscription information  for the community and links to manage billing
 class AdminBillingTab extends StatefulWidget {
@@ -184,7 +185,7 @@ class _AdminBillingContainerContentState
             : formatter.format(priceInfo.priceInCents / 100.0);
 
         final confirm = await ConfirmDialogWhite(
-          title: 'Update to ${priceInfo.name}?',
+          title: context.l10n.updateToPlan.replaceAll('{name}', priceInfo.name),
           mainText:
               'Effective immediately you will be enrolled in the ${priceInfo.name} '
               '($priceString/mo.). You can update this at any time.',
@@ -204,7 +205,7 @@ class _AdminBillingContainerContentState
       } else {
         if (_selectedPlan.typeCode == _freeSubscriptionType) {
           final confirm = await ConfirmDialogWhite(
-            title: 'Cancel current plan?',
+            title: context.l10n.cancelCurrentPlan,
             mainText:
                 'Immediately cancel your current plan and enroll in the free plan?',
             confirmText: 'Yes, cancel plan',

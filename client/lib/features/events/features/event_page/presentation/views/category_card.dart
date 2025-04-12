@@ -7,6 +7,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:provider/src/provider.dart';
 import 'package:quiver/strings.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class CategoryCard extends StatefulWidget {
   final int position;
@@ -45,7 +46,7 @@ class _CategoryCardState extends State<CategoryCard> {
         children: [
           Expanded(
             child: CustomTextField(
-              labelText: 'Enter Category ${widget.position + 1}',
+              labelText: context.l10n.enterCategoryNum(widget.position + 1),
               maxLines: 1,
               maxLength: categoryCharactersMaxLength,
               initialValue: !isNullOrEmpty(_category) ? _category : null,

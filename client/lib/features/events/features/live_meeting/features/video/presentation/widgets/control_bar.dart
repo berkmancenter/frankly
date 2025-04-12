@@ -412,7 +412,7 @@ class _ChatInputState extends State<ChatInput> {
                 bottom: isMobile ? 4 : 0,
               ),
               child: Semantics(
-                label: 'Submit Chat Button',
+                label: context.l10n.submitChatButton,
                 button: true,
                 child: ActionButton(
                   minWidth: 20,

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
@@ -91,7 +92,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Semantics(
-            label: 'Start a community',
+            label: context.l10n.startCommunity,
             button: true,
             child: CustomInkWell(
               onTap: _createCommunityPressed,
@@ -112,7 +113,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
           if (!responsiveLayoutService.isMobile(context)) ...[
             SizedBox(width: 10),
             HeightConstrainedText(
-              'Start a community',
+              context.l10n.startCommunity,
               style: AppTextStyle.body.copyWith(color: AppColor.gray2),
             ),
           ],

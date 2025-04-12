@@ -22,6 +22,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
@@ -58,11 +59,11 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
   String get _stepText {
     switch (_onStep) {
       case 1:
-        return 'Welcome to ${Environment.appName}!';
+        return context.l10n.welcomeToApp(Environment.appName);
       case 2:
-        return 'Create your space';
+        return context.l10n.createYourSpace;
       case 3:
-        return 'Brand your space';
+        return context.l10n.brandYourSpace;
       default:
         return '';
     }
@@ -120,7 +121,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           !isEmailValid(contactEmail)) {
         showRegularToast(
           context,
-          'Please enter a valid email',
+          context.l10n.pleaseEnterValidEmail,
           toastType: ToastType.failed,
         );
         return false;
@@ -155,7 +156,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           );
         } else {
           Navigator.of(context).pop();
-          await showAlert(context, 'Something went wrong, please try again!');
+          await showAlert(context, context.l10n.somethingWentWrongTryAgain);
           return false;
         }
       }
@@ -233,7 +234,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           SizedBox(height: 10),
         ],
         SizedBox(height: 40),
-        if (_onStep != 4) HeightConstrainedText('$_onStep of 3'),
+        if (_onStep != 4) HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
         SizedBox(height: 10),
         HeightConstrainedText(_stepText, style: AppTextStyle.headline2),
         SizedBox(height: 10),
@@ -277,7 +278,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
                 }
               }
             : null,
-        text: _onStep == 1 ? 'Agree and continue' : 'Next',
+        text: _onStep == 1 ? context.l10n.agreeAndContinue : context.l10n.next,
         iconSide: ActionButtonIconSide.right,
         icon: Padding(
           padding: const EdgeInsets.only(left: 5.0),
@@ -301,11 +302,11 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
             children: [
               TextSpan(
                 text:
-                    'By signing in, registering, or using ${Environment.appName}, I agree to be bound by the ',
+                    context.l10n.bySigningInRegisteringOrUsing(Environment.appName),
                 style: AppTextStyle.body.copyWith(color: AppColor.gray2),
               ),
               TextSpan(
-                text: '${Environment.appName} Terms of Service',
+                text: context.l10n.appNameTermsOfService(Environment.appName),
                 style: AppTextStyle.body.copyWith(
                   color: AppColor.accentBlue,
                   decoration: TextDecoration.underline,
@@ -360,8 +361,8 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           removeImage: _removeImage,
         ),
         CustomTextField(
-          hintText: 'Contact email',
-          labelText: 'Contact email',
+          hintText: context.l10n.contactEmail,
+          labelText: context.l10n.contactEmail,
           onChanged: (email) => _updateContactEmail(email),
           isOptional: true,
         ),
@@ -403,7 +404,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Get custom colors ',
+                      text: context.l10n.getCustomColors,
                       style: AppTextStyle.headline2.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -411,7 +412,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
                       ),
                     ),
                     TextSpan(
-                      text: 'when you upgrade',
+                      text: context.l10n.whenYouUpgrade,
                       style: AppTextStyle.eyebrowSmall
                           .copyWith(color: AppColor.gray3),
                     ),
@@ -429,7 +430,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ActionButton(
-              text: 'Finish',
+              text: context.l10n.finish,
               color: AppColor.darkBlue,
               textColor: AppColor.brightGreen,
               borderRadius: BorderRadius.circular(10),
