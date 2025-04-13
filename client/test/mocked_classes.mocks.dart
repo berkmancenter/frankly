@@ -11994,6 +11994,13 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
       ) as List<_i10.DisplayFeature>);
 
   @override
+  bool get supportsShowingSystemContextMenu => (super.noSuchMethod(
+        Invocation.getter(#supportsShowingSystemContextMenu),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   double get textScaleFactor => (super.noSuchMethod(
         Invocation.getter(#textScaleFactor),
         returnValue: 0.0,
@@ -12041,6 +12048,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
     _i16.NavigationMode? navigationMode,
     _i42.DeviceGestureSettings? gestureSettings,
     List<_i10.DisplayFeature>? displayFeatures,
+    bool? supportsShowingSystemContextMenu,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -12066,6 +12074,7 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
             #navigationMode: navigationMode,
             #gestureSettings: gestureSettings,
             #displayFeatures: displayFeatures,
+            #supportsShowingSystemContextMenu: supportsShowingSystemContextMenu,
           },
         ),
         returnValue: _FakeMediaQueryData_82(
@@ -12093,6 +12102,8 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
               #navigationMode: navigationMode,
               #gestureSettings: gestureSettings,
               #displayFeatures: displayFeatures,
+              #supportsShowingSystemContextMenu:
+                  supportsShowingSystemContextMenu,
             },
           ),
         ),
@@ -12121,6 +12132,8 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
               #navigationMode: navigationMode,
               #gestureSettings: gestureSettings,
               #displayFeatures: displayFeatures,
+              #supportsShowingSystemContextMenu:
+                  supportsShowingSystemContextMenu,
             },
           ),
         ),
@@ -14016,6 +14029,13 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
       ) as bool);
 
   @override
+  bool get debugNeedsSemanticsUpdate => (super.noSuchMethod(
+        Invocation.getter(#debugNeedsSemanticsUpdate),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   void setupParentData(_i16.RenderObject? child) => super.noSuchMethod(
         Invocation.method(
           #setupParentData,
@@ -14772,24 +14792,23 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
       ) as bool);
 
   @override
-  _i16.Matrix4 getTransformTo(_i16.RenderObject? ancestor) =>
-      (super.noSuchMethod(
+  _i16.Matrix4 getTransformTo(_i16.RenderObject? target) => (super.noSuchMethod(
         Invocation.method(
           #getTransformTo,
-          [ancestor],
+          [target],
         ),
         returnValue: _FakeMatrix4_93(
           this,
           Invocation.method(
             #getTransformTo,
-            [ancestor],
+            [target],
           ),
         ),
         returnValueForMissingStub: _FakeMatrix4_93(
           this,
           Invocation.method(
             #getTransformTo,
-            [ancestor],
+            [target],
           ),
         ),
       ) as _i16.Matrix4);
@@ -14911,6 +14930,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
     String? prefixLineOne = r'',
     String? prefixOtherLines = r'',
     _i16.DiagnosticLevel? minLevel = _i16.DiagnosticLevel.debug,
+    int? wrapWidth = 65,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -14920,6 +14940,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
             #prefixLineOne: prefixLineOne,
             #prefixOtherLines: prefixOtherLines,
             #minLevel: minLevel,
+            #wrapWidth: wrapWidth,
           },
         ),
         returnValue: _i52.dummyValue<String>(
@@ -14931,6 +14952,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
               #prefixLineOne: prefixLineOne,
               #prefixOtherLines: prefixOtherLines,
               #minLevel: minLevel,
+              #wrapWidth: wrapWidth,
             },
           ),
         ),
@@ -14943,6 +14965,7 @@ class MockRenderBox extends _i1.Mock implements _i16.RenderBox {
               #prefixLineOne: prefixLineOne,
               #prefixOtherLines: prefixOtherLines,
               #minLevel: minLevel,
+              #wrapWidth: wrapWidth,
             },
           ),
         ),

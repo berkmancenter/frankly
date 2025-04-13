@@ -16,6 +16,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/transitions.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:client/core/localization/locale_provider.dart';
+// Generated localization classes
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry/sentry.dart';
@@ -113,7 +114,6 @@ class _AppState extends State<App> {
             child: MaterialApp.router(
               locale: localeProvider.locale,
               localizationsDelegates: const [
-                AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
