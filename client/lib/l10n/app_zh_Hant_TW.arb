@@ -316,6 +316,7 @@
   "yes": "是",
   "yesDelete": "是的，刪除",
   "you": "你",
+  "floatingChat": "浮動聊天",
   "youNeedToBeLoggedInToDoThis": "您需要登錄才能執行此操作",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被從此活動中移除，無法重新加入。",
   "yourName": "您的名字",
@@ -432,6 +433,7 @@
       "name": {}
     }
   },
+  "@enterWordCloudPrompt": {},
   "@videoElement": {
     "placeholders": {
       "label": {}

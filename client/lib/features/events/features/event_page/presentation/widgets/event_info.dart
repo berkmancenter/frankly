@@ -19,6 +19,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
 import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';

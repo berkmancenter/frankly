@@ -316,6 +316,7 @@
   "yes": "Yes",
   "yesDelete": "Yes, Delete",
   "you": "You",
+  "floatingChat": "Floating Chat",
   "youNeedToBeLoggedInToDoThis": "You need to be logged in to do this.",
   "youWereRemovedFromThisEventAndCannotRejoin": "You were removed from this event and cannot rejoin.",
   "yourName": "Your Name",
@@ -432,6 +433,7 @@
       "name": {}
     }
   },
+  "@enterWordCloudPrompt": {},
   "@videoElement": {
     "placeholders": {
       "label": {}
@@ -446,5 +448,6 @@
     "placeholders": {
       "name": {}
     }
-  }
+  },
+  "prereqRequired": "Prerequisite required"
 }

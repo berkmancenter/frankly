@@ -315,6 +315,7 @@
   "yes": "Sí",
   "yesDelete": "Sí, eliminar",
   "you": "Tú",
+  "floatingChat": "Chat Flotante",
   "youNeedToBeLoggedInToDoThis": "Necesita iniciar sesión para hacer esto",
   "youWereRemovedFromThisEventAndCannotRejoin": "<MISSING: youWereRemovedFromThisEventAndCannotRejoin>",
   "yourName": "Tu nombre",
@@ -431,6 +432,7 @@
       "name": {}
     }
   },
+  "@enterWordCloudPrompt": {},
   "@videoElement": {
     "placeholders": {
       "label": {}

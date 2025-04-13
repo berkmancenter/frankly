@@ -19,6 +19,7 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 

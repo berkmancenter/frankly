@@ -11,6 +11,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AppShareData {
   /// Indicates page path.

@@ -19,6 +19,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage._();

@@ -19,6 +19,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:provider/provider.dart';
