@@ -278,7 +278,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
             await guardSignedIn(() async {
               final comment = await Dialogs.showComposeMessageDialog(
                 context,
-                title: 'Add comment',
+                title: context.l10n.addComment,
                 isMobile: isMobile,
                 labelText: 'Comment',
                 validator: (text) => text == null || text.isEmpty

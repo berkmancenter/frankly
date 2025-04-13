@@ -118,7 +118,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             borderRadius: 40,
             borderColor: AppColor.gray3,
             fillColor: AppColor.white,
-            hintText: 'Suggest',
+            hintText: context.l10n.suggest,
           ),
         ),
         SizedBox(width: 10),
@@ -251,7 +251,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                         ),
                         onTap: () async {
                           final isSuccess = await ConfirmDialog(
-                            title: 'Remove Suggestion',
+                            title: context.l10n.removeSuggestion,
                             confirmText: 'Remove',
                             cancelText: 'Cancel',
                             onConfirm: (context) =>

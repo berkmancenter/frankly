@@ -138,7 +138,7 @@ class _ManipulateDiscussionThreadPageState
                           autofocus: true,
                           focusNode: _focusNode,
                           controller: _textEditingController,
-                          hintText: 'Type something',
+                          hintText: context.l10n.typeSomething,
                           onChanged: (input) => _presenter.updateContent(input),
                           maxLines: 10,
                         ),

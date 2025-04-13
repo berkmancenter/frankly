@@ -20,6 +20,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventPageMeetingAgenda extends StatefulWidget {
   const EventPageMeetingAgenda({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
     } else {
       return AddMoreButton(
         isWhiteBackground: true,
-        label: 'Define Breakouts (Optional)',
+        label: context.l10n.defineBreakoutsOptional,
         onPressed: () => alertOnError(context, () async {
           final updatedEvent = event.copyWith(
             breakoutRoomDefinition: eventProvider.defaultBreakoutRoomDefinition,
@@ -213,7 +214,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
 
   Future<void> _showClearAgendaItemsDialog() async {
     final delete = await ConfirmDialog(
-      title: 'Clear agenda?',
+      title: context.l10n.clearAgenda,
       mainText:
           'Are you sure you want to remove all agenda items from the breakout rooms? You won\'t be able to undo this.',
       cancelText: 'Cancel',

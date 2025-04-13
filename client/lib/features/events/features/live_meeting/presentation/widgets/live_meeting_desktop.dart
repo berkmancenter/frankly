@@ -35,6 +35,7 @@ import 'package:data_models/chat/chat.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveMeetingDesktopLayout extends StatefulWidget {
   const LiveMeetingDesktopLayout({Key? key}) : super(key: key);
@@ -99,7 +100,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
         child = _buildMeetingLoading();
         break;
     }
-    child = GlobalKeyedSubtree(label: 'primary-content', child: child);
+    child = GlobalKeyedSubtree(label: context.l10n.primaryContent, child: child);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -114,7 +115,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
 
   Widget _buildEventTabsContent() {
     return GlobalKeyedSubtree(
-      label: 'event-tabs-content',
+      label: context.l10n.eventTabsContent,
       child: Container(
         width: 400,
         color: AppColor.darkBlue,
@@ -633,7 +634,7 @@ class BreakoutStatusInformation extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(
-            child: HeightConstrainedText('Users are in breakout rooms.'),
+            child: HeightConstrainedText(context.l10n.usersAreInBreakoutRooms),
           ),
           SizedBox(width: 10),
           ActionButton(

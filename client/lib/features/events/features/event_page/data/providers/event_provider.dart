@@ -22,6 +22,7 @@ import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_html/html.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventProvider with ChangeNotifier {
   final CommunityProvider communityProvider;
@@ -349,7 +350,7 @@ class EventProvider with ChangeNotifier {
     final participantIsUser = userService.currentUserId == participantId;
     final identifier = participantIsUser ? 'your' : 'this user\'s';
     final cancelParticipation = await ConfirmDialog(
-      title: 'Cancel',
+      title: appLocalizationService.getLocalization().cancel,
       mainText:
           'Are you sure you want to cancel $identifier participation in this event?',
       confirmText: 'Yes, cancel',

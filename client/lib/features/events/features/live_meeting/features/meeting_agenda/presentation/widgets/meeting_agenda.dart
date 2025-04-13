@@ -148,7 +148,7 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
             SizedBox(height: 20),
             AddMoreButton(
               isWhiteBackground: true,
-              label: 'Add agenda item',
+              label: context.l10n.addAgendaItem,
               onPressed: () => agendaProvider.addNewUnsavedItem(),
             ),
           ],

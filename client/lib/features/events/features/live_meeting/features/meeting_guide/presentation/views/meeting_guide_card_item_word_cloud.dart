@@ -23,6 +23,7 @@ import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/iterables.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'meeting_guide_card_item_word_cloud_contract.dart';
 import '../../data/models/meeting_guide_card_item_word_cloud_model.dart';
@@ -152,7 +153,7 @@ class _MeetingGuideCardItemWordCloudState
           boxShape: BoxShape.circle,
           onTap: () => changeViewType(WordCloudViewType.cloud),
           child: Tooltip(
-            message: 'Word Cloud',
+            message: context.l10n.wordCloud,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -176,7 +177,7 @@ class _MeetingGuideCardItemWordCloudState
           boxShape: BoxShape.circle,
           onTap: () => changeViewType(WordCloudViewType.list),
           child: Tooltip(
-            message: 'Word List',
+            message: context.l10n.wordList,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -200,7 +201,7 @@ class _MeetingGuideCardItemWordCloudState
           boxShape: BoxShape.circle,
           onTap: () => changeViewType(WordCloudViewType.mine),
           child: Tooltip(
-            message: 'My Responses',
+            message: context.l10n.myResponses,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -387,7 +388,7 @@ class _MeetingGuideCardItemWordCloudState
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     child: Tooltip(
-                      message: 'Press to promote',
+                      message: context.l10n.pressToPromote,
                       child: HeightConstrainedText(
                         ' ${e.key} ',
                         style: TextStyle(color: color, fontSize: size),

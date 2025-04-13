@@ -2,6 +2,7 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -112,7 +113,7 @@ class _SideBarState extends State<SideBar> {
         padding: const EdgeInsets.only(top: 26, right: 26),
         child: Semantics(
           button: true,
-          label: 'Close',
+          label: context.l10n.close,
           child: CustomInkWell(
             onTap: () => Navigator.of(context).pop(),
             child: Icon(Icons.close, size: 20),
@@ -365,7 +366,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
             ),
             SizedBox(width: 11),
             HeightConstrainedText(
-              'Start a community',
+              context.l10n.startCommunity,
               style: AppTextStyle.body.copyWith(color: AppColor.gray2),
             ),
           ],

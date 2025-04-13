@@ -28,20 +28,20 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         HeightConstrainedText(
-          'Room Number:',
+          context.l10n.roomNumber,
           textAlign: TextAlign.center,
           style: body.copyWith(fontSize: 14),
         ),
         SizedBox(
           width: 60,
           child: CustomTextField(
-            hintText: 'Ex: 2',
+            hintText: context.l10n.enterRoomNumber,
             controller: _textController,
           ),
         ),
         ActionButton(
           onPressed: () => Navigator.of(context).pop(_textController.text),
-          text: 'View',
+          text: context.l10n.view,
           textColor: Theme.of(context).primaryColor,
         ),
       ],

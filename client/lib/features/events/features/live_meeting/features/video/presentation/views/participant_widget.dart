@@ -24,6 +24,7 @@ import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
 
@@ -140,7 +141,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     }
 
     final child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-video-element',
+      label: '${widget.globalKey.distinctLabel}-${context.l10n.videoElement}',
       child: videoWidget,
     );
 
@@ -391,7 +392,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-aspect-ratio-clipped',
+      label: '${widget.globalKey.distinctLabel}-${context.l10n.aspectRatioClipped}',
       child: child,
     );
 

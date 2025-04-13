@@ -16,6 +16,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 
@@ -147,7 +148,7 @@ class ParticipantsDialog extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
-        '${eventProvider.participantCount} Participant${eventProvider.participantCount > 1 ? 's' : ''}',
+        context.l10n.participantCount(eventProvider.participantCount),
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
@@ -171,9 +172,9 @@ class ParticipantsDialog extends StatelessWidget {
         event: eventProvider.event,
       ),
       pageSize: 40,
-      emptyBuilder: (_) => HeightConstrainedText('No one is here yet.'),
-      errorBuilder: (_, __, ___) => HeightConstrainedText(
-        'Something went wrong loading participants. Please refresh.',
+      emptyBuilder: (context) => HeightConstrainedText(context.l10n.noOneIsHereYet),
+      errorBuilder: (context, __, ___) => HeightConstrainedText(
+        context.l10n.participantsLoadError,
       ),
     );
   }

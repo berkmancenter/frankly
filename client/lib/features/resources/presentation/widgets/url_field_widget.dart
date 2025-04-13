@@ -48,7 +48,7 @@ class UrlFieldWidget extends StatelessWidget {
                     url?.isNotEmpty == true && isNullOrEmpty(error)
                         ? () => onSubmit()
                         : null,
-                hintText: 'Paste or enter a URL',
+                hintText: context.l10n.pasteOrEnterUrl,
                 initialValue: url,
                 controller: controller,
                 borderColor: (isNullOrEmpty(error)

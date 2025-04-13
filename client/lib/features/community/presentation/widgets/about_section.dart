@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Section of the CommunityHomePage with a description of the community. It constrains the description
 /// to a certain size and, if the text overflows, allows the user to expand the widget to see more
@@ -40,11 +41,11 @@ class _AboutWidgetState extends State<CommunityHomeAboutSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        HeightConstrainedText('About Us', style: titleStyle),
+        HeightConstrainedText(context.l10n.aboutUs, style: titleStyle),
         SizedBox(height: 10),
         SelectableLinkify(
           text: isNullOrEmpty(widget.community.description)
-              ? 'This section hasn\'t been filled in yet.'
+              ? context.l10n.sectionNotFilledYet
               : (widget.community.description!.length > maxDescriptionLength &&
                       !_isExpanded)
                   ? '${widget.community.description!.substring(0, maxDescriptionLength)}...'

@@ -10,6 +10,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AudioVideoSettingsDialog extends HookWidget {
   final ConferenceRoom conferenceRoom;
@@ -48,7 +49,7 @@ class AudioVideoSettingsDialog extends HookWidget {
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
-        HeightConstrainedText('No devices found.')
+        HeightConstrainedText(context.l10n.noDevicesFound)
       else
         Container(
           width: 287,
@@ -109,7 +110,7 @@ class AudioVideoSettingsDialog extends HookWidget {
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
-        HeightConstrainedText('No devices found.')
+        HeightConstrainedText(context.l10n.noDevicesFound)
       else
         Container(
           width: 287,
@@ -234,7 +235,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                               currentDeviceId: sharedPreferencesService
                                   .getDefaultMicrophoneId(),
                               allDevices: audioDevicesList,
-                              title: 'Audio Input Device:',
+                              title: context.l10n.audioInputDevice,
                             ),
                             ..._buildVideoDevicesDropdown(
                               onChanged: (device) {
@@ -255,7 +256,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                               currentDeviceId:
                                   sharedPreferencesService.getDefaultCameraId(),
                               allDevices: videoDevicesList,
-                              title: 'Video Input Device:',
+                              title: context.l10n.videoInputDevice,
                             ),
                             if (!responsiveLayoutService.isMobile(context)) ...[
                               SizedBox(height: 10),

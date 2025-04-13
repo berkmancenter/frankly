@@ -32,6 +32,7 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 abstract class MeetingProviderParticipant {
   String get userId;
@@ -748,7 +749,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
       await showCustomDialog(
         builder: (context) => AppShareDialog(
-          title: 'SPREAD THE WORD',
+          title: context.l10n.spreadTheWord,
           content: 'Who else would benefit from these events?',
           iconBackgroundColor: AppColor.white,
           appShareData: AppShareData(
@@ -877,7 +878,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   Future<void> endBreakoutRooms() async {
     final confirmed = await ConfirmDialog(
-      title: 'End Breakout Rooms',
+      title: context.l10n.endBreakoutRooms,
       subText:
           'Are you sure you want to end breakout rooms for all participants? \n\n'
           'This will send all participants back to the main room immediately.',
@@ -924,7 +925,7 @@ class LiveMeetingProvider with ChangeNotifier {
   Future<void> confirmProposeKick(String userId) async {
     final user = await firestoreUserService.getPublicUser(userId: userId);
     final reason = await ConfirmTextInputDialogue(
-      title: 'Propose to remove user?',
+      title: context.l10n.proposeToRemoveUser,
       subText:
           'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
           ' only take this action if the participant is behaving inappropriately.',

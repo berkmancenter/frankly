@@ -32,7 +32,7 @@ class LanguageSelector extends StatelessWidget {
             scriptCode: 'Hant',
             countryCode: 'TW',
           ),
-          child: const Text('華文（臺灣）'),
+          child: const Text('臺灣華文'),
         ),
         PopupMenuItem<Locale>(
           value: const Locale('es'),

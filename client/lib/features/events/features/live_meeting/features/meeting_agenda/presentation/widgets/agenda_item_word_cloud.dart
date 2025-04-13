@@ -30,7 +30,7 @@ class AgendaItemWordCloud extends StatelessWidget {
             CustomTextField(
               initialValue: wordCloudData.prompt,
               labelText: 'Word Cloud Prompt',
-              hintText: 'Enter Word Cloud prompt',
+              hintText: context.l10n.enterWordCloudPrompt,
               maxLines: null,
               onChanged: (value) {
                 wordCloudData.prompt = value;

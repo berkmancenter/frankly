@@ -111,7 +111,7 @@ class _EventsPageState extends State<EventsPage> {
     return TextField(
       decoration: InputDecoration(
         fillColor: AppColor.white,
-        hintText: 'Search events',
+        hintText: context.l10n.searchEvents,
         border: InputBorder.none,
       ),
       onChanged: context.read<EventsPageProvider>().onSearchChanged,

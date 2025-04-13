@@ -17,21 +17,18 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
-List<AgendaItem> defaultAgendaItems(String communityId) => <AgendaItem>[
+List<AgendaItem> defaultAgendaItems(String communityId) {
+  final l10n = appLocalizationService.getLocalization();
+  return <AgendaItem>[
       AgendaItem(
         id: 'default-intro-0',
-        title: 'Introductions',
-        content: '''
-_Introduce yourselves!  Each take one minute to answer one of the following questions._
-
-* What's something you did recently that was a lot of fun?
-* Who is your favorite cartoon character and why?
-* What’s one thing you wish to accomplish before you die?
-* What movie did you NOT like?
-''',
+        title: l10n.introductions,
+        content: l10n.introductionContent,
       ),
     ];
+}
 
 class AgendaProviderParams {
   final String communityId;

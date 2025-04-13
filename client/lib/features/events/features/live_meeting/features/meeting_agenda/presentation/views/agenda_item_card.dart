@@ -21,6 +21,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'agenda_item_contract.dart';
 import '../../data/models/agenda_item_model.dart';
@@ -358,7 +359,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
 
   Future<void> _showDeleteDialog() async {
     final delete = await ConfirmDialog(
-      title: 'Delete Agenda Item',
+      title: context.l10n.deleteAgendaItem,
       mainText: 'Are you sure you want to delete?',
     ).show(context: context);
 
@@ -377,7 +378,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         children: [
           if (!isCardUnsaved)
             FloatingActionButton(
-              tooltip: 'Delete Agenda Item',
+              tooltip: context.l10n.deleteAgendaItem,
               elevation: 0,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               backgroundColor: AppColor.gray6,
@@ -389,7 +390,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
             ),
           Spacer(),
           FloatingActionButton(
-            tooltip: 'Cancel',
+            tooltip: context.l10n.cancel,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: AppColor.gray6,
             elevation: 0,
@@ -413,7 +414,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           ),
           SizedBox(width: 10),
           FloatingActionButton(
-            tooltip: 'Save Agenda Item',
+            tooltip: context.l10n.saveAgendaItem,
             elevation: 0,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: hasBeenEdited || isCardUnsaved
@@ -442,7 +443,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         mainAxisSize: MainAxisSize.max,
         children: [
           FloatingActionButton(
-            tooltip: 'Duplicate Item',
+            tooltip: context.l10n.duplicateItem,
             backgroundColor: AppColor.gray6,
             elevation: 0,
             child: Icon(
@@ -453,7 +454,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           ),
           SizedBox(width: 10),
           FloatingActionButton(
-            tooltip: 'Edit Item',
+            tooltip: context.l10n.editItem,
             elevation: 0,
             backgroundColor: AppColor.gray6,
             child: Icon(

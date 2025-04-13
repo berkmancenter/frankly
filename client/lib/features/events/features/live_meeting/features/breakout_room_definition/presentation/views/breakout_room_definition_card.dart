@@ -27,6 +27,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class BreakoutRoomDefinitionCard extends StatefulWidget {
   const BreakoutRoomDefinitionCard({Key? key}) : super(key: key);
@@ -86,7 +87,7 @@ class _BreakoutRoomDefinitionCardState
                   runSpacing: 10,
                   children: [
                     RoundedButton(
-                      label: 'By Size',
+                      label: context.l10n.bySize,
                       onPressed: _assignmentMethod !=
                               BreakoutAssignmentMethod.targetPerRoom
                           ? () => _presenter.updateAssignmentMethod(
@@ -97,7 +98,7 @@ class _BreakoutRoomDefinitionCardState
                     ),
                     if (hasSmartMatchingCapability)
                       RoundedButton(
-                        label: 'Smart Match',
+                        label: context.l10n.smartMatch,
                         onPressed: _assignmentMethod !=
                                 BreakoutAssignmentMethod.smartMatch
                             ? () => _presenter.updateAssignmentMethod(
@@ -108,7 +109,7 @@ class _BreakoutRoomDefinitionCardState
                       ),
                     if (_enableBreakoutCategory)
                       RoundedButton(
-                        label: 'By Category',
+                        label: context.l10n.byCategory,
                         onPressed: _assignmentMethod !=
                                 BreakoutAssignmentMethod.category
                             ? () => _presenter.updateAssignmentMethod(
@@ -156,7 +157,7 @@ class _BreakoutRoomDefinitionCardState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Target size',
+          context.l10n.targetSize,
           style: AppTextStyle.subhead.copyWith(color: AppColor.white),
         ),
         SizedBox(height: 8),
@@ -171,7 +172,7 @@ class _BreakoutRoomDefinitionCardState
               Container(
                 alignment: Alignment.centerLeft,
                 child: HeightConstrainedText(
-                  'Target Size?',
+                  context.l10n.targetSizeQuestion,
                   style: AppTextStyle.body.copyWith(color: AppColor.gray2),
                 ),
               ),
@@ -211,7 +212,7 @@ class _BreakoutRoomDefinitionCardState
       children: [
         SizedBox(height: 30),
         HeightConstrainedText(
-          'Matching questions',
+          context.l10n.matchingQuestions,
           style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
         ),
         SizedBox(height: 20),
@@ -239,7 +240,7 @@ class _BreakoutRoomDefinitionCardState
             isWhiteBackground: true,
             onPressed: () =>
                 context.read<BreakoutRoomPresenter>().addQuestion(),
-            label: 'Add a question',
+            label: context.l10n.addQuestion,
           ),
       ],
     );
@@ -277,7 +278,7 @@ class _BreakoutRoomDefinitionCardState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Category',
+          context.l10n.category,
           style: AppTextStyle.subhead.copyWith(color: AppColor.white),
         ),
         SizedBox(height: 20),
@@ -305,7 +306,7 @@ class _BreakoutRoomDefinitionCardState
                   child: AddMoreButton(
                     onPressed: () =>
                         context.read<BreakoutRoomPresenter>().addCategory(),
-                    label: 'Add a category',
+                    label: context.l10n.addCategory,
                   ),
                 ),
               SizedBox(height: 30),
@@ -361,7 +362,7 @@ class _QuestionCardState extends State<QuestionCard> {
     final surveyQuestion = _presenter.getQuestion(widget.questionId);
     final questionPosition = _presenter.getQuestionPosition(widget.questionId);
     final questionText = surveyQuestion.title.isEmpty
-        ? 'Question ${questionPosition + 1}'
+        ? context.l10n.questionWithNumber(questionPosition + 1)
         : surveyQuestion.title;
 
     return UIMigration(
@@ -419,7 +420,7 @@ class _QuestionCardState extends State<QuestionCard> {
                   CustomTextField(
                     readOnly:
                         _breakoutCardViewType == BreakoutCardViewType.overview,
-                    labelText: 'Enter Question ${questionPosition + 1}',
+                    labelText: context.l10n.enterQuestionWithNumber(questionPosition + 1),
                     maxLines: 1,
                     maxLength: questionMaxLength,
                     initialValue: !isNullOrEmpty(surveyQuestion.title)
@@ -461,7 +462,7 @@ class _QuestionCardState extends State<QuestionCard> {
                                 ? () async {
                                     final delete = await ConfirmDialog(
                                       mainText:
-                                          'Are you sure you want to delete?',
+                                          context.l10n.confirmDelete,
                                     ).show(context: context);
                                     if (delete) {
                                       await alertOnError(
@@ -507,7 +508,7 @@ class _QuestionCardState extends State<QuestionCard> {
         _isExpanded.value = true;
         _toggleCardViewType();
       },
-      text: 'Edit',
+      text: context.l10n.edit,
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
         child: Icon(Icons.edit, color: AppColor.darkBlue, size: 20),
