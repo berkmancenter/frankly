@@ -7,6 +7,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'agenda_item_user_suggestions_contract.dart';
 import '../../data/models/agenda_item_user_suggestions_model.dart';

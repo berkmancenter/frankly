@@ -22,6 +22,7 @@ class AudioVideoSettingsDialog extends HookWidget {
   }
 
   List<Widget> _buildVideoDevicesDropdown({
+    required BuildContext context,
     required List<VideoDeviceInfo> allDevices,
     required Function(VideoDeviceInfo) onChanged,
     String? currentDeviceId,
@@ -83,6 +84,7 @@ class AudioVideoSettingsDialog extends HookWidget {
   }
 
   List<Widget> _buildAudioDevicesDropdown({
+    required BuildContext context,
     required List<AudioDeviceInfo> allDevices,
     required Function(AudioDeviceInfo) onChanged,
     String? currentDeviceId,
@@ -217,6 +219,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                             ),
                             SizedBox(height: 12),
                             ..._buildAudioDevicesDropdown(
+                              context: context,
                               onChanged: (device) {
                                 final id = device.deviceId;
                                 if (id != null &&
@@ -238,6 +241,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                               title: context.l10n.audioInputDevice,
                             ),
                             ..._buildVideoDevicesDropdown(
+                              context: context,
                               onChanged: (device) {
                                 final id = device.deviceId;
                                 if (id != null &&

@@ -91,7 +91,7 @@ class HomeLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('home'),
-          title: context.l10n.appNameHome.replaceAll('{appName}', Environment.appName),
+          title: context.l10n.appNameHome(Environment.appName),
           child: HomePage(),
         ),
       ];
@@ -105,7 +105,7 @@ class NewSpaceLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('newspace'),
-          title: context.l10n.appNameWelcome.replaceAll('{appName}', Environment.appName),
+          title: context.l10n.appNameWelcome(Environment.appName),
           child: NewSpacePage(),
         ),
       ];
@@ -143,7 +143,7 @@ class UserSettingsLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('settings-${state.uri}'),
-          title: context.l10n.appNameUserSettings.replaceAll('{appName}', Environment.appName),
+          title: context.l10n.appNameUserSettings(Environment.appName),
           child: UserSettingsPage(
             communityId: state.queryParameters['communityId'],
             initialSection:
@@ -163,7 +163,7 @@ class EmailUnsubscribeLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('emailunsubscribe'),
-          title: context.l10n.appNameUnsubscribe.replaceAll('{appName}', Environment.appName),
+          title: context.l10n.appNameUnsubscribe(Environment.appName),
           child:
               EmailUnsubscribePage(data: state.queryParameters['data'] ?? ''),
         ),

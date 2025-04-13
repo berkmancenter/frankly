@@ -9,6 +9,7 @@ import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/services.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:data_models/chat/emotion.dart';
 
@@ -32,7 +33,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
     DiscussionThreadComment discussionThreadComment,
   ) async {
     await ConfirmDialog(
-      title: context.l10n.deleteComment,
+      title: appLocalizationService.getLocalization().deleteComment,
       mainText: 'Are you sure you want to delete this comment?',
       onConfirm: (context) {
         Navigator.pop(context);

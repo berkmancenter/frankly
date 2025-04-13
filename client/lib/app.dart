@@ -114,6 +114,7 @@ class _AppState extends State<App> {
             child: MaterialApp.router(
               locale: localeProvider.locale,
               localizationsDelegates: const [
+                AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
@@ -146,10 +147,20 @@ class _AppState extends State<App> {
                 ),
                 pageTransitionsTheme: NoTransitionsOnWeb(),
               ),
-              builder: (_, child) => UIMigration(
-                whiteBackground: true,
-                child: child!,
-              ),
+              builder: (context, child) {
+                // Initialize the app localization service with the current localizations
+                // This ensures we can access localizations without BuildContext
+                if (context != null) {
+                  final localizations = AppLocalizations.of(context);
+                  if (localizations != null) {
+                    appLocalizationService.setLocalization(localizations);
+                  }
+                }
+                return UIMigration(
+                  whiteBackground: true,
+                  child: child!,
+                );
+              },
             ),
           );
         }

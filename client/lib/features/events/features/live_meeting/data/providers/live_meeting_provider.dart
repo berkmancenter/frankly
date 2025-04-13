@@ -877,8 +877,9 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> endBreakoutRooms() async {
+    final l10n = appLocalizationService.getLocalization();
     final confirmed = await ConfirmDialog(
-      title: context.l10n.endBreakoutRooms,
+      title: l10n.endBreakoutRooms,
       subText:
           'Are you sure you want to end breakout rooms for all participants? \n\n'
           'This will send all participants back to the main room immediately.',
@@ -924,8 +925,9 @@ class LiveMeetingProvider with ChangeNotifier {
 
   Future<void> confirmProposeKick(String userId) async {
     final user = await firestoreUserService.getPublicUser(userId: userId);
+    final l10n = appLocalizationService.getLocalization();
     final reason = await ConfirmTextInputDialogue(
-      title: context.l10n.proposeToRemoveUser,
+      title: l10n.proposeToRemoveUser,
       subText:
           'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
           ' only take this action if the participant is behaving inappropriately.',

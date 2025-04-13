@@ -185,7 +185,7 @@ class _AdminBillingContainerContentState
             : formatter.format(priceInfo.priceInCents / 100.0);
 
         final confirm = await ConfirmDialogWhite(
-          title: context.l10n.updateToPlan.replaceAll('{name}', priceInfo.name),
+          title: context.l10n.updateToPlan(priceInfo.name),
           mainText:
               'Effective immediately you will be enrolled in the ${priceInfo.name} '
               '($priceString/mo.). You can update this at any time.',

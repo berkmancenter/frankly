@@ -27,9 +27,9 @@ class ConfirmDialog extends StatefulWidget {
   final String title;
   final String mainText;
   final String subText;
-  final String confirmText;
+  final String? confirmText;
   final Function(BuildContext context)? onConfirm;
-  final String cancelText;
+  final String? cancelText;
   final Function(BuildContext context)? onCancel;
   final TextAlign textAlign;
   final bool isWhiteBackground;
@@ -38,9 +38,9 @@ class ConfirmDialog extends StatefulWidget {
     this.title = '',
     this.mainText = '',
     this.subText = '',
-    String? confirmText,
+    this.confirmText,
     this.onConfirm,
-    String? cancelText,
+    this.cancelText,
     this.onCancel,
     this.textAlign = TextAlign.center,
     this.isWhiteBackground = true,

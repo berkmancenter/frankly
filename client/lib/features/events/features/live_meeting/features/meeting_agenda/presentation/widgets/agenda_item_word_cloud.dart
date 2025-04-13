@@ -6,6 +6,7 @@ import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AgendaItemWordCloud extends StatelessWidget {
   final bool isEditMode;

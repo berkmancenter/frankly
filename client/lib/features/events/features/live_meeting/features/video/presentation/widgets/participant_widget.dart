@@ -141,7 +141,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     }
 
     final child = GlobalKeyedSubtree(
-      label: context.l10n.videoElement,
+      label: context.l10n.videoElement.toString(),
       child: videoWidget,
     );
 
@@ -392,7 +392,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
-      label: context.l10n.aspectRatioClipped,
+      label: context.l10n.aspectRatioClipped.toString(),
       child: child,
     );
 

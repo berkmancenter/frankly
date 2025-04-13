@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class JumpToRoomDialog extends StatefulWidget {
   const JumpToRoomDialog();

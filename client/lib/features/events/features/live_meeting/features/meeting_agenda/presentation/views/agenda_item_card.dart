@@ -359,7 +359,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
 
   Future<void> _showDeleteDialog() async {
     final delete = await ConfirmDialog(
-      title: context.l10n.deleteAgendaItem,
+      title: context.l10n.deleteAgendaItemGeneral,
       mainText: 'Are you sure you want to delete?',
     ).show(context: context);
 
@@ -378,7 +378,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         children: [
           if (!isCardUnsaved)
             FloatingActionButton(
-              tooltip: context.l10n.deleteAgendaItem,
+              tooltip: context.l10n.deleteAgendaItemGeneral,
               elevation: 0,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               backgroundColor: AppColor.gray6,

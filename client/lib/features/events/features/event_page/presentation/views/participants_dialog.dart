@@ -145,10 +145,11 @@ class ParticipantsDialog extends StatelessWidget {
   }
 
   Widget _buildDialogTitle() {
+    final l10n = appLocalizationService.getLocalization();
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
-        context.l10n.participantCount(eventProvider.participantCount),
+        l10n.participantCount(eventProvider.participantCount),
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,

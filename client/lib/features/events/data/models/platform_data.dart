@@ -1,6 +1,7 @@
 import 'package:client/config/environment.dart';
 import 'package:data_models/events/event.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/services.dart';
 
 /// list of available video platforms
 List<PlatformItem> allowedVideoPlatforms = [

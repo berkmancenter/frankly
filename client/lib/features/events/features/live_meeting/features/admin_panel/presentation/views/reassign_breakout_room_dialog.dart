@@ -14,7 +14,6 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/features/events/data/models/breakout_room.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/user/public_user_info.dart';
@@ -128,12 +127,19 @@ class _ReassignBreakoutRoomDialogState
                       '',
               descending: true,
               limit: hasWaitingRoom ? 4 : 5,
-            ),
+            ) as BehaviorSubjectWrapper<List<BreakoutRoom>>,
             height: 100,
-            builder: (context, breakoutRooms) {
+            builder: (context, allRooms) {
+              final fakeWaitingRoomObject = BreakoutRoom(
+                roomId: breakoutsWaitingRoomId,
+                roomName: breakoutsWaitingRoomId,
+                orderingPriority: 0,
+                creatorId: '',
+              );
+
               final rooms = [
                 if (hasWaitingRoom) fakeWaitingRoomObject,
-                ...(breakoutRooms ?? [])
+                ...(allRooms ?? [])
                     .reversed
                     .where((r) => r.roomId != breakoutsWaitingRoomId)
                     .toList(),
@@ -148,7 +154,7 @@ class _ReassignBreakoutRoomDialogState
                     itemCount: rooms.length + 1,
                     itemBuilder: (context, index) {
                       if (index < rooms.length) {
-                        final room = rooms[index];
+                        final room = rooms[index] as BreakoutRoom;
                         final roomNumResult =
                             room.roomId == breakoutsWaitingRoomId
                                 ? breakoutsWaitingRoomId
