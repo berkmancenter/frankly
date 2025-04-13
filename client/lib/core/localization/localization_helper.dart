@@ -14,11 +14,11 @@ class LocalizationHelper {
   static AppLocalizations of(BuildContext context) {
     return AppLocalizations.of(context)!;
   }
-  
+
   /// Example of how to use localized strings in a StatelessWidget
   static Widget exampleWidget(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       children: [
         Text(l10n.appTitle),

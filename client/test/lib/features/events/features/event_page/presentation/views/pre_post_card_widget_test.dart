@@ -3,30 +3,92 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
+import 'package:client/features/events/features/event_page/presentation/pre_post_card_widget_presenter.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:data_models/events/event.dart';
+import 'package:data_models/events/event.dart' hide Event;
+import 'package:data_models/events/event.dart' as event_model;
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
+import 'package:data_models/cloud_functions/requests.dart';
+import 'package:data_models/community/user_admin_details.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/app_localization_service.dart';
+
+// Import our custom mock localizations
+import '../../../../../../../mock_localizations.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';
 
+// Create mocks of the various services
+class MockCloudFunctionsCommunityService extends Mock
+    implements CloudFunctionsCommunityService {
+  @override
+  Future<GetUserAdminDetailsResponse> getUserAdminDetails(
+      GetUserAdminDetailsRequest request) async {
+    return GetUserAdminDetailsResponse(
+      userAdminDetails: [
+        UserAdminDetails(
+          userId: 'userId',
+          email: 'test@example.com',
+          firstName: 'Test',
+          lastName: 'User',
+          displayName: 'Test User',
+        ),
+      ],
+    );
+  }
+}
+
+// Create a mock presenter helper to override the problematic getEmail method
+class MockPrePostCardWidgetPresenterHelper
+    extends PrePostCardWidgetPresenterHelper {
+  @override
+  Future<String?> getEmail(UserService userService,
+      CloudFunctionsCommunityService cloudFunctionsService) async {
+    return 'test@example.com';
+  }
+}
+
 void main() {
-  final Event event = Event(
+  final event_model.Event event = event_model.Event(
     id: 'eventId',
     collectionPath: 'eventCollectionPath',
     creatorId: 'userId',
     communityId: 'communityId',
     templateId: 'templateId',
-    status: EventStatus.active,
+    status: event_model.EventStatus.active,
   );
 
   late MockUserServiceNullable mockUserService;
+  late AppLocalizationService mockAppLocalizationService;
+  late MockCloudFunctionsCommunityService mockCloudFunctionsService;
+  late MockPrePostCardWidgetPresenterHelper mockPresenterHelper;
 
   setUpAll(() {
-    GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
+    // Create mock services
+    mockCloudFunctionsService = MockCloudFunctionsCommunityService();
+    mockPresenterHelper = MockPrePostCardWidgetPresenterHelper();
+    mockAppLocalizationService = AppLocalizationService();
+
+    // Register mock services
+    GetIt.instance.registerSingleton<CloudFunctionsCommunityService>(
+        mockCloudFunctionsService);
+    GetIt.instance
+        .registerSingleton<AppLocalizationService>(mockAppLocalizationService);
+
+    // Register mocked presenter to bypass the regular dependency injection
+    GetIt.instance.registerFactoryParam<PrePostCardWidgetPresenter,
+        BuildContext, PrePostCardWidgetModel>(
+      (context, model) => PrePostCardWidgetPresenter(
+        context,
+        model.view,
+        model,
+        prePostCardWidgetPresenterHelper: mockPresenterHelper,
+        testCloudFunctionsService: mockCloudFunctionsService,
+      ),
+    );
   });
 
   tearDownAll(() async {
@@ -93,12 +155,24 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
-          home: PrePostCardWidgetPage(
-            prePostCardType: PrePostCardType.preEvent,
-            event: event,
-            onUpdate: (_) {},
-            onDelete: () {},
-            isEditable: false,
+          home: MockLocalizationsProvider(
+            child: Builder(
+              builder: (context) {
+                // Initialize the app localization service with the mock localizations
+                final mockLocalizations = context.testL10n;
+                mockAppLocalizationService.setLocalization(mockLocalizations);
+
+                return PrePostCardWidgetPage(
+                  prePostCardType: PrePostCardType.preEvent,
+                  event: event,
+                  onUpdate: (_) {},
+                  onDelete: () {},
+                  isEditable: false,
+                  // Pass the helper directly to avoid dependency injection complexity
+                  // This simplifies the test and avoids issues with localization
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -127,12 +201,22 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
-          home: PrePostCardWidgetPage(
-            prePostCardType: PrePostCardType.preEvent,
-            event: event,
-            onUpdate: (_) {},
-            onDelete: () {},
-            isEditable: true,
+          home: MockLocalizationsProvider(
+            child: Builder(
+              builder: (context) {
+                // Initialize the app localization service with the mock localizations
+                final mockLocalizations = context.testL10n;
+                mockAppLocalizationService.setLocalization(mockLocalizations);
+
+                return PrePostCardWidgetPage(
+                  prePostCardType: PrePostCardType.preEvent,
+                  event: event,
+                  onUpdate: (_) {},
+                  onDelete: () {},
+                  isEditable: true,
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -162,13 +246,23 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
-          home: PrePostCardWidgetPage(
-            prePostCardType: PrePostCardType.preEvent,
-            event: event,
-            onUpdate: (_) {},
-            onDelete: () {},
-            isEditable: true,
-            prePostCardWidgetType: PrePostCardWidgetType.overview,
+          home: MockLocalizationsProvider(
+            child: Builder(
+              builder: (context) {
+                // Initialize the app localization service with the mock localizations
+                final mockLocalizations = context.testL10n;
+                mockAppLocalizationService.setLocalization(mockLocalizations);
+
+                return PrePostCardWidgetPage(
+                  prePostCardType: PrePostCardType.preEvent,
+                  event: event,
+                  onUpdate: (_) {},
+                  onDelete: () {},
+                  isEditable: true,
+                  prePostCardWidgetType: PrePostCardWidgetType.overview,
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -197,13 +291,23 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
-          home: PrePostCardWidgetPage(
-            prePostCardType: PrePostCardType.preEvent,
-            event: event,
-            onUpdate: (_) {},
-            onDelete: () {},
-            isEditable: true,
-            prePostCardWidgetType: PrePostCardWidgetType.edit,
+          home: MockLocalizationsProvider(
+            child: Builder(
+              builder: (context) {
+                // Initialize the app localization service with the mock localizations
+                final mockLocalizations = context.testL10n;
+                mockAppLocalizationService.setLocalization(mockLocalizations);
+
+                return PrePostCardWidgetPage(
+                  prePostCardType: PrePostCardType.preEvent,
+                  event: event,
+                  onUpdate: (_) {},
+                  onDelete: () {},
+                  isEditable: true,
+                  prePostCardWidgetType: PrePostCardWidgetType.edit,
+                );
+              },
+            ),
           ),
         ),
       ),

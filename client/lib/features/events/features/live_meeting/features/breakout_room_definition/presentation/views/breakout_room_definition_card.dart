@@ -420,7 +420,8 @@ class _QuestionCardState extends State<QuestionCard> {
                   CustomTextField(
                     readOnly:
                         _breakoutCardViewType == BreakoutCardViewType.overview,
-                    labelText: context.l10n.enterQuestionWithNumber(questionPosition + 1),
+                    labelText: context.l10n
+                        .enterQuestionWithNumber(questionPosition + 1),
                     maxLines: 1,
                     maxLength: questionMaxLength,
                     initialValue: !isNullOrEmpty(surveyQuestion.title)
@@ -461,8 +462,7 @@ class _QuestionCardState extends State<QuestionCard> {
                                     BreakoutCardViewType.edit
                                 ? () async {
                                     final delete = await ConfirmDialog(
-                                      mainText:
-                                          context.l10n.confirmDelete,
+                                      mainText: context.l10n.confirmDelete,
                                     ).show(context: context);
                                     if (delete) {
                                       await alertOnError(

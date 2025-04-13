@@ -47,8 +47,9 @@ class ConfirmDialog extends StatefulWidget {
   });
 
   static final confirmDialogDismisser = ConfirmDialogDismisser();
-  
-  String _getConfirmText(BuildContext context) => confirmText ?? context.l10n.yes;
+
+  String _getConfirmText(BuildContext context) =>
+      confirmText ?? context.l10n.yes;
   String _getCancelText(BuildContext context) => cancelText ?? context.l10n.no;
 
   Future<bool> show({BuildContext? context}) async {
@@ -164,21 +165,20 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ActionButton(
-                        height: 55,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        minWidth: 100,
-                        color: Colors.transparent,
-                        text: widget._getCancelText(context),
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: textColor,
-                        ),
-                        onPressed: onCancel != null
-                            ? () => onCancel(context)
-                            : () => Navigator.of(context).pop(false),
+                      height: 55,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      minWidth: 100,
+                      color: Colors.transparent,
+                      text: widget._getCancelText(context),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: textColor,
                       ),
-
+                      onPressed: onCancel != null
+                          ? () => onCancel(context)
+                          : () => Navigator.of(context).pop(false),
+                    ),
                     ActionButton(
                       key: ConfirmDialog.confirmButtonKey,
                       height: 55,

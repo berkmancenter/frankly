@@ -70,8 +70,7 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(
             width: 205,
             child: HeightConstrainedText(
-              subtitleText ??
-                  context.l10n.whenNewItemsAdded(type.name),
+              subtitleText ?? context.l10n.whenNewItemsAdded(type.name),
               style: AppTextStyle.eyebrowSmall
                   .copyWith(color: _getColor(subtitle: true)),
               textAlign: TextAlign.center,

@@ -367,7 +367,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(context.l10n.maximum),
-      trailing: Text('$peopleCount ${peopleCount == 1 ? context.l10n.person : context.l10n.people}'),
+      trailing: Text(
+          '$peopleCount ${peopleCount == 1 ? context.l10n.person : context.l10n.people}'),
       onTap: () async {
         final isMobile = _presenter.isMobile(context);
         final maxParticipants = _model.event.maxParticipants ?? 8;

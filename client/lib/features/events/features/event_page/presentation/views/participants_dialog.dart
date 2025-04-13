@@ -173,7 +173,8 @@ class ParticipantsDialog extends StatelessWidget {
         event: eventProvider.event,
       ),
       pageSize: 40,
-      emptyBuilder: (context) => HeightConstrainedText(context.l10n.noOneIsHereYet),
+      emptyBuilder: (context) =>
+          HeightConstrainedText(context.l10n.noOneIsHereYet),
       errorBuilder: (context, __, ___) => HeightConstrainedText(
         context.l10n.participantsLoadError,
       ),

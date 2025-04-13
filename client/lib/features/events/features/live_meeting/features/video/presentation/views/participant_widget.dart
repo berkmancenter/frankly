@@ -392,7 +392,8 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-${context.l10n.aspectRatioClipped}',
+      label:
+          '${widget.globalKey.distinctLabel}-${context.l10n.aspectRatioClipped}',
       child: child,
     );
 

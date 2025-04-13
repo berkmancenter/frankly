@@ -46,7 +46,8 @@ class _KickDialogState extends State<KickDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          HeightConstrainedText(context.l10n.confirmRemoveParticipant(widget.userName ?? context.l10n.thisUser)),
+          HeightConstrainedText(context.l10n.confirmRemoveParticipant(
+              widget.userName ?? context.l10n.thisUser)),
           FormBuilderCheckbox(
             name: 'lock',
             onChanged: (value) => _lockRoom = value ?? false,

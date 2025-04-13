@@ -234,7 +234,8 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           SizedBox(height: 10),
         ],
         SizedBox(height: 40),
-        if (_onStep != 4) HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
+        if (_onStep != 4)
+          HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
         SizedBox(height: 10),
         HeightConstrainedText(_stepText, style: AppTextStyle.headline2),
         SizedBox(height: 10),
@@ -301,8 +302,8 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           text: TextSpan(
             children: [
               TextSpan(
-                text:
-                    context.l10n.bySigningInRegisteringOrUsing(Environment.appName),
+                text: context.l10n
+                    .bySigningInRegisteringOrUsing(Environment.appName),
                 style: AppTextStyle.body.copyWith(color: AppColor.gray2),
               ),
               TextSpan(

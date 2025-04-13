@@ -87,7 +87,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final _localeProvider = LocaleProvider();
-  
+
   @override
   void initState() {
     super.initState();
@@ -108,63 +108,62 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (_) => NavBarProvider()),
         ChangeNotifierProvider.value(value: _localeProvider),
       ],
-      child: Consumer<LocaleProvider>(
-        builder: (context, localeProvider, _) {
-          return Portal(
-            child: MaterialApp.router(
-              locale: localeProvider.locale,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('en'),
-                Locale('es'),
-                Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-                Locale('zh'),
-              ],
-              shortcuts: {
-                ...WidgetsApp.defaultShortcuts,
-                LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
-                LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
-                    DoNothingIntent(),
-                LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
-                LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
-                LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
-                LogicalKeySet(LogicalKeyboardKey.arrowLeft): DoNothingIntent(),
-                LogicalKeySet(LogicalKeyboardKey.arrowRight): DoNothingIntent(),
-              },
-              routerDelegate: routerDelegate,
-              backButtonDispatcher:
-                  BeamerBackButtonDispatcher(delegate: routerDelegate),
-              routeInformationParser: BeamerParser(),
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(
-                  seedColor: AppColor.darkBlue,
-                  secondary: AppColor.brightGreen,
-                ),
-                pageTransitionsTheme: NoTransitionsOnWeb(),
+      child: Consumer<LocaleProvider>(builder: (context, localeProvider, _) {
+        return Portal(
+          child: MaterialApp.router(
+            locale: localeProvider.locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('es'),
+              Locale.fromSubtags(
+                  languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+              Locale('zh'),
+            ],
+            shortcuts: {
+              ...WidgetsApp.defaultShortcuts,
+              LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
+              LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
+                  DoNothingIntent(),
+              LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowLeft): DoNothingIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowRight): DoNothingIntent(),
+            },
+            routerDelegate: routerDelegate,
+            backButtonDispatcher:
+                BeamerBackButtonDispatcher(delegate: routerDelegate),
+            routeInformationParser: BeamerParser(),
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: AppColor.darkBlue,
+                secondary: AppColor.brightGreen,
               ),
-              builder: (context, child) {
-                // Initialize the app localization service with the current localizations
-                // This ensures we can access localizations without BuildContext
-                if (context != null) {
-                  final localizations = AppLocalizations.of(context);
-                  if (localizations != null) {
-                    appLocalizationService.setLocalization(localizations);
-                  }
-                }
-                return UIMigration(
-                  whiteBackground: true,
-                  child: child!,
-                );
-              },
+              pageTransitionsTheme: NoTransitionsOnWeb(),
             ),
-          );
-        }
-      ),
+            builder: (context, child) {
+              // Initialize the app localization service with the current localizations
+              // This ensures we can access localizations without BuildContext
+              if (context != null) {
+                final localizations = AppLocalizations.of(context);
+                if (localizations != null) {
+                  appLocalizationService.setLocalization(localizations);
+                }
+              }
+              return UIMigration(
+                whiteBackground: true,
+                child: child!,
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }

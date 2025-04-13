@@ -308,7 +308,8 @@ class _OnboardPageState extends State<OnboardPage> {
                     }
                   }),
                 ),
-                HeightConstrainedText(context.l10n.skipStripeAccountSetupForNow),
+                HeightConstrainedText(
+                    context.l10n.skipStripeAccountSetupForNow),
                 SizedBox(width: 8),
               ],
             ),

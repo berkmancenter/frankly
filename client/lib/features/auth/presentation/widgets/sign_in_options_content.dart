@@ -164,7 +164,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
-        text: widget.isNewUser ? context.l10n.signUpWithGoogle : context.l10n.signInWithGoogle,
+        text: widget.isNewUser
+            ? context.l10n.signUpWithGoogle
+            : context.l10n.signInWithGoogle,
       ),
       ThickOutlineButton(
         key: SignInOptionsContent.emailSignInKey,
@@ -181,7 +183,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         onPressed: () => widget.openDialogOnEmailProviderSelected
             ? SignInDialog.show(showEmailFormOnly: true)
             : setState(() => _showEmailFormFields = true),
-        text: widget.isNewUser ? context.l10n.signUpWithEmail : context.l10n.signInWithEmail,
+        text: widget.isNewUser
+            ? context.l10n.signUpWithEmail
+            : context.l10n.signInWithEmail,
       ),
     ];
   }
@@ -244,7 +248,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         child: ThickOutlineButton(
           key: SignInOptionsContent.newUserToggleKey,
           onPressed: () => setState(() => _newUser = !_newUser),
-          text: _newUser ? context.l10n.alreadyUserSignIn : context.l10n.newUserRegister,
+          text: _newUser
+              ? context.l10n.alreadyUserSignIn
+              : context.l10n.newUserRegister,
         ),
       ),
     ];

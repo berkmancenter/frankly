@@ -100,7 +100,8 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
         child = _buildMeetingLoading();
         break;
     }
-    child = GlobalKeyedSubtree(label: context.l10n.primaryContent, child: child);
+    child =
+        GlobalKeyedSubtree(label: context.l10n.primaryContent, child: child);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

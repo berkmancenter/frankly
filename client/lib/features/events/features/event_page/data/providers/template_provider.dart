@@ -13,26 +13,26 @@ String get defaultInstantMeetingTemplateId => defaultInstantMeetingTemplate.id;
 Template get defaultInstantMeetingTemplate {
   final l10n = appLocalizationService.getLocalization();
   return Template(
-      id: 'instant-meeting-template',
-      // This required field will be set before writing to firestore.
-      collectionPath: '',
-      creatorId: userService.currentUserId!,
-      title: l10n.instantMeeting,
-      image: _kDefaultLogoImageUrl,
-    );
+    id: 'instant-meeting-template',
+    // This required field will be set before writing to firestore.
+    collectionPath: '',
+    creatorId: userService.currentUserId!,
+    title: l10n.instantMeeting,
+    image: _kDefaultLogoImageUrl,
+  );
 }
 
 const defaultTemplateId = 'misc';
 Template get defaultTemplate {
   final l10n = appLocalizationService.getLocalization();
   return Template(
-      id: defaultTemplateId,
-      // This required field will be set before writing to firestore.
-      collectionPath: '',
-      creatorId: userService.currentUserId!,
-      title: l10n.miscellaneous,
-      image: _kDefaultLogoImageUrl,
-    );
+    id: defaultTemplateId,
+    // This required field will be set before writing to firestore.
+    collectionPath: '',
+    creatorId: userService.currentUserId!,
+    title: l10n.miscellaneous,
+    image: _kDefaultLogoImageUrl,
+  );
 }
 
 class TemplateProvider with ChangeNotifier {

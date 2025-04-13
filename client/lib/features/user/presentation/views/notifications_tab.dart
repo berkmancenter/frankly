@@ -186,7 +186,8 @@ class _NotificationsTabState extends State<NotificationsTab> {
                   ),
                 ),
                 Flexible(
-                  child: HeightConstrainedText(context.l10n.notifyMeAboutNewEvents),
+                  child: HeightConstrainedText(
+                      context.l10n.notifyMeAboutNewEvents),
                 ),
               ],
             ),
@@ -206,15 +207,14 @@ class _NotificationsTabState extends State<NotificationsTab> {
         if (nonNullActiveCommunityId == null) {
           return Padding(
             padding: EdgeInsets.all(20),
-            child:
-                HeightConstrainedText('${context.l10n.no} ${Environment.appName} ${context.l10n.memberships}.'),
+            child: HeightConstrainedText(
+                '${context.l10n.no} ${Environment.appName} ${context.l10n.memberships}.'),
           );
         }
         return CustomStreamBuilder<List<Community>>(
           entryFrom: '_NotificationsTabState._buildContent2',
           stream: Provider.of<UserDataService>(context).userCommunities,
-          errorMessage:
-              context.l10n.errorLoadingCommunities,
+          errorMessage: context.l10n.errorLoadingCommunities,
           builder: (context, communitiesList) {
             final communityLookup = {
               for (var j in communitiesList ?? <Community>[]) j.id: j,

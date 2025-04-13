@@ -42,8 +42,8 @@ extension StringExtension on String {
 }
 
 Map<MembershipStatus, String> _getAdminStatusMap(BuildContext context) => {
-  MembershipStatus.mod: context.l10n.moderator,
-};
+      MembershipStatus.mod: context.l10n.moderator,
+    };
 
 final blueBackground = AppColor.darkBlue.withOpacity(0.1);
 

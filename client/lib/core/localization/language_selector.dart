@@ -10,7 +10,7 @@ class LanguageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final l10n = AppLocalizations.of(context)!;
-    
+
     return PopupMenuButton<Locale>(
       tooltip: l10n.selectLanguage,
       icon: const Icon(Icons.language),

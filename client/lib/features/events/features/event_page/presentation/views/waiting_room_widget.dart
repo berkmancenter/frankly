@@ -166,7 +166,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 SizedBox(width: 20),
                 Expanded(
                   child: HeightConstrainedText(
-                    context.l10n.bufferTimeDescription(waitingBufferDurationDescription),
+                    context.l10n.bufferTimeDescription(
+                        waitingBufferDurationDescription),
                     style: AppTextStyle.body,
                   ),
                 ),
@@ -237,7 +238,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   SizedBox(width: 20),
                   Expanded(
                     child: HeightConstrainedText(
-                      context.l10n.introBeforeBreakouts(introLengthDurationDescription),
+                      context.l10n
+                          .introBeforeBreakouts(introLengthDurationDescription),
                       style: AppTextStyle.body,
                     ),
                   ),
@@ -247,7 +249,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             SizedBox(height: 18),
             HeightConstrainedText(
               'Participants will be sent into rooms at $breakoutsInitiationTime ' +
-              context.l10n.bufferAndIntroTime(waitingBufferDurationDescription, introLengthDurationDescription),
+                  context.l10n.bufferAndIntroTime(
+                      waitingBufferDurationDescription,
+                      introLengthDurationDescription),
               style: AppTextStyle.subhead,
             ),
             SizedBox(height: 10),

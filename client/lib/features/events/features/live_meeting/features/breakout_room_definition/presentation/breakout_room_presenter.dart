@@ -108,13 +108,17 @@ class BreakoutRoomPresenter extends ChangeNotifier {
             BreakoutAnswer(
               id: uuid.v4(),
               options: [
-                BreakoutAnswerOption(id: uuid.v4(), title: appLocalizationService.getLocalization().yes),
+                BreakoutAnswerOption(
+                    id: uuid.v4(),
+                    title: appLocalizationService.getLocalization().yes),
               ],
             ),
             BreakoutAnswer(
               id: uuid.v4(),
               options: [
-                BreakoutAnswerOption(id: uuid.v4(), title: appLocalizationService.getLocalization().no),
+                BreakoutAnswerOption(
+                    id: uuid.v4(),
+                    title: appLocalizationService.getLocalization().no),
               ],
             ),
           ],

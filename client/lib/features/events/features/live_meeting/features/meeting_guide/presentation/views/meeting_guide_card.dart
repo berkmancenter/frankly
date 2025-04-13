@@ -315,7 +315,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                             return HeightConstrainedText(
                               isNullOrEmpty(info.data?.displayName)
                                   ? context.l10n.welcome
-                                  : context.l10n.welcomeName(info.data?.displayName ?? ''),
+                                  : context.l10n.welcomeName(
+                                      info.data?.displayName ?? ''),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline3.copyWith(

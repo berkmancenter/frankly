@@ -115,7 +115,8 @@ DialogProvider get dialogProvider => services.get<DialogProvider>();
 
 AnalyticsService get analytics => services.get<AnalyticsService>();
 PaymentUtils get paymentUtils => services.get<PaymentUtils>();
-AppLocalizationService get appLocalizationService => services.get<AppLocalizationService>();
+AppLocalizationService get appLocalizationService =>
+    services.get<AppLocalizationService>();
 
 /// This file initializes all of our "services" inside of GetIt. This is basically
 /// just a rudimentary way of doing dependency injection. If we write tests for

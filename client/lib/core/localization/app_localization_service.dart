@@ -14,7 +14,8 @@ class AppLocalizationService {
   /// Get the current localizations
   AppLocalizations getLocalization() {
     if (_currentLocalizations == null) {
-      throw Exception('Localizations not initialized. Make sure to call setLocalization first.');
+      throw Exception(
+          'Localizations not initialized. Make sure to call setLocalization first.');
     }
     return _currentLocalizations!;
   }

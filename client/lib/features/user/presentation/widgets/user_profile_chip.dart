@@ -95,7 +95,8 @@ class UserProfileChip extends StatelessWidget {
               ? context.l10n.you
               : name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
         } else {
-          userName = name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
+          userName =
+              name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
         }
 
         return ProfileChip(

@@ -34,7 +34,8 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
     if (widget.isMember) {
       content = context.l10n.meetingEndMessage;
     } else {
-      content = context.l10n.meetingEndWithFollowMessage(widget.community?.name ?? '');
+      content = context.l10n
+          .meetingEndWithFollowMessage(widget.community?.name ?? '');
     }
 
     return Container(
