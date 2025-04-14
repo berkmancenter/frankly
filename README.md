@@ -11,4 +11,5 @@ The Frankly codebase is AGPL 3.0 licensed (see LICENSE.txt). Dependencies distri
 
 # Documentation
 
-Please visit our [documentation site](https://berkmancenter.github.io/frankly).
+Please visit our [documentation site](https://berkmancenter.github.io/frankly) for an introduction and overview, installation guide, troubleshooting guide, and FAQ.
+
