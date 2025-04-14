@@ -100,7 +100,7 @@ This section covers setting up a new computer for Flutter development.
 <!-- Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports. -->
     
 !!! question ""
-    Please check [**❓Troubleshooting / FAQ**](/faq) for suggested resolutions to common Flutter installation errors.
+    Please check [**❓Troubleshooting / FAQ**](faq.md) for suggested resolutions to common Flutter installation errors.
 
 ## Environment Setup
 
@@ -178,7 +178,7 @@ We recommend using the emulators [import and export](https://firebase.google.com
 
 
 !!! question ""
-    Please refer to the Cloud Functions Emulator [section](/faq#cloud-functions-emulator) at [**❓Troubleshooting / FAQ**](/faq) for common issues and resolutions!
+    Please refer to the Cloud Functions Emulator [section](faq.md#cloud-functions-emulator) at [**❓Troubleshooting / FAQ**](faq.md) for common issues and resolutions!
 
 ### Optional: Setup Firebase Cloud Project
 
