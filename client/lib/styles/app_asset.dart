@@ -65,12 +65,12 @@ class AppAsset {
   static const AppAsset kSocialLink2Png = AppAsset('media/social-link2.png');
   static const AppAsset kSocialTwitter2Png =
       AppAsset('media/social-twitter2.png');
+
   // Logo images
   static const AppAsset kLogoIconPng = AppAsset('media/logo-icon.png');
-  static const AppAsset kLogoHorizontalDarkPng =
-      AppAsset('media/logo-horizontal-dark.png');
-  static const AppAsset kLogoHorizontalLightPng =
-      AppAsset('media/logo-horizontal-light.png');
+  static const AppAsset kLogoPng = AppAsset('media/logo.png');
+  static const AppAsset kLogoSvg = AppAsset('media/logo.svg');
+
   static const AppAsset kSpokenCheckMark =
       AppAsset('media/spoken_check_mark.png');
   static const AppAsset kEventsIcon = AppAsset('media/events_icon.png');
