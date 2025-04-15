@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
@@ -605,7 +606,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             .any((id) => id == widget.userId) ??
         false;
     return Semantics(
-      label: context.l10n.participantActionsForUserWithId(userId: widget.userId ?? ''),
+      label: context.l10n.participantActionsForUserWithId(widget.userId ?? ''),
       child: CustomInkWell(
           onTap: widget.isVisible
               ? () => _showMoreMenu(_getMenuItems(context: context))

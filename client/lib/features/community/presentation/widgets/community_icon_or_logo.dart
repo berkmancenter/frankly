@@ -2,6 +2,7 @@ import 'package:client/core/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/config/environment.dart';
@@ -53,7 +54,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
     } else if (withNav) {
       return CustomInkWell(
         onTap: () => routerDelegate.beamTo(HomeLocation()),
-        child: _buildLogo(isMobile: isMobile),
+        child: _buildLogo(context: context, isMobile: isMobile),
       );
     } else if (currentCommunity != null) {
       return CommunityCircleIcon(
@@ -62,11 +63,11 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
         isTooltipShown: false,
       );
     } else {
-      return _buildLogo(isMobile: isMobile);
+      return _buildLogo(context: context, isMobile: isMobile);
     }
   }
 
-  Widget _buildLogo({required bool isMobile}) {
+  Widget _buildLogo({required BuildContext context, required bool isMobile}) {
     return Padding(
       padding: EdgeInsets.only(left: isMobile ? 1 : 8),
       child: SizedBox(
