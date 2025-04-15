@@ -406,6 +406,13 @@
   "yourName": "Tu nombre",
   "youtubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
   "zoom": "Zoom",
+  "errorLoadingWordCloudResponses": "Error al cargar las respuestas de la nube de palabras",
+  "languageSelector": "Selector de idioma",
+  "lastSession": "Última sesión",
+  "prereqRequired": "Requisito previo necesario",
+  "previewVideo": "Vista previa del video",
+  "helpCenter": "Centro de Ayuda",
+  "privacyPolicy": "Política de Privacidad",
   "@appNameTermsOfService": {
     "placeholders": {
       "appName": {}

@@ -157,6 +157,8 @@
   "joinEvent": "Join Event",
   "kickOutUser": "Kick out {displayName}?",
   "language": "Language",
+  "languageSelector": "Language Selector",
+  "lastSession": "Last session",
   "lightColorHex": "Light Color HEX#",
   "linkedinUrl": "LinkedIn URL",
   "livestream": "Livestream",
@@ -233,6 +235,9 @@
   "prerequisiteRequired": "Prerequisite Required",
   "pressToPromote": "Press to promote",
   "primaryContent": "primary-content",
+  "previewAgenda": "Preview Agenda",
+  "previewVideo": "Preview video",
+  "privacyPolicy": "Privacy Policy",
   "profile": "Profile",
   "profileButton": "Profile Button",
   "proposeToRemoveUser": "Propose to remove user?",
@@ -241,7 +246,6 @@
   "raiseHandJoinSpeakerQueue": "Raise your hand to join the speaker queue",
   "record": "Record",
   "odometer": "Odometer",
-  "previewAgenda": "Preview Agenda",
   "saveSettings": "Save Settings",
   "restoreSettings": "Restore Default Settings",
   "devSettings": "Developer Settings",
@@ -400,6 +404,7 @@
   "yourName": "Your Name",
   "youtubeVideoLookupFailed": "Sorry, youtube video lookup failed.",
   "zoom": "Zoom",
+  "helpCenter": "Help Center",
   "@appNameTermsOfService": {
     "placeholders": {
       "appName": {}

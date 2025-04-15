@@ -406,7 +406,11 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
   "yourName": "您的名字",
   "youtubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
-  "zoom": "Zoom",
+  "zoom": "放大",
+  "languageSelector": "语言选择器",
+  "lastSession": "上次会话",
+  "prereqRequired": "需要先决条件",
+  "previewVideo": "视频预览",
   "@appNameTermsOfService": {
     "placeholders": {
       "appName": {}
@@ -533,5 +537,7 @@
     "placeholders": {
       "name": {}
     }
-  }
+  },
+  "helpCenter": "帮助中心",
+  "privacyPolicy": "隐私政策"
 }
