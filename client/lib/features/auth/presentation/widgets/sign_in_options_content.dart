@@ -44,6 +44,7 @@ class SignInOptionsContent extends StatefulWidget {
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
   late bool _showEmailFormFields = widget.showEmailFormOnly;
   late bool _newUser = widget.isNewUser;
+  late bool _showPassword = false;
 
   final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -99,10 +100,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_showEmailFormFields)
-              ..._buildEmailWidgets()
-            else
-              ..._buildSignInProviderButtons(),
+              ..._buildSignIn(),
             SizedBox(height: 12),
             _buildTermsOfService(),
           ],
@@ -131,7 +129,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     }
   }
 
-  List<Widget> _buildSignInProviderButtons() {
+  List<Widget> _buildSignIn() {
     const minWidth = 260.0;
     return [
       Align(
@@ -150,7 +148,47 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             style: AppTextStyle.body,
           ),
         ),
+         CustomTextField(
+        key: SignInOptionsContent.nameTextFieldKey,
+        controller: _displayNameController,
+        labelText: 'Your Name',
+        borderType: BorderType.underline,
+      ),
+      CustomTextField(
+        key: SignInOptionsContent.emailTextFieldKey,
+        controller: _emailController,
+        labelText: 'Email',
+        borderType: BorderType.underline,
+      ),
+      CustomTextField(
+        key: SignInOptionsContent.passwordTextFieldKey,
+        controller: _passwordController,
+        onEditingComplete: () => _submitController.submit(),
+        labelText: 'Password',
+        obscureText: !_showPassword,
+        borderType: BorderType.underline,
+        suffixIcon: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+          child: IconButton(
+            onPressed: () => setState(() => _showPassword = !_showPassword),
+            icon: Icon(
+              _showPassword
+                  ? Icons.visibility_rounded
+                  : Icons.visibility_off_rounded,
+              size: 24,
+            ),
+          ),
+        ),
+      ),
       SizedBox(height: 9),
+        ThickOutlineButton(
+        key: SignInOptionsContent.emailSignInKey,
+        minWidth: minWidth,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        onPressed: () => setState(() => _showEmailFormFields = true),
+        text: 'Sign up',
+      ),
       ThickOutlineButton(
         minWidth: minWidth,
         onPressed: () => context.read<UserService>().signInWithGoogle(),
@@ -163,25 +201,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
         backgroundColor: Colors.white,
-        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
+        text: 'Continue with Google',
       ),
-      ThickOutlineButton(
-        key: SignInOptionsContent.emailSignInKey,
-        minWidth: minWidth,
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-          child: Icon(
-            Icons.email,
-            color: AppColor.darkBlue,
-            size: 22,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        onPressed: () => widget.openDialogOnEmailProviderSelected
-            ? SignInDialog.show(showEmailFormOnly: true)
-            : setState(() => _showEmailFormFields = true),
-        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
-      ),
+    
     ];
   }
 
@@ -196,25 +218,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         ),
       ),
-      if (_newUser)
-        CustomTextField(
-          key: SignInOptionsContent.nameTextFieldKey,
-          controller: _displayNameController,
-          labelText: 'Your Name',
-        ),
-      CustomTextField(
-        key: SignInOptionsContent.emailTextFieldKey,
-        controller: _emailController,
-        labelText: 'Email',
-      ),
-      CustomTextField(
-        key: SignInOptionsContent.passwordTextFieldKey,
-        controller: _passwordController,
-        onEditingComplete: () => _submitController.submit(),
-        labelText: 'Password',
-        maxLines: 1,
-        obscureText: true,
-      ),
+      // if/ (_newUser)
+     
       Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.only(top: 10),

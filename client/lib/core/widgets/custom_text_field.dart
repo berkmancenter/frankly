@@ -62,13 +62,16 @@ class CustomTextField extends StatefulWidget {
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
 
+  /// Allow for custom suffix icon
+  final Widget? suffixIcon;
+
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
     this.labelText,
     this.hintText,
     this.initialValue,
-    this.maxLines = 3,
+    this.maxLines = 1,
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
@@ -106,6 +109,7 @@ class CustomTextField extends StatefulWidget {
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -133,7 +137,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextEditingController(text: widget.initialValue ?? '');
   }
 
-  InputBorder _getBorder({bool isError = false}) {
+  InputBorder _getBorder({bool isError = false, bool isFocused = false}) {
     if (widget.borderType == BorderType.outline) {
       return OutlineInputBorder(
         borderSide: BorderSide(
@@ -152,7 +156,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               (widget.useDarkMode
                   ? _getDarkModeBorderColor(isError: isError)
                   : _getBorderColor(isError: isError)),
-          width: 1.0,
+          width: isFocused ? 2.0 : 1.0,
         ),
       );
     }
@@ -162,10 +166,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   Color _getBorderColor({bool isError = false}) {
     return isError
-        ? AppColor.lightRed
-        : _focusNode.hasFocus
-            ? AppColor.accentBlue
-            : AppColor.gray4;
+        ? AppColor.red500
+        :  AppColor.black;
   }
 
   Color _getDarkModeBorderColor({bool isError = false}) {
@@ -183,7 +185,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ? (widget.useDarkMode
                   ? AppColor.accentBlueLight
                   : AppColor.accentBlue)
-              : (widget.useDarkMode ? AppColor.gray5 : AppColor.gray4),
+              : (widget.useDarkMode ? AppColor.white: AppColor.black),
         );
   }
 
@@ -194,7 +196,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ? (widget.useDarkMode
                   ? AppColor.redDarkMode
                   : AppColor.redLightMode)
-              : (widget.useDarkMode ? AppColor.white : AppColor.gray2),
+              : (widget.useDarkMode ? AppColor.white : AppColor.black),
         );
   }
 
@@ -205,12 +207,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.padding,
-      child: Container(
+    return Container(
         padding: widget.textFieldPadding,
         decoration: BoxDecoration(
-          color: widget.backgroundColor,
+          color: widget.borderType == BorderType.underline ? AppColor.transparent : widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
         child: KeyboardListener(
@@ -295,8 +295,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 validator: widget.validator,
                 decoration: InputDecoration(
                   contentPadding: widget.contentPadding,
-                  border: _getBorder(),
-                  focusedBorder: _getBorder(),
+                  border: _getBorder(isFocused: _focusNode.hasFocus),
+                  focusedBorder: _getBorder(isFocused: true),
                   enabledBorder: _getBorder(),
                   errorBorder: _getBorder(isError: true),
                   labelText: widget.labelText,
@@ -307,8 +307,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   alignLabelWithHint: true,
                   hintText: widget.hintText,
                   hintStyle: _buildTextStyle(),
-                  fillColor: widget.fillColor,
-                  filled: widget.fillColor != null,
+                  suffixIcon: widget.suffixIcon,
+                  // fillColor: widget.fillColor,
+                  // filled: widget.fillColor != null,
                 ),
                 autofocus: widget.autofocus,
                 readOnly: widget.readOnly,
@@ -330,7 +331,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ],
           ),
         ),
-      ),
     );
   }
 
