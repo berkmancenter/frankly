@@ -212,51 +212,47 @@ class Dialogs {
       pageBuilder: (BuildContext builderContext, _, __) {
         return FocusFixer(
           resizeForKeyboard: true,
-          child: Theme(
-            data: Theme.of(context),
-            child: ChangeNotifierProvider<AppDrawerProvider>(
-              create: (_) => AppDrawerProvider(),
-              child: Builder(
-                builder: (originalContext) {
-                  final appDrawerProvider =
-                      originalContext.watch<AppDrawerProvider>();
+          child: ChangeNotifierProvider<AppDrawerProvider>(
+            create: (_) => AppDrawerProvider(),
+            child: Builder(
+              builder: (originalContext) {
+                final appDrawerProvider =
+                    originalContext.watch<AppDrawerProvider>();
 
-                  return Stack(
-                    children: [
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          if (appDrawerProvider.hasDrawerUnsavedChanges) {
-                            appDrawerProvider.showConfirmChangesDialogLayer();
-                          } else {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                      ),
-                      Align(
-                        alignment: appDrawerSide == AppDrawerSide.left
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxWidth: AppSize.kSidebarWidth),
-                          child: Stack(
-                            children: [
-                              child,
-                              if (appDrawerProvider.isConfirmChangesDialogShown)
-                                ConfirmDialogLayer(
-                                  areColorsFromTheme: true,
-                                  onSaveChanges:
-                                      appDrawerProvider.onSaveChanges,
-                                ),
-                            ],
-                          ),
+                return Stack(
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (appDrawerProvider.hasDrawerUnsavedChanges) {
+                          appDrawerProvider.showConfirmChangesDialogLayer();
+                        } else {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                    Align(
+                      alignment: appDrawerSide == AppDrawerSide.left
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxWidth: AppSize.kSidebarWidth),
+                        child: Stack(
+                          children: [
+                            child,
+                            if (appDrawerProvider.isConfirmChangesDialogShown)
+                              ConfirmDialogLayer(
+                                areColorsFromTheme: true,
+                                onSaveChanges: appDrawerProvider.onSaveChanges,
+                              ),
+                          ],
                         ),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         );
