@@ -604,22 +604,25 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             ?.pinnedUserIds
             .any((id) => id == widget.userId) ??
         false;
-    return CustomInkWell(
-      onTap: widget.isVisible
-          ? () => _showMoreMenu(_getMenuItems(context: context))
-          : null,
-      onHover: widget.isVisible
-          ? (isHovered) => setState(() => _isHovered = isHovered)
-          : null,
-      child: Container(
-        key: _menuKey,
-        padding: const EdgeInsets.all(5),
-        child: Icon(
-          isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
-          size: 16,
-          color: _isHovered ? AppColor.brightGreen : AppColor.white,
+    return Semantics(
+      label: 'Participant Actions for user with ID ${widget.userId}',
+      child: CustomInkWell(
+          onTap: widget.isVisible
+              ? () => _showMoreMenu(_getMenuItems(context: context))
+              : null,
+          onHover: widget.isVisible
+              ? (isHovered) => setState(() => _isHovered = isHovered)
+              : null,
+          child: Container(
+            key: _menuKey,
+            padding: const EdgeInsets.all(5),
+            child: Icon(
+              isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
+              size: 16,
+              color: _isHovered ? AppColor.brightGreen : AppColor.white,
+            ),
+          ),
         ),
-      ),
     );
   }
 }

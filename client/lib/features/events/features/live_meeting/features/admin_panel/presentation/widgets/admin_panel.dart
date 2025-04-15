@@ -756,7 +756,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
   Widget build(BuildContext context) {
     final menuItems = _getMenuItems();
     return Semantics(
-      label: context.l10n.participantActions,
+      label: 'Participant Actions for user with ID ${widget.providerParticipant?.userId}',
       child: CustomInkWell(
         hoverColor: AppColor.black.withOpacity(0.1),
         onTap: () => _showMoreMenu(menuItems),
