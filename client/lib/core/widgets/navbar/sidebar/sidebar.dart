@@ -126,7 +126,6 @@ class _SideBarState extends State<SideBar> {
     } else {
       return SignInOptionsContent(
         onComplete: () => Navigator.of(context).pop(),
-        openDialogOnEmailProviderSelected: true,
       );
     }
   }

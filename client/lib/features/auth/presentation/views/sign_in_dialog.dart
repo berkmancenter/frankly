@@ -5,14 +5,14 @@ import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/platform_utils.dart';
 
 class SignInDialog extends StatefulWidget {
-  final bool isNewUser;
+  final bool showSignup;
   final bool isPurchasingSubscription;
   final bool isDismissable;
   final bool showEmailFormOnly;
 
   const SignInDialog({
     Key? key,
-    required this.isNewUser,
+    required this.showSignup,
     this.isPurchasingSubscription = false,
     this.isDismissable = true,
     this.showEmailFormOnly = false,
@@ -29,7 +29,7 @@ class SignInDialog extends StatefulWidget {
       resizeForKeyboard: false,
       isDismissible: isDismissable,
       builder: (_) => SignInDialog(
-        isNewUser: newUser,
+        showSignup: newUser,
         isPurchasingSubscription: isPurchasingSubscription,
         isDismissable: isDismissable,
         showEmailFormOnly: showEmailFormOnly,
@@ -55,9 +55,7 @@ class _SignInDialogState extends State<SignInDialog> {
               shrinkWrap: true,
               children: [
                 SignInOptionsContent(
-                  isPurchasingSubscription: widget.isPurchasingSubscription,
-                  isNewUser: widget.isNewUser,
-                  showEmailFormOnly: widget.showEmailFormOnly,
+                  showSignUp: widget.showSignup,
                 ),
               ],
             ),
