@@ -75,7 +75,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
           children: [
             // App logo
             Semantics(
-                label: 'Frankly Logo',
+                label: context.l10n.franklyLogo,
                 child: Image.asset(
                         AppAsset.kLogoPng.path,
                         width: 100,
@@ -89,7 +89,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
             /*    
             SvgPicture.asset(
               AppAsset.kLogoSvg.path, 
-              semanticsLabel: 'Frankly Logo',
+              semanticsLabel: context.l10n.franklyLogo,
               width: 100,
               height: isMobile ? 40 : 80,         
               fit: BoxFit.contain,

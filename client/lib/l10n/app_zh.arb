@@ -216,6 +216,11 @@
   "or": "或者",
   "owner": "所有者",
   "participantActions": "参与者操作",
+  "participantActionsForUserWithId": "ID为{userId}的用户的参与者操作",
+  "@participantActionsForUserWithId": {
+    "description": "参与者操作的语义标签，带有userId参数。",
+    "placeholders": { "userId": {} }
+  },
   "participantReassigned": "参与者已重新分配",
   "participants": "参与者",
   "participantsLoadError": "加载参与者时出现问题。请刷新。",
@@ -288,6 +293,10 @@
   "showAnnouncementsButton": "显示公告按钮",
   "showOptions": "显示选项",
   "showSidebarButton": "显示侧边栏按钮",
+  "sidebarUnfollowButton": "侧边栏取消关注按钮",
+  "sidebarFollowCommunityButton": "侧边栏关注社区按钮",
+  "followCommunityButton": "关注社区按钮",
+  "franklyLogo": "Frankly 标志",
   "signIn": "登录",
   "signInToApp": "登录到 {appName}",
   "signInWithEmail": "使用邮箱登录",

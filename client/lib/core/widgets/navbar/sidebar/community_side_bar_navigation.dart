@@ -62,7 +62,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         ),
         if (showLeaveCommunity)
          Semantics(
-          label: 'Sidebar Unfollow Button',
+          label: context.l10n.sidebarUnfollowButton,
           identifier: 'sidebar_unfollow_button',
           button: true,
           child: SideBarNavigationButton(

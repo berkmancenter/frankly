@@ -218,6 +218,11 @@
   "or": "Or",
   "owner": "Owner",
   "participantActions": "Participant Actions",
+  "participantActionsForUserWithId": "Participant Actions for user with ID {userId}",
+  "@participantActionsForUserWithId": {
+    "description": "Semantic label for participant actions, with userId as parameter.",
+    "placeholders": { "userId": {} }
+  },
   "participantReassigned": "Participant Reassigned",
   "participants": "Participants",
   "participantsLoadError": "Something went wrong loading participants. Please refresh.",
@@ -285,6 +290,10 @@
   "showAnnouncementsButton": "Show Announcements Button",
   "showOptions": "Show Options",
   "showSidebarButton": "Show Sidebar Button",
+  "sidebarUnfollowButton": "Sidebar Unfollow Button",
+  "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
+  "followCommunityButton": "Follow Community Button",
+  "franklyLogo": "Frankly Logo",
   "signIn": "Sign In",
   "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",

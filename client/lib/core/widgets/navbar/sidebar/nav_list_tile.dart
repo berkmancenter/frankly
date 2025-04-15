@@ -138,7 +138,7 @@ class CommunitySidebarNavLinks extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: 
         Semantics(
-          label:'Sidebar Follow Community Button', 
+          label: context.l10n.sidebarFollowCommunityButton, 
           identifier: 'sidebar_follow_community_button',
           button: true,
           child:
