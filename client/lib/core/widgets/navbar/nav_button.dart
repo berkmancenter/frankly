@@ -1,3 +1,4 @@
+import 'package:client/styles/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/styles/app_styles.dart';
@@ -34,13 +35,14 @@ class _NavButtonState extends State<NavButton> {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-          color: widget.backgroundColor,
+          color: widget.backgroundColor ?? context.theme.colorScheme.primary,
           borderRadius: BorderRadius.circular(10),
         ),
         child: HeightConstrainedText(
           widget.text,
-          style: AppTextStyle.body
-              .copyWith(color: widget.textColor ?? AppColor.darkBlue),
+          style: AppTextStyle.body.copyWith(
+            color: widget.textColor ?? context.theme.colorScheme.onPrimary,
+          ),
         ),
       ),
     );
