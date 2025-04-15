@@ -6,7 +6,7 @@
 #
 # ==========
 
-name: Deploy Docs To Pages
+name: Deploy Docs to Pages
 
 on:
   # Runs on pushes targeting our default branch
