@@ -1,6 +1,7 @@
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 
@@ -77,6 +78,23 @@ Future<T?> alertOnError<T>(
     final sanitizedError = sanitizeError(e.toString());
 
     await showAlert(context, errorMessage ?? sanitizedError);
+    return null;
+  }
+}
+
+// Return callback w/ both the sanitized error and firebase error code when action fails
+Future<Object?> authMessageOnError<T>(
+  Future<T> Function() action, {
+  required Function(String errorMessage, String code) callback,
+}) async {
+  try {
+    return await action();
+  } catch (e, s) {
+    loggingService.log(e, logType: LogType.error);
+    loggingService.log(s, logType: LogType.error);
+
+    final sanitizedError = sanitizeError(e.toString());
+    callback(sanitizedError, (e as FirebaseAuthException).code);
     return null;
   }
 }
