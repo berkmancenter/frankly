@@ -8,7 +8,7 @@ import 'package:client/core/widgets/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -37,15 +37,29 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   late bool _showSignup = widget.showSignUp;
   late bool _showPassword = false;
-  // late final String _formError = '';
+  late String _formError = '';
 
   final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _submitController = SubmitNotifier();
 
+  bool isEmailValid(String email) {
+    return RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(email);
+  }
+
+  bool isPasswordValid(String password) {
+    // Password must be at least 12 characters long, and contain one lowercase and one uppercase letter
+    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{12,}$')
+        .hasMatch(password);
+  }
+
   Future<void> _onSubmit() async {
-     if (!_formKey.currentState!.validate()) {return;}
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
     String name = _displayNameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text;
@@ -83,19 +97,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // if (_showEmailFormFields && !widget.showEmailFormOnly)
-        //   Align(
-        //     alignment: Alignment.topLeft,
-        //     child: GestureDetector(
-        //       child: Icon(Icons.arrow_back),
-        //       onTap: () => setState(() => _showEmailFormFields = false),
-        //     ),
-        //   ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ..._buildSignIn(),
-            SizedBox(height: 12),
+            SizedBox(height: 15),
             _buildTermsOfService(),
           ],
         ),
@@ -115,7 +121,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     return Text.rich(
       key: SignInOptionsContent.showSignUpToggleKey,
       TextSpan(
-        style: AppTextStyle.bodySmall,
+        style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
             text: _showSignup
@@ -143,39 +149,49 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         alignment: Alignment.center,
         child: HeightConstrainedText(
           _getTitleText(),
-          style: AppTextStyle.subhead,
+          style: context.theme.textTheme.titleLarge,
         ),
       ),
       SizedBox(height: 9),
-      // if (_getMessageText().isNotEm pty)
       Align(
         alignment: Alignment.center,
         child: _getMessageText(),
       ),
-
       Form(
         key: _formKey,
         child: Column(
           children: <Widget>[
             if (_showSignup)
-              CustomTextField(
-              key: SignInOptionsContent.nameTextFieldKey,
-              controller: _displayNameController,
-              labelText: 'Your Name',
-              borderType: BorderType.underline,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a valid name';
-                }
-                return null;
-              },
-            ),
+              Column(
+                children: [
+                  CustomTextField(
+                    key: SignInOptionsContent.nameTextFieldKey,
+                    controller: _displayNameController,
+                    labelText: 'Your Name',
+                    borderType: BorderType.underline,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a valid name';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
             CustomTextField(
               key: SignInOptionsContent.emailTextFieldKey,
               controller: _emailController,
               labelText: 'Email',
               borderType: BorderType.underline,
+              validator: (value) {
+                if (value == null || value.isEmpty || !isEmailValid(value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
             ),
+            SizedBox(height: 10),
             CustomTextField(
               key: SignInOptionsContent.passwordTextFieldKey,
               controller: _passwordController,
@@ -196,15 +212,36 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   ),
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty || !isPasswordValid(value)) {
+                  return 'Please enter a valid password';
+                }
+                return null;
+              },
             ),
+            SizedBox(height: 5),
+            Text(
+              'Must be at least 12 characters long, and contain one lowercase and one uppercase letter',
+              style: context.theme.textTheme.bodySmall,
+            ),
+            SizedBox(height: 9),
+            if (_formError.isNotEmpty)
+              Text(
+                _formError,
+                style: context.theme.textTheme.bodySmall?.copyWith(
+                  color: Colors.red,
+                ),
+              ),
             SizedBox(height: 9),
             ThickOutlineButton(
               key: SignInOptionsContent.buttonSubmitKey,
               minWidth: minWidth,
               backgroundColor: Colors.black,
               textColor: Colors.white,
-              // onPressed: () => setState(() => _showSignup = true),
-              onPressed: () => _onSubmit(),
+              onPressed: () => authMessageOnError(_onSubmit,
+                  callback: (error, code) => setState(
+                        () => _formError = code,
+                      ),),
               text: !_showSignup ? 'Log in' : 'Sign up',
             ),
           ],
@@ -215,7 +252,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         alignment: Alignment.center,
         child: Text(
           'or',
-          style: AppTextStyle.bodySmall.copyWith(
+          style: context.theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -241,7 +278,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget _buildTermsOfService() {
     return Text.rich(
       TextSpan(
-        style: AppTextStyle.bodySmall,
+        style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
             text:
@@ -251,7 +288,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             text: '${Environment.appName} Terms of Service',
             recognizer: TapGestureRecognizer()
               ..onTap = () => launch(Environment.termsUrl),
-            style: AppTextStyle.bodySmall.copyWith(
+            style: context.theme.textTheme.bodyMedium?.copyWith(
               decoration: TextDecoration.underline,
             ),
           ),
