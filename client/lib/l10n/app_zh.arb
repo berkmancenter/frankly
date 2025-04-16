@@ -23,23 +23,101 @@
   "anonymous": "匿名",
   "appDescription": "线上审议平台",
   "appNameHome": "{appName} - 首页",
+  "@appNameHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameTermsOfService": "{appName} 服务条款",
+  "@appNameTermsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameTitle": "{appName}",
+  "@appNameTitle": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameUnsubscribe": "{appName} - 取消订阅",
+  "@appNameUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameUserSettings": "{appName} - 用户设置",
+  "@appNameUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameWelcome": "{appName} - 欢迎",
+  "@appNameWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitle": "Frankly",
   "appTitleHome": "{appName} - 首页",
+  "@appTitleHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitleUnsubscribe": "{appName} - 取消订阅",
+  "@appTitleUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitleUserSettings": "{appName} - 用户设置",
+  "@appTitleUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitleWelcome": "{appName} - 欢迎",
+  "@appTitleWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "signIn": "登录",
   "signUp": "注册",
   "signOut": "退出登录",
   "areYouSureYouWantToDeleteMedia": "您确定要删除媒体吗？",
   "areYouSureYouWantToRefreshTheGuide": "您确定要刷新指南吗？",
   "aspectRatioClipped": "纵横比裁剪",
-  "videoElement": "视频元素",
+  "videoElement": "{label}-视频元素",
+  "@videoElement": {
+    "description": "视频元素的语义标签，带有label参数。",
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
   "attendee": "参与者",
   "audioInputDevice": "音频输入设备：",
   "avIssues": "音视频问题？",
@@ -59,6 +137,13 @@
   "buildYourCommunitySpace": "构建您的社区空间",
   "byCategory": "按类别",
   "bySigningInRegisteringOrUsing": "通过登录、注册或使用 {appName}，我同意遵守",
+  "@bySigningInRegisteringOrUsing": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "bySize": "按大小",
   "cancel": "取消",
   "cancelCurrentPlan": "取消当前计划？",
@@ -91,11 +176,25 @@
   "darkColorHex": "深色十六进制值",
   "defineBreakoutsOptional": "定义分组讨论（可选）",
   "deleteAgendaItem": "删除{title}议程项",
+  "@deleteAgendaItem": {
+    "placeholders": {
+      "title": {
+        "type": "Object"
+      }
+    }
+  },
   "deleteAgendaItemGeneral": "删除议程项",
   "roomNumber": "房间号码",
   "enterRoomNumber": "输入房间号码",
   "view": "查看",
   "confirmRemoveParticipant": "您确定要从此活动中移除{name}吗？",
+  "@confirmRemoveParticipant": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "thisUser": "该用户",
   "reassign": "重新分配",
   "fakeParticipantCount": "虚拟参与者数量",
@@ -103,6 +202,13 @@
   "hideAgendaItem": "隐藏议程项",
   "start": "开始",
   "deleteAgendaItemName": "删除{itemName}议程项",
+  "@deleteAgendaItemName": {
+    "placeholders": {
+      "itemName": {
+        "type": "Object"
+      }
+    }
+  },
   "deleteComment": "删除评论",
   "deleteOption": "删除选项",
   "deletePost": "删除帖子",
@@ -120,6 +226,13 @@
   "enterHeadline": "输入标题",
   "enterImageTitle": "输入图片标题",
   "enterQuestionWithNumber": "输入问题 {number}",
+  "@enterQuestionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
   "enterRoomNumber": "例如：2",
   "enterVideoTitle": "输入视频标题",
   "enterWaitingRoomText": "输入等候室文本（可选）",
@@ -157,8 +270,22 @@
   "introductionContent": "_介绍一下自己！每个人花一分钟回答下列问题之一。_\n\n* 最近做了什么有趣的事情？\n* 你最喜欢的动画角色是谁，为什么？\n* 在你离开这个世界之前，有什么事情想要完成？\n* 你不喜欢哪部电影？\n",
   "introductions": "介绍",
   "joinCommunity": "加入{communityName}？",
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
   "joinEvent": "加入活动",
   "kickOutUser": "踢出{displayName}？",
+  "@kickOutUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "Object"
+      }
+    }
+  },
   "language": "语言",
   "lightColorHex": "浅色十六进制值",
   "linkedinUrl": "LinkedIn链接",
@@ -169,6 +296,14 @@
   "loopVideo": "循环播放视频",
   "makeASuggestion": "提出建议",
   "manageJoinRequests": "管理加入请求 ({count})",
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "maps": "地图",
   "matchingOptions": "配对选项",
   "matchingQuestions": "配对问题",
@@ -195,6 +330,13 @@
   "newRoomNumber": "新房间号码：",
   "newSubscription": "新订阅",
   "newToApp": "新来到 {appName}？",
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "newUserRegister": "新用户？ 注册",
   "next": "下一步",
   "no": "否",
@@ -204,6 +346,13 @@
   "noDevicesFound": "未找到设备。",
   "noEventsFound": "未找到活动。",
   "noItems": "没有{name}",
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "noMatchingMembersFound": "未找到匹配的成员。",
   "noOneIsHereYet": "还没有人在这里。",
   "noOneIsHereYet1": "还没有人在这里。",
@@ -215,6 +364,14 @@
   "notifyMeAboutNewAnnouncements": "通知我新公告",
   "notifyMeAboutNewEvents": "通知我新活动。",
   "ofTotal": "共 {count} 步",
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "optional": "可选",
   "or": "或者",
   "owner": "所有者",
@@ -222,7 +379,19 @@
   "participantActionsForUserWithId": "ID为{userId}的用户的参与者操作",
   "@participantActionsForUserWithId": {
     "description": "参与者操作的语义标签，带有userId参数。",
-    "placeholders": { "userId": {} }
+    "placeholders": {
+      "userId": {
+        "type": "Object"
+      }
+    }
+  },
+  "participantCount": "{count}位参与者",
+  "@participantCount": {
+    "placeholders": {
+      "count": {
+        "type": "Object"
+      }
+    }
   },
   "participantReassigned": "参与者已重新分配",
   "participants": "参与者",
@@ -230,6 +399,13 @@
   "password": "密码",
   "passwordInvalid": "密码无效。点击忘记密码进行重置。或者，使用其他电子邮件重新注册。",
   "passwordResetLinkSent": "密码重置链接已发送至 {email}",
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
   "pasteOrEnterAUrl": "粘贴或输入URL",
   "pasteOrEnterUrl": "粘贴或输入URL",
   "people": "人",
@@ -255,7 +431,21 @@
   "enterCategoryNum": "输入类别{number}",
   "meetingEndMessage": "会议已结束。您可以关闭此窗口。",
   "meetingEndWithFollowMessage": "会议已结束。您可以关闭此窗口或访问{name}继续对话。",
+  "@meetingEndWithFollowMessage": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "questionWithNumber": "问题 {number}",
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
   "raiseHandJoinSpeakerQueue": "举手加入发言队列",
   "record": "录制",
   "odometer": "里程表",
@@ -267,6 +457,13 @@
   "enterCategoryNum": "输入类别 {number}",
   "meetingEndMessage": "会议已结束。您可以关闭此窗口。",
   "meetingEndWithFollowMessage": "会议已结束。您可以关闭此窗口或访问{name}继续对话。",
+  "@meetingEndWithFollowMessage": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "raiseHandToJoin": "举手加入发言队列",
   "raiseHandToJoinSpeakerQueue": "举手加入发言队列",
   "raiseYourHandToJoinTheSpeakerQueue": "举手加入发言队列",
@@ -293,6 +490,13 @@
   "setYourPayeeAccountDetails": "设置您的收款账户详情",
   "settings": "设置",
   "settingsFor": "{communityName} 的设置",
+  "@settingsFor": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
   "showAnnouncementsButton": "显示公告按钮",
   "showOptions": "显示选项",
   "showSidebarButton": "显示侧边栏按钮",
@@ -302,6 +506,13 @@
   "franklyLogo": "Frankly 标志",
   "signIn": "登录",
   "signInToApp": "登录到 {appName}",
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "signInWithEmail": "使用邮箱登录",
   "signInWithGoogle": "使用 Google 登录",
   "signOut": "退出登录",
@@ -336,7 +547,21 @@
   "targetSizeQuestion": "目标大小？",
   "templates": "模板",
   "termsAgreementPrefix": "通过登录、注册或使用 {appName}，我同意遵守 ",
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "termsOfService": "{appName} 的服务条款",
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "textCopied": "文本已复制！",
   "thereWasAnErrorLoadingEventTemplates": "加载活动模板时出错。",
   "thisEventIsLocked": "此活动已锁定",
@@ -351,16 +576,43 @@
   "uniqueUrlDisplayNameOptional": "唯一URL显示名称（可选）",
   "upcomingEvents": "即将举行的活动",
   "updateToPlan": "更新至{name}？",
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "urlParameter": "URL参数",
   "usersAreInBreakoutRooms": "用户在分组讨论室中。",
-  "videoElement": "{label}-视频元素",
   "videoInputDevice": "视频输入设备：",
   "vimeoVideoLookupFailed": "抱歉，Vimeo 视频查找失败。",
   "waitingRoom": "等候室",
   "welcome": "欢迎来到 Frankly",
   "welcomeName": "您好，{name}",
+  "@welcomeName": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "welcomeToApp": "欢迎来到 {appName}",
+  "@welcomeToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "whenNewItemsAdded": "当添加新的{name}时，您将在此处看到它们。",
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "whenYouUpgrade": "当您升级时",
   "wordCloud": "词云",
   "wordCloudPrompt": "词云提示",
@@ -375,6 +627,13 @@
   "billing": "账单",
   "finish": "完成",
   "updateToPlan": "更新到{name}计划",
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "roleOwner": "所有者",
   "roleAdmin": "管理员",
   "roleModerator": "主持人",
@@ -396,6 +655,13 @@
   "introBeforeBreakouts": "分组讨论前约{duration}的介绍时间",
   "bufferAndIntroTime": "分组讨论前约{buffer}的缓冲时间和{intro}的介绍时间",
   "kickOutUser": "踢出{displayName}？",
+  "@kickOutUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "Object"
+      }
+    }
+  },
   "addToCalendar": "添加到日历",
   "googleCalendar": "Google 日历",
   "outlookCalendar": "Outlook 日历",
@@ -406,7 +672,6 @@
   "duplicateEvent": "复制活动",
   "downloadMembersRegistrationData": "下载成员注册数据",
   "downloadChatsAndSuggestions": "下载聊天和建议",
-  "participantCount": "{count}位参与者",
   "pasteOrEnterUrl": "粘贴或输入URL",
   "tag": "标签",
   "submitTagButton": "提交",
@@ -425,57 +690,80 @@
   "previewVideo": "视频预览",
   "@appNameTermsOfService": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleHome": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleUnsubscribe": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleUserSettings": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleWelcome": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@aspectRatioClipped": {
+    "description": "纵横比裁剪的语义标签，带有label参数。",
     "placeholders": {
-      "label": {}
+      "label": {
+        "type": "Object"
+      }
     }
   },
   "@bySigningInRegisteringOrUsing": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@deleteAgendaItem": {
     "placeholders": {
-      "title": {}
+      "title": {
+        "type": "Object"
+      }
     }
   },
   "@enterQuestionWithNumber": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "@joinCommunity": {
     "placeholders": {
-      "communityName": {}
+      "communityName": {
+        "type": "Object"
+      }
     }
   },
   "@kickOutUser": {
     "placeholders": {
-      "displayName": {}
+      "displayName": {
+        "type": "Object"
+      }
     }
   },
   "@manageJoinRequests": {
@@ -488,12 +776,16 @@
   },
   "@newToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@noItems": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
   "@ofTotal": {
@@ -506,48 +798,59 @@
   },
   "@passwordResetLinkSent": {
     "placeholders": {
-      "email": {}
+      "email": {
+        "type": "Object"
+      }
     }
   },
   "@questionWithNumber": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "@signInToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@termsAgreementPrefix": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@termsOfService": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@updateToPlan": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
   "@enterWordCloudPrompt": {},
-  "@videoElement": {
-    "placeholders": {
-      "label": {}
-    }
-  },
   "@welcomeToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@whenNewItemsAdded": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
   "helpCenter": "帮助中心",

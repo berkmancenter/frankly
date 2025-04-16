@@ -23,23 +23,100 @@
   "anonymous": "Anónimo",
   "appDescription": "Una plataforma para deliberaciones en línea",
   "appNameHome": "{appName} - Inicio",
+  "@appNameHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameTermsOfService": "Términos de Servicio de {appName}",
+  "@appNameTermsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameTitle": "{appName}",
+  "@appNameTitle": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameUnsubscribe": "{appName} - Cancelar suscripción",
+  "@appNameUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameUserSettings": "{appName} - Configuración de usuario",
+  "@appNameUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appNameWelcome": "{appName} - Bienvenido",
+  "@appNameWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitle": "Frankly",
   "appTitleHome": "{appName} - Inicio",
+  "@appTitleHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitleUnsubscribe": "{appName} - Cancelar suscripción",
+  "@appTitleUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitleUserSettings": "{appName} - Configuración de usuario",
+  "@appTitleUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "appTitleWelcome": "{appName} - Bienvenido",
+  "@appTitleWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "signIn": "Iniciar sesión",
   "signUp": "Regístrate",
   "signOut": "Cerrar sesión",
   "areYouSureYouWantToDeleteMedia": "¿Estás seguro de que quieres eliminar este medio?",
   "areYouSureYouWantToRefreshTheGuide": "¿Estás seguro de que quieres actualizar la guía?",
   "aspectRatioClipped": "Relación de aspecto recortada",
-  "videoElement": "Elemento de video",
+  "videoElement": "{label}-elemento-video",
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
   "attendee": "Asistente",
   "audioInputDevice": "Dispositivo de entrada de audio:",
   "avIssues": "¿Problemas de audio/video?",
@@ -59,6 +136,13 @@
   "buildYourCommunitySpace": "Construya su espacio de comunidad",
   "byCategory": "Por categoría",
   "bySigningInRegisteringOrUsing": "Al iniciar sesión, registrarse o usar {appName}, acepto estar sujeto a los ",
+  "@bySigningInRegisteringOrUsing": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "bySize": "Por tamaño",
   "cancel": "Cancelar",
   "cancelCurrentPlan": "¿Cancelar plan actual?",
@@ -169,6 +253,14 @@
   "loopVideo": "Repetir video",
   "makeASuggestion": "Hacer una sugerencia",
   "manageJoinRequests": "Administrar solicitudes de ingreso ({count})",
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "maps": "Mapas",
   "matchingOptions": "Opciones de emparejamiento",
   "matchingQuestions": "Preguntas de emparejamiento",
@@ -195,6 +287,13 @@
   "newRoomNumber": "Número de sala nueva:",
   "newSubscription": "Nueva Suscripción",
   "newToApp": "¿Nuevo en {appName}?",
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "newUserRegister": "¿Nuevo usuario? Regístrate",
   "next": "Siguiente",
   "no": "No",
@@ -215,6 +314,14 @@
   "notifyMeAboutNewAnnouncements": "Notificarme sobre nuevos anuncios",
   "notifyMeAboutNewEvents": "Notificarme sobre nuevos eventos.",
   "ofTotal": "de {count}",
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "optional": "Opcional",
   "or": "O",
   "owner": "Propietario",
@@ -222,7 +329,7 @@
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
   "@participantActionsForUserWithId": {
     "description": "Etiqueta semántica para acciones del participante, con userId como parámetro.",
-    "placeholders": { "userId": {} }
+    "placeholders": { "userId": { "type": "Object" } }
   },
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
@@ -302,6 +409,13 @@
   "franklyLogo": "Logo de Frankly",
   "signIn": "Iniciar sesión",
   "signInToApp": "Iniciar sesión en {appName}",
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "signInWithEmail": "Iniciar sesión con correo electrónico",
   "signInWithGoogle": "Iniciar sesión con Google",
   "signOut": "Cerrar Sesión",
@@ -336,7 +450,21 @@
   "targetSizeQuestion": "¿Tamaño objetivo?",
   "templates": "Plantillas",
   "termsAgreementPrefix": "Al iniciar sesión, registrarme o usar {appName}, acepto estar sujeto a los ",
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "termsOfService": "Términos de servicio de {appName}",
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "textCopied": "¡Texto copiado!",
   "thereWasAnErrorLoadingEventTemplates": "Hubo un error al cargar las plantillas de eventos.",
   "thisEventIsLocked": "Este evento está bloqueado",
@@ -354,13 +482,34 @@
   "urlParameter": "Parámetro URL",
   "usersAreInBreakoutRooms": "Los usuarios están en salas de grupos.",
   "videoElement": "{label}-elemento-video",
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
   "videoInputDevice": "Dispositivo de entrada de vídeo:",
   "vimeoVideoLookupFailed": "Lo sentimos, la búsqueda del video de Vimeo falló.",
   "waitingRoom": "Sala de espera",
   "welcome": "Bienvenido a Frankly",
   "welcomeName": "Bienvenido, {name}",
   "welcomeToApp": "Bienvenido a {appName}",
+  "@welcomeToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "whenNewItemsAdded": "Cuando se agreguen nuevos {name}, los verás aquí.",
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "whenYouUpgrade": "cuando actualice",
   "wordCloud": "Nube de palabras",
   "wordCloudPrompt": "Introduzca una palabra para la nube de palabras",
@@ -427,57 +576,79 @@
   "privacyPolicy": "Política de Privacidad",
   "@appNameTermsOfService": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleHome": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleUnsubscribe": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleUserSettings": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleWelcome": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@aspectRatioClipped": {
     "placeholders": {
-      "label": {}
+      "label": {
+        "type": "Object"
+      }
     }
   },
   "@bySigningInRegisteringOrUsing": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@deleteAgendaItem": {
     "placeholders": {
-      "title": {}
+      "title": {
+        "type": "Object"
+      }
     }
   },
   "@enterQuestionWithNumber": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "@joinCommunity": {
     "placeholders": {
-      "communityName": {}
+      "communityName": {
+        "type": "Object"
+      }
     }
   },
   "@kickOutUser": {
     "placeholders": {
-      "displayName": {}
+      "displayName": {
+        "type": "Object"
+      }
     }
   },
   "@manageJoinRequests": {
@@ -490,12 +661,16 @@
   },
   "@newToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@noItems": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
   "@ofTotal": {
@@ -508,48 +683,72 @@
   },
   "@passwordResetLinkSent": {
     "placeholders": {
-      "email": {}
+      "email": {
+        "type": "Object"
+      }
     }
   },
   "@questionWithNumber": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "@signInToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@termsAgreementPrefix": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@termsOfService": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@updateToPlan": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
-  "@enterWordCloudPrompt": {},
+  "@enterWordCloudPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "@videoElement": {
     "placeholders": {
-      "label": {}
+      "label": {
+        "type": "Object"
+      }
     }
   },
   "@welcomeToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@whenNewItemsAdded": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   }
 }

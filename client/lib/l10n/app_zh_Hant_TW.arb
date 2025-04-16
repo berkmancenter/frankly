@@ -39,7 +39,14 @@
   "areYouSureYouWantToDeleteMedia": "您確定要刪除媒體嗎？",
   "areYouSureYouWantToRefreshTheGuide": "您確定要刷新指南嗎？",
   "aspectRatioClipped": "長寬比剪裁",
-  "videoElement": "視訊元素",
+  "videoElement": "{label}-影片元素",
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
   "attendee": "參與者",
   "audioInputDevice": "音訊輸入裝置：",
   "avIssues": "影音問題？",
@@ -211,8 +218,12 @@
   "participantActions": "參與者操作",
   "participantActionsForUserWithId": "使用者ID為{userId}的參與者操作",
   "@participantActionsForUserWithId": {
-    "description": "參與者操作的語意標籤，帶有userId參數。",
-    "placeholders": { "userId": {} }
+    "description": "參與者操作的語義標籤，帶有userId參數。",
+    "placeholders": {
+      "userId": {
+        "type": "Object"
+      }
+    }
   },
   "participantReassigned": "參與者已重新分配",
   "participants": "參與者",
@@ -343,7 +354,6 @@
   "updateToPlan": "更新至{name}？",
   "urlParameter": "URL參數",
   "usersAreInBreakoutRooms": "用戶在分組討論室中。",
-  "videoElement": "{label}-影片元素",
   "videoInputDevice": "視訊輸入裝置：",
   "vimeoVideoLookupFailed": "抱歉，Vimeo 影片查找失敗。",
   "waitingRoom": "等候室",
@@ -426,57 +436,79 @@
   "privacyPolicy": "隱私政策",
   "@appNameTermsOfService": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleHome": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleUnsubscribe": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleUserSettings": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@appTitleWelcome": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@aspectRatioClipped": {
     "placeholders": {
-      "label": {}
+      "label": {
+        "type": "Object"
+      }
     }
   },
   "@bySigningInRegisteringOrUsing": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@deleteAgendaItem": {
     "placeholders": {
-      "title": {}
+      "title": {
+        "type": "Object"
+      }
     }
   },
   "@enterQuestionWithNumber": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "@joinCommunity": {
     "placeholders": {
-      "communityName": {}
+      "communityName": {
+        "type": "Object"
+      }
     }
   },
   "@kickOutUser": {
     "placeholders": {
-      "displayName": {}
+      "displayName": {
+        "type": "Object"
+      }
     }
   },
   "@manageJoinRequests": {
@@ -489,12 +521,16 @@
   },
   "@newToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@noItems": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
   "@ofTotal": {
@@ -507,48 +543,747 @@
   },
   "@passwordResetLinkSent": {
     "placeholders": {
-      "email": {}
+      "email": {
+        "type": "Object"
+      }
     }
   },
   "@questionWithNumber": {
     "placeholders": {
-      "number": {}
+      "number": {
+        "type": "Object"
+      }
     }
   },
   "@signInToApp": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@termsAgreementPrefix": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@termsOfService": {
     "placeholders": {
-      "appName": {}
+      "appName": {
+        "type": "Object"
+      }
     }
   },
   "@updateToPlan": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
     }
   },
   "@enterWordCloudPrompt": {},
-  "@videoElement": {
-    "placeholders": {
-      "label": {}
-    }
-  },
-  "@welcomeToApp": {
-    "placeholders": {
-      "appName": {}
-    }
-  },
   "@whenNewItemsAdded": {
     "placeholders": {
-      "name": {}
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferTimeDescription": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@playsAt": {
+    "placeholders": {
+      "time": {
+        "type": "Object"
+      }
+    }
+  },
+  "@introBeforeBreakouts": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferAndIntroTime": {
+    "placeholders": {
+      "buffer": {
+        "type": "Object"
+      },
+      "intro": {
+        "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveParticipant": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@deleteAgendaItemName": {
+    "placeholders": {
+      "itemName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterCategoryNum": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {},
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferTimeDescription": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@playsAt": {
+    "placeholders": {
+      "time": {
+        "type": "Object"
+      }
+    }
+  },
+  "@introBeforeBreakouts": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferAndIntroTime": {
+    "placeholders": {
+      "buffer": {
+        "type": "Object"
+      },
+      "intro": {
+        "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveParticipant": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@deleteAgendaItemName": {
+    "placeholders": {
+      "itemName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterCategoryNum": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {},
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferTimeDescription": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@playsAt": {
+    "placeholders": {
+      "time": {
+        "type": "Object"
+      }
+    }
+  },
+  "@introBeforeBreakouts": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferAndIntroTime": {
+    "placeholders": {
+      "buffer": {
+        "type": "Object"
+      },
+      "intro": {
+        "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveParticipant": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@deleteAgendaItemName": {
+    "placeholders": {
+      "itemName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterCategoryNum": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {},
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferTimeDescription": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@playsAt": {
+    "placeholders": {
+      "time": {
+        "type": "Object"
+      }
+    }
+  },
+  "@introBeforeBreakouts": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferAndIntroTime": {
+    "placeholders": {
+      "buffer": {
+        "type": "Object"
+      },
+      "intro": {
+        "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveParticipant": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@deleteAgendaItemName": {
+    "placeholders": {
+      "itemName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterCategoryNum": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {},
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferTimeDescription": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@playsAt": {
+    "placeholders": {
+      "time": {
+        "type": "Object"
+      }
+    }
+  },
+  "@introBeforeBreakouts": {
+    "placeholders": {
+      "duration": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bufferAndIntroTime": {
+    "placeholders": {
+      "buffer": {
+        "type": "Object"
+      },
+      "intro": {
+        "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveParticipant": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@deleteAgendaItemName": {
+    "placeholders": {
+      "itemName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterCategoryNum": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {},
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
     }
   }
 }
