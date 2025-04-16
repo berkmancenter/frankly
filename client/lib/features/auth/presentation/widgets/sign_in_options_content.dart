@@ -33,8 +33,11 @@ class SignInOptionsContent extends StatefulWidget {
 }
 
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
+  final _formKey = GlobalKey<FormState>();
+
   late bool _showSignup = widget.showSignUp;
   late bool _showPassword = false;
+  // late final String _formError = '';
 
   final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -42,6 +45,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   final _submitController = SubmitNotifier();
 
   Future<void> _onSubmit() async {
+     if (!_formKey.currentState!.validate()) {return;}
     String name = _displayNameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text;
@@ -109,17 +113,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   Widget _getMessageText() {
     return Text.rich(
-      key: SignInOptionsContent.showSignUpToggleKey, 
+      key: SignInOptionsContent.showSignUpToggleKey,
       TextSpan(
         style: AppTextStyle.bodySmall,
         children: [
           TextSpan(
-            text: _showSignup ? 'Already have an account? ' : 'Don\'t have an account? ',
+            text: _showSignup
+                ? 'Already have an account? '
+                : 'Don\'t have an account? ',
           ),
           TextSpan(
             text: _showSignup ? 'Log in' : 'Sign up',
             recognizer: TapGestureRecognizer()
-              ..onTap =  () => setState(() => _showSignup = !_showSignup),
+              ..onTap = () => setState(() => _showSignup = !_showSignup),
             style: TextStyle(
               decoration: TextDecoration.underline,
             ),
@@ -146,48 +152,63 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         alignment: Alignment.center,
         child: _getMessageText(),
       ),
-      if(_showSignup)
-        CustomTextField(
-          key: SignInOptionsContent.nameTextFieldKey,
-          controller: _displayNameController,
-          labelText: 'Your Name',
-          borderType: BorderType.underline,
-        ),
-      CustomTextField(
-        key: SignInOptionsContent.emailTextFieldKey,
-        controller: _emailController,
-        labelText: 'Email',
-        borderType: BorderType.underline,
-      ),
-      CustomTextField(
-        key: SignInOptionsContent.passwordTextFieldKey,
-        controller: _passwordController,
-        onEditingComplete: () => _submitController.submit(),
-        labelText: 'Password',
-        obscureText: !_showPassword,
-        borderType: BorderType.underline,
-        suffixIcon: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-          child: IconButton(
-            onPressed: () => setState(() => _showPassword = !_showPassword),
-            icon: Icon(
-              _showPassword
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded,
-              size: 24,
+
+      Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            if (_showSignup)
+              CustomTextField(
+              key: SignInOptionsContent.nameTextFieldKey,
+              controller: _displayNameController,
+              labelText: 'Your Name',
+              borderType: BorderType.underline,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a valid name';
+                }
+                return null;
+              },
             ),
-          ),
+            CustomTextField(
+              key: SignInOptionsContent.emailTextFieldKey,
+              controller: _emailController,
+              labelText: 'Email',
+              borderType: BorderType.underline,
+            ),
+            CustomTextField(
+              key: SignInOptionsContent.passwordTextFieldKey,
+              controller: _passwordController,
+              onEditingComplete: () => _submitController.submit(),
+              labelText: 'Password',
+              obscureText: !_showPassword,
+              borderType: BorderType.underline,
+              suffixIcon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                child: IconButton(
+                  onPressed: () =>
+                      setState(() => _showPassword = !_showPassword),
+                  icon: Icon(
+                    _showPassword
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 9),
+            ThickOutlineButton(
+              key: SignInOptionsContent.buttonSubmitKey,
+              minWidth: minWidth,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              // onPressed: () => setState(() => _showSignup = true),
+              onPressed: () => _onSubmit(),
+              text: !_showSignup ? 'Log in' : 'Sign up',
+            ),
+          ],
         ),
-      ),
-      SizedBox(height: 9),
-      ThickOutlineButton(
-        key: SignInOptionsContent.buttonSubmitKey,
-        minWidth: minWidth,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        // onPressed: () => setState(() => _showSignup = true),
-        onPressed: () => alertOnError(context, _onSubmit),
-        text: !_showSignup ? 'Log in' : 'Sign up',
       ),
       SizedBox(height: 9),
       Align(

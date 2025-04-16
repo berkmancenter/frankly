@@ -97,7 +97,7 @@ class CustomTextField extends StatefulWidget {
     this.readOnly = false,
     this.fillColor,
     this.cursorColor,
-    this.autovalidateMode,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.prefixText,
     this.isOnlyDigits = false,
     this.numberThreshold,
@@ -165,9 +165,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   Color _getBorderColor({bool isError = false}) {
-    return isError
-        ? AppColor.red500
-        :  AppColor.black;
+    return isError ? AppColor.red500 : AppColor.black;
   }
 
   Color _getDarkModeBorderColor({bool isError = false}) {
@@ -185,19 +183,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ? (widget.useDarkMode
                   ? AppColor.accentBlueLight
                   : AppColor.accentBlue)
-              : (widget.useDarkMode ? AppColor.white: AppColor.black),
+              : (widget.useDarkMode ? AppColor.white : AppColor.black),
         );
   }
 
   TextStyle _buildTextStyle({bool isError = false}) {
     return widget.textStyle ??
-        AppTextStyle.body.copyWith(
-          color: isError
-              ? (widget.useDarkMode
-                  ? AppColor.redDarkMode
-                  : AppColor.redLightMode)
-              : (widget.useDarkMode ? AppColor.white : AppColor.black),
-        );
+        (isError
+            ? AppTextStyle.body.copyWith(
+                color: widget.useDarkMode
+                    ? AppColor.redDarkMode
+                    : AppColor.redLightMode,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                height: AppTextStyle.bodySmall.height,
+              )
+            : AppTextStyle.body.copyWith( 
+                color: widget.useDarkMode ? AppColor.white : AppColor.black,
+              ));
   }
 
   TextStyle _buildOptionalTextStyle() {
@@ -208,129 +211,128 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: widget.textFieldPadding,
-        decoration: BoxDecoration(
-          color: widget.borderType == BorderType.underline ? AppColor.transparent : widget.backgroundColor,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-        ),
-        child: KeyboardListener(
-          focusNode: FocusNode(),
-          onKeyEvent: (event) {
-            final isEventShiftKey =
-                event.logicalKey == LogicalKeyboardKey.shiftLeft ||
-                    event.logicalKey == LogicalKeyboardKey.shiftRight;
-            if (_shiftPressed != isEventShiftKey) {
-              setState(() => _shiftPressed = isEventShiftKey);
-            }
+      padding: widget.textFieldPadding,
+      decoration: BoxDecoration(
+        color: widget.borderType == BorderType.underline
+            ? AppColor.transparent
+            : widget.backgroundColor,
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+      ),
+      child: KeyboardListener(
+        focusNode: FocusNode(),
+        onKeyEvent: (event) {
+          final isEventShiftKey =
+              event.logicalKey == LogicalKeyboardKey.shiftLeft ||
+                  event.logicalKey == LogicalKeyboardKey.shiftRight;
+          if (_shiftPressed != isEventShiftKey) {
+            setState(() => _shiftPressed = isEventShiftKey);
+          }
 
-            if (widget.onEditingComplete != null &&
-                event.runtimeType == KeyDownEvent &&
-                !isEventShiftKey &&
-                event.logicalKey == LogicalKeyboardKey.enter) {
-              widget.onEditingComplete!();
-              if (widget.unfocusOnSubmit) {
-                _unfocus();
-              }
+          if (widget.onEditingComplete != null &&
+              event.runtimeType == KeyDownEvent &&
+              !isEventShiftKey &&
+              event.logicalKey == LogicalKeyboardKey.enter) {
+            widget.onEditingComplete!();
+            if (widget.unfocusOnSubmit) {
+              _unfocus();
             }
-          },
-          child: Stack(
-            children: [
-              TextFormField(
-                onTap: () {
-                  _unfocus();
-                  final localOnTap = widget.onTap;
-                  if (localOnTap != null) {
-                    localOnTap();
-                  }
-                },
-                focusNode: _focusNode,
-                textInputAction: TextInputAction.none,
-                onChanged: (text) {
-                  final onChanged = widget.onChanged;
-                  if (onChanged != null) {
-                    onChanged(text);
-                  }
-                },
-                controller: _controller,
-                style: _buildTextStyle(),
-                onEditingComplete: widget.onEditingComplete,
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
-                obscureText: widget.obscureText,
-                cursorColor: widget.cursorColor ??
-                    (widget.useDarkMode
-                        ? AppColor.accentBlueLight
-                        : AppColor.accentBlue),
-                autovalidateMode: widget.autovalidateMode,
-                maxLength: widget.maxLength,
-                buildCounter: (
-                  _, {
-                  required currentLength,
-                  required maxLength,
-                  required isFocused,
-                }) =>
-                    maxLength != null && isFocused && !widget.hideCounter
-                        ? Container(
-                            margin: EdgeInsets.only(left: 10),
-                            alignment: widget.counterAlignment ??
-                                Alignment.centerRight,
-                            child: Text(
-                              '$currentLength/$maxLength',
-                              style:
-                                  widget.counterStyle ?? AppTextStyle.bodySmall,
-                            ),
-                          )
-                        : null,
-                maxLengthEnforcement: widget.maxLengthEnforcement,
-                inputFormatters: [
-                  if (!_shiftPressed &&
-                      !responsiveLayoutService.isMobile(context) &&
-                      widget.onEditingComplete != null)
-                    DoNotAllowNewLineAtEnd(),
-                  if (widget.isOnlyDigits)
-                    FilteringTextInputFormatter.digitsOnly,
-                  if (widget.numberThreshold != null)
-                    NumberThresholdFormatter(widget.numberThreshold!),
-                ],
-                validator: widget.validator,
-                decoration: InputDecoration(
-                  contentPadding: widget.contentPadding,
-                  border: _getBorder(isFocused: _focusNode.hasFocus),
-                  focusedBorder: _getBorder(isFocused: true),
-                  enabledBorder: _getBorder(),
-                  errorBorder: _getBorder(isError: true),
-                  labelText: widget.labelText,
-                  labelStyle: _buildLabelStyle(),
-                  errorStyle: _buildTextStyle(isError: true),
-                  prefixText: widget.prefixText,
-                  prefixStyle: widget.textStyle,
-                  alignLabelWithHint: true,
-                  hintText: widget.hintText,
-                  hintStyle: _buildTextStyle(),
-                  suffixIcon: widget.suffixIcon,
-                  // fillColor: widget.fillColor,
-                  // filled: widget.fillColor != null,
-                ),
-                autofocus: widget.autofocus,
-                readOnly: widget.readOnly,
-                keyboardType: TextInputType.multiline,
+          }
+        },
+        child: Stack(
+          children: [
+            TextFormField(
+              onTap: () {
+                _unfocus();
+                final localOnTap = widget.onTap;
+                if (localOnTap != null) {
+                  localOnTap();
+                }
+              },
+              focusNode: _focusNode,
+              textInputAction: TextInputAction.none,
+              onChanged: (text) {
+                final onChanged = widget.onChanged;
+                if (onChanged != null) {
+                  onChanged(text);
+                }
+              },
+              controller: _controller,
+              style: _buildTextStyle(),
+              onEditingComplete: widget.onEditingComplete,
+              maxLines: widget.maxLines,
+              minLines: widget.minLines,
+              obscureText: widget.obscureText,
+              cursorColor: widget.cursorColor ??
+                  (widget.useDarkMode
+                      ? AppColor.accentBlueLight
+                      : AppColor.accentBlue),
+              autovalidateMode: widget.autovalidateMode,
+              maxLength: widget.maxLength,
+              buildCounter: (
+                _, {
+                required currentLength,
+                required maxLength,
+                required isFocused,
+              }) =>
+                  maxLength != null && isFocused && !widget.hideCounter
+                      ? Container(
+                          margin: EdgeInsets.only(left: 10),
+                          alignment:
+                              widget.counterAlignment ?? Alignment.centerRight,
+                          child: Text(
+                            '$currentLength/$maxLength',
+                            style:
+                                widget.counterStyle ?? AppTextStyle.bodySmall,
+                          ),
+                        )
+                      : null,
+              maxLengthEnforcement: widget.maxLengthEnforcement,
+              inputFormatters: [
+                if (!_shiftPressed &&
+                    !responsiveLayoutService.isMobile(context) &&
+                    widget.onEditingComplete != null)
+                  DoNotAllowNewLineAtEnd(),
+                if (widget.isOnlyDigits) FilteringTextInputFormatter.digitsOnly,
+                if (widget.numberThreshold != null)
+                  NumberThresholdFormatter(widget.numberThreshold!),
+              ],
+              validator: widget.validator,
+              decoration: InputDecoration(
+                contentPadding: widget.contentPadding,
+                border: _getBorder(isFocused: _focusNode.hasFocus),
+                focusedBorder: _getBorder(isFocused: true),
+                enabledBorder: _getBorder(),
+                errorBorder: _getBorder(isError: true),
+                labelText: widget.labelText,
+                labelStyle: _buildLabelStyle(),
+                errorStyle: _buildTextStyle(isError: true),
+                prefixText: widget.prefixText,
+                prefixStyle: widget.textStyle,
+                alignLabelWithHint: true,
+                hintText: widget.hintText,
+                hintStyle: _buildTextStyle(),
+                suffixIcon: widget.suffixIcon,
               ),
-              if (widget.isOptional &&
-                  !_focusNode.hasFocus &&
-                  _controller.text.isEmpty)
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: _buildOptionalPadding(),
-                    child: Text(
-                      'Optional',
-                      style: _buildOptionalTextStyle(),
-                    ),
+              autofocus: widget.autofocus,
+              readOnly: widget.readOnly,
+              keyboardType: TextInputType.multiline,
+            ),
+            if (widget.isOptional &&
+                !_focusNode.hasFocus &&
+                _controller.text.isEmpty)
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: _buildOptionalPadding(),
+                  child: Text(
+                    'Optional',
+                    style: _buildOptionalTextStyle(),
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
+      ),
     );
   }
 
