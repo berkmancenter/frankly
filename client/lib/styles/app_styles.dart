@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 class AppColor {
   /// Swatches.
   static const Color black = Color(0xFF000000);
-  static const Color white = Color(0xFFFFFFFF);
   static const Color red200 = Color(0xFFF7C5C5);
   static const Color red500 = Color(0xFFC41C1C);
   static const Color gray50 = Color(0xFFFAFAFA);
