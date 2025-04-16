@@ -27,7 +27,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/templates/presentation/widgets/prerequisite_template_widget.dart';
 import 'package:client/core/widgets/tabs/tab_bar.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';
@@ -152,40 +151,36 @@ class _TemplatePageState extends State<TemplatePage>
 
   Widget _buildEvents(Template template, bool hasAttendedPrerequisite) {
     return ConstrainedBody(
-      child: UIMigration(
-        whiteBackground: true,
-        child: CustomStreamBuilder<List<Event>?>(
-          entryFrom: '_TemplatePageState._buildEvents',
-          stream: Provider.of<TemplatePageProvider>(context).events,
-          height: 100,
-          errorMessage: 'Something went wrong loading events.',
-          builder: (_, events) {
-            if (events == null || events.isEmpty) {
-              return EmptyPageContent(
-                type: EmptyPageType.events,
-                titleText: 'No events',
-                subtitleText:
-                    'When new events are added, you’ll see them here.',
-                showContainer: false,
-              );
-            }
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 30),
-                for (final event in events.take(40)) ...[
-                  EventWidget(
-                    event,
-                    key: Key('event-${event.id}'),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ],
+      child: CustomStreamBuilder<List<Event>?>(
+        entryFrom: '_TemplatePageState._buildEvents',
+        stream: Provider.of<TemplatePageProvider>(context).events,
+        height: 100,
+        errorMessage: 'Something went wrong loading events.',
+        builder: (_, events) {
+          if (events == null || events.isEmpty) {
+            return EmptyPageContent(
+              type: EmptyPageType.events,
+              titleText: 'No events',
+              subtitleText: 'When new events are added, you’ll see them here.',
+              showContainer: false,
             );
-          },
-        ),
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 30),
+              for (final event in events.take(40)) ...[
+                EventWidget(
+                  event,
+                  key: Key('event-${event.id}'),
+                ),
+                SizedBox(height: 20),
+              ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -268,27 +263,24 @@ class _TemplatePageState extends State<TemplatePage>
         ],
         child: Column(
           children: [
-            UIMigration(
-              whiteBackground: true,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: AppColor.gray5, width: 2),
-                  ),
-                  color: AppColor.white,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: AppColor.gray5, width: 2),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _TemplateHeader(template: template),
-                    ConstrainedBody(
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: CustomTabBar(isWhiteBackground: true),
-                      ),
+                color: AppColor.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _TemplateHeader(template: template),
+                  ConstrainedBody(
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: CustomTabBar(isWhiteBackground: true),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 20),

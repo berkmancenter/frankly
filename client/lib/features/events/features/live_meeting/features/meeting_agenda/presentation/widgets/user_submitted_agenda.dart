@@ -1,6 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +14,6 @@ import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
@@ -81,100 +80,97 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
         borderRadius: BorderRadius.circular(10),
         color: AppColor.white,
       ),
-      child: UIMigration(
-        whiteBackground: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10) - EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: [
-                  UserProfileChip(
-                    userId: item.creatorId,
-                    textStyle: TextStyle(
-                      color: AppColor.darkBlue,
-                      fontSize: 16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10) - EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                UserProfileChip(
+                  userId: item.creatorId,
+                  textStyle: TextStyle(
+                    color: AppColor.darkBlue,
+                    fontSize: 16,
+                  ),
+                  showBorder: false,
+                  showName: true,
+                  imageHeight: 30,
+                ),
+                Spacer(),
+                _buildVotingButton(
+                  numVotes: item.upvotedUserIds.length,
+                  icon: Icons.thumb_up_outlined,
+                  itemId: item.id ?? '',
+                  upvote: true,
+                  selected: item.upvotedUserIds.contains(userId),
+                ),
+                _buildVotingButton(
+                  numVotes: item.downvotedUserIds.length,
+                  icon: Icons.thumb_down_outlined,
+                  itemId: item.id ?? '',
+                  upvote: false,
+                  selected: item.downvotedUserIds.contains(userId),
+                ),
+                if (canDelete)
+                  AppClickableWidget(
+                    child: ProxiedImage(
+                      null,
+                      asset: AppAsset.kXPng,
+                      width: 24,
+                      height: 24,
                     ),
-                    showBorder: false,
-                    showName: true,
-                    imageHeight: 30,
+                    onTap: () => readProvider.delete(item.id ?? ''),
                   ),
-                  Spacer(),
-                  _buildVotingButton(
-                    numVotes: item.upvotedUserIds.length,
-                    icon: Icons.thumb_up_outlined,
-                    itemId: item.id ?? '',
-                    upvote: true,
-                    selected: item.upvotedUserIds.contains(userId),
-                  ),
-                  _buildVotingButton(
-                    numVotes: item.downvotedUserIds.length,
-                    icon: Icons.thumb_down_outlined,
-                    itemId: item.id ?? '',
-                    upvote: false,
-                    selected: item.downvotedUserIds.contains(userId),
-                  ),
-                  if (canDelete)
-                    AppClickableWidget(
-                      child: ProxiedImage(
-                        null,
-                        asset: AppAsset.kXPng,
-                        width: 24,
-                        height: 24,
-                      ),
-                      onTap: () => readProvider.delete(item.id ?? ''),
-                    ),
-                ],
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Builder(
-                        builder: (context) {
-                          return SelectableLinkify(
-                            text: item.content ?? '',
-                            textAlign: TextAlign.left,
-                            style: AppTextStyle.eyebrow
-                                .copyWith(color: AppColor.gray1),
-                            options: LinkifyOptions(looseUrl: true),
-                            onOpen: (link) => launch(link.url),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        return SelectableLinkify(
+                          text: item.content ?? '',
+                          textAlign: TextAlign.left,
+                          style: AppTextStyle.eyebrow
+                              .copyWith(color: AppColor.gray1),
+                          options: LinkifyOptions(looseUrl: true),
+                          onOpen: (link) => launch(link.url),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(Icons.copy),
+                        splashRadius: 20,
+                        padding: const EdgeInsets.all(8),
+                        onPressed: () {
+                          Clipboard.setData(
+                            ClipboardData(text: item.content!),
+                          );
+                          showRegularToast(
+                            context,
+                            context.l10n.textCopied,
+                            toastType: ToastType.success,
                           );
                         },
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: IconButton(
-                          icon: Icon(Icons.copy),
-                          splashRadius: 20,
-                          padding: const EdgeInsets.all(8),
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(text: item.content!),
-                            );
-                            showRegularToast(
-                              context,
-                              context.l10n.textCopied,
-                              toastType: ToastType.success,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

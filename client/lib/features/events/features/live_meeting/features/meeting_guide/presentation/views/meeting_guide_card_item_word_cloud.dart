@@ -14,7 +14,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
@@ -93,22 +92,19 @@ class _MeetingGuideCardItemWordCloudState
                   Flexible(
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 200),
-                      child: UIMigration(
-                        whiteBackground: true,
-                        child: CustomTextField(
-                          padding: EdgeInsets.zero,
-                          borderRadius: 10,
-                          labelText: 'Enter word',
-                          maxLines: 1,
-                          maxLength: 30,
-                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                          onChanged: (value) => updateView(),
-                          controller: _wordCloudResponseController,
-                          onEditingComplete: _submitInputWordCloudResponse,
-                          unfocusOnSubmit: false,
-                          counterText: '',
-                          hideCounter: true,
-                        ),
+                      child: CustomTextField(
+                        padding: EdgeInsets.zero,
+                        borderRadius: 10,
+                        labelText: 'Enter word',
+                        maxLines: 1,
+                        maxLength: 30,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                        onChanged: (value) => updateView(),
+                        controller: _wordCloudResponseController,
+                        onEditingComplete: _submitInputWordCloudResponse,
+                        unfocusOnSubmit: false,
+                        counterText: '',
+                        hideCounter: true,
                       ),
                     ),
                   ),

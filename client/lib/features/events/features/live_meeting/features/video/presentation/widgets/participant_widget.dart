@@ -355,9 +355,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                     alignment: Alignment.center,
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: CustomLoadingIndicator(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
+                      child: CustomLoadingIndicator(),
                     ),
                   )
                 else

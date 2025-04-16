@@ -3,9 +3,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_text_data.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 
 class AgendaItemText extends StatelessWidget {
@@ -57,18 +55,15 @@ class AgendaItemText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          UIMigration(
-            whiteBackground: true,
-            child: MarkdownBody(
-              data: agendaItemTextData.content.replaceAll('\n', '\n\n'),
-              shrinkWrap: true,
-              selectable: true,
-              onTapLink: (text, href, _) {
-                if (href != null) {
-                  launch(href);
-                }
-              },
-            ),
+          MarkdownBody(
+            data: agendaItemTextData.content.replaceAll('\n', '\n\n'),
+            shrinkWrap: true,
+            selectable: true,
+            onTapLink: (text, href, _) {
+              if (href != null) {
+                launch(href);
+              }
+            },
           ),
         ],
       );

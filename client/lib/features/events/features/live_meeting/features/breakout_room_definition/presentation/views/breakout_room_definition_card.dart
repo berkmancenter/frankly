@@ -1,4 +1,4 @@
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:flutter/cupertino.dart' hide ReorderableList;
 import 'package:flutter/material.dart' hide ReorderableList;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -18,7 +18,6 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
@@ -65,67 +64,64 @@ class _BreakoutRoomDefinitionCardState
     final canFetchCapabilities =
         context.read<CommunityPermissionsProvider>().canModerateContent;
     final communityId = _presenter.eventProvider.communityId;
-    return UIMigration(
-      whiteBackground: true,
-      child: Center(
-        child: CustomStreamBuilder<PlanCapabilityList?>(
-          entryFrom: '__BreakoutRoomsDialogState._buildContent',
-          stream: canFetchCapabilities
-              ? cloudFunctionsCommunityService
-                  .getCommunityCapabilities(
-                    GetCommunityCapabilitiesRequest(communityId: communityId),
-                  )
-                  .asStream()
-              : Future.value(null).asStream(),
-          builder: (context, caps) {
-            final hasSmartMatchingCapability = caps?.hasSmartMatching ?? false;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: [
+    return Center(
+      child: CustomStreamBuilder<PlanCapabilityList?>(
+        entryFrom: '__BreakoutRoomsDialogState._buildContent',
+        stream: canFetchCapabilities
+            ? cloudFunctionsCommunityService
+                .getCommunityCapabilities(
+                  GetCommunityCapabilitiesRequest(communityId: communityId),
+                )
+                .asStream()
+            : Future.value(null).asStream(),
+        builder: (context, caps) {
+          final hasSmartMatchingCapability = caps?.hasSmartMatching ?? false;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  RoundedButton(
+                    label: context.l10n.bySize,
+                    onPressed: _assignmentMethod !=
+                            BreakoutAssignmentMethod.targetPerRoom
+                        ? () => _presenter.updateAssignmentMethod(
+                              assignmentMethod:
+                                  BreakoutAssignmentMethod.targetPerRoom,
+                            )
+                        : null,
+                  ),
+                  if (hasSmartMatchingCapability)
                     RoundedButton(
-                      label: context.l10n.bySize,
+                      label: context.l10n.smartMatch,
                       onPressed: _assignmentMethod !=
-                              BreakoutAssignmentMethod.targetPerRoom
+                              BreakoutAssignmentMethod.smartMatch
                           ? () => _presenter.updateAssignmentMethod(
                                 assignmentMethod:
-                                    BreakoutAssignmentMethod.targetPerRoom,
+                                    BreakoutAssignmentMethod.smartMatch,
                               )
                           : null,
                     ),
-                    if (hasSmartMatchingCapability)
-                      RoundedButton(
-                        label: context.l10n.smartMatch,
-                        onPressed: _assignmentMethod !=
-                                BreakoutAssignmentMethod.smartMatch
-                            ? () => _presenter.updateAssignmentMethod(
-                                  assignmentMethod:
-                                      BreakoutAssignmentMethod.smartMatch,
-                                )
-                            : null,
-                      ),
-                    if (_enableBreakoutCategory)
-                      RoundedButton(
-                        label: context.l10n.byCategory,
-                        onPressed: _assignmentMethod !=
-                                BreakoutAssignmentMethod.category
-                            ? () => _presenter.updateAssignmentMethod(
-                                  assignmentMethod:
-                                      BreakoutAssignmentMethod.category,
-                                )
-                            : null,
-                      ),
-                  ],
-                ),
-                SizedBox(height: 30),
-                _buildCardFields(),
-              ],
-            );
-          },
-        ),
+                  if (_enableBreakoutCategory)
+                    RoundedButton(
+                      label: context.l10n.byCategory,
+                      onPressed:
+                          _assignmentMethod != BreakoutAssignmentMethod.category
+                              ? () => _presenter.updateAssignmentMethod(
+                                    assignmentMethod:
+                                        BreakoutAssignmentMethod.category,
+                                  )
+                              : null,
+                    ),
+                ],
+              ),
+              SizedBox(height: 30),
+              _buildCardFields(),
+            ],
+          );
+        },
       ),
     );
   }
@@ -495,6 +491,133 @@ class _QuestionCardState extends State<QuestionCard> {
             ),
           ],
         ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: ExpansionTile(
+        key: Key(_isExpanded.value.toString()),
+        initiallyExpanded: _isExpanded.value,
+        backgroundColor: AppColor.white,
+        collapsedBackgroundColor: AppColor.white,
+        title: Row(
+          children: [
+            ReorderableListener(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Icon(
+                  Icons.reorder,
+                  color: Theme.of(context).isDark
+                      ? Colors.white
+                      : Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                child: HeightConstrainedText(
+                  questionText,
+                  style:
+                      AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+                ),
+              ),
+            ),
+            if (_breakoutCardViewType == BreakoutCardViewType.overview)
+              _buildEditButton(),
+          ],
+        ),
+        iconColor: AppColor.darkBlue,
+        collapsedIconColor: AppColor.darkBlue,
+        onExpansionChanged: (expanded) => _isExpanded.value = expanded,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomTextField(
+                  readOnly:
+                      _breakoutCardViewType == BreakoutCardViewType.overview,
+                  labelText: 'Enter Question ${questionPosition + 1}',
+                  maxLines: 1,
+                  maxLength: questionMaxLength,
+                  initialValue: !isNullOrEmpty(surveyQuestion.title)
+                      ? surveyQuestion.title
+                      : null,
+                  onChanged: (value) => _presenter.updateQuestionData(
+                    question: value,
+                    questionId: widget.questionId,
+                  ),
+                  useDarkMode: false,
+                ),
+                SizedBox(height: 30),
+                for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
+                  _builderAnswerTextField(surveyQuestion.answers[i], i),
+                  SizedBox(height: 6),
+                ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 10,
+                      ),
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          shape: CircleBorder(),
+                          color: AppColor.gray4,
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            CupertinoIcons.trash,
+                            color: AppColor.white,
+                            size: 15,
+                          ),
+                          onPressed: _breakoutCardViewType ==
+                                  BreakoutCardViewType.edit
+                              ? () async {
+                                  final delete = await ConfirmDialog(
+                                    mainText:
+                                        'Are you sure you want to delete?',
+                                  ).show(context: context);
+                                  if (delete) {
+                                    await alertOnError(
+                                      context,
+                                      () =>
+                                          _presenter.deleteBreakoutRoomQuestion(
+                                        widget.questionId,
+                                      ),
+                                    );
+                                  }
+                                }
+                              : null,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    CircleSaveCheckButton(
+                      isEnabled:
+                          _breakoutCardViewType == BreakoutCardViewType.edit,
+                      onPressed:
+                          _breakoutCardViewType == BreakoutCardViewType.edit
+                              ? () => updateBreakoutRoomQuestionDetails()
+                              : null,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_contract.dart';
 import 'package:client/features/events/features/event_page/data/models/prerequisite_template_widget_model.dart';
 import 'package:client/features/events/features/event_page/presentation/prerequisite_template_widget_presenter.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
@@ -304,93 +302,90 @@ class _PrerequisiteTemplateWidgetPageState
     final isEditIconShown = _presenter.isEditIconShown();
 
     return Material(
-      child: UIMigration(
-        whiteBackground: widget.isWhiteBackground,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: widget.isWhiteBackground
+                    ? AppColor.white
+                    : AppColor.darkBlue,
+                border: Border.all(
+                  width: 1,
                   color: widget.isWhiteBackground
-                      ? AppColor.white
+                      ? AppColor.gray5
                       : AppColor.darkBlue,
-                  border: Border.all(
-                    width: 1,
-                    color: widget.isWhiteBackground
-                        ? AppColor.gray5
-                        : AppColor.darkBlue,
-                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () => _presenter.toggleExpansion(),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Prerequisite Template',
-                              style: AppTextStyle.subhead.copyWith(
-                                color: widget.isWhiteBackground
-                                    ? AppColor.darkBlue
-                                    : AppColor.white,
-                              ),
-                            ),
-                          ),
-                          if (_model.isEditable)
-                            IconButton(
-                              key: Key(
-                                'prerequisiteTemplateWidgetPage-deleteCard',
-                              ),
-                              icon: Icon(
-                                Icons.delete,
-                                color: widget.isWhiteBackground
-                                    ? AppColor.darkBlue
-                                    : AppColor.white,
-                              ),
-                              onPressed: () => _showDeleteDialog(),
-                            ),
-                          if (isEditIconShown)
-                            IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                                color: widget.isWhiteBackground
-                                    ? AppColor.darkBlue
-                                    : AppColor.white,
-                              ),
-                              onPressed: () => _presenter.updateCardType(),
-                            ),
-                          IconButton(
-                            icon: Icon(
-                              _model.isExpanded
-                                  ? Icons.expand_less
-                                  : Icons.expand_more,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () => _presenter.toggleExpansion(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Prerequisite Template',
+                            style: AppTextStyle.subhead.copyWith(
                               color: widget.isWhiteBackground
                                   ? AppColor.darkBlue
                                   : AppColor.white,
                             ),
-                            onPressed: () => _presenter.toggleExpansion(),
                           ),
-                        ],
-                      ),
+                        ),
+                        if (_model.isEditable)
+                          IconButton(
+                            key: Key(
+                              'prerequisiteTemplateWidgetPage-deleteCard',
+                            ),
+                            icon: Icon(
+                              Icons.delete,
+                              color: widget.isWhiteBackground
+                                  ? AppColor.darkBlue
+                                  : AppColor.white,
+                            ),
+                            onPressed: () => _showDeleteDialog(),
+                          ),
+                        if (isEditIconShown)
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: widget.isWhiteBackground
+                                  ? AppColor.darkBlue
+                                  : AppColor.white,
+                            ),
+                            onPressed: () => _presenter.updateCardType(),
+                          ),
+                        IconButton(
+                          icon: Icon(
+                            _model.isExpanded
+                                ? Icons.expand_less
+                                : Icons.expand_more,
+                            color: widget.isWhiteBackground
+                                ? AppColor.darkBlue
+                                : AppColor.white,
+                          ),
+                          onPressed: () => _presenter.toggleExpansion(),
+                        ),
+                      ],
                     ),
-                    if (_model.isExpanded) SizedBox(height: 20),
-                    // Apply additional animation for more fancy experience
-                    AnimatedSize(
-                      duration: kTabScrollDuration,
-                      curve: Curves.easeIn,
-                      child: Container(
-                        child: _model.isExpanded ? _buildCardContent() : null,
-                      ),
+                  ),
+                  if (_model.isExpanded) SizedBox(height: 20),
+                  // Apply additional animation for more fancy experience
+                  AnimatedSize(
+                    duration: kTabScrollDuration,
+                    curve: Curves.easeIn,
+                    child: Container(
+                      child: _model.isExpanded ? _buildCardContent() : null,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

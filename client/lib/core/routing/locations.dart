@@ -17,7 +17,6 @@ import 'package:client/features/templates/presentation/views/template_page.dart'
 import 'package:client/features/user/presentation/views/email_unsubscribe.dart';
 import 'package:client/features/user/presentation/views/user_settings_page.dart';
 import 'package:client/core/widgets/initial_loading_widget.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/config/environment.dart';
 
 final routerDelegate = BeamerDelegate(
@@ -69,11 +68,8 @@ BeamPage _buildBeamPage({
   String title = Environment.appName,
   required Widget child,
 }) {
-  Widget tempWidget = UIMigration(
-    whiteBackground: true,
-    child: InitialLoadingWidget(
-      child: child,
-    ),
+  Widget tempWidget = InitialLoadingWidget(
+    child: child,
   );
 
   return BeamPage(

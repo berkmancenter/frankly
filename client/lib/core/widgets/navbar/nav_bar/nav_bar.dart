@@ -202,14 +202,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
 
     return [
       if (!showBottomNav)
-        Theme(
-          data: ThemeData(
-            textTheme:
-                Theme.of(context).textTheme.apply(bodyColor: AppColor.gray1),
-          ),
-          child: ProfileOrLogin(
-            showMenuAboveIcon: false,
-          ),
+        ProfileOrLogin(
+          showMenuAboveIcon: false,
         ),
       if (showBottomNav) ...[
         if (currentCommunity != null && isCommunityLocation) ...[

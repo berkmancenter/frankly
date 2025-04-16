@@ -2,7 +2,7 @@ import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/theme_preview_container.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';

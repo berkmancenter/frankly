@@ -1,19 +1,17 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
+import 'package:client/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
-import 'package:client/core/utils/transitions.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:client/core/localization/locale_provider.dart';
 // Generated localization classes
@@ -122,48 +120,37 @@ class _AppState extends State<App> {
               Locale('en'),
               Locale('es'),
               Locale.fromSubtags(
-                  languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+                  languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW',),
               Locale('zh'),
             ],
             shortcuts: {
               ...WidgetsApp.defaultShortcuts,
               LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
               LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
-                  DoNothingIntent(),
-              LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
-              LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
-              LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
-              LogicalKeySet(LogicalKeyboardKey.arrowLeft): DoNothingIntent(),
-              LogicalKeySet(LogicalKeyboardKey.arrowRight): DoNothingIntent(),
-            },
-            routerDelegate: routerDelegate,
-            backButtonDispatcher:
-                BeamerBackButtonDispatcher(delegate: routerDelegate),
-            routeInformationParser: BeamerParser(),
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: AppColor.darkBlue,
-                secondary: AppColor.brightGreen,
-              ),
-              pageTransitionsTheme: NoTransitionsOnWeb(),
+                DoNothingIntent(),
+            LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowLeft): DoNothingIntent(),
+            LogicalKeySet(LogicalKeyboardKey.arrowRight): DoNothingIntent(),
+          },
+          routerDelegate: routerDelegate,
+          backButtonDispatcher:
+              BeamerBackButtonDispatcher(delegate: routerDelegate),
+          routeInformationParser: BeamerParser(),
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColor.darkBlue,
+              secondary: AppColor.brightGreen,
             ),
-            builder: (context, child) {
-              // Initialize the app localization service with the current localizations
-              // This ensures we can access localizations without BuildContext
-              if (context != null) {
-                final localizations = AppLocalizations.of(context);
-                if (localizations != null) {
-                  appLocalizationService.setLocalization(localizations);
-                }
-              }
-              return UIMigration(
-                whiteBackground: true,
-                child: child!,
-              );
-            },
+            pageTransitionsTheme: NoTransitionsOnWeb(),
           ),
-        );
-      }),
-    );
+          builder: (_, child) => UIMigration(
+            whiteBackground: true,
+            child: child!,
+          ),
+        ),
+      ),
+    ,,,,);
   }
 }

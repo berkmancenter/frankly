@@ -137,7 +137,6 @@ class _UserSettingsPageState extends State<UserSettingsPage>
   @override
   Widget build(BuildContext buildContext) {
     return CustomScaffold(
-      bgColor: AppColor.gray6,
       child: Provider.of<UserService>(context).isSignedIn
           ? _buildTabs()
           : Container(

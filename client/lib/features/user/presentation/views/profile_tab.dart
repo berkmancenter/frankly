@@ -17,7 +17,6 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
@@ -544,21 +543,18 @@ class _ProfileTabState extends State<_ProfileTab> {
     } else {
       return Material(
         color: AppColor.white,
-        child: UIMigration(
-          whiteBackground: true,
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _buildContentList(controller.userInfo),
-                  ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _buildContentList(controller.userInfo),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }

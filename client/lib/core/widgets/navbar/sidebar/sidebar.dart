@@ -9,7 +9,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/nav_list_tile.dart';
 import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
@@ -48,20 +47,17 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      whiteBackground: true,
-      child: Container(
-        width: AppSize.kSidebarWidth,
-        color: AppColor.white,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxHeight < 750) {
-              return _buildMobileLayout();
-            } else {
-              return _buildDesktopLayout();
-            }
-          },
-        ),
+    return Container(
+      width: AppSize.kSidebarWidth,
+      color: AppColor.white,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxHeight < 750) {
+            return _buildMobileLayout();
+          } else {
+            return _buildDesktopLayout();
+          }
+        },
       ),
     );
   }

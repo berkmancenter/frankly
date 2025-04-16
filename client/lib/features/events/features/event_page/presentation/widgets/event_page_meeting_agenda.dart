@@ -14,7 +14,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -94,98 +93,94 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
         !EventProvider.watch(context).event.isHosted ||
             eventProvider.allowPredefineBreakoutsOnHosted;
 
-    return UIMigration(
-      child: MeetingAgendaWrapper(
-        allowButtonForUserSubmittedAgenda:
-            context.watch<EventPermissionsProvider>().canParticipate,
-        communityId: context.watch<CommunityProvider>().communityId,
-        template: templateProvider.template,
-        event: event,
-        isLivestream: event.isLiveStream,
-        backgroundColor: AppColor.darkerBlue,
-        agendaStartsCollapsed: true,
-        child: Column(
-          children: [
-            if (canEdit && [EventType.hostless].contains(event.eventType)) ...[
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeightConstrainedText(
-                      'Waiting Room',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
-                    ),
-                    SizedBox(height: 10),
-                    WaitingRoomWidget(event: event),
-                  ],
-                ),
+    return MeetingAgendaWrapper(
+      allowButtonForUserSubmittedAgenda:
+          context.watch<EventPermissionsProvider>().canParticipate,
+      communityId: context.watch<CommunityProvider>().communityId,
+      template: templateProvider.template,
+      event: event,
+      isLivestream: event.isLiveStream,
+      backgroundColor: AppColor.darkerBlue,
+      agendaStartsCollapsed: true,
+      child: Column(
+        children: [
+          if (canEdit && [EventType.hostless].contains(event.eventType)) ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.circular(20),
               ),
-              SizedBox(height: 20),
-            ],
-            if (canEdit &&
-                EventProvider.watch(context).isLiveStream &&
-                !responsiveLayoutService.isMobile(context)) ...[
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeightConstrainedText(
-                      'Livestream',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
-                    ),
-                    SizedBox(height: 10),
-                    LiveStreamInstructions(whiteBackground: true),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeightConstrainedText(
+                    'Waiting Room',
+                    style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                  ),
+                  SizedBox(height: 10),
+                  WaitingRoomWidget(event: event),
+                ],
               ),
-              SizedBox(height: 20),
-            ],
-            if (canEdit && allowBreakoutsDefinition) ...[
-              _buildBreakoutsSection(),
-              SizedBox(height: 20),
-            ],
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (agendaItems.isNotEmpty)
-                  if (responsiveLayoutService.isMobile(context)) ...[
-                    _buildAgendaTitle(),
-                    if (canEdit)
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: _buildClearAllButton(),
-                      ),
-                  ] else
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: _buildAgendaTitle(),
-                        ),
-                        if (canEdit) _buildClearAllButton(),
-                      ],
-                    ),
-                SizedBox(height: 10),
-                MeetingAgenda(
-                  canUserEditAgenda:
-                      context.watch<EventPermissionsProvider>().canEditEvent,
-                ),
-              ],
             ),
+            SizedBox(height: 20),
           ],
-        ),
+          if (canEdit &&
+              EventProvider.watch(context).isLiveStream &&
+              !responsiveLayoutService.isMobile(context)) ...[
+            Container(
+              decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeightConstrainedText(
+                    'Livestream',
+                    style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                  ),
+                  SizedBox(height: 10),
+                  LiveStreamInstructions(whiteBackground: true),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+          ],
+          if (canEdit && allowBreakoutsDefinition) ...[
+            _buildBreakoutsSection(),
+            SizedBox(height: 20),
+          ],
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (agendaItems.isNotEmpty)
+                if (responsiveLayoutService.isMobile(context)) ...[
+                  _buildAgendaTitle(),
+                  if (canEdit)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: _buildClearAllButton(),
+                    ),
+                ] else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: _buildAgendaTitle(),
+                      ),
+                      if (canEdit) _buildClearAllButton(),
+                    ],
+                  ),
+              SizedBox(height: 10),
+              MeetingAgenda(
+                canUserEditAgenda:
+                    context.watch<EventPermissionsProvider>().canEditEvent,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

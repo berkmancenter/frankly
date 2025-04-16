@@ -21,7 +21,6 @@ import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:client/core/widgets/tabs/tab_bar.dart';
@@ -36,7 +35,6 @@ import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_message.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 import '../event_page_presenter.dart';
@@ -56,34 +54,32 @@ class EventPage extends StatefulWidget {
   }) : super(key: key);
 
   Widget create() {
-    return UIMigration(
+    return ChangeNotifierProvider(
+      create: (context) => EventProvider(
+        communityProvider: context.read<CommunityProvider>(),
+        templateId: templateId,
+        eventId: eventId,
+      ),
       child: ChangeNotifierProvider(
-        create: (context) => EventProvider(
-          communityProvider: context.read<CommunityProvider>(),
+        create: (context) => TemplateProvider(
+          communityId: context.read<CommunityProvider>().communityId,
           templateId: templateId,
-          eventId: eventId,
         ),
         child: ChangeNotifierProvider(
-          create: (context) => TemplateProvider(
-            communityId: context.read<CommunityProvider>().communityId,
-            templateId: templateId,
+          create: (context) => EventPageProvider(
+            eventProvider: context.read<EventProvider>(),
+            communityProvider: context.read<CommunityProvider>(),
+            navBarProvider: context.read<NavBarProvider>(),
+            cancelParam: cancel,
           ),
           child: ChangeNotifierProvider(
-            create: (context) => EventPageProvider(
+            create: (context) => EventPermissionsProvider(
               eventProvider: context.read<EventProvider>(),
+              communityPermissions:
+                  context.read<CommunityPermissionsProvider>(),
               communityProvider: context.read<CommunityProvider>(),
-              navBarProvider: context.read<NavBarProvider>(),
-              cancelParam: cancel,
             ),
-            child: ChangeNotifierProvider(
-              create: (context) => EventPermissionsProvider(
-                eventProvider: context.read<EventProvider>(),
-                communityPermissions:
-                    context.read<CommunityPermissionsProvider>(),
-                communityProvider: context.read<CommunityProvider>(),
-              ),
-              child: this,
-            ),
+            child: this,
           ),
         ),
       ),
@@ -340,55 +336,52 @@ class _EventPageState extends State<EventPage> implements EventPageView {
     final eventProvider = EventProvider.watch(context);
     final event = eventProvider.event;
 
-    return UIMigration(
-      whiteBackground: true,
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          children: [
-            if (_presenter.isEditTemplateTooltipShown)
-              _buildEditTemplateMessage(),
-            if (isMobile) ...[
-              Container(
-                alignment: Alignment.topCenter,
-                child: EventInfo(
-                  eventPagePresenter: _presenter,
-                  event: event,
-                  onMessagePressed: () => _showSendMessageDialog(),
-                  onJoinEvent: _joinEvent,
-                ),
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        children: [
+          if (_presenter.isEditTemplateTooltipShown)
+            _buildEditTemplateMessage(),
+          if (isMobile) ...[
+            Container(
+              alignment: Alignment.topCenter,
+              child: EventInfo(
+                eventPagePresenter: _presenter,
+                event: event,
+                onMessagePressed: () => _showSendMessageDialog(),
+                onJoinEvent: _joinEvent,
               ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _buildEventTabsWrappedGuide(),
-              ),
-            ] else ...[
-              SizedBox(height: 40),
-              ConstrainedBody(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 400,
-                      alignment: Alignment.topCenter,
-                      child: EventInfo(
-                        eventPagePresenter: _presenter,
-                        event: event,
-                        onMessagePressed: () => _showSendMessageDialog(),
-                        onJoinEvent: _joinEvent,
-                      ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: _buildEventTabsWrappedGuide(),
+            ),
+          ] else ...[
+            SizedBox(height: 40),
+            ConstrainedBody(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 400,
+                    alignment: Alignment.topCenter,
+                    child: EventInfo(
+                      eventPagePresenter: _presenter,
+                      event: event,
+                      onMessagePressed: () => _showSendMessageDialog(),
+                      onJoinEvent: _joinEvent,
                     ),
-                    SizedBox(width: 40),
-                    Expanded(
-                      child: _buildEventTabsWrappedGuide(),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(width: 40),
+                  Expanded(
+                    child: _buildEventTabsWrappedGuide(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
     );
   }

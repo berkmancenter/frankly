@@ -1,6 +1,7 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
@@ -90,14 +91,16 @@ class _CommunityPageState extends State<CommunityPage> {
           final enableCustomColors = !isOnPageWithDefaultColors;
           final lightThemeColor =
               ThemeUtils.parseColor(community?.themeLightColor) ??
-                  AppColor.gray6;
+                  Theme.of(context).colorScheme.surface;
           return Consumer<UserService>(
             builder: (_, __, ___) => Consumer<UserDataService>(
               builder: (_, __, ___) {
-                final primaryColor =
-                    enableCustomColors ? darkThemeColor : AppColor.darkBlue;
-                final secondaryColor =
-                    enableCustomColors ? lightThemeColor : AppColor.brightGreen;
+                final primaryColor = enableCustomColors
+                    ? darkThemeColor
+                    : context.theme.colorScheme.primary;
+                final secondaryColor = enableCustomColors
+                    ? lightThemeColor
+                    : context.theme.colorScheme.secondary;
 
                 return Theme(
                   data: Theme.of(context).copyWith(
@@ -147,9 +150,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                     .canCreateEvent;
 
                         return CustomScaffold(
-                          bgColor: enableCustomColors
-                              ? lightThemeColor
-                              : AppColor.gray6,
+                          bgColor: enableCustomColors ? lightThemeColor : null,
                           fillViewport: widget.fillViewport,
                           bottomNavigationBar: _showBottomNav
                               ? CommunityBottomNavBar(

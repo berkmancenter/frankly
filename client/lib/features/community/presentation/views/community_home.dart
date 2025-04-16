@@ -11,14 +11,12 @@ import 'package:client/features/community/presentation/widgets/event_widget.dart
 import 'package:client/features/community/presentation/widgets/edit_community_button.dart';
 import 'package:client/features/community/data/providers/community_home_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
 import 'package:client/features/community/presentation/widgets/donate_widget.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
@@ -42,10 +40,7 @@ class CommunityHome extends StatefulWidget {
       create: (context) => CommunityHomeProvider(
         communityProvider: context.read<CommunityProvider>(),
       ),
-      child: UIMigration(
-        whiteBackground: true,
-        child: CommunityHome._(),
-      ),
+      child: CommunityHome._(),
     );
   }
 

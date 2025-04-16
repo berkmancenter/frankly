@@ -891,9 +891,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                         SizedBox(
                           height: 20,
                           width: 20,
-                          child: CustomLoadingIndicator(
-                            color: AppColor.brightGreen,
-                          ),
+                          child: CustomLoadingIndicator(),
                         )
                       else if (participantsSnapshot.hasError)
                         HeightConstrainedText(context.l10n.error)
