@@ -433,17 +433,17 @@ class _ChatInputState extends State<ChatInput> {
 }
 
 class _IconButton extends StatefulWidget {
-  final Future<void> Function() onTap;
-  final String text;
-  final IconData icon;
-  final Color iconColor;
-
   const _IconButton({
     required this.onTap,
     required this.text,
     required this.icon,
-    this.iconColor = context.theme.colorScheme.onPrimary,
+    this.iconColor,
   });
+
+  final Future<void> Function() onTap;
+  final String text;
+  final IconData icon;
+  final Color? iconColor;
 
   @override
   _IconButtonState createState() => _IconButtonState();
@@ -489,7 +489,9 @@ class _IconButtonState extends State<_IconButton> {
               child: Icon(
                 widget.icon,
                 size: 34,
-                color: _isSending ? AppColor.gray3 : widget.iconColor,
+                color: _isSending
+                    ? AppColor.gray3
+                    : widget.iconColor ?? context.theme.colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: 2),
