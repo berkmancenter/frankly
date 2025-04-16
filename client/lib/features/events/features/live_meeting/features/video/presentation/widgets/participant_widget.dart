@@ -19,7 +19,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/styles.dart';
+import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -275,8 +275,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                       ? 'Loading...'
                       : snapshot.data?.displayName ?? 'Participant',
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.body
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
+                  style: AppTextStyle.body.copyWith(color: AppColor.white),
                 ),
               ),
             ),
@@ -520,8 +519,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
                   }),
           child: HeightConstrainedText(
             isPinned ? 'Unpin' : 'Pin',
-            style: AppTextStyle.bodyMedium
-                .copyWith(color: context.theme.colorScheme.primary),
+            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
           ),
         ),
       if (widget.showMute)
@@ -532,8 +530,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
           child: HeightConstrainedText(
             'Mute',
-            style: AppTextStyle.bodyMedium
-                .copyWith(color: context.theme.colorScheme.primary),
+            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
           ),
         ),
       if (widget.showKick)
@@ -564,8 +561,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
         ),
         child: HeightConstrainedText(
           isCurrentUser ? 'Edit Profile' : 'View Profile',
-          style: AppTextStyle.bodyMedium
-              .copyWith(color: context.theme.colorScheme.primary),
+          style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
         ),
       ),
     ];
@@ -605,24 +601,25 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             ?.pinnedUserIds
             .any((id) => id == widget.userId) ??
         false;
-    return CustomInkWell(
-      onTap: widget.isVisible
-          ? () => _showMoreMenu(_getMenuItems(context: context))
-          : null,
-      onHover: widget.isVisible
-          ? (isHovered) => setState(() => _isHovered = isHovered)
-          : null,
-      child: Container(
-        key: _menuKey,
-        padding: const EdgeInsets.all(5),
-        child: Icon(
-          isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
-          size: 16,
-          color: _isHovered
-              ? AppColor.brightGreen
-              : context.theme.colorScheme.onPrimary,
+    return Semantics(
+      label: 'Participant Actions for user with ID ${widget.userId}',
+      child: CustomInkWell(
+          onTap: widget.isVisible
+              ? () => _showMoreMenu(_getMenuItems(context: context))
+              : null,
+          onHover: widget.isVisible
+              ? (isHovered) => setState(() => _isHovered = isHovered)
+              : null,
+          child: Container(
+            key: _menuKey,
+            padding: const EdgeInsets.all(5),
+            child: Icon(
+              isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
+              size: 16,
+              color: _isHovered ? AppColor.brightGreen : AppColor.white,
+            ),
+          ),
         ),
-      ),
     );
   }
 }

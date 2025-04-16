@@ -9,7 +9,7 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/styles.dart';
+import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/community/community.dart';
@@ -73,7 +73,7 @@ class _NavListItemState extends State<NavListItem> {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
               child: HeightConstrainedText(
                 widget.community.name ?? 'Unnamed Community',
-                style: AppTextStyle.body,
+                style: AppTextStyle.body.copyWith(color: AppColor.gray1),
               ),
             ),
           ),
@@ -136,10 +136,18 @@ class CommunitySidebarNavLinks extends StatelessWidget {
     } else {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: CommunityMembershipButton(
-          community,
-          minWidth: 315,
-        ),
+        child: 
+        Semantics(
+          label:'Sidebar Follow Community Button', 
+          identifier: 'sidebar_follow_community_button',
+          button: true,
+          child:
+            CommunityMembershipButton(
+              community,
+              bgColor: AppColor.darkBlue,
+              minWidth: 315,
+            ),
+          ),
       );
     }
   }

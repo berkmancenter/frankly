@@ -60,14 +60,19 @@ class CommunitySideBarNavigation extends StatelessWidget {
           style: AppTextStyle.body,
         ),
         if (showLeaveCommunity)
-          SideBarNavigationButton(
-            text: 'Unfollow',
-            onTap: () => alertOnError(
-              context,
-              () => Provider.of<UserDataService>(context, listen: false)
-                  .requestChangeCommunityMembership(
-                community: community,
-                join: false,
+         Semantics(
+          label: 'Sidebar Unfollow Button',
+          identifier: 'sidebar_unfollow_button',
+          button: true,
+          child: SideBarNavigationButton(
+              text: 'Unfollow',
+              onTap: () => alertOnError(
+                context,
+                () => Provider.of<UserDataService>(context, listen: false)
+                    .requestChangeCommunityMembership(
+                  community: community,
+                  join: false,
+                ),
               ),
             ),
           ),
