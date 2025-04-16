@@ -194,7 +194,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
                       })
                   : null,
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.white,
+              textColor: context.theme.colorScheme.onPrimary,
             ),
           ),
           SizedBox(height: 20),

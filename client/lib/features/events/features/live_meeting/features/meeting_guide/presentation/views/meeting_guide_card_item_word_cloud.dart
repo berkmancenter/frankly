@@ -161,7 +161,7 @@ class _MeetingGuideCardItemWordCloudState
                 Icons.cloud,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
-                    ? AppColor.white
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.primary,
               ),
             ),
@@ -185,7 +185,7 @@ class _MeetingGuideCardItemWordCloudState
                 Icons.list,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.list
-                    ? AppColor.white
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.primary,
               ),
             ),
@@ -209,7 +209,7 @@ class _MeetingGuideCardItemWordCloudState
                 Icons.person,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
-                    ? AppColor.white
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.primary,
               ),
             ),

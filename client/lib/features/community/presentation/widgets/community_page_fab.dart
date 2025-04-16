@@ -44,14 +44,14 @@ class CommunityPageFloatingActionButton extends StatelessWidget {
               Icon(
                 Icons.add,
                 size: 41,
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
               ),
               if (!responsiveLayoutService.isMobile(context)) ...[
                 SizedBox(width: 20),
                 HeightConstrainedText(
                   text,
                   style: AppTextStyle.subhead.copyWith(
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                 ),
                 SizedBox(width: 20),

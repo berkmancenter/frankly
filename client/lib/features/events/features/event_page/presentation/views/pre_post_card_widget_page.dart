@@ -342,7 +342,8 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'URL Preview',
-                style: AppTextStyle.body.copyWith(color: AppColor.white),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
               ),
               SizedBox(height: 4),
               HeightConstrainedText(

@@ -513,7 +513,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
           errorMessage: 'Something went wrong loading room. Please refresh!',
           loadingMessage: 'Connecting to room...',
-          textStyle: TextStyle(color: AppColor.white),
+          textStyle: TextStyle(color: context.theme.colorScheme.onPrimary),
           builder: (_, __) => Stack(
             children: [
               _buildMeeting(),
@@ -542,7 +542,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         SizedBox(width: 8),
                         Text(
                           'Recording',
-                          style: TextStyle(color: AppColor.white),
+                          style: TextStyle(
+                              color: context.theme.colorScheme.onPrimary),
                         ),
                         SizedBox(width: 26),
                       ],
@@ -1015,7 +1016,9 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.close,
-                      color: isAdmin ? AppColor.white : AppColor.gray2,
+                      color: isAdmin
+                          ? context.theme.colorScheme.onPrimary
+                          : AppColor.gray2,
                       size: 20,
                     ),
                   ),

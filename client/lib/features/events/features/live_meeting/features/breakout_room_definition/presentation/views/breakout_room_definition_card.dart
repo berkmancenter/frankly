@@ -153,7 +153,8 @@ class _BreakoutRoomDefinitionCardState
       children: [
         HeightConstrainedText(
           'Target size',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: 8),
         Container(
@@ -274,7 +275,8 @@ class _BreakoutRoomDefinitionCardState
       children: [
         HeightConstrainedText(
           'Category',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: 20),
         Container(
@@ -447,7 +449,7 @@ class _QuestionCardState extends State<QuestionCard> {
                         child: IconButton(
                           icon: Icon(
                             CupertinoIcons.trash,
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                             size: 15,
                           ),
                           onPressed: _breakoutCardViewType ==

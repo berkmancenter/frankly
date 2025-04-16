@@ -417,7 +417,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
 
         return ShareSection(
           iconColor: context.theme.colorScheme.primary,
-          iconBackgroundColor: AppColor.white,
+          iconBackgroundColor: context.theme.colorScheme.onPrimary,
           url: shareData.pathToPage,
           body: body,
           subject: subject,

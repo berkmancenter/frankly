@@ -89,7 +89,7 @@ class _CategoryCardState extends State<CategoryCard> {
                 },
                 child: Icon(
                   CupertinoIcons.trash,
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.onPrimary,
                   size: 20,
                 ),
               ),

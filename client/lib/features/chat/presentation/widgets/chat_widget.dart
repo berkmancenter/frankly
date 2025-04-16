@@ -165,7 +165,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ),
@@ -178,7 +178,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
       children: [
         Checkbox(
           fillColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
-          side: BorderSide(color: AppColor.white),
+          side: BorderSide(color: context.theme.colorScheme.onPrimary),
           value: _broadcast,
           onChanged: (value) => setState(() => _broadcast = !_broadcast),
         ),

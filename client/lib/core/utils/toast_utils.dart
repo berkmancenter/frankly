@@ -29,7 +29,7 @@ void showRegularToast(
       break;
     case ToastType.neutral:
       backgroundColor = context.theme.colorScheme.primary;
-      textColor = AppColor.white;
+      textColor = context.theme.colorScheme.onPrimary;
       break;
     case ToastType.failed:
       backgroundColor = AppColor.lightRed;

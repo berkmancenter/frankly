@@ -33,7 +33,7 @@ class PrivateCommunityCheckbox extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             onChanged: onUpdate,
             initialValue: value,
-            checkColor: AppColor.white,
+            checkColor: context.theme.colorScheme.onPrimary,
             activeColor: context.theme.colorScheme.primary,
             decoration: InputDecoration(
               fillColor: context.theme.colorScheme.surfaceContainerLowest,

@@ -73,14 +73,14 @@ class AudioVideoErrorDialog extends StatelessWidget {
 }
 
 class AudioVideoErrorDisplay extends StatelessWidget {
-  final String error;
-  final Color textColor;
-
   const AudioVideoErrorDisplay({
     Key? key,
     required this.error,
-    this.textColor = AppColor.white,
+    this.textColor,
   }) : super(key: key);
+
+  final String error;
+  final Color? textColor;
 
   String _buildErrorText() {
     String errorText = error;
@@ -138,7 +138,9 @@ class AudioVideoErrorDisplay extends StatelessWidget {
             ),
             text: _buildErrorText(),
             textAlign: TextAlign.center,
-            style: TextStyle(color: textColor, fontSize: 22),
+            style: TextStyle(
+                color: textColor ?? context.theme.colorScheme.onPrimary,
+                fontSize: 22),
           ),
           SizedBox(height: 16),
           ActionButton(

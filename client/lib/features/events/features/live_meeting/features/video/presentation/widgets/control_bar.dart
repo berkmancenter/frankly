@@ -73,8 +73,9 @@ class _ControlBarState extends State<ControlBar> {
       icon: _conferenceRoom.videoEnabled
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
-      iconColor:
-          _conferenceRoom.videoEnabled ? AppColor.white : AppColor.redDarkMode,
+      iconColor: _conferenceRoom.videoEnabled
+          ? context.theme.colorScheme.onPrimary
+          : AppColor.redDarkMode,
     );
   }
 
@@ -121,7 +122,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),
@@ -157,7 +158,7 @@ class _ControlBarState extends State<ControlBar> {
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
           iconColor: _conferenceRoom.audioEnabled
-              ? AppColor.white
+              ? context.theme.colorScheme.onPrimary
               : AppColor.redDarkMode,
         ),
         _buildMoreOptionsButton(),
@@ -184,7 +185,7 @@ class _ControlBarState extends State<ControlBar> {
         onPressed: () => LiveMeetingProvider.read(context).leaveMeeting(),
         text: 'Leave',
         color: AppColor.redLightMode,
-        textColor: AppColor.white,
+        textColor: context.theme.colorScheme.onPrimary,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       ),
     );
@@ -380,9 +381,10 @@ class _ChatInputState extends State<ChatInput> {
         children: [
           Expanded(
             child: CustomTextField(
-              cursorColor: AppColor.white,
+              cursorColor: context.theme.colorScheme.onPrimary,
               borderType: BorderType.none,
-              textStyle: body.copyWith(color: AppColor.white),
+              textStyle:
+                  body.copyWith(color: context.theme.colorScheme.onPrimary),
               hintStyle: body.copyWith(color: AppColor.gray2),
               backgroundColor: AppColor.gray2,
               borderRadius: isMobile ? 25 : 10,
@@ -440,7 +442,7 @@ class _IconButton extends StatefulWidget {
     required this.onTap,
     required this.text,
     required this.icon,
-    this.iconColor = AppColor.white,
+    this.iconColor = context.theme.colorScheme.onPrimary,
   });
 
   @override
@@ -495,7 +497,9 @@ class _IconButtonState extends State<_IconButton> {
               widget.text,
               textAlign: TextAlign.center,
               style: body.copyWith(
-                color: _isSending ? AppColor.gray3 : AppColor.white,
+                color: _isSending
+                    ? AppColor.gray3
+                    : context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
                 height: 1.05,
               ),

@@ -472,7 +472,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           padding: EdgeInsets.all(6.0),
           child: Icon(
             icon,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: iconSize,
           ),
         ),

@@ -271,7 +271,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                         HeightConstrainedText(
                           'The event is starting',
                           style: TextStyle(
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                           ),
                         ),
                         SizedBox(height: 10),

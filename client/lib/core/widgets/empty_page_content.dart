@@ -80,8 +80,10 @@ class EmptyPageContent extends StatelessWidget {
           if (onButtonPress != null)
             ActionButton(
               text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body
-                  .copyWith(color: isFlat ? AppColor.white : buttonColor),
+              textStyle: AppTextStyle.body.copyWith(
+                  color: isFlat
+                      ? context.theme.colorScheme.onPrimary
+                      : buttonColor),
               color: isFlat ? buttonColor : null,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),

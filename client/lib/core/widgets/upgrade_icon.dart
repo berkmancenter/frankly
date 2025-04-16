@@ -13,7 +13,7 @@ class UpgradeIcon extends StatelessWidget {
 
   Color _iconColor(BuildContext context) {
     if (isDisabledColor) {
-      return AppColor.white;
+      return context.theme.colorScheme.onPrimary;
     } else if (isColorInverted) {
       return context.theme.colorScheme.primary;
     } else {

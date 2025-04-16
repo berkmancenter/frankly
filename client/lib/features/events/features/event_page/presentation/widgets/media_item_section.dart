@@ -64,7 +64,7 @@ class MediaItemSection extends StatelessWidget {
                     child: Icon(
                       Icons.add,
                       size: 18,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -102,7 +102,8 @@ class MediaItemSection extends StatelessWidget {
                 customBorder: CircleBorder(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.edit, size: 20, color: AppColor.white),
+                  child: Icon(Icons.edit,
+                      size: 20, color: context.theme.colorScheme.onPrimary),
                 ),
                 onTap: () => _showMediaPickerDialog(context),
               ),
@@ -115,7 +116,8 @@ class MediaItemSection extends StatelessWidget {
                 customBorder: CircleBorder(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.delete, size: 20, color: AppColor.white),
+                  child: Icon(Icons.delete,
+                      size: 20, color: context.theme.colorScheme.onPrimary),
                 ),
                 onTap: () {
                   ConfirmDialog(

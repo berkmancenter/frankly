@@ -180,7 +180,8 @@ class CustomCirclePageIndicator extends StatefulWidget {
   static const double _defaultSelectedSize = 8.0;
   static const double _defaultSpacing = 8.0;
   static const Color _defaultDotColor = AppColor.gray4;
-  static const Color _defaultSelectedDotColor = AppColor.white;
+  static const Color _defaultSelectedDotColor =
+      context.theme.colorScheme.onPrimary;
 
   final ValueNotifier<int> currentPageNotifier;
   final int itemCount;

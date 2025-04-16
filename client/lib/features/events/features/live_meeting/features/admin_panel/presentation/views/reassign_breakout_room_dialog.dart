@@ -178,14 +178,16 @@ class _ReassignBreakoutRoomDialogState
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.add, size: 36, color: AppColor.white),
+                              Icon(Icons.add,
+                                  size: 36,
+                                  color: context.theme.colorScheme.onPrimary),
                               SizedBox(height: 6),
                               HeightConstrainedText(
                                 'Add Room $expectedNewRoomNum',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColor.white,
+                                  color: context.theme.colorScheme.onPrimary,
                                 ),
                               ),
                             ],
@@ -232,7 +234,7 @@ class _ReassignBreakoutRoomDialogState
             child: Text(
               'Reassign ${publicUserInfo?.displayName ?? 'User'}',
               style: TextStyle(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 fontSize: 16,
               ),
             ),

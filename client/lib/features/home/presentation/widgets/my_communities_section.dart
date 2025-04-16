@@ -224,7 +224,8 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
             SizedBox(height: 10),
             HeightConstrainedText(
               (community.name ?? 'Unnamed Community').toUpperCase(),
-              style: AppTextStyle.eyebrow.copyWith(color: AppColor.white),
+              style: AppTextStyle.eyebrow
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
@@ -233,7 +234,8 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
               width: 255,
               child: HeightConstrainedText(
                 community.tagLine ?? community.description ?? '',
-                style: AppTextStyle.headline3.copyWith(color: AppColor.white),
+                style: AppTextStyle.headline3
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
                 textAlign: TextAlign.center,
                 maxLines: 3,
               ),

@@ -50,7 +50,7 @@ class MeetingRating extends StatefulWidget {
                       onPressed: () => Navigator.of(innerContext).pop(),
                       text: 'No thanks',
                       color: Colors.transparent,
-                      textColor: AppColor.white,
+                      textColor: innerContext.theme.colorScheme.onPrimary,
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
@@ -146,7 +146,7 @@ class _MeetingRatingState extends State<MeetingRating> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.close,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: 35,
           ),
         ),
@@ -172,7 +172,7 @@ class _MeetingRatingState extends State<MeetingRating> {
               'YOU LEFT THE EVENT',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -190,7 +190,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.headline1.copyWith(
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                       // Trying to keep from wrapping at the default dialog size due to:
                       // https://github.com/flutter/flutter/issues/89586
                       fontSize: 36,
@@ -205,7 +205,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),

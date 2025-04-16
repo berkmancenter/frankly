@@ -203,7 +203,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
           height: 30,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColor.white),
+            border: Border.all(color: context.theme.colorScheme.onPrimary),
           ),
           alignment: Alignment.center,
           child: ProxiedImage(
@@ -303,7 +303,8 @@ class _AvCheckPageState extends State<_AvCheckPage> {
               if (devices.isEmpty) {
                 return HeightConstrainedText(
                   'No alternative devices detected',
-                  style: AppTextStyle.body.copyWith(color: AppColor.white),
+                  style: AppTextStyle.body
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                 );
               } else {
                 return DropdownButton<String>(

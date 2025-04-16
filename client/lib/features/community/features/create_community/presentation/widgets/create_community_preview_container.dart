@@ -46,9 +46,9 @@ class PreviewContainer extends StatelessWidget {
           : AppColor.gray4;
 
   Color _taglineColor(BuildContext context) => finalPreview
-      ? AppColor.white
+      ? context.theme.colorScheme.onPrimary
       : !isNullOrEmpty(community.tagLine)
-          ? AppColor.white
+          ? context.theme.colorScheme.onPrimary
           : AppColor.gray3;
 
   Color _aboutColor(BuildContext context) => finalPreview

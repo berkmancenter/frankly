@@ -136,7 +136,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
       errorMessage: 'Something went wrong loading room. Please refresh!',
       loadingMessage: 'Connecting to room...',
-      textStyle: TextStyle(color: AppColor.white),
+      textStyle: TextStyle(color: context.theme.colorScheme.onPrimary),
       builder: (_, __) => _buildLayout(),
     );
   }
@@ -178,7 +178,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                   SizedBox(width: 8),
                   Text(
                     'Recording',
-                    style: TextStyle(color: AppColor.white),
+                    style:
+                        TextStyle(color: context.theme.colorScheme.onPrimary),
                   ),
                   SizedBox(width: 26),
                 ],

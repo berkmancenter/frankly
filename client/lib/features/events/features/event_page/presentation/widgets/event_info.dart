@@ -462,7 +462,8 @@ class _EventInfoState extends State<EventInfo> {
         icon: CircleAvatar(
           radius: 12,
           backgroundColor: AppColor.redLightMode,
-          child: Icon(Icons.school_outlined, size: 20, color: AppColor.white),
+          child: Icon(Icons.school_outlined,
+              size: 20, color: context.theme.colorScheme.onPrimary),
         ),
         title: 'Prerequisite Required',
       );

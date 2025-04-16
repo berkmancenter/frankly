@@ -74,7 +74,8 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Text(
               'Fake Participants',
-              style: TextStyle(color: AppColor.white, fontSize: 16),
+              style: TextStyle(
+                  color: context.theme.colorScheme.onPrimary, fontSize: 16),
             ),
           ),
         ),

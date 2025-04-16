@@ -370,7 +370,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                     SizedBox(width: 10),
                     Text(
                       '$completedStepCount/$totalSteps',
-                      style: AppTextStyle.body.copyWith(color: AppColor.white),
+                      style: AppTextStyle.body
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                     ),
                     SizedBox(width: 20),
                     AppClickableWidget(
@@ -400,8 +401,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                           SizedBox(width: 5),
                           Text(
                             onboardingStep.title,
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.white),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                                color: context.theme.colorScheme.onPrimary),
                           ),
                         ],
                       ),
@@ -409,13 +410,13 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                         children: [
                           Text(
                             onboardingStep.sectionTitle,
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.white),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                                color: context.theme.colorScheme.onPrimary),
                           ),
                           SizedBox(width: 4),
                           Icon(
                             Icons.arrow_forward_ios,
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                             size: 12,
                           ),
                         ],
@@ -468,19 +469,19 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                         SizedBox(width: 5),
                         Text(
                           onboardingStep.title,
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: AppColor.white),
+                          style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.onPrimary),
                         ),
                         SizedBox(width: 10),
                         Text(
                           onboardingStep.sectionTitle,
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: AppColor.white),
+                          style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.onPrimary),
                         ),
                         SizedBox(width: 5),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: AppColor.white,
+                          color: context.theme.colorScheme.onPrimary,
                           size: 12,
                         ),
                       ],
@@ -499,7 +500,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                   SizedBox(width: 10),
                   Text(
                     '$completedStepCount/$totalSteps',
-                    style: AppTextStyle.body.copyWith(color: AppColor.white),
+                    style: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.onPrimary),
                   ),
                   SizedBox(width: 20),
                   AppClickableWidget(

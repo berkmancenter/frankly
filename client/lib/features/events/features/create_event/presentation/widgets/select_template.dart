@@ -91,7 +91,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
           fontFamily: 'Roboto',
           fontSize: 12,
           fontWeight: FontWeight.normal,
-          color: AppColor.white,
+          color: context.theme.colorScheme.onPrimary,
         ),
         options: [
           for (final category in provider.allCategories)
@@ -256,7 +256,9 @@ class TemplateSelectionCard extends StatelessWidget {
         strokeCap: StrokeCap.round,
         borderType: dotted_border.BorderType.RRect,
         radius: Radius.circular(10),
-        color: isSelected ? AppColor.brightGreen : AppColor.white,
+        color: isSelected
+            ? AppColor.brightGreen
+            : context.theme.colorScheme.onPrimary,
         dashPattern: isSelected ? const [1, 0] : const [5, 5],
         strokeWidth: isSelected ? 4 : 1,
         child: Container(
@@ -306,7 +308,7 @@ class TemplateSelectionCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       height: 1.3,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -317,7 +319,8 @@ class TemplateSelectionCard extends StatelessWidget {
                     width: 23,
                     height: 23,
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColor.white, width: 1),
+                      border: Border.all(
+                          color: context.theme.colorScheme.onPrimary, width: 1),
                       color: Colors.transparent,
                       shape: BoxShape.circle,
                     ),

@@ -289,7 +289,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 'All rooms',
                 style: TextStyle(
                   color: _showOnlyAlertedRooms
-                      ? AppColor.white
+                      ? context.theme.colorScheme.onPrimary
                       : Theme.of(context).primaryColor,
                 ),
               ),
@@ -311,7 +311,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 'Alerts only',
                 style: TextStyle(
                   color: !_showOnlyAlertedRooms
-                      ? AppColor.white
+                      ? context.theme.colorScheme.onPrimary
                       : Theme.of(context).primaryColor,
                 ),
               ),
@@ -864,7 +864,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                     fontWeight: FontWeight.w400,
                     color: isCurrentRoom
                         ? Theme.of(context).primaryColor
-                        : AppColor.white,
+                        : context.theme.colorScheme.onPrimary,
                   ),
                 ),
                 SizedBox(height: 10),
@@ -904,7 +904,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                                 ? AppColor.darkRed
                                 : (isCurrentRoom
                                     ? Theme.of(context).primaryColor
-                                    : AppColor.white),
+                                    : context.theme.colorScheme.onPrimary),
                           ),
                         ),
                     ],
@@ -1133,8 +1133,9 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           color: needsHelp
                               ? AppColor.redDarkMode
                               : Colors.transparent,
-                          textColor:
-                              needsHelp ? AppColor.white : AppColor.brightGreen,
+                          textColor: needsHelp
+                              ? context.theme.colorScheme.onPrimary
+                              : AppColor.brightGreen,
                           overlayColor:
                               context.theme.colorScheme.surfaceContainer,
                           text: 'Enter Room',

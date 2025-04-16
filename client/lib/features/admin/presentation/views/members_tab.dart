@@ -519,7 +519,7 @@ class _MembersTabState extends State<MembersTab> {
                       color: context.theme.colorScheme.primary,
                       icon: Icon(
                         Icons.download,
-                        color: AppColor.white,
+                        color: context.theme.colorScheme.onPrimary,
                         size: 20,
                       ),
                     ),

@@ -39,7 +39,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       return Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -105,7 +105,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -127,7 +127,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
               !responsiveLayoutService.isMobile(context)) ...[
             Container(
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: const EdgeInsets.all(20),

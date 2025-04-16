@@ -122,7 +122,7 @@ class _PrerequisiteTemplateWidgetPageState
               Icons.check,
               size: 16,
               color: widget.isWhiteBackground
-                  ? AppColor.white
+                  ? context.theme.colorScheme.onPrimary
                   : context.theme.colorScheme.primary,
             ),
           ),
@@ -148,7 +148,7 @@ class _PrerequisiteTemplateWidgetPageState
             style: AppTextStyle.subhead.copyWith(
               color: widget.isWhiteBackground
                   ? context.theme.colorScheme.primary
-                  : AppColor.white,
+                  : context.theme.colorScheme.onPrimary,
             ),
           ),
           SizedBox(height: 10),
@@ -184,11 +184,12 @@ class _PrerequisiteTemplateWidgetPageState
                           CupertinoIcons.chevron_down,
                           color: widget.isWhiteBackground
                               ? context.theme.colorScheme.primary
-                              : AppColor.white,
+                              : context.theme.colorScheme.onPrimary,
                         ),
                         iconSize: 24,
                         elevation: 16,
-                        style: TextStyle(color: AppColor.white),
+                        style: TextStyle(
+                            color: context.theme.colorScheme.onPrimary),
                         borderRadius: BorderRadius.circular(10),
                         underline: SizedBox.shrink(),
                         iconEnabledColor: context.theme.colorScheme.primary,
@@ -247,7 +248,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   style: AppTextStyle.body.copyWith(
                                     color: widget.isWhiteBackground
                                         ? context.theme.colorScheme.primary
-                                        : AppColor.white,
+                                        : context.theme.colorScheme.onPrimary,
                                   ),
                                 ),
                               ),
@@ -265,7 +266,7 @@ class _PrerequisiteTemplateWidgetPageState
                                     style: AppTextStyle.body.copyWith(
                                       color: widget.isWhiteBackground
                                           ? context.theme.colorScheme.primary
-                                          : AppColor.white,
+                                          : context.theme.colorScheme.onPrimary,
                                     ),
                                   ),
                                 ),
@@ -337,7 +338,7 @@ class _PrerequisiteTemplateWidgetPageState
                             style: AppTextStyle.subhead.copyWith(
                               color: widget.isWhiteBackground
                                   ? context.theme.colorScheme.primary
-                                  : AppColor.white,
+                                  : context.theme.colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -350,7 +351,7 @@ class _PrerequisiteTemplateWidgetPageState
                               Icons.delete,
                               color: widget.isWhiteBackground
                                   ? context.theme.colorScheme.primary
-                                  : AppColor.white,
+                                  : context.theme.colorScheme.onPrimary,
                             ),
                             onPressed: () => _showDeleteDialog(),
                           ),
@@ -360,7 +361,7 @@ class _PrerequisiteTemplateWidgetPageState
                               Icons.edit,
                               color: widget.isWhiteBackground
                                   ? context.theme.colorScheme.primary
-                                  : AppColor.white,
+                                  : context.theme.colorScheme.onPrimary,
                             ),
                             onPressed: () => _presenter.updateCardType(),
                           ),
@@ -371,7 +372,7 @@ class _PrerequisiteTemplateWidgetPageState
                                 : Icons.expand_more,
                             color: widget.isWhiteBackground
                                 ? context.theme.colorScheme.primary
-                                : AppColor.white,
+                                : context.theme.colorScheme.onPrimary,
                           ),
                           onPressed: () => _presenter.toggleExpansion(),
                         ),

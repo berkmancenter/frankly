@@ -241,7 +241,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ],
