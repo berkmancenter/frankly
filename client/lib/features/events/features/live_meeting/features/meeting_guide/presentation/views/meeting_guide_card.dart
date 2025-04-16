@@ -24,7 +24,6 @@ import 'package:client/core/widgets/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/fade_scroll_view.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/app.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
@@ -84,16 +83,13 @@ class _MeetingGuideCardState extends State<MeetingGuideCard> {
     context.watch<AgendaProvider>();
     context.watch<MeetingGuideCardStore>();
 
-    return UIMigration(
-      whiteBackground: true,
-      child: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: MeetingGuideCardContent(onMinimizeCard: widget.onMinimizeCard),
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(20),
         ),
+        child: MeetingGuideCardContent(onMinimizeCard: widget.onMinimizeCard),
       ),
     );
   }

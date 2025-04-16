@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final isUserSignedIn = Provider.of<UserService>(context).isSignedIn;
     return CustomScaffold(
-      bgColor: AppColor.gray6,
       fillViewport: !isUserSignedIn,
       bottomNavigationBar: responsiveLayoutService.showBottomNavBar(context)
           ? HomeBottomNavBar()

@@ -6,16 +6,13 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/action_button.dart';
 import 'package:client/core/widgets/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
-import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
-import 'package:data_models/community/community.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:provider/provider.dart';
 
@@ -66,61 +63,58 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
   }
 
   Widget _buildBody() {
-    return UIMigration(
-      whiteBackground: true,
-      child: Column(
-        children: [
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Edit template',
-                  style: AppTextStyle.headlineSmall
-                      .copyWith(fontSize: 16, color: AppColor.black),
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Edit template',
+                style: AppTextStyle.headlineSmall
+                    .copyWith(fontSize: 16, color: AppColor.black),
+              ),
+              AppClickableWidget(
+                child: ProxiedImage(
+                  null,
+                  asset: AppAsset.kXPng,
+                  width: 24,
+                  height: 24,
                 ),
-                AppClickableWidget(
-                  child: ProxiedImage(
-                    null,
-                    asset: AppAsset.kXPng,
-                    width: 24,
-                    height: 24,
-                  ),
-                  onTap: () {
-                    if (_presenter.wereChangesMade()) {
-                      _presenter.showConfirmChangesDialog();
-                    } else {
-                      closeDrawer();
-                    }
-                  },
-                ),
-              ],
-            ),
+                onTap: () {
+                  if (_presenter.wereChangesMade()) {
+                    _presenter.showConfirmChangesDialog();
+                  } else {
+                    closeDrawer();
+                  }
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              controller: _scrollController,
-              children: [
-                _buildImageSection(),
-                SizedBox(height: 20),
-                _buildTitleSection(),
-                SizedBox(height: 20),
-                _buildDescriptionSection(),
-                SizedBox(height: 20),
-                _buildTagsSection(),
-                SizedBox(height: 20),
-                _buildBottomButtonsSection(),
-                SizedBox(height: 20),
-              ],
-            ),
+        ),
+        SizedBox(height: 20),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            controller: _scrollController,
+            children: [
+              _buildImageSection(),
+              SizedBox(height: 20),
+              _buildTitleSection(),
+              SizedBox(height: 20),
+              _buildDescriptionSection(),
+              SizedBox(height: 20),
+              _buildTagsSection(),
+              SizedBox(height: 20),
+              _buildBottomButtonsSection(),
+              SizedBox(height: 20),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

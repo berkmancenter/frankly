@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/troubleshoot_av.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
@@ -183,102 +182,98 @@ class AudioVideoSettingsDialog extends HookWidget {
           ),
           borderRadius: BorderRadius.circular(6),
         ),
-        child: UIMigration(
-          whiteBackground: true,
-          child: Container(
-            constraints: BoxConstraints(maxWidth: 500),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: CustomStreamBuilder<List<AudioDeviceInfo>>(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: CustomStreamBuilder<List<AudioDeviceInfo>>(
+                  entryFrom: 'AudioVideoSettingsDialog.build',
+                  stream: audioDevicesFuture.asStream(),
+                  builder: (context, audioDevicesList) =>
+                      CustomStreamBuilder<List<VideoDeviceInfo>>(
                     entryFrom: 'AudioVideoSettingsDialog.build',
-                    stream: audioDevicesFuture.asStream(),
-                    builder: (context, audioDevicesList) =>
-                        CustomStreamBuilder<List<VideoDeviceInfo>>(
-                      entryFrom: 'AudioVideoSettingsDialog.build',
-                      stream: videoDevicesFuture.asStream(),
-                      builder: (context, videoDevicesList) {
-                        if (videoDevicesList == null ||
-                            audioDevicesList == null) {
-                          return CircularProgressIndicator();
-                        }
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            HeightConstrainedText(
-                              'Audio/Video Settings',
-                              style: body.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 22,
-                              ),
+                    stream: videoDevicesFuture.asStream(),
+                    builder: (context, videoDevicesList) {
+                      if (videoDevicesList == null ||
+                          audioDevicesList == null) {
+                        return CircularProgressIndicator();
+                      }
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          HeightConstrainedText(
+                            'Audio/Video Settings',
+                            style: body.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
                             ),
-                            SizedBox(height: 12),
-                            ..._buildAudioDevicesDropdown(
-                              onChanged: (device) {
-                                final id = device.deviceId;
-                                if (id != null &&
-                                    sharedPreferencesService
-                                            .getDefaultMicrophoneId() !=
-                                        id) {
+                          ),
+                          SizedBox(height: 12),
+                          ..._buildAudioDevicesDropdown(
+                            onChanged: (device) {
+                              final id = device.deviceId;
+                              if (id != null &&
                                   sharedPreferencesService
-                                      .setDefaultMicrophoneId(id);
-                                  if (conferenceRoom.audioEnabled) {
-                                    conferenceRoom.toggleAudioEnabled(
-                                      setEnabled: true,
-                                    );
-                                  }
+                                          .getDefaultMicrophoneId() !=
+                                      id) {
+                                sharedPreferencesService
+                                    .setDefaultMicrophoneId(id);
+                                if (conferenceRoom.audioEnabled) {
+                                  conferenceRoom.toggleAudioEnabled(
+                                    setEnabled: true,
+                                  );
                                 }
-                              },
-                              currentDeviceId: sharedPreferencesService
-                                  .getDefaultMicrophoneId(),
-                              allDevices: audioDevicesList,
-                              title: 'Audio Input Device:',
-                            ),
-                            ..._buildVideoDevicesDropdown(
-                              onChanged: (device) {
-                                final id = device.deviceId;
-                                if (id != null &&
-                                    sharedPreferencesService
-                                            .getDefaultCameraId() !=
-                                        id) {
+                              }
+                            },
+                            currentDeviceId: sharedPreferencesService
+                                .getDefaultMicrophoneId(),
+                            allDevices: audioDevicesList,
+                            title: 'Audio Input Device:',
+                          ),
+                          ..._buildVideoDevicesDropdown(
+                            onChanged: (device) {
+                              final id = device.deviceId;
+                              if (id != null &&
                                   sharedPreferencesService
-                                      .setDefaultCameraId(id);
-                                  if (conferenceRoom.videoEnabled) {
-                                    conferenceRoom.toggleVideoEnabled(
-                                      setEnabled: true,
-                                    );
-                                  }
+                                          .getDefaultCameraId() !=
+                                      id) {
+                                sharedPreferencesService.setDefaultCameraId(id);
+                                if (conferenceRoom.videoEnabled) {
+                                  conferenceRoom.toggleVideoEnabled(
+                                    setEnabled: true,
+                                  );
                                 }
-                              },
-                              currentDeviceId:
-                                  sharedPreferencesService.getDefaultCameraId(),
-                              allDevices: videoDevicesList,
-                              title: 'Video Input Device:',
-                            ),
-                            if (!responsiveLayoutService.isMobile(context)) ...[
-                              SizedBox(height: 10),
-                              TroubleshootIssuesButton(),
-                            ],
+                              }
+                            },
+                            currentDeviceId:
+                                sharedPreferencesService.getDefaultCameraId(),
+                            allDevices: videoDevicesList,
+                            title: 'Video Input Device:',
+                          ),
+                          if (!responsiveLayoutService.isMobile(context)) ...[
+                            SizedBox(height: 10),
+                            TroubleshootIssuesButton(),
                           ],
-                        );
-                      },
-                    ),
+                        ],
+                      );
+                    },
                   ),
                 ),
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                      padding: EdgeInsets.zero,
-                    ),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                    padding: EdgeInsets.zero,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
