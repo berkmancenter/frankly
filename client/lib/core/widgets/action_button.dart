@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:pedantic/pedantic.dart';
 
 enum ActionButtonSendingIndicatorAlign {
   left,
@@ -171,16 +169,16 @@ class _ActionButtonState extends State<ActionButton> {
   Color _getTextColor() {
     Color defaultTextColor = widget.type == ActionButtonType.outline
         ? AppColor.white
-        : Theme.of(context).primaryColor;
-    if (widget.color == Theme.of(context).primaryColor) {
-      defaultTextColor = Theme.of(context).colorScheme.secondary;
-    } else if (widget.color == Theme.of(context).colorScheme.secondary) {
-      defaultTextColor = Theme.of(context).primaryColor;
+        : context.theme.primaryColor;
+    if (widget.color == context.theme.primaryColor) {
+      defaultTextColor = context.theme.colorScheme.secondary;
+    } else if (widget.color == context.theme.colorScheme.secondary) {
+      defaultTextColor = context.theme.primaryColor;
     } else if (widget.color == AppColor.redLightMode) {
       defaultTextColor = AppColor.white;
     } else {
       if (widget.color == AppColor.redDarkMode) {
-        defaultTextColor = Theme.of(context).primaryColor;
+        defaultTextColor = context.theme.primaryColor;
       }
     }
 
@@ -255,7 +253,7 @@ class _ActionButtonState extends State<ActionButton> {
               return widget.disabledColor ?? Color(0xFFB2B9C5);
             }
 
-            return widget.color ?? Theme.of(context).colorScheme.secondary;
+            return widget.color ?? context.theme.colorScheme.secondary;
           }),
           overlayColor: overlayColor,
           minimumSize: minimumSize,
