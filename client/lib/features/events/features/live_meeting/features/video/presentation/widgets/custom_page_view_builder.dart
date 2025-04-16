@@ -179,15 +179,12 @@ class CustomCirclePageIndicator extends StatefulWidget {
   static const double _defaultSize = 8.0;
   static const double _defaultSelectedSize = 8.0;
   static const double _defaultSpacing = 8.0;
-  static const Color _defaultDotColor = AppColor.gray4;
-  static const Color _defaultSelectedDotColor =
-      context.theme.colorScheme.onPrimary;
 
   final ValueNotifier<int> currentPageNotifier;
   final int itemCount;
   final ValueChanged<int>? onPageSelected;
-  final Color dotColor;
-  final Color selectedDotColor;
+  final Color? dotColor;
+  final Color? selectedDotColor;
   final double size;
   final double selectedSize;
   final double dotSpacing;
@@ -203,14 +200,12 @@ class CustomCirclePageIndicator extends StatefulWidget {
     this.size = _defaultSize,
     this.dotSpacing = _defaultSpacing,
     Color? dotColor,
-    Color? selectedDotColor,
+    this.selectedDotColor,
     this.selectedSize = _defaultSelectedSize,
     this.borderWidth = 0,
     this.borderColor,
     this.selectedBorderColor,
-  })  : dotColor = dotColor ??
-            ((selectedDotColor?.withAlpha(150)) ?? _defaultDotColor),
-        selectedDotColor = selectedDotColor ?? _defaultSelectedDotColor,
+  })  : dotColor = dotColor ?? (selectedDotColor?.withAlpha(150)),
         assert(
           borderWidth < size,
           'Border width cannot be bigger than dot size!',
@@ -225,8 +220,8 @@ class CustomCirclePageIndicator extends StatefulWidget {
 class CustomCirclePageIndicatorState extends State<CustomCirclePageIndicator> {
   int get _currentPageIndex => widget.currentPageNotifier.value;
 
-  late Color _borderColor;
-  late Color _selectedBorderColor;
+  Color? _borderColor;
+  Color? _selectedBorderColor;
 
   bool isSelected(int dotIndex) => _currentPageIndex == dotIndex;
 
@@ -258,12 +253,15 @@ class CustomCirclePageIndicatorState extends State<CustomCirclePageIndicator> {
         widget.itemCount,
         (int index) {
           double size = widget.size;
-          Color color = widget.dotColor;
+          Color color =
+              widget.dotColor ?? context.theme.colorScheme.primaryFixed;
           Color? borderColor = _borderColor;
           if (isSelected(index)) {
             size = widget.selectedSize;
-            color = widget.selectedDotColor;
-            borderColor = _selectedBorderColor;
+            color =
+                widget.selectedDotColor ?? context.theme.colorScheme.primary;
+            borderColor =
+                _selectedBorderColor ?? context.theme.colorScheme.onPrimary;
           }
           return CustomInkWell(
             onTap: () => widget.onPageSelected == null
