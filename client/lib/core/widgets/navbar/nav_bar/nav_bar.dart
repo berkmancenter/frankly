@@ -108,13 +108,12 @@ class _NavBarState extends State<NavBar> implements NavBarView {
   /// Create a semantically-wrapped button with label for the community membership button
   Widget _buildMembershipButton(Community currentCommunity) {
     return Semantics(
-        label:'Follow Community Button', 
-        identifier: 'follow_community_button',
-        button: true,
-        child: CommunityMembershipButton(
-          currentCommunity,
-          bgColor: Theme.of(context).colorScheme.primary,
-        ),
+      label: 'Follow Community Button',
+      identifier: 'follow_community_button',
+      button: true,
+      child: CommunityMembershipButton(
+        currentCommunity,
+      ),
     );
   }
 
