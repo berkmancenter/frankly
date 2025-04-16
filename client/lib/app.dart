@@ -14,6 +14,8 @@ import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:client/core/localization/locale_provider.dart';
+import 'package:client/core/widgets/ui_migration.dart';
+import 'package:client/core/widgets/no_transitions_on_web.dart';
 // Generated localization classes
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,9 @@ import 'package:sentry/sentry.dart';
 import 'package:uuid/uuid.dart';
 
 import 'config/firebase_options.dart';
+
+import 'package:client/styles/app_styles.dart';
+
 
 bool kShowStripeFeatures = false;
 bool useBotControls = false;
@@ -147,10 +152,11 @@ class _AppState extends State<App> {
           ),
           builder: (_, child) => UIMigration(
             whiteBackground: true,
-            child: child!,
+            child: child ?? Container(),
+            ),
           ),
-        ),
-      ),
-    ,,,,);
+        );
+      },),
+    );
   }
 }
