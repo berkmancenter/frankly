@@ -62,11 +62,11 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
             tabController.openTab(tabType);
           }
         },
-        hoverColor: AppColor.white.withOpacity(0.3),
+        hoverColor: context.theme.colorScheme.surfaceContainer,
         child: Container(
           color:
               Provider.of<EventTabsControllerState>(context).isTabOpen(tabType)
-                  ? AppColor.white.withOpacity(0.3)
+                  ? context.theme.colorScheme.surfaceContainer
                   : null,
           alignment: Alignment.center,
           child: Column(
@@ -189,7 +189,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
     final separator = Container(
       width: isMobile ? 1 : null,
       height: isMobile ? null : 1,
-      color: AppColor.white.withOpacity(0.5),
+      color: context.theme.colorScheme.surfaceContainer,
     );
     final children = [
       _buildCommunityProfilePic(),

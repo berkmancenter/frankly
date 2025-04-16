@@ -162,7 +162,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
             ),
             Container(
               width: 1,
-              color: AppColor.white.withOpacity(0.5),
+              color: context.theme.colorScheme.surfaceContainer,
             ),
           ],
         ),

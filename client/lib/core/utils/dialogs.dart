@@ -323,7 +323,8 @@ class ConfirmDialogLayer extends StatelessWidget {
       color: AppColor.grayTransparent,
       alignment: Alignment.center,
       child: Container(
-        decoration: BoxDecoration(color: AppColor.white.withOpacity(0.75)),
+        decoration:
+            BoxDecoration(color: context.theme.colorScheme.surfaceContainer),
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,

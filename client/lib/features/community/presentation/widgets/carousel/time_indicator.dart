@@ -35,7 +35,9 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: isDisabled ? AppColor.white.withOpacity(0.3) : AppColor.white,
+        color: isDisabled
+            ? context.theme.colorScheme.surfaceContainer
+            : context.theme.colorScheme.surface,
         boxShadow: shadow
             ? const [
                 AppDecoration.lightBoxShadow,

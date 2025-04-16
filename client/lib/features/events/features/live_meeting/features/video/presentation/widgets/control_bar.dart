@@ -86,7 +86,7 @@ class _ControlBarState extends State<ControlBar> {
 
     final mediaDevices = html.window.navigator.mediaDevices;
     return CustomInkWell(
-      hoverColor: AppColor.white.withOpacity(0.15),
+      hoverColor: context.theme.colorScheme.surfaceContainer,
       forceHighlightOnHover: true,
       child: PopupMenuButton<FutureOr<void> Function()>(
         itemBuilder: (context) => [
@@ -415,7 +415,7 @@ class _ChatInputState extends State<ChatInput> {
                   color: context.theme.colorScheme.primary,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
-                  disabledColor: AppColor.white.withOpacity(0.3),
+                  disabledColor: context.theme.colorScheme.surfaceDim,
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
@@ -471,7 +471,7 @@ class _IconButtonState extends State<_IconButton> {
 
         setState(() => _isSending = false);
       },
-      hoverColor: AppColor.white.withOpacity(0.15),
+      hoverColor: context.theme.colorScheme.surfaceContainer,
       child: Container(
         padding: const EdgeInsets.all(2),
         constraints: BoxConstraints(

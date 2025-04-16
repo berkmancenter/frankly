@@ -41,7 +41,7 @@ class ProfileChip extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.white.withOpacity(0.2),
+                  color: context.theme.colorScheme.surfaceContainer,
                 ),
                 padding: showBorder ? const EdgeInsets.all(2) : EdgeInsets.zero,
                 child: ClipOval(

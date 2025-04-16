@@ -112,7 +112,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                 color: AppColor.brightGreen,
               );
             },
-            unratedColor: AppColor.white.withOpacity(0.5),
+            unratedColor: context.theme.colorScheme.surfaceContainer,
             onRatingUpdate: (rating) => alertOnError(context, () async {
               setState(() => _currentRating = rating);
               final event = context.read<EventProvider>().event;
