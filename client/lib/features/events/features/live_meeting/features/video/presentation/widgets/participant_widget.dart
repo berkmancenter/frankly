@@ -276,7 +276,8 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                       ? 'Loading...'
                       : snapshot.data?.displayName ?? 'Participant',
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.body.copyWith(color: AppColor.white),
+                  style: AppTextStyle.body
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                 ),
               ),
             ),
@@ -620,7 +621,9 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           child: Icon(
             isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
             size: 16,
-            color: _isHovered ? AppColor.brightGreen : AppColor.white,
+            color: _isHovered
+                ? context.theme.colorScheme.onPrimary
+                : context.theme.colorScheme.outlineVariant,
           ),
         ),
       ),
