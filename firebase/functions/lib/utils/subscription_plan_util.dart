@@ -14,18 +14,18 @@ var subscriptionPlanUtil = SubscriptionPlanUtil();
 class SubscriptionPlanUtil {
   PlanCapabilityList getDefaultCapabilities() {
     return PlanCapabilityList(
-      userHours: 0,
-      adminCount: 1,
-      facilitatorCount: 0,
-      takeRate: .3,
-      hasSmartMatching: false,
-      hasLivestreams: false,
-      hasCustomUrls: false,
-      hasAdvancedBranding: false,
-      hasBasicAnalytics: false,
-      hasCustomAnalytics: false,
-      hasIntegrations: false,
-      hasPrePost: false,
+      userHours: 100000,
+      adminCount: 100000,
+      facilitatorCount: 100000,
+      takeRate: 0,
+      hasSmartMatching: true,
+      hasLivestreams: true,
+      hasCustomUrls: true,
+      hasAdvancedBranding: true,
+      hasBasicAnalytics: true,
+      hasCustomAnalytics: true,
+      hasIntegrations: true,
+      hasPrePost: true,
     );
   }
 
