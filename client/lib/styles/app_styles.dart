@@ -143,3 +143,10 @@ class AppSize {
 
   static const kHomePageCommunityIconSize = 32.0;
 }
+
+class AppDecoration {
+  static const BoxShadow lightBoxShadow = BoxShadow(
+    blurRadius: 6,
+    offset: Offset(2, 2),
+    color: Color.fromARGB(82, 0, 0, 0),
+}
