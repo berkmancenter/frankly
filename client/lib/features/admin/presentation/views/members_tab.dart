@@ -173,8 +173,10 @@ class _MembersTabState extends State<MembersTab> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(Icons.search,
-                        color: context.theme.colorScheme.secondary),
+                    child: Icon(
+                      Icons.search,
+                      color: context.theme.colorScheme.secondary,
+                    ),
                   ),
                   Expanded(
                     child: _buildSearchBarField(memberships),
@@ -376,7 +378,7 @@ class _MembersTabState extends State<MembersTab> {
                   ),
                   child: Icon(
                     Icons.check,
-                    color: AppColor.lightGreen,
+                    color: context.theme.colorScheme.tertiaryFixed,
                     size: 20,
                   ),
                 ),
@@ -738,7 +740,8 @@ class RolePermissionListTile extends StatelessWidget {
                 child: Text(
                   item,
                   style: AppTextStyle.body.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                    color: context.theme.colorScheme.onPrimaryContainer,
+                  ),
                 ),
               ),
             ],
