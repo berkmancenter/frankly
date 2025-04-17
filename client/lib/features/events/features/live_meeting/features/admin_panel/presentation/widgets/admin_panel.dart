@@ -758,7 +758,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
       label:
           'Participant Actions for user with ID ${widget.providerParticipant?.userId}',
       child: CustomInkWell(
-        hoverColor: context.theme.colorScheme.scrim.withScrimOpacity
+        hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
         onTap: () => _showMoreMenu(menuItems),
         child: Icon(
           Icons.more_vert,
@@ -837,7 +837,8 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
             liveMeetingProvider.currentBreakoutRoomId == room.roomId &&
                 liveMeetingProvider.userLeftBreakouts == false;
 
-        Color backgroundColor = context.theme.colorScheme.scrim.withScrimOpacity;
+        Color backgroundColor =
+            context.theme.colorScheme.scrim.withScrimOpacity;
         if (isCurrentRoom) {
           backgroundColor = context.theme.colorScheme.onPrimary;
         } else if (needsHelp) {
@@ -873,7 +874,9 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: needsHelp ? context.theme.colorScheme.errorContainer : null,
+                    color: needsHelp
+                        ? context.theme.colorScheme.errorContainer
+                        : null,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

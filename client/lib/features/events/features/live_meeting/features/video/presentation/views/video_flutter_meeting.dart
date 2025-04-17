@@ -633,7 +633,7 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: const [
+                            colors: [
                               context.theme.colorScheme.secondary,
                               Colors.transparent,
                             ],
@@ -659,7 +659,7 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: const [
+                            colors: [
                               Colors.transparent,
                               context.theme.colorScheme.secondary,
                             ],

@@ -245,7 +245,7 @@ class _ShadedOverlay extends StatelessWidget {
                   ? LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
-                      colors: const [
+                      colors: [
                         context.theme.colorScheme.primary,
                         Colors.transparent,
                       ],

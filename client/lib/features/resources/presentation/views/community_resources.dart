@@ -70,10 +70,11 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                          blurRadius: 5,
-                          color: context.theme.colorScheme.onPrimaryContainer),
+                        blurRadius: 5,
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ],
                   ),
                   child: Row(
@@ -94,7 +95,8 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                             HeightConstrainedText(
                               resource.title ?? '',
                               style: AppTextStyle.bodyMedium.copyWith(
-                                  color: context.theme.colorScheme.secondary),
+                                color: context.theme.colorScheme.secondary,
+                              ),
                             ),
                             SizedBox(height: 4),
                             Wrap(

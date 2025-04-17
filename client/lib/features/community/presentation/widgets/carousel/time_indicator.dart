@@ -79,10 +79,11 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
             _timeString,
             style: AppTextStyle.body.copyWith(
               fontSize: 14,
-              color:
-                  isDisabled ? context.theme.colorScheme.scrim.withScrimOpacity : context.theme.colorScheme.primary,
+              color: isDisabled
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : context.theme.colorScheme.primary,
             ),
-          ,,,,),
+          ),
         ],
       ),
     );

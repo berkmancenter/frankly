@@ -149,4 +149,5 @@ class AppDecoration {
     blurRadius: 6,
     offset: Offset(2, 2),
     color: Color.fromARGB(82, 0, 0, 0),
+  );
 }

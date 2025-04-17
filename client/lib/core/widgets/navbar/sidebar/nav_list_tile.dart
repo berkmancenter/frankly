@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
