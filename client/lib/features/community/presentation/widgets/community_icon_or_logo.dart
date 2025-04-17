@@ -136,28 +136,19 @@ class CommunityCircleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isTooltipShown) {
-      return Tooltip(
-        message: community.name ?? '',
-        child: _buildChild(),
-      );
-    } else {
-      return _buildChild();
-    }
-  }
-
-  Widget _buildChild() {
     String? profileImageUrl = community.profileImageUrl;
     if (profileImageUrl == null || profileImageUrl.isEmpty) {
       profileImageUrl =
           generateRandomImageUrl(seed: community.id.hashCode, resolution: 160);
     }
 
-    return Container(
+    final child = Container(
       decoration: BoxDecoration(
         border: withBorder
             ? Border.all(
-                color: context.theme.colorScheme.onPrimaryContainer, width: 1)
+                color: context.theme.colorScheme.onPrimaryContainer,
+                width: 1,
+              )
             : null,
         shape: BoxShape.circle,
         color: context.theme.colorScheme.onPrimaryContainer,
@@ -171,5 +162,14 @@ class CommunityCircleIcon extends StatelessWidget {
         ),
       ),
     );
+
+    if (isTooltipShown) {
+      return Tooltip(
+        message: community.name ?? '',
+        child: child,
+      );
+    } else {
+      return child;
+    }
   }
 }
