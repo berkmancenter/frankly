@@ -41,8 +41,9 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
     required IconData icon,
     required bool selected,
   }) {
-    final color =
-        selected ? AppColor.brightGreen : context.theme.colorScheme.primary;
+    final color = selected
+        ? context.theme.colorScheme.onPrimary
+        : context.theme.colorScheme.primary;
     return TextButton(
       onPressed: () => readProvider.vote(upvote: upvote, itemId: itemId),
       child: Padding(

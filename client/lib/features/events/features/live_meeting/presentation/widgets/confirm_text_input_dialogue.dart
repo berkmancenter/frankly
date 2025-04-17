@@ -138,7 +138,7 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
                       horizontal: 18,
                       vertical: 12,
                     ),
-                    color: AppColor.brightGreen,
+                    color: context.theme.colorScheme.onPrimary,
                     text: widget.confirmText,
                     textStyle: AppTextStyle.body
                         .copyWith(color: context.theme.colorScheme.primary),

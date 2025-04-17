@@ -307,7 +307,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           iconData,
           size: 25,
           color: liveMeetingProvider.liveMeetingViewType == type
-              ? AppColor.brightGreen
+              ? context.theme.colorScheme.onPrimary
               : context.theme.colorScheme.onPrimaryContainer,
         ),
       ),
@@ -548,7 +548,7 @@ class _GetHelpButtonState extends State<GetHelpButton> {
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
                   color: Theme.of(context).isDark
-                      ? AppColor.brightGreen
+                      ? context.theme.colorScheme.onPrimary
                       : context.theme.colorScheme.primary,
                 ),
               ),

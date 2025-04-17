@@ -57,7 +57,7 @@ class MeetingRating extends StatefulWidget {
                       sendingIndicatorAlign:
                           ActionButtonSendingIndicatorAlign.none,
                       text: 'NEXT',
-                      color: AppColor.brightGreen,
+                      color: context.theme.colorScheme.onPrimary,
                       textColor: innerContext.theme.colorScheme.primary,
                     ),
                   ],
@@ -109,7 +109,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                 currentRating != null && value < currentRating
                     ? Icons.star
                     : Icons.star_outline,
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onPrimary,
               );
             },
             unratedColor: context.theme.colorScheme.surfaceContainer,

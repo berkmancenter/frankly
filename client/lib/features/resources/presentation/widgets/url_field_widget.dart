@@ -71,7 +71,7 @@ class UrlFieldWidget extends StatelessWidget {
                       context.theme.colorScheme.primary,
                   child: Icon(
                     Icons.check,
-                    color: iconColor ?? AppColor.brightGreen,
+                    color: iconColor ?? context.theme.colorScheme.onPrimary,
                   ),
                 ),
               ),

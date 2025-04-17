@@ -96,7 +96,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
                   child: isMeetingFinished || isReadyToAdvance
                       ? Icon(
                           Icons.check_circle_outline_rounded,
-                          color: AppColor.brightGreen,
+                          color: context.theme.colorScheme.onPrimary,
                         )
                       : _ForwardButton(currentAgendaItemId: currentItemId),
                 );

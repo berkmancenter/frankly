@@ -117,7 +117,7 @@ class _PrerequisiteTemplateWidgetPageState
             },
             backgroundColor: widget.isWhiteBackground
                 ? context.theme.colorScheme.primary
-                : AppColor.brightGreen,
+                : context.theme.colorScheme.onPrimary,
             child: Icon(
               Icons.check,
               size: 16,

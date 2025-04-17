@@ -148,7 +148,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
         onPressed: () => Navigator.of(context).pop(),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         text: 'Finish',
-        color: AppColor.brightGreen,
+        color: context.theme.colorScheme.onPrimary,
         textColor: context.theme.colorScheme.primary,
       );
 

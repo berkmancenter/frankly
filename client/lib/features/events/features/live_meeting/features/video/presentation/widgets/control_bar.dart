@@ -423,7 +423,7 @@ class _ChatInputState extends State<ChatInput> {
                   child: Icon(
                     Icons.send,
                     color: canSubmit
-                        ? AppColor.brightGreen
+                        ? context.theme.colorScheme.onPrimary
                         : context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),

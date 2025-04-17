@@ -67,7 +67,7 @@ class UpgradePerks extends StatelessWidget {
                 SizedBox(height: 20),
                 ActionButton(
                   color: context.theme.colorScheme.primary,
-                  textColor: AppColor.brightGreen,
+                  textColor: context.theme.colorScheme.onPrimary,
                   text: 'Upgrade',
                   expand: true,
                   borderRadius: BorderRadius.circular(10),
@@ -90,7 +90,8 @@ class UpgradePerks extends StatelessWidget {
             child: HeightConstrainedText(
               perk,
               style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
           ),
         ],

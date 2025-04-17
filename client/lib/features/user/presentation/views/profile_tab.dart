@@ -285,7 +285,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                   ),
                 ),
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onPrimary,
                 text: 'Preview',
                 expand: false,
                 textColor: context.theme.colorScheme.primary,

@@ -679,7 +679,7 @@ class _EventInfoState extends State<EventInfo> {
       children: [
         Checkbox(
           activeColor: context.theme.colorScheme.primary,
-          checkColor: AppColor.brightGreen,
+          checkColor: context.theme.colorScheme.onPrimary,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {
             if (value != null) {

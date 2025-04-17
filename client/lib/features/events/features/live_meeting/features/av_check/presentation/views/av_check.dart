@@ -113,12 +113,12 @@ class _AvCheckPageState extends State<_AvCheckPage> {
   }
 
   Widget _buildDiagnoseIssuesButton() =>
-      TroubleshootIssuesButton(linkColor: AppColor.brightGreen);
+      TroubleshootIssuesButton(linkColor: context.theme.colorScheme.onPrimary);
 
   Widget _buildVideoContainer(String image) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColor.brightGreen),
+        border: Border.all(color: context.theme.colorScheme.onPrimary),
         borderRadius: BorderRadius.circular(10),
       ),
       width: 334,
@@ -225,7 +225,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: i < provider.currentAudioLevel && provider.micOn
-                    ? AppColor.brightGreen
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.onPrimaryContainer,
               ),
             );

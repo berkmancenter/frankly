@@ -79,7 +79,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             style: GoogleFonts.fingerPaint(
               fontSize: _getDynamicSize(18),
               fontWeight: FontWeight.normal,
-              color: AppColor.brightGreen,
+              color: context.theme.colorScheme.onPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -227,7 +227,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             children: [
               ActionButton(
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 text: 'Next',
                 onPressed: () => Navigator.pop(context),

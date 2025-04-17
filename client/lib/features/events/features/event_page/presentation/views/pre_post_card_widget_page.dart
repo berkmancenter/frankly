@@ -697,7 +697,7 @@ class _AttributeOptionState extends State<AttributeOption> {
         });
       },
       text: widget.attribute.type.text,
-      color: AppColor.brightGreen,
+      color: context.theme.colorScheme.onPrimary,
       icon: Padding(
         padding: const EdgeInsets.all(5),
         child: Icon(

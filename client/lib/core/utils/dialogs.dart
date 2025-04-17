@@ -147,8 +147,8 @@ class Dialogs {
                 ),
                 SizedBox(height: 10),
                 FormBuilderSlider(
-                  activeColor: AppColor.brightGreen,
-                  inactiveColor: AppColor.gray4,
+                  activeColor: context.theme.colorScheme.primary,
+                  inactiveColor: context.theme.colorScheme.primaryFixed,
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
                       borderSide:

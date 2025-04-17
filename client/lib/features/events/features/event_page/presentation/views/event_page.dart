@@ -209,7 +209,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
             ActionButton(
               text: 'No',
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.brightGreen,
+              textColor: context.theme.colorScheme.onPrimary,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -217,7 +217,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
             ActionButton(
               text: 'Yes',
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.brightGreen,
+              textColor: context.theme.colorScheme.onPrimary,
               onPressed: () => alertOnError(context, () async {
                 await _presenter.removeMessage(eventMessage);
                 if (!context.mounted) return;

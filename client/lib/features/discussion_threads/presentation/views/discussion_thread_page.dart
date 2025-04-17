@@ -169,7 +169,11 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         isExtended: isMobile,
         backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
-        child: Icon(Icons.add, color: AppColor.brightGreen, size: 30),
+        child: Icon(
+          Icons.add,
+          color: context.theme.colorScheme.onPrimary,
+          size: 30,
+        ),
       );
     } else {
       return FloatingActionButton.extended(
@@ -177,11 +181,16 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         onPressed: () => _showAddCommentDialog(discussionThread),
         label: Row(
           children: [
-            Icon(Icons.add, color: AppColor.brightGreen, size: 30),
+            Icon(
+              Icons.add,
+              color: context.theme.colorScheme.onPrimary,
+              size: 30,
+            ),
             SizedBox(width: 10),
             Text(
               'Add a comment',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.brightGreen),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
             ),
           ],
         ),
@@ -234,15 +243,17 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                               HeightConstrainedText(
                                 '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
                                 style: AppTextStyle.bodyMedium.copyWith(
-                                    color: context
-                                        .theme.colorScheme.onPrimaryContainer),
+                                  color: context
+                                      .theme.colorScheme.onPrimaryContainer,
+                                ),
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
                                   'Newest First', // Forced (mock) sorting
                                   style: AppTextStyle.bodyMedium.copyWith(
-                                      color: context.theme.colorScheme
-                                          .onPrimaryContainer),
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
+                                  ),
                                 ),
                             ],
                           ),

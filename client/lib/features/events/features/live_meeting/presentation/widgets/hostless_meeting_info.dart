@@ -90,7 +90,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
                         child: Container(
                           padding: const EdgeInsets.all(9),
                           decoration: BoxDecoration(
-                            color: AppColor.brightGreen,
+                            color: context.theme.colorScheme.onPrimary,
                             shape: BoxShape.circle,
                           ),
                           child: Text(
@@ -135,7 +135,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         children: [
           Icon(
             Icons.account_circle,
-            color: AppColor.brightGreen,
+            color: context.theme.colorScheme.onPrimary,
           ),
           SizedBox(width: 6),
           Flexible(
@@ -143,7 +143,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
               NumberFormat.decimalPattern().format(participants),
               style: body.copyWith(
                 fontWeight: FontWeight.w300,
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onPrimary,
               ),
             ),
           ),

@@ -105,7 +105,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
                       backgroundColor: context.theme.colorScheme.primary,
                       child: Icon(
                         Icons.check,
-                        color: AppColor.brightGreen,
+                        color: context.theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),

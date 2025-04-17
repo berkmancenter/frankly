@@ -33,7 +33,7 @@ class RoundedButton extends StatelessWidget {
         style: TextStyle(
           color: onPressed != null
               ? context.theme.colorScheme.onPrimaryContainer
-              : AppColor.brightGreen,
+              : context.theme.colorScheme.onPrimary,
         ),
       ),
     );

@@ -78,7 +78,8 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                     subtitle: HeightConstrainedText(
                       platform.platformKey.info.description,
                       style: AppTextStyle.eyebrowSmall.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer),
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                     trailing: Container(
                       padding: EdgeInsets.all(2),
@@ -204,7 +205,7 @@ class LinkField extends StatelessWidget {
                           Icons.check,
                           size: 15,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
-                              ? AppColor.brightGreen
+                              ? context.theme.colorScheme.onPrimary
                               : context.theme.colorScheme.secondary,
                         ),
                       ),

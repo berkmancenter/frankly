@@ -41,7 +41,7 @@ class _SelectParticipantsNumberState extends State<SelectParticipantsNumber> {
         ),
         SizedBox(height: 10),
         FormBuilderSlider(
-          activeColor: AppColor.brightGreen,
+          activeColor: context.theme.colorScheme.onPrimary,
           inactiveColor: context.theme.colorScheme.onPrimaryContainer,
           decoration: InputDecoration(
             enabledBorder: const OutlineInputBorder(

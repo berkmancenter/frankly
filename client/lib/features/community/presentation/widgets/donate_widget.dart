@@ -127,7 +127,9 @@ class _DonateWidgetState extends State<DonateWidget> {
         }),
         child: Container(
           alignment: Alignment.center,
-          color: selected ? AppColor.brightGreen : Colors.transparent,
+          color: selected
+              ? context.theme.colorScheme.onPrimary
+              : Colors.transparent,
           child: HeightConstrainedText(
             '\$$dollars',
             style: TextStyle(
@@ -154,7 +156,9 @@ class _DonateWidgetState extends State<DonateWidget> {
         }),
         child: Container(
           alignment: Alignment.center,
-          color: _isOtherSelected ? AppColor.brightGreen : Colors.transparent,
+          color: _isOtherSelected
+              ? context.theme.colorScheme.onPrimary
+              : Colors.transparent,
           child: HeightConstrainedText(
             'Other',
             style: TextStyle(
@@ -173,7 +177,7 @@ class _DonateWidgetState extends State<DonateWidget> {
   Widget _buildOtherTextInput() {
     final hasError = !isNullOrEmpty(_otherAmountController.text) &&
         _otherCentsParsed == null;
-    final style = TextStyle(color: AppColor.brightGreen);
+    final style = TextStyle(color: context.theme.colorScheme.onPrimary);
 
     return TextFormField(
       controller: _otherAmountController,
@@ -240,7 +244,7 @@ class _DonateWidgetState extends State<DonateWidget> {
       text: enabled ? 'Donate \$$donationDisplay' : 'Donate',
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.interior,
       color: enabled
-          ? AppColor.brightGreen
+          ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.onPrimaryContainer,
       height: 55,
       textStyle: TextStyle(

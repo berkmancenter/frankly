@@ -85,7 +85,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
         elevation: 0,
         padding: EdgeInsets.all(0),
         backgroundColor: context.theme.colorScheme.primary,
-        selectedColor: AppColor.brightGreen,
+        selectedColor: context.theme.colorScheme.onPrimary,
         direction: Axis.horizontal,
         labelStyle: TextStyle(
           fontFamily: 'Roboto',
@@ -206,7 +206,7 @@ class _AddNewTemplateButton extends StatelessWidget {
       height: 156,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          foregroundColor: AppColor.brightGreen,
+          foregroundColor: context.theme.colorScheme.onPrimary,
         ),
         onPressed: onAddNew,
         child: Column(
@@ -258,7 +258,7 @@ class TemplateSelectionCard extends StatelessWidget {
         borderType: dotted_border.BorderType.RRect,
         radius: Radius.circular(10),
         color: isSelected
-            ? AppColor.brightGreen
+            ? context.theme.colorScheme.onPrimary
             : context.theme.colorScheme.onPrimary,
         dashPattern: isSelected ? const [1, 0] : const [5, 5],
         strokeWidth: isSelected ? 4 : 1,
@@ -337,7 +337,7 @@ class TemplateSelectionCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: selectedTemplate != null &&
                               selectedTemplate?.id == template?.id
-                          ? AppColor.brightGreen
+                          ? context.theme.colorScheme.onPrimary
                           : Colors.transparent,
                       shape: BoxShape.circle,
                     ),

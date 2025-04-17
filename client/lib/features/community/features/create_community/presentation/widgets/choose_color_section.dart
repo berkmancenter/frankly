@@ -383,7 +383,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _isSelectedColorComboValid
-                ? AppColor.brightGreen.withAlpha(40)
+                ? context.theme.colorScheme.onPrimary.withAlpha(40)
                 : null,
             border: Border.all(
               color: _isSelectedColorComboValid

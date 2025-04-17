@@ -140,7 +140,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                           backgroundColor: context.theme.colorScheme.primary,
                           child: Icon(
                             Icons.close,
-                            color: AppColor.brightGreen,
+                            color: context.theme.colorScheme.onPrimary,
                           ),
                         ),
                       ),

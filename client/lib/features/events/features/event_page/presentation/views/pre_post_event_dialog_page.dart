@@ -180,8 +180,9 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
     return ActionButton(
       color: context.theme.colorScheme.primary,
       type: ActionButtonType.outline,
-      borderSide: BorderSide(color: AppColor.brightGreen, width: 1),
-      textColor: AppColor.brightGreen,
+      borderSide:
+          BorderSide(color: context.theme.colorScheme.onPrimary, width: 1),
+      textColor: context.theme.colorScheme.onPrimary,
       text: buttonTextNotEmpty ? buttonText : 'Open Link',
       onPressed: () =>
           alertOnError(context, () => _presenter.launchSurvey(urlParams)),

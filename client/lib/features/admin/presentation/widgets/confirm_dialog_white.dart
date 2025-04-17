@@ -115,7 +115,7 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                   text: widget.confirmText,
                   color: context.theme.colorScheme.primary,
                   textStyle: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.brightGreen),
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   onPressed: onConfirm != null
                       ? () => onConfirm(context)
                       : () => Navigator.of(context).pop(true),

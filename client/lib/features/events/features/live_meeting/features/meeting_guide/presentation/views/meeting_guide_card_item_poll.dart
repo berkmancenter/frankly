@@ -88,7 +88,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
                 child: ActionButton(
                   text: 'Show Results',
                   color: context.theme.colorScheme.primary,
-                  textColor: AppColor.brightGreen,
+                  textColor: context.theme.colorScheme.onPrimary,
                   onPressed: currentVote != null
                       ? () => _presenter.showResults(currentCardAgendaItemId)
                       : null,

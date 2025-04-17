@@ -112,7 +112,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             children: [
               Checkbox(
                 activeColor: context.theme.colorScheme.primary,
-                checkColor: AppColor.brightGreen,
+                checkColor: context.theme.colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(color: context.theme.colorScheme.primary),
@@ -271,7 +271,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
               ActionButton(
                 loadingHeight: 10.0,
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 text: 'Save',
                 onPressed: () => alertOnError(
                   context,

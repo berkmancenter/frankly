@@ -124,7 +124,7 @@ class _AdminPanelState extends State<AdminPanel> {
             if (_eventProvider.event.eventType != EventType.hostless) ...[
               SizedBox(width: 4),
               ActionButton(
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onPrimary,
                 onPressed: () => _providerRead.endBreakoutRooms(),
                 text: 'End Breakouts',
               ),
@@ -191,7 +191,7 @@ class _AdminPanelState extends State<AdminPanel> {
                           .canModerateContent,
                     ).show(),
             text: 'Breakouts',
-            color: AppColor.brightGreen,
+            color: context.theme.colorScheme.onPrimary,
           ),
           SizedBox(width: 6),
           _MeetingControlsMenu(),
@@ -207,7 +207,7 @@ class _AdminPanelState extends State<AdminPanel> {
           expand: true,
           text: 'Mute All',
           onPressed: () => _providerRead.muteAllParticipants(),
-          color: AppColor.brightGreen,
+          color: context.theme.colorScheme.onPrimary,
         ),
         Expanded(
           child: ListView(
@@ -282,7 +282,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 ),
                 color: _showOnlyAlertedRooms
                     ? context.theme.colorScheme.scrim.withScrimOpacity
-                    : AppColor.brightGreen,
+                    : context.theme.colorScheme.onPrimary,
               ),
               alignment: Alignment.center,
               child: HeightConstrainedText(
@@ -304,7 +304,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 ),
                 color: !_showOnlyAlertedRooms
                     ? context.theme.colorScheme.scrim.withScrimOpacity
-                    : AppColor.brightGreen,
+                    : context.theme.colorScheme.onPrimary,
               ),
               alignment: Alignment.center,
               child: HeightConstrainedText(
@@ -491,7 +491,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                         }
                       }),
                       text: 'Jump To',
-                      textColor: AppColor.brightGreen,
+                      textColor: context.theme.colorScheme.onPrimary,
                       color: context.theme.colorScheme.scrim.withScrimOpacity,
                     ),
                   ],
@@ -507,7 +507,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                     ),
                     text: 'View Current Room',
                     expand: true,
-                    color: AppColor.brightGreen,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                   SizedBox(height: 16),
                 ],
@@ -839,7 +839,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
 
         Color backgroundColor = context.theme.colorScheme.scrim.withScrimOpacity;
         if (isCurrentRoom) {
-          backgroundColor = AppColor.brightGreen;
+          backgroundColor = context.theme.colorScheme.onPrimary;
         } else if (needsHelp) {
           backgroundColor = AppColor.darkRed;
         }
@@ -993,7 +993,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
           SizedBox(width: 6),
           ActionButton(
             color: Colors.transparent,
-            textColor: AppColor.brightGreen,
+            textColor: context.theme.colorScheme.onPrimary,
             overlayColor: context.theme.colorScheme.surfaceContainer,
             sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
             onPressed: () => alertOnError(context, () async {
@@ -1105,7 +1105,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           (!provider.userLeftBreakouts))
                         ActionButton(
                           color: Colors.transparent,
-                          textColor: AppColor.brightGreen,
+                          textColor: context.theme.colorScheme.onPrimary,
                           overlayColor:
                               context.theme.colorScheme.surfaceContainer,
                           onPressed: () async {
@@ -1136,7 +1136,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                               : Colors.transparent,
                           textColor: needsHelp
                               ? context.theme.colorScheme.onPrimary
-                              : AppColor.brightGreen,
+                              : context.theme.colorScheme.onPrimary,
                           overlayColor:
                               context.theme.colorScheme.surfaceContainer,
                           text: 'Enter Room',
