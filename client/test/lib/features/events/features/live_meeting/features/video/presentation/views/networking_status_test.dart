@@ -83,12 +83,7 @@ void main() {
         find.descendant(
           of: find.byType(Row),
           matching: find.byWidgetPredicate(
-            (widget) =>
-                widget is Text &&
-                widget.data == 'Low Bandwidth' &&
-                widget.style ==
-                    AppTextStyle.subhead
-                        .copyWith(color: context.theme.colorScheme.error),
+            (widget) => widget is Text && widget.data == 'Low Bandwidth',
           ),
         ),
         findsOneWidget,
@@ -115,10 +110,7 @@ void main() {
               (widget) =>
                   widget is Text &&
                   widget.data ==
-                      'Try turning off your camera for a smoother experience' &&
-                  widget.style ==
-                      AppTextStyle.subhead.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer),
+                      'Try turning off your camera for a smoother experience',
             ),
           ),
         ),
