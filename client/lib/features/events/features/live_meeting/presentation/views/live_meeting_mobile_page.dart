@@ -720,7 +720,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Divider(height: 1, color: AppColor.gray5),
+              Divider(
+                  height: 1,
+                  color: context.theme.colorScheme.onPrimaryContainer),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,
@@ -1002,7 +1004,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                   height: 5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: AppColor.gray5,
+                    color: context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),

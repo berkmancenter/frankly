@@ -95,7 +95,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           alignment: Alignment.center,
           child: _buildHeaderContent(),
         ),
-        Divider(height: 1, color: AppColor.gray5),
+        Divider(height: 1, color: context.theme.colorScheme.onPrimaryContainer),
       ],
     );
   }

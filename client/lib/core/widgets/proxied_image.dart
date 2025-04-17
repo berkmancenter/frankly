@@ -19,7 +19,7 @@ class ProxiedImage extends StatelessWidget {
     this.asset,
     this.height,
     this.width,
-    this.loadingColor = AppColor.gray5,
+    this.loadingColor = context.theme.colorScheme.onPrimaryContainer,
     this.borderRadius,
     this.fit,
   });

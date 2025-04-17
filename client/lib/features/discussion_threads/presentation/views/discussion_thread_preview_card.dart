@@ -302,7 +302,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: borderRadius,
-              border: Border.all(color: AppColor.gray5),
+              border: Border.all(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

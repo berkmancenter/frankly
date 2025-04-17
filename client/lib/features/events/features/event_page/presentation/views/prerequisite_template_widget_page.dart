@@ -322,7 +322,7 @@ class _PrerequisiteTemplateWidgetPageState
                 border: Border.all(
                   width: 1,
                   color: widget.isWhiteBackground
-                      ? AppColor.gray5
+                      ? context.theme.colorScheme.onPrimaryContainer
                       : context.theme.colorScheme.primary,
                 ),
               ),

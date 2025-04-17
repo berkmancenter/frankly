@@ -308,7 +308,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           size: 25,
           color: liveMeetingProvider.liveMeetingViewType == type
               ? AppColor.brightGreen
-              : AppColor.gray5,
+              : context.theme.colorScheme.onPrimaryContainer,
         ),
       ),
     );

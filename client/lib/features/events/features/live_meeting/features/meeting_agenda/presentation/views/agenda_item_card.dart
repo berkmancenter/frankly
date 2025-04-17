@@ -341,7 +341,10 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(height: 1, thickness: 1, color: AppColor.gray5),
+        Divider(
+            height: 1,
+            thickness: 1,
+            color: context.theme.colorScheme.onPrimaryContainer),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: _model.isEditMode

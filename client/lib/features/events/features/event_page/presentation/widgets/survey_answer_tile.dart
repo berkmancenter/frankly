@@ -48,7 +48,8 @@ class SurveyAnswerTile extends StatelessWidget {
                       Container(
                         height: kIndicatorHeight,
                         width: maxWidth,
-                        decoration: _getBoxDecoration(AppColor.gray5),
+                        decoration: _getBoxDecoration(
+                            context.theme.colorScheme.onPrimaryContainer),
                       ),
                       // Indicator that represents percentage of votes
                       AnimatedContainer(

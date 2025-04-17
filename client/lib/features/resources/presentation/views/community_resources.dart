@@ -71,7 +71,9 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                     boxShadow: const [
-                      BoxShadow(blurRadius: 5, color: AppColor.gray5),
+                      BoxShadow(
+                          blurRadius: 5,
+                          color: context.theme.colorScheme.onPrimaryContainer),
                     ],
                   ),
                   child: Row(

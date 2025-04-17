@@ -96,7 +96,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
             alignment: Alignment.center,
             children: [
               Container(
-                color: AppColor.gray5,
+                color: context.theme.colorScheme.onPrimaryContainer,
                 height: kImageHeight,
                 child: isImageUploaded ? ProxiedImage(imageUrl) : null,
               ),

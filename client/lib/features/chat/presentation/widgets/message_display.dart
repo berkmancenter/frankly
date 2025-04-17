@@ -92,7 +92,8 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).isDark
-                                    ? AppColor.gray5
+                                    ? context
+                                        .theme.colorScheme.onPrimaryContainer
                                     : context.theme.colorScheme.primary,
                               ),
                             ),
@@ -103,7 +104,8 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).isDark
-                                    ? AppColor.gray5
+                                    ? context
+                                        .theme.colorScheme.onPrimaryContainer
                                     : context.theme.colorScheme.primary,
                               ),
                             ),
@@ -141,7 +143,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                             'This message was removed.',
                             style: TextStyle(
                               color: Theme.of(context).isDark
-                                  ? AppColor.gray5
+                                  ? context.theme.colorScheme.onPrimaryContainer
                                   : AppColor.gray1,
                               fontSize: 13,
                               fontStyle: FontStyle.italic,

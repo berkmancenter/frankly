@@ -390,7 +390,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
   Widget _buildEditTemplateMessage() {
     String templateId = event.templateId;
     return Container(
-      color: AppColor.gray5,
+      color: context.theme.colorScheme.onPrimaryContainer,
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ConstrainedBody(
         maxWidth: 1100,
@@ -473,7 +473,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
         border: Border(
           top: BorderSide(
             width: 2,
-            color: AppColor.gray5,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),

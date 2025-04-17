@@ -300,7 +300,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                                 widthFactor: 0.5,
                                 child: SkeletonAnimation(
                                   child: Container(
-                                    color: AppColor.gray5,
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
                                     height: 24,
                                   ),
                                 ),
@@ -452,7 +453,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(height: 1, thickness: 1, color: AppColor.gray5),
+        Divider(
+            height: 1,
+            thickness: 1,
+            color: context.theme.colorScheme.onPrimaryContainer),
         SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
