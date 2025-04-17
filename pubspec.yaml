@@ -1,7 +1,0 @@
-dependencies:
-  # 固定版本到已知工作的版本
-  universal_html: ^2.2.4  # 或更新到最新版
-  win32: 5.0.7  # 使用較舊但兼容的版本
-  collection: ^1.17.0  # 使用最新版本或與您的 Flutter SDK 兼容的版本
-  
-  # 其他依賴保持不變 
