@@ -184,7 +184,7 @@ class _ControlBarState extends State<ControlBar> {
       child: ActionButton(
         onPressed: () => LiveMeetingProvider.read(context).leaveMeeting(),
         text: 'Leave',
-        color: AppColor.redLightMode,
+        color: context.theme.colorScheme.error,
         textColor: context.theme.colorScheme.onPrimary,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       ),
