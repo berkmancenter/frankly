@@ -341,12 +341,12 @@ class _DialogFlowState extends State<DialogFlow> {
           onAboutChanged: (value) => setState(
             () => _community = _community.copyWith(description: value),
           ),
-          aboutFocus: _aboutFocus,
+          // aboutFocus: _aboutFocus,
           nameFocus: _nameFocus,
-          taglineFocus: _taglineFocus,
+          // taglineFocus: _taglineFocus,
           community: _community,
         ),
-        CreateCommunityImageFields(
+        /* CreateCommunityImageFields(
           bannerImageUrl: _community.bannerImageUrl,
           profileImageUrl: _community.profileImageUrl,
           updateBannerImage: (String imageUrl) =>
@@ -360,7 +360,7 @@ class _DialogFlowState extends State<DialogFlow> {
           labelText: 'Contact email',
           onChanged: (email) => _updateContactEmail(email),
           isOptional: true,
-        ),
+        ), */
         SizedBox(height: 6),
         PrivateCommunityCheckbox(
           onUpdate: (bool? v) {

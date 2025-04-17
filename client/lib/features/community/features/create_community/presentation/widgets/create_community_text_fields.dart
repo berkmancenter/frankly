@@ -58,15 +58,13 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           onChanged: widget.onNameChanged,
           focus: widget.nameFocus,
         ),
-        if (widget.showChooseCustomDisplayId) ...[
-          _buildCreateCommunityTextField(
+        _buildCreateCommunityTextField(
             label: 'Unique URL display name (Optional)',
             hint: 'Ex: the-justice-league',
             initialValue: widget.community.displayId,
             onChanged: widget.onCustomDisplayIdChanged,
           ),
-        ],
-        _buildCreateCommunityTextField(
+        /* _buildCreateCommunityTextField(
           label: 'Tagline',
           hint: 'Ex: Protecting the earth from all invaders',
           initialValue: widget.community.tagLine,
@@ -79,7 +77,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           focus: widget.taglineFocus,
           containerHeight: 118,
         ),
-        _buildCreateCommunityTextField(
+        _buildCreateCommunityTextField( 
           label: 'About',
           hint: 'Add more detail as to the goals of this community',
           maxLines: 3,
@@ -90,6 +88,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           containerHeight: 108,
           isOptional: true,
         ),
+        */
       ],
     );
   }
@@ -111,6 +110,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         alignment: Alignment.topCenter,
         height: containerHeight,
         child: CustomTextField(
+          borderType: BorderType.underline,
           counterAlignment: Alignment.topRight,
           focusNode: focus,
           maxLength: maxLength,
