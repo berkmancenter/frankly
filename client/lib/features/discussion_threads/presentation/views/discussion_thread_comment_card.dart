@@ -53,7 +53,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           if (parentComment.isDeleted)
             _DeletedCommentWidget()
           else
-            _buildCommentSection(parentComment),
+            _buildCommentSection(context, parentComment),
           if (childrenComments.isNotEmpty)
             Stack(
               children: [
@@ -79,7 +79,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                     if (discussionThreadComment.isDeleted) {
                       return _DeletedCommentWidget();
                     } else {
-                      return _buildCommentSection(discussionThreadComment);
+                      return _buildCommentSection(
+                          context, discussionThreadComment);
                     }
                   },
                 ),
@@ -90,7 +91,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
     );
   }
 
-  Widget _buildCommentSection(DiscussionThreadComment discussionThreadComment) {
+  Widget _buildCommentSection(
+      BuildContext context, DiscussionThreadComment discussionThreadComment) {
     final commentCreatorId = discussionThreadComment.creatorId;
     final isUsersComment = userService.currentUserId == commentCreatorId;
     final emotion = currentlySelectedEmotion(discussionThreadComment);
@@ -104,7 +106,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
             UserProfileChip(
               userId: commentCreatorId,
               textStyle: AppTextStyle.bodyMedium.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               showName: true,
               showBorder: true,
             ),
