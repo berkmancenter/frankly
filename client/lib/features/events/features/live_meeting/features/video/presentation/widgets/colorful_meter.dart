@@ -72,7 +72,7 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
         // Using only for retrieving correct color from same color spectrum, which is used
         // in rendering gauge arc line.
         final rainbow = Rainbow(
-          spectrum: AppColor.odometerColors,
+          spectrum: kOdometerColors,
           rangeStart: 1,
           rangeEnd: -1,
         );
@@ -135,8 +135,9 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
               title,
               maxLines: 1,
               style: TextStyle(
-                  fontSize: fontSize,
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                fontSize: fontSize,
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -147,8 +148,9 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
               subtitle,
               maxLines: 1,
               style: TextStyle(
-                  fontSize: fontSize,
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                fontSize: fontSize,
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -200,7 +202,7 @@ class _ArcPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.bottomRight,
         end: Alignment.bottomLeft,
-        colors: AppColor.odometerColors,
+        colors: kOdometerColors,
       ).createShader(rect);
 
     // Voodoo math to match drawn arc to UI Design.
