@@ -75,8 +75,8 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             children: [
               HeightConstrainedText(
                 title,
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall.copyWith(
+                    fontSize: 16, color: context.theme.colorScheme.primary),
               ),
               AppClickableWidget(
                 child: ProxiedImage(

@@ -71,7 +71,8 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style: body.copyWith(color: AppColor.black),
+                    style:
+                        body.copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ),
             ],
@@ -133,7 +134,8 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style: body.copyWith(color: AppColor.black),
+                    style:
+                        body.copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ),
             ],

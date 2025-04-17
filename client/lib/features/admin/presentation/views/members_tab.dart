@@ -226,7 +226,7 @@ class _MembersTabState extends State<MembersTab> {
             userId: membership.userId,
             imageHeight: 32,
             textStyle: TextStyle(
-              color: AppColor.black,
+              color: context.theme.colorScheme.primary,
             ),
           ),
           ChangeMembershipDropdown(
@@ -317,7 +317,7 @@ class _MembersTabState extends State<MembersTab> {
               userId: request.userId,
               imageHeight: 32,
               textStyle: TextStyle(
-                color: AppColor.black,
+                color: context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -840,7 +840,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                 style: TextStyle(
                   color: disableDropdown
                       ? context.theme.colorScheme.onPrimaryContainer
-                      : AppColor.black,
+                      : context.theme.colorScheme.primary,
                 ),
                 underline: SizedBox.shrink(),
                 iconEnabledColor: context.theme.colorScheme.primary,

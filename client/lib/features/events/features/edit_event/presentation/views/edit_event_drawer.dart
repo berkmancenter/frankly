@@ -90,8 +90,8 @@ class EditEventDrawerState extends State<EditEventDrawer>
             children: [
               Text(
                 'Edit event',
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall.copyWith(
+                    fontSize: 16, color: context.theme.colorScheme.primary),
               ),
               Semantics(
                 label: 'Close Edit',

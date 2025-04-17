@@ -112,7 +112,8 @@ class _MeetingGuideCardItemUserSuggestionsState
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             onEditingComplete: () => _submitNotifier.submit(),
-            textStyle: AppTextStyle.body.copyWith(color: AppColor.black),
+            textStyle: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.primary),
             hintStyle: AppTextStyle.body
                 .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
             maxLines: 1,

@@ -363,7 +363,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(color: AppColor.black),
+            decoration: BoxDecoration(color: context.theme.colorScheme.primary),
             child: Column(
               children: [
                 Row(
@@ -463,7 +463,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(color: AppColor.black),
+            decoration: BoxDecoration(color: context.theme.colorScheme.primary),
             child: ConstrainedBody(
               maxWidth: 1100,
               child: Row(
@@ -633,7 +633,7 @@ class TrianglePainter extends CustomPainter {
 
   TrianglePainter()
       : painter = Paint()
-          ..color = AppColor.black
+          ..color = context.theme.colorScheme.primary
           ..style = PaintingStyle.fill;
 
   @override

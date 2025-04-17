@@ -334,7 +334,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
                         value: device.deviceId,
                         child: _buildDropdownItem(
                           device,
-                          textColor: AppColor.black,
+                          textColor: context.theme.colorScheme.primary,
                         ),
                       ),
                   ],

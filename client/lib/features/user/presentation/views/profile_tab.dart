@@ -191,7 +191,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                 initialValue: changeRecord.displayName,
                 borderType: BorderType.outline,
                 borderRadius: 5,
-                textStyle: TextStyle(color: AppColor.black, fontSize: 16),
+                textStyle: TextStyle(
+                    color: context.theme.colorScheme.primary, fontSize: 16),
                 labelStyle: TextStyle(
                     fontSize: 14.0,
                     color: context.theme.colorScheme.onPrimaryContainer),
@@ -342,7 +343,8 @@ class _ProfileTabState extends State<_ProfileTab> {
           padding: EdgeInsets.zero,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-          textStyle: TextStyle(color: AppColor.black, fontSize: 16),
+          textStyle:
+              TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
           labelStyle: TextStyle(
               fontSize: 14.0,
               color: context.theme.colorScheme.onPrimaryContainer),
@@ -427,8 +429,8 @@ class _ProfileTabState extends State<_ProfileTab> {
         children: [
           HeightConstrainedText(
             widget.allowEdit ? 'Edit your profile' : '',
-            style: AppTextStyle.headlineSmall
-                .copyWith(fontSize: 16, color: AppColor.black),
+            style: AppTextStyle.headlineSmall.copyWith(
+                fontSize: 16, color: context.theme.colorScheme.primary),
           ),
           Spacer(),
           AppClickableWidget(
@@ -598,7 +600,8 @@ class SocialInputField extends StatelessWidget {
             initialValue: platform.url,
             borderType: BorderType.outline,
             borderRadius: 5,
-            textStyle: TextStyle(color: AppColor.black, fontSize: 16),
+            textStyle: TextStyle(
+                color: context.theme.colorScheme.primary, fontSize: 16),
             labelStyle: TextStyle(
                 fontSize: 14.0,
                 color: context.theme.colorScheme.onPrimaryContainer),

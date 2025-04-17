@@ -249,7 +249,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
               'Asking participants to join breakout rooms.\nBreakout rooms will start in...$timeRemaining',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.black,
+                color: context.theme.colorScheme.primary,
                 fontSize: 16,
               ),
             );

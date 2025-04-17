@@ -90,9 +90,12 @@ class _EventsPageState extends State<EventsPage> {
             disabledDecoration: decoration.copyWith(
               color: context.theme.colorScheme.surface.withOpacity(.7),
             ),
-            weekDayTextStyle: textStyle.copyWith(color: AppColor.black),
-            dateTextStyle: dateTextStyle.copyWith(color: AppColor.black),
-            monthTextStyle: textStyle.copyWith(color: AppColor.black),
+            weekDayTextStyle:
+                textStyle.copyWith(color: context.theme.colorScheme.primary),
+            dateTextStyle: dateTextStyle.copyWith(
+                color: context.theme.colorScheme.primary),
+            monthTextStyle:
+                textStyle.copyWith(color: context.theme.colorScheme.primary),
             selectedMonthTextStyle: textStyle.copyWith(
               color: Theme.of(context).colorScheme.secondary,
             ),

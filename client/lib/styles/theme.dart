@@ -112,5 +112,5 @@ final textTheme = GoogleFonts.interTextTheme(
 );
 
 final iconTheme = IconThemeData(
-  color: AppColor.black,
+  color: context.theme.colorScheme.primary,
 );

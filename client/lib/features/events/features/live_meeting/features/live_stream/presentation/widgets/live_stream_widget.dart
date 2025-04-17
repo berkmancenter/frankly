@@ -99,7 +99,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
     if (_showLiveStream) {
       _currentlyPlayingLiveStream = true;
       return RefreshKeyWidget(
-        backgroundColor: AppColor.black,
+        backgroundColor: context.theme.colorScheme.primary,
         child: UrlVideoWidget(
           playbackUrl: url,
           playbackType: 'application/x-mpegURL',

@@ -107,7 +107,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
               child: Text(
                 'BETA',
                 style: AppTextStyle.bodySmall.copyWith(
-                  color: AppColor.black,
+                  color: context.theme.colorScheme.primary,
                   height: 1.2,
                 ),
               ),

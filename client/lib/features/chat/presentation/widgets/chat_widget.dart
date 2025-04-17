@@ -140,7 +140,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
             onChanged: (_) => setState(() {}),
-            textStyle: body.copyWith(color: AppColor.black),
+            textStyle: body.copyWith(color: context.theme.colorScheme.primary),
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,

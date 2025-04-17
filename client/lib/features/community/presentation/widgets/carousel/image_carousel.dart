@@ -246,7 +246,7 @@ class _ShadedOverlay extends StatelessWidget {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: const [
-                        AppColor.black,
+                        context.theme.colorScheme.primary,
                         Colors.transparent,
                       ],
                     )

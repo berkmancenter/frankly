@@ -53,7 +53,7 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
               fontSize: 14,
               color: isDisabled
                   ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : AppColor.black,
+                  : context.theme.colorScheme.primary,
             ),
           ),
           HeightConstrainedText(
@@ -63,7 +63,7 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
               fontSize: 34,
               color: isDisabled
                   ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : AppColor.black,
+                  : context.theme.colorScheme.primary,
             ),
           ),
           HeightConstrainedText(
@@ -72,7 +72,7 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
               fontSize: 14,
               color: isDisabled
                   ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : AppColor.black,
+                  : context.theme.colorScheme.primary,
             ),
           ),
           HeightConstrainedText(
@@ -80,7 +80,7 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
             style: AppTextStyle.body.copyWith(
               fontSize: 14,
               color:
-                  isDisabled ? context.theme.colorScheme.scrim.withScrimOpacity : AppColor.black,
+                  isDisabled ? context.theme.colorScheme.scrim.withScrimOpacity : context.theme.colorScheme.primary,
             ),
           ,,,,),
         ],
