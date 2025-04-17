@@ -90,7 +90,7 @@ class Dialogs {
                   alignment: Alignment.centerRight,
                   child: ActionButton(
                     text: positiveButtonText,
-                    textColor: AppColor.brightGreen,
+                    textColor: context.theme.colorScheme.onPrimary,
                     color: context.theme.colorScheme.primary,
                     onPressed: () async {
                       if (formKey.currentState?.validate() == true) {
@@ -357,7 +357,7 @@ class ConfirmDialogLayer extends StatelessWidget {
                       : context.theme.colorScheme.primary,
                   textColor: areColorsFromTheme
                       ? Theme.of(context).colorScheme.secondary
-                      : AppColor.brightGreen,
+                      : context.theme.colorScheme.onPrimary,
                   text: 'Save',
                   onPressed: onSaveChanges,
                 ),

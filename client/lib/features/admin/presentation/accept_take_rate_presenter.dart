@@ -40,7 +40,7 @@ class AcceptTakeRatePresenter {
               ActionButton(
                 text: 'Agree and continue',
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 expand: true,
                 onPressed: () => Navigator.pop(context, true),
               ),

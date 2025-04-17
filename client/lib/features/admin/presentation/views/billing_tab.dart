@@ -260,7 +260,7 @@ class _AdminBillingContainerContentState
               ActionButton(
                 text: 'Update Plan',
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 onPressed: _newPlanSelected
                     ? () => alertOnError(context, _updatePlanPressed)
                     : null,
