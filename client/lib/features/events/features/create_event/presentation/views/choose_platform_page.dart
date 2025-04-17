@@ -60,7 +60,8 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
               for (var platform in allowedVideoPlatforms) ...[
                 CustomInkWell(
                   onTap: () => presenter.selectPlatform(platform),
-                  hoverColor: AppColor.gray3.withOpacity(0.1),
+                  hoverColor:
+                      context.theme.colorScheme.primaryFixed.withOpacity(0.1),
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 5),
                     leading: SizedBox(

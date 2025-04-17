@@ -65,7 +65,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
       textStyle:
           TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
       borderType: BorderType.outline,
-      backgroundColor: AppColor.gray4.withOpacity(0.2),
+      backgroundColor: context.theme.colorScheme.primaryFixed.withOpacity(0.2),
       borderRadius: 10,
       borderColor: Colors.transparent,
       maxLines: 1,

@@ -42,7 +42,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: _isHovered ? AppColor.grayHoverColor : null,
+          color: _isHovered ? context.theme.colorScheme.primaryFixed : null,
         ),
         child: TooltipTheme(
           data: TooltipThemeData(
@@ -66,7 +66,8 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                 HeightConstrainedText(
                   'Add to calendar',
                   style: AppTextStyle.body.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                    color: context.theme.colorScheme.onPrimaryContainer,
+                  ),
                 ),
               ],
             ),
