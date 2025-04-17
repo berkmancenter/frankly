@@ -70,7 +70,7 @@ class CustomTextField extends StatefulWidget {
     this.labelText,
     this.hintText,
     this.initialValue,
-    this.maxLines = 1,
+    this.maxLines = 3,
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
