@@ -52,7 +52,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   bool isPasswordValid(String password) {
     // Password must be at least 12 characters long, and contain one lowercase and one uppercase letter
-    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{12,}$')
+    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{12,}$')
         .hasMatch(password);
   }
 
@@ -93,6 +93,70 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     });
   }
 
+// Create a widget containing information about account error messages received from our backend
+  Widget _accountErrorMessageBuilder(String errorCode) {
+    switch (errorCode) {
+      case 'email-already-in-use':
+        return Text.rich(
+          TextSpan(
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              color: context.theme.colorScheme.error,
+            ),
+            children: [
+              TextSpan(
+                text: 'This email is already in use. Try ',
+              ),
+              TextSpan(
+                text: 'logging in',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => setState(() {
+                        _showSignup = false;
+                        _formError = '';
+                      }),
+                style: context.theme.textTheme.bodyMedium?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: context.theme.colorScheme.error,
+                ),
+              ),
+              TextSpan(text: ' instead.'),
+            ],
+          ),
+        );
+      case 'user-not-found':
+        return Text.rich(
+          TextSpan(
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              color: context.theme.colorScheme.error,
+            ),
+            children: [
+              TextSpan(
+                text: 'We couldn’t find an account with this email. Try ',
+              ),
+              TextSpan(
+                text: 'signing up',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => setState(() {
+                        _showSignup = true;
+                        _formError = '';
+                      }),
+                style: context.theme.textTheme.bodyMedium?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: context.theme.colorScheme.error,
+                ),
+              ),
+              TextSpan(text: ' instead.'),
+            ],
+          ),
+        );
+     
+      default:
+        return Text(
+          'Something went wrong. Please try again.',
+          style: context.theme.textTheme.bodySmall,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -131,7 +195,13 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           TextSpan(
             text: _showSignup ? 'Log in' : 'Sign up',
             recognizer: TapGestureRecognizer()
-              ..onTap = () => setState(() => _showSignup = !_showSignup),
+              ..onTap = () {
+                if(_formError.isNotEmpty){
+                  _formKey.currentState!.reset();
+                }
+                setState(() {_showSignup = !_showSignup; _formError = '';});
+
+              },
             style: TextStyle(
               decoration: TextDecoration.underline,
             ),
@@ -213,6 +283,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ),
               ),
               validator: (value) {
+                // If the user is not signing up, we don't need to validate the password
+                // Because they may have a legacy account before we started enforcing complexity
+                if(!_showSignup) {
+                  return null;
+                }
                 if (value == null || value.isEmpty || !isPasswordValid(value)) {
                   return 'Please enter a valid password';
                 }
@@ -220,28 +295,25 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               },
             ),
             SizedBox(height: 5),
-            Text(
-              'Must be at least 12 characters long, and contain one lowercase and one uppercase letter',
-              style: context.theme.textTheme.bodySmall,
-            ),
-            SizedBox(height: 9),
-            if (_formError.isNotEmpty)
+            if(_showSignup) 
               Text(
-                _formError,
-                style: context.theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.red,
-                ),
+                'Must be at least 12 characters long, and contain one lowercase and one uppercase letter',
+                style: context.theme.textTheme.bodySmall,
               ),
+            SizedBox(height: 9),
+            if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
             SizedBox(height: 9),
             ThickOutlineButton(
               key: SignInOptionsContent.buttonSubmitKey,
               minWidth: minWidth,
               backgroundColor: Colors.black,
               textColor: Colors.white,
-              onPressed: () => authMessageOnError(_onSubmit,
-                  callback: (error, code) => setState(
-                        () => _formError = code,
-                      ),),
+              onPressed: () => authMessageOnError(
+                _onSubmit,
+                callback: (error, code) => setState(
+                  () => _formError = code,
+                ),
+              ),
               text: !_showSignup ? 'Log in' : 'Sign up',
             ),
           ],
