@@ -59,97 +59,102 @@ class DiscussionThreadCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final localImageURL = discussionThread.imageUrl;
 
+    final likeImagePath = _getLikeImagePath();
+    final dislikeImagePath = _getDislikeImagePath();
+    final likeDislikeCount = _getLikeDislikeCount();
+
     return Container(
       color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
-          _buildTopSection(),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  UserProfileChip(
+                    userId: discussionThread.creatorId,
+                    textStyle: AppTextStyle.bodyMedium.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
+                    showName: true,
+                    showBorder: true,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        likeDislikeCount,
+                        style: AppTextStyle.bodyMedium.copyWith(
+                          color: context.theme.colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      AppClickableWidget(
+                        child: ProxiedImage(
+                          null,
+                          asset: likeImagePath,
+                          width: 20,
+                          height: 20,
+                        ),
+                        onTap: () async {
+                          await guardSignedIn(() async {
+                            final isLiked = discussionThread.isLiked(
+                              userService.isSignedIn,
+                              userService.currentUserId,
+                            );
+                            onLikeDislikeToggle(
+                              isLiked ? LikeType.neutral : LikeType.like,
+                            );
+                          });
+                        },
+                      ),
+                      SizedBox(width: 5),
+                      AppClickableWidget(
+                        child: ProxiedImage(
+                          null,
+                          asset: dislikeImagePath,
+                          width: 20,
+                          height: 20,
+                        ),
+                        onTap: () async {
+                          await guardSignedIn(() async {
+                            final isDisliked = discussionThread.isDisliked(
+                              userService.isSignedIn,
+                              userService.currentUserId,
+                            );
+                            onLikeDislikeToggle(
+                              isDisliked ? LikeType.neutral : LikeType.dislike,
+                            );
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
           SizedBox(height: 20),
           if (localImageURL != null) ...[
             _buildImage(localImageURL),
             SizedBox(height: 20),
           ],
-          _buildContentSection(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: HeightConstrainedText(
+              discussionThread.content,
+              style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
+            ),
+          ),
           SizedBox(height: 20),
           _buildEmotionsSection(),
           SizedBox(height: 20),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTopSection() {
-    final likeImagePath = _getLikeImagePath();
-    final dislikeImagePath = _getDislikeImagePath();
-    final likeDislikeCount = _getLikeDislikeCount();
-
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            UserProfileChip(
-              userId: discussionThread.creatorId,
-              textStyle: AppTextStyle.bodyMedium.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
-              showName: true,
-              showBorder: true,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  likeDislikeCount,
-                  style: AppTextStyle.bodyMedium.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
-                ),
-                SizedBox(width: 5),
-                AppClickableWidget(
-                  child: ProxiedImage(
-                    null,
-                    asset: likeImagePath,
-                    width: 20,
-                    height: 20,
-                  ),
-                  onTap: () async {
-                    await guardSignedIn(() async {
-                      final isLiked = discussionThread.isLiked(
-                        userService.isSignedIn,
-                        userService.currentUserId,
-                      );
-                      onLikeDislikeToggle(
-                        isLiked ? LikeType.neutral : LikeType.like,
-                      );
-                    });
-                  },
-                ),
-                SizedBox(width: 5),
-                AppClickableWidget(
-                  child: ProxiedImage(
-                    null,
-                    asset: dislikeImagePath,
-                    width: 20,
-                    height: 20,
-                  ),
-                  onTap: () async {
-                    await guardSignedIn(() async {
-                      final isDisliked = discussionThread.isDisliked(
-                        userService.isSignedIn,
-                        userService.currentUserId,
-                      );
-                      onLikeDislikeToggle(
-                        isDisliked ? LikeType.neutral : LikeType.dislike,
-                      );
-                    });
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -160,17 +165,6 @@ class DiscussionThreadCard extends StatelessWidget {
       width: double.maxFinite,
       height: 500,
       fit: BoxFit.cover,
-    );
-  }
-
-  Widget _buildContentSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: HeightConstrainedText(
-        discussionThread.content,
-        style: AppTextStyle.body
-            .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
-      ),
     );
   }
 
