@@ -218,8 +218,11 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Icon(Icons.menu,
-                  size: 34, color: context.theme.colorScheme.secondary),
+              child: Icon(
+                Icons.menu,
+                size: 34,
+                color: context.theme.colorScheme.secondary,
+              ),
             ),
           ),
         ),
@@ -450,7 +453,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                     right: totalWidth - settingsXPosition - 25,
                     child: CustomPaint(
                       size: Size(20, 10),
-                      painter: TrianglePainter(),
+                      painter: TrianglePainter(context),
                     ),
                   ),
                 ],
@@ -545,7 +548,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                     right: totalWidth - settingsXPosition - 25,
                     child: CustomPaint(
                       size: Size(20, 10),
-                      painter: TrianglePainter(),
+                      painter: TrianglePainter(context),
                     ),
                   ),
                 ],
@@ -631,7 +634,7 @@ class _SelectableNavigationButton extends StatelessWidget {
 class TrianglePainter extends CustomPainter {
   final Paint painter;
 
-  TrianglePainter()
+  TrianglePainter(BuildContext context)
       : painter = Paint()
           ..color = context.theme.colorScheme.primary
           ..style = PaintingStyle.fill;
