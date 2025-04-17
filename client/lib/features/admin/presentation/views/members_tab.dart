@@ -654,37 +654,37 @@ class _MembersTabState extends State<MembersTab> {
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Owner',
-          icon: MembershipStatus.owner.icon,
+          icon: MembershipStatus.owner.icon(context),
           permissions: MembershipStatus.owner.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Admin',
-          icon: MembershipStatus.admin.icon,
+          icon: MembershipStatus.admin.icon(context),
           permissions: MembershipStatus.admin.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Moderator',
-          icon: MembershipStatus.mod.icon,
+          icon: MembershipStatus.mod.icon(context),
           permissions: MembershipStatus.mod.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Facilitator',
-          icon: MembershipStatus.facilitator.icon,
+          icon: MembershipStatus.facilitator.icon(context),
           permissions: MembershipStatus.facilitator.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Member',
-          icon: MembershipStatus.member.icon,
+          icon: MembershipStatus.member.icon(context),
           permissions: MembershipStatus.member.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Attendee',
-          icon: MembershipStatus.member.icon,
+          icon: MembershipStatus.member.icon(context),
           permissions: MembershipStatus.attendee.permissions,
         ),
       ],
@@ -856,7 +856,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            value.icon,
+                            value.icon(context),
                             SizedBox(width: 4),
                             Text(
                               _adminStatusMap[value] ??
@@ -902,7 +902,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                         children: [
                           isDisabled
                               ? UpgradeIcon(isDisabledColor: true)
-                              : value.icon,
+                              : value.icon(context),
                           SizedBox(width: 5),
                           Flexible(
                             child: Column(

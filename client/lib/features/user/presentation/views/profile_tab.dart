@@ -114,7 +114,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     final localStatus = status;
     if (localStatus == null) return SizedBox.shrink();
 
-    return localStatus.icon;
+    return localStatus.icon(context);
   }
 
   List<Widget> _buildEmail(String userId) {
