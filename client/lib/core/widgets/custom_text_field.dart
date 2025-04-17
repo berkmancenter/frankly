@@ -70,7 +70,7 @@ class CustomTextField extends StatefulWidget {
     this.labelText,
     this.hintText,
     this.initialValue,
-    this.maxLines = 3,
+    this.maxLines,
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
@@ -129,45 +129,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextEditingController(text: widget.initialValue ?? '');
   }
 
-  InputBorder _getBorder({bool isError = false}) {
-    if (widget.borderType == BorderType.outline) {
-      return OutlineInputBorder(
-        borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(widget.borderRadius),
-      );
-    } else if (widget.borderType == BorderType.underline) {
-      return UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
-          width: 1.0,
-        ),
-      );
-    }
-
-    return InputBorder.none;
-  }
-
-  Color _getBorderColor({bool isError = false}) {
-    return isError ? AppColor.red500 : AppColor.black;
-  }
-
-  Color _getDarkModeBorderColor({bool isError = false}) {
-    return isError
-        ? AppColor.redDarkMode
-        : _focusNode.hasFocus
-            ? AppColor.accentBlueLight
-            : AppColor.gray5;
-  }
-
   TextStyle _buildLabelStyle(
     BuildContext context,
   ) {
@@ -203,9 +164,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       padding: widget.textFieldPadding,
       decoration: BoxDecoration(
-        color: widget.borderType == BorderType.underline
-            ? AppColor.transparent
-            : widget.backgroundColor,
+        color: AppColor.transparent,
         borderRadius: BorderRadius.circular(widget.borderRadius),
       ),
       child: Stack(
@@ -261,11 +220,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ],
             validator: widget.validator,
             decoration: InputDecoration(
+              border: UnderlineInputBorder(),
               contentPadding: widget.contentPadding,
-              border: _getBorder(),
-              focusedBorder: _getBorder(),
-              enabledBorder: _getBorder(),
-              errorBorder: _getBorder(isError: true),
               labelText: widget.labelText,
               labelStyle: _buildLabelStyle(context),
               errorStyle: _buildTextStyle(context, isError: true),

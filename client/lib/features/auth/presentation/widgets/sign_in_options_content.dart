@@ -238,7 +238,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     key: SignInOptionsContent.nameTextFieldKey,
                     controller: _displayNameController,
                     labelText: 'Your Name',
-                    borderType: BorderType.underline,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a valid name';
@@ -253,7 +252,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               key: SignInOptionsContent.emailTextFieldKey,
               controller: _emailController,
               labelText: 'Email',
-              borderType: BorderType.underline,
               validator: (value) {
                 if (value == null || value.isEmpty || !isEmailValid(value)) {
                   return 'Please enter a valid email';
@@ -264,11 +262,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             SizedBox(height: 10),
             CustomTextField(
               key: SignInOptionsContent.passwordTextFieldKey,
-              controller: _passwordController,
+             controller: _passwordController,
               onEditingComplete: () => _submitController.submit(),
               labelText: 'Password',
               obscureText: !_showPassword,
-              borderType: BorderType.underline,
               suffixIcon: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
                 child: IconButton(
