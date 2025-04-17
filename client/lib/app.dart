@@ -22,6 +22,9 @@ import 'package:uuid/uuid.dart';
 
 import 'config/firebase_options.dart';
 
+import 'package:client/styles/app_styles.dart';
+
+
 bool kShowStripeFeatures = false;
 bool useBotControls = false;
 Map<String, String>? botJoinParameters;
@@ -138,19 +141,9 @@ class _AppState extends State<App> {
           backButtonDispatcher:
               BeamerBackButtonDispatcher(delegate: routerDelegate),
           routeInformationParser: BeamerParser(),
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColor.darkBlue,
-              secondary: AppColor.brightGreen,
-            ),
-            pageTransitionsTheme: NoTransitionsOnWeb(),
-          ),
-          builder: (_, child) => UIMigration(
-            whiteBackground: true,
-            child: child!,
-          ),
+          theme: appTheme,
         ),
-      ),
-    ,,,,);
+      ); },),
+    );
   }
 }
