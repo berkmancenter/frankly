@@ -19,26 +19,26 @@ import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 
-class FreemiumDialogFlow extends StatefulWidget with ShowDialogMixin {
+class DialogFlow extends StatefulWidget with ShowDialogMixin {
   final bool showAppNameOnMobile;
 
-  const FreemiumDialogFlow({
+  const DialogFlow({
     this.showAppNameOnMobile = true,
     Key? key,
   }) : super(key: key);
 
   @override
-  _FreemiumDialogFlowState createState() => _FreemiumDialogFlowState();
+  _DialogFlowState createState() => _DialogFlowState();
 }
 
-class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
+class _DialogFlowState extends State<DialogFlow> {
   final FocusNode _aboutFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _taglineFocus = FocusNode();
@@ -60,7 +60,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
       case 1:
         return 'Welcome to ${Environment.appName}!';
       case 2:
-        return 'Create your space';
+        return 'Create a community';
       case 3:
         return 'Brand your space';
       default:
@@ -235,7 +235,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
         SizedBox(height: 40),
         if (_onStep != 4) HeightConstrainedText('$_onStep of 3'),
         SizedBox(height: 10),
-        HeightConstrainedText(_stepText, style: AppTextStyle.headline2),
+        HeightConstrainedText(_stepText, style: context.theme.textTheme.titleLarge),
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
@@ -332,10 +332,6 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PreviewContainer(
-          _community,
-          fieldToEmphasize: _focusedField,
-        ),
         SizedBox(height: 30),
         CreateCommunityTextFields(
           onNameChanged: (value) =>
