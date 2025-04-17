@@ -127,10 +127,10 @@ You can also trigger the hidden Enable Accessibility button by opening console i
     child: Semantics(label:'Submit Chat Button',button: true,
               child: ActionButton(
                 minWidth: 20,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 controller: _sendController,
                 onPressed: canSubmit ? _sendMessage : null,
-                disabledColor: AppColor.white.withOpacity(0.3),
+                disabledColor: context.theme.colorScheme.onPrimary.withOpacity(0.3),
                 height: isMobile ? 50 : 55,
                 child: Icon(
                   Icons.send,

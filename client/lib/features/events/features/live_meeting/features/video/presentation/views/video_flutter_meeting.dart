@@ -172,7 +172,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                     width: recordingPulseSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColor.redDarkMode,
+                      color: context.theme.colorScheme.errorContainer,
                     ),
                   ),
                   SizedBox(width: 8),
@@ -635,7 +635,7 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
                             end: Alignment.centerRight,
                             colors: const [
                               context.theme.colorScheme.secondary,
-                              Colors.transparent
+                              Colors.transparent,
                             ],
                           ),
                         ),
@@ -661,7 +661,7 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
                             end: Alignment.centerRight,
                             colors: const [
                               Colors.transparent,
-                              context.theme.colorScheme.secondary
+                              context.theme.colorScheme.secondary,
                             ],
                           ),
                         ),

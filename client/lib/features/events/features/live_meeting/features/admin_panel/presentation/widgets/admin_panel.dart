@@ -841,7 +841,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
         if (isCurrentRoom) {
           backgroundColor = context.theme.colorScheme.onPrimary;
         } else if (needsHelp) {
-          backgroundColor = AppColor.darkRed;
+          backgroundColor = context.theme.colorScheme.error;
         }
 
         return CustomInkWell(
@@ -873,7 +873,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: needsHelp ? AppColor.redDarkMode : null,
+                    color: needsHelp ? context.theme.colorScheme.errorContainer : null,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -881,7 +881,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                       if (needsHelp) ...[
                         Icon(
                           Icons.notifications,
-                          color: AppColor.darkRed,
+                          color: context.theme.colorScheme.error,
                           size: 16,
                         ),
                         SizedBox(width: 4),
@@ -902,7 +902,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: needsHelp
-                                ? AppColor.darkRed
+                                ? context.theme.colorScheme.error
                                 : (isCurrentRoom
                                     ? Theme.of(context).primaryColor
                                     : context.theme.colorScheme.onPrimary),
@@ -1082,7 +1082,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                 onTap: widget.goBack,
                 child: Container(
                   color: needsHelp
-                      ? AppColor.darkRed
+                      ? context.theme.colorScheme.error
                       : context.theme.colorScheme.scrim.withScrimOpacity,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -1132,7 +1132,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                             );
                           },
                           color: needsHelp
-                              ? AppColor.redDarkMode
+                              ? context.theme.colorScheme.errorContainer
                               : Colors.transparent,
                           textColor: needsHelp
                               ? context.theme.colorScheme.onPrimary

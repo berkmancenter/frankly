@@ -75,7 +75,7 @@ class _ControlBarState extends State<ControlBar> {
           : Icons.videocam_off_outlined,
       iconColor: _conferenceRoom.videoEnabled
           ? context.theme.colorScheme.onPrimary
-          : AppColor.redDarkMode,
+          : context.theme.colorScheme.errorContainer,
     );
   }
 
@@ -159,7 +159,7 @@ class _ControlBarState extends State<ControlBar> {
               : Icons.mic_off_outlined,
           iconColor: _conferenceRoom.audioEnabled
               ? context.theme.colorScheme.onPrimary
-              : AppColor.redDarkMode,
+              : context.theme.colorScheme.errorContainer,
         ),
         _buildMoreOptionsButton(),
         SizedBox(width: spacerWidth),
@@ -386,7 +386,8 @@ class _ChatInputState extends State<ChatInput> {
               textStyle:
                   body.copyWith(color: context.theme.colorScheme.onPrimary),
               hintStyle: body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               backgroundColor: context.theme.colorScheme.onPrimaryContainer,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,

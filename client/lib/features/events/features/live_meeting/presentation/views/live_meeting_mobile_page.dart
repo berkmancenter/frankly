@@ -536,7 +536,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                           width: recordingPulseSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColor.redDarkMode,
+                            color: context.theme.colorScheme.errorContainer,
                           ),
                         ),
                         SizedBox(width: 8),
@@ -721,8 +721,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
             mainAxisSize: MainAxisSize.min,
             children: [
               Divider(
-                  height: 1,
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                height: 1,
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,

@@ -179,7 +179,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildMutedOverlayEntry() {
     return Icon(
       Icons.mic_off_outlined,
-      color: AppColor.redDarkMode,
+      color: context.theme.colorScheme.errorContainer,
       size: 17,
     );
   }

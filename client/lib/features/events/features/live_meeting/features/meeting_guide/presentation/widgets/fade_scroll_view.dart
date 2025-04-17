@@ -69,7 +69,7 @@ class _FadeScrollViewState extends State<FadeScrollView> {
                       gradient: LinearGradient(
                         colors: [
                           context.theme.colorScheme.surfaceContainerLowest,
-                          AppColor.transparent
+                          Colors.transparent,
                         ],
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,

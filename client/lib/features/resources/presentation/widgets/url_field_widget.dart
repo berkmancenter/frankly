@@ -53,7 +53,7 @@ class UrlFieldWidget extends StatelessWidget {
                 controller: controller,
                 borderColor: (isNullOrEmpty(error)
                         ? borderColor
-                        : AppColor.redDarkMode) ??
+                        : context.theme.colorScheme.errorContainer) ??
                     context.theme.colorScheme.primary,
                 onChanged: onUrlChange,
               ),
