@@ -320,7 +320,7 @@ class ConfirmDialogLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.grayTransparent,
+      color: context.theme.colorScheme.scrim.withScrimOpacity,
       alignment: Alignment.center,
       child: Container(
         decoration:

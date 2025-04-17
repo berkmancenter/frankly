@@ -203,7 +203,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
               height: 32,
               padding: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
-                color: AppColor.grayTransparent,
+                color: context.theme.colorScheme.scrim.withScrimOpacity,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(5),
                 ),
@@ -260,7 +260,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         height: 32,
         padding: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: AppColor.grayTransparent,
+          color: context.theme.colorScheme.scrim.withScrimOpacity,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(5),
           ),
