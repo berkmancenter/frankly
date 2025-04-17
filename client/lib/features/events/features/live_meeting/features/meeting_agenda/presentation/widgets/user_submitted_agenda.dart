@@ -137,8 +137,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                         return SelectableLinkify(
                           text: item.content ?? '',
                           textAlign: TextAlign.left,
-                          style: AppTextStyle.eyebrow
-                              .copyWith(color: AppColor.gray1),
+                          style: AppTextStyle.eyebrow.copyWith(
+                              color: context.theme.colorScheme.secondary),
                           options: LinkifyOptions(looseUrl: true),
                           onOpen: (link) => launch(link.url),
                         );

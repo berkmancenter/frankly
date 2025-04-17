@@ -63,7 +63,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
       return Center(
         child: AudioVideoErrorDisplay(
           error: error,
-          textColor: AppColor.gray1,
+          textColor: context.theme.colorScheme.secondary,
         ),
       );
     }

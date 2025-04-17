@@ -131,7 +131,8 @@ class _EventsPageState extends State<EventsPage> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(Icons.search, color: AppColor.gray1),
+            child:
+                Icon(Icons.search, color: context.theme.colorScheme.secondary),
           ),
           Expanded(
             child: _buildSearchBarField(),

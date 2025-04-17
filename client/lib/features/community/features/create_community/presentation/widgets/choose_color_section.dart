@@ -111,7 +111,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
-          AppColor.gray1,
+          context.theme.colorScheme.secondary,
         )) {
           _selectedColorErrorMessage = 'Light color must be lighter';
         } else if (!ThemeUtils.isContrastRatioValid(

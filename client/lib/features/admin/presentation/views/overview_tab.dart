@@ -90,8 +90,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                       onboardingStep == null
                           ? 'Now we’re talking!'
                           : onboardingStep.title,
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.secondary),
                     ),
                   ],
                 ),
@@ -152,8 +152,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             SizedBox(width: 10),
                             Text(
                               'Now we’re talking!',
-                              style: AppTextStyle.subhead
-                                  .copyWith(color: AppColor.gray1),
+                              style: AppTextStyle.subhead.copyWith(
+                                  color: context.theme.colorScheme.secondary),
                             ),
                           ],
                         )
@@ -171,8 +171,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Expanded(
                               child: Text(
                                 onboardingStep.title,
-                                style: AppTextStyle.subhead
-                                    .copyWith(color: AppColor.gray1),
+                                style: AppTextStyle.subhead.copyWith(
+                                    color: context.theme.colorScheme.secondary),
                               ),
                             ),
                             SizedBox(
@@ -306,8 +306,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                 Flexible(
                   child: Text(
                     onboardingStep.sectionTitle,
-                    style:
-                        AppTextStyle.bodyMedium.copyWith(color: AppColor.gray1),
+                    style: AppTextStyle.bodyMedium
+                        .copyWith(color: context.theme.colorScheme.secondary),
                   ),
                 ),
                 AnimatedSize(

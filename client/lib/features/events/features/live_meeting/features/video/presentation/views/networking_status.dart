@@ -182,7 +182,7 @@ class ExplanationText extends StatelessWidget {
             AppAsset.kXSvg.path,
             width: 20,
             height: 20,
-            color: AppColor.gray1,
+            color: context.theme.colorScheme.secondary,
           ),
         ),
       ],

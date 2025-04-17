@@ -180,8 +180,8 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             SizedBox(height: 40),
             HeightConstrainedText(
               'Dev Settings',
-              style: AppTextStyle.headlineSmall
-                  .copyWith(fontSize: 16, color: AppColor.gray1),
+              style: AppTextStyle.headlineSmall.copyWith(
+                  fontSize: 16, color: context.theme.colorScheme.secondary),
             ),
             SizedBox(height: 40),
             for (final feature in _model.eventSettings.toJson().keys.toList())

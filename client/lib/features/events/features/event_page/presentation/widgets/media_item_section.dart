@@ -75,7 +75,7 @@ class MediaItemSection extends StatelessWidget {
                     child: HeightConstrainedText(
                       'Add video or Image',
                       style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.gray1),
+                          .copyWith(color: context.theme.colorScheme.secondary),
                     ),
                   ),
                 ),

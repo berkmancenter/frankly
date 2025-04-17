@@ -50,7 +50,7 @@ class _EditCommunityButtonState extends State<EditCommunityButton> {
             ),
             child: Icon(
               Icons.edit,
-              color: AppColor.gray1,
+              color: context.theme.colorScheme.secondary,
               size: 20,
             ),
           ),

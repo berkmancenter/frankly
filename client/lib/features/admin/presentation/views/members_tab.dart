@@ -173,7 +173,8 @@ class _MembersTabState extends State<MembersTab> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(Icons.search, color: AppColor.gray1),
+                    child: Icon(Icons.search,
+                        color: context.theme.colorScheme.secondary),
                   ),
                   Expanded(
                     child: _buildSearchBarField(memberships),
@@ -896,8 +897,8 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                             isUnallowedFacilitatorPromotion);
                     final textStyle = AppTextStyle.body.copyWith(
                       color: isDisabled
-                          ? AppColor.gray1.withOpacity(.5)
-                          : AppColor.gray1,
+                          ? context.theme.colorScheme.secondary.withOpacity(.5)
+                          : context.theme.colorScheme.secondary,
                     );
                     return DropdownMenuItem<MembershipStatus>(
                       value: value,

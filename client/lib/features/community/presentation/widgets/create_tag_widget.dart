@@ -282,8 +282,10 @@ class TagChip extends StatelessWidget {
             : context.theme.colorScheme.onPrimaryContainer,
         child: HeightConstrainedText(
           '#${label ?? ''}',
-          style: AppTextStyle.body
-              .copyWith(color: isSelected ? tagTextColor : AppColor.gray1),
+          style: AppTextStyle.body.copyWith(
+              color: isSelected
+                  ? tagTextColor
+                  : context.theme.colorScheme.secondary),
         ),
       ),
     );

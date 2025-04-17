@@ -264,7 +264,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                 child: HeightConstrainedText(
                   'Upcoming Events',
                   style: AppTextStyle.headline4.copyWith(
-                    color: AppColor.gray1,
+                    color: context.theme.colorScheme.secondary,
                   ),
                 ),
               ),
@@ -331,14 +331,16 @@ class _CommunityHomeState extends State<CommunityHome> {
         if (email != null && email.isNotEmpty) ...[
           Text(
             'Contact',
-            style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+            style: AppTextStyle.headline4
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           SizedBox(height: 10),
           GestureDetector(
             onTap: () => url_launcher.launch('mailto:$email'),
             child: Text(
               email,
-              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray1),
+              style: AppTextStyle.bodyMedium
+                  .copyWith(color: context.theme.colorScheme.secondary),
             ),
           ),
           SizedBox(height: 10),

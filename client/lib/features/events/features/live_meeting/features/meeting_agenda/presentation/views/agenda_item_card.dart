@@ -177,7 +177,8 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               Expanded(
                 child: HeightConstrainedText(
                   title,
-                  style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+                  style: AppTextStyle.headline4
+                      .copyWith(color: context.theme.colorScheme.secondary),
                 ),
               ),
               if (!_model.isEditMode && !isMobile) ...[

@@ -309,7 +309,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       hint: HeightConstrainedText(
         'Choose duration',
         style: AppTextStyle.bodySmall.copyWith(
-          color: AppColor.gray1,
+          color: context.theme.colorScheme.secondary,
         ),
       ),
       icon: Icon(

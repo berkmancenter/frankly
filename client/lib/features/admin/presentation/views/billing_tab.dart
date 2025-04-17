@@ -310,8 +310,8 @@ class _AdminBillingContainerContentState
                     Flexible(
                       child: HeightConstrainedText(
                         plan.name,
-                        style:
-                            AppTextStyle.body.copyWith(color: AppColor.gray1),
+                        style: AppTextStyle.body.copyWith(
+                            color: context.theme.colorScheme.secondary),
                       ),
                     ),
                     SizedBox(width: 8),

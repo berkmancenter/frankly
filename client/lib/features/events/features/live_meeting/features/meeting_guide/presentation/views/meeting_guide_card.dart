@@ -217,7 +217,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             Expanded(
               child: HeightConstrainedText(
                 title,
-                style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+                style: AppTextStyle.headline4
+                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
             ),
             if (agendaItem.timeInSeconds != null)

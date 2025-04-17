@@ -144,7 +144,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                             style: TextStyle(
                               color: Theme.of(context).isDark
                                   ? context.theme.colorScheme.onPrimaryContainer
-                                  : AppColor.gray1,
+                                  : context.theme.colorScheme.secondary,
                               fontSize: 13,
                               fontStyle: FontStyle.italic,
                             ),

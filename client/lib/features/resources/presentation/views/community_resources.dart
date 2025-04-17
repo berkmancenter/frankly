@@ -93,8 +93,8 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                           children: [
                             HeightConstrainedText(
                               resource.title ?? '',
-                              style: AppTextStyle.bodyMedium
-                                  .copyWith(color: AppColor.gray1),
+                              style: AppTextStyle.bodyMedium.copyWith(
+                                  color: context.theme.colorScheme.secondary),
                             ),
                             SizedBox(height: 4),
                             Wrap(

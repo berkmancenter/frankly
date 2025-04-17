@@ -205,7 +205,7 @@ class LinkField extends StatelessWidget {
                           size: 15,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
                               ? AppColor.brightGreen
-                              : AppColor.gray1,
+                              : context.theme.colorScheme.secondary,
                         ),
                       ),
                     )

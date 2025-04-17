@@ -68,7 +68,8 @@ class EventMessageWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   eventMessage.message,
-                  style: AppTextStyle.eyebrow.copyWith(color: AppColor.gray1),
+                  style: AppTextStyle.eyebrow
+                      .copyWith(color: context.theme.colorScheme.secondary),
                 ),
               ),
             ],

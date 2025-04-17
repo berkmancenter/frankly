@@ -255,8 +255,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                         isIcon: false,
                         child: Text(
                           'See more',
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: AppColor.gray1),
+                          style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.secondary),
                         ),
                       ),
                     ],

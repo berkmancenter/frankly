@@ -174,7 +174,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
               child: HeightConstrainedText(
                 currentCommunity.name ?? Environment.appName,
                 maxLines: 2,
-                style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                style: AppTextStyle.subhead
+                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
             ),
           ),
@@ -217,7 +218,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Icon(Icons.menu, size: 34, color: AppColor.gray1),
+              child: Icon(Icons.menu,
+                  size: 34, color: context.theme.colorScheme.secondary),
             ),
           ),
         ),
