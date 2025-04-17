@@ -1,1 +1,0 @@
-final bool showImageEdit = false; 
