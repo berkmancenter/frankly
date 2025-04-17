@@ -262,7 +262,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                     ),
                   ),
                   Container(
-                    color: AppColor.black.withOpacity(0.7),
+                    color: context.theme.colorScheme.scrim.withScrimOpacity,
                   ),
                   Center(
                     child: Column(

@@ -51,8 +51,9 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
             DateFormat('MMM').format(time).toUpperCase(),
             style: AppTextStyle.body.copyWith(
               fontSize: 14,
-              color:
-                  isDisabled ? AppColor.black.withOpacity(0.5) : AppColor.black,
+              color: isDisabled
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : AppColor.black,
             ),
           ),
           HeightConstrainedText(
@@ -60,16 +61,18 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
             style: AppTextStyle.headline2Light.copyWith(
               height: .9,
               fontSize: 34,
-              color:
-                  isDisabled ? AppColor.black.withOpacity(0.5) : AppColor.black,
+              color: isDisabled
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : AppColor.black,
             ),
           ),
           HeightConstrainedText(
             DateFormat('EEE').format(time),
             style: AppTextStyle.body.copyWith(
               fontSize: 14,
-              color:
-                  isDisabled ? AppColor.black.withOpacity(0.5) : AppColor.black,
+              color: isDisabled
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : AppColor.black,
             ),
           ),
           HeightConstrainedText(
@@ -77,9 +80,9 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
             style: AppTextStyle.body.copyWith(
               fontSize: 14,
               color:
-                  isDisabled ? AppColor.black.withOpacity(0.5) : AppColor.black,
+                  isDisabled ? context.theme.colorScheme.scrim.withScrimOpacity : AppColor.black,
             ),
-          ),
+          ,,,,),
         ],
       ),
     );

@@ -199,7 +199,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: AppColor.black.withOpacity(0.2),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                       child: Stack(
                         children: [
                           Row(

@@ -59,7 +59,7 @@ class EventButton extends HookWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: AppColor.black.withOpacity(0.5),
+              color: context.theme.colorScheme.scrim.withScrimOpacity,
               blurRadius: 4,
               offset: Offset(1, 1),
             ),

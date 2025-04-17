@@ -166,7 +166,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         fit: fit,
         clipBehavior: Clip.hardEdge,
         child: Container(
-          color: AppColor.black.withOpacity(0.7),
+          color: context.theme.colorScheme.scrim.withScrimOpacity,
           height: dimensions.height,
           width: dimensions.width,
           child: _buildVideoElement(),
@@ -315,7 +315,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     return Container(
       color: Theme.of(context).primaryColor,
       child: Container(
-        color: AppColor.black.withOpacity(0.7),
+        color: context.theme.colorScheme.scrim.withScrimOpacity,
         child: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
@@ -421,7 +421,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
           Container(
             color: Theme.of(context).primaryColor,
             child: Container(
-              color: AppColor.black.withOpacity(0.7),
+              color: context.theme.colorScheme.scrim.withScrimOpacity,
               child: AnimatedBuilder(
                 animation: widget.participant,
                 builder: (_, __) => Stack(

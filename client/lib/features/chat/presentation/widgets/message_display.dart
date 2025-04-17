@@ -65,7 +65,9 @@ class MessageDisplayState extends State<MessageDisplay> {
             label: 'Chat Message',
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              color: _isHovered ? AppColor.black.withOpacity(0.05) : null,
+              color: _isHovered
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : null,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

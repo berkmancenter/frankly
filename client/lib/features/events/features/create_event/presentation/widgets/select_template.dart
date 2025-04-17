@@ -268,7 +268,7 @@ class TemplateSelectionCard extends StatelessWidget {
             color: context.theme.colorScheme.surfaceContainerLowest,
             boxShadow: [
               BoxShadow(
-                color: AppColor.black.withOpacity(0.5),
+                color: context.theme.colorScheme.scrim.withScrimOpacity,
                 blurRadius: 4,
                 offset: Offset(1, 1),
               ),

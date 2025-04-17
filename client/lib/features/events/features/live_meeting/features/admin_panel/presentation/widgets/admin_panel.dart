@@ -107,7 +107,7 @@ class _AdminPanelState extends State<AdminPanel> {
   List<Widget> _buildBreakoutList() {
     return [
       Container(
-        color: AppColor.black.withOpacity(0.4),
+        color: context.theme.colorScheme.scrim.withScrimOpacity,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           children: [
@@ -281,7 +281,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                   left: Radius.circular(borderRadius),
                 ),
                 color: _showOnlyAlertedRooms
-                    ? AppColor.black.withOpacity(0.4)
+                    ? context.theme.colorScheme.scrim.withScrimOpacity
                     : AppColor.brightGreen,
               ),
               alignment: Alignment.center,
@@ -303,7 +303,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                   right: Radius.circular(borderRadius),
                 ),
                 color: !_showOnlyAlertedRooms
-                    ? AppColor.black.withOpacity(0.4)
+                    ? context.theme.colorScheme.scrim.withScrimOpacity
                     : AppColor.brightGreen,
               ),
               alignment: Alignment.center,
@@ -492,7 +492,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                       }),
                       text: 'Jump To',
                       textColor: AppColor.brightGreen,
-                      color: AppColor.black.withOpacity(0.4),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                     ),
                   ],
                 ),
@@ -645,7 +645,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
     if (menuItems.isEmpty) return SizedBox.shrink();
 
     return CustomInkWell(
-      hoverColor: AppColor.black.withOpacity(0.1),
+      hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
       onTap: () => _showMoreMenu(menuItems),
       child: Icon(
         Icons.more_vert,
@@ -755,9 +755,10 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
   Widget build(BuildContext context) {
     final menuItems = _getMenuItems();
     return Semantics(
-      label: 'Participant Actions for user with ID ${widget.providerParticipant?.userId}',
+      label:
+          'Participant Actions for user with ID ${widget.providerParticipant?.userId}',
       child: CustomInkWell(
-        hoverColor: AppColor.black.withOpacity(0.1),
+        hoverColor: context.theme.colorScheme.scrim.withScrimOpacity
         onTap: () => _showMoreMenu(menuItems),
         child: Icon(
           Icons.more_vert,
@@ -836,7 +837,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
             liveMeetingProvider.currentBreakoutRoomId == room.roomId &&
                 liveMeetingProvider.userLeftBreakouts == false;
 
-        Color backgroundColor = AppColor.black.withOpacity(0.4);
+        Color backgroundColor = context.theme.colorScheme.scrim.withScrimOpacity;
         if (isCurrentRoom) {
           backgroundColor = AppColor.brightGreen;
         } else if (needsHelp) {
@@ -1082,7 +1083,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                 child: Container(
                   color: needsHelp
                       ? AppColor.darkRed
-                      : AppColor.black.withOpacity(0.4),
+                      : context.theme.colorScheme.scrim.withScrimOpacity,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   child: Row(

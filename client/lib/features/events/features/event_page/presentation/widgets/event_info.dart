@@ -754,7 +754,7 @@ class _EventInfoState extends State<EventInfo> {
             ? null
             : [
                 BoxShadow(
-                  color: AppColor.black.withOpacity(0.25),
+                  color: context.theme.colorScheme.scrim.withScrimOpacity,
                   blurRadius: 34,
                   offset: Offset(0, 14),
                 ),

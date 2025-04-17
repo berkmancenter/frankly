@@ -170,7 +170,8 @@ class _ReassignBreakoutRoomDialogState
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: AppColor.black.withOpacity(0.4),
+                            color: context
+                                .theme.colorScheme.scrim.withScrimOpacity,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           alignment: Alignment.center,

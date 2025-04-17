@@ -65,7 +65,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
     _isExiting = false;
     await showCustomDialog(
       context: context,
-      barrierColor: AppColor.black.withOpacity(0.3),
+      barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
       builder: (context) =>
           ChangeNotifierProvider<CommunityPermissionsProvider>.value(
         value: communityPermissionsProvider,

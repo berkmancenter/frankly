@@ -161,7 +161,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           Container(
             alignment: Alignment.topRight,
             child: Container(
-              color: AppColor.black.withOpacity(0.5),
+              color: context.theme.colorScheme.scrim.withScrimOpacity,
               height: 32,
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Row(

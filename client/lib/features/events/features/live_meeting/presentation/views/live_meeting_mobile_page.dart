@@ -525,7 +525,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 Container(
                   alignment: Alignment.topRight,
                   child: Container(
-                    color: AppColor.black.withOpacity(0.5),
+                    color: context.theme.colorScheme.scrim.withScrimOpacity,
                     height: 32,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
@@ -543,7 +543,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         Text(
                           'Recording',
                           style: TextStyle(
-                              color: context.theme.colorScheme.onPrimary),
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                         SizedBox(width: 26),
                       ],

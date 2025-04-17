@@ -501,7 +501,7 @@ class _OnboardPageState extends State<OnboardPage> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColor.black.withOpacity(0.35),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                       blurRadius: 20,
                       offset: Offset(0, 5),
                     ),
