@@ -51,7 +51,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
       child: Column(
         children: [
           if (parentComment.isDeleted)
-            _buildCommentDeleted()
+            _DeletedCommentWidget()
           else
             _buildCommentSection(parentComment),
           if (childrenComments.isNotEmpty)
@@ -63,8 +63,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Container(
-                        width: 1,
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                      width: 1,
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
                 ListView.builder(
@@ -76,7 +77,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                     final discussionThreadComment = childrenComments[index];
 
                     if (discussionThreadComment.isDeleted) {
-                      return _buildCommentDeleted();
+                      return _DeletedCommentWidget();
                     } else {
                       return _buildCommentSection(discussionThreadComment);
                     }
@@ -86,22 +87,6 @@ class DiscussionThreadCommentCard extends StatelessWidget {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCommentDeleted() {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          child: HeightConstrainedText(
-            'Comment Deleted',
-            style: AppTextStyle.bodyMedium
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
     );
   }
 
@@ -154,6 +139,27 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           ),
         ],
         SizedBox(height: 20),
+      ],
+    );
+  }
+}
+
+class _DeletedCommentWidget extends StatelessWidget {
+  const _DeletedCommentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          child: HeightConstrainedText(
+            'Comment Deleted',
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+          ),
+        ),
+        SizedBox(height: 10),
       ],
     );
   }
