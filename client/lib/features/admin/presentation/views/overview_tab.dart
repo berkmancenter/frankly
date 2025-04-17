@@ -260,7 +260,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
   Widget _buildStepsCounter(int completedStepCount, int totalSteps) {
     return Text(
       '$completedStepCount/$totalSteps',
-      style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+      style: AppTextStyle.body
+          .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
     );
   }
 
@@ -320,8 +321,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Flexible(
                               child: RichText(
                                 text: TextSpan(
-                                  style: AppTextStyle.body
-                                      .copyWith(color: AppColor.gray3),
+                                  style: AppTextStyle.body.copyWith(
+                                      color: context.theme.colorScheme
+                                          .onPrimaryContainer),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)

@@ -92,7 +92,7 @@ class NetworkStatusAlert extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColor.lightRed,
+                  color: context.theme.colorScheme.errorContainer,
                 ),
                 padding: EdgeInsets.all(isMobile ? 10 : 20),
                 child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
@@ -140,12 +140,13 @@ class LowBandwidth extends StatelessWidget {
           AppAsset.kExclamationSvg.path,
           width: 20,
           height: 20,
-          color: AppColor.redLightMode,
+          color: context.theme.colorScheme.error,
         ),
         SizedBox(width: 10),
         Text(
           'Low Bandwidth',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.redLightMode),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.error),
         ),
       ],
     );
@@ -169,7 +170,8 @@ class ExplanationText extends StatelessWidget {
         Expanded(
           child: Text(
             'Try turning off your camera for a smoother experience',
-            style: AppTextStyle.subhead.copyWith(color: AppColor.gray2),
+            style: AppTextStyle.subhead
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           ),
         ),
         SizedBox(width: 10),

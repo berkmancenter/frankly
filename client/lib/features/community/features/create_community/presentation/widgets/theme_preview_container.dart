@@ -66,7 +66,8 @@ class ThemePreview extends StatelessWidget {
         decoration: (compact && isSelected)
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColor.accentBlue, width: 1.5),
+                border: Border.all(
+                    color: context.theme.colorScheme.primary, width: 1.5),
               )
             : null,
         child: Container(

@@ -178,9 +178,11 @@ class _ReassignBreakoutRoomDialogState
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.add,
-                                  size: 36,
-                                  color: context.theme.colorScheme.onPrimary),
+                              Icon(
+                                Icons.add,
+                                size: 36,
+                                color: context.theme.colorScheme.onPrimary,
+                              ),
                               SizedBox(height: 6),
                               HeightConstrainedText(
                                 'Add Room $expectedNewRoomNum',

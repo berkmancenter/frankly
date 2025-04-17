@@ -62,7 +62,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                   bottom: 0,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: Container(width: 1, color: AppColor.gray3),
+                    child: Container(
+                        width: 1,
+                        color: context.theme.colorScheme.onPrimaryContainer),
                   ),
                 ),
                 ListView.builder(
@@ -94,7 +96,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: HeightConstrainedText(
             'Comment Deleted',
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           ),
         ),
         SizedBox(height: 10),
@@ -115,8 +118,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           children: [
             UserProfileChip(
               userId: commentCreatorId,
-              textStyle:
-                  AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+              textStyle: AppTextStyle.bodyMedium.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
               showName: true,
               showBorder: true,
             ),
@@ -132,7 +135,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
         SizedBox(height: 10),
         HeightConstrainedText(
           discussionThreadComment.comment,
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         if (isUsersComment) ...[
           SizedBox(height: 10),

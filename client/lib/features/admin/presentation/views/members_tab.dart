@@ -390,7 +390,8 @@ class _MembersTabState extends State<MembersTab> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  borderSide: BorderSide(color: AppColor.redLightMode),
+                  borderSide:
+                      BorderSide(color: context.theme.colorScheme.error),
                   sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                   onPressed: () => alertOnError(
                     context,
@@ -398,7 +399,7 @@ class _MembersTabState extends State<MembersTab> {
                   ),
                   child: Icon(
                     Icons.close,
-                    color: AppColor.redLightMode,
+                    color: context.theme.colorScheme.error,
                     size: 20,
                   ),
                 ),
@@ -728,14 +729,15 @@ class RolePermissionListTile extends StatelessWidget {
                 child: Icon(
                   Icons.circle,
                   size: 4,
-                  color: AppColor.gray3,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                 ),
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
                   item,
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+                  style: AppTextStyle.body.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
               ),
             ],
@@ -818,7 +820,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: AppColor.gray4,
+                color: context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
             child: UpgradeTooltip(
@@ -835,7 +837,9 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(10),
                 style: TextStyle(
-                  color: disableDropdown ? AppColor.gray4 : AppColor.black,
+                  color: disableDropdown
+                      ? context.theme.colorScheme.onPrimaryContainer
+                      : AppColor.black,
                 ),
                 underline: SizedBox.shrink(),
                 iconEnabledColor: context.theme.colorScheme.primary,

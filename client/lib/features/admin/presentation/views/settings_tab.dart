@@ -49,8 +49,8 @@ class _SettingsTabState extends State<SettingsTab> {
       color: background,
       child: CustomSwitchTile(
         text: title,
-        style: AppTextStyle.body
-            .copyWith(color: hasWarning ? AppColor.redLightMode : null),
+        style: AppTextStyle.body.copyWith(
+            color: hasWarning ? context.theme.colorScheme.error : null),
         val: value,
         onUpdate: onUpdate,
       ),
@@ -144,7 +144,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       '* Your payee account has not been fully set up, so donations will not '
                       'currently be accepted. You may need to link a bank account or accept '
                       'Stripe\'s terms of service.',
-                      style: TextStyle(color: AppColor.redLightMode),
+                      style: TextStyle(color: context.theme.colorScheme.error),
                     ),
                   SizedBox(height: 8),
                   _buildStripeConnectLink(context, agreement!),

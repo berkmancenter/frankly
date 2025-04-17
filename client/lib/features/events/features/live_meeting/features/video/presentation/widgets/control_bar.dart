@@ -319,7 +319,7 @@ class _EmojiButtonState extends State<EmojiButton> {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: AppColor.gray2,
+          color: context.theme.colorScheme.onPrimaryContainer,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
@@ -385,8 +385,9 @@ class _ChatInputState extends State<ChatInput> {
               borderType: BorderType.none,
               textStyle:
                   body.copyWith(color: context.theme.colorScheme.onPrimary),
-              hintStyle: body.copyWith(color: AppColor.gray2),
-              backgroundColor: AppColor.gray2,
+              hintStyle: body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
+              backgroundColor: context.theme.colorScheme.onPrimaryContainer,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
               contentPadding: isMobile
@@ -421,7 +422,9 @@ class _ChatInputState extends State<ChatInput> {
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
-                    color: canSubmit ? AppColor.brightGreen : AppColor.gray2,
+                    color: canSubmit
+                        ? AppColor.brightGreen
+                        : context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -490,7 +493,7 @@ class _IconButtonState extends State<_IconButton> {
                 widget.icon,
                 size: 34,
                 color: _isSending
-                    ? AppColor.gray3
+                    ? context.theme.colorScheme.onPrimaryContainer
                     : widget.iconColor ?? context.theme.colorScheme.onPrimary,
               ),
             ),
@@ -500,7 +503,7 @@ class _IconButtonState extends State<_IconButton> {
               textAlign: TextAlign.center,
               style: body.copyWith(
                 color: _isSending
-                    ? AppColor.gray3
+                    ? context.theme.colorScheme.onPrimaryContainer
                     : context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
                 height: 1.05,

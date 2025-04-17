@@ -615,8 +615,9 @@ class _SelectableNavigationButton extends StatelessWidget {
         child: HeightConstrainedText(
           title,
           style: AppTextStyle.bodyMedium.copyWith(
-            color:
-                isSelected ? context.theme.colorScheme.primary : AppColor.gray3,
+            color: isSelected
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),

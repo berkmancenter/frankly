@@ -93,8 +93,8 @@ class DiscussionThreadCard extends StatelessWidget {
           children: [
             UserProfileChip(
               userId: discussionThread.creatorId,
-              textStyle:
-                  AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+              textStyle: AppTextStyle.bodyMedium.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
               showName: true,
               showBorder: true,
             ),
@@ -103,8 +103,8 @@ class DiscussionThreadCard extends StatelessWidget {
               children: [
                 Text(
                   likeDislikeCount,
-                  style:
-                      AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+                  style: AppTextStyle.bodyMedium.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
                 SizedBox(width: 5),
                 AppClickableWidget(
@@ -168,7 +168,8 @@ class DiscussionThreadCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: HeightConstrainedText(
         discussionThread.content,
-        style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+        style: AppTextStyle.body
+            .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
       ),
     );
   }

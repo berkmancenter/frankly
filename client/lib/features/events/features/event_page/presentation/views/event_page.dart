@@ -403,13 +403,15 @@ class EventPageState extends State<EventPage> implements EventPageView {
                 text: TextSpan(
                   text: 'You are editing an event. \n',
                   style: AppTextStyle.headlineSmall.copyWith(
-                    color: AppColor.gray2,
+                    color: context.theme.colorScheme.onPrimaryContainer,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
                       text: 'If you want to edit future instances, ',
-                      style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                      style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                     TextSpan(
                       text: 'edit the template.',
@@ -424,7 +426,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                               ).templatePage(templateId: templateId),
                             ),
                       style: AppTextStyle.body.copyWith(
-                        color: AppColor.accentBlue,
+                        color: context.theme.colorScheme.primary,
                         decoration: TextDecoration.underline,
                       ),
                     ),

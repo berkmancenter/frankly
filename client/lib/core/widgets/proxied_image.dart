@@ -69,7 +69,7 @@ class ProxiedImage extends StatelessWidget {
     Widget errorBuilder(_, __, ___) => Container(
           height: height,
           width: width,
-          color: AppColor.gray4,
+          color: context.theme.colorScheme.onPrimaryContainer,
           child: Icon(
             Icons.broken_image,
             size: 30,

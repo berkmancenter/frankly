@@ -134,7 +134,9 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
             child: HeightConstrainedText(
               title,
               maxLines: 1,
-              style: TextStyle(fontSize: fontSize, color: AppColor.gray4),
+              style: TextStyle(
+                  fontSize: fontSize,
+                  color: context.theme.colorScheme.onPrimaryContainer),
               textAlign: TextAlign.center,
             ),
           ),
@@ -144,7 +146,9 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
             child: HeightConstrainedText(
               subtitle,
               maxLines: 1,
-              style: TextStyle(fontSize: fontSize, color: AppColor.gray4),
+              style: TextStyle(
+                  fontSize: fontSize,
+                  color: context.theme.colorScheme.onPrimaryContainer),
               textAlign: TextAlign.center,
             ),
           ),

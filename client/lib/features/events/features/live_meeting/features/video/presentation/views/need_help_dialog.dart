@@ -99,7 +99,7 @@ class NeedHelpDialog extends StatelessWidget {
                 text: TextSpan(
                   text: 'Need more help? ',
                   style: AppTextStyle.bodyMedium.copyWith(
-                    color: AppColor.gray2,
+                    color: context.theme.colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.w500,
                   ),
                   children: [
@@ -107,7 +107,7 @@ class NeedHelpDialog extends StatelessWidget {
                       text: 'Troubleshooting Guide',
                       style: AppTextStyle.bodyMedium.copyWith(
                         fontWeight: FontWeight.w500,
-                        color: AppColor.accentBlue,
+                        color: context.theme.colorScheme.primary,
                         decoration: TextDecoration.underline,
                       ),
                       recognizer: TapGestureRecognizer()

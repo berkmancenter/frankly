@@ -277,7 +277,9 @@ class TagChip extends StatelessWidget {
         strokeCap: StrokeCap.round,
         borderType: dotted_border.BorderType.RRect,
         radius: Radius.circular(30),
-        color: isSelected ? tagBackgroundColor : AppColor.gray3,
+        color: isSelected
+            ? tagBackgroundColor
+            : context.theme.colorScheme.onPrimaryContainer,
         child: HeightConstrainedText(
           '#${label ?? ''}',
           style: AppTextStyle.body

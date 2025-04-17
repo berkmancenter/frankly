@@ -83,7 +83,8 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
           SizedBox(height: 20),
           HeightConstrainedText(
             'Let participants suggest agenda items and then upvote or downvote.',
-            style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+            style: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           ),
         ],
       );

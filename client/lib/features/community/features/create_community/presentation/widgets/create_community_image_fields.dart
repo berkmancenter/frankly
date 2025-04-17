@@ -111,7 +111,7 @@ class CreateCommunityImageField extends StatelessWidget {
         height: 30,
         child: Icon(
           Icons.close,
-          color: AppColor.gray2,
+          color: context.theme.colorScheme.onPrimaryContainer,
           size: 20,
         ),
       ),
@@ -131,12 +131,12 @@ class CreateCommunityImageField extends StatelessWidget {
             color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
             border: Border.all(
-              color: AppColor.gray2,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           child: Icon(
             Icons.add,
-            color: AppColor.gray2,
+            color: context.theme.colorScheme.onPrimaryContainer,
             size: 20,
           ),
         ),
@@ -152,7 +152,8 @@ class CreateCommunityImageField extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-            border: Border.all(color: AppColor.gray4),
+            border:
+                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
             borderRadius:
                 (!isCircle && !showImage) ? BorderRadius.circular(5) : null,
           ),
@@ -181,7 +182,8 @@ class CreateCommunityImageField extends StatelessWidget {
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -190,14 +192,16 @@ class CreateCommunityImageField extends StatelessWidget {
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           if (isOptional)
             HeightConstrainedText(
               'Optional',
-              style: AppTextStyle.bodySmall.copyWith(color: AppColor.gray3),
+              style: AppTextStyle.bodySmall.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
         ],
       ],

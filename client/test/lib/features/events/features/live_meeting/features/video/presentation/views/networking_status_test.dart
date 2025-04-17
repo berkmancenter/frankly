@@ -87,7 +87,8 @@ void main() {
                 widget is Text &&
                 widget.data == 'Low Bandwidth' &&
                 widget.style ==
-                    AppTextStyle.subhead.copyWith(color: AppColor.redLightMode),
+                    AppTextStyle.subhead
+                        .copyWith(color: context.theme.colorScheme.error),
           ),
         ),
         findsOneWidget,
@@ -116,7 +117,8 @@ void main() {
                   widget.data ==
                       'Try turning off your camera for a smoother experience' &&
                   widget.style ==
-                      AppTextStyle.subhead.copyWith(color: AppColor.gray2),
+                      AppTextStyle.subhead.copyWith(
+                          color: context.theme.colorScheme.onPrimaryContainer),
             ),
           ),
         ),

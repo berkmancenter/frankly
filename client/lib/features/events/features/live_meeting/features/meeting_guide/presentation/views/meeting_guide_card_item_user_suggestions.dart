@@ -113,10 +113,11 @@ class _MeetingGuideCardItemUserSuggestionsState
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             onEditingComplete: () => _submitNotifier.submit(),
             textStyle: AppTextStyle.body.copyWith(color: AppColor.black),
-            hintStyle: AppTextStyle.body.copyWith(color: AppColor.gray3),
+            hintStyle: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
             maxLines: 1,
             borderRadius: 40,
-            borderColor: AppColor.gray3,
+            borderColor: context.theme.colorScheme.onPrimaryContainer,
             fillColor: context.theme.colorScheme.surfaceContainerLowest,
             hintText: 'Suggest',
           ),
@@ -192,8 +193,8 @@ class _MeetingGuideCardItemUserSuggestionsState
                 Expanded(
                   child: UserProfileChip(
                     userId: participantAgendaItemDetails.userId,
-                    textStyle:
-                        AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+                    textStyle: AppTextStyle.bodyMedium.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer),
                     showName: true,
                     showIsYou: true,
                     showBorder: true,
@@ -205,8 +206,8 @@ class _MeetingGuideCardItemUserSuggestionsState
                   children: [
                     Text(
                       likeDislikeCount,
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.gray2),
+                      style: AppTextStyle.bodyMedium.copyWith(
+                          color: context.theme.colorScheme.onPrimaryContainer),
                     ),
                     SizedBox(width: 5),
                     AppClickableWidget(
@@ -279,7 +280,8 @@ class _MeetingGuideCardItemUserSuggestionsState
             SizedBox(height: 10),
             Text(
               meetingUserSuggestion.suggestion,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
           ],
         ),

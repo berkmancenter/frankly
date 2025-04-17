@@ -121,7 +121,7 @@ class _MeetingGuideCardItemWordCloudState
                       Icons.send,
                       color: _wordCloudResponseController.text != ''
                           ? AppColor.brightGreen
-                          : AppColor.gray2,
+                          : context.theme.colorScheme.onPrimaryContainer,
                     ),
                   ),
                 ],

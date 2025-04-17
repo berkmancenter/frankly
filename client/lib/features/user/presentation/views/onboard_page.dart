@@ -159,7 +159,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: AppColor.gray3,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           HeightConstrainedText(

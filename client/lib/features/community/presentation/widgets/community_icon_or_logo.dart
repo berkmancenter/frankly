@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 
 /// This widget either shows the app icon or a logo of the selected community, if one is selected.
 class CurrentCommunityIconOrLogo extends StatelessWidget {
-
   /// If true, this widget is a button that navigates either to the app's website or the community's landing page
   final bool withNav;
   final bool darkLogo;
@@ -75,13 +74,13 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
           children: [
             // App logo
             Semantics(
-                label: 'Frankly Logo',
-                child: Image.asset(
-                        AppAsset.kLogoPng.path,
-                        width: 100,
-                        height: isMobile ? 40 : 80,
-                        fit: BoxFit.contain,
-                        ),
+              label: 'Frankly Logo',
+              child: Image.asset(
+                AppAsset.kLogoPng.path,
+                width: 100,
+                height: isMobile ? 40 : 80,
+                fit: BoxFit.contain,
+              ),
             ),
             SizedBox(width: 10),
             // TODO: I would prefer to use an SVG asset, but for some reason it looks terrible on web when loaded
@@ -155,9 +154,12 @@ class CommunityCircleIcon extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        border: withBorder ? Border.all(color: AppColor.gray4, width: 1) : null,
+        border: withBorder
+            ? Border.all(
+                color: context.theme.colorScheme.onPrimaryContainer, width: 1)
+            : null,
         shape: BoxShape.circle,
-        color: AppColor.gray3,
+        color: context.theme.colorScheme.onPrimaryContainer,
       ),
       child: ClipOval(
         child: ProxiedImage(

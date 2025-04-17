@@ -124,7 +124,8 @@ class _SelectTemplateState extends State<SelectTemplate> {
         if (provider.displayTemplates.isEmpty && widget.onAddNew == null)
           HeightConstrainedText(
             'No templates found.',
-            style: AppTextStyle.body.copyWith(color: AppColor.gray4),
+            style: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           )
         else
           Container(
@@ -320,7 +321,9 @@ class TemplateSelectionCard extends StatelessWidget {
                     height: 23,
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: context.theme.colorScheme.onPrimary, width: 1),
+                        color: context.theme.colorScheme.onPrimary,
+                        width: 1,
+                      ),
                       color: Colors.transparent,
                       shape: BoxShape.circle,
                     ),

@@ -77,8 +77,8 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                     ),
                     subtitle: HeightConstrainedText(
                       platform.platformKey.info.description,
-                      style: AppTextStyle.eyebrowSmall
-                          .copyWith(color: AppColor.gray4),
+                      style: AppTextStyle.eyebrowSmall.copyWith(
+                          color: context.theme.colorScheme.onPrimaryContainer),
                     ),
                     trailing: Container(
                       padding: EdgeInsets.all(2),
@@ -173,7 +173,7 @@ class LinkField extends StatelessWidget {
                   labelStyle: AppTextStyle.bodySmall.copyWith(
                     color: isNullOrEmpty(error)
                         ? context.theme.colorScheme.primary
-                        : AppColor.redLightMode,
+                        : context.theme.colorScheme.error,
                   ),
                   onEditingComplete: () => onSubmit(),
                   padding: EdgeInsets.zero,
@@ -198,7 +198,7 @@ class LinkField extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
                               ? context.theme.colorScheme.primary
-                              : AppColor.gray4,
+                              : context.theme.colorScheme.onPrimaryContainer,
                         ),
                         child: Icon(
                           Icons.check,

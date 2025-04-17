@@ -214,7 +214,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required bool selected,
     required void Function() onTap,
   }) {
-    final color = selected ? context.theme.colorScheme.primary : AppColor.gray4;
+    final color = selected
+        ? context.theme.colorScheme.primary
+        : context.theme.colorScheme.onPrimaryContainer;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -285,10 +287,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     const linkText = 'color.review.';
     final launchLink = TapGestureRecognizer()
       ..onTap = () => launch('https://color.review');
-    final textStyle = AppTextStyle.body.copyWith(color: AppColor.gray2);
+    final textStyle = AppTextStyle.body
+        .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
     final linkStyle = AppTextStyle.body.copyWith(
       decoration: TextDecoration.underline,
-      color: AppColor.accentBlue,
+      color: context.theme.colorScheme.primary,
     );
 
     final constrained = MediaQuery.of(context).size.width < 475;
@@ -385,7 +388,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             border: Border.all(
               color: _isSelectedColorComboValid
                   ? context.theme.colorScheme.primary
-                  : AppColor.gray3,
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           child: Center(
@@ -393,7 +396,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               Icons.check,
               color: _isSelectedColorComboValid
                   ? AppColor.darkGreen
-                  : AppColor.gray4,
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
         ),
@@ -407,7 +410,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             HeightConstrainedText(
               _selectedColorErrorMessage!,
               style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: AppColor.redLightMode),
+                  .copyWith(color: context.theme.colorScheme.error),
             ),
           ],
         ],

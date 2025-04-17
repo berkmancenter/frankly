@@ -35,7 +35,9 @@ class SideBarNavigationButton extends StatelessWidget {
         child: HeightConstrainedText(
           text,
           textAlign: TextAlign.start,
-          style: style ?? AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: style ??
+              AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
         ),
       ),
     );

@@ -169,11 +169,11 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                 : null,
             textColor: restoreDefaultButtonEnabled
                 ? Theme.of(context).colorScheme.primary
-                : AppColor.gray3,
+                : context.theme.colorScheme.onPrimaryContainer,
             borderSide: BorderSide(
               color: restoreDefaultButtonEnabled
                   ? Theme.of(context).colorScheme.primary
-                  : AppColor.gray3,
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           if (Environment.enableDevEventSettings) ...[

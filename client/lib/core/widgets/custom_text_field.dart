@@ -154,29 +154,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   Color _getBorderColor({bool isError = false}) {
     return isError
-        ? AppColor.lightRed
+        ? context.theme.colorScheme.errorContainer
         : _focusNode.hasFocus
-            ? AppColor.accentBlue
-            : AppColor.gray4;
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.onPrimaryContainer;
   }
 
   TextStyle _buildLabelStyle() {
     return widget.labelStyle ??
         AppTextStyle.bodySmall.copyWith(
-          color: _focusNode.hasFocus ? AppColor.accentBlue : AppColor.gray4,
+          color: _focusNode.hasFocus
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.onPrimaryContainer,
         );
   }
 
   TextStyle _buildTextStyle({bool isError = false}) {
     return widget.textStyle ??
         AppTextStyle.body.copyWith(
-          color: isError ? AppColor.redLightMode : AppColor.gray2,
+          color: isError
+              ? context.theme.colorScheme.error
+              : context.theme.colorScheme.onPrimaryContainer,
         );
   }
 
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
-        AppTextStyle.bodySmall.copyWith(color: AppColor.gray3);
+        AppTextStyle.bodySmall
+            .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
   }
 
   @override
@@ -234,7 +239,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
                 obscureText: widget.obscureText,
-                cursorColor: widget.cursorColor ?? AppColor.accentBlue,
+                cursorColor:
+                    widget.cursorColor ?? context.theme.colorScheme.primary,
                 autovalidateMode: widget.autovalidateMode,
                 maxLength: widget.maxLength,
                 buildCounter: (

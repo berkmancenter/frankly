@@ -93,7 +93,8 @@ class EmotionSection extends StatelessWidget {
         SizedBox(width: 10),
         Text(
           '$emotionCount',
-          style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.bodyMedium
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
       ],
     );

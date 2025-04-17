@@ -108,7 +108,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
         children: [
           UserProfileChip(
             userId: discussionThread.creatorId,
-            textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+            textStyle: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
             showBorder: true,
           ),
           Row(
@@ -116,7 +117,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
             children: [
               Text(
                 likeDislikeCount,
-                style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.bodyMedium.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer),
               ),
               SizedBox(width: 10),
               AppClickableWidget(
@@ -183,7 +185,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: HeightConstrainedText(
         discussionThread.content,
-        style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+        style: AppTextStyle.body
+            .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
       ),
@@ -211,7 +214,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
             children: [
               Text(
                 commentsText,
-                style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.bodyMedium.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer),
               ),
               EmotionSection(
                 emotions: discussionThread.emotions,
@@ -228,7 +232,9 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                 Positioned(
                   top: 0,
                   bottom: 0,
-                  child: Container(width: 1, color: AppColor.gray2),
+                  child: Container(
+                      width: 1,
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
@@ -238,8 +244,9 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                     children: [
                       HeightConstrainedText(
                         localMostRecentDiscussionThreadComment.comment,
-                        style:
-                            AppTextStyle.body.copyWith(color: AppColor.gray2),
+                        style: AppTextStyle.body.copyWith(
+                            color:
+                                context.theme.colorScheme.onPrimaryContainer),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -310,8 +317,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                 ],
                 HeightConstrainedText(
                   'Reply',
-                  style:
-                      AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+                  style: AppTextStyle.bodyMedium.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
               ],
             ),

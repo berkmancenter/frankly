@@ -1018,7 +1018,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                       Icons.close,
                       color: isAdmin
                           ? context.theme.colorScheme.onPrimary
-                          : AppColor.gray2,
+                          : context.theme.colorScheme.onPrimaryContainer,
                       size: 20,
                     ),
                   ),

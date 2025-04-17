@@ -30,12 +30,8 @@ class EmptyPageContent extends StatelessWidget {
   Color _getColor(context, {bool subtitle = false}) {
     if (isBackgroundDark) {
       return context.theme.colorScheme.surface;
-    } else if (isBackgroundPrimaryColor) {
-      return AppColor.gray1;
-    } else if (subtitle) {
-      return AppColor.gray3;
     } else {
-      return AppColor.gray2;
+      return context.theme.colorScheme.onPrimaryContainer;
     }
   }
 
@@ -81,9 +77,9 @@ class EmptyPageContent extends StatelessWidget {
             ActionButton(
               text: buttonText ?? type.buttonText,
               textStyle: AppTextStyle.body.copyWith(
-                  color: isFlat
-                      ? context.theme.colorScheme.onPrimary
-                      : buttonColor),
+                color:
+                    isFlat ? context.theme.colorScheme.onPrimary : buttonColor,
+              ),
               color: isFlat ? buttonColor : null,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),

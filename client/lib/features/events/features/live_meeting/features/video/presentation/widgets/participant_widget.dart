@@ -545,8 +545,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
           child: HeightConstrainedText(
             'Propose to remove user',
-            style:
-                AppTextStyle.bodyMedium.copyWith(color: AppColor.redLightMode),
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.error),
           ),
         ),
       PopupMenuItem<Function()>(

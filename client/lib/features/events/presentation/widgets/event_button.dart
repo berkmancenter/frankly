@@ -94,7 +94,7 @@ class EventButton extends HookWidget {
                       HeightConstrainedText(
                         'Livestream',
                         style: AppTextStyle.bodySmall.copyWith(
-                          color: AppColor.gray3,
+                          color: context.theme.colorScheme.onPrimaryContainer,
                         ),
                       ),
                     SizedBox(height: 10),

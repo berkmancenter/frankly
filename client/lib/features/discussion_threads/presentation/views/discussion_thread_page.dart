@@ -233,14 +233,16 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                             children: [
                               HeightConstrainedText(
                                 '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
-                                style: AppTextStyle.bodyMedium
-                                    .copyWith(color: AppColor.gray2),
+                                style: AppTextStyle.bodyMedium.copyWith(
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer),
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
                                   'Newest First', // Forced (mock) sorting
-                                  style: AppTextStyle.bodyMedium
-                                      .copyWith(color: AppColor.gray2),
+                                  style: AppTextStyle.bodyMedium.copyWith(
+                                      color: context.theme.colorScheme
+                                          .onPrimaryContainer),
                                 ),
                             ],
                           ),

@@ -180,7 +180,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
           SizedBox(height: 20),
           Divider(
             thickness: 1,
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
           SizedBox(height: 20),
           Container(

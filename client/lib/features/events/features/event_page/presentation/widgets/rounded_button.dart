@@ -31,7 +31,9 @@ class RoundedButton extends StatelessWidget {
       child: HeightConstrainedText(
         label,
         style: TextStyle(
-          color: onPressed != null ? AppColor.gray4 : AppColor.brightGreen,
+          color: onPressed != null
+              ? context.theme.colorScheme.onPrimaryContainer
+              : AppColor.brightGreen,
         ),
       ),
     );

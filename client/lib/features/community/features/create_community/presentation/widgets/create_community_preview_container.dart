@@ -36,27 +36,27 @@ class PreviewContainer extends StatelessWidget {
   Color _carouselColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
-      : AppColor.gray4;
+      : context.theme.colorScheme.onPrimaryContainer;
 
   Color _nameColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.name)
           ? context.theme.colorScheme.primary
-          : AppColor.gray4;
+          : context.theme.colorScheme.onPrimaryContainer;
 
   Color _taglineColor(BuildContext context) => finalPreview
       ? context.theme.colorScheme.onPrimary
       : !isNullOrEmpty(community.tagLine)
           ? context.theme.colorScheme.onPrimary
-          : AppColor.gray3;
+          : context.theme.colorScheme.onPrimaryContainer;
 
   Color _aboutColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.description)
           ? context.theme.colorScheme.primary
-          : AppColor.gray4;
+          : context.theme.colorScheme.onPrimaryContainer;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,9 @@ class PreviewContainer extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildLogo(color: AppColor.gray3),
+                        _buildLogo(
+                            color:
+                                context.theme.colorScheme.onPrimaryContainer),
                         SizedBox(height: 10),
                         _checkEmphasis(
                           emphasize:
@@ -154,7 +156,8 @@ class PreviewContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildLogo({Color color = AppColor.gray4}) =>
+  Widget _buildLogo(
+          {Color color = context.theme.colorScheme.onPrimaryContainer}) =>
       !isNullOrEmpty(community.profileImageUrl)
           ? ProxiedImage(
               community.profileImageUrl,
@@ -187,13 +190,16 @@ class PreviewContainer extends StatelessWidget {
         ],
       );
 
-  Widget _buildCircleMock({Color color = AppColor.gray4}) => Container(
+  Widget _buildCircleMock(
+          {Color color = context.theme.colorScheme.onPrimaryContainer}) =>
+      Container(
         decoration: BoxDecoration(shape: BoxShape.circle, color: color),
         width: iconSize,
         height: iconSize,
       );
 
-  Widget _buildLineMock(double width, {Color color = AppColor.gray4}) =>
+  Widget _buildLineMock(double width,
+          {Color color = context.theme.colorScheme.onPrimaryContainer}) =>
       Container(
         width: width,
         height: 4,

@@ -10,7 +10,7 @@ class HoverShadowContainer extends StatefulWidget {
   const HoverShadowContainer({
     required this.child,
     this.borderRadius,
-    this.shadowColor = AppColor.gray3,
+    this.shadowColor = context.theme.colorScheme.onPrimaryContainer,
     Key? key,
   }) : super(key: key);
 

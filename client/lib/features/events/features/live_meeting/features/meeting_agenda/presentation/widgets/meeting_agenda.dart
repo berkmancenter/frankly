@@ -134,7 +134,7 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
               style: TextStyle(
                 color: Theme.of(context).isDark
                     ? context.theme.colorScheme.onPrimary
-                    : AppColor.gray2,
+                    : context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
           for (int i = 0; i < allAgendaItems.length; i++) ...[

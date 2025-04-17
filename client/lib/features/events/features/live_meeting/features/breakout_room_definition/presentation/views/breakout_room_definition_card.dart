@@ -169,7 +169,8 @@ class _BreakoutRoomDefinitionCardState
                 alignment: Alignment.centerLeft,
                 child: HeightConstrainedText(
                   'Target Size?',
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                  style: AppTextStyle.body.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
               ),
               FormBuilderSlider(
@@ -444,7 +445,7 @@ class _QuestionCardState extends State<QuestionCard> {
                       child: Container(
                         decoration: ShapeDecoration(
                           shape: CircleBorder(),
-                          color: AppColor.gray4,
+                          color: context.theme.colorScheme.onPrimaryContainer,
                         ),
                         child: IconButton(
                           icon: Icon(

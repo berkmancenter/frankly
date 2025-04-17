@@ -236,8 +236,9 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             onPressed: canSubmit
                 ? () => alertOnError(context, () => readProvider.submit())
                 : null,
-            color:
-                canSubmit ? context.theme.colorScheme.primary : AppColor.gray4,
+            color: canSubmit
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.onPrimaryContainer,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,

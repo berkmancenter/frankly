@@ -192,7 +192,9 @@ class _ProfileTabState extends State<_ProfileTab> {
                 borderType: BorderType.outline,
                 borderRadius: 5,
                 textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-                labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+                labelStyle: TextStyle(
+                    fontSize: 14.0,
+                    color: context.theme.colorScheme.onPrimaryContainer),
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onChanged: (value) {
@@ -229,7 +231,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                         .toString()
                         .replaceFirst('MembershipStatus.', '')
                         .capitalize(),
-                    style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                    style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer),
                   ),
                 ],
               );
@@ -340,7 +343,9 @@ class _ProfileTabState extends State<_ProfileTab> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
           textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-          labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+          labelStyle: TextStyle(
+              fontSize: 14.0,
+              color: context.theme.colorScheme.onPrimaryContainer),
           initialValue: changeRecord.about,
           onChanged: (value) {
             controller.onChangedAboutMe(value);
@@ -353,7 +358,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           child: HeightConstrainedText(
             changeRecord.about ?? '',
             style: AppTextStyle.body.copyWith(
-              color: AppColor.gray2,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
         ),
@@ -390,7 +395,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                                 : HeightConstrainedText(
                                     '#${definition.title} ',
                                     style: AppTextStyle.body.copyWith(
-                                      color: AppColor.gray3,
+                                      color: context
+                                          .theme.colorScheme.onPrimaryContainer,
                                     ),
                                   ),
                           ),
@@ -593,7 +599,9 @@ class SocialInputField extends StatelessWidget {
             borderType: BorderType.outline,
             borderRadius: 5,
             textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-            labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+            labelStyle: TextStyle(
+                fontSize: 14.0,
+                color: context.theme.colorScheme.onPrimaryContainer),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onChanged: onChanged,

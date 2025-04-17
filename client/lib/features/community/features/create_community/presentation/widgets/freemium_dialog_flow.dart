@@ -302,12 +302,13 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
               TextSpan(
                 text:
                     'By signing in, registering, or using ${Environment.appName}, I agree to be bound by the ',
-                style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.body.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer),
               ),
               TextSpan(
                 text: '${Environment.appName} Terms of Service',
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.accentBlue,
+                  color: context.theme.colorScheme.primary,
                   decoration: TextDecoration.underline,
                 ),
                 recognizer: TapGestureRecognizer()
@@ -316,7 +317,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
               TextSpan(
                 text: '.',
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.gray2,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                 ),
               ),
             ],
@@ -407,13 +408,13 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
                       style: AppTextStyle.headline2.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
-                        color: AppColor.gray2,
+                        color: context.theme.colorScheme.onPrimaryContainer,
                       ),
                     ),
                     TextSpan(
                       text: 'when you upgrade',
-                      style: AppTextStyle.eyebrowSmall
-                          .copyWith(color: AppColor.gray3),
+                      style: AppTextStyle.eyebrowSmall.copyWith(
+                          color: context.theme.colorScheme.onPrimaryContainer),
                     ),
                   ],
                 ),

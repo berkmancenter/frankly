@@ -43,7 +43,8 @@ class EventMessageWidget extends StatelessWidget {
             children: [
               Text(
                 formattedTime,
-                style: AppTextStyle.eyebrow.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.eyebrow.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer),
               ),
               if (isMod || isDocCreator)
                 CustomInkWell(

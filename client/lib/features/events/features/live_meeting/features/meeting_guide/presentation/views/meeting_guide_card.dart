@@ -242,8 +242,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       formattedTime,
                       style: AppTextStyle.body.copyWith(
                         color: negativeTimeRemaining
-                            ? AppColor.redLightMode
-                            : AppColor.gray2,
+                            ? context.theme.colorScheme.error
+                            : context.theme.colorScheme.onPrimaryContainer,
                       ),
                     );
                   },

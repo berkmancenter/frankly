@@ -89,7 +89,8 @@ class UpgradePerks extends StatelessWidget {
           Flexible(
             child: HeightConstrainedText(
               perk,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
           ),
         ],

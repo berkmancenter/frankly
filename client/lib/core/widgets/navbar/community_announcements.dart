@@ -139,7 +139,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
           child: Icon(
             Icons.notifications_none,
             size: 30,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),
