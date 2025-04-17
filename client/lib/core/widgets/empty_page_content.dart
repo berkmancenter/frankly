@@ -27,14 +27,6 @@ class EmptyPageContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Color _getColor(context, {bool subtitle = false}) {
-    if (isBackgroundDark) {
-      return context.theme.colorScheme.surface;
-    } else {
-      return context.theme.colorScheme.onPrimaryContainer;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final buttonColor = context.theme.colorScheme.primary;
@@ -59,7 +51,11 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(color: _getColor(context)),
+            style: AppTextStyle.headline4.copyWith(
+              color: isBackgroundDark
+                  ? context.theme.colorScheme.surface
+                  : context.theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 20),
           SizedBox(
@@ -67,8 +63,11 @@ class EmptyPageContent extends StatelessWidget {
             child: HeightConstrainedText(
               subtitleText ??
                   'When new ${type.name} are added, you\'ll see them here.',
-              style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: _getColor(context, subtitle: true)),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: isBackgroundDark
+                    ? context.theme.colorScheme.surface
+                    : context.theme.colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
