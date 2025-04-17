@@ -7,19 +7,19 @@ import 'package:client/core/localization/locale_provider.dart';
 
 void main() {
   group('LanguageSelector', () {
-    late LocaleProvider mockLocaleProvider;
+    late LocaleProvider localeProvider;
 
     setUp(() {
-      mockLocaleProvider = LocaleProvider();
+      localeProvider = LocaleProvider();
     });
 
     Widget createTestWidget() {
       return MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        locale: mockLocaleProvider.locale ?? const Locale('en'),
+        locale: localeProvider.locale ?? const Locale('en'),
         home: ChangeNotifierProvider<LocaleProvider>.value(
-          value: mockLocaleProvider,
+          value: localeProvider,
           child: Scaffold(
             appBar: AppBar(),
             body: const Center(
@@ -30,21 +30,10 @@ void main() {
       );
     }
 
-    testWidgets('renders language selector button', (WidgetTester tester) async {
+    testWidgets('renders all language options', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
-      
-      // Find the language icon button
-      expect(find.byIcon(Icons.language), findsOneWidget);
-    });
-
-    testWidgets('shows language options on tap', (WidgetTester tester) async {
-      await tester.pumpWidget(createTestWidget());
-      
-      // Tap the language selector
-      await tester.tap(find.byIcon(Icons.language));
       await tester.pumpAndSettle();
-      
-      // Verify all four languages are shown
+
       expect(find.text('English'), findsOneWidget);
       expect(find.text('简体中文'), findsOneWidget);
       expect(find.text('臺灣華文'), findsOneWidget);
@@ -53,34 +42,24 @@ void main() {
 
     testWidgets('selecting language updates locale', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
-      
-      // Tap the language selector
-      await tester.tap(find.byIcon(Icons.language));
       await tester.pumpAndSettle();
-      
-      // Select Spanish
+
       await tester.tap(find.text('Español'));
       await tester.pumpAndSettle();
-      
-      // Verify locale was updated
-      expect(mockLocaleProvider.locale?.languageCode, equals('es'));
+
+      expect(localeProvider.locale?.languageCode, equals('es'));
     });
 
-    testWidgets('selecting complex locale (zh_Hant_TW) works correctly', (WidgetTester tester) async {
+    testWidgets('selecting complex locale (zh_Hant_TW) updates locale', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
-      
-      // Tap the language selector
-      await tester.tap(find.byIcon(Icons.language));
       await tester.pumpAndSettle();
-      
-      // Select Traditional Chinese
+
       await tester.tap(find.text('臺灣華文'));
       await tester.pumpAndSettle();
-      
-      // Verify locale was updated correctly
-      expect(mockLocaleProvider.locale?.languageCode, equals('zh'));
-      expect(mockLocaleProvider.locale?.scriptCode, equals('Hant'));
-      expect(mockLocaleProvider.locale?.countryCode, equals('TW'));
+
+      expect(localeProvider.locale?.languageCode, equals('zh'));
+      expect(localeProvider.locale?.scriptCode, equals('Hant'));
+      expect(localeProvider.locale?.countryCode, equals('TW'));
     });
   });
 }

@@ -234,7 +234,7 @@ class _SideBarState extends State<SideBar> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text(context.l10n.language),
+                      title: Text(context.l10n.selectLanguage),
                       content: LanguageSelector(),
                       actions: [
                         TextButton(

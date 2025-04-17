@@ -11,21 +11,12 @@ class LanguageSelector extends StatelessWidget {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final l10n = AppLocalizations.of(context)!;
     
-    // 獲取當前語言設定
     Locale currentLocale = localeProvider.locale ?? const Locale('en');
     
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.language, size: 20),
-            const SizedBox(width: 8),
-            Text(l10n.selectLanguage),
-          ],
-        ),
         const SizedBox(height: 8),
         _buildLanguageOption(
           context, 
@@ -99,7 +90,6 @@ class LanguageSelector extends StatelessWidget {
     );
   }
   
-  // 比較兩個Locale是否相等
   bool _localesEqual(Locale a, Locale b) {
     if (a.languageCode != b.languageCode) return false;
     if (a.scriptCode != b.scriptCode) return false;
