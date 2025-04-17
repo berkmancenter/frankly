@@ -72,7 +72,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
               return Row(
                 children: [
                   HeightConstrainedText(
-                    'My Communities',
+                    context.l10n.myCommunities,
                     style: AppTextStyle.headline3.copyWith(fontSize: 22),
                   ),
                   Spacer(),
@@ -149,7 +149,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "You haven't joined any communities.",
+                          context.l10n.youHaventJoinedAnyCommunities,
                           style: AppTextStyle.body,
                           textAlign: responsiveLayoutService.isMobile(context)
                               ? TextAlign.center

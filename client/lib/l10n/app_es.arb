@@ -750,5 +750,10 @@
         "type": "Object"
       }
     }
-  }
+  },
+  "myCommunities": "Mis comunidades",
+  "youHaventJoinedAnyCommunities": "No te has unido a ninguna comunidad",
+  "logo": "Logotipo",
+  "background": "Fondo",
+  "makeThisSpacePrivate": "Hacer este espacio privado"
 }

@@ -544,5 +544,10 @@
       "name": {}
     }
   },
-  "prereqRequired": "Prerequisite required"
+  "prereqRequired": "Prerequisite required",
+  "myCommunities": "My Communities",
+  "youHaventJoinedAnyCommunities": "You haven't joined any communities.",
+  "logo": "Logo",
+  "background": "Background",
+  "makeThisSpacePrivate": "Make this space private"
 }

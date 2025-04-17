@@ -854,5 +854,10 @@
     }
   },
   "helpCenter": "帮助中心",
-  "privacyPolicy": "隐私政策"
+  "privacyPolicy": "隐私政策",
+  "myCommunities": "我的社区",
+  "youHaventJoinedAnyCommunities": "您尚未加入任何社区",
+  "logo": "标志",
+  "background": "背景",
+  "makeThisSpacePrivate": "设此为私密空间"
 }
