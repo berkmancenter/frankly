@@ -10,7 +10,7 @@ class ProxiedImage extends StatelessWidget {
   final AppAsset? asset;
   final double? height;
   final double? width;
-  final Color loadingColor;
+  final Color? loadingColor;
   final BorderRadius? borderRadius;
   final BoxFit? fit;
 
@@ -19,7 +19,7 @@ class ProxiedImage extends StatelessWidget {
     this.asset,
     this.height,
     this.width,
-    this.loadingColor = context.theme.colorScheme.onPrimaryContainer,
+    this.loadingColor,
     this.borderRadius,
     this.fit,
   });
@@ -59,7 +59,7 @@ class ProxiedImage extends StatelessWidget {
         return Container(
           height: height,
           width: width,
-          color: loadingColor,
+          color: loadingColor ?? context.theme.colorScheme.onPrimaryContainer,
         );
       }
 
