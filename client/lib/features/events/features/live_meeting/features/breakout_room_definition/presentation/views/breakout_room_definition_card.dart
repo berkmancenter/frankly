@@ -361,6 +361,136 @@ class _QuestionCardState extends State<QuestionCard> {
         ? context.l10n.questionWithNumber(questionPosition + 1)
         : surveyQuestion.title;
 
+    return UIMigration(
+      whiteBackground: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: ExpansionTile(
+          key: Key(_isExpanded.value.toString()),
+          initiallyExpanded: _isExpanded.value,
+          backgroundColor: AppColor.white,
+          collapsedBackgroundColor: AppColor.white,
+          title: Row(
+            children: [
+              ReorderableListener(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Icon(
+                    Icons.reorder,
+                    color: Theme.of(context).isDark
+                        ? Colors.white
+                        : Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  child: HeightConstrainedText(
+                    questionText,
+                    style:
+                        AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+                  ),
+                ),
+              ),
+              if (_breakoutCardViewType == BreakoutCardViewType.overview)
+                _buildEditButton(),
+            ],
+          ),
+          iconColor: AppColor.darkBlue,
+          collapsedIconColor: AppColor.darkBlue,
+          onExpansionChanged: (expanded) => _isExpanded.value = expanded,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextField(
+                    readOnly:
+                        _breakoutCardViewType == BreakoutCardViewType.overview,
+                    labelText: context.l10n
+                        .enterQuestionWithNumber(questionPosition + 1),
+                    maxLines: 1,
+                    maxLength: questionMaxLength,
+                    initialValue: !isNullOrEmpty(surveyQuestion.title)
+                        ? surveyQuestion.title
+                        : null,
+                    onChanged: (value) => _presenter.updateQuestionData(
+                      question: value,
+                      questionId: widget.questionId,
+                    ),
+                    useDarkMode: false,
+                  ),
+                  SizedBox(height: 30),
+                  for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
+                    _builderAnswerTextField(surveyQuestion.answers[i], i),
+                    SizedBox(height: 6),
+                  ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 10,
+                        ),
+                        child: Container(
+                          decoration: ShapeDecoration(
+                            shape: CircleBorder(),
+                            color: AppColor.gray4,
+                          ),
+                          child: IconButton(
+                            icon: Icon(
+                              CupertinoIcons.trash,
+                              color: AppColor.white,
+                              size: 15,
+                            ),
+                            onPressed: _breakoutCardViewType ==
+                                    BreakoutCardViewType.edit
+                                ? () async {
+                                    final delete = await ConfirmDialog(
+                                      mainText: context.l10n.confirmDelete,
+                                    ).show(context: context);
+                                    if (delete) {
+                                      await alertOnError(
+                                        context,
+                                        () => _presenter
+                                            .deleteBreakoutRoomQuestion(
+                                          widget.questionId,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                : null,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      CircleSaveCheckButton(
+                        isEnabled:
+                            _breakoutCardViewType == BreakoutCardViewType.edit,
+                        onPressed:
+                            _breakoutCardViewType == BreakoutCardViewType.edit
+                                ? () => updateBreakoutRoomQuestionDetails()
+                                : null,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                ],
+              ),
+            ),
+          ],
+        ),
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: ExpansionTile(
@@ -414,8 +544,7 @@ class _QuestionCardState extends State<QuestionCard> {
                 CustomTextField(
                   readOnly:
                       _breakoutCardViewType == BreakoutCardViewType.overview,
-                  labelText: context.l10n
-                      .enterQuestionWithNumber(questionPosition + 1),
+                  labelText: 'Enter Question ${questionPosition + 1}',
                   maxLines: 1,
                   maxLength: questionMaxLength,
                   initialValue: !isNullOrEmpty(surveyQuestion.title)
@@ -456,13 +585,14 @@ class _QuestionCardState extends State<QuestionCard> {
                                   BreakoutCardViewType.edit
                               ? () async {
                                   final delete = await ConfirmDialog(
-                                    mainText: context.l10n.confirmDelete,
+                                    mainText:
+                                        'Are you sure you want to delete?',
                                   ).show(context: context);
                                   if (delete) {
                                     await alertOnError(
                                       context,
-                                      () => _presenter
-                                          .deleteBreakoutRoomQuestion(
+                                      () =>
+                                          _presenter.deleteBreakoutRoomQuestion(
                                         widget.questionId,
                                       ),
                                     );

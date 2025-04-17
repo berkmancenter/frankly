@@ -5,7 +5,6 @@ import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
-import 'package:client/core/localization/localization_extension.dart';
 
 class SignInWidget extends StatelessWidget {
   @visibleForTesting
