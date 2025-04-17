@@ -1,13 +1,12 @@
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/theme_preview_container.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -76,11 +75,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     final currentDarkColor = ThemeUtils.parseColor(_currentCommunityDarkColor);
     final currentLightColor =
         ThemeUtils.parseColor(_currentCommunityLightColor);
-    _selectedPresetIndex = ThemeUtils.presetColorThemes.indexWhere(
-      (theme) =>
-          theme.darkColor == currentDarkColor &&
-          theme.lightColor == currentLightColor,
-    );
+    _selectedPresetIndex = ThemeUtils().presetColorThemes(context).indexWhere(
+          (theme) =>
+              theme.darkColor == currentDarkColor &&
+              theme.lightColor == currentLightColor,
+        );
     final customColorsSpecified = _currentCommunityDarkColor != null &&
         _currentCommunityLightColor != null;
     _isPresetSelected =
@@ -94,8 +93,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           ThemeUtils.isColorValid(_currentDarkColor)) {
         final firstColor =
             ThemeUtils.parseColor(_currentLightColor) ?? AppColor.gray6;
-        final secondColor =
-            ThemeUtils.parseColor(_currentDarkColor) ?? AppColor.darkBlue;
+        final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
+            context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
           _selectedColorErrorMessage = 'Light color must be lighter';
@@ -137,9 +136,10 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     _checkChosenColorConstraints();
   }
 
-  void _selectPreset(int index) {
-    widget.setDarkColor(ThemeUtils.darkColorStringFromTheme(index));
-    widget.setLightColor(ThemeUtils.lightColorStringFromTheme(index));
+  void _selectPreset(BuildContext context, int index) {
+    widget.setDarkColor(ThemeUtils().darkColorStringFromTheme(context, index));
+    widget
+        .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
     setState(() => _selectedPresetIndex = index);
   }
 
@@ -205,7 +205,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required bool selected,
     required void Function() onTap,
   }) {
-    final color = selected ? AppColor.darkBlue : AppColor.gray4;
+    final color = selected ? context.theme.colorScheme.primary : AppColor.gray4;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -256,11 +256,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             children: <Widget>[
-              for (var i = 0; i < ThemeUtils.presetColorThemes.length; i++)
+              for (var i = 0;
+                  i < ThemeUtils().presetColorThemes(context).length;
+                  i++)
                 ThemePreview(
-                  selectedTheme: ThemeUtils.presetColorThemes[i],
+                  selectedTheme: ThemeUtils().presetColorThemes(context)[i],
                   isSelected: i == _selectedPresetIndex,
-                  onTap: () => _selectPreset(i),
+                  onTap: () => _selectPreset(context, i),
                   compact: true,
                 ),
             ].intersperse(SizedBox(width: 13)).toList(),
@@ -373,7 +375,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
                 : null,
             border: Border.all(
               color: _isSelectedColorComboValid
-                  ? AppColor.darkBlue
+                  ? context.theme.colorScheme.primary
                   : AppColor.gray3,
             ),
           ),

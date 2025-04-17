@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/admin/presentation/widgets/confirm_dialog_white.dart';
 import 'package:client/core/widgets/profile_chip.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
@@ -15,7 +15,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/admin/data/services/stripe_client_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -259,7 +259,7 @@ class _AdminBillingContainerContentState
               SizedBox(width: 10),
               ActionButton(
                 text: 'Update Plan',
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 textColor: AppColor.brightGreen,
                 onPressed: _newPlanSelected
                     ? () => alertOnError(context, _updatePlanPressed)
@@ -277,8 +277,8 @@ class _AdminBillingContainerContentState
 
     return HeightConstrainedText(
       '${community.name ?? 'This Community'} is on the $planType Plan',
-      style:
-          AppTextStyle.subhead.copyWith(fontSize: 22, color: AppColor.darkBlue),
+      style: AppTextStyle.subhead
+          .copyWith(fontSize: 22, color: context.theme.colorScheme.primary),
     );
   }
 
@@ -407,7 +407,7 @@ class _AdminBillingContainerContentState
               color: Colors.transparent,
               textStyle: TextStyle(
                 decoration: TextDecoration.underline,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
               onPressed: () async {

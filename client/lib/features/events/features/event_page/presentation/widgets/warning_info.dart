@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 class WarningInfo extends StatelessWidget {
   final Widget icon;

@@ -3,7 +3,7 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/event_page/presentation/breakout_category_presenter.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';

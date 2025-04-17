@@ -1,9 +1,8 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 
 /// Displays emotions (Emoji) section with the counter (total count of all emotions).
@@ -190,7 +189,7 @@ class PopupMenuWidget<T> extends PopupMenuEntry<T> {
   }) : super(key: key);
 
   @override
-  _PopupMenuWidgetState createState() => _PopupMenuWidgetState();
+  PopupMenuWidgetState createState() => PopupMenuWidgetState();
 
   @override
   bool represents(T? value) {
@@ -201,7 +200,7 @@ class PopupMenuWidget<T> extends PopupMenuEntry<T> {
   double get height => throw UnimplementedError();
 }
 
-class _PopupMenuWidgetState extends State<PopupMenuWidget> {
+class PopupMenuWidgetState extends State<PopupMenuWidget> {
   @override
   Widget build(BuildContext context) {
     return widget.child;

@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/user/public_user_info.dart';
@@ -93,20 +93,10 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
           Semantics(
             label: 'Start a community',
             button: true,
-            child: CustomInkWell(
-              onTap: _createCommunityPressed,
-              boxShape: BoxShape.circle,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColor.white,
-                ),
-                child: DottedBorder(
-                  dashPattern: const [3, 3],
-                  borderType: BorderType.Circle,
-                  child: Icon(Icons.add),
-                ),
-              ),
+            child: CircleIconButton(
+              onPressed: _createCommunityPressed,
+              icon: Icons.add,
+              toolTipText: 'Start a community',
             ),
           ),
           if (!responsiveLayoutService.isMobile(context)) ...[
@@ -200,7 +190,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
                       community.bannerImageUrl!.trim().isEmpty) ...[
                     Container(
                       color: ThemeUtils.parseColor(community.themeDarkColor) ??
-                          AppColor.darkBlue,
+                          context.theme.colorScheme.primary,
                     ),
                   ] else ...[
                     ProxiedImage(

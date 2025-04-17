@@ -3,7 +3,7 @@ import 'package:client/features/community/presentation/widgets/carousel/time_ind
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';

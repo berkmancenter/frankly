@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 class UpgradeIcon extends StatelessWidget {
   final bool isColorInverted;
@@ -11,23 +11,23 @@ class UpgradeIcon extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Color get _iconColor {
+  Color _iconColor(BuildContext context) {
     if (isDisabledColor) {
       return AppColor.white;
     } else if (isColorInverted) {
-      return AppColor.darkBlue;
+      return context.theme.colorScheme.primary;
     } else {
       return AppColor.brightGreen;
     }
   }
 
-  Color get _containerColor {
+  Color _containerColor(BuildContext context) {
     if (isDisabledColor) {
       return AppColor.gray1.withOpacity(.5);
     } else if (isColorInverted) {
       return AppColor.brightGreen;
     } else {
-      return AppColor.darkBlue;
+      return context.theme.colorScheme.primary;
     }
   }
 
@@ -38,12 +38,12 @@ class UpgradeIcon extends StatelessWidget {
       height: 20,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _containerColor,
+        color: _containerColor(context),
       ),
       alignment: Alignment.center,
       child: Icon(
         Icons.star,
-        color: _iconColor,
+        color: _iconColor(context),
         size: 12,
       ),
     );

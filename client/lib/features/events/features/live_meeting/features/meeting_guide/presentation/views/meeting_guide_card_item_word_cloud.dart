@@ -9,14 +9,14 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_card.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
@@ -111,7 +111,7 @@ class _MeetingGuideCardItemWordCloudState
                   ActionButton(
                     height: 55,
                     minWidth: 20,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     sendingIndicatorAlign:
                         ActionButtonSendingIndicatorAlign.none,
                     onPressed: _wordCloudResponseController.text != ''
@@ -154,7 +154,7 @@ class _MeetingGuideCardItemWordCloudState
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
@@ -162,7 +162,7 @@ class _MeetingGuideCardItemWordCloudState
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -178,7 +178,7 @@ class _MeetingGuideCardItemWordCloudState
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.list
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
@@ -186,7 +186,7 @@ class _MeetingGuideCardItemWordCloudState
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.list
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -202,7 +202,7 @@ class _MeetingGuideCardItemWordCloudState
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
@@ -210,7 +210,7 @@ class _MeetingGuideCardItemWordCloudState
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
                     ? AppColor.white
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -372,7 +372,8 @@ class _MeetingGuideCardItemWordCloudState
                   (1.5 + prominence) /
                   math.sqrt(math.sqrt(math.max(words.length, 6)));
 
-              final color = AppColor.darkBlue.withOpacity(.5 + prominence * .5);
+              final color = context.theme.colorScheme.primary
+                  .withOpacity(.5 + prominence * .5);
               if (currentResponses.contains(e.key)) {
                 return HeightConstrainedText(
                   ' ${e.key} ',

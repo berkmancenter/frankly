@@ -17,11 +17,11 @@ import 'package:client/features/events/features/live_meeting/data/providers/use_
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -181,7 +181,6 @@ class _MeetingDialogState extends State<MeetingDialog> {
     return MeetingAgendaWrapper(
       communityId: eventProvider.communityId,
       event: event,
-      backgroundColor: AppColor.darkerBlue,
       labelColor: Colors.white60,
       child: Builder(
         builder: (context) {
@@ -264,7 +263,7 @@ class _MeetingDialogState extends State<MeetingDialog> {
         return Future.value(false);
       },
       child: Material(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         child: SizedBox.expand(
           child: _buildLoading(),
         ),

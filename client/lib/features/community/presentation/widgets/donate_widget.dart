@@ -1,13 +1,13 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/admin/data/services/stripe_client_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -131,7 +131,8 @@ class _DonateWidgetState extends State<DonateWidget> {
           child: HeightConstrainedText(
             '\$$dollars',
             style: TextStyle(
-              color: selected ? AppColor.darkBlue : AppColor.white,
+              color:
+                  selected ? context.theme.colorScheme.primary : AppColor.white,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -156,7 +157,9 @@ class _DonateWidgetState extends State<DonateWidget> {
           child: HeightConstrainedText(
             'Other',
             style: TextStyle(
-              color: _isOtherSelected ? AppColor.darkBlue : AppColor.white,
+              color: _isOtherSelected
+                  ? context.theme.colorScheme.primary
+                  : AppColor.white,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -238,7 +241,7 @@ class _DonateWidgetState extends State<DonateWidget> {
       color: enabled ? AppColor.brightGreen : AppColor.gray4,
       height: 55,
       textStyle: TextStyle(
-        color: enabled ? AppColor.darkBlue : AppColor.white,
+        color: enabled ? context.theme.colorScheme.primary : AppColor.white,
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
@@ -266,7 +269,7 @@ class _DonateWidgetState extends State<DonateWidget> {
       child: Dialog(
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         child: Stack(
           children: [
             Container(

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
@@ -113,7 +113,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                       child: Text(
                         text,
                         style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.darkBlue),
+                            .copyWith(color: context.theme.colorScheme.primary),
                       ),
                     ),
                   ],

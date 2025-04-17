@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 /// A scrolling view that shows a faded white gradient on the bottom of the view if there is
 /// content to scroll to in that direction

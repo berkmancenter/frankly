@@ -47,7 +47,6 @@ class CustomTextField extends StatefulWidget {
   final bool hideCounter;
   final void Function()? onTap;
   final bool obscureText;
-  final bool useDarkMode;
 
   /// Defines if `Optional` is present at the end of the line.
   final bool isOptional;
@@ -104,7 +103,6 @@ class CustomTextField extends StatefulWidget {
     this.hideCounter = false,
     this.onTap,
     this.obscureText = false,
-    this.useDarkMode = false,
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
@@ -134,12 +132,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   ) {
     return widget.labelStyle ??
         context.theme.textTheme.bodySmall!.copyWith(
-          color: _focusNode.hasFocus
-              ? (widget.useDarkMode
-                  ? AppColor.accentBlueLight
-                  : AppColor.accentBlue)
-              : (widget.useDarkMode ? AppColor.white : AppColor.black),
-        );
+            color: _focusNode.hasFocus ? AppColor.accentBlue : AppColor.black,);
   }
 
   TextStyle _buildTextStyle(BuildContext context, {isError = false}) {
@@ -150,7 +143,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 height: context.theme.textTheme.bodySmall!.height,
               )
             : context.theme.textTheme.bodyMedium!.copyWith(
-                color: widget.useDarkMode ? AppColor.white : AppColor.black,
+                color: AppColor.black,
               ));
   }
 
@@ -184,10 +177,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             maxLines: widget.maxLines,
             minLines: widget.minLines,
             obscureText: widget.obscureText,
-            cursorColor: widget.cursorColor ??
-                (widget.useDarkMode
-                    ? AppColor.accentBlueLight
-                    : AppColor.accentBlue),
+            cursorColor: widget.cursorColor ?? AppColor.accentBlue,
             autovalidateMode: widget.autovalidateMode,
             // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
             // while not having to specify max lines for every single usage 🙄
