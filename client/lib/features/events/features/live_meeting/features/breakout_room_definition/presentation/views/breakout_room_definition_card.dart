@@ -282,7 +282,7 @@ class _BreakoutRoomDefinitionCardState
         Container(
           padding: const EdgeInsets.all(30),
           decoration: BoxDecoration(
-            color: AppColor.darkerBlue,
+            color: context.theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Column(

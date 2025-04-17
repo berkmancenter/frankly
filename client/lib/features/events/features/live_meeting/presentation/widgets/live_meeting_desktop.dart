@@ -137,7 +137,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                           ).expanded = false;
                         },
                         child: CircleAvatar(
-                          backgroundColor: AppColor.darkerBlue,
+                          backgroundColor: context.theme.colorScheme.primary,
                           child: Icon(
                             Icons.close,
                             color: AppColor.brightGreen,

@@ -178,7 +178,7 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
     final buttonText = urlParams.buttonText;
     final buttonTextNotEmpty = buttonText != null && buttonText.isNotEmpty;
     return ActionButton(
-      color: AppColor.darkerBlue,
+      color: context.theme.colorScheme.primary,
       type: ActionButtonType.outline,
       borderSide: BorderSide(color: AppColor.brightGreen, width: 1),
       textColor: AppColor.brightGreen,

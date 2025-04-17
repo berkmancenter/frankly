@@ -183,7 +183,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     ].contains(LiveMeetingProvider.watch(context).activeUiState);
     final showBottomBar = ConferenceRoom.read(context) != null;
     return Scaffold(
-      backgroundColor: AppColor.darkerBlue,
+      backgroundColor: context.theme.colorScheme.primary,
       appBar: showAppBar ? _buildAppBar() : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,

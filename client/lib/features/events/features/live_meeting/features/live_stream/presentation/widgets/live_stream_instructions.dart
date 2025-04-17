@@ -121,7 +121,7 @@ class LiveStreamInstructions extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         color: whiteBackground
             ? context.theme.colorScheme.surfaceContainerLowest
-            : AppColor.darkerBlue,
+            : context.theme.colorScheme.primary,
       ),
       alignment: Alignment.center,
       child: _buildInstructions(context),

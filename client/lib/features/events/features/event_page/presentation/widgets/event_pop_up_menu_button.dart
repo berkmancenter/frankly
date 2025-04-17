@@ -86,7 +86,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
             child: Icon(
               Icons.more_horiz,
               size: 20,
-              color: AppColor.darkerBlue,
+              color: context.theme.colorScheme.primary,
             ),
           ),
         ),
@@ -106,7 +106,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                       iconAsset.path,
                       width: 20,
                       height: 20,
-                      color: AppColor.darkerBlue,
+                      color: context.theme.colorScheme.primary,
                     ),
                     SizedBox(width: 12),
                     Expanded(

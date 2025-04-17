@@ -198,7 +198,7 @@ class _WaitingRoom extends StatelessWidget {
         horizontal:
             responsiveLayoutService.getDynamicSize(context, 20, scale: 0.5),
       ),
-      color: AppColor.darkerBlue,
+      color: context.theme.colorScheme.primary,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

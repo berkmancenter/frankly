@@ -138,7 +138,7 @@ class _PrerequisiteTemplateWidgetPageState
         borderRadius: BorderRadius.circular(10),
         color: widget.isWhiteBackground
             ? context.theme.colorScheme.surface
-            : AppColor.darkerBlue,
+            : context.theme.colorScheme.primary,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

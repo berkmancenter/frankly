@@ -364,7 +364,7 @@ class _MembersTabState extends State<MembersTab> {
                   height: 44,
                   minWidth: 44,
                   padding: EdgeInsets.zero,
-                  color: AppColor.darkerBlue,
+                  color: context.theme.colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
