@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const List<Color> kOdometerColors = [
+  Color.fromARGB(255, 181, 0, 0),
+  Color.fromARGB(255, 190, 251, 155),
+  Color.fromARGB(255, 155, 251, 227),
+  Color.fromARGB(255, 136, 197, 255),
+];
+
 /// Class that holds custom [TextStyle]s.
 ///
 /// [height] is calculated by taking original [height] and dividing by [fontSize].
