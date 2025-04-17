@@ -395,7 +395,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             child: Icon(
               Icons.check,
               color: _isSelectedColorComboValid
-                  ? AppColor.darkGreen
+                  ? context.theme.colorScheme.secondary
                   : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),

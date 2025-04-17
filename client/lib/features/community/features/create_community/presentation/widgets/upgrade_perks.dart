@@ -82,7 +82,8 @@ class UpgradePerks extends StatelessWidget {
   Widget _buildUpgradePerk(String perk) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: AppColor.darkGreen, size: 12),
+          Icon(Icons.check,
+              color: context.theme.colorScheme.secondary, size: 12),
           SizedBox(
             width: 10,
           ),
