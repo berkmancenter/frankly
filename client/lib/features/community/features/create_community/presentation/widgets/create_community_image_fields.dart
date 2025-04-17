@@ -101,7 +101,7 @@ class CreateCommunityImageField extends StatelessWidget {
 
   double get size => 30.0;
 
-  Widget _buildRemoveImageIcon() {
+  Widget _buildRemoveImageIcon(BuildContext context) {
     return CustomInkWell(
       onTap: onTapRemove,
       borderRadius: BorderRadius.circular(15),
@@ -183,17 +183,19 @@ class CreateCommunityImageField extends StatelessWidget {
             child: HeightConstrainedText(
               text,
               style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          _buildRemoveImageIcon(),
+          _buildRemoveImageIcon(context),
         ] else ...[
           Expanded(
             child: HeightConstrainedText(
               text,
               style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -201,7 +203,8 @@ class CreateCommunityImageField extends StatelessWidget {
             HeightConstrainedText(
               'Optional',
               style: AppTextStyle.bodySmall.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
         ],
       ],

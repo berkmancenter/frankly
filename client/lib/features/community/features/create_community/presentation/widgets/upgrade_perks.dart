@@ -48,7 +48,8 @@ class UpgradePerks extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ...[
-                for (final perk in _upgradePerks) _buildUpgradePerk(perk),
+                for (final perk in _upgradePerks)
+                  _buildUpgradePerk(context, perk),
               ].intersperse(
                 SizedBox(height: 10),
               ),
@@ -79,11 +80,14 @@ class UpgradePerks extends StatelessWidget {
         : SizedBox.shrink();
   }
 
-  Widget _buildUpgradePerk(String perk) => Row(
+  Widget _buildUpgradePerk(BuildContext context, String perk) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check,
-              color: context.theme.colorScheme.secondary, size: 12),
+          Icon(
+            Icons.check,
+            color: context.theme.colorScheme.secondary,
+            size: 12,
+          ),
           SizedBox(
             width: 10,
           ),
