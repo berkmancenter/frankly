@@ -57,7 +57,7 @@ class MeetingRating extends StatefulWidget {
                       sendingIndicatorAlign:
                           ActionButtonSendingIndicatorAlign.none,
                       text: 'NEXT',
-                      color: context.theme.colorScheme.onPrimary,
+                      color: innerContext.theme.colorScheme.onPrimary,
                       textColor: innerContext.theme.colorScheme.primary,
                     ),
                   ],
