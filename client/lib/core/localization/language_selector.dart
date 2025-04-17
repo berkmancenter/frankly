@@ -10,35 +10,100 @@ class LanguageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final l10n = AppLocalizations.of(context)!;
-
-    return PopupMenuButton<Locale>(
-      tooltip: l10n.selectLanguage,
-      icon: const Icon(Icons.language),
-      onSelected: (Locale locale) {
-        localeProvider.setLocale(locale);
-      },
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem<Locale>(
-          value: const Locale('en'),
-          child: const Text('English'),
+    
+    // 獲取當前語言設定
+    Locale currentLocale = localeProvider.locale ?? const Locale('en');
+    
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.language, size: 20),
+            const SizedBox(width: 8),
+            Text(l10n.selectLanguage),
+          ],
         ),
-        PopupMenuItem<Locale>(
-          value: const Locale('zh'),
-          child: const Text('简体中文'),
+        const SizedBox(height: 8),
+        _buildLanguageOption(
+          context, 
+          'English', 
+          const Locale('en'), 
+          currentLocale, 
+          localeProvider,
         ),
-        PopupMenuItem<Locale>(
-          value: const Locale.fromSubtags(
+        const SizedBox(height: 8),
+        _buildLanguageOption(
+          context, 
+          '简体中文', 
+          const Locale('zh'), 
+          currentLocale, 
+          localeProvider,
+        ),
+        const SizedBox(height: 8),
+        _buildLanguageOption(
+          context, 
+          '臺灣華文', 
+          const Locale.fromSubtags(
             languageCode: 'zh',
             scriptCode: 'Hant',
             countryCode: 'TW',
-          ),
-          child: const Text('臺灣華文'),
+          ), 
+          currentLocale, 
+          localeProvider,
         ),
-        PopupMenuItem<Locale>(
-          value: const Locale('es'),
-          child: const Text('Español'),
+        const SizedBox(height: 8),
+        _buildLanguageOption(
+          context, 
+          'Español', 
+          const Locale('es'), 
+          currentLocale, 
+          localeProvider,
         ),
       ],
     );
+  }
+  
+  Widget _buildLanguageOption(
+    BuildContext context, 
+    String label, 
+    Locale locale, 
+    Locale currentLocale, 
+    LocaleProvider localeProvider,
+  ) {
+    final isSelected = _localesEqual(locale, currentLocale);
+    
+    return InkWell(
+      onTap: () => localeProvider.setLocale(locale),
+      borderRadius: BorderRadius.circular(4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: isSelected ? Theme.of(context).colorScheme.primary.withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).textTheme.bodyMedium?.color,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+  
+  // 比較兩個Locale是否相等
+  bool _localesEqual(Locale a, Locale b) {
+    if (a.languageCode != b.languageCode) return false;
+    if (a.scriptCode != b.scriptCode) return false;
+    if (a.countryCode != b.countryCode) return false;
+    return true;
   }
 }
