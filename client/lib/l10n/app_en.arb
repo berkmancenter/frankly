@@ -553,5 +553,10 @@
   "update": "Update",
   "saveChanges": "Save changes?",
   "discard": "Discard",
-  "save": "Save"
+  "save": "Save",
+  "sidebarEventsButton": "Events",
+  "sidebarPostsButton": "Posts",
+  "sidebarResourcesButton": "Resources",
+  "sidebarTemplatesButton": "Templates",
+  "sidebarAdminButton": "Admin"
 }

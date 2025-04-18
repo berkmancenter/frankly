@@ -877,5 +877,10 @@
   "update": "更新",
   "saveChanges": "儲存變更？",
   "discard": "放棄",
-  "save": "儲存"
+  "save": "儲存",
+  "sidebarEventsButton": "活動",
+  "sidebarPostsButton": "貼文",
+  "sidebarResourcesButton": "資源",
+  "sidebarTemplatesButton": "模板",
+  "sidebarAdminButton": "管理員"
 }

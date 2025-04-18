@@ -8,7 +8,7 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
-
+import 'package:client/core/localization/localization_helper.dart';
 class CommunitySideBarNavigation extends StatelessWidget {
   final bool showAdmin;
   final bool enableDiscussionThreads;
@@ -35,13 +35,13 @@ class CommunitySideBarNavigation extends StatelessWidget {
       children: [
         SizedBox(height: 12),
         SideBarNavigationButton(
-          text: 'Events',
+          text: context.l10n.sidebarEventsButton,
           onTap: () => routerDelegate.beamTo(initialCommunityRoute.eventsPage),
           style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
         ),
         if (enableDiscussionThreads) ...[
           SideBarNavigationButton(
-            text: 'Posts',
+            text: context.l10n.sidebarPostsButton,
             onTap: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
             style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
@@ -49,14 +49,14 @@ class CommunitySideBarNavigation extends StatelessWidget {
         ],
         if (showResources) ...[
           SideBarNavigationButton(
-            text: 'Resources',
+            text: context.l10n.sidebarResourcesButton,
             style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
             onTap: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
           ),
         ],
         SideBarNavigationButton(
-          text: 'Templates',
+          text: context.l10n.sidebarTemplatesButton,
           onTap: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
           style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
@@ -67,7 +67,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
           identifier: 'sidebar_unfollow_button',
           button: true,
           child: SideBarNavigationButton(
-              text: 'Unfollow',
+              text: context.l10n.unfollow,
               onTap: () => alertOnError(
                 context,
                 () => Provider.of<UserDataService>(context, listen: false)
@@ -80,7 +80,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
           ),
         if (showAdmin) ...[
           SideBarNavigationButton(
-            text: 'Admin',
+            text: context.l10n.sidebarAdminButton,
             onTap: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
             style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),

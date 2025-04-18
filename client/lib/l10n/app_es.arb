@@ -759,5 +759,10 @@
   "update": "Actualizar",
   "saveChanges": "¿Guardar cambios?",
   "discard": "Descartar",
-  "save": "Guardar"
+  "save": "Guardar",
+  "sidebarEventsButton": "Eventos",
+  "sidebarPostsButton": "Publicaciones",
+  "sidebarResourcesButton": "Recursos",
+  "sidebarTemplatesButton": "Plantillas",
+  "sidebarAdminButton": "Administrador"
 }
