@@ -859,5 +859,9 @@
   "youHaventJoinedAnyCommunities": "您尚未加入任何社区",
   "logo": "标志",
   "background": "背景",
-  "makeThisSpacePrivate": "设此为私密空间"
+  "makeThisSpacePrivate": "设此为私密空间",
+  "update": "更新",
+  "saveChanges": "保存更改？",
+  "discard": "放弃",
+  "save": "保存"
 }

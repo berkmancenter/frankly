@@ -873,5 +873,9 @@
   "youHaventJoinedAnyCommunities": "您尚未加入任何社區",
   "logo": "標誌",
   "background": "背景",
-  "makeThisSpacePrivate": "設此為私密空間"
+  "makeThisSpacePrivate": "設此為私密空間",
+  "update": "更新",
+  "saveChanges": "儲存變更？",
+  "discard": "放棄",
+  "save": "儲存"
 }

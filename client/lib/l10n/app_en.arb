@@ -549,5 +549,9 @@
   "youHaventJoinedAnyCommunities": "You haven't joined any communities.",
   "logo": "Logo",
   "background": "Background",
-  "makeThisSpacePrivate": "Make this space private"
+  "makeThisSpacePrivate": "Make this space private",
+  "update": "Update",
+  "saveChanges": "Save changes?",
+  "discard": "Discard",
+  "save": "Save"
 }
