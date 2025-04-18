@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
 import 'package:client/services.dart';
 

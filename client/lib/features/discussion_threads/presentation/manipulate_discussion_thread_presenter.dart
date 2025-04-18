@@ -2,7 +2,6 @@ import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/discussion_threads/data/services/discussion_threads_helper.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/discussion_threads/data/services/firestore_discussion_threads_service.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';

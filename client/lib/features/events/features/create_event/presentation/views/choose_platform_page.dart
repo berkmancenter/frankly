@@ -1,15 +1,15 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/presentation/choose_platform_presenter.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -85,13 +85,16 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(width: 1, color: AppColor.darkBlue),
+                        border: Border.all(
+                          width: 1,
+                          color: context.theme.colorScheme.primary,
+                        ),
                       ),
                       child: Icon(
                         Icons.circle,
                         size: 12,
                         color: presenter.isSelectedPlatform(platform)
-                            ? AppColor.darkBlue
+                            ? context.theme.colorScheme.primary
                             : Colors.transparent,
                       ),
                     ),
@@ -169,7 +172,7 @@ class LinkField extends StatelessWidget {
                   labelText: 'Paste a link',
                   labelStyle: AppTextStyle.bodySmall.copyWith(
                     color: isNullOrEmpty(error)
-                        ? AppColor.darkBlue
+                        ? context.theme.colorScheme.primary
                         : AppColor.redLightMode,
                   ),
                   onEditingComplete: () => onSubmit(),
@@ -194,7 +197,7 @@ class LinkField extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
-                              ? AppColor.darkBlue
+                              ? context.theme.colorScheme.primary
                               : AppColor.gray4,
                         ),
                         child: Icon(
@@ -216,7 +219,9 @@ class LinkField extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.transparent,
-                          border: Border.all(color: AppColor.darkBlue),
+                          border: Border.all(
+                            color: context.theme.colorScheme.primary,
+                          ),
                         ),
                         child: Icon(
                           Icons.close,

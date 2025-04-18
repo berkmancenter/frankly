@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_page_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/data/services/firestore_database.dart';
 import 'package:client/features/events/data/services/firestore_event_service.dart';
 import 'package:client/core/utils/firestore_utils.dart';

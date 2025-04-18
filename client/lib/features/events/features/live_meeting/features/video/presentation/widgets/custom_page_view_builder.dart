@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 /// Creates a PageView widget with arrows at the bottom to control pages
 /// navigation and has circle page indicators

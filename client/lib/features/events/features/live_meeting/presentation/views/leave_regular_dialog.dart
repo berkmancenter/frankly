@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 
@@ -76,7 +76,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
                                 18,
                                 scale: 3 / 4,
                               ),
-                              color: AppColor.darkBlue,
+                              color: context.theme.colorScheme.primary,
                             ),
                           ),
                           SizedBox(height: 18),
@@ -91,7 +91,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
                                   14,
                                   scale: 3 / 4,
                                 ),
-                                color: AppColor.darkBlue,
+                                color: context.theme.colorScheme.primary,
                               ),
                             ),
                           ),
@@ -139,7 +139,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 18,
-                      color: AppColor.darkBlue,
+                      color: context.theme.colorScheme.primary,
                     ),
                   ),
                   SizedBox(height: 14),
@@ -149,7 +149,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
-                        color: AppColor.darkBlue,
+                        color: context.theme.colorScheme.primary,
                       ),
                     ),
                   ),
@@ -176,7 +176,6 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
     return CommunityMembershipButton(
       community,
       text: 'Follow ${community.name}',
-      textColor: AppColor.darkBlue,
     );
   }
 

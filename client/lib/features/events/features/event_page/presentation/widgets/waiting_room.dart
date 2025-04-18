@@ -8,11 +8,10 @@ import 'package:client/features/events/features/live_meeting/data/providers/live
 import 'package:client/features/events/features/live_meeting/features/live_stream/presentation/widgets/url_video_widget.dart';
 import 'package:client/features/events/features/event_page/presentation/waiting_room_presenter.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
 import 'package:data_models/events/event.dart';
@@ -80,7 +79,7 @@ class _WaitingRoom extends StatelessWidget {
   Widget _buildDesktopLayout(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(30.0),
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: Row(
         children: [
           Expanded(
@@ -96,7 +95,7 @@ class _WaitingRoom extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: Column(
         children: [
           _buildMeetingInfo(context),

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/chat/emotion.dart';
 import 'package:data_models/community/community.dart';

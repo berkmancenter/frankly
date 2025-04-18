@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:pedantic/pedantic.dart';
 
 enum ActionButtonSendingIndicatorAlign {
   left,
@@ -169,19 +167,19 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Color _getTextColor() {
-    Color defaultTextColor = widget.type == ActionButtonType.outline
-        ? AppColor.white
-        : Theme.of(context).primaryColor;
-    if (widget.color == Theme.of(context).primaryColor) {
-      defaultTextColor = Theme.of(context).colorScheme.secondary;
-    } else if (widget.color == Theme.of(context).colorScheme.secondary) {
-      defaultTextColor = Theme.of(context).primaryColor;
-    } else if (widget.color == AppColor.redLightMode) {
-      defaultTextColor = AppColor.white;
-    } else {
-      if (widget.color == AppColor.redDarkMode) {
-        defaultTextColor = Theme.of(context).primaryColor;
-      }
+    if (widget.type == ActionButtonType.outline) {
+      return widget.textColor ??
+          widget.borderSide?.color ??
+          context.theme.colorScheme.primary;
+    }
+
+    Color defaultTextColor = context.theme.colorScheme.onPrimary;
+    if (widget.color == context.theme.colorScheme.primary) {
+      defaultTextColor = context.theme.colorScheme.onPrimary;
+    } else if (widget.color == context.theme.colorScheme.secondary) {
+      defaultTextColor = context.theme.colorScheme.primary;
+    } else if (widget.color == context.theme.colorScheme.error) {
+      defaultTextColor = context.theme.colorScheme.onError;
     }
 
     return widget.textColor ?? defaultTextColor;
@@ -252,10 +250,10 @@ class _ActionButtonState extends State<ActionButton> {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return widget.disabledColor ?? Color(0xFFB2B9C5);
+              return widget.disabledColor ??
+                  context.theme.colorScheme.onSurface.withOpacity(0.38);
             }
-
-            return widget.color ?? Theme.of(context).colorScheme.secondary;
+            return widget.color ?? context.theme.colorScheme.primary;
           }),
           overlayColor: overlayColor,
           minimumSize: minimumSize,
@@ -266,11 +264,12 @@ class _ActionButtonState extends State<ActionButton> {
     } else if (widget.type == ActionButtonType.outline) {
       button = OutlinedButton(
         style: ButtonStyle(
-          backgroundColor:
-              WidgetStateProperty.all(widget.color ?? Colors.transparent),
           overlayColor: overlayColor,
           side: WidgetStateProperty.all(
-            widget.borderSide ?? BorderSide(color: _getTextColor()),
+            widget.borderSide ??
+                BorderSide(
+                  color: _getTextColor(),
+                ),
           ),
           padding: WidgetStateProperty.all(EdgeInsets.zero),
           minimumSize: minimumSize,

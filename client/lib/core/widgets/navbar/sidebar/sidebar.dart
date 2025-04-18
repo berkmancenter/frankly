@@ -1,6 +1,7 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
-import 'package:dotted_border/dotted_border.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -18,7 +19,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/user/public_user_info.dart';
@@ -47,7 +47,7 @@ class _SideBarState extends State<SideBar> {
   Widget build(BuildContext context) {
     return Container(
       width: AppSize.kSidebarWidth,
-      color: AppColor.white,
+      color: context.theme.colorScheme.secondary,
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxHeight < 750) {
@@ -66,18 +66,15 @@ class _SideBarState extends State<SideBar> {
       children: [
         _builSidebardHeader(),
         Expanded(
-          child: Container(
-            color: AppColor.gray6,
-            child: CustomListView(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  color: AppColor.white,
-                  child: _buildNavigationOrSignIn(),
-                ),
-                _buildBottomSidebarButtons(),
-              ],
-            ),
+          child: CustomListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                color: AppColor.white,
+                child: _buildNavigationOrSignIn(),
+              ),
+              _buildBottomSidebarButtons(),
+            ],
           ),
         ),
       ],
@@ -192,7 +189,7 @@ class _SideBarState extends State<SideBar> {
     final version =
         js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -307,7 +304,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
         return Column(
           children: [
             for (final community in widget.communities) ...[
-              if (community != widget.communities.first) _buildDivider(),
+              if (community != widget.communities.first) Divider(height: 16),
               NavListItem(
                 community: community,
                 isOpenByDefault: (community == widget.communities.first) &&
@@ -315,7 +312,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
               ),
             ],
             if (owner || Uri.base.origin.contains('localhost')) ...[
-              _buildDivider(),
+              Divider(height: 16),
               _buildStartCommunity(),
             ],
           ],
@@ -324,40 +321,14 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
     );
   }
 
-  Widget _buildDivider() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Container(
-          color: AppColor.gray5,
-          height: 1,
-        ),
-      );
-
   Widget _buildStartCommunity() => GestureDetector(
         onTap: _startCommunityTapped,
         child: Row(
           children: [
-            CustomInkWell(
-              boxShape: BoxShape.circle,
-              onTap: _startCommunityTapped,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColor.darkBlue,
-                ),
-                height: 40,
-                width: 40,
-                child: DottedBorder(
-                  borderType: BorderType.Circle,
-                  dashPattern: const [3, 3],
-                  color: AppColor.gray2,
-                  child: Center(
-                    child: Icon(
-                      Icons.add,
-                      color: AppColor.white,
-                    ),
-                  ),
-                ),
-              ),
+            CircleIconButton(
+              onPressed: _startCommunityTapped,
+              icon: Icons.add,
+              toolTipText: 'Start a community',
             ),
             SizedBox(width: 11),
             HeightConstrainedText(

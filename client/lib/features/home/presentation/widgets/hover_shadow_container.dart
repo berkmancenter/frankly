@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 /// A Widget that shows a box shadow underneath its child when hovered over
 class HoverShadowContainer extends StatefulWidget {
