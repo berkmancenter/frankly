@@ -1,8 +1,8 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 
 /// This is an icon that appears in the top or bottom nav bar. If it is selected it shows a solid
 /// indicator line below the icon. The size of the icon and spacing between it and the indicator
@@ -42,7 +42,9 @@ class SelectableNavigationIcon extends StatelessWidget {
               ? Icon(
                   iconData,
                   size: iconSize,
-                  color: isSelected ? AppColor.darkBlue : AppColor.gray3,
+                  color: isSelected
+                      ? context.theme.colorScheme.primary
+                      : AppColor.gray3,
                 )
               : ProxiedImage(
                   null,
@@ -54,7 +56,11 @@ class SelectableNavigationIcon extends StatelessWidget {
         ),
         if (isSelected) ...[
           SizedBox(height: iconSpacing.toDouble()),
-          Container(height: 2, width: 20, color: AppColor.darkBlue),
+          Container(
+            height: 2,
+            width: 20,
+            color: context.theme.colorScheme.primary,
+          ),
         ],
       ],
     );

@@ -16,7 +16,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/time_input_form.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -164,7 +164,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
                   child: Icon(
                     Icons.reorder,
                     size: 24,
-                    color: AppColor.darkBlue,
                   ),
                 ),
               SizedBox(width: 8),
@@ -199,7 +198,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               // Therefore hiding icon in order to indicate that the card is not collapsable
               Icon(
                 isCollapsed ? Icons.expand_more : Icons.expand_less,
-                color: AppColor.darkBlue,
               ),
             ],
           ),
@@ -212,7 +210,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               children: [
                 _buildDropDownButton(),
                 TimeInputForm(
-                  isWhiteBackground: true,
                   duration: Duration(
                     seconds: _model.agendaItem.timeInSeconds ??
                         AgendaItem.kDefaultTimeInSeconds,
@@ -241,7 +238,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         SizedBox(width: 8),
         HeightConstrainedText(
           agendaItemType.text,
-          style: AppTextStyle.body.copyWith(color: AppColor.darkerBlue),
+          style: AppTextStyle.body,
         ),
       ],
     );
@@ -264,7 +261,6 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         icon: Icon(
           Icons.keyboard_arrow_down,
           size: 24,
-          color: AppColor.darkBlue,
         ),
         selectedItemBuilder: (context) {
           return [
@@ -373,26 +369,18 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     return Row(
       children: [
         if (!isCardUnsaved)
-          FloatingActionButton(
+          IconButton(
             tooltip: 'Delete Agenda Item',
-            elevation: 0,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            backgroundColor: AppColor.gray6,
-            child: Icon(
+            icon: Icon(
               CupertinoIcons.delete,
-              color: AppColor.darkBlue,
             ),
             onPressed: () => _showDeleteDialog(),
           ),
         Spacer(),
-        FloatingActionButton(
+        IconButton(
           tooltip: 'Cancel',
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          backgroundColor: AppColor.gray6,
-          elevation: 0,
-          child: Icon(
+          icon: Icon(
             Icons.close,
-            color: AppColor.darkBlue,
           ),
           onPressed: () async {
             if (hasBeenEdited) {
@@ -409,21 +397,17 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           },
         ),
         SizedBox(width: 10),
-        FloatingActionButton(
+        IconButton(
           tooltip: 'Save Agenda Item',
-          elevation: 0,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          backgroundColor: hasBeenEdited || isCardUnsaved
-              ? AppColor.darkBlue
-              : AppColor.gray6,
+          style: ButtonStyle(
+            elevation: WidgetStateProperty.all(0),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
           onPressed: hasBeenEdited || isCardUnsaved
               ? () => alertOnError(context, () => _presenter.saveContent())
               : null,
-          child: Icon(
+          icon: Icon(
             Icons.check,
-            color: hasBeenEdited || isCardUnsaved
-                ? AppColor.white
-                : AppColor.gray4,
           ),
         ),
       ],
@@ -435,24 +419,18 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.max,
       children: [
-        FloatingActionButton(
+        IconButton(
           tooltip: 'Duplicate Item',
-          backgroundColor: AppColor.gray6,
-          elevation: 0,
-          child: Icon(
+          icon: Icon(
             Icons.copy,
-            color: AppColor.darkBlue,
           ),
           onPressed: () => _presenter.duplicateCard(),
         ),
         SizedBox(width: 10),
-        FloatingActionButton(
+        IconButton(
           tooltip: 'Edit Item',
-          elevation: 0,
-          backgroundColor: AppColor.gray6,
-          child: Icon(
+          icon: Icon(
             Icons.edit,
-            color: AppColor.darkBlue,
           ),
           onPressed: () => _presenter.toggleEditMode(),
         ),

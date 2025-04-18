@@ -1,5 +1,6 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
@@ -8,7 +9,7 @@ import 'package:client/features/community/features/create_community/presentation
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/features/create_community/data/providers/community_tag_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -16,7 +17,6 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
@@ -213,7 +213,8 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     }
     if (!ThemeUtils.isColorValid(dark)) {
       _community = _community.copyWith(
-        themeDarkColor: ThemeUtils.convertToHexString(AppColor.darkBlue),
+        themeDarkColor:
+            ThemeUtils.convertToHexString(context.theme.colorScheme.primary),
       );
     }
 
@@ -445,7 +446,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       stream: createCommunityTagProvider.communityTagsStream,
       builder: (context, _) => CreateTagWidget(
         titleText: 'Add Tags',
-        titleTextStyle: AppTextStyle.body.copyWith(fontSize: 24),
         showIcon: false,
         tags: Provider.of<CreateCommunityTagProvider>(context).tags,
         onAddTag: (title) => alertOnError(

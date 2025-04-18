@@ -1,9 +1,9 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 
 /// Supplementary model to be passed to [AppGenericStateWidget].
 class AppGenericStateData {
@@ -62,7 +62,8 @@ class AppGenericStateWidget extends StatelessWidget {
           ),
           Text(
             title,
-            style: AppTextStyle.headline4.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.headline4
+                .copyWith(color: context.theme.colorScheme.primary),
           ),
           SizedBox(height: 10),
           ProxiedImage(
@@ -76,7 +77,7 @@ class AppGenericStateWidget extends StatelessWidget {
             ActionButton(
               text: localAppGenerisStateData.text,
               textColor: AppColor.white,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               onPressed: localAppGenerisStateData.onTap,
             ),
           ],

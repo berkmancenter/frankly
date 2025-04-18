@@ -1,10 +1,10 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community.dart';
 
 class FeaturedToggleButton extends StatefulWidget {
@@ -75,10 +75,7 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
               child: FormBuilderSwitch(
                 title: Text(
                   widget.label,
-                  style: TextStyle(
-                    color: widget.textColor ?? AppColor.darkBlue,
-                    fontSize: 15,
-                  ),
+                  style: AppTextStyle.body.copyWith(color: widget.textColor),
                 ),
                 controlAffinity:
                     widget.controlAffinity ?? ListTileControlAffinity.trailing,
@@ -88,10 +85,16 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
                 activeTrackColor: Theme.of(context).colorScheme.secondary,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.darkBlue, width: 1),
+                    borderSide: BorderSide(
+                      color: context.theme.colorScheme.primary,
+                      width: 1,
+                    ),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.darkBlue, width: 1),
+                    borderSide: BorderSide(
+                      color: context.theme.colorScheme.primary,
+                      width: 1,
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),

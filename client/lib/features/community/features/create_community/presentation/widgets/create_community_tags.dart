@@ -3,7 +3,6 @@ import 'package:client/features/community/features/create_community/data/provide
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
 class CreateCommunityTags extends StatelessWidget {
@@ -24,7 +23,6 @@ class CreateCommunityTags extends StatelessWidget {
           stream: createCommunityTagProvider.communityTagsStream,
           builder: (context, _) => CreateTagWidget(
             titleText: 'Add Tags',
-            titleTextStyle: AppTextStyle.body.copyWith(fontSize: 24),
             showIcon: false,
             tags: Provider.of<CreateCommunityTagProvider>(context).tags,
             onAddTag: (title) => alertOnError(

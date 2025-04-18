@@ -1,6 +1,7 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:client/features/admin/presentation/views/members_tab.dart';
@@ -8,8 +9,8 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/user/presentation/create_profile_tag_presenter.dart';
 import 'package:client/features/user/presentation/profile_tab_controller.dart';
 import 'package:client/features/user/data/models/social_media_item_data.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/editable_image.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -24,7 +25,6 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -208,7 +208,7 @@ class _ProfileTabState extends State<_ProfileTab> {
         HeightConstrainedText(
           changeRecord.displayName ?? '',
           style: AppTextStyle.headline3.copyWith(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
         ),
         if (profileIsSelf || adminViewingUser) ..._buildEmail(userInfo.id),
@@ -284,7 +284,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                 color: AppColor.brightGreen,
                 text: 'Preview',
                 expand: false,
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
               ),
             ActionButton(
               height: 48,
@@ -376,7 +376,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                     HeightConstrainedText(
                       'Tags',
                       style: AppTextStyle.headline4.copyWith(
-                        color: AppColor.darkBlue,
+                        color: context.theme.colorScheme.primary,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -409,8 +409,6 @@ class _ProfileTabState extends State<_ProfileTab> {
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),
           onTapTag: (tag) =>
               alertOnError(context, () => createTagPresenter.onTapTag(tag)),
-          tagBackgroundColor: AppColor.brightGreen,
-          tagTextColor: AppColor.darkBlue,
         );
       },
     );
@@ -450,10 +448,11 @@ class _ProfileTabState extends State<_ProfileTab> {
   }
 
   Widget _buildFAIcon(
+    BuildContext context,
     IconData icon, {
     required void Function() onTap,
   }) {
-    const foregroundColor = AppColor.darkBlue;
+    final foregroundColor = context.theme.colorScheme.primary;
 
     final size = responsiveLayoutService.getDynamicSize(context, 35.0);
     final iconSize = responsiveLayoutService.getDynamicSize(context, 20.0);
@@ -487,21 +486,25 @@ class _ProfileTabState extends State<_ProfileTab> {
     switch (key) {
       case SocialMediaKey.facebook:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.facebookF,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.instagram:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.instagram,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.linkedin:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.linkedin,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.twitter:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.twitter,
           onTap: () => launch(item.url!),
         );

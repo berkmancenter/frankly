@@ -3,6 +3,7 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
@@ -12,14 +13,13 @@ import 'package:client/features/community/features/create_community/presentation
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/private_community_checkbox.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
@@ -267,7 +267,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
     return Align(
       alignment: Alignment.centerRight,
       child: ActionButton(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         textColor: AppColor.brightGreen,
         onPressed: _isNextPageAvailable
             ? () async {
@@ -430,7 +430,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           children: [
             ActionButton(
               text: 'Finish',
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.brightGreen,
               borderRadius: BorderRadius.circular(10),
               padding: const EdgeInsets.all(20),

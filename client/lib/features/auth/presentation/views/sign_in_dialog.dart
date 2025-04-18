@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
-import 'package:client/core/utils/platform_utils.dart';
 
 class SignInDialog extends StatefulWidget {
   final bool isNewUser;

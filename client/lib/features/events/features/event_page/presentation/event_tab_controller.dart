@@ -19,7 +19,7 @@ import 'package:client/features/events/features/event_page/presentation/views/pr
 import 'package:client/features/community/presentation/widgets/event_widget.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -28,7 +28,7 @@ import 'package:client/features/templates/presentation/widgets/template_cards.da
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -93,7 +93,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (eventTabsModel.enableUserSubmittedAgenda)
           CustomTabAndContent(
             tab: 'Suggest',
-            content: (_) => _buildSuggestSection(),
+            content: (_) => _buildSuggestSection(context),
             unreadCount: Provider.of<UserSubmittedAgendaProvider>(context)
                 .numUnreadSuggestions,
           ),
@@ -106,7 +106,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (eventTabsModel.enableMessages)
           CustomTabAndContent(
             tab: 'Announcements',
-            content: (_) => _buildAnnouncements(),
+            content: (context) => _buildAnnouncements(context),
           ),
         if (eventTabsModel.enableAdminPanel)
           CustomTabAndContent(
@@ -124,7 +124,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     );
   }
 
-  Widget _buildAnnouncements({bool compact = false}) {
+  Widget _buildAnnouncements(BuildContext context, {bool compact = false}) {
     return CustomStreamBuilder<List<EventMessage>>(
       entryFrom: '_EventPageState._buildGuide',
       stream: context.watch<EventTabsControllerState>().eventMessagesStream,
@@ -158,8 +158,9 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                   type: ActionButtonType.outline,
                   onPressed: _showSendMessageDialog,
                   text: '+ Add New',
-                  borderSide: BorderSide(color: AppColor.darkBlue),
-                  textColor: AppColor.darkBlue,
+                  borderSide:
+                      BorderSide(color: context.theme.colorScheme.primary),
+                  textColor: context.theme.colorScheme.primary,
                 ),
               ),
             ListView.builder(
@@ -213,7 +214,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     }
   }
 
-  Widget _buildAboutSection(context) {
+  Widget _buildAboutSection(BuildContext context) {
     final tabsController = Provider.of<EventTabsControllerState>(context);
     final hasAnnouncements = tabsController.announcementsCount > 1;
     final description = Provider.of<EventProvider>(context).event.description;
@@ -225,8 +226,10 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (description != null && description.isNotEmpty) ...[
           HeightConstrainedText(
             'Description',
-            style: AppTextStyle.headlineSmall
-                .copyWith(color: AppColor.darkBlue, fontSize: 16),
+            style: AppTextStyle.headlineSmall.copyWith(
+              color: context.theme.colorScheme.primary,
+              fontSize: 16,
+            ),
           ),
           HeightConstrainedText(
             description,
@@ -240,7 +243,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
               HeightConstrainedText(
                 'Announcements',
                 style: AppTextStyle.headlineSmall.copyWith(
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   fontSize: 16,
                 ),
               ),
@@ -251,20 +254,20 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                   child: HeightConstrainedText(
                     'See all',
                     style: AppTextStyle.bodyMedium
-                        .copyWith(color: AppColor.darkBlue),
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ),
             ],
           ),
           SizedBox(height: 10),
-          _buildAnnouncements(compact: true),
+          _buildAnnouncements(context, compact: true),
           SizedBox(height: 40),
         ],
         ...[
           HeightConstrainedText(
             'More Upcoming Events',
             style: AppTextStyle.headlineSmall.copyWith(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               fontSize: 16,
             ),
           ),
@@ -317,7 +320,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             HeightConstrainedText(
               'More from ${community.name}',
               style: AppTextStyle.headlineSmall.copyWith(
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 fontSize: 16,
               ),
             ),
@@ -430,7 +433,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     );
   }
 
-  Widget _buildSuggestSection() => LayoutBuilder(
+  Widget _buildSuggestSection(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           margin: const EdgeInsets.only(bottom: 10),
@@ -533,7 +536,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       return PrePostCardWidgetPage(
         prePostCardType: prePostCardType,
         prePostCard: eventCardData,
-        isWhiteBackground: true,
         event: event,
         onUpdate: (prePostCard) async {
           final Event updatedEvent;
@@ -581,7 +583,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     } else {
       return AddMoreButton(
         label: addNewTitle,
-        isWhiteBackground: true,
         onPressed: () async {
           final prePostCard = PrePostCard.newCard(prePostCardType);
           final Event updatedEvent;
@@ -649,7 +650,6 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     } else {
       return AddMoreButton(
         label: 'Add a prerequisite template',
-        isWhiteBackground: true,
         onPressed: () {
           eventTabsModelState.isNewPrerequisite = true;
         },
