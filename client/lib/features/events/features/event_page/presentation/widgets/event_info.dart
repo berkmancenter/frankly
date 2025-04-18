@@ -186,7 +186,7 @@ class _EventInfoState extends State<EventInfo> {
 
   String _getShareUrl() {
     final url = routerDelegate.currentConfiguration?.uri.toString();
-    final shareLink = '{$Environment.shareLinkUrl}$url';
+    final shareLink = '${Environment.shareLinkUrl}$url';
     return shareLink;
   }
 
