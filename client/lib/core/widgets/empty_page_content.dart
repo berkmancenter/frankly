@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class EmptyPageContent extends StatelessWidget {
@@ -27,21 +27,9 @@ class EmptyPageContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Color _getColor({bool subtitle = false}) {
-    if (isBackgroundDark) {
-      return AppColor.gray6;
-    } else if (isBackgroundPrimaryColor) {
-      return AppColor.gray1;
-    } else if (subtitle) {
-      return AppColor.gray3;
-    } else {
-      return AppColor.gray2;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final buttonColor = Theme.of(context).colorScheme.primary;
+    final buttonColor = context.theme.colorScheme.primary;
     final isFlat = buttonType == ActionButtonType.flat;
     return Container(
       height: 311,
@@ -50,7 +38,7 @@ class EmptyPageContent extends StatelessWidget {
       decoration: showContainer
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             )
           : null,
       child: Column(
@@ -63,7 +51,11 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(color: _getColor()),
+            style: AppTextStyle.headline4.copyWith(
+              color: isBackgroundDark
+                  ? context.theme.colorScheme.surface
+                  : context.theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 20),
           SizedBox(
@@ -71,8 +63,11 @@ class EmptyPageContent extends StatelessWidget {
             child: HeightConstrainedText(
               subtitleText ??
                   'When new ${type.name} are added, you\'ll see them here.',
-              style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: _getColor(subtitle: true)),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: isBackgroundDark
+                    ? context.theme.colorScheme.surface
+                    : context.theme.colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -80,8 +75,10 @@ class EmptyPageContent extends StatelessWidget {
           if (onButtonPress != null)
             ActionButton(
               text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body
-                  .copyWith(color: isFlat ? AppColor.white : buttonColor),
+              textStyle: AppTextStyle.body.copyWith(
+                color:
+                    isFlat ? context.theme.colorScheme.onPrimary : buttonColor,
+              ),
               color: isFlat ? buttonColor : null,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),

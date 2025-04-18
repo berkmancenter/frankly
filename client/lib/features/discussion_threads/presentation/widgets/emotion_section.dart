@@ -1,9 +1,8 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 
 /// Displays emotions (Emoji) section with the counter (total count of all emotions).
@@ -94,7 +93,8 @@ class EmotionSection extends StatelessWidget {
         SizedBox(width: 10),
         Text(
           '$emotionCount',
-          style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.bodyMedium
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
       ],
     );
@@ -154,7 +154,7 @@ class EmotionSection extends StatelessWidget {
                           borderRadius: borderRadius,
                           color: emotionType ==
                                   currentlySelectedEmotion?.emotionType
-                              ? AppColor.gray6
+                              ? context.theme.colorScheme.surface
                               : Colors.transparent,
                         ),
                         child: Padding(
@@ -190,7 +190,7 @@ class PopupMenuWidget<T> extends PopupMenuEntry<T> {
   }) : super(key: key);
 
   @override
-  _PopupMenuWidgetState createState() => _PopupMenuWidgetState();
+  PopupMenuWidgetState createState() => PopupMenuWidgetState();
 
   @override
   bool represents(T? value) {
@@ -201,7 +201,7 @@ class PopupMenuWidget<T> extends PopupMenuEntry<T> {
   double get height => throw UnimplementedError();
 }
 
-class _PopupMenuWidgetState extends State<PopupMenuWidget> {
+class PopupMenuWidgetState extends State<PopupMenuWidget> {
   @override
   Widget build(BuildContext context) {
     return widget.child;

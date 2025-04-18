@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/networking_status.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 void main() {
   group('NetworkStatusAlert', () {
@@ -83,11 +83,7 @@ void main() {
         find.descendant(
           of: find.byType(Row),
           matching: find.byWidgetPredicate(
-            (widget) =>
-                widget is Text &&
-                widget.data == 'Low Bandwidth' &&
-                widget.style ==
-                    AppTextStyle.subhead.copyWith(color: AppColor.redLightMode),
+            (widget) => widget is Text && widget.data == 'Low Bandwidth',
           ),
         ),
         findsOneWidget,
@@ -114,9 +110,7 @@ void main() {
               (widget) =>
                   widget is Text &&
                   widget.data ==
-                      'Try turning off your camera for a smoother experience' &&
-                  widget.style ==
-                      AppTextStyle.subhead.copyWith(color: AppColor.gray2),
+                      'Try turning off your camera for a smoother experience',
             ),
           ),
         ),

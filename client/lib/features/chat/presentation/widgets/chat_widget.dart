@@ -1,17 +1,17 @@
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
 import 'package:client/features/chat/presentation/widgets/message_display.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:provider/provider.dart';
@@ -140,7 +140,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
             onChanged: (_) => setState(() {}),
-            textStyle: body.copyWith(color: AppColor.black),
+            textStyle: body.copyWith(color: context.theme.colorScheme.primary),
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,
@@ -158,14 +158,16 @@ class _ChatWidgetState extends State<_ChatWidget> {
           borderRadius: BorderRadius.circular(50),
           controller: _sendController,
           onPressed: canSubmit ? _sendMessage : null,
-          color: canSubmit ? AppColor.darkBlue : AppColor.gray4,
+          color: canSubmit
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.onPrimaryContainer,
           child: Semantics(
             label: 'Submit Message Button',
             button: true,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ),
@@ -178,7 +180,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
       children: [
         Checkbox(
           fillColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
-          side: BorderSide(color: AppColor.white),
+          side: BorderSide(color: context.theme.colorScheme.onPrimary),
           value: _broadcast,
           onChanged: (value) => setState(() => _broadcast = !_broadcast),
         ),

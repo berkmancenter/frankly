@@ -1,11 +1,8 @@
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
-import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community_tag.dart';
 
 class TagFilterWidget extends StatelessWidget {
@@ -32,12 +29,9 @@ class TagFilterWidget extends StatelessWidget {
       child: Row(
         children: [
           if (tags.isNotEmpty) ...[
-            ProxiedImage(
-              null,
-              asset: AppAsset.kFliterIcon,
-            ),
+            Icon(Icons.tune),
             SizedBox(width: 10),
-            Text('filter'),
+            Text('filter', style: AppTextStyle.body),
           ],
           SizedBox(width: 20),
           Expanded(
@@ -65,16 +59,16 @@ class TagFilterWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: isSelectedDefinitionId(tagDefinitionId)
-                                  ? AppColor.darkBlue
-                                  : AppColor.white,
+                                  ? context.theme.colorScheme.primary
+                                  : context.theme.colorScheme.onPrimary,
                             ),
                             child: Center(
                               child: Text(
                                 '#${definition.title}',
                                 style: AppTextStyle.body.copyWith(
                                   color: isSelectedDefinitionId(tagDefinitionId)
-                                      ? AppColor.white
-                                      : AppColor.darkBlue,
+                                      ? context.theme.colorScheme.onPrimary
+                                      : context.theme.colorScheme.primary,
                                 ),
                               ),
                             ),

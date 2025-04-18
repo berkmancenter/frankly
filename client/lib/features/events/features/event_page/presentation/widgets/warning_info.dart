@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 class WarningInfo extends StatelessWidget {
   final Widget icon;
@@ -20,7 +20,7 @@ class WarningInfo extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: AppColor.pink,
+        color: context.theme.colorScheme.errorContainer,
       ),
       child: Center(
         child: Wrap(
@@ -34,7 +34,7 @@ class WarningInfo extends StatelessWidget {
                   text: TextSpan(
                     text: '$title  ',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColor.redLightMode,
+                          color: context.theme.colorScheme.error,
                           fontWeight: FontWeight.w700,
                         ),
                     children: [

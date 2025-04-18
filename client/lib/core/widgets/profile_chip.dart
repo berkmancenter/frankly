@@ -1,7 +1,7 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class ProfileChip extends StatelessWidget {
@@ -24,75 +24,68 @@ class ProfileChip extends StatelessWidget {
     this.showName = true,
   }) : super(key: key);
 
-  Widget _buildImageAndName() {
-    final notFound = imageUrl == null || (imageUrl?.trim().isEmpty ?? true);
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: imageHeight ?? 42,
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.white.withOpacity(0.2),
-              ),
-              padding: showBorder ? const EdgeInsets.all(2) : EdgeInsets.zero,
-              child: ClipOval(
-                child: notFound
-                    ? Container(
-                        alignment: Alignment.center,
-                        height: imageHeight ?? 80,
-                        width: imageHeight ?? 80,
-                        decoration: BoxDecoration(
-                          color: AppColor.darkBlue,
-                        ),
-                        child: Text(
-                          name.isNotEmpty ? name[0].toUpperCase() : '',
-                          style: AppTextStyle.body
-                              .copyWith(color: AppColor.brightGreen),
-                        ),
-                      )
-                    : ProxiedImage(
-                        imageUrl,
-                        height: imageHeight ?? 80,
-                        width: imageHeight ?? 80,
-                      ),
-              ),
-            ),
-          ),
-        ),
-        if (showName)
-          Flexible(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: HeightConstrainedText(
-                name,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: textStyle ??
-                    TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return onTap == null
-        ? _buildImageAndName()
-        : CustomInkWell(
-            onTap: onTap,
-            hoverColor: Colors.transparent,
-            child: _buildImageAndName(),
-          );
+    final notFound = imageUrl == null || (imageUrl?.trim().isEmpty ?? true);
+    return CustomInkWell(
+      onTap: onTap,
+      hoverColor: Colors.transparent,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: imageHeight ?? 42,
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.theme.colorScheme.surfaceContainer,
+                ),
+                padding: showBorder ? const EdgeInsets.all(2) : EdgeInsets.zero,
+                child: ClipOval(
+                  child: notFound
+                      ? Container(
+                          alignment: Alignment.center,
+                          height: imageHeight ?? 80,
+                          width: imageHeight ?? 80,
+                          decoration: BoxDecoration(
+                            color: context.theme.colorScheme.primary,
+                          ),
+                          child: Text(
+                            name.isNotEmpty ? name[0].toUpperCase() : '',
+                            style: AppTextStyle.body.copyWith(
+                                color: context.theme.colorScheme.onPrimary),
+                          ),
+                        )
+                      : ProxiedImage(
+                          imageUrl,
+                          height: imageHeight ?? 80,
+                          width: imageHeight ?? 80,
+                        ),
+                ),
+              ),
+            ),
+          ),
+          if (showName)
+            Flexible(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: HeightConstrainedText(
+                  name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: textStyle ??
+                      TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }

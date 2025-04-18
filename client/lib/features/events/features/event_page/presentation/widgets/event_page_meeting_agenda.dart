@@ -12,10 +12,10 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/views/waiting_room_widget.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       return Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -47,7 +47,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           children: [
             HeightConstrainedText(
               'Add breakouts',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.secondary),
             ),
             SizedBox(height: 10),
             BreakoutRoomDefinitionWidget(),
@@ -56,7 +57,6 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       );
     } else {
       return AddMoreButton(
-        isWhiteBackground: true,
         label: 'Define Breakouts (Optional)',
         onPressed: () => alertOnError(context, () async {
           final updatedEvent = event.copyWith(
@@ -99,7 +99,6 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       template: templateProvider.template,
       event: event,
       isLivestream: event.isLiveStream,
-      backgroundColor: AppColor.darkerBlue,
       agendaStartsCollapsed: true,
       child: Column(
         children: [
@@ -107,7 +106,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -115,7 +114,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 children: [
                   HeightConstrainedText(
                     'Waiting Room',
-                    style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                    style: AppTextStyle.subhead
+                        .copyWith(color: context.theme.colorScheme.secondary),
                   ),
                   SizedBox(height: 10),
                   WaitingRoomWidget(event: event),
@@ -129,7 +129,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
               !responsiveLayoutService.isMobile(context)) ...[
             Container(
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: const EdgeInsets.all(20),
@@ -138,7 +138,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 children: [
                   HeightConstrainedText(
                     'Livestream',
-                    style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                    style: AppTextStyle.subhead
+                        .copyWith(color: context.theme.colorScheme.secondary),
                   ),
                   SizedBox(height: 10),
                   LiveStreamInstructions(whiteBackground: true),
@@ -187,19 +188,24 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildAgendaTitle() {
     return HeightConstrainedText(
       'Agenda',
-      style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+      style: AppTextStyle.subhead
+          .copyWith(color: context.theme.colorScheme.secondary),
     );
   }
 
   Widget _buildClearAllButton() {
     return ActionButton(
       color: Colors.transparent,
-      textColor: AppColor.darkBlue,
+      textColor: context.theme.colorScheme.primary,
       onPressed: () => _showClearAgendaItemsDialog(),
       text: 'Clear all',
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
-        child: Icon(Icons.close, color: AppColor.darkBlue, size: 20),
+        child: Icon(
+          Icons.close,
+          color: context.theme.colorScheme.primary,
+          size: 20,
+        ),
       ),
       iconSide: ActionButtonIconSide.right,
       padding: EdgeInsets.zero,

@@ -11,7 +11,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FirestoreEventService {

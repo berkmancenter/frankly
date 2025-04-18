@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/services/firestore_meeting_guide_service.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/features/user/data/services/user_service.dart';

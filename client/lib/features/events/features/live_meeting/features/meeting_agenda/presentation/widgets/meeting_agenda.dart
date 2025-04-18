@@ -7,8 +7,8 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
@@ -22,7 +22,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    this.backgroundColor = AppColor.darkerBlue,
     this.labelColor,
     this.isLivestream = false,
     this.child,
@@ -34,7 +33,7 @@ class MeetingAgendaWrapper extends StatelessWidget {
   final Template? template;
   final bool allowButtonForUserSubmittedAgenda;
   final SubmitNotifier? saveNotifier;
-  final Color backgroundColor;
+
   final Color? labelColor;
   final bool isLivestream;
   final bool agendaStartsCollapsed;
@@ -50,7 +49,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
       allowButtonForUserSubmittedAgenda: allowButtonForUserSubmittedAgenda,
       agendaStartsCollapsed: agendaStartsCollapsed,
       saveNotifier: saveNotifier,
-      backgroundColor: backgroundColor,
       isLivestream: isLivestream,
       labelColor: labelColor,
     );
@@ -134,8 +132,9 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
             HeightConstrainedText(
               'There is no agenda for this event.',
               style: TextStyle(
-                color:
-                    Theme.of(context).isDark ? AppColor.white : AppColor.gray2,
+                color: Theme.of(context).isDark
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
           for (int i = 0; i < allAgendaItems.length; i++) ...[
@@ -147,7 +146,6 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
           if (canEditAgenda && !hasAnyUnsavedItems) ...[
             SizedBox(height: 20),
             AddMoreButton(
-              isWhiteBackground: true,
               label: 'Add agenda item',
               onPressed: () => agendaProvider.addNewUnsavedItem(),
             ),

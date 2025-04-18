@@ -1,13 +1,13 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -27,7 +27,6 @@ import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
@@ -92,11 +91,11 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                 : _buildOnboardingOverviewTooltip(onboardingStep),
           ),
         Container(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           alignment: Alignment.center,
           child: _buildHeaderContent(),
         ),
-        Divider(height: 1, color: AppColor.gray5),
+        Divider(height: 1, color: context.theme.colorScheme.onPrimaryContainer),
       ],
     );
   }
@@ -109,13 +108,12 @@ class _NavBarState extends State<NavBar> implements NavBarView {
   /// Create a semantically-wrapped button with label for the community membership button
   Widget _buildMembershipButton(Community currentCommunity) {
     return Semantics(
-        label:'Follow Community Button', 
-        identifier: 'follow_community_button',
-        button: true,
-        child: CommunityMembershipButton(
-          currentCommunity,
-          bgColor: Theme.of(context).colorScheme.primary,
-        ),
+      label: 'Follow Community Button',
+      identifier: 'follow_community_button',
+      button: true,
+      child: CommunityMembershipButton(
+        currentCommunity,
+      ),
     );
   }
 
@@ -176,7 +174,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
               child: HeightConstrainedText(
                 currentCommunity.name ?? Environment.appName,
                 maxLines: 2,
-                style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                style: AppTextStyle.subhead
+                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
             ),
           ),
@@ -219,7 +218,11 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Icon(Icons.menu, size: 34, color: AppColor.gray1),
+              child: Icon(
+                Icons.menu,
+                size: 34,
+                color: context.theme.colorScheme.secondary,
+              ),
             ),
           ),
         ),
@@ -363,7 +366,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(color: AppColor.black),
+            decoration: BoxDecoration(color: context.theme.colorScheme.primary),
             child: Column(
               children: [
                 Row(
@@ -373,14 +376,16 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                       child: StepProgressIndicator(
                         completedStepCount: completedStepCount,
                         totalSteps: totalSteps,
-                        backgroundColor: AppColor.gray3,
-                        progressColor: AppColor.brightGreen,
+                        backgroundColor:
+                            context.theme.colorScheme.surfaceContainer,
+                        progressColor: context.theme.colorScheme.primary,
                       ),
                     ),
                     SizedBox(width: 10),
                     Text(
                       '$completedStepCount/$totalSteps',
-                      style: AppTextStyle.body.copyWith(color: AppColor.white),
+                      style: AppTextStyle.body
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                     ),
                     SizedBox(width: 20),
                     AppClickableWidget(
@@ -410,8 +415,9 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                           SizedBox(width: 5),
                           Text(
                             onboardingStep.title,
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.white),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.onPrimary,
+                            ),
                           ),
                         ],
                       ),
@@ -419,13 +425,14 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                         children: [
                           Text(
                             onboardingStep.sectionTitle,
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.white),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.onPrimary,
+                            ),
                           ),
                           SizedBox(width: 4),
                           Icon(
                             Icons.arrow_forward_ios,
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                             size: 12,
                           ),
                         ],
@@ -446,7 +453,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                     right: totalWidth - settingsXPosition - 25,
                     child: CustomPaint(
                       size: Size(20, 10),
-                      painter: TrianglePainter(),
+                      painter: TrianglePainter(context),
                     ),
                   ),
                 ],
@@ -459,7 +466,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(color: AppColor.black),
+            decoration: BoxDecoration(color: context.theme.colorScheme.primary),
             child: ConstrainedBody(
               maxWidth: 1100,
               child: Row(
@@ -478,19 +485,21 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                         SizedBox(width: 5),
                         Text(
                           onboardingStep.title,
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: AppColor.white),
+                          style: AppTextStyle.bodyMedium.copyWith(
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                         SizedBox(width: 10),
                         Text(
                           onboardingStep.sectionTitle,
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: AppColor.white),
+                          style: AppTextStyle.bodyMedium.copyWith(
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                         SizedBox(width: 5),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: AppColor.white,
+                          color: context.theme.colorScheme.onPrimary,
                           size: 12,
                         ),
                       ],
@@ -502,14 +511,16 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                     child: StepProgressIndicator(
                       completedStepCount: completedStepCount,
                       totalSteps: totalSteps,
-                      backgroundColor: AppColor.gray3,
-                      progressColor: AppColor.brightGreen,
+                      backgroundColor:
+                          context.theme.colorScheme.surfaceContainer,
+                      progressColor: context.theme.colorScheme.primary,
                     ),
                   ),
                   SizedBox(width: 10),
                   Text(
                     '$completedStepCount/$totalSteps',
-                    style: AppTextStyle.body.copyWith(color: AppColor.white),
+                    style: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.onPrimary),
                   ),
                   SizedBox(width: 20),
                   AppClickableWidget(
@@ -528,7 +539,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           if (settingsXPosition != null)
             Container(
               // Making optical illusion that `triangle` is overlapping app bar.
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               height: 10,
               child: Stack(
                 children: [
@@ -537,7 +548,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
                     right: totalWidth - settingsXPosition - 25,
                     child: CustomPaint(
                       size: Size(20, 10),
-                      painter: TrianglePainter(),
+                      painter: TrianglePainter(context),
                     ),
                   ),
                 ],
@@ -599,14 +610,19 @@ class _SelectableNavigationButton extends StatelessWidget {
         decoration: isSelected
             ? BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: AppColor.darkBlue, width: 1.5),
+                  bottom: BorderSide(
+                    color: context.theme.colorScheme.primary,
+                    width: 1.5,
+                  ),
                 ),
               )
             : null,
         child: HeightConstrainedText(
           title,
           style: AppTextStyle.bodyMedium.copyWith(
-            color: isSelected ? AppColor.darkBlue : AppColor.gray3,
+            color: isSelected
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),
@@ -618,9 +634,9 @@ class _SelectableNavigationButton extends StatelessWidget {
 class TrianglePainter extends CustomPainter {
   final Paint painter;
 
-  TrianglePainter()
+  TrianglePainter(BuildContext context)
       : painter = Paint()
-          ..color = AppColor.black
+          ..color = context.theme.colorScheme.primary
           ..style = PaintingStyle.fill;
 
   @override

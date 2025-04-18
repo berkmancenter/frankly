@@ -5,12 +5,12 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/survey_answer_tile.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
@@ -87,8 +87,8 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
                 alignment: Alignment.centerLeft,
                 child: ActionButton(
                   text: 'Show Results',
-                  color: AppColor.darkBlue,
-                  textColor: AppColor.brightGreen,
+                  color: context.theme.colorScheme.primary,
+                  textColor: context.theme.colorScheme.onPrimary,
                   onPressed: currentVote != null
                       ? () => _presenter.showResults(currentCardAgendaItemId)
                       : null,
@@ -133,8 +133,9 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
                   color: Colors.transparent,
                   onPressed: () =>
                       _presenter.showQuestions(currentCardAgendaItemId),
-                  borderSide: BorderSide(color: AppColor.darkBlue),
-                  textColor: AppColor.darkBlue,
+                  borderSide:
+                      BorderSide(color: context.theme.colorScheme.primary),
+                  textColor: context.theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -156,7 +157,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
       child: Row(
         children: [
           Radio<String>(
-            activeColor: AppColor.darkBlue,
+            activeColor: context.theme.colorScheme.primary,
             value: value,
             groupValue: vote,
             onChanged: (newVote) async {
@@ -176,7 +177,8 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
           Expanded(
             child: HeightConstrainedText(
               value,
-              style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+              style: AppTextStyle.body
+                  .copyWith(color: context.theme.colorScheme.primary),
             ),
           ),
         ],

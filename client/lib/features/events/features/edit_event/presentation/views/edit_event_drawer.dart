@@ -1,5 +1,6 @@
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/events/features/edit_event/presentation/widgets/app_radio_list_tile.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
@@ -21,7 +22,6 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -35,10 +35,10 @@ class EditEventDrawer extends StatefulWidget {
   const EditEventDrawer({Key? key}) : super(key: key);
 
   @override
-  _EditEventDrawerState createState() => _EditEventDrawerState();
+  EditEventDrawerState createState() => EditEventDrawerState();
 }
 
-class _EditEventDrawerState extends State<EditEventDrawer>
+class EditEventDrawerState extends State<EditEventDrawer>
     implements EditEventView {
   final ScrollController _scrollController = ScrollController();
   late final EditEventModel _model;
@@ -58,7 +58,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: _buildBody(),
     );
   }
@@ -90,8 +90,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
             children: [
               Text(
                 'Edit event',
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall.copyWith(
+                    fontSize: 16, color: context.theme.colorScheme.primary),
               ),
               Semantics(
                 label: 'Close Edit',
@@ -187,7 +187,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         Spacer(),
         InkWell(
@@ -308,30 +309,31 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       hint: HeightConstrainedText(
         'Choose duration',
         style: AppTextStyle.bodySmall.copyWith(
-          color: AppColor.gray1,
+          color: context.theme.colorScheme.secondary,
         ),
       ),
       icon: Icon(
         CupertinoIcons.chevron_down,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
       ),
       iconSize: 20,
       elevation: 16,
       decoration: InputDecoration(
-        fillColor: AppColor.white,
+        fillColor: context.theme.colorScheme.surfaceContainerLowest,
         filled: true,
         label: HeightConstrainedText(
           'Length',
           style: AppTextStyle.bodySmall.copyWith(
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: AppColor.gray4),
+          borderSide:
+              BorderSide(color: context.theme.colorScheme.onPrimaryContainer),
         ),
       ),
-      iconEnabledColor: AppColor.darkBlue,
+      iconEnabledColor: context.theme.colorScheme.primary,
       onChanged: (value) {
         if (value != null) {
           _presenter.updateEventDuration(value);
@@ -347,7 +349,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
               alignment: Alignment.centerLeft,
               child: Text(
                 durationString(duration, readAsHuman: true),
-                style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
             ),
           ),
@@ -403,7 +406,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           type: ActionButtonType.outline,
-          textColor: AppColor.redLightMode,
+          textColor: context.theme.colorScheme.error,
           text: 'Cancel event',
           onPressed: () =>
               alertOnError(context, () => _presenter.cancelEvent()),

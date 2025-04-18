@@ -7,10 +7,10 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +23,7 @@ class MeetingRating extends StatefulWidget {
   }) {
     return showCustomDialog<void>(
       builder: (innerContext) => Dialog(
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: innerContext.theme.colorScheme.primary,
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ConstrainedBox(
@@ -50,15 +50,15 @@ class MeetingRating extends StatefulWidget {
                       onPressed: () => Navigator.of(innerContext).pop(),
                       text: 'No thanks',
                       color: Colors.transparent,
-                      textColor: AppColor.white,
+                      textColor: innerContext.theme.colorScheme.onPrimary,
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
                       sendingIndicatorAlign:
                           ActionButtonSendingIndicatorAlign.none,
                       text: 'NEXT',
-                      color: AppColor.brightGreen,
-                      textColor: AppColor.darkBlue,
+                      color: innerContext.theme.colorScheme.onPrimary,
+                      textColor: innerContext.theme.colorScheme.primary,
                     ),
                   ],
                 ),
@@ -109,10 +109,10 @@ class _MeetingRatingState extends State<MeetingRating> {
                 currentRating != null && value < currentRating
                     ? Icons.star
                     : Icons.star_outline,
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onPrimary,
               );
             },
-            unratedColor: AppColor.white.withOpacity(0.5),
+            unratedColor: context.theme.colorScheme.surfaceContainer,
             onRatingUpdate: (rating) => alertOnError(context, () async {
               setState(() => _currentRating = rating);
               final event = context.read<EventProvider>().event;
@@ -146,7 +146,7 @@ class _MeetingRatingState extends State<MeetingRating> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.close,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: 35,
           ),
         ),
@@ -172,7 +172,7 @@ class _MeetingRatingState extends State<MeetingRating> {
               'YOU LEFT THE EVENT',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -190,7 +190,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.headline1.copyWith(
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                       // Trying to keep from wrapping at the default dialog size due to:
                       // https://github.com/flutter/flutter/issues/89586
                       fontSize: 36,
@@ -205,7 +205,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),

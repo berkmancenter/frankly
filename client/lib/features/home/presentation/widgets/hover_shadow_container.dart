@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 /// A Widget that shows a box shadow underneath its child when hovered over
 class HoverShadowContainer extends StatefulWidget {
-  final Widget child;
-  final BorderRadiusGeometry? borderRadius;
-  final Color shadowColor;
-
   const HoverShadowContainer({
     required this.child,
     this.borderRadius,
-    this.shadowColor = AppColor.gray3,
+    this.shadowColor,
     Key? key,
   }) : super(key: key);
+
+  final Widget child;
+  final BorderRadiusGeometry? borderRadius;
+  final Color? shadowColor;
 
   @override
   _HoverShadowContainerState createState() => _HoverShadowContainerState();
@@ -29,7 +29,8 @@ class _HoverShadowContainerState extends State<HoverShadowContainer> {
   Widget build(BuildContext context) {
     final boxShadow = [
       BoxShadow(
-        color: widget.shadowColor,
+        color:
+            widget.shadowColor ?? context.theme.colorScheme.onPrimaryContainer,
         offset: Offset(1, 1),
         blurRadius: 10,
       ),

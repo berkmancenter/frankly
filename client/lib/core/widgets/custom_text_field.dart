@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:universal_html/js.dart' as universal_js;
 
 enum BorderType {
@@ -48,7 +48,6 @@ class CustomTextField extends StatefulWidget {
   final bool hideCounter;
   final void Function()? onTap;
   final bool obscureText;
-  final bool useDarkMode;
 
   /// Defines if `Optional` is present at the end of the line.
   final bool isOptional;
@@ -80,7 +79,7 @@ class CustomTextField extends StatefulWidget {
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
     this.borderRadius = 5,
-    this.backgroundColor = AppColor.white,
+    this.backgroundColor,
     this.focusNode,
     this.textFieldPadding,
     this.borderColor,
@@ -102,7 +101,6 @@ class CustomTextField extends StatefulWidget {
     this.hideCounter = false,
     this.onTap,
     this.obscureText = false,
-    this.useDarkMode = false,
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
@@ -137,10 +135,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     if (widget.borderType == BorderType.outline) {
       return OutlineInputBorder(
         borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
           width: 1.0,
         ),
         borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -148,10 +143,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     } else if (widget.borderType == BorderType.underline) {
       return UnderlineInputBorder(
         borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
           width: 1.0,
         ),
       );
@@ -162,28 +154,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   Color _getBorderColor({bool isError = false}) {
     return isError
-        ? AppColor.lightRed
+        ? context.theme.colorScheme.errorContainer
         : _focusNode.hasFocus
-            ? AppColor.accentBlue
-            : AppColor.gray4;
-  }
-
-  Color _getDarkModeBorderColor({bool isError = false}) {
-    return isError
-        ? AppColor.redDarkMode
-        : _focusNode.hasFocus
-            ? AppColor.accentBlueLight
-            : AppColor.gray5;
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.onPrimaryContainer;
   }
 
   TextStyle _buildLabelStyle() {
     return widget.labelStyle ??
         AppTextStyle.bodySmall.copyWith(
           color: _focusNode.hasFocus
-              ? (widget.useDarkMode
-                  ? AppColor.accentBlueLight
-                  : AppColor.accentBlue)
-              : (widget.useDarkMode ? AppColor.gray5 : AppColor.gray4),
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.onPrimaryContainer,
         );
   }
 
@@ -191,16 +173,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return widget.textStyle ??
         AppTextStyle.body.copyWith(
           color: isError
-              ? (widget.useDarkMode
-                  ? AppColor.redDarkMode
-                  : AppColor.redLightMode)
-              : (widget.useDarkMode ? AppColor.white : AppColor.gray2),
+              ? context.theme.colorScheme.error
+              : context.theme.colorScheme.onPrimaryContainer,
         );
   }
 
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
-        AppTextStyle.bodySmall.copyWith(color: AppColor.gray3);
+        AppTextStyle.bodySmall
+            .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
   }
 
   @override
@@ -210,7 +191,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Container(
         padding: widget.textFieldPadding,
         decoration: BoxDecoration(
-          color: widget.backgroundColor,
+          color: widget.backgroundColor ??
+              context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
         child: KeyboardListener(
@@ -257,10 +239,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
                 obscureText: widget.obscureText,
-                cursorColor: widget.cursorColor ??
-                    (widget.useDarkMode
-                        ? AppColor.accentBlueLight
-                        : AppColor.accentBlue),
+                cursorColor:
+                    widget.cursorColor ?? context.theme.colorScheme.primary,
                 autovalidateMode: widget.autovalidateMode,
                 maxLength: widget.maxLength,
                 buildCounter: (

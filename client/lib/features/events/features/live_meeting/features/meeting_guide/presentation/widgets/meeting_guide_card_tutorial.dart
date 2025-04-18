@@ -2,11 +2,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/raising_hand.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class MeetingGuideTutorial extends StatefulWidget {
@@ -79,7 +79,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             style: GoogleFonts.fingerPaint(
               fontSize: _getDynamicSize(18),
               fontWeight: FontWeight.normal,
-              color: AppColor.brightGreen,
+              color: context.theme.colorScheme.onPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -99,7 +99,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
   Widget _buildMainCard() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -111,7 +111,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
                 style: TextStyle(
                   fontSize: _getDynamicSize(24),
                   fontWeight: FontWeight.w700,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                 ),
               ),
               IgnorePointer(
@@ -129,7 +129,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
               vertical: _getDynamicSize(40),
               horizontal: _getDynamicSize(32),
             ),
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
             strokeWidth: 1,
             dashPattern: const [8, 4],
             child: Column(
@@ -139,7 +139,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
                   style: TextStyle(
                     fontSize: _getDynamicSize(24),
                     fontWeight: FontWeight.w700,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -149,7 +149,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
                   style: TextStyle(
                     fontSize: _getDynamicSize(16),
                     fontWeight: FontWeight.normal,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -174,7 +174,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
     const kEmptyProfileSize = 32.0;
 
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
       child: Column(
         children: [
@@ -205,7 +205,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             style: TextStyle(
               fontSize: _getDynamicSize(18),
               fontWeight: FontWeight.w700,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -215,7 +215,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             style: TextStyle(
               fontSize: _getDynamicSize(16),
               fontWeight: FontWeight.w400,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -226,8 +226,8 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
                 : MainAxisAlignment.end,
             children: [
               ActionButton(
-                color: AppColor.darkBlue,
-                textColor: AppColor.brightGreen,
+                color: context.theme.colorScheme.primary,
+                textColor: context.theme.colorScheme.onPrimary,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 text: 'Next',
                 onPressed: () => Navigator.pop(context),

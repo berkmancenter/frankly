@@ -4,7 +4,7 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/custom_date_picker.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 

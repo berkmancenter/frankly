@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -170,7 +170,8 @@ class _ReassignBreakoutRoomDialogState
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: AppColor.black.withOpacity(0.4),
+                            color: context
+                                .theme.colorScheme.scrim.withScrimOpacity,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           alignment: Alignment.center,
@@ -178,14 +179,18 @@ class _ReassignBreakoutRoomDialogState
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.add, size: 36, color: AppColor.white),
+                              Icon(
+                                Icons.add,
+                                size: 36,
+                                color: context.theme.colorScheme.onPrimary,
+                              ),
                               SizedBox(height: 6),
                               HeightConstrainedText(
                                 'Add Room $expectedNewRoomNum',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColor.white,
+                                  color: context.theme.colorScheme.onPrimary,
                                 ),
                               ),
                             ],
@@ -232,7 +237,7 @@ class _ReassignBreakoutRoomDialogState
             child: Text(
               'Reassign ${publicUserInfo?.displayName ?? 'User'}',
               style: TextStyle(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onPrimary,
                 fontSize: 16,
               ),
             ),
@@ -253,7 +258,7 @@ class _ReassignBreakoutRoomDialogState
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),

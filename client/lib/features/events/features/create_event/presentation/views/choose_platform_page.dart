@@ -1,15 +1,15 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/presentation/choose_platform_presenter.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +60,8 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
               for (var platform in allowedVideoPlatforms) ...[
                 CustomInkWell(
                   onTap: () => presenter.selectPlatform(platform),
-                  hoverColor: AppColor.gray3.withOpacity(0.1),
+                  hoverColor:
+                      context.theme.colorScheme.primaryFixed.withOpacity(0.1),
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 5),
                     leading: SizedBox(
@@ -77,21 +78,25 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                     ),
                     subtitle: HeightConstrainedText(
                       platform.platformKey.info.description,
-                      style: AppTextStyle.eyebrowSmall
-                          .copyWith(color: AppColor.gray4),
+                      style: AppTextStyle.eyebrowSmall.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                     trailing: Container(
                       padding: EdgeInsets.all(2),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(width: 1, color: AppColor.darkBlue),
+                        border: Border.all(
+                          width: 1,
+                          color: context.theme.colorScheme.primary,
+                        ),
                       ),
                       child: Icon(
                         Icons.circle,
                         size: 12,
                         color: presenter.isSelectedPlatform(platform)
-                            ? AppColor.darkBlue
+                            ? context.theme.colorScheme.primary
                             : Colors.transparent,
                       ),
                     ),
@@ -169,8 +174,8 @@ class LinkField extends StatelessWidget {
                   labelText: 'Paste a link',
                   labelStyle: AppTextStyle.bodySmall.copyWith(
                     color: isNullOrEmpty(error)
-                        ? AppColor.darkBlue
-                        : AppColor.redLightMode,
+                        ? context.theme.colorScheme.primary
+                        : context.theme.colorScheme.error,
                   ),
                   onEditingComplete: () => onSubmit(),
                   padding: EdgeInsets.zero,
@@ -194,15 +199,15 @@ class LinkField extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
-                              ? AppColor.darkBlue
-                              : AppColor.gray4,
+                              ? context.theme.colorScheme.primary
+                              : context.theme.colorScheme.onPrimaryContainer,
                         ),
                         child: Icon(
                           Icons.check,
                           size: 15,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
-                              ? AppColor.brightGreen
-                              : AppColor.gray1,
+                              ? context.theme.colorScheme.onPrimary
+                              : context.theme.colorScheme.secondary,
                         ),
                       ),
                     )
@@ -216,7 +221,9 @@ class LinkField extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.transparent,
-                          border: Border.all(color: AppColor.darkBlue),
+                          border: Border.all(
+                            color: context.theme.colorScheme.primary,
+                          ),
                         ),
                         child: Icon(
                           Icons.close,
