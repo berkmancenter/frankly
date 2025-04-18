@@ -1,13 +1,13 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/admin/data/services/stripe_client_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -83,7 +83,7 @@ class _DonateWidgetState extends State<DonateWidget> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.close,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: 35,
           ),
         ),
@@ -109,7 +109,7 @@ class _DonateWidgetState extends State<DonateWidget> {
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 18,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ),
@@ -131,7 +131,9 @@ class _DonateWidgetState extends State<DonateWidget> {
           child: HeightConstrainedText(
             '\$$dollars',
             style: TextStyle(
-              color: selected ? AppColor.darkBlue : AppColor.white,
+              color: selected
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onPrimary,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -156,7 +158,9 @@ class _DonateWidgetState extends State<DonateWidget> {
           child: HeightConstrainedText(
             'Other',
             style: TextStyle(
-              color: _isOtherSelected ? AppColor.darkBlue : AppColor.white,
+              color: _isOtherSelected
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onPrimary,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -196,7 +200,7 @@ class _DonateWidgetState extends State<DonateWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        border: Border.all(color: AppColor.white),
+        border: Border.all(color: context.theme.colorScheme.onPrimary),
       ),
       height: 50,
       child: ClipRRect(
@@ -205,13 +209,13 @@ class _DonateWidgetState extends State<DonateWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildDonationButton(10),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildDonationButton(25),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildDonationButton(50),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildDonationButton(100),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildOtherButton(),
           ],
         ),
@@ -238,7 +242,9 @@ class _DonateWidgetState extends State<DonateWidget> {
       color: enabled ? AppColor.brightGreen : AppColor.gray4,
       height: 55,
       textStyle: TextStyle(
-        color: enabled ? AppColor.darkBlue : AppColor.white,
+        color: enabled
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.onPrimary,
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
@@ -252,7 +258,7 @@ class _DonateWidgetState extends State<DonateWidget> {
       color: Colors.transparent,
       height: 55,
       textStyle: TextStyle(
-        color: AppColor.white,
+        color: context.theme.colorScheme.onPrimary,
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
@@ -266,7 +272,7 @@ class _DonateWidgetState extends State<DonateWidget> {
       child: Dialog(
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         child: Stack(
           children: [
             Container(
@@ -284,7 +290,7 @@ class _DonateWidgetState extends State<DonateWidget> {
                           widget.subHeader.toUpperCase(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
                           ),
@@ -296,7 +302,7 @@ class _DonateWidgetState extends State<DonateWidget> {
                       widget.headline,
                       textAlign: TextAlign.center,
                       style: AppTextStyle.headline1.copyWith(
-                        color: AppColor.white,
+                        color: context.theme.colorScheme.onPrimary,
                       ),
                     ),
                     SizedBox(height: 18),
@@ -305,7 +311,7 @@ class _DonateWidgetState extends State<DonateWidget> {
                           'If you enjoyed this event, support ${widget.community.name}.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: AppColor.white,
+                        color: context.theme.colorScheme.onPrimary,
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                       ),

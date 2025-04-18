@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class EmptyPageContent extends StatelessWidget {
@@ -27,9 +27,9 @@ class EmptyPageContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Color _getColor({bool subtitle = false}) {
+  Color _getColor(context, {bool subtitle = false}) {
     if (isBackgroundDark) {
-      return AppColor.gray6;
+      return context.theme.colorScheme.surface;
     } else if (isBackgroundPrimaryColor) {
       return AppColor.gray1;
     } else if (subtitle) {
@@ -41,7 +41,7 @@ class EmptyPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonColor = Theme.of(context).colorScheme.primary;
+    final buttonColor = context.theme.colorScheme.primary;
     final isFlat = buttonType == ActionButtonType.flat;
     return Container(
       height: 311,
@@ -50,7 +50,7 @@ class EmptyPageContent extends StatelessWidget {
       decoration: showContainer
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             )
           : null,
       child: Column(
@@ -63,7 +63,7 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(color: _getColor()),
+            style: AppTextStyle.headline4.copyWith(color: _getColor(context)),
           ),
           SizedBox(height: 20),
           SizedBox(
@@ -72,7 +72,7 @@ class EmptyPageContent extends StatelessWidget {
               subtitleText ??
                   'When new ${type.name} are added, you\'ll see them here.',
               style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: _getColor(subtitle: true)),
+                  .copyWith(color: _getColor(context, subtitle: true)),
               textAlign: TextAlign.center,
             ),
           ),
@@ -80,8 +80,10 @@ class EmptyPageContent extends StatelessWidget {
           if (onButtonPress != null)
             ActionButton(
               text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body
-                  .copyWith(color: isFlat ? AppColor.white : buttonColor),
+              textStyle: AppTextStyle.body.copyWith(
+                  color: isFlat
+                      ? context.theme.colorScheme.onPrimary
+                      : buttonColor),
               color: isFlat ? buttonColor : null,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),

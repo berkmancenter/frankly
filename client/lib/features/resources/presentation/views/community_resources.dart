@@ -14,7 +14,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/tag_filter_widget.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 

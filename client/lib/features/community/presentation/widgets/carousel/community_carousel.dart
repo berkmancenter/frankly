@@ -7,10 +7,9 @@ import 'package:client/features/community/presentation/widgets/carousel/carousel
 import 'package:client/features/community/presentation/widgets/carousel/carousel_tabs.dart';
 import 'package:client/features/community/presentation/widgets/carousel/drag_animator.dart';
 import 'package:client/features/community/presentation/widgets/carousel/image_carousel.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/templates/template.dart';

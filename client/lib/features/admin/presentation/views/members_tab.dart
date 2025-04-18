@@ -6,8 +6,7 @@ import 'package:csv/csv.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -19,7 +18,7 @@ import 'package:client/features/user/presentation/widgets/user_profile_chip.dart
 import 'package:client/app.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -42,8 +41,6 @@ extension StringExtension on String {
 const _adminStatusMap = <MembershipStatus, String>{
   MembershipStatus.mod: 'Moderator',
 };
-
-final blueBackground = AppColor.darkBlue.withOpacity(0.1);
 
 class MembersTab extends StatefulWidget {
   @override
@@ -170,7 +167,7 @@ class _MembersTabState extends State<MembersTab> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
               ),
               child: Row(
                 children: [
@@ -214,7 +211,9 @@ class _MembersTabState extends State<MembersTab> {
     return Container(
       key: Key(membership.userId),
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-      color: index.isEven ? blueBackground : Colors.white70,
+      color: index.isEven
+          ? context.theme.colorScheme.primary.withOpacity(0.1)
+          : Colors.white70,
       child: Wrap(
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -304,7 +303,9 @@ class _MembersTabState extends State<MembersTab> {
     return Container(
       key: Key(request.userId),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
-      color: index.isEven ? blueBackground : Colors.white70,
+      color: index.isEven
+          ? context.theme.colorScheme.primary.withOpacity(0.1)
+          : Colors.white70,
       child: Wrap(
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -435,7 +436,7 @@ class _MembersTabState extends State<MembersTab> {
         return Container(
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -497,7 +498,7 @@ class _MembersTabState extends State<MembersTab> {
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -515,10 +516,10 @@ class _MembersTabState extends State<MembersTab> {
                       onPressed: () => _downloadMembersData(membershipList),
                       borderRadius: BorderRadius.circular(15),
                       padding: EdgeInsets.zero,
-                      color: AppColor.darkBlue,
+                      color: context.theme.colorScheme.primary,
                       icon: Icon(
                         Icons.download,
-                        color: AppColor.white,
+                        color: context.theme.colorScheme.onPrimary,
                         size: 20,
                       ),
                     ),
@@ -813,7 +814,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
@@ -837,7 +838,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                   color: disableDropdown ? AppColor.gray4 : AppColor.black,
                 ),
                 underline: SizedBox.shrink(),
-                iconEnabledColor: AppColor.darkBlue,
+                iconEnabledColor: context.theme.colorScheme.primary,
                 onChanged: disableDropdown ? null : _updateMembership,
                 selectedItemBuilder: (BuildContext context) => [
                   if (widget.membership.status == MembershipStatus.owner)

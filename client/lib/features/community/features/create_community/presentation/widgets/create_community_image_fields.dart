@@ -4,7 +4,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class CreateCommunityImageFields extends StatelessWidget {
@@ -118,7 +118,7 @@ class CreateCommunityImageField extends StatelessWidget {
     );
   }
 
-  Widget _buildInkWellWidget() {
+  Widget _buildInkWellWidget(BuildContext context) {
     if (!showImage) {
       return CustomInkWell(
         onTap: onTap,
@@ -128,7 +128,7 @@ class CreateCommunityImageField extends StatelessWidget {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
             border: Border.all(
               color: AppColor.gray2,
@@ -171,7 +171,11 @@ class CreateCommunityImageField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Semantics(button: true, label: text, child: _buildInkWellWidget()),
+        Semantics(
+          button: true,
+          label: text,
+          child: _buildInkWellWidget(context),
+        ),
         SizedBox(width: 10),
         if (showImage) ...[
           Expanded(

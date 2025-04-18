@@ -31,13 +31,13 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/event_page/presentation/widgets/waiting_room.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -189,7 +189,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: isBottomSheetPresent && isRaisedHandVisible
           ? FloatingActionButton(
-              backgroundColor: AppColor.darkBlue,
+              backgroundColor: context.theme.colorScheme.primary,
               child: ProxiedImage(
                 null,
                 asset: AppAsset.raisedHand(),
@@ -217,7 +217,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: Container(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -398,7 +398,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       margin: const EdgeInsets.all(16),
       alignment: Alignment.center,
@@ -513,7 +513,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
           errorMessage: 'Something went wrong loading room. Please refresh!',
           loadingMessage: 'Connecting to room...',
-          textStyle: TextStyle(color: AppColor.white),
+          textStyle: TextStyle(color: context.theme.colorScheme.onPrimary),
           builder: (_, __) => Stack(
             children: [
               _buildMeeting(),
@@ -542,7 +542,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         SizedBox(width: 8),
                         Text(
                           'Recording',
-                          style: TextStyle(color: AppColor.white),
+                          style: TextStyle(
+                              color: context.theme.colorScheme.onPrimary),
                         ),
                         SizedBox(width: 26),
                       ],
@@ -714,7 +715,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -790,7 +791,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             width: 40,
                             height: 40,
                             child: FloatingActionButton(
-                              backgroundColor: AppColor.darkBlue,
+                              backgroundColor:
+                                  context.theme.colorScheme.primary,
                               child: ProxiedImage(
                                 null,
                                 asset: AppAsset.raisedHand(),
@@ -834,7 +836,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             width: 40,
                             height: 40,
                             child: FloatingActionButton(
-                              backgroundColor: AppColor.darkBlue,
+                              backgroundColor:
+                                  context.theme.colorScheme.primary,
                               child: ProxiedImage(
                                 null,
                                 asset: readyToAdvance
@@ -965,11 +968,11 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     final isAdmin = selectedTab == TabType.admin;
     final Color backgroundColor;
     if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
-      backgroundColor = AppColor.gray6;
+      backgroundColor = context.theme.colorScheme.surface;
     } else if (isAdmin) {
-      backgroundColor = AppColor.darkBlue;
+      backgroundColor = context.theme.colorScheme.primary;
     } else {
-      backgroundColor = AppColor.white;
+      backgroundColor = context.theme.colorScheme.surfaceContainerLowest;
     }
     return PointerInterceptor(
       child: Container(
@@ -1013,7 +1016,9 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.close,
-                      color: isAdmin ? AppColor.white : AppColor.gray2,
+                      color: isAdmin
+                          ? context.theme.colorScheme.onPrimary
+                          : AppColor.gray2,
                       size: 20,
                     ),
                   ),

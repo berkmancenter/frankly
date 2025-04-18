@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
@@ -64,7 +64,8 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Text(
               'Jump To Room',
-              style: TextStyle(color: AppColor.white, fontSize: 16),
+              style: TextStyle(
+                  color: context.theme.colorScheme.onPrimary, fontSize: 16),
             ),
           ),
         ),
@@ -78,7 +79,7 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),

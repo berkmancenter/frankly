@@ -12,7 +12,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -62,11 +62,11 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
             tabController.openTab(tabType);
           }
         },
-        hoverColor: AppColor.white.withOpacity(0.3),
+        hoverColor: context.theme.colorScheme.surfaceContainer,
         child: Container(
           color:
               Provider.of<EventTabsControllerState>(context).isTabOpen(tabType)
-                  ? AppColor.white.withOpacity(0.3)
+                  ? context.theme.colorScheme.surfaceContainer
                   : null,
           alignment: Alignment.center,
           child: Column(
@@ -189,7 +189,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
     final separator = Container(
       width: isMobile ? 1 : null,
       height: isMobile ? null : 1,
-      color: AppColor.white.withOpacity(0.5),
+      color: context.theme.colorScheme.surfaceContainer,
     );
     final children = [
       _buildCommunityProfilePic(),
@@ -215,7 +215,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       ),
     ];
     return Container(
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       width: isMobile ? null : _iconWidth,
       height: isMobile ? _iconWidth : null,
       child: isMobile

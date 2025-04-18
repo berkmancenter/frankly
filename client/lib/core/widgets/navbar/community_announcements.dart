@@ -5,7 +5,7 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
@@ -101,7 +101,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
                     padding: const EdgeInsets.all(12),
                     constraints:
                         BoxConstraints(maxHeight: halfSize ? 200 : 400),
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     child: Announcements.create(),
                   ),
                 ),

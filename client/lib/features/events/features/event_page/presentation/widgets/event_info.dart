@@ -14,7 +14,7 @@ import 'package:client/features/events/features/event_page/presentation/views/ev
 import 'package:client/features/events/features/edit_event/presentation/views/edit_event_drawer.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/calendar_menu_button.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/circle_icon_button.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_pop_up_menu_button.dart';
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
@@ -24,7 +24,7 @@ import 'package:client/features/templates/features/create_template/presentation/
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -38,7 +38,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -343,15 +343,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Edit event',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          Icons.edit_outlined,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: Icons.edit_outlined,
     );
   }
 
@@ -375,15 +367,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Event Settings',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          CupertinoIcons.gear_alt,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: CupertinoIcons.gear_alt,
     );
   }
 
@@ -478,7 +462,8 @@ class _EventInfoState extends State<EventInfo> {
         icon: CircleAvatar(
           radius: 12,
           backgroundColor: AppColor.redLightMode,
-          child: Icon(Icons.school_outlined, size: 20, color: AppColor.white),
+          child: Icon(Icons.school_outlined,
+              size: 20, color: context.theme.colorScheme.onPrimary),
         ),
         title: 'Prerequisite Required',
       );
@@ -574,7 +559,7 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -599,7 +584,7 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelParticipation,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -676,7 +661,7 @@ class _EventInfoState extends State<EventInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Checkbox(
-          activeColor: AppColor.darkBlue,
+          activeColor: context.theme.colorScheme.primary,
           checkColor: AppColor.brightGreen,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {
@@ -710,8 +695,8 @@ class _EventInfoState extends State<EventInfo> {
         url: _getShareUrl(),
         body: _getShareBody(),
         subject: 'Join my event on ${Environment.appName}!',
-        iconColor: Theme.of(context).colorScheme.primary,
-        iconBackgroundColor: AppColor.white,
+        iconColor: context.theme.colorScheme.primary,
+        iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         size: 40,
         iconSize: 20,
         wrapIcons: false,
@@ -746,7 +731,7 @@ class _EventInfoState extends State<EventInfo> {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         borderRadius: isMobile ? null : BorderRadius.circular(20),
         boxShadow: isMobile
             ? null
@@ -883,11 +868,7 @@ class _EventInfoState extends State<EventInfo> {
                         CircleIconButton(
                           onPressed: widget.onMessagePressed,
                           toolTipText: 'Message',
-                          icon: SizedBox(
-                            width: isMobile ? 30 : 20,
-                            height: isMobile ? 30 : 20,
-                            child: Icon(CupertinoIcons.paperplane),
-                          ),
+                          icon: CupertinoIcons.paperplane,
                         ),
                     ],
                   ),

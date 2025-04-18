@@ -12,11 +12,11 @@ import 'package:client/features/events/features/live_meeting/data/providers/live
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/fake_participants_dialog.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
+import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/core/utils/visible_exception.dart';
@@ -24,7 +24,7 @@ import 'package:client/config/environment.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -289,7 +289,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 'All rooms',
                 style: TextStyle(
                   color: _showOnlyAlertedRooms
-                      ? AppColor.white
+                      ? context.theme.colorScheme.onPrimary
                       : Theme.of(context).primaryColor,
                 ),
               ),
@@ -311,7 +311,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 'Alerts only',
                 style: TextStyle(
                   color: !_showOnlyAlertedRooms
-                      ? AppColor.white
+                      ? context.theme.colorScheme.onPrimary
                       : Theme.of(context).primaryColor,
                 ),
               ),
@@ -864,7 +864,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                     fontWeight: FontWeight.w400,
                     color: isCurrentRoom
                         ? Theme.of(context).primaryColor
-                        : AppColor.white,
+                        : context.theme.colorScheme.onPrimary,
                   ),
                 ),
                 SizedBox(height: 10),
@@ -904,7 +904,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                                 ? AppColor.darkRed
                                 : (isCurrentRoom
                                     ? Theme.of(context).primaryColor
-                                    : AppColor.white),
+                                    : context.theme.colorScheme.onPrimary),
                           ),
                         ),
                     ],
@@ -993,7 +993,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
           ActionButton(
             color: Colors.transparent,
             textColor: AppColor.brightGreen,
-            overlayColor: AppColor.white.withOpacity(0.3),
+            overlayColor: context.theme.colorScheme.surfaceContainer,
             sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
             onPressed: () => alertOnError(context, () async {
               final ReassignResult? newRoomAssignment =
@@ -1105,7 +1105,8 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                         ActionButton(
                           color: Colors.transparent,
                           textColor: AppColor.brightGreen,
-                          overlayColor: AppColor.white.withOpacity(0.3),
+                          overlayColor:
+                              context.theme.colorScheme.surfaceContainer,
                           onPressed: () async {
                             final reassignUser =
                                 provider.currentBreakoutRoomId ==
@@ -1132,9 +1133,11 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           color: needsHelp
                               ? AppColor.redDarkMode
                               : Colors.transparent,
-                          textColor:
-                              needsHelp ? AppColor.white : AppColor.brightGreen,
-                          overlayColor: AppColor.white.withOpacity(0.3),
+                          textColor: needsHelp
+                              ? context.theme.colorScheme.onPrimary
+                              : AppColor.brightGreen,
+                          overlayColor:
+                              context.theme.colorScheme.surfaceContainer,
                           text: 'Enter Room',
                         ),
                     ],

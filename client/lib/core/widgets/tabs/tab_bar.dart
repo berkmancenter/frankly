@@ -1,19 +1,17 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/tabs/tab_controller.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
 /// The widget that contains the list of selectable tab titles
 class CustomTabBar extends StatelessWidget {
   final EdgeInsets? padding;
-  final bool isWhiteBackground;
 
   const CustomTabBar({
     Key? key,
     this.padding,
-    this.isWhiteBackground = false,
     x,
   });
 
@@ -34,13 +32,10 @@ class CustomTabBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 12),
                 child: CustomInkWell(
                   hoverColor: Colors.transparent,
-                  onTap: !tabController.tabs[i].isGated
-                      ? () => tabController.currentTab = i
-                      : null,
+                  onTap: () => tabController.currentTab = i,
                   child: _CustomTab(
                     tab: tabController.tabs[i],
                     index: i,
-                    isWhiteBackground: isWhiteBackground,
                   ),
                 ),
               ),
@@ -53,14 +48,10 @@ class CustomTabBar extends StatelessWidget {
 class _CustomTab extends StatefulWidget {
   final CustomTabAndContent tab;
   final int index;
-  final int? unreadCount;
-  final bool isWhiteBackground;
 
   const _CustomTab({
     required this.tab,
     required this.index,
-    required this.isWhiteBackground,
-    this.unreadCount,
   });
 
   @override
@@ -70,108 +61,61 @@ class _CustomTab extends StatefulWidget {
 class _CustomTabState extends State<_CustomTab> {
   bool _hovered = false;
 
-  TextStyle get getTextStyle {
-    final style = _hovered && widget.isWhiteBackground
-        ? AppTextStyle.bodyMedium
-        : AppTextStyle.body;
-    return style.copyWith(color: currentColor);
-  }
-
-  bool get _bold => _hovered && widget.isWhiteBackground;
-
-  Color get currentColor {
-    final Color color;
-
-    if (isSelected) {
-      color = selectedColor;
-    } else if (widget.isWhiteBackground) {
-      color = AppColor.gray2.withOpacity(.75);
-    } else if (_hovered) {
-      color = AppColor.white;
-    } else {
-      color = AppColor.white.withOpacity(.75);
-    }
-
-    if (widget.tab.isGated) {
-      return color.withOpacity(.5);
-    } else {
-      return color;
-    }
-  }
-
   bool get isSelected {
     final controller = Provider.of<CustomTabControllerState>(context);
     return widget.index == controller.currentTab;
   }
 
-  Color get selectedColor =>
-      widget.isWhiteBackground ? AppColor.darkBlue : AppColor.brightGreen;
-
   @override
   Widget build(BuildContext context) {
-    final localUnreadCount = widget.unreadCount;
+    final shouldHighlight = isSelected || _hovered;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
-      child: ConstrainedBox(
+      child: Container(
         constraints: BoxConstraints(minWidth: 100),
-        child: IntrinsicWidth(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+        padding: EdgeInsets.only(bottom: shouldHighlight ? 6 : 8),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: shouldHighlight
+                  ? context.theme.colorScheme.primary
+                  : AppColor.textTertiary,
+              width: shouldHighlight ? 5 : 3,
+            ),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  SizedBox(width: 10),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
-                      if (widget.isWhiteBackground)
-                        HeightConstrainedText(
-                          widget.tab.tab.toUpperCase(),
-                          style: AppTextStyle.bodyMedium
-                              .copyWith(color: Colors.transparent),
-                        ),
-                      HeightConstrainedText(
-                        widget.tab.tab.toUpperCase(),
-                        style: getTextStyle,
-                      ),
-                    ],
+                  // Transparent bold text to take up the space of the hovered tab and avoid the widget resizing on hover
+                  HeightConstrainedText(
+                    widget.tab.tab.toUpperCase(),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: AppTextStyle.bodyMedium
+                        .copyWith(color: Colors.transparent),
                   ),
-                  if (localUnreadCount != null && localUnreadCount > 0) ...[
-                    SizedBox(width: 4),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.brightGreen,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      height: 25,
-                      width: 25,
-                      child: Text(
-                        widget.unreadCount.toString(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
+                  HeightConstrainedText(
+                    widget.tab.tab.toUpperCase(),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: AppTextStyle.bodyMedium.copyWith(
+                      color: shouldHighlight
+                          ? context.theme.colorScheme.primary
+                          : AppColor.textTertiary,
                     ),
-                  ],
-                  SizedBox(width: 10),
+                  ),
                 ],
               ),
-              SizedBox(height: _bold ? 7 : 8),
-              Container(
-                height: _bold ? 5 : 4,
-                color: currentColor,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

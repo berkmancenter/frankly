@@ -2,28 +2,15 @@ import 'dart:math';
 
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:data_models/utils/share_type.dart';
 
 class ShareSection extends StatefulWidget {
-  final String url;
-  final String? body;
-  final String? subject;
-  final bool wrapIcons;
-  final double buttonPadding;
-  final double? size;
-  final double? iconSize;
-  final Color iconColor;
-  final Color? iconBackgroundColor;
-  final void Function()? onItemTap;
-  final void Function(ShareType type)? shareCallback;
-
   const ShareSection({
     Key? key,
     required this.url,
@@ -33,11 +20,23 @@ class ShareSection extends StatefulWidget {
     this.buttonPadding = 10.0,
     this.size,
     this.iconSize,
-    this.iconColor = AppColor.darkBlue,
+    this.iconColor,
     this.iconBackgroundColor,
     this.onItemTap,
     this.shareCallback,
   }) : super(key: key);
+
+  final String url;
+  final String? body;
+  final String? subject;
+  final bool wrapIcons;
+  final double buttonPadding;
+  final double? size;
+  final double? iconSize;
+  final Color? iconColor;
+  final Color? iconBackgroundColor;
+  final void Function()? onItemTap;
+  final void Function(ShareType type)? shareCallback;
 
   @override
   State<ShareSection> createState() => _ShareSectionState();
@@ -147,7 +146,8 @@ class _ShareSectionState extends State<ShareSection> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: widget.iconBackgroundColor,
-            border: Border.all(color: widget.iconColor),
+            border: Border.all(
+                color: widget.iconColor ?? context.theme.colorScheme.primary),
           ),
           duration: kTabScrollDuration,
           child: Padding(
