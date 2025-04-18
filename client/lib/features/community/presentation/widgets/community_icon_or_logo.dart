@@ -9,12 +9,11 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 /// This widget either shows the app icon or a logo of the selected community, if one is selected.
 class CurrentCommunityIconOrLogo extends StatelessWidget {
-  static const kLightLogo = AppAsset.kLogoHorizontalLightPng;
-  static const kDarkLogo = AppAsset.kLogoHorizontalDarkPng;
 
   /// If true, this widget is a button that navigates either to the app's website or the community's landing page
   final bool withNav;
@@ -70,18 +69,35 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: isMobile ? 1 : 8),
       child: SizedBox(
-        height: 35,
-        // TODO Rebranding: Replace text with logo images
-        // child: CustomImage(null, asset: darkLogo ? kDarkLogo : kLightLogo),
+        height: isMobile ? 40 : 80,
         child: Row(
           children: [
-            Text(
-              Environment.appName,
-              style: AppTextStyle.headline2.copyWith(
-                color: darkLogo ? AppColor.black : AppColor.white,
-              ),
+            // App logo
+            Semantics(
+                label: 'Frankly Logo',
+                child: Image.asset(
+                        AppAsset.kLogoPng.path,
+                        width: 100,
+                        height: isMobile ? 40 : 80,
+                        fit: BoxFit.contain,
+                        ),
             ),
-            SizedBox(width: 8),
+            SizedBox(width: 10),
+            // TODO: I would prefer to use an SVG asset, but for some reason it looks terrible on web when loaded
+            // Fix the SVG logo issue?
+            /*    
+            SvgPicture.asset(
+              AppAsset.kLogoSvg.path, 
+              semanticsLabel: 'Frankly Logo',
+              width: 100,
+              height: isMobile ? 40 : 80,         
+              fit: BoxFit.contain,
+              placeholderBuilder: (BuildContext context) => Container(
+                  padding: const EdgeInsets.all(30.0),
+                  child: const CircularProgressIndicator(),),
+            ), 
+            */
+            SizedBox(width: 10),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
               decoration: BoxDecoration(

@@ -13,14 +13,14 @@
   <meta property="og:description" content="Enabling constructive dialogue." />
   <meta property="og:url" content="https://app.frankly.org/" />
   <meta property="og:image"
-    content="https://res.cloudinary.com/dh0vegjku/image/upload/v1725488218/frankly_assets/Frankly-Open-Graph_l1b9ui.png" />
+    content="https://res.cloudinary.com/dh0vegjku/image/upload/v1744144186/frankly_assets/open-graph.png" />
   <meta property="og:image:width" content="600" />
   <meta property="og:image:height" content="315" />
 
   <meta name="twitter:title" content="Frankly" />
   <meta name="twitter:description" content="Enabling constructive dialogue." />
   <meta name="twitter:image"
-    content="https://res.cloudinary.com/dh0vegjku/image/upload/v1725488218/frankly_assets/Frankly-Open-Graph_l1b9ui.png" />
+    content="https://res.cloudinary.com/dh0vegjku/image/upload/v1744144186/frankly_assets/open-graph.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- iOS meta tags & icons -->
@@ -30,12 +30,11 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/png" href="favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="icons/favicon.png" />
 
   <title>Frankly</title>
 
-  <meta name="google-signin-client_id"
-    content="__GOOGLE_ID__" />
+  <meta name="google-signin-client_id" content="__GOOGLE_ID__" />
 
   <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 
@@ -66,7 +65,6 @@
   <!--https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-functions.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
@@ -75,16 +73,22 @@
   <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
   <script src="./utils/app-utils.js"></script>
   <script src="./utils/hark.bundle.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/can-autoplay@3.0.0/build/can-autoplay.min.js"></script>
   <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
+
+  <!-- The following script tags are used to enable Stripe functionality.
+  To enable Stripe, uncomment this block and set kShowStripeFeatures to true in app.dart. -->
+  <!-- Stripe scripts -->
+  <!--   
+  <script src="https://js.stripe.com/v3/"></script>
 
   <script type="application/javascript">
     window.stripe = Stripe(
       "__STRIPE_KEY__"
     );
   </script>
+  -->
   <script src="./agora/iris-web-rtc.js"></script>
 
 
@@ -93,7 +97,7 @@
     window.platformVersion = '__VERSION__';
   </script>
   <script src="main.dart.js?version=__VERSION__" type="application/javascript"></script>
-  
+
   <script>
     if (window.location.hostname == 'localhost') {
       // needed to make the auth emulator work correctly
