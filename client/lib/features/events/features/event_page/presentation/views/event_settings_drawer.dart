@@ -1,15 +1,15 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
@@ -284,7 +284,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
               height: size,
               width: size,
@@ -302,7 +302,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
         if (isIndicatorShown) _buildIndicator(),
         HeightConstrainedText(
           text,
-          style: AppTextStyle.body.copyWith(color: AppColor.gray1),
+          style: AppTextStyle.body,
           maxLines: 2,
         ),
       ],

@@ -1,11 +1,10 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -47,7 +46,7 @@ class AudioVideoErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.darkBlue,
+      backgroundColor: context.theme.colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6),
       ),

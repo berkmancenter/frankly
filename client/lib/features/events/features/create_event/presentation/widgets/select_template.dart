@@ -1,12 +1,12 @@
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart' as dotted_border;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:client/features/templates/data/providers/select_template_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/custom_form_builder_choice_chips.dart';
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -61,8 +61,9 @@ class _SelectTemplateState extends State<SelectTemplate> {
     return CustomTextField(
       padding: EdgeInsets.zero,
       labelText: 'Search templates',
-      labelStyle: TextStyle(color: AppColor.darkBlue),
-      textStyle: TextStyle(color: AppColor.darkBlue, fontSize: 16),
+      labelStyle: TextStyle(color: context.theme.colorScheme.primary),
+      textStyle:
+          TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
       borderType: BorderType.outline,
       backgroundColor: AppColor.gray4.withOpacity(0.2),
       borderRadius: 10,
@@ -83,7 +84,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
         initialValue: const [],
         elevation: 0,
         padding: EdgeInsets.all(0),
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         selectedColor: AppColor.brightGreen,
         direction: Axis.horizontal,
         labelStyle: TextStyle(
@@ -98,41 +99,6 @@ class _SelectTemplateState extends State<SelectTemplate> {
         ],
         onChanged: (value) => provider.updateCategory(value),
         name: 'category_filter',
-      ),
-    );
-  }
-
-  Widget _buildAddNewTemplate() {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      width: 156,
-      height: 156,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: AppColor.brightGreen,
-        ),
-        onPressed: widget.onAddNew,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Padding(
-              padding: EdgeInsets.only(left: 5, top: 10, right: 5),
-              child: Icon(Icons.add, color: AppColor.darkBlue),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
-              child: HeightConstrainedText(
-                'Create a new template',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColor.darkBlue,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -172,7 +138,10 @@ class _SelectTemplateState extends State<SelectTemplate> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 children: [
-                  if (widget.onAddNew != null) _buildAddNewTemplate(),
+                  if (widget.onAddNew != null)
+                    _AddNewTemplateButton(
+                      onAddNew: widget.onAddNew,
+                    ),
                   for (final template in provider.displayTemplates)
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -218,6 +187,50 @@ class _SelectTemplateState extends State<SelectTemplate> {
   @override
   Widget build(BuildContext context) {
     return _buildTemplatesLoading();
+  }
+}
+
+class _AddNewTemplateButton extends StatelessWidget {
+  const _AddNewTemplateButton({
+    required this.onAddNew,
+  });
+
+  final void Function()? onAddNew;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      width: 156,
+      height: 156,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: AppColor.brightGreen,
+        ),
+        onPressed: onAddNew,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 5, top: 10, right: 5),
+              child: Icon(Icons.add, color: context.theme.colorScheme.primary),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
+              child: HeightConstrainedText(
+                'Create a new template',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.theme.colorScheme.primary,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

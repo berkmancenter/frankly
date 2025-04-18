@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/pre_post_card.dart';

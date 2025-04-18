@@ -18,14 +18,14 @@ import 'package:client/features/events/features/live_meeting/features/live_strea
 import 'package:client/features/events/features/event_page/presentation/widgets/waiting_room.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -117,7 +117,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       label: 'event-tabs-content',
       child: Container(
         width: 400,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -390,7 +390,7 @@ class _FloatingChatState extends State<FloatingChat> {
         position: _getPositionTransition(animation),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(

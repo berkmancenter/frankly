@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 // Single source of truth for our styles
 // https://flutter.dev/docs/development/ui/layout/building-adaptive-apps#single-source-of-truth-for-styling
 class AppColor {
+  /// Swatches.
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
   static const Color red200 = Color(0xFFF7C5C5);
@@ -18,7 +19,21 @@ class AppColor {
   static const Color gray700 = Color(0xFF404040);
   static const Color gray800 = Color(0xFF262626);
   static const Color gray900 = Color(0xFF171717);
-  static const Color darkBlue = Color(0xFF303B5F);
+
+  /// Designer-defined colors.
+  /// Text colors.
+  static const Color textPrimary = gray900;
+  static const Color textSecondary = gray700;
+  static const Color textTertiary = gray500;
+  static const Color textDisabled = gray300;
+
+  /// Component colors - Primary.
+  static const Color primaryPlainActiveBg = gray200;
+  static const Color primaryPlainColor = gray500;
+  static const Color primaryPlainDisabled = gray400;
+  static const Color primaryPlainHover = gray100;
+
+  /// Legacy colors.
   static const Color darkGreen = Color(0xFF4E7E61);
   static const Color brightGreen = Color(0xFF9BFBC2);
   static const Color lightGreen = Color(0xFFDEF5E7);

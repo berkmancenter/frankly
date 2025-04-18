@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 /// Accepts an animation controller that controls left-right movement of the carousel,
 /// and list of up to five image urls ordered according to their order on screen.

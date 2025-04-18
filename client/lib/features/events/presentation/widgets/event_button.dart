@@ -9,7 +9,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/events/presentation/widgets/participants_list.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 
@@ -35,34 +35,6 @@ class EventButton extends HookWidget {
       ),
     );
   }
-
-  Widget _buildCardContent() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HeightConstrainedText(
-            event.title ?? 'Scheduled event',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.headline4.copyWith(
-              color: AppColor.darkBlue,
-            ),
-          ),
-          SizedBox(height: 10.0),
-          if (_isLiveStream)
-            HeightConstrainedText(
-              'Livestream',
-              style: AppTextStyle.bodySmall.copyWith(
-                color: AppColor.gray3,
-              ),
-            ),
-          SizedBox(height: 10),
-          _ParticipantsList(
-            event: event,
-          ),
-        ],
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +76,33 @@ class EventButton extends HookWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _buildCardContent(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      event.title ?? 'Scheduled event',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.headline4.copyWith(
+                        color: context.theme.colorScheme.primary,
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    if (_isLiveStream)
+                      HeightConstrainedText(
+                        'Livestream',
+                        style: AppTextStyle.bodySmall.copyWith(
+                          color: AppColor.gray3,
+                        ),
+                      ),
+                    SizedBox(height: 10),
+                    _ParticipantsList(
+                      event: event,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

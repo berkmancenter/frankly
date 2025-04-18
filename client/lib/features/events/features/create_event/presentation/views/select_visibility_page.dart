@@ -1,10 +1,10 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/features/community/presentation/widgets/featured_toggle_button.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +54,7 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
                 isPublic: value == _VisibilityType.public,
               );
             },
-            activeColor: AppColor.darkBlue,
+            activeColor: context.theme.colorScheme.primary,
             separator: null,
             options: [
               for (final entry in _visibilityTypeDescriptionLookup.entries)
@@ -62,7 +62,10 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
                   value: entry.key,
                   child: HeightConstrainedText(
                     entry.value,
-                    style: TextStyle(color: AppColor.darkBlue, fontSize: 15),
+                    style: TextStyle(
+                      color: context.theme.colorScheme.primary,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
             ],
@@ -80,7 +83,7 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
               color: AppColor.white,
               borderRadius: BorderRadius.circular(12),
             ),
-            textColor: AppColor.darkBlue,
+            textColor: context.theme.colorScheme.primary,
             communityId: dialogModel.communityProvider.communityId,
             label:
                 'Feature on ${dialogModel.communityProvider.community.name} homepage',

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -17,7 +18,7 @@ import 'package:client/features/events/features/event_page/data/providers/templa
 import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -28,7 +29,6 @@ import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -86,10 +86,10 @@ class EventPage extends StatefulWidget {
   }
 
   @override
-  _EventPageState createState() => _EventPageState();
+  EventPageState createState() => EventPageState();
 }
 
-class _EventPageState extends State<EventPage> implements EventPageView {
+class EventPageState extends State<EventPage> implements EventPageView {
   EventProvider get _eventProvider => EventProvider.watch(context);
 
   Event get event => _eventProvider.event;
@@ -163,6 +163,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       joinResults = await _joinEvent(showConfirm: false);
       if (!joinResults.isJoined) return;
     }
+    if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
@@ -184,6 +185,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       positiveButtonText: 'Send',
     );
 
+    if (!mounted) return;
     if (message != null) {
       await alertOnError(context, () => _presenter.sendMessage(message));
     }
@@ -200,12 +202,13 @@ class _EventPageState extends State<EventPage> implements EventPageView {
           backgroundColor: AppColor.white,
           title: Text(
             'Are you sure you want to remove this message?',
-            style: AppTextStyle.headline3.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.headline3
+                .copyWith(color: context.theme.colorScheme.primary),
           ),
           actions: [
             ActionButton(
               text: 'No',
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.brightGreen,
               onPressed: () {
                 Navigator.pop(context);
@@ -213,10 +216,11 @@ class _EventPageState extends State<EventPage> implements EventPageView {
             ),
             ActionButton(
               text: 'Yes',
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               textColor: AppColor.brightGreen,
               onPressed: () => alertOnError(context, () async {
                 await _presenter.removeMessage(eventMessage);
+                if (!context.mounted) return;
                 Navigator.pop(context);
               }),
             ),
@@ -289,7 +293,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
         ],
         CustomTabBar(
           padding: EdgeInsets.zero,
-          isWhiteBackground: true,
         ),
         SizedBox(height: 16),
         CustomTabBarView(keepAlive: !responsiveLayoutService.isMobile(context)),
@@ -300,7 +303,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
 
   Widget _buildEventTabsWrappedGuide() {
     final eventProvider = EventProvider.watch(context);
-    final communityProvider = CommunityProvider.watch(context);
     final isInBreakouts =
         LiveMeetingProvider.watchOrNull(context)?.isInBreakout ?? false;
     final isParticipant = eventProvider.isParticipant;
@@ -434,7 +436,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
               onPressed: () => _presenter.hideEditTooltip(),
               icon: Icon(
                 Icons.close,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
             ),
           ],
@@ -446,7 +448,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   @override
   Widget build(BuildContext context) {
     final eventProvider = context.watch<EventProvider>();
-    final eventPermissions = context.watch<EventPermissionsProvider>();
 
     if (context.watch<EventPageProvider>().isEnteredMeeting) {
       final isInstant = context.watch<EventPageProvider>().isInstant;

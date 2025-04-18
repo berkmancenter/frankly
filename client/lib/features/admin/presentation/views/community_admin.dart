@@ -10,7 +10,6 @@ import 'package:client/features/admin/presentation/views/overview_tab.dart';
 import 'package:client/features/admin/presentation/views/settings_tab.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:client/core/widgets/tabs/tab_bar.dart';
@@ -86,7 +85,6 @@ class _CommunityAdminState extends State<CommunityAdmin>
               alignment: Alignment.bottomLeft,
               child: CustomTabBar(
                 padding: null,
-                isWhiteBackground: true,
               ),
             ),
           ],
