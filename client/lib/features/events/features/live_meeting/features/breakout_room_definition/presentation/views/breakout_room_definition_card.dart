@@ -12,8 +12,8 @@ import 'package:client/features/events/features/event_page/presentation/views/ca
 import 'package:client/features/events/features/event_page/presentation/widgets/circle_save_check_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/rounded_button.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';

@@ -6,7 +6,7 @@ import 'package:client/features/events/features/event_page/presentation/views/wa
 import 'package:client/features/events/features/event_page/data/models/waiting_room_widget_model.dart';
 import 'package:client/features/events/features/event_page/presentation/waiting_room_widget_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/media_item_section.dart';
 import 'package:client/styles/app_styles.dart';

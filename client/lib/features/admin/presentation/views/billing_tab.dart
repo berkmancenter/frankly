@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/admin/presentation/widgets/confirm_dialog_white.dart';
 import 'package:client/core/widgets/profile_chip.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
