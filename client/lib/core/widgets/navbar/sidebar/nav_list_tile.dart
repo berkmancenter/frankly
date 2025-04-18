@@ -144,7 +144,6 @@ class CommunitySidebarNavLinks extends StatelessWidget {
           child:
             CommunityMembershipButton(
               community,
-              bgColor: AppColor.darkBlue,
               minWidth: 315,
             ),
           ),
