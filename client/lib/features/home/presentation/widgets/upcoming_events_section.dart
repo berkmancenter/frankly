@@ -8,6 +8,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class UpcomingEventsSection extends StatefulWidget {
   const UpcomingEventsSection._();
@@ -47,7 +48,7 @@ class _UpcomingEventsSectionState extends State<UpcomingEventsSection> {
   Widget _buildTitle() => Align(
         alignment: Alignment.centerLeft,
         child: HeightConstrainedText(
-          'My Upcoming Events',
+          context.l10n.myUpcomingEvents,
           style: AppTextStyle.headline3.copyWith(fontSize: 22),
         ),
       );
@@ -64,7 +65,7 @@ class _UpcomingEventsSectionState extends State<UpcomingEventsSection> {
           children: [
             if (events!.isEmpty)
               Text(
-                "You haven't registered for any upcoming events.",
+                context.l10n.noUpcomingEventsMessage,
                 style: AppTextStyle.body,
               ),
             for (final event in events.take(eventsToShow)) ...[

@@ -7,6 +7,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LeaveRegularDialog extends StatefulWidget {
   final Community? community;
@@ -31,11 +32,10 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
     String content;
 
     if (widget.isMember) {
-      content =
-          'That’s the end of your agenda. You can hang out and finish up for as long as you’d like.';
+      content = context.l10n.meetingEndMessage;
     } else {
-      content =
-          'That’s the end of your agenda. You can hang out and finish up for as long as you’d like. Follow ${widget.community?.name} for more great events.';
+      content = context.l10n
+          .meetingEndWithFollowMessage(widget.community?.name ?? '');
     }
 
     return Container(

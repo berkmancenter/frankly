@@ -10,6 +10,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class HostingOption extends StatefulWidget {
   final Function(EventType?) selectedEventType;
@@ -50,18 +51,18 @@ class _HostingOptionState extends State<HostingOption> {
       builder: (context, caps) {
         List<_HostingOptionType> hostingTypes = [
           _HostingOptionType(
-            title: 'Hosted',
+            title: context.l10n.hosted,
             isGated: false,
             eventType: EventType.hosted,
           ),
           if (widget.isHostlessEnabled)
             _HostingOptionType(
-              title: 'Hostless',
+              title: context.l10n.hostless,
               isGated: !(caps?.hasLivestreams ?? false),
               eventType: EventType.hostless,
             ),
           _HostingOptionType(
-            title: 'Livestream',
+            title: context.l10n.livestream,
             isGated: !(caps?.hasLivestreams ?? false),
             eventType: EventType.livestream,
           ),

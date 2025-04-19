@@ -12,6 +12,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/community/community_tag_definition.dart';
@@ -148,7 +149,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
             Expanded(
               child: Semantics(
                 textField: true,
-                label: 'Tag',
+                label: context.l10n.tag,
                 child: TypeAheadFormField<CommunityTagDefinition>(
                   textFieldConfiguration: TextFieldConfiguration(
                     autofocus: true,
@@ -203,7 +204,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
               SizedBox(width: 10),
               Semantics(
                 button: true,
-                label: 'Submit Tag Button',
+                label: context.l10n.submitTagButton,
                 child: CustomInkWell(
                   boxShape: BoxShape.circle,
                   onTap: _hasValidInput

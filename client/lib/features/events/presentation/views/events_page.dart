@@ -19,6 +19,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage._();
@@ -111,7 +112,7 @@ class _EventsPageState extends State<EventsPage> {
     return TextField(
       decoration: InputDecoration(
         fillColor: AppColor.white,
-        hintText: 'Search events',
+        hintText: context.l10n.searchEvents,
         border: InputBorder.none,
       ),
       onChanged: context.read<EventsPageProvider>().onSearchChanged,

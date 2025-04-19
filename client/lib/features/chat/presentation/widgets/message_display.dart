@@ -17,6 +17,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MessageDisplay extends StatefulWidget {
   final ChatMessage message;
@@ -62,7 +63,7 @@ class MessageDisplayState extends State<MessageDisplay> {
           onEnter: (hover) => setState(() => _isHovered = true),
           onExit: (hover) => setState(() => _isHovered = false),
           child: Semantics(
-            label: 'Chat Message',
+            label: context.l10n.chatMessage,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               color: _isHovered ? AppColor.black.withOpacity(0.05) : null,
@@ -84,7 +85,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             SelectableText(
-                              semanticsLabel: 'Message from',
+                              semanticsLabel: context.l10n.messageFrom,
                               snapshot.data?.displayName ?? '...',
                               style: TextStyle(
                                 fontSize: 16,
@@ -95,7 +96,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                               ),
                             ),
                             SelectableText(
-                              semanticsLabel: 'Message time',
+                              semanticsLabel: context.l10n.messageTime,
                               ' $messageDate, $messageTime$messageTimeZone',
                               style: TextStyle(
                                 fontSize: 13,
@@ -150,7 +151,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                           // https://github.com/Cretezy/flutter_linkify/issues/59
                           // https://github.com/Cretezy/flutter_linkify/issues/54
                           Semantics(
-                            label: 'Message',
+                            label: context.l10n.chatMessage,
                             child: SelectableLinkify(
                               text: widget.message.message ?? '',
                               style: TextStyle(

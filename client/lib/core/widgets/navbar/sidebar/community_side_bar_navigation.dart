@@ -2,6 +2,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/styles/app_styles.dart';
@@ -62,7 +63,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         ),
         if (showLeaveCommunity)
          Semantics(
-          label: 'Sidebar Unfollow Button',
+          label: context.l10n.sidebarUnfollowButton,
           identifier: 'sidebar_unfollow_button',
           button: true,
           child: SideBarNavigationButton(

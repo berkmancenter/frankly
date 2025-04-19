@@ -30,6 +30,7 @@ import 'package:data_models/events/event.dart' as event;
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
 

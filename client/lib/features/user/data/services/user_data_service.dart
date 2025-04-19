@@ -12,7 +12,9 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class UserDataService with ChangeNotifier {
   String? _currentUserId;
@@ -206,7 +208,7 @@ class UserDataService with ChangeNotifier {
 
       if (!join) {
         final unsubscribe = await ConfirmDialog(
-          title: 'Unfollow',
+          title: appLocalizationService.getLocalization().unfollow,
           mainText:
               'Are you sure you want to unsubscribe from ${community.name}?',
           confirmText: 'Yes',

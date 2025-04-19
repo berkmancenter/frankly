@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class PrivateCommunityCheckbox extends StatelessWidget {
   final void Function(bool?) onUpdate;
@@ -27,7 +28,7 @@ class PrivateCommunityCheckbox extends StatelessWidget {
           child: FormBuilderCheckbox(
             name: 'is_private',
             title: HeightConstrainedText(
-              'Make this space private',
+              context.l10n.makeThisSpacePrivate,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             contentPadding: EdgeInsets.zero,

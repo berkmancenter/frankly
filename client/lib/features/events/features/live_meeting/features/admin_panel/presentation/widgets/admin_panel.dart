@@ -30,10 +30,11 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 final fakeWaitingRoomObject = BreakoutRoom(
   roomId: breakoutsWaitingRoomId,
-  roomName: 'Waiting Room',
+  roomName: appLocalizationService.getLocalization().waitingRoom,
   orderingPriority: -1,
   flagStatus: BreakoutRoomFlagStatus.unflagged,
   creatorId: 'fake',
@@ -151,7 +152,7 @@ class _AdminPanelState extends State<AdminPanel> {
         event: EventProvider.watch(context).event,
       ),
       pageSize: 40,
-      emptyBuilder: (_) => HeightConstrainedText('No one is here yet.'),
+      emptyBuilder: (_) => HeightConstrainedText(context.l10n.noOneIsHereYet),
       errorBuilder: (_, __, ___) => HeightConstrainedText(
         'Something went wrong loading participants. Please refreh.',
       ),
@@ -201,7 +202,7 @@ class _AdminPanelState extends State<AdminPanel> {
       if (!useMeetingProviderParticipants)
         Expanded(child: _buildPaginatedParticipants())
       else if (participantCount == 0)
-        Text('No one is here yet')
+        Text(context.l10n.noOneIsHereYet)
       else ...[
         ActionButton(
           expand: true,
@@ -346,7 +347,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 'Something went wrong loading breakout rooms. Please refresh',
               );
             } else if (snapshot.docs.isEmpty) {
-              return HeightConstrainedText('No rooms found.');
+              return HeightConstrainedText(context.l10n.noRoomsFound);
             }
 
             // if we reached the end of the currently obtained items, we try to
@@ -384,7 +385,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
     List<BreakoutRoom> rooms,
   ) {
     if (rooms.isEmpty) {
-      return HeightConstrainedText('No rooms need help.');
+      return HeightConstrainedText(context.l10n.noRoomsNeedHelp);
     }
     return GridView.builder(
       itemCount: rooms.length,
@@ -755,7 +756,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
   Widget build(BuildContext context) {
     final menuItems = _getMenuItems();
     return Semantics(
-      label: 'Participant Actions for user with ID ${widget.providerParticipant?.userId}',
+      label: context.l10n.participantActionsForUserWithId(widget.providerParticipant?.userId ?? ''),
       child: CustomInkWell(
         hoverColor: AppColor.black.withOpacity(0.1),
         onTap: () => _showMoreMenu(menuItems),
@@ -893,7 +894,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                           child: CustomLoadingIndicator(),
                         )
                       else if (participantsSnapshot.hasError)
-                        HeightConstrainedText('Error')
+                        HeightConstrainedText(context.l10n.error)
                       else
                         HeightConstrainedText(
                           '$participantCount people',
@@ -1024,7 +1025,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                   newRoomAssignment?.expectedNewRoom?.toString() !=
                       newBreakoutRoom.roomName) {
                 await ConfirmDialog(
-                  title: 'Participant Reassigned',
+                  title: context.l10n.participantReassigned,
                   mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
                   confirmText: 'Ok',
                 ).show(context: context);
@@ -1172,7 +1173,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               if (participantCount == 0)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: HeightConstrainedText('No one is here yet'),
+                  child: HeightConstrainedText(context.l10n.noOneIsHereYet),
                 )
               else
                 Expanded(

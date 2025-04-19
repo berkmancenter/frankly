@@ -4,6 +4,7 @@ import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:flutter/material.dart';
 import 'package:client/services.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 Future<T?> guardCommunityMember<T>(
   BuildContext context,
@@ -16,7 +17,7 @@ Future<T?> guardCommunityMember<T>(
     await userDataService.memberships.first;
     if (!userDataService.getMembership(communityId).isMember) {
       final joinCommunity = await ConfirmDialog(
-        title: 'Join ${community.name}?',
+        title: context.l10n.joinCommunity(community.name ?? ''),
         mainText:
             'You must be a member of this space to participate. Would you like to join?',
         confirmText: 'Yes, Join!',

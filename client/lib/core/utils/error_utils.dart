@@ -2,6 +2,7 @@ import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 
 import 'dart:async';
@@ -14,23 +15,23 @@ String sanitizeError(String error) {
       .trim();
 
   if (error.contains('An account already exists with the same email address')) {
-    return 'An account exists with the same email address but a different sign in method. Use Sign in with Email and click Forgot Password if you don’t know it. Or, Sign Up again using a different email.';
+    return appLocalizationService.getLocalization().accountExistsWithSameEmail;
   }
   if (error.contains('The password is invalid')) {
-    return 'Password is invalid. Click Forgot Password to reset it. Or, Sign Up again using a different email.';
+    return appLocalizationService.getLocalization().passwordInvalid;
   }
   if (error.contains('There is no user record')) {
-    return 'No account found. Try signing in using a different email address. Or, Sign Up using this one.';
+    return appLocalizationService.getLocalization().noAccountFound;
   }
   if (error
       .contains('The email address is already in use by another account')) {
-    return 'You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don’t know it. Or, Sign Up again using a different email.';
+    return appLocalizationService.getLocalization().emailAddressAlreadyInUse;
   }
   if (error.contains('Missing or insufficient permission')) {
-    return 'Sorry, you aren\'t authorized to do that.';
+    return appLocalizationService.getLocalization().notAuthorized;
   }
   if (error.trim().toLowerCase() == 'INTERNAL'.toLowerCase()) {
-    return 'Sorry, something went wrong.';
+    return appLocalizationService.getLocalization().somethingWentWrong;
   }
 
   return error;

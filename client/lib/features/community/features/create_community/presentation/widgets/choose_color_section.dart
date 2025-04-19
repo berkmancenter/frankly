@@ -13,6 +13,7 @@ import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
 /// either from a preset list of color combinations or by entering custom 6-digit color strings
@@ -329,13 +330,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           child: Column(
             children: [
               _buildChooseColorTextField(
-                label: 'Light Color HEX#',
+                label: context.l10n.lightColorHex,
                 onChanged: _changeLightColorTextField,
                 controller: _customLightColorController,
               ),
               _buildChooseColorTextField(
                 onChanged: _changeDarkColorTextField,
-                label: 'Dark Color HEX#',
+                label: context.l10n.darkColorHex,
                 controller: _customDarkColorController,
               ),
             ],

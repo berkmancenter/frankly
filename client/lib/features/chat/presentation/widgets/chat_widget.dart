@@ -15,6 +15,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class ChatWidget extends StatelessWidget {
   final String parentPath;
@@ -160,7 +161,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
           onPressed: canSubmit ? _sendMessage : null,
           color: canSubmit ? AppColor.darkBlue : AppColor.gray4,
           child: Semantics(
-            label: 'Submit Message Button',
+            label: context.l10n.submitMessageButton,
             button: true,
             child: Icon(
               CupertinoIcons.paperplane,
@@ -183,7 +184,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
           onChanged: (value) => setState(() => _broadcast = !_broadcast),
         ),
         Flexible(
-          child: HeightConstrainedText('Broadcast'),
+          child: HeightConstrainedText(context.l10n.broadcast),
         ),
       ],
     );

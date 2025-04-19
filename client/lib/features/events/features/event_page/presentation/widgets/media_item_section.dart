@@ -9,6 +9,7 @@ import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/media_item.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MediaItemSection extends StatelessWidget {
   final MediaItem? mediaItem;
@@ -119,7 +120,7 @@ class MediaItemSection extends StatelessWidget {
                 ),
                 onTap: () {
                   ConfirmDialog(
-                    title: 'Are you sure you want to delete media?',
+                    title: context.l10n.confirmDeleteMedia,
                     onConfirm: (_) {
                       Navigator.pop(context);
                       onDelete();

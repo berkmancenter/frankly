@@ -7,6 +7,7 @@ import 'package:client/features/events/features/live_meeting/data/services/cloud
 import 'package:get_it/get_it.dart';
 import 'package:client/core/data/services/analytics_service.dart';
 import 'package:client/core/data/services/clock_service.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/features/admin/data/services/firestore_agreements_service.dart';
 import 'package:client/features/announcements/data/services/firestore_announcements_service.dart';
 import 'package:client/features/admin/data/services/firestore_billing_subscriptions_service.dart';
@@ -114,6 +115,8 @@ DialogProvider get dialogProvider => services.get<DialogProvider>();
 
 AnalyticsService get analytics => services.get<AnalyticsService>();
 PaymentUtils get paymentUtils => services.get<PaymentUtils>();
+AppLocalizationService get appLocalizationService =>
+    services.get<AppLocalizationService>();
 
 /// This file initializes all of our "services" inside of GetIt. This is basically
 /// just a rudimentary way of doing dependency injection. If we write tests for
@@ -160,6 +163,7 @@ void createServices() {
   services.registerSingleton(MediaHelperService());
   services.registerSingleton(StripeClientService());
   services.registerSingleton(PaymentUtils());
+  services.registerSingleton(AppLocalizationService());
 }
 
 Future<void> initializeServices() async {

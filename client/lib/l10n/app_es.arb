@@ -1,0 +1,759 @@
+{
+  "@@locale": "es",
+  "aVIssues": "Problemas de A/V",
+  "about": "Acerca de",
+  "aboutUs": "Sobre Nosotros",
+  "accountExistsWithSameEmail": "Ya existe una cuenta con la misma dirección de email pero con un método de inicio de sesión diferente. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
+  "addACategory": "Agregar una categoría",
+  "addAPrerequisiteTemplate": "Agregar una plantilla de requisito previo",
+  "addAQuestion": "Agregar una pregunta",
+  "addActionLink": "Añadir enlace de acción",
+  "addAgendaItem": "Añadir elemento de agenda",
+  "addCategory": "Añadir una categoría",
+  "addComment": "Añadir comentario",
+  "addCommunityImages": "Añadir imágenes de comunidad",
+  "addNew": "+ Añadir nuevo",
+  "addOption": "Añadir opción",
+  "addPrerequisiteTemplate": "Añadir una plantilla de requisitos previos",
+  "addQuestion": "Añadir una pregunta",
+  "addSomethingHere": "Añadir algo aquí",
+  "admin": "Administrador",
+  "agreeAndContinue": "Aceptar y continuar",
+  "alreadyUserSignIn": "¿Ya eres usuario? Inicia sesión",
+  "anonymous": "Anónimo",
+  "appDescription": "Una plataforma para deliberaciones en línea",
+  "appNameHome": "{appName} - Inicio",
+  "@appNameHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appNameTermsOfService": "Términos de Servicio de {appName}",
+  "@appNameTermsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appNameTitle": "{appName}",
+  "@appNameTitle": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appNameUnsubscribe": "{appName} - Cancelar suscripción",
+  "@appNameUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appNameUserSettings": "{appName} - Configuración de usuario",
+  "@appNameUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appNameWelcome": "{appName} - Bienvenido",
+  "@appNameWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appTitle": "Frankly",
+  "appTitleHome": "{appName} - Inicio",
+  "@appTitleHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appTitleUnsubscribe": "{appName} - Cancelar suscripción",
+  "@appTitleUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appTitleUserSettings": "{appName} - Configuración de usuario",
+  "@appTitleUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "appTitleWelcome": "{appName} - Bienvenido",
+  "@appTitleWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "signIn": "Iniciar sesión",
+  "signUp": "Regístrate",
+  "signOut": "Cerrar sesión",
+  "areYouSureYouWantToDeleteMedia": "¿Estás seguro de que quieres eliminar este medio?",
+  "areYouSureYouWantToRefreshTheGuide": "¿Estás seguro de que quieres actualizar la guía?",
+  "aspectRatioClipped": "Relación de aspecto recortada",
+  "videoElement": "{label}-elemento-video",
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
+  "attendee": "Asistente",
+  "audioInputDevice": "Dispositivo de entrada de audio:",
+  "avIssues": "¿Problemas de audio/video?",
+  "avErrorDuplicateIdentity": "Ya estás conectado desde otro dispositivo o navegador.",
+  "avErrorNotFound": "Dispositivos de audio/video no encontrados.",
+  "avErrorMediaAccess": "No se puede acceder a los dispositivos multimedia.",
+  "avErrorPermissionRequired": "Se requiere permiso para usar dispositivos de audio/video.",
+  "avErrorDisconnected": "Dispositivos de audio/video desconectados.",
+  "avErrorConstraints": "Error de restricciones multimedia.",
+  "avErrorNetwork": "Error de red con conexión de audio/video.",
+  "avErrorNotReadable": "El dispositivo de audio/video no se puede leer o está ocupado.",
+  "awaitingResponses": "Esperando respuestas…",
+  "banned": "Prohibido",
+  "brandYourSpace": "Marcar tu espacio",
+  "broadcast": "Transmisión",
+  "buildCommunitySpace": "Construir tu espacio comunitario",
+  "buildYourCommunitySpace": "Construya su espacio de comunidad",
+  "byCategory": "Por categoría",
+  "bySigningInRegisteringOrUsing": "Al iniciar sesión, registrarse o usar {appName}, acepto estar sujeto a los ",
+  "@bySigningInRegisteringOrUsing": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "bySize": "Por tamaño",
+  "cancel": "Cancelar",
+  "cancelCurrentPlan": "¿Cancelar plan actual?",
+  "cancelEvent": "Cancelar evento",
+  "cancelParticipation": "Cancelar participación",
+  "cannotPlayVimeoVideo": "No se puede reproducir el video de Vimeo.",
+  "cannotPlayYouTubeVideo": "No se puede reproducir el video de YouTube",
+  "cannotPlayYoutubeVideo": "No se puede reproducir el video de YouTube.",
+  "changeLanguage": "Cambiar idioma",
+  "chat": "Chat",
+  "chatMessage": "Mensaje de chat",
+  "chatWithParticipants": "Chatear con participantes",
+  "clearAgenda": "¿Limpiar agenda?",
+  "close": "Cerrar",
+  "closeEdit": "Cerrar edición",
+  "confirm": "Confirmar",
+  "confirmDelete": "¿Está seguro de que desea eliminar?",
+  "confirmDeleteMedia": "¿Estás seguro de que quieres eliminar el medio?",
+  "confirmRefreshGuide": "¿Estás seguro de que quieres actualizar la guía?",
+  "contactEmail": "Correo de contacto",
+  "createAPost": "Crear un post",
+  "createAResource": "Crear un recurso",
+  "createATemplate": "Crear una plantilla",
+  "createAccount": "Crear una cuenta",
+  "createAnAnnouncement": "Crear un anuncio",
+  "createAnEvent": "Crear un evento",
+  "createEvent": "Crear evento",
+  "createYourSpace": "Crear tu espacio",
+  "currentParticipants": "Participantes\nactuales",
+  "darkColorHex": "Color oscuro HEX#",
+  "defineBreakoutsOptional": "Definir salas (Opcional)",
+  "deleteAgendaItem": "Eliminar el elemento de agenda {title}",
+  "deleteAgendaItemGeneral": "Eliminar elemento de agenda",
+  "roomNumber": "Número de sala",
+  "enterRoomNumber": "Ingrese el número de sala",
+  "view": "Ver",
+  "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
+  "thisUser": "este usuario",
+  "reassign": "Reasignar",
+  "fakeParticipantCount": "Recuento de participantes falsos",
+  "category": "Categoría",
+  "hideAgendaItem": "Ocultar elemento de agenda",
+  "start": "Iniciar",
+  "deleteAgendaItemName": "Eliminar {itemName} de la agenda",
+  "deleteComment": "Eliminar comentario",
+  "deleteOption": "Eliminar opción",
+  "deletePost": "Eliminar publicación",
+  "deletePrerequisiteTemplate": "Eliminar plantilla de requisitos previos",
+  "deleteTitleAgendaItem": "Eliminar $title elemento de agenda",
+  "downloadMembersData": "Descargar datos de miembros",
+  "duplicateItem": "Duplicar elemento",
+  "edit": "Editar",
+  "editImage": "Editar imagen",
+  "editItem": "Editar elemento",
+  "email": "Email",
+  "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
+  "endBreakoutRooms": "Finalizar salas de grupo",
+  "endTime": "Hora de finalización",
+  "enterHeadline": "Introducir título",
+  "enterImageTitle": "Introducir título de la imagen",
+  "enterQuestionWithNumber": "Ingrese la pregunta {number}",
+  "enterRoomNumber": "Ej: 2",
+  "enterVideoTitle": "Introducir título del vídeo",
+  "enterWaitingRoomText": "Introducir texto de sala de espera (opcional)",
+  "enterWaitingRoomTextOptional": "Ingrese el texto de la sala de espera (opcional)",
+  "enterWordCloudPrompt": "Introducir indicación para nube de palabras",
+  "error": "Error",
+  "errorLoadingCommunities": "Algo salió mal al cargar las comunidades. Por favor, actualice.",
+  "errorLoadingEmail": "Error al cargar el Email.",
+  "errorLoadingMemberships": "Algo salió mal al cargar las membresías. Por favor, actualice.",
+  "errorLoadingProfileInfo": "Hubo un error al cargar la información del perfil.",
+  "errorOccurred": "Se produjo un error",
+  "somethingWentWrong": "Algo salió mal",
+  "eventDescription": "Descripción del evento",
+  "eventDetails": "Detalles del evento",
+  "eventIsLocked": "Este evento está bloqueado",
+  "eventLocked": "Este evento está bloqueado",
+  "eventTabsContent": "contenido-pestañas-evento",
+  "eventTitle": "Título del evento",
+  "events": "Eventos",
+  "ex2": "Ej: 2",
+  "exTwo": "Ej: 2",
+  "facebookUrl": "URL de Facebook",
+  "facilitator": "Facilitador",
+  "filter": "filtrar",
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "getCustomColors": "Obtener colores personalizados",
+  "googleMeet": "Google Meet",
+  "hosted": "Con anfitrión",
+  "hostless": "Sin anfitrión",
+  "iAgreeToThe": "Acepto los ",
+  "imageUrlIsNotSet": "(URL de imagen no establecida.)",
+  "imageUrlNotSet": "(URL de imagen no establecida.)",
+  "instagramUrl": "URL de Instagram",
+  "instantMeeting": "Reunión instantánea",
+  "introductionContent": "_¡Preséntense! Cada uno toma un minuto para responder una de las siguientes preguntas._\n\n* ¿Qué has hecho recientemente que fue muy divertido?\n* ¿Quién es tu personaje de dibujos animados favorito y por qué?\n* ¿Qué es algo que deseas lograr antes de morir?\n* ¿Qué película NO te gustó?\n",
+  "introductions": "Introducciones",
+  "joinCommunity": "¿Unirse a {communityName}?",
+  "joinEvent": "Unirse al evento",
+  "kickOutUser": "¿Expulsar a {displayName}?",
+  "language": "Idioma",
+  "lightColorHex": "Color claro HEX#",
+  "linkedinUrl": "URL de LinkedIn",
+  "livestream": "Transmisión en vivo",
+  "locked": "Bloqueado",
+  "login": "Iniciar sesión",
+  "logout": "Cerrar sesión",
+  "loopVideo": "Repetir video",
+  "makeASuggestion": "Hacer una sugerencia",
+  "manageJoinRequests": "Administrar solicitudes de ingreso ({count})",
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "maps": "Mapas",
+  "matchingOptions": "Opciones de emparejamiento",
+  "matchingQuestions": "Preguntas de emparejamiento",
+  "maximum": "Máximo",
+  "meetingGuideCard": "tarjeta-guía-reunión",
+  "member": "Miembro",
+  "memberships": "membresías",
+  "message": "Mensaje",
+  "messageFrom": "Mensaje de",
+  "messageParticipants": "Enviar mensaje a participantes",
+  "messageTime": "Hora del mensaje",
+  "microsoftTeams": "Microsoft Teams",
+  "mins": "mins",
+  "miscellaneous": "Misceláneo",
+  "moderator": "Moderador",
+  "mustBeLoggedInToAccessThisSection": "Debe estar conectado para acceder a esta sección",
+  "myCustomEvent": "Mi evento personalizado",
+  "myEvents": "Mis eventos",
+  "myProfile": "Mi Perfil",
+  "myResponses": "Mis respuestas",
+  "myUpcomingEvents": "Mis próximos eventos",
+  "name": "Nombre",
+  "newAnnouncement": "Nuevo anuncio",
+  "newRoomNumber": "Número de sala nueva:",
+  "newSubscription": "Nueva Suscripción",
+  "newToApp": "¿Nuevo en {appName}?",
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "newUserRegister": "¿Nuevo usuario? Regístrate",
+  "next": "Siguiente",
+  "no": "No",
+  "noAccountFound": "No se encontró ninguna cuenta. Intente iniciar sesión con una dirección de email diferente. O regístrese con esta.",
+  "noAnnouncementsYet": "Aún no hay anuncios.",
+  "noCancel": "No, Cancelar",
+  "noDevicesFound": "No se encontraron dispositivos.",
+  "noEventsFound": "No se encontraron eventos.",
+  "noItems": "No hay {name}",
+  "noMatchingMembersFound": "No se encontraron miembros coincidentes.",
+  "noOneIsHereYet": "Nadie está aquí todavía.",
+  "noOneIsHereYet1": "Nadie está aquí todavía.",
+  "noPendingJoinRequests": "No hay solicitudes de ingreso pendientes",
+  "noRoomsFound": "No se encontraron salas.",
+  "noRoomsNeedHelp": "No hay salas que necesiten ayuda.",
+  "noUpcomingEventsMessage": "No te has registrado para ningún evento próximo.",
+  "notAuthorized": "Lo sentimos, no está autorizado para hacer eso.",
+  "notifyMeAboutNewAnnouncements": "Notificarme sobre nuevos anuncios",
+  "notifyMeAboutNewEvents": "Notificarme sobre nuevos eventos.",
+  "ofTotal": "de {count}",
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "optional": "Opcional",
+  "or": "O",
+  "owner": "Propietario",
+  "participantActions": "Acciones del participante",
+  "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
+  "@participantActionsForUserWithId": {
+    "description": "Etiqueta semántica para acciones del participante, con userId como parámetro.",
+    "placeholders": { "userId": { "type": "Object" } }
+  },
+  "participantReassigned": "Participante reasignado",
+  "participants": "Participantes",
+  "participantsLoadError": "Algo salió mal al cargar los participantes. Por favor, actualice.",
+  "password": "Contraseña",
+  "passwordInvalid": "La contraseña no es válida. Haga clic en Olvidé mi contraseña para restablecerla. O regístrese de nuevo con un email diferente.",
+  "passwordResetLinkSent": "Enlace de restablecimiento de contraseña enviado a {email}",
+  "pasteOrEnterAUrl": "Pegue o ingrese una URL",
+  "pasteOrEnterUrl": "Pega o ingresa una URL",
+  "people": "personas",
+  "person": "persona",
+  "pleaseEnterValidEmail": "Por favor, introduzca una dirección de email válida.",
+  "pleaseLogInOrSignUp": "Por favor, inicia sesión o regístrate.",
+  "postWasDeleted": "La publicación fue eliminada.",
+  "posts": "Publicaciones",
+  "prerequisiteRequired": "Requisito previo requerido",
+  "pressToPromote": "Presione para promover",
+  "primaryContent": "contenido-principal",
+  "profile": "Perfil",
+  "profileButton": "Botón de perfil",
+  "proposeToRemoveUser": "¿Proponer eliminar usuario?",
+  "questionGoesHere": "La pregunta va aquí",
+  "agendaPromptReady": "¡Su evento está listo para comenzar!",
+  "startEvent": "Iniciar Evento",
+  "agendaPromptWaiting": "Esperando a que el anfitrión inicie el evento...",
+  "noDevicesFound": "No se encontraron dispositivos",
+  "deleteOption": "Eliminar opción",
+  "suggestions": "Sugerencias",
+  "enterWordCloudPrompt": "Ingrese instrucción para la Nube de Palabras",
+  "enterCategoryNum": "Ingrese Categoría {number}",
+  "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
+  "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
+  "questionWithNumber": "Pregunta {number}",
+  "raiseHandJoinSpeakerQueue": "Levanta la mano para unirte a la cola de oradores",
+  "record": "Grabar",
+  "odometer": "Odómetro",
+  "previewAgenda": "Vista previa de la agenda",
+  "saveSettings": "Guardar configuración",
+  "restoreSettings": "Restaurar configuración predeterminada",
+  "devSettings": "Configuración para desarrolladores",
+  "changedFromDefault": "Cambiado del valor predeterminado",
+  "enterCategoryNum": "Ingrese Categoría {number}",
+  "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
+  "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
+  "raiseHandToJoin": "Levante la mano para unirse a la cola de oradores",
+  "raiseHandToJoinSpeakerQueue": "Levante la mano para unirse a la cola de oradores",
+  "raiseYourHandToJoinTheSpeakerQueue": "Levanta la mano para unirte a la cola de oradores",
+  "randomlyAssign": "Asignar Aleatoriamente",
+  "recentRooms": "Salas Recientes",
+  "refreshConnection": "Actualizar conexión",
+  "register": "Registrarse",
+  "removeParticipant": "Eliminar Participante",
+  "removeSuggestion": "Eliminar sugerencia",
+  "removedFromEvent": "Ha sido eliminado de este evento y no puede volver a unirse.",
+  "resources": "Recursos",
+  "roomsCountMayChange": "El número de salas puede cambiar si los participantes se desconectan.",
+  "save": "Guardar",
+  "saveAgendaItem": "Guardar elemento de agenda",
+  "search": "Buscar",
+  "searchEvents": "Buscar eventos",
+  "searchTemplates": "Buscar plantillas",
+  "sectionNotFilledYet": "Esta sección aún no se ha completado.",
+  "selectLanguage": "Seleccionar idioma",
+  "selectMaxParticipantCount": "Seleccionar número máximo de participantes",
+  "selectSpace": "Seleccionar espacio:",
+  "sendMessage": "Enviar mensaje",
+  "setPayeeAccountDetails": "Establecer los detalles de tu cuenta de beneficiario",
+  "setYourPayeeAccountDetails": "Establecer los detalles de su cuenta de pagos",
+  "settings": "Configuración",
+  "settingsFor": "Configuración para {communityName}",
+  "showAnnouncementsButton": "Botón mostrar anuncios",
+  "showOptions": "Mostrar opciones",
+  "showSidebarButton": "Mostrar Botón de Barra Lateral",
+  "sidebarUnfollowButton": "Botón de dejar de seguir barra lateral",
+  "sidebarFollowCommunityButton": "Botón de seguir comunidad barra lateral",
+  "followCommunityButton": "Botón seguir comunidad",
+  "franklyLogo": "Logo de Frankly",
+  "signIn": "Iniciar sesión",
+  "signInToApp": "Iniciar sesión en {appName}",
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "signInWithEmail": "Iniciar sesión con email",
+  "signInWithGoogle": "Iniciar sesión con Google",
+  "signOut": "Cerrar Sesión",
+  "signUpOrSignInToContinue": "Regístrate (o inicia sesión con una cuenta existente) para continuar.",
+  "signUpToGetStarted": "Regístrate para comenzar.",
+  "signUpWithEmail": "Registrarse con email",
+  "signUpWithGoogle": "Registrarse con Google",
+  "signup": "Registrarse",
+  "skipStripeAccountSetupForNow": "Omitir la configuración de la cuenta de Stripe por ahora.",
+  "smartMatch": "Coincidencia inteligente",
+  "smartMatchParticipants": "Emparejamiento Inteligente",
+  "socialFacebook": "Facebook",
+  "socialInstagram": "Instagram",
+  "socialLinkedIn": "LinkedIn",
+  "socialTwitter": "Twitter",
+  "somethingWentWrongTryAgain": "Algo salió mal. Por favor, inténtelo de nuevo.",
+  "sorryVimeoVideoLookupFailed": "Lo sentimos, la búsqueda del video de Vimeo falló.",
+  "sorryYoutubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
+  "spreadTheWord": "CORRE LA VOZ",
+  "startCommunity": "Iniciar una comunidad",
+  "startTime": "Hora de inicio",
+  "submitChatButton": "Botón enviar chat",
+  "submitMessageButton": "Botón enviar mensaje",
+  "submitTagButton": "Botón enviar etiqueta",
+  "suggest": "Sugerir",
+  "suggestAgendaItemHint": "Puede sugerir un elemento de agenda y todos pueden votar",
+  "suggestions": "Sugerencias",
+  "tag": "Etiqueta",
+  "tagline": "Lema",
+  "targetParticipantsPerRoom": "Participantes\nPor Sala",
+  "targetSize": "Tamaño objetivo",
+  "targetSizeQuestion": "¿Tamaño objetivo?",
+  "templates": "Plantillas",
+  "termsAgreementPrefix": "Al iniciar sesión, registrarme o usar {appName}, acepto estar sujeto a los ",
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "termsOfService": "Términos de servicio de {appName}",
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "textCopied": "¡Texto copiado!",
+  "thereWasAnErrorLoadingEventTemplates": "Hubo un error al cargar las plantillas de eventos.",
+  "thisEventIsLocked": "Este evento está bloqueado",
+  "thisUrlWasNotFound": "Esta URL no se encontró.",
+  "troubleshoot": "Solucionar problemas",
+  "tryAgain": "Por favor, inténtelo de nuevo",
+  "turnOnAudioVideo": "¿Activar audio/vídeo?",
+  "twitterUrl": "URL de Twitter",
+  "typeSomething": "Escribe algo",
+  "unfollow": "Dejar de seguir",
+  "uniqueUrlDisplayName": "Nombre de URL único (Opcional)",
+  "uniqueUrlDisplayNameOptional": "Nombre de URL único (Opcional)",
+  "upcomingEvents": "Próximos eventos",
+  "updateToPlan": "¿Actualizar a {name}?",
+  "urlParameter": "Parámetro URL",
+  "usersAreInBreakoutRooms": "Los usuarios están en salas de grupos.",
+  "videoElement": "{label}-elemento-video",
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
+  "videoInputDevice": "Dispositivo de entrada de vídeo:",
+  "vimeoVideoLookupFailed": "Lo sentimos, la búsqueda del video de Vimeo falló.",
+  "waitingRoom": "Sala de espera",
+  "welcome": "Bienvenido a Frankly",
+  "welcomeName": "Bienvenido, {name}",
+  "welcomeToApp": "Bienvenido a {appName}",
+  "@welcomeToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "whenNewItemsAdded": "Cuando se agreguen nuevos {name}, los verás aquí.",
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "whenYouUpgrade": "cuando actualice",
+  "wordCloud": "Nube de palabras",
+  "wordCloudPrompt": "Introduzca una palabra para la nube de palabras",
+  "wordCloudPromptRequired": "Por favor, introduzca una palabra para la nube de palabras",
+  "wordList": "Lista de palabras",
+  "refresh": "Actualizar",
+  "donate": "Donar",
+  "addAResource": "Añadir un recurso",
+  "createPost": "Crear publicación",
+  "notifications": "Notificaciones",
+  "billing": "Facturación",
+  "finish": "Finalizar",
+  "updateToPlan": "Actualizar al plan {name}",
+  "roleOwner": "Propietario",
+  "roleAdmin": "Administrador",
+  "roleModerator": "Moderador",
+  "roleFacilitator": "Facilitador",
+  "roleMember": "Miembro",
+  "roleAttendee": "Asistente",
+  "suggestionsWillShowUpHere": "Las sugerencias aparecerán aquí",
+  "upvoteDownvoteSuggestions": "Puede votar a favor y en contra de los elementos de agenda sugeridos para discutir",
+  "suggest": "Sugerir",
+  "remove": "Eliminar",
+  "enterWordCloudPromptHint": "Ingrese instrucción para la Nube de Palabras",
+  "wordCloudLabelText": "Instrucción para la Nube de Palabras",
+  "wordCloudParticipantsInfo": "Se pedirá a los participantes que respondan con una lista de palabras o frases cortas",
+  "removeSuggestion": "Eliminar Sugerencia",
+  "addRoom": "Añadir Sala",
+  "copiedToClipboard": "Copiado al portapapeles",
+  "bufferTimeDescription": "Aproximadamente {duration} de tiempo de espera antes de que comience el evento",
+  "playsAt": "Comienza a las {time}",
+  "introBeforeBreakouts": "Aproximadamente {duration} de introducción antes de las salas de grupos",
+  "bufferAndIntroTime": "Aproximadamente {buffer} de tiempo de espera y {intro} de introducción antes de las salas de grupos",
+  "kickOutUser": "¿Expulsar a {displayName}?",
+  "addToCalendar": "Añadir al calendario",
+  "googleCalendar": "Google Calendar",
+  "outlookCalendar": "Outlook Calendar",
+  "office365Calendar": "Office 365 Calendar",
+  "iCalCalendar": "iCal Calendar",
+  "refreshGuide": "Actualizar Guía",
+  "createTemplateFromEvent": "Crear Plantilla a partir del Evento",
+  "duplicateEvent": "Duplicar Evento",
+  "downloadMembersRegistrationData": "Descargar Datos de Registro de Miembros",
+  "downloadChatsAndSuggestions": "Descargar Chats y Sugerencias",
+  "participantCount": "{count} participantes",
+  "pasteOrEnterUrl": "Pegar o ingresar URL",
+  "tag": "Etiqueta",
+  "submitTagButton": "Enviar",
+  "yes": "Sí",
+  "yesDelete": "Sí, eliminar",
+  "you": "Tú",
+  "floatingChat": "Chat Flotante",
+  "youNeedToBeLoggedInToDoThis": "Necesita iniciar sesión para hacer esto",
+  "youWereRemovedFromThisEventAndCannotRejoin": "<MISSING: youWereRemovedFromThisEventAndCannotRejoin>",
+  "yourName": "Tu nombre",
+  "youtubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
+  "zoom": "Zoom",
+  "errorLoadingWordCloudResponses": "Error al cargar las respuestas de la nube de palabras",
+  "languageSelector": "Selector de idioma",
+  "lastSession": "Última sesión",
+  "prereqRequired": "Requisito previo necesario",
+  "previewVideo": "Vista previa del video",
+  "helpCenter": "Centro de Ayuda",
+  "privacyPolicy": "Política de Privacidad",
+  "@appNameTermsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@appTitleHome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@appTitleUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@appTitleUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@appTitleWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@aspectRatioClipped": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
+  "@bySigningInRegisteringOrUsing": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@deleteAgendaItem": {
+    "placeholders": {
+      "title": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterQuestionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@kickOutUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "Object"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "Object"
+      }
+    }
+  },
+  "@welcomeToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
+  "myCommunities": "Mis comunidades",
+  "youHaventJoinedAnyCommunities": "No te has unido a ninguna comunidad",
+  "logo": "Logotipo",
+  "background": "Fondo",
+  "makeThisSpacePrivate": "Hacer este espacio privado"
+}

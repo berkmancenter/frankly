@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:universal_html/js.dart' as universal_js;
 
 enum BorderType {
@@ -322,7 +323,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   child: Padding(
                     padding: _buildOptionalPadding(),
                     child: Text(
-                      'Optional',
+                      context.l10n.optional,
                       style: _buildOptionalTextStyle(),
                     ),
                   ),

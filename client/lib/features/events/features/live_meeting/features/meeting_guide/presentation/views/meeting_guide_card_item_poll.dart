@@ -14,6 +14,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'meeting_guide_card_item_poll_contract.dart';
 import '../../data/models/meeting_guide_card_item_poll_model.dart';
@@ -115,7 +116,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (answers.isEmpty)
-                HeightConstrainedText('Awaiting responses…')
+                HeightConstrainedText(context.l10n.awaitingResponses)
               else ...[
                 for (final answer in answers)
                   SurveyAnswerTile(
