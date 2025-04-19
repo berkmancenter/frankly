@@ -20,12 +20,11 @@ import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 List<AgendaItem> defaultAgendaItems(String communityId) {
-  final l10n = appLocalizationService.getLocalization();
   return <AgendaItem>[
     AgendaItem(
       id: 'default-intro-0',
-      title: l10n.introductions,
-      content: l10n.introductionContent,
+      title: 'Introductions',
+      content: 'Welcome to the meeting!',
     ),
   ];
 }
