@@ -127,7 +127,7 @@ class _ReassignBreakoutRoomDialogState
                       '',
               descending: true,
               limit: hasWaitingRoom ? 4 : 5,
-            ) as BehaviorSubjectWrapper<List<BreakoutRoom>>,
+            ),
             height: 100,
             builder: (context, allRooms) {
               final fakeWaitingRoomObject = BreakoutRoom(
