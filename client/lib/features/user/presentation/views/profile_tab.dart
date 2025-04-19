@@ -292,7 +292,10 @@ class _ProfileTabState extends State<_ProfileTab> {
               borderRadius: BorderRadius.circular(10),
               onPressed: controller.changeKeys.isNotEmpty ||
                       createTagPresenter.unsavedTags.isNotEmpty
-                  ? () => alertOnError(context, () => _saveChanges())
+                  ? () async {
+                      if (!mounted) return;
+                      await alertOnError(context, () => _saveChanges());
+                    }
                   : null,
               color: Theme.of(context).primaryColor,
               text: 'Update Profile',
@@ -310,9 +313,12 @@ class _ProfileTabState extends State<_ProfileTab> {
   Future<void> _saveChanges() async {
     final controller = context.read<ProfileTabController>();
     final createTagPresenter = context.read<CreateProfileTagPresenter>();
-
+    
     await controller.submitPressed();
     await createTagPresenter.submit();
+    
+    if (!mounted) return;
+    
     showRegularToast(
       context,
       'Profile updated',
@@ -405,6 +411,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           tags: tags,
           onAddTag: (text) async {
             await alertOnError(context, () => createTagPresenter.addTag(text));
+            if (!mounted) return;
             context.read<AppDrawerProvider>().setUnsavedChanges(true);
           },
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),
@@ -514,6 +521,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     super.initState();
     context.read<AppDrawerProvider>().setOnSaveChanges(
       onSaveChanges: () async {
+        if (!mounted) return;
         await alertOnError(context, () => _saveChanges());
       },
     );
