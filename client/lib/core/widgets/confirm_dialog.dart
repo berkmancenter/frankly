@@ -163,21 +163,24 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ActionButton(
-                      height: 55,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      minWidth: 100,
-                      color: Colors.transparent,
-                      text: widget._getCancelText(context),
-                      textStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: textColor,
-                      ),
-                      onPressed: onCancel != null
-                          ? () => onCancel(context)
-                          : () => Navigator.of(context).pop(false),
-                    ),
+                    if (!isNullOrEmpty(widget.cancelText))
+                      ActionButton(
+                        height: 55,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        minWidth: 100,
+                        color: Colors.transparent,
+                        text: widget.cancelText,
+                        textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: textColor,
+                        ),
+                        onPressed: onCancel != null
+                            ? () => onCancel(context)
+                            : () => Navigator.of(context).pop(false),
+                      )
+                    else
+                      SizedBox.shrink(),
                     ActionButton(
                       key: ConfirmDialog.confirmButtonKey,
                       height: 55,
