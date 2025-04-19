@@ -101,7 +101,7 @@ class _TemplatePageState extends State<TemplatePage>
             template: template.copyWith(prerequisiteTemplateId: prerequisiteId),
             keys: [Template.fieldPrerequisiteTemplate],
           );
-          if (!mounted) return;
+
           showRegularToast(
             context,
             'Prerequisite saved',
