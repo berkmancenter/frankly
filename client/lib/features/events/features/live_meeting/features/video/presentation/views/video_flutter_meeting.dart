@@ -223,7 +223,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
 
   Widget _buildMeetingGuideCard() {
     return GlobalKeyedSubtree(
-      label: context.l10n.meetingGuideCard,
+      label: 'meeting-guide-card',
       child: MeetingGuideCard(
         onMinimizeCard: () => alertOnError(
           context,
