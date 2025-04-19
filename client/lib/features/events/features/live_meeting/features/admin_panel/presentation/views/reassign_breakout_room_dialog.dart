@@ -129,17 +129,10 @@ class _ReassignBreakoutRoomDialogState
               limit: hasWaitingRoom ? 4 : 5,
             ),
             height: 100,
-            builder: (context, allRooms) {
-              final fakeWaitingRoomObject = BreakoutRoom(
-                roomId: breakoutsWaitingRoomId,
-                roomName: breakoutsWaitingRoomId,
-                orderingPriority: 0,
-                creatorId: '',
-              );
-
+            builder: (context, breakoutRooms) {
               final rooms = [
                 if (hasWaitingRoom) fakeWaitingRoomObject,
-                ...(allRooms ?? [])
+                ...(breakoutRooms ?? [])
                     .reversed
                     .where((r) => r.roomId != breakoutsWaitingRoomId)
                     .toList(),
@@ -154,7 +147,7 @@ class _ReassignBreakoutRoomDialogState
                     itemCount: rooms.length + 1,
                     itemBuilder: (context, index) {
                       if (index < rooms.length) {
-                        final room = rooms[index] as BreakoutRoom;
+                        final room = rooms[index];
                         final roomNumResult =
                             room.roomId == breakoutsWaitingRoomId
                                 ? breakoutsWaitingRoomId
