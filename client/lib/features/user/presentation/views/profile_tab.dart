@@ -587,14 +587,14 @@ class SocialInputField extends StatelessWidget {
           padding: const EdgeInsets.only(top: 15.0),
           child: ProxiedImage(
             null,
-            asset: AppAsset(platform.socialMediaKey?.info.logoUrl ?? ''),
+            asset: AppAsset(platform.socialMediaKey?.getInfo(context).logoUrl ?? ''),
             width: 30,
           ),
         ),
         SizedBox(width: 15),
         Expanded(
           child: CustomTextField(
-            labelText: platform.socialMediaKey?.info.title,
+            labelText: platform.socialMediaKey?.getInfo(context).title,
             initialValue: platform.url,
             borderType: BorderType.outline,
             borderRadius: 5,
