@@ -141,7 +141,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     }
 
     final child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-${context.l10n.videoElement}',
+      label: '${widget.globalKey.distinctLabel}-video-element',
       child: videoWidget,
     );
 

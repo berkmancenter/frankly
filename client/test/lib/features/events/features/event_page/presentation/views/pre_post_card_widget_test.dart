@@ -30,6 +30,7 @@ void main() {
 
   setUpAll(() {
     GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
+    GetIt.instance.registerSingleton(AppLocalizationService());
   });
 
   tearDownAll(() async {

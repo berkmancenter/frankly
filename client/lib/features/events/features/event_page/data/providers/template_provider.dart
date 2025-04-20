@@ -5,7 +5,6 @@ import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 const _kDefaultLogoImageUrl = Environment.logoUrl;
 
