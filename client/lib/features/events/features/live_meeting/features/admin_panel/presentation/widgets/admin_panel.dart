@@ -127,7 +127,7 @@ class _AdminPanelState extends State<AdminPanel> {
               ActionButton(
                 color: AppColor.brightGreen,
                 onPressed: () => _providerRead.endBreakoutRooms(),
-                text: 'End Breakouts',
+                text: context.l10n.endBreakouts,
               ),
             ],
             SizedBox(width: 6),
@@ -191,7 +191,7 @@ class _AdminPanelState extends State<AdminPanel> {
                           .read<CommunityPermissionsProvider>()
                           .canModerateContent,
                     ).show(),
-            text: 'Breakouts',
+            text: context.l10n.breakouts,
             color: AppColor.brightGreen,
           ),
           SizedBox(width: 6),
@@ -206,7 +206,7 @@ class _AdminPanelState extends State<AdminPanel> {
       else ...[
         ActionButton(
           expand: true,
-          text: 'Mute All',
+          text: context.l10n.muteAll,
           onPressed: () => _providerRead.muteAllParticipants(),
           color: AppColor.brightGreen,
         ),
@@ -491,7 +491,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                           setState(() => _selectedRoom = room.roomId);
                         }
                       }),
-                      text: 'Jump To',
+                      text: context.l10n.jumpTo,
                       textColor: AppColor.brightGreen,
                       color: AppColor.black.withOpacity(0.4),
                     ),
@@ -506,7 +506,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                       () => _selectedRoom =
                           liveMeetingProvider.currentBreakoutRoomId,
                     ),
-                    text: 'View Current Room',
+                    text: context.l10n.viewCurrentRoom,
                     expand: true,
                     color: AppColor.brightGreen,
                   ),
@@ -560,7 +560,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             );
           },
           child: HeightConstrainedText(
-            isLocked ? 'Unlock Meeting' : 'Lock Meeting',
+            isLocked ? context.l10n.unlockMeeting : context.l10n.lockMeeting,
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).primaryColor,
@@ -1026,12 +1026,12 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                       newBreakoutRoom.roomName) {
                 await ConfirmDialog(
                   title: context.l10n.participantReassigned,
-                  mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
-                  confirmText: 'Ok',
+                  mainText: context.l10n.reassignedToRoom(newBreakoutRoom.roomName),
+                  confirmText: context.l10n.ok,
                 ).show(context: context);
               }
             }),
-            text: 'Reassign',
+            text: context.l10n.reassign,
           ),
           if (!local)
             _ParticipantMenu(
@@ -1121,7 +1121,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                               );
                             }
                           },
-                          text: 'Leave Room',
+                          text: context.l10n.leaveRoom,
                         )
                       else
                         ActionButton(
@@ -1136,7 +1136,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           textColor:
                               needsHelp ? AppColor.white : AppColor.brightGreen,
                           overlayColor: AppColor.white.withOpacity(0.3),
-                          text: 'Enter Room',
+                          text: context.l10n.enterRoom,
                         ),
                     ],
                   ),
@@ -1166,7 +1166,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                     );
                   },
                   expand: true,
-                  text: 'Cancel Help Needed',
+                  text: context.l10n.cancelHelpNeeded,
                 ),
               ],
               SizedBox(height: 8),

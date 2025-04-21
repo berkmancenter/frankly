@@ -558,5 +558,18 @@
   "sidebarPostsButton": "Posts",
   "sidebarResourcesButton": "Resources",
   "sidebarTemplatesButton": "Templates",
-  "sidebarAdminButton": "Admin"
+  "sidebarAdminButton": "Admin",
+  "endBreakouts": "End Breakouts",
+  "breakouts": "Breakouts",
+  "muteAll": "Mute All",
+  "jumpTo": "Jump To",
+  "viewCurrentRoom": "View Current Room",
+  "reassignedToRoom": "Reassigned to Room {roomName}",
+  "ok": "Ok",
+  "reassign": "Reassign",
+  "leaveRoom": "Leave Room",
+  "enterRoom": "Enter Room",
+  "cancelHelpNeeded": "Cancel Help Needed",
+  "unlockMeeting": "Unlock Meeting",
+  "lockMeeting": "Lock Meeting"
 }

@@ -743,5 +743,18 @@
   "sidebarPostsButton": "貼文",
   "sidebarResourcesButton": "資源",
   "sidebarTemplatesButton": "模板",
-  "sidebarAdminButton": "管理員"
+  "sidebarAdminButton": "管理員",
+  "endBreakouts": "結束分組討論",
+  "breakouts": "分組討論",
+  "muteAll": "全部靜音",
+  "jumpTo": "跳轉至",
+  "viewCurrentRoom": "查看當前房間",
+  "reassignedToRoom": "已重新分配到房間 {roomName}",
+  "ok": "確定",
+  "reassign": "重新分配",
+  "leaveRoom": "離開房間",
+  "enterRoom": "進入房間",
+  "cancelHelpNeeded": "取消需要幫助",
+  "unlockMeeting": "解鎖會議",
+  "lockMeeting": "鎖定會議"
 }

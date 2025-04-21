@@ -764,5 +764,18 @@
   "sidebarPostsButton": "Publicaciones",
   "sidebarResourcesButton": "Recursos",
   "sidebarTemplatesButton": "Plantillas",
-  "sidebarAdminButton": "Administrador"
+  "sidebarAdminButton": "Administrador",
+  "endBreakouts": "Finalizar salas de grupo",
+  "breakouts": "Salas de grupo",
+  "muteAll": "Silenciar a todos",
+  "jumpTo": "Ir a",
+  "viewCurrentRoom": "Ver sala actual",
+  "reassignedToRoom": "Reasignado a la sala {roomName}",
+  "ok": "Ok",
+  "reassign": "Reasignar",
+  "leaveRoom": "Salir de la sala",
+  "enterRoom": "Entrar a la sala",
+  "cancelHelpNeeded": "Cancelar solicitud de ayuda",
+  "unlockMeeting": "Desbloquear reunión",
+  "lockMeeting": "Bloquear reunión"
 }

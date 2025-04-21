@@ -868,5 +868,18 @@
   "sidebarPostsButton": "帖子",
   "sidebarResourcesButton": "资源",
   "sidebarTemplatesButton": "模板",
-  "sidebarAdminButton": "管理员"
+  "sidebarAdminButton": "管理员",
+  "endBreakouts": "结束分组讨论",
+  "breakouts": "分组讨论",
+  "muteAll": "全部静音",
+  "jumpTo": "跳转至",
+  "viewCurrentRoom": "查看当前房间",
+  "reassignedToRoom": "已重新分配到房间 {roomName}",
+  "ok": "确定",
+  "reassign": "重新分配",
+  "leaveRoom": "离开房间",
+  "enterRoom": "进入房间",
+  "cancelHelpNeeded": "取消需要帮助",
+  "unlockMeeting": "解锁会议",
+  "lockMeeting": "锁定会议"
 }
