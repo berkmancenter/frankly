@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -70,7 +70,7 @@ class _CollapsibleBottomEventContentState
         ),
         Expanded(
           child: Container(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
             child: CustomTabBarView(),
           ),
         ),

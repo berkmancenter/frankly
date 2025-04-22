@@ -5,7 +5,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 /// Textfield for URL input that handles loading and URL preview.
@@ -54,7 +54,7 @@ class UrlFieldWidget extends StatelessWidget {
                 borderColor: (isNullOrEmpty(error)
                         ? borderColor
                         : AppColor.redDarkMode) ??
-                    AppColor.darkBlue,
+                    context.theme.colorScheme.primary,
                 onChanged: onUrlChange,
               ),
             ),
@@ -67,7 +67,7 @@ class UrlFieldWidget extends StatelessWidget {
                   radius: 25,
                   backgroundColor:
                       (isNullOrEmpty(error) ? buttonColor : AppColor.gray3) ??
-                          AppColor.darkBlue,
+                          context.theme.colorScheme.primary,
                   child: Icon(
                     Icons.check,
                     color: iconColor ?? AppColor.brightGreen,

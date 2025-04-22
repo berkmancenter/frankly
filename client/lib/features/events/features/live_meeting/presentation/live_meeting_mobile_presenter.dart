@@ -11,7 +11,6 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';

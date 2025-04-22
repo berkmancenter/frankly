@@ -3,7 +3,7 @@ import 'package:client/features/community/features/create_community/presentation
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/admin/plan_capability_list.dart';

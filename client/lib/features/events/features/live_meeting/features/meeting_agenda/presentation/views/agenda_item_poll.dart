@@ -104,16 +104,17 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
               Expanded(
                 child: CustomTextField(
                   initialValue: answer,
+                  padding: EdgeInsets.zero,
                   maxLines: 1,
                   onChanged: (value) => _presenter.updateAnswer(value, index),
                 ),
               ),
+              SizedBox(width: 8),
               IconButton(
                 icon: const Icon(Icons.delete_forever),
                 splashRadius: 20,
                 tooltip: 'Delete option',
                 hoverColor: Colors.black26,
-                padding: const EdgeInsets.all(14),
                 onPressed: () => _presenter.removeAnswer(index),
               ),
             ],

@@ -1,5 +1,5 @@
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,7 +28,7 @@ void showRegularToast(
       iconPath = AppAsset.kCheckCircleSvg;
       break;
     case ToastType.neutral:
-      backgroundColor = AppColor.darkBlue;
+      backgroundColor = context.theme.colorScheme.primary;
       textColor = AppColor.white;
       break;
     case ToastType.failed:

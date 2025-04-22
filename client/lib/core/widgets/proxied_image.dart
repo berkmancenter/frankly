@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:universal_html/js.dart' as universal_js;
 
 class ProxiedImage extends StatelessWidget {

@@ -1,13 +1,13 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
@@ -30,7 +30,7 @@ class Dialogs {
             TextEditingController();
 
         return Dialog(
-          backgroundColor: AppColor.darkBlue,
+          backgroundColor: context.theme.colorScheme.primary,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
@@ -54,10 +54,11 @@ class Dialogs {
                                 // Apply same style just slightly smaller font for mobile
                                 .copyWith(
                                 fontSize: 30,
-                                color: AppColor.darkBlue,
+                                color: context.theme.colorScheme.primary,
                               )
-                            : AppTextStyle.headline1
-                                .copyWith(color: AppColor.darkBlue),
+                            : AppTextStyle.headline1.copyWith(
+                                color: context.theme.colorScheme.primary,
+                              ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -90,7 +91,7 @@ class Dialogs {
                   child: ActionButton(
                     text: positiveButtonText,
                     textColor: AppColor.brightGreen,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     onPressed: () async {
                       if (formKey.currentState?.validate() == true) {
                         Navigator.pop(context, textEditingController.text);
@@ -124,7 +125,7 @@ class Dialogs {
         double? selectedValue = currentNumber;
 
         return Dialog(
-          backgroundColor: AppColor.darkBlue,
+          backgroundColor: context.theme.colorScheme.primary,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
@@ -154,7 +155,8 @@ class Dialogs {
                           BorderSide(color: Colors.transparent, width: 0),
                     ),
                     border: const OutlineInputBorder(),
-                    labelStyle: TextStyle(color: AppColor.darkBlue),
+                    labelStyle:
+                        TextStyle(color: context.theme.colorScheme.primary),
                   ),
                   initialValue: currentNumber,
                   min: minNumber,
@@ -332,7 +334,7 @@ class ConfirmDialogLayer extends StatelessWidget {
               style: AppTextStyle.headline3.copyWith(
                 color: areColorsFromTheme
                     ? Theme.of(context).colorScheme.primary
-                    : AppColor.darkBlue,
+                    : context.theme.colorScheme.primary,
               ),
             ),
             SizedBox(height: 20),
@@ -343,7 +345,7 @@ class ConfirmDialogLayer extends StatelessWidget {
                   type: ActionButtonType.outline,
                   textColor: areColorsFromTheme
                       ? Theme.of(context).colorScheme.primary
-                      : AppColor.darkBlue,
+                      : context.theme.colorScheme.primary,
                   text: 'Discard',
                   onPressed: () => Navigator.pop(context),
                 ),
@@ -351,7 +353,7 @@ class ConfirmDialogLayer extends StatelessWidget {
                 ActionButton(
                   color: areColorsFromTheme
                       ? Theme.of(context).colorScheme.primary
-                      : AppColor.darkBlue,
+                      : context.theme.colorScheme.primary,
                   textColor: areColorsFromTheme
                       ? Theme.of(context).colorScheme.secondary
                       : AppColor.brightGreen,

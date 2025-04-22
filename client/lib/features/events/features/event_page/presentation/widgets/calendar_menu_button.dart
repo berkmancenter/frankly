@@ -1,6 +1,6 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 enum CalendarMenuSelection {
@@ -81,7 +81,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                       child: HeightConstrainedText(
                         text,
                         style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.darkBlue),
+                            .copyWith(color: context.theme.colorScheme.primary),
                       ),
                     ),
                   );

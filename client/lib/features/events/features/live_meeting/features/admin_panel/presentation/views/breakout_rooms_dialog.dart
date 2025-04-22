@@ -7,10 +7,10 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';

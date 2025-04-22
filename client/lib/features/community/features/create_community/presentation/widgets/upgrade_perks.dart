@@ -1,11 +1,11 @@
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class UpgradePerks extends StatelessWidget {
@@ -54,7 +54,7 @@ class UpgradePerks extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ActionButton(
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
                 text: 'Explore plans',
                 expand: true,
                 type: ActionButtonType.outline,
@@ -66,7 +66,7 @@ class UpgradePerks extends StatelessWidget {
               if (onUpgradeTap != null) ...[
                 SizedBox(height: 20),
                 ActionButton(
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   textColor: AppColor.brightGreen,
                   text: 'Upgrade',
                   expand: true,

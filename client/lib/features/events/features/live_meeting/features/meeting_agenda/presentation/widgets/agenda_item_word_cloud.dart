@@ -3,7 +3,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class AgendaItemWordCloud extends StatelessWidget {

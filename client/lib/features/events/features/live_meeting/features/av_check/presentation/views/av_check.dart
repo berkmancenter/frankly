@@ -6,13 +6,13 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/av_check/data/providers/av_check_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/troubleshoot_av.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +75,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
 
     return Container(
       alignment: Alignment.center,
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: UserInfoBuilder(
         userId: userService.currentUserId,
         builder: (context, loading, user) {
@@ -296,7 +296,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
           decoration: BoxDecoration(
             border: Border.all(color: AppColor.gray6),
             borderRadius: BorderRadius.circular(10),
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
           child: Builder(
             builder: (context) {

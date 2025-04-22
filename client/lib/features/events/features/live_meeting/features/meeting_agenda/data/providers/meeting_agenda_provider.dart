@@ -6,7 +6,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/data/services/logging_service.dart';
@@ -41,7 +41,7 @@ class AgendaProviderParams {
   final bool allowButtonForUserSubmittedAgenda;
   final bool agendaStartsCollapsed;
   final SubmitNotifier? saveNotifier;
-  final Color backgroundColor;
+
   final Color? labelColor;
   final bool isLivestream;
   final Color? highlightColor;
@@ -54,7 +54,6 @@ class AgendaProviderParams {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    required this.backgroundColor,
     required this.labelColor,
     required this.isLivestream,
     this.highlightColor,

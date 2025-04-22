@@ -1,7 +1,6 @@
 import 'package:client/core/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/home/presentation/widgets/hover_shadow_container.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -9,7 +8,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/events/presentation/widgets/participants_list.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/events/event.dart';

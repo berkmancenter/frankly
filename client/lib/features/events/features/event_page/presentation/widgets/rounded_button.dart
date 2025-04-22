@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class RoundedButton extends StatelessWidget {
@@ -19,7 +19,7 @@ class RoundedButton extends StatelessWidget {
         shape: WidgetStateProperty.all<OutlinedBorder>(StadiumBorder()),
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.disabled)) {
-            return AppColor.darkBlue;
+            return context.theme.colorScheme.primary;
           }
           return AppColor.gray5;
         }),

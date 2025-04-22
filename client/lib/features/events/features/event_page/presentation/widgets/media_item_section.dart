@@ -6,7 +6,7 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/media_item.dart';
 
@@ -60,7 +60,7 @@ class MediaItemSection extends StatelessWidget {
                 SizedBox.fromSize(
                   size: kMediaSectionSize,
                   child: Container(
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     child: Icon(
                       Icons.add,
                       size: 18,
@@ -96,7 +96,7 @@ class MediaItemSection extends StatelessWidget {
             ),
             Spacer(),
             Material(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               shape: CircleBorder(),
               child: InkWell(
                 customBorder: CircleBorder(),
@@ -109,7 +109,7 @@ class MediaItemSection extends StatelessWidget {
             ),
             SizedBox(width: 20),
             Material(
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
               shape: CircleBorder(),
               child: InkWell(
                 customBorder: CircleBorder(),

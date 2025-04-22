@@ -1,12 +1,12 @@
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/features/templates/data/providers/select_template_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -15,7 +15,6 @@ import 'package:client/features/community/features/create_community/presentation
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/templates/template.dart';
@@ -55,7 +54,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainer,
       ),
       padding: const EdgeInsets.only(left: 12, right: 32),
       constraints: BoxConstraints(maxWidth: 450),
@@ -63,7 +62,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(Icons.search, color: AppColor.gray1),
+            child: Icon(Icons.search),
           ),
           Expanded(
             child: _buildSearchBarField(),
@@ -81,14 +80,9 @@ class _SelectTemplateState extends State<SelectTemplate> {
         initialValue: const [],
         spacing: 4,
         runSpacing: 3,
-        backgroundColor: Color(0x59C4C4C4),
-        selectedColor: Color(0x452F5EFF),
-        labelStyle: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 12,
-          fontWeight: FontWeight.normal,
-          color: AppColor.black,
-        ),
+        backgroundColor: context.theme.colorScheme.surfaceContainer,
+        selectedColor: context.theme.colorScheme.primary,
+        labelStyle: AppTextStyle.bodySmall,
         options: Provider.of<SelectTemplateProvider>(context)
             .allCategories
             .map((option) => FormBuilderChipOption(value: option))
@@ -130,9 +124,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: ActionButton(
-                  type: ActionButtonType.outline,
-                  color: AppColor.white,
-                  textColor: AppColor.gray1,
+                  color: context.theme.colorScheme.primary,
                   onPressed: widget.onAddNew,
                   text: 'Add New',
                 ),
@@ -254,10 +246,10 @@ class TemplateCard extends StatelessWidget {
       aspectRatio: 1.0,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainer,
           boxShadow: [
             BoxShadow(
-              color: AppColor.black.withOpacity(0.5),
+              color: context.theme.colorScheme.shadow,
               blurRadius: 4,
               offset: Offset(1, 1),
             ),
@@ -265,7 +257,7 @@ class TemplateCard extends StatelessWidget {
         ),
         child: CustomInkWell(
           onTap: () => _onTapFunction(context),
-          hoverColor: Color(0xFF5568FF).withOpacity(0.2),
+          hoverColor: context.theme.colorScheme.primary.withOpacity(0.38),
           child: Stack(
             children: [
               Positioned.fill(
@@ -275,7 +267,7 @@ class TemplateCard extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFF303B5F).withOpacity(0.8),
+                  color: context.theme.colorScheme.primary,
                   backgroundBlendMode: BlendMode.multiply,
                 ),
               ),
@@ -291,7 +283,7 @@ class TemplateCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     height: 1.3,
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

@@ -1,13 +1,14 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/discussion_threads/presentation/views/discussion_thread_card.dart';
 import 'package:client/features/discussion_threads/presentation/views/discussion_thread_comment_card.dart';
 import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/discussion_threads/presentation/widgets/app_generic_state_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -15,7 +16,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -169,13 +169,13 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     if (isMobile) {
       return FloatingActionButton(
         isExtended: isMobile,
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
         child: Icon(Icons.add, color: AppColor.brightGreen, size: 30),
       );
     } else {
       return FloatingActionButton.extended(
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
         label: Row(
           children: [
@@ -328,16 +328,18 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                           value: DiscussionThreadOptionType.update,
                           child: Text(
                             'Update Post',
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.darkBlue),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.delete,
                           child: Text(
                             'Delete Post',
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.darkBlue),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                       ];
@@ -492,7 +494,8 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             SizedBox(width: 10),
             Text(
               'Reply',
-              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+              style: AppTextStyle.bodyMedium
+                  .copyWith(color: context.theme.colorScheme.primary),
             ),
           ],
         ),

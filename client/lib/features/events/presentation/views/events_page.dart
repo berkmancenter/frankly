@@ -8,14 +8,13 @@ import 'package:client/features/events/features/create_event/presentation/views/
 import 'package:client/features/events/data/providers/events_page_provider.dart';
 import 'package:client/features/community/presentation/widgets/event_widget.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
