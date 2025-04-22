@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class CreateAnnouncementDialog extends StatefulWidget {
   final String communityId;
@@ -78,7 +79,7 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
                   ActionButton(
                     onPressed: _createAnnouncement,
                     color: Theme.of(context).primaryColor,
-                    text: 'Create',
+                    text: context.l10n.create,
                   ),
                 ],
               ),

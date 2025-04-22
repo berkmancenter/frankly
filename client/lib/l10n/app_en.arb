@@ -79,6 +79,7 @@
   "confirmDeleteMedia": "Are you sure you want to delete media?",
   "confirmRefreshGuide": "Are you sure you want to refresh the guide?",
   "contactEmail": "Contact email",
+  "create": "Create",
   "createAPost": "Create a post",
   "createAResource": "Create a resource",
   "createATemplate": "Create a template",
@@ -571,5 +572,7 @@
   "enterRoom": "Enter Room",
   "cancelHelpNeeded": "Cancel Help Needed",
   "unlockMeeting": "Unlock Meeting",
-  "lockMeeting": "Lock Meeting"
+  "lockMeeting": "Lock Meeting",
+  "announcements": "Announcements",
+  "confirmDeleteAnnouncement": "Are you sure you want to delete this announcement?"
 }

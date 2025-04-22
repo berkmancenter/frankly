@@ -164,6 +164,7 @@
   "confirmDeleteMedia": "您确定要删除媒体吗？",
   "confirmRefreshGuide": "您确定要刷新指南吗？",
   "contactEmail": "联系邮箱",
+  "create": "创建",
   "createAPost": "创建一篇文章",
   "createAResource": "创建一个资源",
   "createATemplate": "创建一个模板",
@@ -881,5 +882,7 @@
   "enterRoom": "进入房间",
   "cancelHelpNeeded": "取消需要帮助",
   "unlockMeeting": "解锁会议",
-  "lockMeeting": "锁定会议"
+  "lockMeeting": "锁定会议",
+  "announcements": "公告",
+  "confirmDeleteAnnouncement": "您确定要删除这个公告吗？"
 }

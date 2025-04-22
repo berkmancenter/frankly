@@ -68,8 +68,8 @@ class _AnnouncementsState extends State<Announcements> {
                 onTap: () => alertOnError(context, () async {
                   final confirmedDelete = await ConfirmDialog(
                     mainText:
-                        'Are you sure you want to delete this announcement?',
-                    cancelText: 'No, cancel',
+                        context.l10n.confirmDeleteAnnouncement,
+                    cancelText: context.l10n.noCancel,
                   ).show();
 
                   if (confirmedDelete) {

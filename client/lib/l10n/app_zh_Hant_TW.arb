@@ -86,6 +86,7 @@
   "confirmDeleteMedia": "您確定要刪除媒體嗎？",
   "confirmRefreshGuide": "您確定要重新整理指南嗎？",
   "contactEmail": "聯絡電郵",
+  "create": "創建",
   "createAPost": "創建文章",
   "createAResource": "創建資源",
   "createATemplate": "創建模板",
@@ -756,5 +757,7 @@
   "enterRoom": "進入房間",
   "cancelHelpNeeded": "取消需要幫助",
   "unlockMeeting": "解鎖會議",
-  "lockMeeting": "鎖定會議"
+  "lockMeeting": "鎖定會議",
+  "announcements": "公告",
+  "confirmDeleteAnnouncement": "您確定要刪除這個公告嗎？"
 }

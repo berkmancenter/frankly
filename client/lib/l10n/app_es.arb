@@ -163,6 +163,7 @@
   "confirmDeleteMedia": "¿Estás seguro de que quieres eliminar el medio?",
   "confirmRefreshGuide": "¿Estás seguro de que quieres actualizar la guía?",
   "contactEmail": "Correo de contacto",
+  "create": "Crear",
   "createAPost": "Crear un post",
   "createAResource": "Crear un recurso",
   "createATemplate": "Crear una plantilla",
@@ -777,5 +778,7 @@
   "enterRoom": "Entrar a la sala",
   "cancelHelpNeeded": "Cancelar solicitud de ayuda",
   "unlockMeeting": "Desbloquear reunión",
-  "lockMeeting": "Bloquear reunión"
+  "lockMeeting": "Bloquear reunión",
+  "announcements": "Anuncios",
+  "confirmDeleteAnnouncement": "¿Está seguro de que desea eliminar este anuncio?"
 }
