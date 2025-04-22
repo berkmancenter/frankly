@@ -106,6 +106,19 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     setState(() {});
   }
 
+  /// Create a semantically-wrapped button with label for the community membership button
+  Widget _buildMembershipButton(Community currentCommunity) {
+    return Semantics(
+        label:'Follow Community Button', 
+        identifier: 'follow_community_button',
+        button: true,
+        child: CommunityMembershipButton(
+          currentCommunity,
+          bgColor: Theme.of(context).colorScheme.primary,
+        ),
+    );
+  }
+
   Widget _buildHeaderContent() {
     final canViewCommunityLinks = _presenter.canViewCommunityLinks();
     final isOnCommunityPage = _presenter.isCommunityLocation();
@@ -171,9 +184,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         if (showCommunityMembershipButton) ...[
           SizedBox(width: 20),
           Expanded(
-            child: CommunityMembershipButton(
-              currentCommunity,
-            ),
+            child: _buildMembershipButton(currentCommunity),
           ),
         ] else
           Spacer(),
@@ -190,14 +201,8 @@ class _NavBarState extends State<NavBar> implements NavBarView {
 
     return [
       if (!showBottomNav)
-        Theme(
-          data: ThemeData(
-            textTheme:
-                Theme.of(context).textTheme.apply(bodyColor: AppColor.gray1),
-          ),
-          child: ProfileOrLogin(
-            showMenuAboveIcon: false,
-          ),
+        ProfileOrLogin(
+          showMenuAboveIcon: false,
         ),
       if (showBottomNav) ...[
         if (currentCommunity != null && isCommunityLocation) ...[
@@ -232,9 +237,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     if (!canViewCommunityLinks) {
       return [
         SizedBox(width: 20),
-        CommunityMembershipButton(
-          community,
-        ),
+        _buildMembershipButton(community),
       ];
     }
     return [

@@ -40,39 +40,34 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
         ),
         SizedBox(height: 20),
         Center(
-          child: Theme(
-            data: ThemeData(
-              unselectedWidgetColor: AppColor.darkBlue,
+          child: FormBuilderRadioGroup<_VisibilityType>(
+            decoration: InputDecoration(
+              border: InputBorder.none,
             ),
-            child: FormBuilderRadioGroup<_VisibilityType>(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-              ),
-              focusNode: FocusNode(),
-              initialValue: dialogModel.event.isPublic == true
-                  ? _VisibilityType.public
-                  : _VisibilityType.private,
-              name: 'visibility_options',
-              onChanged: (value) {
-                dialogModel.updateVisibility(
-                  isPublic: value == _VisibilityType.public,
-                );
-              },
-              activeColor: AppColor.darkBlue,
-              separator: null,
-              options: [
-                for (final entry in _visibilityTypeDescriptionLookup.entries)
-                  FormBuilderFieldOption(
-                    value: entry.key,
-                    child: HeightConstrainedText(
-                      entry.value,
-                      style: TextStyle(color: AppColor.darkBlue, fontSize: 15),
-                    ),
+            focusNode: FocusNode(),
+            initialValue: dialogModel.event.isPublic == true
+                ? _VisibilityType.public
+                : _VisibilityType.private,
+            name: 'visibility_options',
+            onChanged: (value) {
+              dialogModel.updateVisibility(
+                isPublic: value == _VisibilityType.public,
+              );
+            },
+            activeColor: AppColor.darkBlue,
+            separator: null,
+            options: [
+              for (final entry in _visibilityTypeDescriptionLookup.entries)
+                FormBuilderFieldOption(
+                  value: entry.key,
+                  child: HeightConstrainedText(
+                    entry.value,
+                    style: TextStyle(color: AppColor.darkBlue, fontSize: 15),
                   ),
-              ],
-              controlAffinity: ControlAffinity.leading,
-              orientation: OptionsOrientation.vertical,
-            ),
+                ),
+            ],
+            controlAffinity: ControlAffinity.leading,
+            orientation: OptionsOrientation.vertical,
           ),
         ),
         if (dialogModel.isEdit &&
