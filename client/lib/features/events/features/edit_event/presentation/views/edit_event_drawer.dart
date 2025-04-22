@@ -90,7 +90,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Edit event',
+                context.l10n.editEvent,
                 style: AppTextStyle.headlineSmall
                     .copyWith(fontSize: 16, color: AppColor.black),
               ),
@@ -187,7 +187,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     return Row(
       children: [
         Text(
-          'Image',
+          context.l10n.image,
           style: AppTextStyle.body.copyWith(color: AppColor.gray2),
         ),
         Spacer(),
@@ -212,7 +212,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
 
   Widget _buildTitleSection() {
     return CustomTextField(
-      labelText: 'Title',
+      labelText: context.l10n.title,
       initialValue: _model.event.title,
       maxLines: 2,
       maxLength: 60,
@@ -223,7 +223,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
 
   Widget _buildDescriptionSection() {
     return CustomTextField(
-      labelText: 'Description',
+      labelText: context.l10n.description,
       initialValue: _model.event.description,
       onChanged: (value) => _presenter.updateDescription(value),
     );
@@ -232,7 +232,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
   Widget _buildIsPublicSection() {
     return CustomSwitchTile(
       val: _model.event.isPublic,
-      text: 'Public',
+      text: context.l10n.public,
       onUpdate: (value) => _presenter.updateIsPublic(value),
     );
   }
@@ -249,7 +249,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
 
     return CustomTextField(
       key: Key(dateString),
-      labelText: 'Date',
+      labelText: context.l10n.date,
       readOnly: true,
       initialValue: dateString,
       maxLength: null,
@@ -280,7 +280,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     }
     return CustomTextField(
       key: Key(timeString),
-      labelText: 'Time',
+      labelText: context.l10n.time,
       readOnly: true,
       initialValue: timeString,
       onTap: () async {
@@ -307,7 +307,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       isExpanded: true,
       isDense: true,
       hint: HeightConstrainedText(
-        'Choose duration',
+        context.l10n.chooseDuration,
         style: AppTextStyle.bodySmall.copyWith(
           color: AppColor.gray1,
         ),
@@ -322,7 +322,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         fillColor: AppColor.white,
         filled: true,
         label: HeightConstrainedText(
-          'Length',
+          context.l10n.length,
           style: AppTextStyle.bodySmall.copyWith(
             color: AppColor.gray4,
           ),
@@ -393,7 +393,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       children: [
         ActionButton(
           expand: true,
-          text: 'Save Event',
+          text: context.l10n.saveEvent,
           color: Theme.of(context).colorScheme.primary,
           textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => alertOnError(
@@ -406,7 +406,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
           expand: true,
           type: ActionButtonType.outline,
           textColor: AppColor.redLightMode,
-          text: 'Cancel event',
+          text: context.l10n.cancelEvent,
           onPressed: () =>
               alertOnError(context, () => _presenter.cancelEvent()),
         ),
@@ -461,7 +461,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         Clipboard.setData(ClipboardData(text: text));
         showRegularToast(
           context,
-          'Copied to clipboard!',
+          context.l10n.copiedToClipboard,
           toastType: ToastType.success,
         );
       },

@@ -759,5 +759,18 @@
   "unlockMeeting": "解鎖會議",
   "lockMeeting": "鎖定會議",
   "announcements": "公告",
-  "confirmDeleteAnnouncement": "您確定要刪除這個公告嗎？"
+  "confirmDeleteAnnouncement": "您確定要刪除這個公告嗎？",
+  "editEvent": "編輯活動",
+  "image": "圖片",
+  "title": "標題",
+  "description": "描述",
+  "public": "公開",
+  "date": "日期",
+  "time": "時間",
+  "chooseDuration": "選擇持續時間",
+  "length": "長度",
+  "saveEvent": "儲存活動",
+  "cancelEvent": "取消活動",
+  "update": "更新",
+  "copiedToClipboard": "已複製到剪貼簿！"
 }

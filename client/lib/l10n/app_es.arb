@@ -780,5 +780,18 @@
   "unlockMeeting": "Desbloquear reunión",
   "lockMeeting": "Bloquear reunión",
   "announcements": "Anuncios",
-  "confirmDeleteAnnouncement": "¿Está seguro de que desea eliminar este anuncio?"
+  "confirmDeleteAnnouncement": "¿Está seguro de que desea eliminar este anuncio?",
+  "editEvent": "Editar evento",
+  "image": "Imagen",
+  "title": "Título",
+  "description": "Descripción",
+  "public": "Público",
+  "date": "Fecha",
+  "time": "Hora",
+  "chooseDuration": "Elegir duración",
+  "length": "Duración",
+  "saveEvent": "Guardar evento",
+  "cancelEvent": "Cancelar evento",
+  "update": "Actualizar",
+  "copiedToClipboard": "¡Copiado al portapapeles!"
 }

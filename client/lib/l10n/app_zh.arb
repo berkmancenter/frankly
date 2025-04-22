@@ -884,5 +884,18 @@
   "unlockMeeting": "解锁会议",
   "lockMeeting": "锁定会议",
   "announcements": "公告",
-  "confirmDeleteAnnouncement": "您确定要删除这个公告吗？"
+  "confirmDeleteAnnouncement": "您确定要删除这个公告吗？",
+  "editEvent": "编辑活动",
+  "image": "图片",
+  "title": "标题",
+  "description": "描述",
+  "public": "公开",
+  "date": "日期",
+  "time": "时间",
+  "chooseDuration": "选择时长",
+  "length": "时长",
+  "saveEvent": "保存活动",
+  "cancelEvent": "取消活动",
+  "update": "更新",
+  "copiedToClipboard": "已复制到剪贴板！"
 }
