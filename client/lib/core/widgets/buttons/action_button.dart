@@ -114,6 +114,7 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton> {
   bool _isSending = false;
+  bool _hover = false;
 
   @override
   void initState() {
@@ -247,13 +248,19 @@ class _ActionButtonState extends State<ActionButton> {
     if (widget.type == ActionButtonType.flat) {
       button = TextButton(
         onPressed: onPressed,
+        onHover: (hover) {
+          setState(() => _hover = hover);
+        },
+        onFocusChange: (focus) {
+          setState(() => _hover = focus);
+        },
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return widget.disabledColor ??
                   context.theme.colorScheme.onSurface.withOpacity(0.38);
             }
-            return widget.color ?? context.theme.colorScheme.primary;
+            return widget.color != null ? widget.color!.withOpacity(_hover ? .8 : 1) : context.theme.colorScheme.primary;
           }),
           overlayColor: overlayColor,
           minimumSize: minimumSize,
