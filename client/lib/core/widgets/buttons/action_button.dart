@@ -158,31 +158,12 @@ class _ActionButtonState extends State<ActionButton> {
         child: Icon(
           widget.icon,
           size: 18,
-          color: _getTextColor(),
+          color: widget.textColor,
         ),
       );
     }
 
     throw Exception('Icon must be a Widget or IconData instance.');
-  }
-
-  Color _getTextColor() {
-    if (widget.type == ActionButtonType.outline) {
-      return widget.textColor ??
-          widget.borderSide?.color ??
-          context.theme.colorScheme.primary;
-    }
-
-    Color defaultTextColor = context.theme.colorScheme.onPrimary;
-    if (widget.color == context.theme.colorScheme.primary) {
-      defaultTextColor = context.theme.colorScheme.onPrimary;
-    } else if (widget.color == context.theme.colorScheme.secondary) {
-      defaultTextColor = context.theme.colorScheme.primary;
-    } else if (widget.color == context.theme.colorScheme.error) {
-      defaultTextColor = context.theme.colorScheme.onError;
-    }
-
-    return widget.textColor ?? defaultTextColor;
   }
 
   Widget _buildButtonContents() {
@@ -214,9 +195,8 @@ class _ActionButtonState extends State<ActionButton> {
             HeightConstrainedText(
               text,
               textAlign: TextAlign.center,
-              style: body.copyWith(color: _getTextColor()).merge(
-                    widget.textStyle ?? TextStyle(),
-                  ),
+              style: (widget.textStyle ?? context.theme.textTheme.bodyMedium)!
+                  .copyWith(color: widget.textColor),
             )
           else if (child != null)
             child,
