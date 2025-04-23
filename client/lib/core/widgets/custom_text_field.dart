@@ -117,6 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   late FocusNode _focusNode;
   late TextEditingController _controller;
   final bool _shiftPressed = false;
+  bool _hasFocus = false;
 
   @override
   void initState() {
@@ -125,6 +126,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue ?? '');
+
+    _focusNode.addListener(() {
+      setState(() {
+        _hasFocus = _focusNode.hasFocus;
+      });
+    });
   }
 
   TextStyle _buildLabelStyle(
@@ -132,7 +139,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
   ) {
     return widget.labelStyle ??
         context.theme.textTheme.bodySmall!.copyWith(
-            color: _focusNode.hasFocus ? AppColor.accentBlue : AppColor.black,);
+          color: AppColor.black,
+          fontSize: 16,
+          fontWeight: _hasFocus ? FontWeight.bold : FontWeight.normal,
+        );
   }
 
   TextStyle _buildTextStyle(BuildContext context, {isError = false}) {
@@ -141,6 +151,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ? context.theme.textTheme.bodySmall!.copyWith(
                 fontSize: 12,
                 height: context.theme.textTheme.bodySmall!.height,
+                color: AppColor.red500,
               )
             : context.theme.textTheme.bodyMedium!.copyWith(
                 color: AppColor.black,
@@ -216,6 +227,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
             validator: widget.validator,
             decoration: InputDecoration(
               border: UnderlineInputBorder(),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  width: 3.0,
+                ),
+              ),
+              errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: AppColor.red500,
+                  width: 1.0,
+                ),
+              ),
               contentPadding: widget.contentPadding,
               labelText: widget.labelText,
               labelStyle: _buildLabelStyle(context),
