@@ -21,7 +21,7 @@ class EmptyPageContent extends StatelessWidget {
     this.subtitleText,
     this.buttonText,
     this.showContainer = true,
-    this.buttonType = ActionButtonType.solid,
+    this.buttonType = ActionButtonType.filled,
     this.isBackgroundDark = false,
     this.isBackgroundPrimaryColor = false,
     Key? key,
@@ -30,7 +30,7 @@ class EmptyPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonColor = context.theme.colorScheme.primary;
-    final isSolid = buttonType == ActionButtonType.solid;
+    final isSolid = buttonType == ActionButtonType.filled;
     return Container(
       height: 311,
       width: 524,

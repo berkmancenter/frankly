@@ -106,7 +106,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
             padding: spacerPadding,
             child: ActionButton(
               tooltipText: 'Show Agenda Item',
-              type: ActionButtonType.solid,
+              type: ActionButtonType.filled,
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
               minWidth: 40,
               onPressed: widget.onExpandCard,
@@ -145,7 +145,7 @@ class _ForwardButton extends HookWidget {
     final agendaProvider = AgendaProvider.watch(context);
 
     return ActionButton(
-      type: ActionButtonType.solid,
+      type: ActionButtonType.filled,
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 40,
       onPressed: () => alertOnError(context, () async {
