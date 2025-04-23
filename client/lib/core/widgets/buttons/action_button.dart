@@ -242,7 +242,6 @@ class _ActionButtonState extends State<ActionButton> {
           foregroundColor: WidgetStateProperty.all(
             widget.textColor ?? context.theme.colorScheme.primary,
           ),
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
           minimumSize: minimumSize,
           shape: WidgetStateProperty.all(shape),
         ),
