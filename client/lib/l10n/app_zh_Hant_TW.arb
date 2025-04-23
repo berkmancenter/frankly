@@ -1,5 +1,200 @@
 {
   "@@locale": "zh_Hant_TW",
+  "@appNameTermsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@appTitleHome": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@appTitleUnsubscribe": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@appTitleUserSettings": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@appTitleWelcome": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@areYouSureYouWantToStartVoteToKick": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@aspectRatioClipped": {},
+  "@bySigningInRegisteringOrUsing": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@deleteAgendaItem": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@enterQuestionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@enterWordCloudPrompt": {},
+  "@joinAnEventWithMe": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@joinCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@kickOutUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@letsHaveConversation": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@manageJoinRequests": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "@newToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@noItems": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@ofTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@participantActionsForUserWithId": {
+    "description": "參與者操作的語義標籤，帶有userId參數。",
+    "placeholders": {
+      "userId": {
+        "type": "String"
+      }
+    }
+  },
+  "@passwordResetLinkSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "@questionWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@supportThisSpace": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@termsAgreementPrefix": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@termsOfService": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@updateToPlan": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@videoElement": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@welcomeToApp": "",
+  "@whenNewItemsAdded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "aVIssues": "影音問題？",
   "about": "關於",
   "aboutUs": "關於我們",
@@ -7,6 +202,7 @@
   "addACategory": "添加類別",
   "addAPrerequisiteTemplate": "添加先決條件模板",
   "addAQuestion": "添加問題",
+  "addAResource": "新增資源",
   "addActionLink": "新增行動連結",
   "addAgendaItem": "新增議程項目",
   "addCategory": "新增類別",
@@ -16,10 +212,15 @@
   "addOption": "新增選項",
   "addPrerequisiteTemplate": "新增先決條件模板",
   "addQuestion": "新增問題",
+  "addRoom": "新增房間",
   "addSomethingHere": "在此處新增內容",
+  "addToCalendar": "新增至日曆",
   "admin": "管理員",
+  "agendaPromptReady": "您的活動已準備好開始！",
+  "agendaPromptWaiting": "等待主持人開始活動...",
   "agreeAndContinue": "同意並繼續",
   "alreadyUserSignIn": "已有帳戶？ 登入",
+  "announcements": "公告",
   "anonymous": "匿名",
   "appDescription": "線上審議平臺",
   "appNameHome": "{appName} - 首頁",
@@ -33,35 +234,31 @@
   "appTitleUnsubscribe": "{appName} - 取消訂閱",
   "appTitleUserSettings": "{appName} - 用戶設定",
   "appTitleWelcome": "{appName} - 歡迎",
-  "signIn": "登入",
-  "signUp": "註冊",
-  "signOut": "登出",
   "areYouSureYouWantToDeleteMedia": "您確定要刪除媒體嗎？",
   "areYouSureYouWantToRefreshTheGuide": "您確定要刷新指南嗎？",
+  "areYouSureYouWantToRemoveMember": "您確定要移除成員嗎？",
+  "areYouSureYouWantToStartVoteToKick": "您確定要開始投票踢出{displayName}嗎？請只在參與者行為不當時採取此行動。",
   "aspectRatioClipped": "長寬比剪裁",
-  "videoElement": "{label}-影片元素",
-  "@videoElement": {
-    "placeholders": {
-      "label": {
-        "type": "Object"
-      }
-    }
-  },
   "attendee": "參與者",
   "audioInputDevice": "音訊輸入裝置：",
-  "avIssues": "影音問題？",
-  "avErrorDuplicateIdentity": "您已經從另一個設備或瀏覽器連接。",
-  "avErrorNotFound": "未找到音訊/視訊設備。",
-  "avErrorMediaAccess": "無法訪問媒體設備。",
-  "avErrorPermissionRequired": "需要權限使用音訊/視訊設備。",
-  "avErrorDisconnected": "音訊/視訊設備已斷開連接。",
   "avErrorConstraints": "媒體約束錯誤。",
+  "avErrorDisconnected": "音訊/視訊設備已斷開連接。",
+  "avErrorDuplicateIdentity": "您已經從另一個設備或瀏覽器連接。",
+  "avErrorMediaAccess": "無法訪問媒體設備。",
   "avErrorNetwork": "音訊/視訊連接網絡錯誤。",
+  "avErrorNotFound": "未找到音訊/視訊設備。",
   "avErrorNotReadable": "無法讀取音訊/視訊設備或該設備正忙。",
+  "avErrorPermissionRequired": "需要權限使用音訊/視訊設備。",
+  "avIssues": "影音問題？",
   "awaitingResponses": "等待回應中...",
+  "background": "背景",
   "banned": "已禁止",
+  "billing": "帳單",
   "brandYourSpace": "打造您的空間品牌",
+  "breakouts": "分組討論",
   "broadcast": "廣播",
+  "bufferAndIntroTime": "分組討論前約{buffer}的緩衝時間和{intro}的介紹時間",
+  "bufferTimeDescription": "活動開始前約{duration}的緩衝時間",
   "buildCommunitySpace": "建立您的社區空間",
   "buildYourCommunitySpace": "構建您的社區空間",
   "byCategory": "按類別",
@@ -70,22 +267,30 @@
   "cancel": "取消",
   "cancelCurrentPlan": "取消目前計劃？",
   "cancelEvent": "取消活動",
+  "cancelHelpNeeded": "取消需要幫助",
   "cancelParticipation": "取消參與",
   "cannotPlayVimeoVideo": "無法播放 Vimeo 影片",
   "cannotPlayYouTubeVideo": "無法播放 YouTube 影片",
   "cannotPlayYoutubeVideo": "無法播放 YouTube 影片",
+  "category": "類別",
   "changeLanguage": "變更語言",
+  "changedFromDefault": "已從預設值更改",
   "chat": "聊天",
   "chatMessage": "聊天訊息",
   "chatWithParticipants": "和參與者聊天",
+  "chooseDuration": "選擇持續時間",
   "clearAgenda": "清除議程？",
   "close": "關閉",
   "closeEdit": "關閉編輯",
   "confirm": "確認",
   "confirmDelete": "確定要刪除嗎？",
+  "confirmDeleteAnnouncement": "您確定要刪除這個公告嗎？",
   "confirmDeleteMedia": "您確定要刪除媒體嗎？",
   "confirmRefreshGuide": "您確定要重新整理指南嗎？",
+  "confirmRemoveParticipant": "您確定要將 {name} 從此活動中移除嗎？",
+  "connectToStripe": "連接到 Stripe",
   "contactEmail": "聯絡電郵",
+  "copiedToClipboard": "已複製到剪貼簿！",
   "create": "創建",
   "createAPost": "創建文章",
   "createAResource": "創建資源",
@@ -94,9 +299,13 @@
   "createAnAnnouncement": "創建公告",
   "createAnEvent": "創建活動",
   "createEvent": "建立活動",
+  "createNewTemplate": "創建新模版",
+  "createPost": "建立貼文",
+  "createTemplateFromEvent": "從活動建立模板",
   "createYourSpace": "創建您的空間",
   "currentParticipants": "目前\n參與者",
   "darkColorHex": "深色十六進制值",
+  "date": "日期",
   "defineBreakoutsOptional": "定義分組討論（可選）",
   "deleteAgendaItem": "刪除{title}議程項目",
   "deleteAgendaItemGeneral": "刪除議程項目",
@@ -105,31 +314,47 @@
   "deleteOption": "刪除選項",
   "deletePost": "刪除貼文",
   "deletePrerequisiteTemplate": "刪除先決條件模板",
-  "deleteTitleAgendaItem": "刪除 $title 議程項目",
+  "deleteTitleAgendaItem": "刪除 {title} 議程項目",
+  "description": "描述",
+  "devSettings": "開發者設定",
+  "discard": "放棄",
+  "donate": "捐贈",
+  "donateToKeepConversationGoing": "捐款以保持對話進行！",
+  "download": "下載",
+  "downloadChatsAndSuggestions": "下載聊天和建議",
   "downloadMembersData": "下載成員資料",
+  "downloadMembersRegistrationData": "下載成員註冊資料",
+  "duplicateEvent": "複製活動",
   "duplicateItem": "複製項目",
   "edit": "編輯",
+  "editEvent": "編輯活動",
   "editImage": "編輯圖片",
   "editItem": "編輯項目",
+  "editYourCommunity": "編輯您的社區",
   "email": "電子郵件",
   "emailAddressAlreadyInUse": "您已經創建了一個與此電子郵件地址關聯的帳戶。請使用電子郵件登入，如果不知道密碼請點擊忘記密碼。或者，使用其他電子郵件重新註冊。",
   "endBreakoutRooms": "結束分組討論",
+  "endBreakouts": "結束分組討論",
   "endTime": "結束時間",
+  "enterCategoryNum": "輸入類別 {number}",
   "enterHeadline": "輸入標題",
   "enterImageTitle": "輸入圖片標題",
   "enterQuestionWithNumber": "輸入問題 {number}",
+  "enterReason": "輸入原因",
+  "enterRoom": "進入房間",
   "enterRoomNumber": "輸入房間號碼",
   "enterVideoTitle": "輸入影片標題",
   "enterWaitingRoomText": "輸入等候室文字（可選）",
   "enterWaitingRoomTextOptional": "輸入等候室文本（可選）",
   "enterWordCloudPrompt": "輸入詞雲提示",
+  "enterWordCloudPromptHint": "輸入詞雲提示",
   "error": "錯誤",
   "errorLoadingCommunities": "載入社區時出錯。請重新整理。",
   "errorLoadingEmail": "加載電子郵件時出錯。",
   "errorLoadingMemberships": "載入會員資格時出錯。請重新整理。",
   "errorLoadingProfileInfo": "載入個人資料時發生錯誤。",
+  "errorLoadingWordCloudResponses": "載入詞雲回應時出錯",
   "errorOccurred": "發生錯誤",
-  "somethingWentWrong": "出了些問題",
   "eventDescription": "活動描述",
   "eventDetails": "活動詳情",
   "eventIsLocked": "此活動已鎖定",
@@ -137,40 +362,69 @@
   "eventTabsContent": "活動標籤內容",
   "eventTitle": "活動標題",
   "events": "活動",
+  "everyoneWasMutedWhileVideoPlaying": "播放影片時所有人都被靜音了。",
   "ex2": "例如：2",
   "exTwo": "例：2",
   "facebookUrl": "Facebook連結",
   "facilitator": "引導者",
+  "fakeParticipantCount": "假參與者數量",
   "filter": "篩選",
+  "finish": "完成",
+  "floatingChat": "浮動聊天",
+  "followCommunityButton": "追蹤社群按鈕",
   "forgotPassword": "忘記密碼？",
+  "franklyLogo": "Frankly 標誌",
   "getCustomColors": "獲取自定義顏色",
+  "googleCalendar": "Google 日曆",
   "googleMeet": "Google Meet",
+  "guideAgendaItemExpandedByHost": "主持人已為所有參與者展開指南議程項目。",
+  "guideAgendaItemMinimizedByHost": "主持人已為所有參與者最小化指南議程項目。",
+  "helpCenter": "幫助中心",
+  "hideAgendaItem": "隱藏議程項目",
+  "hostIsSendingYouToBreakoutRoom": "主持人正在將您送到分組討論室。加入分組討論室？",
   "hosted": "有主持人",
   "hostless": "無主持人",
   "iAgreeToThe": "我同意",
+  "iCalCalendar": "iCal 日曆",
+  "image": "圖片",
   "imageUrlIsNotSet": "（圖片URL未設置。）",
   "imageUrlNotSet": "(圖片URL未設置。)",
   "instagramUrl": "Instagram連結",
   "instantMeeting": "即時會議",
+  "introBeforeBreakouts": "分組討論前約{duration}的介紹時間",
   "introductionContent": "_介紹一下自己！每位花一分鐘回答下列問題之一。_\n\n* 最近做了什麼有趣的事情？\n* 你最喜歡的動畫角色是誰，為什麼？\n* 在你離開這個世界之前，有什麼事情想要完成？\n* 你不喜歡哪部電影？\n",
   "introductions": "介紹",
+  "joinAnEventWithMe": "在{appName}上與我一起參加活動！",
   "joinCommunity": "加入{communityName}？",
   "joinEvent": "加入活動",
+  "jumpTo": "跳轉至",
   "kickOutUser": "踢出{displayName}？",
   "language": "語言",
+  "languageSelector": "語言選擇器",
+  "lastSession": "上次會議",
+  "learnMore": "了解更多",
+  "leaveRoom": "離開房間",
+  "length": "長度",
+  "letsHaveConversation": "讓我們在{appName}上進行對話！",
   "lightColorHex": "淡色十六進制值",
   "linkedinUrl": "LinkedIn連結",
+  "live": "直播？",
   "livestream": "直播",
+  "lockMeeting": "鎖定會議",
   "locked": "已鎖定",
   "login": "登入",
+  "logo": "標誌",
   "logout": "登出",
   "loopVideo": "循環播放影片",
   "makeASuggestion": "提出建議",
+  "makeThisSpacePrivate": "設此為私密空間",
   "manageJoinRequests": "管理加入請求 ({count})",
   "maps": "地圖",
   "matchingOptions": "配對選項",
   "matchingQuestions": "配對問題",
   "maximum": "最大值",
+  "meetingEndMessage": "會議已結束。您可以關閉此視窗。",
+  "meetingEndWithFollowMessage": "會議已結束。您可以關閉此視窗或訪問{name}繼續對話。",
   "meetingGuideCard": "會議指南卡",
   "member": "成員",
   "memberships": "會員資格",
@@ -183,6 +437,8 @@
   "miscellaneous": "其他",
   "moderator": "版主",
   "mustBeLoggedInToAccessThisSection": "必須登錄才能訪問此部分。",
+  "muteAll": "全部靜音",
+  "myCommunities": "我的社區",
   "myCustomEvent": "我的自訂活動",
   "myEvents": "我的活動",
   "myProfile": "我的個人資料",
@@ -190,16 +446,18 @@
   "myUpcomingEvents": "我的即將舉行的活動",
   "name": "名稱",
   "newAnnouncement": "新公告",
+  "newEvent": "新活動",
   "newRoomNumber": "新房間號碼：",
   "newSubscription": "新訂閱",
+  "newTemplate": "新模板",
   "newToApp": "新來到 {appName}？",
   "newUserRegister": "新用戶？ 註冊",
   "next": "下一步",
   "no": "否",
   "noAccountFound": "未找到帳戶。請嘗試使用其他電子郵件地址登入。或者，使用此電子郵件註冊。",
   "noAnnouncementsYet": "暫無公告。",
-  "noCancel": "取消",
-  "noDevicesFound": "未找到設備。",
+  "noCancel": "不，取消",
+  "noDevicesFound": "未找到設備",
   "noEventsFound": "未找到活動。",
   "noItems": "沒有{name}",
   "noMatchingMembersFound": "未找到匹配的成員。",
@@ -208,24 +466,25 @@
   "noPendingJoinRequests": "沒有待處理的加入請求",
   "noRoomsFound": "未找到房間。",
   "noRoomsNeedHelp": "沒有房間需要幫助。",
+  "noSkip": "不，跳過",
   "noUpcomingEventsMessage": "您尚未註冊任何即將舉行的活動。",
   "notAuthorized": "抱歉，您沒有權限執行此操作。",
+  "notifications": "通知",
   "notifyMeAboutNewAnnouncements": "通知我新公告",
   "notifyMeAboutNewEvents": "通知我新活動。",
+  "nowWereTalking": "現在我們來談談！",
+  "numParticipants": "參與者數量",
+  "odometer": "里程錶",
   "ofTotal": "共 {count} 步",
+  "office365Calendar": "Office 365 日曆",
+  "ok": "確定",
   "optional": "可選",
   "or": "或者",
+  "outlookCalendar": "Outlook 日曆",
   "owner": "擁有者",
   "participantActions": "參與者操作",
   "participantActionsForUserWithId": "使用者ID為{userId}的參與者操作",
-  "@participantActionsForUserWithId": {
-    "description": "參與者操作的語義標籤，帶有userId參數。",
-    "placeholders": {
-      "userId": {
-        "type": "Object"
-      }
-    }
-  },
+  "participantCount": "{count}位參與者",
   "participantReassigned": "參與者已重新分配",
   "participants": "參與者",
   "participantsLoadError": "載入參與者時出現問題。請刷新。",
@@ -236,53 +495,59 @@
   "pasteOrEnterUrl": "貼上或輸入URL",
   "people": "人",
   "person": "人",
+  "playsAt": "在{time}播放",
   "pleaseEnterValidEmail": "請輸入有效的電子郵件地址。",
   "pleaseLogInOrSignUp": "請登錄或註冊",
   "postWasDeleted": "貼文已刪除。",
   "posts": "貼文",
+  "prereqRequired": "需要先決條件",
   "prerequisiteRequired": "需要先決條件",
   "pressToPromote": "點擊推廣",
+  "previewAgenda": "預覽議程",
+  "previewVideo": "預覽影片",
   "primaryContent": "主要內容",
+  "privacyPolicy": "隱私政策",
+  "private": "私密",
   "profile": "個人檔案",
   "profileButton": "個人資料按鈕",
   "proposeToRemoveUser": "提議移除用戶？",
+  "public": "公開",
   "questionGoesHere": "問題寫在這裡",
-  "agendaPromptReady": "您的活動已準備好開始！",
-  "startEvent": "開始活動",
-  "agendaPromptWaiting": "等待主持人開始活動...",
-  "noDevicesFound": "未找到設備",
-  "deleteOption": "刪除選項",
-  "suggestions": "建議",
-  "enterWordCloudPrompt": "輸入詞雲提示",
-  "enterCategoryNum": "輸入類別{number}",
-  "meetingEndMessage": "會議已結束。您可以關閉此視窗。",
-  "meetingEndWithFollowMessage": "會議已結束。您可以關閉此視窗或訪問{name}繼續對話。",
   "questionWithNumber": "問題 {number}",
   "raiseHandJoinSpeakerQueue": "舉手加入發言隊列",
   "raiseHandToJoin": "舉手加入發言隊列",
-  "record": "錄製",
-  "odometer": "里程錶",
-  "previewAgenda": "預覽議程",
-  "saveSettings": "儲存設定",
-  "restoreSettings": "恢復預設設定",
-  "devSettings": "開發者設定",
-  "changedFromDefault": "已從預設值更改",
-  "enterCategoryNum": "輸入類別 {number}",
-  "meetingEndMessage": "會議已結束。您可以關閉此視窗。",
-  "meetingEndWithFollowMessage": "會議已結束。您可以關閉此視窗或訪問{name}繼續對話。",
   "raiseHandToJoinSpeakerQueue": "舉手加入發言隊列",
   "raiseYourHandToJoinTheSpeakerQueue": "舉手加入發言隊列",
   "randomlyAssign": "隨機分配",
+  "reasonHint": "例如：他們試圖破壞活動",
+  "reassign": "重新分配",
+  "reassignedToRoom": "已重新分配到房間 {roomName}",
   "recentRooms": "最近的房間",
+  "record": "錄製",
+  "recordings": "錄影",
+  "refresh": "刷新",
   "refreshConnection": "重新整理連線",
+  "refreshGuide": "刷新指南",
   "register": "註冊",
+  "remove": "移除",
   "removeParticipant": "移除參與者",
   "removeSuggestion": "刪除建議",
   "removedFromEvent": "您已被從此活動中移除，無法重新加入。",
   "resources": "資源",
+  "restoreSettings": "恢復預設設定",
+  "roleAdmin": "管理員",
+  "roleAttendee": "參加者",
+  "roleFacilitator": "引導者",
+  "roleMember": "成員",
+  "roleModerator": "總管",
+  "roleOwner": "擁有者",
+  "roomNumber": "房間號碼",
   "roomsCountMayChange": "如果參與者退出，房間數量可能會變化。",
   "save": "儲存",
   "saveAgendaItem": "儲存議程項目",
+  "saveChanges": "儲存變更？",
+  "saveEvent": "儲存活動",
+  "saveSettings": "儲存設定",
   "search": "搜尋",
   "searchEvents": "搜尋活動",
   "searchTemplates": "搜尋模板",
@@ -298,15 +563,19 @@
   "showAnnouncementsButton": "顯示公告按鈕",
   "showOptions": "顯示選項",
   "showSidebarButton": "顯示側邊欄按鈕",
-  "sidebarUnfollowButton": "側邊欄取消追蹤按鈕",
+  "sidebarAdminButton": "管理員",
+  "sidebarEventsButton": "活動",
   "sidebarFollowCommunityButton": "側邊欄追蹤社群按鈕",
-  "followCommunityButton": "追蹤社群按鈕",
-  "franklyLogo": "Frankly 標誌",
+  "sidebarPostsButton": "貼文",
+  "sidebarResourcesButton": "資源",
+  "sidebarTemplatesButton": "模板",
+  "sidebarUnfollowButton": "側邊欄取消追蹤按鈕",
   "signIn": "登入",
   "signInToApp": "登入到 {appName}",
   "signInWithEmail": "使用電郵登入",
   "signInWithGoogle": "使用 Google 登入",
   "signOut": "退出登錄",
+  "signUp": "註冊",
   "signUpOrSignInToContinue": "註冊（或使用現有帳戶登入）以繼續。",
   "signUpToGetStarted": "註冊以開始使用。",
   "signUpWithEmail": "使用電郵註冊",
@@ -319,18 +588,23 @@
   "socialInstagram": "Instagram",
   "socialLinkedIn": "LinkedIn",
   "socialTwitter": "Twitter",
+  "somethingWentWrong": "出了些問題",
   "somethingWentWrongTryAgain": "出現錯誤，請重試。",
   "sorryVimeoVideoLookupFailed": "抱歉，Vimeo 影片查詢失敗。",
   "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 影片查詢失敗。",
   "spreadTheWord": "傳播訊息",
+  "start": "開始",
   "startCommunity": "創建社區",
+  "startEvent": "開始活動",
   "startTime": "開始時間",
   "submitChatButton": "提交聊天按鈕",
   "submitMessageButton": "提交訊息按鈕",
-  "submitTagButton": "提交標籤按鈕",
+  "submitTagButton": "提交",
   "suggest": "建議",
   "suggestAgendaItemHint": "您可以提出議程項目，每個人都可以投票",
   "suggestions": "建議",
+  "suggestionsWillShowUpHere": "建議將顯示在這裡",
+  "supportThisSpace": "支持{name}！",
   "tag": "標籤",
   "tagline": "標語",
   "targetParticipantsPerRoom": "每個分組的\n目標參與者",
@@ -343,6 +617,9 @@
   "thereWasAnErrorLoadingEventTemplates": "載入活動模板時出錯。",
   "thisEventIsLocked": "此活動已鎖定",
   "thisUrlWasNotFound": "未找到此URL。",
+  "thisUser": "此用戶",
+  "time": "時間",
+  "title": "標題",
   "troubleshoot": "故障排除",
   "tryAgain": "請再試一次",
   "turnOnAudioVideo": "開啟音訊/視訊？",
@@ -351,487 +628,44 @@
   "unfollow": "取消追蹤",
   "uniqueUrlDisplayName": "唯一URL顯示名稱（可選）",
   "uniqueUrlDisplayNameOptional": "唯一URL顯示名稱（可選）",
+  "unlockMeeting": "解鎖會議",
   "upcomingEvents": "即將舉行的活動",
-  "updateToPlan": "更新至{name}？",
+  "update": "更新",
+  "updateStripeAccount": "更新 Stripe 帳戶",
+  "updateToPlan": "更新至{name}方案",
+  "upvoteDownvoteSuggestions": "您可以對建議的議程項目進行投票和反對投票",
   "urlParameter": "URL參數",
   "usersAreInBreakoutRooms": "用戶在分組討論室中。",
+  "videoElement": "{label}-影片元素",
   "videoInputDevice": "視訊輸入裝置：",
+  "view": "查看",
+  "viewCurrentRoom": "查看當前房間",
+  "viewMore": "查看更多",
   "vimeoVideoLookupFailed": "抱歉，Vimeo 影片查找失敗。",
+  "visibility": "可見性",
   "waitingRoom": "等候室",
   "welcome": "歡迎來到 Frankly",
   "welcomeName": "您好，{name}",
   "welcomeToApp": "歡迎來到 {appName}",
   "whenNewItemsAdded": "當新增{name}時，您將在此處看到它們。",
   "whenYouUpgrade": "當您升級時",
+  "whoElseWouldBenefitFromTheseEvents": "還有誰會從這些活動中受益？",
   "wordCloud": "詞雲",
-  "wordCloudPrompt": "詞雲提示",
-  "wordCloudPromptRequired": "詞雲提示是必填項",
-  "errorLoadingWordCloudResponses": "載入詞雲回應時出錯",
-  "wordList": "詞彙列表",
-  "refresh": "刷新",
-  "donate": "捐贈",
-  "addAResource": "新增資源",
-  "createPost": "建立貼文",
-  "notifications": "通知",
-  "billing": "帳單",
-  "finish": "完成",
-  "updateToPlan": "更新至{name}方案",
-  "roleOwner": "擁有者",
-  "roleAdmin": "管理員",
-  "roleModerator": "總管",
-  "roleFacilitator": "引導者",
-  "roleMember": "成員",
-  "roleAttendee": "參加者",
-  "suggestionsWillShowUpHere": "建議將顯示在這裡",
-  "upvoteDownvoteSuggestions": "您可以對建議的議程項目進行投票和反對投票",
-  "suggest": "建議",
-  "remove": "移除",
-  "enterWordCloudPromptHint": "輸入詞雲提示",
   "wordCloudLabelText": "詞雲提示",
   "wordCloudParticipantsInfo": "參與者將被要求回覆一系列單詞或短語",
-  "removeSuggestion": "刪除建議",
-  "addRoom": "新增房間",
-  "copiedToClipboard": "已複製到剪貼簿",
-  "bufferTimeDescription": "活動開始前約{duration}的緩衝時間",
-  "playsAt": "在{time}播放",
-  "introBeforeBreakouts": "分組討論前約{duration}的介紹時間",
-  "bufferAndIntroTime": "分組討論前約{buffer}的緩衝時間和{intro}的介紹時間",
-  "kickOutUser": "踢出{displayName}？",
-  "addToCalendar": "新增至日曆",
-  "googleCalendar": "Google 日曆",
-  "outlookCalendar": "Outlook 日曆",
-  "office365Calendar": "Office 365 日曆",
-  "iCalCalendar": "iCal 日曆",
-  "refreshGuide": "刷新指南",
-  "createTemplateFromEvent": "從活動建立模板",
-  "duplicateEvent": "複製活動",
-  "downloadMembersRegistrationData": "下載成員註冊資料",
-  "downloadChatsAndSuggestions": "下載聊天和建議",
-  "participantCount": "{count}位參與者",
-  "pasteOrEnterUrl": "貼上或輸入URL",
-  "tag": "標籤",
-  "submitTagButton": "提交",
+  "wordCloudPrompt": "詞雲提示",
+  "wordCloudPromptRequired": "詞雲提示是必填項",
+  "wordList": "詞彙列表",
+  "wouldYouLikeToParticipateInBreakoutRoomAssignments": "您是否要參與分組討論室分配？",
   "yes": "是",
   "yesDelete": "是的，刪除",
+  "yesJoin": "是的，加入",
+  "yesPollParticipants": "是的，讓參與者投票",
   "you": "你",
-  "floatingChat": "浮動聊天",
+  "youHaventJoinedAnyCommunities": "您尚未加入任何社區",
   "youNeedToBeLoggedInToDoThis": "您需要登錄才能執行此操作",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被從此活動中移除，無法重新加入。",
   "yourName": "您的名字",
   "youtubeVideoLookupFailed": "抱歉，YouTube影片查詢失敗。",
-  "zoom": "縮放",
-  "category": "類別",
-  "confirmRemoveParticipant": "您確定要將 {name} 從此活動中移除嗎？",
-  "fakeParticipantCount": "假參與者數量",
-  "hideAgendaItem": "隱藏議程項目",
-  "languageSelector": "語言選擇器",
-  "lastSession": "上次會議",
-  "prereqRequired": "需要先決條件",
-  "previewVideo": "預覽影片",
-  "reassign": "重新分配",
-  "roomNumber": "房間號碼",
-  "start": "開始",
-  "thisUser": "此用戶",
-  "view": "查看",
-  "helpCenter": "幫助中心",
-  "privacyPolicy": "隱私政策",
-  "@appNameTermsOfService": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@appTitleHome": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@appTitleUnsubscribe": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@appTitleUserSettings": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@appTitleWelcome": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@aspectRatioClipped": {
-    "placeholders": {
-      "label": {
-        "type": "Object"
-      }
-    }
-  },
-  "@bySigningInRegisteringOrUsing": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@deleteAgendaItem": {
-    "placeholders": {
-      "title": {
-        "type": "Object"
-      }
-    }
-  },
-  "@enterQuestionWithNumber": {
-    "placeholders": {
-      "number": {
-        "type": "Object"
-      }
-    }
-  },
-  "@joinCommunity": {
-    "placeholders": {
-      "communityName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@kickOutUser": {
-    "placeholders": {
-      "displayName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@manageJoinRequests": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@newToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@noItems": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "@ofTotal": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "@passwordResetLinkSent": {
-    "placeholders": {
-      "email": {
-        "type": "Object"
-      }
-    }
-  },
-  "@questionWithNumber": {
-    "placeholders": {
-      "number": {
-        "type": "Object"
-      }
-    }
-  },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@termsAgreementPrefix": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@termsOfService": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@updateToPlan": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "@enterWordCloudPrompt": {},
-  "@whenNewItemsAdded": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "@bufferTimeDescription": {
-    "placeholders": {
-      "duration": {
-        "type": "Object"
-      }
-    }
-  },
-  "@playsAt": {
-    "placeholders": {
-      "time": {
-        "type": "Object"
-      }
-    }
-  },
-  "@introBeforeBreakouts": {
-    "placeholders": {
-      "duration": {
-        "type": "Object"
-      }
-    }
-  },
-  "@bufferAndIntroTime": {
-    "placeholders": {
-      "buffer": {
-        "type": "Object"
-      },
-      "intro": {
-        "type": "Object"
-      }
-    }
-  },
-  "@confirmRemoveParticipant": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "@deleteAgendaItemName": {
-    "placeholders": {
-      "itemName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@enterCategoryNum": {
-    "placeholders": {
-      "number": {
-        "type": "Object"
-      }
-    }
-  },
-  "@manageJoinRequests": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "@joinCommunity": {
-    "placeholders": {
-      "communityName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@newToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@noItems": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "@ofTotal": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "@passwordResetLinkSent": {
-    "placeholders": {
-      "email": {
-        "type": "Object"
-      }
-    }
-  },
-  "@questionWithNumber": {
-    "placeholders": {
-      "number": {
-        "type": "Object"
-      }
-    }
-  },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@termsAgreementPrefix": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@termsOfService": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
-  "@updateToPlan": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "@enterWordCloudPrompt": {},
-  "@whenNewItemsAdded": {
-    "placeholders": {
-      "name": {
-        "type": "Object"
-      }
-    }
-  },
-  "myCommunities": "我的社區",
-  "youHaventJoinedAnyCommunities": "您尚未加入任何社區",
-  "logo": "標誌",
-  "background": "背景",
-  "makeThisSpacePrivate": "設此為私密空間",
-  "update": "更新",
-  "saveChanges": "儲存變更？",
-  "discard": "放棄",
-  "save": "儲存",
-  "sidebarEventsButton": "活動",
-  "sidebarPostsButton": "貼文",
-  "sidebarResourcesButton": "資源",
-  "sidebarTemplatesButton": "模板",
-  "sidebarAdminButton": "管理員",
-  "endBreakouts": "結束分組討論",
-  "breakouts": "分組討論",
-  "muteAll": "全部靜音",
-  "jumpTo": "跳轉至",
-  "viewCurrentRoom": "查看當前房間",
-  "reassignedToRoom": "已重新分配到房間 {roomName}",
-  "ok": "確定",
-  "reassign": "重新分配",
-  "leaveRoom": "離開房間",
-  "enterRoom": "進入房間",
-  "cancelHelpNeeded": "取消需要幫助",
-  "unlockMeeting": "解鎖會議",
-  "lockMeeting": "鎖定會議",
-  "announcements": "公告",
-  "confirmDeleteAnnouncement": "您確定要刪除這個公告嗎？",
-  "editEvent": "編輯活動",
-  "image": "圖片",
-  "title": "標題",
-  "description": "描述",
-  "public": "公開",
-  "date": "日期",
-  "time": "時間",
-  "chooseDuration": "選擇持續時間",
-  "length": "長度",
-  "saveEvent": "儲存活動",
-  "cancelEvent": "取消活動",
-  "update": "更新",
-  "copiedToClipboard": "已複製到剪貼簿！",
-  "nowWereTalking": "現在我們來談談！",
-  "editYourCommunity": "編輯您的社區",
-  "newTemplate": "新模板",
-  "newEvent": "新活動",
-  "updateStripeAccount": "更新 Stripe 帳戶",
-  "connectToStripe": "連接到 Stripe",
-  "learnMore": "了解更多",
-  "visibility": "可見性",
-  "live": "直播？",
-  "numParticipants": "參與者數量",
-  "recordings": "錄影",
-  "private": "私密",
-  "download": "下載",
-  "viewMore": "查看更多",
-  "areYouSureYouWantToRemoveMember": "您確定要移除成員嗎？",
-  "guideAgendaItemMinimizedByHost": "主持人已為所有參與者最小化指南議程項目。",
-  "guideAgendaItemExpandedByHost": "主持人已為所有參與者展開指南議程項目。",
-  "wouldYouLikeToParticipateInBreakoutRoomAssignments": "您是否要參與分組討論室分配？",
-  "yesJoin": "是的，加入",
-  "noSkip": "不，跳過",
-  "hostIsSendingYouToBreakoutRoom": "主持人正在將您送到分組討論室。加入分組討論室？",
-  "donateToKeepConversationGoing": "捐款以保持對話進行！",
-  "supportThisSpace": "支持{name}！",
-  "whoElseWouldBenefitFromTheseEvents": "還有誰會從這些活動中受益？",
-  "joinAnEventWithMe": "在{appName}上與我一起參加活動！",
-  "letsHaveConversation": "讓我們在{appName}上進行對話！",
-  "everyoneWasMutedWhileVideoPlaying": "播放影片時所有人都被靜音了。",
-  "areYouSureYouWantToStartVoteToKick": "您確定要開始投票踢出{displayName}嗎？請只在參與者行為不當時採取此行動。",
-  "enterReason": "輸入原因",
-  "reasonHint": "例如：他們試圖破壞活動",
-  "noCancel": "不，取消",
-  "yesPollParticipants": "是的，讓參與者投票",
-  "@joinAnEventWithMe": {
-    "placeholders": {
-      "appName": {
-        "type": "String"
-      }
-    }
-  },
-  "@letsHaveConversation": {
-    "placeholders": {
-      "appName": {
-        "type": "String"
-      }
-    }
-  },
-  "@supportThisSpace": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "@areYouSureYouWantToStartVoteToKick": {
-    "placeholders": {
-      "displayName": {
-        "type": "String"
-      }
-    }
-  },
-  "createNewTemplate": "創建新模版"
+  "zoom": "縮放"
 }
