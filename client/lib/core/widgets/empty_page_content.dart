@@ -21,7 +21,7 @@ class EmptyPageContent extends StatelessWidget {
     this.subtitleText,
     this.buttonText,
     this.showContainer = true,
-    this.buttonType = ActionButtonType.flat,
+    this.buttonType = ActionButtonType.solid,
     this.isBackgroundDark = false,
     this.isBackgroundPrimaryColor = false,
     Key? key,
@@ -30,7 +30,7 @@ class EmptyPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonColor = context.theme.colorScheme.primary;
-    final isFlat = buttonType == ActionButtonType.flat;
+    final isSolid = buttonType == ActionButtonType.solid;
     return Container(
       height: 311,
       width: 524,
@@ -77,9 +77,9 @@ class EmptyPageContent extends StatelessWidget {
               text: buttonText ?? type.buttonText,
               textStyle: AppTextStyle.body.copyWith(
                 color:
-                    isFlat ? context.theme.colorScheme.onPrimary : buttonColor,
+                    isSolid ? context.theme.colorScheme.onPrimary : buttonColor,
               ),
-              color: isFlat ? buttonColor : null,
+              color: isSolid ? buttonColor : null,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),
               type: buttonType,

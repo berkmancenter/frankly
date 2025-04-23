@@ -181,7 +181,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
 
   Widget _buildMinimizeButton() {
     return ActionButton(
-      type: ActionButtonType.flat,
+      type: ActionButtonType.solid,
       tooltipText: 'Hide Agenda Item',
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 0,

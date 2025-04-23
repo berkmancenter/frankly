@@ -22,7 +22,7 @@ class RaisingHandToggle extends StatelessWidget {
     return Tooltip(
       message: 'Raise your hand to join the speaker queue',
       child: ActionButton(
-        type: ActionButtonType.flat,
+        type: ActionButtonType.solid,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         minWidth: 0,
         height: 0,

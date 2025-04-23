@@ -17,7 +17,7 @@ enum ActionButtonSendingIndicatorAlign {
 
 enum ActionButtonType {
   outline,
-  flat,
+  solid,
 }
 
 enum ActionButtonIconSide {
@@ -77,7 +77,7 @@ class ActionButton extends StatefulWidget {
   const ActionButton({
     Key? key,
     this.icon,
-    this.type = ActionButtonType.flat,
+    this.type = ActionButtonType.solid,
     this.text,
     this.color,
     this.disabledColor,
@@ -244,7 +244,7 @@ class _ActionButtonState extends State<ActionButton> {
         widget.onPressed != null && !_isSending ? _runAction : null;
 
     final Widget button;
-    if (widget.type == ActionButtonType.flat) {
+    if (widget.type == ActionButtonType.solid) {
       button = TextButton(
         onPressed: onPressed,
         style: ButtonStyle(

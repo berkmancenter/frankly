@@ -397,7 +397,7 @@ class _EventInfoState extends State<EventInfo> {
 
     return ActionButton(
       height: 64,
-      type: isEventOpen ? ActionButtonType.flat : ActionButtonType.outline,
+      type: isEventOpen ? ActionButtonType.solid : ActionButtonType.outline,
       color: isEventOpen ? Theme.of(context).colorScheme.primary : null,
       textColor: isEventOpen
           ? Theme.of(context).colorScheme.secondary
