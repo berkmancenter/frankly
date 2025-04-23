@@ -15,10 +15,7 @@ enum ActionButtonSendingIndicatorAlign {
   interior,
 }
 
-enum ActionButtonType {
-  filled,
-  outline,
-}
+enum ActionButtonType { filled, outline, text }
 
 enum ActionButtonIconSide {
   left,
@@ -215,41 +212,55 @@ class _ActionButtonState extends State<ActionButton> {
         widget.onPressed != null && !_isSending ? _runAction : null;
 
     final Widget button;
-    if (widget.type == ActionButtonType.filled) {
-      button = FilledButton(
-        onPressed: onPressed,
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            widget.color ?? context.theme.colorScheme.primary,
+    switch (widget.type) {
+      case ActionButtonType.filled:
+        button = FilledButton(
+          onPressed: onPressed,
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(
+              widget.color ?? context.theme.colorScheme.primary,
+            ),
+            foregroundColor: WidgetStateProperty.all(
+              widget.textColor ?? context.theme.colorScheme.onPrimary,
+            ),
+            minimumSize: minimumSize,
+            shape: WidgetStateProperty.all(shape),
           ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.textColor ?? context.theme.colorScheme.onPrimary,
+          child: _buildButtonContents(),
+        );
+        break;
+      case ActionButtonType.outline:
+        button = OutlinedButton(
+          style: ButtonStyle(
+            side: WidgetStateProperty.all(
+              widget.borderSide ??
+                  BorderSide(
+                    color: widget.color ?? context.theme.colorScheme.primary,
+                  ),
+            ),
+            foregroundColor: WidgetStateProperty.all(
+              widget.textColor ?? context.theme.colorScheme.primary,
+            ),
+            minimumSize: minimumSize,
+            shape: WidgetStateProperty.all(shape),
           ),
-          minimumSize: minimumSize,
-          shape: WidgetStateProperty.all(shape),
-        ),
-        child: _buildButtonContents(),
-      );
-    } else if (widget.type == ActionButtonType.outline) {
-      button = OutlinedButton(
-        style: ButtonStyle(
-          side: WidgetStateProperty.all(
-            widget.borderSide ??
-                BorderSide(
-                  color: widget.color ?? context.theme.colorScheme.primary,
-                ),
+          onPressed: onPressed,
+          child: _buildButtonContents(),
+        );
+        break;
+      case ActionButtonType.text:
+        button = TextButton(
+          onPressed: onPressed,
+          style: ButtonStyle(
+            foregroundColor: WidgetStateProperty.all(
+              widget.textColor ?? context.theme.colorScheme.primary,
+            ),
+            minimumSize: minimumSize,
+            shape: WidgetStateProperty.all(shape),
           ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.textColor ?? context.theme.colorScheme.primary,
-          ),
-          minimumSize: minimumSize,
-          shape: WidgetStateProperty.all(shape),
-        ),
-        onPressed: onPressed,
-        child: _buildButtonContents(),
-      );
-    } else {
-      button = SizedBox.shrink();
+          child: _buildButtonContents(),
+        );
+        break;
     }
 
     if (widget.expand) {
