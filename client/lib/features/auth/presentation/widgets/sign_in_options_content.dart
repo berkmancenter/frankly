@@ -89,7 +89,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text.rich(
           TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: context.theme.colorScheme.error,
+              color: AppColor.red500,
             ),
             children: [
               TextSpan(
@@ -104,7 +104,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                       }),
                 style: context.theme.textTheme.bodyMedium?.copyWith(
                   decoration: TextDecoration.underline,
-                  color: context.theme.colorScheme.error,
+                  color: AppColor.red500,
                 ),
               ),
               TextSpan(text: ' instead.'),
@@ -115,7 +115,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text.rich(
           TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: context.theme.colorScheme.error,
+              color: AppColor.red500,
             ),
             children: [
               TextSpan(
@@ -130,7 +130,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                       }),
                 style: context.theme.textTheme.bodyMedium?.copyWith(
                   decoration: TextDecoration.underline,
-                  color: context.theme.colorScheme.error,
+                  color: AppColor.red500,
                 ),
               ),
               TextSpan(text: ' instead.'),
@@ -141,7 +141,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text(
           'Please enter a valid email address.',
           style: context.theme.textTheme.bodyMedium?.copyWith(
-            color: context.theme.colorScheme.error,
+                  color: AppColor.red500,
+   
           ),
         );
 
@@ -162,10 +163,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         else
           setState(() => _formError = msg),
       },
-    );
-    setState(
-      () =>
-          _formMessage = 'Password reset link sent to ${_emailController.text}',
+      callback: () => {
+        setState(
+          () => _formMessage =
+              'Password reset link sent to ${_emailController.text}',
+        ),
+      },
     );
   }
 
@@ -186,7 +189,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   }
 
   String _getTitleText() {
-    if (widget.showSignUp) {
+    if (_showSignup) {
       return 'Sign up for ${Environment.appName}';
     } else {
       return 'Log into ${Environment.appName}';
@@ -294,12 +297,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ),
               ),
               validator: (value) {
-                // If the user is not signing up, we don't need to validate the password
+                // If the user is not signing up, just validate if any value is entered, not format;
                 // Because they may have a legacy account before we started enforcing complexity
-                if (!_showSignup) {
-                  return null;
+                if (!_showSignup && (value == null || value.isEmpty)) {
+                  return 'Please enter a password';
                 }
-                if (value == null || value.isEmpty || !isPasswordValid(value)) {
+                else if (value == null || value.isEmpty || !isPasswordValid(value)) {
                   return 'Please enter a valid password';
                 }
                 return null;
