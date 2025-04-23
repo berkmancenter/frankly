@@ -470,6 +470,8 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   void _onLiveMeetingChange(LiveMeeting liveMeeting) {
+    final l10n = appLocalizationService.getLocalization();
+
     _checkShowBreakoutDialog();
 
     _checkLoadBreakoutsStream(liveMeeting);
@@ -487,12 +489,12 @@ class LiveMeetingProvider with ChangeNotifier {
       if (_previousLiveMeeting?.isMeetingCardMinimized != null) {
         if (_isMeetingCardMinimized) {
           showToast(
-            'Guide agenda item minimized by host for all participants.',
+            l10n.guideAgendaItemMinimizedByHost,
             hideOnMobile: true,
           );
         } else {
           showToast(
-            'Guide agenda item expanded by host for all participants.',
+            l10n.guideAgendaItemExpandedByHost,
             hideOnMobile: true,
           );
         }
@@ -505,6 +507,8 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   void _checkLoadBreakoutsStream(LiveMeeting liveMeeting) {
+    final l10n = appLocalizationService.getLocalization();
+
     if (_previousLiveMeeting?.currentBreakoutSession?.breakoutRoomStatus ==
             BreakoutRoomStatus.pending &&
         liveMeeting.currentBreakoutSession?.breakoutRoomStatus !=
@@ -542,6 +546,7 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> _checkShowBreakoutDialog() async {
+    final l10n = appLocalizationService.getLocalization();
     final localLiveMeeting = liveMeeting;
     if (localLiveMeeting == null) return;
 
@@ -597,9 +602,9 @@ class LiveMeetingProvider with ChangeNotifier {
         if (isMod) {
           final confirmJoiningBreakouts = await ConfirmDialog(
             mainText:
-                'Would you like to participate in breakout room assignments?',
-            confirmText: 'Yes, join',
-            cancelText: 'No, skip',
+                l10n.wouldYouLikeToParticipateInBreakoutRoomAssignments,
+            confirmText: l10n.yesJoin,
+            cancelText: l10n.noSkip,
           ).show();
 
           if (!confirmJoiningBreakouts) {
@@ -620,8 +625,8 @@ class LiveMeetingProvider with ChangeNotifier {
       } else {
         await ConfirmDialog(
           mainText:
-              'Host is sending you to a breakout room. Join breakout room?',
-          confirmText: 'Yes, join',
+              l10n.hostIsSendingYouToBreakoutRoom,
+          confirmText: l10n.yesJoin,
           onConfirm: (context) => alertOnError(context, () async {
             await firestoreLiveMeetingService
                 .updateAvailableForBreakoutSessionId(
@@ -632,7 +637,7 @@ class LiveMeetingProvider with ChangeNotifier {
             );
             Navigator.of(context).pop(true);
           }),
-          cancelText: 'No, skip',
+          cancelText: l10n.noSkip,
         ).show();
       }
     }
@@ -686,6 +691,8 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> leaveMeeting() async {
+    final l10n = appLocalizationService.getLocalization();
+
     if (_leftMeeting) return;
 
     _leftMeeting = true;
@@ -731,8 +738,8 @@ class LiveMeetingProvider with ChangeNotifier {
               eventProvider.isLiveStream)) {
         await DonateWidget(
           community: community,
-          headline: 'Donate to keep the conversation going!',
-          subHeader: 'Support ${community.name ?? 'this space'}!',
+          headline: l10n.donateToKeepConversationGoing,
+          subHeader: l10n.supportThisSpace(community.name ?? 'this space'),
         ).show();
       }
 
@@ -750,11 +757,11 @@ class LiveMeetingProvider with ChangeNotifier {
       await showCustomDialog(
         builder: (context) => AppShareDialog(
           title: context.l10n.spreadTheWord,
-          content: 'Who else would benefit from these events?',
+          content: l10n.whoElseWouldBenefitFromTheseEvents,
           iconBackgroundColor: AppColor.white,
           appShareData: AppShareData(
-            subject: 'Join an event with me on ${Environment.appName}!',
-            body: "Let's have a conversation on ${Environment.appName}!",
+            subject: l10n.joinAnEventWithMe(Environment.appName),
+            body: l10n.letsHaveConversation(Environment.appName),
             pathToPage: pathToPage,
             communityId: communityProvider.communityId,
           ),
@@ -902,13 +909,14 @@ class LiveMeetingProvider with ChangeNotifier {
   bool get audioTemporarilyDisabled => _audioTemporarilyDisabled;
 
   Future<void> setAudioTemporarilyDisabled({required bool disabled}) async {
+    final l10n = appLocalizationService.getLocalization();
     if (_audioTemporarilyDisabled == disabled ||
         (conferenceRoom?.room?.localParticipant == null)) {
       return;
     }
 
     if (shouldStartLocalAudioOn && disabled) {
-      showToast('Everyone was muted while the video is playing.');
+      showToast(l10n.everyoneWasMutedWhileVideoPlaying);
     }
 
     _audioTemporarilyDisabled = disabled;
@@ -928,13 +936,11 @@ class LiveMeetingProvider with ChangeNotifier {
     final l10n = appLocalizationService.getLocalization();
     final reason = await ConfirmTextInputDialogue(
       title: l10n.proposeToRemoveUser,
-      subText:
-          'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
-          ' only take this action if the participant is behaving inappropriately.',
-      textLabel: 'Enter reason',
-      textHint: 'e.g. They are trying to sabotage the event',
-      cancelText: 'No, cancel',
-      confirmText: 'Yes, poll participants',
+      subText: l10n.areYouSureYouWantToStartVoteToKick(user.displayName ?? ''),
+      textLabel: l10n.enterReason,
+      textHint: l10n.reasonHint,
+      cancelText: l10n.noCancel,
+      confirmText: l10n.yesPollParticipants,
     ).show();
     if (reason != null) {
       await cloudFunctionsLiveMeetingService.voteToKick(

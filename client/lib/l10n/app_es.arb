@@ -793,5 +793,66 @@
   "saveEvent": "Guardar evento",
   "cancelEvent": "Cancelar evento",
   "update": "Actualizar",
-  "copiedToClipboard": "¡Copiado al portapapeles!"
+  "copiedToClipboard": "¡Copiado al portapapeles!",
+  "nowWereTalking": "¡Ahora estamos hablando!",
+  "editYourCommunity": "Editar su comunidad",
+  "newTemplate": "Nueva plantilla",
+  "newEvent": "Nuevo evento",
+  "updateStripeAccount": "Actualizar cuenta Stripe",
+  "connectToStripe": "Conectar con Stripe",
+  "learnMore": "Aprender más",
+  "visibility": "Visibilidad",
+  "live": "¿En vivo?",
+  "numParticipants": "Número de participantes",
+  "recordings": "Grabaciones",
+  "private": "Privado",
+  "download": "Descargar",
+  "viewMore": "Ver más",
+  "areYouSureYouWantToRemoveMember": "¿Está seguro de que desea eliminar al miembro?",
+  "guideAgendaItemMinimizedByHost": "El elemento de agenda de la guía ha sido minimizado por el anfitrión para todos los participantes.",
+  "guideAgendaItemExpandedByHost": "El elemento de agenda de la guía ha sido expandido por el anfitrión para todos los participantes.",
+  "wouldYouLikeToParticipateInBreakoutRoomAssignments": "¿Le gustaría participar en las asignaciones de salas de grupos?",
+  "yesJoin": "Sí, unirse",
+  "noSkip": "No, omitir",
+  "hostIsSendingYouToBreakoutRoom": "El anfitrión le está enviando a una sala de grupos. ¿Unirse a la sala de grupos?",
+  "donateToKeepConversationGoing": "¡Done para mantener la conversación!",
+  "supportThisSpace": "¡Apoye a {name}!",
+  "whoElseWouldBenefitFromTheseEvents": "¿Quién más se beneficiaría de estos eventos?",
+  "joinAnEventWithMe": "¡Únase a un evento conmigo en {appName}!",
+  "letsHaveConversation": "¡Tengamos una conversación en {appName}!",
+  "everyoneWasMutedWhileVideoPlaying": "Todos fueron silenciados mientras se reproducía el video.",
+  "areYouSureYouWantToStartVoteToKick": "¿Está seguro de que desea iniciar una votación para expulsar a {displayName}? Por favor, solo tome esta acción si el participante se está comportando de manera inapropiada.",
+  "enterReason": "Ingrese el motivo",
+  "reasonHint": "ej. Están tratando de sabotear el evento",
+  "noCancel": "No, cancelar",
+  "yesPollParticipants": "Sí, encuestar a los participantes",
+  "@joinAnEventWithMe": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@letsHaveConversation": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@supportThisSpace": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@areYouSureYouWantToStartVoteToKick": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "createNewTemplate": "Crear una nueva plantilla"
 }

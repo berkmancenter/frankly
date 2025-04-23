@@ -587,5 +587,66 @@
   "saveEvent": "Save Event",
   "cancelEvent": "Cancel event",
   "update": "Update",
-  "copiedToClipboard": "Copied to clipboard!"
+  "copiedToClipboard": "Copied to clipboard!",
+  "nowWereTalking": "Now we're talking!",
+  "editYourCommunity": "Edit your Community",
+  "newTemplate": "New template",
+  "newEvent": "New event",
+  "updateStripeAccount": "Update Stripe Account",
+  "connectToStripe": "Connect to Stripe",
+  "learnMore": "Learn More",
+  "visibility": "Visibility",
+  "live": "Live?",
+  "numParticipants": "Num Participants",
+  "recordings": "Recordings",
+  "private": "Private",
+  "download": "Download",
+  "viewMore": "View more",
+  "areYouSureYouWantToRemoveMember" : "Are you sure you want to remove member?",
+  "guideAgendaItemMinimizedByHost": "Guide agenda item minimized by host for all participants.",
+  "guideAgendaItemExpandedByHost": "Guide agenda item expanded by host for all participants.",
+  "wouldYouLikeToParticipateInBreakoutRoomAssignments": "Would you like to participate in breakout room assignments?",
+  "yesJoin": "Yes, join",
+  "noSkip": "No, skip",
+  "hostIsSendingYouToBreakoutRoom": "Host is sending you to a breakout room. Join breakout room?",
+  "donateToKeepConversationGoing": "Donate to keep the conversation going!",
+  "supportThisSpace": "Support {name}!",
+  "whoElseWouldBenefitFromTheseEvents": "Who else would benefit from these events?",
+  "joinAnEventWithMe": "Join an event with me on {appName}!",
+  "letsHaveConversation": "Let's have a conversation on {appName}!",
+  "everyoneWasMutedWhileVideoPlaying": "Everyone was muted while the video is playing.",
+  "areYouSureYouWantToStartVoteToKick": "Are you sure you want to start a vote to kick out {displayName}? Please only take this action if the participant is behaving inappropriately.",
+  "enterReason": "Enter reason",
+  "reasonHint": "e.g. They are trying to sabotage the event",
+  "noCancel": "No, cancel",
+  "yesPollParticipants": "Yes, poll participants",
+  "@joinAnEventWithMe": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@letsHaveConversation": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@supportThisSpace": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@areYouSureYouWantToStartVoteToKick": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "createNewTemplate": "Create a new template"
 }

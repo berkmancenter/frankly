@@ -772,5 +772,66 @@
   "saveEvent": "儲存活動",
   "cancelEvent": "取消活動",
   "update": "更新",
-  "copiedToClipboard": "已複製到剪貼簿！"
+  "copiedToClipboard": "已複製到剪貼簿！",
+  "nowWereTalking": "現在我們來談談！",
+  "editYourCommunity": "編輯您的社區",
+  "newTemplate": "新模板",
+  "newEvent": "新活動",
+  "updateStripeAccount": "更新 Stripe 帳戶",
+  "connectToStripe": "連接到 Stripe",
+  "learnMore": "了解更多",
+  "visibility": "可見性",
+  "live": "直播？",
+  "numParticipants": "參與者數量",
+  "recordings": "錄影",
+  "private": "私密",
+  "download": "下載",
+  "viewMore": "查看更多",
+  "areYouSureYouWantToRemoveMember": "您確定要移除成員嗎？",
+  "guideAgendaItemMinimizedByHost": "主持人已為所有參與者最小化指南議程項目。",
+  "guideAgendaItemExpandedByHost": "主持人已為所有參與者展開指南議程項目。",
+  "wouldYouLikeToParticipateInBreakoutRoomAssignments": "您是否要參與分組討論室分配？",
+  "yesJoin": "是的，加入",
+  "noSkip": "不，跳過",
+  "hostIsSendingYouToBreakoutRoom": "主持人正在將您送到分組討論室。加入分組討論室？",
+  "donateToKeepConversationGoing": "捐款以保持對話進行！",
+  "supportThisSpace": "支持{name}！",
+  "whoElseWouldBenefitFromTheseEvents": "還有誰會從這些活動中受益？",
+  "joinAnEventWithMe": "在{appName}上與我一起參加活動！",
+  "letsHaveConversation": "讓我們在{appName}上進行對話！",
+  "everyoneWasMutedWhileVideoPlaying": "播放影片時所有人都被靜音了。",
+  "areYouSureYouWantToStartVoteToKick": "您確定要開始投票踢出{displayName}嗎？請只在參與者行為不當時採取此行動。",
+  "enterReason": "輸入原因",
+  "reasonHint": "例如：他們試圖破壞活動",
+  "noCancel": "不，取消",
+  "yesPollParticipants": "是的，讓參與者投票",
+  "@joinAnEventWithMe": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@letsHaveConversation": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "@supportThisSpace": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@areYouSureYouWantToStartVoteToKick": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "createNewTemplate": "創建新模版"
 }

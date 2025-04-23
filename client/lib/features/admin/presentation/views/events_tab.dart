@@ -19,6 +19,9 @@ import 'package:client/core/utils/platform_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:universal_html/html.dart' as html;
 
+import 'package:client/core/localization/localization_helper.dart';
+
+
 class EventsTab extends StatefulWidget {
   @override
   _EventsTabState createState() => _EventsTabState();
@@ -58,14 +61,14 @@ class _EventsTabState extends State<EventsTab> {
         _buildRowEntry(
           width: 200,
           child: Text(
-            'Date',
+            context.l10n.date,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         _buildRowEntry(
           width: 320,
           child: Text(
-            'Title',
+            context.l10n.title,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -73,7 +76,7 @@ class _EventsTabState extends State<EventsTab> {
           _buildRowEntry(
             width: 70,
             child: Text(
-              'Visibility',
+              context.l10n.visibility,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -81,7 +84,7 @@ class _EventsTabState extends State<EventsTab> {
           _buildRowEntry(
             width: 80,
             child: Text(
-              'Live?',
+              context.l10n.live,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -89,14 +92,14 @@ class _EventsTabState extends State<EventsTab> {
           _buildRowEntry(
             width: 100,
             child: Text(
-              'Num Participants',
+              context.l10n.numParticipants,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         _buildRowEntry(
           width: 170,
           child: Text(
-            'Recordings',
+            context.l10n.recordings,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -144,7 +147,7 @@ class _EventsTabState extends State<EventsTab> {
           },
         ),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
-        text: 'Download',
+        text: context.l10n.download,
       );
     }
   }
@@ -190,7 +193,7 @@ class _EventsTabState extends State<EventsTab> {
             _buildRowEntry(
               width: 70,
               child: HeightConstrainedText(
-                event.isPublic == true ? 'Public' : 'Private',
+                event.isPublic == true ? context.l10n.public : context.l10n.private,
               ),
             ),
           _buildRowEntry(
@@ -251,7 +254,7 @@ class _EventsTabState extends State<EventsTab> {
                 alignment: Alignment.center,
                 child: ActionButton(
                   onPressed: () => setState(() => _numToShow += 10),
-                  text: 'View more',
+                  text: context.l10n.viewMore,
                 ),
               ),
           ],

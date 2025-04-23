@@ -31,6 +31,8 @@ import 'overview_contract.dart';
 import '../../data/models/overview_model.dart';
 import '../overview_presenter.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class OverviewTab extends StatefulHookWidget {
   final void Function() onUpgradeTap;
 
@@ -90,7 +92,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                     SizedBox(width: 10),
                     Text(
                       onboardingStep == null
-                          ? 'Now we’re talking!'
+                          ? context.l10n.nowWereTalking
                           : onboardingStep.title,
                       style:
                           AppTextStyle.subhead.copyWith(color: AppColor.gray1),
@@ -153,7 +155,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             ),
                             SizedBox(width: 10),
                             Text(
-                              'Now we’re talking!',
+                              context.l10n.nowWereTalking,
                               style: AppTextStyle.subhead
                                   .copyWith(color: AppColor.gray1),
                             ),
@@ -328,7 +330,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)
                                       TextSpan(
-                                        text: 'Learn More',
+                                        text: context.l10n.learnMore,
                                         style: AppTextStyle.body.copyWith(
                                           color: Colors.blue,
                                           decoration: TextDecoration.underline,
@@ -366,7 +368,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
         return ActionButton(
-          text: 'Edit your Community',
+          text: context.l10n.editYourCommunity,
           icon: Icon(Icons.edit, size: 20),
           iconSide: ActionButtonIconSide.right,
           textColor: AppColor.darkBlue,
@@ -380,7 +382,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         );
       case OnboardingStep.createGuide:
         return ActionButton(
-          text: 'New template',
+          text: context.l10n.newTemplate,
           icon: Icon(Icons.add, size: 20),
           iconSide: ActionButtonIconSide.right,
           textColor: AppColor.darkBlue,
@@ -396,7 +398,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         );
       case OnboardingStep.hostEvent:
         return ActionButton(
-          text: 'New event',
+          text: context.l10n.newEvent,
           icon: Icon(Icons.add, size: 20),
           iconSide: ActionButtonIconSide.right,
           textColor: AppColor.darkBlue,
@@ -429,8 +431,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
       case OnboardingStep.createStripeAccount:
         return ActionButton(
           text: isOnboardingStepCompleted
-              ? 'Update Stripe Account'
-              : 'Connect to Stripe',
+              ? context.l10n.updateStripeAccount
+              : context.l10n.connectToStripe,
           textColor: AppColor.darkBlue,
           type: ActionButtonType.outline,
           borderSide: BorderSide(color: AppColor.darkBlue),
