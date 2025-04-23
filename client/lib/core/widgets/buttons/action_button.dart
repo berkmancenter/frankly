@@ -205,9 +205,8 @@ class _ActionButtonState extends State<ActionButton> {
         RoundedRectangleBorder(
           borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
         );
-    final minimumSize = WidgetStateProperty.all(
-      Size(widget.minWidth ?? 96, widget.height ?? 50),
-    );
+    final minimumSize = Size(widget.minWidth ?? 96, widget.height ?? 50);
+
     final onPressed =
         widget.onPressed != null && !_isSending ? _runAction : null;
 
@@ -216,33 +215,27 @@ class _ActionButtonState extends State<ActionButton> {
       case ActionButtonType.filled:
         button = FilledButton(
           onPressed: onPressed,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(
-              widget.color ?? context.theme.colorScheme.primary,
-            ),
-            foregroundColor: WidgetStateProperty.all(
-              widget.textColor ?? context.theme.colorScheme.onPrimary,
-            ),
+          style: FilledButton.styleFrom(
+            backgroundColor: widget.color ?? context.theme.colorScheme.primary,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.onPrimary,
             minimumSize: minimumSize,
-            shape: WidgetStateProperty.all(shape),
+            shape: shape,
           ),
           child: _buildButtonContents(),
         );
         break;
       case ActionButtonType.outline:
         button = OutlinedButton(
-          style: ButtonStyle(
-            side: WidgetStateProperty.all(
-              widget.borderSide ??
-                  BorderSide(
-                    color: widget.color ?? context.theme.colorScheme.primary,
-                  ),
-            ),
-            foregroundColor: WidgetStateProperty.all(
-              widget.textColor ?? context.theme.colorScheme.primary,
-            ),
+          style: OutlinedButton.styleFrom(
+            side: widget.borderSide ??
+                BorderSide(
+                  color: widget.color ?? context.theme.colorScheme.primary,
+                ),
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.primary,
             minimumSize: minimumSize,
-            shape: WidgetStateProperty.all(shape),
+            shape: shape,
           ),
           onPressed: onPressed,
           child: _buildButtonContents(),
@@ -251,12 +244,11 @@ class _ActionButtonState extends State<ActionButton> {
       case ActionButtonType.text:
         button = TextButton(
           onPressed: onPressed,
-          style: ButtonStyle(
-            foregroundColor: WidgetStateProperty.all(
-              widget.textColor ?? context.theme.colorScheme.primary,
-            ),
+          style: TextButton.styleFrom(
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.primary,
             minimumSize: minimumSize,
-            shape: WidgetStateProperty.all(shape),
+            shape: shape,
           ),
           child: _buildButtonContents(),
         );
