@@ -217,16 +217,15 @@ class _ActionButtonState extends State<ActionButton> {
 
     final Widget button;
     if (widget.type == ActionButtonType.solid) {
-      button = TextButton(
+      button = FilledButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return widget.disabledColor ??
-                  context.theme.colorScheme.onSurface.withOpacity(0.38);
-            }
-            return widget.color ?? context.theme.colorScheme.primary;
-          }),
+          backgroundColor: WidgetStateProperty.all(
+            widget.color ?? context.theme.colorScheme.primary,
+          ),
+          foregroundColor: WidgetStateProperty.all(
+            widget.textColor ?? context.theme.colorScheme.onPrimary,
+          ),
           minimumSize: minimumSize,
           shape: WidgetStateProperty.all(shape),
         ),
@@ -236,7 +235,13 @@ class _ActionButtonState extends State<ActionButton> {
       button = OutlinedButton(
         style: ButtonStyle(
           side: WidgetStateProperty.all(
-            widget.borderSide,
+            widget.borderSide ??
+                BorderSide(
+                  color: widget.color ?? context.theme.colorScheme.primary,
+                ),
+          ),
+          foregroundColor: WidgetStateProperty.all(
+            widget.textColor ?? context.theme.colorScheme.primary,
           ),
           padding: WidgetStateProperty.all(EdgeInsets.zero),
           minimumSize: minimumSize,
