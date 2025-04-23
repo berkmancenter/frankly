@@ -173,39 +173,36 @@ class _ActionButtonState extends State<ActionButton> {
     final text = widget.text;
     final child = widget.child;
 
-    return Container(
-      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (widget.iconSide == ActionButtonIconSide.left &&
-              widget.icon != null &&
-              !showSendingIndicatorInterior)
-            _buildIcon(),
-          if (showSendingIndicatorInterior) ...[
-            SizedBox(
-              height: 18,
-              width: 18,
-              child: CustomLoadingIndicator(),
-            ),
-            SizedBox(width: 10),
-          ],
-          if (text != null)
-            HeightConstrainedText(
-              text,
-              textAlign: TextAlign.center,
-              style: (widget.textStyle ?? context.theme.textTheme.bodyMedium)!
-                  .copyWith(color: widget.textColor),
-            )
-          else if (child != null)
-            child,
-          if (widget.iconSide == ActionButtonIconSide.right &&
-              widget.icon != null &&
-              !showSendingIndicatorInterior)
-            _buildIcon(),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (widget.iconSide == ActionButtonIconSide.left &&
+            widget.icon != null &&
+            !showSendingIndicatorInterior)
+          _buildIcon(),
+        if (showSendingIndicatorInterior) ...[
+          SizedBox(
+            height: 18,
+            width: 18,
+            child: CustomLoadingIndicator(),
+          ),
+          SizedBox(width: 10),
         ],
-      ),
+        if (text != null)
+          HeightConstrainedText(
+            text,
+            textAlign: TextAlign.center,
+            style: (widget.textStyle ?? context.theme.textTheme.bodyMedium)!
+                .copyWith(color: widget.textColor),
+          )
+        else if (child != null)
+          child,
+        if (widget.iconSide == ActionButtonIconSide.right &&
+            widget.icon != null &&
+            !showSendingIndicatorInterior)
+          _buildIcon(),
+      ],
     );
   }
 
@@ -290,28 +287,25 @@ class _ActionButtonState extends State<ActionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.margin ?? const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.sendingIndicatorAlign ==
-                  ActionButtonSendingIndicatorAlign.left &&
-              _isSending)
-            Padding(
-              padding: const EdgeInsets.only(right: 14),
-              child: _buildLoading(),
-            ),
-          _buildTooltipWrappedButton(),
-          if (widget.sendingIndicatorAlign ==
-                  ActionButtonSendingIndicatorAlign.right &&
-              _isSending)
-            Padding(
-              padding: const EdgeInsets.only(left: 14),
-              child: _buildLoading(),
-            ),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (widget.sendingIndicatorAlign ==
+                ActionButtonSendingIndicatorAlign.left &&
+            _isSending)
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: _buildLoading(),
+          ),
+        _buildTooltipWrappedButton(),
+        if (widget.sendingIndicatorAlign ==
+                ActionButtonSendingIndicatorAlign.right &&
+            _isSending)
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: _buildLoading(),
+          ),
+      ],
     );
   }
 }
