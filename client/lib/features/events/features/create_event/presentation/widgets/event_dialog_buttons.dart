@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 

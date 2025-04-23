@@ -14,7 +14,7 @@ import 'package:client/features/events/features/event_page/presentation/views/ev
 import 'package:client/features/events/features/edit_event/presentation/views/edit_event_drawer.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/calendar_menu_button.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/circle_icon_button.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_pop_up_menu_button.dart';
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
@@ -24,7 +24,7 @@ import 'package:client/features/templates/features/create_template/presentation/
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -343,15 +343,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Edit event',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          Icons.edit_outlined,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: Icons.edit_outlined,
     );
   }
 
@@ -375,15 +367,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Event Settings',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          CupertinoIcons.gear_alt,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: CupertinoIcons.gear_alt,
     );
   }
 
@@ -883,11 +867,7 @@ class _EventInfoState extends State<EventInfo> {
                         CircleIconButton(
                           onPressed: widget.onMessagePressed,
                           toolTipText: 'Message',
-                          icon: SizedBox(
-                            width: isMobile ? 30 : 20,
-                            height: isMobile ? 30 : 20,
-                            child: Icon(CupertinoIcons.paperplane),
-                          ),
+                          icon: CupertinoIcons.paperplane,
                         ),
                     ],
                   ),
