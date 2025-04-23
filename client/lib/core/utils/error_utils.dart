@@ -86,25 +86,26 @@ Future<T?> alertOnError<T>(
 }
 
 // Return callback w/ both the sanitized error and either firebase error code or exception msg when action fails
-Future<Object?> authMessageOnError<T>(
+Future<void> authMessageOnError<T>(
   Future<T> Function() action, {
   required Function(String errorMessage, String code) errorCallback,
+Function()? callback ,
 }) async {
   try {
-    return await action();
+    await action();
+    callback!();
   } catch (e, s) {
     loggingService.log(e, logType: LogType.error);
     loggingService.log(s, logType: LogType.error);
 
     final sanitizedError = sanitizeError(e.toString());
+    // TODO: This can probably be done in a more elegant fashion
     if (e is FirebaseAuthException) {
       errorCallback(sanitizedError, e.code);
     } else if (e is VisibleException) {
       errorCallback(sanitizedError, e.msg);
-    } else {
-      errorCallback(sanitizedError, 'Unknown error');
     }
-    return null;
+
   }
 }
 
