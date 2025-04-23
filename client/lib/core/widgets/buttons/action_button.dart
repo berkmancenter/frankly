@@ -246,10 +246,7 @@ class _ActionButtonState extends State<ActionButton> {
         style: ButtonStyle(
           overlayColor: overlayColor,
           side: WidgetStateProperty.all(
-            widget.borderSide ??
-                BorderSide(
-                  color: _getTextColor(),
-                ),
+            widget.borderSide,
           ),
           padding: WidgetStateProperty.all(EdgeInsets.zero),
           minimumSize: minimumSize,
