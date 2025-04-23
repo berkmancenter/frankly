@@ -49,7 +49,6 @@ class ActionButton extends StatefulWidget {
   final Color? color;
   final Color? disabledColor;
   final Color? textColor;
-  final Color? overlayColor;
   final TextStyle? textStyle;
   final OutlinedBorder? shape;
   final BorderRadius? borderRadius;
@@ -82,7 +81,6 @@ class ActionButton extends StatefulWidget {
     this.color,
     this.disabledColor,
     this.textColor,
-    this.overlayColor,
     this.textStyle,
     this.shape,
     this.borderRadius,
@@ -207,9 +205,6 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Widget _buildButton() {
-    final overlayColor = widget.overlayColor != null
-        ? WidgetStateProperty.all(widget.overlayColor)
-        : null;
     final shape = widget.shape ??
         RoundedRectangleBorder(
           borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
@@ -232,7 +227,6 @@ class _ActionButtonState extends State<ActionButton> {
             }
             return widget.color ?? context.theme.colorScheme.primary;
           }),
-          overlayColor: overlayColor,
           minimumSize: minimumSize,
           shape: WidgetStateProperty.all(shape),
         ),
@@ -241,7 +235,6 @@ class _ActionButtonState extends State<ActionButton> {
     } else if (widget.type == ActionButtonType.outline) {
       button = OutlinedButton(
         style: ButtonStyle(
-          overlayColor: overlayColor,
           side: WidgetStateProperty.all(
             widget.borderSide,
           ),
