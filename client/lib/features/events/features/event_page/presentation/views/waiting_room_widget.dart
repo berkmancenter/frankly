@@ -136,7 +136,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   onChanged: (value) =>
                       _presenter.updateWaitingBufferMinutesInString(value),
                   isOnlyDigits: true,
-                  useDarkMode: false,
                   numberThreshold: 60,
                 ),
               ),
@@ -156,7 +155,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   onChanged: (value) =>
                       _presenter.updateWaitingBufferSecondsInString(value),
                   isOnlyDigits: true,
-                  useDarkMode: false,
                   numberThreshold: 59,
                 ),
               ),
@@ -207,7 +205,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                     onChanged: (value) =>
                         _presenter.updateMinutesInString(value),
                     isOnlyDigits: true,
-                    useDarkMode: false,
                     numberThreshold: 60,
                   ),
                 ),
@@ -227,7 +224,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                     onChanged: (value) =>
                         _presenter.updateSecondsInString(value),
                     isOnlyDigits: true,
-                    useDarkMode: false,
                     numberThreshold: 59,
                   ),
                 ),

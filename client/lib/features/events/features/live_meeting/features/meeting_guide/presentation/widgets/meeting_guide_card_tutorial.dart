@@ -174,7 +174,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
     const kEmptyProfileSize = 32.0;
 
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
       child: Column(
         children: [

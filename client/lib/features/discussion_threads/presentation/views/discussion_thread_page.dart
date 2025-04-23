@@ -48,8 +48,6 @@ class DiscussionThreadPage extends StatefulWidget {
 
 class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     implements DiscussionThreadView {
-  static const _kBackgroundColor = AppColor.gray6;
-
   /// Key for `comments` section start. It is used for auto-scrolling if [widget.scrollToComments]
   /// is true.
   final _commentsSectionKey = GlobalKey();
@@ -151,7 +149,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               _presenter.scrollToComments();
 
               return Scaffold(
-                backgroundColor: _kBackgroundColor,
+                backgroundColor: context.theme.colorScheme.surface,
                 floatingActionButton: _buildFAB(discussionThread),
                 body:
                     _buildBody(discussionThread, localDiscussionThreadComments),
@@ -209,7 +207,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           child: CustomScrollView(
             slivers: [
               SliverAppBar(
-                backgroundColor: isMobile ? AppColor.white : _kBackgroundColor,
+                backgroundColor: isMobile
+                    ? AppColor.white
+                    : context.theme.colorScheme.surface,
                 automaticallyImplyLeading: false,
                 expandedHeight: 50,
                 floating: true,

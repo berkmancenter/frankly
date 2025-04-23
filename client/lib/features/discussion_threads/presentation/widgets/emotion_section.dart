@@ -153,7 +153,7 @@ class EmotionSection extends StatelessWidget {
                           borderRadius: borderRadius,
                           color: emotionType ==
                                   currentlySelectedEmotion?.emotionType
-                              ? AppColor.gray6
+                              ? context.theme.colorScheme.surface
                               : Colors.transparent,
                         ),
                         child: Padding(

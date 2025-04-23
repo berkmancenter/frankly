@@ -173,7 +173,7 @@ class _BreakoutRoomDefinitionCardState
               ),
               FormBuilderSlider(
                 activeColor: context.theme.colorScheme.primary,
-                inactiveColor: AppColor.gray6,
+                inactiveColor: context.theme.colorScheme.surface,
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent, width: 0),
@@ -423,7 +423,6 @@ class _QuestionCardState extends State<QuestionCard> {
                     question: value,
                     questionId: widget.questionId,
                   ),
-                  useDarkMode: false,
                 ),
                 SizedBox(height: 30),
                 for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
@@ -503,8 +502,11 @@ class _QuestionCardState extends State<QuestionCard> {
       text: 'Edit',
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
-        child: Icon(Icons.edit,
-            color: context.theme.colorScheme.primary, size: 20),
+        child: Icon(
+          Icons.edit,
+          color: context.theme.colorScheme.primary,
+          size: 20,
+        ),
       ),
       iconSide: ActionButtonIconSide.right,
     );
@@ -541,7 +543,6 @@ class _QuestionCardState extends State<QuestionCard> {
                   questionId: widget.questionId,
                   breakoutAnswerOption: breakoutAnswerOption,
                 ),
-                useDarkMode: false,
               ),
             ),
             SizedBox(width: 10),

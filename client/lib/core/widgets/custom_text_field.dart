@@ -48,7 +48,6 @@ class CustomTextField extends StatefulWidget {
   final bool hideCounter;
   final void Function()? onTap;
   final bool obscureText;
-  final bool useDarkMode;
 
   /// Defines if `Optional` is present at the end of the line.
   final bool isOptional;
@@ -102,7 +101,6 @@ class CustomTextField extends StatefulWidget {
     this.hideCounter = false,
     this.onTap,
     this.obscureText = false,
-    this.useDarkMode = false,
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
@@ -137,10 +135,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     if (widget.borderType == BorderType.outline) {
       return OutlineInputBorder(
         borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
           width: 1.0,
         ),
         borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -148,10 +143,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     } else if (widget.borderType == BorderType.underline) {
       return UnderlineInputBorder(
         borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
           width: 1.0,
         ),
       );
@@ -168,33 +160,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
             : AppColor.gray4;
   }
 
-  Color _getDarkModeBorderColor({bool isError = false}) {
-    return isError
-        ? AppColor.redDarkMode
-        : _focusNode.hasFocus
-            ? AppColor.accentBlueLight
-            : AppColor.gray5;
-  }
-
   TextStyle _buildLabelStyle() {
     return widget.labelStyle ??
         AppTextStyle.bodySmall.copyWith(
-          color: _focusNode.hasFocus
-              ? (widget.useDarkMode
-                  ? AppColor.accentBlueLight
-                  : AppColor.accentBlue)
-              : (widget.useDarkMode ? AppColor.gray5 : AppColor.gray4),
+          color: _focusNode.hasFocus ? AppColor.accentBlue : AppColor.gray4,
         );
   }
 
   TextStyle _buildTextStyle({bool isError = false}) {
     return widget.textStyle ??
         AppTextStyle.body.copyWith(
-          color: isError
-              ? (widget.useDarkMode
-                  ? AppColor.redDarkMode
-                  : AppColor.redLightMode)
-              : (widget.useDarkMode ? AppColor.white : AppColor.gray2),
+          color: isError ? AppColor.redLightMode : AppColor.gray2,
         );
   }
 
@@ -257,10 +233,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
                 obscureText: widget.obscureText,
-                cursorColor: widget.cursorColor ??
-                    (widget.useDarkMode
-                        ? AppColor.accentBlueLight
-                        : AppColor.accentBlue),
+                cursorColor: widget.cursorColor ?? AppColor.accentBlue,
                 autovalidateMode: widget.autovalidateMode,
                 maxLength: widget.maxLength,
                 buildCounter: (

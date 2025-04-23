@@ -967,7 +967,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     final isAdmin = selectedTab == TabType.admin;
     final Color backgroundColor;
     if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
-      backgroundColor = AppColor.gray6;
+      backgroundColor = context.theme.colorScheme.surface;
     } else if (isAdmin) {
       backgroundColor = context.theme.colorScheme.primary;
     } else {
