@@ -114,6 +114,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   late FocusNode _focusNode;
   late TextEditingController _controller;
   bool _shiftPressed = false;
+  bool _hasFocus = false;
 
   void _unfocus() {
     if (kIsWeb) {
@@ -129,6 +130,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue ?? '');
+    
+    _focusNode.addListener(() {
+      setState(() {
+        _hasFocus = _focusNode.hasFocus;
+      });
+    });
   }
 
   InputBorder _getBorder({bool isError = false}) {
@@ -166,6 +173,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: _focusNode.hasFocus
               ? context.theme.colorScheme.primary
               : context.theme.colorScheme.onPrimaryContainer,
+          fontWeight: _hasFocus ? FontWeight.bold : FontWeight.normal,
         );
   }
 
@@ -281,7 +289,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 decoration: InputDecoration(
                   contentPadding: widget.contentPadding,
                   border: _getBorder(),
-                  focusedBorder: _getBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 3.0,
+                    ),
+                  ),
                   enabledBorder: _getBorder(),
                   errorBorder: _getBorder(isError: true),
                   labelText: widget.labelText,
