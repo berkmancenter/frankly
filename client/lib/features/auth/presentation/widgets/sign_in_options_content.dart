@@ -141,8 +141,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text(
           'Please enter a valid email address.',
           style: context.theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColor.red500,
-   
+            color: AppColor.red500,
           ),
         );
 
@@ -254,7 +253,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   CustomTextField(
                     key: SignInOptionsContent.nameTextFieldKey,
                     controller: _displayNameController,
-                    labelText: 'Your Name',
+                    labelText: 'Full Name',
+                    hintText: 'e.g. Jane Doe',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a valid name';
@@ -285,14 +285,18 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               obscureText: !_showPassword,
               suffixIcon: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
-                child: IconButton(
-                  onPressed: () =>
-                      setState(() => _showPassword = !_showPassword),
-                  icon: Icon(
-                    _showPassword
-                        ? Icons.visibility_rounded
-                        : Icons.visibility_off_rounded,
-                    size: 24,
+                child: Semantics(
+                  label: _showPassword ? 'Hide password' : 'Show password',
+                  button: true,
+                  child: IconButton(
+                    onPressed: () =>
+                        setState(() => _showPassword = !_showPassword),
+                    icon: Icon(
+                      _showPassword
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
@@ -301,8 +305,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 // Because they may have a legacy account before we started enforcing complexity
                 if (!_showSignup && (value == null || value.isEmpty)) {
                   return 'Please enter a password';
-                }
-                else if (value == null || value.isEmpty || !isPasswordValid(value)) {
+                } else if (value == null ||
+                    value.isEmpty ||
+                    !isPasswordValid(value)) {
                   return 'Please enter a valid password';
                 }
                 return null;
