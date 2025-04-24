@@ -1,6 +1,6 @@
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/styles/styles.dart';
@@ -30,43 +30,50 @@ class CommunitySideBarNavigation extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 12),
-        SideBarNavigationButton(
+        ActionButton(
+          type: ActionButtonType.text,
           text: 'Events',
-          onTap: () => routerDelegate.beamTo(initialCommunityRoute.eventsPage),
-          style: AppTextStyle.body,
+          onPressed: () =>
+              routerDelegate.beamTo(initialCommunityRoute.eventsPage),
+          textStyle: context.theme.textTheme.bodyMedium,
         ),
         if (enableDiscussionThreads) ...[
-          SideBarNavigationButton(
+          ActionButton(
+            type: ActionButtonType.text,
             text: 'Posts',
-            onTap: () => routerDelegate
+            onPressed: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
-            style: AppTextStyle.body,
+            textStyle: context.theme.textTheme.bodyMedium,
           ),
         ],
         if (showResources) ...[
-          SideBarNavigationButton(
+          ActionButton(
+            type: ActionButtonType.text,
             text: 'Resources',
-            style: AppTextStyle.body,
-            onTap: () =>
+            onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
+            textStyle: context.theme.textTheme.bodyMedium,
           ),
         ],
-        SideBarNavigationButton(
+        ActionButton(
+          type: ActionButtonType.text,
           text: 'Templates',
-          onTap: () =>
+          onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
-          style: AppTextStyle.body,
+          textStyle: context.theme.textTheme.bodyMedium,
         ),
         if (showLeaveCommunity)
-         Semantics(
-          label: 'Sidebar Unfollow Button',
-          identifier: 'sidebar_unfollow_button',
-          button: true,
-          child: SideBarNavigationButton(
+          Semantics(
+            label: 'Sidebar Unfollow Button',
+            identifier: 'sidebar_unfollow_button',
+            button: true,
+            child: ActionButton(
+              type: ActionButtonType.text,
               text: 'Unfollow',
-              onTap: () => alertOnError(
+              onPressed: () => alertOnError(
                 context,
                 () => Provider.of<UserDataService>(context, listen: false)
                     .requestChangeCommunityMembership(
@@ -74,14 +81,16 @@ class CommunitySideBarNavigation extends StatelessWidget {
                   join: false,
                 ),
               ),
+              textStyle: context.theme.textTheme.bodyMedium,
             ),
           ),
         if (showAdmin) ...[
-          SideBarNavigationButton(
+          ActionButton(
+            type: ActionButtonType.text,
             text: 'Admin',
-            onTap: () =>
+            onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
-            style: AppTextStyle.body,
+            textStyle: context.theme.textTheme.bodyMedium,
           ),
         ],
       ],
