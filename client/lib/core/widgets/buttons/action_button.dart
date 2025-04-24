@@ -246,44 +246,58 @@ class _ActionButtonState extends State<ActionButton> {
 
     final Widget button;
     if (widget.type == ActionButtonType.flat) {
-      button = TextButton(
-        onPressed: onPressed,
-        onHover: (hover) {
-          setState(() => _hover = hover);
-        },
-        onFocusChange: (focus) {
-          setState(() => _hover = focus);
-        },
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return widget.disabledColor ??
-                  context.theme.colorScheme.onSurface.withOpacity(0.38);
-            }
-            return widget.color != null ? widget.color!.withOpacity(_hover ? .8 : 1) : context.theme.colorScheme.primary;
-          }),
-          overlayColor: overlayColor,
-          minimumSize: minimumSize,
-          shape: WidgetStateProperty.all(shape),
+      button = Semantics(
+        button: true,
+        focused: _hover,
+        enabled: onPressed != null,
+        label: widget.text,
+        child: TextButton(
+          onPressed: onPressed,
+          onHover: (hover) {
+            setState(() => _hover = hover);
+          },
+          onFocusChange: (focus) {
+            setState(() => _hover = focus);
+          },
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.disabled)) {
+                return widget.disabledColor ??
+                    context.theme.colorScheme.onSurface.withOpacity(0.38);
+              }
+              return widget.color != null
+                  ? widget.color!.withOpacity(_hover ? .8 : 1)
+                  : context.theme.colorScheme.primary;
+            }),
+            overlayColor: overlayColor,
+            minimumSize: minimumSize,
+            shape: WidgetStateProperty.all(shape),
+          ),
+          child: _buildButtonContents(),
         ),
-        child: _buildButtonContents(),
       );
     } else if (widget.type == ActionButtonType.outline) {
-      button = OutlinedButton(
-        style: ButtonStyle(
-          overlayColor: overlayColor,
-          side: WidgetStateProperty.all(
-            widget.borderSide ??
-                BorderSide(
-                  color: _getTextColor(),
-                ),
+      button = Semantics(
+        button: true,
+        focused: _hover,
+        enabled: onPressed != null,
+        label: widget.text,
+        child: OutlinedButton(
+          style: ButtonStyle(
+            overlayColor: overlayColor,
+            side: WidgetStateProperty.all(
+              widget.borderSide ??
+                  BorderSide(
+                    color: _getTextColor(),
+                  ),
+            ),
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            minimumSize: minimumSize,
+            shape: WidgetStateProperty.all(shape),
           ),
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
-          minimumSize: minimumSize,
-          shape: WidgetStateProperty.all(shape),
+          onPressed: onPressed,
+          child: _buildButtonContents(),
         ),
-        onPressed: onPressed,
-        child: _buildButtonContents(),
       );
     } else {
       button = SizedBox.shrink();
