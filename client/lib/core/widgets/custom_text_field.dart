@@ -236,7 +236,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 controller: _controller,
                 style: _buildTextStyle(),
                 onEditingComplete: widget.onEditingComplete,
-                maxLines: widget.maxLines,
+                // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
+                // while not having to specify max lines for every single usage 🙄
+                maxLines: (widget.maxLength != null &&
+                        widget.minLines! > widget.maxLines!)
+                    ? widget.minLines
+                    : widget.maxLines,
                 minLines: widget.minLines,
                 obscureText: widget.obscureText,
                 cursorColor:
