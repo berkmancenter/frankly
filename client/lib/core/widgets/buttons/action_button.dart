@@ -182,34 +182,37 @@ class _ActionButtonState extends State<ActionButton> {
                 : MainAxisAlignment.end;
     final child = widget.child;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: mainAxisAlignment,
-      children: [
-        if (widget.iconSide == ActionButtonIconSide.left &&
-            widget.icon != null &&
-            !showSendingIndicatorInterior)
-          _buildIcon(),
-        if (showSendingIndicatorInterior) ...[
-          SizedBox(
-            height: 18,
-            width: 18,
-            child: CustomLoadingIndicator(),
-          ),
-          SizedBox(width: 10),
+    return Padding(
+      padding: widget.padding ?? EdgeInsets.zero,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: mainAxisAlignment,
+        children: [
+          if (widget.iconSide == ActionButtonIconSide.left &&
+              widget.icon != null &&
+              !showSendingIndicatorInterior)
+            _buildIcon(),
+          if (showSendingIndicatorInterior) ...[
+            SizedBox(
+              height: 18,
+              width: 18,
+              child: CustomLoadingIndicator(),
+            ),
+            SizedBox(width: 10),
+          ],
+          if (text != null)
+            HeightConstrainedText(
+              text,
+              style: widget.textStyle,
+            )
+          else if (child != null)
+            child,
+          if (widget.iconSide == ActionButtonIconSide.right &&
+              widget.icon != null &&
+              !showSendingIndicatorInterior)
+            _buildIcon(),
         ],
-        if (text != null)
-          HeightConstrainedText(
-            text,
-            style: widget.textStyle,
-          )
-        else if (child != null)
-          child,
-        if (widget.iconSide == ActionButtonIconSide.right &&
-            widget.icon != null &&
-            !showSendingIndicatorInterior)
-          _buildIcon(),
-      ],
+      ),
     );
   }
 
