@@ -12,6 +12,7 @@ import 'package:client/features/events/presentation/widgets/custom_drag_scroll_b
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Widget that shows all templates within the community and lets you search through
 /// them and select them.
@@ -60,7 +61,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
   Widget _buildSearchBar() {
     return CustomTextField(
       padding: EdgeInsets.zero,
-      labelText: 'Search templates',
+      labelText: context.l10n.searchTemplates,
       labelStyle: TextStyle(color: AppColor.darkBlue),
       textStyle: TextStyle(color: AppColor.darkBlue, fontSize: 16),
       borderType: BorderType.outline,
@@ -115,16 +116,16 @@ class _SelectTemplateState extends State<SelectTemplate> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Padding(
+          children: [
+            const Padding(
               padding: EdgeInsets.only(left: 5, top: 10, right: 5),
               child: Icon(Icons.add, color: AppColor.darkBlue),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
+              padding: const EdgeInsets.only(left: 5, bottom: 10, right: 5),
               child: HeightConstrainedText(
-                'Create a new template',
-                style: TextStyle(
+                context.l10n.createNewTemplate,
+                style: const TextStyle(
                   fontSize: 13,
                   color: AppColor.darkBlue,
                   fontWeight: FontWeight.w900,
@@ -157,7 +158,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
           SizedBox.shrink(),
         if (provider.displayTemplates.isEmpty && widget.onAddNew == null)
           HeightConstrainedText(
-            'No templates found.',
+            context.l10n.noTemplatesFound,
             style: AppTextStyle.body.copyWith(color: AppColor.gray4),
           )
         else
@@ -194,7 +195,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
                       alignment: Alignment.center,
                       child: ActionButton(
                         onPressed: provider.showMoreTemplates,
-                        text: 'View more templates',
+                        text: context.l10n.viewMoreTemplates,
                       ),
                     ),
                 ],
