@@ -2,13 +2,12 @@ import 'dart:math';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/circle_icon_button.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_picture.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
 import 'package:client/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart';
@@ -23,7 +22,6 @@ import 'package:client/features/templates/presentation/views/new_event_card.dart
 import 'package:client/features/templates/data/providers/template_page_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
-import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
@@ -34,7 +32,6 @@ import 'package:client/core/widgets/tabs/tab_controller.dart';
 import 'package:client/features/templates/presentation/widgets/template_cards.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -712,12 +709,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
 
   Widget _buildSettingsButton() {
     return CircleIconButton(
-      icon: ProxiedImage(
-        null,
-        asset: AppAsset.kGearPng,
-        width: 20,
-        height: 20,
-      ),
+      icon: Icons.settings_outlined,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -743,12 +735,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
     final communityProvider = context.read<CommunityProvider>();
 
     return CircleIconButton(
-      icon: ProxiedImage(
-        null,
-        asset: AppAsset.kEditPng,
-        width: 20,
-        height: 20,
-      ),
+      icon: Icons.edit,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,

@@ -4,7 +4,7 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';

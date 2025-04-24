@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';

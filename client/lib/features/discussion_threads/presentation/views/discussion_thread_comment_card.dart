@@ -1,7 +1,7 @@
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/discussion_threads/presentation/widgets/emotion_section.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';

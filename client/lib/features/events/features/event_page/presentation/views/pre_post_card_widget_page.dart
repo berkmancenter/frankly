@@ -7,8 +7,8 @@ import 'package:client/features/events/features/event_page/presentation/views/pr
 import 'package:client/features/events/features/event_page/data/models/pre_post_card_widget_model.dart';
 import 'package:client/features/events/features/event_page/presentation/pre_post_card_widget_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';

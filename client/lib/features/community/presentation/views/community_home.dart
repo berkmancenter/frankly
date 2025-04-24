@@ -19,6 +19,7 @@ import 'package:client/features/community/presentation/widgets/community_members
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/thick_outline_button.dart';
+import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
@@ -189,7 +190,6 @@ class _CommunityHomeState extends State<CommunityHome> {
           if (!userDataService.isMember(communityId: community.id)) ...[
             CommunityMembershipButton(
               community,
-              bgColor: Theme.of(context).colorScheme.primary,
             ),
             SizedBox(width: 12),
           ],
