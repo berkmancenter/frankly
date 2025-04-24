@@ -47,7 +47,7 @@ class _SideBarState extends State<SideBar> {
   Widget build(BuildContext context) {
     return Container(
       width: AppSize.kSidebarWidth,
-      color: context.theme.colorScheme.secondary,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxHeight < 750) {
