@@ -68,9 +68,8 @@ class _SideBarState extends State<SideBar> {
         Expanded(
           child: CustomListView(
             children: [
-              Container(
+              Padding(
                 padding: const EdgeInsets.all(20),
-                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: _buildNavigationOrSignIn(),
               ),
               _buildBottomSidebarButtons(),
