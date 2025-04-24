@@ -96,11 +96,7 @@ class ActionButton extends StatefulWidget {
     this.height,
     this.tooltipText,
     this.child,
-  })  : assert(
-          textStyle == null || textColor == null,
-          'Cannot specify textStyle and textColor',
-        ),
-        assert(child == null || text == null, 'Cannot specify child and text'),
+  })  : assert(child == null || text == null, 'Cannot specify child and text'),
         super(key: key);
 
   @override
