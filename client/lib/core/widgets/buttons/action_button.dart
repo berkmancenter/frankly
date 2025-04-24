@@ -22,6 +22,12 @@ enum ActionButtonIconSide {
   right,
 }
 
+enum ActionButtonContentAlignment {
+  start,
+  center,
+  end,
+}
+
 class SubmitNotifier {
   final List<Future<void> Function()> _listeners = [];
 
@@ -58,6 +64,7 @@ class ActionButton extends StatefulWidget {
   final Map<String, dynamic>? eventParameters;
   final SubmitNotifier? controller;
   final ActionButtonSendingIndicatorAlign sendingIndicatorAlign;
+  final ActionButtonContentAlignment contentAlign;
   final ActionButtonIconSide iconSide;
 
   final double? loadingHeight;
@@ -91,6 +98,7 @@ class ActionButton extends StatefulWidget {
     this.eventParameters,
     this.controller,
     this.sendingIndicatorAlign = ActionButtonSendingIndicatorAlign.left,
+    this.contentAlign = ActionButtonContentAlignment.center,
     this.iconSide = ActionButtonIconSide.left,
     this.loadingHeight,
     this.height,
@@ -166,11 +174,17 @@ class _ActionButtonState extends State<ActionButton> {
             ActionButtonSendingIndicatorAlign.interior &&
         _isSending;
     final text = widget.text;
+    final mainAxisAlignment =
+        widget.contentAlign == ActionButtonContentAlignment.center
+            ? MainAxisAlignment.center
+            : widget.contentAlign == ActionButtonContentAlignment.start
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.end;
     final child = widget.child;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: mainAxisAlignment,
       children: [
         if (widget.iconSide == ActionButtonIconSide.left &&
             widget.icon != null &&
@@ -187,7 +201,6 @@ class _ActionButtonState extends State<ActionButton> {
         if (text != null)
           HeightConstrainedText(
             text,
-            textAlign: TextAlign.center,
             style: widget.textStyle,
           )
         else if (child != null)
