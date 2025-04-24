@@ -11,7 +11,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
