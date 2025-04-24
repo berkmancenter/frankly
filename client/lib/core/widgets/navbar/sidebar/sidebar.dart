@@ -185,7 +185,6 @@ class _SideBarState extends State<SideBar> {
       );
 
   Widget _buildBottomSidebarButtons() {
-    const showHomeButton = true;
     final version =
         js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
@@ -196,24 +195,23 @@ class _SideBarState extends State<SideBar> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 8),
-          if (showHomeButton)
-            Row(
-              children: [
-                SizedBox(width: 5),
-                ProxiedImage(
-                  null,
-                  asset: AppAsset.kLogoIconPng,
-                  width: 20,
-                  height: 20,
-                ),
-                SideBarNavigationButton(
-                  text: '${Environment.appName} Home',
-                  onTap: () => routerDelegate.beamTo(HomeLocation()),
-                  style: AppTextStyle.eyebrowSmall,
-                  verticalPadding: 6,
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              SizedBox(width: 5),
+              ProxiedImage(
+                null,
+                asset: AppAsset.kLogoIconPng,
+                width: 20,
+                height: 20,
+              ),
+              SideBarNavigationButton(
+                text: '${Environment.appName} Home',
+                onTap: () => routerDelegate.beamTo(HomeLocation()),
+                style: AppTextStyle.eyebrowSmall,
+                verticalPadding: 6,
+              ),
+            ],
+          ),
           SideBarNavigationButton(
             text: 'Help Center',
             onTap: () => launch(Environment.helpCenterUrl),
