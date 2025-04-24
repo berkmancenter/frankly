@@ -37,7 +37,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
           text: 'Events',
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.eventsPage),
-          textStyle: context.theme.textTheme.bodyMedium,
+          textStyle: context.theme.textTheme.bodyLarge,
           expand: true,
           padding: EdgeInsets.symmetric(horizontal: 16),
           contentAlign: ActionButtonContentAlignment.start,
@@ -48,7 +48,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
             text: 'Posts',
             onPressed: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
-            textStyle: context.theme.textTheme.bodyMedium,
+            textStyle: context.theme.textTheme.bodyLarge,
             padding: EdgeInsets.symmetric(horizontal: 16),
             expand: true,
             contentAlign: ActionButtonContentAlignment.start,
@@ -60,7 +60,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
             text: 'Resources',
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
-            textStyle: context.theme.textTheme.bodyMedium,
+            textStyle: context.theme.textTheme.bodyLarge,
             expand: true,
             padding: EdgeInsets.symmetric(horizontal: 16),
             contentAlign: ActionButtonContentAlignment.start,
@@ -71,7 +71,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
           text: 'Templates',
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
-          textStyle: context.theme.textTheme.bodyMedium,
+          textStyle: context.theme.textTheme.bodyLarge,
           expand: true,
           padding: EdgeInsets.symmetric(horizontal: 16),
           contentAlign: ActionButtonContentAlignment.start,
@@ -92,7 +92,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
                   join: false,
                 ),
               ),
-              textStyle: context.theme.textTheme.bodyMedium,
+              textStyle: context.theme.textTheme.bodyLarge,
               expand: true,
               padding: EdgeInsets.symmetric(horizontal: 16),
               contentAlign: ActionButtonContentAlignment.start,
@@ -104,7 +104,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
             text: 'Admin',
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
-            textStyle: context.theme.textTheme.bodyMedium,
+            textStyle: context.theme.textTheme.bodyLarge,
             expand: true,
             padding: EdgeInsets.symmetric(horizontal: 16),
             contentAlign: ActionButtonContentAlignment.start,
