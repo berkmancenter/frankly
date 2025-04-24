@@ -103,7 +103,8 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
             HeightConstrainedText(
               'Start a community',
               style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onSurface,
+              ),
             ),
           ],
         ],
