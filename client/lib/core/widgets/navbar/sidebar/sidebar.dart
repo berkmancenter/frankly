@@ -64,7 +64,7 @@ class _SideBarState extends State<SideBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildSidebarHeader(),
+        _buildSidebarCloseButton(),
         Expanded(
           child: CustomListView(
             children: [
@@ -84,7 +84,7 @@ class _SideBarState extends State<SideBar> {
   Widget _buildDesktopLayout() {
     return Column(
       children: [
-        _buildSidebarHeader(),
+        _buildSidebarCloseButton(),
         Expanded(
           child: CustomListView(
             padding: const EdgeInsets.all(20),
@@ -98,7 +98,7 @@ class _SideBarState extends State<SideBar> {
     );
   }
 
-  Widget _buildSidebarHeader() {
+  Widget _buildSidebarCloseButton() {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
