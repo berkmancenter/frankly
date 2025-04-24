@@ -187,7 +187,6 @@ class _ActionButtonState extends State<ActionButton> {
             HeightConstrainedText(
               text,
               textAlign: TextAlign.center,
-
             )
           else if (child != null)
             child,
@@ -259,10 +258,22 @@ class _ActionButtonState extends State<ActionButton> {
     }
 
     if (widget.expand) {
-      return Expanded(child: button);
+      return Semantics(
+        button: true,
+        focused: _hover,
+        enabled: onPressed != null,
+        label: widget.text,
+        child: Expanded(child: button),
+      );
     }
 
-    return button;
+    return Semantics(
+      button: true,
+      focused: _hover,
+      enabled: onPressed != null,
+      label: widget.text,
+      child: button,
+    );
   }
 
   Widget _buildTooltipWrappedButton() {
