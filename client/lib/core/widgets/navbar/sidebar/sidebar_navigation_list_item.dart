@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
@@ -55,6 +56,7 @@ class _SidebarNavigationListItemState extends State<SidebarNavigationListItem> {
         CommunityPageRoutes(communityDisplayId: widget.community.displayId);
 
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         CustomInkWell(
           hoverColor: Colors.transparent,
@@ -65,22 +67,20 @@ class _SidebarNavigationListItemState extends State<SidebarNavigationListItem> {
             withBorder: true,
           ),
         ),
-        SizedBox(width: 10),
-        Expanded(
-          child: CustomInkWell(
-            onTap: () =>
+        SizedBox(width: 8),
+        Flexible(
+          child: ActionButton(
+            type: ActionButtonType.text,
+            text: widget.community.name ?? 'Unnamed Community',
+            onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityHome),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-              child: HeightConstrainedText(
-                widget.community.name ?? 'Unnamed Community',
-                style: AppTextStyle.body
-                    .copyWith(color: context.theme.colorScheme.secondary),
-              ),
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+            textStyle: context.theme.textTheme.titleMedium,
+            expand: true,
+            contentAlign: ActionButtonContentAlignment.start,
           ),
         ),
-        SizedBox(width: 10),
+        SizedBox(width: 8),
         if (widget.isCollapsible)
           CustomInkWell(
             hoverColor: Colors.transparent,
