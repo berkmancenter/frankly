@@ -211,19 +211,16 @@ class _SideBarState extends State<SideBar> {
               ),
             ],
           ),
-          const SizedBox(height: 4.0),
           ActionButton(
             type: ActionButtonType.text,
             text: 'Help Center',
             onPressed: () => launch(Environment.helpCenterUrl),
           ),
-          const SizedBox(height: 8.0),
           ActionButton(
             type: ActionButtonType.text,
             text: 'About ${Environment.appName}',
             onPressed: () => launch(Environment.aboutUrl),
           ),
-          const SizedBox(height: 8.0),
           ActionButton(
             type: ActionButtonType.text,
             text: 'Privacy Policy',
