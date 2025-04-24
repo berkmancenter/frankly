@@ -89,7 +89,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text.rich(
           TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: AppColor.red500,
+              color: context.theme.colorScheme.error,
             ),
             children: [
               TextSpan(
@@ -104,7 +104,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                       }),
                 style: context.theme.textTheme.bodyMedium?.copyWith(
                   decoration: TextDecoration.underline,
-                  color: AppColor.red500,
+                  color: context.theme.colorScheme.error,
                 ),
               ),
               TextSpan(text: ' instead.'),
@@ -115,7 +115,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text.rich(
           TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: AppColor.red500,
+              color: context.theme.colorScheme.error,
             ),
             children: [
               TextSpan(
@@ -130,7 +130,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                       }),
                 style: context.theme.textTheme.bodyMedium?.copyWith(
                   decoration: TextDecoration.underline,
-                  color: AppColor.red500,
+                  color: context.theme.colorScheme.error,
                 ),
               ),
               TextSpan(text: ' instead.'),
@@ -141,7 +141,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         return Text(
           'Please enter a valid email address.',
           style: context.theme.textTheme.bodyMedium?.copyWith(
-            color: AppColor.red500,
+            color: context.theme.colorScheme.error,
           ),
         );
 
