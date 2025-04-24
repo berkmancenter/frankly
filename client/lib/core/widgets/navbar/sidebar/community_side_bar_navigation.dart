@@ -30,7 +30,6 @@ class CommunitySideBarNavigation extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 12),
         ActionButton(
@@ -39,6 +38,9 @@ class CommunitySideBarNavigation extends StatelessWidget {
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.eventsPage),
           textStyle: context.theme.textTheme.bodyMedium,
+          expand: true,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          contentAlign: ActionButtonContentAlignment.start,
         ),
         if (enableDiscussionThreads) ...[
           ActionButton(
@@ -47,6 +49,9 @@ class CommunitySideBarNavigation extends StatelessWidget {
             onPressed: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
             textStyle: context.theme.textTheme.bodyMedium,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            expand: true,
+            contentAlign: ActionButtonContentAlignment.start,
           ),
         ],
         if (showResources) ...[
@@ -56,6 +61,9 @@ class CommunitySideBarNavigation extends StatelessWidget {
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
             textStyle: context.theme.textTheme.bodyMedium,
+            expand: true,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            contentAlign: ActionButtonContentAlignment.start,
           ),
         ],
         ActionButton(
@@ -64,6 +72,9 @@ class CommunitySideBarNavigation extends StatelessWidget {
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
           textStyle: context.theme.textTheme.bodyMedium,
+          expand: true,
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          contentAlign: ActionButtonContentAlignment.start,
         ),
         if (showLeaveCommunity)
           Semantics(
@@ -82,6 +93,9 @@ class CommunitySideBarNavigation extends StatelessWidget {
                 ),
               ),
               textStyle: context.theme.textTheme.bodyMedium,
+              expand: true,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              contentAlign: ActionButtonContentAlignment.start,
             ),
           ),
         if (showAdmin) ...[
@@ -91,6 +105,9 @@ class CommunitySideBarNavigation extends StatelessWidget {
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
             textStyle: context.theme.textTheme.bodyMedium,
+            expand: true,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            contentAlign: ActionButtonContentAlignment.start,
           ),
         ],
       ],
