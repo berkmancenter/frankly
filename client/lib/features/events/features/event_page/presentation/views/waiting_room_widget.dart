@@ -82,7 +82,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
         children: [
           HeightConstrainedText(
             'Intro Text',
-            style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+            style: AppTextStyle.subhead
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           CustomTextField(
             minLines: 3,
@@ -91,7 +92,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             initialValue: _model.waitingRoomInfo.content,
             onChanged: (value) => _presenter.updateWaitingText(value),
             hintText: 'Enter waiting room text (optional)',
-            textStyle: AppTextStyle.body.copyWith(color: AppColor.gray1),
+            textStyle: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           SizedBox(height: 20),
           Text(
@@ -110,7 +112,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             children: [
               Checkbox(
                 activeColor: context.theme.colorScheme.primary,
-                checkColor: AppColor.brightGreen,
+                checkColor: context.theme.colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(color: context.theme.colorScheme.primary),
@@ -269,7 +271,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
               ActionButton(
                 loadingHeight: 10.0,
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 text: 'Save',
                 onPressed: () => alertOnError(
                   context,

@@ -81,7 +81,7 @@ class _CustomTabState extends State<_CustomTab> {
             bottom: BorderSide(
               color: shouldHighlight
                   ? context.theme.colorScheme.primary
-                  : AppColor.textTertiary,
+                  : context.theme.colorScheme.secondary,
               width: shouldHighlight ? 5 : 3,
             ),
           ),
@@ -109,7 +109,7 @@ class _CustomTabState extends State<_CustomTab> {
                     style: AppTextStyle.bodyMedium.copyWith(
                       color: shouldHighlight
                           ? context.theme.colorScheme.primary
-                          : AppColor.textTertiary,
+                          : context.theme.colorScheme.secondary,
                     ),
                   ),
                 ],

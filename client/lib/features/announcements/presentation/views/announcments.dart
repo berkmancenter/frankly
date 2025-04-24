@@ -105,7 +105,7 @@ class _AnnouncementsState extends State<Announcements> {
           textAlign: TextAlign.left,
           style: body.copyWith(
             fontSize: 14,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
           options: LinkifyOptions(looseUrl: true),
           onOpen: (link) => launch(link.url),

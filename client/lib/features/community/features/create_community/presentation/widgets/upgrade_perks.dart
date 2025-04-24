@@ -48,7 +48,8 @@ class UpgradePerks extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ...[
-                for (final perk in _upgradePerks) _buildUpgradePerk(perk),
+                for (final perk in _upgradePerks)
+                  _buildUpgradePerk(context, perk),
               ].intersperse(
                 SizedBox(height: 10),
               ),
@@ -67,7 +68,7 @@ class UpgradePerks extends StatelessWidget {
                 SizedBox(height: 20),
                 ActionButton(
                   color: context.theme.colorScheme.primary,
-                  textColor: AppColor.brightGreen,
+                  textColor: context.theme.colorScheme.onPrimary,
                   text: 'Upgrade',
                   expand: true,
                   borderRadius: BorderRadius.circular(10),
@@ -79,17 +80,23 @@ class UpgradePerks extends StatelessWidget {
         : SizedBox.shrink();
   }
 
-  Widget _buildUpgradePerk(String perk) => Row(
+  Widget _buildUpgradePerk(BuildContext context, String perk) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: AppColor.darkGreen, size: 12),
+          Icon(
+            Icons.check,
+            color: context.theme.colorScheme.secondary,
+            size: 12,
+          ),
           SizedBox(
             width: 10,
           ),
           Flexible(
             child: HeightConstrainedText(
               perk,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
           ),
         ],

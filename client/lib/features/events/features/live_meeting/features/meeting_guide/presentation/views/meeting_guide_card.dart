@@ -86,7 +86,7 @@ class _MeetingGuideCardState extends State<MeetingGuideCard> {
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(20),
         ),
         child: MeetingGuideCardContent(onMinimizeCard: widget.onMinimizeCard),
@@ -195,11 +195,11 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               ),
               Spacer(),
               ActionButton(
-                type: ActionButtonType.flat,
+                type: ActionButtonType.filled,
                 tooltipText: 'Hide Agenda Item',
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: widget.onMinimizeCard,
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 padding: EdgeInsets.zero,
                 child: ProxiedImage(
                   null,
@@ -217,7 +217,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             Expanded(
               child: HeightConstrainedText(
                 title,
-                style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+                style: AppTextStyle.headline4
+                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
             ),
             if (agendaItem.timeInSeconds != null)
@@ -242,8 +243,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       formattedTime,
                       style: AppTextStyle.body.copyWith(
                         color: negativeTimeRemaining
-                            ? AppColor.redLightMode
-                            : AppColor.gray2,
+                            ? context.theme.colorScheme.error
+                            : context.theme.colorScheme.onPrimaryContainer,
                       ),
                     );
                   },
@@ -300,7 +301,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                                 widthFactor: 0.5,
                                 child: SkeletonAnimation(
                                   child: Container(
-                                    color: AppColor.gray5,
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
                                     height: 24,
                                   ),
                                 ),
@@ -452,12 +454,16 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(height: 1, thickness: 1, color: AppColor.gray5),
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: context.theme.colorScheme.onPrimaryContainer,
+        ),
         SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
           ),
           child: CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
             entryFrom: '_MeetingGuideCard._buildBottomSection',
@@ -520,7 +526,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         child: Text(
                           '$readyToMoveOnCount/${presentParticipantIds.length}',
                           style: AppTextStyle.body.copyWith(
-                              color: context.theme.colorScheme.primary),
+                            color: context.theme.colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),

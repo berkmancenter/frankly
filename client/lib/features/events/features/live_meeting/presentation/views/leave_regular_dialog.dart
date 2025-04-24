@@ -42,7 +42,7 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: isMobileScale
           ? _buildMobileLayout(content)
@@ -181,13 +181,13 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
 
   Widget _buildMinimizeButton() {
     return ActionButton(
-      type: ActionButtonType.flat,
+      type: ActionButtonType.filled,
       tooltipText: 'Hide Agenda Item',
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 0,
       height: 0,
       onPressed: widget.onMinimizeCard,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       padding: EdgeInsets.zero,
       child: ProxiedImage(
         null,

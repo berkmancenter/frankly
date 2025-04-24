@@ -79,7 +79,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             style: GoogleFonts.fingerPaint(
               fontSize: _getDynamicSize(18),
               fontWeight: FontWeight.normal,
-              color: AppColor.brightGreen,
+              color: context.theme.colorScheme.onPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -99,7 +99,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
   Widget _buildMainCard() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -174,7 +174,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
     const kEmptyProfileSize = 32.0;
 
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
       child: Column(
         children: [
@@ -227,7 +227,7 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
             children: [
               ActionButton(
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 text: 'Next',
                 onPressed: () => Navigator.pop(context),

@@ -137,10 +137,10 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                           ).expanded = false;
                         },
                         child: CircleAvatar(
-                          backgroundColor: AppColor.darkerBlue,
+                          backgroundColor: context.theme.colorScheme.primary,
                           child: Icon(
                             Icons.close,
-                            color: AppColor.brightGreen,
+                            color: context.theme.colorScheme.onPrimary,
                           ),
                         ),
                       ),
@@ -162,7 +162,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
             ),
             Container(
               width: 1,
-              color: AppColor.white.withOpacity(0.5),
+              color: context.theme.colorScheme.surfaceContainer,
             ),
           ],
         ),
@@ -199,7 +199,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: AppColor.black.withOpacity(0.2),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                       child: Stack(
                         children: [
                           Row(
@@ -466,7 +466,7 @@ class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       margin: const EdgeInsets.all(16),
       alignment: Alignment.center,

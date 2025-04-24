@@ -140,7 +140,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
             onChanged: (_) => setState(() {}),
-            textStyle: body.copyWith(color: AppColor.black),
+            textStyle: body.copyWith(color: context.theme.colorScheme.primary),
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,
@@ -158,14 +158,16 @@ class _ChatWidgetState extends State<_ChatWidget> {
           borderRadius: BorderRadius.circular(50),
           controller: _sendController,
           onPressed: canSubmit ? _sendMessage : null,
-          color: canSubmit ? context.theme.colorScheme.primary : AppColor.gray4,
+          color: canSubmit
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.onPrimaryContainer,
           child: Semantics(
             label: 'Submit Message Button',
             button: true,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ),
@@ -178,7 +180,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
       children: [
         Checkbox(
           fillColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
-          side: BorderSide(color: AppColor.white),
+          side: BorderSide(color: context.theme.colorScheme.onPrimary),
           value: _broadcast,
           onChanged: (value) => setState(() => _broadcast = !_broadcast),
         ),

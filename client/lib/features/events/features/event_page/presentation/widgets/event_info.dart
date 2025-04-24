@@ -397,7 +397,7 @@ class _EventInfoState extends State<EventInfo> {
 
     return ActionButton(
       height: 64,
-      type: isEventOpen ? ActionButtonType.flat : ActionButtonType.outline,
+      type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       color: isEventOpen ? Theme.of(context).colorScheme.primary : null,
       textColor: isEventOpen
           ? Theme.of(context).colorScheme.secondary
@@ -461,20 +461,32 @@ class _EventInfoState extends State<EventInfo> {
       return WarningInfo(
         icon: CircleAvatar(
           radius: 12,
-          backgroundColor: AppColor.redLightMode,
-          child: Icon(Icons.school_outlined, size: 20, color: AppColor.white),
+          backgroundColor: context.theme.colorScheme.error,
+          child: Icon(
+            Icons.school_outlined,
+            size: 20,
+            color: context.theme.colorScheme.onPrimary,
+          ),
         ),
         title: 'Prerequisite Required',
       );
     } else if (isBanned) {
       return WarningInfo(
-        icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
+        icon: Icon(
+          Icons.info_outline,
+          size: 20,
+          color: context.theme.colorScheme.error,
+        ),
         title: 'Banned',
         message: 'You were removed from this event and cannot rejoin.',
       );
     } else if (isLocked) {
       return WarningInfo(
-        icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
+        icon: Icon(
+          Icons.info_outline,
+          size: 20,
+          color: context.theme.colorScheme.error,
+        ),
         title: 'Locked',
         message: 'This event is locked',
       );
@@ -558,20 +570,22 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.close,
             size: 20,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
           SizedBox(width: 10),
           Flexible(
             child: HeightConstrainedText(
               'Cancel event',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
           ),
         ],
@@ -583,20 +597,22 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelParticipation,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.close,
             size: 20,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
           SizedBox(width: 10),
           Flexible(
             child: Text(
               'Cancel',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
           ),
         ],
@@ -646,7 +662,9 @@ class _EventInfoState extends State<EventInfo> {
             SizedBox(width: 6),
             HeightConstrainedText(
               text,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
             SizedBox(width: 20),
           ],
@@ -661,7 +679,7 @@ class _EventInfoState extends State<EventInfo> {
       children: [
         Checkbox(
           activeColor: context.theme.colorScheme.primary,
-          checkColor: AppColor.brightGreen,
+          checkColor: context.theme.colorScheme.onPrimary,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {
             if (value != null) {
@@ -694,8 +712,8 @@ class _EventInfoState extends State<EventInfo> {
         url: _getShareUrl(),
         body: _getShareBody(),
         subject: 'Join my event on ${Environment.appName}!',
-        iconColor: Theme.of(context).colorScheme.primary,
-        iconBackgroundColor: AppColor.white,
+        iconColor: context.theme.colorScheme.primary,
+        iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         size: 40,
         iconSize: 20,
         wrapIcons: false,
@@ -730,13 +748,13 @@ class _EventInfoState extends State<EventInfo> {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         borderRadius: isMobile ? null : BorderRadius.circular(20),
         boxShadow: isMobile
             ? null
             : [
                 BoxShadow(
-                  color: AppColor.black.withOpacity(0.25),
+                  color: context.theme.colorScheme.scrim.withScrimOpacity,
                   blurRadius: 34,
                   offset: Offset(0, 14),
                 ),
@@ -832,8 +850,10 @@ class _EventInfoState extends State<EventInfo> {
                             }
                             return Text(
                               '#${definition.title} ',
-                              style: AppTextStyle.body
-                                  .copyWith(color: AppColor.gray3),
+                              style: AppTextStyle.body.copyWith(
+                                color: context
+                                    .theme.colorScheme.onPrimaryContainer,
+                              ),
                             );
                           },
                         ),
@@ -936,7 +956,11 @@ class _EventInfoState extends State<EventInfo> {
       children: [
         ProxiedImage(null, asset: appAsset, width: 20, height: 20),
         SizedBox(width: 6),
-        Text(type, style: AppTextStyle.body.copyWith(color: AppColor.gray3)),
+        Text(
+          type,
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+        ),
       ],
     );
   }

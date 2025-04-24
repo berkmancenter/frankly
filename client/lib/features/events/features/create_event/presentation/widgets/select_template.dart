@@ -65,7 +65,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
       textStyle:
           TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
       borderType: BorderType.outline,
-      backgroundColor: AppColor.gray4.withOpacity(0.2),
+      backgroundColor: context.theme.colorScheme.primaryFixed.withOpacity(0.2),
       borderRadius: 10,
       borderColor: Colors.transparent,
       maxLines: 1,
@@ -85,13 +85,13 @@ class _SelectTemplateState extends State<SelectTemplate> {
         elevation: 0,
         padding: EdgeInsets.all(0),
         backgroundColor: context.theme.colorScheme.primary,
-        selectedColor: AppColor.brightGreen,
+        selectedColor: context.theme.colorScheme.onPrimary,
         direction: Axis.horizontal,
         labelStyle: TextStyle(
           fontFamily: 'Roboto',
           fontSize: 12,
           fontWeight: FontWeight.normal,
-          color: AppColor.white,
+          color: context.theme.colorScheme.onPrimary,
         ),
         options: [
           for (final category in provider.allCategories)
@@ -124,7 +124,8 @@ class _SelectTemplateState extends State<SelectTemplate> {
         if (provider.displayTemplates.isEmpty && widget.onAddNew == null)
           HeightConstrainedText(
             'No templates found.',
-            style: AppTextStyle.body.copyWith(color: AppColor.gray4),
+            style: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           )
         else
           Container(
@@ -205,7 +206,7 @@ class _AddNewTemplateButton extends StatelessWidget {
       height: 156,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          foregroundColor: AppColor.brightGreen,
+          foregroundColor: context.theme.colorScheme.onPrimary,
         ),
         onPressed: onAddNew,
         child: Column(
@@ -256,16 +257,18 @@ class TemplateSelectionCard extends StatelessWidget {
         strokeCap: StrokeCap.round,
         borderType: dotted_border.BorderType.RRect,
         radius: Radius.circular(10),
-        color: isSelected ? AppColor.brightGreen : AppColor.white,
+        color: isSelected
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.onPrimary,
         dashPattern: isSelected ? const [1, 0] : const [5, 5],
         strokeWidth: isSelected ? 4 : 1,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             boxShadow: [
               BoxShadow(
-                color: AppColor.black.withOpacity(0.5),
+                color: context.theme.colorScheme.scrim.withScrimOpacity,
                 blurRadius: 4,
                 offset: Offset(1, 1),
               ),
@@ -306,7 +309,7 @@ class TemplateSelectionCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       height: 1.3,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -317,7 +320,10 @@ class TemplateSelectionCard extends StatelessWidget {
                     width: 23,
                     height: 23,
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColor.white, width: 1),
+                      border: Border.all(
+                        color: context.theme.colorScheme.onPrimary,
+                        width: 1,
+                      ),
                       color: Colors.transparent,
                       shape: BoxShape.circle,
                     ),
@@ -331,7 +337,7 @@ class TemplateSelectionCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: selectedTemplate != null &&
                               selectedTemplate?.id == template?.id
-                          ? AppColor.brightGreen
+                          ? context.theme.colorScheme.onPrimary
                           : Colors.transparent,
                       shape: BoxShape.circle,
                     ),

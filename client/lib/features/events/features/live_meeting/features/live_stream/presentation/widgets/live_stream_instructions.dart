@@ -119,7 +119,9 @@ class LiveStreamInstructions extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: whiteBackground ? AppColor.white : AppColor.darkerBlue,
+        color: whiteBackground
+            ? context.theme.colorScheme.surfaceContainerLowest
+            : context.theme.colorScheme.primary,
       ),
       alignment: Alignment.center,
       child: _buildInstructions(context),

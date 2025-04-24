@@ -71,7 +71,7 @@ class ParticipantsDialog extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: 400),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -98,7 +98,7 @@ class ParticipantsDialog extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             child: Padding(
               padding: const EdgeInsets.all(20),

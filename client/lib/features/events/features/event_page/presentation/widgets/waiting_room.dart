@@ -117,7 +117,8 @@ class _WaitingRoom extends StatelessWidget {
         Flexible(
           child: HeightConstrainedText(
             eventProvider.event.title ?? 'Your Event',
-            style: AppTextStyle.headline2.copyWith(color: AppColor.white),
+            style: AppTextStyle.headline2
+                .copyWith(color: context.theme.colorScheme.onPrimary),
             textAlign: TextAlign.start,
             maxLines: isMobile ? 2 : 1,
             overflow: TextOverflow.ellipsis,
@@ -134,7 +135,8 @@ class _WaitingRoom extends StatelessWidget {
           Flexible(
             child: HeightConstrainedText(
               eventProvider.event.waitingRoomInfo?.content ?? '',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
               textAlign: TextAlign.start,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
@@ -151,7 +153,8 @@ class _WaitingRoom extends StatelessWidget {
             Flexible(
               child: Text(
                 _buildPresentCountText(context),
-                style: AppTextStyle.body.copyWith(color: AppColor.white),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
               ),
             ),
           ],
@@ -195,13 +198,14 @@ class _WaitingRoom extends StatelessWidget {
         horizontal:
             responsiveLayoutService.getDynamicSize(context, 20, scale: 0.5),
       ),
-      color: AppColor.darkerBlue,
+      color: context.theme.colorScheme.primary,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             _buildWaitingRoomInfoText(isInBreakouts, waitingRoomMediaIsActive),
-            style: AppTextStyle.body.copyWith(color: AppColor.white),
+            style: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimary),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
@@ -217,7 +221,8 @@ class _WaitingRoom extends StatelessWidget {
                 }
                 return Text(
                   _buildTimeToStart(timeTillStart),
-                  style: AppTextStyle.headline1.copyWith(color: AppColor.white),
+                  style: AppTextStyle.headline1
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   textAlign: TextAlign.center,
                 );
               },

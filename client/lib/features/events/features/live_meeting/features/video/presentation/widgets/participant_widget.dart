@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
@@ -19,7 +20,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/styles.dart';
+import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -166,7 +167,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         fit: fit,
         clipBehavior: Clip.hardEdge,
         child: Container(
-          color: AppColor.black.withOpacity(0.7),
+          color: context.theme.colorScheme.scrim.withScrimOpacity,
           height: dimensions.height,
           width: dimensions.width,
           child: _buildVideoElement(),
@@ -178,7 +179,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildMutedOverlayEntry() {
     return Icon(
       Icons.mic_off_outlined,
-      color: AppColor.redDarkMode,
+      color: context.theme.colorScheme.errorContainer,
       size: 17,
     );
   }
@@ -202,7 +203,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
               height: 32,
               padding: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
-                color: AppColor.grayTransparent,
+                color: context.theme.colorScheme.scrim.withScrimOpacity,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(5),
                 ),
@@ -259,7 +260,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         height: 32,
         padding: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: AppColor.grayTransparent,
+          color: context.theme.colorScheme.scrim.withScrimOpacity,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(5),
           ),
@@ -275,7 +276,8 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                       ? 'Loading...'
                       : snapshot.data?.displayName ?? 'Participant',
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.body.copyWith(color: AppColor.white),
+                  style: AppTextStyle.body
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                 ),
               ),
             ),
@@ -314,7 +316,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     return Container(
       color: Theme.of(context).primaryColor,
       child: Container(
-        color: AppColor.black.withOpacity(0.7),
+        color: context.theme.colorScheme.scrim.withScrimOpacity,
         child: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
@@ -420,7 +422,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
           Container(
             color: Theme.of(context).primaryColor,
             child: Container(
-              color: AppColor.black.withOpacity(0.7),
+              color: context.theme.colorScheme.scrim.withScrimOpacity,
               child: AnimatedBuilder(
                 animation: widget.participant,
                 builder: (_, __) => Stack(
@@ -543,8 +545,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
           child: HeightConstrainedText(
             'Propose to remove user',
-            style:
-                AppTextStyle.bodyMedium.copyWith(color: AppColor.redLightMode),
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.error),
           ),
         ),
       PopupMenuItem<Function()>(
@@ -607,22 +609,24 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
     return Semantics(
       label: 'Participant Actions for user with ID ${widget.userId}',
       child: CustomInkWell(
-          onTap: widget.isVisible
-              ? () => _showMoreMenu(_getMenuItems(context: context))
-              : null,
-          onHover: widget.isVisible
-              ? (isHovered) => setState(() => _isHovered = isHovered)
-              : null,
-          child: Container(
-            key: _menuKey,
-            padding: const EdgeInsets.all(5),
-            child: Icon(
-              isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
-              size: 16,
-              color: _isHovered ? AppColor.brightGreen : AppColor.white,
-            ),
+        onTap: widget.isVisible
+            ? () => _showMoreMenu(_getMenuItems(context: context))
+            : null,
+        onHover: widget.isVisible
+            ? (isHovered) => setState(() => _isHovered = isHovered)
+            : null,
+        child: Container(
+          key: _menuKey,
+          padding: const EdgeInsets.all(5),
+          child: Icon(
+            isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
+            size: 16,
+            color: _isHovered
+                ? context.theme.colorScheme.onPrimary
+                : context.theme.colorScheme.outlineVariant,
           ),
         ),
+      ),
     );
   }
 }

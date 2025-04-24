@@ -185,7 +185,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
             icon: Icons.refresh,
             onPressed: onRewatch,
             color: Colors.transparent,
-            textColor: AppColor.white,
+            textColor: context.theme.colorScheme.onPrimary,
           ),
           Center(
             child: FittedBox(
@@ -196,25 +196,25 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
                   if (allReady)
                     HeightConstrainedText(
                       'Everyone is ready to move on.',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.white),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                     )
                   else ...[
                     HeightConstrainedText(
                       'Some people are still finishing the video.',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.white),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                     ),
                     if (totalTimeLeft > 0) ...[
                       HeightConstrainedText(
                         'We\'ll be ready in:',
-                        style: AppTextStyle.subhead
-                            .copyWith(color: AppColor.white),
+                        style: AppTextStyle.subhead.copyWith(
+                            color: context.theme.colorScheme.onPrimary),
                       ),
                       HeightConstrainedText(
                         '$minutes:$secondsFormatted',
-                        style: AppTextStyle.timeLarge
-                            .copyWith(color: AppColor.white),
+                        style: AppTextStyle.timeLarge.copyWith(
+                            color: context.theme.colorScheme.onPrimary),
                       ),
                     ],
                   ],

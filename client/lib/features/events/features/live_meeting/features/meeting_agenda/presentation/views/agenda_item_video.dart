@@ -276,7 +276,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
           SizedBox(height: 20),
           Expanded(
             child: Container(
-              color: AppColor.gray6,
+              color: context.theme.colorScheme.surface,
               child: Center(
                 child: _buildVideoPicker('Upload Video'),
               ),
@@ -324,7 +324,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         else
           Expanded(
             child: Container(
-              color: AppColor.gray6,
+              color: context.theme.colorScheme.surface,
               child: Center(
                 child: ProxiedImage(
                   null,
@@ -368,7 +368,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         else
           Expanded(
             child: Container(
-              color: AppColor.gray6,
+              color: context.theme.colorScheme.surface,
               child: Center(
                 child: ProxiedImage(
                   null,
@@ -414,7 +414,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         else
           Expanded(
             child: Container(
-              color: AppColor.gray6,
+              color: context.theme.colorScheme.surface,
               child: Center(
                 child: ProxiedImage(
                   null,

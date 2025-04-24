@@ -78,7 +78,8 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
               if (!isNullOrEmpty(widget.title)) ...[
                 HeightConstrainedText(
                   widget.title,
-                  style: AppTextStyle.headline1.copyWith(color: AppColor.white),
+                  style: AppTextStyle.headline1
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -87,7 +88,8 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
               if (!isNullOrEmpty(widget.mainText)) ...[
                 HeightConstrainedText(
                   widget.mainText,
-                  style: AppTextStyle.body.copyWith(color: AppColor.white),
+                  style: AppTextStyle.body
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 10),
@@ -95,7 +97,8 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
               if (!isNullOrEmpty(widget.subText)) ...[
                 HeightConstrainedText(
                   widget.subText,
-                  style: AppTextStyle.body.copyWith(color: AppColor.white),
+                  style: AppTextStyle.body
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 10),
@@ -123,8 +126,8 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
                       minWidth: 100,
                       color: Colors.transparent,
                       text: widget.cancelText,
-                      textStyle:
-                          AppTextStyle.body.copyWith(color: AppColor.white),
+                      textStyle: AppTextStyle.body
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                       onPressed: _cancel,
                     )
                   else
@@ -135,7 +138,7 @@ class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
                       horizontal: 18,
                       vertical: 12,
                     ),
-                    color: AppColor.brightGreen,
+                    color: context.theme.colorScheme.onPrimary,
                     text: widget.confirmText,
                     textStyle: AppTextStyle.body
                         .copyWith(color: context.theme.colorScheme.primary),

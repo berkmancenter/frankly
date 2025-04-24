@@ -65,7 +65,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
     _isExiting = false;
     await showCustomDialog(
       context: context,
-      barrierColor: AppColor.black.withOpacity(0.3),
+      barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
       builder: (context) =>
           ChangeNotifierProvider<CommunityPermissionsProvider>.value(
         value: communityPermissionsProvider,
@@ -101,7 +101,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
                     padding: const EdgeInsets.all(12),
                     constraints:
                         BoxConstraints(maxHeight: halfSize ? 200 : 400),
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     child: Announcements.create(),
                   ),
                 ),
@@ -139,7 +139,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
           child: Icon(
             Icons.notifications_none,
             size: 30,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),

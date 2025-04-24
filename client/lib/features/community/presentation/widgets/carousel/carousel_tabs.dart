@@ -44,7 +44,8 @@ class AboutCommunityCarouselTab extends StatelessWidget {
             if (community.name != null) ...[
               HeightConstrainedText(
                 community.name!.toUpperCase(),
-                style: AppTextStyle.body.copyWith(color: AppColor.white),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20.0),
@@ -61,7 +62,7 @@ class AboutCommunityCarouselTab extends StatelessWidget {
                   style: AppTextStyle.headline3.copyWith(
                     fontSize:
                         responsiveLayoutService.getDynamicSize(context, 40),
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.onPrimary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -99,7 +100,8 @@ class FeaturedEventCarouselTab extends StatelessWidget {
         ],
         HeightConstrainedText(
           event.title ?? 'Scheduled event',
-          style: AppTextStyle.body.copyWith(color: AppColor.white),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimary),
           maxLines: 3,
         ),
         if (event.isLiveStream) ...[
@@ -108,13 +110,14 @@ class FeaturedEventCarouselTab extends StatelessWidget {
             width: 82,
             height: 25,
             decoration: BoxDecoration(
-              border: Border.all(color: AppColor.white),
+              border: Border.all(color: context.theme.colorScheme.onPrimary),
               borderRadius: BorderRadius.circular(13),
             ),
             alignment: Alignment.center,
             child: HeightConstrainedText(
               'livestream',
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.white),
+              style: AppTextStyle.eyebrowSmall
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
             ),
           ),
         ] else
@@ -144,7 +147,8 @@ class FeaturedTemplateCarouselTab extends StatelessWidget {
         children: [
           HeightConstrainedText(
             template.title ?? 'Event template',
-            style: AppTextStyle.body.copyWith(color: AppColor.white),
+            style: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimary),
             maxLines: 3,
           ),
           SizedBox(height: 8),
@@ -152,13 +156,14 @@ class FeaturedTemplateCarouselTab extends StatelessWidget {
             width: 82,
             height: 25,
             decoration: BoxDecoration(
-              border: Border.all(color: AppColor.white),
+              border: Border.all(color: context.theme.colorScheme.onPrimary),
               borderRadius: BorderRadius.circular(20),
             ),
             alignment: Alignment.center,
             child: HeightConstrainedText(
               'template',
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.white),
+              style: AppTextStyle.eyebrowSmall
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
             ),
           ),
           SizedBox(height: 25),

@@ -268,7 +268,7 @@ class _DialogFlowState extends State<DialogFlow> {
       alignment: Alignment.centerRight,
       child: ActionButton(
         color: context.theme.colorScheme.primary,
-        textColor: AppColor.brightGreen,
+        textColor: context.theme.colorScheme.onPrimary,
         onPressed: _isNextPageAvailable
             ? () async {
                 if (await _nextButtonAction()) {
@@ -283,7 +283,7 @@ class _DialogFlowState extends State<DialogFlow> {
           padding: const EdgeInsets.only(left: 5.0),
           child: Icon(
             Icons.arrow_forward_ios,
-            color: AppColor.brightGreen,
+            color: context.theme.colorScheme.onPrimary,
             size: 18,
           ),
         ),
@@ -302,12 +302,14 @@ class _DialogFlowState extends State<DialogFlow> {
               TextSpan(
                 text:
                     'By signing in, registering, or using ${Environment.appName}, I agree to be bound by the ',
-                style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer,
+                ),
               ),
               TextSpan(
                 text: '${Environment.appName} Terms of Service',
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.accentBlue,
+                  color: context.theme.colorScheme.primary,
                   decoration: TextDecoration.underline,
                 ),
                 recognizer: TapGestureRecognizer()
@@ -316,7 +318,7 @@ class _DialogFlowState extends State<DialogFlow> {
               TextSpan(
                 text: '.',
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.gray2,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                 ),
               ),
             ],
@@ -403,13 +405,14 @@ class _DialogFlowState extends State<DialogFlow> {
                       style: AppTextStyle.headline2.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
-                        color: AppColor.gray2,
+                        color: context.theme.colorScheme.onPrimaryContainer,
                       ),
                     ),
                     TextSpan(
                       text: 'when you upgrade',
-                      style: AppTextStyle.eyebrowSmall
-                          .copyWith(color: AppColor.gray3),
+                      style: AppTextStyle.eyebrowSmall.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ],
                 ),
@@ -427,7 +430,7 @@ class _DialogFlowState extends State<DialogFlow> {
             ActionButton(
               text: 'Finish',
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.brightGreen,
+              textColor: context.theme.colorScheme.onPrimary,
               borderRadius: BorderRadius.circular(10),
               padding: const EdgeInsets.all(20),
               onPressed: () async {

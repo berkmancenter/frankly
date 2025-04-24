@@ -45,12 +45,12 @@ class _EditCommunityButtonState extends State<EditCommunityButton> {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Icon(
               Icons.edit,
-              color: AppColor.gray1,
+              color: context.theme.colorScheme.secondary,
               size: 20,
             ),
           ),

@@ -65,7 +65,9 @@ class MessageDisplayState extends State<MessageDisplay> {
             label: 'Chat Message',
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              color: _isHovered ? AppColor.black.withOpacity(0.05) : null,
+              color: _isHovered
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : null,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -90,7 +92,8 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).isDark
-                                    ? AppColor.gray5
+                                    ? context
+                                        .theme.colorScheme.onPrimaryContainer
                                     : context.theme.colorScheme.primary,
                               ),
                             ),
@@ -101,7 +104,8 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).isDark
-                                    ? AppColor.gray5
+                                    ? context
+                                        .theme.colorScheme.onPrimaryContainer
                                     : context.theme.colorScheme.primary,
                               ),
                             ),
@@ -118,7 +122,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 child: HeightConstrainedText(
                                   isAdmin ? 'ADMIN' : 'MOD',
                                   style: TextStyle(
-                                    color: AppColor.white,
+                                    color: context.theme.colorScheme.onPrimary,
                                     fontSize: 10,
                                   ),
                                 ),
@@ -139,8 +143,8 @@ class MessageDisplayState extends State<MessageDisplay> {
                             'This message was removed.',
                             style: TextStyle(
                               color: Theme.of(context).isDark
-                                  ? AppColor.gray5
-                                  : AppColor.gray1,
+                                  ? context.theme.colorScheme.onPrimaryContainer
+                                  : context.theme.colorScheme.secondary,
                               fontSize: 13,
                               fontStyle: FontStyle.italic,
                             ),
@@ -156,7 +160,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Theme.of(context).isDark
-                                    ? AppColor.white
+                                    ? context.theme.colorScheme.onPrimary
                                     : context.theme.colorScheme.primary,
                               ),
                               options: LinkifyOptions(looseUrl: true),
@@ -181,7 +185,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                         child: Icon(
                           Icons.close,
                           color: Theme.of(context).isDark
-                              ? AppColor.gray6
+                              ? context.theme.colorScheme.surface
                               : context.theme.colorScheme.primary,
                           size: 20,
                         ),

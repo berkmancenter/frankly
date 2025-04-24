@@ -37,7 +37,7 @@ class Dialogs {
             constraints: BoxConstraints(maxHeight: 600, maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: EdgeInsets.all(isMobile ? 20 : 40),
             child: Column(
@@ -90,7 +90,7 @@ class Dialogs {
                   alignment: Alignment.centerRight,
                   child: ActionButton(
                     text: positiveButtonText,
-                    textColor: AppColor.brightGreen,
+                    textColor: context.theme.colorScheme.onPrimary,
                     color: context.theme.colorScheme.primary,
                     onPressed: () async {
                       if (formKey.currentState?.validate() == true) {
@@ -132,7 +132,7 @@ class Dialogs {
             constraints: BoxConstraints(maxHeight: 600, maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: EdgeInsets.all(isMobile ? 20 : 40),
             child: Column(
@@ -147,8 +147,8 @@ class Dialogs {
                 ),
                 SizedBox(height: 10),
                 FormBuilderSlider(
-                  activeColor: AppColor.brightGreen,
-                  inactiveColor: AppColor.gray4,
+                  activeColor: context.theme.colorScheme.primary,
+                  inactiveColor: context.theme.colorScheme.primaryFixed,
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
                       borderSide:
@@ -320,10 +320,11 @@ class ConfirmDialogLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.grayTransparent,
+      color: context.theme.colorScheme.scrim.withScrimOpacity,
       alignment: Alignment.center,
       child: Container(
-        decoration: BoxDecoration(color: AppColor.white.withOpacity(0.75)),
+        decoration:
+            BoxDecoration(color: context.theme.colorScheme.surfaceContainer),
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -356,7 +357,7 @@ class ConfirmDialogLayer extends StatelessWidget {
                       : context.theme.colorScheme.primary,
                   textColor: areColorsFromTheme
                       ? Theme.of(context).colorScheme.secondary
-                      : AppColor.brightGreen,
+                      : context.theme.colorScheme.onPrimary,
                   text: 'Save',
                   onPressed: onSaveChanges,
                 ),

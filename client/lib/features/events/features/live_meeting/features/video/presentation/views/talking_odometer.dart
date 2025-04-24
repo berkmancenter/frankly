@@ -71,7 +71,7 @@ class _TalkingOdometerState extends State<TalkingOdometer>
         padding: const EdgeInsets.all(30),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
         ),
         child: ColorfulMeter(
           value: applyWarning ? adjustedValue : value,

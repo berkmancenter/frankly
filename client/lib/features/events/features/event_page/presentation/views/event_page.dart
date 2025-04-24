@@ -199,7 +199,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: AppColor.white,
+          backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
           title: Text(
             'Are you sure you want to remove this message?',
             style: AppTextStyle.headline3
@@ -209,7 +209,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
             ActionButton(
               text: 'No',
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.brightGreen,
+              textColor: context.theme.colorScheme.onPrimary,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -217,7 +217,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
             ActionButton(
               text: 'Yes',
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.brightGreen,
+              textColor: context.theme.colorScheme.onPrimary,
               onPressed: () => alertOnError(context, () async {
                 await _presenter.removeMessage(eventMessage);
                 if (!context.mounted) return;
@@ -262,7 +262,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                     ),
                   ),
                   Container(
-                    color: AppColor.black.withOpacity(0.7),
+                    color: context.theme.colorScheme.scrim.withScrimOpacity,
                   ),
                   Center(
                     child: Column(
@@ -271,7 +271,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                         HeightConstrainedText(
                           'The event is starting',
                           style: TextStyle(
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -390,7 +390,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
   Widget _buildEditTemplateMessage() {
     String templateId = event.templateId;
     return Container(
-      color: AppColor.gray5,
+      color: context.theme.colorScheme.onPrimaryContainer,
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ConstrainedBody(
         maxWidth: 1100,
@@ -403,13 +403,15 @@ class EventPageState extends State<EventPage> implements EventPageView {
                 text: TextSpan(
                   text: 'You are editing an event. \n',
                   style: AppTextStyle.headlineSmall.copyWith(
-                    color: AppColor.gray2,
+                    color: context.theme.colorScheme.onPrimaryContainer,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
                       text: 'If you want to edit future instances, ',
-                      style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                      style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                     TextSpan(
                       text: 'edit the template.',
@@ -424,7 +426,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                               ).templatePage(templateId: templateId),
                             ),
                       style: AppTextStyle.body.copyWith(
-                        color: AppColor.accentBlue,
+                        color: context.theme.colorScheme.primary,
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -471,7 +473,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
         border: Border(
           top: BorderSide(
             width: 2,
-            color: AppColor.gray5,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),

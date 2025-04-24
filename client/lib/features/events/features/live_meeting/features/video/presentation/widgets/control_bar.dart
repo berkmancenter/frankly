@@ -73,8 +73,9 @@ class _ControlBarState extends State<ControlBar> {
       icon: _conferenceRoom.videoEnabled
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
-      iconColor:
-          _conferenceRoom.videoEnabled ? AppColor.white : AppColor.redDarkMode,
+      iconColor: _conferenceRoom.videoEnabled
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.errorContainer,
     );
   }
 
@@ -86,7 +87,7 @@ class _ControlBarState extends State<ControlBar> {
 
     final mediaDevices = html.window.navigator.mediaDevices;
     return CustomInkWell(
-      hoverColor: AppColor.white.withOpacity(0.15),
+      hoverColor: context.theme.colorScheme.surfaceContainer,
       forceHighlightOnHover: true,
       child: PopupMenuButton<FutureOr<void> Function()>(
         itemBuilder: (context) => [
@@ -121,7 +122,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),
@@ -157,8 +158,8 @@ class _ControlBarState extends State<ControlBar> {
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
           iconColor: _conferenceRoom.audioEnabled
-              ? AppColor.white
-              : AppColor.redDarkMode,
+              ? context.theme.colorScheme.onPrimary
+              : context.theme.colorScheme.errorContainer,
         ),
         _buildMoreOptionsButton(),
         SizedBox(width: spacerWidth),
@@ -183,8 +184,8 @@ class _ControlBarState extends State<ControlBar> {
       child: ActionButton(
         onPressed: () => LiveMeetingProvider.read(context).leaveMeeting(),
         text: 'Leave',
-        color: AppColor.redLightMode,
-        textColor: AppColor.white,
+        color: context.theme.colorScheme.error,
+        textColor: context.theme.colorScheme.onPrimary,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       ),
     );
@@ -202,7 +203,7 @@ class _ControlBarState extends State<ControlBar> {
     return AnimatedBuilder(
       animation: _liveMeetingProvider.conferenceRoomNotifier,
       builder: (context, __) => Container(
-        color: AppColor.gray1,
+        color: context.theme.colorScheme.secondary,
         height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,7 +319,7 @@ class _EmojiButtonState extends State<EmojiButton> {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: AppColor.gray2,
+          color: context.theme.colorScheme.onPrimaryContainer,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
@@ -380,11 +381,14 @@ class _ChatInputState extends State<ChatInput> {
         children: [
           Expanded(
             child: CustomTextField(
-              cursorColor: AppColor.white,
+              cursorColor: context.theme.colorScheme.onPrimary,
               borderType: BorderType.none,
-              textStyle: body.copyWith(color: AppColor.white),
-              hintStyle: body.copyWith(color: AppColor.gray2),
-              backgroundColor: AppColor.gray2,
+              textStyle:
+                  body.copyWith(color: context.theme.colorScheme.onPrimary),
+              hintStyle: body.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
+              backgroundColor: context.theme.colorScheme.onPrimaryContainer,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
               contentPadding: isMobile
@@ -415,11 +419,13 @@ class _ChatInputState extends State<ChatInput> {
                   color: context.theme.colorScheme.primary,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
-                  disabledColor: AppColor.white.withOpacity(0.3),
+                  disabledColor: context.theme.colorScheme.surfaceDim,
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
-                    color: canSubmit ? AppColor.brightGreen : AppColor.gray2,
+                    color: canSubmit
+                        ? context.theme.colorScheme.onPrimary
+                        : context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -431,17 +437,17 @@ class _ChatInputState extends State<ChatInput> {
 }
 
 class _IconButton extends StatefulWidget {
-  final Future<void> Function() onTap;
-  final String text;
-  final IconData icon;
-  final Color iconColor;
-
   const _IconButton({
     required this.onTap,
     required this.text,
     required this.icon,
-    this.iconColor = AppColor.white,
+    this.iconColor,
   });
+
+  final Future<void> Function() onTap;
+  final String text;
+  final IconData icon;
+  final Color? iconColor;
 
   @override
   _IconButtonState createState() => _IconButtonState();
@@ -471,7 +477,7 @@ class _IconButtonState extends State<_IconButton> {
 
         setState(() => _isSending = false);
       },
-      hoverColor: AppColor.white.withOpacity(0.15),
+      hoverColor: context.theme.colorScheme.surfaceContainer,
       child: Container(
         padding: const EdgeInsets.all(2),
         constraints: BoxConstraints(
@@ -487,7 +493,9 @@ class _IconButtonState extends State<_IconButton> {
               child: Icon(
                 widget.icon,
                 size: 34,
-                color: _isSending ? AppColor.gray3 : widget.iconColor,
+                color: _isSending
+                    ? context.theme.colorScheme.onPrimaryContainer
+                    : widget.iconColor ?? context.theme.colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: 2),
@@ -495,7 +503,9 @@ class _IconButtonState extends State<_IconButton> {
               widget.text,
               textAlign: TextAlign.center,
               style: body.copyWith(
-                color: _isSending ? AppColor.gray3 : AppColor.white,
+                color: _isSending
+                    ? context.theme.colorScheme.onPrimaryContainer
+                    : context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
                 height: 1.05,
               ),

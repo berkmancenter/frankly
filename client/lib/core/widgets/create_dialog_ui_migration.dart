@@ -57,7 +57,7 @@ class _CreateDialogUiMigrationState<T>
           onTap: () {},
           child: Material(
             borderRadius: !isFullscreen ? BorderRadius.circular(20) : null,
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             child: Container(
               constraints: !isFullscreen
                   ? BoxConstraints(maxWidth: widget.maxWidth)

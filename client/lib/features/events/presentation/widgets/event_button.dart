@@ -55,11 +55,11 @@ class EventButton extends HookWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: AppColor.black.withOpacity(0.5),
+              color: context.theme.colorScheme.scrim.withScrimOpacity,
               blurRadius: 4,
               offset: Offset(1, 1),
             ),
@@ -94,7 +94,7 @@ class EventButton extends HookWidget {
                       HeightConstrainedText(
                         'Livestream',
                         style: AppTextStyle.bodySmall.copyWith(
-                          color: AppColor.gray3,
+                          color: context.theme.colorScheme.onPrimaryContainer,
                         ),
                       ),
                     SizedBox(height: 10),

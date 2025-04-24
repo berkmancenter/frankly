@@ -260,7 +260,7 @@ class _AdminBillingContainerContentState
               ActionButton(
                 text: 'Update Plan',
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 onPressed: _newPlanSelected
                     ? () => alertOnError(context, _updatePlanPressed)
                     : null,
@@ -286,11 +286,11 @@ class _AdminBillingContainerContentState
         constraints: BoxConstraints(maxWidth: 270),
         padding: const EdgeInsets.only(left: 15, right: 10),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 1,
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
         child: DropdownButton<Plan>(
@@ -310,14 +310,15 @@ class _AdminBillingContainerContentState
                     Flexible(
                       child: HeightConstrainedText(
                         plan.name,
-                        style:
-                            AppTextStyle.body.copyWith(color: AppColor.gray1),
+                        style: AppTextStyle.body.copyWith(
+                            color: context.theme.colorScheme.secondary),
                       ),
                     ),
                     SizedBox(width: 8),
                     HeightConstrainedText(
                       plan.cost,
-                      style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+                      style: AppTextStyle.body.copyWith(
+                          color: context.theme.colorScheme.onPrimaryContainer),
                     ),
                   ],
                 ),
@@ -334,7 +335,8 @@ class _AdminBillingContainerContentState
       children: [
         HeightConstrainedText(
           'Contact the billing manager to update plan:',
-          style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray3),
+          style: AppTextStyle.eyebrowSmall
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         UserInfoBuilder(
           userId: context.watch<CommunityProvider>().community.creatorId,
@@ -365,8 +367,9 @@ class _AdminBillingContainerContentState
                           : '';
                       return HeightConstrainedText(
                         '${userInfo.displayName ?? 'The community owner'} ${emailText}is the billing manager',
-                        style:
-                            AppTextStyle.body.copyWith(color: AppColor.gray2),
+                        style: AppTextStyle.body.copyWith(
+                            color:
+                                context.theme.colorScheme.onPrimaryContainer),
                       );
                     },
                   ),
@@ -399,7 +402,8 @@ class _AdminBillingContainerContentState
             ),
             HeightConstrainedText(
               'You are the billing manager',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
             SizedBox(width: 10),
             ActionButton(

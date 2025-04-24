@@ -47,8 +47,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   String get _currentDarkColor => _customDarkColorController.text;
 
-  bool get _isSelectedColorComboValid =>
-      ThemeUtils.isColorComboValid(_currentLightColor, _currentDarkColor);
+  bool get _isSelectedColorComboValid => ThemeUtils.isColorComboValid(
+        context,
+        _currentLightColor,
+        _currentDarkColor,
+      );
 
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
 
@@ -91,24 +94,30 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     setState(() {
       if (ThemeUtils.isColorValid(_currentLightColor) &&
           ThemeUtils.isColorValid(_currentDarkColor)) {
-        final firstColor =
-            ThemeUtils.parseColor(_currentLightColor) ?? AppColor.gray6;
+        final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
+            context.theme.colorScheme.surface;
         final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
             context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
           _selectedColorErrorMessage = 'Light color must be lighter';
-        } else if (!ThemeUtils.isContrastRatioValid(firstColor, secondColor)) {
+        } else if (!ThemeUtils.isContrastRatioValid(
+          context,
+          firstColor,
+          secondColor,
+        )) {
           _selectedColorErrorMessage =
               'Contrast ratio must be greater than 4.5';
         } else if (!ThemeUtils.isContrastRatioValid(
+          context,
           firstColor,
-          AppColor.gray1,
+          context.theme.colorScheme.secondary,
         )) {
           _selectedColorErrorMessage = 'Light color must be lighter';
         } else if (!ThemeUtils.isContrastRatioValid(
+          context,
           secondColor,
-          AppColor.gray6,
+          context.theme.colorScheme.surface,
         )) {
           _selectedColorErrorMessage = 'Dark color must be darker';
         }
@@ -205,7 +214,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required bool selected,
     required void Function() onTap,
   }) {
-    final color = selected ? context.theme.colorScheme.primary : AppColor.gray4;
+    final color = selected
+        ? context.theme.colorScheme.primary
+        : context.theme.colorScheme.onPrimaryContainer;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -276,10 +287,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     const linkText = 'color.review.';
     final launchLink = TapGestureRecognizer()
       ..onTap = () => launch('https://color.review');
-    final textStyle = AppTextStyle.body.copyWith(color: AppColor.gray2);
+    final textStyle = AppTextStyle.body
+        .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
     final linkStyle = AppTextStyle.body.copyWith(
       decoration: TextDecoration.underline,
-      color: AppColor.accentBlue,
+      color: context.theme.colorScheme.primary,
     );
 
     final constrained = MediaQuery.of(context).size.width < 475;
@@ -371,20 +383,20 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _isSelectedColorComboValid
-                ? AppColor.brightGreen.withAlpha(40)
+                ? context.theme.colorScheme.onPrimary.withAlpha(40)
                 : null,
             border: Border.all(
               color: _isSelectedColorComboValid
                   ? context.theme.colorScheme.primary
-                  : AppColor.gray3,
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           child: Center(
             child: Icon(
               Icons.check,
               color: _isSelectedColorComboValid
-                  ? AppColor.darkGreen
-                  : AppColor.gray4,
+                  ? context.theme.colorScheme.secondary
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
         ),
@@ -398,7 +410,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             HeightConstrainedText(
               _selectedColorErrorMessage!,
               style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: AppColor.redLightMode),
+                  .copyWith(color: context.theme.colorScheme.error),
             ),
           ],
         ],

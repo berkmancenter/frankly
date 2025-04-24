@@ -101,7 +101,7 @@ class CreateCommunityImageField extends StatelessWidget {
 
   double get size => 30.0;
 
-  Widget _buildRemoveImageIcon() {
+  Widget _buildRemoveImageIcon(BuildContext context) {
     return CustomInkWell(
       onTap: onTapRemove,
       borderRadius: BorderRadius.circular(15),
@@ -111,14 +111,14 @@ class CreateCommunityImageField extends StatelessWidget {
         height: 30,
         child: Icon(
           Icons.close,
-          color: AppColor.gray2,
+          color: context.theme.colorScheme.onPrimaryContainer,
           size: 20,
         ),
       ),
     );
   }
 
-  Widget _buildInkWellWidget() {
+  Widget _buildInkWellWidget(BuildContext context) {
     if (!showImage) {
       return CustomInkWell(
         onTap: onTap,
@@ -128,15 +128,15 @@ class CreateCommunityImageField extends StatelessWidget {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
             border: Border.all(
-              color: AppColor.gray2,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           child: Icon(
             Icons.add,
-            color: AppColor.gray2,
+            color: context.theme.colorScheme.onPrimaryContainer,
             size: 20,
           ),
         ),
@@ -152,7 +152,8 @@ class CreateCommunityImageField extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-            border: Border.all(color: AppColor.gray4),
+            border:
+                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
             borderRadius:
                 (!isCircle && !showImage) ? BorderRadius.circular(5) : null,
           ),
@@ -171,29 +172,39 @@ class CreateCommunityImageField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Semantics(button: true, label: text, child: _buildInkWellWidget()),
+        Semantics(
+          button: true,
+          label: text,
+          child: _buildInkWellWidget(context),
+        ),
         SizedBox(width: 10),
         if (showImage) ...[
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          _buildRemoveImageIcon(),
+          _buildRemoveImageIcon(context),
         ] else ...[
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           if (isOptional)
             HeightConstrainedText(
               'Optional',
-              style: AppTextStyle.bodySmall.copyWith(color: AppColor.gray3),
+              style: AppTextStyle.bodySmall.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
         ],
       ],

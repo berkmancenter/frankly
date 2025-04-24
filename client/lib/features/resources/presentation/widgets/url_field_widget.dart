@@ -53,7 +53,7 @@ class UrlFieldWidget extends StatelessWidget {
                 controller: controller,
                 borderColor: (isNullOrEmpty(error)
                         ? borderColor
-                        : AppColor.redDarkMode) ??
+                        : context.theme.colorScheme.errorContainer) ??
                     context.theme.colorScheme.primary,
                 onChanged: onUrlChange,
               ),
@@ -65,12 +65,13 @@ class UrlFieldWidget extends StatelessWidget {
                 onTap: isNullOrEmpty(error) ? () => onSubmit() : null,
                 child: CircleAvatar(
                   radius: 25,
-                  backgroundColor:
-                      (isNullOrEmpty(error) ? buttonColor : AppColor.gray3) ??
-                          context.theme.colorScheme.primary,
+                  backgroundColor: (isNullOrEmpty(error)
+                          ? buttonColor
+                          : context.theme.colorScheme.onPrimaryContainer) ??
+                      context.theme.colorScheme.primary,
                   child: Icon(
                     Icons.check,
-                    color: iconColor ?? AppColor.brightGreen,
+                    color: iconColor ?? context.theme.colorScheme.onPrimary,
                   ),
                 ),
               ),
@@ -81,7 +82,7 @@ class UrlFieldWidget extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             error!,
-            style: TextStyle(color: AppColor.redLightMode),
+            style: TextStyle(color: context.theme.colorScheme.error),
           ),
         ],
         if (isLoading) ...[
@@ -92,7 +93,7 @@ class UrlFieldWidget extends StatelessWidget {
             strokeCap: StrokeCap.round,
             borderType: dotted_border.BorderType.RRect,
             radius: Radius.circular(4),
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onPrimaryContainer,
             child: Center(
               child: ProxiedImage(
                 null,

@@ -25,7 +25,7 @@ class NavButton extends StatefulWidget {
 class _NavButtonState extends State<NavButton> {
   @override
   Widget build(BuildContext context) {
-    final selectedColor = AppColor.white.withOpacity(0.2);
+    final selectedColor = context.theme.colorScheme.surfaceContainerLow;
     return CustomInkWell(
       onTap: widget.onPressed,
       hoverColor: selectedColor,

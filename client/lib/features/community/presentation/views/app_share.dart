@@ -90,7 +90,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                     padding: const EdgeInsets.all(6),
                     child: Icon(
                       Icons.close,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                       size: 30,
                     ),
                   ),
@@ -103,7 +103,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 title,
                 textAlign: TextAlign.center,
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.onPrimary,
                 ),
               ),
               SizedBox(height: 10),
@@ -112,11 +112,12 @@ class _AppShareDialogState extends State<AppShareDialog> {
               widget.content,
               textAlign: TextAlign.center,
               style: isMobile
-                  ? AppTextStyle.bodyMedium.copyWith(color: AppColor.white)
+                  ? AppTextStyle.bodyMedium
+                      .copyWith(color: context.theme.colorScheme.onPrimary)
                   : AppTextStyle.body.copyWith(
                       fontSize:
                           responsiveLayoutService.getDynamicSize(context, 35),
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
             ),
             SizedBox(height: isMobile ? 8 : 18),
@@ -128,7 +129,8 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 children: [
                   HeightConstrainedText(
                     'Share',
-                    style: AppTextStyle.body.copyWith(color: AppColor.white),
+                    style: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.onPrimary),
                   ),
                   _buildShareSection(),
                   _buildFinishButton(),
@@ -146,7 +148,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
         onPressed: () => Navigator.of(context).pop(),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         text: 'Finish',
-        color: AppColor.brightGreen,
+        color: context.theme.colorScheme.onPrimary,
         textColor: context.theme.colorScheme.primary,
       );
 

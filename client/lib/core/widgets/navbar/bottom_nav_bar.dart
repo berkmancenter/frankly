@@ -158,8 +158,8 @@ class _BottomNavAddIcon extends StatelessWidget {
           width: 32,
           child: HeightConstrainedText(
             '+',
-            style:
-                AppTextStyle.body.copyWith(color: AppColor.white, fontSize: 20),
+            style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onPrimary, fontSize: 20),
           ),
         ),
       ),

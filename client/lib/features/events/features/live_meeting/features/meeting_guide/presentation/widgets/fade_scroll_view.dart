@@ -67,7 +67,10 @@ class _FadeScrollViewState extends State<FadeScrollView> {
                     height: _fadeHeight,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: const [AppColor.white, Color(0x00FFFFFF)],
+                        colors: [
+                          context.theme.colorScheme.surfaceContainerLowest,
+                          Colors.transparent,
+                        ],
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                       ),

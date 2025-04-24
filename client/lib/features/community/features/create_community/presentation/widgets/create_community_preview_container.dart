@@ -29,33 +29,34 @@ class PreviewContainer extends StatelessWidget {
   }) : super(key: key);
 
   Color _containerColor(BuildContext context) => finalPreview
-      ? (ThemeUtils.parseColor(community.themeLightColor) ?? AppColor.gray6)
-      : AppColor.gray6;
+      ? (ThemeUtils.parseColor(community.themeLightColor) ??
+          context.theme.colorScheme.surface)
+      : context.theme.colorScheme.surface;
 
   Color _carouselColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
-      : AppColor.gray4;
+      : context.theme.colorScheme.onPrimaryContainer;
 
   Color _nameColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.name)
           ? context.theme.colorScheme.primary
-          : AppColor.gray4;
+          : context.theme.colorScheme.onPrimaryContainer;
 
   Color _taglineColor(BuildContext context) => finalPreview
-      ? AppColor.white
+      ? context.theme.colorScheme.onPrimary
       : !isNullOrEmpty(community.tagLine)
-          ? AppColor.white
-          : AppColor.gray3;
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.onPrimaryContainer;
 
   Color _aboutColor(BuildContext context) => finalPreview
       ? (ThemeUtils.parseColor(community.themeDarkColor) ??
           context.theme.colorScheme.primary)
       : !isNullOrEmpty(community.description)
           ? context.theme.colorScheme.primary
-          : AppColor.gray4;
+          : context.theme.colorScheme.onPrimaryContainer;
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +77,15 @@ class PreviewContainer extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildLogo(),
+                  _buildLogo(context: context),
                   SizedBox(width: 5),
                   _checkEmphasis(
                     emphasize: fieldToEmphasize == PreviewContainerField.name,
-                    child: _buildLineMock(24, color: _nameColor(context)),
+                    child: _buildLineMock(
+                      24,
+                      context: context,
+                      color: _nameColor(context),
+                    ),
                   ),
                 ],
               ),
@@ -112,7 +117,9 @@ class PreviewContainer extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildLogo(color: AppColor.gray3),
+                        _buildLogo(
+                          context: context,
+                        ),
                         SizedBox(height: 10),
                         _checkEmphasis(
                           emphasize:
@@ -142,7 +149,7 @@ class PreviewContainer extends StatelessWidget {
                   height: 29,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                   ),
                 ),
               ],
@@ -153,7 +160,10 @@ class PreviewContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildLogo({Color color = AppColor.gray4}) =>
+  Widget _buildLogo({
+    required BuildContext context,
+    Color? color,
+  }) =>
       !isNullOrEmpty(community.profileImageUrl)
           ? ProxiedImage(
               community.profileImageUrl,
@@ -161,44 +171,58 @@ class PreviewContainer extends StatelessWidget {
               height: iconSize,
               borderRadius: BorderRadius.circular(10),
             )
-          : _buildCircleMock(color: color);
+          : _buildCircleMock(
+              context: context,
+              color: color ?? context.theme.colorScheme.onPrimaryContainer,
+            );
 
   Widget _buildAbout(context) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLineMock(50, color: _aboutColor(context)),
+          _buildLineMock(50, context: context, color: _aboutColor(context)),
           SizedBox(height: 5),
-          _buildLineMock(43, color: _aboutColor(context)),
+          _buildLineMock(43, context: context, color: _aboutColor(context)),
           SizedBox(height: 5),
-          _buildLineMock(48, color: _aboutColor(context)),
+          _buildLineMock(48, context: context, color: _aboutColor(context)),
         ],
       );
 
   Widget _buildTagline(context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildLineMock(50, color: _taglineColor(context)),
+          _buildLineMock(50, context: context, color: _taglineColor(context)),
           SizedBox(height: 8),
-          _buildLineMock(43, color: _taglineColor(context)),
+          _buildLineMock(43, context: context, color: _taglineColor(context)),
           SizedBox(height: 8),
-          _buildLineMock(48, color: _taglineColor(context)),
+          _buildLineMock(48, context: context, color: _taglineColor(context)),
         ],
       );
 
-  Widget _buildCircleMock({Color color = AppColor.gray4}) => Container(
-        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+  Widget _buildCircleMock({
+    required BuildContext context,
+    Color? color,
+  }) =>
+      Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color ?? context.theme.colorScheme.onPrimaryContainer,
+        ),
         width: iconSize,
         height: iconSize,
       );
 
-  Widget _buildLineMock(double width, {Color color = AppColor.gray4}) =>
+  Widget _buildLineMock(
+    double width, {
+    required BuildContext context,
+    Color? color,
+  }) =>
       Container(
         width: width,
         height: 4,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2),
-          color: color,
+          color: color ?? context.theme.colorScheme.onPrimaryContainer,
         ),
       );
 

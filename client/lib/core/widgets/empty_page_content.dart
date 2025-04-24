@@ -21,28 +21,16 @@ class EmptyPageContent extends StatelessWidget {
     this.subtitleText,
     this.buttonText,
     this.showContainer = true,
-    this.buttonType = ActionButtonType.flat,
+    this.buttonType = ActionButtonType.filled,
     this.isBackgroundDark = false,
     this.isBackgroundPrimaryColor = false,
     Key? key,
   }) : super(key: key);
 
-  Color _getColor({bool subtitle = false}) {
-    if (isBackgroundDark) {
-      return AppColor.gray6;
-    } else if (isBackgroundPrimaryColor) {
-      return AppColor.gray1;
-    } else if (subtitle) {
-      return AppColor.gray3;
-    } else {
-      return AppColor.gray2;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final buttonColor = Theme.of(context).colorScheme.primary;
-    final isFlat = buttonType == ActionButtonType.flat;
+    final buttonColor = context.theme.colorScheme.primary;
+    final isSolid = buttonType == ActionButtonType.filled;
     return Container(
       height: 311,
       width: 524,
@@ -50,7 +38,7 @@ class EmptyPageContent extends StatelessWidget {
       decoration: showContainer
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             )
           : null,
       child: Column(
@@ -63,7 +51,11 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(color: _getColor()),
+            style: AppTextStyle.headline4.copyWith(
+              color: isBackgroundDark
+                  ? context.theme.colorScheme.surface
+                  : context.theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 20),
           SizedBox(
@@ -71,8 +63,11 @@ class EmptyPageContent extends StatelessWidget {
             child: HeightConstrainedText(
               subtitleText ??
                   'When new ${type.name} are added, you\'ll see them here.',
-              style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: _getColor(subtitle: true)),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: isBackgroundDark
+                    ? context.theme.colorScheme.surface
+                    : context.theme.colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -80,9 +75,11 @@ class EmptyPageContent extends StatelessWidget {
           if (onButtonPress != null)
             ActionButton(
               text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body
-                  .copyWith(color: isFlat ? AppColor.white : buttonColor),
-              color: isFlat ? buttonColor : null,
+              textStyle: AppTextStyle.body.copyWith(
+                color:
+                    isSolid ? context.theme.colorScheme.onPrimary : buttonColor,
+              ),
+              color: isSolid ? buttonColor : null,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),
               type: buttonType,

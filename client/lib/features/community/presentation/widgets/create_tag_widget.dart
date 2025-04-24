@@ -267,7 +267,9 @@ class TagChip extends StatelessWidget {
     return ActionButton(
       onPressed: onPressed,
       padding: EdgeInsets.zero,
-      color: isSelected ? tagBackgroundColor : AppColor.white,
+      color: isSelected
+          ? tagBackgroundColor
+          : context.theme.colorScheme.surfaceContainerLowest,
       borderRadius: BorderRadius.circular(30),
       child: dotted_border.DottedBorder(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -275,11 +277,15 @@ class TagChip extends StatelessWidget {
         strokeCap: StrokeCap.round,
         borderType: dotted_border.BorderType.RRect,
         radius: Radius.circular(30),
-        color: isSelected ? tagBackgroundColor : AppColor.gray3,
+        color: isSelected
+            ? tagBackgroundColor
+            : context.theme.colorScheme.onPrimaryContainer,
         child: HeightConstrainedText(
           '#${label ?? ''}',
-          style: AppTextStyle.body
-              .copyWith(color: isSelected ? tagTextColor : AppColor.gray1),
+          style: AppTextStyle.body.copyWith(
+              color: isSelected
+                  ? tagTextColor
+                  : context.theme.colorScheme.secondary),
         ),
       ),
     );

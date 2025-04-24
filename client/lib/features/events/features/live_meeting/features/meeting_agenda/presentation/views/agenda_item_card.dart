@@ -103,7 +103,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -177,13 +177,15 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               Expanded(
                 child: HeightConstrainedText(
                   title,
-                  style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+                  style: AppTextStyle.headline4
+                      .copyWith(color: context.theme.colorScheme.secondary),
                 ),
               ),
               if (!_model.isEditMode && !isMobile) ...[
                 HeightConstrainedText(
                   formattedTime,
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                  style: AppTextStyle.body.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
                 SizedBox(width: 10),
                 ProxiedImage(
@@ -250,7 +252,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColor.gray4),
+        border: Border.all(color: context.theme.colorScheme.onPrimaryContainer),
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownButton<AgendaItemType>(
@@ -340,7 +342,10 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(height: 1, thickness: 1, color: AppColor.gray5),
+        Divider(
+            height: 1,
+            thickness: 1,
+            color: context.theme.colorScheme.onPrimaryContainer),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: _model.isEditMode

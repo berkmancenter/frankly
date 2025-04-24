@@ -41,7 +41,7 @@ class ProfileChip extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.white.withOpacity(0.2),
+                  color: context.theme.colorScheme.surfaceContainer,
                 ),
                 padding: showBorder ? const EdgeInsets.all(2) : EdgeInsets.zero,
                 child: ClipOval(
@@ -55,8 +55,8 @@ class ProfileChip extends StatelessWidget {
                           ),
                           child: Text(
                             name.isNotEmpty ? name[0].toUpperCase() : '',
-                            style: AppTextStyle.body
-                                .copyWith(color: AppColor.brightGreen),
+                            style: AppTextStyle.body.copyWith(
+                                color: context.theme.colorScheme.onPrimary),
                           ),
                         )
                       : ProxiedImage(

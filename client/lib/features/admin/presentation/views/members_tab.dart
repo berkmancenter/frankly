@@ -167,13 +167,16 @@ class _MembersTabState extends State<MembersTab> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
               ),
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(Icons.search, color: AppColor.gray1),
+                    child: Icon(
+                      Icons.search,
+                      color: context.theme.colorScheme.secondary,
+                    ),
                   ),
                   Expanded(
                     child: _buildSearchBarField(memberships),
@@ -225,7 +228,7 @@ class _MembersTabState extends State<MembersTab> {
             userId: membership.userId,
             imageHeight: 32,
             textStyle: TextStyle(
-              color: AppColor.black,
+              color: context.theme.colorScheme.primary,
             ),
           ),
           ChangeMembershipDropdown(
@@ -316,7 +319,7 @@ class _MembersTabState extends State<MembersTab> {
               userId: request.userId,
               imageHeight: 32,
               textStyle: TextStyle(
-                color: AppColor.black,
+                color: context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -364,7 +367,7 @@ class _MembersTabState extends State<MembersTab> {
                   height: 44,
                   minWidth: 44,
                   padding: EdgeInsets.zero,
-                  color: AppColor.darkerBlue,
+                  color: context.theme.colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
@@ -375,7 +378,7 @@ class _MembersTabState extends State<MembersTab> {
                   ),
                   child: Icon(
                     Icons.check,
-                    color: AppColor.lightGreen,
+                    color: context.theme.colorScheme.tertiaryFixed,
                     size: 20,
                   ),
                 ),
@@ -390,7 +393,8 @@ class _MembersTabState extends State<MembersTab> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  borderSide: BorderSide(color: AppColor.redLightMode),
+                  borderSide:
+                      BorderSide(color: context.theme.colorScheme.error),
                   sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                   onPressed: () => alertOnError(
                     context,
@@ -398,7 +402,7 @@ class _MembersTabState extends State<MembersTab> {
                   ),
                   child: Icon(
                     Icons.close,
-                    color: AppColor.redLightMode,
+                    color: context.theme.colorScheme.error,
                     size: 20,
                   ),
                 ),
@@ -436,7 +440,7 @@ class _MembersTabState extends State<MembersTab> {
         return Container(
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -498,7 +502,7 @@ class _MembersTabState extends State<MembersTab> {
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -519,7 +523,7 @@ class _MembersTabState extends State<MembersTab> {
                       color: context.theme.colorScheme.primary,
                       icon: Icon(
                         Icons.download,
-                        color: AppColor.white,
+                        color: context.theme.colorScheme.onPrimary,
                         size: 20,
                       ),
                     ),
@@ -654,37 +658,37 @@ class _MembersTabState extends State<MembersTab> {
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Owner',
-          icon: MembershipStatus.owner.icon,
+          icon: MembershipStatus.owner.icon(context),
           permissions: MembershipStatus.owner.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Admin',
-          icon: MembershipStatus.admin.icon,
+          icon: MembershipStatus.admin.icon(context),
           permissions: MembershipStatus.admin.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Moderator',
-          icon: MembershipStatus.mod.icon,
+          icon: MembershipStatus.mod.icon(context),
           permissions: MembershipStatus.mod.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Facilitator',
-          icon: MembershipStatus.facilitator.icon,
+          icon: MembershipStatus.facilitator.icon(context),
           permissions: MembershipStatus.facilitator.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Member',
-          icon: MembershipStatus.member.icon,
+          icon: MembershipStatus.member.icon(context),
           permissions: MembershipStatus.member.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
           title: 'Attendee',
-          icon: MembershipStatus.member.icon,
+          icon: MembershipStatus.member.icon(context),
           permissions: MembershipStatus.attendee.permissions,
         ),
       ],
@@ -728,14 +732,16 @@ class RolePermissionListTile extends StatelessWidget {
                 child: Icon(
                   Icons.circle,
                   size: 4,
-                  color: AppColor.gray3,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                 ),
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
                   item,
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+                  style: AppTextStyle.body.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer,
+                  ),
                 ),
               ),
             ],
@@ -814,11 +820,11 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: AppColor.gray4,
+                color: context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
             child: UpgradeTooltip(
@@ -835,7 +841,9 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(10),
                 style: TextStyle(
-                  color: disableDropdown ? AppColor.gray4 : AppColor.black,
+                  color: disableDropdown
+                      ? context.theme.colorScheme.onPrimaryContainer
+                      : context.theme.colorScheme.primary,
                 ),
                 underline: SizedBox.shrink(),
                 iconEnabledColor: context.theme.colorScheme.primary,
@@ -856,7 +864,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            value.icon,
+                            value.icon(context),
                             SizedBox(width: 4),
                             Text(
                               _adminStatusMap[value] ??
@@ -892,8 +900,8 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                             isUnallowedFacilitatorPromotion);
                     final textStyle = AppTextStyle.body.copyWith(
                       color: isDisabled
-                          ? AppColor.gray1.withOpacity(.5)
-                          : AppColor.gray1,
+                          ? context.theme.colorScheme.secondary.withOpacity(.5)
+                          : context.theme.colorScheme.secondary,
                     );
                     return DropdownMenuItem<MembershipStatus>(
                       value: value,
@@ -902,7 +910,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                         children: [
                           isDisabled
                               ? UpgradeIcon(isDisabledColor: true)
-                              : value.icon,
+                              : value.icon(context),
                           SizedBox(width: 5),
                           Flexible(
                             child: Column(

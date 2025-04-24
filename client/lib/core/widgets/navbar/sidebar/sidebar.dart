@@ -70,7 +70,7 @@ class _SideBarState extends State<SideBar> {
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: _buildNavigationOrSignIn(),
               ),
               _buildBottomSidebarButtons(),
@@ -242,7 +242,7 @@ class _SideBarState extends State<SideBar> {
                   ),
                 ],
                 style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: AppColor.gray2,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                   fontSize: 12,
                 ),
               ),
@@ -255,7 +255,7 @@ class _SideBarState extends State<SideBar> {
               text: TextSpan(
                 text: 'v$version',
                 style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: AppColor.gray2,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                   fontSize: 12,
                 ),
               ),
@@ -332,7 +332,8 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
             SizedBox(width: 11),
             HeightConstrainedText(
               'Start a community',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
           ],
         ),

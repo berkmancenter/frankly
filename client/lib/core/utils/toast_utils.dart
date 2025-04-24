@@ -23,17 +23,17 @@ void showRegularToast(
 
   switch (toastType) {
     case ToastType.success:
-      backgroundColor = AppColor.lightGreen;
-      textColor = AppColor.darkGreen;
+      backgroundColor = context.theme.colorScheme.primary;
+      textColor = context.theme.colorScheme.onPrimary;
       iconPath = AppAsset.kCheckCircleSvg;
       break;
     case ToastType.neutral:
       backgroundColor = context.theme.colorScheme.primary;
-      textColor = AppColor.white;
+      textColor = context.theme.colorScheme.onPrimary;
       break;
     case ToastType.failed:
-      backgroundColor = AppColor.lightRed;
-      textColor = AppColor.redLightMode;
+      backgroundColor = context.theme.colorScheme.error;
+      textColor = context.theme.colorScheme.onError;
       iconPath = AppAsset.kExclamationSvg;
       break;
   }

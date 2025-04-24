@@ -120,8 +120,8 @@ class _MeetingGuideCardItemWordCloudState
                     child: Icon(
                       Icons.send,
                       color: _wordCloudResponseController.text != ''
-                          ? AppColor.brightGreen
-                          : AppColor.gray2,
+                          ? context.theme.colorScheme.onPrimary
+                          : context.theme.colorScheme.onPrimaryContainer,
                     ),
                   ),
                 ],
@@ -161,7 +161,7 @@ class _MeetingGuideCardItemWordCloudState
                 Icons.cloud,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
-                    ? AppColor.white
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.primary,
               ),
             ),
@@ -185,7 +185,7 @@ class _MeetingGuideCardItemWordCloudState
                 Icons.list,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.list
-                    ? AppColor.white
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.primary,
               ),
             ),
@@ -209,7 +209,7 @@ class _MeetingGuideCardItemWordCloudState
                 Icons.person,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
-                    ? AppColor.white
+                    ? context.theme.colorScheme.onPrimary
                     : context.theme.colorScheme.primary,
               ),
             ),
@@ -317,8 +317,8 @@ class _MeetingGuideCardItemWordCloudState
                         child: Container(
                           height: 8,
                           width: lineWidth,
-                          decoration:
-                              BoxDecoration(color: AppColor.brightGreen),
+                          decoration: BoxDecoration(
+                              color: context.theme.colorScheme.onPrimary),
                         ),
                       ),
                     ),

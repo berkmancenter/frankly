@@ -54,7 +54,7 @@ class UserProfileChip extends StatelessWidget {
               width: imageHeight ?? 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.gray5,
+                color: context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
           );

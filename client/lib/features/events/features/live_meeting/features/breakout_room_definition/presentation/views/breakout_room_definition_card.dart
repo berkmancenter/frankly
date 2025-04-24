@@ -153,12 +153,13 @@ class _BreakoutRoomDefinitionCardState
       children: [
         HeightConstrainedText(
           'Target size',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           padding: EdgeInsets.all(15),
@@ -168,12 +169,13 @@ class _BreakoutRoomDefinitionCardState
                 alignment: Alignment.centerLeft,
                 child: HeightConstrainedText(
                   'Target Size?',
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                  style: AppTextStyle.body.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
               ),
               FormBuilderSlider(
                 activeColor: context.theme.colorScheme.primary,
-                inactiveColor: AppColor.gray6,
+                inactiveColor: context.theme.colorScheme.surface,
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent, width: 0),
@@ -274,13 +276,14 @@ class _BreakoutRoomDefinitionCardState
       children: [
         HeightConstrainedText(
           'Category',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.all(30),
           decoration: BoxDecoration(
-            color: AppColor.darkerBlue,
+            color: context.theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Column(
@@ -365,8 +368,9 @@ class _QuestionCardState extends State<QuestionCard> {
       child: ExpansionTile(
         key: Key(_isExpanded.value.toString()),
         initiallyExpanded: _isExpanded.value,
-        backgroundColor: AppColor.white,
-        collapsedBackgroundColor: AppColor.white,
+        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+        collapsedBackgroundColor:
+            context.theme.colorScheme.surfaceContainerLowest,
         title: Row(
           children: [
             ReorderableListener(
@@ -402,7 +406,7 @@ class _QuestionCardState extends State<QuestionCard> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             padding: EdgeInsets.all(20),
@@ -441,12 +445,12 @@ class _QuestionCardState extends State<QuestionCard> {
                       child: Container(
                         decoration: ShapeDecoration(
                           shape: CircleBorder(),
-                          color: AppColor.gray4,
+                          color: context.theme.colorScheme.onPrimaryContainer,
                         ),
                         child: IconButton(
                           icon: Icon(
                             CupertinoIcons.trash,
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                             size: 15,
                           ),
                           onPressed: _breakoutCardViewType ==
@@ -493,7 +497,7 @@ class _QuestionCardState extends State<QuestionCard> {
   Widget _buildEditButton() {
     return ActionButton(
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       textColor: context.theme.colorScheme.primary,
       onPressed: () {
         _isExpanded.value = true;

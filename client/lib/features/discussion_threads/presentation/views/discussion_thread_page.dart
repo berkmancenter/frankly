@@ -48,8 +48,6 @@ class DiscussionThreadPage extends StatefulWidget {
 
 class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     implements DiscussionThreadView {
-  static const _kBackgroundColor = AppColor.gray6;
-
   /// Key for `comments` section start. It is used for auto-scrolling if [widget.scrollToComments]
   /// is true.
   final _commentsSectionKey = GlobalKey();
@@ -151,7 +149,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               _presenter.scrollToComments();
 
               return Scaffold(
-                backgroundColor: _kBackgroundColor,
+                backgroundColor: context.theme.colorScheme.surface,
                 floatingActionButton: _buildFAB(discussionThread),
                 body:
                     _buildBody(discussionThread, localDiscussionThreadComments),
@@ -171,7 +169,11 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         isExtended: isMobile,
         backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
-        child: Icon(Icons.add, color: AppColor.brightGreen, size: 30),
+        child: Icon(
+          Icons.add,
+          color: context.theme.colorScheme.onPrimary,
+          size: 30,
+        ),
       );
     } else {
       return FloatingActionButton.extended(
@@ -179,11 +181,16 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         onPressed: () => _showAddCommentDialog(discussionThread),
         label: Row(
           children: [
-            Icon(Icons.add, color: AppColor.brightGreen, size: 30),
+            Icon(
+              Icons.add,
+              color: context.theme.colorScheme.onPrimary,
+              size: 30,
+            ),
             SizedBox(width: 10),
             Text(
               'Add a comment',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.brightGreen),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
             ),
           ],
         ),
@@ -209,7 +216,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           child: CustomScrollView(
             slivers: [
               SliverAppBar(
-                backgroundColor: isMobile ? AppColor.white : _kBackgroundColor,
+                backgroundColor: isMobile
+                    ? context.theme.colorScheme.surfaceContainerLowest
+                    : context.theme.colorScheme.surface,
                 automaticallyImplyLeading: false,
                 expandedHeight: 50,
                 floating: true,
@@ -233,14 +242,18 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                             children: [
                               HeightConstrainedText(
                                 '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
-                                style: AppTextStyle.bodyMedium
-                                    .copyWith(color: AppColor.gray2),
+                                style: AppTextStyle.bodyMedium.copyWith(
+                                  color: context
+                                      .theme.colorScheme.onPrimaryContainer,
+                                ),
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
                                   'Newest First', // Forced (mock) sorting
-                                  style: AppTextStyle.bodyMedium
-                                      .copyWith(color: AppColor.gray2),
+                                  style: AppTextStyle.bodyMedium.copyWith(
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
+                                  ),
                                 ),
                             ],
                           ),
@@ -403,7 +416,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Container(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             child: Column(
               children: [
                 SizedBox(height: 20),

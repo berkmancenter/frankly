@@ -74,7 +74,8 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Text(
               'Fake Participants',
-              style: TextStyle(color: AppColor.white, fontSize: 16),
+              style: TextStyle(
+                  color: context.theme.colorScheme.onPrimary, fontSize: 16),
             ),
           ),
         ),
@@ -88,7 +89,7 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),

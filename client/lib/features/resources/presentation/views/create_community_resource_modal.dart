@@ -70,7 +70,8 @@ class CreateCommunityResourceModal extends StatelessWidget {
               ),
               CircleAvatar(
                 maxRadius: 10,
-                backgroundColor: AppColor.white,
+                backgroundColor:
+                    context.theme.colorScheme.surfaceContainerLowest,
                 child: Icon(
                   Icons.edit,
                   size: 15,
@@ -104,7 +105,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
                       backgroundColor: context.theme.colorScheme.primary,
                       child: Icon(
                         Icons.check,
-                        color: AppColor.brightGreen,
+                        color: context.theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -179,7 +180,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
           SizedBox(height: 20),
           Divider(
             thickness: 1,
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
           SizedBox(height: 20),
           Container(
@@ -193,7 +194,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
                       })
                   : null,
               color: context.theme.colorScheme.primary,
-              textColor: AppColor.white,
+              textColor: context.theme.colorScheme.onPrimary,
             ),
           ),
           SizedBox(height: 20),

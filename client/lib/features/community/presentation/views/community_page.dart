@@ -141,7 +141,8 @@ class CommunityPageState extends State<CommunityPage> {
                               if (states.contains(WidgetState.selected)) {
                                 return primaryColor;
                               } else {
-                                return AppColor.gray4;
+                                return context
+                                    .theme.colorScheme.onPrimaryContainer;
                               }
                             }),
                           ),
@@ -150,7 +151,8 @@ class CommunityPageState extends State<CommunityPage> {
                               if (states.contains(WidgetState.selected)) {
                                 return primaryColor;
                               } else {
-                                return AppColor.gray4;
+                                return context
+                                    .theme.colorScheme.onPrimaryContainer;
                               }
                             }),
                           ),

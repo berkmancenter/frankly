@@ -38,12 +38,14 @@ class BreakoutCategoryDialog extends StatelessWidget {
         SizedBox(height: spacerHeight),
         HeightConstrainedText(
           'Choose a category',
-          style: AppTextStyle.headline1.copyWith(color: AppColor.white),
+          style: AppTextStyle.headline1
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: 10),
         HeightConstrainedText(
           'Please pick the category to be placed into a room.',
-          style: AppTextStyle.body.copyWith(color: AppColor.white),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: spacerHeight),
         for (var categoryData in categoryPresenter.breakoutCategories)
@@ -54,13 +56,14 @@ class BreakoutCategoryDialog extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 10),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.white),
+                border: Border.all(color: context.theme.colorScheme.onPrimary),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: HeightConstrainedText(
                 categoryData.category,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.bodyMedium.copyWith(color: AppColor.white),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
               ),
             ),
           ),

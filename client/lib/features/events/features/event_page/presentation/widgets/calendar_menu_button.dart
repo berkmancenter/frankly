@@ -42,7 +42,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: _isHovered ? AppColor.grayHoverColor : null,
+          color: _isHovered ? context.theme.colorScheme.primaryFixed : null,
         ),
         child: TooltipTheme(
           data: TooltipThemeData(
@@ -60,12 +60,14 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                 Icon(
                   CupertinoIcons.calendar_badge_plus,
                   size: 20,
-                  color: AppColor.gray3,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                 ),
                 SizedBox(width: 10),
                 HeightConstrainedText(
                   'Add to calendar',
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+                  style: AppTextStyle.body.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer,
+                  ),
                 ),
               ],
             ),

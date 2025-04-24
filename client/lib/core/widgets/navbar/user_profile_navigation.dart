@@ -51,7 +51,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
     _isExiting = false;
     await showCustomDialog(
       context: context,
-      barrierColor: AppColor.black.withOpacity(0.3),
+      barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
       builder: (context) => Stack(
         children: [
           Positioned.fill(
@@ -85,7 +85,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
             child: MouseRegion(
               child: Container(
                 constraints: BoxConstraints(maxHeight: 400),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: ProfileNavigationList(),
               ),
             ),

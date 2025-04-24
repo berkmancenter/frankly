@@ -66,7 +66,7 @@ class ControlsButton extends StatelessWidget {
           icon: Icon(
             icon,
             size: 25,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
           ),
           onPressed: onPressed,
         ),

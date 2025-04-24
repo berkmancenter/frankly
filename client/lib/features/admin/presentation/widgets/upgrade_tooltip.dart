@@ -202,7 +202,7 @@ class _TooltipContainerState extends State<_TooltipContainer> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   boxShadow: const [AppDecoration.lightBoxShadow],
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
@@ -212,7 +212,7 @@ class _TooltipContainerState extends State<_TooltipContainer> {
             Container(
               width: 18,
               height: 18,
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               transform: Matrix4.identity()
                 ..translate(0, 10 * (widget.isBelowIcon ? 1 : -1))
                 ..rotateZ(pi / 4),

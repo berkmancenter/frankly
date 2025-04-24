@@ -51,9 +51,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
       child: Column(
         children: [
           if (parentComment.isDeleted)
-            _buildCommentDeleted()
+            _DeletedCommentWidget()
           else
-            _buildCommentSection(parentComment),
+            _buildCommentSection(context, parentComment),
           if (childrenComments.isNotEmpty)
             Stack(
               children: [
@@ -62,7 +62,10 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                   bottom: 0,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: Container(width: 1, color: AppColor.gray3),
+                    child: Container(
+                      width: 1,
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
                 ListView.builder(
@@ -74,9 +77,10 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                     final discussionThreadComment = childrenComments[index];
 
                     if (discussionThreadComment.isDeleted) {
-                      return _buildCommentDeleted();
+                      return _DeletedCommentWidget();
                     } else {
-                      return _buildCommentSection(discussionThreadComment);
+                      return _buildCommentSection(
+                          context, discussionThreadComment);
                     }
                   },
                 ),
@@ -87,22 +91,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
     );
   }
 
-  Widget _buildCommentDeleted() {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          child: HeightConstrainedText(
-            'Comment Deleted',
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
-          ),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  Widget _buildCommentSection(DiscussionThreadComment discussionThreadComment) {
+  Widget _buildCommentSection(
+      BuildContext context, DiscussionThreadComment discussionThreadComment) {
     final commentCreatorId = discussionThreadComment.creatorId;
     final isUsersComment = userService.currentUserId == commentCreatorId;
     final emotion = currentlySelectedEmotion(discussionThreadComment);
@@ -115,8 +105,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           children: [
             UserProfileChip(
               userId: commentCreatorId,
-              textStyle:
-                  AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+              textStyle: AppTextStyle.bodyMedium.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
               showName: true,
               showBorder: true,
             ),
@@ -132,7 +123,8 @@ class DiscussionThreadCommentCard extends StatelessWidget {
         SizedBox(height: 10),
         HeightConstrainedText(
           discussionThreadComment.comment,
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         if (isUsersComment) ...[
           SizedBox(height: 10),
@@ -150,6 +142,27 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           ),
         ],
         SizedBox(height: 20),
+      ],
+    );
+  }
+}
+
+class _DeletedCommentWidget extends StatelessWidget {
+  const _DeletedCommentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          child: HeightConstrainedText(
+            'Comment Deleted',
+            style: AppTextStyle.bodyMedium
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+          ),
+        ),
+        SizedBox(height: 10),
       ],
     );
   }

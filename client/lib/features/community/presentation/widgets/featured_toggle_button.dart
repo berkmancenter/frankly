@@ -69,7 +69,7 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
             child: Container(
               decoration: widget.decoration ??
                   BoxDecoration(
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     borderRadius: BorderRadius.circular(12),
                   ),
               child: FormBuilderSwitch(
@@ -81,7 +81,7 @@ class _FeaturedToggleButtonState extends State<FeaturedToggleButton> {
                     widget.controlAffinity ?? ListTileControlAffinity.trailing,
                 name: 'featured',
                 inactiveTrackColor: Colors.grey,
-                activeColor: AppColor.white,
+                activeColor: context.theme.colorScheme.surfaceContainerLowest,
                 activeTrackColor: Theme.of(context).colorScheme.secondary,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(

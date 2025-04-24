@@ -342,7 +342,8 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'URL Preview',
-                style: AppTextStyle.body.copyWith(color: AppColor.white),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
               ),
               SizedBox(height: 4),
               HeightConstrainedText(
@@ -696,7 +697,7 @@ class _AttributeOptionState extends State<AttributeOption> {
         });
       },
       text: widget.attribute.type.text,
-      color: AppColor.brightGreen,
+      color: context.theme.colorScheme.onPrimary,
       icon: Padding(
         padding: const EdgeInsets.all(5),
         child: Icon(

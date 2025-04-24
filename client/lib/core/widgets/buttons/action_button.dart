@@ -15,10 +15,7 @@ enum ActionButtonSendingIndicatorAlign {
   interior,
 }
 
-enum ActionButtonType {
-  outline,
-  flat,
-}
+enum ActionButtonType { filled, outline, text }
 
 enum ActionButtonIconSide {
   left,
@@ -49,7 +46,6 @@ class ActionButton extends StatefulWidget {
   final Color? color;
   final Color? disabledColor;
   final Color? textColor;
-  final Color? overlayColor;
   final TextStyle? textStyle;
   final OutlinedBorder? shape;
   final BorderRadius? borderRadius;
@@ -77,12 +73,11 @@ class ActionButton extends StatefulWidget {
   const ActionButton({
     Key? key,
     this.icon,
-    this.type = ActionButtonType.flat,
+    this.type = ActionButtonType.filled,
     this.text,
     this.color,
     this.disabledColor,
     this.textColor,
-    this.overlayColor,
     this.textStyle,
     this.shape,
     this.borderRadius,
@@ -101,11 +96,7 @@ class ActionButton extends StatefulWidget {
     this.height,
     this.tooltipText,
     this.child,
-  })  : assert(
-          textStyle == null || textColor == null,
-          'Cannot specify textStyle and textColor',
-        ),
-        assert(child == null || text == null, 'Cannot specify child and text'),
+  })  : assert(child == null || text == null, 'Cannot specify child and text'),
         super(key: key);
 
   @override
@@ -114,7 +105,7 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton> {
   bool _isSending = false;
-  bool _hover = false;
+  final bool _hover = false;
 
   @override
   void initState() {
@@ -159,31 +150,12 @@ class _ActionButtonState extends State<ActionButton> {
         child: Icon(
           widget.icon,
           size: 18,
-          color: _getTextColor(),
+          color: widget.textColor,
         ),
       );
     }
 
     throw Exception('Icon must be a Widget or IconData instance.');
-  }
-
-  Color _getTextColor() {
-    if (widget.type == ActionButtonType.outline) {
-      return widget.textColor ??
-          widget.borderSide?.color ??
-          context.theme.colorScheme.primary;
-    }
-
-    Color defaultTextColor = context.theme.colorScheme.onPrimary;
-    if (widget.color == context.theme.colorScheme.primary) {
-      defaultTextColor = context.theme.colorScheme.onPrimary;
-    } else if (widget.color == context.theme.colorScheme.secondary) {
-      defaultTextColor = context.theme.colorScheme.primary;
-    } else if (widget.color == context.theme.colorScheme.error) {
-      defaultTextColor = context.theme.colorScheme.onError;
-    }
-
-    return widget.textColor ?? defaultTextColor;
   }
 
   Widget _buildButtonContents() {
@@ -193,8 +165,8 @@ class _ActionButtonState extends State<ActionButton> {
     final text = widget.text;
     final child = widget.child;
 
-    return Container(
-      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12),
+    return Padding(
+      padding: widget.padding ?? EdgeInsets.zero,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -215,9 +187,7 @@ class _ActionButtonState extends State<ActionButton> {
             HeightConstrainedText(
               text,
               textAlign: TextAlign.center,
-              style: body.copyWith(color: _getTextColor()).merge(
-                    widget.textStyle ?? TextStyle(),
-                  ),
+
             )
           else if (child != null)
             child,
@@ -231,76 +201,61 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Widget _buildButton() {
-    final overlayColor = widget.overlayColor != null
-        ? WidgetStateProperty.all(widget.overlayColor)
-        : null;
     final shape = widget.shape ??
         RoundedRectangleBorder(
           borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
         );
-    final minimumSize = WidgetStateProperty.all(
-      Size(widget.minWidth ?? 96, widget.height ?? 50),
-    );
+    final minimumSize = Size(widget.minWidth ?? 96, widget.height ?? 50);
+
     final onPressed =
         widget.onPressed != null && !_isSending ? _runAction : null;
 
     final Widget button;
-    if (widget.type == ActionButtonType.flat) {
-      button = Semantics(
-        button: true,
-        focused: _hover,
-        enabled: onPressed != null,
-        label: widget.text,
-        child: TextButton(
+    switch (widget.type) {
+      case ActionButtonType.filled:
+        button = FilledButton(
           onPressed: onPressed,
-          onHover: (hover) {
-            setState(() => _hover = hover);
-          },
-          onFocusChange: (focus) {
-            setState(() => _hover = focus);
-          },
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.disabled)) {
-                return widget.disabledColor ??
-                    context.theme.colorScheme.onSurface.withOpacity(0.38);
-              }
-              return widget.color != null
-                  ? widget.color!.withOpacity(_hover ? .8 : 1)
-                  : context.theme.colorScheme.primary;
-            }),
-            overlayColor: overlayColor,
+          style: FilledButton.styleFrom(
+            backgroundColor: widget.color ?? context.theme.colorScheme.primary,
+            textStyle: widget.textStyle,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.onPrimary,
             minimumSize: minimumSize,
-            shape: WidgetStateProperty.all(shape),
+            shape: shape,
           ),
           child: _buildButtonContents(),
-        ),
-      );
-    } else if (widget.type == ActionButtonType.outline) {
-      button = Semantics(
-        button: true,
-        focused: _hover,
-        enabled: onPressed != null,
-        label: widget.text,
-        child: OutlinedButton(
-          style: ButtonStyle(
-            overlayColor: overlayColor,
-            side: WidgetStateProperty.all(
-              widget.borderSide ??
-                  BorderSide(
-                    color: _getTextColor(),
-                  ),
-            ),
-            padding: WidgetStateProperty.all(EdgeInsets.zero),
+        );
+        break;
+      case ActionButtonType.outline:
+        button = OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            side: widget.borderSide ??
+                BorderSide(
+                  color: widget.color ?? context.theme.colorScheme.primary,
+                ),
+            textStyle: widget.textStyle,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.primary,
             minimumSize: minimumSize,
-            shape: WidgetStateProperty.all(shape),
+            shape: shape,
           ),
           onPressed: onPressed,
           child: _buildButtonContents(),
-        ),
-      );
-    } else {
-      button = SizedBox.shrink();
+        );
+        break;
+      case ActionButtonType.text:
+        button = TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+            textStyle: widget.textStyle,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.primary,
+            minimumSize: minimumSize,
+            shape: shape,
+          ),
+          child: _buildButtonContents(),
+        );
+        break;
     }
 
     if (widget.expand) {
@@ -334,28 +289,25 @@ class _ActionButtonState extends State<ActionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.margin ?? const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.sendingIndicatorAlign ==
-                  ActionButtonSendingIndicatorAlign.left &&
-              _isSending)
-            Padding(
-              padding: const EdgeInsets.only(right: 14),
-              child: _buildLoading(),
-            ),
-          _buildTooltipWrappedButton(),
-          if (widget.sendingIndicatorAlign ==
-                  ActionButtonSendingIndicatorAlign.right &&
-              _isSending)
-            Padding(
-              padding: const EdgeInsets.only(left: 14),
-              child: _buildLoading(),
-            ),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (widget.sendingIndicatorAlign ==
+                ActionButtonSendingIndicatorAlign.left &&
+            _isSending)
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: _buildLoading(),
+          ),
+        _buildTooltipWrappedButton(),
+        if (widget.sendingIndicatorAlign ==
+                ActionButtonSendingIndicatorAlign.right &&
+            _isSending)
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: _buildLoading(),
+          ),
+      ],
     );
   }
 }

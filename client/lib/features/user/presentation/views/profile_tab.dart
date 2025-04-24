@@ -114,7 +114,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     final localStatus = status;
     if (localStatus == null) return SizedBox.shrink();
 
-    return localStatus.icon;
+    return localStatus.icon(context);
   }
 
   List<Widget> _buildEmail(String userId) {
@@ -191,8 +191,11 @@ class _ProfileTabState extends State<_ProfileTab> {
                 initialValue: changeRecord.displayName,
                 borderType: BorderType.outline,
                 borderRadius: 5,
-                textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-                labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+                textStyle: TextStyle(
+                    color: context.theme.colorScheme.primary, fontSize: 16),
+                labelStyle: TextStyle(
+                    fontSize: 14.0,
+                    color: context.theme.colorScheme.onPrimaryContainer),
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onChanged: (value) {
@@ -229,7 +232,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                         .toString()
                         .replaceFirst('MembershipStatus.', '')
                         .capitalize(),
-                    style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                    style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer),
                   ),
                 ],
               );
@@ -281,7 +285,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                   ),
                 ),
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onPrimary,
                 text: 'Preview',
                 expand: false,
                 textColor: context.theme.colorScheme.primary,
@@ -297,8 +301,8 @@ class _ProfileTabState extends State<_ProfileTab> {
               text: 'Update Profile',
               expand: false,
               textColor: controller.changeKeys.isNotEmpty
-                  ? Theme.of(context).colorScheme.secondary
-                  : AppColor.white,
+                  ? context.theme.colorScheme.secondary
+                  : context.theme.colorScheme.surfaceContainerLowest,
             ),
           ],
         ),
@@ -339,8 +343,11 @@ class _ProfileTabState extends State<_ProfileTab> {
           padding: EdgeInsets.zero,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-          textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-          labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+          textStyle:
+              TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
+          labelStyle: TextStyle(
+              fontSize: 14.0,
+              color: context.theme.colorScheme.onPrimaryContainer),
           initialValue: changeRecord.about,
           onChanged: (value) {
             controller.onChangedAboutMe(value);
@@ -353,7 +360,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           child: HeightConstrainedText(
             changeRecord.about ?? '',
             style: AppTextStyle.body.copyWith(
-              color: AppColor.gray2,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
         ),
@@ -390,7 +397,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                                 : HeightConstrainedText(
                                     '#${definition.title} ',
                                     style: AppTextStyle.body.copyWith(
-                                      color: AppColor.gray3,
+                                      color: context
+                                          .theme.colorScheme.onPrimaryContainer,
                                     ),
                                   ),
                           ),
@@ -421,8 +429,8 @@ class _ProfileTabState extends State<_ProfileTab> {
         children: [
           HeightConstrainedText(
             widget.allowEdit ? 'Edit your profile' : '',
-            style: AppTextStyle.headlineSmall
-                .copyWith(fontSize: 16, color: AppColor.black),
+            style: AppTextStyle.headlineSmall.copyWith(
+                fontSize: 16, color: context.theme.colorScheme.primary),
           ),
           Spacer(),
           AppClickableWidget(
@@ -472,7 +480,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           padding: EdgeInsets.all(6.0),
           child: Icon(
             icon,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: iconSize,
           ),
         ),
@@ -544,7 +552,7 @@ class _ProfileTabState extends State<_ProfileTab> {
       );
     } else {
       return Material(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         child: Column(
           children: [
             Expanded(
@@ -592,8 +600,11 @@ class SocialInputField extends StatelessWidget {
             initialValue: platform.url,
             borderType: BorderType.outline,
             borderRadius: 5,
-            textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-            labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+            textStyle: TextStyle(
+                color: context.theme.colorScheme.primary, fontSize: 16),
+            labelStyle: TextStyle(
+                fontSize: 14.0,
+                color: context.theme.colorScheme.onPrimaryContainer),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onChanged: onChanged,

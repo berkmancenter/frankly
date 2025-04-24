@@ -26,11 +26,12 @@ class SectionCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: HeightConstrainedText(
             title,
-            style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+            style: AppTextStyle.subhead
+                .copyWith(color: context.theme.colorScheme.onPrimary),
           ),
         ),
-        iconColor: AppColor.white,
-        collapsedIconColor: AppColor.white,
+        iconColor: context.theme.colorScheme.onPrimary,
+        collapsedIconColor: context.theme.colorScheme.onPrimary,
         children: [
           body,
         ],

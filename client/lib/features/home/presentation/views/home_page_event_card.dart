@@ -49,7 +49,7 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
   @override
   Widget build(BuildContext context) {
     return HoverShadowContainer(
-      shadowColor: AppColor.gray4,
+      shadowColor: context.theme.colorScheme.onPrimaryContainer,
       borderRadius: BorderRadius.circular(10),
       child: CustomInkWell(
         hoverColor: Colors.transparent,
@@ -58,7 +58,7 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
         child: Container(
           height: responsiveLayoutService.isMobile(context) ? 130 : 118,
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(10),
             boxShadow: const [AppDecoration.lightBoxShadow],
           ),
@@ -116,8 +116,8 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
               if (widget.event.isLiveStream)
                 HeightConstrainedText(
                   'Livestream',
-                  style:
-                      AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray3),
+                  style: AppTextStyle.eyebrowSmall.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer),
                 ),
               SizedBox(height: 10),
               Row(

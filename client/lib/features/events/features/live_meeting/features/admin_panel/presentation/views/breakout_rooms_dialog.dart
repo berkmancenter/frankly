@@ -166,7 +166,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           () => _startBreakouts(BreakoutAssignmentMethod.targetPerRoom),
         ),
         text: 'Randomly Assign',
-        color: AppColor.brightGreen,
+        color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
@@ -196,7 +196,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           () => _startBreakouts(BreakoutAssignmentMethod.smartMatch),
         ),
         text: 'Smart Match Participants',
-        color: AppColor.brightGreen,
+        color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
@@ -249,7 +249,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
               'Asking participants to join breakout rooms.\nBreakout rooms will start in...$timeRemaining',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.black,
+                color: context.theme.colorScheme.primary,
                 fontSize: 16,
               ),
             );
@@ -269,7 +269,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),
@@ -297,7 +297,9 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: Text(
                       'Breakout Rooms',
-                      style: TextStyle(color: AppColor.white, fontSize: 16),
+                      style: TextStyle(
+                          color: context.theme.colorScheme.onPrimary,
+                          fontSize: 16),
                     ),
                   ),
                 ),

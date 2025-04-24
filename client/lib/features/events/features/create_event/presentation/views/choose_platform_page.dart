@@ -60,7 +60,8 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
               for (var platform in allowedVideoPlatforms) ...[
                 CustomInkWell(
                   onTap: () => presenter.selectPlatform(platform),
-                  hoverColor: AppColor.gray3.withOpacity(0.1),
+                  hoverColor:
+                      context.theme.colorScheme.primaryFixed.withOpacity(0.1),
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 5),
                     leading: SizedBox(
@@ -77,8 +78,9 @@ class _ChoosePlatformPageState extends State<_ChoosePlatformPage> {
                     ),
                     subtitle: HeightConstrainedText(
                       platform.platformKey.info.description,
-                      style: AppTextStyle.eyebrowSmall
-                          .copyWith(color: AppColor.gray4),
+                      style: AppTextStyle.eyebrowSmall.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                     trailing: Container(
                       padding: EdgeInsets.all(2),
@@ -173,7 +175,7 @@ class LinkField extends StatelessWidget {
                   labelStyle: AppTextStyle.bodySmall.copyWith(
                     color: isNullOrEmpty(error)
                         ? context.theme.colorScheme.primary
-                        : AppColor.redLightMode,
+                        : context.theme.colorScheme.error,
                   ),
                   onEditingComplete: () => onSubmit(),
                   padding: EdgeInsets.zero,
@@ -198,14 +200,14 @@ class LinkField extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
                               ? context.theme.colorScheme.primary
-                              : AppColor.gray4,
+                              : context.theme.colorScheme.onPrimaryContainer,
                         ),
                         child: Icon(
                           Icons.check,
                           size: 15,
                           color: isNullOrEmpty(error) && !isNullOrEmpty(url)
-                              ? AppColor.brightGreen
-                              : AppColor.gray1,
+                              ? context.theme.colorScheme.onPrimary
+                              : context.theme.colorScheme.secondary,
                         ),
                       ),
                     )

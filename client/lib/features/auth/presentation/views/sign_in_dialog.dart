@@ -44,7 +44,7 @@ class _SignInDialogState extends State<SignInDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       child: Stack(
         children: [
           ConstrainedBox(

@@ -92,8 +92,8 @@ class SurveyDialog extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: ActionButton(
               color: surveyPresenter.checkSurveyCompleted()
-                  ? AppColor.brightGreen
-                  : AppColor.gray4,
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.onPrimaryContainer,
               onPressed: () => surveyPresenter.checkSurveyCompleted()
                   ? Navigator.of(context).pop(
                       SurveyDialogResult(

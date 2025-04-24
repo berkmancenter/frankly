@@ -91,7 +91,7 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
                     child: Icon(
                       Icons.close,
                       size: iconSize,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -99,14 +99,16 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
             ),
             HeightConstrainedText(
               _model.prePostCard.headline,
-              style: AppTextStyle.headline1.copyWith(color: AppColor.white),
+              style: AppTextStyle.headline1
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 10),
             HeightConstrainedText(
               _model.prePostCard.message,
-              style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
               maxLines: 8,
               overflow: TextOverflow.ellipsis,
             ),
@@ -176,10 +178,11 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
     final buttonText = urlParams.buttonText;
     final buttonTextNotEmpty = buttonText != null && buttonText.isNotEmpty;
     return ActionButton(
-      color: AppColor.darkerBlue,
+      color: context.theme.colorScheme.primary,
       type: ActionButtonType.outline,
-      borderSide: BorderSide(color: AppColor.brightGreen, width: 1),
-      textColor: AppColor.brightGreen,
+      borderSide:
+          BorderSide(color: context.theme.colorScheme.onPrimary, width: 1),
+      textColor: context.theme.colorScheme.onPrimary,
       text: buttonTextNotEmpty ? buttonText : 'Open Link',
       onPressed: () =>
           alertOnError(context, () => _presenter.launchSurvey(urlParams)),

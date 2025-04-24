@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
+import 'package:universal_html/js.dart' as universal_js;
 
 enum BorderType {
   none,
@@ -60,16 +61,13 @@ class CustomTextField extends StatefulWidget {
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
 
-  /// Allow for custom suffix icon
-  final Widget? suffixIcon;
-
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
     this.labelText,
     this.hintText,
     this.initialValue,
-    this.maxLines = 1,
+    this.maxLines = 3,
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
@@ -79,9 +77,9 @@ class CustomTextField extends StatefulWidget {
     this.onEditingComplete,
     this.borderType = BorderType.outline,
     this.contentPadding =
-        const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
     this.borderRadius = 5,
-    this.backgroundColor = AppColor.white,
+    this.backgroundColor,
     this.focusNode,
     this.textFieldPadding,
     this.borderColor,
@@ -95,7 +93,7 @@ class CustomTextField extends StatefulWidget {
     this.readOnly = false,
     this.fillColor,
     this.cursorColor,
-    this.autovalidateMode = AutovalidateMode.onUserInteraction,
+    this.autovalidateMode,
     this.prefixText,
     this.isOnlyDigits = false,
     this.numberThreshold,
@@ -106,7 +104,6 @@ class CustomTextField extends StatefulWidget {
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
-    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -116,8 +113,14 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   late FocusNode _focusNode;
   late TextEditingController _controller;
-  final bool _shiftPressed = false;
-  bool _hasFocus = false;
+  bool _shiftPressed = false;
+
+  void _unfocus() {
+    if (kIsWeb) {
+      universal_js.context.callMethod('focus');
+    }
+    FocusNode().requestFocus();
+  }
 
   @override
   void initState() {
@@ -126,147 +129,187 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue ?? '');
-
-    _focusNode.addListener(() {
-      setState(() {
-        _hasFocus = _focusNode.hasFocus;
-      });
-    });
   }
 
-  TextStyle _buildLabelStyle(
-    BuildContext context,
-  ) {
+  InputBorder _getBorder({bool isError = false}) {
+    if (widget.borderType == BorderType.outline) {
+      return OutlineInputBorder(
+        borderSide: BorderSide(
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+      );
+    } else if (widget.borderType == BorderType.underline) {
+      return UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
+          width: 1.0,
+        ),
+      );
+    }
+
+    return InputBorder.none;
+  }
+
+  Color _getBorderColor({bool isError = false}) {
+    return isError
+        ? context.theme.colorScheme.errorContainer
+        : _focusNode.hasFocus
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.onPrimaryContainer;
+  }
+
+  TextStyle _buildLabelStyle() {
     return widget.labelStyle ??
-        context.theme.textTheme.bodySmall!.copyWith(
-          color: AppColor.black,
-          fontSize: 16,
-          fontWeight: _hasFocus ? FontWeight.bold : FontWeight.normal,
+        AppTextStyle.bodySmall.copyWith(
+          color: _focusNode.hasFocus
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.onPrimaryContainer,
         );
   }
 
-  TextStyle _buildTextStyle(BuildContext context, {isError = false}) {
+  TextStyle _buildTextStyle({bool isError = false}) {
     return widget.textStyle ??
-        (isError
-            ? context.theme.textTheme.bodySmall!.copyWith(
-                fontSize: 12,
-                height: context.theme.textTheme.bodySmall!.height,
-                color: AppColor.red500,
-              )
-            : context.theme.textTheme.bodyMedium!.copyWith(
-                color: AppColor.black,
-              ));
+        AppTextStyle.body.copyWith(
+          color: isError
+              ? context.theme.colorScheme.error
+              : context.theme.colorScheme.primary,
+        );
   }
 
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
-        context.theme.textTheme.bodySmall!.copyWith(color: AppColor.gray3);
+        AppTextStyle.bodySmall
+            .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: widget.textFieldPadding,
-      decoration: BoxDecoration(
-        color: AppColor.transparent,
-        borderRadius: BorderRadius.circular(widget.borderRadius),
-      ),
-      child: Stack(
-        children: [
-          TextFormField(
-            focusNode: _focusNode,
-            textInputAction: TextInputAction.none,
-            onChanged: (text) {
-              final onChanged = widget.onChanged;
-              if (onChanged != null) {
-                onChanged(text);
+    return Padding(
+      padding: widget.padding,
+      child: Container(
+        padding: widget.textFieldPadding,
+        decoration: BoxDecoration(
+          color: widget.backgroundColor ??
+              context.theme.colorScheme.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+        ),
+        child: KeyboardListener(
+          focusNode: FocusNode(),
+          onKeyEvent: (event) {
+            final isEventShiftKey =
+                event.logicalKey == LogicalKeyboardKey.shiftLeft ||
+                    event.logicalKey == LogicalKeyboardKey.shiftRight;
+            if (_shiftPressed != isEventShiftKey) {
+              setState(() => _shiftPressed = isEventShiftKey);
+            }
+
+            if (widget.onEditingComplete != null &&
+                event.runtimeType == KeyDownEvent &&
+                !isEventShiftKey &&
+                event.logicalKey == LogicalKeyboardKey.enter) {
+              widget.onEditingComplete!();
+              if (widget.unfocusOnSubmit) {
+                _unfocus();
               }
-            },
-            controller: _controller,
-            style: _buildTextStyle(context),
-            onEditingComplete: widget.onEditingComplete,
-            maxLines: widget.maxLines,
-            minLines: widget.minLines,
-            obscureText: widget.obscureText,
-            cursorColor: widget.cursorColor ?? AppColor.accentBlue,
-            autovalidateMode: widget.autovalidateMode,
-            // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
-            // while not having to specify max lines for every single usage 🙄
-            maxLength: (widget.maxLength != null &&
-                    widget.minLines! > widget.maxLength!)
-                ? widget.minLines
-                : widget.maxLength,
-            buildCounter: (
-              _, {
-              required currentLength,
-              required maxLength,
-              required isFocused,
-            }) =>
-                maxLength != null && isFocused && !widget.hideCounter
-                    ? Container(
-                        margin: EdgeInsets.only(left: 10),
-                        alignment:
-                            widget.counterAlignment ?? Alignment.centerRight,
-                        child: Text(
-                          '$currentLength/$maxLength',
-                          style: widget.counterStyle ??
-                              context.theme.textTheme.bodySmall,
-                        ),
-                      )
-                    : null,
-            maxLengthEnforcement: widget.maxLengthEnforcement,
-            inputFormatters: [
-              if (!_shiftPressed &&
-                  !responsiveLayoutService.isMobile(context) &&
-                  widget.onEditingComplete != null)
-                DoNotAllowNewLineAtEnd(),
-              if (widget.isOnlyDigits) FilteringTextInputFormatter.digitsOnly,
-              if (widget.numberThreshold != null)
-                NumberThresholdFormatter(widget.numberThreshold!),
+            }
+          },
+          child: Stack(
+            children: [
+              TextFormField(
+                onTap: () {
+                  _unfocus();
+                  final localOnTap = widget.onTap;
+                  if (localOnTap != null) {
+                    localOnTap();
+                  }
+                },
+                focusNode: _focusNode,
+                textInputAction: TextInputAction.none,
+                onChanged: (text) {
+                  final onChanged = widget.onChanged;
+                  if (onChanged != null) {
+                    onChanged(text);
+                  }
+                },
+                controller: _controller,
+                style: _buildTextStyle(),
+                onEditingComplete: widget.onEditingComplete,
+                maxLines: widget.maxLines,
+                minLines: widget.minLines,
+                obscureText: widget.obscureText,
+                cursorColor:
+                    widget.cursorColor ?? context.theme.colorScheme.primary,
+                autovalidateMode: widget.autovalidateMode,
+                maxLength: widget.maxLength,
+                buildCounter: (
+                  _, {
+                  required currentLength,
+                  required maxLength,
+                  required isFocused,
+                }) =>
+                    maxLength != null && isFocused && !widget.hideCounter
+                        ? Container(
+                            margin: EdgeInsets.only(left: 10),
+                            alignment: widget.counterAlignment ??
+                                Alignment.centerRight,
+                            child: Text(
+                              '$currentLength/$maxLength',
+                              style:
+                                  widget.counterStyle ?? AppTextStyle.bodySmall,
+                            ),
+                          )
+                        : null,
+                maxLengthEnforcement: widget.maxLengthEnforcement,
+                inputFormatters: [
+                  if (!_shiftPressed &&
+                      !responsiveLayoutService.isMobile(context) &&
+                      widget.onEditingComplete != null)
+                    DoNotAllowNewLineAtEnd(),
+                  if (widget.isOnlyDigits)
+                    FilteringTextInputFormatter.digitsOnly,
+                  if (widget.numberThreshold != null)
+                    NumberThresholdFormatter(widget.numberThreshold!),
+                ],
+                validator: widget.validator,
+                decoration: InputDecoration(
+                  contentPadding: widget.contentPadding,
+                  border: _getBorder(),
+                  focusedBorder: _getBorder(),
+                  enabledBorder: _getBorder(),
+                  errorBorder: _getBorder(isError: true),
+                  labelText: widget.labelText,
+                  labelStyle: _buildLabelStyle(),
+                  errorStyle: _buildTextStyle(isError: true),
+                  prefixText: widget.prefixText,
+                  prefixStyle: widget.textStyle,
+                  alignLabelWithHint: true,
+                  hintText: widget.hintText,
+                  hintStyle: _buildTextStyle(),
+                  fillColor: widget.fillColor,
+                  filled: widget.fillColor != null,
+                ),
+                autofocus: widget.autofocus,
+                readOnly: widget.readOnly,
+                keyboardType: TextInputType.multiline,
+              ),
+              if (widget.isOptional &&
+                  !_focusNode.hasFocus &&
+                  _controller.text.isEmpty)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: _buildOptionalPadding(),
+                    child: Text(
+                      'Optional',
+                      style: _buildOptionalTextStyle(),
+                    ),
+                  ),
+                ),
             ],
-            validator: widget.validator,
-            decoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  width: 3.0,
-                ),
-              ),
-              errorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.red500,
-                  width: 1.0,
-                ),
-              ),
-              contentPadding: widget.contentPadding,
-              labelText: widget.labelText,
-              labelStyle: _buildLabelStyle(context),
-              errorStyle: _buildTextStyle(context, isError: true),
-              prefixText: widget.prefixText,
-              prefixStyle: widget.textStyle,
-              alignLabelWithHint: true,
-              hintText: widget.hintText,
-              hintStyle: _buildTextStyle(context),
-              suffixIcon: widget.suffixIcon,
-            ),
-            autofocus: widget.autofocus,
-            readOnly: widget.readOnly,
-            keyboardType: TextInputType.multiline,
           ),
-          if (widget.isOptional &&
-              !_focusNode.hasFocus &&
-              _controller.text.isEmpty)
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: _buildOptionalPadding(),
-                child: Text(
-                  'Optional',
-                  style: _buildOptionalTextStyle(),
-                ),
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }

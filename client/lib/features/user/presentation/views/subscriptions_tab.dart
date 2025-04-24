@@ -45,7 +45,7 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: AppColor.white,
+            color: context.theme.colorScheme.primaryContainer,
           ),
           constraints: BoxConstraints(maxWidth: 600, maxHeight: 500),
           child: CustomListView(
@@ -60,7 +60,7 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
               for (int i = 0; i < communities.length; i++)
                 Container(
                   height: 60,
-                  color: i.isOdd ? AppColor.gray6 : null,
+                  color: i.isOdd ? context.theme.colorScheme.surface : null,
                   alignment: Alignment.center,
                   child: Row(
                     children: [
@@ -82,7 +82,8 @@ class _SubscriptionsTabState extends State<SubscriptionsTab> {
                         ),
                         textColor: context.theme.colorScheme.primary,
                         borderSide: BorderSide(
-                            color: context.theme.colorScheme.primary),
+                          color: context.theme.colorScheme.primary,
+                        ),
                       ),
                       SizedBox(width: 10),
                     ],

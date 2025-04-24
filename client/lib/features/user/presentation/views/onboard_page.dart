@@ -159,7 +159,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: AppColor.gray3,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           HeightConstrainedText(
@@ -188,7 +188,7 @@ class _OnboardPageState extends State<OnboardPage> {
       height: 48,
       expand: true,
       borderRadius: BorderRadius.circular(10),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       textStyle: body.copyWith(
         fontWeight: FontWeight.w600,
         color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
@@ -497,11 +497,11 @@ class _OnboardPageState extends State<OnboardPage> {
             : Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColor.black.withOpacity(0.35),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                       blurRadius: 20,
                       offset: Offset(0, 5),
                     ),

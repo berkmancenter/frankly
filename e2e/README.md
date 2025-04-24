@@ -130,11 +130,11 @@ You can also trigger the hidden Enable Accessibility button by opening console i
                 color: context.theme.colorScheme.primary,
                 controller: _sendController,
                 onPressed: canSubmit ? _sendMessage : null,
-                disabledColor: AppColor.white.withOpacity(0.3),
+                disabledColor: context.theme.colorScheme.surfaceContainer,
                 height: isMobile ? 50 : 55,
                 child: Icon(
                   Icons.send,
-                  color: canSubmit ? AppColor.brightGreen : AppColor.gray2,
+                  color: canSubmit ? context.theme.colorScheme.onPrimary : context.theme.colorScheme.surfaceDim,
                 ),
                 ),
               ),

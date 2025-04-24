@@ -54,7 +54,7 @@ class MediaItemSection extends StatelessWidget {
         child: CustomInkWell(
           onTap: () => _showMediaPickerDialog(context),
           child: Container(
-            color: AppColor.gray6,
+            color: context.theme.colorScheme.surface,
             child: Row(
               children: [
                 SizedBox.fromSize(
@@ -64,7 +64,7 @@ class MediaItemSection extends StatelessWidget {
                     child: Icon(
                       Icons.add,
                       size: 18,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -75,7 +75,7 @@ class MediaItemSection extends StatelessWidget {
                     child: HeightConstrainedText(
                       'Add video or Image',
                       style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.gray1),
+                          .copyWith(color: context.theme.colorScheme.secondary),
                     ),
                   ),
                 ),
@@ -102,7 +102,8 @@ class MediaItemSection extends StatelessWidget {
                 customBorder: CircleBorder(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.edit, size: 20, color: AppColor.white),
+                  child: Icon(Icons.edit,
+                      size: 20, color: context.theme.colorScheme.onPrimary),
                 ),
                 onTap: () => _showMediaPickerDialog(context),
               ),
@@ -115,7 +116,8 @@ class MediaItemSection extends StatelessWidget {
                 customBorder: CircleBorder(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.delete, size: 20, color: AppColor.white),
+                  child: Icon(Icons.delete,
+                      size: 20, color: context.theme.colorScheme.onPrimary),
                 ),
                 onTap: () {
                   ConfirmDialog(

@@ -13,21 +13,17 @@ class UpgradeIcon extends StatelessWidget {
 
   Color _iconColor(BuildContext context) {
     if (isDisabledColor) {
-      return AppColor.white;
-    } else if (isColorInverted) {
-      return context.theme.colorScheme.primary;
+      return context.theme.colorScheme.onPrimaryFixed;
     } else {
-      return AppColor.brightGreen;
+      return context.theme.colorScheme.primary;
     }
   }
 
   Color _containerColor(BuildContext context) {
     if (isDisabledColor) {
-      return AppColor.gray1.withOpacity(.5);
-    } else if (isColorInverted) {
-      return AppColor.brightGreen;
+      return context.theme.colorScheme.primaryFixed;
     } else {
-      return context.theme.colorScheme.primary;
+      return context.theme.colorScheme.onPrimary;
     }
   }
 

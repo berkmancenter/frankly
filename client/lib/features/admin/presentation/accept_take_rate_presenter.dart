@@ -34,13 +34,14 @@ class AcceptTakeRatePresenter {
               SizedBox(height: 10),
               Text(
                 'On our free plan, any end user payments will incur a ${takeRate * 100}% commission. Upgrade your plan for a lower rate.',
-                style: AppTextStyle.body.copyWith(color: AppColor.gray1),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
               SizedBox(height: 20),
               ActionButton(
                 text: 'Agree and continue',
                 color: context.theme.colorScheme.primary,
-                textColor: AppColor.brightGreen,
+                textColor: context.theme.colorScheme.onPrimary,
                 expand: true,
                 onPressed: () => Navigator.pop(context, true),
               ),

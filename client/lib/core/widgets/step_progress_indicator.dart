@@ -6,13 +6,13 @@ class StepProgressIndicator extends StatelessWidget {
     Key? key,
     required this.completedStepCount,
     required this.totalSteps,
-    this.backgroundColor = AppColor.gray5,
+    this.backgroundColor,
     this.progressColor,
   }) : super(key: key);
 
   final int completedStepCount;
   final int totalSteps;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color? progressColor;
 
   @override
@@ -24,7 +24,8 @@ class StepProgressIndicator extends StatelessWidget {
           Positioned.fill(
             child: Container(
               height: 4,
-              color: backgroundColor,
+              color: backgroundColor ??
+                  context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           LayoutBuilder(

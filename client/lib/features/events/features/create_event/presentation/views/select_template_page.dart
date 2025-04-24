@@ -53,7 +53,7 @@ class _SelectTemplatePageState extends State<SelectTemplatePage> {
               ActionButton(
                 onPressed: () => provider.goNext(),
                 color: Theme.of(context).primaryColor,
-                textColor: AppColor.white,
+                textColor: context.theme.colorScheme.onPrimary,
                 text: 'Skip',
               ),
             Spacer(),

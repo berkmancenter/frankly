@@ -68,7 +68,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
       margin: const EdgeInsets.only(top: 2, right: 5),
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -96,7 +96,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
                   child: isMeetingFinished || isReadyToAdvance
                       ? Icon(
                           Icons.check_circle_outline_rounded,
-                          color: AppColor.brightGreen,
+                          color: context.theme.colorScheme.onPrimary,
                         )
                       : _ForwardButton(currentAgendaItemId: currentItemId),
                 );
@@ -106,11 +106,11 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
             padding: spacerPadding,
             child: ActionButton(
               tooltipText: 'Show Agenda Item',
-              type: ActionButtonType.flat,
+              type: ActionButtonType.filled,
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
               minWidth: 40,
               onPressed: widget.onExpandCard,
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               padding: EdgeInsets.zero,
               child: ProxiedImage(
                 null,
@@ -145,7 +145,7 @@ class _ForwardButton extends HookWidget {
     final agendaProvider = AgendaProvider.watch(context);
 
     return ActionButton(
-      type: ActionButtonType.flat,
+      type: ActionButtonType.filled,
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 40,
       onPressed: () => alertOnError(context, () async {
@@ -158,7 +158,7 @@ class _ForwardButton extends HookWidget {
           toastType: ToastType.success,
         );
       }),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       padding: EdgeInsets.zero,
       child: ProxiedImage(
         null,

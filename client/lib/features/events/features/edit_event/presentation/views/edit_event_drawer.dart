@@ -58,7 +58,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: _buildBody(),
     );
   }
@@ -90,8 +90,8 @@ class EditEventDrawerState extends State<EditEventDrawer>
             children: [
               Text(
                 'Edit event',
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall.copyWith(
+                    fontSize: 16, color: context.theme.colorScheme.primary),
               ),
               Semantics(
                 label: 'Close Edit',
@@ -187,7 +187,8 @@ class EditEventDrawerState extends State<EditEventDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         Spacer(),
         InkWell(
@@ -308,7 +309,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       hint: HeightConstrainedText(
         'Choose duration',
         style: AppTextStyle.bodySmall.copyWith(
-          color: AppColor.gray1,
+          color: context.theme.colorScheme.secondary,
         ),
       ),
       icon: Icon(
@@ -318,17 +319,18 @@ class EditEventDrawerState extends State<EditEventDrawer>
       iconSize: 20,
       elevation: 16,
       decoration: InputDecoration(
-        fillColor: AppColor.white,
+        fillColor: context.theme.colorScheme.surfaceContainerLowest,
         filled: true,
         label: HeightConstrainedText(
           'Length',
           style: AppTextStyle.bodySmall.copyWith(
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: AppColor.gray4),
+          borderSide:
+              BorderSide(color: context.theme.colorScheme.onPrimaryContainer),
         ),
       ),
       iconEnabledColor: context.theme.colorScheme.primary,
@@ -404,7 +406,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           type: ActionButtonType.outline,
-          textColor: AppColor.redLightMode,
+          textColor: context.theme.colorScheme.error,
           text: 'Cancel event',
           onPressed: () =>
               alertOnError(context, () => _presenter.cancelEvent()),

@@ -750,7 +750,7 @@ class LiveMeetingProvider with ChangeNotifier {
         builder: (context) => AppShareDialog(
           title: 'SPREAD THE WORD',
           content: 'Who else would benefit from these events?',
-          iconBackgroundColor: AppColor.white,
+          iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
           appShareData: AppShareData(
             subject: 'Join an event with me on ${Environment.appName}!',
             body: "Let's have a conversation on ${Environment.appName}!",

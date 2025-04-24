@@ -132,8 +132,9 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
             HeightConstrainedText(
               'There is no agenda for this event.',
               style: TextStyle(
-                color:
-                    Theme.of(context).isDark ? AppColor.white : AppColor.gray2,
+                color: Theme.of(context).isDark
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
           for (int i = 0; i < allAgendaItems.length; i++) ...[

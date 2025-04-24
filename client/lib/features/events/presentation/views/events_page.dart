@@ -85,12 +85,17 @@ class _EventsPageState extends State<EventsPage> {
             isDateDisabled: (date) =>
                 !Provider.of<EventsPageProvider>(context, listen: false)
                     .dateHasEvent(date),
-            defaultDecoration: decoration.copyWith(color: AppColor.white),
-            disabledDecoration:
-                decoration.copyWith(color: AppColor.gray6.withOpacity(.7)),
-            weekDayTextStyle: textStyle.copyWith(color: AppColor.black),
-            dateTextStyle: dateTextStyle.copyWith(color: AppColor.black),
-            monthTextStyle: textStyle.copyWith(color: AppColor.black),
+            defaultDecoration: decoration.copyWith(
+                color: context.theme.colorScheme.surfaceContainerLowest),
+            disabledDecoration: decoration.copyWith(
+              color: context.theme.colorScheme.surface.withOpacity(.7),
+            ),
+            weekDayTextStyle:
+                textStyle.copyWith(color: context.theme.colorScheme.primary),
+            dateTextStyle: dateTextStyle.copyWith(
+                color: context.theme.colorScheme.primary),
+            monthTextStyle:
+                textStyle.copyWith(color: context.theme.colorScheme.primary),
             selectedMonthTextStyle: textStyle.copyWith(
               color: Theme.of(context).colorScheme.secondary,
             ),
@@ -109,7 +114,7 @@ class _EventsPageState extends State<EventsPage> {
   Widget _buildSearchBarField() {
     return TextField(
       decoration: InputDecoration(
-        fillColor: AppColor.white,
+        fillColor: context.theme.colorScheme.surfaceContainerLowest,
         hintText: 'Search events',
         border: InputBorder.none,
       ),
@@ -121,7 +126,7 @@ class _EventsPageState extends State<EventsPage> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       padding: const EdgeInsets.only(left: 12, right: 32),
       constraints: BoxConstraints(maxWidth: 450),
@@ -129,7 +134,8 @@ class _EventsPageState extends State<EventsPage> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(Icons.search, color: AppColor.gray1),
+            child:
+                Icon(Icons.search, color: context.theme.colorScheme.secondary),
           ),
           Expanded(
             child: _buildSearchBarField(),

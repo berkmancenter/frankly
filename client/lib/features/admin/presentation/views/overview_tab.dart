@@ -69,7 +69,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           Container(
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -90,8 +90,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                       onboardingStep == null
                           ? 'Now we’re talking!'
                           : onboardingStep.title,
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.secondary),
                     ),
                   ],
                 ),
@@ -133,7 +133,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                 return Container(
                   padding: const EdgeInsets.all(40),
                   decoration: BoxDecoration(
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -152,8 +152,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             SizedBox(width: 10),
                             Text(
                               'Now we’re talking!',
-                              style: AppTextStyle.subhead
-                                  .copyWith(color: AppColor.gray1),
+                              style: AppTextStyle.subhead.copyWith(
+                                  color: context.theme.colorScheme.secondary),
                             ),
                           ],
                         )
@@ -171,8 +171,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Expanded(
                               child: Text(
                                 onboardingStep.title,
-                                style: AppTextStyle.subhead
-                                    .copyWith(color: AppColor.gray1),
+                                style: AppTextStyle.subhead.copyWith(
+                                    color: context.theme.colorScheme.secondary),
                               ),
                             ),
                             SizedBox(
@@ -260,7 +260,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
   Widget _buildStepsCounter(int completedStepCount, int totalSteps) {
     return Text(
       '$completedStepCount/$totalSteps',
-      style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+      style: AppTextStyle.body
+          .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
     );
   }
 
@@ -305,8 +306,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                 Flexible(
                   child: Text(
                     onboardingStep.sectionTitle,
-                    style:
-                        AppTextStyle.bodyMedium.copyWith(color: AppColor.gray1),
+                    style: AppTextStyle.bodyMedium
+                        .copyWith(color: context.theme.colorScheme.secondary),
                   ),
                 ),
                 AnimatedSize(
@@ -320,8 +321,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Flexible(
                               child: RichText(
                                 text: TextSpan(
-                                  style: AppTextStyle.body
-                                      .copyWith(color: AppColor.gray3),
+                                  style: AppTextStyle.body.copyWith(
+                                      color: context.theme.colorScheme
+                                          .onPrimaryContainer),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)
@@ -417,7 +419,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
 
         return ShareSection(
           iconColor: context.theme.colorScheme.primary,
-          iconBackgroundColor: AppColor.white,
+          iconBackgroundColor: context.theme.colorScheme.onPrimary,
           url: shareData.pathToPage,
           body: body,
           subject: subject,

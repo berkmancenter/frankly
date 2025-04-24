@@ -54,7 +54,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: _buildBody(),
     );
   }
@@ -66,7 +66,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
         _presenter.isDefaultSettingsButtonEnabled;
     return Container(
       width: AppSize.kSidebarWidth,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: CustomListView(
         padding: const EdgeInsets.all(30),
         children: [
@@ -75,8 +75,8 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             children: [
               HeightConstrainedText(
                 title,
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall.copyWith(
+                    fontSize: 16, color: context.theme.colorScheme.primary),
               ),
               AppClickableWidget(
                 child: ProxiedImage(
@@ -169,19 +169,19 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                 : null,
             textColor: restoreDefaultButtonEnabled
                 ? Theme.of(context).colorScheme.primary
-                : AppColor.gray3,
+                : context.theme.colorScheme.onPrimaryContainer,
             borderSide: BorderSide(
               color: restoreDefaultButtonEnabled
                   ? Theme.of(context).colorScheme.primary
-                  : AppColor.gray3,
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           if (Environment.enableDevEventSettings) ...[
             SizedBox(height: 40),
             HeightConstrainedText(
               'Dev Settings',
-              style: AppTextStyle.headlineSmall
-                  .copyWith(fontSize: 16, color: AppColor.gray1),
+              style: AppTextStyle.headlineSmall.copyWith(
+                  fontSize: 16, color: context.theme.colorScheme.secondary),
             ),
             SizedBox(height: 40),
             for (final feature in _model.eventSettings.toJson().keys.toList())

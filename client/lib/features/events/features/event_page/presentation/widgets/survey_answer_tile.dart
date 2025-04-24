@@ -24,7 +24,8 @@ class SurveyAnswerTile extends StatelessWidget {
         SizedBox(height: 10),
         Text(
           answer,
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         Row(
           children: [
@@ -47,7 +48,8 @@ class SurveyAnswerTile extends StatelessWidget {
                       Container(
                         height: kIndicatorHeight,
                         width: maxWidth,
-                        decoration: _getBoxDecoration(AppColor.gray5),
+                        decoration: _getBoxDecoration(
+                            context.theme.colorScheme.onPrimaryContainer),
                       ),
                       // Indicator that represents percentage of votes
                       AnimatedContainer(
@@ -66,7 +68,8 @@ class SurveyAnswerTile extends StatelessWidget {
             SizedBox(width: 10),
             Text(
               '$answeredParticipants/$totalParticipants',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
             ),
           ],
         ),

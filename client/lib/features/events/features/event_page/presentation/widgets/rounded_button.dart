@@ -21,7 +21,7 @@ class RoundedButton extends StatelessWidget {
           if (states.contains(WidgetState.disabled)) {
             return context.theme.colorScheme.primary;
           }
-          return AppColor.gray5;
+          return context.theme.colorScheme.onPrimaryContainer;
         }),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -31,7 +31,9 @@ class RoundedButton extends StatelessWidget {
       child: HeightConstrainedText(
         label,
         style: TextStyle(
-          color: onPressed != null ? AppColor.gray4 : AppColor.brightGreen,
+          color: onPressed != null
+              ? context.theme.colorScheme.onPrimaryContainer
+              : context.theme.colorScheme.onPrimary,
         ),
       ),
     );

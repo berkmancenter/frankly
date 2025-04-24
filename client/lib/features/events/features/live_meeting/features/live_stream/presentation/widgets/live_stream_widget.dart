@@ -54,7 +54,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       alignment: Alignment.center,
       child: Column(
@@ -99,7 +99,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
     if (_showLiveStream) {
       _currentlyPlayingLiveStream = true;
       return RefreshKeyWidget(
-        backgroundColor: AppColor.black,
+        backgroundColor: context.theme.colorScheme.primary,
         child: UrlVideoWidget(
           playbackUrl: url,
           playbackType: 'application/x-mpegURL',
@@ -173,7 +173,8 @@ class _RefreshKeyWidgetState extends State<RefreshKeyWidget> {
                 child: Container(
                   padding: EdgeInsets.all(4),
                   color: widget.backgroundColor ?? Color(0xFF262F4C),
-                  child: Icon(Icons.refresh, size: 24, color: AppColor.white),
+                  child: Icon(Icons.refresh,
+                      size: 24, color: context.theme.colorScheme.onPrimary),
                 ),
               ),
             ),

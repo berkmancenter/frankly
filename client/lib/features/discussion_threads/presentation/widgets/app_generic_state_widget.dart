@@ -48,7 +48,7 @@ class AppGenericStateWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -76,7 +76,7 @@ class AppGenericStateWidget extends StatelessWidget {
             SizedBox(height: 10),
             ActionButton(
               text: localAppGenerisStateData.text,
-              textColor: AppColor.white,
+              textColor: context.theme.colorScheme.onPrimary,
               color: context.theme.colorScheme.primary,
               onPressed: localAppGenerisStateData.onTap,
             ),
