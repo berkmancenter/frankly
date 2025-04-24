@@ -584,6 +584,7 @@
   "signInWithGoogle": "使用 Google 登录",
   "signOut": "退出登录",
   "signUp": "注册",
+  "skip": "跳过",
   "signUpOrSignInToContinue": "注册（或使用现有账户登录）以继续。",
   "signUpToGetStarted": "注册以开始使用。",
   "signUpWithEmail": "使用邮箱注册",

@@ -8,6 +8,7 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SelectTemplatePage extends StatefulWidget {
   @override
@@ -54,14 +55,14 @@ class _SelectTemplatePageState extends State<SelectTemplatePage> {
                 onPressed: () => provider.goNext(),
                 color: Theme.of(context).primaryColor,
                 textColor: AppColor.white,
-                text: 'Skip',
+                text: context.l10n.skip,
               ),
             Spacer(),
             ActionButton(
               onPressed: provider.selectedTemplate != null
                   ? () => provider.goNext()
                   : null,
-              text: 'Next',
+              text: context.l10n.next,
             ),
           ],
         ),

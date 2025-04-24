@@ -577,6 +577,7 @@
   "signInWithGoogle": "使用 Google 登入",
   "signOut": "退出登錄",
   "signUp": "註冊",
+  "skip": "略過",
   "signUpOrSignInToContinue": "註冊（或使用現有帳戶登入）以繼續。",
   "signUpToGetStarted": "註冊以開始使用。",
   "signUpWithEmail": "使用電郵註冊",

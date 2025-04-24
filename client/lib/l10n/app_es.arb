@@ -595,6 +595,7 @@
   "signUpWithEmail": "Registrarse con email",
   "signUpWithGoogle": "Registrarse con Google",
   "signup": "Registrarse",
+  "skip": "Omitir",
   "skipStripeAccountSetupForNow": "Omitir la configuración de la cuenta de Stripe por ahora.",
   "smartMatch": "Coincidencia inteligente",
   "smartMatchParticipants": "Emparejamiento Inteligente",
