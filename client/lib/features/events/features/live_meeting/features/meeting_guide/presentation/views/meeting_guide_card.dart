@@ -195,7 +195,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               ),
               Spacer(),
               ActionButton(
-                type: ActionButtonType.solid,
+                type: ActionButtonType.filled,
                 tooltipText: 'Hide Agenda Item',
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: widget.onMinimizeCard,
