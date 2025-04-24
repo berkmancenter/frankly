@@ -670,5 +670,14 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被從此活動中移除，無法重新加入。",
   "yourName": "您的名字",
   "youtubeVideoLookupFailed": "抱歉，YouTube影片查詢失敗。",
-  "zoom": "縮放"
+  "zoom": "縮放",
+  "allowMembersToCreateEvents": "允許成員創建活動",
+  "allowMembersToCreateTemplates": "允許成員創建模板",
+  "requireApprovalForNewMembers": "需要審批新成員",
+  "enableWeeklyEmailDigests": "啟用每週活動摘要郵件",
+  "allowUsersToDonateFunds": "允許用戶捐款",
+  "defaultEventSettings": "預設活動設定",
+  "agendaPreview": "議程預覽",
+  "overview": "概覽",
+  "members": "成員"
 }

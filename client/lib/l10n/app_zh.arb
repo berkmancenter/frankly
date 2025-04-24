@@ -677,5 +677,14 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
   "yourName": "您的名字",
   "youtubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
-  "zoom": "放大"
+  "zoom": "放大",
+  "allowMembersToCreateEvents": "允许成员创建活动",
+  "allowMembersToCreateTemplates": "允许成员创建模板",
+  "requireApprovalForNewMembers": "需要审批新成员",
+  "enableWeeklyEmailDigests": "启用每周活动摘要邮件",
+  "allowUsersToDonateFunds": "允许用户捐款",
+  "defaultEventSettings": "默认活动设置",
+  "agendaPreview": "议程预览",
+  "overview": "概览",
+  "members": "成员"
 }

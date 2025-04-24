@@ -634,5 +634,14 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "You were removed from this event and cannot rejoin.",
   "yourName": "Your Name",
   "youtubeVideoLookupFailed": "Sorry, youtube video lookup failed.",
-  "zoom": "Zoom"
+  "zoom": "Zoom",
+  "allowMembersToCreateEvents": "Allow members to create events",
+  "allowMembersToCreateTemplates": "Allow members to create templates",
+  "requireApprovalForNewMembers": "Require approval for new members",
+  "enableWeeklyEmailDigests": "Enable weekly email digests of upcoming events",
+  "allowUsersToDonateFunds": "Allow users to donate funds",
+  "defaultEventSettings": "Default event settings",
+  "agendaPreview": "Agenda preview",
+  "overview": "Overview",
+  "members": "Members"
 }

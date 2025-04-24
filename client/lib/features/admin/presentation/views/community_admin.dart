@@ -20,6 +20,7 @@ import 'package:client/app.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class CommunityAdmin extends StatefulWidget {
   final String? tab;
@@ -105,7 +106,7 @@ class _CommunityAdminState extends State<CommunityAdmin>
       tabs: [
         if (enableOverview)
           CustomTabAndContent(
-            tab: 'OVERVIEW',
+            tab: context.l10n.overview,
             content: (_) => OverviewTab(
               onUpgradeTap: () => _selectedTabController.setTabIndex(
                 getTabIndex(CommunityAdminTabs.billing),
@@ -113,15 +114,15 @@ class _CommunityAdminState extends State<CommunityAdmin>
             ),
           ),
         CustomTabAndContent(
-          tab: 'MEMBERS',
+          tab: context.l10n.members,
           content: (context) => MembersTab(),
         ),
         CustomTabAndContent(
-          tab: 'EVENTS',
+          tab: context.l10n.events,
           content: (context) => EventsTab(),
         ),
         CustomTabAndContent(
-          tab: 'SETTINGS',
+          tab: context.l10n.settings,
           content: (context) => SettingsTab(
             onUpgradeTap: () => _selectedTabController.setTabIndex(
               getTabIndex(CommunityAdminTabs.billing),
@@ -130,7 +131,7 @@ class _CommunityAdminState extends State<CommunityAdmin>
         ),
         if (kShowStripeFeatures)
           CustomTabAndContent(
-            tab: 'BILLING',
+            tab: context.l10n.billing,
             content: (context) => AdminBillingTab(),
           ),
       ],

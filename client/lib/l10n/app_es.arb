@@ -683,5 +683,14 @@
   "youWereRemovedFromThisEventAndCannotRejoin": "<MISSING: youWereRemovedFromThisEventAndCannotRejoin>",
   "yourName": "Tu nombre",
   "youtubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
-  "zoom": "Zoom"
+  "zoom": "Zoom",
+  "allowMembersToCreateEvents": "Permitir que los miembros creen eventos",
+  "allowMembersToCreateTemplates": "Permitir que los miembros creen plantillas",
+  "requireApprovalForNewMembers": "Requerir aprobación para nuevos miembros",
+  "enableWeeklyEmailDigests": "Habilitar resúmenes semanales por correo electrónico",
+  "allowUsersToDonateFunds": "Permitir que los usuarios donen fondos",
+  "defaultEventSettings": "Configuración predeterminada del evento",
+  "agendaPreview": "Vista previa de la agenda",
+  "overview": "Vista general",
+  "members": "Miembros"
 }

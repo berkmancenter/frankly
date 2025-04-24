@@ -25,6 +25,9 @@ import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
+import 'package:client/core/localization/localization_helper.dart';
+
+
 class SettingsTab extends StatefulHookWidget {
   final void Function() onUpgradeTap;
 
@@ -82,12 +85,12 @@ class _SettingsTabState extends State<SettingsTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Settings',
+                  context.l10n.settings,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 8),
                 _buildSettingsToggle(
-                  'Allow members to create events',
+                  context.l10n.allowMembersToCreateEvents,
                   !settings.dontAllowMembersToCreateMeetings,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -98,7 +101,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   blueBackground,
                 ),
                 _buildSettingsToggle(
-                  'Allow members to create templates',
+                  context.l10n.allowMembersToCreateTemplates,
                   settings.allowUnofficialTemplates,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -109,7 +112,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
-                  'Require approval for new members',
+                  context.l10n.requireApprovalForNewMembers,
                   settings.requireApprovalToJoin,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -119,7 +122,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   blueBackground,
                 ),
                 _buildSettingsToggle(
-                  'Enable weekly email digests of upcoming events',
+                  context.l10n.enableWeeklyEmailDigests,
                   !settings.disableEmailDigests,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -132,7 +135,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     ? agreement?.allowPayments ?? false
                     : false) ...[
                   _buildSettingsToggle(
-                    'Allow users to donate funds${donationWarning ? ' *' : ''}',
+                    '${context.l10n.allowUsersToDonateFunds}${donationWarning ? ' *' : ''}',
                     settings.allowDonations,
                     (val) => _toggleCommunitySetting(
                       settings.copyWith(
@@ -154,11 +157,11 @@ class _SettingsTabState extends State<SettingsTab> {
                 ],
                 SizedBox(height: 30),
                 HeightConstrainedText(
-                  'Default event settings',
+                  context.l10n.defaultEventSettings,
                   style: AppTextStyle.subhead,
                 ),
                 _buildSettingsToggle(
-                  'Chat',
+                  context.l10n.chat,
                   eventSettings.chat ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -168,7 +171,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
-                  'Floating Chat',
+                  context.l10n.floatingChat,
                   eventSettings.showChatMessagesInRealTime ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -179,7 +182,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   blueBackground,
                 ),
                 _buildSettingsToggle(
-                  'Record',
+                  context.l10n.record,
                   eventSettings.alwaysRecord ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -189,7 +192,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
-                  'Odometer',
+                  context.l10n.odometer,
                   eventSettings.talkingTimer ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -199,7 +202,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   blueBackground,
                 ),
                 _buildSettingsToggle(
-                  'Agenda preview',
+                  context.l10n.agendaPreview,
                   eventSettings.agendaPreview ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
