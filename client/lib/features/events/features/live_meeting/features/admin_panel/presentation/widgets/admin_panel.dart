@@ -997,7 +997,6 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
           ActionButton(
             color: Colors.transparent,
             textColor: context.theme.colorScheme.onPrimary,
-            overlayColor: context.theme.colorScheme.surfaceContainer,
             sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
             onPressed: () => alertOnError(context, () async {
               final ReassignResult? newRoomAssignment =
@@ -1109,8 +1108,6 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                         ActionButton(
                           color: Colors.transparent,
                           textColor: context.theme.colorScheme.onPrimary,
-                          overlayColor:
-                              context.theme.colorScheme.surfaceContainer,
                           onPressed: () async {
                             final reassignUser =
                                 provider.currentBreakoutRoomId ==
@@ -1140,8 +1137,6 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           textColor: needsHelp
                               ? context.theme.colorScheme.onPrimary
                               : context.theme.colorScheme.onPrimary,
-                          overlayColor:
-                              context.theme.colorScheme.surfaceContainer,
                           text: 'Enter Room',
                         ),
                     ],
