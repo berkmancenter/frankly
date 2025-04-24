@@ -102,67 +102,65 @@ class _CommunityPageState extends State<CommunityPage> {
                     ? lightThemeColor
                     : context.theme.colorScheme.secondary;
 
-                return Theme(
-                  data: Theme.of(context).copyWith(
-                    colorScheme: Theme.of(context).colorScheme.copyWith(
-                          primary: primaryColor,
-                          secondary: secondaryColor,
-                        ),
-                    switchTheme: SwitchTheme.of(context).copyWith(
-                      thumbColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return secondaryColor;
-                        } else {
-                          return primaryColor;
-                        }
-                      }),
-                      trackColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return primaryColor;
-                        } else {
-                          return AppColor.gray4;
-                        }
-                      }),
+                return ChangeNotifierProvider<CommunityPermissionsProvider>(
+                  create: (context) => CommunityPermissionsProvider(
+                    communityProvider: Provider.of<CommunityProvider>(
+                      context,
+                      listen: false,
                     ),
-                    radioTheme: RadioTheme.of(context).copyWith(
-                      fillColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return primaryColor;
-                        } else {
-                          return AppColor.gray4;
-                        }
-                      }),
-                    ),
-                  ),
-                  child: ChangeNotifierProvider<CommunityPermissionsProvider>(
-                    create: (context) => CommunityPermissionsProvider(
-                      communityProvider: Provider.of<CommunityProvider>(
-                        context,
-                        listen: false,
-                      ),
-                    )..initialize(),
-                    child: Builder(
-                      builder: (context) {
-                        final isCreateMeetingAvailable =
-                            widget.isCreateEventFabVisible &&
-                                context
-                                    .watch<CommunityPermissionsProvider>()
-                                    .canCreateEvent;
+                  )..initialize(),
+                  child: Builder(
+                    builder: (context) {
+                      final isCreateMeetingAvailable =
+                          widget.isCreateEventFabVisible &&
+                              context
+                                  .watch<CommunityPermissionsProvider>()
+                                  .canCreateEvent;
 
-                        return CustomScaffold(
-                          bgColor: enableCustomColors ? lightThemeColor : null,
-                          fillViewport: widget.fillViewport,
-                          bottomNavigationBar: _showBottomNav
-                              ? CommunityBottomNavBar(
-                                  showCreateMeetingButton:
-                                      isCreateMeetingAvailable,
-                                )
-                              : null,
-                          floatingActionButton: _buildFab(context),
-                          child: widget.content,
-                        );
-                      },
-                    ),
+                      return CustomScaffold(
+                        bgColor: enableCustomColors ? lightThemeColor : null,
+                        fillViewport: widget.fillViewport,
+                        bottomNavigationBar: _showBottomNav
+                            ? CommunityBottomNavBar(
+                                showCreateMeetingButton:
+                                    isCreateMeetingAvailable,
+                              )
+                            : null,
+                        floatingActionButton: _buildFab(context),
+                        childTheme: Theme.of(context).copyWith(
+                          colorScheme: Theme.of(context).colorScheme.copyWith(
+                                primary: primaryColor,
+                                secondary: secondaryColor,
+                              ),
+                          switchTheme: SwitchTheme.of(context).copyWith(
+                            thumbColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return secondaryColor;
+                              } else {
+                                return primaryColor;
+                              }
+                            }),
+                            trackColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return primaryColor;
+                              } else {
+                                return AppColor.gray4;
+                              }
+                            }),
+                          ),
+                          radioTheme: RadioTheme.of(context).copyWith(
+                            fillColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return primaryColor;
+                              } else {
+                                return AppColor.gray4;
+                              }
+                            }),
+                          ),
+                        ),
+                        child: widget.content,
+                      );
+                    },
                   ),
                 );
               },

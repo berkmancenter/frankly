@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
@@ -172,8 +173,8 @@ class _ActionButtonState extends State<ActionButton> {
     Color defaultTextColor = widget.type == ActionButtonType.outline
         ? AppColor.white
         : Theme.of(context).primaryColor;
-    if (widget.color == Theme.of(context).primaryColor) {
-      defaultTextColor = Theme.of(context).colorScheme.secondary;
+    if (widget.color == context.theme.colorScheme.primary) {
+      defaultTextColor = context.theme.colorScheme.onPrimary;
     } else if (widget.color == Theme.of(context).colorScheme.secondary) {
       defaultTextColor = Theme.of(context).primaryColor;
     } else if (widget.color == AppColor.redLightMode) {

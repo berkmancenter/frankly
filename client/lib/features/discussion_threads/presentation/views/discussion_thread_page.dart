@@ -7,7 +7,7 @@ import 'package:client/features/discussion_threads/presentation/views/discussion
 import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/discussion_threads/presentation/widgets/app_generic_state_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
