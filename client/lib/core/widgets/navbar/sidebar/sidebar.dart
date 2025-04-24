@@ -1,4 +1,5 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
@@ -11,7 +12,6 @@ import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/nav_list_tile.dart';
-import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
@@ -194,41 +194,40 @@ class _SideBarState extends State<SideBar> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8),
+          SizedBox(height: 12.0),
           Row(
             children: [
-              SizedBox(width: 5),
+              SizedBox(width: 8.0),
               ProxiedImage(
                 null,
                 asset: AppAsset.kLogoIconPng,
                 width: 20,
                 height: 20,
               ),
-              SideBarNavigationButton(
+              ActionButton(
+                type: ActionButtonType.text,
                 text: '${Environment.appName} Home',
-                onTap: () => routerDelegate.beamTo(HomeLocation()),
-                style: AppTextStyle.eyebrowSmall,
-                verticalPadding: 6,
+                onPressed: () => routerDelegate.beamTo(HomeLocation()),
               ),
             ],
           ),
-          SideBarNavigationButton(
+          const SizedBox(height: 4.0),
+          ActionButton(
+            type: ActionButtonType.text,
             text: 'Help Center',
-            onTap: () => launch(Environment.helpCenterUrl),
-            style: AppTextStyle.eyebrowSmall,
-            verticalPadding: 6,
+            onPressed: () => launch(Environment.helpCenterUrl),
           ),
-          SideBarNavigationButton(
+          const SizedBox(height: 8.0),
+          ActionButton(
+            type: ActionButtonType.text,
             text: 'About ${Environment.appName}',
-            onTap: () => launch(Environment.aboutUrl),
-            style: AppTextStyle.eyebrowSmall,
-            verticalPadding: 6,
+            onPressed: () => launch(Environment.aboutUrl),
           ),
-          SideBarNavigationButton(
+          const SizedBox(height: 8.0),
+          ActionButton(
+            type: ActionButtonType.text,
             text: 'Privacy Policy',
-            onTap: () => launch(Environment.privacyPolicyUrl),
-            style: AppTextStyle.eyebrowSmall,
-            verticalPadding: 6,
+            onPressed: () => launch(Environment.privacyPolicyUrl),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 24, 8, 24),
