@@ -240,9 +240,8 @@ class _SideBarState extends State<SideBar> {
                     text: '.\n© ${Environment.copyrightStatement}',
                   ),
                 ],
-                style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
-                  fontSize: 12,
+                style: context.theme.textTheme.labelMedium!.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -253,9 +252,8 @@ class _SideBarState extends State<SideBar> {
               textAlign: TextAlign.right,
               text: TextSpan(
                 text: 'v$version',
-                style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
-                  fontSize: 12,
+                style: context.theme.textTheme.labelMedium!.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
