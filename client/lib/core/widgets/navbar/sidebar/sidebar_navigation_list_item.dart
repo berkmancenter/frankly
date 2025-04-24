@@ -10,19 +10,18 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
-class NavListItem extends StatefulWidget {
+class SidebarNavigationListItem extends StatefulWidget {
   final Community community;
   final bool isCollapsible;
   final bool buttonActive;
   final bool isOpenByDefault;
 
-  const NavListItem({
+  const SidebarNavigationListItem({
     this.isOpenByDefault = true,
     this.isCollapsible = true,
     this.buttonActive = true,
@@ -31,10 +30,11 @@ class NavListItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<NavListItem> createState() => _NavListItemState();
+  State<SidebarNavigationListItem> createState() =>
+      _SidebarNavigationListItemState();
 }
 
-class _NavListItemState extends State<NavListItem> {
+class _SidebarNavigationListItemState extends State<SidebarNavigationListItem> {
   late bool isOpen = widget.isOpenByDefault ? true : false;
 
   void _activateTitle() => setState(() => isOpen = !isOpen);

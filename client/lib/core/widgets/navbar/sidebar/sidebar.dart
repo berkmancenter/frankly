@@ -11,7 +11,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
-import 'package:client/core/widgets/navbar/sidebar/nav_list_tile.dart';
+import 'package:client/core/widgets/navbar/sidebar/sidebar_navigation_list_item.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
@@ -177,7 +177,7 @@ class _SideBarState extends State<SideBar> {
   Widget _buildSingleCommunityNav(Community community) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          NavListItem(
+          SidebarNavigationListItem(
             isCollapsible: false,
             community: community,
           ),
@@ -300,7 +300,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
           children: [
             for (final community in widget.communities) ...[
               if (community != widget.communities.first) Divider(height: 16),
-              NavListItem(
+              SidebarNavigationListItem(
                 community: community,
                 isOpenByDefault: (community == widget.communities.first) &&
                     CheckCurrentLocation.isCommunityRoute,
