@@ -190,7 +190,7 @@ class _ActionButtonState extends State<ActionButton> {
             HeightConstrainedText(
               text,
               textAlign: TextAlign.center,
-              style: widget.textStyle,
+
             )
           else if (child != null)
             child,
@@ -220,6 +220,7 @@ class _ActionButtonState extends State<ActionButton> {
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: widget.color ?? context.theme.colorScheme.primary,
+            textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.onPrimary,
             minimumSize: minimumSize,
@@ -235,6 +236,7 @@ class _ActionButtonState extends State<ActionButton> {
                 BorderSide(
                   color: widget.color ?? context.theme.colorScheme.primary,
                 ),
+            textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.primary,
             minimumSize: minimumSize,
@@ -248,6 +250,7 @@ class _ActionButtonState extends State<ActionButton> {
         button = TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
+            textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.primary,
             minimumSize: minimumSize,
