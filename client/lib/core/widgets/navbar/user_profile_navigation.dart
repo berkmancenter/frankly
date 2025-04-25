@@ -20,10 +20,10 @@ class UserProfileNavigation extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UserProfileNavigationState createState() => _UserProfileNavigationState();
+  UserProfileNavigationState createState() => UserProfileNavigationState();
 }
 
-class _UserProfileNavigationState extends State<UserProfileNavigation> {
+class UserProfileNavigationState extends State<UserProfileNavigation> {
   final _buttonGlobalKey = GlobalKey();
 
   Future<void> _showOptionsFloating() async {
