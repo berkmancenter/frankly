@@ -294,7 +294,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     final enableDiscussionThreads =
         currentCommunity.settingsMigration.enableDiscussionThreads;
     return [
-      SizedBox(width: 20),
       _SelectableNavigationButton(
         title: 'Events',
         onTap: () => routerDelegate.beamTo(
@@ -303,8 +302,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
         ),
         isSelected: CheckCurrentLocation.isCommunitySchedulePage,
       ),
-      if (enableDiscussionThreads) ...[
-        SizedBox(width: 20),
+      if (enableDiscussionThreads)
         _SelectableNavigationButton(
           title: 'Posts',
           onTap: () => routerDelegate.beamTo(
@@ -313,9 +311,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           ),
           isSelected: CheckCurrentLocation.isDiscussionThreadsPage,
         ),
-      ],
-      if (Provider.of<NavBarProvider>(context).showResources) ...[
-        SizedBox(width: 20),
+      if (Provider.of<NavBarProvider>(context).showResources)
         _SelectableNavigationButton(
           title: 'Resources',
           onTap: () => routerDelegate.beamTo(
@@ -324,8 +320,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           ),
           isSelected: CheckCurrentLocation.isCommunityResourcesPage,
         ),
-      ],
-      SizedBox(width: 20),
       _SelectableNavigationButton(
         title: 'Templates',
         onTap: () => routerDelegate.beamTo(
