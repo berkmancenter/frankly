@@ -65,17 +65,9 @@ class CommunityBottomNavBar extends StatelessWidget {
   }
 
   Widget _buildEventsIcon(BuildContext context) {
-    return CustomInkWell(
-      child: Container(
-        height: AppSize.kBottomNavBarHeight,
-        width: AppSize.kBottomNavBarHeight,
-        alignment: Alignment.center,
-        child: SelectableNavigationIcon(
-          isSelected: false,
-          iconData: Icons.today_rounded,
-          iconSize: 36,
-        ),
-      ),
+    return SelectableNavigationIcon(
+      isSelected: false,
+      iconData: Icons.today_rounded,
       onTap: () => guardSignedIn(() async {
         routerDelegate.beamTo(
           UserSettingsLocation(

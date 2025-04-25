@@ -1,7 +1,7 @@
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
+
 import 'package:client/styles/app_asset.dart';
 
 /// This is an icon that appears in the top or bottom nav bar. If it is selected it shows a solid
