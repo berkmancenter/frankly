@@ -1,9 +1,6 @@
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
-import 'package:client/services.dart';
-import 'package:client/features/user/data/services/user_service.dart';
-import 'package:provider/provider.dart';
 
 class SignInWidget extends StatelessWidget {
   @visibleForTesting
@@ -14,15 +11,8 @@ class SignInWidget extends StatelessWidget {
     await SignInDialog.show(newUser: isNewUser);
   }
 
-  Widget _buildSignedIn(BuildContext context) {
-    return ActionButton(
-      type: ActionButtonType.text,
-      onPressed: () => userService.signOut(),
-      text: 'Sign Out',
-    );
-  }
-
-  Widget _buildSignedOut(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -40,11 +30,5 @@ class SignInWidget extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isSignedIn = context.watch<UserService>().isSignedIn;
-    return isSignedIn ? _buildSignedIn(context) : _buildSignedOut(context);
   }
 }
