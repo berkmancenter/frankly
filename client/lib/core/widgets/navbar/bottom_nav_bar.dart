@@ -27,38 +27,34 @@ class CommunityBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: context.theme.colorScheme.surfaceContainer,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildEventsIcon(context),
-              if (showCreateMeetingButton)
-                _BottomNavAddIcon(
-                  onTap: () => CreateEventDialog.show(context),
-                ),
-              if (showCreateNewEventButton)
-                _BottomNavAddIcon(
-                  onTap: () async {
-                    await guardSignedIn(
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ManipulateDiscussionThreadPage(
-                            communityProvider:
-                                context.read<CommunityProvider>(),
-                            discussionThread: null,
-                          ),
-                        ),
+          _buildEventsIcon(context),
+          if (showCreateMeetingButton)
+            IconButton.filled(
+              icon: const Icon(Icons.add),
+              onPressed: () => CreateEventDialog.show(context),
+            ),
+          if (showCreateNewEventButton)
+            IconButton.filled(
+              icon: const Icon(Icons.add),
+              onPressed: () async {
+                await guardSignedIn(
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ManipulateDiscussionThreadPage(
+                        communityProvider: context.read<CommunityProvider>(),
+                        discussionThread: null,
                       ),
-                    );
-                  },
-                ),
-              ProfileOrLogin(),
-            ],
-          ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ProfileOrLogin(),
         ],
       ),
     );
