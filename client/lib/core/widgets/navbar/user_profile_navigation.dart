@@ -1,12 +1,11 @@
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
 /// This is the user profile icon. If hovered over (or tapped on mobile / touchscreen) a menu will
@@ -110,31 +109,6 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
 }
 
 class ProfileNavigationList extends StatelessWidget {
-  Widget _buildNavButton(
-    BuildContext context,
-    String text,
-    void Function()? onTap, {
-    Color? color,
-  }) {
-    return CustomInkWell(
-      onTap: () {
-        Navigator.of(context).pop();
-
-        if (onTap != null) onTap();
-      },
-      hoverColor: Theme.of(context).primaryColor.withOpacity(0.3),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        color: color,
-        alignment: Alignment.centerLeft,
-        child: HeightConstrainedText(
-          text,
-          textAlign: TextAlign.start,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final userId = userService.currentUserId;
