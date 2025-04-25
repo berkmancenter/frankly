@@ -100,34 +100,11 @@ class HomeBottomNavBar extends StatelessWidget {
       color: context.theme.colorScheme.surfaceContainer,
       height: AppSize.kBottomNavBarHeight,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildEventsIcon(context),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
           ProfileOrLogin(),
         ],
       ),
-    );
-  }
-
-  Widget _buildEventsIcon(BuildContext context) {
-    return CustomInkWell(
-      child: Container(
-        height: AppSize.kBottomNavBarHeight,
-        width: AppSize.kBottomNavBarHeight,
-        alignment: Alignment.center,
-        child: SelectableNavigationIcon(
-          isSelected: false,
-          imagePath: AppAsset.kEventsIcon,
-          iconSize: 35,
-        ),
-      ),
-      onTap: () => guardSignedIn(() async {
-        routerDelegate.beamTo(
-          UserSettingsLocation(
-            initialSection: UserSettingsSection.events,
-          ),
-        );
-      }),
     );
   }
 }
@@ -159,7 +136,9 @@ class _BottomNavAddIcon extends StatelessWidget {
           child: HeightConstrainedText(
             '+',
             style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimary, fontSize: 20),
+              color: context.theme.colorScheme.onPrimary,
+              fontSize: 20,
+            ),
           ),
         ),
       ),
