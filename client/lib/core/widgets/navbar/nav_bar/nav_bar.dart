@@ -1,4 +1,5 @@
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -603,10 +604,11 @@ class _SelectableNavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomInkWell(
-      onTap: onTap,
+    return ActionButton(
+      type: ActionButtonType.text,
+      onPressed: onTap,
+      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 1),
         decoration: isSelected
             ? BoxDecoration(
                 border: Border(
@@ -619,10 +621,10 @@ class _SelectableNavigationButton extends StatelessWidget {
             : null,
         child: HeightConstrainedText(
           title,
-          style: AppTextStyle.bodyMedium.copyWith(
+          style: context.theme.textTheme.titleMedium!.copyWith(
             color: isSelected
                 ? context.theme.colorScheme.primary
-                : context.theme.colorScheme.onPrimaryContainer,
+                : context.theme.colorScheme.outline,
           ),
         ),
       ),
