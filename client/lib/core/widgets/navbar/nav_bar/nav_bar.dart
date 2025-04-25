@@ -263,7 +263,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           selectedImagePath: AppAsset.kChatBubbleBluePng,
           isSelected: CheckCurrentLocation.isDiscussionThreadsPage,
           iconSize: 32,
-          iconSpacing: 2,
           onTap: () => routerDelegate.beamTo(
             CommunityPageRoutes(
               communityDisplayId: CommunityProvider.read(context).displayId,
