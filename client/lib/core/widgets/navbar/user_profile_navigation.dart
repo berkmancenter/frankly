@@ -143,28 +143,37 @@ class ProfileNavigationList extends StatelessWidget {
       shrinkWrap: true,
       children: [
         if (userId != null)
-          _buildNavButton(
-            context,
-            'My Profile',
-            () => routerDelegate.beamTo(
+          ActionButton(
+            type: ActionButtonType.text,
+            text: 'My Profile',
+            onPressed: () => routerDelegate.beamTo(
               UserSettingsLocation(
                 initialSection: UserSettingsSection.profile,
               ),
             ),
+            expand: true,
+            textStyle: context.theme.textTheme.bodyMedium,
+            contentAlign: ActionButtonContentAlignment.start,
           ),
-        _buildNavButton(
-          context,
-          'My Events',
-          () => routerDelegate.beamTo(
+        ActionButton(
+          type: ActionButtonType.text,
+          text: 'My Events',
+          onPressed: () => routerDelegate.beamTo(
             UserSettingsLocation(
               initialSection: UserSettingsSection.events,
             ),
           ),
+          expand: true,
+          textStyle: context.theme.textTheme.bodyMedium,
+          contentAlign: ActionButtonContentAlignment.start,
         ),
-        _buildNavButton(
-          context,
-          'Sign Out',
-          () => userService.signOut(),
+        ActionButton(
+          type: ActionButtonType.text,
+          text: 'Sign Out',
+          onPressed: () => userService.signOut(),
+          expand: true,
+          textStyle: context.theme.textTheme.bodyMedium,
+          contentAlign: ActionButtonContentAlignment.start,
         ),
       ],
     );
