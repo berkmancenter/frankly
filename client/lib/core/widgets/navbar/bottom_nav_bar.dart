@@ -8,7 +8,6 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/profile_or_login.dart';
 import 'package:client/core/widgets/navbar/selectable_navigation_icon.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/styles/app_asset.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -73,8 +72,8 @@ class CommunityBottomNavBar extends StatelessWidget {
         alignment: Alignment.center,
         child: SelectableNavigationIcon(
           isSelected: false,
-          imagePath: AppAsset.kEventsIcon,
-          iconSize: 35,
+          iconData: Icons.today_rounded,
+          iconSize: 36,
         ),
       ),
       onTap: () => guardSignedIn(() async {

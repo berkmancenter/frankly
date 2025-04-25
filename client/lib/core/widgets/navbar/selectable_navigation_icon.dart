@@ -44,7 +44,7 @@ class SelectableNavigationIcon extends StatelessWidget {
                   size: iconSize,
                   color: isSelected
                       ? context.theme.colorScheme.primary
-                      : context.theme.colorScheme.onPrimaryContainer,
+                      : context.theme.colorScheme.onSurfaceVariant,
                 )
               : ProxiedImage(
                   null,
