@@ -3,7 +3,6 @@ import 'package:client/features/announcements/data/providers/announcements_provi
 import 'package:client/features/announcements/presentation/views/announcments.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
@@ -35,7 +34,6 @@ class _AnnouncementsIcon extends StatefulWidget {
 
 class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
   final _buttonGlobalKey = GlobalKey();
-  bool _isExiting = false;
   bool _isShowing = false;
 
   Future<void> _showOptionsFloating(bool halfSize) async {
@@ -62,7 +60,6 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
       Offset.zero & overlay.size,
     );
 
-    _isExiting = false;
     await showCustomDialog(
       context: context,
       barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
@@ -73,35 +70,19 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
           value: communityProvider,
           child: Stack(
             children: [
-              Positioned.fill(
-                child: CustomInkWell(
-                  hoverColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  onHover: (hover) {
-                    if (hover && !_isExiting) {
-                      _isExiting = true;
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ),
-              // Absorb mouse region over the button
-              Positioned.fromRelativeRect(
-                rect: position,
-                child: MouseRegion(),
-              ),
               Positioned(
                 width: 260.0,
                 right: position.right - 90,
                 top: position.top + position.toSize(overlay.size).height,
                 child: MouseRegion(
                   child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: context.theme.colorScheme.surfaceContainerLowest,
+                    ),
                     padding: const EdgeInsets.all(12),
                     constraints:
                         BoxConstraints(maxHeight: halfSize ? 200 : 400),
-                    color: context.theme.colorScheme.surfaceContainerLowest,
                     child: Announcements.create(),
                   ),
                 ),
@@ -123,24 +104,16 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
     return Semantics(
       button: true,
       label: 'Show Announcements Button',
-      child: CustomInkWell(
-        onHover: (hover) async {
-          if (hover && !_isShowing) {
-            return _profileActivated(halfSize);
-          }
-        },
+      child: IconButton(
+        key: _buttonGlobalKey,
         // Register on tap events in case of touchscreens
-        onTap: () => _profileActivated(halfSize),
-        child: Container(
-          key: _buttonGlobalKey,
-          alignment: Alignment.center,
-          width: 50,
-          height: AppSize.kNavBarHeight,
-          child: Icon(
-            Icons.notifications_none,
-            size: 30,
-            color: context.theme.colorScheme.onPrimaryContainer,
-          ),
+        onPressed: () => _profileActivated(halfSize),
+        icon: Icon(
+          Icons.notifications_none_rounded,
+          size: 30,
+          color: _isShowing
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.outline,
         ),
       ),
     );
