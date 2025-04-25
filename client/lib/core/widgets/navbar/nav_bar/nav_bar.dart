@@ -201,10 +201,13 @@ class _NavBarState extends State<NavBar> implements NavBarView {
 
     return [
       if (!showBottomNav)
-        ProfileOrLogin(
-          showMenuAboveIcon: false,
-        ),
-      if (showBottomNav) ...[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ProfileOrLogin(
+            showMenuAboveIcon: false,
+          ),
+        )
+      else ...[
         if (currentCommunity != null && isCommunityLocation) ...[
           ..._buildRightSideNavIcons(currentCommunity, canViewCommunityLinks),
         ],
@@ -218,13 +221,10 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           label: 'Show Sidebar Button',
           child: IconButton(
             onPressed: () => Scaffold.of(context).openEndDrawer(),
-            icon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Icon(
-                Icons.menu,
-                size: 34,
-                color: context.theme.colorScheme.secondary,
-              ),
+            icon: Icon(
+              Icons.menu,
+              size: 34,
+              color: context.theme.colorScheme.secondary,
             ),
           ),
         ),
