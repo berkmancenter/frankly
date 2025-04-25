@@ -26,8 +26,6 @@ class UserProfileNavigation extends StatefulWidget {
 
 class _UserProfileNavigationState extends State<UserProfileNavigation> {
   final _buttonGlobalKey = GlobalKey();
-  bool _isExiting = false;
-  bool _isShowing = false;
 
   Future<void> _showOptionsFloating() async {
     final RenderBox button =
@@ -48,31 +46,11 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
       Offset.zero & overlay.size,
     );
 
-    _isExiting = false;
     await showCustomDialog(
       context: context,
       barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
       builder: (context) => Stack(
         children: [
-          Positioned.fill(
-            child: CustomInkWell(
-              hoverColor: Colors.transparent,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              onHover: (hover) {
-                if (hover && !_isExiting) {
-                  _isExiting = true;
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ),
-          // Absorb mouse region over the button
-          Positioned.fromRelativeRect(
-            rect: position,
-            child: MouseRegion(),
-          ),
           Positioned(
             width: 200.0,
             right: position.right - 60,
@@ -96,9 +74,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
   }
 
   Future<void> _profileActivated() async {
-    _isShowing = true;
     await _showOptionsFloating();
-    _isShowing = false;
   }
 
   Widget _buildProfileButton() {
@@ -108,11 +84,17 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
       child: IconButton(
         key: _buttonGlobalKey,
         onPressed: _profileActivated,
-        icon: UserProfileChip(
-          userId: Provider.of<UserService>(context).currentUserId,
-          customAction: _profileActivated,
-          showName: false,
-          imageHeight: 38,
+        padding: EdgeInsets.all(4.0),
+        icon: SizedBox(
+          height: 40,
+          width: 40,
+          child: UserProfileChip(
+            userId: Provider.of<UserService>(context).currentUserId,
+            customAction: _profileActivated,
+            alignment: Alignment.center,
+            showName: false,
+            imageHeight: 40,
+          ),
         ),
       ),
     );
