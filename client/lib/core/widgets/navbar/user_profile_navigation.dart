@@ -102,32 +102,17 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
   }
 
   Widget _buildProfileButton() {
-    return CustomInkWell(
-      onHover: (hover) async {
-        if (hover && !_isShowing) {
-          return _profileActivated();
-        }
-      },
-      // Register on tap events in case of touchscreens
-      onTap: _profileActivated,
-      child: Center(
-        child: Semantics(
-          button: true,
-          label: 'Profile Button',
-          child: Container(
-            key: _buttonGlobalKey,
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: UserProfileChip(
-                userId: Provider.of<UserService>(context).currentUserId,
-                customAction: _profileActivated,
-                showName: false,
-                imageHeight: 38,
-              ),
-            ),
-          ),
+    return Semantics(
+      button: true,
+      label: 'Profile Button',
+      child: IconButton(
+        key: _buttonGlobalKey,
+        onPressed: _profileActivated,
+        icon: UserProfileChip(
+          userId: Provider.of<UserService>(context).currentUserId,
+          customAction: _profileActivated,
+          showName: false,
+          imageHeight: 38,
         ),
       ),
     );
