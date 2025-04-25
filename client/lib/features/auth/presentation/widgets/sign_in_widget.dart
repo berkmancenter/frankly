@@ -1,10 +1,8 @@
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/navbar/nav_button.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
 
 class SignInWidget extends StatelessWidget {
