@@ -211,13 +211,14 @@ class _NavBarState extends State<NavBar> implements NavBarView {
       ],
       if (isMobile) Spacer(),
       if (isAdminButtonVisible) _buildAdminButton(),
-      Semantics(
-        button: true,
-        label: 'Show Sidebar Button',
-        child: CustomInkWell(
-          onTap: () => Scaffold.of(context).openEndDrawer(),
-          child: Center(
-            child: Padding(
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Semantics(
+          button: true,
+          label: 'Show Sidebar Button',
+          child: IconButton(
+            onPressed: () => Scaffold.of(context).openEndDrawer(),
+            icon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Icon(
                 Icons.menu,
