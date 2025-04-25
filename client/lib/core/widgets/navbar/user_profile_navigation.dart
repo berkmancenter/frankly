@@ -62,8 +62,11 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
                 : position.top + position.toSize(overlay.size).height,
             child: MouseRegion(
               child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: context.theme.colorScheme.surfaceContainerLowest,
+                ),
                 constraints: BoxConstraints(maxHeight: 400),
-                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: ProfileNavigationList(),
               ),
             ),

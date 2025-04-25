@@ -77,7 +77,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
                 child: MouseRegion(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(8),
                       color: context.theme.colorScheme.surfaceContainerLowest,
                     ),
                     padding: const EdgeInsets.all(12),
