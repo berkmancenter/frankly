@@ -686,5 +686,8 @@
   "defaultEventSettings": "默认活动设置",
   "agendaPreview": "议程预览",
   "overview": "概览",
-  "members": "成员"
+  "members": "成员",
+  "updatePlan": "更新方案",
+  "updateBilling": "更新账单",
+  "contactBillingManager": "联系账单管理员以更新方案："
 }

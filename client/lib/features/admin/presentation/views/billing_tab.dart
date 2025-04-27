@@ -259,7 +259,7 @@ class _AdminBillingContainerContentState
               _buildPlansDropdown(),
               SizedBox(width: 10),
               ActionButton(
-                text: 'Update Plan',
+                text: context.l10n.updatePlan,
                 color: AppColor.darkBlue,
                 textColor: AppColor.brightGreen,
                 onPressed: _newPlanSelected
@@ -334,7 +334,7 @@ class _AdminBillingContainerContentState
       mainAxisSize: MainAxisSize.min,
       children: [
         HeightConstrainedText(
-          'Contact the billing manager to update plan:',
+          context.l10n.contactBillingManager,
           style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray3),
         ),
         UserInfoBuilder(
@@ -404,7 +404,7 @@ class _AdminBillingContainerContentState
             ),
             SizedBox(width: 10),
             ActionButton(
-              text: 'Update billing',
+              text: context.l10n.updateBilling,
               color: Colors.transparent,
               textStyle: TextStyle(
                 decoration: TextDecoration.underline,

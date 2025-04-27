@@ -679,5 +679,8 @@
   "defaultEventSettings": "預設活動設定",
   "agendaPreview": "議程預覽",
   "overview": "概覽",
-  "members": "成員"
+  "members": "成員",
+  "updatePlan": "更新方案",
+  "updateBilling": "更新帳單",
+  "contactBillingManager": "聯絡帳單管理員以更新方案："
 }

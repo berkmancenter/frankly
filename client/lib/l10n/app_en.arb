@@ -643,5 +643,8 @@
   "defaultEventSettings": "Default event settings",
   "agendaPreview": "Agenda preview",
   "overview": "Overview",
-  "members": "Members"
+  "members": "Members",
+  "updatePlan": "Update Plan",
+  "updateBilling": "Update billing",
+  "contactBillingManager": "Contact the billing manager to update plan:"
 }

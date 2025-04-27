@@ -691,6 +691,9 @@
   "allowUsersToDonateFunds": "Permitir que los usuarios donen fondos",
   "defaultEventSettings": "Configuración predeterminada del evento",
   "agendaPreview": "Vista previa de la agenda",
-  "overview": "Vista general",
-  "members": "Miembros"
+  "overview": "Resumen",
+  "members": "Miembros",
+  "updatePlan": "Actualizar Plan",
+  "updateBilling": "Actualizar facturación",
+  "contactBillingManager": "Contacte al administrador de facturación para actualizar el plan:"
 }
