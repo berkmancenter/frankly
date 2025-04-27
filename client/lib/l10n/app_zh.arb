@@ -696,6 +696,6 @@
   "startVideo": "开启视频",
   "mute": "静音",
   "unmute": "取消静音",
-  "allParticipantsAreMutedDuringVideo": "播放视频时所有人都被静音了！",
+  "allParticipantsAreMutedDuringVideo": "视频时所有人都被静音了！",
   "audioVideoSettings": "音频/视频设置"
 }

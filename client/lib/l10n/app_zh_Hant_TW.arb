@@ -689,6 +689,6 @@
   "startVideo": "開啟視訊",
   "mute": "靜音",
   "unmute": "取消靜音",
-  "allParticipantsAreMutedDuringVideo": "播放影片時所有人都被靜音了！",
+  "allParticipantsAreMutedDuringVideo": "視訊時所有人都被靜音了！",
   "audioVideoSettings": "音訊/視訊設定"
 }
