@@ -695,5 +695,13 @@
   "members": "Miembros",
   "updatePlan": "Actualizar Plan",
   "updateBilling": "Actualizar facturación",
-  "contactBillingManager": "Contacte al administrador de facturación para actualizar el plan:"
+  "contactBillingManager": "Contacte al administrador de facturación para actualizar el plan:",
+  "enterMessage": "Ingrese mensaje",
+  "introduceYourselfToHelpBreakTheIce": "Preséntate para ayudar a romper el hielo 😉",
+  "stopVideo": "Detener video",
+  "startVideo": "Iniciar video",
+  "mute": "Silenciar",
+  "unmute": "Activar sonido",
+  "allParticipantsAreMutedDuringVideo": "¡Todos los participantes están silenciados durante el video!",
+  "audioVideoSettings": "Configuración de audio/video"
 }

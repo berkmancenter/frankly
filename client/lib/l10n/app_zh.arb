@@ -689,5 +689,13 @@
   "members": "成员",
   "updatePlan": "更新方案",
   "updateBilling": "更新账单",
-  "contactBillingManager": "联系账单管理员以更新方案："
+  "contactBillingManager": "联系账单管理员以更新方案：",
+  "enterMessage": "输入消息",
+  "introduceYourselfToHelpBreakTheIce": "介绍一下自己，帮助打破僵局 😉",
+  "stopVideo": "停止视频",
+  "startVideo": "开启视频",
+  "mute": "静音",
+  "unmute": "取消静音",
+  "allParticipantsAreMutedDuringVideo": "播放视频时所有人都被静音了！",
+  "audioVideoSettings": "音频/视频设置"
 }

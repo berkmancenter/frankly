@@ -28,6 +28,7 @@ import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart' as js_util;
+import 'package:client/core/localization/localization_helper.dart';
 
 class ControlBar extends StatefulWidget {
   @override
@@ -70,7 +71,9 @@ class _ControlBarState extends State<ControlBar> {
         context,
         () => _conferenceRoomRead.toggleVideoEnabled(),
       ),
-      text: _conferenceRoom.videoEnabled ? 'Stop Video' : 'Start Video',
+      text: _conferenceRoom.videoEnabled
+          ? context.l10n.stopVideo
+          : context.l10n.startVideo,
       icon: _conferenceRoom.videoEnabled
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
@@ -96,7 +99,7 @@ class _ControlBarState extends State<ControlBar> {
                 AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
                     .show(),
             child: HeightConstrainedText(
-              'Audio/Video Settings',
+              context.l10n.audioVideoSettings,
             ),
           ),
           if (enableScreenshare &&
@@ -149,11 +152,11 @@ class _ControlBarState extends State<ControlBar> {
               : () async {
                   showRegularToast(
                     context,
-                    'All participants are muted during video!',
+                    context.l10n.allParticipantsAreMutedDuringVideo,
                     toastType: ToastType.success,
                   );
                 },
-          text: _conferenceRoom.audioEnabled ? 'Mute' : 'Unmute',
+          text: _conferenceRoom.audioEnabled ? context.l10n.mute : context.l10n.unmute,
           icon: _conferenceRoom.audioEnabled
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,

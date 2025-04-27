@@ -646,5 +646,13 @@
   "members": "Members",
   "updatePlan": "Update Plan",
   "updateBilling": "Update billing",
-  "contactBillingManager": "Contact the billing manager to update plan:"
+  "contactBillingManager": "Contact the billing manager to update plan:",
+  "enterMessage": "Enter message",
+  "introduceYourselfToHelpBreakTheIce": "Introduce yourself to help break the ice 😉",
+  "stopVideo": "Stop Video",
+  "startVideo": "Start Video",
+  "mute": "Mute",
+  "unmute": "Unmute",
+  "allParticipantsAreMutedDuringVideo": "All participants are muted during video!",
+  "audioVideoSettings": "Audio/Video Settings"
 }

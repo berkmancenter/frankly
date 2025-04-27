@@ -682,5 +682,13 @@
   "members": "成員",
   "updatePlan": "更新方案",
   "updateBilling": "更新帳單",
-  "contactBillingManager": "聯絡帳單管理員以更新方案："
+  "contactBillingManager": "聯絡帳單管理員以更新方案：",
+  "enterMessage": "輸入訊息",
+  "introduceYourselfToHelpBreakTheIce": "介紹一下自己，幫助打破僵局 😉",
+  "stopVideo": "停止視訊",
+  "startVideo": "開啟視訊",
+  "mute": "靜音",
+  "unmute": "取消靜音",
+  "allParticipantsAreMutedDuringVideo": "播放影片時所有人都被靜音了！",
+  "audioVideoSettings": "音訊/視訊設定"
 }
