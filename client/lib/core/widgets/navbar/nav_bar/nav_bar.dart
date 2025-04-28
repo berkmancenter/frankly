@@ -160,7 +160,6 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     return [
       CurrentCommunityIconOrLogo(community: currentCommunity, darkLogo: true),
       if (currentCommunity != null && isOnCommunityPage && !isMobile) ...[
-        SizedBox(width: 8),
         Expanded(
           flex: showCommunityMembershipButton ? 0 : 1,
           child: ConstrainedBox(
