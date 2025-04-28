@@ -11,7 +11,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/navbar/community_announcements.dart';
 import 'package:client/core/widgets/navbar/nav_bar/nav_bar_contract.dart';
