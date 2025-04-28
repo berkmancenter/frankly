@@ -125,7 +125,7 @@ class CommunityCircleIcon extends StatelessWidget {
   const CommunityCircleIcon(
     this.community, {
     this.withBorder = false,
-    this.imageHeight = 40,
+    this.imageHeight = 42,
     this.isTooltipShown = true,
     Key? key,
   }) : super(key: key);
