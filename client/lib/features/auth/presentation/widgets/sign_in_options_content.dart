@@ -37,6 +37,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   late bool _showSignup = widget.showSignUp;
   late bool _showPassword = false;
+  // This is used to ignore password validation when user is asking to reset password
+  late bool _ignorePassword;
   late String _formError = '';
   late String _formMessage = '';
 
@@ -158,15 +160,21 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       () => userService.resetPassword(email: _emailController.text),
       errorCallback: (error, msg) => {
         if (msg == 'Email must be entered to reset password.')
-          setState(() => _formError = 'email-missing-pw')
+          setState(() {
+            _formError = 'email-missing-pw';
+            _ignorePassword = false;
+          })
         else
-          setState(() => _formError = msg),
+          setState(() {
+            _formError = msg;
+            _ignorePassword = false;
+          }),
       },
       callback: () => {
-        setState(
-          () => _formMessage =
-              'Password reset link sent to ${_emailController.text}',
-        ),
+        setState(() {
+          _formMessage = 'Password reset link sent to ${_emailController.text}';
+          _ignorePassword = false;
+        }),
       },
     );
   }
@@ -304,13 +312,17 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ),
               ),
               validator: (value) {
+                if (_ignorePassword) {
+                  return null;
+                }
                 // If the user is not signing up, just validate if any value is entered, not format;
                 // Because they may have a legacy account before we started enforcing complexity
                 if (!_showSignup && (value == null || value.isEmpty)) {
                   return 'Please enter a password';
-                } else if (value == null ||
-                    value.isEmpty ||
-                    !isPasswordValid(value)) {
+                } else if (_showSignup &&
+                    (value == null ||
+                        value.isEmpty ||
+                        !isPasswordValid(value))) {
                   return 'Please enter a valid password';
                 }
                 return null;
@@ -325,12 +337,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
-                child: TextButton(
-                  onPressed: _resetPassword,
-                  child: Text(
-                    'Forgot your password?',
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Forgot your password?',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        // We have to disable password validation for now so the form validation can succeed without it
+                        setState(() {
+                          _ignorePassword = true;
+                        });
+                        if(_formKey.currentState!.validate()){
+                          _resetPassword();}
+                      },
                     style: context.theme.textTheme.bodySmall?.copyWith(
-                      color: context.theme.colorScheme.surfaceDim,
                       decoration: TextDecoration.underline,
                     ),
                   ),

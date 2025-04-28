@@ -63,10 +63,9 @@ class _SignInDialogState extends State<SignInDialog> {
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topRight,
-                child: IconButton(
+                child: IconButton(                  
                   icon: Icon(Icons.close),
                   onPressed: () => Navigator.of(context).pop(),
-                  padding: EdgeInsets.zero,
                 ),
               ),
             ),

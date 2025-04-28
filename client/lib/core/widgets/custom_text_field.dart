@@ -188,6 +188,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: isError
               ? context.theme.colorScheme.error
               : context.theme.colorScheme.primary,
+              fontSize: isError ? 12 : AppTextStyle.body.fontSize,
         );
   }
 
