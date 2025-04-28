@@ -248,8 +248,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     return [
       SizedBox(width: 20),
       SelectableNavigationIcon(
-        imagePath: AppAsset.kCalendarGreyPng,
-        selectedImagePath: AppAsset.kCalendarBluePng,
+        iconData: Icons.calendar_month_rounded,
         isSelected: CheckCurrentLocation.isCommunitySchedulePage,
         iconSize: 32,
         onTap: () => routerDelegate.beamTo(
@@ -260,8 +259,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
       if (enableDiscussionThreads) ...[
         SizedBox(width: 20),
         SelectableNavigationIcon(
-          imagePath: AppAsset.kChatBubbleGreyPng,
-          selectedImagePath: AppAsset.kChatBubbleBluePng,
+          iconData: Icons.forum_outlined,
           isSelected: CheckCurrentLocation.isDiscussionThreadsPage,
           iconSize: 32,
           onTap: () => routerDelegate.beamTo(
@@ -275,8 +273,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
       if (Provider.of<NavBarProvider>(context).showResources) ...[
         SizedBox(width: 10),
         SelectableNavigationIcon(
-          imagePath: AppAsset.kDocumentsGreyPng,
-          selectedImagePath: AppAsset.kDocumentsBluePng,
+          iconData: Icons.assignment_outlined,
           isSelected: CheckCurrentLocation.isCommunityResourcesPage,
           iconSize: 32,
           onTap: () => routerDelegate.beamTo(
