@@ -59,12 +59,17 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   @override
   void initState() {
+    super.initState();
     _customLightColorController =
         TextEditingController(text: _currentCommunityLightColor);
     _customDarkColorController =
         TextEditingController(text: _currentCommunityDarkColor);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _determineSelectedColorScheme();
-    super.initState();
   }
 
   @override
