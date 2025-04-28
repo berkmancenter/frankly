@@ -87,9 +87,10 @@ class HomeBottomNavBar extends StatelessWidget {
       color: context.theme.colorScheme.surfaceContainer,
       height: AppSize.kBottomNavBarHeight,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: const [
           ProfileOrLogin(),
+          SizedBox(width: 24),
         ],
       ),
     );
