@@ -86,17 +86,11 @@ class UserProfileNavigationState extends State<UserProfileNavigation> {
       child: IconButton(
         key: _buttonGlobalKey,
         onPressed: _profileActivated,
-        padding: EdgeInsets.all(4.0),
-        icon: SizedBox(
-          height: 40,
-          width: 40,
-          child: UserProfileChip(
-            userId: Provider.of<UserService>(context).currentUserId,
-            customAction: _profileActivated,
-            alignment: Alignment.center,
-            showName: false,
-            imageHeight: 40,
-          ),
+        icon: UserProfileChip(
+          userId: Provider.of<UserService>(context).currentUserId,
+          customAction: _profileActivated,
+          alignment: Alignment.center,
+          showName: false,
         ),
       ),
     );
