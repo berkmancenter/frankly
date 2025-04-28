@@ -252,6 +252,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 children: [
                   CustomTextField(
                     key: SignInOptionsContent.nameTextFieldKey,
+                    borderType: BorderType.underline,
                     controller: _displayNameController,
                     labelText: 'Full Name',
                     hintText: 'e.g. Jane Doe',
@@ -267,6 +268,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               ),
             CustomTextField(
               key: SignInOptionsContent.emailTextFieldKey,
+              borderType: BorderType.underline,
               controller: _emailController,
               labelText: 'Email',
               validator: (value) {
@@ -279,6 +281,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             SizedBox(height: 10),
             CustomTextField(
               key: SignInOptionsContent.passwordTextFieldKey,
+              borderType: BorderType.underline,
               controller: _passwordController,
               onEditingComplete: () => _submitController.submit(),
               labelText: 'Password',
@@ -351,7 +354,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ),
               ),
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-              type: ActionButtonType.flat,
+              type: ActionButtonType.filled,
               minWidth: minWidth,
               textColor: Colors.white,
               color: Colors.black,

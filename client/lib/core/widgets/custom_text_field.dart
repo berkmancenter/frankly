@@ -61,13 +61,17 @@ class CustomTextField extends StatefulWidget {
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
 
+  /// Allow for custom suffix icon
+  final Widget? suffixIcon;
+
+
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
     this.labelText,
     this.hintText,
     this.initialValue,
-    this.maxLines = 3,
+    this.maxLines = 1,
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
@@ -104,6 +108,7 @@ class CustomTextField extends StatefulWidget {
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -199,8 +204,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Container(
         padding: widget.textFieldPadding,
         decoration: BoxDecoration(
-          color: widget.backgroundColor ??
-              context.theme.colorScheme.surfaceContainerLowest,
+          color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
         child: KeyboardListener(
@@ -254,6 +258,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 obscureText: widget.obscureText,
                 cursorColor:
                     widget.cursorColor ?? context.theme.colorScheme.primary,
+                cursorHeight: 15,
                 autovalidateMode: widget.autovalidateMode,
                 maxLength: widget.maxLength,
                 buildCounter: (
@@ -306,6 +311,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   hintStyle: _buildTextStyle(),
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
+                  suffixIcon: widget.suffixIcon,
                 ),
                 autofocus: widget.autofocus,
                 readOnly: widget.readOnly,
