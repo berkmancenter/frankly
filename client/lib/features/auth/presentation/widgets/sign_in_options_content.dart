@@ -38,7 +38,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   late bool _showSignup = widget.showSignUp;
   late bool _showPassword = false;
   // This is used to ignore password validation when user is asking to reset password
-  late bool _ignorePassword;
+  late bool _ignorePassword = false;
   late String _formError = '';
   late String _formMessage = '';
 
