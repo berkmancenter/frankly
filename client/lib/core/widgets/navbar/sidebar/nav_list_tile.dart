@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -74,8 +73,7 @@ class _NavListItemState extends State<NavListItem> {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
               child: HeightConstrainedText(
                 widget.community.name ?? 'Unnamed Community',
-                style: AppTextStyle.body
-                    .copyWith(color: context.theme.colorScheme.secondary),
+                style: AppTextStyle.body.copyWith(color: AppColor.gray1),
               ),
             ),
           ),
@@ -138,15 +136,17 @@ class CommunitySidebarNavLinks extends StatelessWidget {
     } else {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Semantics(
-          label: 'Sidebar Follow Community Button',
+        child: 
+        Semantics(
+          label:'Sidebar Follow Community Button', 
           identifier: 'sidebar_follow_community_button',
           button: true,
-          child: CommunityMembershipButton(
-            community,
-            minWidth: 315,
+          child:
+            CommunityMembershipButton(
+              community,              
+              minWidth: 315,
+            ),
           ),
-        ),
       );
     }
   }
