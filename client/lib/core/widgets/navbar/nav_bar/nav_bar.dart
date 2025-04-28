@@ -166,17 +166,19 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           flex: showCommunityMembershipButton ? 0 : 1,
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 180),
-            child: CustomInkWell(
-              onTap: () => routerDelegate.beamTo(
+            child: ActionButton(
+              type: ActionButtonType.text,
+              onPressed: () => routerDelegate.beamTo(
                 CommunityPageRoutes(
                   communityDisplayId: currentCommunity.displayId,
                 ).communityHome,
               ),
+              contentAlign: ActionButtonContentAlignment.start,
+              expand: true,
+              textStyle: context.theme.textTheme.titleMedium,
               child: HeightConstrainedText(
                 currentCommunity.name ?? Environment.appName,
                 maxLines: 2,
-                style: AppTextStyle.subhead
-                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
             ),
           ),
