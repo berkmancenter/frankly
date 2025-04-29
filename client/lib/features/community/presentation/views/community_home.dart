@@ -31,6 +31,7 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
+import 'package:client/core/localization/localization_helper.dart';
 
 class CommunityHome extends StatefulWidget {
   const CommunityHome._();
@@ -263,7 +264,7 @@ class _CommunityHomeState extends State<CommunityHome> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: HeightConstrainedText(
-                  'Upcoming Events',
+                  context.l10n.upcomingEvents,
                   style: AppTextStyle.headline4.copyWith(
                     color: AppColor.gray1,
                   ),
@@ -293,7 +294,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                         ),
                         alignment: Alignment.center,
                         child: HeightConstrainedText(
-                          'See More Events',
+                          context.l10n.seeMoreEvents,
                           style: AppTextStyle.eyebrowSmall,
                         ),
                       ),
@@ -316,8 +317,8 @@ class _CommunityHomeState extends State<CommunityHome> {
           return EmptyPageContent(
             type: EmptyPageType.events,
             subtitleText: (communityHasEvents ?? true)
-                ? 'No events'
-                : 'Create your first event!',
+                ? context.l10n.noEvents
+                : context.l10n.createYourFirstEvent,
             onButtonPress: () => CreateEventDialog.show(context),
           );
         },

@@ -695,5 +695,10 @@
   "nameHint": "例如：正義聯盟",
   "uniqueUrlDisplayNameHint": "例如：正義聯盟",
   "taglineHint": "例如：保護地球免受入侵",
-  "chooseColorScheme": "選擇您的配色方案"
+  "chooseColorScheme": "選擇您的配色方案",
+  "addTags": "新增標籤",
+  "addTag": "新增標籤",
+  "noEvents": "沒有活動",
+  "createYourFirstEvent": "創建您的第一個活動！",
+  "seeMoreEvents": "查看更多活動"
 }

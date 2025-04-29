@@ -702,5 +702,10 @@
   "nameHint": "例如：正义联盟",
   "uniqueUrlDisplayNameHint": "例如：the-justice-league",
   "taglineHint": "例如：保护地球免受入侵",
-  "chooseColorScheme": "选择您的配色方案"
+  "chooseColorScheme": "选择您的配色方案",
+  "addTags": "添加标签",
+  "addTag": "添加标签",
+  "noEvents": "沒有活动",
+  "createYourFirstEvent": "创建您的第一个活动！",
+  "seeMoreEvents": "查看更多活动"
 }

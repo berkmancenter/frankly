@@ -708,5 +708,10 @@
   "nameHint": "Ej: The Justice League",
   "uniqueUrlDisplayNameHint": "Ej: the-justice-league",
   "taglineHint": "Ej: Protegiendo la tierra de todos los invasores",
-  "chooseColorScheme": "Elige tu esquema de colores"
+  "chooseColorScheme": "Elige tu esquema de colores",
+  "addTags": "Añadir etiquetas",
+  "addTag": "Añadir etiqueta",
+  "noEvents": "No hay eventos",
+  "createYourFirstEvent": "¡Crea tu primer evento!",
+  "seeMoreEvents": "Ver más eventos"
 }

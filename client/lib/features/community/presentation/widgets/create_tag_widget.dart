@@ -16,6 +16,7 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/community/community_tag_definition.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is a widget that shows the create tag section
 /// displays existing tags and add tag field
@@ -256,7 +257,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
             color: AppColor.white,
             onPressed: () => _onTapAddButton(),
             child: HeightConstrainedText(
-              'Add tag',
+              context.l10n.addTag,
               style: TextStyle(color: AppColor.darkBlue),
             ),
           ),

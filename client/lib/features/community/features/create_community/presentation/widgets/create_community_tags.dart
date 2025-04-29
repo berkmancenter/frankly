@@ -5,7 +5,7 @@ import 'package:client/features/community/presentation/widgets/create_tag_widget
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:provider/provider.dart';
-
+import 'package:client/core/localization/localization_helper.dart';
 class CreateCommunityTags extends StatelessWidget {
   final String communityId;
 
@@ -23,7 +23,7 @@ class CreateCommunityTags extends StatelessWidget {
           entryFrom: 'CreateCommunityDialog._buildAddTagsSection',
           stream: createCommunityTagProvider.communityTagsStream,
           builder: (context, _) => CreateTagWidget(
-            titleText: 'Add Tags',
+            titleText: context.l10n.addTags,
             titleTextStyle: AppTextStyle.body.copyWith(fontSize: 24),
             showIcon: false,
             tags: Provider.of<CreateCommunityTagProvider>(context).tags,
