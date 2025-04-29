@@ -112,8 +112,8 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
           Icons.notifications_none_rounded,
           size: 30,
           color: _isShowing
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.outline,
+              ? context.theme.colorScheme.onSurface
+              : context.theme.colorScheme.onSurfaceVariant,
         ),
       ),
     );

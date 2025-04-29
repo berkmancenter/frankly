@@ -614,8 +614,8 @@ class _SelectableNavigationButton extends StatelessWidget {
           title,
           style: context.theme.textTheme.titleMedium!.copyWith(
             color: isSelected
-                ? context.theme.colorScheme.primary
-                : context.theme.colorScheme.outline,
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),
