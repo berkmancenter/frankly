@@ -367,12 +367,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
             onCustomDisplayIdChanged: (value) => _displayId = value,
             onNameChanged: (value) =>
                 setState(() => _community = _community.copyWith(name: value)),
-            onTaglineChanged: (value) => setState(
-              () => _community = _community.copyWith(tagLine: value),
-            ),
-            onAboutChanged: (value) => setState(
-              () => _community = _community.copyWith(description: value),
-            ),
             community: _community,
           ),
         if (widget.showImageEdit)

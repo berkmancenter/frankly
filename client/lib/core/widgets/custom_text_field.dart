@@ -15,6 +15,7 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsets padding;
   final String? labelText;
   final String? hintText;
+  final String? helperText;
   final String? initialValue;
   final int? maxLines;
   final int? minLines;
@@ -70,6 +71,7 @@ class CustomTextField extends StatefulWidget {
     this.padding = const EdgeInsets.only(top: 15),
     this.labelText,
     this.hintText,
+    this.helperText,
     this.initialValue,
     this.maxLines = 1,
     this.minLines = 1,
@@ -251,7 +253,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onEditingComplete: widget.onEditingComplete,
                 // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
                 // while not having to specify max lines for every single usage 🙄
-                maxLines: (widget.maxLength != null &&
+                maxLines: (widget.maxLines != null &&
                         widget.minLines! > widget.maxLines!)
                     ? widget.minLines
                     : widget.maxLines,
@@ -310,6 +312,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   alignLabelWithHint: true,
                   hintText: widget.hintText,
                   hintStyle: _buildTextStyle(),
+                  helperText: widget.helperText,
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
                   suffixIcon: widget.suffixIcon,

@@ -74,7 +74,7 @@ class _NavListItemState extends State<NavListItem> {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
               child: HeightConstrainedText(
                 widget.community.name ?? 'Unnamed Community',
-                style: AppTextStyle.body.copyWith(color:  context.theme.colorScheme.onTertiary.gray1),
+                style: AppTextStyle.body.copyWith(color:  context.theme.colorScheme.secondary),
               ),
             ),
           ),

@@ -73,7 +73,7 @@ class _DialogFlowState extends State<DialogFlow> {
       case 1:
         return true;
       case 2:
-        return _notEmpty(_community.name) && _notEmpty(_community.tagLine);
+        return _notEmpty(_community.name);
       default:
         return false;
     }
@@ -235,7 +235,8 @@ class _DialogFlowState extends State<DialogFlow> {
         SizedBox(height: 40),
         if (_onStep != 4) HeightConstrainedText('$_onStep of 3'),
         SizedBox(height: 10),
-        HeightConstrainedText(_stepText, style: context.theme.textTheme.titleLarge),
+        HeightConstrainedText(_stepText,
+            style: context.theme.textTheme.titleLarge,),
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
@@ -250,6 +251,7 @@ class _DialogFlowState extends State<DialogFlow> {
   Widget _buildStepContent() {
     switch (_onStep) {
       case 1:
+        return _buildStepTwoContent();
         return _buildStepOneContent();
 
       case 2:
@@ -338,31 +340,11 @@ class _DialogFlowState extends State<DialogFlow> {
         CreateCommunityTextFields(
           onNameChanged: (value) =>
               setState(() => _community = _community.copyWith(name: value)),
-          onTaglineChanged: (value) =>
-              setState(() => _community = _community.copyWith(tagLine: value)),
-          onAboutChanged: (value) => setState(
-            () => _community = _community.copyWith(description: value),
-          ),
-          // aboutFocus: _aboutFocus,
+          onCustomDisplayIdChanged: (value) => setState(
+              () => _community = _community.copyWith(displayIds: [value]),),
           nameFocus: _nameFocus,
-          // taglineFocus: _taglineFocus,
           community: _community,
         ),
-        /* CreateCommunityImageFields(
-          bannerImageUrl: _community.bannerImageUrl,
-          profileImageUrl: _community.profileImageUrl,
-          updateBannerImage: (String imageUrl) =>
-              _updateBannerImage(imageUrl: imageUrl),
-          updateProfileImage: (String imageUrl) =>
-              _updateProfileImage(imageUrl: imageUrl),
-          removeImage: _removeImage,
-        ),
-        CustomTextField(
-          hintText: 'Contact email',
-          labelText: 'Contact email',
-          onChanged: (email) => _updateContactEmail(email),
-          isOptional: true,
-        ), */
         SizedBox(height: 6),
         PrivateCommunityCheckbox(
           onUpdate: (bool? v) {
