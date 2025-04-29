@@ -55,6 +55,7 @@ class _EventsPageState extends State<EventsPage> {
     final dateNumberTextStyle = context.theme.textTheme.headlineLarge!;
     final boxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(8),
+      color: context.theme.colorScheme.surfaceContainerLowest,
     );
     return LayoutBuilder(
       builder: (_, constraints) {
@@ -78,13 +79,16 @@ class _EventsPageState extends State<EventsPage> {
             onDateUnSelected: (_) =>
                 Provider.of<EventsPageProvider>(context, listen: false)
                     .setDate(null),
-            disabledDecoration: boxDecoration,
+            defaultDecoration: boxDecoration,
+            disabledDecoration: boxDecoration.copyWith(
+              color: context.theme.colorScheme.surfaceContainer,
+            ),
+            selectedDecoration: boxDecoration.copyWith(
+              color: context.theme.colorScheme.primary,
+            ),
             isDateDisabled: (date) =>
                 !Provider.of<EventsPageProvider>(context, listen: false)
                     .dateHasEvent(date),
-            defaultDecoration: boxDecoration.copyWith(
-              color: context.theme.colorScheme.surfaceContainerLowest,
-            ),
             weekDayTextStyle: labelTextStyle.copyWith(
               color: context.theme.colorScheme.onSurfaceVariant,
             ),
@@ -94,9 +98,15 @@ class _EventsPageState extends State<EventsPage> {
             monthTextStyle: labelTextStyle.copyWith(
               color: context.theme.colorScheme.onSurfaceVariant,
             ),
-            selectedMonthTextStyle: labelTextStyle,
-            selectedWeekDayTextStyle: labelTextStyle,
-            selectedDateTextStyle: dateNumberTextStyle,
+            selectedMonthTextStyle: labelTextStyle.copyWith(
+              color: context.theme.colorScheme.onPrimary,
+            ),
+            selectedWeekDayTextStyle: labelTextStyle.copyWith(
+              color: context.theme.colorScheme.onPrimary,
+            ),
+            selectedDateTextStyle: dateNumberTextStyle.copyWith(
+              color: context.theme.colorScheme.onPrimary,
+            ),
           ),
         );
       },
