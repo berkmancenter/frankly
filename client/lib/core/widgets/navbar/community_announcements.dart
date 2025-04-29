@@ -104,7 +104,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
                     ),
                     padding: const EdgeInsets.all(12),
                     constraints:
-                        BoxConstraints(maxHeight: halfSize ? 200 : 400),                    
+                        BoxConstraints(maxHeight: halfSize ? 200 : 400),
                     child: Announcements.create(),
                   ),
                 ),
@@ -143,8 +143,8 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
             Icons.notifications_none_rounded,
             size: 30,
             color: _isShowing
-              ? context.theme.colorScheme.onSurface
-              : context.theme.colorScheme.onSurfaceVariant,
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),
