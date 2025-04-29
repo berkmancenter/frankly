@@ -4,7 +4,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/events/event_message.dart';
 
@@ -32,7 +32,7 @@ class EventMessageWidget extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,7 +43,8 @@ class EventMessageWidget extends StatelessWidget {
             children: [
               Text(
                 formattedTime,
-                style: AppTextStyle.eyebrow.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.eyebrow.copyWith(
+                    color: context.theme.colorScheme.onPrimaryContainer),
               ),
               if (isMod || isDocCreator)
                 CustomInkWell(
@@ -67,7 +68,8 @@ class EventMessageWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   eventMessage.message,
-                  style: AppTextStyle.eyebrow.copyWith(color: AppColor.gray1),
+                  style: AppTextStyle.eyebrow
+                      .copyWith(color: context.theme.colorScheme.secondary),
                 ),
               ),
             ],

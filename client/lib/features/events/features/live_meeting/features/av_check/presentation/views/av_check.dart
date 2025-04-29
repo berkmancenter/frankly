@@ -6,13 +6,13 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/av_check/data/providers/av_check_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/troubleshoot_av.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -63,7 +63,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
       return Center(
         child: AudioVideoErrorDisplay(
           error: error,
-          textColor: AppColor.gray1,
+          textColor: context.theme.colorScheme.secondary,
         ),
       );
     }
@@ -75,7 +75,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
 
     return Container(
       alignment: Alignment.center,
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: UserInfoBuilder(
         userId: userService.currentUserId,
         builder: (context, loading, user) {
@@ -99,7 +99,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
               SizedBox(height: 16),
               _buildSelectVideo(),
               SizedBox(height: 36),
-              _buildJoinNowButton(),
+              _buildJoinNowButton(context),
               SizedBox(height: 20),
               if (!responsiveLayoutService.isMobile(context)) ...[
                 _buildDiagnoseIssuesButton(),
@@ -113,12 +113,12 @@ class _AvCheckPageState extends State<_AvCheckPage> {
   }
 
   Widget _buildDiagnoseIssuesButton() =>
-      TroubleshootIssuesButton(linkColor: AppColor.brightGreen);
+      TroubleshootIssuesButton(linkColor: context.theme.colorScheme.onPrimary);
 
   Widget _buildVideoContainer(String image) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColor.brightGreen),
+        border: Border.all(color: context.theme.colorScheme.onPrimary),
         borderRadius: BorderRadius.circular(10),
       ),
       width: 334,
@@ -203,7 +203,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
           height: 30,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColor.white),
+            border: Border.all(color: context.theme.colorScheme.onPrimary),
           ),
           alignment: Alignment.center,
           child: ProxiedImage(
@@ -225,8 +225,8 @@ class _AvCheckPageState extends State<_AvCheckPage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: i < provider.currentAudioLevel && provider.micOn
-                    ? AppColor.brightGreen
-                    : AppColor.gray3,
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.onPrimaryContainer,
               ),
             );
           },
@@ -247,8 +247,8 @@ class _AvCheckPageState extends State<_AvCheckPage> {
         asset: AppAsset.kCameraPng,
       );
 
-  Widget _buildJoinNowButton() => ActionButton(
-        color: AppColor.white,
+  Widget _buildJoinNowButton(BuildContext context) => ActionButton(
+        color: context.theme.colorScheme.surfaceContainerLowest,
         minWidth: 335,
         height: 68,
         text: 'Join Now',
@@ -294,16 +294,17 @@ class _AvCheckPageState extends State<_AvCheckPage> {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.gray6),
+            border: Border.all(color: context.theme.colorScheme.surface),
             borderRadius: BorderRadius.circular(10),
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
           child: Builder(
             builder: (context) {
               if (devices.isEmpty) {
                 return HeightConstrainedText(
                   'No alternative devices detected',
-                  style: AppTextStyle.body.copyWith(color: AppColor.white),
+                  style: AppTextStyle.body
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                 );
               } else {
                 return DropdownButton<String>(
@@ -321,7 +322,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
                     quarterTurns: 1,
                     child: Icon(
                       Icons.arrow_forward_ios,
-                      color: AppColor.gray6,
+                      color: context.theme.colorScheme.surface,
                       size: 20,
                     ),
                   ),
@@ -333,7 +334,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
                         value: device.deviceId,
                         child: _buildDropdownItem(
                           device,
-                          textColor: AppColor.black,
+                          textColor: context.theme.colorScheme.primary,
                         ),
                       ),
                   ],

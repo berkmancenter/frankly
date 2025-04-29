@@ -22,7 +22,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -136,7 +136,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
       errorMessage: 'Something went wrong loading room. Please refresh!',
       loadingMessage: 'Connecting to room...',
-      textStyle: TextStyle(color: AppColor.white),
+      textStyle: TextStyle(color: context.theme.colorScheme.onPrimary),
       builder: (_, __) => _buildLayout(),
     );
   }
@@ -161,7 +161,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           Container(
             alignment: Alignment.topRight,
             child: Container(
-              color: AppColor.black.withOpacity(0.5),
+              color: context.theme.colorScheme.scrim.withScrimOpacity,
               height: 32,
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Row(
@@ -172,13 +172,14 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                     width: recordingPulseSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColor.redDarkMode,
+                      color: context.theme.colorScheme.errorContainer,
                     ),
                   ),
                   SizedBox(width: 8),
                   Text(
                     'Recording',
-                    style: TextStyle(color: AppColor.white),
+                    style:
+                        TextStyle(color: context.theme.colorScheme.onPrimary),
                   ),
                   SizedBox(width: 26),
                 ],
@@ -268,7 +269,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -306,8 +307,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           iconData,
           size: 25,
           color: liveMeetingProvider.liveMeetingViewType == type
-              ? AppColor.brightGreen
-              : AppColor.gray5,
+              ? context.theme.colorScheme.onPrimary
+              : context.theme.colorScheme.onPrimaryContainer,
         ),
       ),
     );
@@ -547,8 +548,8 @@ class _GetHelpButtonState extends State<GetHelpButton> {
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
                   color: Theme.of(context).isDark
-                      ? AppColor.brightGreen
-                      : AppColor.darkBlue,
+                      ? context.theme.colorScheme.onPrimary
+                      : context.theme.colorScheme.primary,
                 ),
               ),
             ),
@@ -632,7 +633,10 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: const [AppColor.gray1, Colors.transparent],
+                            colors: [
+                              context.theme.colorScheme.secondary,
+                              Colors.transparent,
+                            ],
                           ),
                         ),
                         alignment: Alignment.center,
@@ -655,7 +659,10 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: const [Colors.transparent, AppColor.gray1],
+                            colors: [
+                              Colors.transparent,
+                              context.theme.colorScheme.secondary,
+                            ],
                           ),
                         ),
                         alignment: Alignment.center,

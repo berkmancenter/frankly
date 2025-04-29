@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:data_models/events/event.dart';

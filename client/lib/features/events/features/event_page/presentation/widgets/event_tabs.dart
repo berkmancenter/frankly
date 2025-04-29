@@ -8,7 +8,7 @@ import 'package:client/features/events/features/live_meeting/data/providers/live
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/user_submitted_agenda_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
+
 import 'package:data_models/events/event_message.dart';
 import 'package:provider/provider.dart';
 

@@ -3,7 +3,7 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/event_page/presentation/breakout_category_presenter.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -38,12 +38,14 @@ class BreakoutCategoryDialog extends StatelessWidget {
         SizedBox(height: spacerHeight),
         HeightConstrainedText(
           'Choose a category',
-          style: AppTextStyle.headline1.copyWith(color: AppColor.white),
+          style: AppTextStyle.headline1
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: 10),
         HeightConstrainedText(
           'Please pick the category to be placed into a room.',
-          style: AppTextStyle.body.copyWith(color: AppColor.white),
+          style: AppTextStyle.body
+              .copyWith(color: context.theme.colorScheme.onPrimary),
         ),
         SizedBox(height: spacerHeight),
         for (var categoryData in categoryPresenter.breakoutCategories)
@@ -54,13 +56,14 @@ class BreakoutCategoryDialog extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 10),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.white),
+                border: Border.all(color: context.theme.colorScheme.onPrimary),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: HeightConstrainedText(
                 categoryData.category,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.bodyMedium.copyWith(color: AppColor.white),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
               ),
             ),
           ),

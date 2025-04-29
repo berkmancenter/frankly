@@ -8,8 +8,8 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/user_submitted_agenda_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
@@ -17,7 +17,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +41,9 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
     required IconData icon,
     required bool selected,
   }) {
-    final color = selected ? AppColor.brightGreen : AppColor.darkBlue;
+    final color = selected
+        ? context.theme.colorScheme.onPrimary
+        : context.theme.colorScheme.primary;
     return TextButton(
       onPressed: () => readProvider.vote(upvote: upvote, itemId: itemId),
       child: Padding(
@@ -77,7 +79,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,7 +91,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                 UserProfileChip(
                   userId: item.creatorId,
                   textStyle: TextStyle(
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                     fontSize: 16,
                   ),
                   showBorder: false,
@@ -136,8 +138,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                         return SelectableLinkify(
                           text: item.content ?? '',
                           textAlign: TextAlign.left,
-                          style: AppTextStyle.eyebrow
-                              .copyWith(color: AppColor.gray1),
+                          style: AppTextStyle.eyebrow.copyWith(
+                              color: context.theme.colorScheme.secondary),
                           options: LinkifyOptions(looseUrl: true),
                           onOpen: (link) => launch(link.url),
                         );
@@ -217,7 +219,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
               contentPadding: EdgeInsets.all(20),
               onEditingComplete:
                   canSubmit ? () => _submitController.submit() : null,
-              textStyle: body.copyWith(color: AppColor.black),
+              textStyle:
+                  body.copyWith(color: context.theme.colorScheme.primary),
               maxLines: 1,
               borderType: BorderType.none,
               borderRadius: 30,
@@ -235,11 +238,13 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             onPressed: canSubmit
                 ? () => alertOnError(context, () => readProvider.submit())
                 : null,
-            color: canSubmit ? AppColor.darkBlue : AppColor.gray4,
+            color: canSubmit
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.onPrimaryContainer,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ],

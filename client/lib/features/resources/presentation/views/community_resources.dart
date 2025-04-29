@@ -14,7 +14,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/tag_filter_widget.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -70,8 +70,11 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(blurRadius: 5, color: AppColor.gray5),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ],
                   ),
                   child: Row(
@@ -91,8 +94,9 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                           children: [
                             HeightConstrainedText(
                               resource.title ?? '',
-                              style: AppTextStyle.bodyMedium
-                                  .copyWith(color: AppColor.gray1),
+                              style: AppTextStyle.bodyMedium.copyWith(
+                                color: context.theme.colorScheme.secondary,
+                              ),
                             ),
                             SizedBox(height: 4),
                             Wrap(

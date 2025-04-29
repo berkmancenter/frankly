@@ -6,7 +6,7 @@ import 'package:client/features/events/features/live_meeting/features/video/data
 import 'package:client/features/events/features/live_meeting/features/video/presentation/networking_status_presenter.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
 
 class NetworkingStatus extends StatefulWidget {
@@ -92,7 +92,7 @@ class NetworkStatusAlert extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColor.lightRed,
+                  color: context.theme.colorScheme.errorContainer,
                 ),
                 padding: EdgeInsets.all(isMobile ? 10 : 20),
                 child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
@@ -140,12 +140,13 @@ class LowBandwidth extends StatelessWidget {
           AppAsset.kExclamationSvg.path,
           width: 20,
           height: 20,
-          color: AppColor.redLightMode,
+          color: context.theme.colorScheme.error,
         ),
         SizedBox(width: 10),
         Text(
           'Low Bandwidth',
-          style: AppTextStyle.subhead.copyWith(color: AppColor.redLightMode),
+          style: AppTextStyle.subhead
+              .copyWith(color: context.theme.colorScheme.error),
         ),
       ],
     );
@@ -169,7 +170,8 @@ class ExplanationText extends StatelessWidget {
         Expanded(
           child: Text(
             'Try turning off your camera for a smoother experience',
-            style: AppTextStyle.subhead.copyWith(color: AppColor.gray2),
+            style: AppTextStyle.subhead
+                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
           ),
         ),
         SizedBox(width: 10),
@@ -180,7 +182,7 @@ class ExplanationText extends StatelessWidget {
             AppAsset.kXSvg.path,
             width: 20,
             height: 20,
-            color: AppColor.gray1,
+            color: context.theme.colorScheme.secondary,
           ),
         ),
       ],

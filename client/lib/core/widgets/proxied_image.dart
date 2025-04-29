@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:universal_html/js.dart' as universal_js;
 
 class ProxiedImage extends StatelessWidget {
@@ -10,7 +10,7 @@ class ProxiedImage extends StatelessWidget {
   final AppAsset? asset;
   final double? height;
   final double? width;
-  final Color loadingColor;
+  final Color? loadingColor;
   final BorderRadius? borderRadius;
   final BoxFit? fit;
 
@@ -19,7 +19,7 @@ class ProxiedImage extends StatelessWidget {
     this.asset,
     this.height,
     this.width,
-    this.loadingColor = AppColor.gray5,
+    this.loadingColor,
     this.borderRadius,
     this.fit,
   });
@@ -59,7 +59,7 @@ class ProxiedImage extends StatelessWidget {
         return Container(
           height: height,
           width: width,
-          color: loadingColor,
+          color: loadingColor ?? context.theme.colorScheme.onPrimaryContainer,
         );
       }
 
@@ -69,7 +69,7 @@ class ProxiedImage extends StatelessWidget {
     Widget errorBuilder(_, __, ___) => Container(
           height: height,
           width: width,
-          color: AppColor.gray4,
+          color: context.theme.colorScheme.onPrimaryContainer,
           child: Icon(
             Icons.broken_image,
             size: 30,

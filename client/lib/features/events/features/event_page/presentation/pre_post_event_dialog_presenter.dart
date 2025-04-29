@@ -1,7 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/services.dart';

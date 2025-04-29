@@ -1,11 +1,11 @@
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class UpgradePerks extends StatelessWidget {
@@ -48,13 +48,14 @@ class UpgradePerks extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ...[
-                for (final perk in _upgradePerks) _buildUpgradePerk(perk),
+                for (final perk in _upgradePerks)
+                  _buildUpgradePerk(context, perk),
               ].intersperse(
                 SizedBox(height: 10),
               ),
               SizedBox(height: 20),
               ActionButton(
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
                 text: 'Explore plans',
                 expand: true,
                 type: ActionButtonType.outline,
@@ -66,8 +67,8 @@ class UpgradePerks extends StatelessWidget {
               if (onUpgradeTap != null) ...[
                 SizedBox(height: 20),
                 ActionButton(
-                  color: AppColor.darkBlue,
-                  textColor: AppColor.brightGreen,
+                  color: context.theme.colorScheme.primary,
+                  textColor: context.theme.colorScheme.onPrimary,
                   text: 'Upgrade',
                   expand: true,
                   borderRadius: BorderRadius.circular(10),
@@ -79,17 +80,23 @@ class UpgradePerks extends StatelessWidget {
         : SizedBox.shrink();
   }
 
-  Widget _buildUpgradePerk(String perk) => Row(
+  Widget _buildUpgradePerk(BuildContext context, String perk) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: AppColor.darkGreen, size: 12),
+          Icon(
+            Icons.check,
+            color: context.theme.colorScheme.secondary,
+            size: 12,
+          ),
           SizedBox(
             width: 10,
           ),
           Flexible(
             child: HeightConstrainedText(
               perk,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
           ),
         ],

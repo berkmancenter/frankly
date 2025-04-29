@@ -1,8 +1,8 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -85,7 +85,7 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
             constraints: BoxConstraints(maxWidth: 523),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: const EdgeInsets.all(40),
             child: CustomListView(
@@ -95,14 +95,15 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                   HeightConstrainedText(
                     widget.title,
                     style: AppTextStyle.headline3
-                        .copyWith(color: AppColor.darkBlue),
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                   SizedBox(height: 10),
                 ],
                 if (!isNullOrEmpty(widget.mainText)) ...[
                   HeightConstrainedText(
                     widget.mainText,
-                    style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                    style: AppTextStyle.body
+                        .copyWith(color: context.theme.colorScheme.primary),
                   ),
                   SizedBox(height: 10),
                 ],
@@ -112,9 +113,9 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                   expand: true,
                   height: 48,
                   text: widget.confirmText,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                   textStyle: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.brightGreen),
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   onPressed: onConfirm != null
                       ? () => onConfirm(context)
                       : () => Navigator.of(context).pop(true),
@@ -128,7 +129,7 @@ class _ConfirmDialogWhiteState extends State<ConfirmDialogWhite> {
                     color: Colors.transparent,
                     text: widget.cancelText,
                     textStyle: AppTextStyle.bodyMedium
-                        .copyWith(color: AppColor.darkBlue),
+                        .copyWith(color: context.theme.colorScheme.primary),
                     onPressed: onCancel != null
                         ? () => onCancel(context)
                         : () => Navigator.of(context).pop(false),

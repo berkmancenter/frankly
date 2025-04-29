@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 
@@ -119,7 +119,9 @@ class LiveStreamInstructions extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: whiteBackground ? AppColor.white : AppColor.darkerBlue,
+        color: whiteBackground
+            ? context.theme.colorScheme.surfaceContainerLowest
+            : context.theme.colorScheme.primary,
       ),
       alignment: Alignment.center,
       child: _buildInstructions(context),

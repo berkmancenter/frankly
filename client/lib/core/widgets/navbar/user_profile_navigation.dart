@@ -4,7 +4,7 @@ import 'package:client/features/user/presentation/widgets/user_profile_chip.dart
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +51,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
     _isExiting = false;
     await showCustomDialog(
       context: context,
-      barrierColor: AppColor.black.withOpacity(0.3),
+      barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
       builder: (context) => Stack(
         children: [
           Positioned.fill(
@@ -85,7 +85,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
             child: MouseRegion(
               child: Container(
                 constraints: BoxConstraints(maxHeight: 400),
-                color: AppColor.white,
+                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: ProfileNavigationList(),
               ),
             ),

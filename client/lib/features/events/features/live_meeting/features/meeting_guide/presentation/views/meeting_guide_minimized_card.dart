@@ -7,12 +7,12 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 
@@ -68,7 +68,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
       margin: const EdgeInsets.only(top: 2, right: 5),
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -96,7 +96,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
                   child: isMeetingFinished || isReadyToAdvance
                       ? Icon(
                           Icons.check_circle_outline_rounded,
-                          color: AppColor.brightGreen,
+                          color: context.theme.colorScheme.onPrimary,
                         )
                       : _ForwardButton(currentAgendaItemId: currentItemId),
                 );
@@ -106,11 +106,11 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
             padding: spacerPadding,
             child: ActionButton(
               tooltipText: 'Show Agenda Item',
-              type: ActionButtonType.flat,
+              type: ActionButtonType.filled,
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
               minWidth: 40,
               onPressed: widget.onExpandCard,
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               padding: EdgeInsets.zero,
               child: ProxiedImage(
                 null,
@@ -145,7 +145,7 @@ class _ForwardButton extends HookWidget {
     final agendaProvider = AgendaProvider.watch(context);
 
     return ActionButton(
-      type: ActionButtonType.flat,
+      type: ActionButtonType.filled,
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 40,
       onPressed: () => alertOnError(context, () async {
@@ -158,7 +158,7 @@ class _ForwardButton extends HookWidget {
           toastType: ToastType.success,
         );
       }),
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       padding: EdgeInsets.zero,
       child: ProxiedImage(
         null,

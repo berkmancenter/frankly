@@ -17,10 +17,10 @@ import 'package:client/features/community/presentation/widgets/donate_widget.dar
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
+import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -188,7 +188,6 @@ class _CommunityHomeState extends State<CommunityHome> {
           if (!userDataService.isMember(communityId: community.id)) ...[
             CommunityMembershipButton(
               community,
-              bgColor: Theme.of(context).colorScheme.primary,
             ),
             SizedBox(width: 12),
           ],
@@ -265,7 +264,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                 child: HeightConstrainedText(
                   'Upcoming Events',
                   style: AppTextStyle.headline4.copyWith(
-                    color: AppColor.gray1,
+                    color: context.theme.colorScheme.secondary,
                   ),
                 ),
               ),
@@ -332,14 +331,16 @@ class _CommunityHomeState extends State<CommunityHome> {
         if (email != null && email.isNotEmpty) ...[
           Text(
             'Contact',
-            style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+            style: AppTextStyle.headline4
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           SizedBox(height: 10),
           GestureDetector(
             onTap: () => url_launcher.launch('mailto:$email'),
             child: Text(
               email,
-              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray1),
+              style: AppTextStyle.bodyMedium
+                  .copyWith(color: context.theme.colorScheme.secondary),
             ),
           ),
           SizedBox(height: 10),

@@ -1,17 +1,17 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_tag_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +47,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainer,
       child: _buildBody(),
     );
   }
@@ -74,8 +74,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
             children: [
               Text(
                 'Edit template',
-                style: AppTextStyle.headlineSmall
-                    .copyWith(fontSize: 16, color: AppColor.black),
+                style: AppTextStyle.headlineSmall,
               ),
               AppClickableWidget(
                 child: ProxiedImage(
@@ -128,7 +127,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: AppTextStyle.body,
         ),
         Spacer(),
         InkWell(
@@ -190,7 +189,6 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildBottomButtonsSection() {
     final templateToggleButtonText = _presenter.getTemplateButtonToggleText();
-    final templateToggleButtonColor = _presenter.getTemplateButtonToggleColor();
     final canToggleTemplate = _presenter.canDeleteTemplate();
 
     return Column(
@@ -198,8 +196,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
         ActionButton(
           expand: true,
           text: 'Save template',
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Theme.of(context).colorScheme.secondary,
+          color: context.theme.colorScheme.primary,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
@@ -210,7 +207,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
           ActionButton(
             expand: true,
             type: ActionButtonType.outline,
-            textColor: templateToggleButtonColor,
+            textColor: context.theme.colorScheme.error,
             text: templateToggleButtonText,
             onPressed: () => alertOnError(
               context,

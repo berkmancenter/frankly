@@ -3,7 +3,7 @@ import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 
 class CreateDialogUiMigration<T> extends StatefulWidget {
@@ -57,7 +57,7 @@ class _CreateDialogUiMigrationState<T>
           onTap: () {},
           child: Material(
             borderRadius: !isFullscreen ? BorderRadius.circular(20) : null,
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             child: Container(
               constraints: !isFullscreen
                   ? BoxConstraints(maxWidth: widget.maxWidth)

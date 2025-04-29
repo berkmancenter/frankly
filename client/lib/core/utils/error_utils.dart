@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:client/core/data/services/logging_service.dart';
+import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,20 +85,27 @@ Future<T?> alertOnError<T>(
   }
 }
 
-// Return callback w/ both the sanitized error and firebase error code when action fails
-Future<Object?> authMessageOnError<T>(
+// Return callback w/ both the sanitized error and either firebase error code or exception msg when action fails
+Future<void> authMessageOnError<T>(
   Future<T> Function() action, {
-  required Function(String errorMessage, String code) callback,
+  required Function(String errorMessage, String code) errorCallback,
+Function()? callback ,
 }) async {
   try {
-    return await action();
+    await action();
+    callback!();
   } catch (e, s) {
     loggingService.log(e, logType: LogType.error);
     loggingService.log(s, logType: LogType.error);
 
     final sanitizedError = sanitizeError(e.toString());
-    callback(sanitizedError, (e as FirebaseAuthException).code);
-    return null;
+    // TODO: This can probably be done in a more elegant fashion
+    if (e is FirebaseAuthException) {
+      errorCallback(sanitizedError, e.code);
+    } else if (e is VisibleException) {
+      errorCallback(sanitizedError, e.msg);
+    }
+
   }
 }
 

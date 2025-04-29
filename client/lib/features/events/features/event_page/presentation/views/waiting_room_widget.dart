@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,10 +7,9 @@ import 'package:client/features/events/features/event_page/presentation/views/wa
 import 'package:client/features/events/features/event_page/data/models/waiting_room_widget_model.dart';
 import 'package:client/features/events/features/event_page/presentation/waiting_room_widget_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/media_item_section.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 
@@ -82,7 +82,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
         children: [
           HeightConstrainedText(
             'Intro Text',
-            style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+            style: AppTextStyle.subhead
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           CustomTextField(
             minLines: 3,
@@ -91,12 +92,14 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             initialValue: _model.waitingRoomInfo.content,
             onChanged: (value) => _presenter.updateWaitingText(value),
             hintText: 'Enter waiting room text (optional)',
-            textStyle: AppTextStyle.body.copyWith(color: AppColor.gray1),
+            textStyle: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           SizedBox(height: 20),
           Text(
             'Waiting Room Image/Video',
-            style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+            style: AppTextStyle.subhead
+                .copyWith(color: context.theme.colorScheme.primary),
           ),
           SizedBox(height: 10),
           MediaItemSection(
@@ -108,13 +111,13 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           Row(
             children: [
               Checkbox(
-                activeColor: AppColor.darkBlue,
-                checkColor: AppColor.brightGreen,
+                activeColor: context.theme.colorScheme.primary,
+                checkColor: context.theme.colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
-                  side: BorderSide(color: AppColor.darkBlue),
+                  side: BorderSide(color: context.theme.colorScheme.primary),
                 ),
-                side: BorderSide(color: AppColor.darkBlue),
+                side: BorderSide(color: context.theme.colorScheme.primary),
                 value: _model.waitingRoomInfo.loopWaitingVideo,
                 onChanged: (bool? value) =>
                     _presenter.updateLoopWaitingVideo(value ?? false),
@@ -135,15 +138,14 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   onChanged: (value) =>
                       _presenter.updateWaitingBufferMinutesInString(value),
                   isOnlyDigits: true,
-                  useDarkMode: false,
                   numberThreshold: 60,
                 ),
               ),
               SizedBox(width: 4),
               HeightConstrainedText(
                 ':',
-                style:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
               SizedBox(width: 4),
               SizedBox(
@@ -155,7 +157,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   onChanged: (value) =>
                       _presenter.updateWaitingBufferSecondsInString(value),
                   isOnlyDigits: true,
-                  useDarkMode: false,
                   numberThreshold: 59,
                 ),
               ),
@@ -173,7 +174,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             RichText(
               text: TextSpan(
                 text: 'Intro Image/Video',
-                style: AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.subhead
+                    .copyWith(color: context.theme.colorScheme.primary),
                 children: [
                   TextSpan(
                     text: ' (Plays at $introStartTime)',
@@ -205,7 +207,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                     onChanged: (value) =>
                         _presenter.updateMinutesInString(value),
                     isOnlyDigits: true,
-                    useDarkMode: false,
                     numberThreshold: 60,
                   ),
                 ),
@@ -213,7 +214,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 HeightConstrainedText(
                   ':',
                   style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.darkBlue),
+                      .copyWith(color: context.theme.colorScheme.primary),
                 ),
                 SizedBox(width: 4),
                 SizedBox(
@@ -225,7 +226,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                     onChanged: (value) =>
                         _presenter.updateSecondsInString(value),
                     isOnlyDigits: true,
-                    useDarkMode: false,
                     numberThreshold: 59,
                   ),
                 ),
@@ -270,8 +270,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 SizedBox.shrink(),
               ActionButton(
                 loadingHeight: 10.0,
-                color: AppColor.darkBlue,
-                textColor: AppColor.brightGreen,
+                color: context.theme.colorScheme.primary,
+                textColor: context.theme.colorScheme.onPrimary,
                 text: 'Save',
                 onPressed: () => alertOnError(
                   context,

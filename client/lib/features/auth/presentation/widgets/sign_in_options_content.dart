@@ -1,14 +1,13 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +23,7 @@ class SignInOptionsContent extends StatefulWidget {
   static const emailTextFieldKey = Key('input-email');
   static const passwordTextFieldKey = Key('input-password');
   static const buttonSubmitKey = Key('submit-button');
+  static const buttonGoogleKey = Key('google-button');
 
   final bool showSignUp;
   final void Function()? onComplete;
@@ -37,7 +37,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   late bool _showSignup = widget.showSignUp;
   late bool _showPassword = false;
+  // This is used to ignore password validation when user is asking to reset password
+  late bool _ignorePassword = false;
   late String _formError = '';
+  late String _formMessage = '';
 
   final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -52,8 +55,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   bool isPasswordValid(String password) {
     // Password must be at least 12 characters long, and contain one lowercase and one uppercase letter
-    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{12,}$')
-        .hasMatch(password);
+    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{12,}$').hasMatch(password);
   }
 
   Future<void> _onSubmit() async {
@@ -80,17 +82,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Navigator.of(context).pop();
     }
     widget.onComplete?.call();
-  }
-
-  Future<void> _resetPassword() {
-    return alertOnError(context, () async {
-      await userService.resetPassword(email: _emailController.text);
-      if (!mounted) return;
-      await showAlert(
-        context,
-        'Password reset link sent to ${_emailController.text}',
-      );
-    });
   }
 
 // Create a widget containing information about account error messages received from our backend
@@ -148,13 +139,44 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ],
           ),
         );
-     
+      case 'email-missing-pw':
+        return Text(
+          'Please enter a valid email address.',
+          style: context.theme.textTheme.bodyMedium?.copyWith(
+            color: context.theme.colorScheme.error,
+          ),
+        );
+
       default:
         return Text(
           'Something went wrong. Please try again.',
           style: context.theme.textTheme.bodySmall,
         );
     }
+  }
+
+  Future<void> _resetPassword() async {
+    await authMessageOnError(
+      () => userService.resetPassword(email: _emailController.text),
+      errorCallback: (error, msg) => {
+        if (msg == 'Email must be entered to reset password.')
+          setState(() {
+            _formError = 'email-missing-pw';
+            _ignorePassword = false;
+          })
+        else
+          setState(() {
+            _formError = msg;
+            _ignorePassword = false;
+          }),
+      },
+      callback: () => {
+        setState(() {
+          _formMessage = 'Password reset link sent to ${_emailController.text}';
+          _ignorePassword = false;
+        }),
+      },
+    );
   }
 
   @override
@@ -174,7 +196,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   }
 
   String _getTitleText() {
-    if (widget.showSignUp) {
+    if (_showSignup) {
       return 'Sign up for ${Environment.appName}';
     } else {
       return 'Log into ${Environment.appName}';
@@ -196,11 +218,13 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             text: _showSignup ? 'Log in' : 'Sign up',
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                if(_formError.isNotEmpty){
+                if (_formError.isNotEmpty) {
                   _formKey.currentState!.reset();
                 }
-                setState(() {_showSignup = !_showSignup; _formError = '';});
-
+                setState(() {
+                  _showSignup = !_showSignup;
+                  _formError = '';
+                });
               },
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -236,9 +260,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 children: [
                   CustomTextField(
                     key: SignInOptionsContent.nameTextFieldKey,
-                    controller: _displayNameController,
-                    labelText: 'Your Name',
                     borderType: BorderType.underline,
+                    controller: _displayNameController,
+                    labelText: 'Full Name',
+                    hintText: 'e.g. Jane Doe',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a valid name';
@@ -251,9 +276,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               ),
             CustomTextField(
               key: SignInOptionsContent.emailTextFieldKey,
+              borderType: BorderType.underline,
               controller: _emailController,
               labelText: 'Email',
-              borderType: BorderType.underline,
               validator: (value) {
                 if (value == null || value.isEmpty || !isEmailValid(value)) {
                   return 'Please enter a valid email';
@@ -264,56 +289,94 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             SizedBox(height: 10),
             CustomTextField(
               key: SignInOptionsContent.passwordTextFieldKey,
+              borderType: BorderType.underline,
               controller: _passwordController,
               onEditingComplete: () => _submitController.submit(),
               labelText: 'Password',
               obscureText: !_showPassword,
-              borderType: BorderType.underline,
               suffixIcon: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
-                child: IconButton(
-                  onPressed: () =>
-                      setState(() => _showPassword = !_showPassword),
-                  icon: Icon(
-                    _showPassword
-                        ? Icons.visibility_rounded
-                        : Icons.visibility_off_rounded,
-                    size: 24,
+                child: Semantics(
+                  label: _showPassword ? 'Hide password' : 'Show password',
+                  button: true,
+                  child: IconButton(
+                    onPressed: () =>
+                        setState(() => _showPassword = !_showPassword),
+                    icon: Icon(
+                      _showPassword
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
               validator: (value) {
-                // If the user is not signing up, we don't need to validate the password
-                // Because they may have a legacy account before we started enforcing complexity
-                if(!_showSignup) {
+                if (_ignorePassword) {
                   return null;
                 }
-                if (value == null || value.isEmpty || !isPasswordValid(value)) {
+                // If the user is not signing up, just validate if any value is entered, not format;
+                // Because they may have a legacy account before we started enforcing complexity
+                if (!_showSignup && (value == null || value.isEmpty)) {
+                  return 'Please enter a password';
+                } else if (_showSignup &&
+                    (value == null ||
+                        value.isEmpty ||
+                        !isPasswordValid(value))) {
                   return 'Please enter a valid password';
                 }
                 return null;
               },
             ),
             SizedBox(height: 5),
-            if(_showSignup) 
+            if (_showSignup)
               Text(
                 'Must be at least 12 characters long, and contain one lowercase and one uppercase letter',
                 style: context.theme.textTheme.bodySmall,
               ),
+            if (!_showSignup)
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Forgot your password?',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        // We have to disable password validation for now so the form validation can succeed without it
+                        setState(() {
+                          _ignorePassword = true;
+                        });
+                        if(_formKey.currentState!.validate()){
+                          _resetPassword();}
+                      },
+                    style: context.theme.textTheme.bodySmall?.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
             SizedBox(height: 9),
             if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
+            if (_formMessage.isNotEmpty)
+              Text(
+                _formMessage,
+                style: context.theme.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
             SizedBox(height: 9),
-            ThickOutlineButton(
+            ActionButton(
               key: SignInOptionsContent.buttonSubmitKey,
-              minWidth: minWidth,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
               onPressed: () => authMessageOnError(
                 _onSubmit,
-                callback: (error, code) => setState(
+                errorCallback: (error, code) => setState(
                   () => _formError = code,
                 ),
               ),
+              sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
+              type: ActionButtonType.filled,
+              minWidth: minWidth,
+              textColor: Colors.white,
+              color: Colors.black,
               text: !_showSignup ? 'Log in' : 'Sign up',
             ),
           ],
@@ -330,9 +393,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         ),
       ),
       SizedBox(height: 9),
-      ThickOutlineButton(
+      ActionButton(
+        key: SignInOptionsContent.buttonGoogleKey,
         minWidth: minWidth,
         onPressed: () => context.read<UserService>().signInWithGoogle(),
+        type: ActionButtonType.outline,
         icon: Padding(
           padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
           child: Image.asset(
@@ -341,7 +406,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             height: 22,
           ),
         ),
-        backgroundColor: Colors.white,
         text: 'Continue with Google',
       ),
     ];

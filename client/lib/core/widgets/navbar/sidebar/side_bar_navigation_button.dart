@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class SideBarNavigationButton extends StatelessWidget {
@@ -35,7 +35,9 @@ class SideBarNavigationButton extends StatelessWidget {
         child: HeightConstrainedText(
           text,
           textAlign: TextAlign.start,
-          style: style ?? AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: style ??
+              AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer),
         ),
       ),
     );

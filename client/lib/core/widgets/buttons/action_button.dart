@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
-import 'package:flutter/material.dart';
 import 'package:client/styles/styles.dart';
+import 'package:flutter/material.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 enum ActionButtonSendingIndicatorAlign {
@@ -15,10 +15,7 @@ enum ActionButtonSendingIndicatorAlign {
   interior,
 }
 
-enum ActionButtonType {
-  outline,
-  flat,
-}
+enum ActionButtonType { filled, outline, text }
 
 enum ActionButtonIconSide {
   left,
@@ -49,7 +46,6 @@ class ActionButton extends StatefulWidget {
   final Color? color;
   final Color? disabledColor;
   final Color? textColor;
-  final Color? overlayColor;
   final TextStyle? textStyle;
   final OutlinedBorder? shape;
   final BorderRadius? borderRadius;
@@ -77,12 +73,11 @@ class ActionButton extends StatefulWidget {
   const ActionButton({
     Key? key,
     this.icon,
-    this.type = ActionButtonType.flat,
+    this.type = ActionButtonType.filled,
     this.text,
     this.color,
     this.disabledColor,
     this.textColor,
-    this.overlayColor,
     this.textStyle,
     this.shape,
     this.borderRadius,
@@ -101,11 +96,7 @@ class ActionButton extends StatefulWidget {
     this.height,
     this.tooltipText,
     this.child,
-  })  : assert(
-          textStyle == null || textColor == null,
-          'Cannot specify textStyle and textColor',
-        ),
-        assert(child == null || text == null, 'Cannot specify child and text'),
+  })  : assert(child == null || text == null, 'Cannot specify child and text'),
         super(key: key);
 
   @override
@@ -114,6 +105,7 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton> {
   bool _isSending = false;
+  final bool _hover = false;
 
   @override
   void initState() {
@@ -158,31 +150,12 @@ class _ActionButtonState extends State<ActionButton> {
         child: Icon(
           widget.icon,
           size: 18,
-          color: _getTextColor(),
+          color: widget.textColor,
         ),
       );
     }
 
     throw Exception('Icon must be a Widget or IconData instance.');
-  }
-
-  Color _getTextColor() {
-    Color defaultTextColor = widget.type == ActionButtonType.outline
-        ? AppColor.white
-        : context.theme.primaryColor;
-    if (widget.color == context.theme.primaryColor) {
-      defaultTextColor = context.theme.colorScheme.secondary;
-    } else if (widget.color == context.theme.colorScheme.secondary) {
-      defaultTextColor = context.theme.primaryColor;
-    } else if (widget.color == AppColor.redLightMode) {
-      defaultTextColor = AppColor.white;
-    } else {
-      if (widget.color == AppColor.redDarkMode) {
-        defaultTextColor = context.theme.primaryColor;
-      }
-    }
-
-    return widget.textColor ?? defaultTextColor;
   }
 
   Widget _buildButtonContents() {
@@ -192,8 +165,8 @@ class _ActionButtonState extends State<ActionButton> {
     final text = widget.text;
     final child = widget.child;
 
-    return Container(
-      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12),
+    return Padding(
+      padding: widget.padding ?? EdgeInsets.zero,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -214,9 +187,6 @@ class _ActionButtonState extends State<ActionButton> {
             HeightConstrainedText(
               text,
               textAlign: TextAlign.center,
-              style: body.copyWith(color: _getTextColor()).merge(
-                    widget.textStyle ?? TextStyle(),
-                  ),
             )
           else if (child != null)
             child,
@@ -230,62 +200,80 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Widget _buildButton() {
-    final overlayColor = widget.overlayColor != null
-        ? WidgetStateProperty.all(widget.overlayColor)
-        : null;
     final shape = widget.shape ??
         RoundedRectangleBorder(
           borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
         );
-    final minimumSize = WidgetStateProperty.all(
-      Size(widget.minWidth ?? 96, widget.height ?? 50),
-    );
+    final minimumSize = Size(widget.minWidth ?? 96, widget.height ?? 50);
+
     final onPressed =
         widget.onPressed != null && !_isSending ? _runAction : null;
 
     final Widget button;
-    if (widget.type == ActionButtonType.flat) {
-      button = TextButton(
-        onPressed: onPressed,
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return widget.disabledColor ?? Color(0xFFB2B9C5);
-            }
-
-            return widget.color ?? context.theme.colorScheme.secondary;
-          }),
-          overlayColor: overlayColor,
-          minimumSize: minimumSize,
-          shape: WidgetStateProperty.all(shape),
-        ),
-        child: _buildButtonContents(),
-      );
-    } else if (widget.type == ActionButtonType.outline) {
-      button = OutlinedButton(
-        style: ButtonStyle(
-          backgroundColor:
-              WidgetStateProperty.all(widget.color ?? Colors.transparent),
-          overlayColor: overlayColor,
-          side: WidgetStateProperty.all(
-            widget.borderSide ?? BorderSide(color: _getTextColor()),
+    switch (widget.type) {
+      case ActionButtonType.filled:
+        button = FilledButton(
+          onPressed: onPressed,
+          style: FilledButton.styleFrom(
+            backgroundColor: widget.color ?? context.theme.colorScheme.primary,
+            textStyle: widget.textStyle,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.onPrimary,
+            minimumSize: minimumSize,
+            shape: shape,
           ),
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
-          minimumSize: minimumSize,
-          shape: WidgetStateProperty.all(shape),
-        ),
-        onPressed: onPressed,
-        child: _buildButtonContents(),
-      );
-    } else {
-      button = SizedBox.shrink();
+          child: _buildButtonContents(),
+        );
+        break;
+      case ActionButtonType.outline:
+        button = OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            side: widget.borderSide ??
+                BorderSide(
+                  color: widget.color ?? context.theme.colorScheme.primary,
+                ),
+            textStyle: widget.textStyle,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.primary,
+            minimumSize: minimumSize,
+            shape: shape,
+          ),
+          onPressed: onPressed,
+          child: _buildButtonContents(),
+        );
+        break;
+      case ActionButtonType.text:
+        button = TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+            textStyle: widget.textStyle,
+            foregroundColor:
+                widget.textColor ?? context.theme.colorScheme.primary,
+            minimumSize: minimumSize,
+            shape: shape,
+          ),
+          child: _buildButtonContents(),
+        );
+        break;
     }
 
     if (widget.expand) {
-      return Expanded(child: button);
+      return Semantics(
+        button: true,
+        focused: _hover,
+        enabled: onPressed != null,
+        label: widget.text,
+        child: Expanded(child: button),
+      );
     }
 
-    return button;
+    return Semantics(
+      button: true,
+      focused: _hover,
+      enabled: onPressed != null,
+      label: widget.text,
+      child: button,
+    );
   }
 
   Widget _buildTooltipWrappedButton() {
@@ -312,28 +300,25 @@ class _ActionButtonState extends State<ActionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.margin ?? const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.sendingIndicatorAlign ==
-                  ActionButtonSendingIndicatorAlign.left &&
-              _isSending)
-            Padding(
-              padding: const EdgeInsets.only(right: 14),
-              child: _buildLoading(),
-            ),
-          _buildTooltipWrappedButton(),
-          if (widget.sendingIndicatorAlign ==
-                  ActionButtonSendingIndicatorAlign.right &&
-              _isSending)
-            Padding(
-              padding: const EdgeInsets.only(left: 14),
-              child: _buildLoading(),
-            ),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (widget.sendingIndicatorAlign ==
+                ActionButtonSendingIndicatorAlign.left &&
+            _isSending)
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: _buildLoading(),
+          ),
+        _buildTooltipWrappedButton(),
+        if (widget.sendingIndicatorAlign ==
+                ActionButtonSendingIndicatorAlign.right &&
+            _isSending)
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: _buildLoading(),
+          ),
+      ],
     );
   }
 }
