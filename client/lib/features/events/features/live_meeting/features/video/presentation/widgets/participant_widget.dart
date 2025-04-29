@@ -622,8 +622,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
             size: 16,
             color: _isHovered
-                ? context.theme.colorScheme.onPrimary
-                : context.theme.colorScheme.outlineVariant,
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),
