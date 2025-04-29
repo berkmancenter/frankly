@@ -132,10 +132,12 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
             return _profileActivated(halfSize);
           }
         },
+        hoverColor: Colors.transparent,
         // Register on tap events in case of touchscreens
         onTap: () => _profileActivated(halfSize),
         child: Container(
           key: _buttonGlobalKey,
+          width: 50,
           alignment: Alignment.center,
           child: Icon(
             Icons.notifications_none_rounded,
