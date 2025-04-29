@@ -167,7 +167,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     return [
       if (widget.bigTitle) SizedBox(height: 25),
       HeightConstrainedText(
-        'Choose your color scheme',
+        context.l10n.chooseColorScheme,
         style: widget.bigTitle
             ? AppTextStyle.body.copyWith(fontSize: 24)
             : AppTextStyle.body,

@@ -658,5 +658,6 @@
   "communityGoalsHint": "Add more detail as to the goals of this community",
   "nameHint": "Ex: The Justice League",
   "uniqueUrlDisplayNameHint": "Ex: the-justice-league",
-  "taglineHint": "Ex: Protecting the earth from all invaders"
+  "taglineHint": "Ex: Protecting the earth from all invaders",
+  "chooseColorScheme": "Choose your color scheme"
 }

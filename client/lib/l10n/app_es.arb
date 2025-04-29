@@ -707,5 +707,6 @@
   "communityGoalsHint": "Añade más detalles sobre los objetivos de esta comunidad",
   "nameHint": "Ej: The Justice League",
   "uniqueUrlDisplayNameHint": "Ej: the-justice-league",
-  "taglineHint": "Ej: Protegiendo la tierra de todos los invasores"
+  "taglineHint": "Ej: Protegiendo la tierra de todos los invasores",
+  "chooseColorScheme": "Elige tu esquema de colores"
 }
