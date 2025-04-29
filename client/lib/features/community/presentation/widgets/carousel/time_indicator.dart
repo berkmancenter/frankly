@@ -31,19 +31,7 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 110,
       padding: padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: isDisabled
-            ? context.theme.colorScheme.surfaceContainer
-            : context.theme.colorScheme.surface,
-        boxShadow: shadow
-            ? const [
-                AppDecoration.lightBoxShadow,
-              ]
-            : null,
-      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
