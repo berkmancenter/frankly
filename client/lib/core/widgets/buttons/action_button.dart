@@ -53,6 +53,8 @@ class ActionButton extends StatefulWidget {
   final Color? disabledColor;
   final Color? textColor;
   final TextStyle? textStyle;
+  final int? maxLines;
+  final double? maxTextWidth;
   final OutlinedBorder? shape;
   final BorderRadius? borderRadius;
   final double? minWidth;
@@ -86,6 +88,8 @@ class ActionButton extends StatefulWidget {
     this.disabledColor,
     this.textColor,
     this.textStyle,
+    this.maxLines,
+    this.maxTextWidth,
     this.shape,
     this.borderRadius,
     this.minWidth,
@@ -197,8 +201,14 @@ class _ActionButtonState extends State<ActionButton> {
             SizedBox(width: 10),
           ],
           if (text != null)
-            HeightConstrainedText(
-              text,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: widget.maxTextWidth ?? double.infinity,
+              ),
+              child: HeightConstrainedText(
+                text,
+                maxLines: widget.maxLines,
+              ),
             )
           else if (child != null)
             child,
