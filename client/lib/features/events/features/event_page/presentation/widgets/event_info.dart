@@ -19,6 +19,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
 import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
@@ -48,6 +49,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
@@ -221,7 +223,7 @@ class _EventInfoState extends State<EventInfo> {
 
   Future<void> _showRefreshGuideDialog() async {
     await ConfirmDialog(
-      title: 'Are you sure you want to refresh the guide?',
+      title: context.l10n.confirmRefreshGuide,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
       confirmText: 'Yes, refresh',
@@ -464,19 +466,19 @@ class _EventInfoState extends State<EventInfo> {
           backgroundColor: AppColor.redLightMode,
           child: Icon(Icons.school_outlined, size: 20, color: AppColor.white),
         ),
-        title: 'Prerequisite Required',
+        title: context.l10n.prereqRequired,
       );
     } else if (isBanned) {
       return WarningInfo(
         icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
-        title: 'Banned',
-        message: 'You were removed from this event and cannot rejoin.',
+        title: context.l10n.banned,
+        message: context.l10n.removedFromEvent,
       );
     } else if (isLocked) {
       return WarningInfo(
         icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
-        title: 'Locked',
-        message: 'This event is locked',
+        title: context.l10n.locked,
+        message: context.l10n.eventIsLocked,
       );
     } else if (showEnterEventButton) {
       return PeriodicBuilder(

@@ -8,6 +8,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventsTab extends StatefulWidget {
   const EventsTab._();
@@ -43,7 +44,7 @@ class _EventsTabState extends State<EventsTab> {
           children: [
             SizedBox(height: 30),
             if (events!.isEmpty)
-              Text('No events found', style: AppTextStyle.body),
+              Text(context.l10n.noEventsFound, style: AppTextStyle.body),
             for (final event in events.take(40)) ...[
               EventButton(
                 key: Key('event-${event.id}'),

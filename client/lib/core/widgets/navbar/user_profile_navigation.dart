@@ -8,6 +8,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is the user profile icon. If hovered over (or tapped on mobile / touchscreen) a menu will
 /// appear above or below it with options to select from.
@@ -113,7 +114,7 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
       child: Center(
         child: Semantics(
           button: true,
-          label: 'Profile Button',
+          label: context.l10n.profileButton,
           child: Container(
             key: _buttonGlobalKey,
             margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -175,7 +176,7 @@ class ProfileNavigationList extends StatelessWidget {
         if (userId != null)
           _buildNavButton(
             context,
-            'My Profile',
+            context.l10n.myProfile,
             () => routerDelegate.beamTo(
               UserSettingsLocation(
                 initialSection: UserSettingsSection.profile,
@@ -184,7 +185,7 @@ class ProfileNavigationList extends StatelessWidget {
           ),
         _buildNavButton(
           context,
-          'My Events',
+          context.l10n.myEvents,
           () => routerDelegate.beamTo(
             UserSettingsLocation(
               initialSection: UserSettingsSection.events,
@@ -193,7 +194,7 @@ class ProfileNavigationList extends StatelessWidget {
         ),
         _buildNavButton(
           context,
-          'Sign Out',
+          context.l10n.signOut,
           () => userService.signOut(),
         ),
       ],

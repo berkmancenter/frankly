@@ -18,6 +18,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
@@ -408,7 +409,7 @@ class _ChatInputState extends State<ChatInput> {
                 bottom: isMobile ? 4 : 0,
               ),
               child: Semantics(
-                label: 'Submit Chat Button',
+                label: context.l10n.submitChatButton,
                 button: true,
                 child: ActionButton(
                   minWidth: 20,

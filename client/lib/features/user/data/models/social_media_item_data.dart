@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:data_models/user/public_user_info.dart';
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/services.dart';
 
 /// list of allowed social media platforms
 List<SocialMediaItem> allowedSocialPlatforms = [
@@ -9,26 +12,26 @@ List<SocialMediaItem> allowedSocialPlatforms = [
 ];
 
 extension SocialMediaInfoExtension on SocialMediaKey {
-  SocialMediaInfo get info {
+  SocialMediaInfo getInfo(BuildContext context) {
     switch (this) {
       case SocialMediaKey.facebook:
         return SocialMediaInfo(
-          title: 'Facebook URL',
+          title: context.l10n.socialFacebook,
           logoUrl: 'media/facebook.png',
         );
       case SocialMediaKey.instagram:
         return SocialMediaInfo(
-          title: 'Instagram URL',
+          title: context.l10n.socialInstagram,
           logoUrl: 'media/instagram.png',
         );
       case SocialMediaKey.twitter:
         return SocialMediaInfo(
-          title: 'Twitter URL',
+          title: context.l10n.socialTwitter,
           logoUrl: 'media/twitterLogo.png',
         );
       case SocialMediaKey.linkedin:
         return SocialMediaInfo(
-          title: 'LinkedIn URL',
+          title: context.l10n.socialLinkedIn,
           logoUrl: 'media/linkedin.png',
         );
     }

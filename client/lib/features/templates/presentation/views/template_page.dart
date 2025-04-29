@@ -41,6 +41,7 @@ import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class TemplatePage extends StatefulWidget {
   const TemplatePage._();
@@ -107,7 +108,7 @@ class _TemplatePageState extends State<TemplatePage>
       );
     } else {
       return AddMoreButton(
-        label: 'Add a prerequisite template',
+        label: context.l10n.addPrerequisiteTemplate,
         isWhiteBackground: true,
         onPressed: () {
           templatePageProvider.isNewPrerequisite = true;

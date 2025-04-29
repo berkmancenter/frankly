@@ -18,6 +18,7 @@ import 'package:client/features/events/presentation/widgets/event_participants_l
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
@@ -94,7 +95,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
                     .copyWith(fontSize: 16, color: AppColor.black),
               ),
               Semantics(
-                label: 'Close Edit',
+                label: context.l10n.closeEdit,
                 child: AppClickableWidget(
                   child: ProxiedImage(
                     null,
@@ -359,8 +360,9 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     final peopleCount = _model.event.maxParticipants ?? 0;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text('Maximum'),
-      trailing: Text('$peopleCount ${peopleCount == 1 ? 'person' : 'people'}'),
+      title: Text(context.l10n.maximum),
+      trailing: Text(
+          '$peopleCount ${peopleCount == 1 ? context.l10n.person : context.l10n.people}',),
       onTap: () async {
         final isMobile = _presenter.isMobile(context);
         final maxParticipants = _model.event.maxParticipants ?? 8;
@@ -368,7 +370,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         final selectedNumber = await Dialogs.showSelectNumberDialog(
           context,
           isMobile: isMobile,
-          title: 'Select max. participant count',
+          title: context.l10n.selectMaxParticipantCount,
           minNumber: 2,
           maxNumber: 50,
           currentNumber: maxParticipants.toDouble(),

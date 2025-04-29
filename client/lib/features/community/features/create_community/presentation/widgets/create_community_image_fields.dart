@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class CreateCommunityImageFields extends StatelessWidget {
   final String? bannerImageUrl;
@@ -55,7 +56,7 @@ class CreateCommunityImageFields extends StatelessWidget {
   }
 
   Widget _buildLogoField(BuildContext context) => CreateCommunityImageField(
-        text: 'Logo',
+        text: context.l10n.logo,
         onTap: () => alertOnError(context, () => _editLogoPressed()),
         onTapRemove: () =>
             alertOnError(context, () => removeImage(isBannerImage: false)),
@@ -67,7 +68,7 @@ class CreateCommunityImageFields extends StatelessWidget {
 
   Widget _buildBackgroundField(BuildContext context) =>
       CreateCommunityImageField(
-        text: 'Background',
+        text: context.l10n.background,
         onTap: () => alertOnError(context, () => _editBannerPressed()),
         onTapRemove: () =>
             alertOnError(context, () => removeImage(isBannerImage: true)),
@@ -192,7 +193,7 @@ class CreateCommunityImageField extends StatelessWidget {
           ),
           if (isOptional)
             HeightConstrainedText(
-              'Optional',
+              context.l10n.optional,
               style: AppTextStyle.bodySmall.copyWith(color: AppColor.gray3),
             ),
         ],

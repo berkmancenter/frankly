@@ -14,6 +14,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +75,7 @@ class _ReassignBreakoutRoomDialogState
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         HeightConstrainedText(
-          'New Room Number:',
+          context.l10n.newRoomNumber,
           textAlign: TextAlign.center,
           style: body.copyWith(fontSize: 14),
         ),
@@ -82,14 +83,14 @@ class _ReassignBreakoutRoomDialogState
           width: 60,
           child: CustomTextField(
             initialValue: _roomAssignment,
-            hintText: 'Ex: 2',
+            hintText: context.l10n.enterRoomNumber,
             onChanged: (value) => setState(() => _roomAssignment = value),
           ),
         ),
         ActionButton(
           onPressed: () => Navigator.of(context)
               .pop(ReassignResult(reassignId: _roomAssignment)),
-          text: 'Reassign',
+          text: context.l10n.reassign,
           textColor: Theme.of(context).primaryColor,
         ),
       ],
@@ -109,7 +110,7 @@ class _ReassignBreakoutRoomDialogState
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: HeightConstrainedText('Recent Rooms'),
+            child: HeightConstrainedText(context.l10n.recentRooms),
           ),
           SizedBox(height: 6),
           CustomStreamBuilder<List<BreakoutRoom>>(

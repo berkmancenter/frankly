@@ -13,6 +13,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingAgendaWrapper extends StatelessWidget {
   const MeetingAgendaWrapper({
@@ -148,7 +149,7 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
             SizedBox(height: 20),
             AddMoreButton(
               isWhiteBackground: true,
-              label: 'Add agenda item',
+              label: context.l10n.addAgendaItem,
               onPressed: () => agendaProvider.addNewUnsavedItem(),
             ),
           ],

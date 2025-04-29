@@ -20,6 +20,7 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
@@ -196,7 +197,7 @@ class _CommunityPageState extends State<CommunityPage> {
   }) =>
       isAvailable
           ? CommunityPageFloatingActionButton(
-              text: 'Create an event',
+              text: context.l10n.createAnEvent,
               onTap: () => CreateEventDialog.show(context),
             )
           : null;
@@ -210,7 +211,7 @@ class _CommunityPageState extends State<CommunityPage> {
             builder: (context) {
               return CommunityPageFloatingActionButton(
                 onTap: () => CreateCommunityResourceModal.show(context),
-                text: 'Add a resource',
+                text: context.l10n.addAResource,
               );
             },
           ),
@@ -219,7 +220,7 @@ class _CommunityPageState extends State<CommunityPage> {
 
   Widget? _buildDiscussionThreadsFab() {
     return CommunityPageFloatingActionButton(
-      text: 'Create post',
+      text: context.l10n.createPost,
       onTap: () => guardSignedIn(
         () => Navigator.push(
           context,

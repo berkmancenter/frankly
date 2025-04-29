@@ -21,6 +21,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Dialog Widget to create event
 class CreateEventDialog extends StatelessWidget {
@@ -58,7 +59,7 @@ class CreateEventDialog extends StatelessWidget {
             .templatesCollection(communityProvider.communityId)
             .path,
         creatorId: userService.currentUserId!,
-        title: 'My Custom Event',
+        title: context.l10n.myCustomEvent,
         image: generateRandomImageUrl(),
         eventSettings: communityProvider.eventSettings,
       );

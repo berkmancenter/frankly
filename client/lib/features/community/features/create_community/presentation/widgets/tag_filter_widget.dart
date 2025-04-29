@@ -7,6 +7,7 @@ import 'package:client/features/community/presentation/widgets/community_tag_bui
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community_tag.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class TagFilterWidget extends StatelessWidget {
   /// Tags to choose from
@@ -37,7 +38,7 @@ class TagFilterWidget extends StatelessWidget {
               asset: AppAsset.kFliterIcon,
             ),
             SizedBox(width: 10),
-            Text('filter'),
+            Text(context.l10n.filter),
           ],
           SizedBox(width: 20),
           Expanded(

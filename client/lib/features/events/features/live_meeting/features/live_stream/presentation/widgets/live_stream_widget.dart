@@ -14,6 +14,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveStreamWidget extends StatefulWidget {
   const LiveStreamWidget({Key? key}) : super(key: key);
@@ -163,7 +164,7 @@ class _RefreshKeyWidgetState extends State<RefreshKeyWidget> {
         Align(
           alignment: Alignment.topRight,
           child: Tooltip(
-            message: 'Refresh Connection',
+            message: context.l10n.refreshConnection,
             child: CustomPointerInterceptor(
               child: CustomInkWell(
                 onTap: () {

@@ -5,6 +5,7 @@ import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SignInWidget extends StatelessWidget {
   @visibleForTesting
@@ -18,7 +19,7 @@ class SignInWidget extends StatelessWidget {
   Widget _buildSignedIn(BuildContext context) {
     return NavButton(
       onPressed: () => userService.signOut(),
-      text: 'Sign Out',
+      text: context.l10n.signOut,
       backgroundColor: Colors.transparent,
       textColor: context.theme.colorScheme.primary,
     );
@@ -31,14 +32,14 @@ class SignInWidget extends StatelessWidget {
         NavButton(
           key: signInKey,
           onPressed: () => _showLogin(context, isNewUser: false),
-          text: 'Log In',
+          text: context.l10n.signIn,
           backgroundColor: Colors.transparent,
           textColor: context.theme.colorScheme.primary,
         ),
         NavButton(
           key: signUpKey,
           onPressed: () => _showLogin(context),
-          text: 'Sign Up',
+          text: context.l10n.signUp,
         ),
       ],
     );

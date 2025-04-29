@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/navbar/sidebar/community_side_bar_navigation.dart';
@@ -138,7 +139,7 @@ class CommunitySidebarNavLinks extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: 
         Semantics(
-          label:'Sidebar Follow Community Button', 
+          label: context.l10n.sidebarFollowCommunityButton, 
           identifier: 'sidebar_follow_community_button',
           button: true,
           child:

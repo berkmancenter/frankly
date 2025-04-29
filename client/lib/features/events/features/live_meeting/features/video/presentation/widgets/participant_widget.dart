@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
@@ -19,6 +20,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -389,7 +391,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-aspect-ratio-clipped',
+      label: context.l10n.aspectRatioClipped.toString(),
       child: child,
     );
 
@@ -602,7 +604,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             .any((id) => id == widget.userId) ??
         false;
     return Semantics(
-      label: 'Participant Actions for user with ID ${widget.userId}',
+      label: context.l10n.participantActionsForUserWithId(widget.userId ?? ''),
       child: CustomInkWell(
           onTap: widget.isVisible
               ? () => _showMoreMenu(_getMenuItems(context: context))

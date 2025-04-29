@@ -7,6 +7,7 @@ import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/src/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class NewSpacePage extends StatefulWidget {
   const NewSpacePage({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _NewSpacePageState extends State<NewSpacePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            HeightConstrainedText('Please log in or sign up'),
+            HeightConstrainedText(context.l10n.pleaseLogInOrSignUp),
             SizedBox(height: 20),
             SignInWidget(),
           ],
