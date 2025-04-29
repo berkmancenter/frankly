@@ -152,24 +152,25 @@ class EventWidget extends StatelessWidget {
                     event.title ?? 'Scheduled event',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.headline4.copyWith(
+                    style: context.theme.textTheme.titleMedium!.copyWith(
                       color: isDisabled
-                          ? context.theme.colorScheme.primary.withOpacity(0.5)
-                          : context.theme.colorScheme.primary,
+                          ? context.theme.colorScheme.onSurface
+                              .withOpacity(0.75)
+                          : context.theme.colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: 20.0),
                   if (isDisabled)
                     PrerequisiteBadge(
-                      textStyle: AppTextStyle.eyebrowSmall,
+                      textStyle: context.theme.textTheme.labelMedium,
                     )
                   else ...[
                     if (event.isLiveStream)
                       HeightConstrainedText(
                         'Livestream',
-                        style: AppTextStyle.bodySmall.copyWith(
+                        style: context.theme.textTheme.bodySmall!.copyWith(
                           color: context.theme.colorScheme.onSurface
-                              .withOpacity(0.38),
+                              .withOpacity(0.75),
                         ),
                       ),
                     EventPageParticipantsList(
