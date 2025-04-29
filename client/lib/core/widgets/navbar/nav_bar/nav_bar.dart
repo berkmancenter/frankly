@@ -162,27 +162,23 @@ class _NavBarState extends State<NavBar> implements NavBarView {
       if (currentCommunity != null && isOnCommunityPage && !isMobile) ...[
         Expanded(
           flex: showCommunityMembershipButton ? 0 : 1,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 180),
-            child: ActionButton(
-              type: ActionButtonType.text,
-              onPressed: () => routerDelegate.beamTo(
-                CommunityPageRoutes(
-                  communityDisplayId: currentCommunity.displayId,
-                ).communityHome,
-              ),
-              contentAlign: ActionButtonContentAlignment.start,
-              expand: true,
-              textStyle: context.theme.textTheme.titleMedium,
-              child: HeightConstrainedText(
-                currentCommunity.name ?? Environment.appName,
-                maxLines: 2,
-              ),
+          child: ActionButton(
+            type: ActionButtonType.text,
+            onPressed: () => routerDelegate.beamTo(
+              CommunityPageRoutes(
+                communityDisplayId: currentCommunity.displayId,
+              ).communityHome,
             ),
+            expand: !showCommunityMembershipButton,
+            maxTextWidth: 180,
+            maxLines: 2,
+            contentAlign: ActionButtonContentAlignment.start,
+            textStyle: context.theme.textTheme.titleMedium,
+            text: currentCommunity.name ?? Environment.appName,
           ),
         ),
         if (showCommunityMembershipButton) ...[
-          SizedBox(width: 20),
+          SizedBox(width: 16),
           Expanded(
             child: _buildMembershipButton(currentCommunity),
           ),
