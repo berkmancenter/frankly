@@ -51,10 +51,10 @@ class _EventsPageState extends State<EventsPage> {
 
   Widget _buildCalendar() {
     final dateTimeNow = clockService.now();
-    final textStyle = AppTextStyle.eyebrowSmall;
-    final dateTextStyle = AppTextStyle.headline2Light.copyWith(height: .9);
-    final decoration = BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
+    final labelTextStyle = context.theme.textTheme.titleSmall!;
+    final dateNumberTextStyle = context.theme.textTheme.headlineLarge!;
+    final boxDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
     );
     return LayoutBuilder(
       builder: (_, constraints) {
@@ -71,7 +71,6 @@ class _EventsPageState extends State<EventsPage> {
           child: HorizontalCalendar(
             listViewPadding: padding,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            height: 95,
             spacingBetweenDates: 18.0,
             firstDate: dateTimeNow,
             lastDate: dateTimeNow.add(Duration(days: 90)),
@@ -79,32 +78,25 @@ class _EventsPageState extends State<EventsPage> {
             onDateUnSelected: (_) =>
                 Provider.of<EventsPageProvider>(context, listen: false)
                     .setDate(null),
-            selectedDecoration: decoration.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            disabledDecoration: boxDecoration,
             isDateDisabled: (date) =>
                 !Provider.of<EventsPageProvider>(context, listen: false)
                     .dateHasEvent(date),
-            defaultDecoration: decoration.copyWith(
-                color: context.theme.colorScheme.surfaceContainerLowest),
-            disabledDecoration: decoration.copyWith(
-              color: context.theme.colorScheme.surface.withOpacity(.7),
+            defaultDecoration: boxDecoration.copyWith(
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
-            weekDayTextStyle:
-                textStyle.copyWith(color: context.theme.colorScheme.primary),
-            dateTextStyle: dateTextStyle.copyWith(
-                color: context.theme.colorScheme.primary),
-            monthTextStyle:
-                textStyle.copyWith(color: context.theme.colorScheme.primary),
-            selectedMonthTextStyle: textStyle.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
+            weekDayTextStyle: labelTextStyle.copyWith(
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
-            selectedWeekDayTextStyle: textStyle.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
+            dateTextStyle: dateNumberTextStyle.copyWith(
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
-            selectedDateTextStyle: dateTextStyle.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
+            monthTextStyle: labelTextStyle.copyWith(
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
+            selectedMonthTextStyle: labelTextStyle,
+            selectedWeekDayTextStyle: labelTextStyle,
+            selectedDateTextStyle: dateNumberTextStyle,
           ),
         );
       },
@@ -135,7 +127,7 @@ class _EventsPageState extends State<EventsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child:
-                Icon(Icons.search, color: context.theme.colorScheme.secondary),
+                Icon(Icons.search, color: context.theme.colorScheme.onSurface),
           ),
           Expanded(
             child: _buildSearchBarField(),
