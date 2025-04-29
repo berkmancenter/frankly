@@ -74,17 +74,11 @@ class EventWidget extends StatelessWidget {
                                     eventId: event.id,
                                   ),
                                 ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: isDisabled
-                                ? context.theme.colorScheme.surfaceContainer
-                                    .withOpacity(0.8)
-                                : context.theme.colorScheme.surfaceContainer,
-                            boxShadow: [
-                              if (!isDisabled) AppDecoration.lightBoxShadow,
-                            ],
-                          ),
+                        child: Card.outlined(
+                          color: isDisabled
+                              ? context.theme.colorScheme.surfaceContainer
+                              : context
+                                  .theme.colorScheme.surfaceContainerLowest,
                           clipBehavior: Clip.hardEdge,
                           child: _buildCardContent(
                             context: context,
