@@ -690,5 +690,9 @@
   "mute": "靜音",
   "unmute": "取消靜音",
   "allParticipantsAreMutedDuringVideo": "視訊時所有人都被靜音了！",
-  "audioVideoSettings": "音訊/視訊設定"
+  "audioVideoSettings": "音訊/視訊設定",
+  "communityGoalsHint": "添加更多關於此社區目標的詳細資訊",
+  "nameHint": "例如：正義聯盟",
+  "uniqueUrlDisplayNameHint": "例如：正義聯盟",
+  "taglineHint": "例如：保護地球免受入侵"
 }

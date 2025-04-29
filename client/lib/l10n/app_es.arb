@@ -703,5 +703,9 @@
   "mute": "Silenciar",
   "unmute": "Activar sonido",
   "allParticipantsAreMutedDuringVideo": "¡Todos los participantes están silenciados durante el video!",
-  "audioVideoSettings": "Configuración de audio/video"
+  "audioVideoSettings": "Configuración de audio/video",
+  "communityGoalsHint": "Añade más detalles sobre los objetivos de esta comunidad",
+  "nameHint": "Ej: The Justice League",
+  "uniqueUrlDisplayNameHint": "Ej: the-justice-league",
+  "taglineHint": "Ej: Protegiendo la tierra de todos los invasores"
 }

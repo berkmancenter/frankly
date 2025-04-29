@@ -654,5 +654,9 @@
   "mute": "Mute",
   "unmute": "Unmute",
   "allParticipantsAreMutedDuringVideo": "All participants are muted during video!",
-  "audioVideoSettings": "Audio/Video Settings"
+  "audioVideoSettings": "Audio/Video Settings",
+  "communityGoalsHint": "Add more detail as to the goals of this community",
+  "nameHint": "Ex: The Justice League",
+  "uniqueUrlDisplayNameHint": "Ex: the-justice-league",
+  "taglineHint": "Ex: Protecting the earth from all invaders"
 }

@@ -54,7 +54,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
               ? '${widget.community.name!.length}/$titleMaxCharactersLength'
               : '',
           label: context.l10n.name,
-          hint: 'Ex: The Justice League',
+          hint: context.l10n.nameHint,
           initialValue: widget.community.name,
           onChanged: widget.onNameChanged,
           focus: widget.nameFocus,
@@ -62,14 +62,14 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         if (widget.showChooseCustomDisplayId) ...[
           _buildCreateCommunityTextField(
             label: context.l10n.uniqueUrlDisplayName,
-            hint: 'Ex: the-justice-league',
+            hint: context.l10n.uniqueUrlDisplayNameHint,
             initialValue: widget.community.displayId,
             onChanged: widget.onCustomDisplayIdChanged,
           ),
         ],
         _buildCreateCommunityTextField(
           label: context.l10n.tagline,
-          hint: 'Ex: Protecting the earth from all invaders',
+          hint: context.l10n.taglineHint,
           initialValue: widget.community.tagLine,
           onChanged: widget.onTaglineChanged,
           maxLength: taglineMaxCharactersLength,
@@ -82,7 +82,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         ),
         _buildCreateCommunityTextField(
           label: context.l10n.about,
-          hint: 'Add more detail as to the goals of this community',
+          hint: context.l10n.communityGoalsHint,
           maxLines: 3,
           minLines: 3,
           initialValue: widget.community.description,

@@ -697,5 +697,9 @@
   "mute": "静音",
   "unmute": "取消静音",
   "allParticipantsAreMutedDuringVideo": "视频时所有人都被静音了！",
-  "audioVideoSettings": "音频/视频设置"
+  "audioVideoSettings": "音频/视频设置",
+  "communityGoalsHint": "添加更多关于此社区目标的详细信息",
+  "nameHint": "例如：正义联盟",
+  "uniqueUrlDisplayNameHint": "例如：the-justice-league",
+  "taglineHint": "例如：保护地球免受入侵"
 }
