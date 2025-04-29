@@ -6,7 +6,7 @@ import 'package:horizontal_calendar_widget/horizontal_calendar.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/events/data/providers/events_page_provider.dart';
-import 'package:client/features/community/presentation/widgets/event_widget.dart';
+import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_list_view.dart';

@@ -16,7 +16,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/widgets/event_message_widget.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
 import 'package:client/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart';
-import 'package:client/features/community/presentation/widgets/event_widget.dart';
+import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -142,7 +142,8 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
               ? HeightConstrainedText(
                   'No Announcements sent yet',
                   style: AppTextStyle.body.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                    color: context.theme.colorScheme.onPrimaryContainer,
+                  ),
                 )
               : _buildNoResource(context);
         }

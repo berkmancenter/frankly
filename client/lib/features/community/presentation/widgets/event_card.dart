@@ -38,12 +38,12 @@ class EventWidget extends StatelessWidget {
           builder: (context) {
             final eventProvider = EventProvider.watch(context);
             return CustomStreamBuilder<bool>(
-              entryFrom: 'event_widget.build_event',
+              entryFrom: 'event_card.build_event',
               stream: eventProvider.hasParticipantAttendedPrerequisiteFuture
                   .asStream(),
               builder: (_, __) {
                 return CustomStreamBuilder<Event>(
-                  entryFrom: 'event_widget.build_event',
+                  entryFrom: 'event_card.build_event',
                   stream: eventProvider.eventStream,
                   builder: (context, _) {
                     final isAdmin = Provider.of<UserDataService>(context)
@@ -75,6 +75,7 @@ class EventWidget extends StatelessWidget {
                                   ),
                                 ),
                         child: Card.outlined(
+                          margin: EdgeInsets.zero,
                           color: isDisabled
                               ? context.theme.colorScheme.surfaceContainer
                               : context

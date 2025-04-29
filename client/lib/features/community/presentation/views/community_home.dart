@@ -7,7 +7,7 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/presentation/widgets/about_section.dart';
 import 'package:client/features/community/presentation/widgets/carousel/carousel_initializer.dart';
-import 'package:client/features/community/presentation/widgets/event_widget.dart';
+import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/presentation/widgets/edit_community_button.dart';
 import 'package:client/features/community/data/providers/community_home_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
