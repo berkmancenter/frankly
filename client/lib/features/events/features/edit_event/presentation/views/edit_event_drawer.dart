@@ -91,7 +91,9 @@ class EditEventDrawerState extends State<EditEventDrawer>
               Text(
                 'Edit event',
                 style: AppTextStyle.headlineSmall.copyWith(
-                    fontSize: 16, color: context.theme.colorScheme.primary),
+                  fontSize: 16,
+                  color: context.theme.colorScheme.primary,
+                ),
               ),
               Semantics(
                 label: 'Close Edit',
@@ -188,7 +190,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         Text(
           'Image',
           style: AppTextStyle.body
-              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
         Spacer(),
         InkWell(
@@ -324,13 +326,13 @@ class EditEventDrawerState extends State<EditEventDrawer>
         label: HeightConstrainedText(
           'Length',
           style: AppTextStyle.bodySmall.copyWith(
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide:
-              BorderSide(color: context.theme.colorScheme.onPrimaryContainer),
+              BorderSide(color: context.theme.colorScheme.onSurfaceVariant),
         ),
       ),
       iconEnabledColor: context.theme.colorScheme.primary,

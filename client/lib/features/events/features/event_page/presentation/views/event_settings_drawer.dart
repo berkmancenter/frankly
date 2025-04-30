@@ -76,7 +76,9 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               HeightConstrainedText(
                 title,
                 style: AppTextStyle.headlineSmall.copyWith(
-                    fontSize: 16, color: context.theme.colorScheme.primary),
+                  fontSize: 16,
+                  color: context.theme.colorScheme.primary,
+                ),
               ),
               AppClickableWidget(
                 child: ProxiedImage(
@@ -169,11 +171,11 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                 : null,
             textColor: restoreDefaultButtonEnabled
                 ? Theme.of(context).colorScheme.primary
-                : context.theme.colorScheme.onPrimaryContainer,
+                : context.theme.colorScheme.onSurfaceVariant,
             borderSide: BorderSide(
               color: restoreDefaultButtonEnabled
-                  ? Theme.of(context).colorScheme.primary
-                  : context.theme.colorScheme.onPrimaryContainer,
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onSurfaceVariant,
             ),
           ),
           if (Environment.enableDevEventSettings) ...[
@@ -181,7 +183,9 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             HeightConstrainedText(
               'Dev Settings',
               style: AppTextStyle.headlineSmall.copyWith(
-                  fontSize: 16, color: context.theme.colorScheme.secondary),
+                fontSize: 16,
+                color: context.theme.colorScheme.secondary,
+              ),
             ),
             SizedBox(height: 40),
             for (final feature in _model.eventSettings.toJson().keys.toList())

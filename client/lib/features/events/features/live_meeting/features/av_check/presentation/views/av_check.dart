@@ -226,7 +226,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
                 borderRadius: BorderRadius.circular(3),
                 color: i < provider.currentAudioLevel && provider.micOn
                     ? context.theme.colorScheme.onPrimary
-                    : context.theme.colorScheme.onPrimaryContainer,
+                    : context.theme.colorScheme.onSurfaceVariant,
               ),
             );
           },

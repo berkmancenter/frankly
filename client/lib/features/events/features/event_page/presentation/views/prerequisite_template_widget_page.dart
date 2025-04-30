@@ -159,7 +159,8 @@ class _PrerequisiteTemplateWidgetPageState
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                      color: context.theme.colorScheme.outline,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: CustomStreamBuilder<List<Template>>(
@@ -190,7 +191,8 @@ class _PrerequisiteTemplateWidgetPageState
                         iconSize: 24,
                         elevation: 16,
                         style: TextStyle(
-                            color: context.theme.colorScheme.onPrimary),
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
                         borderRadius: BorderRadius.circular(10),
                         underline: SizedBox.shrink(),
                         iconEnabledColor: context.theme.colorScheme.primary,
@@ -322,7 +324,7 @@ class _PrerequisiteTemplateWidgetPageState
                 border: Border.all(
                   width: 1,
                   color: widget.isWhiteBackground
-                      ? context.theme.colorScheme.onPrimaryContainer
+                      ? context.theme.colorScheme.outline
                       : context.theme.colorScheme.primary,
                 ),
               ),

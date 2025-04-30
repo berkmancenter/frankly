@@ -577,14 +577,14 @@ class _EventInfoState extends State<EventInfo> {
           Icon(
             Icons.close,
             size: 20,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: HeightConstrainedText(
               'Cancel event',
               style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -604,14 +604,14 @@ class _EventInfoState extends State<EventInfo> {
           Icon(
             Icons.close,
             size: 20,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: Text(
               'Cancel',
               style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -663,7 +663,7 @@ class _EventInfoState extends State<EventInfo> {
             HeightConstrainedText(
               text,
               style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
             SizedBox(width: 20),
@@ -851,8 +851,8 @@ class _EventInfoState extends State<EventInfo> {
                             return Text(
                               '#${definition.title} ',
                               style: AppTextStyle.body.copyWith(
-                                color: context
-                                    .theme.colorScheme.onPrimaryContainer,
+                                color:
+                                    context.theme.colorScheme.onSurfaceVariant,
                               ),
                             );
                           },
@@ -959,7 +959,7 @@ class _EventInfoState extends State<EventInfo> {
         Text(
           type,
           style: AppTextStyle.body
-              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
       ],
     );

@@ -390,7 +390,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
   Widget _buildEditTemplateMessage() {
     String templateId = event.templateId;
     return Container(
-      color: context.theme.colorScheme.onPrimaryContainer,
+      color: context.theme.colorScheme.onSurfaceVariant,
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ConstrainedBody(
         maxWidth: 1100,
@@ -403,14 +403,14 @@ class EventPageState extends State<EventPage> implements EventPageView {
                 text: TextSpan(
                   text: 'You are editing an event. \n',
                   style: AppTextStyle.headlineSmall.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
                       text: 'If you want to edit future instances, ',
                       style: AppTextStyle.body.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,
+                        color: context.theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     TextSpan(
@@ -473,7 +473,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
         border: Border(
           top: BorderSide(
             width: 2,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),

@@ -60,13 +60,13 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                 Icon(
                   CupertinoIcons.calendar_badge_plus,
                   size: 20,
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
                 SizedBox(width: 10),
                 HeightConstrainedText(
                   'Add to calendar',
                   style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],

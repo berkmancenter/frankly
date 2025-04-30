@@ -131,7 +131,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       errorBuilder: (_) => HeightConstrainedText(
         'There was an error while loading Announcements',
         style: AppTextStyle.body
-            .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+            .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
       ),
       builder: (context, eventMessages) {
         final localEventMessages =
@@ -142,7 +142,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
               ? HeightConstrainedText(
                   'No Announcements sent yet',
                   style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 )
               : _buildNoResource(context);
@@ -237,7 +237,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           HeightConstrainedText(
             description,
             style: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+                .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
           SizedBox(height: 30),
         ],
@@ -369,7 +369,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           return HeightConstrainedText(
             'No upcoming events.',
             style: AppTextStyle.body.copyWith(
-              color: context.theme.colorScheme.onPrimaryContainer,
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
           );
         }
