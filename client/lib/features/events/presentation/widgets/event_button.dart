@@ -29,6 +29,7 @@ class EventButton extends HookWidget {
     final scheduledTime = event.scheduledTime ?? clockService.now();
 
     return VerticalTimeAndDateIndicator(
+      padding: EdgeInsets.zero,
       shadow: false,
       time: DateTime.fromMillisecondsSinceEpoch(
         (scheduledTime.millisecondsSinceEpoch),
@@ -53,59 +54,52 @@ class EventButton extends HookWidget {
           eventId: localEvent.id,
         ),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: context.theme.colorScheme.scrim.withScrimOpacity,
-              blurRadius: 4,
-              offset: Offset(1, 1),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            SizedBox(width: 8),
-            _buildTime(),
-            EventOrTemplatePicture(
-              height: height,
-              event: localEvent,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    HeightConstrainedText(
-                      event.title ?? 'Scheduled event',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyle.headline4.copyWith(
-                        color: context.theme.colorScheme.primary,
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    if (_isLiveStream)
+      child: Card.outlined(
+        margin: EdgeInsets.zero,
+        color: context.theme.colorScheme.surfaceContainerLowest,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              SizedBox(width: 8),
+              _buildTime(),
+              SizedBox(width: 24),
+              EventOrTemplatePicture(
+                height: height,
+                event: localEvent,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       HeightConstrainedText(
-                        'Livestream',
-                        style: context.theme.textTheme.bodySmall!.copyWith(
-                          color: context.theme.colorScheme.onSurfaceVariant,
-                        ),
+                        event.title ?? 'Scheduled event',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.theme.textTheme.titleMedium,
                       ),
-                    SizedBox(height: 10),
-                    _ParticipantsList(
-                      event: event,
-                    ),
-                  ],
+                      SizedBox(height: 10.0),
+                      if (_isLiveStream)
+                        HeightConstrainedText(
+                          'Livestream',
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            color: context.theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      SizedBox(height: 10),
+                      _ParticipantsList(
+                        event: event,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
