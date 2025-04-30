@@ -36,8 +36,7 @@ class AppRadioListTile<T> extends StatelessWidget {
           Flexible(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.body
-                  .copyWith(color: Theme.of(context).colorScheme.primary),
+              style: context.theme.textTheme.bodyLarge,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
