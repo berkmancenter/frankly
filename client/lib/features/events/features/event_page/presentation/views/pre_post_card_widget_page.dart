@@ -109,7 +109,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: context.theme.colorScheme.surfaceContainer,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   border: Border.all(
                     width: 1,
                     color: context.theme.colorScheme.outline,
@@ -125,7 +125,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                           Expanded(
                             child: Text(
                               title,
-                              style: AppTextStyle.subhead,
+                              style: context.theme.textTheme.titleLarge,
                             ),
                           ),
                           if (isEditIconShown)
@@ -207,7 +207,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           children: [
             Text(
               'What message do you want to show participants $beforeAfter the event?',
-              style: AppTextStyle.subhead,
+              style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 30),
             CustomTextField(
@@ -242,7 +242,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'Add action links participants should visit $beforeAfter the event',
-                style: AppTextStyle.subhead,
+                style: context.theme.textTheme.titleMedium,
               ),
               SizedBox(height: 30),
               if (prePostUrls.isNotEmpty) ...[
@@ -342,13 +342,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'URL Preview',
-                style: AppTextStyle.body
-                    .copyWith(color: context.theme.colorScheme.onPrimary),
+                style: context.theme.textTheme.bodyMedium,
               ),
               SizedBox(height: 4),
               HeightConstrainedText(
                 finalisedUrlFieldValue,
-                style: AppTextStyle.body,
               ),
             ],
           ),
@@ -400,12 +398,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               children: [
                 HeightConstrainedText(
                   'URL Preview',
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(height: 4),
                 HeightConstrainedText(
                   finalisedUrlFieldValue,
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -548,12 +546,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         children: [
           Text(
             _model.prePostCard.headline,
-            style: AppTextStyle.headline3,
+            style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 20),
           Text(
             _model.prePostCard.message,
-            style: AppTextStyle.subhead,
+            style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 20),
           if (prePostUrls.isNotEmpty)
@@ -615,7 +613,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                   SizedBox(width: 10),
                   Text(
                     'Add URL Parameter',
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ],
               ),
@@ -788,7 +786,7 @@ class _AttributeOptionState extends State<AttributeOption> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     attributeType.text,
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ),
               ),
@@ -801,7 +799,7 @@ class _AttributeOptionState extends State<AttributeOption> {
                 // Button which is in the selection list (when expanded)
                 child: Text(
                   e.text,
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             )
