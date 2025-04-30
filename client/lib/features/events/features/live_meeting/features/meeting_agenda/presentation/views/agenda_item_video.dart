@@ -135,7 +135,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             hintText: 'Enter Video title',
             maxLines: 1,
             maxLength: agendaTitleCharactersLength,
-            counterStyle: AppTextStyle.bodySmall,
+            counterStyle: context.theme.textTheme.bodySmall,
             onChanged: (value) => _presenter.updateVideoTitle(value),
           ),
           SizedBox(height: 40),
@@ -161,7 +161,8 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                       children: [
                         Text(
                           tabName,
-                          style: AppTextStyle.eyebrow.copyWith(color: color),
+                          style: context.theme.textTheme.labelMedium!
+                              .copyWith(color: color),
                         ),
                         SizedBox(height: 10),
                         Row(

@@ -87,7 +87,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
             labelText: 'Title',
             hintText: 'Enter Image title',
             maxLength: agendaTitleCharactersLength,
-            counterStyle: AppTextStyle.bodySmall,
+            counterStyle: context.theme.textTheme.bodySmall,
             maxLines: 1,
             onChanged: (value) => _presenter.updateImageTitle(value),
           ),

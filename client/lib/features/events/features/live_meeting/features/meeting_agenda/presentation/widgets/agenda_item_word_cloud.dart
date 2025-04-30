@@ -36,9 +36,8 @@ class AgendaItemWordCloud extends StatelessWidget {
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
-            'Participants will be asked to respond with a list of words or short phrases',
-            style: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+            'Participants will be asked to respond with a list of words or short phrases.',
+            style: context.theme.textTheme.bodyMedium,
           ),
         ],
       );

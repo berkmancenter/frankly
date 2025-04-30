@@ -1,4 +1,3 @@
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:flutter/material.dart' hide ReorderableList;
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';

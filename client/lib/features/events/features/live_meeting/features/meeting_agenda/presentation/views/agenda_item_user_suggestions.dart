@@ -77,14 +77,14 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
             hintText: 'Suggestions',
             maxLength: agendaSuggestionCharactersLength,
             maxLines: 1,
-            counterStyle: AppTextStyle.bodySmall,
+            counterStyle: context.theme.textTheme.bodySmall,
             onChanged: (value) => _presenter.updateTitle(value),
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
             'Let participants suggest agenda items and then upvote or downvote.',
-            style: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+            style: context.theme.textTheme.bodyMedium!
+                .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
         ],
       );
