@@ -47,8 +47,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           children: [
             HeightConstrainedText(
               'Add breakouts',
-              style: AppTextStyle.subhead
-                  .copyWith(color: context.theme.colorScheme.secondary),
+              style: context.theme.textTheme.titleLarge!
+                  .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
             ),
             SizedBox(height: 10),
             BreakoutRoomDefinitionWidget(),
@@ -114,8 +114,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 children: [
                   HeightConstrainedText(
                     'Waiting Room',
-                    style: AppTextStyle.subhead
-                        .copyWith(color: context.theme.colorScheme.secondary),
+                    style: context.theme.textTheme.titleLarge!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   SizedBox(height: 10),
                   WaitingRoomWidget(event: event),
@@ -138,8 +139,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 children: [
                   HeightConstrainedText(
                     'Livestream',
-                    style: AppTextStyle.subhead
-                        .copyWith(color: context.theme.colorScheme.secondary),
+                    style: context.theme.textTheme.titleLarge!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   SizedBox(height: 10),
                   LiveStreamInstructions(whiteBackground: true),
@@ -188,15 +190,13 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildAgendaTitle() {
     return HeightConstrainedText(
       'Agenda',
-      style: AppTextStyle.subhead
-          .copyWith(color: context.theme.colorScheme.secondary),
+      style: context.theme.textTheme.titleLarge,
     );
   }
 
   Widget _buildClearAllButton() {
     return ActionButton(
-      color: Colors.transparent,
-      textColor: context.theme.colorScheme.primary,
+      type: ActionButtonType.text,
       onPressed: () => _showClearAgendaItemsDialog(),
       text: 'Clear all',
       icon: Padding(
