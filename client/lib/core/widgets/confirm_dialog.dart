@@ -101,16 +101,11 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: ActionButton(
-                    height: 40,
+                  child: IconButton(
                     padding: const EdgeInsets.all(0),
-                    margin: const EdgeInsets.all(0),
-                    minWidth: 50,
-                    borderRadius: BorderRadius.circular(0),
-                    color: Colors.transparent,
                     icon: Icon(
                       Icons.close,
-                      size: 40,
+                      size: 24,
                     ),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
@@ -119,8 +114,8 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                   HeightConstrainedText(
                     widget.title,
                     style: responsiveLayoutService.isMobile(context)
-                        ? AppTextStyle.headline2
-                        : AppTextStyle.headline1,
+                        ? context.theme.textTheme.headlineMedium
+                        : context.theme.textTheme.headlineSmall,
                     textAlign: widget.textAlign,
                   ),
                   SizedBox(height: 10),
@@ -128,7 +123,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 if (!isNullOrEmpty(widget.mainText)) ...[
                   HeightConstrainedText(
                     widget.mainText,
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                     textAlign: widget.textAlign,
                   ),
                   SizedBox(height: 10),
@@ -149,12 +144,11 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                   children: [
                     if (!isNullOrEmpty(widget.cancelText))
                       ActionButton(
+                        type: ActionButtonType.text,
                         height: 55,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         minWidth: 100,
-                        color: Colors.transparent,
                         text: widget.cancelText,
-                        textStyle: AppTextStyle.body,
                         onPressed: onCancel != null
                             ? () => onCancel(context)
                             : () => Navigator.of(context).pop(false),
