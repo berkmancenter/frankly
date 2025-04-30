@@ -137,7 +137,7 @@ class _PrerequisiteTemplateWidgetPageState
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: widget.isWhiteBackground
-            ? context.theme.colorScheme.surface
+            ? context.theme.colorScheme.surfaceContainerLowest
             : context.theme.colorScheme.primary,
       ),
       child: Column(
@@ -145,9 +145,9 @@ class _PrerequisiteTemplateWidgetPageState
         children: [
           HeightConstrainedText(
             'Template',
-            style: AppTextStyle.subhead.copyWith(
+            style: context.theme.textTheme.titleSmall!.copyWith(
               color: widget.isWhiteBackground
-                  ? context.theme.colorScheme.primary
+                  ? context.theme.colorScheme.onSurface
                   : context.theme.colorScheme.onPrimary,
             ),
           ),
@@ -211,9 +211,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   templates.isEmpty
                                       ? 'No Templates Available'
                                       : 'Choose Template',
-                                  style: AppTextStyle.body.copyWith(
-                                    color: context.theme.colorScheme.primary,
-                                  ),
+                                  style: context.theme.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -227,9 +225,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     template.title ?? '',
-                                    style: AppTextStyle.body.copyWith(
-                                      color: context.theme.colorScheme.primary,
-                                    ),
+                                    style: context.theme.textTheme.bodyMedium,
                                   ),
                                 ),
                               ),
@@ -248,9 +244,10 @@ class _PrerequisiteTemplateWidgetPageState
                                   (templates ?? []).isEmpty
                                       ? 'No Templates Available'
                                       : 'Choose Template',
-                                  style: AppTextStyle.body.copyWith(
+                                  style: context.theme.textTheme.bodyMedium!
+                                      .copyWith(
                                     color: widget.isWhiteBackground
-                                        ? context.theme.colorScheme.primary
+                                        ? context.theme.colorScheme.onSurface
                                         : context.theme.colorScheme.onPrimary,
                                   ),
                                 ),
@@ -266,9 +263,10 @@ class _PrerequisiteTemplateWidgetPageState
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     template.title ?? '',
-                                    style: AppTextStyle.body.copyWith(
+                                    style: context.theme.textTheme.bodyMedium!
+                                        .copyWith(
                                       color: widget.isWhiteBackground
-                                          ? context.theme.colorScheme.primary
+                                          ? context.theme.colorScheme.onSurface
                                           : context.theme.colorScheme.onPrimary,
                                     ),
                                   ),
@@ -338,9 +336,10 @@ class _PrerequisiteTemplateWidgetPageState
                         Expanded(
                           child: Text(
                             'Prerequisite Template',
-                            style: AppTextStyle.subhead.copyWith(
+                            style:
+                                context.theme.textTheme.titleMedium!.copyWith(
                               color: widget.isWhiteBackground
-                                  ? context.theme.colorScheme.primary
+                                  ? context.theme.colorScheme.onSurface
                                   : context.theme.colorScheme.onPrimary,
                             ),
                           ),
