@@ -75,10 +75,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             children: [
               HeightConstrainedText(
                 title,
-                style: AppTextStyle.headlineSmall.copyWith(
-                  fontSize: 16,
-                  color: context.theme.colorScheme.primary,
-                ),
+                style: context.theme.textTheme.headlineSmall,
               ),
               AppClickableWidget(
                 child: ProxiedImage(
@@ -152,40 +149,32 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             ),
             text: 'Preview agenda',
             val: _model.eventSettings.agendaPreview ?? true,
+            style: context.theme.textTheme.bodyMedium,
           ),
           SizedBox(height: 40),
           ActionButton(
             expand: true,
             text: 'Save settings',
             onPressed: () => _presenter.saveSettings(),
-            color: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).colorScheme.secondary,
+            color: context.theme.colorScheme.primary,
+            textColor: context.theme.colorScheme.onPrimary,
           ),
           SizedBox(height: 16),
           ActionButton(
             expand: true,
-            type: ActionButtonType.outline,
+            type: ActionButtonType.filled,
+            color: context.theme.colorScheme.surfaceContainer,
+            textColor: context.theme.colorScheme.onSurface,
             text: 'Restore settings',
             onPressed: restoreDefaultButtonEnabled
                 ? _presenter.restoreDefaultSettings
                 : null,
-            textColor: restoreDefaultButtonEnabled
-                ? Theme.of(context).colorScheme.primary
-                : context.theme.colorScheme.onSurfaceVariant,
-            borderSide: BorderSide(
-              color: restoreDefaultButtonEnabled
-                  ? context.theme.colorScheme.primary
-                  : context.theme.colorScheme.onSurfaceVariant,
-            ),
           ),
           if (Environment.enableDevEventSettings) ...[
             SizedBox(height: 40),
             HeightConstrainedText(
               'Dev Settings',
-              style: AppTextStyle.headlineSmall.copyWith(
-                fontSize: 16,
-                color: context.theme.colorScheme.secondary,
-              ),
+              style: context.theme.textTheme.headlineSmall!,
             ),
             SizedBox(height: 40),
             for (final feature in _model.eventSettings.toJson().keys.toList())
@@ -194,6 +183,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                     _presenter.updateSetting(feature, isSelected),
                 text: feature,
                 val: _model.eventSettings.toJson()[feature] ?? false,
+                style: context.theme.textTheme.bodyMedium,
               ),
           ],
         ],
@@ -279,7 +269,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
           ballonPadding: const EdgeInsets.all(8),
           content: HeightConstrainedText(
             'This has been changed from\nthe default setting',
-            style: AppTextStyle.eyebrowSmall,
+            style: context.theme.textTheme.bodyMedium,
             textAlign: TextAlign.left,
           ),
           show: _visible,
@@ -306,7 +296,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
         if (isIndicatorShown) _buildIndicator(),
         HeightConstrainedText(
           text,
-          style: AppTextStyle.body,
+          style: context.theme.textTheme.bodyMedium,
           maxLines: 2,
         ),
       ],
