@@ -97,14 +97,13 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final bool isCollapsed = _presenter.isCollapsed();
     final bool allowEdit = _presenter.doesAllowEdit();
 
-    return CustomInkWell(
-      onTap: () => _presenter.toggleCardExpansion(),
-      hoverColor: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: context.theme.colorScheme.surfaceContainerLowest,
-        ),
+    return Card.outlined(
+      margin: EdgeInsets.zero,
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () => _presenter.toggleCardExpansion(),
+        hoverColor: Colors.transparent,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -177,15 +176,13 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               Expanded(
                 child: HeightConstrainedText(
                   title,
-                  style: AppTextStyle.headline4
-                      .copyWith(color: context.theme.colorScheme.secondary),
+                  style: context.theme.textTheme.titleMedium,
                 ),
               ),
               if (!_model.isEditMode && !isMobile) ...[
                 HeightConstrainedText(
                   formattedTime,
-                  style: AppTextStyle.body.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                  style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(width: 10),
                 ProxiedImage(
@@ -240,7 +237,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         SizedBox(width: 8),
         HeightConstrainedText(
           agendaItemType.text,
-          style: AppTextStyle.body,
+          style: context.theme.textTheme.bodyMedium,
         ),
       ],
     );
@@ -343,9 +340,10 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       mainAxisSize: MainAxisSize.min,
       children: [
         Divider(
-            height: 1,
-            thickness: 1,
-            color: context.theme.colorScheme.onPrimaryContainer),
+          height: 1,
+          thickness: 1,
+          color: context.theme.colorScheme.onPrimaryContainer,
+        ),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: _model.isEditMode
