@@ -160,11 +160,10 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   child: ActionButton(
-                    type: ActionButtonType.outline,
+                    type: ActionButtonType.filled,
                     onPressed: _showSendMessageDialog,
                     text: '+ Add New',
-                    borderSide:
-                        BorderSide(color: context.theme.colorScheme.primary),
+                    color: context.theme.colorScheme.surfaceContainerHighest,
                     textColor: context.theme.colorScheme.primary,
                   ),
                 ),
