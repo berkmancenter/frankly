@@ -69,7 +69,7 @@ class EventMessageWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   eventMessage.message,
-                  style: context.theme.textTheme.labelMedium,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             ],
