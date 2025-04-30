@@ -8,11 +8,15 @@ class CircleIconButton extends StatelessWidget {
     required this.onPressed,
     required this.toolTipText,
     required this.icon,
+    this.color,
+    this.iconColor,
   }) : super(key: key);
 
   final VoidCallback onPressed;
   final String toolTipText;
   final IconData icon;
+  final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +28,14 @@ class CircleIconButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: context.theme.colorScheme.primary,
+            color: color ?? context.theme.colorScheme.primary,
           ),
           child: Padding(
             padding: EdgeInsets.all(10),
-            child: Icon(icon, color: context.theme.colorScheme.onPrimary),
+            child: Icon(
+              icon,
+              color: iconColor ?? context.theme.colorScheme.onPrimary,
+            ),
           ),
         ),
       ),

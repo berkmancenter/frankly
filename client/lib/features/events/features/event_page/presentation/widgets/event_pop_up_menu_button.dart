@@ -76,18 +76,18 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         onSelected: (value) => widget.onSelected(value),
         tooltip: 'Show Options',
         iconSize: kIconSize,
-        icon: Material(
-          shape: CircleBorder(),
-          color: _isHovered
-              ? context.theme.colorScheme.scrim.withScrimOpacity
-              : context.theme.colorScheme.surface,
-          child: Padding(
-            padding: EdgeInsets.all(iconPadding),
-            child: Icon(
-              Icons.more_horiz,
-              size: 20,
-              color: context.theme.colorScheme.primary,
-            ),
+        icon: Container(
+          decoration: BoxDecoration(
+            color: _isHovered
+                ? context.theme.colorScheme.scrim.withScrimOpacity
+                : context.theme.colorScheme.surfaceContainer,
+            shape: BoxShape.circle,
+          ),
+          padding: EdgeInsets.all(iconPadding),
+          child: Icon(
+            Icons.more_horiz,
+            size: 20,
+            color: context.theme.colorScheme.onSurface,
           ),
         ),
         itemBuilder: (context) {

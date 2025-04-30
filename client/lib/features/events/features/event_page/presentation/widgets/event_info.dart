@@ -321,6 +321,8 @@ class _EventInfoState extends State<EventInfo> {
 
   Widget _buildEditEvent() {
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -349,6 +351,8 @@ class _EventInfoState extends State<EventInfo> {
 
   Widget _buildSettingIcon() {
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -873,6 +877,8 @@ class _EventInfoState extends State<EventInfo> {
                           onPressed: widget.onMessagePressed,
                           toolTipText: 'Message',
                           icon: CupertinoIcons.paperplane,
+                          color: context.theme.colorScheme.surfaceContainer,
+                          iconColor: context.theme.colorScheme.onSurface,
                         ),
                     ],
                   ),
