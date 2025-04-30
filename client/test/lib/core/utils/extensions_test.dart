@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/services.dart';
 
 void main() {
   group('DateTimeExtension', () {
@@ -377,19 +379,19 @@ void main() {
 
           switch (onboardingStep) {
             case OnboardingStep.brandSpace:
-              expectedResult = 'Looking good';
+              expectedResult = appLocalizationService.getLocalization().lookingGood;
               break;
             case OnboardingStep.createGuide:
-              expectedResult = 'Looking good';
+              expectedResult = appLocalizationService.getLocalization().lookingGood;
               break;
             case OnboardingStep.hostEvent:
-              expectedResult = 'Get people talking';
+              expectedResult = appLocalizationService.getLocalization().getPeopleTalking;
               break;
             case OnboardingStep.inviteSomeone:
-              expectedResult = 'Get it on the books';
+              expectedResult = appLocalizationService.getLocalization().getItOnTheBooks;
               break;
             case OnboardingStep.createStripeAccount:
-              expectedResult = 'Start processing payments';
+              expectedResult = appLocalizationService.getLocalization().startProcessingPayments;
               break;
           }
 
@@ -410,19 +412,19 @@ void main() {
           final String expectedResult;
           switch (onboardingStep) {
             case OnboardingStep.brandSpace:
-              expectedResult = 'Brand your space';
+              expectedResult = appLocalizationService.getLocalization().brandSpace;
               break;
             case OnboardingStep.createGuide:
-              expectedResult = 'Create a template';
+              expectedResult = appLocalizationService.getLocalization().createGuide;
               break;
             case OnboardingStep.hostEvent:
-              expectedResult = 'Schedule an event';
+              expectedResult = appLocalizationService.getLocalization().hostEvent;
               break;
             case OnboardingStep.inviteSomeone:
-              expectedResult = 'Invite your people';
+              expectedResult = appLocalizationService.getLocalization().inviteYourPeople;
               break;
             case OnboardingStep.createStripeAccount:
-              expectedResult = 'Link your Stripe account';
+              expectedResult = appLocalizationService.getLocalization().linkYourStripeAccount;
               break;
           }
 

@@ -713,5 +713,16 @@
   "addTag": "Añadir etiqueta",
   "noEvents": "No hay eventos",
   "createYourFirstEvent": "¡Crea tu primer evento!",
-  "seeMoreEvents": "Ver más eventos"
+  "seeMoreEvents": "Ver más eventos",
+  "lookingGood": "¡Bien!",
+  "getPeopleTalking": "¡Empieza a hablar!",
+  "getItOnTheBooks": "¡Registra!",
+  "inviteYourPeople": "Invita a tus personas",
+  "linkYourStripeAccount": "Enlace tu cuenta de Stripe",
+  "brandSpace": "Marca tu espacio",
+  "createGuide": "Crear una plantilla",
+  "hostEvent": "Programar un evento",
+  "inviteSomeone": "Invita a alguien",
+  "startProcessingPayments": "Comienza a procesar pagos",
+  "createStripeAccount": "Comienza a procesar pagos"
 }

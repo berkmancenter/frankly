@@ -707,5 +707,16 @@
   "addTag": "添加标签",
   "noEvents": "沒有活动",
   "createYourFirstEvent": "创建您的第一个活动！",
-  "seeMoreEvents": "查看更多活动"
+  "seeMoreEvents": "查看更多活动",
+  "lookingGood": "看起来不错",
+  "getPeopleTalking": "让大家都开始聊天",
+  "getItOnTheBooks": "在账本上记下",
+  "inviteYourPeople": "邀请你的朋友",
+  "linkYourStripeAccount": "链接你的Stripe账户",
+  "brandSpace": "品牌你的空间",
+  "createGuide": "创建一个模板",
+  "hostEvent": "安排一个活动",
+  "inviteSomeone": "邀请某人",
+  "startProcessingPayments": "开始处理付款",
+  "createStripeAccount": "开始处理付款"
 }

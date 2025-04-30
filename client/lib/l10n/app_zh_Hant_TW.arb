@@ -700,5 +700,16 @@
   "addTag": "新增標籤",
   "noEvents": "沒有活動",
   "createYourFirstEvent": "創建您的第一個活動！",
-  "seeMoreEvents": "查看更多活動"
+  "seeMoreEvents": "查看更多活動",
+  "lookingGood": "看起來不錯",
+  "getPeopleTalking": "讓大家開始聊天",
+  "getItOnTheBooks": "在帳本上記下",
+  "inviteYourPeople": "邀請你的朋友",
+  "linkYourStripeAccount": "連結你的Stripe帳戶",
+  "brandSpace": "品牌你的空間",
+  "createGuide": "建立一個模板",
+  "hostEvent": "安排一個活動",
+  "inviteSomeone": "邀請某人",
+  "startProcessingPayments": "開始處理付款",
+  "createStripeAccount": "開始處理付款"
 }

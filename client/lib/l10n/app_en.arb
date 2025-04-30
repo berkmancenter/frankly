@@ -664,5 +664,16 @@
   "addTag": "Add tag",
   "noEvents": "No events",
   "createYourFirstEvent": "Create your first event!",
-  "seeMoreEvents": "See more events"
+  "seeMoreEvents": "See more events",
+  "lookingGood": "Looking good",
+  "getPeopleTalking": "Get people talking",
+  "getItOnTheBooks": "Get it on the books",
+  "inviteYourPeople": "Invite your people",
+  "linkYourStripeAccount": "Link your Stripe account",
+  "brandSpace": "Brand your space",
+  "createGuide": "Create a template",
+  "hostEvent": "Schedule an event",
+  "inviteSomeone": "Invite someone",
+  "startProcessingPayments": "Start processing payments",
+  "createStripeAccount": "Start processing payments"
 }
