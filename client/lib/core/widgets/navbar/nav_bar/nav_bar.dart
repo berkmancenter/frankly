@@ -36,10 +36,10 @@ class NavBar extends StatefulWidget {
   NavBar() : super(key: Key('navBar'));
 
   @override
-  _NavBarState createState() => _NavBarState();
+  NavBarState createState() => NavBarState();
 }
 
-class _NavBarState extends State<NavBar> implements NavBarView {
+class NavBarState extends State<NavBar> implements NavBarView {
   late final NavBarModel _model;
   late final NavBarPresenter _presenter;
 
@@ -56,7 +56,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     final community = _presenter.getCommunity();
     if (community == null) {
       loggingService.log(
-        '_NavBarState._goToSettingsPage: Community is null',
+        'NavBarState._goToSettingsPage: Community is null',
         logType: LogType.error,
       );
       return;
