@@ -136,10 +136,6 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 if (!isNullOrEmpty(widget.subText)) ...[
                   HeightConstrainedText(
                     widget.subText,
-                    style: body.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
