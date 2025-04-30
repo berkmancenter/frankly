@@ -468,28 +468,17 @@ class EventPageState extends State<EventPage> implements EventPageView {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            width: 2,
-            color: context.theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ),
-      alignment: Alignment.topCenter,
-      child: CustomStreamBuilder<Event>(
+    return CustomStreamBuilder<Event>(
+      entryFrom: '_EventPageState.build',
+      stream: eventProvider.eventStream,
+      builder: (_, event) => CustomStreamBuilder<List<Participant>>(
         entryFrom: '_EventPageState.build',
-        stream: eventProvider.eventStream,
-        builder: (_, event) => CustomStreamBuilder<List<Participant>>(
-          entryFrom: '_EventPageState.build',
-          stream: eventProvider.eventParticipantsStream,
-          builder: (_, __) {
-            if (event == null) return CircularProgressIndicator();
+        stream: eventProvider.eventParticipantsStream,
+        builder: (_, __) {
+          if (event == null) return CircularProgressIndicator();
 
-            return _buildMainContent();
-          },
-        ),
+          return _buildMainContent();
+        },
       ),
     );
   }
