@@ -40,7 +40,7 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: HeightConstrainedText(
                       widget.text ?? '',
-                      style: AppTextStyle.body,
+                      style: widget.style ?? context.theme.textTheme.bodyMedium,
                       maxLines: 2,
                     ),
                   ),
