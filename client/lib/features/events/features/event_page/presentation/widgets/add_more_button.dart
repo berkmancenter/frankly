@@ -16,7 +16,8 @@ class AddMoreButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionButton(
-      type: ActionButtonType.outline,
+      type: ActionButtonType.filled,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       expand: true,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       contentAlign: ActionButtonContentAlignment.start,
