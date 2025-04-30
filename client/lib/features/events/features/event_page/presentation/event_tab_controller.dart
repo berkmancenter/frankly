@@ -130,7 +130,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       stream: context.watch<EventTabsControllerState>().eventMessagesStream,
       errorBuilder: (_) => HeightConstrainedText(
         'There was an error while loading Announcements',
-        style: AppTextStyle.body
+        style: context.theme.textTheme.bodyMedium!
             .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
       ),
       builder: (context, eventMessages) {
@@ -141,7 +141,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           return compact
               ? HeightConstrainedText(
                   'No Announcements sent yet',
-                  style: AppTextStyle.body.copyWith(
+                  style: context.theme.textTheme.bodyMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 )
@@ -155,15 +155,18 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         return Column(
           children: [
             if (canEditEvent)
-              Container(
-                alignment: Alignment.centerLeft,
-                child: ActionButton(
-                  type: ActionButtonType.outline,
-                  onPressed: _showSendMessageDialog,
-                  text: '+ Add New',
-                  borderSide:
-                      BorderSide(color: context.theme.colorScheme.primary),
-                  textColor: context.theme.colorScheme.primary,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: ActionButton(
+                    type: ActionButtonType.outline,
+                    onPressed: _showSendMessageDialog,
+                    text: '+ Add New',
+                    borderSide:
+                        BorderSide(color: context.theme.colorScheme.primary),
+                    textColor: context.theme.colorScheme.primary,
+                  ),
                 ),
               ),
             ListView.builder(
@@ -225,18 +228,16 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 30),
+        SizedBox(height: 24),
         if (description != null && description.isNotEmpty) ...[
           HeightConstrainedText(
             'Description',
-            style: AppTextStyle.headlineSmall.copyWith(
-              color: context.theme.colorScheme.primary,
-              fontSize: 16,
-            ),
+            style: context.theme.textTheme.titleMedium,
           ),
+          SizedBox(height: 8),
           HeightConstrainedText(
             description,
-            style: AppTextStyle.body
+            style: context.theme.textTheme.bodyMedium!
                 .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
           SizedBox(height: 30),
@@ -246,10 +247,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             children: [
               HeightConstrainedText(
                 'Announcements',
-                style: AppTextStyle.headlineSmall.copyWith(
-                  color: context.theme.colorScheme.primary,
-                  fontSize: 16,
-                ),
+                style: context.theme.textTheme.titleMedium,
               ),
               Spacer(),
               if (hasAnnouncements)
@@ -257,24 +255,21 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                   onTap: () => tabsController.openTab(TabType.messages),
                   child: HeightConstrainedText(
                     'See all',
-                    style: AppTextStyle.bodyMedium
-                        .copyWith(color: context.theme.colorScheme.primary),
+                    style: context.theme.textTheme.titleSmall,
                   ),
                 ),
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 8),
           _buildAnnouncements(context, compact: true),
           SizedBox(height: 40),
         ],
         ...[
           HeightConstrainedText(
             'More Upcoming Events',
-            style: AppTextStyle.headlineSmall.copyWith(
-              color: context.theme.colorScheme.primary,
-              fontSize: 16,
-            ),
+            style: context.theme.textTheme.titleMedium,
           ),
+          SizedBox(height: 8),
           _buildUpcomingEvents(),
           SizedBox(height: 40),
           _buildTemplates(),
@@ -323,12 +318,9 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           children: [
             HeightConstrainedText(
               'More from ${community.name}',
-              style: AppTextStyle.headlineSmall.copyWith(
-                color: context.theme.colorScheme.primary,
-                fontSize: 16,
-              ),
+              style: context.theme.textTheme.titleMedium,
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 8),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -368,7 +360,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (events.isEmpty) {
           return HeightConstrainedText(
             'No upcoming events.',
-            style: AppTextStyle.body.copyWith(
+            style: context.theme.textTheme.bodyMedium!.copyWith(
               color: context.theme.colorScheme.onSurfaceVariant,
             ),
           );
