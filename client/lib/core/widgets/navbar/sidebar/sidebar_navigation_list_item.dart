@@ -76,6 +76,7 @@ class _SidebarNavigationListItemState extends State<SidebarNavigationListItem> {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
             textStyle: context.theme.textTheme.titleMedium,
             expand: true,
+            maxTextWidth: 200,
             contentAlign: ActionButtonContentAlignment.start,
           ),
         ),
