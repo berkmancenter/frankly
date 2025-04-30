@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
@@ -196,35 +197,16 @@ class EventPageState extends State<EventPage> implements EventPageView {
   ) async {
     await showCustomDialog(
       builder: (context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-          title: Text(
-            'Are you sure you want to remove this message?',
-            style: AppTextStyle.headline3
-                .copyWith(color: context.theme.colorScheme.primary),
-          ),
-          actions: [
-            ActionButton(
-              text: 'No',
-              color: context.theme.colorScheme.primary,
-              textColor: context.theme.colorScheme.onPrimary,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            ActionButton(
-              text: 'Yes',
-              color: context.theme.colorScheme.primary,
-              textColor: context.theme.colorScheme.onPrimary,
-              onPressed: () => alertOnError(context, () async {
-                await _presenter.removeMessage(eventMessage);
-                if (!context.mounted) return;
-                Navigator.pop(context);
-              }),
-            ),
-          ],
+        return ConfirmDialog(
+          title: 'Are you sure you want to remove this message?',
+          onCancel: (context) {
+            Navigator.pop(context);
+          },
+          onConfirm: (context) => alertOnError(context, () async {
+            await _presenter.removeMessage(eventMessage);
+            if (!context.mounted) return;
+            Navigator.pop(context);
+          }),
         );
       },
     );
