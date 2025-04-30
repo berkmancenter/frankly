@@ -500,7 +500,6 @@ class _EventInfoState extends State<EventInfo> {
         height: 64,
         text: 'FULL',
         expand: true,
-        color: Colors.blueGrey,
       );
     } else if (showJoinButton) {
       return Column(
@@ -515,8 +514,6 @@ class _EventInfoState extends State<EventInfo> {
               );
             }),
             expand: true,
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).colorScheme.secondary,
             text: 'RSVP',
           ),
           if (canShowFollowCommunity) ...[
@@ -583,7 +580,7 @@ class _EventInfoState extends State<EventInfo> {
           Flexible(
             child: HeightConstrainedText(
               'Cancel event',
-              style: AppTextStyle.body.copyWith(
+              style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
@@ -610,7 +607,7 @@ class _EventInfoState extends State<EventInfo> {
           Flexible(
             child: Text(
               'Cancel',
-              style: AppTextStyle.body.copyWith(
+              style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
@@ -662,7 +659,7 @@ class _EventInfoState extends State<EventInfo> {
             SizedBox(width: 6),
             HeightConstrainedText(
               text,
-              style: AppTextStyle.body.copyWith(
+              style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
@@ -693,7 +690,7 @@ class _EventInfoState extends State<EventInfo> {
         Flexible(
           child: Text(
             'Follow ${Provider.of<CommunityProvider>(context).community.name} for access to all events and resources.',
-            style: AppTextStyle.bodyMedium,
+            style: context.theme.textTheme.bodyMedium,
           ),
         ),
       ],
@@ -812,7 +809,7 @@ class _EventInfoState extends State<EventInfo> {
                       ),
                   ],
                 ),
-                SizedBox(height: isMobile ? 0 : 20),
+                SizedBox(height: 20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -827,7 +824,7 @@ class _EventInfoState extends State<EventInfo> {
                       child: HeightConstrainedText(
                         _event.title ?? '',
                         maxLines: 3,
-                        style: AppTextStyle.headline2Light.copyWith(
+                        style: context.theme.textTheme.headlineMedium!.copyWith(
                           color: Theme.of(context).primaryColor,
                           decoration: _event.status == EventStatus.canceled
                               ? TextDecoration.lineThrough
@@ -850,7 +847,8 @@ class _EventInfoState extends State<EventInfo> {
                             }
                             return Text(
                               '#${definition.title} ',
-                              style: AppTextStyle.body.copyWith(
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
                                 color:
                                     context.theme.colorScheme.onSurfaceVariant,
                               ),
@@ -894,6 +892,7 @@ class _EventInfoState extends State<EventInfo> {
                 ),
                 SizedBox(height: 10),
                 _buildJoinEventButton(),
+                SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -958,7 +957,7 @@ class _EventInfoState extends State<EventInfo> {
         SizedBox(width: 6),
         Text(
           type,
-          style: AppTextStyle.body
+          style: context.theme.textTheme.bodyMedium!
               .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
       ],
