@@ -65,7 +65,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                 SizedBox(width: 10),
                 HeightConstrainedText(
                   'Add to calendar',
-                  style: AppTextStyle.body.copyWith(
+                  style: context.theme.textTheme.bodyLarge!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -82,8 +82,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                       width: 100,
                       child: HeightConstrainedText(
                         text,
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: context.theme.colorScheme.primary),
+                        style: context.theme.textTheme.bodyLarge,
                       ),
                     ),
                   );
