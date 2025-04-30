@@ -112,8 +112,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                     Expanded(
                       child: Text(
                         text,
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: context.theme.colorScheme.primary),
+                        style: context.theme.textTheme.bodyLarge,
                       ),
                     ),
                   ],
