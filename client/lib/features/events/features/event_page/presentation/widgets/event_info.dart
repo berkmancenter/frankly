@@ -743,20 +743,8 @@ class _EventInfoState extends State<EventInfo> {
         eventProvider.event.isHosted || canEditCommunity;
     final isMobile = responsiveLayoutService.isMobile(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: context.theme.colorScheme.surfaceContainerLowest,
-        borderRadius: isMobile ? null : BorderRadius.circular(20),
-        boxShadow: isMobile
-            ? null
-            : [
-                BoxShadow(
-                  color: context.theme.colorScheme.scrim.withScrimOpacity,
-                  blurRadius: 34,
-                  offset: Offset(0, 14),
-                ),
-              ],
-      ),
+    return Card.outlined(
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
