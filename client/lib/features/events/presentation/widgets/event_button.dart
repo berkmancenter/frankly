@@ -13,8 +13,6 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 
-import '../../../../core/widgets/custom_ink_well.dart';
-
 class EventButton extends HookWidget {
   final Event event;
 
