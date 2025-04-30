@@ -158,9 +158,6 @@ class _ChatWidgetState extends State<_ChatWidget> {
           borderRadius: BorderRadius.circular(50),
           controller: _sendController,
           onPressed: canSubmit ? _sendMessage : null,
-          color: canSubmit
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.onPrimaryContainer,
           child: Semantics(
             label: 'Submit Message Button',
             button: true,
