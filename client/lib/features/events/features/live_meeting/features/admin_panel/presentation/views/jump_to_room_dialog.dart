@@ -30,7 +30,6 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
         HeightConstrainedText(
           'Room Number:',
           textAlign: TextAlign.center,
-          style: body.copyWith(fontSize: 14),
         ),
         SizedBox(
           width: 60,
@@ -65,7 +64,9 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
             child: Text(
               'Jump To Room',
               style: TextStyle(
-                  color: context.theme.colorScheme.onPrimary, fontSize: 16),
+                color: context.theme.colorScheme.onPrimary,
+                fontSize: 16,
+              ),
             ),
           ),
         ),

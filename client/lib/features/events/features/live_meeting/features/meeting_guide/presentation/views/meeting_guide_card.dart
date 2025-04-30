@@ -53,8 +53,6 @@ class MeetingGuideCard extends StatefulWidget {
 }
 
 class _MeetingGuideCardState extends State<MeetingGuideCard> {
-  TextStyle get bodyStyle => body.copyWith(fontSize: 14);
-
   @override
   void initState() {
     super.initState();

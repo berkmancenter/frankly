@@ -41,10 +41,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return [
       HeightConstrainedText(
         title,
-        style: body.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        style: context.theme.textTheme.titleSmall,
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
@@ -72,8 +69,6 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style:
-                        body.copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ),
             ],
@@ -105,10 +100,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return [
       HeightConstrainedText(
         title,
-        style: body.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        style: context.theme.textTheme.titleSmall,
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
@@ -136,8 +128,6 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style:
-                        body.copyWith(color: context.theme.colorScheme.primary),
                   ),
                 ),
             ],
@@ -212,10 +202,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                         children: [
                           HeightConstrainedText(
                             'Audio/Video Settings',
-                            style: body.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22,
-                            ),
+                            style: context.theme.textTheme.titleMedium,
                           ),
                           SizedBox(height: 12),
                           ..._buildAudioDevicesDropdown(

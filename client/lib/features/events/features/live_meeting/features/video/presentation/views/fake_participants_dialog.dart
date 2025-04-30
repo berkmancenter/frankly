@@ -40,12 +40,10 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
         HeightConstrainedText(
           'Fake Participant Count:',
           textAlign: TextAlign.center,
-          style: body.copyWith(fontSize: 14),
         ),
         SizedBox(
           width: 60,
           child: CustomTextField(
-            textStyle: body,
             controller: _textController,
           ),
         ),
@@ -75,7 +73,9 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
             child: Text(
               'Fake Participants',
               style: TextStyle(
-                  color: context.theme.colorScheme.onPrimary, fontSize: 16),
+                color: context.theme.colorScheme.onPrimary,
+                fontSize: 16,
+              ),
             ),
           ),
         ),

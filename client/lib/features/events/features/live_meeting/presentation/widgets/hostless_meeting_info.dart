@@ -107,10 +107,6 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
               SizedBox(height: 4),
               HeightConstrainedText(
                 text,
-                style: body.copyWith(
-                  fontSize: isMobile ? 12 : 14,
-                  fontWeight: FontWeight.w400,
-                ),
               ),
             ],
           ),
@@ -141,10 +137,6 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           Flexible(
             child: HeightConstrainedText(
               NumberFormat.decimalPattern().format(participants),
-              style: body.copyWith(
-                fontWeight: FontWeight.w300,
-                color: context.theme.colorScheme.onPrimary,
-              ),
             ),
           ),
         ],

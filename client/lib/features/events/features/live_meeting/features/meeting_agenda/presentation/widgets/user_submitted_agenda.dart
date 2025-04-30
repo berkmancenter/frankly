@@ -137,8 +137,7 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                       builder: (context) {
                         return SelectableLinkify(
                           text: item.content ?? '',
-                          textAlign: TextAlign.left,
-                          style: context.theme.textTheme.labelMedium,
+                          textAlign: TextAlign.left,                 style: context.theme.textTheme.labelMedium,
                           options: LinkifyOptions(looseUrl: true),
                           onOpen: (link) => launch(link.url),
                         );
@@ -218,8 +217,6 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
               contentPadding: EdgeInsets.all(20),
               onEditingComplete:
                   canSubmit ? () => _submitController.submit() : null,
-              textStyle:
-                  body.copyWith(color: context.theme.colorScheme.primary),
               maxLines: 1,
               borderType: BorderType.none,
               borderRadius: 30,

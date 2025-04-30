@@ -57,7 +57,8 @@ class _AnnouncementsState extends State<Announcements> {
             Expanded(
               child: HeightConstrainedText(
                 announcement.title ?? 'Announcement',
-                style: body.copyWith(fontWeight: FontWeight.w700),
+                style: context.theme.textTheme.bodyMedium!
+                    .copyWith(fontWeight: FontWeight.w700),
               ),
             ),
             if (Provider.of<CommunityPermissionsProvider>(context)
@@ -103,10 +104,7 @@ class _AnnouncementsState extends State<Announcements> {
         SelectableLinkify(
           text: announcement.message ?? '',
           textAlign: TextAlign.left,
-          style: body.copyWith(
-            fontSize: 14,
-            color: context.theme.colorScheme.onPrimaryContainer,
-          ),
+          style: context.theme.textTheme.bodyMedium,
           options: LinkifyOptions(looseUrl: true),
           onOpen: (link) => launch(link.url),
         ),

@@ -187,15 +187,7 @@ class _OnboardPageState extends State<OnboardPage> {
       type: ActionButtonType.outline,
       height: 48,
       expand: true,
-      borderRadius: BorderRadius.circular(10),
       color: context.theme.colorScheme.surfaceContainerLowest,
-      textStyle: body.copyWith(
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
-      ),
-      borderSide: BorderSide(
-        color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
-      ),
       text: '${isAccountCreated ? 'Edit' : 'Set'} Linked Payee Account',
       onPressed: skip
           ? null
