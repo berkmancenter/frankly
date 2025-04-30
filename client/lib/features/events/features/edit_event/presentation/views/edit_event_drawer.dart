@@ -90,10 +90,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
             children: [
               Text(
                 'Edit event',
-                style: AppTextStyle.headlineSmall.copyWith(
-                  fontSize: 16,
-                  color: context.theme.colorScheme.primary,
-                ),
+                style: context.theme.textTheme.headlineSmall,
               ),
               Semantics(
                 label: 'Close Edit',
@@ -189,7 +186,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body
+          style: context.theme.textTheme.bodyLarge!
               .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
         Spacer(),
@@ -235,6 +232,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     return CustomSwitchTile(
       val: _model.event.isPublic,
       text: 'Public',
+      style: context.theme.textTheme.bodyLarge,
       onUpdate: (value) => _presenter.updateIsPublic(value),
     );
   }
@@ -310,9 +308,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       isDense: true,
       hint: HeightConstrainedText(
         'Choose duration',
-        style: AppTextStyle.bodySmall.copyWith(
-          color: context.theme.colorScheme.secondary,
-        ),
+        style: context.theme.textTheme.bodySmall,
       ),
       icon: Icon(
         CupertinoIcons.chevron_down,
@@ -325,7 +321,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         filled: true,
         label: HeightConstrainedText(
           'Length',
-          style: AppTextStyle.bodySmall.copyWith(
+          style: context.theme.textTheme.bodySmall!.copyWith(
             color: context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
@@ -351,8 +347,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
               alignment: Alignment.centerLeft,
               child: Text(
                 durationString(duration, readAsHuman: true),
-                style: AppTextStyle.body
-                    .copyWith(color: context.theme.colorScheme.primary),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
           ),
@@ -364,8 +359,14 @@ class EditEventDrawerState extends State<EditEventDrawer>
     final peopleCount = _model.event.maxParticipants ?? 0;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text('Maximum'),
-      trailing: Text('$peopleCount ${peopleCount == 1 ? 'person' : 'people'}'),
+      title: Text(
+        'Maximum',
+        style: context.theme.textTheme.bodyLarge,
+      ),
+      trailing: Text(
+        '$peopleCount ${peopleCount == 1 ? 'person' : 'people'}',
+        style: context.theme.textTheme.bodyLarge,
+      ),
       onTap: () async {
         final isMobile = _presenter.isMobile(context);
         final maxParticipants = _model.event.maxParticipants ?? 8;
@@ -397,8 +398,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           text: 'Save Event',
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
@@ -408,6 +407,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           type: ActionButtonType.outline,
+          color: context.theme.colorScheme.error,
           textColor: context.theme.colorScheme.error,
           text: 'Cancel event',
           onPressed: () =>
@@ -444,7 +444,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
                   ? externalPlatform.platformKey.info.title
                   : '${Environment.appName} Video',
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyle.subhead,
+              style: context.theme.textTheme.bodyLarge,
             ),
           ),
           SizedBox(width: 10),
