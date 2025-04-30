@@ -22,7 +22,9 @@ class HeightConstrainedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = style ?? context.theme.textTheme.bodyMedium!;
+    var textStyle = context.theme.textTheme.bodyMedium!
+        .merge(DefaultTextStyle.of(context).style)
+        .merge(style ?? TextStyle());
 
     final localMaxLines = maxLines;
     final localFontSize = textStyle.fontSize;
