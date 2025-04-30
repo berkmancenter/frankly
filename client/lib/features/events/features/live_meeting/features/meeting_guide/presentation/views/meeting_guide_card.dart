@@ -53,8 +53,6 @@ class MeetingGuideCard extends StatefulWidget {
 }
 
 class _MeetingGuideCardState extends State<MeetingGuideCard> {
-  TextStyle get bodyStyle => body.copyWith(fontSize: 14);
-
   @override
   void initState() {
     super.initState();
@@ -455,9 +453,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
       mainAxisSize: MainAxisSize.min,
       children: [
         Divider(
-            height: 1,
-            thickness: 1,
-            color: context.theme.colorScheme.onPrimaryContainer),
+          height: 1,
+          thickness: 1,
+          color: context.theme.colorScheme.onPrimaryContainer,
+        ),
         SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(

@@ -381,13 +381,7 @@ class _ChatInputState extends State<ChatInput> {
         children: [
           Expanded(
             child: CustomTextField(
-              cursorColor: context.theme.colorScheme.onPrimary,
               borderType: BorderType.none,
-              textStyle:
-                  body.copyWith(color: context.theme.colorScheme.onPrimary),
-              hintStyle: body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
               backgroundColor: context.theme.colorScheme.onPrimaryContainer,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
@@ -494,18 +488,18 @@ class _IconButtonState extends State<_IconButton> {
                 widget.icon,
                 size: 34,
                 color: _isSending
-                    ? context.theme.colorScheme.onPrimaryContainer
-                    : widget.iconColor ?? context.theme.colorScheme.onPrimary,
+                    ? context.theme.colorScheme.onSurfaceVariant
+                    : widget.iconColor ?? context.theme.colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 2),
             HeightConstrainedText(
               widget.text,
               textAlign: TextAlign.center,
-              style: body.copyWith(
+              style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: _isSending
-                    ? context.theme.colorScheme.onPrimaryContainer
-                    : context.theme.colorScheme.onPrimary,
+                    ? context.theme.colorScheme.onSurfaceVariant
+                    : context.theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
                 height: 1.05,
               ),

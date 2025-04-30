@@ -214,9 +214,8 @@ class _ActionButtonState extends State<ActionButton> {
             HeightConstrainedText(
               text,
               textAlign: TextAlign.center,
-              style: body.copyWith(color: _getTextColor()).merge(
-                    widget.textStyle ?? TextStyle(),
-                  ),
+              style: (widget.textStyle ?? context.theme.textTheme.bodyMedium!)
+                  .copyWith(color: _getTextColor()),
             )
           else if (child != null)
             child,

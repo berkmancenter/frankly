@@ -76,7 +76,6 @@ class _ReassignBreakoutRoomDialogState
         HeightConstrainedText(
           'New Room Number:',
           textAlign: TextAlign.center,
-          style: body.copyWith(fontSize: 14),
         ),
         SizedBox(
           width: 60,

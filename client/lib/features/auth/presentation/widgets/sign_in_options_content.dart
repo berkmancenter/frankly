@@ -251,7 +251,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget _buildTermsOfService() {
     return Text.rich(
       TextSpan(
-        style: body.copyWith(fontSize: 12),
+        style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
             text:
