@@ -761,8 +761,7 @@ class _EventInfoState extends State<EventInfo> {
                   children: [
                     VerticalTimeAndDateIndicator(
                       shadow: false,
-                      padding:
-                          EdgeInsets.only(left: isMobile ? 0 : 16, right: 16),
+                      padding: EdgeInsets.only(right: 24),
                       time: DateTime.fromMillisecondsSinceEpoch(
                         (eventProvider
                                 .event.scheduledTime?.millisecondsSinceEpoch ??
