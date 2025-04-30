@@ -50,15 +50,8 @@ class Dialogs {
                       child: Text(
                         title,
                         style: isMobile
-                            ? AppTextStyle.headline1
-                                // Apply same style just slightly smaller font for mobile
-                                .copyWith(
-                                fontSize: 30,
-                                color: context.theme.colorScheme.primary,
-                              )
-                            : AppTextStyle.headline1.copyWith(
-                                color: context.theme.colorScheme.primary,
-                              ),
+                            ? context.theme.textTheme.headlineMedium
+                            : context.theme.textTheme.headlineSmall,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -142,7 +135,7 @@ class Dialogs {
                 Center(
                   child: HeightConstrainedText(
                     title,
-                    style: AppTextStyle.headline1,
+                    style: context.theme.textTheme.headlineMedium,
                   ),
                 ),
                 SizedBox(height: 10),
@@ -332,11 +325,7 @@ class ConfirmDialogLayer extends StatelessWidget {
             Spacer(),
             HeightConstrainedText(
               'Save changes?',
-              style: AppTextStyle.headline3.copyWith(
-                color: areColorsFromTheme
-                    ? Theme.of(context).colorScheme.primary
-                    : context.theme.colorScheme.primary,
-              ),
+              style: context.theme.textTheme.titleMedium!,
             ),
             SizedBox(height: 20),
             Row(
@@ -344,20 +333,14 @@ class ConfirmDialogLayer extends StatelessWidget {
               children: [
                 ActionButton(
                   type: ActionButtonType.outline,
-                  textColor: areColorsFromTheme
-                      ? Theme.of(context).colorScheme.primary
-                      : context.theme.colorScheme.primary,
+                  textColor: context.theme.colorScheme.primary,
                   text: 'Discard',
                   onPressed: () => Navigator.pop(context),
                 ),
                 SizedBox(width: 10),
                 ActionButton(
-                  color: areColorsFromTheme
-                      ? Theme.of(context).colorScheme.primary
-                      : context.theme.colorScheme.primary,
-                  textColor: areColorsFromTheme
-                      ? Theme.of(context).colorScheme.secondary
-                      : context.theme.colorScheme.onPrimary,
+                  color: context.theme.colorScheme.primary,
+                  textColor: context.theme.colorScheme.onPrimary,
                   text: 'Save',
                   onPressed: onSaveChanges,
                 ),
