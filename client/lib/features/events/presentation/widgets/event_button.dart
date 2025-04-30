@@ -42,21 +42,21 @@ class EventButton extends HookWidget {
     const height = 100.0;
     final localEvent = event;
 
-    return CustomInkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: () => routerDelegate.beamTo(
-        CommunityPageRoutes(
-          communityDisplayId:
-              CommunityProvider.readOrNull(context)?.displayId ??
-                  localEvent.communityId,
-        ).eventPage(
-          templateId: localEvent.templateId,
-          eventId: localEvent.id,
+    return Card.outlined(
+      margin: EdgeInsets.zero,
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () => routerDelegate.beamTo(
+          CommunityPageRoutes(
+            communityDisplayId:
+                CommunityProvider.readOrNull(context)?.displayId ??
+                    localEvent.communityId,
+          ).eventPage(
+            templateId: localEvent.templateId,
+            eventId: localEvent.id,
+          ),
         ),
-      ),
-      child: Card.outlined(
-        margin: EdgeInsets.zero,
-        color: context.theme.colorScheme.surfaceContainerLowest,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Row(
