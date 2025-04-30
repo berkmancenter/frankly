@@ -99,16 +99,14 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
             ),
             HeightConstrainedText(
               _model.prePostCard.headline,
-              style: AppTextStyle.headline1
-                  .copyWith(color: context.theme.colorScheme.onPrimary),
+              style: context.theme.textTheme.titleLarge,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 10),
             HeightConstrainedText(
               _model.prePostCard.message,
-              style: AppTextStyle.subhead
-                  .copyWith(color: context.theme.colorScheme.onPrimary),
+              style: context.theme.textTheme.titleSmall,
               maxLines: 8,
               overflow: TextOverflow.ellipsis,
             ),
