@@ -73,9 +73,10 @@ class MediaItemSection extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     alignment: Alignment.centerLeft,
                     child: HeightConstrainedText(
-                      'Add video or Image',
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: context.theme.colorScheme.secondary),
+                      'Add video or image',
+                      style: context.theme.textTheme.bodyMedium!.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ),
                 ),
@@ -102,8 +103,11 @@ class MediaItemSection extends StatelessWidget {
                 customBorder: CircleBorder(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.edit,
-                      size: 20, color: context.theme.colorScheme.onPrimary),
+                  child: Icon(
+                    Icons.edit,
+                    size: 20,
+                    color: context.theme.colorScheme.onPrimary,
+                  ),
                 ),
                 onTap: () => _showMediaPickerDialog(context),
               ),
@@ -116,8 +120,11 @@ class MediaItemSection extends StatelessWidget {
                 customBorder: CircleBorder(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.delete,
-                      size: 20, color: context.theme.colorScheme.onPrimary),
+                  child: Icon(
+                    Icons.delete,
+                    size: 20,
+                    color: context.theme.colorScheme.onPrimary,
+                  ),
                 ),
                 onTap: () {
                   ConfirmDialog(

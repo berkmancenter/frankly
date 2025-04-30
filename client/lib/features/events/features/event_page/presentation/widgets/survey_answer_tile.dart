@@ -24,7 +24,7 @@ class SurveyAnswerTile extends StatelessWidget {
         SizedBox(height: 10),
         Text(
           answer,
-          style: AppTextStyle.body
+          style: context.theme.textTheme.bodyMedium!
               .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
         Row(
@@ -69,7 +69,7 @@ class SurveyAnswerTile extends StatelessWidget {
             SizedBox(width: 10),
             Text(
               '$answeredParticipants/$totalParticipants',
-              style: AppTextStyle.body.copyWith(
+              style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
