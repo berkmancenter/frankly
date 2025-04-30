@@ -30,7 +30,7 @@ class EmptyPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonColor = context.theme.colorScheme.primary;
-    final isSolid = buttonType == ActionButtonType.filled;
+
     return Container(
       height: 311,
       width: 524,
@@ -51,7 +51,7 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(
+            style: context.theme.textTheme.titleMedium!.copyWith(
               color: isBackgroundDark
                   ? context.theme.colorScheme.surface
                   : context.theme.colorScheme.onSurface,
@@ -63,7 +63,7 @@ class EmptyPageContent extends StatelessWidget {
             child: HeightConstrainedText(
               subtitleText ??
                   'When new ${type.name} are added, you\'ll see them here.',
-              style: AppTextStyle.eyebrowSmall.copyWith(
+              style: context.theme.textTheme.labelLarge!.copyWith(
                 color: isBackgroundDark
                     ? context.theme.colorScheme.surface
                     : context.theme.colorScheme.onSurface,
@@ -75,11 +75,7 @@ class EmptyPageContent extends StatelessWidget {
           if (onButtonPress != null)
             ActionButton(
               text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body.copyWith(
-                color:
-                    isSolid ? context.theme.colorScheme.onPrimary : buttonColor,
-              ),
-              color: isSolid ? buttonColor : null,
+              color: buttonColor,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),
               type: buttonType,
