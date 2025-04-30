@@ -102,8 +102,10 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       color: context.theme.colorScheme.surfaceContainerLowest,
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
-        onTap: () => _presenter.toggleCardExpansion(),
+        onTap:
+            _model.isEditMode ? null : () => _presenter.toggleCardExpansion(),
         hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
