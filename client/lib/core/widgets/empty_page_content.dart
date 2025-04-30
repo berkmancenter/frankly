@@ -51,7 +51,7 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? 'No ${type.name}',
-            style: context.theme.textTheme.titleMedium!.copyWith(
+            style: context.theme.textTheme.titleLarge!.copyWith(
               color: isBackgroundDark
                   ? context.theme.colorScheme.surface
                   : context.theme.colorScheme.onSurface,
