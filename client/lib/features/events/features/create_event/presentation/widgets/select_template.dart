@@ -64,10 +64,8 @@ class _SelectTemplateState extends State<SelectTemplate> {
       labelStyle: TextStyle(color: context.theme.colorScheme.primary),
       textStyle:
           TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
-      borderType: BorderType.outline,
-      backgroundColor: context.theme.colorScheme.primaryFixed.withOpacity(0.2),
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       borderRadius: 10,
-      borderColor: Colors.transparent,
       maxLines: 1,
       onChanged: (value) =>
           context.read<SelectTemplateProvider>().onSearchChanged(value),
