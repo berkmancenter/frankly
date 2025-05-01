@@ -57,8 +57,7 @@ class _AnnouncementsState extends State<Announcements> {
             Expanded(
               child: HeightConstrainedText(
                 announcement.title ?? 'Announcement',
-                style: context.theme.textTheme.bodyMedium!
-                    .copyWith(fontWeight: FontWeight.w700),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
             if (Provider.of<CommunityPermissionsProvider>(context)
