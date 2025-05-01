@@ -14,7 +14,7 @@ const List<Color> kOdometerColors = [
 /// For example, Line Height in Figma is 20 and Font Size is 10.
 /// [height] will become 20/10 => 2.
 class AppTextStyle {
-  static TextStyle headline1 = GoogleFonts.poppins(
+  static TextStyle headline1 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -23,7 +23,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline2 = GoogleFonts.poppins(
+  static TextStyle headline2 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -32,7 +32,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline2Light = GoogleFonts.poppins(
+  static TextStyle headline2Light = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w300,
       fontStyle: FontStyle.normal,
@@ -41,7 +41,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline3 = GoogleFonts.poppins(
+  static TextStyle headline3 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -50,7 +50,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline4 = GoogleFonts.poppins(
+  static TextStyle headline4 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -59,7 +59,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headlineSmall = GoogleFonts.poppins(
+  static TextStyle headlineSmall = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -68,7 +68,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle subhead = GoogleFonts.poppins(
+  static TextStyle subhead = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontStyle: FontStyle.normal,
@@ -77,7 +77,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle eyebrow = GoogleFonts.poppins(
+  static TextStyle eyebrow = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -86,7 +86,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle eyebrowSmall = GoogleFonts.poppins(
+  static TextStyle eyebrowSmall = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -95,7 +95,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle body = GoogleFonts.poppins(
+  static TextStyle body = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -104,7 +104,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle bodyMedium = GoogleFonts.poppins(
+  static TextStyle bodyMedium = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w600,
       fontStyle: FontStyle.normal,
@@ -113,7 +113,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle bodySmall = GoogleFonts.poppins(
+  static TextStyle bodySmall = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -122,7 +122,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle timeLarge = GoogleFonts.poppins(
+  static TextStyle timeLarge = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w200,
       fontStyle: FontStyle.normal,
