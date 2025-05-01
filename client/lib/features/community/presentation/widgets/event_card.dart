@@ -102,82 +102,87 @@ class EventCard extends StatelessWidget {
     required BuildContext context,
     required bool isDisabled,
   }) =>
-      Row(
-        children: [
-          if (event.scheduledTime != null)
-            VerticalTimeAndDateIndicator(
-              shadow: false,
-              isDisabled: isDisabled,
-              time: DateTime.fromMillisecondsSinceEpoch(
-                (event.scheduledTime?.millisecondsSinceEpoch ?? 0),
-              ),
-            )
-          else
-            SizedBox(width: 100),
-          Stack(
-            children: [
-              Container(
-                width: 90,
-                height: 90,
-                clipBehavior: Clip.hardEdge,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: EventOrTemplatePicture(
-                  key: Key(event.id),
-                  event: event,
-                  height: 100,
+      Container(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            if (event.scheduledTime != null)
+              VerticalTimeAndDateIndicator(
+                shadow: false,
+                padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
+                isDisabled: isDisabled,
+                time: DateTime.fromMillisecondsSinceEpoch(
+                  (event.scheduledTime?.millisecondsSinceEpoch ?? 0),
                 ),
-              ),
-              if (isDisabled)
-                SizedBox(
+              )
+            else
+              SizedBox(width: 100),
+            Stack(
+              children: [
+                Container(
                   width: 90,
                   height: 90,
-                ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  HeightConstrainedText(
-                    event.title ?? 'Scheduled event',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.theme.textTheme.titleMedium!.copyWith(
-                      color: isDisabled
-                          ? context.theme.colorScheme.onSurface
-                              .withOpacity(0.75)
-                          : context.theme.colorScheme.onSurface,
-                    ),
+                  clipBehavior: Clip.hardEdge,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  child: EventOrTemplatePicture(
+                    key: Key(event.id),
+                    event: event,
+                    height: 100,
                   ),
-                  SizedBox(height: 20.0),
-                  if (isDisabled)
-                    PrerequisiteBadge(
-                      textStyle: context.theme.textTheme.labelMedium,
-                    )
-                  else ...[
-                    if (event.isLiveStream)
-                      HeightConstrainedText(
-                        'Livestream',
-                        style: context.theme.textTheme.bodySmall!.copyWith(
-                          color: context.theme.colorScheme.onSurface
-                              .withOpacity(0.75),
-                        ),
+                ),
+                if (isDisabled)
+                  SizedBox(
+                    width: 90,
+                    height: 90,
+                  ),
+              ],
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      event.title ?? 'Scheduled event',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.theme.textTheme.titleMedium!.copyWith(
+                        color: isDisabled
+                            ? context.theme.colorScheme.onSurface
+                                .withOpacity(0.75)
+                            : context.theme.colorScheme.onSurface,
                       ),
-                    EventPageParticipantsList(
-                      event,
-                      iconSize: 30,
-                      showFullParticipantCount: true,
                     ),
+                    SizedBox(height: 20.0),
+                    if (isDisabled)
+                      PrerequisiteBadge(
+                        textStyle: context.theme.textTheme.labelMedium,
+                      )
+                    else ...[
+                      if (event.isLiveStream)
+                        HeightConstrainedText(
+                          'Livestream',
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            color: context.theme.colorScheme.onSurface
+                                .withOpacity(0.75),
+                          ),
+                        ),
+                      EventPageParticipantsList(
+                        event,
+                        iconSize: 30,
+                        showFullParticipantCount: true,
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 }
