@@ -287,6 +287,7 @@
   "downloadMembersData": "Download members data",
   "downloadMembersRegistrationData": "Download Members Registration Data",
   "duplicateEvent": "Duplicate Event",
+  "duplicateGuide": "Duplicate",
   "duplicateItem": "Duplicate Item",
   "edit": "Edit",
   "editEvent": "Edit event",
@@ -561,7 +562,7 @@
   "spreadTheWord": "SPREAD THE WORD",
   "start": "Start",
   "startCommunity": "Start a community",
-  "startEvent": "Start Event",
+  "startEvent": "Start event",
   "startTime": "Start Time",
   "submitChatButton": "Submit Chat Button",
   "submitMessageButton": "Submit Message Button",
@@ -597,6 +598,9 @@
   "unlockMeeting": "Unlock Meeting",
   "upcomingEvents": "Upcoming Events",
   "update": "Update",
+  "updateBilling": "Update billing",
+  "updateGuide": "Update template",
+  "updatePlan": "Update Plan",
   "updateStripeAccount": "Update Stripe Account",
   "updateToPlan": "Update to {name} plan",
   "upvoteDownvoteSuggestions": "You can upvote and downvote suggested agenda items to discuss",
@@ -675,5 +679,15 @@
   "hostEvent": "Schedule an event",
   "inviteSomeone": "Invite someone",
   "startProcessingPayments": "Start processing payments",
-  "createStripeAccount": "Start processing payments"
+  "createStripeAccount": "Start processing payments",
+  "templateName": "Template name",
+  "featureOnHomepage": "Feature on {communityName} homepage",
+  "@featureOnHomepage": {
+    "description": "Label for the featured toggle button, with the community name.",
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  }
 }

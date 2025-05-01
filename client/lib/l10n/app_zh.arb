@@ -332,6 +332,7 @@
   "downloadMembersData": "下载成员数据",
   "downloadMembersRegistrationData": "下载成员注册数据",
   "duplicateEvent": "复制活动",
+  "duplicateGuide": "复制",
   "duplicateItem": "复制项目",
   "edit": "编辑",
   "editEvent": "编辑活动",
@@ -640,6 +641,9 @@
   "unlockMeeting": "解锁会议",
   "upcomingEvents": "即将举行的活动",
   "update": "更新",
+  "updateBilling": "更新账单",
+  "updateGuide": "更新模板",
+  "updatePlan": "更新方案",
   "updateStripeAccount": "更新 Stripe 账户",
   "updateToPlan": "更新到{name}计划",
   "upvoteDownvoteSuggestions": "您可以对建议的议程项目进行投票和反对投票",
@@ -718,5 +722,15 @@
   "hostEvent": "安排一个活动",
   "inviteSomeone": "邀请某人",
   "startProcessingPayments": "开始处理付款",
-  "createStripeAccount": "开始处理付款"
+  "createStripeAccount": "开始处理付款",
+  "templateName": "模板名称",
+  "featureOnHomepage": "在{communityName}首页推荐",
+  "@featureOnHomepage": {
+    "description": "特色切换按钮的标签，带有社区名称。",
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  }
 }

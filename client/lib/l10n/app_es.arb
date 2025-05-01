@@ -337,6 +337,7 @@
   "downloadMembersData": "Descargar datos de miembros",
   "downloadMembersRegistrationData": "Descargar Datos de Registro de Miembros",
   "duplicateEvent": "Duplicar Evento",
+  "duplicateGuide": "Duplicar",
   "duplicateItem": "Duplicar elemento",
   "edit": "Editar",
   "editEvent": "Editar evento",
@@ -646,6 +647,7 @@
   "unlockMeeting": "Desbloquear reunión",
   "upcomingEvents": "Próximos eventos",
   "update": "Actualizar",
+  "updateGuide": "Actualizar plantilla",
   "updateStripeAccount": "Actualizar cuenta Stripe",
   "updateToPlan": "Actualizar al plan {name}",
   "upvoteDownvoteSuggestions": "Puede votar a favor y en contra de los elementos de agenda sugeridos para discutir",
@@ -724,5 +726,15 @@
   "hostEvent": "Programar un evento",
   "inviteSomeone": "Invita a alguien",
   "startProcessingPayments": "Comienza a procesar pagos",
-  "createStripeAccount": "Comienza a procesar pagos"
+  "createStripeAccount": "Comienza a procesar pagos",
+  "templateName": "Nombre de plantilla",
+  "featureOnHomepage": "Destacar en la página principal de {communityName}",
+  "@featureOnHomepage": {
+    "description": "Etiqueta para el botón destacado, con el nombre de la comunidad.",
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -7,6 +7,8 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 
 class CreateTemplatePresenter extends ChangeNotifier {
   final CommunityProvider communityProvider;
@@ -95,23 +97,25 @@ class CreateTemplatePresenter extends ChangeNotifier {
   }
 
   String getPageTitle() {
+    final l10n = appLocalizationService.getLocalization();
     switch (templateActionType) {
       case TemplateActionType.create:
       case TemplateActionType.duplicate:
-        return 'Create a template';
+        return l10n.createGuide;
       case TemplateActionType.edit:
-        return 'Update template';
+        return l10n.updateGuide;
     }
   }
 
   String getButtonTitle() {
+    final l10n = appLocalizationService.getLocalization();
     switch (templateActionType) {
       case TemplateActionType.create:
-        return 'Create';
+        return l10n.createGuide;
       case TemplateActionType.edit:
-        return 'Update';
+        return l10n.updateGuide;
       case TemplateActionType.duplicate:
-        return 'Duplicate';
+        return l10n.duplicateGuide;
     }
   }
 }

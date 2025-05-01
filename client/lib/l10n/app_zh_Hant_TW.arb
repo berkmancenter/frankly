@@ -325,6 +325,7 @@
   "downloadMembersData": "下載成員資料",
   "downloadMembersRegistrationData": "下載成員註冊資料",
   "duplicateEvent": "複製活動",
+  "duplicateGuide": "複製",
   "duplicateItem": "複製項目",
   "edit": "編輯",
   "editEvent": "編輯活動",
@@ -593,7 +594,7 @@
   "somethingWentWrong": "出了些問題",
   "somethingWentWrongTryAgain": "出現錯誤，請重試。",
   "sorryVimeoVideoLookupFailed": "抱歉，Vimeo 影片查詢失敗。",
-  "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 影片查詢失敗。",
+  "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 影片查找失敗。",
   "spreadTheWord": "傳播訊息",
   "start": "開始",
   "startCommunity": "創建社區",
@@ -633,6 +634,7 @@
   "unlockMeeting": "解鎖會議",
   "upcomingEvents": "即將舉行的活動",
   "update": "更新",
+  "updateGuide": "更新模板",
   "updateStripeAccount": "更新 Stripe 帳戶",
   "updateToPlan": "更新至{name}方案",
   "upvoteDownvoteSuggestions": "您可以對建議的議程項目進行投票和反對投票",
@@ -711,5 +713,15 @@
   "hostEvent": "安排一個活動",
   "inviteSomeone": "邀請某人",
   "startProcessingPayments": "開始處理付款",
-  "createStripeAccount": "開始處理付款"
+  "createStripeAccount": "開始處理付款",
+  "templateName": "模板名稱",
+  "featureOnHomepage": "在{communityName}首頁推薦",
+  "@featureOnHomepage": {
+    "description": "特色切換按鈕的標籤，帶有社區名稱。",
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  }
 }
