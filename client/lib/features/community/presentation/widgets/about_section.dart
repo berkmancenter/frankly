@@ -34,10 +34,8 @@ class _AboutWidgetState extends State<CommunityHomeAboutSection> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle =
-        AppTextStyle.body.copyWith(color: context.theme.colorScheme.secondary);
-    final titleStyle = AppTextStyle.headline4
-        .copyWith(color: context.theme.colorScheme.secondary);
+    final textStyle = context.theme.textTheme.bodyMedium;
+    final titleStyle = context.theme.textTheme.titleMedium;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
