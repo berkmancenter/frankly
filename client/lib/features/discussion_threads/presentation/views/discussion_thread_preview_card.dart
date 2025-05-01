@@ -89,7 +89,8 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                   UserProfileChip(
                     userId: discussionThread.creatorId,
                     textStyle: AppTextStyle.bodyMedium.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
                     showBorder: true,
                   ),
                   Row(
@@ -98,7 +99,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                       Text(
                         likeDislikeCount,
                         style: AppTextStyle.bodyMedium.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer,
+                          color: context.theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                       SizedBox(width: 10),
@@ -156,7 +157,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
               child: HeightConstrainedText(
                 discussionThread.content,
                 style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
@@ -208,7 +209,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
               Text(
                 commentsText,
                 style: AppTextStyle.bodyMedium.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               EmotionSection(
@@ -228,7 +229,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     width: 1,
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.outline,
                   ),
                 ),
                 Padding(
@@ -240,7 +241,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                       HeightConstrainedText(
                         localMostRecentDiscussionThreadComment.comment,
                         style: AppTextStyle.body.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer,
+                          color: context.theme.colorScheme.onSurfaceVariant,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -299,7 +300,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: borderRadius,
               border: Border.all(
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.outline,
               ),
             ),
             child: Row(
@@ -316,7 +317,7 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                 HeightConstrainedText(
                   'Reply',
                   style: AppTextStyle.bodyMedium.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
