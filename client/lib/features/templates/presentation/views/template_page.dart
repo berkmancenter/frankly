@@ -166,7 +166,7 @@ class _TemplatePageState extends State<TemplatePage>
             children: [
               SizedBox(height: 30),
               for (final event in events.take(40)) ...[
-                EventWidget(
+                EventCard(
                   event,
                   key: Key('event-${event.id}'),
                 ),
@@ -468,7 +468,7 @@ class _TemplatePageState extends State<TemplatePage>
               children: [
                 SizedBox(height: 30),
                 for (final event in events.take(1)) ...[
-                  EventWidget(
+                  EventCard(
                     event,
                     key: Key('event-${event.id}'),
                   ),

@@ -370,7 +370,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           children: [
             SizedBox(height: 30),
             for (final event in events) ...[
-              EventWidget(
+              EventCard(
                 event,
                 key: Key('event-${event.id}'),
               ),

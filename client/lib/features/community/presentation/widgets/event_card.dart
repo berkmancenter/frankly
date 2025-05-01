@@ -17,10 +17,10 @@ import 'package:provider/provider.dart';
 /// This is the card for the upcoming events shown on the Home page.
 ///
 /// Tapping on it navigates to the event page.
-class EventWidget extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final Event event;
 
-  const EventWidget(
+  const EventCard(
     this.event, {
     Key? key,
   }) : super(key: key);

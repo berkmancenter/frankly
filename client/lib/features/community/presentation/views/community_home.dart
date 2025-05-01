@@ -270,7 +270,7 @@ class _CommunityHomeState extends State<CommunityHome> {
               ),
               SizedBox(height: 10),
               for (var i = 0; i < min(events.length, _eventsToShow); i++) ...[
-                EventWidget(events[i]),
+                EventCard(events[i]),
                 SizedBox(height: 20),
               ],
               if (events.length > _eventsToShow)

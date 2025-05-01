@@ -208,7 +208,7 @@ class _EventsPageState extends State<EventsPage> {
                 alignment: Alignment.centerLeft,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 700),
-                  child: EventWidget(
+                  child: EventCard(
                     event,
                     key: Key('event-${event.id}'),
                   ),
