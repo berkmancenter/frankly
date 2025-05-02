@@ -736,5 +736,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "featuredTags": "Etiquetas destacadas",
+  "tags": "Etiquetas"
 }

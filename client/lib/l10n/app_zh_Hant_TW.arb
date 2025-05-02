@@ -723,5 +723,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "featuredTags": "精選標籤",
+  "tags": "標籤"
 }

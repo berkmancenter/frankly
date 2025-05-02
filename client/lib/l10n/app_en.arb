@@ -689,5 +689,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "featuredTags": "Featured Tags",
+  "tags": "Tags"
 }

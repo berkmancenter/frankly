@@ -732,5 +732,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "featuredTags": "精选标签",
+  "tags": "标签"
 }

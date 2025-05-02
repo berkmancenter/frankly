@@ -100,7 +100,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
           SizedBox(width: 5),
         ],
         HeightConstrainedText(
-          widget.titleText ?? (widget.isFeaturedTag ? 'Featured Tags' : 'Tags'),
+          widget.titleText ?? (widget.isFeaturedTag ? context.l10n.featuredTags : context.l10n.tags),
           style: widget.titleTextStyle ??
               AppTextStyle.body.copyWith(color: AppColor.darkBlue),
         ),
