@@ -172,9 +172,13 @@ class _RefreshKeyWidgetState extends State<RefreshKeyWidget> {
                 },
                 child: Container(
                   padding: EdgeInsets.all(4),
-                  color: widget.backgroundColor ?? Color(0xFF262F4C),
-                  child: Icon(Icons.refresh,
-                      size: 24, color: context.theme.colorScheme.onPrimary),
+                  color: widget.backgroundColor ??
+                      context.theme.colorScheme.primary,
+                  child: Icon(
+                    Icons.refresh,
+                    size: 24,
+                    color: context.theme.colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),

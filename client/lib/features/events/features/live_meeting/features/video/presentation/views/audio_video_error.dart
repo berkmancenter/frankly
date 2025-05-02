@@ -139,8 +139,9 @@ class AudioVideoErrorDisplay extends StatelessWidget {
             text: _buildErrorText(),
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: textColor ?? context.theme.colorScheme.onPrimary,
-                fontSize: 22),
+              color: textColor ?? context.theme.colorScheme.onSurface,
+              fontSize: 22,
+            ),
           ),
           SizedBox(height: 16),
           ActionButton(

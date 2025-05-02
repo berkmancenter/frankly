@@ -199,7 +199,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: context.theme.colorScheme.scrim.withScrimOpacity,
+                      color: context.theme.colorScheme.surfaceContainerHigh,
                       child: Stack(
                         children: [
                           Row(
@@ -390,7 +390,7 @@ class _FloatingChatState extends State<FloatingChat> {
         position: _getPositionTransition(animation),
         child: Container(
           decoration: BoxDecoration(
-            color: context.theme.colorScheme.primary,
+            color: context.theme.colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
