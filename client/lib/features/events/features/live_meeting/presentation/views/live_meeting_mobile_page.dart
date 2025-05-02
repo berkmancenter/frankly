@@ -183,7 +183,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     ].contains(LiveMeetingProvider.watch(context).activeUiState);
     final showBottomBar = ConferenceRoom.read(context) != null;
     return Scaffold(
-      backgroundColor: context.theme.colorScheme.primary,
+      backgroundColor: context.theme.colorScheme.surface,
       appBar: showAppBar ? _buildAppBar() : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
@@ -217,7 +217,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: Container(
-        color: context.theme.colorScheme.primary,
+        color: context.theme.colorScheme.surfaceContainerHighest,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -230,11 +230,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     if (eventTabsController.widget.enableGuide &&
                         !suppressGuide)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.guideDarkBlue(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.book_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -250,11 +248,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableChat)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.chatBubble3White(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.forum_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -270,11 +266,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableUserSubmittedAgenda)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.lightBulbWhite(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.lightbulb_outline_rounded,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -301,11 +295,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableAdminPanel)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.gearWhite(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.settings_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -320,11 +312,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         },
                       ),
                     AppClickableWidget(
-                      child: ProxiedImage(
-                        null,
-                        asset: AppAsset.needHelpWhite(),
-                        width: 30,
-                        height: 30,
+                      child: Icon(
+                        Icons.help_outline_rounded,
+                        size: 30,
                       ),
                       onTap: () => GetHelpButton.getHelp(context),
                     ),
@@ -716,14 +706,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: context.theme.colorScheme.surfaceContainerLowest,
+          color: context.theme.colorScheme.surfaceContainerHighest,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Divider(
-                height: 1,
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,
@@ -974,7 +960,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
       backgroundColor = context.theme.colorScheme.surface;
     } else if (isAdmin) {
-      backgroundColor = context.theme.colorScheme.primary;
+      backgroundColor = context.theme.colorScheme.surface;
     } else {
       backgroundColor = context.theme.colorScheme.surfaceContainerLowest;
     }
