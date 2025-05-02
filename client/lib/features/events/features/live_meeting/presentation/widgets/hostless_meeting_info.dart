@@ -65,7 +65,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         child: Container(
           color:
               Provider.of<EventTabsControllerState>(context).isTabOpen(tabType)
-                  ? context.theme.colorScheme.surfaceContainerLowest
+                  ? context.theme.colorScheme.surface
                   : null,
           alignment: Alignment.center,
           child: Column(
@@ -204,7 +204,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       ),
     ];
     return Container(
-      color: context.theme.colorScheme.primary,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       width: isMobile ? null : _iconWidth,
       height: isMobile ? _iconWidth : null,
       child: isMobile
