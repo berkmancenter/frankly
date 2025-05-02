@@ -171,7 +171,7 @@ class ExplanationText extends StatelessWidget {
           child: Text(
             'Try turning off your camera for a smoother experience',
             style: AppTextStyle.subhead
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+                .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
         ),
         SizedBox(width: 10),

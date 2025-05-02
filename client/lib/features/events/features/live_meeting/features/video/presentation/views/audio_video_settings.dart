@@ -52,8 +52,7 @@ class AudioVideoSettingsDialog extends HookWidget {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border:
-                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
+            border: Border.all(color: context.theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButton<String>(
@@ -111,8 +110,7 @@ class AudioVideoSettingsDialog extends HookWidget {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border:
-                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
+            border: Border.all(color: context.theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButton<String>(

@@ -319,7 +319,7 @@ class _EmojiButtonState extends State<EmojiButton> {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.onPrimaryContainer,
+          color: context.theme.colorScheme.outline,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
@@ -382,7 +382,6 @@ class _ChatInputState extends State<ChatInput> {
           Expanded(
             child: CustomTextField(
               borderType: BorderType.none,
-              backgroundColor: context.theme.colorScheme.onPrimaryContainer,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
               contentPadding: isMobile
@@ -413,13 +412,9 @@ class _ChatInputState extends State<ChatInput> {
                   color: context.theme.colorScheme.primary,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
-                  disabledColor: context.theme.colorScheme.surfaceDim,
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
-                    color: canSubmit
-                        ? context.theme.colorScheme.onPrimary
-                        : context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),

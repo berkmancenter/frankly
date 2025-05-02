@@ -99,7 +99,7 @@ class NeedHelpDialog extends StatelessWidget {
                 text: TextSpan(
                   text: 'Need more help? ',
                   style: AppTextStyle.bodyMedium.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
                   children: [
