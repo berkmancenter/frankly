@@ -310,7 +310,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                             return HeightConstrainedText(
                               isNullOrEmpty(info.data?.displayName)
                                   ? 'Welcome!'
-                                  : 'Welcome ${info.data?.displayName}!',
+                                  : 'Welcome, ${info.data?.displayName}!',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline3.copyWith(
@@ -332,9 +332,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         ),
                         SizedBox(height: 20),
                         ActionButton(
-                          color: Colors.transparent,
-                          type: ActionButtonType.outline,
-                          textColor: context.theme.colorScheme.primary,
+                          type: ActionButtonType.filled,
+                          color: context.theme.colorScheme.surfaceContainer,
+                          textColor: context.theme.colorScheme.onSurface,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,
                           onPressed: () => alertOnError(context, () async {
