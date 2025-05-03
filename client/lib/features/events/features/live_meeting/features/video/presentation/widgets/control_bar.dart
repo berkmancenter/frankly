@@ -87,8 +87,6 @@ class _ControlBarState extends State<ControlBar> {
 
     final mediaDevices = html.window.navigator.mediaDevices;
     return CustomInkWell(
-      hoverColor: context.theme.colorScheme.surfaceContainer,
-      forceHighlightOnHover: true,
       child: PopupMenuButton<FutureOr<void> Function()>(
         itemBuilder: (context) => [
           PopupMenuItem(
@@ -122,7 +120,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: context.theme.colorScheme.onPrimary,
+            color: context.theme.colorScheme.onSurface,
           ),
         ),
       ),
