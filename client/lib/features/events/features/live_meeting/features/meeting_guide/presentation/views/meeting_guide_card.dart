@@ -359,10 +359,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   Spacer(),
                   Expanded(
                     flex: symmetricFlex,
-                    child: ProxiedImage(
-                      null,
-                      asset: AppAsset.kStartEventCardImage,
-                      fit: BoxFit.contain,
+                    child: Icon(
+                      Icons.meeting_room_rounded,
+                      size: 100,
+                      color: context.theme.colorScheme.secondary,
                     ),
                   ),
                 ],
