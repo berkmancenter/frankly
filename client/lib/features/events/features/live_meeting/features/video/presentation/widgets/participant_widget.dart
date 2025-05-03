@@ -314,7 +314,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: context.theme.colorScheme.surfaceContainerHighest,
       child: Container(
         color: context.theme.colorScheme.scrim.withScrimOpacity,
         child: Container(

@@ -176,8 +176,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
     return Row(
       children: [
         Checkbox(
-          fillColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
-          side: BorderSide(color: context.theme.colorScheme.onPrimary),
+          side: BorderSide(color: context.theme.colorScheme.outline),
           value: _broadcast,
           onChanged: (value) => setState(() => _broadcast = !_broadcast),
         ),

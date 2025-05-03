@@ -317,7 +317,7 @@ class _EmojiButtonState extends State<EmojiButton> {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.outline,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
