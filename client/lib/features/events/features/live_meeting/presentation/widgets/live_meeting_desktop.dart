@@ -117,7 +117,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       label: 'event-tabs-content',
       child: Container(
         width: 400,
-        color: context.theme.colorScheme.primary,
+        color: context.theme.colorScheme.surfaceContainer,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,10 +137,10 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                           ).expanded = false;
                         },
                         child: CircleAvatar(
-                          backgroundColor: context.theme.colorScheme.primary,
+                          backgroundColor: Colors.transparent,
                           child: Icon(
                             Icons.close,
-                            color: context.theme.colorScheme.onPrimary,
+                            color: context.theme.colorScheme.onSurface,
                           ),
                         ),
                       ),
