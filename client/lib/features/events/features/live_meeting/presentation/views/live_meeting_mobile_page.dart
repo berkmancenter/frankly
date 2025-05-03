@@ -956,14 +956,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
 
     final localOnClose = widget.onClose;
     final isAdmin = selectedTab == TabType.admin;
-    final Color backgroundColor;
-    if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
-      backgroundColor = context.theme.colorScheme.surface;
-    } else if (isAdmin) {
-      backgroundColor = context.theme.colorScheme.surface;
-    } else {
-      backgroundColor = context.theme.colorScheme.surfaceContainerLowest;
-    }
+
     return PointerInterceptor(
       child: Container(
         decoration: BoxDecoration(
@@ -978,7 +971,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
               color: Colors.black.withOpacity(0.5),
             ),
           ],
-          color: backgroundColor,
+          color: context.theme.colorScheme.surfaceContainerHigh,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
