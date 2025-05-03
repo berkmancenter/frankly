@@ -166,7 +166,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         fit: fit,
         clipBehavior: Clip.hardEdge,
         child: Container(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
+          color: context.theme.colorScheme.surfaceDim,
           height: dimensions.height,
           width: dimensions.width,
           child: _buildVideoElement(),
@@ -202,7 +202,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
               height: 32,
               padding: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
-                color: context.theme.colorScheme.scrim.withScrimOpacity,
+                color: context.theme.colorScheme.surfaceDim,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(5),
                 ),
@@ -259,7 +259,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         height: 32,
         padding: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
+          color: context.theme.colorScheme.surfaceDim,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(5),
           ),
@@ -313,74 +313,71 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: context.theme.colorScheme.surfaceDim,
       child: Container(
-        color: context.theme.colorScheme.scrim.withScrimOpacity,
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: IntrinsicHeight(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: isMobile ? 16 : 30),
-                Flexible(
-                  child: Container(
-                    constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-                    child: UserProfileChip(
-                      userId: widget.participant.identity,
-                      showName: false,
-                      enableOnTap: false,
-                      imageHeight: 200,
-                      alignment: Alignment.center,
-                    ),
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.center,
+        child: IntrinsicHeight(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: isMobile ? 16 : 30),
+              Flexible(
+                child: Container(
+                  constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+                  child: UserProfileChip(
+                    userId: widget.participant.identity,
+                    showName: false,
+                    enableOnTap: false,
+                    imageHeight: 200,
+                    alignment: Alignment.center,
                   ),
                 ),
-                if (!isMobile) SizedBox(height: 10),
-                if (isConnecting)
-                  HeightConstrainedText(
-                    'Connecting...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: isMobile ? 12 : 16,
-                    ),
-                  )
-                else if (switchedOff && (_startedTimer?.isActive ?? false))
-                  Container(
-                    height: 20,
-                    alignment: Alignment.center,
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CustomLoadingIndicator(),
-                    ),
-                  )
-                else
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      HeightConstrainedText(
-                        'Video Off',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: isMobile ? 12 : 16,
-                        ),
-                      ),
-                      if (switchedOff) ...[
-                        SizedBox(width: 6),
-                        Icon(
-                          Icons.wifi_off,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: isMobile ? 12 : 16,
-                        ),
-                      ],
-                    ],
+              ),
+              if (!isMobile) SizedBox(height: 10),
+              if (isConnecting)
+                HeightConstrainedText(
+                  'Connecting...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: isMobile ? 12 : 16,
                   ),
-              ],
-            ),
+                )
+              else if (switchedOff && (_startedTimer?.isActive ?? false))
+                Container(
+                  height: 20,
+                  alignment: Alignment.center,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CustomLoadingIndicator(),
+                  ),
+                )
+              else
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      'Video Off',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: isMobile ? 12 : 16,
+                      ),
+                    ),
+                    if (switchedOff) ...[
+                      SizedBox(width: 6),
+                      Icon(
+                        Icons.wifi_off,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: isMobile ? 12 : 16,
+                      ),
+                    ],
+                  ],
+                ),
+            ],
           ),
         ),
       ),
@@ -419,25 +416,22 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
       child: RepaintBoundary(
         child: _buildAspectRatioClipped(
           Container(
-            color: Theme.of(context).primaryColor,
-            child: Container(
-              color: context.theme.colorScheme.scrim.withScrimOpacity,
-              child: AnimatedBuilder(
-                animation: widget.participant,
-                builder: (_, __) => Stack(
-                  children: [
-                    Container(),
-                    if (videoEnabled)
-                      Positioned.fill(
-                        child: _buildVideo(),
-                      ),
-                    if (!videoEnabled)
-                      Positioned.fill(
-                        child: _buildVideoDisabled(),
-                      ),
-                    _buildOverlay(),
-                  ],
-                ),
+            color: context.theme.colorScheme.surfaceDim,
+            child: AnimatedBuilder(
+              animation: widget.participant,
+              builder: (_, __) => Stack(
+                children: [
+                  Container(),
+                  if (videoEnabled)
+                    Positioned.fill(
+                      child: _buildVideo(),
+                    ),
+                  if (!videoEnabled)
+                    Positioned.fill(
+                      child: _buildVideoDisabled(),
+                    ),
+                  _buildOverlay(),
+                ],
               ),
             ),
           ),
