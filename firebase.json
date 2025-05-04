@@ -80,7 +80,7 @@
       "host": "0.0.0.0"
     },
     "database": {
-      "port": 9000,
+      "port": 9002,
       "host": "0.0.0.0"
     },
     "hosting": {
