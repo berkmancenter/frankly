@@ -15,6 +15,7 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:data_models/utils/utils.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class FirestoreNotFoundException implements Exception {}
 
@@ -267,8 +268,9 @@ class FirestoreDatabase {
     required String communityId,
     required Template template,
   }) async {
+    final l10n = appLocalizationService.getLocalization();
     if ((template.title?.trim() ?? '').isEmpty) {
-      throw VisibleException('Template title is required.');
+      throw VisibleException(l10n.templateTitleRequired);
     }
 
     final docRef = templatesCollection(communityId).doc(template.id);

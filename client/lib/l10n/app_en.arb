@@ -691,5 +691,6 @@
     }
   },
   "featuredTags": "Featured Tags",
-  "tags": "Tags"
+  "tags": "Tags",
+  "templateTitleRequired": "Template title is required"
 }

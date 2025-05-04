@@ -738,5 +738,6 @@
     }
   },
   "featuredTags": "Etiquetas destacadas",
-  "tags": "Etiquetas"
+  "tags": "Etiquetas",
+  "templateTitleRequired": "El título de la plantilla es obligatorio"
 }
