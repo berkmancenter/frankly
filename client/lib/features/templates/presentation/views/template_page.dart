@@ -157,8 +157,8 @@ class _TemplatePageState extends State<TemplatePage>
           if (events == null || events.isEmpty) {
             return EmptyPageContent(
               type: EmptyPageType.events,
-              titleText: 'No events',
-              subtitleText: 'When new events are added, you’ll see them here.',
+              titleText: context.l10n.noEvents,
+              subtitleText: context.l10n.whenNewEventsAreAddedYoullSeeThemHere,
               showContainer: false,
             );
           }
@@ -193,7 +193,7 @@ class _TemplatePageState extends State<TemplatePage>
       builder: (context, prePostEnabled) => CustomTabController(
         tabs: [
           CustomTabAndContent(
-            tab: 'About',
+            tab: context.l10n.about,
             content: (context) => CustomStreamBuilder<bool>(
               entryFrom: 'TemplatePage._buildTemplateContents',
               stream: Provider.of<AttendedPrerequisiteProvider>(context)
@@ -209,7 +209,7 @@ class _TemplatePageState extends State<TemplatePage>
             ),
           ),
           CustomTabAndContent(
-            tab: 'Agenda',
+            tab: context.l10n.agenda,
             content: (context) {
               return CustomStreamBuilder<bool>(
                 entryFrom: 'TemplatePage._buildTemplateContents',
@@ -226,7 +226,7 @@ class _TemplatePageState extends State<TemplatePage>
             },
           ),
           CustomTabAndContent(
-            tab: 'Upcoming Events',
+            tab: context.l10n.upcomingEvents,
             content: (context) => CustomStreamBuilder<bool>(
               entryFrom: 'TemplatePage._buildTemplateContents',
               stream: Provider.of<AttendedPrerequisiteProvider>(context)
@@ -242,7 +242,7 @@ class _TemplatePageState extends State<TemplatePage>
           ),
           if (isAdmin)
             CustomTabAndContent(
-              tab: 'CTAS',
+              tab: context.l10n.ctas,
               content: (context) => CustomStreamBuilder<bool>(
                 entryFrom: 'TemplatePage._buildTemplateContents',
                 stream: Provider.of<AttendedPrerequisiteProvider>(context)
@@ -340,11 +340,12 @@ class _TemplatePageState extends State<TemplatePage>
   }
 
   Widget _buildTemplateDescription({required Template template}) {
+    final l10n = appLocalizationService.getLocalization();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Description',
+          l10n.description,
           style: AppTextStyle.headlineSmall.copyWith(
             color: AppColor.darkBlue,
             fontSize: 16,
@@ -360,6 +361,7 @@ class _TemplatePageState extends State<TemplatePage>
   }
 
   Widget _buildMoreTemplates() {
+    final l10n = appLocalizationService.getLocalization();
     final width = MediaQuery.of(context).size.width;
     final int maxContainerDisplayCount;
     if (width < 450) {
@@ -394,7 +396,7 @@ class _TemplatePageState extends State<TemplatePage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'More from ${community.name}',
+              l10n.moreFrom(community.name ?? ''),
               style: AppTextStyle.headlineSmall.copyWith(
                 color: AppColor.darkBlue,
                 fontSize: 16,
@@ -429,6 +431,7 @@ class _TemplatePageState extends State<TemplatePage>
   }
 
   Widget _buildUpcomingEvents(context) {
+    final l10n = appLocalizationService.getLocalization();
     final templatePageProvider = Provider.of<TemplatePageProvider>(context);
     final tabController = Provider.of<CustomTabControllerState>(context);
     return Column(
@@ -436,7 +439,7 @@ class _TemplatePageState extends State<TemplatePage>
         Row(
           children: [
             HeightConstrainedText(
-              'Upcoming Events',
+              l10n.upcomingEvents,
               style: AppTextStyle.headlineSmall.copyWith(
                 color: AppColor.darkBlue,
                 fontSize: 16,
@@ -447,7 +450,7 @@ class _TemplatePageState extends State<TemplatePage>
               CustomInkWell(
                 onTap: () => tabController.currentTab = 3,
                 child: HeightConstrainedText(
-                  'See all',
+                  l10n.seeAll,
                   style: AppTextStyle.bodyMedium
                       .copyWith(color: AppColor.darkBlue),
                 ),
@@ -458,7 +461,7 @@ class _TemplatePageState extends State<TemplatePage>
           entryFrom: '_EventPageState._buildEvents',
           stream: templatePageProvider.events,
           height: 100,
-          errorMessage: 'Something went wrong loading events.',
+          errorMessage: l10n.somethingWentWrongLoadingEvents,
           builder: (_, events) {
             if (events == null || events.isEmpty) {
               return Align(
@@ -466,7 +469,7 @@ class _TemplatePageState extends State<TemplatePage>
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: HeightConstrainedText(
-                    'No upcoming events.',
+                    l10n.noUpcomingEvents,
                     style: AppTextStyle.body.copyWith(
                       color: AppColor.gray2,
                     ),
@@ -563,6 +566,7 @@ class _TemplatePageState extends State<TemplatePage>
     required Template template,
     required bool isEditable,
   }) {
+    final l10n = appLocalizationService.getLocalization();
     String communityId =
         Provider.of<CommunityProvider>(context, listen: false).communityId;
     if (!isEditable && (eventCardData == null || eventCardData.isNew())) {
@@ -573,11 +577,11 @@ class _TemplatePageState extends State<TemplatePage>
     final String fieldName;
     switch (prePostCardType) {
       case PrePostCardType.preEvent:
-        addNewTitle = 'Add Pre-event';
+        addNewTitle = l10n.addPreEvent;
         fieldName = Template.kFieldPreEventCardData;
         break;
       case PrePostCardType.postEvent:
-        addNewTitle = 'Add Post-event';
+        addNewTitle = l10n.addPostEvent;
         fieldName = Template.kFieldPostEventCardData;
         break;
     }

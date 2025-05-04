@@ -228,6 +228,10 @@
   "addSomethingHere": "Añadir algo aquí",
   "addToCalendar": "Añadir al calendario",
   "admin": "Administrador",
+  "agenda": "Agenda",
+  "@agenda": {
+    "description": "Etiqueta de pestaña para la sección de agenda."
+  },
   "agendaPromptReady": "¡Su evento está listo para comenzar!",
   "agendaPromptWaiting": "Esperando a que el anfitrión inicie el evento...",
   "agreeAndContinue": "Aceptar y continuar",
@@ -665,6 +669,10 @@
   "welcome": "Bienvenido a Frankly",
   "welcomeName": "Bienvenido, {name}",
   "welcomeToApp": "Bienvenido a {appName}",
+  "whenNewEventsAreAddedYoullSeeThemHere": "Cuando se agreguen nuevos eventos, los verás aquí.",
+  "@whenNewEventsAreAddedYoullSeeThemHere": {
+    "description": "Subtítulo para la página vacía de eventos."
+  },
   "whenNewItemsAdded": "Cuando se agreguen nuevos {name}, los verás aquí.",
   "whenYouUpgrade": "cuando actualice",
   "whoElseWouldBenefitFromTheseEvents": "¿Quién más se beneficiaría de estos eventos?",
@@ -739,5 +747,30 @@
   },
   "featuredTags": "Etiquetas destacadas",
   "tags": "Etiquetas",
-  "templateTitleRequired": "El título de la plantilla es obligatorio"
+  "templateTitleRequired": "El título de la plantilla es obligatorio",
+  "ctas": "CTAs",
+  "@ctas": {
+    "description": "Etiqueta de pestaña para la sección de CTAs (Llamados a la acción)."
+  },
+  "somethingWentWrongLoadingEvents": "Algo salió mal al cargar los eventos.",
+  "noUpcomingEvents": "No hay eventos próximos.",
+  "seeAll": "Ver todo",
+  "moreFrom": "Más de {name}",
+  "@moreFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createEventFromTemplate": "Crear un evento{isMobile}desde esta plantilla",
+  "@createEventFromTemplate": {
+    "placeholders": {
+      "isMobile": {
+        "type": "String"
+      }
+    }
+  },
+  "addPreEvent": "Añadir Pre-Evento",
+  "addPostEvent": "Añadir Post-Evento"
 }

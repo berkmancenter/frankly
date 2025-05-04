@@ -223,6 +223,10 @@
   "addSomethingHere": "在此处添加内容",
   "addToCalendar": "添加到日历",
   "admin": "管理员",
+  "agenda": "議程",
+  "@agenda": {
+    "description": "議程分頁標籤。"
+  },
   "agendaPromptReady": "您的活动已准备好开始！",
   "agendaPromptWaiting": "等待主持人开始活动...",
   "agreeAndContinue": "同意并继续",
@@ -661,6 +665,10 @@
   "welcome": "欢迎来到 Frankly",
   "welcomeName": "您好，{name}",
   "welcomeToApp": "欢迎来到 {appName}",
+  "whenNewEventsAreAddedYoullSeeThemHere": "新增活動將會顯示於此。",
+  "@whenNewEventsAreAddedYoullSeeThemHere": {
+    "description": "活動頁面無資料時的副標題。"
+  },
   "whenNewItemsAdded": "当添加新的{name}时，您将在此处看到它们。",
   "whenYouUpgrade": "当您升级时",
   "whoElseWouldBenefitFromTheseEvents": "还有谁会从这些活动中受益？",
@@ -735,5 +743,30 @@
   },
   "featuredTags": "精选标签",
   "tags": "标签",
-  "templateTitleRequired": "模板标题是必填项"
+  "templateTitleRequired": "模板标题是必填项",
+  "ctas": "行动呼吁",
+  "@ctas": {
+    "description": "CTAs（行动呼吁）分页标签。"
+  },
+  "somethingWentWrongLoadingEvents": "载入活动时出错。",
+  "noUpcomingEvents": "没有即来活动。",
+  "seeAll": "看全部",
+  "moreFrom": "更多来自{name}的內容",
+  "@moreFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createEventFromTemplate": "使用此模板{isMobile}创建活动",
+  "@createEventFromTemplate": {
+    "placeholders": {
+      "isMobile": {
+        "type": "String"
+      }
+    }
+  },
+  "addPreEvent": "添加活动前内容",
+  "addPostEvent": "添加活动后内容"
 }

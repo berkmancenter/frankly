@@ -178,6 +178,10 @@
   "addSomethingHere": "Add something here",
   "addToCalendar": "Add to calendar",
   "admin": "Admin",
+  "agenda": "Agenda",
+  "@agenda": {
+    "description": "Tab label for the agenda section."
+  },
   "agendaPromptReady": "Your event is ready to start!",
   "agendaPromptWaiting": "Waiting for host to start the event...",
   "agreeAndContinue": "Agree and continue",
@@ -618,6 +622,10 @@
   "welcome": "Welcome to Frankly",
   "welcomeName": "Welcome, {name}",
   "welcomeToApp": "Welcome to {appName}",
+  "whenNewEventsAreAddedYoullSeeThemHere": "When new events are added, you'll see them here.",
+  "@whenNewEventsAreAddedYoullSeeThemHere": {
+    "description": "Subtitle for empty events page."
+  },
   "whenNewItemsAdded": "When new {name} are added, you'll see them here.",
   "whenYouUpgrade": "when you upgrade",
   "whoElseWouldBenefitFromTheseEvents": "Who else would benefit from these events?",
@@ -692,5 +700,30 @@
   },
   "featuredTags": "Featured Tags",
   "tags": "Tags",
-  "templateTitleRequired": "Template title is required"
+  "templateTitleRequired": "Template title is required",
+  "ctas": "CTAs",
+  "@ctas": {
+    "description": "Tab label for CTAs (Calls to Action) section."
+  },
+  "somethingWentWrongLoadingEvents": "Something went wrong loading events.",
+  "noUpcomingEvents": "No upcoming events.",
+  "seeAll": "See All",
+  "moreFrom": "More from {name}",
+  "@moreFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createEventFromTemplate": "Create an event{isMobile}from this template",
+  "@createEventFromTemplate": {
+    "placeholders": {
+      "isMobile": {
+        "type": "String"
+      }
+    }
+  },
+  "addPreEvent": "Add Pre-Event",
+  "addPostEvent": "Add Post-Event"
 }

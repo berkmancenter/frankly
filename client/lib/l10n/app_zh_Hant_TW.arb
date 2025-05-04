@@ -216,6 +216,10 @@
   "addSomethingHere": "在此處新增內容",
   "addToCalendar": "新增至日曆",
   "admin": "管理員",
+  "agenda": "議程",
+  "@agenda": {
+    "description": "議程分頁標籤。"
+  },
   "agendaPromptReady": "您的活動已準備好開始！",
   "agendaPromptWaiting": "等待主持人開始活動...",
   "agreeAndContinue": "同意並繼續",
@@ -652,6 +656,10 @@
   "welcome": "歡迎來到 Frankly",
   "welcomeName": "您好，{name}",
   "welcomeToApp": "歡迎來到 {appName}",
+  "whenNewEventsAreAddedYoullSeeThemHere": "新增活動將會顯示於此。",
+  "@whenNewEventsAreAddedYoullSeeThemHere": {
+    "description": "活動頁面無資料時的副標題。"
+  },
   "whenNewItemsAdded": "當新增{name}時，您將在此處看到它們。",
   "whenYouUpgrade": "當您升級時",
   "whoElseWouldBenefitFromTheseEvents": "還有誰會從這些活動中受益？",
@@ -726,5 +734,30 @@
   },
   "featuredTags": "精選標籤",
   "tags": "標籤",
-  "templateTitleRequired": "模板標題是必填項"
+  "templateTitleRequired": "模板標題是必填項",
+  "ctas": "行動呼籲",
+  "@ctas": {
+    "description": "CTAs（行動呼籲）分頁標籤。"
+  },
+  "somethingWentWrongLoadingEvents": "載入活動時出錯。",
+  "noUpcomingEvents": "沒有即將到來的活動。",
+  "seeAll": "查看全部",
+  "moreFrom": "更多來自{name}的內容",
+  "@moreFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createEventFromTemplate": "使用此模板{isMobile}建立活動",
+  "@createEventFromTemplate": {
+    "placeholders": {
+      "isMobile": {
+        "type": "String"
+      }
+    }
+  },
+  "addPreEvent": "新增活動前內容",
+  "addPostEvent": "新增活動後內容"
 }
