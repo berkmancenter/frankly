@@ -269,7 +269,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: context.theme.colorScheme.primary,
+                color: context.theme.colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
