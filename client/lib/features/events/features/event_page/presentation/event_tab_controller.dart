@@ -140,7 +140,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (localEventMessages.isEmpty) {
           return compact
               ? HeightConstrainedText(
-                  'No Announcements sent yet',
+                  'No announcements sent yet',
                   style: context.theme.textTheme.bodyMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),

@@ -391,7 +391,7 @@ class ConferenceRoom with ChangeNotifier {
       if (!granted) {
         await showAlert(
           navigatorState.context,
-          'Error enabling camera. Please ensure you have granted permission',
+          'Error enabling camera. Please ensure you have granted permission.',
         );
         return;
       }
@@ -424,7 +424,7 @@ class ConferenceRoom with ChangeNotifier {
       if (!granted) {
         await showAlert(
           navigatorState.context,
-          'Error enabling microphone. Please ensure you have granted permission',
+          'Error enabling microphone. Please ensure you have granted permission.',
         );
         return;
       }
