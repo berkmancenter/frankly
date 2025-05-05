@@ -166,8 +166,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
       child: FittedBox(
         fit: fit,
         clipBehavior: Clip.hardEdge,
-        child: Container(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
+        child: SizedBox(
           height: dimensions.height,
           width: dimensions.width,
           child: _buildVideoElement(),
@@ -314,74 +313,71 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     return Container(
-      color: context.theme.colorScheme.surfaceContainerHighest,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       child: Container(
-        color: context.theme.colorScheme.scrim.withScrimOpacity,
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: IntrinsicHeight(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: isMobile ? 16 : 30),
-                Flexible(
-                  child: Container(
-                    constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-                    child: UserProfileChip(
-                      userId: widget.participant.identity,
-                      showName: false,
-                      enableOnTap: false,
-                      imageHeight: 200,
-                      alignment: Alignment.center,
-                    ),
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.center,
+        child: IntrinsicHeight(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: isMobile ? 16 : 30),
+              Flexible(
+                child: Container(
+                  constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+                  child: UserProfileChip(
+                    userId: widget.participant.identity,
+                    showName: false,
+                    enableOnTap: false,
+                    imageHeight: 200,
+                    alignment: Alignment.center,
                   ),
                 ),
-                if (!isMobile) SizedBox(height: 10),
-                if (isConnecting)
-                  HeightConstrainedText(
-                    'Connecting...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: isMobile ? 12 : 16,
-                    ),
-                  )
-                else if (switchedOff && (_startedTimer?.isActive ?? false))
-                  Container(
-                    height: 20,
-                    alignment: Alignment.center,
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CustomLoadingIndicator(),
-                    ),
-                  )
-                else
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      HeightConstrainedText(
-                        'Video Off',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: isMobile ? 12 : 16,
-                        ),
-                      ),
-                      if (switchedOff) ...[
-                        SizedBox(width: 6),
-                        Icon(
-                          Icons.wifi_off,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: isMobile ? 12 : 16,
-                        ),
-                      ],
-                    ],
+              ),
+              if (!isMobile) SizedBox(height: 10),
+              if (isConnecting)
+                HeightConstrainedText(
+                  'Connecting...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: isMobile ? 12 : 16,
                   ),
-              ],
-            ),
+                )
+              else if (switchedOff && (_startedTimer?.isActive ?? false))
+                Container(
+                  height: 20,
+                  alignment: Alignment.center,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CustomLoadingIndicator(),
+                  ),
+                )
+              else
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      'Video Off',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: isMobile ? 12 : 16,
+                      ),
+                    ),
+                    if (switchedOff) ...[
+                      SizedBox(width: 6),
+                      Icon(
+                        Icons.wifi_off,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: isMobile ? 12 : 16,
+                      ),
+                    ],
+                  ],
+                ),
+            ],
           ),
         ),
       ),
