@@ -748,9 +748,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
       await showCustomDialog(
         builder: (context) => AppShareDialog(
-          title: 'SPREAD THE WORD',
+          title: 'Share this event',
           content: 'Who else would benefit from these events?',
-          iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
           appShareData: AppShareData(
             subject: 'Join an event with me on ${Environment.appName}!',
             body: "Let's have a conversation on ${Environment.appName}!",
