@@ -274,10 +274,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               height: 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: context.theme.colorScheme.outline,
-                  width: 1,
-                ),
               ),
               child: Center(
                 child: AppClickableWidget(
