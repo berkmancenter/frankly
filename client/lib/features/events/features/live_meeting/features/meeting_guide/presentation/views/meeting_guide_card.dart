@@ -242,7 +242,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       style: AppTextStyle.body.copyWith(
                         color: negativeTimeRemaining
                             ? context.theme.colorScheme.error
-                            : context.theme.colorScheme.onPrimaryContainer,
+                            : context.theme.colorScheme.onSurface,
                       ),
                     );
                   },

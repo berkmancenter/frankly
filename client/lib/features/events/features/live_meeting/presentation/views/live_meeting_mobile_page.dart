@@ -217,7 +217,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: Container(
-        color: context.theme.colorScheme.surfaceContainerHighest,
+        color: context.theme.colorScheme.surfaceContainer,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -960,6 +960,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     return PointerInterceptor(
       child: Container(
         decoration: BoxDecoration(
+          color: context.theme.colorScheme.surfaceContainer,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -971,7 +972,6 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
               color: Colors.black.withOpacity(0.5),
             ),
           ],
-          color: context.theme.colorScheme.surfaceContainerHigh,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
