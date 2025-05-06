@@ -772,5 +772,9 @@
     }
   },
   "addPreEvent": "Añadir Pre-Evento",
-  "addPostEvent": "Añadir Post-Evento"
+  "addPostEvent": "Añadir Post-Evento",
+  "editTemplate": "Editar plantilla",
+  "templateTitle": "Título",
+  "templateDescription": "Descripción",
+  "saveTemplate": "Guardar plantilla"
 }

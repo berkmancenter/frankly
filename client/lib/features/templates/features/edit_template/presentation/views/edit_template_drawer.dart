@@ -20,6 +20,9 @@ import 'edit_template_contract.dart';
 import '../../data/models/edit_template_model.dart';
 import '../edit_template_presenter.dart';
 
+import 'package:client/services.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 class EditTemplateDrawer extends StatefulWidget {
   const EditTemplateDrawer({Key? key}) : super(key: key);
 
@@ -63,6 +66,9 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
   }
 
   Widget _buildBody() {
+
+    final l10n = appLocalizationService.getLocalization();
+
     return Column(
       children: [
         SizedBox(height: 30),
@@ -73,7 +79,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Edit template',
+                l10n.editTemplate,
                 style: AppTextStyle.headlineSmall
                     .copyWith(fontSize: 16, color: AppColor.black),
               ),
@@ -124,10 +130,11 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
   }
 
   Widget _buildImageSection() {
+    final l10n = appLocalizationService.getLocalization();
     return Row(
       children: [
         Text(
-          'Image',
+          l10n.image,
           style: AppTextStyle.body.copyWith(color: AppColor.gray2),
         ),
         Spacer(),
@@ -151,8 +158,9 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
   }
 
   Widget _buildTitleSection() {
+    final l10n = appLocalizationService.getLocalization();
     return CustomTextField(
-      labelText: 'Title',
+      labelText: l10n.templateTitle,
       initialValue: _model.template.title,
       maxLines: 2,
       maxLength: 80,
@@ -162,8 +170,9 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
   }
 
   Widget _buildDescriptionSection() {
+    final l10n = appLocalizationService.getLocalization();
     return CustomTextField(
-      labelText: 'Description',
+      labelText: l10n.templateDescription,
       initialValue: _model.template.description,
       onChanged: (value) => _presenter.updateDescription(value),
     );
@@ -192,12 +201,13 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
     final templateToggleButtonText = _presenter.getTemplateButtonToggleText();
     final templateToggleButtonColor = _presenter.getTemplateButtonToggleColor();
     final canToggleTemplate = _presenter.canDeleteTemplate();
+    final l10n = appLocalizationService.getLocalization();
 
     return Column(
       children: [
         ActionButton(
           expand: true,
-          text: 'Save template',
+          text: l10n.saveTemplate,
           color: Theme.of(context).colorScheme.primary,
           textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => alertOnError(

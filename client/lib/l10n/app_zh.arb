@@ -768,5 +768,9 @@
     }
   },
   "addPreEvent": "添加活动前内容",
-  "addPostEvent": "添加活动后内容"
+  "addPostEvent": "添加活动后内容",
+  "editTemplate": "编辑模板",
+  "templateTitle": "标题",
+  "templateDescription": "描述",
+  "saveTemplate": "保存模板"
 }

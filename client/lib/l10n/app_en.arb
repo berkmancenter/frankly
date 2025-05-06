@@ -725,5 +725,9 @@
     }
   },
   "addPreEvent": "Add Pre-Event",
-  "addPostEvent": "Add Post-Event"
+  "addPostEvent": "Add Post-Event",
+  "editTemplate": "Edit template",
+  "templateTitle": "Title",
+  "templateDescription": "Description",
+  "saveTemplate": "Save template"
 }
