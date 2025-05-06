@@ -772,5 +772,8 @@
   "editTemplate": "编辑模板",
   "templateTitle": "标题",
   "templateDescription": "描述",
-  "saveTemplate": "保存模板"
+  "saveTemplate": "保存模板",
+  "removeTemplate": "删除模板",
+  "reactivate": "重新启用",
+  "templateTitleCannotBeEmpty": "模板标题不能為空"
 }

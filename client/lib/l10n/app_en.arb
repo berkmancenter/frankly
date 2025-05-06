@@ -729,5 +729,8 @@
   "editTemplate": "Edit template",
   "templateTitle": "Title",
   "templateDescription": "Description",
-  "saveTemplate": "Save template"
+  "saveTemplate": "Save template",
+  "removeTemplate": "Remove template",
+  "reactivate": "Reactivate",
+  "templateTitleCannotBeEmpty": "Template title cannot be empty"
 }

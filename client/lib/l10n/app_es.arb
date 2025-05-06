@@ -776,5 +776,8 @@
   "editTemplate": "Editar plantilla",
   "templateTitle": "Título",
   "templateDescription": "Descripción",
-  "saveTemplate": "Guardar plantilla"
+  "saveTemplate": "Guardar plantilla",
+  "removeTemplate": "Eliminar plantilla",
+  "reactivate": "Reactivar",
+  "templateTitleCannotBeEmpty": "El título de la plantilla no puede estar vacío"
 }

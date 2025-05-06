@@ -18,6 +18,8 @@ import 'package:provider/provider.dart';
 import 'views/edit_template_contract.dart';
 import '../data/models/edit_template_model.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class EditTemplatePresenter {
   final EditTemplateView _view;
   final EditTemplateModel _model;
@@ -176,11 +178,12 @@ class EditTemplatePresenter {
   }
 
   String getTemplateButtonToggleText() {
+    final l10n = appLocalizationService.getLocalization();
     switch (_model.template.status) {
       case TemplateStatus.active:
-        return 'Remove template';
+        return l10n.removeTemplate;
       case TemplateStatus.removed:
-        return 'Reactivate';
+        return l10n.reactivate;
     }
   }
 
@@ -206,8 +209,9 @@ class EditTemplatePresenter {
 class EditTemplatePresenterHelper {
   String? areChangesValid(Template template) {
     final title = template.title;
+    final l10n = appLocalizationService.getLocalization();
     if (title == null || title.isEmpty) {
-      return 'Title cannot be empty';
+      return l10n.templateTitleCannotBeEmpty;
     }
 
     return null;
