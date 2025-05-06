@@ -16,8 +16,8 @@ class CustomTextField extends StatefulWidget {
   final String? labelText;
   final String? hintText;
   final String? initialValue;
-  final int? maxLines;
-  final int? minLines;
+  final int maxLines;
+  final int minLines;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextEditingController? controller;
@@ -63,7 +63,6 @@ class CustomTextField extends StatefulWidget {
 
   /// Allow for custom suffix icon
   final Widget? suffixIcon;
-
 
   const CustomTextField({
     Key? key,
@@ -135,7 +134,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue ?? '');
-    
+
     _focusNode.addListener(() {
       setState(() {
         _hasFocus = _focusNode.hasFocus;
@@ -237,12 +236,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   }
                 },
                 controller: _controller,
-                style:  widget.textStyle ?? context.theme.textTheme.bodyMedium,
+                style: widget.textStyle ?? context.theme.textTheme.bodyMedium,
                 onEditingComplete: widget.onEditingComplete,
                 // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
                 // while not having to specify max lines for every single usage 🙄
-                maxLines: (widget.maxLength != null &&
-                        widget.minLines! > widget.maxLines!)
+                maxLines: widget.minLines.compareTo(widget.maxLines).isNegative
                     ? widget.minLines
                     : widget.maxLines,
                 minLines: widget.minLines,
