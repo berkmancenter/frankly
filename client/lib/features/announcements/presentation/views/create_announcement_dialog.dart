@@ -54,7 +54,8 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
           children: [
             SizedBox(height: 50),
             HeightConstrainedText(
-              'Create New Announcement',
+              // 'Create New Announcement',
+              context.l10n.createNewAnnouncement,
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
