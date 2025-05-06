@@ -105,7 +105,6 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton> {
   bool _isSending = false;
-  final bool _hover = false;
 
   @override
   void initState() {
@@ -258,21 +257,23 @@ class _ActionButtonState extends State<ActionButton> {
     }
 
     if (widget.expand) {
-      return Semantics(
-        button: true,
-        focused: _hover,
-        enabled: onPressed != null,
-        label: widget.text,
-        child: Expanded(child: button),
+      return _semanticsWrappedButton(
+        Expanded(child: button),
       );
     }
 
+    return _semanticsWrappedButton(
+      button,
+    );
+  }
+
+  Widget _semanticsWrappedButton(child) {
     return Semantics(
       button: true,
-      focused: _hover,
-      enabled: onPressed != null,
+      focused: false,
+      enabled: widget.onPressed != null,
       label: widget.text,
-      child: button,
+      child: child,
     );
   }
 
