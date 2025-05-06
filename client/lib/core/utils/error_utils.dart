@@ -99,7 +99,7 @@ Function()? callback ,
     loggingService.log(s, logType: LogType.error);
 
     final sanitizedError = sanitizeError(e.toString());
-    // TODO: This can probably be done in a more elegant fashion
+    
     if (e is FirebaseAuthException) {
       errorCallback(sanitizedError, e.code);
     } else if (e is VisibleException) {
