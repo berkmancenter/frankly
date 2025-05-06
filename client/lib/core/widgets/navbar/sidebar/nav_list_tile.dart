@@ -12,6 +12,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +74,9 @@ class _NavListItemState extends State<NavListItem> {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
               child: HeightConstrainedText(
                 widget.community.name ?? 'Unnamed Community',
-                style: AppTextStyle.body.copyWith(color: AppColor.gray1),
+                style: context.theme.textTheme.bodyMedium!.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
+                ),
               ),
             ),
           ),
