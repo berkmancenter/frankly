@@ -182,16 +182,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
         );
   }
 
-  TextStyle _buildTextStyle({bool isError = false}) {
-    return widget.textStyle ??
-        AppTextStyle.body.copyWith(
-          color: isError
-              ? context.theme.colorScheme.error
-              : context.theme.colorScheme.primary,
-              fontSize: isError ? 12 : AppTextStyle.body.fontSize,
-        );
-  }
-
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
         AppTextStyle.bodySmall
@@ -247,7 +237,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   }
                 },
                 controller: _controller,
-                style: _buildTextStyle(),
+                style:  widget.textStyle ?? context.theme.textTheme.bodyMedium,
                 onEditingComplete: widget.onEditingComplete,
                 // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
                 // while not having to specify max lines for every single usage 🙄
@@ -304,12 +294,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   errorBorder: _getBorder(isError: true),
                   labelText: widget.labelText,
                   labelStyle: _buildLabelStyle(),
-                  errorStyle: _buildTextStyle(isError: true),
+                  errorStyle: context.theme.textTheme.labelMedium!
+                      .copyWith(color: context.theme.colorScheme.error),
                   prefixText: widget.prefixText,
                   prefixStyle: widget.textStyle,
                   alignLabelWithHint: true,
                   hintText: widget.hintText,
-                  hintStyle: _buildTextStyle(),
+                  hintStyle: context.theme.textTheme.bodyMedium,
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
                   suffixIcon: widget.suffixIcon,
