@@ -240,7 +240,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onEditingComplete: widget.onEditingComplete,
                 // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
                 // while not having to specify max lines for every single usage 🙄
-                maxLines: widget.minLines.compareTo(widget.maxLines).isNegative
+                maxLines: !widget.minLines.compareTo(widget.maxLines).isNegative
                     ? widget.minLines
                     : widget.maxLines,
                 minLines: widget.minLines,
