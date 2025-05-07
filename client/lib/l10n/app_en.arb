@@ -766,5 +766,12 @@
         "type": "String"
       }
     }
+  },
+  "editSettings": "Edit settings",
+  "publicOrPrivate": "Public or Private?",
+  "iWillShareThisWithAPrivateGroup": "I'll share this with a private group",
+  "allowTheCommunityToJoin": "Allow the community to join",
+  "@allowTheCommunityToJoin": {
+    "description": "Description for public event visibility"
   }
 }

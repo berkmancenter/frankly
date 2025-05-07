@@ -800,5 +800,12 @@
         "type": "String"
       }
     }
+  },
+  "editSettings": "編輯設定",
+  "publicOrPrivate": "公開或私人？",
+  "iWillShareThisWithAPrivateGroup": "我會與私人群組分享這個活動",
+  "allowTheCommunityToJoin": "允許社群加入",
+  "@allowTheCommunityToJoin": {
+    "description": "公開活動可見性的說明"
   }
 }

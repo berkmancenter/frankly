@@ -809,5 +809,12 @@
         "type": "String"
       }
     }
+  },
+  "editSettings": "编辑设置",
+  "publicOrPrivate": "公开或私人？",
+  "iWillShareThisWithAPrivateGroup": "我会与私人群组分享这个活动",
+  "allowTheCommunityToJoin": "允许社群加入",
+  "@allowTheCommunityToJoin": {
+    "description": "公开活动可见性的说明"
   }
 }

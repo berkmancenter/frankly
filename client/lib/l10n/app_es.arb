@@ -813,5 +813,12 @@
         "type": "String"
       }
     }
+  },
+  "editSettings": "Editar configuración",
+  "publicOrPrivate": "Público o Privado?",
+  "iWillShareThisWithAPrivateGroup": "Compartiré esto con un grupo privado",
+  "allowTheCommunityToJoin": "Permitir que la comunidad se una",
+  "@allowTheCommunityToJoin": {
+    "description": "Descripción para la visibilidad pública del evento"
   }
 }

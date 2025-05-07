@@ -8,6 +8,11 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
+import 'package:client/services.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
+
+final l10n = appLocalizationService.getLocalization();
 
 enum _VisibilityType {
   public,
@@ -15,8 +20,8 @@ enum _VisibilityType {
 }
 
 final _visibilityTypeDescriptionLookup = <_VisibilityType, String>{
-  _VisibilityType.public: 'Allow the community to join',
-  _VisibilityType.private: 'I\'ll share this with a private group',
+  _VisibilityType.public: l10n.allowTheCommunityToJoin,
+  _VisibilityType.private: l10n.iWillShareThisWithAPrivateGroup,
 };
 
 class SelectVisibilityPage extends StatefulWidget {
@@ -35,7 +40,7 @@ class _SelectVisibilityPageState extends State<SelectVisibilityPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         HeightConstrainedText(
-          'Public or private?',
+          context.l10n.publicOrPrivate,
           style: AppTextStyle.headline1,
         ),
         SizedBox(height: 20),

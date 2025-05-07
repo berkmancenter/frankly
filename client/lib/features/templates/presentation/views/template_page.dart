@@ -712,6 +712,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
       .canEditTemplate(widget.template);
 
   Widget _buildSettingsButton() {
+    final l10n = appLocalizationService.getLocalization();
     return CircleIconButton(
       icon: Icons.settings_outlined,
       onPressed: () => Dialogs.showAppDrawer(
@@ -731,11 +732,12 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           ),
         ),
       ),
-      toolTipText: 'Edit settings',
+      toolTipText: l10n.editSettings,
     );
   }
 
   Widget _buildEditButton() {
+    final l10n = appLocalizationService.getLocalization();
     final communityProvider = context.read<CommunityProvider>();
 
     return CircleIconButton(
@@ -771,7 +773,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           child: EditTemplateDrawer(),
         ),
       ),
-      toolTipText: 'Edit template',
+      toolTipText: l10n.editTemplate,
     );
   }
 
