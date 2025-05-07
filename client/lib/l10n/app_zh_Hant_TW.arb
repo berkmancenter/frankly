@@ -363,7 +363,14 @@
   "errorOccurred": "發生錯誤",
   "eventDescription": "活動描述",
   "eventDetails": "活動詳情",
-  "eventIsLocked": "此活動已鎖定",
+  "eventIsLocked": "活動已鎖定",
+  "prePostCardMessage": "輸入訊息。例如，活動{beforeAfter}請填寫此問卷",
+  "@prePostCardMessage": {
+    "description": "活動前後問卷訊息提示，含 before/after 佔位符",
+    "placeholders": {
+      "beforeAfter": {}
+    }
+  },
   "eventLocked": "此活動已鎖定",
   "eventTabsContent": "活動標籤內容",
   "eventTitle": "活動標題",
@@ -767,5 +774,31 @@
   "saveTemplate": "保存模板",
   "removeTemplate": "刪除模板",
   "reactivate": "重新啟用",
-  "templateTitleCannotBeEmpty": "模板標題不能為空"
+  "templateTitleCannotBeEmpty": "模板標題不能為空",
+  "enterUrl": "輸入網址",
+  "buttonText": "按鈕文字",
+  "@buttonText": {
+    "description": "使用者輸入按鈕文字的文字欄標籤"
+  },
+  "@enterUrl": {
+    "description": "使用者輸入網址的文字欄標籤"
+  },
+  "before": "之前",
+  "after": "之後",
+  "whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": "你想在活動{beforeAfter}給參與者顯示什麼訊息？",
+  "@whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
+  "addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": "新增參與者應該在活動{beforeAfter}造訪的操作連結",
+  "@addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  }
 }

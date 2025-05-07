@@ -376,6 +376,13 @@
   "eventDescription": "Descripción del evento",
   "eventDetails": "Detalles del evento",
   "eventIsLocked": "Este evento está bloqueado",
+  "prePostCardMessage": "Ingrese el mensaje. Por ejemplo, complete esta encuesta {beforeAfter} el evento",
+  "@prePostCardMessage": {
+    "description": "Mensaje de ejemplo para encuesta antes/después del evento, con placeholder beforeAfter",
+    "placeholders": {
+      "beforeAfter": {}
+    }
+  },
   "eventLocked": "Este evento está bloqueado",
   "eventTabsContent": "contenido-pestañas-evento",
   "eventTitle": "Título del evento",
@@ -780,5 +787,31 @@
   "saveTemplate": "Guardar plantilla",
   "removeTemplate": "Eliminar plantilla",
   "reactivate": "Reactivar",
-  "templateTitleCannotBeEmpty": "El título de la plantilla no puede estar vacío"
+  "templateTitleCannotBeEmpty": "El título de la plantilla no puede estar vacío",
+  "enterUrl": "Ingrese URL",
+  "buttonText": "Texto del botón",
+  "@buttonText": {
+    "description": "Etiqueta para el campo de texto donde los usuarios ingresan el texto del botón"
+  },
+  "@enterUrl": {
+    "description": "Etiqueta para el campo de texto donde los usuarios ingresan una URL"
+  },
+  "before": "antes",
+  "after": "después",
+  "whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": "¿Qué mensaje quieres mostrar a los participantes {beforeAfter} el evento?",
+  "@whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
+  "addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": "Añadir enlaces de acción que los participantes deben visitar {beforeAfter} el evento",
+  "@addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  }
 }

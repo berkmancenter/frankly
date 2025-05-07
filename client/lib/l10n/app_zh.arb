@@ -371,6 +371,13 @@
   "eventDescription": "活动描述",
   "eventDetails": "活动详情",
   "eventIsLocked": "此活动已锁定",
+  "prePostCardMessage": "輸入訊息。例如，活動{beforeAfter}請填寫此問卷",
+  "@prePostCardMessage": {
+    "description": "活動前後問卷訊息提示，含 before/after 佔位符",
+    "placeholders": {
+      "beforeAfter": {}
+    }
+  },
   "eventLocked": "此活动已锁定",
   "eventTabsContent": "事件选项卡内容",
   "eventTitle": "活动标题",
@@ -776,5 +783,31 @@
   "saveTemplate": "保存模板",
   "removeTemplate": "删除模板",
   "reactivate": "重新启用",
-  "templateTitleCannotBeEmpty": "模板标题不能為空"
+  "templateTitleCannotBeEmpty": "模板标题不能為空",
+  "enterUrl": "输入网址",
+  "buttonText": "按钮文字",
+  "@buttonText": {
+    "description": "用户输入按钮文字的文本框标签"
+  },
+  "@enterUrl": {
+    "description": "用户输入网址的文本框标签"
+  },
+  "before": "之前",
+  "after": "之后",
+  "whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": "你想在活动{beforeAfter}给参与者显示什么消息？",
+  "@whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
+  "addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": "新增参与者应该在活动{beforeAfter}访问的操作链接",
+  "@addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  }
 }

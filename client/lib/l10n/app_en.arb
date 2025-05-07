@@ -326,6 +326,13 @@
   "eventDescription": "Event Description",
   "eventDetails": "Event Details",
   "eventIsLocked": "This event is locked",
+  "prePostCardMessage": "Enter Message. Eg, Take this survey {beforeAfter} the event",
+  "@prePostCardMessage": {
+    "description": "Message hint for pre/post event survey, with beforeAfter placeholder",
+    "placeholders": {
+      "beforeAfter": {}
+    }
+  },
   "eventLocked": "This event is locked",
   "eventTabsContent": "event-tabs-content",
   "eventTitle": "Event Title",
@@ -733,5 +740,31 @@
   "saveTemplate": "Save template",
   "removeTemplate": "Remove template",
   "reactivate": "Reactivate",
-  "templateTitleCannotBeEmpty": "Template title cannot be empty"
+  "templateTitleCannotBeEmpty": "Template title cannot be empty",
+  "enterUrl": "Enter URL",
+  "buttonText": "Button Text",
+  "@buttonText": {
+    "description": "Label for the text field where users enter the button text"
+  },
+  "@enterUrl": {
+    "description": "Label for the text field where users enter a URL"
+  },
+  "before": "before",
+  "after": "after",
+  "whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": "What message do you want to show participants {beforeAfter} the event?",
+  "@whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
+  "addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": "Add action links participants should visit {beforeAfter} the event",
+  "@addActionLinksParticipantsShouldVisitBeforeAfterTheEvent": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  }
 }
