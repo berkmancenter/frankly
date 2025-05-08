@@ -104,8 +104,6 @@ class _AppState extends State<App> {
           shortcuts: {
             ...WidgetsApp.defaultShortcuts,
             LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
-            LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
-                DoNothingIntent(),
             LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
             LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
             LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
