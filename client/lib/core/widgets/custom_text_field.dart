@@ -15,6 +15,7 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsets padding;
   final String? labelText;
   final String? hintText;
+  final String? helperText;
   final String? initialValue;
   final int maxLines;
   final int minLines;
@@ -74,13 +75,14 @@ class CustomTextField extends StatefulWidget {
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
+    this.helperText,
     this.labelStyle,
     this.controller,
     this.onChanged,
     this.onEditingComplete,
     this.borderType = BorderType.outline,
     this.contentPadding =
-        const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        const EdgeInsets.symmetric(horizontal: 10),
     this.borderRadius = 5,
     this.backgroundColor,
     this.focusNode,
@@ -267,6 +269,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 errorBorder: _getBorder(isError: true),
                 labelText: widget.labelText,
                 labelStyle: _buildLabelStyle(),
+                
                 errorStyle: context.theme.textTheme.labelMedium!
                     .copyWith(color: context.theme.colorScheme.error),
                 prefixText: widget.prefixText,
@@ -274,6 +277,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 alignLabelWithHint: true,
                 hintText: widget.hintText,
                 hintStyle: context.theme.textTheme.bodyMedium,
+                      helperText: widget.helperText, 
                 fillColor: widget.fillColor,
                 filled: widget.fillColor != null,
                 suffixIcon: widget.suffixIcon,
