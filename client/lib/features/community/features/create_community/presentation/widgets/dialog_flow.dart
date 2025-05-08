@@ -240,7 +240,7 @@ class _DialogFlowState extends State<DialogFlow> {
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
-        if (_onStep != 3) ...[
+        if (_onStep != 2) ...[
           _buildNextButton(),
           SizedBox(height: 20),
         ],
@@ -251,7 +251,7 @@ class _DialogFlowState extends State<DialogFlow> {
   Widget _buildStepContent() {
     switch (_onStep) {
       case 1:
-        return _buildStepTwoContent();
+        // return _buildStepTwoContent();
         return _buildStepOneContent();
 
       case 2:
