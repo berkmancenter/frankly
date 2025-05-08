@@ -250,10 +250,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       : null,
               maxLengthEnforcement: widget.maxLengthEnforcement,
               inputFormatters: [
-                if (!_shiftPressed &&
-                    !responsiveLayoutService.isMobile(context) &&
-                    widget.onEditingComplete != null)
-                  DoNotAllowNewLineAtEnd(),
                 if (widget.isOnlyDigits) FilteringTextInputFormatter.digitsOnly,
                 if (widget.numberThreshold != null)
                   NumberThresholdFormatter(widget.numberThreshold!),
