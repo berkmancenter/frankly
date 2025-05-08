@@ -15,10 +15,9 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsets padding;
   final String? labelText;
   final String? hintText;
-  final String? helperText;
   final String? initialValue;
-  final int? maxLines;
-  final int? minLines;
+  final int maxLines;
+  final int minLines;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextEditingController? controller;
@@ -65,13 +64,11 @@ class CustomTextField extends StatefulWidget {
   /// Allow for custom suffix icon
   final Widget? suffixIcon;
 
-
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
     this.labelText,
     this.hintText,
-    this.helperText,
     this.initialValue,
     this.maxLines = 1,
     this.minLines = 1,
@@ -120,7 +117,6 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   late FocusNode _focusNode;
   late TextEditingController _controller;
-  bool _shiftPressed = false;
   bool _hasFocus = false;
 
   void _unfocus() {
@@ -137,7 +133,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue ?? '');
-    
+
     _focusNode.addListener(() {
       setState(() {
         _hasFocus = _focusNode.hasFocus;
@@ -184,16 +180,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
         );
   }
 
-  TextStyle _buildTextStyle({bool isError = false}) {
-    return widget.textStyle ??
-        AppTextStyle.body.copyWith(
-          color: isError
-              ? context.theme.colorScheme.error
-              : context.theme.colorScheme.primary,
-              fontSize: isError ? 12 : AppTextStyle.body.fontSize,
-        );
-  }
-
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
         AppTextStyle.bodySmall
@@ -210,132 +196,106 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-        child: KeyboardListener(
-          focusNode: FocusNode(),
-          onKeyEvent: (event) {
-            final isEventShiftKey =
-                event.logicalKey == LogicalKeyboardKey.shiftLeft ||
-                    event.logicalKey == LogicalKeyboardKey.shiftRight;
-            if (_shiftPressed != isEventShiftKey) {
-              setState(() => _shiftPressed = isEventShiftKey);
-            }
-
-            if (widget.onEditingComplete != null &&
-                event.runtimeType == KeyDownEvent &&
-                !isEventShiftKey &&
-                event.logicalKey == LogicalKeyboardKey.enter) {
-              widget.onEditingComplete!();
-              if (widget.unfocusOnSubmit) {
+        child: Stack(
+          children: [
+            TextFormField(
+              onTap: () {
                 _unfocus();
-              }
-            }
-          },
-          child: Stack(
-            children: [
-              TextFormField(
-                onTap: () {
-                  _unfocus();
-                  final localOnTap = widget.onTap;
-                  if (localOnTap != null) {
-                    localOnTap();
-                  }
-                },
-                focusNode: _focusNode,
-                textInputAction: TextInputAction.none,
-                onChanged: (text) {
-                  final onChanged = widget.onChanged;
-                  if (onChanged != null) {
-                    onChanged(text);
-                  }
-                },
-                controller: _controller,
-                style: _buildTextStyle(),
-                onEditingComplete: widget.onEditingComplete,
-                // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
-                // while not having to specify max lines for every single usage 🙄
-                maxLines: (widget.maxLines != null &&
-                        widget.minLines! > widget.maxLines!)
-                    ? widget.minLines
-                    : widget.maxLines,
-                minLines: widget.minLines,
-                obscureText: widget.obscureText,
-                cursorColor:
-                    widget.cursorColor ?? context.theme.colorScheme.primary,
-                cursorHeight: 15,
-                autovalidateMode: widget.autovalidateMode,
-                maxLength: widget.maxLength,
-                buildCounter: (
-                  _, {
-                  required currentLength,
-                  required maxLength,
-                  required isFocused,
-                }) =>
-                    maxLength != null && isFocused && !widget.hideCounter
-                        ? Container(
-                            margin: EdgeInsets.only(left: 10),
-                            alignment: widget.counterAlignment ??
-                                Alignment.centerRight,
-                            child: Text(
-                              '$currentLength/$maxLength',
-                              style:
-                                  widget.counterStyle ?? AppTextStyle.bodySmall,
-                            ),
-                          )
-                        : null,
-                maxLengthEnforcement: widget.maxLengthEnforcement,
-                inputFormatters: [
-                  if (!_shiftPressed &&
-                      !responsiveLayoutService.isMobile(context) &&
-                      widget.onEditingComplete != null)
-                    DoNotAllowNewLineAtEnd(),
-                  if (widget.isOnlyDigits)
-                    FilteringTextInputFormatter.digitsOnly,
-                  if (widget.numberThreshold != null)
-                    NumberThresholdFormatter(widget.numberThreshold!),
-                ],
-                validator: widget.validator,
-                decoration: InputDecoration(
-                  contentPadding: widget.contentPadding,
-                  border: _getBorder(),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 3.0,
-                    ),
+                final localOnTap = widget.onTap;
+                if (localOnTap != null) {
+                  localOnTap();
+                }
+              },
+              onChanged: (text) {
+                final onChanged = widget.onChanged;
+                if (onChanged != null) {
+                  onChanged(text);
+                }
+              },
+              onFieldSubmitted: (value) {widget.onEditingComplete?.call();},
+              focusNode: _focusNode,
+              textInputAction: TextInputAction.none,
+              controller: _controller,
+              style: widget.textStyle ?? context.theme.textTheme.bodyMedium,
+              onEditingComplete: widget.onEditingComplete,
+              // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
+              // while not having to specify max lines for every single usage 🙄
+              maxLines: !widget.minLines.compareTo(widget.maxLines).isNegative
+                  ? widget.minLines
+                  : widget.maxLines,
+              minLines: widget.minLines,
+              obscureText: widget.obscureText,
+              cursorColor:
+                  widget.cursorColor ?? context.theme.colorScheme.primary,
+              cursorHeight: 15,
+              autovalidateMode: widget.autovalidateMode,
+              maxLength: widget.maxLength,
+              buildCounter: (
+                _, {
+                required currentLength,
+                required maxLength,
+                required isFocused,
+              }) =>
+                  maxLength != null && isFocused && !widget.hideCounter
+                      ? Container(
+                          margin: EdgeInsets.only(left: 10),
+                          alignment:
+                              widget.counterAlignment ?? Alignment.centerRight,
+                          child: Text(
+                            '$currentLength/$maxLength',
+                            style:
+                                widget.counterStyle ?? AppTextStyle.bodySmall,
+                          ),
+                        )
+                      : null,
+              maxLengthEnforcement: widget.maxLengthEnforcement,
+              inputFormatters: [
+                if (widget.isOnlyDigits) FilteringTextInputFormatter.digitsOnly,
+                if (widget.numberThreshold != null)
+                  NumberThresholdFormatter(widget.numberThreshold!),
+              ],
+              validator: widget.validator,
+              decoration: InputDecoration(
+                contentPadding: widget.contentPadding,
+                border: _getBorder(),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 3.0,
                   ),
-                  enabledBorder: _getBorder(),
-                  errorBorder: _getBorder(isError: true),
-                  labelText: widget.labelText,
-                  labelStyle: _buildLabelStyle(),
-                  errorStyle: _buildTextStyle(isError: true),
-                  prefixText: widget.prefixText,
-                  prefixStyle: widget.textStyle,
-                  alignLabelWithHint: true,
-                  hintText: widget.hintText,
-                  hintStyle: _buildTextStyle(),
-                  helperText: widget.helperText,
-                  fillColor: widget.fillColor,
-                  filled: widget.fillColor != null,
-                  suffixIcon: widget.suffixIcon,
                 ),
-                autofocus: widget.autofocus,
-                readOnly: widget.readOnly,
-                keyboardType: TextInputType.multiline,
+                enabledBorder: _getBorder(),
+                errorBorder: _getBorder(isError: true),
+                labelText: widget.labelText,
+                labelStyle: _buildLabelStyle(),
+                errorStyle: context.theme.textTheme.labelMedium!
+                    .copyWith(color: context.theme.colorScheme.error),
+                prefixText: widget.prefixText,
+                prefixStyle: widget.textStyle,
+                alignLabelWithHint: true,
+                hintText: widget.hintText,
+                hintStyle: context.theme.textTheme.bodyMedium,
+                fillColor: widget.fillColor,
+                filled: widget.fillColor != null,
+                suffixIcon: widget.suffixIcon,
               ),
-              if (widget.isOptional &&
-                  !_focusNode.hasFocus &&
-                  _controller.text.isEmpty)
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: _buildOptionalPadding(),
-                    child: Text(
-                      'Optional',
-                      style: _buildOptionalTextStyle(),
-                    ),
+              autofocus: widget.autofocus,
+              readOnly: widget.readOnly,
+              keyboardType: TextInputType.multiline,
+            ),
+            if (widget.isOptional &&
+                !_focusNode.hasFocus &&
+                _controller.text.isEmpty)
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: _buildOptionalPadding(),
+                  child: Text(
+                    'Optional',
+                    style: _buildOptionalTextStyle(),
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

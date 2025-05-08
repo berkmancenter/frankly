@@ -45,7 +45,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _submitController = SubmitNotifier();
 
   bool isEmailValid(String email) {
     return RegExp(
@@ -179,6 +178,15 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     );
   }
 
+  void _submitForm() {
+    authMessageOnError(
+      _onSubmit,
+      errorCallback: (error, code) => setState(
+        () => _formError = code,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -264,6 +272,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     controller: _displayNameController,
                     labelText: 'Full Name',
                     hintText: 'e.g. Jane Doe',
+                    onEditingComplete: () => _submitForm(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a valid name';
@@ -279,6 +288,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               borderType: BorderType.underline,
               controller: _emailController,
               labelText: 'Email',
+              onEditingComplete: () => _submitForm(),
               validator: (value) {
                 if (value == null || value.isEmpty || !isEmailValid(value)) {
                   return 'Please enter a valid email';
@@ -291,7 +301,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               key: SignInOptionsContent.passwordTextFieldKey,
               borderType: BorderType.underline,
               controller: _passwordController,
-              onEditingComplete: () => _submitController.submit(),
+              onEditingComplete: () => _submitForm(),
               labelText: 'Password',
               obscureText: !_showPassword,
               suffixIcon: Padding(
@@ -346,8 +356,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                         setState(() {
                           _ignorePassword = true;
                         });
-                        if(_formKey.currentState!.validate()){
-                          _resetPassword();}
+                        if (_formKey.currentState!.validate()) {
+                          _resetPassword();
+                        }
                       },
                     style: context.theme.textTheme.bodySmall?.copyWith(
                       decoration: TextDecoration.underline,
