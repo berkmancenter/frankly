@@ -174,7 +174,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         AppTextStyle.body.copyWith(
           color: isError
               ? context.theme.colorScheme.error
-              : context.theme.colorScheme.onPrimaryContainer,
+              : context.theme.colorScheme.primary,
         );
   }
 
