@@ -45,12 +45,16 @@ class _SignInDialogState extends State<SignInDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+        
+      ),
       child: Stack(
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 300),
+            constraints: BoxConstraints(maxWidth: 400),
             child: ListView(
-              padding: EdgeInsets.all(20) + EdgeInsets.only(top: 20),
+              padding: EdgeInsets.all(40) + EdgeInsets.only(top: 30),
               shrinkWrap: true,
               children: [
                 SignInOptionsContent(
@@ -61,6 +65,8 @@ class _SignInDialogState extends State<SignInDialog> {
           ),
           if (widget.isDismissable)
             Positioned.fill(
+              right: 20,
+              top: 20, 
               child: Align(
                 alignment: Alignment.topRight,
                 child: IconButton(                  
