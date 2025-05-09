@@ -235,8 +235,10 @@ class _DialogFlowState extends State<DialogFlow> {
         SizedBox(height: 40),
         if (_onStep != 4) HeightConstrainedText('$_onStep of 3'),
         SizedBox(height: 10),
-        HeightConstrainedText(_stepText,
-            style: context.theme.textTheme.titleLarge,),
+        HeightConstrainedText(
+          _stepText,
+          style: context.theme.textTheme.titleLarge,
+        ),
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
@@ -341,7 +343,8 @@ class _DialogFlowState extends State<DialogFlow> {
           onNameChanged: (value) =>
               setState(() => _community = _community.copyWith(name: value)),
           onCustomDisplayIdChanged: (value) => setState(
-              () => _community = _community.copyWith(displayIds: [value]),),
+            () => _community = _community.copyWith(displayIds: [value]),
+          ),
           nameFocus: _nameFocus,
           community: _community,
         ),
@@ -354,6 +357,46 @@ class _DialogFlowState extends State<DialogFlow> {
             );
           },
           value: !(_community.isPublic ?? true),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ActionButton(
+              text: 'Finish',
+              color: context.theme.colorScheme.primary,
+              textColor: context.theme.colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(10),
+              // padding: const EdgeInsets.all(20),
+              onPressed: _isNextPageAvailable
+                  ? () async {
+                      if (_createCommunity) {
+                        await cloudFunctionsCommunityService.updateCommunity(
+                          UpdateCommunityRequest(
+                            community: _community,
+                            keys: [
+                              Community.kFieldThemeDarkColor,
+                              Community.kFieldThemeLightColor,
+                            ],
+                          ),
+                        );
+                        analytics.logEvent(
+                          AnalyticsUpdateCommunityMetadataEvent(
+                            communityId: _community.id,
+                          ),
+                        );
+                      }
+
+                      // Immediately proceed to created community
+                      Navigator.of(context).pop();
+                      routerDelegate.beamTo(
+                        CommunityPageRoutes(
+                          communityDisplayId: _community.displayId,
+                        ).communityHome,
+                      );
+                    }
+                  : null,
+            ),
+          ],
         ),
       ],
     );

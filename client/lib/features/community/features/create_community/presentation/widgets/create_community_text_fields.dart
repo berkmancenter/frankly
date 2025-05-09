@@ -7,7 +7,7 @@ import 'package:client/styles/styles.dart';
 class CreateCommunityTextFields extends StatefulWidget {
   final bool showChooseCustomDisplayId;
   final void Function(String) onNameChanged;
-  final void Function(String)? onCustomDisplayIdChanged;
+  final void Function(String) onCustomDisplayIdChanged;
   final FocusNode? nameFocus;
   final FocusNode? aboutFocus;
   final Community community;
@@ -57,6 +57,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           label: 'Name',
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
+            widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
             setState(() {
               // Update the displayId when the name changes
               _displayIdController.text = _formatDisplayIdFromName(val);
