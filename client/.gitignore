@@ -68,3 +68,6 @@ app.*.map.json
 .runtimeconfig.json 
 
 shared/build
+
+# Localization
+missing.json

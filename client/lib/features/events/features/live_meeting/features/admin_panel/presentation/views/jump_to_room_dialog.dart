@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class JumpToRoomDialog extends StatefulWidget {
   const JumpToRoomDialog();
@@ -28,19 +29,19 @@ class _JumpToRoomDialogState extends State<JumpToRoomDialog> {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         HeightConstrainedText(
-          'Room Number:',
+          context.l10n.roomNumber,
           textAlign: TextAlign.center,
         ),
         SizedBox(
           width: 60,
           child: CustomTextField(
-            hintText: 'Ex: 2',
+            hintText: context.l10n.enterRoomNumber,
             controller: _textController,
           ),
         ),
         ActionButton(
           onPressed: () => Navigator.of(context).pop(_textController.text),
-          text: 'View',
+          text: context.l10n.view,
           textColor: Theme.of(context).primaryColor,
         ),
       ],

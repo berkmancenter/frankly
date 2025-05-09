@@ -20,6 +20,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Widget that shows all templates within the community and lets you search through
 /// them and select them.
@@ -42,8 +43,8 @@ class _SelectTemplateState extends State<SelectTemplate> {
   }
 
   Widget _buildSearchBarField() {
-    return CustomTextField(
-      labelText: 'Search templates',
+  return CustomTextField(
+      labelText: context.l10n.searchTemplates,
       padding: EdgeInsets.zero,
       labelStyle: TextStyle(color: context.theme.colorScheme.primary),
       textStyle:
@@ -203,7 +204,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
             stackTrace: (snapshot.error as Error).stackTrace,
           );
 
-          return Text('There was an error loading event templates.');
+          return Text(context.l10n.thereWasAnErrorLoadingEventTemplates);
         } else if (!snapshot.hasData) {
           return Container(
             height: 400,

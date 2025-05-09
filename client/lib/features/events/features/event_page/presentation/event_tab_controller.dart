@@ -19,6 +19,7 @@ import 'package:client/features/events/features/event_page/presentation/views/pr
 import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -82,7 +83,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       tabs: [
         if (eventTabsModel.enableAbout)
           CustomTabAndContent(
-            tab: 'About',
+            tab: context.l10n.about,
             content: (context) => _buildAboutSection(context),
           ),
         if (eventTabsModel.enableGuide)
@@ -99,7 +100,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
         if (eventTabsModel.enableChat)
           CustomTabAndContent(
-            tab: 'Chat',
+            tab: context.l10n.chat,
             content: (context) => _buildChatSection(context),
             unreadCount: Provider.of<ChatModel>(context).numUnreadMessages,
           ),
@@ -110,7 +111,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
         if (eventTabsModel.enableAdminPanel)
           CustomTabAndContent(
-            tab: 'Admin',
+            tab: context.l10n.admin,
             content: (context) => AdminPanel(padding: EdgeInsets.zero),
           ),
         if (eventTabsModel.enablePrePostEvent)
@@ -162,7 +163,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
                   child: ActionButton(
                     type: ActionButtonType.filled,
                     onPressed: _showSendMessageDialog,
-                    text: '+ Add New',
+                    text: context.l10n.addNew,
                     color: context.theme.colorScheme.surfaceContainerHighest,
                     textColor: context.theme.colorScheme.primary,
                   ),
@@ -206,7 +207,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
 
     final message = await Dialogs.showComposeMessageDialog(
       context,
-      title: 'Message Participants',
+      title: context.l10n.messageParticipants,
       isMobile: isMobile,
       labelText: 'Message',
       validator: (message) =>
@@ -644,7 +645,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       );
     } else {
       return AddMoreButton(
-        label: 'Add a prerequisite template',
+        label: context.l10n.addPrerequisiteTemplate,
         onPressed: () {
           eventTabsModelState.isNewPrerequisite = true;
         },

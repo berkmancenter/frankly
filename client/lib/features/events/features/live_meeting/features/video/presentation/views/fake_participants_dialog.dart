@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class FakeParticipantsDialog extends StatefulWidget {
   final int fakeParticipantCount;
@@ -38,7 +39,7 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         HeightConstrainedText(
-          'Fake Participant Count:',
+          context.l10n.fakeParticipantCount,
           textAlign: TextAlign.center,
         ),
         SizedBox(

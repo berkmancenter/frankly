@@ -5,6 +5,7 @@ import 'package:client/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/config/environment.dart';
@@ -12,11 +13,17 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
+import 'package:client/core/localization/locale_provider.dart';
+// Generated localization classes
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry/sentry.dart';
 import 'package:uuid/uuid.dart';
 
 import 'config/firebase_options.dart';
+
+import 'package:client/styles/app_styles.dart';
+
 
 bool kShowStripeFeatures = false;
 bool useBotControls = false;
@@ -80,12 +87,14 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final _localeProvider = LocaleProvider();
+
   @override
   void initState() {
     super.initState();
 
     initializeTimezones();
-
+    _localeProvider.init();
     createServices();
   }
 
@@ -98,13 +107,29 @@ class _AppState extends State<App> {
         ChangeNotifierProvider.value(value: dialogProvider),
         Provider.value(value: firestoreDatabase),
         ChangeNotifierProvider(create: (_) => NavBarProvider()),
+        ChangeNotifierProvider.value(value: _localeProvider),
       ],
-      child: Portal(
-        child: MaterialApp.router(
-          shortcuts: {
-            ...WidgetsApp.defaultShortcuts,
-            LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
-            LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
+      child: Consumer<LocaleProvider>(builder: (context, localeProvider, _) {
+        return Portal(
+          child: MaterialApp.router(
+            locale: localeProvider.locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('es'),
+              Locale.fromSubtags(
+                  languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW',),
+              Locale('zh'),
+            ],
+            shortcuts: {
+              ...WidgetsApp.defaultShortcuts,
+              LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
+              LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
                 DoNothingIntent(),
             LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
             LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
@@ -118,7 +143,7 @@ class _AppState extends State<App> {
           routeInformationParser: BeamerParser(),
           theme: appTheme,
         ),
-      ),
+      ); },),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -25,6 +26,7 @@ import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart' as js_util;
+import 'package:client/core/localization/language_selector.dart';
 
 /// This is the side navigation drawer that appears when the hamburger icon is clicked. It contains
 /// links to sign in if the user is not signed in, otherwise it contains links to the user's communities
@@ -104,7 +106,7 @@ class _SideBarState extends State<SideBar> {
         padding: const EdgeInsets.only(top: 26, right: 26),
         child: Semantics(
           button: true,
-          label: 'Close',
+          label: context.l10n.close,
           child: CustomInkWell(
             onTap: () => Navigator.of(context).pop(),
             child: Icon(Icons.close, size: 20),
@@ -210,19 +212,49 @@ class _SideBarState extends State<SideBar> {
               ),
             ],
           ),
-          ActionButton(
-            type: ActionButtonType.text,
-            text: 'Help Center',
+          Row(
+            children: [
+              SizedBox(width: 5),
+              Text(
+                '🌐',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              ActionButton(              
+                text: context.l10n.language,
+                type: ActionButtonType.text,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(context.l10n.selectLanguage),
+                      content: LanguageSelector(),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(context.l10n.close),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          ActionButton(            
+            text: context.l10n.helpCenter,
+            type: ActionButtonType.text,            
             onPressed: () => launch(Environment.helpCenterUrl),
           ),
           ActionButton(
+            text: context.l10n.about + ' ${Environment.appName}',
             type: ActionButtonType.text,
-            text: 'About ${Environment.appName}',
             onPressed: () => launch(Environment.aboutUrl),
           ),
           ActionButton(
+            text: context.l10n.privacyPolicy,
             type: ActionButtonType.text,
-            text: 'Privacy Policy',
             onPressed: () => launch(Environment.privacyPolicyUrl),
           ),
           Padding(
@@ -323,7 +355,7 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
             ),
             SizedBox(width: 11),
             HeightConstrainedText(
-              'Start a community',
+              context.l10n.startCommunity,
               style: AppTextStyle.body.copyWith(
                 color: context.theme.colorScheme.onSurface,
               ),

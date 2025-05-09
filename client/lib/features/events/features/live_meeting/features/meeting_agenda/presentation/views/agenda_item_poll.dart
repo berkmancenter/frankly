@@ -5,6 +5,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_poll_presenter.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/survey_answer_tile.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AgendaItemPoll extends StatefulWidget {
   final bool isEditMode;
@@ -65,7 +66,7 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
           CustomTextField(
             initialValue: _model.agendaItemPollData.question,
             labelText: 'Poll Question',
-            hintText: 'Question goes here',
+            hintText: context.l10n.questionGoesHere,
             maxLines: null,
             onChanged: (value) => _presenter.updatePollQuestion(value),
           ),
@@ -113,7 +114,7 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
               IconButton(
                 icon: const Icon(Icons.delete_forever),
                 splashRadius: 20,
-                tooltip: 'Delete option',
+                tooltip: context.l10n.deleteOption,
                 hoverColor: Colors.black26,
                 onPressed: () => _presenter.removeAnswer(index),
               ),
@@ -129,7 +130,7 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
             SizedBox(width: 15),
             Expanded(
               child: CustomTextField(
-                hintText: 'Add option',
+                hintText: context.l10n.addOption,
                 maxLines: 1,
                 onChanged: (value) => _presenter.addAnswer(value),
               ),

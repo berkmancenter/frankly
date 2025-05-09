@@ -19,6 +19,7 @@ import 'package:client/core/widgets/navbar/nav_bar/nav_bar_presenter.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/profile_or_login.dart';
 import 'package:client/core/widgets/navbar/selectable_navigation_icon.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
@@ -108,7 +109,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
   /// Create a semantically-wrapped button with label for the community membership button
   Widget _buildMembershipButton(Community currentCommunity) {
     return Semantics(
-      label: 'Follow Community Button',
+      label: context.l10n.followCommunityButton,
       identifier: 'follow_community_button',
       button: true,
       child: CommunityMembershipButton(
@@ -214,7 +215,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
         padding: const EdgeInsets.only(left: 8.0),
         child: Semantics(
           button: true,
-          label: 'Show Sidebar Button',
+          label: context.l10n.showSidebarButton,
           child: IconButton(
             onPressed: () => Scaffold.of(context).openEndDrawer(),
             icon: Icon(
@@ -288,7 +289,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
         currentCommunity.settingsMigration.enableDiscussionThreads;
     return [
       _SelectableNavigationButton(
-        title: 'Events',
+        title: context.l10n.events,
         onTap: () => routerDelegate.beamTo(
           CommunityPageRoutes(communityDisplayId: communityDisplayId)
               .eventsPage,
@@ -297,7 +298,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
       ),
       if (enableDiscussionThreads)
         _SelectableNavigationButton(
-          title: 'Posts',
+          title: context.l10n.posts,
           onTap: () => routerDelegate.beamTo(
             CommunityPageRoutes(communityDisplayId: communityDisplayId)
                 .discussionThreadsPage,
@@ -306,7 +307,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
         ),
       if (Provider.of<NavBarProvider>(context).showResources)
         _SelectableNavigationButton(
-          title: 'Resources',
+          title: context.l10n.resources,
           onTap: () => routerDelegate.beamTo(
             CommunityPageRoutes(communityDisplayId: communityDisplayId)
                 .resourcesPage,
@@ -314,7 +315,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
           isSelected: CheckCurrentLocation.isCommunityResourcesPage,
         ),
       _SelectableNavigationButton(
-        title: 'Templates',
+        title: context.l10n.templates,
         onTap: () => routerDelegate.beamTo(
           CommunityPageRoutes(communityDisplayId: communityDisplayId)
               .browseTemplatesPage,

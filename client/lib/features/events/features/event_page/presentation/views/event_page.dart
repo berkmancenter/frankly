@@ -30,6 +30,7 @@ import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -178,7 +179,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
     final message = await Dialogs.showComposeMessageDialog(
       context,
-      title: 'Message Participants',
+      title: context.l10n.messageParticipants,
       isMobile: isMobile,
       labelText: 'Message',
       validator: (message) =>

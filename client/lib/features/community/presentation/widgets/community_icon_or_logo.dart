@@ -3,6 +3,7 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/routing/locations.dart';
@@ -71,7 +72,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
           children: [
             // App logo
             Semantics(
-              label: 'Frankly Logo',
+              label: context.l10n.franklyLogo,
               child: Image.asset(
                 AppAsset.kLogoPng.path,
                 width: 100,
@@ -85,7 +86,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
             /*    
             SvgPicture.asset(
               AppAsset.kLogoSvg.path, 
-              semanticsLabel: 'Frankly Logo',
+              semanticsLabel: context.l10n.franklyLogo,
               width: 100,
               height: isMobile ? 40 : 80,         
               fit: BoxFit.contain,

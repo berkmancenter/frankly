@@ -12,6 +12,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/media_item_section.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class WaitingRoomWidget extends StatefulWidget {
   final Event event;
@@ -91,7 +92,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             borderRadius: 10,
             initialValue: _model.waitingRoomInfo.content,
             onChanged: (value) => _presenter.updateWaitingText(value),
-            hintText: 'Enter waiting room text (optional)',
+            hintText: context.l10n.enterWaitingRoomText,
             textStyle: AppTextStyle.body
                 .copyWith(color: context.theme.colorScheme.secondary),
           ),
@@ -122,7 +123,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 onChanged: (bool? value) =>
                     _presenter.updateLoopWaitingVideo(value ?? false),
               ),
-              HeightConstrainedText('Loop Video'),
+              HeightConstrainedText(context.l10n.loopVideo),
             ],
           ),
           SizedBox(height: 10),
@@ -163,7 +164,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
               SizedBox(width: 20),
               Expanded(
                 child: HeightConstrainedText(
-                  'Buffer: Allow $waitingBufferDurationDescription for people to filter in',
+                  context.l10n.bufferTimeDescription(
+                        waitingBufferDurationDescription,),
                   style: AppTextStyle.body,
                 ),
               ),
@@ -178,7 +180,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                     .copyWith(color: context.theme.colorScheme.primary),
                 children: [
                   TextSpan(
-                    text: ' (Plays at $introStartTime)',
+                    text: context.l10n.playsAt(introStartTime),
                     style: AppTextStyle.bodyMedium,
                   ),
                 ],
@@ -232,7 +234,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 SizedBox(width: 20),
                 Expanded(
                   child: HeightConstrainedText(
-                    '$introLengthDurationDescription intro before participants are sent to breakouts',
+                    context.l10n
+                          .introBeforeBreakouts(introLengthDurationDescription),
                     style: AppTextStyle.body,
                   ),
                 ),
@@ -241,8 +244,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ],
           SizedBox(height: 18),
           HeightConstrainedText(
-            'Participants will be sent into rooms at $breakoutsInitiationTime '
-            '($waitingBufferDurationDescription buffer + $introLengthDurationDescription intro)',
+            'Participants will be sent into rooms at $breakoutsInitiationTime ${context.l10n.bufferAndIntroTime(
+                      waitingBufferDurationDescription,
+                      introLengthDurationDescription,)}',
             style: AppTextStyle.subhead,
           ),
           SizedBox(height: 10),

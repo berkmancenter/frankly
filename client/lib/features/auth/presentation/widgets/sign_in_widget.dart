@@ -1,6 +1,7 @@
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SignInWidget extends StatelessWidget {
   @visibleForTesting
@@ -21,14 +22,14 @@ class SignInWidget extends StatelessWidget {
           key: signInKey,
           onPressed: () => _showLogin(context, isNewUser: false),
           sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-          text: 'Log In',
+          text: context.l10n.signIn,
         ),
         ActionButton(
           type: ActionButtonType.filled,
           key: signUpKey,
           onPressed: () => _showLogin(context),
           sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-          text: 'Sign Up',
+          text: context.l10n.signUp,
         ),
       ],
     );

@@ -7,6 +7,7 @@ import 'package:client/services.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class _DismissNotifier with ChangeNotifier {
   @override
@@ -25,9 +26,9 @@ class ConfirmDialog extends StatefulWidget {
   final String title;
   final String mainText;
   final String subText;
-  final String confirmText;
+  final String? confirmText;
   final Function(BuildContext context)? onConfirm;
-  final String cancelText;
+  final String? cancelText;
   final Function(BuildContext context)? onCancel;
   final TextAlign textAlign;
   final bool isWhiteBackground;
@@ -36,15 +37,19 @@ class ConfirmDialog extends StatefulWidget {
     this.title = '',
     this.mainText = '',
     this.subText = '',
-    this.confirmText = 'Yes',
+    this.confirmText,
     this.onConfirm,
-    this.cancelText = 'No',
+    this.cancelText,
     this.onCancel,
     this.textAlign = TextAlign.center,
     this.isWhiteBackground = true,
   });
 
   static final confirmDialogDismisser = ConfirmDialogDismisser();
+
+  String _getConfirmText(BuildContext context) =>
+      confirmText ?? context.l10n.yes;
+  String _getCancelText(BuildContext context) => cancelText ?? context.l10n.no;
 
   Future<bool> show({BuildContext? context}) async {
     return (await showCustomDialog(builder: (_) => this)) ?? false;
@@ -158,8 +163,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                         horizontal: 18,
                         vertical: 12,
                       ),
-                      color: context.theme.primaryColor,
-                      text: widget.confirmText,
+                      text: widget._getConfirmText(context),                                  
                       onPressed: onConfirm != null
                           ? () => onConfirm(context)
                           : () => Navigator.of(context).pop(true),

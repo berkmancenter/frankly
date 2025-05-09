@@ -19,6 +19,7 @@ import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_card_attribute.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum PrePostCardWidgetType { overview, edit }
 
@@ -82,7 +83,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     final title = _presenter.getTitle();
 
     await ConfirmDialog(
-      title: 'Delete $title agenda item',
+      title: context.l10n.deleteAgendaItemName(title),
       mainText: 'Are you sure want to delete?',
       onConfirm: (context) {
         Navigator.pop(context);
@@ -211,7 +212,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             ),
             SizedBox(height: 30),
             CustomTextField(
-              hintText: 'Enter Headline',
+              hintText: context.l10n.enterHeadline,
               initialValue: _model.prePostCard.headline,
               borderType: BorderType.outline,
               borderRadius: 10,
@@ -223,7 +224,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             SizedBox(height: 14),
             CustomTextField(
               hintText:
-                  'Enter Message. Eg, Take this survey $beforeAfter the event',
+                  'Enter message (e.g. "Take this survey $beforeAfter the event")',
               initialValue: _model.prePostCard.message,
               borderType: BorderType.outline,
               borderRadius: 10,
@@ -260,7 +261,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               ],
               AddMoreButton(
                 onPressed: () => _presenter.addNewActionLink(),
-                label: 'Add action link',
+                label: context.l10n.addActionLink,
               ),
             ],
           ),
@@ -713,7 +714,7 @@ class _AttributeOptionState extends State<AttributeOption> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  hintText: 'URL Parameter',
+                  hintText: context.l10n.urlParameter,
                   controller: _textController,
                   initialValue: _textController.text,
                   borderType: BorderType.outline,

@@ -10,6 +10,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum PrerequisiteTemplateWidgetType {
   overview,
@@ -81,7 +82,7 @@ class _PrerequisiteTemplateWidgetPageState
 
   Future<void> _showDeleteDialog() async {
     await ConfirmDialog(
-      title: 'Delete prerequisite template',
+      title: context.l10n.deletePrerequisiteTemplate,
       mainText: 'Are you sure want to delete?',
       onConfirm: (context) {
         Navigator.pop(context);

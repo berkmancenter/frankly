@@ -9,6 +9,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AnnouncementsIcon extends StatelessWidget {
   final String communityId;
@@ -125,7 +126,7 @@ class _AnnouncementsIconState extends State<_AnnouncementsIcon> {
   Widget _buildNotificationButton(bool halfSize) {
     return Semantics(
       button: true,
-      label: 'Show Announcements Button',
+      label: context.l10n.showAnnouncementsButton,
       child: CustomInkWell(
         onHover: (hover) async {
           if (hover && !_isShowing) {

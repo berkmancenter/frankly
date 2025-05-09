@@ -2,3 +2,4 @@ node_modules/
 logs/
 .idea/
 docs/output
+*.log

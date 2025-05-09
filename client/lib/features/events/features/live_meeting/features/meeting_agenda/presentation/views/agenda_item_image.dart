@@ -10,6 +10,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AgendaItemImage extends StatefulWidget {
   final bool isEditMode;
@@ -85,7 +86,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
           CustomTextField(
             initialValue: _model.agendaItemImageData.title,
             labelText: 'Title',
-            hintText: 'Enter Image title',
+            hintText: context.l10n.enterImageTitle,
             maxLength: agendaTitleCharactersLength,
             counterStyle: context.theme.textTheme.bodySmall,
             maxLines: 1,
@@ -124,7 +125,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
       return Column(
         children: [
           if (imageUrl.isEmpty)
-            HeightConstrainedText('(Image URL is not set.)')
+            HeightConstrainedText(context.l10n.imageUrlNotSet)
           else
             ClipRRect(
               borderRadius: BorderRadius.circular(15),

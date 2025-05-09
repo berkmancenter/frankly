@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
@@ -70,7 +71,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
               return Row(
                 children: [
                   HeightConstrainedText(
-                    'My Communities',
+                    context.l10n.myCommunities,
                     style: AppTextStyle.headline3.copyWith(fontSize: 22),
                   ),
                   Spacer(),
@@ -90,7 +91,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Semantics(
-            label: 'Start a community',
+            label: context.l10n.startCommunity,
             button: true,
             child: CircleIconButton(
               onPressed: _createCommunityPressed,
@@ -101,7 +102,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
           if (!responsiveLayoutService.isMobile(context)) ...[
             SizedBox(width: 10),
             HeightConstrainedText(
-              'Start a community',
+              context.l10n.startCommunity,
               style: AppTextStyle.body.copyWith(
                 color: context.theme.colorScheme.onSurface,
               ),
@@ -139,7 +140,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "You haven't joined any communities.",
+                          context.l10n.youHaventJoinedAnyCommunities,
                           style: AppTextStyle.body,
                           textAlign: responsiveLayoutService.isMobile(context)
                               ? TextAlign.center

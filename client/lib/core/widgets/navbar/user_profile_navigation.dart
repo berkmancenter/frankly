@@ -8,6 +8,7 @@ import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is the user profile icon. If hovered over (or tapped on mobile / touchscreen) a menu will
 /// appear above or below it with options to select from.
@@ -107,7 +108,7 @@ class UserProfileNavigationState extends State<UserProfileNavigation> {
   Widget _buildProfileButton() {
     return Semantics(
       button: true,
-      label: 'Profile Button',
+      label: context.l10n.profileButton,
       child: CustomInkWell(
         onHover: (hover) async {
           if (hover && !_isShowing) {
@@ -143,9 +144,9 @@ class ProfileNavigationList extends StatelessWidget {
       shrinkWrap: true,
       children: [
         if (userId != null)
-          ActionButton(
+           ActionButton(
             type: ActionButtonType.text,
-            text: 'My Profile',
+            text: context.l10n.myProfile,
             onPressed: () => routerDelegate.beamTo(
               UserSettingsLocation(
                 initialSection: UserSettingsSection.profile,
@@ -155,9 +156,9 @@ class ProfileNavigationList extends StatelessWidget {
             textStyle: context.theme.textTheme.bodyMedium,
             contentAlign: ActionButtonContentAlignment.start,
           ),
-        ActionButton(
+          ActionButton(
           type: ActionButtonType.text,
-          text: 'My Events',
+          text: context.l10n.myEvents,
           onPressed: () => routerDelegate.beamTo(
             UserSettingsLocation(
               initialSection: UserSettingsSection.events,
@@ -167,9 +168,9 @@ class ProfileNavigationList extends StatelessWidget {
           textStyle: context.theme.textTheme.bodyMedium,
           contentAlign: ActionButtonContentAlignment.start,
         ),
-        ActionButton(
+         ActionButton(
           type: ActionButtonType.text,
-          text: 'Sign Out',
+          text: context.l10n.signOut,
           onPressed: () => userService.signOut(),
           expand: true,
           textStyle: context.theme.textTheme.bodyMedium,

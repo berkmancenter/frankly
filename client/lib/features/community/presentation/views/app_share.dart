@@ -11,6 +11,7 @@ import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AppShareData {
   /// Indicates page path.
@@ -141,7 +142,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
   Widget _buildFinishButton() => ActionButton(
         onPressed: () => Navigator.of(context).pop(),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-        text: 'Finish',
+        text: context.l10n.finish,
       );
 
   Widget _buildShareSection() => LayoutBuilder(

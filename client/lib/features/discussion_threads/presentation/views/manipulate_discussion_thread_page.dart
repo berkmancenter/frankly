@@ -12,6 +12,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'manipulate_discussion_thread_contract.dart';
 import '../../data/models/manipulate_discussion_thread_model.dart';
@@ -140,7 +141,7 @@ class _ManipulateDiscussionThreadPageState
                           autofocus: true,
                           focusNode: _focusNode,
                           controller: _textEditingController,
-                          hintText: 'Type something',
+                          hintText: context.l10n.typeSomething,
                           onChanged: (input) => _presenter.updateContent(input),
                           maxLines: 10,
                         ),

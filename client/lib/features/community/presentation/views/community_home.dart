@@ -17,6 +17,7 @@ import 'package:client/features/community/presentation/widgets/donate_widget.dar
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
@@ -193,7 +194,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           ],
           if (showDonation)
             ThickOutlineButton(
-              text: 'Donate',
+              text: context.l10n.donate,
               eventName: 'donate_pressed',
               backgroundColor: Colors.white,
               onPressed: () => guardSignedIn(

@@ -19,6 +19,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
 
   Future<void> _showDeleteThreadDialog() async {
     await ConfirmDialog(
-      title: 'Delete post',
+      title: context.l10n.deletePost,
       mainText: 'Are you sure want to delete this post?',
       cancelText: 'No',
       onCancel: (context) => Navigator.pop(context),
@@ -86,7 +87,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     await guardSignedIn(() async {
       final comment = await Dialogs.showComposeMessageDialog(
         context,
-        title: 'Add comment',
+        title: context.l10n.addComment,
         isMobile: isMobile,
         labelText: 'Comment',
         validator: (text) =>
@@ -129,7 +130,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           if (discussionThread.isDeleted) {
             return Center(
               child: AppGenericStateWidget(
-                title: 'Post was deleted.',
+                title: context.l10n.postWasDeleted,
                 imagePath: AppAsset.kEmptyStateStatusPng,
                 responsiveLayoutService: responsiveLayoutService,
                 appGenericStateData: AppGenericStateData(
@@ -325,7 +326,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                           break;
                       }
                     },
-                    tooltip: 'Show Options',
+                    tooltip: context.l10n.showOptions,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ProxiedImage(
@@ -473,7 +474,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           await guardSignedIn(() async {
             final comment = await Dialogs.showComposeMessageDialog(
               context,
-              title: 'Add comment',
+              title: context.l10n.addComment,
               isMobile: isMobile,
               labelText: 'Comment',
               validator: (text) => text == null || text.isEmpty

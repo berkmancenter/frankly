@@ -16,6 +16,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class Announcements extends StatefulWidget {
   const Announcements._();
@@ -44,7 +45,7 @@ class _AnnouncementsState extends State<Announcements> {
       onPressed: () => CreateAnnouncementDialog.show(
         communityId: context.read<CommunityProvider>().communityId,
       ),
-      text: 'New Announcement',
+      text: context.l10n.newAnnouncement,
     );
   }
 
@@ -114,7 +115,7 @@ class _AnnouncementsState extends State<Announcements> {
 
   Widget _buildAnnouncements(List<Announcement> announcements) {
     if (announcements.isEmpty) {
-      return HeightConstrainedText('No announcements yet.');
+      return HeightConstrainedText(context.l10n.noAnnouncementsYet);
     }
 
     return SingleChildScrollView(

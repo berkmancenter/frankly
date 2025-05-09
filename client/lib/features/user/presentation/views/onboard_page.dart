@@ -20,6 +20,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum OnboardStep {
   agreement,
@@ -215,7 +216,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Welcome to ${Environment.appName}',
+          title: context.l10n.welcomeToApp(Environment.appName),
           stepNum: 1,
           totalSteps: numSteps,
         ),
@@ -236,7 +237,7 @@ class _OnboardPageState extends State<OnboardPage> {
                   }
                 }),
               ),
-              HeightConstrainedText('I agree to the '),
+              HeightConstrainedText(context.l10n.iAgreeToThe),
               TextButton(
                 child: HeightConstrainedText(
                   '${Environment.appName} Subscription Services Agreement',
@@ -276,7 +277,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Set your payee account details',
+          title: context.l10n.setPayeeAccountDetails,
           stepNum: 2,
           totalSteps: numSteps,
         ),
@@ -299,7 +300,8 @@ class _OnboardPageState extends State<OnboardPage> {
                     }
                   }),
                 ),
-                HeightConstrainedText('Skip Stripe account setup for now'),
+                HeightConstrainedText(
+                    context.l10n.skipStripeAccountSetupForNow),
                 SizedBox(width: 8),
               ],
             ),
@@ -333,7 +335,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Build your community space',
+          title: context.l10n.buildCommunitySpace,
           stepNum: numSteps - 1,
           totalSteps: numSteps,
         ),
@@ -360,7 +362,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Add community images',
+          title: context.l10n.addCommunityImages,
           stepNum: numSteps,
           totalSteps: numSteps,
         ),

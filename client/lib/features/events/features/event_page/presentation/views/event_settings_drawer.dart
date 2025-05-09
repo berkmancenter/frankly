@@ -15,6 +15,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'event_settings_contract.dart';
 
@@ -100,7 +101,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               EventSettings.kFieldChat,
               isSelected,
             ),
-            text: 'Chat',
+            text: context.l10n.chat,
             val: _model.eventSettings.chat ?? false,
             isIndicatorShown: _presenter
                 .isSettingNotDefaultIndicatorShown((settings) => settings.chat),
@@ -111,7 +112,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               EventSettings.kFieldShowChatMessagesInRealTime,
               isSelected,
             ),
-            text: 'Floating Chat',
+            text: context.l10n.floatingChat,
             val: floatingChatToggleValue,
             isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
               (settings) => settings.showChatMessagesInRealTime,
@@ -123,7 +124,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               EventSettings.kFieldAlwaysRecord,
               isSelected,
             ),
-            text: 'Record',
+            text: context.l10n.record,
             val: _model.eventSettings.alwaysRecord ?? false,
             isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
               (settings) => settings.alwaysRecord,
@@ -135,7 +136,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               EventSettings.kFieldTalkingTimer,
               isSelected,
             ),
-            text: 'Odometer',
+            text: context.l10n.odometer,
             val: _model.eventSettings.talkingTimer ?? false,
             isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
               (settings) => settings.talkingTimer,
@@ -147,14 +148,14 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               EventSettings.kFieldAgendaPreview,
               isSelected,
             ),
-            text: 'Preview agenda',
+            text: context.l10n.previewAgenda,
             val: _model.eventSettings.agendaPreview ?? true,
             style: context.theme.textTheme.bodyMedium,
           ),
           SizedBox(height: 40),
           ActionButton(
             expand: true,
-            text: 'Save settings',
+            text: context.l10n.saveSettings,
             onPressed: () => _presenter.saveSettings(),
             color: context.theme.colorScheme.primary,
             textColor: context.theme.colorScheme.onPrimary,
@@ -165,7 +166,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
             type: ActionButtonType.filled,
             color: context.theme.colorScheme.surfaceContainer,
             textColor: context.theme.colorScheme.onSurface,
-            text: 'Restore settings',
+            text: context.l10n.restoreSettings,
             onPressed: restoreDefaultButtonEnabled
                 ? _presenter.restoreDefaultSettings
                 : null,
@@ -173,7 +174,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           if (Environment.enableDevEventSettings) ...[
             SizedBox(height: 40),
             HeightConstrainedText(
-              'Dev Settings',
+              context.l10n.devSettings,
               style: context.theme.textTheme.headlineSmall!,
             ),
             SizedBox(height: 40),
@@ -268,7 +269,7 @@ class _SwitchAndTooltipState extends State<_SwitchAndTooltip> {
           borderWidth: 0,
           ballonPadding: const EdgeInsets.all(8),
           content: HeightConstrainedText(
-            'This has been changed from\nthe default setting',
+            context.l10n.changedFromDefault,
             style: context.theme.textTheme.bodyMedium,
             textAlign: TextAlign.left,
           ),

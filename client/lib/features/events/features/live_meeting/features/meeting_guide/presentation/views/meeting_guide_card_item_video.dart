@@ -13,6 +13,7 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'meeting_guide_card_item_video_contract.dart';
 import '../../data/models/meeting_guide_card_item_video_model.dart';
@@ -77,7 +78,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
               },
             );
           } else {
-            return Center(child: Text('Cannot play YouTube video'));
+            return Center(child: Text(context.l10n.cannotPlayYouTubeVideo));
           }
         case AgendaItemVideoType.vimeo:
           final vimeoVideoId = _presenter.getVimeoVideoId(videoUrl);
@@ -88,7 +89,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
               child: VimeoVideoWidget(vimeoId: vimeoVideoId),
             );
           } else {
-            return Center(child: Text('Cannot play Vimeo video'));
+            return Center(child: Text(context.l10n.cannotPlayVimeoVideo));
           }
         case AgendaItemVideoType.url:
           return UrlVideoWidget(

@@ -2,6 +2,7 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum CalendarMenuSelection {
   google,
@@ -64,7 +65,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                 ),
                 SizedBox(width: 10),
                 HeightConstrainedText(
-                  'Add to calendar',
+                  context.l10n.addToCalendar,
                   style: context.theme.textTheme.bodyMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),
@@ -98,13 +99,13 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
   String _getText(CalendarMenuSelection calendarMenuSelection) {
     switch (calendarMenuSelection) {
       case CalendarMenuSelection.google:
-        return 'Google ';
+        return context.l10n.googleCalendar;
       case CalendarMenuSelection.outlook:
-        return 'Outlook';
+        return context.l10n.outlookCalendar;
       case CalendarMenuSelection.office365:
-        return 'Office 365';
+        return context.l10n.office365Calendar;
       case CalendarMenuSelection.ical:
-        return 'iCal';
+        return context.l10n.iCalCalendar;
     }
   }
 }

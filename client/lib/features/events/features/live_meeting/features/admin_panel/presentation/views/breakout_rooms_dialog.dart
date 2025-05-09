@@ -18,6 +18,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum _BreakoutRoomsDialogState {
   start,
@@ -125,7 +126,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           style: DefaultTextStyle.of(context).style.copyWith(fontSize: 20),
         ),
         Text(
-          'Current\nParticipants',
+          context.l10n.currentParticipants,
           style: DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
           textAlign: TextAlign.center,
         ),
@@ -142,7 +143,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         Icon(Icons.arrow_right_alt),
         SizedBox(width: 18),
         _buildNumPicker(
-          text: 'Target Participants\nPer Room',
+          text: context.l10n.targetParticipantsPerRoom,
           value: _numPerRoom,
           onChanged: (value) => setState(() {
             _numPerRoom = value;
@@ -165,7 +166,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           context,
           () => _startBreakouts(BreakoutAssignmentMethod.targetPerRoom),
         ),
-        text: 'Randomly Assign',
+        text: context.l10n.randomlyAssign,
         color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
@@ -174,7 +175,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            'Number of rooms may change if participants drop off.',
+            context.l10n.roomsCountMayChange,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -195,12 +196,12 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           context,
           () => _startBreakouts(BreakoutAssignmentMethod.smartMatch),
         ),
-        text: 'Smart Match Participants',
+        text: context.l10n.smartMatchParticipants,
         color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
-      HeightConstrainedText('Or'),
+      HeightConstrainedText(context.l10n.or),
     ];
   }
 

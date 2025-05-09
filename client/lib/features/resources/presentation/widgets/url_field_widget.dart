@@ -7,6 +7,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Textfield for URL input that handles loading and URL preview.
 class UrlFieldWidget extends StatelessWidget {
@@ -48,7 +49,7 @@ class UrlFieldWidget extends StatelessWidget {
                     url?.isNotEmpty == true && isNullOrEmpty(error)
                         ? () => onSubmit()
                         : null,
-                hintText: 'Paste or enter a URL',
+                hintText: context.l10n.pasteOrEnterUrl,
                 initialValue: url,
                 controller: controller,
                 borderColor: (isNullOrEmpty(error)
