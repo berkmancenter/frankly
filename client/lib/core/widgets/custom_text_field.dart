@@ -177,7 +177,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         AppTextStyle.bodySmall.copyWith(
           color: _focusNode.hasFocus
               ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.onPrimaryContainer,
+              : context.theme.colorScheme.onSurfaceVariant,
           fontWeight: _hasFocus ? FontWeight.bold : FontWeight.normal,
         );
   }
@@ -229,7 +229,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               obscureText: widget.obscureText,
               cursorColor:
                   widget.cursorColor ?? context.theme.colorScheme.primary,
-              cursorHeight: 15,
+              cursorHeight: 20,
               autovalidateMode: widget.autovalidateMode,
               maxLength: widget.maxLength,
               buildCounter: (

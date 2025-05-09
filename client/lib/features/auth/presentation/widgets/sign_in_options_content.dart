@@ -341,29 +341,25 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             SizedBox(height: 5),
             if (_showSignup)
               Text(
-                'Must be at least 12 characters long, and contain one lowercase and one uppercase letter',
+                'Must be at least 12 characters long, and contain one lowercase and one uppercase letter.',
                 style: context.theme.textTheme.bodySmall,
               ),
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
-                child: Text.rich(
-                  TextSpan(
-                    text: 'Forgot your password?',
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        // We have to disable password validation for now so the form validation can succeed without it
-                        setState(() {
-                          _ignorePassword = true;
-                        });
-                        if (_formKey.currentState!.validate()) {
-                          _resetPassword();
-                        }
-                      },
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
+                child: ActionButton(
+                  // key: SignInOptionsContent.buttonSubmitKey,
+                  onPressed: () {
+                    // We have to disable password validation for now so the form validation can succeed without it
+                    setState(() {
+                      _ignorePassword = true;
+                    });
+                    if (_formKey.currentState!.validate()) {
+                      _resetPassword();
+                    }
+                  },
+                  type: ActionButtonType.text,
+                  text: 'Forgot your password?',
                 ),
               ),
             SizedBox(height: 9),
