@@ -24,6 +24,7 @@ class SignInWidget extends StatelessWidget {
           sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
           text: context.l10n.signIn,
         ),
+        const SizedBox(width: 8),
         ActionButton(
           type: ActionButtonType.filled,
           key: signUpKey,
