@@ -773,5 +773,36 @@
   "allowTheCommunityToJoin": "Allow the community to join",
   "@allowTheCommunityToJoin": {
     "description": "Description for public event visibility"
-  }
+  },
+  "selectADay": "Select a day",
+  "selectATime": "Select a time",
+  "timeShownIn": "Time shown in {timezone}",
+  "@timeShownIn": {
+    "placeholders": {
+      "timezone": {
+        "type": "String"
+      }
+    }
+  },
+  "step": "Step {current} of {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "back": "Back",
+  "updateEvent": "Update Event",
+  "templateSettings": "Template Settings",
+  "eventSettings": "Event Settings",
+  "youAreEditingAnEvent": "You are editing an event. \n",
+  "enterEvent": "Enter Event",
+  "eventIsStarting": "The event is starting",
+  "ifYouWantToEditFutureInstances": "If you want to edit future instances,",
+  "editTheTemplate": "edit the template.",
+  "eventEnded": "Event Ended"
 }

@@ -7,12 +7,14 @@ import 'package:client/services.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SelectDatePage extends StatelessWidget {
   const SelectDatePage();
 
   @override
   Widget build(BuildContext context) {
+    final l10n = appLocalizationService.getLocalization();
     final dialogModel = Provider.of<CreateEventDialogModel>(context);
     final timeNow = clockService.now();
     return Column(
@@ -20,7 +22,7 @@ class SelectDatePage extends StatelessWidget {
       children: [
         Center(
           child: HeightConstrainedText(
-            'Select a day',
+            l10n.selectADay,
             style: AppTextStyle.headline1,
           ),
         ),

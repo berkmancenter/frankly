@@ -816,5 +816,36 @@
   "allowTheCommunityToJoin": "允许社群加入",
   "@allowTheCommunityToJoin": {
     "description": "公开活动可见性的说明"
-  }
+  },
+  "selectADay": "选择日期",
+  "selectATime": "选择时间",
+  "timeShownIn": "时间显示在{timezone}",
+  "@timeShownIn": {
+    "placeholders": {
+      "timezone": {
+        "type": "String"
+      }
+    }
+  },
+  "step": "第{current}步，共{total}步",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "back": "返回",
+  "updateEvent": "更新活动",
+  "templateSettings": "模板设置",
+  "eventSettings": "活动设置",
+  "youAreEditingAnEvent": "您正在编辑一个活动。 \n",
+  "enterEvent": "进入活动",
+  "eventIsStarting": "活动即将开始",
+  "ifYouWantToEditFutureInstances": "如果您想要编辑未来的实例，",
+  "editTheTemplate": "请编辑模板。",
+  "eventEnded": "活动已结束"
 }

@@ -322,6 +322,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   Widget _buildEditEvent() {
+    final l10n = appLocalizationService.getLocalization();
     return CircleIconButton(
       onPressed: () => Dialogs.showAppDrawer(
         context,
@@ -344,12 +345,13 @@ class _EventInfoState extends State<EventInfo> {
           child: EditEventDrawer(),
         ),
       ),
-      toolTipText: 'Edit event',
+      toolTipText: l10n.editEvent,
       icon: Icons.edit_outlined,
     );
   }
 
   Widget _buildSettingIcon() {
+    final l10n = appLocalizationService.getLocalization();
     return CircleIconButton(
       onPressed: () => Dialogs.showAppDrawer(
         context,
@@ -368,13 +370,14 @@ class _EventInfoState extends State<EventInfo> {
           ),
         ),
       ),
-      toolTipText: 'Event Settings',
+      toolTipText: l10n.eventSettings,
       icon: CupertinoIcons.gear_alt,
     );
   }
 
   ActionButton _buildEnterEvent(DateTime scheduled) {
-    const kEventOpenText = 'Enter Event';
+    final l10n = appLocalizationService.getLocalization();
+    final kEventOpenText = l10n.enterEvent;
     final now = clockService.now();
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
@@ -390,7 +393,7 @@ class _EventInfoState extends State<EventInfo> {
     } else if (daysDifference == 0 && difference.inMinutes > 9) {
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
-      text = 'Event Ended';
+      text = l10n.eventEnded;
     } else {
       text = kEventOpenText;
     }

@@ -16,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'views/event_settings_contract.dart';
 import '../data/models/event_settings_model.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class EventSettingsPresenter {
   final EventSettingsView _view;
   final EventSettingsModel _model;
@@ -165,11 +167,12 @@ class EventSettingsPresenter {
   }
 
   String getTitle() {
+    final l10n = appLocalizationService.getLocalization();
     switch (_model.eventSettingsDrawerType) {
       case EventSettingsDrawerType.template:
-        return 'Template Settings';
+        return l10n.templateSettings;
       case EventSettingsDrawerType.event:
-        return 'Event Settings';
+        return l10n.eventSettings;
     }
   }
 

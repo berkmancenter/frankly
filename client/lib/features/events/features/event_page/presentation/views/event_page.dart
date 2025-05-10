@@ -39,6 +39,8 @@ import 'package:provider/provider.dart';
 
 import '../event_page_presenter.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class EventPage extends StatefulWidget {
   final String templateId;
   final String eventId;
@@ -239,6 +241,9 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   }
 
   Widget _buildGuide() {
+
+    final l10n = appLocalizationService.getLocalization();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,14 +271,14 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         HeightConstrainedText(
-                          'The event is starting',
+                          l10n.eventIsStarting,
                           style: TextStyle(
                             color: AppColor.white,
                           ),
                         ),
                         SizedBox(height: 10),
                         ActionButton(
-                          text: 'Enter Event',
+                          text: l10n.enterEvent,
                           onPressed: _startMeeting,
                           height: 65,
                           sendingIndicatorAlign:
@@ -387,6 +392,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   }
 
   Widget _buildEditTemplateMessage() {
+    final l10n = appLocalizationService.getLocalization();
     String templateId = event.templateId;
     return Container(
       color: AppColor.gray5,
@@ -400,18 +406,18 @@ class _EventPageState extends State<EventPage> implements EventPageView {
             Expanded(
               child: RichText(
                 text: TextSpan(
-                  text: 'You are editing an event. \n',
+                  text: l10n.youAreEditingAnEvent,
                   style: AppTextStyle.headlineSmall.copyWith(
                     color: AppColor.gray2,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
-                      text: 'If you want to edit future instances, ',
+                      text: l10n.ifYouWantToEditFutureInstances,
                       style: AppTextStyle.body.copyWith(color: AppColor.gray2),
                     ),
                     TextSpan(
-                      text: 'edit the template.',
+                      text: l10n.editTheTemplate,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => routerDelegate.beamTo(
                               CommunityPageRoutes(

@@ -134,7 +134,7 @@ class CreateEventDialog extends StatelessWidget {
         children: [
           if (currentIndex > 1 && lastIndex > 1)
             HeightConstrainedText(
-              'STEP $currentIndex OF $lastIndex',
+              context.l10n.step(currentIndex, lastIndex),
               style: AppTextStyle.eyebrow,
             ),
           _buildCurrentPage(context),

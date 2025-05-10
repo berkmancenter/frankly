@@ -820,5 +820,36 @@
   "allowTheCommunityToJoin": "Permitir que la comunidad se una",
   "@allowTheCommunityToJoin": {
     "description": "Descripción para la visibilidad pública del evento"
-  }
+  },
+  "selectADay": "Selecciona un día",
+  "selectATime": "Selecciona una hora",
+  "timeShownIn": "Hora mostrada en {timezone}",
+  "@timeShownIn": {
+    "placeholders": {
+      "timezone": {
+        "type": "String"
+      }
+    }
+  },
+  "step": "Paso {current} de {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "back": "Atrás",
+  "updateEvent": "Actualizar Evento",
+  "templateSettings": "Configuración de plantilla",
+  "eventSettings": "Configuración de evento",
+  "youAreEditingAnEvent": "Estás editando un evento. \n",
+  "enterEvent": "Entrar al evento",
+  "eventIsStarting": "El evento está comenzando",
+  "ifYouWantToEditFutureInstances": "Si quieres editar futuras instancias,",
+  "editTheTemplate": "edita la plantilla.",
+  "eventEnded": "Evento Terminado"
 }

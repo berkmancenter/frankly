@@ -807,5 +807,36 @@
   "allowTheCommunityToJoin": "允許社群加入",
   "@allowTheCommunityToJoin": {
     "description": "公開活動可見性的說明"
-  }
+  },
+  "selectADay": "選擇日期",
+  "selectATime": "選擇時間",
+  "timeShownIn": "時間顯示在{timezone}",
+  "@timeShownIn": {
+    "placeholders": {
+      "timezone": {
+        "type": "String"
+      }
+    }
+  },
+  "step": "第{current}步，共{total}步",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "back": "返回",
+  "updateEvent": "更新活動",
+  "templateSettings": "模板設定",
+  "eventSettings": "活動設定",
+  "youAreEditingAnEvent": "您正在編輯一個活動。 \n",
+  "enterEvent": "進入活動",
+  "eventIsStarting": "活動即將開始",
+  "ifYouWantToEditFutureInstances": "如果您想要編輯未來的實例，",
+  "editTheTemplate": "請編輯模板。",
+  "eventEnded": "活動已結束"
 }

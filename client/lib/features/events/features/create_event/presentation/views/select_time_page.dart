@@ -8,6 +8,8 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:client/services.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SelectTimePage extends StatefulWidget {
   final bool isEdit;
@@ -21,6 +23,7 @@ class SelectTimePage extends StatefulWidget {
 class _SelectTimePageState extends State<SelectTimePage> {
   @override
   Widget build(BuildContext context) {
+    final l10n = appLocalizationService.getLocalization();
     final dialogModel = context.watch<CreateEventDialogModel>();
     final scheduledTime = dialogModel.scheduledTime;
     final timezone = getTimezoneAbbreviation(scheduledTime!);
@@ -30,7 +33,7 @@ class _SelectTimePageState extends State<SelectTimePage> {
       children: [
         Center(
           child: HeightConstrainedText(
-            'Select a time',
+            l10n.selectATime,
             style: AppTextStyle.headline1,
           ),
         ),
@@ -45,7 +48,7 @@ class _SelectTimePageState extends State<SelectTimePage> {
           },
         ),
         HeightConstrainedText(
-          isNullOrEmpty(timezone) ? '' : 'Time shown in $timezone',
+          isNullOrEmpty(timezone) ? '' : l10n.timeShownIn(timezone ?? ''),
           textAlign: TextAlign.right,
         ),
         SizedBox(height: 15),
