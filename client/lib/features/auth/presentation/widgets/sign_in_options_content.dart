@@ -141,7 +141,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         );
       case 'email-missing-pw':
         return Text(
-          'Please enter a valid email address.',
+          context.l10n.pleaseEnterValidEmail,
           style: context.theme.textTheme.bodyMedium?.copyWith(
             color: context.theme.colorScheme.error,
           ),
@@ -149,7 +149,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
       default:
         return Text(
-          'Something went wrong. Please try again.',
+          context.l10n.somethingWentWrongTryAgain,
           style: context.theme.textTheme.bodySmall,
         );
     }
@@ -293,7 +293,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               onEditingComplete: () => _submitForm(),
               validator: (value) {
                 if (value == null || value.isEmpty || !isEmailValid(value)) {
-                  return 'Please enter a valid email';
+                  return context.l10n.pleaseEnterValidEmail;
                 }
                 return null;
               },
