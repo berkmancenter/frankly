@@ -3,7 +3,7 @@ import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -123,7 +123,6 @@ class _SideBarState extends State<SideBar> {
     } else {
       return SignInOptionsContent(
         onComplete: () => Navigator.of(context).pop(),
-        openDialogOnEmailProviderSelected: true,
       );
     }
   }
@@ -280,7 +279,7 @@ class AnimatedSidebarContent extends StatefulWidget {
 
 class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
   void _startCommunityTapped() =>
-      guardSignedIn(() => FreemiumDialogFlow().show());
+      guardSignedIn(() => DialogFlow().show());
 
   @override
   Widget build(BuildContext context) {

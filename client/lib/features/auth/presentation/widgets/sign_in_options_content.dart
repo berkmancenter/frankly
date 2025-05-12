@@ -1,12 +1,10 @@
 import 'package:client/core/utils/navigation_utils.dart';
-import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
@@ -15,25 +13,19 @@ import 'package:provider/provider.dart';
 
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
-    this.isNewUser = true,
-    this.isPurchasingSubscription = false,
-    this.openDialogOnEmailProviderSelected = false,
-    this.showEmailFormOnly = false,
+    this.showSignUp = true,
     this.onComplete,
     Key? key,
   }) : super(key: key);
 
-  static const emailSignInKey = Key('email-sign-in');
-  static const newUserToggleKey = Key('new-user-toggle');
+  static const showSignUpToggleKey = Key('new-user-toggle');
   static const nameTextFieldKey = Key('input-name');
   static const emailTextFieldKey = Key('input-email');
   static const passwordTextFieldKey = Key('input-password');
-  static const signInSubmitKey = Key('sign-in-submit');
+  static const buttonSubmitKey = Key('submit-button');
+  static const buttonGoogleKey = Key('google-button');
 
-  final bool isNewUser;
-  final bool isPurchasingSubscription;
-  final bool openDialogOnEmailProviderSelected;
-  final bool showEmailFormOnly;
+  final bool showSignUp;
   final void Function()? onComplete;
 
   @override
@@ -41,20 +33,39 @@ class SignInOptionsContent extends StatefulWidget {
 }
 
 class _SignInOptionsContentState extends State<SignInOptionsContent> {
-  late bool _showEmailFormFields = widget.showEmailFormOnly;
-  late bool _newUser = widget.isNewUser;
+  final _formKey = GlobalKey<FormState>();
+
+  late bool _showSignup = widget.showSignUp;
+  late bool _showPassword = false;
+  // This is used to ignore password validation when user is asking to reset password
+  late bool _ignorePassword = false;
+  late String _formError = '';
+  late String _formMessage = '';
 
   final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _submitController = SubmitNotifier();
+
+  bool isEmailValid(String email) {
+    return RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(email);
+  }
+
+  bool isPasswordValid(String password) {
+    // Password must be at least 12 characters long, and contain one lowercase and one uppercase letter
+    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z]).{12,}$').hasMatch(password);
+  }
 
   Future<void> _onSubmit() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
     String name = _displayNameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text;
 
-    if (_newUser) {
+    if (_showSignup) {
       await context.read<UserService>().registerWithEmail(
             displayName: name,
             email: email,
@@ -72,37 +83,119 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     widget.onComplete?.call();
   }
 
-  Future<void> _resetPassword() {
-    return alertOnError(context, () async {
-      await userService.resetPassword(email: _emailController.text);
-      if (!mounted) return;
-      await showAlert(
-        context,
-        'Password reset link sent to ${_emailController.text}',
-      );
-    });
+// Create a widget containing information about account error messages received from our backend
+  Widget _accountErrorMessageBuilder(String errorCode) {
+    switch (errorCode) {
+      case 'email-already-in-use':
+        return Text.rich(
+          TextSpan(
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              color: context.theme.colorScheme.error,
+            ),
+            children: [
+              TextSpan(
+                text: 'This email is already in use. Try ',
+              ),
+              TextSpan(
+                text: 'logging in',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => setState(() {
+                        _showSignup = false;
+                        _formError = '';
+                      }),
+                style: context.theme.textTheme.bodyMedium?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: context.theme.colorScheme.error,
+                ),
+              ),
+              TextSpan(text: ' instead.'),
+            ],
+          ),
+        );
+      case 'user-not-found':
+        return Text.rich(
+          TextSpan(
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              color: context.theme.colorScheme.error,
+            ),
+            children: [
+              TextSpan(
+                text: 'We couldn’t find an account with this email. Try ',
+              ),
+              TextSpan(
+                text: 'signing up',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => setState(() {
+                        _showSignup = true;
+                        _formError = '';
+                      }),
+                style: context.theme.textTheme.bodyMedium?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: context.theme.colorScheme.error,
+                ),
+              ),
+              TextSpan(text: ' instead.'),
+            ],
+          ),
+        );
+      case 'email-missing-pw':
+        return Text(
+          'Please enter a valid email address.',
+          style: context.theme.textTheme.bodyMedium?.copyWith(
+            color: context.theme.colorScheme.error,
+          ),
+        );
+
+      default:
+        return Text(
+          'Something went wrong. Please try again.',
+          style: context.theme.textTheme.bodySmall,
+        );
+    }
+  }
+
+  Future<void> _resetPassword() async {
+    await authMessageOnError(
+      () => userService.resetPassword(email: _emailController.text),
+      errorCallback: (error, msg) => {
+        if (msg == 'Email must be entered to reset password.')
+          setState(() {
+            _formError = 'email-missing-pw';
+            _ignorePassword = false;
+          })
+        else
+          setState(() {
+            _formError = msg;
+            _ignorePassword = false;
+          }),
+      },
+      callback: () => {
+        setState(() {
+          _formMessage = 'Password reset link sent to ${_emailController.text}';
+          _ignorePassword = false;
+        }),
+      },
+    );
+  }
+
+  void _submitForm() {
+    authMessageOnError(
+      _onSubmit,
+      errorCallback: (error, code) => setState(
+        () => _formError = code,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (_showEmailFormFields && !widget.showEmailFormOnly)
-          Align(
-            alignment: Alignment.topLeft,
-            child: GestureDetector(
-              child: Icon(Icons.arrow_back),
-              onTap: () => setState(() => _showEmailFormFields = false),
-            ),
-          ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_showEmailFormFields)
-              ..._buildEmailWidgets()
-            else
-              ..._buildSignInProviderButtons(),
-            SizedBox(height: 12),
+            ..._buildSignIn(),
+            SizedBox(height: 15),
             _buildTermsOfService(),
           ],
         ),
@@ -111,48 +204,207 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   }
 
   String _getTitleText() {
-    if (widget.isPurchasingSubscription) {
-      return 'New Subscription';
-    } else if (widget.isNewUser) {
-      return 'New to ${Environment.appName}?';
+    if (_showSignup) {
+      return 'Sign up for ${Environment.appName}';
     } else {
-      return 'Sign in to ${Environment.appName}';
+      return 'Log into ${Environment.appName}';
     }
   }
 
-  String _getMessageText() {
-    if (widget.isPurchasingSubscription) {
-      return 'Sign up (or sign in using an existing account) to continue.';
-    } else if (widget.isNewUser) {
-      return 'Sign up to get started.';
-    } else {
-      return '';
-    }
+  Widget _getMessageText() {
+    return Text.rich(
+      key: SignInOptionsContent.showSignUpToggleKey,
+      TextSpan(
+        style: context.theme.textTheme.bodyMedium,
+        children: [
+          TextSpan(
+            text: _showSignup
+                ? 'Already have an account? '
+                : 'Don\'t have an account? ',
+          ),
+          TextSpan(
+            text: _showSignup ? 'Log in' : 'Sign up',
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                if (_formError.isNotEmpty) {
+                  _formKey.currentState!.reset();
+                }
+                setState(() {
+                  _showSignup = !_showSignup;
+                  _formError = '';
+                });
+              },
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          TextSpan(text: '.'),
+        ],
+      ),
+    );
   }
 
-  List<Widget> _buildSignInProviderButtons() {
+  List<Widget> _buildSignIn() {
     const minWidth = 260.0;
     return [
       Align(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: HeightConstrainedText(
           _getTitleText(),
-          style: AppTextStyle.headline4,
+          style: context.theme.textTheme.titleLarge,
         ),
       ),
       SizedBox(height: 9),
-      if (_getMessageText().isNotEmpty)
-        Align(
-          alignment: Alignment.centerLeft,
-          child: HeightConstrainedText(
-            _getMessageText(),
-            style: AppTextStyle.body,
+      Align(
+        alignment: Alignment.center,
+        child: _getMessageText(),
+      ),
+      Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            if (_showSignup)
+              Column(
+                children: [
+                  CustomTextField(
+                    key: SignInOptionsContent.nameTextFieldKey,
+                    borderType: BorderType.underline,
+                    controller: _displayNameController,
+                    labelText: 'Full Name',
+                    hintText: 'e.g. Jane Doe',
+                    onEditingComplete: () => _submitForm(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a valid name';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            CustomTextField(
+              key: SignInOptionsContent.emailTextFieldKey,
+              borderType: BorderType.underline,
+              controller: _emailController,
+              labelText: 'Email',
+              onEditingComplete: () => _submitForm(),
+              validator: (value) {
+                if (value == null || value.isEmpty || !isEmailValid(value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 10),
+            CustomTextField(
+              key: SignInOptionsContent.passwordTextFieldKey,
+              borderType: BorderType.underline,
+              controller: _passwordController,
+              onEditingComplete: () => _submitForm(),
+              labelText: 'Password',
+              obscureText: !_showPassword,
+              suffixIcon: Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                child: Semantics(
+                  label: _showPassword ? 'Hide password' : 'Show password',
+                  button: true,
+                  child: IconButton(
+                    onPressed: () =>
+                        setState(() => _showPassword = !_showPassword),
+                    icon: Icon(
+                      _showPassword
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+              validator: (value) {
+                if (_ignorePassword) {
+                  return null;
+                }
+                // If the user is not signing up, just validate if any value is entered, not format;
+                // Because they may have a legacy account before we started enforcing complexity
+                if (!_showSignup && (value == null || value.isEmpty)) {
+                  return 'Please enter a password';
+                } else if (_showSignup &&
+                    (value == null ||
+                        value.isEmpty ||
+                        !isPasswordValid(value))) {
+                  return 'Please enter a valid password';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 5),
+            if (_showSignup)
+              Text(
+                'Must be at least 12 characters long, and contain one lowercase and one uppercase letter.',
+                style: context.theme.textTheme.bodySmall,
+              ),
+            if (!_showSignup)
+              Align(
+                alignment: Alignment.topLeft,
+                child: ActionButton(
+                  // key: SignInOptionsContent.buttonSubmitKey,
+                  onPressed: () {
+                    // We have to disable password validation for now so the form validation can succeed without it
+                    setState(() {
+                      _ignorePassword = true;
+                    });
+                    if (_formKey.currentState!.validate()) {
+                      _resetPassword();
+                    }
+                  },
+                  type: ActionButtonType.text,
+                  text: 'Forgot your password?',
+                ),
+              ),
+            SizedBox(height: 9),
+            if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
+            if (_formMessage.isNotEmpty)
+              Text(
+                _formMessage,
+                style: context.theme.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+            SizedBox(height: 9),
+            ActionButton(
+              key: SignInOptionsContent.buttonSubmitKey,
+              onPressed: () => authMessageOnError(
+                _onSubmit,
+                errorCallback: (error, code) => setState(
+                  () => _formError = code,
+                ),
+              ),
+              sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
+              type: ActionButtonType.filled,
+              minWidth: minWidth,
+              textColor: Colors.white,
+              color: Colors.black,
+              text: !_showSignup ? 'Log in' : 'Sign up',
+            ),
+          ],
+        ),
+      ),
+      SizedBox(height: 9),
+      Align(
+        alignment: Alignment.center,
+        child: Text(
+          'or',
+          style: context.theme.textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.bold,
           ),
         ),
+      ),
       SizedBox(height: 9),
-      ThickOutlineButton(
+      ActionButton(
+        key: SignInOptionsContent.buttonGoogleKey,
         minWidth: minWidth,
         onPressed: () => context.read<UserService>().signInWithGoogle(),
+        type: ActionButtonType.outline,
         icon: Padding(
           padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
           child: Image.asset(
@@ -161,89 +413,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             height: 22,
           ),
         ),
-        backgroundColor: Colors.white,
-        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Google',
-      ),
-      ThickOutlineButton(
-        key: SignInOptionsContent.emailSignInKey,
-        minWidth: minWidth,
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-          child: Icon(
-            Icons.email,
-            color: context.theme.colorScheme.primary,
-            size: 22,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        onPressed: () => widget.openDialogOnEmailProviderSelected
-            ? SignInDialog.show(showEmailFormOnly: true)
-            : setState(() => _showEmailFormFields = true),
-        text: 'Sign ${widget.isNewUser ? 'up' : 'in'} with Email',
-      ),
-    ];
-  }
-
-  List<Widget> _buildEmailWidgets() {
-    return [
-      Center(
-        child: Text(
-          _newUser ? 'Create an account' : 'Sign In',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      if (_newUser)
-        CustomTextField(
-          key: SignInOptionsContent.nameTextFieldKey,
-          controller: _displayNameController,
-          labelText: 'Your Name',
-        ),
-      CustomTextField(
-        key: SignInOptionsContent.emailTextFieldKey,
-        controller: _emailController,
-        labelText: 'Email',
-      ),
-      CustomTextField(
-        key: SignInOptionsContent.passwordTextFieldKey,
-        controller: _passwordController,
-        onEditingComplete: () => _submitController.submit(),
-        labelText: 'Password',
-        maxLines: 1,
-        obscureText: true,
-      ),
-      Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.only(top: 10),
-        child: ActionButton(
-          key: SignInOptionsContent.signInSubmitKey,
-          controller: _submitController,
-          onPressed: () => alertOnError(context, _onSubmit),
-          text: _newUser ? 'Register' : 'Sign In',
-        ),
-      ),
-      if (!_newUser)
-        Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(vertical: 3),
-          child: TextButton(
-            onPressed: _resetPassword,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
-              child: Text('Forgot Password'),
-            ),
-          ),
-        ),
-      Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(2),
-        child: ThickOutlineButton(
-          key: SignInOptionsContent.newUserToggleKey,
-          onPressed: () => setState(() => _newUser = !_newUser),
-          text: _newUser ? 'Already a user? Sign In' : 'New user? Register',
-        ),
+        text: 'Continue with Google',
       ),
     ];
   }
@@ -251,7 +421,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   Widget _buildTermsOfService() {
     return Text.rich(
       TextSpan(
-        style: body.copyWith(fontSize: 12),
+        style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
             text:
@@ -261,10 +431,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             text: '${Environment.appName} Terms of Service',
             recognizer: TapGestureRecognizer()
               ..onTap = () => launch(Environment.termsUrl),
-            style: TextStyle(
-              color: Colors.blueAccent,
+            style: context.theme.textTheme.bodyMedium?.copyWith(
               decoration: TextDecoration.underline,
-              fontStyle: FontStyle.italic,
             ),
           ),
           TextSpan(text: '.'),

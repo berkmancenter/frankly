@@ -40,7 +40,6 @@ class AgendaItemText extends StatelessWidget {
             labelText: 'Content',
             hintText:
                 'Keep it short! You don’t want people to spend time reading.',
-            maxLines: null,
             onChanged: (value) {
               agendaItemTextData.content = value;
               onChanged(agendaItemTextData);
