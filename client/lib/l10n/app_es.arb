@@ -597,6 +597,14 @@
   "sidebarResourcesButton": "Recursos",
   "sidebarTemplatesButton": "Plantillas",
   "sidebarUnfollowButton": "Botón de dejar de seguir barra lateral",
+  "followCommunityForAccess": "Sigue a {community} para acceder a todos los eventos y recursos.",
+  "@followCommunityForAccess": {
+    "placeholders": {
+      "community": {
+        "type": "String"
+      }
+    }
+  },
   "signIn": "Iniciar sesión",
   "signInToApp": "Iniciar sesión en {appName}",
   "signInWithEmail": "Iniciar sesión con email",
@@ -851,5 +859,26 @@
   "eventIsStarting": "El evento está comenzando",
   "ifYouWantToEditFutureInstances": "Si quieres editar futuras instancias,",
   "editTheTemplate": "edita la plantilla.",
-  "eventEnded": "Evento Terminado"
+  "eventEnded": "Evento Terminado",
+  "yesCancel": "Sí, cancelar",
+  "areYouSureYouWantToCancel": "¿Estás seguro de que quieres cancelar?",
+  "titleCannotBeEmpty": "Title cannot be empty",
+  "startsInDays": "Starts in {days} days",
+  "@startsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "startsTomorrow": "Starts Tomorrow",
+  "startsToday": "Starts Today",
+  "startsIn": "Starts in {time}",
+  "@startsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

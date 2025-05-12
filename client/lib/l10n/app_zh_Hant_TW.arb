@@ -584,6 +584,14 @@
   "sidebarResourcesButton": "資源",
   "sidebarTemplatesButton": "模板",
   "sidebarUnfollowButton": "側邊欄取消追蹤按鈕",
+  "followCommunityForAccess": "追蹤{community}即可存取所有活動與資源。",
+  "@followCommunityForAccess": {
+    "placeholders": {
+      "community": {
+        "type": "String"
+      }
+    }
+  },
   "signIn": "登入",
   "signInToApp": "登入到 {appName}",
   "signInWithEmail": "使用電郵登入",
@@ -838,5 +846,26 @@
   "eventIsStarting": "活動即將開始",
   "ifYouWantToEditFutureInstances": "如果您想要編輯未來的實例，",
   "editTheTemplate": "請編輯模板。",
-  "eventEnded": "活動已結束"
+  "eventEnded": "活動已結束",
+  "yesCancel": "是的，取消",
+  "areYouSureYouWantToCancel": "您確定要取消嗎？",
+  "titleCannotBeEmpty": "標題不能為空",
+  "startsInDays": "即將於 {days} 天後開始",
+  "@startsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "startsTomorrow": "即將於明天開始",
+  "startsToday": "即將於今天開始",
+  "startsIn": "即將於 {time} 後開始",
+  "@startsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -387,11 +387,11 @@ class _EventInfoState extends State<EventInfo> {
     final isPlatformSelectionEnabled =
         CommunityProvider.watch(context).settings.enablePlatformSelection;
     if (daysDifference > 1) {
-      text = 'Starts in $daysDifference Days';
+      text = l10n.startsInDays(daysDifference);
     } else if (daysDifference == 1) {
-      text = 'Starts Tomorrow';
+      text = l10n.startsTomorrow;
     } else if (daysDifference == 0 && difference.inMinutes > 9) {
-      text = 'Starts in ${durationString(difference)}';
+      text = l10n.startsIn(durationString(difference));
     } else if (daysDifference < 0) {
       text = l10n.eventEnded;
     } else {
@@ -560,6 +560,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   Widget _buildCancelEventButton() {
+    final l10n = appLocalizationService.getLocalization();
     return ActionButton(
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
@@ -575,7 +576,7 @@ class _EventInfoState extends State<EventInfo> {
           SizedBox(width: 10),
           Flexible(
             child: HeightConstrainedText(
-              'Cancel event',
+              l10n.cancelEvent,
               style: AppTextStyle.body.copyWith(color: AppColor.gray3),
             ),
           ),
@@ -585,6 +586,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   Widget _buildCancelParticipationButton() {
+    final l10n = appLocalizationService.getLocalization();
     return ActionButton(
       onPressed: _cancelParticipation,
       type: ActionButtonType.outline,
@@ -600,7 +602,7 @@ class _EventInfoState extends State<EventInfo> {
           SizedBox(width: 10),
           Flexible(
             child: Text(
-              'Cancel',
+              l10n.cancel,
               style: AppTextStyle.body.copyWith(color: AppColor.gray3),
             ),
           ),
@@ -610,6 +612,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   Widget _buildEventVisibility() {
+    final l10n = appLocalizationService.getLocalization();
     final isPublic = _event.isPublic;
     final docPath =
         '${_eventProvider.event.collectionPath}/${_eventProvider.event.id}';
@@ -632,7 +635,7 @@ class _EventInfoState extends State<EventInfo> {
             appAsset = null;
           }
         } else {
-          text = 'Private';
+          text = l10n.private;
           appAsset = AppAsset.kLockPng;
         }
 
@@ -645,7 +648,7 @@ class _EventInfoState extends State<EventInfo> {
         return Row(
           children: [
             Tooltip(
-              message: isPublic ? 'Public' : 'Private',
+              message: isPublic ? l10n.public : l10n.private,
               child: ProxiedImage(null, asset: appAsset, width: 20, height: 20),
             ),
             SizedBox(width: 6),
@@ -661,6 +664,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   Widget _buildFollowCommunityCheckbox() {
+    final l10n = appLocalizationService.getLocalization();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -679,7 +683,9 @@ class _EventInfoState extends State<EventInfo> {
         SizedBox(width: 5),
         Flexible(
           child: Text(
-            'Follow ${Provider.of<CommunityProvider>(context).community.name} for access to all events and resources.',
+            l10n.followCommunityForAccess(
+              Provider.of<CommunityProvider>(context).community.name ?? '',
+            ),
             style: AppTextStyle.bodyMedium,
           ),
         ),

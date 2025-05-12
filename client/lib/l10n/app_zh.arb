@@ -591,6 +591,14 @@
   "sidebarResourcesButton": "资源",
   "sidebarTemplatesButton": "模板",
   "sidebarUnfollowButton": "侧边栏取消关注按钮",
+  "followCommunityForAccess": "关注{community}，即可访问所有活动和资源。",
+  "@followCommunityForAccess": {
+    "placeholders": {
+      "community": {
+        "type": "String"
+      }
+    }
+  },
   "signIn": "登录",
   "signInToApp": "登录到 {appName}",
   "signInWithEmail": "使用邮箱登录",
@@ -847,5 +855,26 @@
   "eventIsStarting": "活动即将开始",
   "ifYouWantToEditFutureInstances": "如果您想要编辑未来的实例，",
   "editTheTemplate": "请编辑模板。",
-  "eventEnded": "活动已结束"
+  "eventEnded": "活动已结束",
+  "yesCancel": "是的，取消",
+  "areYouSureYouWantToCancel": "您确定要取消吗？",
+  "titleCannotBeEmpty": "标题不能为空",
+  "startsInDays": "即将于 {days} 天后开始",
+  "@startsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "startsTomorrow": "即将于明天开始",
+  "startsToday": "即将于今天开始",
+  "startsIn": "即将于 {time} 后开始",
+  "@startsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

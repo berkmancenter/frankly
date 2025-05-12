@@ -277,11 +277,12 @@ class EventPageProvider with ChangeNotifier {
   }
 
   Future<bool> cancelEvent() async {
+    final l10n = appLocalizationService.getLocalization();
     final cancel = await ConfirmDialog(
-      title: appLocalizationService.getLocalization().cancelEvent,
+      title: l10n.cancelEvent,
       mainText: 'Are you sure you want to cancel event? This '
           'cannot be undone and will notify all participants.',
-      confirmText: 'Yes, cancel',
+      confirmText: l10n.yesCancel,
     ).show();
     if (!cancel) return false;
 
@@ -296,6 +297,7 @@ class EventPageProvider with ChangeNotifier {
   }
 
   Future<void> _processCancelParam() async {
+    final l10n = appLocalizationService.getLocalization();
     if (!userService.isSignedIn) {
       await Future.microtask(() => SignInDialog.show());
     }
@@ -315,9 +317,9 @@ class EventPageProvider with ChangeNotifier {
       await cancelEvent();
     } else if (eventProvider.isParticipant) {
       final cancelParticipation = await ConfirmDialog(
-        title: appLocalizationService.getLocalization().cancelParticipation,
-        mainText: 'Are you sure you want to cancel?',
-        confirmText: 'Yes, cancel',
+        title: l10n.cancelParticipation,
+        mainText: l10n.areYouSureYouWantToCancel,
+        confirmText: l10n.yesCancel,
       ).show();
       if (cancelParticipation) {
         await alertOnError(

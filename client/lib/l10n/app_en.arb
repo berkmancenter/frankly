@@ -548,6 +548,14 @@
   "sidebarResourcesButton": "Resources",
   "sidebarTemplatesButton": "Templates",
   "sidebarUnfollowButton": "Sidebar Unfollow Button",
+  "followCommunityForAccess": "Follow {community} for access to all events and resources.",
+  "@followCommunityForAccess": {
+    "placeholders": {
+      "community": {
+        "type": "String"
+      }
+    }
+  },
   "signIn": "Sign In",
   "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
@@ -804,5 +812,26 @@
   "eventIsStarting": "The event is starting",
   "ifYouWantToEditFutureInstances": "If you want to edit future instances,",
   "editTheTemplate": "edit the template.",
-  "eventEnded": "Event Ended"
+  "eventEnded": "Event Ended",
+  "yesCancel": "Yes, cancel",
+  "areYouSureYouWantToCancel": "Are you sure you want to cancel?",
+  "titleCannotBeEmpty": "Title cannot be empty",
+  "startsInDays": "Starts in {days} days",
+  "@startsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "startsTomorrow": "Starts Tomorrow",
+  "startsToday": "Starts Today",
+  "startsIn": "Starts in {time}",
+  "@startsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

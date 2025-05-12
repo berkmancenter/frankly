@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'views/edit_event_contract.dart';
 import '../data/models/edit_event_model.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class EditEventPresenter {
   final EditEventView _view;
   final EditEventModel _model;
@@ -92,13 +94,14 @@ class EditEventPresenter {
   }
 
   String getEventTypeTitle(EventType eventType) {
+    final l10n = appLocalizationService.getLocalization();
     switch (eventType) {
       case EventType.hosted:
-        return 'Hosted';
+        return l10n.hosted;
       case EventType.hostless:
-        return 'Hostless';
+        return l10n.hostless;
       case EventType.livestream:
-        return 'Livestream';
+        return l10n.livestream;
     }
   }
 
@@ -312,10 +315,12 @@ class EditEventPresenter {
 
 @visibleForTesting
 class EditEventPresenterHelper {
+
+  final l10n = appLocalizationService.getLocalization();
   String? areChangesValid(Event event) {
     final title = event.title;
     if (title == null || title.isEmpty) {
-      return 'Title cannot be empty';
+      return l10n.titleCannotBeEmpty;
     }
 
     return null;
