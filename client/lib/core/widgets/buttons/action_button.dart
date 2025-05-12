@@ -280,8 +280,10 @@ class _ActionButtonState extends State<ActionButton> {
     }
 
     if (widget.expand) {
-      return _semanticsWrappedButton(
-        Expanded(child: button),
+      return Expanded(
+        child: _semanticsWrappedButton(
+          button,
+        ),
       );
     }
 
