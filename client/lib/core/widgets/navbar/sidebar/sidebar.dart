@@ -195,59 +195,55 @@ class _SideBarState extends State<SideBar> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 12.0),
-          Row(
-            children: [
-              SizedBox(width: 8.0),
-              ProxiedImage(
+          ActionButton(
+            type: ActionButtonType.text,
+            icon: Padding(
+              padding: const EdgeInsets.only(left: 4.0, right: 12.0),
+              child: ProxiedImage(
                 null,
                 asset: AppAsset.kLogoIconPng,
                 width: 20,
                 height: 20,
               ),
-              ActionButton(
-                type: ActionButtonType.text,
-                text: '${Environment.appName} Home',
-                onPressed: () => routerDelegate.beamTo(HomeLocation()),
-              ),
-            ],
+            ),
+            text: '${Environment.appName} Home',
+            onPressed: () => routerDelegate.beamTo(HomeLocation()),
           ),
-          Row(
-            children: [
-              SizedBox(width: 5),
-              Text(
+          ActionButton(
+            text: context.l10n.language,
+            type: ActionButtonType.text,
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Text(
                 '🌐',
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
-              ActionButton(              
-                text: context.l10n.language,
-                type: ActionButtonType.text,
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(context.l10n.selectLanguage),
-                      content: LanguageSelector(),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(context.l10n.close),
-                        ),
-                      ],
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(context.l10n.selectLanguage),
+                  content: LanguageSelector(),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(context.l10n.close),
                     ),
-                  );
-                },
-              ),
-            ],
+                  ],
+                ),
+              );
+            },
           ),
-          ActionButton(            
+          ActionButton(
             text: context.l10n.helpCenter,
-            type: ActionButtonType.text,            
+            type: ActionButtonType.text,
             onPressed: () => launch(Environment.helpCenterUrl),
           ),
           ActionButton(
-            text: context.l10n.about + ' ${Environment.appName}',
+            text: '${context.l10n.about} ${Environment.appName}',
             type: ActionButtonType.text,
             onPressed: () => launch(Environment.aboutUrl),
           ),
@@ -301,8 +297,7 @@ class AnimatedSidebarContent extends StatefulWidget {
 }
 
 class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
-  void _startCommunityTapped() =>
-      guardSignedIn(() => DialogFlow().show());
+  void _startCommunityTapped() => guardSignedIn(() => DialogFlow().show());
 
   @override
   Widget build(BuildContext context) {
