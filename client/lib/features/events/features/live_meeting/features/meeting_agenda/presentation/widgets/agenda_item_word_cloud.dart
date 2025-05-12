@@ -29,7 +29,6 @@ class AgendaItemWordCloud extends StatelessWidget {
             initialValue: wordCloudData.prompt,
             labelText: 'Word Cloud Prompt',
             hintText: context.l10n.enterWordCloudPrompt,
-            maxLines: null,
             onChanged: (value) {
               wordCloudData.prompt = value;
               onChanged(wordCloudData);

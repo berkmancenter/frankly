@@ -67,7 +67,6 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
             initialValue: _model.agendaItemPollData.question,
             labelText: 'Poll Question',
             hintText: context.l10n.questionGoesHere,
-            maxLines: null,
             onChanged: (value) => _presenter.updatePollQuestion(value),
           ),
           SizedBox(height: 16),
