@@ -6,7 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/dialog_flow.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
@@ -33,7 +34,7 @@ class _MyCommunitiesSectionState extends State<MyCommunitiesSection> {
   static const double _communityCardSize = 295;
 
   void _createCommunityPressed() {
-    guardSignedIn(() => FreemiumDialogFlow().show());
+    guardSignedIn(() => DialogFlow().show());
   }
 
   @override

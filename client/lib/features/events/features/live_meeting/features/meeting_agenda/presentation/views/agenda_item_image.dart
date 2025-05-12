@@ -111,7 +111,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
                 child: CustomTextField(
                   controller: _textEditingController,
                   labelText: 'Image URL',
-                  maxLines: null,
                   onChanged: (value) => _presenter.updateImageUrl(value),
                 ),
               ),
