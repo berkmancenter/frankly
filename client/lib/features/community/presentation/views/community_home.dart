@@ -316,7 +316,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           return EmptyPageContent(
             type: EmptyPageType.events,
             subtitleText: (communityHasEvents ?? true)
-                ? 'No events'
+                ? context.l10n.noEventsFound
                 : 'Create your first event!',
             onButtonPress: () => CreateEventDialog.show(context),
           );
