@@ -103,9 +103,6 @@
       }
     }
   },
-  "signIn": "Iniciar sesión",
-  "signUp": "Regístrate",
-  "signOut": "Cerrar sesión",
   "areYouSureYouWantToDeleteMedia": "¿Estás seguro de que quieres eliminar este medio?",
   "areYouSureYouWantToRefreshTheGuide": "¿Estás seguro de que quieres actualizar la guía?",
   "aspectRatioClipped": "Relación de aspecto recortada",
@@ -329,7 +326,11 @@
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
   "@participantActionsForUserWithId": {
     "description": "Etiqueta semántica para acciones del participante, con userId como parámetro.",
-    "placeholders": { "userId": { "type": "Object" } }
+    "placeholders": {
+      "userId": {
+        "type": "Object"
+      }
+    }
   },
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
@@ -408,6 +409,8 @@
   "followCommunityButton": "Botón seguir comunidad",
   "franklyLogo": "Logo de Frankly",
   "signIn": "Iniciar sesión",
+  "signUp": "Regístrate",
+  "signOut": "Cerrar sesión",
   "signInToApp": "Iniciar sesión en {appName}",
   "@signInToApp": {
     "placeholders": {
@@ -418,7 +421,6 @@
   },
   "signInWithEmail": "Iniciar sesión con email",
   "signInWithGoogle": "Iniciar sesión con Google",
-  "signOut": "Cerrar Sesión",
   "signUpOrSignInToContinue": "Regístrate (o inicia sesión con una cuenta existente) para continuar.",
   "signUpToGetStarted": "Regístrate para comenzar.",
   "signUpWithEmail": "Registrarse con email",

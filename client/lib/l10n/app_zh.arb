@@ -103,9 +103,6 @@
       }
     }
   },
-  "signIn": "登录",
-  "signUp": "注册",
-  "signOut": "退出登录",
   "areYouSureYouWantToDeleteMedia": "您确定要删除媒体吗？",
   "areYouSureYouWantToRefreshTheGuide": "您确定要刷新指南吗？",
   "aspectRatioClipped": "纵横比裁剪",
@@ -505,6 +502,8 @@
   "followCommunityButton": "关注社区按钮",
   "franklyLogo": "Frankly 标志",
   "signIn": "登录",
+  "signUp": "注册",
+  "signOut": "退出登录",
   "signInToApp": "登录到 {appName}",
   "@signInToApp": {
     "placeholders": {
@@ -515,7 +514,6 @@
   },
   "signInWithEmail": "使用邮箱登录",
   "signInWithGoogle": "使用 Google 登录",
-  "signOut": "退出登录",
   "signUpOrSignInToContinue": "注册（或使用现有账户登录）以继续。",
   "signUpToGetStarted": "注册以开始使用。",
   "signUpWithEmail": "使用邮箱注册",

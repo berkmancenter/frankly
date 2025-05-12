@@ -33,9 +33,6 @@
   "appTitleUnsubscribe": "{appName} - Unsubscribe",
   "appTitleUserSettings": "{appName} - User Settings",
   "appTitleWelcome": "{appName} - Welcome",
-  "signIn": "Log In",
-  "signUp": "Sign Up",
-  "signOut": "Sign Out",
   "areYouSureYouWantToDeleteMedia": "Are you sure you want to delete media?",
   "areYouSureYouWantToRefreshTheGuide": "Are you sure you want to refresh the guide?",
   "aspectRatioClipped": "Aspect ratio clipped",
@@ -224,7 +221,9 @@
   "participantActionsForUserWithId": "Participant Actions for user with ID {userId}",
   "@participantActionsForUserWithId": {
     "description": "Semantic label for participant actions, with userId as parameter.",
-    "placeholders": { "userId": {} }
+    "placeholders": {
+      "userId": {}
+    }
   },
   "participantReassigned": "Participant Reassigned",
   "participants": "Participants",
@@ -297,7 +296,8 @@
   "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
   "followCommunityButton": "Follow Community Button",
   "franklyLogo": "Frankly Logo",
-  "signIn": "Sign In",
+  "signIn": "Log In",
+  "signUp": "Sign Up",
   "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
   "signInWithGoogle": "Sign in with Google",
