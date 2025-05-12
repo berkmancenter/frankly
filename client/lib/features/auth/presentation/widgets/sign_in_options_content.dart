@@ -172,7 +172,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       },
       callback: () => {
         setState(() {
-          _formMessage = context.l10n.passwordResetLinkSent(_emailController.text),
+          _formMessage =
+              context.l10n.passwordResetLinkSent(_emailController.text);
           _ignorePassword = false;
         }),
       },
@@ -414,7 +415,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             height: 22,
           ),
         ),
-        text: _showSignup ? context.l10n.signUpWithGoogle : context.l10n.signInWithGoogle,
+        text: _showSignup
+            ? context.l10n.signUpWithGoogle
+            : context.l10n.signInWithGoogle,
       ),
     ];
   }
