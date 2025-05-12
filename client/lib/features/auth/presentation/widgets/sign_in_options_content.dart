@@ -272,7 +272,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     key: SignInOptionsContent.nameTextFieldKey,
                     borderType: BorderType.underline,
                     controller: _displayNameController,
-                    labelText: 'Full Name',
+                    labelText: context.l10n.yourName,
                     hintText: 'e.g. Jane Doe',
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
@@ -289,7 +289,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               key: SignInOptionsContent.emailTextFieldKey,
               borderType: BorderType.underline,
               controller: _emailController,
-              labelText: 'Email',
+              labelText: context.l10n.email,
               onEditingComplete: () => _submitForm(),
               validator: (value) {
                 if (value == null || value.isEmpty || !isEmailValid(value)) {
@@ -304,7 +304,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               borderType: BorderType.underline,
               controller: _passwordController,
               onEditingComplete: () => _submitForm(),
-              labelText: 'Password',
+              labelText: context.l10n.password,
               obscureText: !_showPassword,
               suffixIcon: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
@@ -361,7 +361,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     }
                   },
                   type: ActionButtonType.text,
-                  text: 'Forgot your password?',
+                  text: context.l10n.forgotPassword,
                 ),
               ),
             SizedBox(height: 9),
@@ -386,7 +386,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               minWidth: minWidth,
               textColor: Colors.white,
               color: Colors.black,
-              text: !_showSignup ? 'Log in' : 'Sign up',
+              text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
             ),
           ],
         ),
