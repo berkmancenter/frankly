@@ -62,11 +62,11 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
             ),
             SizedBox(height: 12),
             CustomTextField(
-              labelText: 'Enter a title',
+              labelText: context.l10n.enterTitle,
               onChanged: (value) => setState(() => _title = value),
             ),
             CustomTextField(
-              labelText: 'Enter a message',
+              labelText: context.l10n.enterMessage,
               minLines: 4,
               maxLines: 8,
               onChanged: (value) => setState(() => _message = value),

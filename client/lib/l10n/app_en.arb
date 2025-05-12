@@ -311,6 +311,8 @@
   "enterReason": "Enter reason",
   "enterRoom": "Enter Room",
   "enterRoomNumber": "Ex: 2",
+  "enterTitle": "Enter a title",
+  "enterMessage": "Enter a message",
   "enterVideoTitle": "Enter Video title",
   "enterWaitingRoomText": "Enter waiting room text (optional)",
   "enterWaitingRoomTextOptional": "Enter waiting room text (optional)",

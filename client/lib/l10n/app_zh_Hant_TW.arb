@@ -349,6 +349,8 @@
   "enterReason": "輸入原因",
   "enterRoom": "進入房間",
   "enterRoomNumber": "輸入房間號碼",
+  "enterTitle": "輸入標題",
+  "enterMessage": "輸入訊息",
   "enterVideoTitle": "輸入影片標題",
   "enterWaitingRoomText": "輸入等候室文字（可選）",
   "enterWaitingRoomTextOptional": "輸入等候室文本（可選）",
