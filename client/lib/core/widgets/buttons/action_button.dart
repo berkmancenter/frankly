@@ -279,27 +279,19 @@ class _ActionButtonState extends State<ActionButton> {
         break;
     }
 
-    if (widget.expand) {
-      return Expanded(
-        child: _semanticsWrappedButton(
-          button,
-        ),
-      );
-    }
-
-    return _semanticsWrappedButton(
-      button,
-    );
-  }
-
-  Widget _semanticsWrappedButton(child) {
-    return Semantics(
+    final semanticsWrappedButton = Semantics(
       button: true,
       focused: false,
       enabled: widget.onPressed != null,
       label: widget.text,
-      child: child,
+      child: button,
     );
+
+    if (widget.expand) {
+      return Expanded(child: semanticsWrappedButton);
+    } else {
+      return semanticsWrappedButton;
+    }
   }
 
   Widget _buildTooltipWrappedButton() {
