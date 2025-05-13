@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class AppRadioListTile<T> extends StatelessWidget {
@@ -36,8 +36,7 @@ class AppRadioListTile<T> extends StatelessWidget {
           Flexible(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.body
-                  .copyWith(color: Theme.of(context).colorScheme.primary),
+              style: context.theme.textTheme.bodyLarge,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),

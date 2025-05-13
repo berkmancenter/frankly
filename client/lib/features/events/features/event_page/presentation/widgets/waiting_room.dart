@@ -8,11 +8,10 @@ import 'package:client/features/events/features/live_meeting/data/providers/live
 import 'package:client/features/events/features/live_meeting/features/live_stream/presentation/widgets/url_video_widget.dart';
 import 'package:client/features/events/features/event_page/presentation/waiting_room_presenter.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
 import 'package:data_models/events/event.dart';
@@ -80,7 +79,7 @@ class _WaitingRoom extends StatelessWidget {
   Widget _buildDesktopLayout(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(30.0),
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: Row(
         children: [
           Expanded(
@@ -96,7 +95,7 @@ class _WaitingRoom extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       child: Column(
         children: [
           _buildMeetingInfo(context),
@@ -118,7 +117,8 @@ class _WaitingRoom extends StatelessWidget {
         Flexible(
           child: HeightConstrainedText(
             eventProvider.event.title ?? 'Your Event',
-            style: AppTextStyle.headline2.copyWith(color: AppColor.white),
+            style: AppTextStyle.headline2
+                .copyWith(color: context.theme.colorScheme.onPrimary),
             textAlign: TextAlign.start,
             maxLines: isMobile ? 2 : 1,
             overflow: TextOverflow.ellipsis,
@@ -135,7 +135,8 @@ class _WaitingRoom extends StatelessWidget {
           Flexible(
             child: HeightConstrainedText(
               eventProvider.event.waitingRoomInfo?.content ?? '',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.white),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
               textAlign: TextAlign.start,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
@@ -152,7 +153,8 @@ class _WaitingRoom extends StatelessWidget {
             Flexible(
               child: Text(
                 _buildPresentCountText(context),
-                style: AppTextStyle.body.copyWith(color: AppColor.white),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.onPrimary),
               ),
             ),
           ],
@@ -196,13 +198,14 @@ class _WaitingRoom extends StatelessWidget {
         horizontal:
             responsiveLayoutService.getDynamicSize(context, 20, scale: 0.5),
       ),
-      color: AppColor.darkerBlue,
+      color: context.theme.colorScheme.primary,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             _buildWaitingRoomInfoText(isInBreakouts, waitingRoomMediaIsActive),
-            style: AppTextStyle.body.copyWith(color: AppColor.white),
+            style: AppTextStyle.body
+                .copyWith(color: context.theme.colorScheme.onPrimary),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
@@ -218,7 +221,8 @@ class _WaitingRoom extends StatelessWidget {
                 }
                 return Text(
                   _buildTimeToStart(timeTillStart),
-                  style: AppTextStyle.headline1.copyWith(color: AppColor.white),
+                  style: AppTextStyle.headline1
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                   textAlign: TextAlign.center,
                 );
               },

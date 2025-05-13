@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
@@ -30,14 +30,14 @@ class Dialogs {
             TextEditingController();
 
         return Dialog(
-          backgroundColor: AppColor.darkBlue,
+          backgroundColor: context.theme.colorScheme.primary,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
             constraints: BoxConstraints(maxHeight: 600, maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: EdgeInsets.all(isMobile ? 20 : 40),
             child: Column(
@@ -50,14 +50,8 @@ class Dialogs {
                       child: Text(
                         title,
                         style: isMobile
-                            ? AppTextStyle.headline1
-                                // Apply same style just slightly smaller font for mobile
-                                .copyWith(
-                                fontSize: 30,
-                                color: AppColor.darkBlue,
-                              )
-                            : AppTextStyle.headline1
-                                .copyWith(color: AppColor.darkBlue),
+                            ? context.theme.textTheme.headlineMedium
+                            : context.theme.textTheme.headlineSmall,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -89,8 +83,8 @@ class Dialogs {
                   alignment: Alignment.centerRight,
                   child: ActionButton(
                     text: positiveButtonText,
-                    textColor: AppColor.brightGreen,
-                    color: AppColor.darkBlue,
+                    textColor: context.theme.colorScheme.onPrimary,
+                    color: context.theme.colorScheme.primary,
                     onPressed: () async {
                       if (formKey.currentState?.validate() == true) {
                         Navigator.pop(context, textEditingController.text);
@@ -124,14 +118,14 @@ class Dialogs {
         double? selectedValue = currentNumber;
 
         return Dialog(
-          backgroundColor: AppColor.darkBlue,
+          backgroundColor: context.theme.colorScheme.primary,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
             constraints: BoxConstraints(maxHeight: 600, maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             padding: EdgeInsets.all(isMobile ? 20 : 40),
             child: Column(
@@ -141,20 +135,21 @@ class Dialogs {
                 Center(
                   child: HeightConstrainedText(
                     title,
-                    style: AppTextStyle.headline1,
+                    style: context.theme.textTheme.headlineMedium,
                   ),
                 ),
                 SizedBox(height: 10),
                 FormBuilderSlider(
-                  activeColor: AppColor.brightGreen,
-                  inactiveColor: AppColor.gray4,
+                  activeColor: context.theme.colorScheme.primary,
+                  inactiveColor: context.theme.colorScheme.primaryFixed,
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Colors.transparent, width: 0),
                     ),
                     border: const OutlineInputBorder(),
-                    labelStyle: TextStyle(color: AppColor.darkBlue),
+                    labelStyle:
+                        TextStyle(color: context.theme.colorScheme.primary),
                   ),
                   initialValue: currentNumber,
                   min: minNumber,
@@ -318,10 +313,11 @@ class ConfirmDialogLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.grayTransparent,
+      color: context.theme.colorScheme.scrim.withScrimOpacity,
       alignment: Alignment.center,
       child: Container(
-        decoration: BoxDecoration(color: AppColor.white.withOpacity(0.75)),
+        decoration:
+            BoxDecoration(color: context.theme.colorScheme.surfaceContainer),
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -329,11 +325,7 @@ class ConfirmDialogLayer extends StatelessWidget {
             Spacer(),
             HeightConstrainedText(
               'Save changes?',
-              style: AppTextStyle.headline3.copyWith(
-                color: areColorsFromTheme
-                    ? Theme.of(context).colorScheme.primary
-                    : AppColor.darkBlue,
-              ),
+              style: context.theme.textTheme.titleMedium!,
             ),
             SizedBox(height: 20),
             Row(
@@ -341,20 +333,14 @@ class ConfirmDialogLayer extends StatelessWidget {
               children: [
                 ActionButton(
                   type: ActionButtonType.outline,
-                  textColor: areColorsFromTheme
-                      ? Theme.of(context).colorScheme.primary
-                      : AppColor.darkBlue,
+                  textColor: context.theme.colorScheme.primary,
                   text: 'Discard',
                   onPressed: () => Navigator.pop(context),
                 ),
                 SizedBox(width: 10),
                 ActionButton(
-                  color: areColorsFromTheme
-                      ? Theme.of(context).colorScheme.primary
-                      : AppColor.darkBlue,
-                  textColor: areColorsFromTheme
-                      ? Theme.of(context).colorScheme.secondary
-                      : AppColor.brightGreen,
+                  color: context.theme.colorScheme.primary,
+                  textColor: context.theme.colorScheme.onPrimary,
                   text: 'Save',
                   onPressed: onSaveChanges,
                 ),

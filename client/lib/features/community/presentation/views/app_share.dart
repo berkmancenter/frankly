@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -7,7 +8,6 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
@@ -42,20 +42,20 @@ class AppShareData {
 }
 
 class AppShareDialog extends StatefulWidget {
-  final String? title;
-  final String content;
-  final AppShareData appShareData;
-  final Color iconColor;
-  final Color? iconBackgroundColor;
-
   const AppShareDialog({
     Key? key,
     this.title,
     required this.content,
     required this.appShareData,
-    this.iconColor = AppColor.darkBlue,
+    this.iconColor,
     this.iconBackgroundColor,
   }) : super(key: key);
+
+  final String? title;
+  final String content;
+  final AppShareData appShareData;
+  final Color? iconColor;
+  final Color? iconBackgroundColor;
 
   @override
   State<AppShareDialog> createState() => _AppShareDialogState();
@@ -74,7 +74,6 @@ class _AppShareDialogState extends State<AppShareDialog> {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: AppColor.darkBlue,
       child: Container(
         padding: EdgeInsets.all(isMobile ? 20 : 40),
         width: responsiveLayoutService.getDynamicSize(context, 600),
@@ -91,7 +90,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                     padding: const EdgeInsets.all(6),
                     child: Icon(
                       Icons.close,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onSurfaceVariant,
                       size: 30,
                     ),
                   ),
@@ -103,9 +102,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
               HeightConstrainedText(
                 title,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.body.copyWith(
-                  color: AppColor.white,
-                ),
+                style: AppTextStyle.body,
               ),
               SizedBox(height: 10),
             ],
@@ -113,11 +110,10 @@ class _AppShareDialogState extends State<AppShareDialog> {
               widget.content,
               textAlign: TextAlign.center,
               style: isMobile
-                  ? AppTextStyle.bodyMedium.copyWith(color: AppColor.white)
+                  ? AppTextStyle.bodyMedium
                   : AppTextStyle.body.copyWith(
                       fontSize:
                           responsiveLayoutService.getDynamicSize(context, 35),
-                      color: AppColor.white,
                     ),
             ),
             SizedBox(height: isMobile ? 8 : 18),
@@ -129,7 +125,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 children: [
                   HeightConstrainedText(
                     'Share',
-                    style: AppTextStyle.body.copyWith(color: AppColor.white),
+                    style: AppTextStyle.body,
                   ),
                   _buildShareSection(),
                   _buildFinishButton(),
@@ -147,8 +143,6 @@ class _AppShareDialogState extends State<AppShareDialog> {
         onPressed: () => Navigator.of(context).pop(),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         text: context.l10n.finish,
-        color: AppColor.brightGreen,
-        textColor: AppColor.darkBlue,
       );
 
   Widget _buildShareSection() => LayoutBuilder(
@@ -182,8 +176,9 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 );
               }
             },
-            iconColor: widget.iconColor,
-            iconBackgroundColor: widget.iconBackgroundColor,
+            iconColor: widget.iconColor ?? context.theme.colorScheme.primary,
+            iconBackgroundColor: widget.iconBackgroundColor ??
+                context.theme.colorScheme.surfaceContainer,
             buttonPadding: padding,
             size: size,
             iconSize: min(size - 16, 20),

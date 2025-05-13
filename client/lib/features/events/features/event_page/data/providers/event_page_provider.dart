@@ -13,7 +13,6 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
-import 'package:client/app.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';

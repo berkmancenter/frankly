@@ -1,5 +1,6 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
@@ -16,7 +17,6 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -209,16 +209,19 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     if (light.isEmpty && dark.isEmpty) return;
     if (!ThemeUtils.isColorValid(light)) {
       _community = _community.copyWith(
-        themeLightColor: ThemeUtils.convertToHexString(AppColor.gray6),
+        themeLightColor:
+            ThemeUtils.convertToHexString(context.theme.colorScheme.surface),
       );
     }
     if (!ThemeUtils.isColorValid(dark)) {
       _community = _community.copyWith(
-        themeDarkColor: ThemeUtils.convertToHexString(AppColor.darkBlue),
+        themeDarkColor:
+            ThemeUtils.convertToHexString(context.theme.colorScheme.primary),
       );
     }
 
     final valid = ThemeUtils.isColorComboValid(
+      context,
       _community.themeLightColor,
       _community.themeDarkColor,
     );
@@ -446,7 +449,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       stream: createCommunityTagProvider.communityTagsStream,
       builder: (context, _) => CreateTagWidget(
         titleText: 'Add Tags',
-        titleTextStyle: AppTextStyle.body.copyWith(fontSize: 24),
         showIcon: false,
         tags: Provider.of<CreateCommunityTagProvider>(context).tags,
         onAddTag: (title) => alertOnError(

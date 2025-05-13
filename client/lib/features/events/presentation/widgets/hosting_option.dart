@@ -1,13 +1,11 @@
 import 'package:client/core/utils/extensions.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/events/event.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -16,14 +14,12 @@ class HostingOption extends StatefulWidget {
   final Function(EventType?) selectedEventType;
   final bool isHostlessEnabled;
   final EventType initialHostingOption;
-  final bool isWhiteBackground;
 
   const HostingOption({
     Key? key,
     required this.selectedEventType,
     required this.isHostlessEnabled,
     required this.initialHostingOption,
-    this.isWhiteBackground = true,
   }) : super(key: key);
 
   @override
@@ -44,9 +40,7 @@ class _HostingOptionState extends State<HostingOption> {
             ),
           )
           .asStream(),
-      textStyle: AppTextStyle.body.copyWith(
-        color: widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white,
-      ),
+      textStyle: AppTextStyle.body,
       height: 100,
       builder: (context, caps) {
         List<_HostingOptionType> hostingTypes = [
@@ -77,7 +71,6 @@ class _HostingOptionState extends State<HostingOption> {
                 for (final type in hostingTypes)
                   if (!type.isGated)
                     _HostingRadioOption(
-                      isWhiteBackground: widget.isWhiteBackground,
                       onSelected: () {
                         widget.selectedEventType(type.eventType);
                         setState(() => _hostingOption = type.eventType);
@@ -112,7 +105,6 @@ class _HostingRadioOption extends StatefulWidget {
   final bool isSelected;
   final void Function() onSelected;
   final String title;
-  final bool isWhiteBackground;
 
   const _HostingRadioOption({
     Key? key,
@@ -120,7 +112,6 @@ class _HostingRadioOption extends StatefulWidget {
     required this.title,
     required this.isSelected,
     required this.onSelected,
-    this.isWhiteBackground = false,
   }) : super(key: key);
 
   @override
@@ -129,18 +120,10 @@ class _HostingRadioOption extends StatefulWidget {
 
 class _HostingRadioOptionState extends State<_HostingRadioOption> {
   Color get color {
-    if (widget.isWhiteBackground) {
-      if (!widget.isGated) {
-        return AppColor.darkBlue;
-      } else {
-        return AppColor.darkBlue.withOpacity(.5);
-      }
+    if (!widget.isGated) {
+      return context.theme.colorScheme.primary;
     } else {
-      if (!widget.isGated) {
-        return AppColor.white;
-      } else {
-        return AppColor.white.withOpacity(.5);
-      }
+      return context.theme.colorScheme.primary.withOpacity(0.38);
     }
   }
 

@@ -8,7 +8,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -88,9 +88,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
             labelText: 'Title',
             hintText: context.l10n.enterImageTitle,
             maxLength: agendaTitleCharactersLength,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: context.theme.textTheme.bodySmall,
             maxLines: 1,
             onChanged: (value) => _presenter.updateImageTitle(value),
           ),
@@ -99,7 +97,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
             alignment: Alignment.center,
             children: [
               Container(
-                color: AppColor.gray5,
+                color: context.theme.colorScheme.onPrimaryContainer,
                 height: kImageHeight,
                 child: isImageUploaded ? ProxiedImage(imageUrl) : null,
               ),
@@ -113,7 +111,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
                 child: CustomTextField(
                   controller: _textEditingController,
                   labelText: 'Image URL',
-                  maxLines: null,
                   onChanged: (value) => _presenter.updateImageUrl(value),
                 ),
               ),
@@ -145,8 +142,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
 
   Widget _buildUploadImage(String text) {
     return ActionButton(
-      color: AppColor.darkBlue,
-      textColor: AppColor.brightGreen,
       text: text,
       onPressed: () async {
         await alertOnError(context, () async {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/dialog_flow.dart';
 import 'package:client/core/widgets/navbar/custom_scaffold.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_widget.dart';
@@ -42,7 +42,7 @@ class _NewSpacePageState extends State<NewSpacePage> {
       );
     }
     return CustomScaffold(
-      child: FreemiumDialogFlow(showAppNameOnMobile: false),
+      child: DialogFlow(showAppNameOnMobile: false),
     );
   }
 }

@@ -21,7 +21,7 @@ import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/hostless_action_fallback_controller.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -751,7 +751,6 @@ class LiveMeetingProvider with ChangeNotifier {
         builder: (context) => AppShareDialog(
           title: context.l10n.spreadTheWord,
           content: 'Who else would benefit from these events?',
-          iconBackgroundColor: AppColor.white,
           appShareData: AppShareData(
             subject: 'Join an event with me on ${Environment.appName}!',
             body: "Let's have a conversation on ${Environment.appName}!",

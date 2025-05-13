@@ -33,9 +33,6 @@
   "appTitleUnsubscribe": "{appName} - Unsubscribe",
   "appTitleUserSettings": "{appName} - User Settings",
   "appTitleWelcome": "{appName} - Welcome",
-  "signIn": "Log In",
-  "signUp": "Sign Up",
-  "signOut": "Sign Out",
   "areYouSureYouWantToDeleteMedia": "Are you sure you want to delete media?",
   "areYouSureYouWantToRefreshTheGuide": "Are you sure you want to refresh the guide?",
   "aspectRatioClipped": "Aspect ratio clipped",
@@ -224,7 +221,9 @@
   "participantActionsForUserWithId": "Participant Actions for user with ID {userId}",
   "@participantActionsForUserWithId": {
     "description": "Semantic label for participant actions, with userId as parameter.",
-    "placeholders": { "userId": {} }
+    "placeholders": {
+      "userId": {}
+    }
   },
   "participantReassigned": "Participant Reassigned",
   "participants": "Participants",
@@ -270,7 +269,6 @@
   "randomlyAssign": "Randomly Assign",
   "recentRooms": "Recent Rooms",
   "refreshConnection": "Refresh Connection",
-  "register": "Register",
   "removeParticipant": "Remove Participant",
   "removeSuggestion": "Remove Suggestion",
   "removedFromEvent": "You were removed from this event and cannot rejoin.",
@@ -297,7 +295,8 @@
   "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
   "followCommunityButton": "Follow Community Button",
   "franklyLogo": "Frankly Logo",
-  "signIn": "Sign In",
+  "signIn": "Log In",
+  "signUp": "Sign Up",
   "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
   "signInWithGoogle": "Sign in with Google",
@@ -306,7 +305,6 @@
   "signUpToGetStarted": "Sign up to get started.",
   "signUpWithEmail": "Sign up with Email",
   "signUpWithGoogle": "Sign up with Google",
-  "signup": "Sign up",
   "skipStripeAccountSetupForNow": "Skip Stripe account setup for now",
   "smartMatch": "Smart Match",
   "smartMatchParticipants": "Smart Match Participants",

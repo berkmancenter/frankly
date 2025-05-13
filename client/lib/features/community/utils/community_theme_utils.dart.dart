@@ -1,6 +1,5 @@
 import 'dart:math';
-import 'dart:ui';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class PresetColorTheme {
@@ -13,63 +12,63 @@ class PresetColorTheme {
 /// A utility class to help calculate the perceived contrast between two colors
 /// and other methods related to the creation and use of custom color schemes
 class ThemeUtils {
-  static List<PresetColorTheme> presetColorThemes = const [
-    PresetColorTheme(
-      lightColor: AppColor.gray6,
-      darkColor: AppColor.darkBlue,
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFDEF8FF),
-      darkColor: Color(0xFF203EA0),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFE1F4EE),
-      darkColor: Color(0xFF006442),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFF76F1A4),
-      darkColor: Color(0xFF0F200F),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFF9EB0F),
-      darkColor: Color(0xFF000000),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFFFA800),
-      darkColor: Color(0xFF320243),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFFF6258),
-      darkColor: Color(0xFF001D58),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFEAF3FD),
-      darkColor: Color(0xFF900E2D),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFFBE5D6),
-      darkColor: Color(0xFF660D6B),
-    ),
-    PresetColorTheme(
-      lightColor: Color(0xFFEFEFEF),
-      darkColor: Color(0xFF222222),
-    ),
-  ];
+  List<PresetColorTheme> presetColorThemes(BuildContext context) => [
+        PresetColorTheme(
+          lightColor: context.theme.colorScheme.surface,
+          darkColor: context.theme.colorScheme.primary,
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFDEF8FF),
+          darkColor: Color(0xFF203EA0),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFE1F4EE),
+          darkColor: Color(0xFF006442),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFF76F1A4),
+          darkColor: Color(0xFF0F200F),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFF9EB0F),
+          darkColor: Color(0xFF000000),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFFFA800),
+          darkColor: Color(0xFF320243),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFFF6258),
+          darkColor: Color(0xFF001D58),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFEAF3FD),
+          darkColor: Color(0xFF900E2D),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFFBE5D6),
+          darkColor: Color(0xFF660D6B),
+        ),
+        PresetColorTheme(
+          lightColor: Color(0xFFEFEFEF),
+          darkColor: Color(0xFF222222),
+        ),
+      ];
 
-  static Color lightColorFromTheme(int theme) =>
-      presetColorThemes[theme].lightColor;
+  Color lightColorFromTheme(BuildContext context, int theme) =>
+      presetColorThemes(context)[theme].lightColor;
 
-  static Color darkColorFromTheme(int theme) =>
-      presetColorThemes[theme].darkColor;
+  Color darkColorFromTheme(BuildContext context, int theme) =>
+      presetColorThemes(context)[theme].darkColor;
 
   static String convertToHexString(Color color) =>
       color.toString().substring(10, 16);
 
-  static String darkColorStringFromTheme(int theme) =>
-      convertToHexString(darkColorFromTheme(theme));
+  String darkColorStringFromTheme(BuildContext context, int theme) =>
+      convertToHexString(darkColorFromTheme(context, theme));
 
-  static String lightColorStringFromTheme(int theme) =>
-      convertToHexString(lightColorFromTheme(theme));
+  String lightColorStringFromTheme(BuildContext context, int theme) =>
+      convertToHexString(lightColorFromTheme(context, theme));
 
   static bool isColorValid(String? color) =>
       color != null &&
@@ -77,6 +76,7 @@ class ThemeUtils {
       RegExp(r'^[0-9a-fA-F]*$').hasMatch(color);
 
   static bool isColorComboValid(
+    BuildContext context,
     String? lightColorString,
     String? darkColorString,
   ) {
@@ -88,16 +88,19 @@ class ThemeUtils {
     final lightColor = parseColor(lightColorString)!;
     final darkColor = parseColor(darkColorString)!;
 
-    bool validRatio = isContrastRatioValid(lightColor, darkColor);
+    bool validRatio = isContrastRatioValid(context, lightColor, darkColor);
     bool lightDarkCorrect = isFirstColorLighter(
       parseColor(lightColorString)!,
       parseColor(darkColorString)!,
     );
 
-    final darkColorIsDarkEnough =
-        isContrastRatioValid(darkColor, AppColor.gray6);
-    final lightColorIsLightEnough =
-        isContrastRatioValid(lightColor, AppColor.gray1);
+    final darkColorIsDarkEnough = isContrastRatioValid(
+      context,
+      darkColor,
+      context.theme.colorScheme.surface,
+    );
+    final lightColorIsLightEnough = isContrastRatioValid(
+        context, lightColor, context.theme.colorScheme.secondary);
 
     return validRatio &&
         lightDarkCorrect &&
@@ -108,7 +111,11 @@ class ThemeUtils {
   static bool isFirstColorLighter(Color firstColor, Color secondColor) =>
       firstColor.computeLuminance() > secondColor.computeLuminance();
 
-  static bool isContrastRatioValid(Color firstColor, Color secondColor) {
+  static bool isContrastRatioValid(
+    BuildContext context,
+    Color firstColor,
+    Color secondColor,
+  ) {
     final val = calculateContrastRatio(
       firstColor,
       secondColor,

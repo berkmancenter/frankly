@@ -12,7 +12,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +41,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
   Widget _buildTab({
     required TabType tabType,
     int unreadMessages = 0,
-    required AppAsset asset,
+    required IconData icon,
     required String text,
   }) {
     final isMobile = responsiveLayoutService.isMobile(context);
@@ -62,11 +62,10 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
             tabController.openTab(tabType);
           }
         },
-        hoverColor: AppColor.white.withOpacity(0.3),
         child: Container(
           color:
               Provider.of<EventTabsControllerState>(context).isTabOpen(tabType)
-                  ? AppColor.white.withOpacity(0.3)
+                  ? context.theme.colorScheme.surface
                   : null,
           alignment: Alignment.center,
           child: Column(
@@ -76,11 +75,9 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(14),
-                    child: ProxiedImage(
-                      null,
-                      asset: asset,
-                      height: isMobile ? 30 : 40,
-                      loadingColor: Colors.transparent,
+                    child: Icon(
+                      icon,
+                      size: isMobile ? 30 : 40,
                     ),
                   ),
                   if (unreadMessages > 0)
@@ -90,7 +87,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
                         child: Container(
                           padding: const EdgeInsets.all(9),
                           decoration: BoxDecoration(
-                            color: AppColor.brightGreen,
+                            color: context.theme.colorScheme.onPrimary,
                             shape: BoxShape.circle,
                           ),
                           child: Text(
@@ -107,10 +104,6 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
               SizedBox(height: 4),
               HeightConstrainedText(
                 text,
-                style: body.copyWith(
-                  fontSize: isMobile ? 12 : 14,
-                  fontWeight: FontWeight.w400,
-                ),
               ),
             ],
           ),
@@ -135,16 +128,12 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         children: [
           Icon(
             Icons.account_circle,
-            color: AppColor.brightGreen,
+            color: context.theme.colorScheme.onPrimary,
           ),
           SizedBox(width: 6),
           Flexible(
             child: HeightConstrainedText(
               NumberFormat.decimalPattern().format(participants),
-              style: body.copyWith(
-                fontWeight: FontWeight.w300,
-                color: AppColor.brightGreen,
-              ),
             ),
           ),
         ],
@@ -160,14 +149,14 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       if (provider.enableGuide)
         _buildTab(
           tabType: TabType.guide,
-          asset: AppAsset('media/guide_icon.png'),
+          icon: Icons.book_outlined,
           text: 'Agenda',
         ),
       if (provider.enableChat)
         _buildTab(
           tabType: TabType.chat,
           unreadMessages: Provider.of<ChatModel>(context).numUnreadMessages,
-          asset: AppAsset('media/chat_icon.png'),
+          icon: Icons.comment_outlined,
           text: 'Chat',
         ),
       if (provider.enableUserSubmittedAgenda)
@@ -175,13 +164,13 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           tabType: TabType.suggestions,
           unreadMessages: Provider.of<UserSubmittedAgendaProvider>(context)
               .numUnreadSuggestions,
-          asset: AppAsset('media/guide_icon.png'),
+          icon: Icons.book_outlined,
           text: 'Suggest',
         ),
       if (provider.enableAdminPanel)
         _buildTab(
           tabType: TabType.admin,
-          asset: AppAsset('media/admin_icon.png'),
+          icon: Icons.settings_outlined,
           text: 'Admin',
         ),
     ];
@@ -189,7 +178,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
     final separator = Container(
       width: isMobile ? 1 : null,
       height: isMobile ? null : 1,
-      color: AppColor.white.withOpacity(0.5),
+      color: context.theme.colorScheme.surfaceContainer,
     );
     final children = [
       _buildCommunityProfilePic(),
@@ -215,7 +204,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       ),
     ];
     return Container(
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       width: isMobile ? null : _iconWidth,
       height: isMobile ? _iconWidth : null,
       child: isMobile

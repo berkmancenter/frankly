@@ -1,6 +1,7 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/discussion_threads/presentation/views/discussion_thread_card.dart';
 import 'package:client/features/discussion_threads/presentation/views/discussion_thread_comment_card.dart';
@@ -15,7 +16,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -49,8 +49,6 @@ class DiscussionThreadPage extends StatefulWidget {
 
 class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     implements DiscussionThreadView {
-  static const _kBackgroundColor = AppColor.gray6;
-
   /// Key for `comments` section start. It is used for auto-scrolling if [widget.scrollToComments]
   /// is true.
   final _commentsSectionKey = GlobalKey();
@@ -152,7 +150,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               _presenter.scrollToComments();
 
               return Scaffold(
-                backgroundColor: _kBackgroundColor,
+                backgroundColor: context.theme.colorScheme.surface,
                 floatingActionButton: _buildFAB(discussionThread),
                 body:
                     _buildBody(discussionThread, localDiscussionThreadComments),
@@ -170,21 +168,30 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     if (isMobile) {
       return FloatingActionButton(
         isExtended: isMobile,
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
-        child: Icon(Icons.add, color: AppColor.brightGreen, size: 30),
+        child: Icon(
+          Icons.add,
+          color: context.theme.colorScheme.onPrimary,
+          size: 30,
+        ),
       );
     } else {
       return FloatingActionButton.extended(
-        backgroundColor: AppColor.darkBlue,
+        backgroundColor: context.theme.colorScheme.primary,
         onPressed: () => _showAddCommentDialog(discussionThread),
         label: Row(
           children: [
-            Icon(Icons.add, color: AppColor.brightGreen, size: 30),
+            Icon(
+              Icons.add,
+              color: context.theme.colorScheme.onPrimary,
+              size: 30,
+            ),
             SizedBox(width: 10),
             Text(
               'Add a comment',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.brightGreen),
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.onPrimary),
             ),
           ],
         ),
@@ -210,7 +217,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
           child: CustomScrollView(
             slivers: [
               SliverAppBar(
-                backgroundColor: isMobile ? AppColor.white : _kBackgroundColor,
+                backgroundColor: isMobile
+                    ? context.theme.colorScheme.surfaceContainerLowest
+                    : context.theme.colorScheme.surface,
                 automaticallyImplyLeading: false,
                 expandedHeight: 50,
                 floating: true,
@@ -234,14 +243,18 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                             children: [
                               HeightConstrainedText(
                                 '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
-                                style: AppTextStyle.bodyMedium
-                                    .copyWith(color: AppColor.gray2),
+                                style: AppTextStyle.bodyMedium.copyWith(
+                                  color: context
+                                      .theme.colorScheme.onPrimaryContainer,
+                                ),
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
                                   'Newest First', // Forced (mock) sorting
-                                  style: AppTextStyle.bodyMedium
-                                      .copyWith(color: AppColor.gray2),
+                                  style: AppTextStyle.bodyMedium.copyWith(
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
+                                  ),
                                 ),
                             ],
                           ),
@@ -329,16 +342,18 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                           value: DiscussionThreadOptionType.update,
                           child: Text(
                             'Update Post',
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.darkBlue),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                         PopupMenuItem(
                           value: DiscussionThreadOptionType.delete,
                           child: Text(
                             'Delete Post',
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.darkBlue),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                              color: context.theme.colorScheme.primary,
+                            ),
                           ),
                         ),
                       ];
@@ -402,7 +417,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Container(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             child: Column(
               children: [
                 SizedBox(height: 20),
@@ -493,7 +508,8 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             SizedBox(width: 10),
             Text(
               'Reply',
-              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
+              style: AppTextStyle.bodyMedium
+                  .copyWith(color: context.theme.colorScheme.primary),
             ),
           ],
         ),

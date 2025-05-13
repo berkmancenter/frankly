@@ -22,9 +22,6 @@ import 'package:uuid/uuid.dart';
 
 import 'config/firebase_options.dart';
 
-import 'package:client/styles/app_styles.dart';
-
-
 bool kShowStripeFeatures = false;
 bool useBotControls = false;
 Map<String, String>? botJoinParameters;
@@ -109,41 +106,45 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (_) => NavBarProvider()),
         ChangeNotifierProvider.value(value: _localeProvider),
       ],
-      child: Consumer<LocaleProvider>(builder: (context, localeProvider, _) {
-        return Portal(
-          child: MaterialApp.router(
-            locale: localeProvider.locale,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en'),
-              Locale('es'),
-              Locale.fromSubtags(
-                  languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW',),
-              Locale('zh'),
-            ],
-            shortcuts: {
-              ...WidgetsApp.defaultShortcuts,
-              LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
-              LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
-                DoNothingIntent(),
-            LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowLeft): DoNothingIntent(),
-            LogicalKeySet(LogicalKeyboardKey.arrowRight): DoNothingIntent(),
-          },
-          routerDelegate: routerDelegate,
-          backButtonDispatcher:
-              BeamerBackButtonDispatcher(delegate: routerDelegate),
-          routeInformationParser: BeamerParser(),
-          theme: appTheme,
-        ),
-      ); },),
+      child: Consumer<LocaleProvider>(
+        builder: (context, localeProvider, _) {
+          return Portal(
+            child: MaterialApp.router(
+              locale: localeProvider.locale,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'),
+                Locale('es'),
+                Locale.fromSubtags(
+                  languageCode: 'zh',
+                  scriptCode: 'Hant',
+                  countryCode: 'TW',
+                ),
+                Locale('zh'),
+              ],
+              shortcuts: {
+                ...WidgetsApp.defaultShortcuts,
+                LogicalKeySet(LogicalKeyboardKey.space): ActivateIntent(),
+                LogicalKeySet(LogicalKeyboardKey.shift): DoNothingIntent(),
+                LogicalKeySet(LogicalKeyboardKey.arrowUp): DoNothingIntent(),
+                LogicalKeySet(LogicalKeyboardKey.arrowDown): DoNothingIntent(),
+                LogicalKeySet(LogicalKeyboardKey.arrowLeft): DoNothingIntent(),
+                LogicalKeySet(LogicalKeyboardKey.arrowRight): DoNothingIntent(),
+              },
+              routerDelegate: routerDelegate,
+              backButtonDispatcher:
+                  BeamerBackButtonDispatcher(delegate: routerDelegate),
+              routeInformationParser: BeamerParser(),
+              theme: appTheme,
+            ),
+          );
+        },
+      ),
     );
   }
 }

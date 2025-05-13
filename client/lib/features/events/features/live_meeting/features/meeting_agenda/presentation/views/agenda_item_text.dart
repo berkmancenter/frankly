@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_text_data.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 class AgendaItemText extends StatelessWidget {
   final bool isEditMode;
@@ -28,9 +28,7 @@ class AgendaItemText extends StatelessWidget {
             labelText: 'Title',
             maxLength: agendaTitleCharactersLength,
             maxLines: 1,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: context.theme.textTheme.labelMedium,
             onChanged: (value) {
               agendaItemTextData.title = value;
               onChanged(agendaItemTextData);
@@ -42,7 +40,6 @@ class AgendaItemText extends StatelessWidget {
             labelText: 'Content',
             hintText:
                 'Keep it short! You don’t want people to spend time reading.',
-            maxLines: null,
             onChanged: (value) {
               agendaItemTextData.content = value;
               onChanged(agendaItemTextData);

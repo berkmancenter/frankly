@@ -1,15 +1,13 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/profile_or_login.dart';
 import 'package:client/core/widgets/navbar/selectable_navigation_icon.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -28,59 +26,44 @@ class CommunityBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.white,
-      // Adjusting AppSize.bottomNavBarHeight directly - does not seem to work
-      // therefore we add amendment here.
-      height: AppSize.kBottomNavBarHeight + 1,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      color: context.theme.colorScheme.surfaceContainer,
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Divider(height: 1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildEventsIcon(context),
-              if (showCreateMeetingButton)
-                _BottomNavAddIcon(
-                  onTap: () => CreateEventDialog.show(context),
-                ),
-              if (showCreateNewEventButton)
-                _BottomNavAddIcon(
-                  onTap: () async {
-                    await guardSignedIn(
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ManipulateDiscussionThreadPage(
-                            communityProvider:
-                                context.read<CommunityProvider>(),
-                            discussionThread: null,
-                          ),
-                        ),
+          _buildEventsIcon(context),
+          if (showCreateMeetingButton)
+            IconButton.filled(
+              icon: const Icon(Icons.add),
+              onPressed: () => CreateEventDialog.show(context),
+            ),
+          if (showCreateNewEventButton)
+            IconButton.filled(
+              icon: const Icon(Icons.add),
+              onPressed: () async {
+                await guardSignedIn(
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ManipulateDiscussionThreadPage(
+                        communityProvider: context.read<CommunityProvider>(),
+                        discussionThread: null,
                       ),
-                    );
-                  },
-                ),
-              ProfileOrLogin(),
-            ],
-          ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ProfileOrLogin(),
         ],
       ),
     );
   }
 
   Widget _buildEventsIcon(BuildContext context) {
-    return CustomInkWell(
-      child: Container(
-        height: AppSize.kBottomNavBarHeight,
-        width: AppSize.kBottomNavBarHeight,
-        alignment: Alignment.center,
-        child: SelectableNavigationIcon(
-          isSelected: false,
-          imagePath: AppAsset.kEventsIcon,
-          iconSize: 35,
-        ),
-      ),
+    return SelectableNavigationIcon(
+      isSelected: false,
+      iconData: Icons.today_rounded,
       onTap: () => guardSignedIn(() async {
         routerDelegate.beamTo(
           UserSettingsLocation(
@@ -101,37 +84,15 @@ class HomeBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainer,
       height: AppSize.kBottomNavBarHeight,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildEventsIcon(context),
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: const [
           ProfileOrLogin(),
+          SizedBox(width: 24),
         ],
       ),
-    );
-  }
-
-  Widget _buildEventsIcon(BuildContext context) {
-    return CustomInkWell(
-      child: Container(
-        height: AppSize.kBottomNavBarHeight,
-        width: AppSize.kBottomNavBarHeight,
-        alignment: Alignment.center,
-        child: SelectableNavigationIcon(
-          isSelected: false,
-          imagePath: AppAsset.kEventsIcon,
-          iconSize: 35,
-        ),
-      ),
-      onTap: () => guardSignedIn(() async {
-        routerDelegate.beamTo(
-          UserSettingsLocation(
-            initialSection: UserSettingsSection.events,
-          ),
-        );
-      }),
     );
   }
 }
@@ -162,8 +123,10 @@ class _BottomNavAddIcon extends StatelessWidget {
           width: 32,
           child: HeightConstrainedText(
             '+',
-            style:
-                AppTextStyle.body.copyWith(color: AppColor.white, fontSize: 20),
+            style: AppTextStyle.body.copyWith(
+              color: context.theme.colorScheme.onPrimary,
+              fontSize: 20,
+            ),
           ),
         ),
       ),

@@ -7,13 +7,12 @@ import 'package:client/features/announcements/data/providers/announcements_provi
 import 'package:client/features/announcements/presentation/views/create_announcement_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +58,7 @@ class _AnnouncementsState extends State<Announcements> {
             Expanded(
               child: HeightConstrainedText(
                 announcement.title ?? 'Announcement',
-                style: body.copyWith(fontWeight: FontWeight.w700),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
             if (Provider.of<CommunityPermissionsProvider>(context)
@@ -105,10 +104,7 @@ class _AnnouncementsState extends State<Announcements> {
         SelectableLinkify(
           text: announcement.message ?? '',
           textAlign: TextAlign.left,
-          style: body.copyWith(
-            fontSize: 14,
-            color: AppColor.gray3,
-          ),
+          style: context.theme.textTheme.bodyMedium,
           options: LinkifyOptions(looseUrl: true),
           onOpen: (link) => launch(link.url),
         ),

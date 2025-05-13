@@ -3,7 +3,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -29,7 +29,6 @@ class AgendaItemWordCloud extends StatelessWidget {
             initialValue: wordCloudData.prompt,
             labelText: 'Word Cloud Prompt',
             hintText: context.l10n.enterWordCloudPrompt,
-            maxLines: null,
             onChanged: (value) {
               wordCloudData.prompt = value;
               onChanged(wordCloudData);
@@ -37,8 +36,8 @@ class AgendaItemWordCloud extends StatelessWidget {
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
-            'Participants will be asked to respond with a list of words or short phrases',
-            style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+            'Participants will be asked to respond with a list of words or short phrases.',
+            style: context.theme.textTheme.bodyMedium,
           ),
         ],
       );

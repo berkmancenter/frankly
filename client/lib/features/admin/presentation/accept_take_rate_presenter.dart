@@ -2,7 +2,7 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:flutter/material.dart';
 
@@ -28,19 +28,20 @@ class AcceptTakeRatePresenter {
             children: [
               Text(
                 'Payment terms',
-                style:
-                    AppTextStyle.headline3.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.headline3
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
               SizedBox(height: 10),
               Text(
                 'On our free plan, any end user payments will incur a ${takeRate * 100}% commission. Upgrade your plan for a lower rate.',
-                style: AppTextStyle.body.copyWith(color: AppColor.gray1),
+                style: AppTextStyle.body
+                    .copyWith(color: context.theme.colorScheme.secondary),
               ),
               SizedBox(height: 20),
               ActionButton(
                 text: 'Agree and continue',
-                color: AppColor.darkBlue,
-                textColor: AppColor.brightGreen,
+                color: context.theme.colorScheme.primary,
+                textColor: context.theme.colorScheme.onPrimary,
                 expand: true,
                 onPressed: () => Navigator.pop(context, true),
               ),
@@ -48,7 +49,7 @@ class AcceptTakeRatePresenter {
               ActionButton(
                 text: 'Not now',
                 color: Colors.transparent,
-                textColor: AppColor.darkBlue,
+                textColor: context.theme.colorScheme.primary,
                 expand: true,
                 onPressed: () => Navigator.pop(context, false),
               ),

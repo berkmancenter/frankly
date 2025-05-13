@@ -1,9 +1,9 @@
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -85,13 +85,6 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
     super.dispose();
   }
 
-  Color get textColor =>
-      widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white;
-  Color get buttonColor =>
-      widget.isWhiteBackground ? AppColor.darkBlue : AppColor.lightGreen;
-  Color get backgroundColor =>
-      widget.isWhiteBackground ? AppColor.white : AppColor.darkBlue;
-
   Widget _buildDialog(BuildContext context) {
     final onCancel = widget.onCancel;
     final onConfirm = widget.onConfirm;
@@ -105,7 +98,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
             constraints: BoxConstraints(maxWidth: 600),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: backgroundColor,
+              color: context.theme.colorScheme.surface,
             ),
             padding: const EdgeInsets.all(40),
             child: CustomListView(
@@ -113,19 +106,11 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: ActionButton(
-                    height: 40,
+                  child: IconButton(
                     padding: const EdgeInsets.all(0),
-                    margin: const EdgeInsets.all(0),
-                    minWidth: 50,
-                    borderRadius: BorderRadius.circular(0),
-                    color: Colors.transparent,
                     icon: Icon(
                       Icons.close,
-                      size: 40,
-                      color: widget.isWhiteBackground
-                          ? AppColor.darkBlue
-                          : AppColor.white,
+                      size: 24,
                     ),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
@@ -134,8 +119,8 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                   HeightConstrainedText(
                     widget.title,
                     style: responsiveLayoutService.isMobile(context)
-                        ? AppTextStyle.headline2.copyWith(color: textColor)
-                        : AppTextStyle.headline1.copyWith(color: textColor),
+                        ? context.theme.textTheme.headlineMedium
+                        : context.theme.textTheme.headlineSmall,
                     textAlign: widget.textAlign,
                   ),
                   SizedBox(height: 10),
@@ -143,7 +128,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 if (!isNullOrEmpty(widget.mainText)) ...[
                   HeightConstrainedText(
                     widget.mainText,
-                    style: AppTextStyle.body.copyWith(color: textColor),
+                    style: context.theme.textTheme.bodyMedium,
                     textAlign: widget.textAlign,
                   ),
                   SizedBox(height: 10),
@@ -151,11 +136,6 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 if (!isNullOrEmpty(widget.subText)) ...[
                   HeightConstrainedText(
                     widget.subText,
-                    style: body.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      color: textColor,
-                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
@@ -165,16 +145,11 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                   children: [
                     if (!isNullOrEmpty(widget.cancelText))
                       ActionButton(
+                        type: ActionButtonType.text,
                         height: 55,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         minWidth: 100,
-                        color: Colors.transparent,
                         text: widget.cancelText,
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: textColor,
-                        ),
                         onPressed: onCancel != null
                             ? () => onCancel(context)
                             : () => Navigator.of(context).pop(false),
@@ -188,13 +163,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                         horizontal: 18,
                         vertical: 12,
                       ),
-                      color: buttonColor,
-                      text: widget._getConfirmText(context),
-                      textStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: backgroundColor,
-                      ),
+                      text: widget._getConfirmText(context),                                  
                       onPressed: onConfirm != null
                           ? () => onConfirm(context)
                           : () => Navigator.of(context).pop(true),

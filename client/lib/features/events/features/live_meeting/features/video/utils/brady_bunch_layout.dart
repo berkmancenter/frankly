@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:quiver/core.dart';
 

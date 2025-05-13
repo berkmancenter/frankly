@@ -9,11 +9,9 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/events/presentation/widgets/participants_list.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
-
-import '../../../../core/widgets/custom_ink_well.dart';
 
 class EventButton extends HookWidget {
   final Event event;
@@ -29,6 +27,7 @@ class EventButton extends HookWidget {
     final scheduledTime = event.scheduledTime ?? clockService.now();
 
     return VerticalTimeAndDateIndicator(
+      padding: EdgeInsets.zero,
       shadow: false,
       time: DateTime.fromMillisecondsSinceEpoch(
         (scheduledTime.millisecondsSinceEpoch),
@@ -36,78 +35,69 @@ class EventButton extends HookWidget {
     );
   }
 
-  Widget _buildCardContent() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HeightConstrainedText(
-            event.title ?? 'Scheduled event',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.headline4.copyWith(
-              color: AppColor.darkBlue,
-            ),
-          ),
-          SizedBox(height: 10.0),
-          if (_isLiveStream)
-            HeightConstrainedText(
-              'Livestream',
-              style: AppTextStyle.bodySmall.copyWith(
-                color: AppColor.gray3,
-              ),
-            ),
-          SizedBox(height: 10),
-          _ParticipantsList(
-            event: event,
-          ),
-        ],
-      );
-
   @override
   Widget build(BuildContext context) {
     const height = 100.0;
     final localEvent = event;
 
-    return CustomInkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: () => routerDelegate.beamTo(
-        CommunityPageRoutes(
-          communityDisplayId:
-              CommunityProvider.readOrNull(context)?.displayId ??
-                  localEvent.communityId,
-        ).eventPage(
-          templateId: localEvent.templateId,
-          eventId: localEvent.id,
+    return Card.outlined(
+      margin: EdgeInsets.zero,
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () => routerDelegate.beamTo(
+          CommunityPageRoutes(
+            communityDisplayId:
+                CommunityProvider.readOrNull(context)?.displayId ??
+                    localEvent.communityId,
+          ).eventPage(
+            templateId: localEvent.templateId,
+            eventId: localEvent.id,
+          ),
         ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColor.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.black.withOpacity(0.5),
-              blurRadius: 4,
-              offset: Offset(1, 1),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            SizedBox(width: 8),
-            _buildTime(),
-            EventOrTemplatePicture(
-              height: height,
-              event: localEvent,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _buildCardContent(),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              SizedBox(width: 8),
+              _buildTime(),
+              SizedBox(width: 24),
+              EventOrTemplatePicture(
+                height: height,
+                event: localEvent,
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      HeightConstrainedText(
+                        event.title ?? 'Scheduled event',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.theme.textTheme.titleMedium,
+                      ),
+                      SizedBox(height: 10.0),
+                      if (_isLiveStream)
+                        HeightConstrainedText(
+                          'Livestream',
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            color: context.theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      SizedBox(height: 10),
+                      _ParticipantsList(
+                        event: event,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

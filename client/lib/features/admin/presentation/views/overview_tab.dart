@@ -11,7 +11,6 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -21,8 +20,7 @@ import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
-import 'package:client/core/utils/dialogs.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +69,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           Container(
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -92,8 +90,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                       onboardingStep == null
                           ? 'Now we’re talking!'
                           : onboardingStep.title,
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.secondary),
                     ),
                   ],
                 ),
@@ -135,7 +133,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                 return Container(
                   padding: const EdgeInsets.all(40),
                   decoration: BoxDecoration(
-                    color: AppColor.white,
+                    color: context.theme.colorScheme.surfaceContainerLowest,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -154,8 +152,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             SizedBox(width: 10),
                             Text(
                               'Now we’re talking!',
-                              style: AppTextStyle.subhead
-                                  .copyWith(color: AppColor.gray1),
+                              style: AppTextStyle.subhead.copyWith(
+                                  color: context.theme.colorScheme.secondary),
                             ),
                           ],
                         )
@@ -173,8 +171,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Expanded(
                               child: Text(
                                 onboardingStep.title,
-                                style: AppTextStyle.subhead
-                                    .copyWith(color: AppColor.gray1),
+                                style: AppTextStyle.subhead.copyWith(
+                                    color: context.theme.colorScheme.secondary),
                               ),
                             ),
                             SizedBox(
@@ -262,7 +260,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
   Widget _buildStepsCounter(int completedStepCount, int totalSteps) {
     return Text(
       '$completedStepCount/$totalSteps',
-      style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+      style: AppTextStyle.body
+          .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
     );
   }
 
@@ -307,8 +306,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                 Flexible(
                   child: Text(
                     onboardingStep.sectionTitle,
-                    style:
-                        AppTextStyle.bodyMedium.copyWith(color: AppColor.gray1),
+                    style: AppTextStyle.bodyMedium
+                        .copyWith(color: context.theme.colorScheme.secondary),
                   ),
                 ),
                 AnimatedSize(
@@ -322,8 +321,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Flexible(
                               child: RichText(
                                 text: TextSpan(
-                                  style: AppTextStyle.body
-                                      .copyWith(color: AppColor.gray3),
+                                  style: AppTextStyle.body.copyWith(
+                                      color: context.theme.colorScheme
+                                          .onPrimaryContainer),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)
@@ -369,9 +369,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: 'Edit your Community',
           icon: Icon(Icons.edit, size: 20),
           iconSide: ActionButtonIconSide.right,
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () {
             final community = _presenter.getCommunity();
 
@@ -383,9 +383,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: 'New template',
           icon: Icon(Icons.add, size: 20),
           iconSide: ActionButtonIconSide.right,
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () {
             CreateTemplateDialog.show(
               communityProvider: context.read<CommunityProvider>(),
@@ -399,9 +399,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: 'New event',
           icon: Icon(Icons.add, size: 20),
           iconSide: ActionButtonIconSide.right,
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () {
             CreateEventDialog.show(context);
           },
@@ -418,8 +418,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         );
 
         return ShareSection(
-          iconColor: AppColor.darkBlue,
-          iconBackgroundColor: AppColor.white,
+          iconColor: context.theme.colorScheme.primary,
+          iconBackgroundColor: context.theme.colorScheme.onPrimary,
           url: shareData.pathToPage,
           body: body,
           subject: subject,
@@ -431,9 +431,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
           text: isOnboardingStepCompleted
               ? 'Update Stripe Account'
               : 'Connect to Stripe',
-          textColor: AppColor.darkBlue,
+          textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
-          borderSide: BorderSide(color: AppColor.darkBlue),
+          borderSide: BorderSide(color: context.theme.colorScheme.primary),
           onPressed: () async {
             // Show dialog only if user has not created an account
             if (!isOnboardingStepCompleted) {

@@ -1,6 +1,6 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -22,7 +22,7 @@ class PrivateCommunityCheckbox extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 5),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(4),
           ),
           child: FormBuilderCheckbox(
@@ -34,10 +34,10 @@ class PrivateCommunityCheckbox extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             onChanged: onUpdate,
             initialValue: value,
-            checkColor: AppColor.white,
-            activeColor: AppColor.darkBlue,
+            checkColor: context.theme.colorScheme.onPrimary,
+            activeColor: context.theme.colorScheme.primary,
             decoration: InputDecoration(
-              fillColor: AppColor.white,
+              fillColor: context.theme.colorScheme.surfaceContainerLowest,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),

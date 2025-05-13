@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
@@ -72,7 +72,7 @@ class ParticipantsDialog extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: 400),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -80,7 +80,7 @@ class ParticipantsDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildCloseDialogIcon(context),
-            _buildDialogTitle(),
+            _buildDialogTitle(context),
             Flexible(
               child: _buildLiveStreamEventParticipants(context),
             ),
@@ -99,7 +99,7 @@ class ParticipantsDialog extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -107,7 +107,7 @@ class ParticipantsDialog extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   _buildCloseDialogIcon(context),
-                  _buildDialogTitle(),
+                  _buildDialogTitle(context),
                   ..._buildEventParticipants(context),
                 ],
               ),
@@ -131,14 +131,14 @@ class ParticipantsDialog extends StatelessWidget {
         icon: Icon(
           Icons.close,
           size: 40,
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
         ),
         onPressed: () => Navigator.of(context).pop(false),
       ),
     );
   }
 
-  Widget _buildDialogTitle() {
+  Widget _buildDialogTitle(BuildContext context) {
     final l10n = appLocalizationService.getLocalization();
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -147,7 +147,7 @@ class ParticipantsDialog extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
         ),
         textAlign: TextAlign.center,
       ),

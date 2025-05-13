@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:rainbow_color/rainbow_color.dart';
 
@@ -72,7 +72,7 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
         // Using only for retrieving correct color from same color spectrum, which is used
         // in rendering gauge arc line.
         final rainbow = Rainbow(
-          spectrum: AppColor.odometerColors,
+          spectrum: kOdometerColors,
           rangeStart: 1,
           rangeEnd: -1,
         );
@@ -134,7 +134,10 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
             child: HeightConstrainedText(
               title,
               maxLines: 1,
-              style: TextStyle(fontSize: fontSize, color: AppColor.gray4),
+              style: TextStyle(
+                fontSize: fontSize,
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -144,7 +147,10 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
             child: HeightConstrainedText(
               subtitle,
               maxLines: 1,
-              style: TextStyle(fontSize: fontSize, color: AppColor.gray4),
+              style: TextStyle(
+                fontSize: fontSize,
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -196,7 +202,7 @@ class _ArcPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.bottomRight,
         end: Alignment.bottomLeft,
-        colors: AppColor.odometerColors,
+        colors: kOdometerColors,
       ).createShader(rect);
 
     // Voodoo math to match drawn arc to UI Design.

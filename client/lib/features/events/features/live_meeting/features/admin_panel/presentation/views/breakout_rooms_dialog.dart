@@ -10,7 +10,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -167,7 +167,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           () => _startBreakouts(BreakoutAssignmentMethod.targetPerRoom),
         ),
         text: context.l10n.randomlyAssign,
-        color: AppColor.brightGreen,
+        color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
@@ -197,7 +197,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           () => _startBreakouts(BreakoutAssignmentMethod.smartMatch),
         ),
         text: context.l10n.smartMatchParticipants,
-        color: AppColor.brightGreen,
+        color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
@@ -250,7 +250,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
               'Asking participants to join breakout rooms.\nBreakout rooms will start in...$timeRemaining',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.black,
+                color: context.theme.colorScheme.primary,
                 fontSize: 16,
               ),
             );
@@ -270,7 +270,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),
@@ -298,7 +298,9 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: Text(
                       'Breakout Rooms',
-                      style: TextStyle(color: AppColor.white, fontSize: 16),
+                      style: TextStyle(
+                          color: context.theme.colorScheme.onPrimary,
+                          fontSize: 16),
                     ),
                   ),
                 ),

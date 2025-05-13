@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
@@ -12,7 +13,6 @@ import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/pre_post_card.dart';
@@ -32,7 +32,6 @@ class PrePostCardWidgetPage extends StatefulWidget {
   final PrePostCard? prePostCard;
   final PrePostCardWidgetType prePostCardWidgetType;
   final bool isEditable;
-  final bool isWhiteBackground;
 
   const PrePostCardWidgetPage({
     Key? key,
@@ -42,7 +41,6 @@ class PrePostCardWidgetPage extends StatefulWidget {
     this.event,
     this.template,
     this.prePostCard,
-    this.isWhiteBackground = false,
     this.prePostCardWidgetType = PrePostCardWidgetType.overview,
     this.isEditable = false,
   }) : super(key: key);
@@ -81,13 +79,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     showRegularToast(context, text, toastType: ToastType.success);
   }
 
-  Color get _textColor =>
-      widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white;
-  Color get _backgroundColor =>
-      widget.isWhiteBackground ? AppColor.white : AppColor.darkBlue;
-  Color get _fillColor =>
-      widget.isWhiteBackground ? AppColor.white : AppColor.darkerBlue;
-
   Future<void> _showDeleteDialog() async {
     final title = _presenter.getTitle();
 
@@ -119,12 +110,10 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: _backgroundColor,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   border: Border.all(
                     width: 1,
-                    color: widget.isWhiteBackground
-                        ? AppColor.gray5
-                        : AppColor.darkBlue,
+                    color: context.theme.colorScheme.outline,
                   ),
                 ),
                 child: Column(
@@ -137,30 +126,33 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                           Expanded(
                             child: Text(
                               title,
-                              style: AppTextStyle.subhead
-                                  .copyWith(color: _textColor),
+                              style: context.theme.textTheme.titleLarge,
                             ),
                           ),
                           if (isEditIconShown)
-                            IconButton(
-                              key: Key('prePostCardWidgetPage-deleteCard'),
-                              icon: Icon(
-                                CupertinoIcons.delete,
-                                color: _textColor,
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: IconButton(
+                                key: Key('prePostCardWidgetPage-deleteCard'),
+                                icon: Icon(
+                                  CupertinoIcons.delete,
+                                ),
+                                onPressed: () => _showDeleteDialog(),
                               ),
-                              onPressed: () => _showDeleteDialog(),
                             ),
                           if (isEditIconShown)
-                            IconButton(
-                              icon: Icon(Icons.edit, color: _textColor),
-                              onPressed: () => _presenter.toggleCardType(),
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => _presenter.toggleCardType(),
+                              ),
                             ),
                           IconButton(
                             icon: Icon(
                               _model.isExpanded
                                   ? Icons.expand_less
                                   : Icons.expand_more,
-                              color: _textColor,
                             ),
                             onPressed: () => _presenter.toggleExpansion(),
                           ),
@@ -207,68 +199,51 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     final prePostUrls = _model.prePostCard.prePostUrls;
-    final backgroundColor =
-        widget.isWhiteBackground ? AppColor.white : AppColor.darkBlue;
+
     return Column(
       key: Key('prePostCardWidget-editablePrePostCard'),
       children: [
-        Container(
-          color: backgroundColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'What message do you want to show participants $beforeAfter the event?',
-                style: AppTextStyle.subhead.copyWith(color: _textColor),
-              ),
-              SizedBox(height: 30),
-              CustomTextField(
-                hintText: context.l10n.enterHeadline,
-                fillColor: _fillColor,
-                backgroundColor: backgroundColor,
-                initialValue: _model.prePostCard.headline,
-                labelStyle: AppTextStyle.body.copyWith(color: _textColor),
-                hintStyle: AppTextStyle.body.copyWith(color: _textColor),
-                textStyle: AppTextStyle.body.copyWith(color: _textColor),
-                borderType: BorderType.outline,
-                borderRadius: 10,
-                maxLines: 1,
-                maxLength: 50,
-                onChanged: (text) => _presenter.updateEnteredHeadline(text),
-                validator: (text) => _presenter.validateHeadline(text),
-                useDarkMode: !widget.isWhiteBackground,
-              ),
-              SizedBox(height: 14),
-              CustomTextField(
-                hintText:
-                    'Enter Message. Eg, Take this survey $beforeAfter the event',
-                initialValue: _model.prePostCard.message,
-                fillColor: _fillColor,
-                backgroundColor: backgroundColor,
-                labelStyle: AppTextStyle.body.copyWith(color: _textColor),
-                hintStyle: AppTextStyle.body.copyWith(color: _textColor),
-                textStyle: AppTextStyle.body.copyWith(color: _textColor),
-                borderType: BorderType.outline,
-                borderRadius: 10,
-                maxLength: 200,
-                minLines: 3,
-                onChanged: (text) => _presenter.updateEnteredMessage(text),
-                validator: (text) => _presenter.validateMessage(text),
-                useDarkMode: !widget.isWhiteBackground,
-              ),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'What message do you want to show participants $beforeAfter the event?',
+              style: context.theme.textTheme.titleMedium,
+            ),
+            SizedBox(height: 30),
+            CustomTextField(
+              hintText: context.l10n.enterHeadline,
+              initialValue: _model.prePostCard.headline,
+              borderType: BorderType.outline,
+              borderRadius: 10,
+              maxLines: 1,
+              maxLength: 50,
+              onChanged: (text) => _presenter.updateEnteredHeadline(text),
+              validator: (text) => _presenter.validateHeadline(text),
+            ),
+            SizedBox(height: 14),
+            CustomTextField(
+              hintText:
+                  'Enter message (e.g. "Take this survey $beforeAfter the event")',
+              initialValue: _model.prePostCard.message,
+              borderType: BorderType.outline,
+              borderRadius: 10,
+              maxLength: 200,
+              minLines: 3,
+              onChanged: (text) => _presenter.updateEnteredMessage(text),
+              validator: (text) => _presenter.validateMessage(text),
+            ),
+          ],
         ),
         SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
-          color: _fillColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightConstrainedText(
                 'Add action links participants should visit $beforeAfter the event',
-                style: AppTextStyle.subhead.copyWith(color: _textColor),
+                style: context.theme.textTheme.titleMedium,
               ),
               SizedBox(height: 30),
               if (prePostUrls.isNotEmpty) ...[
@@ -286,7 +261,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               ],
               AddMoreButton(
                 onPressed: () => _presenter.addNewActionLink(),
-                isWhiteBackground: widget.isWhiteBackground,
                 label: context.l10n.addActionLink,
               ),
             ],
@@ -301,23 +275,17 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               height: 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: _textColor,
-                  width: 1,
-                ),
               ),
               child: Center(
                 child: AppClickableWidget(
                   onTap: () => _showDeleteDialog(),
-                  child:
-                      Icon(CupertinoIcons.delete, size: 15, color: _textColor),
+                  child: Icon(CupertinoIcons.delete),
                 ),
               ),
             ),
             SizedBox(width: 20),
             CircleSaveCheckButton(
               isEnabled: _presenter.hasBeenEdited(widget.event),
-              isWhiteBackground: widget.isWhiteBackground,
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   widget.onUpdate(_presenter.getPrePostCardDetailsToSave());
@@ -371,16 +339,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'URL Preview',
-                style: AppTextStyle.body.copyWith(color: AppColor.white),
+                style: context.theme.textTheme.bodyMedium,
               ),
               SizedBox(height: 4),
               HeightConstrainedText(
                 finalisedUrlFieldValue,
-                style: AppTextStyle.body.copyWith(
-                  color: widget.isWhiteBackground
-                      ? AppColor.darkBlue
-                      : AppColor.white.withOpacity(0.5),
-                ),
               ),
             ],
           ),
@@ -432,16 +395,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               children: [
                 HeightConstrainedText(
                   'URL Preview',
-                  style: AppTextStyle.body.copyWith(color: _textColor),
+                  style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(height: 4),
                 HeightConstrainedText(
                   finalisedUrlFieldValue,
-                  style: AppTextStyle.body.copyWith(
-                    color: widget.isWhiteBackground
-                        ? AppColor.darkBlue
-                        : AppColor.white.withOpacity(0.5),
-                  ),
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -480,17 +439,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     return CustomTextField(
       labelText: 'Button Text',
       initialValue: buttonText,
-      backgroundColor: _fillColor,
-      labelStyle: AppTextStyle.body.copyWith(color: _textColor),
-      hintStyle: AppTextStyle.body.copyWith(color: _textColor),
-      textStyle: AppTextStyle.body.copyWith(color: _textColor),
       borderType: BorderType.outline,
       borderRadius: 10,
       maxLines: 1,
       maxLength: 20,
       onChanged: (text) => _presenter.updateEnteredButtonText(urlIndex, text),
       validator: (text) => _presenter.validateButtonText(text, urlIndex),
-      useDarkMode: !widget.isWhiteBackground,
     );
   }
 
@@ -505,17 +459,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     return CustomTextField(
       labelText: 'Enter URL',
       initialValue: surveyUrl,
-      backgroundColor: _fillColor,
-      labelStyle: AppTextStyle.body.copyWith(color: _textColor),
-      hintStyle: AppTextStyle.body.copyWith(color: _textColor),
-      textStyle: AppTextStyle.body.copyWith(color: _textColor),
       borderType: BorderType.outline,
       borderRadius: 10,
       maxLines: 1,
       maxLength: 100,
       onChanged: (text) => _presenter.updateEnteredUrl(text, urlIndex),
       validator: (url) => _presenter.validateUrl(url, urlIndex),
-      useDarkMode: !widget.isWhiteBackground,
     );
   }
 
@@ -553,7 +502,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             ),
             urlIndex: urlIndex,
             attributeIndex: attributeIndex,
-            isWhiteBackground: widget.isWhiteBackground,
             onValidateUrlParameter: (value) {
               _presenter.validateUrlParameter(value);
             },
@@ -595,12 +543,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         children: [
           Text(
             _model.prePostCard.headline,
-            style: AppTextStyle.headline3.copyWith(color: _textColor),
+            style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 20),
           Text(
             _model.prePostCard.message,
-            style: AppTextStyle.subhead.copyWith(color: _textColor),
+            style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 20),
           if (prePostUrls.isNotEmpty)
@@ -625,10 +573,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
 
     if (isButtonVisible && isSurveyUrlValid) {
       return ActionButton(
-        color: AppColor.darkerBlue,
-        type: ActionButtonType.outline,
-        borderSide: BorderSide(color: AppColor.brightGreen, width: 1),
-        textColor: AppColor.brightGreen,
+        color: context.theme.colorScheme.primary,
         text: buttonText,
         onPressed: () => alertOnError(
           context,
@@ -661,18 +606,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                   Icon(
                     Icons.add,
                     size: 20,
-                    color: widget.isWhiteBackground
-                        ? AppColor.darkBlue
-                        : AppColor.white,
                   ),
                   SizedBox(width: 10),
                   Text(
                     'Add URL Parameter',
-                    style: AppTextStyle.body.copyWith(
-                      color: widget.isWhiteBackground
-                          ? AppColor.darkBlue
-                          : AppColor.white,
-                    ),
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ],
               ),
@@ -687,7 +625,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     return Padding(
       padding: EdgeInsets.only(top: 25),
       child: AppClickableWidget(
-        child: Icon(CupertinoIcons.delete, color: _textColor, size: 15),
+        child: Icon(CupertinoIcons.delete),
         onTap: () => _presenter.removeActionLinkOption(urlIndex),
       ),
     );
@@ -699,7 +637,7 @@ class AttributeOption extends StatefulWidget {
   final List<PrePostCardAttributeType> innerAvailableAttributeTypes;
   final int urlIndex;
   final int attributeIndex;
-  final bool isWhiteBackground;
+
   final Function(String?) onValidateUrlParameter;
   final Function() onDeleteQueryParamRow;
   final Function(String?) onUpdateEnteredQueryName;
@@ -711,7 +649,6 @@ class AttributeOption extends StatefulWidget {
     required this.innerAvailableAttributeTypes,
     required this.urlIndex,
     required this.attributeIndex,
-    required this.isWhiteBackground,
     required this.onValidateUrlParameter,
     required this.onDeleteQueryParamRow,
     required this.onUpdateEnteredQueryName,
@@ -726,11 +663,6 @@ class _AttributeOptionState extends State<AttributeOption> {
   late bool isEditMode;
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
-
-  Color get _textColor =>
-      widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white;
-  Color get _backgroundColor =>
-      widget.isWhiteBackground ? AppColor.white : AppColor.darkerBlue;
 
   @override
   void initState() {
@@ -760,12 +692,11 @@ class _AttributeOptionState extends State<AttributeOption> {
         });
       },
       text: widget.attribute.type.text,
-      color: AppColor.brightGreen,
+      color: context.theme.colorScheme.onPrimary,
       icon: Padding(
         padding: const EdgeInsets.all(5),
         child: Icon(
           Icons.edit,
-          color: AppColor.darkBlue,
         ),
       ),
       iconSide: ActionButtonIconSide.right,
@@ -786,10 +717,6 @@ class _AttributeOptionState extends State<AttributeOption> {
                   hintText: context.l10n.urlParameter,
                   controller: _textController,
                   initialValue: _textController.text,
-                  backgroundColor: _backgroundColor,
-                  labelStyle: AppTextStyle.body.copyWith(color: _textColor),
-                  hintStyle: AppTextStyle.body.copyWith(color: _textColor),
-                  textStyle: AppTextStyle.body.copyWith(color: _textColor),
                   borderType: BorderType.outline,
                   borderRadius: 10,
                   maxLines: 1,
@@ -797,13 +724,12 @@ class _AttributeOptionState extends State<AttributeOption> {
                   onChanged: (_) =>
                       widget.onUpdateEnteredQueryName(_textController.text),
                   validator: (text) => widget.onValidateUrlParameter(text),
-                  useDarkMode: !widget.isWhiteBackground,
                 ),
               ),
               SizedBox(width: 10),
               AppClickableWidget(
                 onTap: () => widget.onDeleteQueryParamRow(),
-                child: Icon(CupertinoIcons.delete, color: _textColor, size: 20),
+                child: Icon(CupertinoIcons.delete),
               ),
             ],
           ),
@@ -831,7 +757,7 @@ class _AttributeOptionState extends State<AttributeOption> {
   ) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: _textColor),
+        border: Border.all(color: context.theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownButton<PrePostCardAttributeType>(
@@ -844,7 +770,6 @@ class _AttributeOptionState extends State<AttributeOption> {
           child: Icon(
             Icons.keyboard_arrow_down,
             size: 24,
-            color: _textColor,
           ),
         ),
         selectedItemBuilder: (context) {
@@ -858,7 +783,7 @@ class _AttributeOptionState extends State<AttributeOption> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     attributeType.text,
-                    style: AppTextStyle.body.copyWith(color: _textColor),
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ),
               ),
@@ -871,7 +796,7 @@ class _AttributeOptionState extends State<AttributeOption> {
                 // Button which is in the selection list (when expanded)
                 child: Text(
                   e.text,
-                  style: AppTextStyle.body.copyWith(color: AppColor.darkerBlue),
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             )

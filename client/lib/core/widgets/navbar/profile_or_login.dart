@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/user_profile_navigation.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_widget.dart';
-import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:provider/provider.dart';
 
@@ -18,14 +16,7 @@ class ProfileOrLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (Provider.of<UserService>(context).isSignedIn) {
-      return CustomInkWell(
-        child: UserProfileNavigation(showMenuAboveIcon: showMenuAboveIcon),
-        onTap: () => routerDelegate.beamTo(
-          UserSettingsLocation(
-            initialSection: UserSettingsSection.profile,
-          ),
-        ),
-      );
+      return UserProfileNavigation(showMenuAboveIcon: showMenuAboveIcon);
     } else {
       return SignInWidget();
     }

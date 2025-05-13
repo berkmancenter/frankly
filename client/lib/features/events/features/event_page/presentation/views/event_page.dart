@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -29,7 +31,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -87,10 +88,10 @@ class EventPage extends StatefulWidget {
   }
 
   @override
-  _EventPageState createState() => _EventPageState();
+  EventPageState createState() => EventPageState();
 }
 
-class _EventPageState extends State<EventPage> implements EventPageView {
+class EventPageState extends State<EventPage> implements EventPageView {
   EventProvider get _eventProvider => EventProvider.watch(context);
 
   Event get event => _eventProvider.event;
@@ -164,6 +165,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       joinResults = await _joinEvent(showConfirm: false);
       if (!joinResults.isJoined) return;
     }
+    if (!mounted) return;
     await alertOnError(
       context,
       () => eventPageProvider.enterMeeting(
@@ -185,6 +187,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       positiveButtonText: 'Send',
     );
 
+    if (!mounted) return;
     if (message != null) {
       await alertOnError(context, () => _presenter.sendMessage(message));
     }
@@ -195,33 +198,16 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   ) async {
     await showCustomDialog(
       builder: (context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: AppColor.white,
-          title: Text(
-            'Are you sure you want to remove this message?',
-            style: AppTextStyle.headline3.copyWith(color: AppColor.darkBlue),
-          ),
-          actions: [
-            ActionButton(
-              text: 'No',
-              color: AppColor.darkBlue,
-              textColor: AppColor.brightGreen,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            ActionButton(
-              text: 'Yes',
-              color: AppColor.darkBlue,
-              textColor: AppColor.brightGreen,
-              onPressed: () => alertOnError(context, () async {
-                await _presenter.removeMessage(eventMessage);
-                Navigator.pop(context);
-              }),
-            ),
-          ],
+        return ConfirmDialog(
+          title: 'Are you sure you want to remove this message?',
+          onCancel: (context) {
+            Navigator.pop(context);
+          },
+          onConfirm: (context) => alertOnError(context, () async {
+            await _presenter.removeMessage(eventMessage);
+            if (!context.mounted) return;
+            Navigator.pop(context);
+          }),
         );
       },
     );
@@ -259,7 +245,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                     ),
                   ),
                   Container(
-                    color: AppColor.black.withOpacity(0.7),
+                    color: context.theme.colorScheme.scrim.withScrimOpacity,
                   ),
                   Center(
                     child: Column(
@@ -268,7 +254,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                         HeightConstrainedText(
                           'The event is starting',
                           style: TextStyle(
-                            color: AppColor.white,
+                            color: context.theme.colorScheme.onPrimary,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -290,7 +276,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
         ],
         CustomTabBar(
           padding: EdgeInsets.zero,
-          isWhiteBackground: true,
         ),
         SizedBox(height: 16),
         CustomTabBarView(keepAlive: !responsiveLayoutService.isMobile(context)),
@@ -301,7 +286,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
 
   Widget _buildEventTabsWrappedGuide() {
     final eventProvider = EventProvider.watch(context);
-    final communityProvider = CommunityProvider.watch(context);
     final isInBreakouts =
         LiveMeetingProvider.watchOrNull(context)?.isInBreakout ?? false;
     final isParticipant = eventProvider.isParticipant;
@@ -389,7 +373,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   Widget _buildEditTemplateMessage() {
     String templateId = event.templateId;
     return Container(
-      color: AppColor.gray5,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ConstrainedBody(
         maxWidth: 1100,
@@ -401,14 +385,16 @@ class _EventPageState extends State<EventPage> implements EventPageView {
               child: RichText(
                 text: TextSpan(
                   text: 'You are editing an event. \n',
-                  style: AppTextStyle.headlineSmall.copyWith(
-                    color: AppColor.gray2,
+                  style: context.theme.textTheme.titleMedium!.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
                       text: 'If you want to edit future instances, ',
-                      style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                      style: context.theme.textTheme.bodyMedium!.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
                     TextSpan(
                       text: 'edit the template.',
@@ -422,8 +408,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
                                 ).displayId,
                               ).templatePage(templateId: templateId),
                             ),
-                      style: AppTextStyle.body.copyWith(
-                        color: AppColor.accentBlue,
+                      style: context.theme.textTheme.bodyMedium!.copyWith(
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -435,7 +420,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
               onPressed: () => _presenter.hideEditTooltip(),
               icon: Icon(
                 Icons.close,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
             ),
           ],
@@ -447,7 +432,6 @@ class _EventPageState extends State<EventPage> implements EventPageView {
   @override
   Widget build(BuildContext context) {
     final eventProvider = context.watch<EventProvider>();
-    final eventPermissions = context.watch<EventPermissionsProvider>();
 
     if (context.watch<EventPageProvider>().isEnteredMeeting) {
       final isInstant = context.watch<EventPageProvider>().isInstant;
@@ -466,28 +450,17 @@ class _EventPageState extends State<EventPage> implements EventPageView {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            width: 2,
-            color: AppColor.gray5,
-          ),
-        ),
-      ),
-      alignment: Alignment.topCenter,
-      child: CustomStreamBuilder<Event>(
+    return CustomStreamBuilder<Event>(
+      entryFrom: '_EventPageState.build',
+      stream: eventProvider.eventStream,
+      builder: (_, event) => CustomStreamBuilder<List<Participant>>(
         entryFrom: '_EventPageState.build',
-        stream: eventProvider.eventStream,
-        builder: (_, event) => CustomStreamBuilder<List<Participant>>(
-          entryFrom: '_EventPageState.build',
-          stream: eventProvider.eventParticipantsStream,
-          builder: (_, __) {
-            if (event == null) return CircularProgressIndicator();
+        stream: eventProvider.eventParticipantsStream,
+        builder: (_, __) {
+          if (event == null) return CircularProgressIndicator();
 
-            return _buildMainContent();
-          },
-        ),
+          return _buildMainContent();
+        },
       ),
     );
   }

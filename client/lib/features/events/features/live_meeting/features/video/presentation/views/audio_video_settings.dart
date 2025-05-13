@@ -6,7 +6,7 @@ import 'package:client/features/events/features/live_meeting/features/video/data
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/troubleshoot_av.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -42,10 +42,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return [
       HeightConstrainedText(
         title,
-        style: body.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        style: context.theme.textTheme.titleSmall,
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
@@ -56,7 +53,7 @@ class AudioVideoSettingsDialog extends HookWidget {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.gray3),
+            border: Border.all(color: context.theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButton<String>(
@@ -72,7 +69,6 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style: body.copyWith(color: AppColor.black),
                   ),
                 ),
             ],
@@ -104,10 +100,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return [
       HeightConstrainedText(
         title,
-        style: body.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        style: context.theme.textTheme.titleSmall,
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
@@ -118,7 +111,7 @@ class AudioVideoSettingsDialog extends HookWidget {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.gray3),
+            border: Border.all(color: context.theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButton<String>(
@@ -134,7 +127,6 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style: body.copyWith(color: AppColor.black),
                   ),
                 ),
             ],
@@ -177,7 +169,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return AnimatedBuilder(
       animation: conferenceRoom,
       builder: (_, __) => Dialog(
-        backgroundColor: AppColor.white,
+        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Color(0xFF5568FF),
@@ -209,14 +201,11 @@ class AudioVideoSettingsDialog extends HookWidget {
                         children: [
                           HeightConstrainedText(
                             'Audio/Video Settings',
-                            style: body.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22,
-                            ),
+                            style: context.theme.textTheme.titleMedium,
                           ),
                           SizedBox(height: 12),
                           ..._buildAudioDevicesDropdown(
-                              context: context,
+                            context: context,
                             onChanged: (device) {
                               final id = device.deviceId;
                               if (id != null &&
@@ -238,7 +227,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                             title: context.l10n.audioInputDevice,
                           ),
                           ..._buildVideoDevicesDropdown(
-                              context: context,
+                            context: context,
                             onChanged: (device) {
                               final id = device.deviceId;
                               if (id != null &&

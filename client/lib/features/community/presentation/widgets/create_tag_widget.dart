@@ -2,16 +2,14 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart' as dotted_border;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
@@ -36,8 +34,6 @@ class CreateTagWidget extends StatefulWidget {
   final bool showIcon;
   final String? titleText;
   final TextStyle? titleTextStyle;
-  final Color tagBackgroundColor;
-  final Color tagTextColor;
 
   const CreateTagWidget({
     Key? key,
@@ -49,8 +45,6 @@ class CreateTagWidget extends StatefulWidget {
     this.showIcon = true,
     this.titleText,
     this.titleTextStyle,
-    this.tagBackgroundColor = AppColor.darkBlue,
-    this.tagTextColor = AppColor.white,
   }) : super(key: key);
 
   @override
@@ -100,8 +94,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
         ],
         HeightConstrainedText(
           widget.titleText ?? (widget.isFeaturedTag ? 'Featured Tags' : 'Tags'),
-          style: widget.titleTextStyle ??
-              AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+          style: AppTextStyle.body,
         ),
         SizedBox(width: 15),
         Expanded(
@@ -118,8 +111,8 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
                       label: snapshot.title,
                       isSelected: widget.checkIsSelected(tag),
                       onPressed: () => widget.onTapTag(tag),
-                      tagBackgroundColor: widget.tagBackgroundColor,
-                      tagTextColor: widget.tagTextColor,
+                      tagBackgroundColor: context.theme.colorScheme.primary,
+                      tagTextColor: context.theme.colorScheme.onPrimary,
                     );
                   },
                 ),
@@ -142,7 +135,6 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
       children: [
         HeightConstrainedText(
           'Add a new tag',
-          style: TextStyle(color: AppColor.gray3),
         ),
         Row(
           children: [
@@ -158,7 +150,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppColor.accentBlue,
+                          color: context.theme.colorScheme.outline,
                           width: 1.0,
                         ),
                         borderRadius: BorderRadius.circular(5),
@@ -205,22 +197,15 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
               Semantics(
                 button: true,
                 label: context.l10n.submitTagButton,
-                child: CustomInkWell(
-                  boxShape: BoxShape.circle,
-                  onTap: _hasValidInput
+                child: IconButton(
+                  onPressed: _hasValidInput
                       ? () {
                           widget.onAddTag(_controller.text);
                           _controller.clear();
                         }
                       : null,
-                  child: CircleAvatar(
-                    backgroundColor: _hasValidInput
-                        ? AppColor.darkBlue
-                        : AppColor.darkBlue.withOpacity(0.5),
-                    child: Icon(
-                      Icons.check,
-                      color: AppColor.brightGreen,
-                    ),
+                  icon: Icon(
+                    Icons.check,
                   ),
                 ),
               ),
@@ -246,19 +231,15 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
           ],
           SizedBox(height: 20),
           ActionButton(
-            borderSide: BorderSide(color: AppColor.black, width: 1),
             borderRadius: BorderRadius.circular(30),
             icon: Icon(
               Icons.add,
-              color: AppColor.darkBlue,
             ),
             type: ActionButtonType.outline,
-            color: AppColor.white,
+            color: context.theme.colorScheme.primary,
+            textColor: context.theme.colorScheme.primary,
             onPressed: () => _onTapAddButton(),
-            child: HeightConstrainedText(
-              'Add tag',
-              style: TextStyle(color: AppColor.darkBlue),
-            ),
+            text: 'Add tag',
           ),
         ],
       ),
@@ -287,7 +268,9 @@ class TagChip extends StatelessWidget {
     return ActionButton(
       onPressed: onPressed,
       padding: EdgeInsets.zero,
-      color: isSelected ? tagBackgroundColor : AppColor.white,
+      color: isSelected
+          ? tagBackgroundColor
+          : context.theme.colorScheme.surfaceContainerLowest,
       borderRadius: BorderRadius.circular(30),
       child: dotted_border.DottedBorder(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -295,11 +278,15 @@ class TagChip extends StatelessWidget {
         strokeCap: StrokeCap.round,
         borderType: dotted_border.BorderType.RRect,
         radius: Radius.circular(30),
-        color: isSelected ? tagBackgroundColor : AppColor.gray3,
+        color: isSelected
+            ? tagBackgroundColor
+            : context.theme.colorScheme.onPrimaryContainer,
         child: HeightConstrainedText(
           '#${label ?? ''}',
-          style: AppTextStyle.body
-              .copyWith(color: isSelected ? tagTextColor : AppColor.gray1),
+          style: AppTextStyle.body.copyWith(
+              color: isSelected
+                  ? tagTextColor
+                  : context.theme.colorScheme.secondary),
         ),
       ),
     );

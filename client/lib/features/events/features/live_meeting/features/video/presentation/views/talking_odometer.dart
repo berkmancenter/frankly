@@ -5,7 +5,7 @@ import 'package:client/features/events/features/live_meeting/features/video/pres
 import 'package:client/features/events/features/live_meeting/features/video/data/models/talking_odometer_model.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/talking_odometer_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/colorful_meter.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -65,13 +65,14 @@ class _TalkingOdometerState extends State<TalkingOdometer>
         key: _model.tooltipKey,
         triggerMode: TooltipTriggerMode.manual,
         message: message,
-        textStyle: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+        textStyle: AppTextStyle.body
+            .copyWith(color: context.theme.colorScheme.primary),
         verticalOffset: 40,
         preferBelow: false,
         padding: const EdgeInsets.all(30),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
         ),
         child: ColorfulMeter(
           value: applyWarning ? adjustedValue : value,

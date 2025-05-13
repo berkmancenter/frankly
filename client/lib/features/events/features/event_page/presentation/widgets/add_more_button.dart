@@ -1,63 +1,48 @@
-import 'package:dotted_border/dotted_border.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class AddMoreButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;
-  final bool isWhiteBackground;
 
   const AddMoreButton({
     Key? key,
     required this.onPressed,
     required this.label,
-    this.isWhiteBackground = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      color: AppColor.gray4,
-      dashPattern: const [10, 10],
-      child: CustomInkWell(
-        onTap: onPressed,
-        child: Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: isWhiteBackground ? AppColor.gray6 : Colors.transparent,
+    return ActionButton(
+      type: ActionButtonType.filled,
+      color: context.theme.colorScheme.surfaceContainerHigh,
+      expand: true,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      contentAlign: ActionButtonContentAlignment.start,
+      onPressed: onPressed,
+      child: Row(
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: ShapeDecoration(
+              color: context.theme.colorScheme.primary,
+              shape: CircleBorder(),
+            ),
+            child: Icon(
+              Icons.add,
+              size: 12,
+              color: context.theme.colorScheme.onPrimary,
+            ),
           ),
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Container(
-                width: 25,
-                height: 25,
-                decoration: ShapeDecoration(
-                  color: isWhiteBackground
-                      ? AppColor.darkBlue
-                      : AppColor.brightGreen,
-                  shape: CircleBorder(),
-                ),
-                child: Icon(
-                  Icons.add,
-                  size: 12,
-                  color: isWhiteBackground
-                      ? AppColor.lightGreen
-                      : AppColor.darkBlue,
-                ),
-              ),
-              SizedBox(width: 5),
-              HeightConstrainedText(
-                label,
-                style: AppTextStyle.subhead.copyWith(
-                  color: isWhiteBackground ? AppColor.darkBlue : AppColor.white,
-                ),
-              ),
-            ],
+          SizedBox(width: 12),
+          HeightConstrainedText(
+            label,
+            style: context.theme.textTheme.titleMedium,
           ),
-        ),
+        ],
       ),
     );
   }

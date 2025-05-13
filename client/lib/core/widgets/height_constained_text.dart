@@ -1,7 +1,5 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-TextStyle get body => GoogleFonts.poppins(fontSize: 16);
 
 class HeightConstrainedText extends StatelessWidget {
   final String text;
@@ -24,13 +22,9 @@ class HeightConstrainedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textStyle = GoogleFonts.poppins()
+    var textStyle = context.theme.textTheme.bodyMedium!
         .merge(DefaultTextStyle.of(context).style)
         .merge(style ?? TextStyle());
-
-    textStyle = textStyle.copyWith(
-      color: textStyle.color ?? Theme.of(context).primaryColor,
-    );
 
     final localMaxLines = maxLines;
     final localFontSize = textStyle.fontSize;
