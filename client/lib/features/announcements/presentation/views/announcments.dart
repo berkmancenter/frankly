@@ -150,7 +150,7 @@ class _AnnouncementsState extends State<Announcements> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         HeightConstrainedText(
-          'Announcements',
+          context.l10n.announcements,
           style: Theme.of(context).textTheme.titleSmall,
         ),
         if (Provider.of<CommunityPermissionsProvider>(context)
