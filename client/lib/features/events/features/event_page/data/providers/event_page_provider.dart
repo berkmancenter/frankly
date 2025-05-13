@@ -280,8 +280,7 @@ class EventPageProvider with ChangeNotifier {
     final l10n = appLocalizationService.getLocalization();
     final cancel = await ConfirmDialog(
       title: l10n.cancelEvent,
-      mainText: 'Are you sure you want to cancel event? This '
-          'cannot be undone and will notify all participants.',
+      mainText: l10n.areYouSureYouWantToCancelEvent,
       confirmText: l10n.yesCancel,
     ).show();
     if (!cancel) return false;

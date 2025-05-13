@@ -882,5 +882,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "addNewTag": "Añadir una nueva etiqueta",
+  "errorLoadingAnnouncements": "Hubo un error al cargar Anuncios",
+  "noAnnouncementsSentYet": "No se han enviado anuncios",
+  "moreUpcomingEvents": "Más Eventos Próximos",
+  "errorLoadingEvents": "Algo salió mal al cargar los eventos.",
+  "sendMessageToAllParticipants": "Enviar un mensaje a todos los participantes en el grupo",
+  "ifTheHostSendsAMessageYoullSeeItHere": "Si el anfitrión envía un mensaje, lo verás aquí.",
+  "areYouSureYouWantToCancelEvent": "¿Estás seguro de que quieres cancelar el evento? Esto no se puede deshacer y notificará a todos los participantes."
 }

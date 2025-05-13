@@ -138,11 +138,12 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
   }
 
   Widget _buildAddTagField() {
+    final l10n = appLocalizationService.getLocalization();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Add a new tag',
+          l10n.addNewTag,
           style: TextStyle(color: AppColor.gray3),
         ),
         Row(

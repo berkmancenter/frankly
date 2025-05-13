@@ -878,5 +878,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "addNewTag": "新增标签",
+  "errorLoadingAnnouncements": "載入公告時出錯",
+  "noAnnouncementsSentYet": "还没有公告",
+  "moreUpcomingEvents": "更多即将到来的活动",
+  "errorLoadingEvents": "载入活动时出错。",
+  "sendMessageToAllParticipants": "向群组中的所有成员发送讯息",
+  "ifTheHostSendsAMessageYoullSeeItHere": "如果主持人发送讯息，您将会看到它们。",
+  "areYouSureYouWantToCancelEvent": "您确定要取消活动吗？这不能撤销，并将通知所有参与者。"
 }

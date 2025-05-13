@@ -38,6 +38,8 @@ import 'package:data_models/events/event_message.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 
 /// Class that defines our event tabs and their associated content.
 ///
@@ -88,12 +90,12 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
         if (eventTabsModel.enableGuide)
           CustomTabAndContent(
-            tab: 'Agenda',
+            tab: context.l10n.agenda,
             content: (context) => _buildAgendaSection(context),
           ),
         if (eventTabsModel.enableUserSubmittedAgenda)
           CustomTabAndContent(
-            tab: 'Suggest',
+            tab: context.l10n.suggest,
             content: (_) => _buildSuggestSection(),
             unreadCount: Provider.of<UserSubmittedAgendaProvider>(context)
                 .numUnreadSuggestions,
@@ -106,7 +108,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
         if (eventTabsModel.enableMessages)
           CustomTabAndContent(
-            tab: 'Announcements',
+            tab: context.l10n.announcements,
             content: (_) => _buildAnnouncements(),
           ),
         if (eventTabsModel.enableAdminPanel)
@@ -116,7 +118,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
         if (eventTabsModel.enablePrePostEvent)
           CustomTabAndContent(
-            tab: 'CTAs',
+            tab: context.l10n.ctas,
             isGated: !prePostUnlocked,
             content: (context) => _buildPrePostSection(context),
           ),
@@ -130,7 +132,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       entryFrom: '_EventPageState._buildGuide',
       stream: context.watch<EventTabsControllerState>().eventMessagesStream,
       errorBuilder: (_) => HeightConstrainedText(
-        'There was an error while loading Announcements',
+        context.l10n.errorLoadingAnnouncements,
         style: AppTextStyle.body.copyWith(color: AppColor.gray2),
       ),
       builder: (context, eventMessages) {
@@ -140,7 +142,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         if (localEventMessages.isEmpty) {
           return compact
               ? HeightConstrainedText(
-                  'No Announcements sent yet',
+                  context.l10n.noAnnouncementsSentYet,
                   style: AppTextStyle.body.copyWith(color: AppColor.gray2),
                 )
               : _buildNoResource(context);
@@ -215,6 +217,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
   }
 
   Widget _buildAboutSection(context) {
+    final l10n = appLocalizationService.getLocalization();
     final tabsController = Provider.of<EventTabsControllerState>(context);
     final hasAnnouncements = tabsController.announcementsCount > 1;
     final description = Provider.of<EventProvider>(context).event.description;
@@ -225,7 +228,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         SizedBox(height: 30),
         if (description != null && description.isNotEmpty) ...[
           HeightConstrainedText(
-            'Description',
+            l10n.description,
             style: AppTextStyle.headlineSmall
                 .copyWith(color: AppColor.darkBlue, fontSize: 16),
           ),
@@ -239,7 +242,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           Row(
             children: [
               HeightConstrainedText(
-                'Announcements',
+                l10n.announcements,
                 style: AppTextStyle.headlineSmall.copyWith(
                   color: AppColor.darkBlue,
                   fontSize: 16,
@@ -263,7 +266,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
         ],
         ...[
           HeightConstrainedText(
-            'More Upcoming Events',
+            l10n.moreUpcomingEvents,
             style: AppTextStyle.headlineSmall.copyWith(
               color: AppColor.darkBlue,
               fontSize: 16,
@@ -351,17 +354,18 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
   }
 
   Widget _buildUpcomingEvents() {
+    final l10n = appLocalizationService.getLocalization();
     final eventProvider = Provider.of<EventProvider>(context);
     return CustomStreamBuilder<List<Event>?>(
       entryFrom: '_EventPageState._buildEvents',
       stream: eventProvider.upcomingEventsStream,
       height: 100,
-      errorMessage: 'Something went wrong loading events.',
+      errorMessage: l10n.errorLoadingEvents,
       builder: (_, __) {
         final events = eventProvider.upcomingEvents;
         if (events.isEmpty) {
           return HeightConstrainedText(
-            'No upcoming events.',
+            l10n.noUpcomingEvents,
             style: AppTextStyle.body.copyWith(
               color: AppColor.gray2,
             ),
@@ -386,6 +390,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
   }
 
   Widget _buildNoResource(BuildContext context) {
+    final l10n = appLocalizationService.getLocalization();
     final canEditEvent =
         Provider.of<EventPermissionsProvider>(context).canEditEvent;
 
@@ -393,12 +398,12 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       child: EmptyPageContent(
         type: EmptyPageType.announcements,
         subtitleText: canEditEvent
-            ? 'Send a message to all the participants in the group'
-            : 'If the host sends a message, you\'ll see it here.',
+            ? l10n.sendMessageToAllParticipants
+            : l10n.ifTheHostSendsAMessageYoullSeeItHere,
         onButtonPress: canEditEvent ? _showSendMessageDialog : null,
         showContainer: false,
         buttonType: ActionButtonType.outline,
-        buttonText: 'Message participants',
+        buttonText: l10n.messageParticipants,
       ),
     );
   }
@@ -517,15 +522,16 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       return SizedBox.shrink();
     }
 
+    final l10n = appLocalizationService.getLocalization();
     final String addNewTitle;
     final String fieldName;
     switch (prePostCardType) {
       case PrePostCardType.preEvent:
-        addNewTitle = 'Add Pre-event';
+        addNewTitle = l10n.addPreEvent;
         fieldName = Event.kFieldPreEventCardData;
         break;
       case PrePostCardType.postEvent:
-        addNewTitle = 'Add Post-event';
+        addNewTitle = l10n.addPostEvent;
         fieldName = Event.kFieldPostEventCardData;
         break;
     }
