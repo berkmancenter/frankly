@@ -877,5 +877,16 @@
   "errorLoadingEvents": "載入活動時出錯。",
   "sendMessageToAllParticipants": "向群組中的所有成員發送訊息",
   "ifTheHostSendsAMessageYoullSeeItHere": "如果主持人發送訊息，您將會看到它們。",
-  "areYouSureYouWantToCancelEvent": "您確定要取消活動嗎？這不能撤銷，並將通知所有參與者。"
+  "areYouSureYouWantToCancelEvent": "您確定要取消活動嗎？這不能撤銷，並將通知所有參與者。",
+  "textTitle": "文字標題",
+  "video": "視訊",
+  "question": "問題",
+  "titleIsRequired": "標題是必填項",
+  "messageIsRequired": "訊息是必填項",
+  "videoUrlIsRequired": "視訊URL是必填項",
+  "imageUrlIsRequired": "圖片URL是必填項",
+  "questionIsRequired": "問題是必填項",
+  "answersIsRequired": "請添加一些答案",
+  "wordCloudPromptIsRequired": "Word Cloud提示是必填項",
+  "headlineIsRequired": "標題是必填項"
 }

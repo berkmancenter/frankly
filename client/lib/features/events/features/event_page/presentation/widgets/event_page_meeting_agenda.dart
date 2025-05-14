@@ -186,8 +186,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   }
 
   Widget _buildAgendaTitle() {
+    final l10n = appLocalizationService.getLocalization();
     return HeightConstrainedText(
-      'Agenda',
+      l10n.agenda,
       style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
     );
   }

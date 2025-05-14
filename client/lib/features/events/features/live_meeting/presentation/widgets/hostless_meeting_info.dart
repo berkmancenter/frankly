@@ -153,6 +153,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
   }
 
   Widget _buildContent() {
+    final l10n = appLocalizationService.getLocalization();
     final provider = Provider.of<EventTabsControllerState>(context).widget;
     final isMobile = responsiveLayoutService.isMobile(context);
 
@@ -161,7 +162,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         _buildTab(
           tabType: TabType.guide,
           asset: AppAsset('media/guide_icon.png'),
-          text: 'Agenda',
+          text: l10n.agenda,
         ),
       if (provider.enableChat)
         _buildTab(

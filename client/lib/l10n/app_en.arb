@@ -843,5 +843,16 @@
   "errorLoadingEvents": "Something went wrong loading events.",
   "sendMessageToAllParticipants": "Send a message to all the participants in the group",
   "ifTheHostSendsAMessageYoullSeeItHere": "If the host sends a message, you'll see it here.",
-  "areYouSureYouWantToCancelEvent": "Are you sure you want to cancel event? This cannot be undone and will notify all participants."
+  "areYouSureYouWantToCancelEvent": "Are you sure you want to cancel event? This cannot be undone and will notify all participants.",
+  "textTitle": "Text Title",
+  "video": "Video",
+  "question": "Question",
+  "titleIsRequired": "Title is required",
+  "messageIsRequired": "Message is required",
+  "videoUrlIsRequired": "Video URL is required",
+  "imageUrlIsRequired": "Image URL is required",
+  "questionIsRequired": "Question is required",
+  "answersIsRequired": "Please add some answers",
+  "wordCloudPromptIsRequired": "Word Cloud prompt is required",
+  "headlineIsRequired": "Headline is required"
 }

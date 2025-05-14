@@ -886,5 +886,16 @@
   "errorLoadingEvents": "载入活动时出错。",
   "sendMessageToAllParticipants": "向群组中的所有成员发送讯息",
   "ifTheHostSendsAMessageYoullSeeItHere": "如果主持人发送讯息，您将会看到它们。",
-  "areYouSureYouWantToCancelEvent": "您确定要取消活动吗？这不能撤销，并将通知所有参与者。"
+  "areYouSureYouWantToCancelEvent": "您确定要取消活动吗？这不能撤销，并将通知所有参与者。",
+  "textTitle": "文字标题",
+  "video": "视频",
+  "question": "问题",
+  "titleIsRequired": "标题是必填项",
+  "messageIsRequired": "讯息是必填项",
+  "videoUrlIsRequired": "视频URL是必填项",
+  "imageUrlIsRequired": "图片URL是必填项",
+  "questionIsRequired": "问题是必填项",
+  "answersIsRequired": "请添加一些答案",
+  "wordCloudPromptIsRequired": "Word Cloud提示是必填项",
+  "headlineIsRequired": "标题是必填项"
 }

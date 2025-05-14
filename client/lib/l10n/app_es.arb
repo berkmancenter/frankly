@@ -890,5 +890,16 @@
   "errorLoadingEvents": "Algo salió mal al cargar los eventos.",
   "sendMessageToAllParticipants": "Enviar un mensaje a todos los participantes en el grupo",
   "ifTheHostSendsAMessageYoullSeeItHere": "Si el anfitrión envía un mensaje, lo verás aquí.",
-  "areYouSureYouWantToCancelEvent": "¿Estás seguro de que quieres cancelar el evento? Esto no se puede deshacer y notificará a todos los participantes."
+  "areYouSureYouWantToCancelEvent": "¿Estás seguro de que quieres cancelar el evento? Esto no se puede deshacer y notificará a todos los participantes.",
+  "textTitle": "Título de Texto",
+  "video": "Video",
+  "question": "Pregunta",
+  "titleIsRequired": "Título es requerido",
+  "messageIsRequired": "Mensaje es requerido",
+  "videoUrlIsRequired": "URL de video es requerida",
+  "imageUrlIsRequired": "URL de imagen es requerida",
+  "questionIsRequired": "Pregunta es requerida",
+  "answersIsRequired": "Por favor, añade algunas respuestas",
+  "wordCloudPromptIsRequired": "Prompt de Word Cloud es requerido",
+  "headlineIsRequired": "Headline es requerido"
 }
