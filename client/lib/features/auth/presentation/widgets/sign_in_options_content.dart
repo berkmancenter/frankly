@@ -95,10 +95,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ),
             children: [
               TextSpan(
-                text: 'This email is already in use. Try ',
+                text: context.l10n.emailAddressAlreadyInUseLoginError,
               ),
               TextSpan(
-                text: 'logging in',
+                text: context.l10n.loggingIn,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => setState(() {
                         _showSignup = false;
@@ -109,7 +109,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   color: context.theme.colorScheme.error,
                 ),
               ),
-              TextSpan(text: ' instead.'),
+              TextSpan(text: context.l10n.insteadSuffix),
             ],
           ),
         );
@@ -121,10 +121,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ),
             children: [
               TextSpan(
-                text: 'We couldn’t find an account with this email. Try ',
+                text: context.l10n.couldntFindAccount,
               ),
               TextSpan(
-                text: 'signing up',
+                text: context.l10n.signingUp,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => setState(() {
                         _showSignup = true;
@@ -135,7 +135,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   color: context.theme.colorScheme.error,
                 ),
               ),
-              TextSpan(text: ' instead.'),
+              TextSpan(text: context.l10n.insteadSuffix),
             ],
           ),
         );
@@ -221,8 +221,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         children: [
           TextSpan(
             text: _showSignup
-                ? 'Already have an account? '
-                : 'Don\'t have an account? ',
+                ? context.l10n.alreadyUserSignIn
+                : context.l10n.notUserSignUp,
           ),
           TextSpan(
             text: _showSignup ? context.l10n.signIn : context.l10n.signUp,
@@ -277,7 +277,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a valid name';
+                        return context.l10n.enterValidName;
                       }
                       return null;
                     },
@@ -309,7 +309,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               suffixIcon: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
                 child: Semantics(
-                  label: _showPassword ? 'Hide password' : 'Show password',
+                  label: _showPassword
+                      ? context.l10n.hidePassword
+                      : context.l10n.showPassword,
                   button: true,
                   child: IconButton(
                     onPressed: () =>
@@ -330,12 +332,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 // If the user is not signing up, just validate if any value is entered, not format;
                 // Because they may have a legacy account before we started enforcing complexity
                 if (!_showSignup && (value == null || value.isEmpty)) {
-                  return 'Please enter a password';
+                  return context.l10n.pleaseEnterValidPassword;
                 } else if (_showSignup &&
                     (value == null ||
                         value.isEmpty ||
                         !isPasswordValid(value))) {
-                  return 'Please enter a valid password';
+                  return context.l10n.pleaseEnterPassword;
                 }
                 return null;
               },
@@ -343,7 +345,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             SizedBox(height: 5),
             if (_showSignup)
               Text(
-                'Must be at least 12 characters long, and contain one lowercase and one uppercase letter.',
+                context.l10n.passwordRequirements,
                 style: context.theme.textTheme.bodySmall,
               ),
             if (!_showSignup)
@@ -395,7 +397,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Align(
         alignment: Alignment.center,
         child: Text(
-          'or',
+          context.l10n.or,
           style: context.theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
