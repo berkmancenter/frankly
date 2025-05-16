@@ -13,7 +13,7 @@ class MaterialTheme {
   static MaterialScheme lightScheme() {
     return const MaterialScheme(
       brightness: Brightness.light,
-      primary: Color(0xff000000),
+      primary: Color(0xff313030),
       surfaceTint: Color(0xff5f5e5e),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff262626),
@@ -72,7 +72,7 @@ class MaterialTheme {
   static MaterialScheme lightMediumContrastScheme() {
     return const MaterialScheme(
       brightness: Brightness.light,
-      primary: Color(0xff000000),
+      primary: Color(0xff313030),
       surfaceTint: Color(0xff5f5e5e),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff262626),
@@ -131,7 +131,7 @@ class MaterialTheme {
   static MaterialScheme lightHighContrastScheme() {
     return const MaterialScheme(
       brightness: Brightness.light,
-      primary: Color(0xff000000),
+      primary: Color(0xff313030),
       surfaceTint: Color(0xff5f5e5e),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff262626),
