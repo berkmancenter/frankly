@@ -888,5 +888,7 @@
   "questionIsRequired": "問題是必填項",
   "answersIsRequired": "請添加一些答案",
   "wordCloudPromptIsRequired": "Word Cloud提示是必填項",
-  "headlineIsRequired": "標題是必填項"
+  "headlineIsRequired": "標題是必填項",
+  "content": "內容",
+  "keepItShort": "保持簡短！你不希望人們花時間閱讀。"
 }

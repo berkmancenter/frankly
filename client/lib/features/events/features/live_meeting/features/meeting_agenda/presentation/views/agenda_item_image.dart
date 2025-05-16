@@ -85,7 +85,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
         children: [
           CustomTextField(
             initialValue: _model.agendaItemImageData.title,
-            labelText: 'Title',
+            labelText: context.l10n.title,
             hintText: context.l10n.enterImageTitle,
             maxLength: agendaTitleCharactersLength,
             counterStyle: AppTextStyle.bodySmall.copyWith(

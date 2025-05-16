@@ -132,7 +132,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         children: [
           CustomTextField(
             initialValue: _model.agendaItemVideoData.title,
-            labelText: 'Title',
+            labelText: context.l10n.title,
             hintText: context.l10n.enterVideoTitle,
             maxLines: 1,
             maxLength: agendaTitleCharactersLength,

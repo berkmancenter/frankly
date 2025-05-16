@@ -5,6 +5,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SelectTitlePage extends StatefulWidget {
   const SelectTitlePage({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _SelectTitlePageState extends State<SelectTitlePage> {
       children: [
         Center(
           child: HeightConstrainedText(
-            'Enter a title',
+            context.l10n.enterTitle,
             style: AppTextStyle.headline1,
           ),
         ),
@@ -35,7 +36,7 @@ class _SelectTitlePageState extends State<SelectTitlePage> {
         CustomTextField(
           maxLines: 1,
           maxLength: titleMaxCharactersLength,
-          labelText: 'Title',
+          labelText: context.l10n.title,
           initialValue: editProvider.event.title,
           onChanged: (value) => editProviderRead.setEvent(
             editProviderRead.event.copyWith(title: value),

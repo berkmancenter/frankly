@@ -901,5 +901,7 @@
   "questionIsRequired": "Pregunta es requerida",
   "answersIsRequired": "Por favor, añade algunas respuestas",
   "wordCloudPromptIsRequired": "Prompt de Word Cloud es requerido",
-  "headlineIsRequired": "Headline es requerido"
+  "headlineIsRequired": "Headline es requerido",
+  "content": "Contenido",
+  "keepItShort": "¡Sé breve! No querrás que la gente pierda tiempo leyéndolo."
 }

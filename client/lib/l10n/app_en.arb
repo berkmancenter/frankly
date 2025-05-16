@@ -854,5 +854,7 @@
   "questionIsRequired": "Question is required",
   "answersIsRequired": "Please add some answers",
   "wordCloudPromptIsRequired": "Word Cloud prompt is required",
-  "headlineIsRequired": "Headline is required"
+  "headlineIsRequired": "Headline is required",
+  "content": "Content",
+  "keepItShort": "Keep it short! You don’t want people to spend time reading."
 }
