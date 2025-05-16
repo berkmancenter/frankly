@@ -29,33 +29,8 @@ class CommunityAdmin extends StatefulWidget {
   _CommunityAdminState createState() => _CommunityAdminState();
 }
 
-enum CommunityAdminTabs {
-  overview,
-  members,
-  events,
-  settings,
-  billing,
-}
-
 class _CommunityAdminState extends State<CommunityAdmin>
     with SingleTickerProviderStateMixin {
-  late final SelectedTabController _selectedTabController;
-
-  List<CommunityAdminTabs> get tabs {
-    final communityProvider = context.read<CommunityProvider>();
-    return [
-      if (communityProvider.community.isOnboardingOverviewEnabled)
-        CommunityAdminTabs.overview,
-      CommunityAdminTabs.members,
-      CommunityAdminTabs.events,
-      CommunityAdminTabs.settings,
-      if (kShowStripeFeatures) CommunityAdminTabs.billing,
-    ];
-  }
-
-  int getTabIndex(CommunityAdminTabs tab) {
-    return tabs.indexOf(tab);
-  }
 
   @override
   void initState() {
@@ -66,83 +41,6 @@ class _CommunityAdminState extends State<CommunityAdmin>
         (_) => SignInDialog.show(isDismissable: false),
       );
     }
-
-    final queryParamTabs = tabs.map((e) => describeEnum(e)).toList();
-    final tab = widget.tab;
-    final int initialIndex =
-        tab != null ? max(0, queryParamTabs.indexOf(tab)) : 0;
-    _selectedTabController = SelectedTabController(initialTab: initialIndex);
-  }
-
-  Widget _buildHeader() {
-    return Builder(
-      builder: (context) => ConstrainedBody(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            SizedBox(height: 30),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: CustomTabBar(
-                padding: null,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAdminSections() {
-    final communityProvider = context.watch<CommunityProvider>();
-    final enableOverview =
-        communityProvider.community.isOnboardingOverviewEnabled;
-
-    return CustomTabController(
-      selectedTabController: _selectedTabController,
-      tabs: [
-        if (enableOverview)
-          CustomTabAndContent(
-            tab: 'OVERVIEW',
-            content: (_) => OverviewTab(
-              onUpgradeTap: () => _selectedTabController.setTabIndex(
-                getTabIndex(CommunityAdminTabs.billing),
-              ),
-            ),
-          ),
-        CustomTabAndContent(
-          tab: 'MEMBERS',
-          content: (context) => MembersTab(),
-        ),
-        CustomTabAndContent(
-          tab: 'EVENTS',
-          content: (context) => EventsTab(),
-        ),
-        CustomTabAndContent(
-          tab: 'SETTINGS',
-          content: (context) => SettingsTab(
-            onUpgradeTap: () => _selectedTabController.setTabIndex(
-              getTabIndex(CommunityAdminTabs.billing),
-            ),
-          ),
-        ),
-        if (kShowStripeFeatures)
-          CustomTabAndContent(
-            tab: 'BILLING',
-            content: (context) => AdminBillingTab(),
-          ),
-      ],
-      child: CustomListView(
-        children: [
-          _buildHeader(),
-          SizedBox(height: 16),
-          ConstrainedBody(
-            child: CustomTabBarView(),
-          ),
-          SizedBox(height: 100),
-        ],
-      ),
-    );
   }
 
   @override
@@ -156,7 +54,42 @@ class _CommunityAdminState extends State<CommunityAdmin>
         ),
       );
     }
-
-    return _buildAdminSections();
+    return ConstrainedBody(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 30),
+          SizedBox(
+            height: 600,
+            child: DefaultTabController(
+              length: 4,
+              child: Scaffold(
+                appBar: AppBar(
+                  bottom: const TabBar(
+                    tabs: [
+                      Tab(text: 'Profile'),
+                      Tab(text: 'Members'),
+                      Tab(text: 'Settings'),
+                      Tab(text: 'Data'),
+                    ],
+                  ),
+                  title: const Text('Community Admin'),
+                ),
+                body: TabBarView(
+                  children: [
+                    OverviewTab(),
+                    MembersTab(),
+                    SettingsTab(),
+                    AdminBillingTab(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -5,7 +5,6 @@ import 'package:client/features/admin/presentation/accept_take_rate_presenter.da
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
@@ -30,9 +29,7 @@ import '../../data/models/overview_model.dart';
 import '../overview_presenter.dart';
 
 class OverviewTab extends StatefulHookWidget {
-  final void Function() onUpgradeTap;
-
-  const OverviewTab({required this.onUpgradeTap});
+  const OverviewTab();
 
   @override
   _OverviewTabState createState() => _OverviewTabState();
@@ -112,10 +109,6 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
             ),
           ),
           SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: UpgradePerks(onUpgradeTap: () => widget.onUpgradeTap()),
-          ),
         ],
       );
     } else {
@@ -153,7 +146,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Text(
                               'Now we’re talking!',
                               style: AppTextStyle.subhead.copyWith(
-                                  color: context.theme.colorScheme.secondary),
+                                  color: context.theme.colorScheme.secondary,),
                             ),
                           ],
                         )
@@ -172,7 +165,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                               child: Text(
                                 onboardingStep.title,
                                 style: AppTextStyle.subhead.copyWith(
-                                    color: context.theme.colorScheme.secondary),
+                                    color: context.theme.colorScheme.secondary,),
                               ),
                             ),
                             SizedBox(
@@ -205,10 +198,6 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
             ),
           ),
           Spacer(),
-          Expanded(
-            flex: 2,
-            child: UpgradePerks(onUpgradeTap: () => widget.onUpgradeTap()),
-          ),
         ],
       );
     }
@@ -323,7 +312,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                                 text: TextSpan(
                                   style: AppTextStyle.body.copyWith(
                                       color: context.theme.colorScheme
-                                          .onPrimaryContainer),
+                                          .onPrimaryContainer,),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)
