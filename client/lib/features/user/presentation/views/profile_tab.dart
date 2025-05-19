@@ -193,12 +193,10 @@ class _ProfileTabState extends State<_ProfileTab> {
                 borderType: BorderType.outline,
                 borderRadius: 5,
                 textStyle: TextStyle(
-                    color: context.theme.colorScheme.primary, fontSize: 16),
+                    color: context.theme.colorScheme.primary, fontSize: 16,),
                 labelStyle: TextStyle(
                     fontSize: 14.0,
-                    color: context.theme.colorScheme.onPrimaryContainer),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                    color: context.theme.colorScheme.onPrimaryContainer,),
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
@@ -234,7 +232,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                         .replaceFirst('MembershipStatus.', '')
                         .capitalize(),
                     style: AppTextStyle.body.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                        color: context.theme.colorScheme.onPrimaryContainer,),
                   ),
                 ],
               );
@@ -338,17 +336,16 @@ class _ProfileTabState extends State<_ProfileTab> {
       if (widget.allowEdit)
         CustomTextField(
           labelText: 'About me',
+          keyboardType: TextInputType.multiline,
           maxLines: 6,
           minLines: 6,
           borderRadius: 5,
           padding: EdgeInsets.zero,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
           textStyle:
               TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
           labelStyle: TextStyle(
               fontSize: 14.0,
-              color: context.theme.colorScheme.onPrimaryContainer),
+              color: context.theme.colorScheme.onPrimaryContainer,),
           initialValue: changeRecord.about,
           onChanged: (value) {
             controller.onChangedAboutMe(value);
@@ -431,7 +428,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           HeightConstrainedText(
             widget.allowEdit ? 'Edit your profile' : '',
             style: AppTextStyle.headlineSmall.copyWith(
-                fontSize: 16, color: context.theme.colorScheme.primary),
+                fontSize: 16, color: context.theme.colorScheme.primary,),
           ),
           Spacer(),
           AppClickableWidget(
@@ -602,12 +599,10 @@ class SocialInputField extends StatelessWidget {
             borderType: BorderType.outline,
             borderRadius: 5,
             textStyle: TextStyle(
-                color: context.theme.colorScheme.primary, fontSize: 16),
+                color: context.theme.colorScheme.primary, fontSize: 16,),
             labelStyle: TextStyle(
                 fontSize: 14.0,
-                color: context.theme.colorScheme.onPrimaryContainer),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: context.theme.colorScheme.onPrimaryContainer,),
             onChanged: onChanged,
           ),
         ),

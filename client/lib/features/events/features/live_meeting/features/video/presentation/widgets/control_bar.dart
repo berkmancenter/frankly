@@ -383,9 +383,6 @@ class _ChatInputState extends State<ChatInput> {
               borderType: BorderType.none,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
-              contentPadding: isMobile
-                  ? EdgeInsets.symmetric(horizontal: 14, vertical: 12)
-                  : EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               onEditingComplete:
                   canSubmit ? _sendController.submit : widget.controller.clear,
               controller: widget.controller,

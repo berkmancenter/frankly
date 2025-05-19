@@ -220,9 +220,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
-            text: _showSignup
-                ? context.l10n.alreadyUserSignIn
-                : context.l10n.notUserSignUp,
+            text:
+                '${_showSignup ? context.l10n.alreadyUserSignIn : context.l10n.notUserSignUp} ',
           ),
           TextSpan(
             text: _showSignup ? context.l10n.signIn : context.l10n.signUp,
