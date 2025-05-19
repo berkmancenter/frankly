@@ -220,6 +220,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               controller: _controller,
               style: widget.textStyle ?? context.theme.textTheme.bodyMedium,
               onEditingComplete: widget.onEditingComplete,
+              keyboardType: TextInputType.multiline,
               // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
               // while not having to specify max lines for every single usage 🙄
               maxLines: !widget.minLines.compareTo(widget.maxLines).isNegative
@@ -283,7 +284,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
               autofocus: widget.autofocus,
               readOnly: widget.readOnly,
-              keyboardType: TextInputType.multiline,
             ),
             if (widget.isOptional &&
                 !_focusNode.hasFocus &&

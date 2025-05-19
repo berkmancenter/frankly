@@ -1,6 +1,7 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,8 @@ import '../overview_presenter.dart';
 class OverviewTab extends StatefulHookWidget {
   const OverviewTab();
 
+  static const communityNameKey = Key('community-name');
+
   @override
   _OverviewTabState createState() => _OverviewTabState();
 }
@@ -38,6 +41,20 @@ class OverviewTab extends StatefulHookWidget {
 class _OverviewTabState extends State<OverviewTab> implements OverviewView {
   late final OverviewModel _model;
   late final OverviewPresenter _presenter;
+
+  final int titleMaxCharactersLength = 80;
+  final int customIdMaxCharactersLength = 80;
+  final _nameController = TextEditingController();
+  final _displayIdController = TextEditingController();
+
+  String _formatDisplayIdFromName(String displayId) {
+    final String formattedDisplayId = displayId
+        .replaceAll(RegExp(r'[^a-zA-Z0-9-_]'), '-')
+        .replaceAll(RegExp(r'--+'), '-')
+        .replaceAll(RegExp(r'-+$'), '-')
+        .toLowerCase();
+    return formattedDisplayId;
+  }
 
   @override
   void initState() {
@@ -56,151 +73,56 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
       onboardingSteps.remove(OnboardingStep.createStripeAccount);
     }
 
-    final onboardingStep = _presenter.getCurrentOnboardingStep();
-    final totalSteps = onboardingSteps.length;
-    final isMobile = _presenter.isMobile(context);
-
-    if (isMobile) {
-      return Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(40),
-            decoration: BoxDecoration(
-              color: context.theme.colorScheme.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    ProxiedImage(
-                      null,
-                      asset: onboardingStep == null
-                          ? AppAsset.kEmojiPartyPng
-                          : onboardingStep.titleIconPath,
-                      width: 24,
-                      height: 24,
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      onboardingStep == null
-                          ? 'Now we’re talking!'
-                          : onboardingStep.title,
-                      style: AppTextStyle.subhead
-                          .copyWith(color: context.theme.colorScheme.secondary),
-                    ),
-                  ],
-                ),
-                if (onboardingStep != null)
-                  _buildProgressSection(isMobile, totalSteps, onboardingStep),
-                SizedBox(height: 15),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: totalSteps,
-                  itemBuilder: (context, index) {
-                    final onboardingStep = onboardingSteps[index];
-
-                    return _buildStepSection(onboardingStep);
-                  },
-                ),
-              ],
-            ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(40),
+          decoration: BoxDecoration(
+            color: context.theme.colorScheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(10),
           ),
-          SizedBox(height: 40),
-        ],
-      );
-    } else {
-      return Row(
-        // Make sure it's locked as start. Otherwise after toggling selection of step,
-        // right section will glitch positions
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 5,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final containerWidth = constraints.maxWidth;
-
-                return Container(
-                  padding: const EdgeInsets.all(40),
-                  decoration: BoxDecoration(
-                    color: context.theme.colorScheme.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (onboardingStep == null)
-                        Row(
-                          children: [
-                            SizedBox(width: 5),
-                            ProxiedImage(
-                              null,
-                              asset: AppAsset.kEmojiPartyPng,
-                              width: 24,
-                              height: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Now we’re talking!',
-                              style: AppTextStyle.subhead.copyWith(
-                                  color: context.theme.colorScheme.secondary,),
-                            ),
-                          ],
-                        )
-                      else
-                        Row(
-                          children: [
-                            SizedBox(width: 5),
-                            ProxiedImage(
-                              null,
-                              asset: onboardingStep.titleIconPath,
-                              width: 24,
-                              height: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                onboardingStep.title,
-                                style: AppTextStyle.subhead.copyWith(
-                                    color: context.theme.colorScheme.secondary,),
-                              ),
-                            ),
-                            SizedBox(
-                              // Pretty specific width constraint. We have to make sure that
-                              // `progress` line has enough but not too much space within the row.
-                              width: containerWidth / 2.6,
-                              child: _buildProgressSection(
-                                isMobile,
-                                totalSteps,
-                                onboardingStep,
-                              ),
-                            ),
-                          ],
-                        ),
-                      SizedBox(height: onboardingStep == null ? 10 : 30),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: totalSteps,
-                        itemBuilder: (context, index) {
-                          final onboardingStep = onboardingSteps[index];
-
-                          return _buildStepSection(onboardingStep);
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomTextField(
+                key: OverviewTab.communityNameKey,
+                initialValue: CommunityProvider.read(context).community.name,
+                // controller: _displayNameController,
+                labelText: 'Community Name',
+                // onEditingComplete: () => _submitForm(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a value';
+                  }
+                  return null;
+                },
+              ),
+              CustomTextField(
+                //  controller: _displayIdController,
+                maxLength: customIdMaxCharactersLength,
+                labelText: 'Community URL',
+                initialValue: _nameController.text,
+                // onChanged: widget.onCustomDisplayIdChanged,
+                // helperText: widget.community.displayId.isNotEmpty
+                //     ? 'https://app.frankly.org/${widget.community.displayId}'
+                //     : null,
+              ),
+              CustomTextField(
+                //  controller: _displayIdController,
+                labelText: 'Community Description', 
+                minLines: 3, 
+                maxLines: 6, 
+                // onChanged: widget.onCustomDisplayIdChanged,
+                // helperText: widget.community.displayId.isNotEmpty
+                //     ? 'https://app.frankly.org/${widget.community.displayId}'
+                //     : null,
+              ),
+            ],
           ),
-          Spacer(),
-        ],
-      );
-    }
+        ),
+        SizedBox(height: 40),
+      ],
+    );
   }
 
   Widget _buildProgressSection(
@@ -311,8 +233,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                               child: RichText(
                                 text: TextSpan(
                                   style: AppTextStyle.body.copyWith(
-                                      color: context.theme.colorScheme
-                                          .onPrimaryContainer,),
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
+                                  ),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)

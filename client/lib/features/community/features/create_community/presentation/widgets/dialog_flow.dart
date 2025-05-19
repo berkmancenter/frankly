@@ -417,34 +417,6 @@ class _DialogFlowState extends State<DialogFlow> {
           community: _community,
         ),
         SizedBox(height: 22),
-        if (kShowStripeFeatures)
-          Row(
-            children: [
-              UpgradeIcon(),
-              SizedBox(width: 10),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Get custom colors ',
-                      style: AppTextStyle.headline2.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: context.theme.colorScheme.onPrimaryContainer,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'when you upgrade',
-                      style: AppTextStyle.eyebrowSmall.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        SizedBox(height: 40),
         if (_createdCommunityId != null) ...[
           CreateCommunityTags(_createdCommunityId!),
           SizedBox(height: 40),
