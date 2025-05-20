@@ -350,19 +350,23 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
-                child: ActionButton(
-                  // key: SignInOptionsContent.buttonSubmitKey,
-                  onPressed: () {
-                    // We have to disable password validation for now so the form validation can succeed without it
-                    setState(() {
-                      _ignorePassword = true;
-                    });
-                    if (_formKey.currentState!.validate()) {
-                      _resetPassword();
-                    }
-                  },
-                  type: ActionButtonType.text,
-                  text: context.l10n.forgotPassword,
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Forgot your password?',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        // We have to disable password validation for now so the form validation can succeed without it
+                        setState(() {
+                          _ignorePassword = true;
+                        });
+                        if (_formKey.currentState!.validate()) {
+                          _resetPassword();
+                        }
+                      },
+                    style: context.theme.textTheme.bodySmall?.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ),
             SizedBox(height: 9),
