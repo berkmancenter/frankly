@@ -185,14 +185,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
       return UnderlineInputBorder(
         borderSide: BorderSide(
           color: _getBorderColor(),
-          width: 3.0,
+          width: 2.0,
         ),
       );
     }
     return OutlineInputBorder(
       borderSide: BorderSide(
         color: _getBorderColor(),
-        width: 3.0,
+        width: 2.0,
       ),
       borderRadius: BorderRadius.circular(widget.borderRadius),
     );
