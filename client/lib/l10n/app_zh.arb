@@ -899,5 +899,6 @@
   "wordCloudPromptIsRequired": "Word Cloud提示是必填项",
   "headlineIsRequired": "标题是必填项",
   "content": "内容",
-  "keepItShort": "保持简短！你肯定不想让人们花时间阅读。"
+  "keepItShort": "保持简短！你肯定不想让人们花时间阅读。",
+  "areYouSureYouWantToRemoveThisMessage": "您确定要刪除此訊息嗎？"
 }

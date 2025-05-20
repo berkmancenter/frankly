@@ -319,7 +319,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'More from ${community.name}',
+              context.l10n.moreFrom(community.name ?? ''),
               style: AppTextStyle.headlineSmall.copyWith(
                 color: AppColor.darkBlue,
                 fontSize: 16,

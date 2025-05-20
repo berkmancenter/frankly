@@ -202,7 +202,7 @@ class _EventPageState extends State<EventPage> implements EventPageView {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           backgroundColor: AppColor.white,
           title: Text(
-            'Are you sure you want to remove this message?',
+            context.l10n.areYouSureYouWantToRemoveThisMessage,
             style: AppTextStyle.headline3.copyWith(color: AppColor.darkBlue),
           ),
           actions: [
