@@ -44,6 +44,30 @@ class EmptyPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonColor = Theme.of(context).colorScheme.primary;
     final isFlat = buttonType == ActionButtonType.flat;
+
+    var typeName = type.name;
+    if (type == EmptyPageType.posts) {
+      typeName = context.l10n.posts;
+    }
+    if (type == EmptyPageType.suggestions) {
+      typeName = context.l10n.suggestions;
+    }
+    if (type == EmptyPageType.chats) {
+      typeName = context.l10n.chat;
+    }
+    if (type == EmptyPageType.templates) {
+      typeName = context.l10n.templates;
+    }
+    if (type == EmptyPageType.resources) {
+      typeName = context.l10n.resources;
+    }
+    if (type == EmptyPageType.announcements) {
+      typeName = context.l10n.announcements;
+    }
+    if (type == EmptyPageType.events) {
+      typeName = context.l10n.events;
+    }
+
     return Container(
       height: 311,
       width: 524,
@@ -63,14 +87,14 @@ class EmptyPageContent extends StatelessWidget {
           ),
           SizedBox(height: 10),
           HeightConstrainedText(
-            titleText ?? context.l10n.noItems(type.name),
+            titleText ?? context.l10n.noItems(typeName),
             style: AppTextStyle.headline4.copyWith(color: _getColor()),
           ),
           SizedBox(height: 20),
           SizedBox(
             width: 205,
             child: HeightConstrainedText(
-              subtitleText ?? context.l10n.whenNewItemsAdded(type.name),
+              subtitleText ?? context.l10n.whenNewItemsAdded(typeName),
               style: AppTextStyle.eyebrowSmall
                   .copyWith(color: _getColor(subtitle: true)),
               textAlign: TextAlign.center,
