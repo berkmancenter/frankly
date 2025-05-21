@@ -91,16 +91,13 @@ class SurveyDialog extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: ActionButton(
-              color: surveyPresenter.checkSurveyCompleted()
-                  ? context.theme.colorScheme.onPrimary
-                  : context.theme.colorScheme.onPrimaryContainer,
-              onPressed: () => surveyPresenter.checkSurveyCompleted()
-                  ? Navigator.of(context).pop(
-                      SurveyDialogResult(
-                        questions: surveyPresenter.surveyQuestions,
-                        zipCode: surveyPresenter.zipCodeController.text,
-                      ),
-                    )
+              onPressed: surveyPresenter.checkSurveyCompleted()
+                  ? () => Navigator.of(context).pop(
+                        SurveyDialogResult(
+                          questions: surveyPresenter.surveyQuestions,
+                          zipCode: surveyPresenter.zipCodeController.text,
+                        ),
+                      )
                   : null,
               text: 'Finish',
             ),
