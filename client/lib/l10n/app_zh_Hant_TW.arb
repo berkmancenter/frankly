@@ -891,5 +891,12 @@
   "headlineIsRequired": "標題是必填項",
   "content": "內容",
   "keepItShort": "保持簡短！你不希望人們花時間閱讀。",
-  "areYouSureYouWantToRemoveThisMessage": "您確定要刪除此訊息嗎？"
+  "areYouSureYouWantToRemoveThisMessage": "您確定要刪除此訊息嗎？",
+  "youAreInWaitingRoom": "您正在等待室。",
+  "somethingWentWrongLoadingRoomPleaseRefresh": "載入房間時出錯。請重新整理！",
+  "loadingRoomPleaseWait": "載入房間中，請稍等...",
+  "connectingToRoom": "連接到房間...",
+  "saySomething": "說些什麼",
+  "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "無法加入房間。請重新整理並再試一次",
+  "leave": "離開"
 }

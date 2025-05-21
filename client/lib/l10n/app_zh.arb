@@ -900,5 +900,12 @@
   "headlineIsRequired": "标题是必填项",
   "content": "内容",
   "keepItShort": "保持简短！你肯定不想让人们花时间阅读。",
-  "areYouSureYouWantToRemoveThisMessage": "您确定要刪除此訊息嗎？"
+  "areYouSureYouWantToRemoveThisMessage": "您确定要刪除此訊息嗎？",
+  "youAreInWaitingRoom": "您正在等待室。",
+  "somethingWentWrongLoadingRoomPleaseRefresh": "载入房间时出错。请重新整理！",
+  "loadingRoomPleaseWait": "载入房间中，请稍等...",
+  "connectingToRoom": "连接到房间...",
+  "saySomething": "说些什么",
+  "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "无法加入房间。请重新整理并再试一次",
+  "leave": "离开"
 }

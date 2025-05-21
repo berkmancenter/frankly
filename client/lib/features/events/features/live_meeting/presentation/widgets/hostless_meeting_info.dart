@@ -169,7 +169,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           tabType: TabType.chat,
           unreadMessages: Provider.of<ChatModel>(context).numUnreadMessages,
           asset: AppAsset('media/chat_icon.png'),
-          text: 'Chat',
+          text: l10n.chat,
         ),
       if (provider.enableUserSubmittedAgenda)
         _buildTab(
@@ -177,13 +177,13 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           unreadMessages: Provider.of<UserSubmittedAgendaProvider>(context)
               .numUnreadSuggestions,
           asset: AppAsset('media/guide_icon.png'),
-          text: 'Suggest',
+          text: l10n.suggest,
         ),
       if (provider.enableAdminPanel)
         _buildTab(
           tabType: TabType.admin,
           asset: AppAsset('media/admin_icon.png'),
-          text: 'Admin',
+          text: l10n.admin,
         ),
     ];
 

@@ -857,5 +857,12 @@
   "headlineIsRequired": "Headline is required",
   "content": "Content",
   "keepItShort": "Keep it short! You don’t want people to spend time reading.",
-  "areYouSureYouWantToRemoveThisMessage": "Are you sure you want to remove this message?"
+  "areYouSureYouWantToRemoveThisMessage": "Are you sure you want to remove this message?",
+  "youAreInWaitingRoom": "You are in the waiting room.",
+  "somethingWentWrongLoadingRoomPleaseRefresh": "Something went wrong loading room. Please refresh!",
+  "loadingRoomPleaseWait": "Loading room. Please wait...",
+  "connectingToRoom": "Connecting to room...",
+  "saySomething": "Say something",
+  "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "Could not join room. Please refresh and try again",
+  "leave": "Leave"
 }

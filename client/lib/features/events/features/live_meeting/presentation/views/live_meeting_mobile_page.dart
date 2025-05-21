@@ -49,6 +49,9 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../live_meeting_mobile_presenter.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
+
 
 enum LiveMeetingMobileBottomSheetState {
   fullyVisible,
@@ -428,7 +431,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   Widget _buildWaitingRoomTextWidget() {
     return HeightConstrainedText(
-      'You are in the waiting room.',
+      context.l10n.youAreInWaitingRoom,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).primaryColor,
@@ -497,7 +500,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return CustomStreamBuilder<GetMeetingJoinInfoResponse>(
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: context.l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         final conferenceRoom = ConferenceRoom.watch(context);
         final error = conferenceRoom.connectError;
@@ -512,8 +515,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         return CustomStreamBuilder(
           entryFrom: 'LiveMeetingMobilePage._buildMeetingLoading',
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
-          errorMessage: 'Something went wrong loading room. Please refresh!',
-          loadingMessage: 'Connecting to room...',
+          errorMessage: context.l10n.somethingWentWrongLoadingRoomPleaseRefresh,
+          loadingMessage: context.l10n.connectingToRoom,
           textStyle: TextStyle(color: AppColor.white),
           builder: (_, __) => Stack(
             children: [
@@ -1041,7 +1044,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
     if (selectedTab == TabType.chat) {
       return ChatWidget(
         parentPath: context.watch<ChatModel>().parentPath,
-        messageInputHint: 'Say something',
+        messageInputHint: context.l10n.saySomething,
         allowBroadcast: context.watch<LiveMeetingProvider>().isInBreakout &&
             context.watch<EventPermissionsProvider>().canBroadcastChat,
       );

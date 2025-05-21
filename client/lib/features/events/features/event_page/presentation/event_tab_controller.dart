@@ -410,7 +410,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
 
   Widget _buildChatSection(BuildContext context) {
     final liveMeetingProvider = LiveMeetingProvider.watchOrNull(context);
-
+    final l10n = appLocalizationService.getLocalization();
     return Container(
       alignment: Alignment.center,
       child: LayoutBuilder(
@@ -426,7 +426,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
           ),
           child: ChatWidget(
             parentPath: context.watch<ChatModel>().parentPath,
-            messageInputHint: 'Say something',
+            messageInputHint: l10n.saySomething,
             allowBroadcast: liveMeetingProvider != null &&
                 !liveMeetingProvider.isInBreakout &&
                 context.watch<EventPermissionsProvider>().canBroadcastChat,

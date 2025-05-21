@@ -186,7 +186,7 @@ class _ControlBarState extends State<ControlBar> {
       padding: padding,
       child: ActionButton(
         onPressed: () => LiveMeetingProvider.read(context).leaveMeeting(),
-        text: 'Leave',
+        text: context.l10n.leave,
         color: AppColor.redLightMode,
         textColor: AppColor.white,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
@@ -259,7 +259,7 @@ class _ChatAndEmojisInputState extends State<ChatAndEmojisInput> {
               child: CustomPointerInterceptor(
                 child: ChatInput(
                   controller: _controller,
-                  messageInputHint: 'Say something',
+                  messageInputHint: context.l10n.saySomething,
                   shouldGuardCommunityMember: false,
                 ),
               ),

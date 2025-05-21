@@ -135,8 +135,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     return CustomStreamBuilder(
       entryFrom: '_VideoFlutterMeetingState.build',
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
-      errorMessage: 'Something went wrong loading room. Please refresh!',
-      loadingMessage: 'Connecting to room...',
+      errorMessage: context.l10n.somethingWentWrongLoadingRoomPleaseRefresh,
+      loadingMessage: context.l10n.connectingToRoom,
       textStyle: TextStyle(color: AppColor.white),
       builder: (_, __) => _buildLayout(),
     );

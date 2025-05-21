@@ -904,5 +904,12 @@
   "headlineIsRequired": "Headline es requerido",
   "content": "Contenido",
   "keepItShort": "¡Sé breve! No querrás que la gente pierda tiempo leyéndolo.",
-  "areYouSureYouWantToRemoveThisMessage": "¿Estás seguro de que quieres eliminar este mensaje?"
+  "areYouSureYouWantToRemoveThisMessage": "¿Estás seguro de que quieres eliminar este mensaje?",
+  "youAreInWaitingRoom": "¡Estás en la sala de espera!",
+  "somethingWentWrongLoadingRoomPleaseRefresh": "Algo salió mal al cargar la sala. Por favor, recarga!",
+  "loadingRoomPleaseWait": "Cargando sala. Por favor, espera...",
+  "connectingToRoom": "Conectando a la sala...",
+  "saySomething": "Di algo",
+  "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "No se pudo unir a la sala. Por favor, recarga y vuelve a intentarlo",
+  "leave": "Salir"
 }
