@@ -920,5 +920,15 @@
   "allowMultiplePeopleOnStage": "Permitir múltiples personas en escenario",
   "showSmartMatchingForBreakouts": "Mostrar emparejamiento inteligente para salas",
   "alwaysRecord": "Grabar siempre",
-  "enablePrerequisites": "Habilitar requisitos previos"
+  "enablePrerequisites": "Habilitar requisitos previos",
+  "connecting": "Conectando...",
+  "videoOff": "Vídeo apagado",
+  "youveSpokenFor": "Has hablado durante {speakingTime} en esta reunión.",
+  "@youveSpokenFor": {
+    "placeholders": {
+      "speakingTime": {
+        "type": "String"
+      }
+    }
+  }
 }

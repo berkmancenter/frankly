@@ -342,7 +342,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                 if (!isMobile) SizedBox(height: 10),
                 if (isConnecting)
                   HeightConstrainedText(
-                    'Connecting...',
+                    context.l10n.connecting,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
@@ -363,7 +363,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       HeightConstrainedText(
-                        'Video Off',
+                        context.l10n.videoOff,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,

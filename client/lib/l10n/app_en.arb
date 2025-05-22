@@ -875,6 +875,14 @@
   "showSmartMatchingForBreakouts": "Show Smart Matching for Breakouts",
   "alwaysRecord": "Always Record",
   "enablePrerequisites": "Enable Prerequisites",
-  "agendaPreview": "Agenda preview",
-  "devSettings": "Developer Settings"
+  "connecting": "Connecting...",
+  "videoOff": "Video Off",
+  "youveSpokenFor": "You've spoken for {speakingTime} in this meeting.",
+  "@youveSpokenFor": {
+    "placeholders": {
+      "speakingTime": {
+        "type": "String"
+      }
+    }
+  }
 }

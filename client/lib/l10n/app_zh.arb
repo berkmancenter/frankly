@@ -918,6 +918,14 @@
   "showSmartMatchingForBreakouts": "为分组显示智能匹配",
   "alwaysRecord": "始终录制",
   "enablePrerequisites": "启用先决条件",
-  "agendaPreview": "议程预览",
-  "devSettings": "开发者设置"
+  "connecting": "连接中...",
+  "videoOff": "视频关闭",
+  "youveSpokenFor": "您已在此会议中发言 {speakingTime} 。",
+  "@youveSpokenFor": {
+    "placeholders": {
+      "speakingTime": {
+        "type": "String"
+      }
+    }
+  }
 }

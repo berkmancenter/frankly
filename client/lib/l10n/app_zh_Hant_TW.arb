@@ -909,6 +909,14 @@
   "showSmartMatchingForBreakouts": "為分組顯示智能匹配",
   "alwaysRecord": "總是錄製",
   "enablePrerequisites": "啟用先決條件",
-  "agendaPreview": "議程預覽",
-  "devSettings": "開發者設定"
+  "connecting": "連接中...",
+  "videoOff": "視訊關閉",
+  "youveSpokenFor": "您已在此會議中發言 {speakingTime}。",
+  "@youveSpokenFor": {
+    "placeholders": {
+      "speakingTime": {
+        "type": "String"
+      }
+    }
+  }
 }
