@@ -898,5 +898,17 @@
   "connectingToRoom": "連接到房間...",
   "saySomething": "說些什麼",
   "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "無法加入房間。請重新整理並再試一次",
-  "leave": "離開"
+  "leave": "離開",
+  "reminderEmails": "提醒電子郵件",
+  "showChatMessagesInRealTime": "即時顯示聊天訊息",
+  "talkingTimer": "發言計時器",
+  "allowPredefineBreakoutsOnHostLoad": "主持人載入時允許預定義分組",
+  "defaultStageView": "預設舞台視圖",
+  "enableBreakoutsByCategory": "按類別啟用分組",
+  "allowMultiplePeopleOnStage": "允許多人在舞台上",
+  "showSmartMatchingForBreakouts": "為分組顯示智能匹配",
+  "alwaysRecord": "總是錄製",
+  "enablePrerequisites": "啟用先決條件",
+  "agendaPreview": "議程預覽",
+  "devSettings": "開發者設定"
 }

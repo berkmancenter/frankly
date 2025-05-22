@@ -856,7 +856,7 @@
   "wordCloudPromptIsRequired": "Word Cloud prompt is required",
   "headlineIsRequired": "Headline is required",
   "content": "Content",
-  "keepItShort": "Keep it short! You don’t want people to spend time reading.",
+  "keepItShort": "Keep it short! You don't want people to spend time reading.",
   "areYouSureYouWantToRemoveThisMessage": "Are you sure you want to remove this message?",
   "youAreInWaitingRoom": "You are in the waiting room.",
   "somethingWentWrongLoadingRoomPleaseRefresh": "Something went wrong loading room. Please refresh!",
@@ -864,5 +864,17 @@
   "connectingToRoom": "Connecting to room...",
   "saySomething": "Say something",
   "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "Could not join room. Please refresh and try again",
-  "leave": "Leave"
+  "leave": "Leave",
+  "reminderEmails": "Reminder Emails",
+  "showChatMessagesInRealTime": "Show Chat Messages in Real Time",
+  "talkingTimer": "Talking Timer",
+  "allowPredefineBreakoutsOnHostLoad": "Allow Predefined Breakouts on Host Load",
+  "defaultStageView": "Default Stage View",
+  "enableBreakoutsByCategory": "Enable Breakouts by Category",
+  "allowMultiplePeopleOnStage": "Allow Multiple People on Stage",
+  "showSmartMatchingForBreakouts": "Show Smart Matching for Breakouts",
+  "alwaysRecord": "Always Record",
+  "enablePrerequisites": "Enable Prerequisites",
+  "agendaPreview": "Agenda preview",
+  "devSettings": "Developer Settings"
 }

@@ -756,7 +756,6 @@
   "templateName": "Nombre de plantilla",
   "featureOnHomepage": "Destacar en la página principal de {communityName}",
   "@featureOnHomepage": {
-    "description": "Etiqueta para el botón destacado, con el nombre de la comunidad.",
     "placeholders": {
       "communityName": {
         "type": "String"
@@ -911,5 +910,15 @@
   "connectingToRoom": "Conectando a la sala...",
   "saySomething": "Di algo",
   "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "No se pudo unir a la sala. Por favor, recarga y vuelve a intentarlo",
-  "leave": "Salir"
+  "leave": "Salir",
+  "reminderEmails": "Correos de recordatorio",
+  "showChatMessagesInRealTime": "Mostrar mensajes de chat en tiempo real",
+  "talkingTimer": "Temporizador de conversación",
+  "allowPredefineBreakoutsOnHostLoad": "Permitir salas predefinidas al cargar anfitrión",
+  "defaultStageView": "Vista de escenario predeterminada",
+  "enableBreakoutsByCategory": "Habilitar salas por categoría",
+  "allowMultiplePeopleOnStage": "Permitir múltiples personas en escenario",
+  "showSmartMatchingForBreakouts": "Mostrar emparejamiento inteligente para salas",
+  "alwaysRecord": "Grabar siempre",
+  "enablePrerequisites": "Habilitar requisitos previos"
 }

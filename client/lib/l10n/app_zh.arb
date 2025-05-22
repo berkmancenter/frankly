@@ -907,5 +907,17 @@
   "connectingToRoom": "连接到房间...",
   "saySomething": "说些什么",
   "liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain": "无法加入房间。请重新整理并再试一次",
-  "leave": "离开"
+  "leave": "离开",
+  "reminderEmails": "提醒邮件",
+  "showChatMessagesInRealTime": "实时显示聊天消息",
+  "talkingTimer": "发言计时器",
+  "allowPredefineBreakoutsOnHostLoad": "主持人加载时允许预定义分组",
+  "defaultStageView": "默认舞台视图",
+  "enableBreakoutsByCategory": "按类别启用分组",
+  "allowMultiplePeopleOnStage": "允许多人在舞台上",
+  "showSmartMatchingForBreakouts": "为分组显示智能匹配",
+  "alwaysRecord": "始终录制",
+  "enablePrerequisites": "启用先决条件",
+  "agendaPreview": "议程预览",
+  "devSettings": "开发者设置"
 }

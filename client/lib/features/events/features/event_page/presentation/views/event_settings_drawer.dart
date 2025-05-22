@@ -16,6 +16,7 @@ import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/utils/string_utils.dart';
 
 import 'event_settings_contract.dart';
 
@@ -189,13 +190,52 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               CustomSwitchTile(
                 onUpdate: (isSelected) =>
                     _presenter.updateSetting(feature, isSelected),
-                text: feature,
+                text: _getLocalizedFeatureName(feature),
                 val: _model.eventSettings.toJson()[feature] ?? false,
               ),
           ],
         ],
       ),
     );
+  }
+  
+  String _getLocalizedFeatureName(String feature) {
+    // Only use properties defined in the l10n localization system
+    try {
+      switch (feature) {
+        case 'chat':
+          return context.l10n.chat;
+        case 'reminderEmails':
+          return context.l10n.reminderEmails;
+        case 'showChatMessagesInRealTime':
+          return context.l10n.showChatMessagesInRealTime;
+        case 'talkingTimer':
+          return context.l10n.talkingTimer;
+        case 'allowPredefineBreakoutsOnHosted':
+          return context.l10n.allowPredefineBreakoutsOnHostLoad;
+        case 'defaultStageView':
+          return context.l10n.defaultStageView;
+        case 'enableBreakoutsByCategory':
+          return context.l10n.enableBreakoutsByCategory;
+        case 'allowMultiplePeopleOnStage':
+          return context.l10n.allowMultiplePeopleOnStage;
+        case 'showSmartMatchingForBreakouts':
+          return context.l10n.showSmartMatchingForBreakouts;
+        case 'alwaysRecord':
+          return context.l10n.alwaysRecord;
+        case 'enablePrerequisites':
+          return context.l10n.enablePrerequisites;
+        case 'agendaPreview':
+          return context.l10n.agendaPreview;
+        case 'devSettings':
+          return context.l10n.devSettings;
+        default:
+          // For properties not defined in l10n, format display using StringUtils.humanizeString
+          return StringUtils.humanizeString(feature);
+      }
+    } catch (e) {
+      return StringUtils.humanizeString(feature);
+    }
   }
 
   @override
