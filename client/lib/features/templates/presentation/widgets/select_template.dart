@@ -135,7 +135,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
                   color: AppColor.white,
                   textColor: AppColor.gray1,
                   onPressed: widget.onAddNew,
-                  text: 'Add New',
+                  text: context.l10n.addNew,
                 ),
               ),
           ],
