@@ -870,7 +870,7 @@
   "reminderEmails": "Reminder Emails",
   "showChatMessagesInRealTime": "Show Chat Messages in Real Time",
   "talkingTimer": "Talking Timer",
-  "allowPredefineBreakoutsOnHosted": "Allow Predefined Breakouts on Host Load",
+  "allowPredefineBreakoutsOnHosted": "Allow Predefined Breakouts on Hosted",
   "defaultStageView": "Default Stage View",
   "enableBreakoutsByCategory": "Enable Breakouts by Category",
   "allowMultiplePeopleOnStage": "Allow Multiple People on Stage",

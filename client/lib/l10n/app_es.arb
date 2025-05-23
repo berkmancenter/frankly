@@ -916,7 +916,7 @@
   "reminderEmails": "Correos de recordatorio",
   "showChatMessagesInRealTime": "Mostrar mensajes de chat en tiempo real",
   "talkingTimer": "Temporizador de conversación",
-  "allowPredefineBreakoutsOnHosted": "Permitir salas predefinidas al cargar anfitrión",
+  "allowPredefineBreakoutsOnHosted": "Permitir salas de grupos predefinidas en sesiones alojadas",
   "defaultStageView": "Vista de escenario predeterminada",
   "enableBreakoutsByCategory": "Habilitar salas por categoría",
   "allowMultiplePeopleOnStage": "Permitir múltiples personas en escenario",
