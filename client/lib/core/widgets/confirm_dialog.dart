@@ -140,6 +140,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                   ),
                   SizedBox(height: 10),
                 ],
+                const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
