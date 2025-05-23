@@ -322,6 +322,8 @@
   "deleteTitleAgendaItem": "刪除 {title} 議程項目",
   "description": "描述",
   "devSettings": "開發者設定",
+  "devSettingsCommunitySettings": "開發設定 - 社區設定",
+  "devSettingsDefaultEventSettings": "開發設定 - 預設活動設定",
   "discard": "放棄",
   "donate": "捐贈",
   "donateToKeepConversationGoing": "捐款以保持對話進行！",
@@ -902,7 +904,7 @@
   "reminderEmails": "提醒電子郵件",
   "showChatMessagesInRealTime": "即時顯示聊天訊息",
   "talkingTimer": "發言計時器",
-  "allowPredefineBreakoutsOnHostLoad": "主持人載入時允許預定義分組",
+  "allowPredefineBreakoutsOnHosted": "主持人載入時允許預定義分組",
   "defaultStageView": "預設舞台視圖",
   "enableBreakoutsByCategory": "按類別啟用分組",
   "allowMultiplePeopleOnStage": "允許多人在舞台上",
@@ -918,5 +920,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "allowDonations": "允許捐款",
+  "allowUnofficialTemplates": "允許非官方模板",
+  "disableEmailDigests": "停用電子郵件摘要",
+  "dontAllowMembersToCreateMeetings": "不允許成員建立會議",
+  "enableDiscussionThreads": "啟用討論串",
+  "enableHostless": "啟用無主持人模式",
+  "enablePlatformSelection": "啟用平台選擇",
+  "multiplePeopleOnStage": "多人上台",
+  "multipleVideoTypes": "多種視訊類型",
+  "requireApprovalToJoin": "加入需要批准",
+  "enableUpdatedLiveMeetingMobile": "啟用更新的行動裝置直播會議",
+  "enableAVCheck": "啟用音視頻檢查"
 }

@@ -284,6 +284,8 @@
   "deleteTitleAgendaItem": "Delete {title} agenda item",
   "description": "Description",
   "devSettings": "Developer Settings",
+  "devSettingsCommunitySettings": "Dev Settings - Community Settings",
+  "devSettingsDefaultEventSettings": "Dev Settings - Default Event Settings",
   "discard": "Discard",
   "donate": "Donate",
   "donateToKeepConversationGoing": "Donate to keep the conversation going!",
@@ -868,7 +870,7 @@
   "reminderEmails": "Reminder Emails",
   "showChatMessagesInRealTime": "Show Chat Messages in Real Time",
   "talkingTimer": "Talking Timer",
-  "allowPredefineBreakoutsOnHostLoad": "Allow Predefined Breakouts on Host Load",
+  "allowPredefineBreakoutsOnHosted": "Allow Predefined Breakouts on Host Load",
   "defaultStageView": "Default Stage View",
   "enableBreakoutsByCategory": "Enable Breakouts by Category",
   "allowMultiplePeopleOnStage": "Allow Multiple People on Stage",
@@ -884,5 +886,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "allowDonations": "Allow Donations",
+  "allowUnofficialTemplates": "Allow Unofficial Templates",
+  "disableEmailDigests": "Disable Email Digests",
+  "dontAllowMembersToCreateMeetings": "Don't Allow Members to Create Meetings",
+  "enableDiscussionThreads": "Enable Discussion Threads",
+  "enableHostless": "Enable Hostless",
+  "enablePlatformSelection": "Enable Platform Selection",
+  "multiplePeopleOnStage": "Multiple People on Stage",
+  "multipleVideoTypes": "Multiple Video Types",
+  "requireApprovalToJoin": "Require Approval to Join",
+  "enableUpdatedLiveMeetingMobile": "Enable Updated Live Meeting Mobile",
+  "enableAVCheck": "Enable AV Check"
 }

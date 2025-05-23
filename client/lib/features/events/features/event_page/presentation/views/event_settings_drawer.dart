@@ -212,7 +212,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
         case 'talkingTimer':
           return context.l10n.talkingTimer;
         case 'allowPredefineBreakoutsOnHosted':
-          return context.l10n.allowPredefineBreakoutsOnHostLoad;
+          return context.l10n.allowPredefineBreakoutsOnHosted;
         case 'defaultStageView':
           return context.l10n.defaultStageView;
         case 'enableBreakoutsByCategory':

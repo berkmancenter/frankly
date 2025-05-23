@@ -334,6 +334,8 @@
   "deleteTitleAgendaItem": "Eliminar {title} elemento de agenda",
   "description": "Descripción",
   "devSettings": "Configuración para desarrolladores",
+  "devSettingsCommunitySettings": "Configuración de desarrollo - Configuración de comunidad",
+  "devSettingsDefaultEventSettings": "Configuración de desarrollo - Configuración predeterminada de eventos",
   "discard": "Descartar",
   "donate": "Donar",
   "donateToKeepConversationGoing": "¡Done para mantener la conversación!",
@@ -914,7 +916,7 @@
   "reminderEmails": "Correos de recordatorio",
   "showChatMessagesInRealTime": "Mostrar mensajes de chat en tiempo real",
   "talkingTimer": "Temporizador de conversación",
-  "allowPredefineBreakoutsOnHostLoad": "Permitir salas predefinidas al cargar anfitrión",
+  "allowPredefineBreakoutsOnHosted": "Permitir salas predefinidas al cargar anfitrión",
   "defaultStageView": "Vista de escenario predeterminada",
   "enableBreakoutsByCategory": "Habilitar salas por categoría",
   "allowMultiplePeopleOnStage": "Permitir múltiples personas en escenario",
@@ -930,5 +932,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "allowDonations": "Permitir donaciones",
+  "allowUnofficialTemplates": "Permitir plantillas no oficiales",
+  "disableEmailDigests": "Desactivar resúmenes por correo electrónico",
+  "dontAllowMembersToCreateMeetings": "No permitir que los miembros creen reuniones",
+  "enableDiscussionThreads": "Habilitar hilos de discusión",
+  "enableHostless": "Habilitar modo sin anfitrión",
+  "enablePlatformSelection": "Habilitar selección de plataforma",
+  "multiplePeopleOnStage": "Múltiples personas en escena",
+  "multipleVideoTypes": "Múltiples tipos de video",
+  "requireApprovalToJoin": "Requerir aprobación para unirse",
+  "enableUpdatedLiveMeetingMobile": "Habilitar reuniones en vivo actualizadas en móviles",
+  "enableAVCheck": "Habilitar verificación de audio/video"
 }
