@@ -513,6 +513,7 @@ class _MembersTabState extends State<MembersTab> {
                     'Manage Members (${membershipList!.length})',
                     style: AppTextStyle.headline4,
                   ),
+                  SizedBox(height: 8),
                   Tooltip(
                     message: 'Download members data',
                     child: ActionButton(
