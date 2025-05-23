@@ -285,8 +285,7 @@ class _BreakoutRoomDefinitionCardState
       children: [
         HeightConstrainedText(
           context.l10n.category,
-          style: AppTextStyle.subhead
-              .copyWith(color: context.theme.colorScheme.onPrimary),
+          style: AppTextStyle.subhead,
         ),
         SizedBox(height: 20),
         Container(
@@ -374,88 +373,89 @@ class _QuestionCardState extends State<QuestionCard> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: ExpansionTile(
-        key: Key(_isExpanded.value.toString()),
-        initiallyExpanded: _isExpanded.value,
-        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-        collapsedBackgroundColor:
-            context.theme.colorScheme.surfaceContainerLowest,
-        title: Row(
-          children: [
-            ReorderableListener(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Icon(
-                  Icons.reorder,
-                  color: Theme.of(context).isDark
-                      ? Colors.white
-                      : Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                child: HeightConstrainedText(
-                  questionText,
-                  style: AppTextStyle.subhead
-                      .copyWith(color: context.theme.colorScheme.primary),
-                ),
-              ),
-            ),
-            if (_breakoutCardViewType == BreakoutCardViewType.overview)
-              _buildEditButton(),
-          ],
-        ),
-        iconColor: context.theme.colorScheme.primary,
-        collapsedIconColor: context.theme.colorScheme.primary,
-        onExpansionChanged: (expanded) => _isExpanded.value = expanded,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: context.theme.colorScheme.surfaceContainerLowest,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            padding: EdgeInsets.all(20),
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomTextField(
-                  readOnly:
-                      _breakoutCardViewType == BreakoutCardViewType.overview,
-                  labelText: context.l10n
-                      .enterQuestionWithNumber(questionPosition + 1),
-                  maxLines: 1,
-                  maxLength: questionMaxLength,
-                  initialValue: !isNullOrEmpty(surveyQuestion.title)
-                      ? surveyQuestion.title
-                      : null,
-                  onChanged: (value) => _presenter.updateQuestionData(
-                    question: value,
-                    questionId: widget.questionId,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: ExpansionTile(
+          key: Key(_isExpanded.value.toString()),
+          // Shape must be passed into ExpansionTile to avoid showing a border.
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          initiallyExpanded: _isExpanded.value,
+          backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+          collapsedBackgroundColor:
+              context.theme.colorScheme.surfaceContainerLowest,
+          title: Row(
+            children: [
+              ReorderableListener(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Icon(
+                    Icons.reorder,
+                    color: Theme.of(context).isDark
+                        ? Colors.white
+                        : Theme.of(context).primaryColor,
                   ),
                 ),
-                SizedBox(height: 30),
-                for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
-                  _builderAnswerTextField(surveyQuestion.answers[i], i),
-                  SizedBox(height: 6),
-                ],
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 10,
-                      ),
-                      child: Container(
-                        decoration: ShapeDecoration(
-                          shape: CircleBorder(),
-                          color: context.theme.colorScheme.onPrimaryContainer,
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  child: HeightConstrainedText(
+                    questionText,
+                    style: AppTextStyle.subhead
+                        .copyWith(color: context.theme.colorScheme.primary),
+                  ),
+                ),
+              ),
+              if (_breakoutCardViewType == BreakoutCardViewType.overview)
+                _buildEditButton(),
+            ],
+          ),
+          iconColor: context.theme.colorScheme.primary,
+          collapsedIconColor: context.theme.colorScheme.primary,
+          onExpansionChanged: (expanded) => _isExpanded.value = expanded,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.surfaceContainerLowest,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextField(
+                    readOnly:
+                        _breakoutCardViewType == BreakoutCardViewType.overview,
+                    labelText: context.l10n
+                        .enterQuestionWithNumber(questionPosition + 1),
+                    maxLines: 1,
+                    maxLength: questionMaxLength,
+                    initialValue: !isNullOrEmpty(surveyQuestion.title)
+                        ? surveyQuestion.title
+                        : null,
+                    onChanged: (value) => _presenter.updateQuestionData(
+                      question: value,
+                      questionId: widget.questionId,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
+                    _builderAnswerTextField(surveyQuestion.answers[i], i),
+                    SizedBox(height: 6),
+                  ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 10,
                         ),
                         child: IconButton(
                           icon: Icon(
@@ -482,23 +482,23 @@ class _QuestionCardState extends State<QuestionCard> {
                               : null,
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    CircleSaveCheckButton(
-                      isEnabled:
-                          _breakoutCardViewType == BreakoutCardViewType.edit,
-                      onPressed:
-                          _breakoutCardViewType == BreakoutCardViewType.edit
-                              ? () => updateBreakoutRoomQuestionDetails()
-                              : null,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30),
-              ],
+                      SizedBox(width: 10),
+                      CircleSaveCheckButton(
+                        isEnabled:
+                            _breakoutCardViewType == BreakoutCardViewType.edit,
+                        onPressed:
+                            _breakoutCardViewType == BreakoutCardViewType.edit
+                                ? () => updateBreakoutRoomQuestionDetails()
+                                : null,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
