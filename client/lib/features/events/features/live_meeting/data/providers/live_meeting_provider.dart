@@ -633,7 +633,6 @@ class LiveMeetingProvider with ChangeNotifier {
             );
             Navigator.of(context).pop(true);
           }),
-          cancelText: 'No, skip',
         ).show();
       }
     }
