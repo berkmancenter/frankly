@@ -738,15 +738,15 @@ class RolePermissionListTile extends StatelessWidget {
                 child: Icon(
                   Icons.circle,
                   size: 4,
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
                   item,
-                  style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                  style: context.theme.textTheme.bodyMedium!.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),
