@@ -461,17 +461,12 @@ class _QuestionCardState extends State<QuestionCard> {
                           icon: Icon(
                             Icons.delete_outline_rounded,
                           ),
-                          style: IconButton.styleFrom(
-                            foregroundColor: context.theme.colorScheme.error,
-                            side: BorderSide(
-                              color: context.theme.colorScheme.error,
-                            ),
-                          ),
                           onPressed: _breakoutCardViewType ==
                                   BreakoutCardViewType.edit
                               ? () async {
                                   final delete = await ConfirmDialog(
                                     mainText: context.l10n.confirmDelete,
+                                    cancelText: context.l10n.cancel,
                                   ).show(context: context);
                                   if (delete) {
                                     await alertOnError(
