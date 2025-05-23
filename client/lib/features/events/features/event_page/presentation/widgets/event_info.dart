@@ -404,10 +404,6 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       height: 64,
       type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
-      color: isEventOpen ? Theme.of(context).colorScheme.primary : null,
-      textColor: isEventOpen
-          ? Theme.of(context).colorScheme.secondary
-          : Theme.of(context).colorScheme.primary,
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () => alertOnError(context, () async {
