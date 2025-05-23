@@ -709,7 +709,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: context.theme.colorScheme.surfaceContainerHighest,
+          color: context.theme.colorScheme.primaryContainer,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
