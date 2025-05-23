@@ -509,28 +509,32 @@ class _MembersTabState extends State<MembersTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HeightConstrainedText(
-                    'Manage Members (${membershipList!.length})',
-                    style: AppTextStyle.headline4,
-                  ),
-                  SizedBox(height: 8),
-                  Tooltip(
-                    message: 'Download members data',
-                    child: ActionButton(
-                      height: 40,
-                      minWidth: 60,
-                      onPressed: () => _downloadMembersData(membershipList),
-                      borderRadius: BorderRadius.circular(15),
-                      padding: EdgeInsets.zero,
-                      color: context.theme.colorScheme.primary,
-                      icon: Icon(
-                        Icons.download,
-                        color: context.theme.colorScheme.onPrimary,
-                        size: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      HeightConstrainedText(
+                        'Manage Members (${membershipList!.length})',
+                        style: AppTextStyle.headline4,
                       ),
-                    ),
+                      SizedBox(width: 8),
+                      Tooltip(
+                        message: 'Download members data',
+                        child: ActionButton(
+                          type: ActionButtonType.outline,
+                          height: 40,
+                          minWidth: 60,
+                          onPressed: () => _downloadMembersData(membershipList),
+                          borderRadius: BorderRadius.circular(15),
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.download,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 24),
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: 400,
