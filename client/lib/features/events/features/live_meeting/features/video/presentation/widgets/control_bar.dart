@@ -121,7 +121,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: context.theme.colorScheme.onSurface,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
       ),
@@ -382,6 +382,7 @@ class _ChatInputState extends State<ChatInput> {
             child: CustomTextField(
               borderType: BorderType.none,
               borderRadius: isMobile ? 25 : 10,
+              backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
               contentPadding: isMobile
                   ? EdgeInsets.symmetric(horizontal: 14, vertical: 12)
@@ -408,7 +409,9 @@ class _ChatInputState extends State<ChatInput> {
                 button: true,
                 child: ActionButton(
                   minWidth: 20,
-                  color: context.theme.colorScheme.primary,
+                  color: context.theme.colorScheme.surface,
+                  disabledColor: context.theme.colorScheme.primaryFixedDim,
+                  textColor: context.theme.colorScheme.onSurface,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
                   height: isMobile ? 50 : 55,
@@ -447,6 +450,7 @@ class _IconButtonState extends State<_IconButton> {
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
+      hoverColor: context.theme.colorScheme.surface.withScrimOpacity,
       onTap: () async {
         if (_isSending) return;
         setState(() => _isSending = true);
@@ -465,7 +469,6 @@ class _IconButtonState extends State<_IconButton> {
 
         setState(() => _isSending = false);
       },
-      hoverColor: context.theme.colorScheme.surfaceContainer,
       child: Container(
         padding: const EdgeInsets.all(2),
         constraints: BoxConstraints(
@@ -482,8 +485,8 @@ class _IconButtonState extends State<_IconButton> {
                 widget.icon,
                 size: 34,
                 color: _isSending
-                    ? context.theme.colorScheme.onSurfaceVariant
-                    : widget.iconColor ?? context.theme.colorScheme.onSurface,
+                    ? context.theme.colorScheme.onPrimaryContainer
+                    : widget.iconColor ?? context.theme.colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: 2),
@@ -492,8 +495,8 @@ class _IconButtonState extends State<_IconButton> {
               textAlign: TextAlign.center,
               style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: _isSending
-                    ? context.theme.colorScheme.onSurfaceVariant
-                    : context.theme.colorScheme.onSurface,
+                    ? context.theme.colorScheme.onPrimaryContainer
+                    : context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
                 height: 1.05,
               ),
