@@ -165,8 +165,7 @@ class _BreakoutRoomDefinitionCardState
       children: [
         HeightConstrainedText(
           context.l10n.targetSize,
-          style: AppTextStyle.subhead
-              .copyWith(color: context.theme.colorScheme.onPrimary),
+          style: AppTextStyle.subhead,
         ),
         SizedBox(height: 8),
         Container(
@@ -182,13 +181,13 @@ class _BreakoutRoomDefinitionCardState
                 child: HeightConstrainedText(
                   context.l10n.targetSizeQuestion,
                   style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),
               FormBuilderSlider(
                 activeColor: context.theme.colorScheme.primary,
-                inactiveColor: context.theme.colorScheme.surface,
+                inactiveColor: context.theme.colorScheme.surfaceDim,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                 ),
