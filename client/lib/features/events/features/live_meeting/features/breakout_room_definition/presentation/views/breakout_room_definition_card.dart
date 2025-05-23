@@ -457,11 +457,15 @@ class _QuestionCardState extends State<QuestionCard> {
                           horizontal: 5,
                           vertical: 10,
                         ),
-                        child: IconButton(
+                        child: IconButton.outlined(
                           icon: Icon(
-                            CupertinoIcons.trash,
-                            color: context.theme.colorScheme.onPrimary,
-                            size: 15,
+                            Icons.delete_outline_rounded,
+                          ),
+                          style: IconButton.styleFrom(
+                            foregroundColor: context.theme.colorScheme.error,
+                            side: BorderSide(
+                              color: context.theme.colorScheme.error,
+                            ),
                           ),
                           onPressed: _breakoutCardViewType ==
                                   BreakoutCardViewType.edit
@@ -483,9 +487,10 @@ class _QuestionCardState extends State<QuestionCard> {
                         ),
                       ),
                       SizedBox(width: 10),
-                      CircleSaveCheckButton(
-                        isEnabled:
-                            _breakoutCardViewType == BreakoutCardViewType.edit,
+                      IconButton.filled(
+                        icon: Icon(
+                          Icons.check,
+                        ),
                         onPressed:
                             _breakoutCardViewType == BreakoutCardViewType.edit
                                 ? () => updateBreakoutRoomQuestionDetails()
@@ -505,9 +510,9 @@ class _QuestionCardState extends State<QuestionCard> {
 
   Widget _buildEditButton() {
     return ActionButton(
-      type: ActionButtonType.outline,
-      color: context.theme.colorScheme.surfaceContainerLowest,
-      textColor: context.theme.colorScheme.primary,
+      type: ActionButtonType.filled,
+      color: context.theme.colorScheme.surfaceContainerLow,
+      textColor: context.theme.colorScheme.onSurface,
       onPressed: () {
         _isExpanded.value = true;
         _toggleCardViewType();
