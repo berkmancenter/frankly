@@ -10,7 +10,6 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
 import 'package:client/features/events/features/event_page/presentation/views/category_card.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/circle_save_check_button.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/rounded_button.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
@@ -83,36 +82,48 @@ class _BreakoutRoomDefinitionCardState
                 spacing: 10,
                 runSpacing: 10,
                 children: [
-                  RoundedButton(
-                    label: context.l10n.bySize,
-                    onPressed: _assignmentMethod !=
+                  ActionButton(
+                    text: context.l10n.bySize,
+                    type: _assignmentMethod ==
                             BreakoutAssignmentMethod.targetPerRoom
-                        ? () => _presenter.updateAssignmentMethod(
-                              assignmentMethod:
-                                  BreakoutAssignmentMethod.targetPerRoom,
-                            )
+                        ? ActionButtonType.filled
+                        : ActionButtonType.outline,
+                    onPressed: () => _assignmentMethod !=
+                            BreakoutAssignmentMethod.targetPerRoom
+                        ? _presenter.updateAssignmentMethod(
+                            assignmentMethod:
+                                BreakoutAssignmentMethod.targetPerRoom,
+                          )
                         : null,
                   ),
                   if (hasSmartMatchingCapability)
-                    RoundedButton(
-                      label: context.l10n.smartMatch,
-                      onPressed: _assignmentMethod !=
+                    ActionButton(
+                      text: context.l10n.smartMatch,
+                      type: _assignmentMethod ==
                               BreakoutAssignmentMethod.smartMatch
-                          ? () => _presenter.updateAssignmentMethod(
-                                assignmentMethod:
-                                    BreakoutAssignmentMethod.smartMatch,
-                              )
+                          ? ActionButtonType.filled
+                          : ActionButtonType.outline,
+                      onPressed: () => _assignmentMethod !=
+                              BreakoutAssignmentMethod.smartMatch
+                          ? _presenter.updateAssignmentMethod(
+                              assignmentMethod:
+                                  BreakoutAssignmentMethod.smartMatch,
+                            )
                           : null,
                     ),
                   if (_enableBreakoutCategory)
-                    RoundedButton(
-                      label: context.l10n.byCategory,
-                      onPressed:
+                    ActionButton(
+                      text: context.l10n.byCategory,
+                      type:
+                          _assignmentMethod == BreakoutAssignmentMethod.category
+                              ? ActionButtonType.filled
+                              : ActionButtonType.outline,
+                      onPressed: () =>
                           _assignmentMethod != BreakoutAssignmentMethod.category
-                              ? () => _presenter.updateAssignmentMethod(
-                                    assignmentMethod:
-                                        BreakoutAssignmentMethod.category,
-                                  )
+                              ? _presenter.updateAssignmentMethod(
+                                  assignmentMethod:
+                                      BreakoutAssignmentMethod.category,
+                                )
                               : null,
                     ),
                 ],
@@ -171,7 +182,8 @@ class _BreakoutRoomDefinitionCardState
                 child: HeightConstrainedText(
                   context.l10n.targetSizeQuestion,
                   style: AppTextStyle.body.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                    color: context.theme.colorScheme.onPrimaryContainer,
+                  ),
                 ),
               ),
               FormBuilderSlider(
@@ -464,8 +476,8 @@ class _QuestionCardState extends State<QuestionCard> {
                                   if (delete) {
                                     await alertOnError(
                                       context,
-                                      () => _presenter
-                                          .deleteBreakoutRoomQuestion(
+                                      () =>
+                                          _presenter.deleteBreakoutRoomQuestion(
                                         widget.questionId,
                                       ),
                                     );
