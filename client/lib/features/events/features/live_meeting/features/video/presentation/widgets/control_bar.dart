@@ -202,7 +202,7 @@ class _ControlBarState extends State<ControlBar> {
     return AnimatedBuilder(
       animation: _liveMeetingProvider.conferenceRoomNotifier,
       builder: (context, __) => Container(
-        color: context.theme.colorScheme.surfaceContainerHighest,
+        color: context.theme.colorScheme.primaryContainer,
         height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
