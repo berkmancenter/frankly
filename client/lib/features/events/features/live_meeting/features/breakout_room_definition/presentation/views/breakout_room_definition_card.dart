@@ -190,10 +190,7 @@ class _BreakoutRoomDefinitionCardState
                 activeColor: context.theme.colorScheme.primary,
                 inactiveColor: context.theme.colorScheme.surface,
                 decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent, width: 0),
-                  ),
-                  border: const OutlineInputBorder(),
+                  border: InputBorder.none,
                 ),
                 initialValue: presenter
                     .breakoutRoomDefinitionDetails.targetParticipants!
