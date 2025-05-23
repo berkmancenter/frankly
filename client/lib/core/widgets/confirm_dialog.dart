@@ -128,7 +128,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 if (!isNullOrEmpty(widget.mainText)) ...[
                   HeightConstrainedText(
                     widget.mainText,
-                    style: context.theme.textTheme.bodyMedium,
+                    style: context.theme.textTheme.bodyLarge,
                     textAlign: widget.textAlign,
                   ),
                   SizedBox(height: 10),
@@ -163,7 +163,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                         horizontal: 18,
                         vertical: 12,
                       ),
-                      text: widget._getConfirmText(context),                                  
+                      text: widget._getConfirmText(context),
                       onPressed: onConfirm != null
                           ? () => onConfirm(context)
                           : () => Navigator.of(context).pop(true),
