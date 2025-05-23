@@ -387,12 +387,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   }
 
   Widget _buildAspectRatioClipped(Widget child) {
-    // ignore: parameter_assignments
-    child = GlobalKeyedSubtree(
-      label: context.l10n.aspectRatioClipped.toString(),
-      child: child,
-    );
-
     if (widget.isScreenShare) return child;
 
     if (widget.borderRadius != BorderRadius.zero) {
