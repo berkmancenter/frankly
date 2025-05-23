@@ -622,6 +622,7 @@ class LiveMeetingProvider with ChangeNotifier {
           mainText:
               'Host is sending you to a breakout room. Join breakout room?',
           confirmText: 'Yes, join',
+          cancelText: appLocalizationService.getLocalization().cancel,
           onConfirm: (context) => alertOnError(context, () async {
             await firestoreLiveMeetingService
                 .updateAvailableForBreakoutSessionId(
@@ -882,6 +883,7 @@ class LiveMeetingProvider with ChangeNotifier {
       subText:
           'Are you sure you want to end breakout rooms for all participants? \n\n'
           'This will send all participants back to the main room immediately.',
+      cancelText: l10n.cancel,
     ).show();
     if (confirmed) {
       final updatedLiveMeeting =

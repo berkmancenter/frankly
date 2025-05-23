@@ -788,6 +788,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
     if (newStatus == MembershipStatus.nonmember) {
       final delete = await ConfirmDialog(
         mainText: 'Are you sure you want to remove member?',
+        cancelText: context.l10n.cancel,
       ).show(context: context);
       if (!delete) return;
     }

@@ -361,6 +361,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final delete = await ConfirmDialog(
       title: context.l10n.deleteAgendaItemGeneral,
       mainText: 'Are you sure you want to delete?',
+      cancelText: context.l10n.cancel,
     ).show(context: context);
 
     if (delete) {
@@ -392,6 +393,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
             if (hasBeenEdited) {
               final isDiscardChangesConfirmed = await ConfirmDialog(
                 mainText: 'Are you sure you want to discard changes?',
+                cancelText: context.l10n.cancel,
               ).show(context: context);
 
               if (isDiscardChangesConfirmed) {

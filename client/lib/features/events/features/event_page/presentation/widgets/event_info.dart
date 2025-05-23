@@ -233,7 +233,7 @@ class _EventInfoState extends State<EventInfo> {
           Navigator.pop(context);
         });
       },
-      cancelText: 'No, nevermind',
+      cancelText: context.l10n.cancel,
     ).show();
   }
 

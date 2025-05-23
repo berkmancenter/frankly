@@ -549,6 +549,7 @@ class ConferenceRoom with ChangeNotifier {
     final enableAudioVideo = await ConfirmDialog(
       title: appLocalizationService.getLocalization().turnOnAudioVideo,
       mainText: 'Would you like to turn on audio and video?',
+      cancelText: appLocalizationService.getLocalization().cancel,
     ).show();
     if (enableAudioVideo) {
       if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {

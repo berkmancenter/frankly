@@ -568,6 +568,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             final confirmed = await ConfirmDialog(
               mainText:
                   'This will delete all existing meeting data. Are you sure you want to reset?',
+              cancelText: context.l10n.cancel,
             ).show(context: context);
             if (!confirmed) return;
             await agendaProvider.resetMeeting();
@@ -750,7 +751,9 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
   Widget build(BuildContext context) {
     final menuItems = _getMenuItems();
     return Semantics(
-      label: context.l10n.participantActionsForUserWithId(widget.providerParticipant?.userId ?? ''),
+      label: context.l10n.participantActionsForUserWithId(
+        widget.providerParticipant?.userId ?? '',
+      ),
       child: CustomInkWell(
         hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
         onTap: () => _showMoreMenu(menuItems),
@@ -1023,7 +1026,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                 await ConfirmDialog(
                   title: context.l10n.participantReassigned,
                   mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
-                  confirmText: 'Ok',
+                  confirmText: 'Continue',
                 ).show(context: context);
               }
             }),

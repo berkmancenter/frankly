@@ -130,6 +130,7 @@ class MediaItemSection extends StatelessWidget {
                 onTap: () {
                   ConfirmDialog(
                     title: context.l10n.confirmDeleteMedia,
+                    cancelText: context.l10n.cancel,
                     onConfirm: (_) {
                       Navigator.pop(context);
                       onDelete();
