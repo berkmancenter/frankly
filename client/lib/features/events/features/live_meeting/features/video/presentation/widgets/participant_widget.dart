@@ -520,7 +520,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
                     setState(() => _isPinnedLocal = !isPinned);
                   }),
           child: HeightConstrainedText(
-            isPinned ? 'Unpin' : 'Pin',
+            isPinned ? context.l10n.unpin : context.l10n.pin,
             style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
           ),
         ),

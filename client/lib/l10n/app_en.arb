@@ -898,5 +898,25 @@
   "multipleVideoTypes": "Multiple Video Types",
   "requireApprovalToJoin": "Require Approval to Join",
   "enableUpdatedLiveMeetingMobile": "Enable Updated Live Meeting Mobile",
-  "enableAVCheck": "Enable AV Check"
+  "enableAVCheck": "Enable AV Check",
+  "errorLoadingEventDetails": "There was an error loading event details.",
+  "needHelp": "Need Help?",
+  "unpin": "Unpin",
+  "pin": "Pin",
+  "editProfile": "Edit Profile",
+  "viewProfile": "View Profile",
+  "ready": "Ready",
+  "nextAgendaItem": "Moving to the next agenda item...",
+  "clickNextWhenYouAreReadyToMoveOn": "Click Next when you’re ready to move on.",
+  "readyToMoveOnTooltip": "{readyToMoveOnCount} out of {total} participants are ready to move on.",
+  "@readyToMoveOnTooltip": {
+    "placeholders": {
+      "readyToMoveOnCount": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

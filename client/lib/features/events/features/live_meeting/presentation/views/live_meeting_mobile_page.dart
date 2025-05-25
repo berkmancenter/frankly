@@ -776,7 +776,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               conferenceRoom: context.read<ConferenceRoom>(),
                             ).show(),
                             child: HeightConstrainedText(
-                              'Audio/Video Settings',
+                              context.l10n.audioVideoSettings,
                             ),
                           ),
                         ];

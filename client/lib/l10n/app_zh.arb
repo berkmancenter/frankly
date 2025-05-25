@@ -941,5 +941,25 @@
   "multipleVideoTypes": "多种视频类型",
   "requireApprovalToJoin": "加入需要批准",
   "enableUpdatedLiveMeetingMobile": "启用更新的移动设备直播会议",
-  "enableAVCheck": "启用音视频检查"
+  "enableAVCheck": "启用音视频检查",
+  "errorLoadingEventDetails": "载入活动细节时出错。",
+  "needHelp": "需要帮助？",
+  "unpin": "取消钉选",
+  "pin": "钉选",
+  "editProfile": "编辑个人资料",
+  "viewProfile": "查看个人资料",
+  "ready": "准备好了",
+  "nextAgendaItem": "移动到下一个议程...",
+  "clickNextWhenYouAreReadyToMoveOn": "当您准备好了时，点击「下一步」。",
+  "readyToMoveOnTooltip": "{readyToMoveOnCount}/{total} 参与者准备往下一步移動了。",
+  "@readyToMoveOnTooltip": {
+    "placeholders": {
+      "readyToMoveOnCount": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

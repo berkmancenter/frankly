@@ -944,5 +944,25 @@
   "multipleVideoTypes": "Múltiples tipos de video",
   "requireApprovalToJoin": "Requerir aprobación para unirse",
   "enableUpdatedLiveMeetingMobile": "Habilitar reuniones en vivo actualizadas en móviles",
-  "enableAVCheck": "Habilitar verificación de audio/video"
+  "enableAVCheck": "Habilitar verificación de audio/video",
+  "errorLoadingEventDetails": "Hubo un error al cargar detalles del evento.",
+  "needHelp": "¿Necesitas ayuda?",
+  "unpin": "Desafijar",
+  "pin": "Afijar",
+  "editProfile": "Editar Perfil",
+  "viewProfile": "Ver Perfil",
+  "ready": "Listo",
+  "nextAgendaItem": "Pasando al siguiente punto del orden del día...",
+  "clickNextWhenYouAreReadyToMoveOn": "Cuando estés listo, haz clic en Siguiente.",
+  "readyToMoveOnTooltip": "{readyToMoveOnCount}/{total} participantes están listos para pasar al siguiente punto del orden del día.",
+  "@readyToMoveOnTooltip": {
+    "placeholders": {
+      "readyToMoveOnCount": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

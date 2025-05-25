@@ -520,7 +520,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
                     setState(() => _isPinnedLocal = !isPinned);
                   }),
           child: HeightConstrainedText(
-            isPinned ? 'Unpin' : 'Pin',
+            isPinned ? context.l10n.unpin : context.l10n.pin,
             style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
           ),
         ),
@@ -531,7 +531,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             () => liveMeetingProvider.mute(userId: userId),
           ),
           child: HeightConstrainedText(
-            'Mute',
+            context.l10n.mute,
             style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
           ),
         ),
@@ -542,7 +542,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             () => liveMeetingProvider.confirmProposeKick(userId),
           ),
           child: HeightConstrainedText(
-            'Propose to remove user',
+            context.l10n.proposeToRemoveUser,
             style:
                 AppTextStyle.bodyMedium.copyWith(color: AppColor.redLightMode),
           ),
@@ -562,7 +562,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
         ),
         child: HeightConstrainedText(
-          isCurrentUser ? 'Edit Profile' : 'View Profile',
+          isCurrentUser ? context.l10n.editProfile : context.l10n.viewProfile,
           style: AppTextStyle.bodyMedium.copyWith(color: AppColor.darkBlue),
         ),
       ),

@@ -40,6 +40,7 @@ import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:skeleton_text/skeleton_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingGuideCard extends StatefulWidget {
   final void Function() onMinimizeCard;
@@ -312,7 +313,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                               isNullOrEmpty(info.data?.displayName)
                                   ? context.l10n.welcome
                                   : context.l10n.welcomeName(
-                                      info.data?.displayName ?? ''),
+                                      info.data?.displayName ?? '',),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline3.copyWith(
@@ -496,7 +497,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         sendingIndicatorAlign:
                             ActionButtonSendingIndicatorAlign.none,
                         icon: Icons.arrow_back_ios,
-                        text: 'Back',
+                        text: context.l10n.back,
                         onPressed: () => _presenter.goToPreviousAgendaItem(),
                       ),
                     Spacer(),
@@ -517,8 +518,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Tooltip(
                         message:
-                            '$readyToMoveOnCount out of ${presentParticipantIds.length} participants '
-                            'are ready to move on.',
+                            context.l10n.readyToMoveOnTooltip(
+                              readyToMoveOnCount,
+                              presentParticipantIds.length,
+                            ),
                         child: Text(
                           '$readyToMoveOnCount/${presentParticipantIds.length}',
                           style: AppTextStyle.body
@@ -532,7 +535,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         textColor: AppColor.darkBlue,
                         sendingIndicatorAlign:
                             ActionButtonSendingIndicatorAlign.none,
-                        text: 'Ready',
+                        text: context.l10n.ready,
                         icon: Icons.check_circle_outline,
                       )
                     else
@@ -575,7 +578,7 @@ class CountdownWidget extends StatelessWidget {
             if (!isMobile) ...[
               Expanded(
                 child: HeightConstrainedText(
-                  'Moving to the next agenda item...',
+                  context.l10n.nextAgendaItem,
                   style:
                       AppTextStyle.subhead.copyWith(color: AppColor.darkBlue),
                 ),
@@ -605,7 +608,7 @@ class _ReadyButton extends HookWidget {
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      tooltipText: 'Click Next when you’re ready to move on.',
+      tooltipText: context.l10n.clickNextWhenYouAreReadyToMoveOn,
       color: Colors.transparent,
       type: ActionButtonType.outline,
       textColor: AppColor.darkBlue,
@@ -617,7 +620,7 @@ class _ReadyButton extends HookWidget {
           currentAgendaItemId: currentAgendaItemId,
         );
       }),
-      text: 'Next',
+      text: context.l10n.next,
     );
   }
 }
