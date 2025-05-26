@@ -15,6 +15,8 @@ import 'pre_post_event_dialog_contract.dart';
 import '../../data/models/pre_post_event_dialog_model.dart';
 import '../pre_post_event_dialog_presenter.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class PrePostEventDialogPage extends StatefulWidget {
   final PrePostCard prePostCard;
   final Event event;
@@ -165,9 +167,10 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
   }
 
   Widget _buildNotNowWidget() {
+    final l10n = appLocalizationService.getLocalization();
     return ActionButton(
       type: ActionButtonType.outline,
-      text: 'Next',
+      text: l10n.next,
       onPressed: () => Navigator.of(context).pop(),
     );
   }
@@ -187,9 +190,10 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
   }
 
   Widget _buildNextButton() {
+    final l10n = appLocalizationService.getLocalization();
     return ActionButton(
       onPressed: () => Navigator.pop(context),
-      text: 'Next',
+      text: l10n.next,
     );
   }
 }

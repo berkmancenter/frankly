@@ -20,6 +20,8 @@ import 'meeting_guide_minimized_card_contract.dart';
 import '../../data/models/meeting_guide_minimized_card_model.dart';
 import '../meeting_guide_minimized_card_presenter.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class MeetingGuideMinimizedCard extends StatefulWidget {
   final void Function() onExpandCard;
 
@@ -105,7 +107,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
           Padding(
             padding: spacerPadding,
             child: ActionButton(
-              tooltipText: 'Show Agenda Item',
+              tooltipText: context.l10n.showAgendaItem,
               type: ActionButtonType.flat,
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
               minWidth: 40,
@@ -154,7 +156,7 @@ class _ForwardButton extends HookWidget {
         );
         showRegularToast(
           context,
-          "You're ready to move on",
+          context.l10n.readyToMoveOn,
           toastType: ToastType.success,
         );
       }),

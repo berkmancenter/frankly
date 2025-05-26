@@ -214,7 +214,7 @@
   "addAgendaItem": "添加议程项",
   "addCategory": "添加类别",
   "addComment": "添加评论",
-  "addCommunityImages": "添加社区图片",
+  "addCommunityImages": "添加社群图片",
   "addNew": "+ 添加新的",
   "addOption": "添加选项",
   "addPrerequisiteTemplate": "添加先决条件模板",
@@ -270,8 +270,8 @@
   "broadcast": "广播",
   "bufferAndIntroTime": "分组讨论前约{buffer}的缓冲时间和{intro}的介绍时间",
   "bufferTimeDescription": "事件开始前约{duration}的缓冲时间",
-  "buildCommunitySpace": "构建您的社区空间",
-  "buildYourCommunitySpace": "构建您的社区空间",
+  "buildCommunitySpace": "构建您的社群空间",
+  "buildYourCommunitySpace": "构建您的社群空间",
   "byCategory": "按类别",
   "bySigningInRegisteringOrUsing": "通过登录、注册或使用 {appName}，我同意遵守",
   "bySize": "按大小",
@@ -329,7 +329,7 @@
   "deleteTitleAgendaItem": "删除 {title} 议程项",
   "description": "描述",
   "devSettings": "开发者设置",
-  "devSettingsCommunitySettings": "开发设置 - 社区设置",
+  "devSettingsCommunitySettings": "开发设置 - 社群设置",
   "devSettingsDefaultEventSettings": "开发设置 - 默认活动设置",
   "discard": "放弃",
   "donate": "捐赠",
@@ -345,7 +345,7 @@
   "editEvent": "编辑活动",
   "editImage": "编辑图片",
   "editItem": "编辑项目",
-  "editYourCommunity": "编辑您的社区",
+  "editYourCommunity": "编辑您的社群",
   "email": "电子邮箱",
   "emailAddressAlreadyInUse": "您已经创建了一个与此电子邮件地址关联的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。",
   "endBreakoutRooms": "结束分组讨论",
@@ -366,7 +366,7 @@
   "enterWordCloudPrompt": "输入词云提示",
   "enterWordCloudPromptHint": "输入词云提示",
   "error": "错误",
-  "errorLoadingCommunities": "加载社区时出错。请刷新。",
+  "errorLoadingCommunities": "加载社群时出错。请刷新。",
   "errorLoadingEmail": "加载电子邮件时出错。",
   "errorLoadingMemberships": "加载会员资格时出错。请刷新。",
   "errorLoadingProfileInfo": "加载个人资料时出错。",
@@ -395,7 +395,7 @@
   "filter": "筛选",
   "finish": "完成",
   "floatingChat": "浮动聊天",
-  "followCommunityButton": "关注社区按钮",
+  "followCommunityButton": "关注社群按钮",
   "forgotPassword": "忘记密码？",
   "franklyLogo": "Frankly 标志",
   "getCustomColors": "获取自定义颜色",
@@ -462,7 +462,7 @@
   "moderator": "版主",
   "mustBeLoggedInToAccessThisSection": "必须登录才能访问此部分。",
   "muteAll": "全部静音",
-  "myCommunities": "我的社区",
+  "myCommunities": "我的社群",
   "myCustomEvent": "我的自定义活动",
   "myEvents": "我的活动",
   "myProfile": "我的个人资料",
@@ -590,7 +590,7 @@
   "showSidebarButton": "显示侧边栏按钮",
   "sidebarAdminButton": "管理员",
   "sidebarEventsButton": "活动",
-  "sidebarFollowCommunityButton": "侧边栏关注社区按钮",
+  "sidebarFollowCommunityButton": "侧边栏关注社群按钮",
   "sidebarPostsButton": "帖子",
   "sidebarResourcesButton": "资源",
   "sidebarTemplatesButton": "模板",
@@ -628,7 +628,7 @@
   "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
   "spreadTheWord": "传播信息",
   "start": "开始",
-  "startCommunity": "创建社区",
+  "startCommunity": "创建社群",
   "startEvent": "开始活动",
   "startTime": "开始时间",
   "submitChatButton": "提交聊天按钮",
@@ -704,7 +704,7 @@
   "yesJoin": "是的，加入",
   "yesPollParticipants": "是的，让参与者投票",
   "you": "你",
-  "youHaventJoinedAnyCommunities": "您尚未加入任何社区",
+  "youHaventJoinedAnyCommunities": "您尚未加入任何社群",
   "youNeedToBeLoggedInToDoThis": "您需要登录才能执行此操作。",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
   "yourName": "您的名字",
@@ -730,7 +730,7 @@
   "unmute": "取消静音",
   "allParticipantsAreMutedDuringVideo": "视频时所有人都被静音了！",
   "audioVideoSettings": "音频/视频设置",
-  "communityGoalsHint": "添加更多关于此社区目标的详细信息",
+  "communityGoalsHint": "添加更多关于此社群目标的详细信息",
   "nameHint": "例如：正义联盟",
   "uniqueUrlDisplayNameHint": "例如：the-justice-league",
   "taglineHint": "例如：保护地球免受入侵",
@@ -754,7 +754,7 @@
   "templateName": "模板名称",
   "featureOnHomepage": "在{communityName}首页推荐",
   "@featureOnHomepage": {
-    "description": "特色切换按钮的标签，带有社区名称。",
+    "description": "特色切换按钮的标签，带有社群名称。",
     "placeholders": {
       "communityName": {
         "type": "String"
@@ -961,5 +961,31 @@
         "type": "int"
       }
     }
-  }
+  },
+  "agendaItemSaved": "议程项目已保存",
+  "agendaItemDuplicated": "议程项目已复制！",
+  "showAgendaItem": "显示议程项目",
+  "readyToMoveOn": "您已准备好继续前進",
+  "send": "发送",
+  "messageCannotBeEmpty": "讯息不能為空",
+  "youLeftTheEvent": "您已离开活动",
+  "howWasTheEvent": "活动如何？",
+  "provideFeedbackForCommunity": "提供社群 {communityName} 的回馈",
+  "@provideFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "provideAdditionalFeedbackForCommunity": "请提供社群 {communityName} 额外的回馈",
+  "@provideAdditionalFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "noThanks": "不了，谢谢",
+  "share": "分享"
 }

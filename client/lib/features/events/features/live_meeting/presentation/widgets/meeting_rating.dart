@@ -14,6 +14,7 @@ import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingRating extends StatefulWidget {
   Future<void> showInDialog({
@@ -21,6 +22,7 @@ class MeetingRating extends StatefulWidget {
     required LiveMeetingProvider liveMeetingProvider,
     required CommunityProvider communityProvider,
   }) {
+    final l10n = appLocalizationService.getLocalization();
     return showCustomDialog<void>(
       builder: (innerContext) => Dialog(
         backgroundColor: AppColor.darkBlue,
@@ -48,7 +50,7 @@ class MeetingRating extends StatefulWidget {
                   children: [
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
-                      text: 'No thanks',
+                      text: l10n.noThanks,
                       color: Colors.transparent,
                       textColor: AppColor.white,
                     ),
@@ -56,7 +58,7 @@ class MeetingRating extends StatefulWidget {
                       onPressed: () => Navigator.of(innerContext).pop(),
                       sendingIndicatorAlign:
                           ActionButtonSendingIndicatorAlign.none,
-                      text: 'NEXT',
+                      text: l10n.next,
                       color: AppColor.brightGreen,
                       textColor: AppColor.darkBlue,
                     ),
@@ -169,7 +171,7 @@ class _MeetingRatingState extends State<MeetingRating> {
           Padding(
             padding: const EdgeInsets.only(top: 7, bottom: 15),
             child: HeightConstrainedText(
-              'YOU LEFT THE EVENT',
+              context.l10n.youLeftTheEvent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColor.white,
@@ -185,7 +187,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                 Container(
                   color: Colors.transparent,
                   child: HeightConstrainedText(
-                    'How was the event?',
+                    context.l10n.howWasTheEvent,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -201,7 +203,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                   padding: const EdgeInsets.only(top: 15),
                   color: Colors.transparent,
                   child: HeightConstrainedText(
-                    'Provide feedback for ${CommunityProvider.read(context).community.name}',
+                    context.l10n.provideFeedbackForCommunity(CommunityProvider.read(context).community.name ?? ''),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
@@ -219,8 +221,9 @@ class _MeetingRatingState extends State<MeetingRating> {
                         hoverColor: Colors.transparent,
                         onTap: () => launch(ratingSurveyUrl),
                         child: HeightConstrainedText(
-                          'Please provide additional feedback for '
-                          '${CommunityProvider.read(context).community.name} here',
+                          context.l10n.provideAdditionalFeedbackForCommunity(
+                            CommunityProvider.read(context).community.name ?? '',
+                          ),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.blueAccent,

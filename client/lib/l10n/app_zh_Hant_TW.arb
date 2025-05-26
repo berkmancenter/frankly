@@ -207,7 +207,7 @@
   "addAgendaItem": "新增議程項目",
   "addCategory": "新增類別",
   "addComment": "新增評論",
-  "addCommunityImages": "新增社區圖片",
+  "addCommunityImages": "新增社群圖片",
   "addNew": "+ 新增",
   "addOption": "新增選項",
   "addPrerequisiteTemplate": "新增先決條件模板",
@@ -263,8 +263,8 @@
   "broadcast": "廣播",
   "bufferAndIntroTime": "分組討論前約{buffer}的緩衝時間和{intro}的介紹時間",
   "bufferTimeDescription": "活動開始前約{duration}的緩衝時間",
-  "buildCommunitySpace": "建立您的社區空間",
-  "buildYourCommunitySpace": "構建您的社區空間",
+  "buildCommunitySpace": "建立您的社群空間",
+  "buildYourCommunitySpace": "構建您的社群空間",
   "byCategory": "按類別",
   "bySigningInRegisteringOrUsing": "通過登錄、註冊或使用 {appName}，我同意遵守",
   "bySize": "按大小",
@@ -322,7 +322,7 @@
   "deleteTitleAgendaItem": "刪除 {title} 議程項目",
   "description": "描述",
   "devSettings": "開發者設定",
-  "devSettingsCommunitySettings": "開發設定 - 社區設定",
+  "devSettingsCommunitySettings": "開發設定 - 社群設定",
   "devSettingsDefaultEventSettings": "開發設定 - 預設活動設定",
   "discard": "放棄",
   "donate": "捐贈",
@@ -338,7 +338,7 @@
   "editEvent": "編輯活動",
   "editImage": "編輯圖片",
   "editItem": "編輯項目",
-  "editYourCommunity": "編輯您的社區",
+  "editYourCommunity": "編輯您的社群",
   "email": "電子郵件",
   "emailAddressAlreadyInUse": "您已經建立了一個與此電子郵件地址關聯的帳戶。請使用電子郵件登入，如果不知道密碼請點擊忘記密碼。或者，使用其他電子郵件重新註冊。",
   "endBreakoutRooms": "結束分組討論",
@@ -359,7 +359,7 @@
   "enterWordCloudPrompt": "輸入詞雲提示",
   "enterWordCloudPromptHint": "輸入詞雲提示",
   "error": "錯誤",
-  "errorLoadingCommunities": "載入社區時出錯。請重新整理。",
+  "errorLoadingCommunities": "載入社群時出錯。請重新整理。",
   "errorLoadingEmail": "加載電子郵件時出錯。",
   "errorLoadingMemberships": "載入會員資格時出錯。請重新整理。",
   "errorLoadingProfileInfo": "載入個人資料時發生錯誤。",
@@ -455,7 +455,7 @@
   "moderator": "版主",
   "mustBeLoggedInToAccessThisSection": "必須登錄才能訪問此部分。",
   "muteAll": "全部靜音",
-  "myCommunities": "我的社區",
+  "myCommunities": "我的社群",
   "myCustomEvent": "我的自訂活動",
   "myEvents": "我的活動",
   "myProfile": "我的個人資料",
@@ -621,7 +621,7 @@
   "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 影片查找失敗。",
   "spreadTheWord": "傳播訊息",
   "start": "開始",
-  "startCommunity": "建立社區",
+  "startCommunity": "建立社群",
   "startEvent": "開始活動",
   "startTime": "開始時間",
   "submitChatButton": "提交聊天按鈕",
@@ -695,7 +695,7 @@
   "yesJoin": "是的，加入",
   "yesPollParticipants": "是的，讓參與者投票",
   "you": "你",
-  "youHaventJoinedAnyCommunities": "您尚未加入任何社區",
+  "youHaventJoinedAnyCommunities": "您尚未加入任何社群",
   "youNeedToBeLoggedInToDoThis": "您需要登錄才能執行此操作",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被從此活動中移除，無法重新加入。",
   "yourName": "您的名字",
@@ -721,7 +721,7 @@
   "unmute": "取消靜音",
   "allParticipantsAreMutedDuringVideo": "視訊時所有人都被靜音了！",
   "audioVideoSettings": "音訊/視訊設定",
-  "communityGoalsHint": "添加更多關於此社區目標的詳細資訊",
+  "communityGoalsHint": "添加更多關於此社群目標的詳細資訊",
   "nameHint": "例如：正義聯盟",
   "uniqueUrlDisplayNameHint": "例如：正義聯盟",
   "taglineHint": "例如：保護地球免受入侵",
@@ -745,7 +745,7 @@
   "templateName": "模板名稱",
   "featureOnHomepage": "在{communityName}首頁推薦",
   "@featureOnHomepage": {
-    "description": "特色切換按鈕的標籤，帶有社區名稱。",
+    "description": "特色切換按鈕的標籤，帶有社群名稱。",
     "placeholders": {
       "communityName": {
         "type": "String"
@@ -952,5 +952,31 @@
         "type": "int"
       }
     }
-  }
+  },
+  "agendaItemSaved": "議程項目已保存",
+  "agendaItemDuplicated": "議程項目已複製！",
+  "showAgendaItem": "顯示議程項目",
+  "readyToMoveOn": "您已準備好繼續前進",
+  "send": "發送",
+  "messageCannotBeEmpty": "訊息不能為空",
+  "youLeftTheEvent": "您已離開活動",
+  "howWasTheEvent": "活動如何？",
+  "provideFeedbackForCommunity": "提供社群 {communityName} 的回饋",
+  "@provideFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "provideAdditionalFeedbackForCommunity": "請提供社群 {communityName} 额外的回饋",
+  "@provideAdditionalFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "noThanks": "不了，謝謝",
+  "share": "分享"
 }

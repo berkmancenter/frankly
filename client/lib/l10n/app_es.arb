@@ -964,5 +964,31 @@
         "type": "int"
       }
     }
-  }
+  },
+  "agendaItemSaved": "El punto del orden del día se guardó",
+  "agendaItemDuplicated": "El punto del orden del día se duplicó!",
+  "showAgendaItem": "Mostrar Punto del Orden del Día",
+  "readyToMoveOn": "Estás listo para seguir adelante",
+  "send": "Enviar",
+  "messageCannotBeEmpty": "El mensaje no puede estar vacío",
+  "youLeftTheEvent": "HAS SALIDO DEL EVENTO",
+  "howWasTheEvent": "¿Cómo fue el evento?",
+  "provideFeedbackForCommunity": "Proporciona comentarios para {communityName}",
+  "@provideFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "provideAdditionalFeedbackForCommunity": "Proporciona comentarios adicionales para {communityName} aquí",
+  "@provideAdditionalFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "noThanks": "No, Gracias",
+  "share": "Compartir"
 }

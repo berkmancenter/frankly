@@ -128,7 +128,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   HeightConstrainedText(
-                    'Share',
+                    context.l10n.share,
                     style: AppTextStyle.body.copyWith(color: AppColor.white),
                   ),
                   _buildShareSection(),

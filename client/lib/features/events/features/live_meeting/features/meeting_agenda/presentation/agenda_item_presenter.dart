@@ -23,6 +23,8 @@ import 'package:provider/provider.dart';
 import 'views/agenda_item_contract.dart';
 import '../data/models/agenda_item_model.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class AgendaItemPresenter {
   final AgendaItemView _view;
   final AgendaItemModel _model;
@@ -125,14 +127,17 @@ class AgendaItemPresenter {
   }
 
   void duplicateCard() {
+    final l10n = appLocalizationService.getLocalization();
     _agendaProvider.addNewUnsavedItem(agendaItem: _model.agendaItem);
     _view.showMessage(
-      'Agenda item was duplicated!',
+      l10n.agendaItemDuplicated,
       toastType: ToastType.success,
     );
   }
 
   Future<void> saveContent() async {
+    final l10n = appLocalizationService.getLocalization();
+
     final agendaItemType = _model.agendaItem.type;
 
     final errorMessage = _helper.areRequiredFieldsInput(_model);
@@ -206,7 +211,7 @@ class AgendaItemPresenter {
         debugPrint(e.toString());
         rethrow;
       }
-      _view.showMessage('Agenda item was saved', toastType: ToastType.success);
+      _view.showMessage(l10n.agendaItemSaved, toastType: ToastType.success);
     }
 
     _model.isEditMode = false;

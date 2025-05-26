@@ -918,5 +918,31 @@
         "type": "int"
       }
     }
-  }
+  },
+  "agendaItemSaved": "Agenda item was saved",
+  "agendaItemDuplicated": "Agenda item was duplicated!",
+  "showAgendaItem": "Show Agenda Item",
+  "readyToMoveOn": "You're ready to move on",
+  "send": "Send",
+  "messageCannotBeEmpty": "Message cannot be empty",
+  "youLeftTheEvent": "YOU LEFT THE EVENT",
+  "howWasTheEvent": "How was the event?",
+  "provideFeedbackForCommunity": "Provide feedback for {communityName}",
+  "@provideFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "provideAdditionalFeedbackForCommunity": "Please provide additional feedback for {communityName} here",
+  "@provideAdditionalFeedbackForCommunity": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "noThanks": "No Thanks",
+  "share": "Share"
 }
