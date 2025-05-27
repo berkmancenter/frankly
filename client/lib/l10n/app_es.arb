@@ -990,5 +990,9 @@
     }
   },
   "noThanks": "No, Gracias",
-  "share": "Compartir"
+  "share": "Compartir",
+  "needHelpMarkdown": "### ¿Problemas técnicos?\n\n__Actualiza la página:__ Haz clic en el botón de actualizar en la esquina superior derecha o actualiza tu navegador. Permanecerás en la misma sala.\n\n__Cierra otros programas:__ Cierra Zoom, Microsoft Teams y otros programas que utilicen tu cámara y micrófono.\n\n__Verifica la configuración de audio/video:__\n- Haz clic en los tres puntos (. . .) en la esquina inferior izquierda y selecciona “Configuración de Audio/Video” para elegir la cámara y el micrófono correctos.\n- Asegúrate de “Permitir” el acceso a la cámara o micrófono si se te solicita.\n\n__Prueba con otro dispositivo o navegador:__ Recomendamos Chrome o Firefox en una laptop o computadora de escritorio, y Safari si usas un iPhone o iPad. Al volver a entrar al evento, serás colocado en la misma sala.",
+  "needHelpMarkdownWithContactAdmin": "### ¿Problemas técnicos?\n\n__Actualiza la página:__ Haz clic en el botón de actualizar en la esquina superior derecha o actualiza tu navegador. Permanecerás en la misma sala.\n\n__Cierra otros programas:__ Cierra Zoom, Microsoft Teams y otros programas que utilicen tu cámara y micrófono.\n\n__Verifica la configuración de audio/video:__\n- Haz clic en los tres puntos (. . .) en la esquina inferior izquierda y selecciona “Configuración de Audio/Video” para elegir la cámara y el micrófono correctos.\n- Asegúrate de “Permitir” el acceso a la cámara o micrófono si se te solicita.\n\n__Prueba con otro dispositivo o navegador:__ Recomendamos Chrome o Firefox en una laptop o computadora de escritorio, y Safari si usas un iPhone o iPad. Al volver a entrar al evento, serás colocado en la misma sala.\n\nSi aún necesitas ayuda, [haz clic aquí](ask-admin) para solicitar a un administrador que se unan a tu sala y te ayuden tan pronto como puedan.",
+  "needMoreHelp": "¿Necesitas más ayuda? ",
+  "troubleshootingGuide": "Guía de solución de problemas"
 }

@@ -950,7 +950,7 @@
   "viewProfile": "查看个人资料",
   "ready": "准备好了",
   "nextAgendaItem": "移动到下一个议程...",
-  "clickNextWhenYouAreReadyToMoveOn": "当您准备好了时，点击「下一步」。",
+  "clickNextWhenYouAreReadyToMoveOn": "当您准备好了时，点击“下一步”。",
   "readyToMoveOnTooltip": "{readyToMoveOnCount}/{total} 参与者准备往下一步移動了。",
   "@readyToMoveOnTooltip": {
     "placeholders": {
@@ -987,5 +987,9 @@
     }
   },
   "noThanks": "不了，谢谢",
-  "share": "分享"
+  "share": "分享",
+  "needHelpMarkdown": "### 技术问题？\n\n__刷新页面：__ 点击右上角的刷新按钮或刷新浏览器。您将会留在同一个房间。\n\n__关闭其他程序：__ 关闭 Zoom、Microsoft Teams 及其他会使用您的摄像头和麦克风的程序。\n\n__检查音频/视频设置：__\n- 点击左下角的三个点（. . .），然后选择“音频/视频设置”，以选择正确的摄像头和麦克风。\n- 如果系统提示，请务必选择“允许”摄像头或麦克风访问。\n\n__尝试不同的设备或浏览器：__ 建议在笔记本或台式机上使用 Chrome 或 Firefox，iPhone 或 iPad 请使用 Safari。再次进入活动时，您会被放回同一个房间。",
+  "needHelpMarkdownWithContactAdmin": "### 技术问题？\n\n__刷新页面：__ 点击右上角的刷新按钮或刷新浏览器。您将会留在同一个房间。\n\n__关闭其他程序：__ 关闭 Zoom、Microsoft Teams 及其他会使用您的摄像头和麦克风的程序。\n\n__检查音频/视频设置：__\n- 点击左下角的三个点（. . .），然后选择“音频/视频设置”，以选择正确的摄像头和麦克风。\n- 如果系统提示，请务必选择“允许”摄像头或麦克风访问。\n\n__尝试不同的设备或浏览器：__ 建议在笔记本或台式机上使用 Chrome 或 Firefox，iPhone 或 iPad 请使用 Safari。再次进入活动时，您会被放回同一个房间。\n\n如果您仍然需要帮助，[点击这里](ask-admin)请求一名管理员加入您的房间并尽力为您服务。",
+  "needMoreHelp": "需要更多帮助？ ",
+  "troubleshootingGuide": "故障排除指南"
 }
