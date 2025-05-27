@@ -1151,7 +1151,8 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               ),
               if (localRoom.flagStatus == BreakoutRoomFlagStatus.needsHelp) ...[
                 SizedBox(height: 6),
-                ThickOutlineButton(
+                ActionButton(
+                  type: ActionButtonType.outline,
                   onPressed: () async {
                     final roomId = localRoom.roomId;
 
