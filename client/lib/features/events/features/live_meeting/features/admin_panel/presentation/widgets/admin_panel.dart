@@ -880,7 +880,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                       if (needsHelp) ...[
                         Icon(
                           Icons.notifications,
-                          color: context.theme.colorScheme.error,
+                          color: context.theme.colorScheme.onErrorContainer,
                           size: 16,
                         ),
                         SizedBox(width: 4),
@@ -901,9 +901,9 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: needsHelp
-                                ? context.theme.colorScheme.error
+                                ? context.theme.colorScheme.onErrorContainer
                                 : (isCurrentRoom
-                                    ? Theme.of(context).primaryColor
+                                    ? context.theme.colorScheme.primary
                                     : context.theme.colorScheme.onPrimary),
                           ),
                         ),
