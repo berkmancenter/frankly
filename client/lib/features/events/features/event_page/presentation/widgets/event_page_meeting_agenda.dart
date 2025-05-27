@@ -47,7 +47,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'Add breakouts',
+              context.l10n.addBreakouts,
               style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
             ),
             SizedBox(height: 10),
@@ -115,7 +115,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeightConstrainedText(
-                    'Waiting Room',
+                    context.l10n.waitingRoom,
                     style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
                   ),
                   SizedBox(height: 10),
@@ -138,7 +138,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeightConstrainedText(
-                    'Livestream',
+                    context.l10n.livestream,
                     style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
                   ),
                   SizedBox(height: 10),
@@ -198,7 +198,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       color: Colors.transparent,
       textColor: AppColor.darkBlue,
       onPressed: () => _showClearAgendaItemsDialog(),
-      text: 'Clear all',
+      text: context.l10n.clearAll,
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
         child: Icon(Icons.close, color: AppColor.darkBlue, size: 20),
@@ -211,10 +211,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Future<void> _showClearAgendaItemsDialog() async {
     final delete = await ConfirmDialog(
       title: context.l10n.clearAgenda,
-      mainText:
-          'Are you sure you want to remove all agenda items from the breakout rooms? You won\'t be able to undo this.',
-      cancelText: 'Cancel',
-      confirmText: 'Yes, clear',
+      mainText: context.l10n.confirmRemoveAllAgendaItems,
+      cancelText: context.l10n.cancel,
+      confirmText: context.l10n.yesClear,
       textAlign: TextAlign.start,
     ).show(context: context);
 
