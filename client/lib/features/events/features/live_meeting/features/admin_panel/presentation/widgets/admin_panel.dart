@@ -108,7 +108,6 @@ class _AdminPanelState extends State<AdminPanel> {
   List<Widget> _buildBreakoutList() {
     return [
       Container(
-        color: context.theme.colorScheme.scrim.withScrimOpacity,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           children: [
@@ -1080,22 +1079,32 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               CustomInkWell(
                 onTap: widget.goBack,
                 child: Container(
-                  color: needsHelp
-                      ? context.theme.colorScheme.error
-                      : context.theme.colorScheme.scrim.withScrimOpacity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: needsHelp
+                        ? context.theme.colorScheme.error
+                        : context.theme.colorScheme.surfaceContainerLowest,
+                  ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 36),
+                      Icon(
+                        Icons.chevron_left,
+                        size: 36,
+                        color: needsHelp
+                            ? context.theme.colorScheme.onError
+                            : context.theme.colorScheme.onSurface,
+                      ),
                       SizedBox(width: 12),
                       Expanded(
                         child: HeightConstrainedText(
                           roomDisplayName,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
+                          style: context.theme.textTheme.titleLarge!.copyWith(
+                            color: needsHelp
+                                ? context.theme.colorScheme.onError
+                                : context.theme.colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -1103,7 +1112,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                       if (provider.currentBreakoutRoomId == localRoom.roomId &&
                           (!provider.userLeftBreakouts))
                         ActionButton(
-                          color: Colors.transparent,
+                          type: ActionButtonType.text,
                           textColor: context.theme.colorScheme.onSurface,
                           onPressed: () async {
                             final reassignUser =
