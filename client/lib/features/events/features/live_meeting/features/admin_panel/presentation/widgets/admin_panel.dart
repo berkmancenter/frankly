@@ -1112,8 +1112,12 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                       if (provider.currentBreakoutRoomId == localRoom.roomId &&
                           (!provider.userLeftBreakouts))
                         ActionButton(
-                          type: ActionButtonType.text,
-                          textColor: context.theme.colorScheme.onSurface,
+                          color: needsHelp
+                              ? context.theme.colorScheme.errorContainer
+                              : null,
+                          textColor: needsHelp
+                              ? context.theme.colorScheme.onErrorContainer
+                              : null,
                           onPressed: () async {
                             final reassignUser =
                                 provider.currentBreakoutRoomId ==
@@ -1139,10 +1143,10 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           },
                           color: needsHelp
                               ? context.theme.colorScheme.errorContainer
-                              : Colors.transparent,
+                              : null,
                           textColor: needsHelp
                               ? context.theme.colorScheme.onErrorContainer
-                              : context.theme.colorScheme.onSurface,
+                              : null,
                           text: 'Enter Room',
                         ),
                     ],
