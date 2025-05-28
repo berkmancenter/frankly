@@ -288,6 +288,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         final now = clock.now();
         final TimeOfDay? timeOfDay = await showTimePicker(
           context: context,
+          initialEntryMode: TimePickerEntryMode.input,
           initialTime:
               TimeOfDay.fromDateTime(_model.event.scheduledTime ?? now),
         );
