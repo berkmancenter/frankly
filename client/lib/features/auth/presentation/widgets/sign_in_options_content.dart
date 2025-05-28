@@ -317,9 +317,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     onPressed: () =>
                         setState(() => _showPassword = !_showPassword),
                     icon: Icon(
-                      _showPassword
-                          ? Icons.visibility_rounded
-                          : Icons.visibility_off_rounded,
+                      _showPassword ? Icons.visibility_off : Icons.visibility,
                       size: 24,
                     ),
                   ),
