@@ -263,6 +263,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             if (_showSignup)
               Column(
@@ -378,20 +380,23 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 textAlign: TextAlign.center,
               ),
             SizedBox(height: 9),
-            ActionButton(
-              key: SignInOptionsContent.buttonSubmitKey,
-              onPressed: () => authMessageOnError(
-                _onSubmit,
-                errorCallback: (error, code) => setState(
-                  () => _formError = code,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ActionButton(
+                key: SignInOptionsContent.buttonSubmitKey,
+                onPressed: () => authMessageOnError(
+                  _onSubmit,
+                  errorCallback: (error, code) => setState(
+                    () => _formError = code,
+                  ),
                 ),
+                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
+                type: ActionButtonType.filled,
+                expand: true,
+                textColor: Colors.white,
+                color: Colors.black,
+                text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
               ),
-              sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-              type: ActionButtonType.filled,
-              minWidth: minWidth,
-              textColor: Colors.white,
-              color: Colors.black,
-              text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
             ),
           ],
         ),
@@ -400,29 +405,34 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Align(
         alignment: Alignment.center,
         child: Text(
-          context.l10n.or,
+          context.l10n.or, 
           style: context.theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       SizedBox(height: 9),
-      ActionButton(
-        key: SignInOptionsContent.buttonGoogleKey,
-        minWidth: minWidth,
-        onPressed: () => context.read<UserService>().signInWithGoogle(),
-        type: ActionButtonType.outline,
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-          child: Image.asset(
-            'media/googleLogo.png',
-            width: 22,
-            height: 22,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ActionButton(
+          key: SignInOptionsContent.buttonGoogleKey,
+          // minWidth: minWidth,
+          maxTextWidth: 140,
+          expand: true,
+          onPressed: () => context.read<UserService>().signInWithGoogle(),
+          type: ActionButtonType.outline,
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+            child: Image.asset(
+              'media/googleLogo.png',
+              width: 22,
+              height: 22,
+            ),
           ),
+          text: _showSignup
+              ? context.l10n.signUpWithGoogle
+              : context.l10n.signInWithGoogle,
         ),
-        text: _showSignup
-            ? context.l10n.signUpWithGoogle
-            : context.l10n.signInWithGoogle,
       ),
     ];
   }
