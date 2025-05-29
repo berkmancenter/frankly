@@ -35,6 +35,7 @@ import 'package:data_models/chat/chat.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveMeetingDesktopLayout extends StatefulWidget {
   const LiveMeetingDesktopLayout({Key? key}) : super(key: key);
@@ -114,10 +115,10 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
 
   Widget _buildEventTabsContent() {
     return GlobalKeyedSubtree(
-      label: 'event-tabs-content',
+      label: context.l10n.eventTabsContent,
       child: Container(
         width: 400,
-        color: context.theme.colorScheme.primary,
+        color: context.theme.colorScheme.surfaceContainer,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,10 +138,10 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                           ).expanded = false;
                         },
                         child: CircleAvatar(
-                          backgroundColor: context.theme.colorScheme.primary,
+                          backgroundColor: Colors.transparent,
                           child: Icon(
                             Icons.close,
-                            color: context.theme.colorScheme.onPrimary,
+                            color: context.theme.colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -199,7 +200,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: context.theme.colorScheme.scrim.withScrimOpacity,
+                      color: context.theme.colorScheme.surface,
                       child: Stack(
                         children: [
                           Row(
@@ -390,7 +391,7 @@ class _FloatingChatState extends State<FloatingChat> {
         position: _getPositionTransition(animation),
         child: Container(
           decoration: BoxDecoration(
-            color: context.theme.colorScheme.primary,
+            color: context.theme.colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
@@ -633,7 +634,7 @@ class BreakoutStatusInformation extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(
-            child: HeightConstrainedText('Users are in breakout rooms.'),
+            child: HeightConstrainedText(context.l10n.usersAreInBreakoutRooms),
           ),
           SizedBox(width: 10),
           ActionButton(

@@ -1,4 +1,5 @@
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/navbar/community_announcements.dart';
 import 'package:client/core/widgets/navbar/nav_bar/nav_bar_contract.dart';
@@ -19,6 +19,7 @@ import 'package:client/core/widgets/navbar/nav_bar/nav_bar_presenter.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/profile_or_login.dart';
 import 'package:client/core/widgets/navbar/selectable_navigation_icon.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
@@ -36,10 +37,10 @@ class NavBar extends StatefulWidget {
   NavBar() : super(key: Key('navBar'));
 
   @override
-  _NavBarState createState() => _NavBarState();
+  NavBarState createState() => NavBarState();
 }
 
-class _NavBarState extends State<NavBar> implements NavBarView {
+class NavBarState extends State<NavBar> implements NavBarView {
   late final NavBarModel _model;
   late final NavBarPresenter _presenter;
 
@@ -56,7 +57,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     final community = _presenter.getCommunity();
     if (community == null) {
       loggingService.log(
-        '_NavBarState._goToSettingsPage: Community is null',
+        'NavBarState._goToSettingsPage: Community is null',
         logType: LogType.error,
       );
       return;
@@ -95,7 +96,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
           alignment: Alignment.center,
           child: _buildHeaderContent(),
         ),
-        Divider(height: 1, color: context.theme.colorScheme.onPrimaryContainer),
+        Divider(height: 1, color: context.theme.colorScheme.outline),
       ],
     );
   }
@@ -108,7 +109,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
   /// Create a semantically-wrapped button with label for the community membership button
   Widget _buildMembershipButton(Community currentCommunity) {
     return Semantics(
-      label: 'Follow Community Button',
+      label: context.l10n.followCommunityButton,
       identifier: 'follow_community_button',
       button: true,
       child: CommunityMembershipButton(
@@ -160,28 +161,25 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     return [
       CurrentCommunityIconOrLogo(community: currentCommunity, darkLogo: true),
       if (currentCommunity != null && isOnCommunityPage && !isMobile) ...[
-        SizedBox(width: 8),
         Expanded(
           flex: showCommunityMembershipButton ? 0 : 1,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 180),
-            child: CustomInkWell(
-              onTap: () => routerDelegate.beamTo(
-                CommunityPageRoutes(
-                  communityDisplayId: currentCommunity.displayId,
-                ).communityHome,
-              ),
-              child: HeightConstrainedText(
-                currentCommunity.name ?? Environment.appName,
-                maxLines: 2,
-                style: AppTextStyle.subhead
-                    .copyWith(color: context.theme.colorScheme.secondary),
-              ),
+          child: ActionButton(
+            type: ActionButtonType.text,
+            onPressed: () => routerDelegate.beamTo(
+              CommunityPageRoutes(
+                communityDisplayId: currentCommunity.displayId,
+              ).communityHome,
             ),
+            expand: !showCommunityMembershipButton,
+            maxTextWidth: 180,
+            maxLines: 2,
+            contentAlign: ActionButtonContentAlignment.start,
+            textStyle: context.theme.textTheme.titleMedium,
+            text: currentCommunity.name ?? Environment.appName,
           ),
         ),
         if (showCommunityMembershipButton) ...[
-          SizedBox(width: 20),
+          SizedBox(width: 16),
           Expanded(
             child: _buildMembershipButton(currentCommunity),
           ),
@@ -200,29 +198,30 @@ class _NavBarState extends State<NavBar> implements NavBarView {
 
     return [
       if (!showBottomNav)
-        ProfileOrLogin(
-          showMenuAboveIcon: false,
-        ),
-      if (showBottomNav) ...[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ProfileOrLogin(
+            showMenuAboveIcon: false,
+          ),
+        )
+      else ...[
         if (currentCommunity != null && isCommunityLocation) ...[
           ..._buildRightSideNavIcons(currentCommunity, canViewCommunityLinks),
         ],
       ],
       if (isMobile) Spacer(),
       if (isAdminButtonVisible) _buildAdminButton(),
-      Semantics(
-        button: true,
-        label: 'Show Sidebar Button',
-        child: CustomInkWell(
-          onTap: () => Scaffold.of(context).openEndDrawer(),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Icon(
-                Icons.menu,
-                size: 34,
-                color: context.theme.colorScheme.secondary,
-              ),
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Semantics(
+          button: true,
+          label: context.l10n.showSidebarButton,
+          child: IconButton(
+            onPressed: () => Scaffold.of(context).openEndDrawer(),
+            icon: Icon(
+              Icons.menu,
+              size: 34,
+              color: context.theme.colorScheme.secondary,
             ),
           ),
         ),
@@ -246,8 +245,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     return [
       SizedBox(width: 20),
       SelectableNavigationIcon(
-        imagePath: AppAsset.kCalendarGreyPng,
-        selectedImagePath: AppAsset.kCalendarBluePng,
+        iconData: Icons.calendar_month_rounded,
         isSelected: CheckCurrentLocation.isCommunitySchedulePage,
         iconSize: 32,
         onTap: () => routerDelegate.beamTo(
@@ -258,11 +256,9 @@ class _NavBarState extends State<NavBar> implements NavBarView {
       if (enableDiscussionThreads) ...[
         SizedBox(width: 20),
         SelectableNavigationIcon(
-          imagePath: AppAsset.kChatBubbleGreyPng,
-          selectedImagePath: AppAsset.kChatBubbleBluePng,
+          iconData: Icons.forum_outlined,
           isSelected: CheckCurrentLocation.isDiscussionThreadsPage,
           iconSize: 32,
-          iconSpacing: 2,
           onTap: () => routerDelegate.beamTo(
             CommunityPageRoutes(
               communityDisplayId: CommunityProvider.read(context).displayId,
@@ -274,8 +270,7 @@ class _NavBarState extends State<NavBar> implements NavBarView {
       if (Provider.of<NavBarProvider>(context).showResources) ...[
         SizedBox(width: 10),
         SelectableNavigationIcon(
-          imagePath: AppAsset.kDocumentsGreyPng,
-          selectedImagePath: AppAsset.kDocumentsBluePng,
+          iconData: Icons.assignment_outlined,
           isSelected: CheckCurrentLocation.isCommunityResourcesPage,
           iconSize: 32,
           onTap: () => routerDelegate.beamTo(
@@ -293,40 +288,34 @@ class _NavBarState extends State<NavBar> implements NavBarView {
     final enableDiscussionThreads =
         currentCommunity.settingsMigration.enableDiscussionThreads;
     return [
-      SizedBox(width: 20),
       _SelectableNavigationButton(
-        title: 'Events',
+        title: context.l10n.events,
         onTap: () => routerDelegate.beamTo(
           CommunityPageRoutes(communityDisplayId: communityDisplayId)
               .eventsPage,
         ),
         isSelected: CheckCurrentLocation.isCommunitySchedulePage,
       ),
-      if (enableDiscussionThreads) ...[
-        SizedBox(width: 20),
+      if (enableDiscussionThreads)
         _SelectableNavigationButton(
-          title: 'Posts',
+          title: context.l10n.posts,
           onTap: () => routerDelegate.beamTo(
             CommunityPageRoutes(communityDisplayId: communityDisplayId)
                 .discussionThreadsPage,
           ),
           isSelected: CheckCurrentLocation.isDiscussionThreadsPage,
         ),
-      ],
-      if (Provider.of<NavBarProvider>(context).showResources) ...[
-        SizedBox(width: 20),
+      if (Provider.of<NavBarProvider>(context).showResources)
         _SelectableNavigationButton(
-          title: 'Resources',
+          title: context.l10n.resources,
           onTap: () => routerDelegate.beamTo(
             CommunityPageRoutes(communityDisplayId: communityDisplayId)
                 .resourcesPage,
           ),
           isSelected: CheckCurrentLocation.isCommunityResourcesPage,
         ),
-      ],
-      SizedBox(width: 20),
       _SelectableNavigationButton(
-        title: 'Templates',
+        title: context.l10n.templates,
         onTap: () => routerDelegate.beamTo(
           CommunityPageRoutes(communityDisplayId: communityDisplayId)
               .browseTemplatesPage,
@@ -603,10 +592,11 @@ class _SelectableNavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomInkWell(
-      onTap: onTap,
+    return ActionButton(
+      type: ActionButtonType.text,
+      onPressed: onTap,
+      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 1),
         decoration: isSelected
             ? BoxDecoration(
                 border: Border(
@@ -619,10 +609,10 @@ class _SelectableNavigationButton extends StatelessWidget {
             : null,
         child: HeightConstrainedText(
           title,
-          style: AppTextStyle.bodyMedium.copyWith(
+          style: context.theme.textTheme.titleMedium!.copyWith(
             color: isSelected
-                ? context.theme.colorScheme.primary
-                : context.theme.colorScheme.onPrimaryContainer,
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),

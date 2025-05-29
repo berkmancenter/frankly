@@ -9,6 +9,7 @@ import 'package:client/services.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event_proposal.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 void useKickProposalListeners(BuildContext context) {
   final liveMeetingProvider = LiveMeetingProvider.watch(context);
@@ -145,7 +146,7 @@ Future<String?> _kickProposalConfirmation(
   final targetUser = await targetUserFuture;
   final initiatingUser = await initiatingUserFuture;
   return ConfirmTextInputDialogue(
-    title: 'Kick out ${targetUser.displayName}?',
+    title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
     subText: '${initiatingUser.displayName} started a vote to kick'
         ' ${targetUser.displayName} out of the event. Do you want to'
         ' kick them out? They will not be allowed back in.',

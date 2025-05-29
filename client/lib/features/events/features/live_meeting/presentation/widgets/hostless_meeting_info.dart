@@ -41,7 +41,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
   Widget _buildTab({
     required TabType tabType,
     int unreadMessages = 0,
-    required AppAsset asset,
+    required IconData icon,
     required String text,
   }) {
     final isMobile = responsiveLayoutService.isMobile(context);
@@ -62,11 +62,10 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
             tabController.openTab(tabType);
           }
         },
-        hoverColor: context.theme.colorScheme.surfaceContainer,
         child: Container(
           color:
               Provider.of<EventTabsControllerState>(context).isTabOpen(tabType)
-                  ? context.theme.colorScheme.surfaceContainer
+                  ? context.theme.colorScheme.surface
                   : null,
           alignment: Alignment.center,
           child: Column(
@@ -76,11 +75,9 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(14),
-                    child: ProxiedImage(
-                      null,
-                      asset: asset,
-                      height: isMobile ? 30 : 40,
-                      loadingColor: Colors.transparent,
+                    child: Icon(
+                      icon,
+                      size: isMobile ? 30 : 40,
                     ),
                   ),
                   if (unreadMessages > 0)
@@ -107,10 +104,6 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
               SizedBox(height: 4),
               HeightConstrainedText(
                 text,
-                style: body.copyWith(
-                  fontSize: isMobile ? 12 : 14,
-                  fontWeight: FontWeight.w400,
-                ),
               ),
             ],
           ),
@@ -141,10 +134,6 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           Flexible(
             child: HeightConstrainedText(
               NumberFormat.decimalPattern().format(participants),
-              style: body.copyWith(
-                fontWeight: FontWeight.w300,
-                color: context.theme.colorScheme.onPrimary,
-              ),
             ),
           ),
         ],
@@ -160,14 +149,14 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       if (provider.enableGuide)
         _buildTab(
           tabType: TabType.guide,
-          asset: AppAsset('media/guide_icon.png'),
+          icon: Icons.book_outlined,
           text: 'Agenda',
         ),
       if (provider.enableChat)
         _buildTab(
           tabType: TabType.chat,
           unreadMessages: Provider.of<ChatModel>(context).numUnreadMessages,
-          asset: AppAsset('media/chat_icon.png'),
+          icon: Icons.comment_outlined,
           text: 'Chat',
         ),
       if (provider.enableUserSubmittedAgenda)
@@ -175,13 +164,13 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           tabType: TabType.suggestions,
           unreadMessages: Provider.of<UserSubmittedAgendaProvider>(context)
               .numUnreadSuggestions,
-          asset: AppAsset('media/guide_icon.png'),
+          icon: Icons.book_outlined,
           text: 'Suggest',
         ),
       if (provider.enableAdminPanel)
         _buildTab(
           tabType: TabType.admin,
-          asset: AppAsset('media/admin_icon.png'),
+          icon: Icons.settings_outlined,
           text: 'Admin',
         ),
     ];
@@ -215,7 +204,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
       ),
     ];
     return Container(
-      color: context.theme.colorScheme.primary,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       width: isMobile ? null : _iconWidth,
       height: isMobile ? _iconWidth : null,
       child: isMobile

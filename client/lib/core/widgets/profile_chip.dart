@@ -55,8 +55,7 @@ class ProfileChip extends StatelessWidget {
                           ),
                           child: Text(
                             name.isNotEmpty ? name[0].toUpperCase() : '',
-                            style: AppTextStyle.body.copyWith(
-                                color: context.theme.colorScheme.onPrimary),
+                            style: context.theme.textTheme.bodyMedium,
                           ),
                         )
                       : ProxiedImage(
@@ -76,11 +75,7 @@ class ProfileChip extends StatelessWidget {
                   name,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: textStyle ??
-                      TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  style: textStyle ?? context.theme.textTheme.bodyMedium,
                 ),
               ),
             ),

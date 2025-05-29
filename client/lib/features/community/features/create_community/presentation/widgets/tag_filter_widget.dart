@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:data_models/community/community_tag.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class TagFilterWidget extends StatelessWidget {
   /// Tags to choose from
@@ -31,7 +32,7 @@ class TagFilterWidget extends StatelessWidget {
           if (tags.isNotEmpty) ...[
             Icon(Icons.tune),
             SizedBox(width: 10),
-            Text('filter', style: AppTextStyle.body),
+            Text(context.l10n.filter, style: AppTextStyle.body),
           ],
           SizedBox(width: 20),
           Expanded(

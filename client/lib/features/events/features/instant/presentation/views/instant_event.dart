@@ -18,6 +18,7 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class InstantEvent extends StatefulHookWidget {
   final String communityId;
@@ -79,7 +80,7 @@ class _InstantEventState extends State<InstantEvent> {
         communityId: communityId,
         templateId: templateId,
         nullableEventType: EventType.hosted,
-        title: 'Instant Meeting',
+        title: context.l10n.instantMeeting,
         scheduledTime: clockService.now(),
         isPublic: false,
         minParticipants: Event.defaultMinParticipants,

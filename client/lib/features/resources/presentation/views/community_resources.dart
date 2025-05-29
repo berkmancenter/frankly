@@ -62,93 +62,85 @@ class _CommunityResourcesState extends State<_CommunityResources> {
             alignment: Alignment.centerLeft,
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 700),
-              child: CustomInkWell(
-                onTap: () => launch(resource.url!),
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 5,
-                        color: context.theme.colorScheme.onPrimaryContainer,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ProxiedImage(
-                        resource.image,
-                        borderRadius: BorderRadius.circular(10),
-                        width: 60,
-                        height: 60,
-                      ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            HeightConstrainedText(
-                              resource.title ?? '',
-                              style: AppTextStyle.bodyMedium.copyWith(
-                                color: context.theme.colorScheme.secondary,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Wrap(
-                              children: [
-                                for (var tag in _resourcePresenter
-                                    .getResourceTags(resource))
-                                  CommunityTagBuilder(
-                                    tagDefinitionId: tag.definitionId,
-                                    builder: (_, isLoading, definition) =>
-                                        isLoading || definition == null
-                                            ? SizedBox.shrink()
-                                            : Text(
-                                                '#${definition.title}${_resourcePresenter.getResourceTags(resource).length > 1 ? ',' : ''} ',
-                                              ),
-                                  ),
-                              ],
-                            ),
-                          ],
+              child: Card.outlined(
+                color: context.theme.colorScheme.surfaceContainerLowest,
+                margin: EdgeInsets.zero,
+                child: CustomInkWell(
+                  onTap: () => launch(resource.url!),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ProxiedImage(
+                          resource.image,
+                          borderRadius: BorderRadius.circular(10),
+                          width: 60,
+                          height: 60,
                         ),
-                      ),
-                      if (canEditCommunity) ...[
-                        IconButton(
-                          onPressed: () => CreateCommunityResourceModal.show(
-                            context,
-                            resource: resource,
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              HeightConstrainedText(
+                                resource.title ?? '',
+                                style: AppTextStyle.bodyMedium,
+                              ),
+                              SizedBox(height: 4),
+                              Wrap(
+                                children: [
+                                  for (var tag in _resourcePresenter
+                                      .getResourceTags(resource))
+                                    CommunityTagBuilder(
+                                      tagDefinitionId: tag.definitionId,
+                                      builder: (_, isLoading, definition) =>
+                                          isLoading || definition == null
+                                              ? SizedBox.shrink()
+                                              : Text(
+                                                  '#${definition.title}${_resourcePresenter.getResourceTags(resource).length > 1 ? ',' : ''} ',
+                                                ),
+                                    ),
+                                ],
+                              ),
+                            ],
                           ),
-                          icon: Icon(Icons.edit),
                         ),
-                        SizedBox(height: 10),
-                        IconButton(
-                          onPressed: () async {
-                            final delete = await ConfirmDialog(
-                              mainText:
-                                  'Are you sure you want to delete this resource?',
-                            ).show();
-
-                            if (!delete) return;
-
-                            await alertOnError(
+                        if (canEditCommunity) ...[
+                          IconButton(
+                            onPressed: () => CreateCommunityResourceModal.show(
                               context,
-                              () => firestoreCommunityResourceService
-                                  .deleteCommunityResource(
-                                communityId:
-                                    CommunityProvider.read(context).communityId,
-                                resourceId: resource.id,
-                              ),
-                            );
-                          },
-                          icon: Icon(Icons.delete),
-                        ),
+                              resource: resource,
+                            ),
+                            icon: Icon(Icons.edit),
+                          ),
+                          SizedBox(height: 10),
+                          IconButton(
+                            onPressed: () async {
+                              final delete = await ConfirmDialog(
+                                mainText:
+                                    'Are you sure you want to delete this resource?',
+                              ).show();
+
+                              if (!delete) return;
+
+                              await alertOnError(
+                                context,
+                                () => firestoreCommunityResourceService
+                                    .deleteCommunityResource(
+                                  communityId: CommunityProvider.read(context)
+                                      .communityId,
+                                  resourceId: resource.id,
+                                ),
+                              );
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
               ),

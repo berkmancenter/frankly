@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
@@ -29,6 +30,7 @@ import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -177,7 +179,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
     final message = await Dialogs.showComposeMessageDialog(
       context,
-      title: 'Message Participants',
+      title: context.l10n.messageParticipants,
       isMobile: isMobile,
       labelText: 'Message',
       validator: (message) =>
@@ -196,35 +198,16 @@ class EventPageState extends State<EventPage> implements EventPageView {
   ) async {
     await showCustomDialog(
       builder: (context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-          title: Text(
-            'Are you sure you want to remove this message?',
-            style: AppTextStyle.headline3
-                .copyWith(color: context.theme.colorScheme.primary),
-          ),
-          actions: [
-            ActionButton(
-              text: 'No',
-              color: context.theme.colorScheme.primary,
-              textColor: context.theme.colorScheme.onPrimary,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            ActionButton(
-              text: 'Yes',
-              color: context.theme.colorScheme.primary,
-              textColor: context.theme.colorScheme.onPrimary,
-              onPressed: () => alertOnError(context, () async {
-                await _presenter.removeMessage(eventMessage);
-                if (!context.mounted) return;
-                Navigator.pop(context);
-              }),
-            ),
-          ],
+        return ConfirmDialog(
+          title: 'Are you sure you want to remove this message?',
+          onCancel: (context) {
+            Navigator.pop(context);
+          },
+          onConfirm: (context) => alertOnError(context, () async {
+            await _presenter.removeMessage(eventMessage);
+            if (!context.mounted) return;
+            Navigator.pop(context);
+          }),
         );
       },
     );
@@ -390,7 +373,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
   Widget _buildEditTemplateMessage() {
     String templateId = event.templateId;
     return Container(
-      color: context.theme.colorScheme.onPrimaryContainer,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ConstrainedBody(
         maxWidth: 1100,
@@ -402,15 +385,15 @@ class EventPageState extends State<EventPage> implements EventPageView {
               child: RichText(
                 text: TextSpan(
                   text: 'You are editing an event. \n',
-                  style: AppTextStyle.headlineSmall.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                  style: context.theme.textTheme.titleMedium!.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
                       text: 'If you want to edit future instances, ',
-                      style: AppTextStyle.body.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,
+                      style: context.theme.textTheme.bodyMedium!.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     TextSpan(
@@ -425,8 +408,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                                 ).displayId,
                               ).templatePage(templateId: templateId),
                             ),
-                      style: AppTextStyle.body.copyWith(
-                        color: context.theme.colorScheme.primary,
+                      style: context.theme.textTheme.bodyMedium!.copyWith(
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -468,28 +450,17 @@ class EventPageState extends State<EventPage> implements EventPageView {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            width: 2,
-            color: context.theme.colorScheme.onPrimaryContainer,
-          ),
-        ),
-      ),
-      alignment: Alignment.topCenter,
-      child: CustomStreamBuilder<Event>(
+    return CustomStreamBuilder<Event>(
+      entryFrom: '_EventPageState.build',
+      stream: eventProvider.eventStream,
+      builder: (_, event) => CustomStreamBuilder<List<Participant>>(
         entryFrom: '_EventPageState.build',
-        stream: eventProvider.eventStream,
-        builder: (_, event) => CustomStreamBuilder<List<Participant>>(
-          entryFrom: '_EventPageState.build',
-          stream: eventProvider.eventParticipantsStream,
-          builder: (_, __) {
-            if (event == null) return CircularProgressIndicator();
+        stream: eventProvider.eventParticipantsStream,
+        builder: (_, __) {
+          if (event == null) return CircularProgressIndicator();
 
-            return _buildMainContent();
-          },
-        ),
+          return _buildMainContent();
+        },
       ),
     );
   }

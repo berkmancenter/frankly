@@ -12,7 +12,7 @@ import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_picture.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
 import 'package:client/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart';
-import 'package:client/features/community/presentation/widgets/event_widget.dart';
+import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/data/providers/attended_prerequisite_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
@@ -41,6 +41,7 @@ import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class TemplatePage extends StatefulWidget {
   const TemplatePage._();
@@ -107,7 +108,7 @@ class _TemplatePageState extends State<TemplatePage>
       );
     } else {
       return AddMoreButton(
-        label: 'Add a prerequisite template',
+        label: context.l10n.addPrerequisiteTemplate,
         onPressed: () {
           templatePageProvider.isNewPrerequisite = true;
         },
@@ -166,7 +167,7 @@ class _TemplatePageState extends State<TemplatePage>
             children: [
               SizedBox(height: 30),
               for (final event in events.take(40)) ...[
-                EventWidget(
+                EventCard(
                   event,
                   key: Key('event-${event.id}'),
                 ),
@@ -468,7 +469,7 @@ class _TemplatePageState extends State<TemplatePage>
               children: [
                 SizedBox(height: 30),
                 for (final event in events.take(1)) ...[
-                  EventWidget(
+                  EventCard(
                     event,
                     key: Key('event-${event.id}'),
                   ),

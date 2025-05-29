@@ -7,6 +7,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveStreamInstructions extends StatelessWidget {
   const LiveStreamInstructions({this.whiteBackground = true});
@@ -23,7 +24,7 @@ class LiveStreamInstructions extends StatelessWidget {
         Clipboard.setData(ClipboardData(text: text));
         showRegularToast(
           context,
-          'Copied to clipboard!',
+          context.l10n.copiedToClipboard,
           toastType: ToastType.success,
         );
       },

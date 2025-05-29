@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:data_models/community/community.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 
 class CreateCommunityTextFields extends StatefulWidget {
@@ -53,6 +54,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
       children: [
         _buildCreateCommunityTextField(
           controller: _nameController,
+
           maxLength: titleMaxCharactersLength,
           label: 'Name',
           onChanged: (String val) => {

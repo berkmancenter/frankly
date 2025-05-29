@@ -1,4 +1,3 @@
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:flutter/material.dart' hide ReorderableList;
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -13,6 +12,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingAgendaWrapper extends StatelessWidget {
   const MeetingAgendaWrapper({
@@ -131,10 +131,8 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
           if (allAgendaItems.isEmpty)
             HeightConstrainedText(
               'There is no agenda for this event.',
-              style: TextStyle(
-                color: Theme.of(context).isDark
-                    ? context.theme.colorScheme.onPrimary
-                    : context.theme.colorScheme.onPrimaryContainer,
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
           for (int i = 0; i < allAgendaItems.length; i++) ...[
@@ -146,7 +144,7 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
           if (canEditAgenda && !hasAnyUnsavedItems) ...[
             SizedBox(height: 20),
             AddMoreButton(
-              label: 'Add agenda item',
+              label: context.l10n.addAgendaItem,
               onPressed: () => agendaProvider.addNewUnsavedItem(),
             ),
           ],

@@ -22,6 +22,12 @@ enum ActionButtonIconSide {
   right,
 }
 
+enum ActionButtonContentAlignment {
+  start,
+  center,
+  end,
+}
+
 class SubmitNotifier {
   final List<Future<void> Function()> _listeners = [];
 
@@ -47,6 +53,8 @@ class ActionButton extends StatefulWidget {
   final Color? disabledColor;
   final Color? textColor;
   final TextStyle? textStyle;
+  final int? maxLines;
+  final double? maxTextWidth;
   final OutlinedBorder? shape;
   final BorderRadius? borderRadius;
   final double? minWidth;
@@ -58,6 +66,7 @@ class ActionButton extends StatefulWidget {
   final Map<String, dynamic>? eventParameters;
   final SubmitNotifier? controller;
   final ActionButtonSendingIndicatorAlign sendingIndicatorAlign;
+  final ActionButtonContentAlignment contentAlign;
   final ActionButtonIconSide iconSide;
 
   final double? loadingHeight;
@@ -79,6 +88,8 @@ class ActionButton extends StatefulWidget {
     this.disabledColor,
     this.textColor,
     this.textStyle,
+    this.maxLines,
+    this.maxTextWidth,
     this.shape,
     this.borderRadius,
     this.minWidth,
@@ -91,6 +102,7 @@ class ActionButton extends StatefulWidget {
     this.eventParameters,
     this.controller,
     this.sendingIndicatorAlign = ActionButtonSendingIndicatorAlign.left,
+    this.contentAlign = ActionButtonContentAlignment.center,
     this.iconSide = ActionButtonIconSide.left,
     this.loadingHeight,
     this.height,
@@ -162,13 +174,19 @@ class _ActionButtonState extends State<ActionButton> {
             ActionButtonSendingIndicatorAlign.interior &&
         _isSending;
     final text = widget.text;
+    final mainAxisAlignment =
+        widget.contentAlign == ActionButtonContentAlignment.center
+            ? MainAxisAlignment.center
+            : widget.contentAlign == ActionButtonContentAlignment.start
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.end;
     final child = widget.child;
 
     return Padding(
       padding: widget.padding ?? EdgeInsets.zero,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: mainAxisAlignment,
         children: [
           if (widget.iconSide == ActionButtonIconSide.left &&
               widget.icon != null &&
@@ -183,9 +201,14 @@ class _ActionButtonState extends State<ActionButton> {
             SizedBox(width: 10),
           ],
           if (text != null)
-            HeightConstrainedText(
-              text,
-              textAlign: TextAlign.center,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: widget.maxTextWidth ?? double.infinity,
+              ),
+              child: HeightConstrainedText(
+                text,
+                maxLines: widget.maxLines,
+              ),
             )
           else if (child != null)
             child,
@@ -256,25 +279,19 @@ class _ActionButtonState extends State<ActionButton> {
         break;
     }
 
-    if (widget.expand) {
-      return _semanticsWrappedButton(
-        Expanded(child: button),
-      );
-    }
-
-    return _semanticsWrappedButton(
-      button,
-    );
-  }
-
-  Widget _semanticsWrappedButton(child) {
-    return Semantics(
+    final semanticsWrappedButton = Semantics(
       button: true,
       focused: false,
       enabled: widget.onPressed != null,
       label: widget.text,
-      child: child,
+      child: button,
     );
+
+    if (widget.expand) {
+      return Expanded(child: semanticsWrappedButton);
+    } else {
+      return semanticsWrappedButton;
+    }
   }
 
   Widget _buildTooltipWrappedButton() {

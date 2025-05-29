@@ -136,7 +136,7 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
               maxLines: 1,
               style: TextStyle(
                 fontSize: fontSize,
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),
@@ -149,7 +149,7 @@ class _ColorfulMeterState extends State<ColorfulMeter> {
               maxLines: 1,
               style: TextStyle(
                 fontSize: fontSize,
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),

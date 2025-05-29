@@ -6,6 +6,7 @@ import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum EventPopUpMenuSelection {
   refreshGuide,
@@ -74,20 +75,20 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         offset: Offset(0, kIconSize + 2 * iconPadding),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         onSelected: (value) => widget.onSelected(value),
-        tooltip: 'Show Options',
+        tooltip: context.l10n.showOptions,
         iconSize: kIconSize,
-        icon: Material(
-          shape: CircleBorder(),
-          color: _isHovered
-              ? context.theme.colorScheme.scrim.withScrimOpacity
-              : context.theme.colorScheme.surface,
-          child: Padding(
-            padding: EdgeInsets.all(iconPadding),
-            child: Icon(
-              Icons.more_horiz,
-              size: 20,
-              color: context.theme.colorScheme.primary,
-            ),
+        icon: Container(
+          decoration: BoxDecoration(
+            color: _isHovered
+                ? context.theme.colorScheme.scrim.withScrimOpacity
+                : context.theme.colorScheme.surfaceContainer,
+            shape: BoxShape.circle,
+          ),
+          padding: EdgeInsets.all(iconPadding),
+          child: Icon(
+            Icons.more_horiz,
+            size: 20,
+            color: context.theme.colorScheme.onSurface,
           ),
         ),
         itemBuilder: (context) {
@@ -112,8 +113,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                     Expanded(
                       child: Text(
                         text,
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: context.theme.colorScheme.primary),
+                        style: context.theme.textTheme.bodyLarge,
                       ),
                     ),
                   ],
@@ -129,17 +129,17 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
   String _getText(EventPopUpMenuSelection eventPopUpMenuSelection) {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
-        return 'Refresh Guide';
+        return context.l10n.refreshGuide;
       case EventPopUpMenuSelection.createGuideFromEvent:
-        return 'Create template from event';
+        return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
-        return 'Duplicate Event';
+        return context.l10n.duplicateEvent;
       case EventPopUpMenuSelection.downloadRegistrationData:
-        return 'Download members registration data';
+        return context.l10n.downloadMembersRegistrationData;
       case EventPopUpMenuSelection.downloadChatsAndSuggestions:
-        return 'Download chats and suggestions';
+        return context.l10n.downloadChatsAndSuggestions;
       case EventPopUpMenuSelection.cancelEvent:
-        return 'Cancel Event';
+        return context.l10n.cancelEvent;
     }
   }
 

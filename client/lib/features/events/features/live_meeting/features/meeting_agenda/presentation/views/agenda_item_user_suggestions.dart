@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'agenda_item_user_suggestions_contract.dart';
 import '../../data/models/agenda_item_user_suggestions_model.dart';
@@ -74,17 +75,17 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
           CustomTextField(
             initialValue: _model.agendaItemUserSuggestionsData.headline,
             labelText: 'Headline',
-            hintText: 'Suggestions',
+            hintText: context.l10n.suggestions,
             maxLength: agendaSuggestionCharactersLength,
             maxLines: 1,
-            counterStyle: AppTextStyle.bodySmall,
+            counterStyle: context.theme.textTheme.bodySmall,
             onChanged: (value) => _presenter.updateTitle(value),
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
             'Let participants suggest agenda items and then upvote or downvote.',
-            style: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+            style: context.theme.textTheme.bodyMedium!
+                .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
         ],
       );

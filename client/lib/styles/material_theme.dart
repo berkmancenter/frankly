@@ -13,7 +13,7 @@ class MaterialTheme {
   static MaterialScheme lightScheme() {
     return const MaterialScheme(
       brightness: Brightness.light,
-      primary: Color(0xff000000),
+      primary: Color(0xff313030),
       surfaceTint: Color(0xff5f5e5e),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff262626),
@@ -32,7 +32,7 @@ class MaterialTheme {
       onErrorContainer: Color(0xffffffff),
       background: Color(0xfffdf8f8),
       onBackground: Color(0xff1c1b1b),
-      surface: Color(0xfffdf8f8),
+      surface: Color(0xfffaf8f8),
       onSurface: Color(0xff1c1b1b),
       surfaceVariant: Color(0xffe0e3e3),
       onSurfaceVariant: Color(0xff444748),
@@ -72,7 +72,7 @@ class MaterialTheme {
   static MaterialScheme lightMediumContrastScheme() {
     return const MaterialScheme(
       brightness: Brightness.light,
-      primary: Color(0xff000000),
+      primary: Color(0xff313030),
       surfaceTint: Color(0xff5f5e5e),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff262626),
@@ -91,7 +91,7 @@ class MaterialTheme {
       onErrorContainer: Color(0xffffffff),
       background: Color(0xfffdf8f8),
       onBackground: Color(0xff1c1b1b),
-      surface: Color(0xfffdf8f8),
+      surface: Color(0xfffaf8f8),
       onSurface: Color(0xff1c1b1b),
       surfaceVariant: Color(0xffe0e3e3),
       onSurfaceVariant: Color(0xff404344),
@@ -131,7 +131,7 @@ class MaterialTheme {
   static MaterialScheme lightHighContrastScheme() {
     return const MaterialScheme(
       brightness: Brightness.light,
-      primary: Color(0xff000000),
+      primary: Color(0xff313030),
       surfaceTint: Color(0xff5f5e5e),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff262626),
@@ -150,7 +150,7 @@ class MaterialTheme {
       onErrorContainer: Color(0xffffffff),
       background: Color(0xfffdf8f8),
       onBackground: Color(0xff1c1b1b),
-      surface: Color(0xfffdf8f8),
+      surface: Color(0xfffaf8f8),
       onSurface: Color(0xff000000),
       surfaceVariant: Color(0xffe0e3e3),
       onSurfaceVariant: Color(0xff212425),

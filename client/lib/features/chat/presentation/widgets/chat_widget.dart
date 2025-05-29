@@ -15,6 +15,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class ChatWidget extends StatelessWidget {
   final String parentPath;
@@ -140,7 +141,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
             onChanged: (_) => setState(() {}),
-            textStyle: body.copyWith(color: context.theme.colorScheme.primary),
+            textStyle: context.theme.textTheme.bodyMedium,
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,
@@ -158,11 +159,8 @@ class _ChatWidgetState extends State<_ChatWidget> {
           borderRadius: BorderRadius.circular(50),
           controller: _sendController,
           onPressed: canSubmit ? _sendMessage : null,
-          color: canSubmit
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.onPrimaryContainer,
           child: Semantics(
-            label: 'Submit Message Button',
+            label: context.l10n.submitMessageButton,
             button: true,
             child: Icon(
               CupertinoIcons.paperplane,
@@ -179,13 +177,12 @@ class _ChatWidgetState extends State<_ChatWidget> {
     return Row(
       children: [
         Checkbox(
-          fillColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
-          side: BorderSide(color: context.theme.colorScheme.onPrimary),
+          side: BorderSide(color: context.theme.colorScheme.outline),
           value: _broadcast,
           onChanged: (value) => setState(() => _broadcast = !_broadcast),
         ),
         Flexible(
-          child: HeightConstrainedText('Broadcast'),
+          child: HeightConstrainedText(context.l10n.broadcast),
         ),
       ],
     );

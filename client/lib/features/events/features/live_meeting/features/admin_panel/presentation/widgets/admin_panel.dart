@@ -30,10 +30,11 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 final fakeWaitingRoomObject = BreakoutRoom(
   roomId: breakoutsWaitingRoomId,
-  roomName: 'Waiting Room',
+  roomName: appLocalizationService.getLocalization().waitingRoom,
   orderingPriority: -1,
   flagStatus: BreakoutRoomFlagStatus.unflagged,
   creatorId: 'fake',
@@ -124,7 +125,6 @@ class _AdminPanelState extends State<AdminPanel> {
             if (_eventProvider.event.eventType != EventType.hostless) ...[
               SizedBox(width: 4),
               ActionButton(
-                color: context.theme.colorScheme.onPrimary,
                 onPressed: () => _providerRead.endBreakoutRooms(),
                 text: 'End Breakouts',
               ),
@@ -151,7 +151,7 @@ class _AdminPanelState extends State<AdminPanel> {
         event: EventProvider.watch(context).event,
       ),
       pageSize: 40,
-      emptyBuilder: (_) => HeightConstrainedText('No one is here yet.'),
+      emptyBuilder: (_) => HeightConstrainedText(context.l10n.noOneIsHereYet),
       errorBuilder: (_, __, ___) => HeightConstrainedText(
         'Something went wrong loading participants. Please refreh.',
       ),
@@ -191,7 +191,6 @@ class _AdminPanelState extends State<AdminPanel> {
                           .canModerateContent,
                     ).show(),
             text: 'Breakouts',
-            color: context.theme.colorScheme.onPrimary,
           ),
           SizedBox(width: 6),
           _MeetingControlsMenu(),
@@ -201,13 +200,12 @@ class _AdminPanelState extends State<AdminPanel> {
       if (!useMeetingProviderParticipants)
         Expanded(child: _buildPaginatedParticipants())
       else if (participantCount == 0)
-        Text('No one is here yet')
+        Text(context.l10n.noOneIsHereYet)
       else ...[
         ActionButton(
           expand: true,
           text: 'Mute All',
           onPressed: () => _providerRead.muteAllParticipants(),
-          color: context.theme.colorScheme.onPrimary,
         ),
         Expanded(
           child: ListView(
@@ -346,7 +344,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                 'Something went wrong loading breakout rooms. Please refresh',
               );
             } else if (snapshot.docs.isEmpty) {
-              return HeightConstrainedText('No rooms found.');
+              return HeightConstrainedText(context.l10n.noRoomsFound);
             }
 
             // if we reached the end of the currently obtained items, we try to
@@ -384,7 +382,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
     List<BreakoutRoom> rooms,
   ) {
     if (rooms.isEmpty) {
-      return HeightConstrainedText('No rooms need help.');
+      return HeightConstrainedText(context.l10n.noRoomsNeedHelp);
     }
     return GridView.builder(
       itemCount: rooms.length,
@@ -491,8 +489,6 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                         }
                       }),
                       text: 'Jump To',
-                      textColor: context.theme.colorScheme.onPrimary,
-                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                     ),
                   ],
                 ),
@@ -507,7 +503,6 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                     ),
                     text: 'View Current Room',
                     expand: true,
-                    color: context.theme.colorScheme.onPrimary,
                   ),
                   SizedBox(height: 16),
                 ],
@@ -755,8 +750,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
   Widget build(BuildContext context) {
     final menuItems = _getMenuItems();
     return Semantics(
-      label:
-          'Participant Actions for user with ID ${widget.providerParticipant?.userId}',
+      label: context.l10n.participantActionsForUserWithId(widget.providerParticipant?.userId ?? ''),
       child: CustomInkWell(
         hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
         onTap: () => _showMoreMenu(menuItems),
@@ -897,7 +891,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                           child: CustomLoadingIndicator(),
                         )
                       else if (participantsSnapshot.hasError)
-                        HeightConstrainedText('Error')
+                        HeightConstrainedText(context.l10n.error)
                       else
                         HeightConstrainedText(
                           '$participantCount people',
@@ -996,7 +990,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
           SizedBox(width: 6),
           ActionButton(
             color: Colors.transparent,
-            textColor: context.theme.colorScheme.onPrimary,
+            textColor: context.theme.colorScheme.onSurface,
             sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
             onPressed: () => alertOnError(context, () async {
               final ReassignResult? newRoomAssignment =
@@ -1027,7 +1021,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                   newRoomAssignment?.expectedNewRoom?.toString() !=
                       newBreakoutRoom.roomName) {
                 await ConfirmDialog(
-                  title: 'Participant Reassigned',
+                  title: context.l10n.participantReassigned,
                   mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
                   confirmText: 'Ok',
                 ).show(context: context);
@@ -1107,7 +1101,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           (!provider.userLeftBreakouts))
                         ActionButton(
                           color: Colors.transparent,
-                          textColor: context.theme.colorScheme.onPrimary,
+                          textColor: context.theme.colorScheme.onSurface,
                           onPressed: () async {
                             final reassignUser =
                                 provider.currentBreakoutRoomId ==
@@ -1135,8 +1129,8 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                               ? context.theme.colorScheme.errorContainer
                               : Colors.transparent,
                           textColor: needsHelp
-                              ? context.theme.colorScheme.onPrimary
-                              : context.theme.colorScheme.onPrimary,
+                              ? context.theme.colorScheme.onErrorContainer
+                              : context.theme.colorScheme.onSurface,
                           text: 'Enter Room',
                         ),
                     ],
@@ -1174,7 +1168,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               if (participantCount == 0)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: HeightConstrainedText('No one is here yet'),
+                  child: HeightConstrainedText(context.l10n.noOneIsHereYet),
                 )
               else
                 Expanded(

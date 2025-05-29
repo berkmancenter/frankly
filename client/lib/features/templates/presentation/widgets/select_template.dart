@@ -1,4 +1,5 @@
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -19,6 +20,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Widget that shows all templates within the community and lets you search through
 /// them and select them.
@@ -41,22 +43,21 @@ class _SelectTemplateState extends State<SelectTemplate> {
   }
 
   Widget _buildSearchBarField() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search templates',
-        border: InputBorder.none,
-      ),
+  return CustomTextField(
+      labelText: context.l10n.searchTemplates,
+      padding: EdgeInsets.zero,
+      labelStyle: TextStyle(color: context.theme.colorScheme.primary),
+      textStyle:
+          TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+      borderRadius: 10,
+      maxLines: 1,
       onChanged: context.read<SelectTemplateProvider>().onSearchChanged,
     );
   }
 
   Widget _buildSearchBar() {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: context.theme.colorScheme.surfaceContainer,
-      ),
-      padding: const EdgeInsets.only(left: 12, right: 32),
       constraints: BoxConstraints(maxWidth: 450),
       child: Row(
         children: [
@@ -203,7 +204,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
             stackTrace: (snapshot.error as Error).stackTrace,
           );
 
-          return Text('There was an error loading event templates.');
+          return Text(context.l10n.thereWasAnErrorLoadingEventTemplates);
         } else if (!snapshot.hasData) {
           return Container(
             height: 400,

@@ -1,7 +1,7 @@
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
+
 import 'package:client/styles/app_asset.dart';
 
 /// This is an icon that appears in the top or bottom nav bar. If it is selected it shows a solid
@@ -16,7 +16,6 @@ class SelectableNavigationIcon extends StatelessWidget {
   final AppAsset? selectedImagePath;
   final void Function()? onTap;
   final double iconSize;
-  final double iconSpacing;
 
   const SelectableNavigationIcon({
     Key? key,
@@ -26,7 +25,6 @@ class SelectableNavigationIcon extends StatelessWidget {
     this.selectedImagePath,
     this.onTap,
     this.iconSize = 30.0,
-    this.iconSpacing = 6.0,
   })  : assert(iconData != null || imagePath != null),
         super(key: key);
 
@@ -35,16 +33,15 @@ class SelectableNavigationIcon extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (isSelected) SizedBox(height: iconSpacing + 2),
-        CustomInkWell(
-          onTap: onTap,
-          child: iconData != null
+        IconButton(
+          onPressed: onTap,
+          icon: iconData != null
               ? Icon(
                   iconData,
                   size: iconSize,
                   color: isSelected
-                      ? context.theme.colorScheme.primary
-                      : context.theme.colorScheme.onPrimaryContainer,
+                      ? context.theme.colorScheme.onSurface
+                      : context.theme.colorScheme.onSurfaceVariant,
                 )
               : ProxiedImage(
                   null,
@@ -55,10 +52,9 @@ class SelectableNavigationIcon extends StatelessWidget {
                 ),
         ),
         if (isSelected) ...[
-          SizedBox(height: iconSpacing.toDouble()),
           Container(
             height: 2,
-            width: 20,
+            width: 24,
             color: context.theme.colorScheme.primary,
           ),
         ],

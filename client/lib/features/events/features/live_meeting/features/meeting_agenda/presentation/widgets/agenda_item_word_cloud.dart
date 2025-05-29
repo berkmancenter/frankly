@@ -5,6 +5,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AgendaItemWordCloud extends StatelessWidget {
   final bool isEditMode;
@@ -27,7 +28,7 @@ class AgendaItemWordCloud extends StatelessWidget {
           CustomTextField(
             initialValue: wordCloudData.prompt,
             labelText: 'Word Cloud Prompt',
-            hintText: 'Enter Word Cloud prompt',
+            hintText: context.l10n.enterWordCloudPrompt,
             onChanged: (value) {
               wordCloudData.prompt = value;
               onChanged(wordCloudData);
@@ -35,9 +36,8 @@ class AgendaItemWordCloud extends StatelessWidget {
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
-            'Participants will be asked to respond with a list of words or short phrases',
-            style: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+            'Participants will be asked to respond with a list of words or short phrases.',
+            style: context.theme.textTheme.bodyMedium,
           ),
         ],
       );

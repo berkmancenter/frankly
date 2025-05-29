@@ -47,7 +47,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
         SizedBox(width: 4),
         HeightConstrainedText(
           ':',
-          style: AppTextStyle.bodyMedium,
+          style: context.theme.textTheme.bodyMedium,
         ),
         SizedBox(width: 4),
         _buildNumberInput(

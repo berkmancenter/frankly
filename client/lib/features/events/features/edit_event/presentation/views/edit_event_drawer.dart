@@ -19,6 +19,7 @@ import 'package:client/features/events/presentation/widgets/event_participants_l
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
@@ -90,11 +91,10 @@ class EditEventDrawerState extends State<EditEventDrawer>
             children: [
               Text(
                 'Edit event',
-                style: AppTextStyle.headlineSmall.copyWith(
-                    fontSize: 16, color: context.theme.colorScheme.primary),
+                style: context.theme.textTheme.headlineSmall,
               ),
               Semantics(
-                label: 'Close Edit',
+                label: context.l10n.closeEdit,
                 child: AppClickableWidget(
                   child: ProxiedImage(
                     null,
@@ -187,8 +187,8 @@ class EditEventDrawerState extends State<EditEventDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body
-              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+          style: context.theme.textTheme.bodyLarge!
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
         Spacer(),
         InkWell(
@@ -233,6 +233,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     return CustomSwitchTile(
       val: _model.event.isPublic,
       text: 'Public',
+      style: context.theme.textTheme.bodyLarge,
       onUpdate: (value) => _presenter.updateIsPublic(value),
     );
   }
@@ -308,9 +309,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       isDense: true,
       hint: HeightConstrainedText(
         'Choose duration',
-        style: AppTextStyle.bodySmall.copyWith(
-          color: context.theme.colorScheme.secondary,
-        ),
+        style: context.theme.textTheme.bodySmall,
       ),
       icon: Icon(
         CupertinoIcons.chevron_down,
@@ -323,14 +322,14 @@ class EditEventDrawerState extends State<EditEventDrawer>
         filled: true,
         label: HeightConstrainedText(
           'Length',
-          style: AppTextStyle.bodySmall.copyWith(
-            color: context.theme.colorScheme.onPrimaryContainer,
+          style: context.theme.textTheme.bodySmall!.copyWith(
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide:
-              BorderSide(color: context.theme.colorScheme.onPrimaryContainer),
+              BorderSide(color: context.theme.colorScheme.onSurfaceVariant),
         ),
       ),
       iconEnabledColor: context.theme.colorScheme.primary,
@@ -349,8 +348,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
               alignment: Alignment.centerLeft,
               child: Text(
                 durationString(duration, readAsHuman: true),
-                style: AppTextStyle.body
-                    .copyWith(color: context.theme.colorScheme.primary),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
           ),
@@ -362,8 +360,14 @@ class EditEventDrawerState extends State<EditEventDrawer>
     final peopleCount = _model.event.maxParticipants ?? 0;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text('Maximum'),
-      trailing: Text('$peopleCount ${peopleCount == 1 ? 'person' : 'people'}'),
+      title: Text(
+        context.l10n.maximum,
+        style: context.theme.textTheme.bodyLarge,
+      ),
+      trailing: Text(
+        '$peopleCount ${peopleCount == 1 ? context.l10n.person : context.l10n.people}',
+        style: context.theme.textTheme.bodyLarge,
+      ),
       onTap: () async {
         final isMobile = _presenter.isMobile(context);
         final maxParticipants = _model.event.maxParticipants ?? 8;
@@ -371,7 +375,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         final selectedNumber = await Dialogs.showSelectNumberDialog(
           context,
           isMobile: isMobile,
-          title: 'Select max. participant count',
+          title: context.l10n.selectMaxParticipantCount,
           minNumber: 2,
           maxNumber: 50,
           currentNumber: maxParticipants.toDouble(),
@@ -395,8 +399,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           text: 'Save Event',
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
@@ -406,6 +408,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           type: ActionButtonType.outline,
+          color: context.theme.colorScheme.error,
           textColor: context.theme.colorScheme.error,
           text: 'Cancel event',
           onPressed: () =>
@@ -442,7 +445,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
                   ? externalPlatform.platformKey.info.title
                   : '${Environment.appName} Video',
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyle.subhead,
+              style: context.theme.textTheme.bodyLarge,
             ),
           ),
           SizedBox(width: 10),

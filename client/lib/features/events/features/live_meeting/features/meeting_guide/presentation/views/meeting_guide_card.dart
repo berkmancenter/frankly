@@ -19,6 +19,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/raising_hand.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/fade_scroll_view.dart';
@@ -53,8 +54,6 @@ class MeetingGuideCard extends StatefulWidget {
 }
 
 class _MeetingGuideCardState extends State<MeetingGuideCard> {
-  TextStyle get bodyStyle => body.copyWith(fontSize: 14);
-
   @override
   void initState() {
     super.initState();
@@ -196,7 +195,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               Spacer(),
               ActionButton(
                 type: ActionButtonType.filled,
-                tooltipText: 'Hide Agenda Item',
+                tooltipText: context.l10n.hideAgendaItem,
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: widget.onMinimizeCard,
                 color: context.theme.colorScheme.surfaceContainerLowest,
@@ -233,7 +232,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     final String formattedTime;
                     if (timeRemaining == null) {
                       negativeTimeRemaining = false;
-                      formattedTime = 'Start';
+                      formattedTime = context.l10n.start;
                     } else {
                       negativeTimeRemaining = timeRemaining.isNegative;
                       formattedTime =
@@ -244,7 +243,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       style: AppTextStyle.body.copyWith(
                         color: negativeTimeRemaining
                             ? context.theme.colorScheme.error
-                            : context.theme.colorScheme.onPrimaryContainer,
+                            : context.theme.colorScheme.onSurface,
                       ),
                     );
                   },
@@ -311,8 +310,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                           } else {
                             return HeightConstrainedText(
                               isNullOrEmpty(info.data?.displayName)
-                                  ? 'Welcome!'
-                                  : 'Welcome ${info.data?.displayName}!',
+                                ? context.l10n.welcome
+                                : context.l10n.welcomeName(
+                                    info.data?.displayName ?? ''),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline3.copyWith(
@@ -326,7 +326,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       SizedBox(height: 20),
                       if (isInControl) ...[
                         HeightConstrainedText(
-                          'This is your agenda. Prompts will appear here. Ready to get started?',
+                          context.l10n.agendaPromptReady,
                           style: AppTextStyle.subhead.copyWith(
                             fontSize: isMobile ? 15 : 18,
                             color: context.theme.colorScheme.primary,
@@ -334,9 +334,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         ),
                         SizedBox(height: 20),
                         ActionButton(
-                          color: Colors.transparent,
-                          type: ActionButtonType.outline,
-                          textColor: context.theme.colorScheme.primary,
+                          type: ActionButtonType.filled,
+                          color: context.theme.colorScheme.surfaceContainer,
+                          textColor: context.theme.colorScheme.onSurface,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,
                           onPressed: () => alertOnError(context, () async {
@@ -344,11 +344,11 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                                 _presenter.getCurrentAgendaItemId();
                             await _presenter.moveForward(currentAgendaItemId!);
                           }),
-                          text: 'Start event',
+                          text: context.l10n.startEvent,
                         ),
                       ] else
                         HeightConstrainedText(
-                          'This is your agenda. Prompts will appear here. Waiting for host to start...',
+                          context.l10n.agendaPromptWaiting,
                           style: AppTextStyle.subhead.copyWith(
                             fontSize: isMobile ? 15 : 18,
                             color: context.theme.colorScheme.primary,
@@ -361,10 +361,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   Spacer(),
                   Expanded(
                     flex: symmetricFlex,
-                    child: ProxiedImage(
-                      null,
-                      asset: AppAsset.kStartEventCardImage,
-                      fit: BoxFit.contain,
+                    child: Icon(
+                      Icons.meeting_room_rounded,
+                      size: 100,
+                      color: context.theme.colorScheme.secondary,
                     ),
                   ),
                 ],

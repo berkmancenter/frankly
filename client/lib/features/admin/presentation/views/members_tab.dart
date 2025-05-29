@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:csv/csv.dart';
@@ -657,37 +658,37 @@ class _MembersTabState extends State<MembersTab> {
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Owner',
+          title: context.l10n.roleOwner,
           icon: MembershipStatus.owner.icon(context),
           permissions: MembershipStatus.owner.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Admin',
+          title: context.l10n.roleAdmin,
           icon: MembershipStatus.admin.icon(context),
           permissions: MembershipStatus.admin.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Moderator',
+          title: context.l10n.roleModerator,
           icon: MembershipStatus.mod.icon(context),
           permissions: MembershipStatus.mod.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Facilitator',
+          title: context.l10n.roleFacilitator,
           icon: MembershipStatus.facilitator.icon(context),
           permissions: MembershipStatus.facilitator.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Member',
+          title: context.l10n.roleMember,
           icon: MembershipStatus.member.icon(context),
           permissions: MembershipStatus.member.permissions,
         ),
         SizedBox(height: 20),
         RolePermissionListTile(
-          title: 'Attendee',
+          title: context.l10n.roleAttendee,
           icon: MembershipStatus.member.icon(context),
           permissions: MembershipStatus.attendee.permissions,
         ),

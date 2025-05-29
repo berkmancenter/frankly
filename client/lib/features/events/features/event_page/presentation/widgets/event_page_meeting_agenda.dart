@@ -19,6 +19,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventPageMeetingAgenda extends StatefulWidget {
   const EventPageMeetingAgenda({Key? key}) : super(key: key);
@@ -47,8 +48,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           children: [
             HeightConstrainedText(
               'Add breakouts',
-              style: AppTextStyle.subhead
-                  .copyWith(color: context.theme.colorScheme.secondary),
+              style: context.theme.textTheme.titleLarge!
+                  .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
             ),
             SizedBox(height: 10),
             BreakoutRoomDefinitionWidget(),
@@ -57,7 +58,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       );
     } else {
       return AddMoreButton(
-        label: 'Define Breakouts (Optional)',
+        label: context.l10n.defineBreakoutsOptional,
         onPressed: () => alertOnError(context, () async {
           final updatedEvent = event.copyWith(
             breakoutRoomDefinition: eventProvider.defaultBreakoutRoomDefinition,
@@ -114,8 +115,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 children: [
                   HeightConstrainedText(
                     'Waiting Room',
-                    style: AppTextStyle.subhead
-                        .copyWith(color: context.theme.colorScheme.secondary),
+                    style: context.theme.textTheme.titleLarge!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   SizedBox(height: 10),
                   WaitingRoomWidget(event: event),
@@ -138,8 +140,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 children: [
                   HeightConstrainedText(
                     'Livestream',
-                    style: AppTextStyle.subhead
-                        .copyWith(color: context.theme.colorScheme.secondary),
+                    style: context.theme.textTheme.titleLarge!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   SizedBox(height: 10),
                   LiveStreamInstructions(whiteBackground: true),
@@ -188,15 +191,13 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildAgendaTitle() {
     return HeightConstrainedText(
       'Agenda',
-      style: AppTextStyle.subhead
-          .copyWith(color: context.theme.colorScheme.secondary),
+      style: context.theme.textTheme.titleLarge,
     );
   }
 
   Widget _buildClearAllButton() {
     return ActionButton(
-      color: Colors.transparent,
-      textColor: context.theme.colorScheme.primary,
+      type: ActionButtonType.text,
       onPressed: () => _showClearAgendaItemsDialog(),
       text: 'Clear all',
       icon: Padding(
@@ -214,7 +215,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
 
   Future<void> _showClearAgendaItemsDialog() async {
     final delete = await ConfirmDialog(
-      title: 'Clear agenda?',
+      title: context.l10n.clearAgenda,
       mainText:
           'Are you sure you want to remove all agenda items from the breakout rooms? You won\'t be able to undo this.',
       cancelText: 'Cancel',

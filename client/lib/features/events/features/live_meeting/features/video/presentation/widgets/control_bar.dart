@@ -18,6 +18,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
@@ -87,8 +88,6 @@ class _ControlBarState extends State<ControlBar> {
 
     final mediaDevices = html.window.navigator.mediaDevices;
     return CustomInkWell(
-      hoverColor: context.theme.colorScheme.surfaceContainer,
-      forceHighlightOnHover: true,
       child: PopupMenuButton<FutureOr<void> Function()>(
         itemBuilder: (context) => [
           PopupMenuItem(
@@ -122,7 +121,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: context.theme.colorScheme.onPrimary,
+            color: context.theme.colorScheme.onSurface,
           ),
         ),
       ),
@@ -203,7 +202,7 @@ class _ControlBarState extends State<ControlBar> {
     return AnimatedBuilder(
       animation: _liveMeetingProvider.conferenceRoomNotifier,
       builder: (context, __) => Container(
-        color: context.theme.colorScheme.secondary,
+        color: context.theme.colorScheme.surfaceContainerHighest,
         height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -319,7 +318,7 @@ class _EmojiButtonState extends State<EmojiButton> {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.onPrimaryContainer,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
@@ -381,14 +380,7 @@ class _ChatInputState extends State<ChatInput> {
         children: [
           Expanded(
             child: CustomTextField(
-              cursorColor: context.theme.colorScheme.onPrimary,
               borderType: BorderType.none,
-              textStyle:
-                  body.copyWith(color: context.theme.colorScheme.onPrimary),
-              hintStyle: body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
-              backgroundColor: context.theme.colorScheme.onPrimaryContainer,
               borderRadius: isMobile ? 25 : 10,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
               contentPadding: isMobile
@@ -412,20 +404,16 @@ class _ChatInputState extends State<ChatInput> {
                 bottom: isMobile ? 4 : 0,
               ),
               child: Semantics(
-                label: 'Submit Chat Button',
+                label: context.l10n.submitChatButton,
                 button: true,
                 child: ActionButton(
                   minWidth: 20,
                   color: context.theme.colorScheme.primary,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
-                  disabledColor: context.theme.colorScheme.surfaceDim,
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
-                    color: canSubmit
-                        ? context.theme.colorScheme.onPrimary
-                        : context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -494,18 +482,18 @@ class _IconButtonState extends State<_IconButton> {
                 widget.icon,
                 size: 34,
                 color: _isSending
-                    ? context.theme.colorScheme.onPrimaryContainer
-                    : widget.iconColor ?? context.theme.colorScheme.onPrimary,
+                    ? context.theme.colorScheme.onSurfaceVariant
+                    : widget.iconColor ?? context.theme.colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 2),
             HeightConstrainedText(
               widget.text,
               textAlign: TextAlign.center,
-              style: body.copyWith(
+              style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: _isSending
-                    ? context.theme.colorScheme.onPrimaryContainer
-                    : context.theme.colorScheme.onPrimary,
+                    ? context.theme.colorScheme.onSurfaceVariant
+                    : context.theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
                 height: 1.05,
               ),

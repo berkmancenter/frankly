@@ -43,8 +43,9 @@ class EventMessageWidget extends StatelessWidget {
             children: [
               Text(
                 formattedTime,
-                style: AppTextStyle.eyebrow.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer),
+                style: context.theme.textTheme.labelMedium!.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
+                ),
               ),
               if (isMod || isDocCreator)
                 CustomInkWell(
@@ -68,8 +69,7 @@ class EventMessageWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   eventMessage.message,
-                  style: AppTextStyle.eyebrow
-                      .copyWith(color: context.theme.colorScheme.secondary),
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             ],

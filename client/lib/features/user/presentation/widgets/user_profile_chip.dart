@@ -8,6 +8,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class UserProfileChip extends StatelessWidget {
   final String? userId;
@@ -91,10 +92,11 @@ class UserProfileChip extends StatelessWidget {
         final String userName;
         if (showIsYou) {
           userName = isMyUser
-              ? 'You'
-              : name ?? snapshot.data?.displayName ?? 'Anonymous';
+              ? context.l10n.you
+              : name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
         } else {
-          userName = name ?? snapshot.data?.displayName ?? 'Anonymous';
+          userName =
+              name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
         }
 
         return ProfileChip(

@@ -20,6 +20,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'agenda_item_contract.dart';
 import '../../data/models/agenda_item_model.dart';
@@ -97,14 +98,15 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final bool isCollapsed = _presenter.isCollapsed();
     final bool allowEdit = _presenter.doesAllowEdit();
 
-    return CustomInkWell(
-      onTap: () => _presenter.toggleCardExpansion(),
-      hoverColor: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: context.theme.colorScheme.surfaceContainerLowest,
-        ),
+    return Card.outlined(
+      margin: EdgeInsets.zero,
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap:
+            _model.isEditMode ? null : () => _presenter.toggleCardExpansion(),
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -177,15 +179,13 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               Expanded(
                 child: HeightConstrainedText(
                   title,
-                  style: AppTextStyle.headline4
-                      .copyWith(color: context.theme.colorScheme.secondary),
+                  style: context.theme.textTheme.titleMedium,
                 ),
               ),
               if (!_model.isEditMode && !isMobile) ...[
                 HeightConstrainedText(
                   formattedTime,
-                  style: AppTextStyle.body.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                  style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(width: 10),
                 ProxiedImage(
@@ -240,7 +240,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         SizedBox(width: 8),
         HeightConstrainedText(
           agendaItemType.text,
-          style: AppTextStyle.body,
+          style: context.theme.textTheme.bodyMedium,
         ),
       ],
     );
@@ -343,9 +343,10 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       mainAxisSize: MainAxisSize.min,
       children: [
         Divider(
-            height: 1,
-            thickness: 1,
-            color: context.theme.colorScheme.onPrimaryContainer),
+          height: 1,
+          thickness: 1,
+          color: context.theme.colorScheme.onPrimaryContainer,
+        ),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: _model.isEditMode
@@ -358,7 +359,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
 
   Future<void> _showDeleteDialog() async {
     final delete = await ConfirmDialog(
-      title: 'Delete Agenda Item',
+      title: context.l10n.deleteAgendaItemGeneral,
       mainText: 'Are you sure you want to delete?',
     ).show(context: context);
 
@@ -375,7 +376,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       children: [
         if (!isCardUnsaved)
           IconButton(
-            tooltip: 'Delete Agenda Item',
+            tooltip: context.l10n.deleteAgendaItemGeneral,
             icon: Icon(
               CupertinoIcons.delete,
             ),
@@ -383,7 +384,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           ),
         Spacer(),
         IconButton(
-          tooltip: 'Cancel',
+          tooltip: context.l10n.cancel,
           icon: Icon(
             Icons.close,
           ),
@@ -403,7 +404,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         ),
         SizedBox(width: 10),
         IconButton(
-          tooltip: 'Save Agenda Item',
+          tooltip: context.l10n.saveAgendaItem,
           style: ButtonStyle(
             elevation: WidgetStateProperty.all(0),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -425,7 +426,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       mainAxisSize: MainAxisSize.max,
       children: [
         IconButton(
-          tooltip: 'Duplicate Item',
+          tooltip: context.l10n.duplicateItem,
           icon: Icon(
             Icons.copy,
           ),
@@ -433,7 +434,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
         ),
         SizedBox(width: 10),
         IconButton(
-          tooltip: 'Edit Item',
+          tooltip: context.l10n.editItem,
           icon: Icon(
             Icons.edit,
           ),

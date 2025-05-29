@@ -30,6 +30,7 @@ import 'package:data_models/events/event.dart' as event;
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
 
@@ -136,7 +137,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
       errorMessage: 'Something went wrong loading room. Please refresh!',
       loadingMessage: 'Connecting to room...',
-      textStyle: TextStyle(color: context.theme.colorScheme.onPrimary),
+      textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
       builder: (_, __) => _buildLayout(),
     );
   }
@@ -269,7 +270,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: context.theme.colorScheme.primary,
+                color: context.theme.colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -307,8 +308,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           iconData,
           size: 25,
           color: liveMeetingProvider.liveMeetingViewType == type
-              ? context.theme.colorScheme.onPrimary
-              : context.theme.colorScheme.onPrimaryContainer,
+              ? context.theme.colorScheme.onSurface
+              : context.theme.colorScheme.onSurfaceVariant,
         ),
       ),
     );

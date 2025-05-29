@@ -10,6 +10,7 @@ import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
@@ -94,10 +95,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ),
             children: [
               TextSpan(
-                text: 'This email is already in use. Try ',
+                text: context.l10n.emailAddressAlreadyInUseLoginError,
               ),
               TextSpan(
-                text: 'logging in',
+                text: context.l10n.loggingIn,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => setState(() {
                         _showSignup = false;
@@ -108,7 +109,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   color: context.theme.colorScheme.error,
                 ),
               ),
-              TextSpan(text: ' instead.'),
+              TextSpan(text: context.l10n.insteadSuffix),
             ],
           ),
         );
@@ -120,10 +121,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ),
             children: [
               TextSpan(
-                text: 'We couldn’t find an account with this email. Try ',
+                text: context.l10n.couldntFindAccount,
               ),
               TextSpan(
-                text: 'signing up',
+                text: context.l10n.signingUp,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => setState(() {
                         _showSignup = true;
@@ -134,13 +135,13 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   color: context.theme.colorScheme.error,
                 ),
               ),
-              TextSpan(text: ' instead.'),
+              TextSpan(text: context.l10n.insteadSuffix),
             ],
           ),
         );
       case 'email-missing-pw':
         return Text(
-          'Please enter a valid email address.',
+          context.l10n.pleaseEnterValidEmail,
           style: context.theme.textTheme.bodyMedium?.copyWith(
             color: context.theme.colorScheme.error,
           ),
@@ -148,7 +149,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
       default:
         return Text(
-          'Something went wrong. Please try again.',
+          context.l10n.somethingWentWrongTryAgain,
           style: context.theme.textTheme.bodySmall,
         );
     }
@@ -171,7 +172,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       },
       callback: () => {
         setState(() {
-          _formMessage = 'Password reset link sent to ${_emailController.text}';
+          _formMessage =
+              context.l10n.passwordResetLinkSent(_emailController.text);
           _ignorePassword = false;
         }),
       },
@@ -205,9 +207,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   String _getTitleText() {
     if (_showSignup) {
-      return 'Sign up for ${Environment.appName}';
+      return context.l10n.newToApp(Environment.appName);
     } else {
-      return 'Log into ${Environment.appName}';
+      return context.l10n.signInToApp(Environment.appName);
     }
   }
 
@@ -219,11 +221,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         children: [
           TextSpan(
             text: _showSignup
-                ? 'Already have an account? '
-                : 'Don\'t have an account? ',
+                ? context.l10n.alreadyUserSignIn
+                : context.l10n.notUserSignUp,
           ),
           TextSpan(
-            text: _showSignup ? 'Log in' : 'Sign up',
+            text: _showSignup ? context.l10n.signIn : context.l10n.signUp,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 if (_formError.isNotEmpty) {
@@ -270,12 +272,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     key: SignInOptionsContent.nameTextFieldKey,
                     borderType: BorderType.underline,
                     controller: _displayNameController,
-                    labelText: 'Full Name',
+                    labelText: context.l10n.yourName,
                     hintText: 'e.g. Jane Doe',
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a valid name';
+                        return context.l10n.enterValidName;
                       }
                       return null;
                     },
@@ -287,11 +289,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               key: SignInOptionsContent.emailTextFieldKey,
               borderType: BorderType.underline,
               controller: _emailController,
-              labelText: 'Email',
+              labelText: context.l10n.email,
               onEditingComplete: () => _submitForm(),
               validator: (value) {
                 if (value == null || value.isEmpty || !isEmailValid(value)) {
-                  return 'Please enter a valid email';
+                  return context.l10n.pleaseEnterValidEmail;
                 }
                 return null;
               },
@@ -302,12 +304,14 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               borderType: BorderType.underline,
               controller: _passwordController,
               onEditingComplete: () => _submitForm(),
-              labelText: 'Password',
+              labelText: context.l10n.password,
               obscureText: !_showPassword,
               suffixIcon: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
                 child: Semantics(
-                  label: _showPassword ? 'Hide password' : 'Show password',
+                  label: _showPassword
+                      ? context.l10n.hidePassword
+                      : context.l10n.showPassword,
                   button: true,
                   child: IconButton(
                     onPressed: () =>
@@ -328,12 +332,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 // If the user is not signing up, just validate if any value is entered, not format;
                 // Because they may have a legacy account before we started enforcing complexity
                 if (!_showSignup && (value == null || value.isEmpty)) {
-                  return 'Please enter a password';
+                  return context.l10n.pleaseEnterValidPassword;
                 } else if (_showSignup &&
                     (value == null ||
                         value.isEmpty ||
                         !isPasswordValid(value))) {
-                  return 'Please enter a valid password';
+                  return context.l10n.pleaseEnterPassword;
                 }
                 return null;
               },
@@ -341,29 +345,25 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             SizedBox(height: 5),
             if (_showSignup)
               Text(
-                'Must be at least 12 characters long, and contain one lowercase and one uppercase letter',
+                context.l10n.passwordRequirements,
                 style: context.theme.textTheme.bodySmall,
               ),
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
-                child: Text.rich(
-                  TextSpan(
-                    text: 'Forgot your password?',
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        // We have to disable password validation for now so the form validation can succeed without it
-                        setState(() {
-                          _ignorePassword = true;
-                        });
-                        if (_formKey.currentState!.validate()) {
-                          _resetPassword();
-                        }
-                      },
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
+                child: ActionButton(
+                  // key: SignInOptionsContent.buttonSubmitKey,
+                  onPressed: () {
+                    // We have to disable password validation for now so the form validation can succeed without it
+                    setState(() {
+                      _ignorePassword = true;
+                    });
+                    if (_formKey.currentState!.validate()) {
+                      _resetPassword();
+                    }
+                  },
+                  type: ActionButtonType.text,
+                  text: context.l10n.forgotPassword,
                 ),
               ),
             SizedBox(height: 9),
@@ -388,7 +388,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               minWidth: minWidth,
               textColor: Colors.white,
               color: Colors.black,
-              text: !_showSignup ? 'Log in' : 'Sign up',
+              text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
             ),
           ],
         ),
@@ -397,7 +397,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Align(
         alignment: Alignment.center,
         child: Text(
-          'or',
+          context.l10n.or,
           style: context.theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -417,7 +417,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             height: 22,
           ),
         ),
-        text: 'Continue with Google',
+        text: _showSignup
+            ? context.l10n.signUpWithGoogle
+            : context.l10n.signInWithGoogle,
       ),
     ];
   }
@@ -428,11 +430,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
-            text:
-                'By signing in, registering, or using ${Environment.appName}, I agree to be bound by the ',
+            text: context.l10n.termsAgreementPrefix(Environment.appName),
           ),
           TextSpan(
-            text: '${Environment.appName} Terms of Service',
+            text: context.l10n.termsOfService(Environment.appName),
             recognizer: TapGestureRecognizer()
               ..onTap = () => launch(Environment.termsUrl),
             style: context.theme.textTheme.bodyMedium?.copyWith(

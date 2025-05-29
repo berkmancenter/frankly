@@ -11,6 +11,7 @@ import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AppShareData {
   /// Indicates page path.
@@ -73,7 +74,6 @@ class _AppShareDialogState extends State<AppShareDialog> {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: context.theme.colorScheme.primary,
       child: Container(
         padding: EdgeInsets.all(isMobile ? 20 : 40),
         width: responsiveLayoutService.getDynamicSize(context, 600),
@@ -90,7 +90,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                     padding: const EdgeInsets.all(6),
                     child: Icon(
                       Icons.close,
-                      color: context.theme.colorScheme.onPrimary,
+                      color: context.theme.colorScheme.onSurfaceVariant,
                       size: 30,
                     ),
                   ),
@@ -102,9 +102,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
               HeightConstrainedText(
                 title,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimary,
-                ),
+                style: AppTextStyle.body,
               ),
               SizedBox(height: 10),
             ],
@@ -113,11 +111,9 @@ class _AppShareDialogState extends State<AppShareDialog> {
               textAlign: TextAlign.center,
               style: isMobile
                   ? AppTextStyle.bodyMedium
-                      .copyWith(color: context.theme.colorScheme.onPrimary)
                   : AppTextStyle.body.copyWith(
                       fontSize:
                           responsiveLayoutService.getDynamicSize(context, 35),
-                      color: context.theme.colorScheme.onPrimary,
                     ),
             ),
             SizedBox(height: isMobile ? 8 : 18),
@@ -129,8 +125,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
                 children: [
                   HeightConstrainedText(
                     'Share',
-                    style: AppTextStyle.body
-                        .copyWith(color: context.theme.colorScheme.onPrimary),
+                    style: AppTextStyle.body,
                   ),
                   _buildShareSection(),
                   _buildFinishButton(),
@@ -147,9 +142,7 @@ class _AppShareDialogState extends State<AppShareDialog> {
   Widget _buildFinishButton() => ActionButton(
         onPressed: () => Navigator.of(context).pop(),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-        text: 'Finish',
-        color: context.theme.colorScheme.onPrimary,
-        textColor: context.theme.colorScheme.primary,
+        text: context.l10n.finish,
       );
 
   Widget _buildShareSection() => LayoutBuilder(
@@ -184,7 +177,8 @@ class _AppShareDialogState extends State<AppShareDialog> {
               }
             },
             iconColor: widget.iconColor ?? context.theme.colorScheme.primary,
-            iconBackgroundColor: widget.iconBackgroundColor,
+            iconBackgroundColor: widget.iconBackgroundColor ??
+                context.theme.colorScheme.surfaceContainer,
             buttonPadding: padding,
             size: size,
             iconSize: min(size - 16, 20),

@@ -80,8 +80,8 @@ class _CustomTabState extends State<_CustomTab> {
           border: Border(
             bottom: BorderSide(
               color: shouldHighlight
-                  ? context.theme.colorScheme.primary
-                  : context.theme.colorScheme.secondary,
+                  ? context.theme.colorScheme.onSurface
+                  : context.theme.colorScheme.onSurfaceVariant,
               width: shouldHighlight ? 5 : 3,
             ),
           ),
@@ -99,17 +99,17 @@ class _CustomTabState extends State<_CustomTab> {
                     widget.tab.tab.toUpperCase(),
                     maxLines: 1,
                     softWrap: false,
-                    style: AppTextStyle.bodyMedium
+                    style: context.theme.textTheme.titleSmall!
                         .copyWith(color: Colors.transparent),
                   ),
                   HeightConstrainedText(
                     widget.tab.tab.toUpperCase(),
                     maxLines: 1,
                     softWrap: false,
-                    style: AppTextStyle.bodyMedium.copyWith(
+                    style: context.theme.textTheme.titleSmall!.copyWith(
                       color: shouldHighlight
-                          ? context.theme.colorScheme.primary
-                          : context.theme.colorScheme.secondary,
+                          ? context.theme.colorScheme.onSurface
+                          : context.theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],

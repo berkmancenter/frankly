@@ -144,8 +144,8 @@ class _ParticipantsListState extends State<ParticipantsList> {
       }
       return HeightConstrainedText(
         text,
-        style: AppTextStyle.eyebrowSmall
-            .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+        style: context.theme.textTheme.bodyMedium!
+            .copyWith(color: context.theme.colorScheme.onSurface),
       );
     }
   }
@@ -158,8 +158,8 @@ class _ParticipantsListState extends State<ParticipantsList> {
 
           return HeightConstrainedText(
             showName ? name : '1 person',
-            style: AppTextStyle.eyebrowSmall
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+            style: context.theme.textTheme.bodyMedium!
+                .copyWith(color: context.theme.colorScheme.onSurface),
           );
         },
       );

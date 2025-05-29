@@ -17,10 +17,10 @@ import 'package:provider/provider.dart';
 /// This is the card for the upcoming events shown on the Home page.
 ///
 /// Tapping on it navigates to the event page.
-class EventWidget extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final Event event;
 
-  const EventWidget(
+  const EventCard(
     this.event, {
     Key? key,
   }) : super(key: key);
@@ -38,12 +38,12 @@ class EventWidget extends StatelessWidget {
           builder: (context) {
             final eventProvider = EventProvider.watch(context);
             return CustomStreamBuilder<bool>(
-              entryFrom: 'event_widget.build_event',
+              entryFrom: 'event_card.build_event',
               stream: eventProvider.hasParticipantAttendedPrerequisiteFuture
                   .asStream(),
               builder: (_, __) {
                 return CustomStreamBuilder<Event>(
-                  entryFrom: 'event_widget.build_event',
+                  entryFrom: 'event_card.build_event',
                   stream: eventProvider.eventStream,
                   builder: (context, _) {
                     final isAdmin = Provider.of<UserDataService>(context)
@@ -74,17 +74,12 @@ class EventWidget extends StatelessWidget {
                                     eventId: event.id,
                                   ),
                                 ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: isDisabled
-                                ? context.theme.colorScheme.surfaceContainer
-                                    .withOpacity(0.8)
-                                : context.theme.colorScheme.surfaceContainer,
-                            boxShadow: [
-                              if (!isDisabled) AppDecoration.lightBoxShadow,
-                            ],
-                          ),
+                        child: Card.outlined(
+                          margin: EdgeInsets.zero,
+                          color: isDisabled
+                              ? context.theme.colorScheme.surfaceContainer
+                              : context
+                                  .theme.colorScheme.surfaceContainerLowest,
                           clipBehavior: Clip.hardEdge,
                           child: _buildCardContent(
                             context: context,
@@ -107,81 +102,87 @@ class EventWidget extends StatelessWidget {
     required BuildContext context,
     required bool isDisabled,
   }) =>
-      Row(
-        children: [
-          if (event.scheduledTime != null)
-            VerticalTimeAndDateIndicator(
-              shadow: false,
-              isDisabled: isDisabled,
-              time: DateTime.fromMillisecondsSinceEpoch(
-                (event.scheduledTime?.millisecondsSinceEpoch ?? 0),
-              ),
-            )
-          else
-            SizedBox(width: 100),
-          Stack(
-            children: [
-              Container(
-                width: 90,
-                height: 90,
-                clipBehavior: Clip.hardEdge,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: EventOrTemplatePicture(
-                  key: Key(event.id),
-                  event: event,
-                  height: 100,
+      Container(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            if (event.scheduledTime != null)
+              VerticalTimeAndDateIndicator(
+                shadow: false,
+                padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
+                isDisabled: isDisabled,
+                time: DateTime.fromMillisecondsSinceEpoch(
+                  (event.scheduledTime?.millisecondsSinceEpoch ?? 0),
                 ),
-              ),
-              if (isDisabled)
-                SizedBox(
+              )
+            else
+              SizedBox(width: 100),
+            Stack(
+              children: [
+                Container(
                   width: 90,
                   height: 90,
-                ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  HeightConstrainedText(
-                    event.title ?? 'Scheduled event',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.headline4.copyWith(
-                      color: isDisabled
-                          ? context.theme.colorScheme.primary.withOpacity(0.5)
-                          : context.theme.colorScheme.primary,
-                    ),
+                  clipBehavior: Clip.hardEdge,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  child: EventOrTemplatePicture(
+                    key: Key(event.id),
+                    event: event,
+                    height: 100,
                   ),
-                  SizedBox(height: 20.0),
-                  if (isDisabled)
-                    PrerequisiteBadge(
-                      textStyle: AppTextStyle.eyebrowSmall,
-                    )
-                  else ...[
-                    if (event.isLiveStream)
-                      HeightConstrainedText(
-                        'Livestream',
-                        style: AppTextStyle.bodySmall.copyWith(
-                          color: context.theme.colorScheme.onSurface
-                              .withOpacity(0.38),
-                        ),
+                ),
+                if (isDisabled)
+                  SizedBox(
+                    width: 90,
+                    height: 90,
+                  ),
+              ],
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      event.title ?? 'Scheduled event',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.theme.textTheme.titleMedium!.copyWith(
+                        color: isDisabled
+                            ? context.theme.colorScheme.onSurface
+                                .withOpacity(0.75)
+                            : context.theme.colorScheme.onSurface,
                       ),
-                    EventPageParticipantsList(
-                      event,
-                      iconSize: 30,
-                      showFullParticipantCount: true,
                     ),
+                    SizedBox(height: 20.0),
+                    if (isDisabled)
+                      PrerequisiteBadge(
+                        textStyle: context.theme.textTheme.labelMedium,
+                      )
+                    else ...[
+                      if (event.isLiveStream)
+                        HeightConstrainedText(
+                          'Livestream',
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            color: context.theme.colorScheme.onSurface
+                                .withOpacity(0.75),
+                          ),
+                        ),
+                      EventPageParticipantsList(
+                        event,
+                        iconSize: 30,
+                        showFullParticipantCount: true,
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 }

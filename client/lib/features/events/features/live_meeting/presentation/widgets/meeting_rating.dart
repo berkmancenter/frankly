@@ -23,7 +23,6 @@ class MeetingRating extends StatefulWidget {
   }) {
     return showCustomDialog<void>(
       builder: (innerContext) => Dialog(
-        backgroundColor: innerContext.theme.colorScheme.primary,
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ConstrainedBox(
@@ -49,16 +48,13 @@ class MeetingRating extends StatefulWidget {
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
                       text: 'No thanks',
-                      color: Colors.transparent,
-                      textColor: innerContext.theme.colorScheme.onPrimary,
+                      type: ActionButtonType.text,
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
                       sendingIndicatorAlign:
                           ActionButtonSendingIndicatorAlign.none,
-                      text: 'NEXT',
-                      color: innerContext.theme.colorScheme.onPrimary,
-                      textColor: innerContext.theme.colorScheme.primary,
+                      text: 'Next',
                     ),
                   ],
                 ),
@@ -109,10 +105,10 @@ class _MeetingRatingState extends State<MeetingRating> {
                 currentRating != null && value < currentRating
                     ? Icons.star
                     : Icons.star_outline,
-                color: context.theme.colorScheme.onPrimary,
+                color: context.theme.colorScheme.onSurface,
               );
             },
-            unratedColor: context.theme.colorScheme.surfaceContainer,
+            unratedColor: context.theme.colorScheme.outlineVariant,
             onRatingUpdate: (rating) => alertOnError(context, () async {
               setState(() => _currentRating = rating);
               final event = context.read<EventProvider>().event;
@@ -146,7 +142,7 @@ class _MeetingRatingState extends State<MeetingRating> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.close,
-            color: context.theme.colorScheme.onPrimary,
+            color: context.theme.colorScheme.onSurfaceVariant,
             size: 35,
           ),
         ),
@@ -169,10 +165,10 @@ class _MeetingRatingState extends State<MeetingRating> {
           Padding(
             padding: const EdgeInsets.only(top: 7, bottom: 15),
             child: HeightConstrainedText(
-              'YOU LEFT THE EVENT',
+              'You left the event.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: context.theme.colorScheme.onPrimary,
+                color: context.theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -190,7 +186,6 @@ class _MeetingRatingState extends State<MeetingRating> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.headline1.copyWith(
-                      color: context.theme.colorScheme.onPrimary,
                       // Trying to keep from wrapping at the default dialog size due to:
                       // https://github.com/flutter/flutter/issues/89586
                       fontSize: 36,
@@ -201,11 +196,11 @@ class _MeetingRatingState extends State<MeetingRating> {
                   padding: const EdgeInsets.only(top: 15),
                   color: Colors.transparent,
                   child: HeightConstrainedText(
-                    'Provide feedback for ${CommunityProvider.read(context).community.name}',
+                    'Please take a moment to provide feedback for ${CommunityProvider.read(context).community.name}.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      color: context.theme.colorScheme.onPrimary,
+                      color: context.theme.colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -220,7 +215,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                         onTap: () => launch(ratingSurveyUrl),
                         child: HeightConstrainedText(
                           'Please provide additional feedback for '
-                          '${CommunityProvider.read(context).community.name} here',
+                          '${CommunityProvider.read(context).community.name} here.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.blueAccent,

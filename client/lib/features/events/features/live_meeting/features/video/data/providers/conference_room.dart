@@ -20,6 +20,7 @@ import 'package:data_models/events/event.dart' hide Participant;
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_html/js_util.dart' as js_util;
 import 'package:universal_html/html.dart' as html;
@@ -391,7 +392,7 @@ class ConferenceRoom with ChangeNotifier {
       if (!granted) {
         await showAlert(
           navigatorState.context,
-          'Error enabling camera. Please ensure you have granted permission',
+          'Error enabling camera. Please ensure you have granted permission.',
         );
         return;
       }
@@ -424,7 +425,7 @@ class ConferenceRoom with ChangeNotifier {
       if (!granted) {
         await showAlert(
           navigatorState.context,
-          'Error enabling microphone. Please ensure you have granted permission',
+          'Error enabling microphone. Please ensure you have granted permission.',
         );
         return;
       }
@@ -546,7 +547,7 @@ class ConferenceRoom with ChangeNotifier {
 
   Future<void> _promptToTurnOnVideo() async {
     final enableAudioVideo = await ConfirmDialog(
-      title: 'Turn on Audio/Video?',
+      title: appLocalizationService.getLocalization().turnOnAudioVideo,
       mainText: 'Would you like to turn on audio and video?',
     ).show();
     if (enableAudioVideo) {

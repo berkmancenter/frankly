@@ -7,7 +7,7 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/presentation/widgets/about_section.dart';
 import 'package:client/features/community/presentation/widgets/carousel/carousel_initializer.dart';
-import 'package:client/features/community/presentation/widgets/event_widget.dart';
+import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/presentation/widgets/edit_community_button.dart';
 import 'package:client/features/community/data/providers/community_home_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -17,6 +17,7 @@ import 'package:client/features/community/presentation/widgets/donate_widget.dar
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
@@ -193,7 +194,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           ],
           if (showDonation)
             ThickOutlineButton(
-              text: 'Donate',
+              text: context.l10n.donate,
               eventName: 'donate_pressed',
               backgroundColor: Colors.white,
               onPressed: () => guardSignedIn(
@@ -270,7 +271,7 @@ class _CommunityHomeState extends State<CommunityHome> {
               ),
               SizedBox(height: 10),
               for (var i = 0; i < min(events.length, _eventsToShow); i++) ...[
-                EventWidget(events[i]),
+                EventCard(events[i]),
                 SizedBox(height: 20),
               ],
               if (events.length > _eventsToShow)
@@ -315,7 +316,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           return EmptyPageContent(
             type: EmptyPageType.events,
             subtitleText: (communityHasEvents ?? true)
-                ? 'No events'
+                ? context.l10n.noEventsFound
                 : 'Create your first event!',
             onButtonPress: () => CreateEventDialog.show(context),
           );

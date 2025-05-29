@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
+import 'package:flutter/material.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is the user profile icon. If hovered over (or tapped on mobile / touchscreen) a menu will
 /// appear above or below it with options to select from.
@@ -21,10 +22,10 @@ class UserProfileNavigation extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UserProfileNavigationState createState() => _UserProfileNavigationState();
+  UserProfileNavigationState createState() => UserProfileNavigationState();
 }
 
-class _UserProfileNavigationState extends State<UserProfileNavigation> {
+class UserProfileNavigationState extends State<UserProfileNavigation> {
   final _buttonGlobalKey = GlobalKey();
   bool _isExiting = false;
   bool _isShowing = false;
@@ -47,8 +48,8 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
       ),
       Offset.zero & overlay.size,
     );
-
     _isExiting = false;
+
     await showCustomDialog(
       context: context,
       barrierColor: context.theme.colorScheme.scrim.withScrimOpacity,
@@ -84,8 +85,11 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
                 : position.top + position.toSize(overlay.size).height,
             child: MouseRegion(
               child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: context.theme.colorScheme.surfaceContainerLowest,
+                ),
                 constraints: BoxConstraints(maxHeight: 400),
-                color: context.theme.colorScheme.surfaceContainerLowest,
                 child: ProfileNavigationList(),
               ),
             ),
@@ -102,31 +106,23 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
   }
 
   Widget _buildProfileButton() {
-    return CustomInkWell(
-      onHover: (hover) async {
-        if (hover && !_isShowing) {
-          return _profileActivated();
-        }
-      },
-      // Register on tap events in case of touchscreens
-      onTap: _profileActivated,
-      child: Center(
-        child: Semantics(
-          button: true,
-          label: 'Profile Button',
-          child: Container(
-            key: _buttonGlobalKey,
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: UserProfileChip(
-                userId: Provider.of<UserService>(context).currentUserId,
-                customAction: _profileActivated,
-                showName: false,
-                imageHeight: 38,
-              ),
-            ),
+    return Semantics(
+      button: true,
+      label: context.l10n.profileButton,
+      child: CustomInkWell(
+        onHover: (hover) async {
+          if (hover && !_isShowing) {
+            return _profileActivated();
+          }
+        },
+        child: IconButton(
+          key: _buttonGlobalKey,
+          onPressed: _profileActivated,
+          icon: UserProfileChip(
+            userId: Provider.of<UserService>(context).currentUserId,
+            customAction: _profileActivated,
+            alignment: Alignment.center,
+            showName: false,
           ),
         ),
       ),
@@ -140,31 +136,6 @@ class _UserProfileNavigationState extends State<UserProfileNavigation> {
 }
 
 class ProfileNavigationList extends StatelessWidget {
-  Widget _buildNavButton(
-    BuildContext context,
-    String text,
-    void Function()? onTap, {
-    Color? color,
-  }) {
-    return CustomInkWell(
-      onTap: () {
-        Navigator.of(context).pop();
-
-        if (onTap != null) onTap();
-      },
-      hoverColor: Theme.of(context).primaryColor.withOpacity(0.3),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        color: color,
-        alignment: Alignment.centerLeft,
-        child: HeightConstrainedText(
-          text,
-          textAlign: TextAlign.start,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final userId = userService.currentUserId;
@@ -173,28 +144,37 @@ class ProfileNavigationList extends StatelessWidget {
       shrinkWrap: true,
       children: [
         if (userId != null)
-          _buildNavButton(
-            context,
-            'My Profile',
-            () => routerDelegate.beamTo(
+           ActionButton(
+            type: ActionButtonType.text,
+            text: context.l10n.myProfile,
+            onPressed: () => routerDelegate.beamTo(
               UserSettingsLocation(
                 initialSection: UserSettingsSection.profile,
               ),
             ),
+            expand: true,
+            textStyle: context.theme.textTheme.bodyMedium,
+            contentAlign: ActionButtonContentAlignment.start,
           ),
-        _buildNavButton(
-          context,
-          'My Events',
-          () => routerDelegate.beamTo(
+          ActionButton(
+          type: ActionButtonType.text,
+          text: context.l10n.myEvents,
+          onPressed: () => routerDelegate.beamTo(
             UserSettingsLocation(
               initialSection: UserSettingsSection.events,
             ),
           ),
+          expand: true,
+          textStyle: context.theme.textTheme.bodyMedium,
+          contentAlign: ActionButtonContentAlignment.start,
         ),
-        _buildNavButton(
-          context,
-          'Sign Out',
-          () => userService.signOut(),
+         ActionButton(
+          type: ActionButtonType.text,
+          text: context.l10n.signOut,
+          onPressed: () => userService.signOut(),
+          expand: true,
+          textStyle: context.theme.textTheme.bodyMedium,
+          contentAlign: ActionButtonContentAlignment.start,
         ),
       ],
     );

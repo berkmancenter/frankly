@@ -16,6 +16,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class Announcements extends StatefulWidget {
   const Announcements._();
@@ -44,7 +45,7 @@ class _AnnouncementsState extends State<Announcements> {
       onPressed: () => CreateAnnouncementDialog.show(
         communityId: context.read<CommunityProvider>().communityId,
       ),
-      text: 'New Announcement',
+      text: context.l10n.newAnnouncement,
     );
   }
 
@@ -57,7 +58,7 @@ class _AnnouncementsState extends State<Announcements> {
             Expanded(
               child: HeightConstrainedText(
                 announcement.title ?? 'Announcement',
-                style: body.copyWith(fontWeight: FontWeight.w700),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
             if (Provider.of<CommunityPermissionsProvider>(context)
@@ -103,10 +104,7 @@ class _AnnouncementsState extends State<Announcements> {
         SelectableLinkify(
           text: announcement.message ?? '',
           textAlign: TextAlign.left,
-          style: body.copyWith(
-            fontSize: 14,
-            color: context.theme.colorScheme.onPrimaryContainer,
-          ),
+          style: context.theme.textTheme.bodyMedium,
           options: LinkifyOptions(looseUrl: true),
           onOpen: (link) => launch(link.url),
         ),
@@ -117,7 +115,7 @@ class _AnnouncementsState extends State<Announcements> {
 
   Widget _buildAnnouncements(List<Announcement> announcements) {
     if (announcements.isEmpty) {
-      return HeightConstrainedText('No announcements yet.');
+      return HeightConstrainedText(context.l10n.noAnnouncementsYet);
     }
 
     return SingleChildScrollView(

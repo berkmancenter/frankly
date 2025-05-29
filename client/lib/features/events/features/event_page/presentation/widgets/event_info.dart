@@ -19,6 +19,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
 import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
@@ -48,6 +49,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
@@ -221,7 +223,7 @@ class _EventInfoState extends State<EventInfo> {
 
   Future<void> _showRefreshGuideDialog() async {
     await ConfirmDialog(
-      title: 'Are you sure you want to refresh the guide?',
+      title: context.l10n.confirmRefreshGuide,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
       confirmText: 'Yes, refresh',
@@ -321,6 +323,8 @@ class _EventInfoState extends State<EventInfo> {
 
   Widget _buildEditEvent() {
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -349,6 +353,8 @@ class _EventInfoState extends State<EventInfo> {
 
   Widget _buildSettingIcon() {
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -468,7 +474,7 @@ class _EventInfoState extends State<EventInfo> {
             color: context.theme.colorScheme.onPrimary,
           ),
         ),
-        title: 'Prerequisite Required',
+        title: context.l10n.prereqRequired,
       );
     } else if (isBanned) {
       return WarningInfo(
@@ -477,8 +483,8 @@ class _EventInfoState extends State<EventInfo> {
           size: 20,
           color: context.theme.colorScheme.error,
         ),
-        title: 'Banned',
-        message: 'You were removed from this event and cannot rejoin.',
+        title: context.l10n.prereqRequired,
+        message: context.l10n.removedFromEvent,
       );
     } else if (isLocked) {
       return WarningInfo(
@@ -487,8 +493,8 @@ class _EventInfoState extends State<EventInfo> {
           size: 20,
           color: context.theme.colorScheme.error,
         ),
-        title: 'Locked',
-        message: 'This event is locked',
+        title: context.l10n.locked,
+        message: context.l10n.eventIsLocked,
       );
     } else if (showEnterEventButton) {
       return PeriodicBuilder(
@@ -500,7 +506,6 @@ class _EventInfoState extends State<EventInfo> {
         height: 64,
         text: 'FULL',
         expand: true,
-        color: Colors.blueGrey,
       );
     } else if (showJoinButton) {
       return Column(
@@ -515,8 +520,6 @@ class _EventInfoState extends State<EventInfo> {
               );
             }),
             expand: true,
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).colorScheme.secondary,
             text: 'RSVP',
           ),
           if (canShowFollowCommunity) ...[
@@ -577,14 +580,14 @@ class _EventInfoState extends State<EventInfo> {
           Icon(
             Icons.close,
             size: 20,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: HeightConstrainedText(
               'Cancel event',
-              style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -604,14 +607,14 @@ class _EventInfoState extends State<EventInfo> {
           Icon(
             Icons.close,
             size: 20,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: Text(
               'Cancel',
-              style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -662,8 +665,8 @@ class _EventInfoState extends State<EventInfo> {
             SizedBox(width: 6),
             HeightConstrainedText(
               text,
-              style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
             SizedBox(width: 20),
@@ -693,7 +696,7 @@ class _EventInfoState extends State<EventInfo> {
         Flexible(
           child: Text(
             'Follow ${Provider.of<CommunityProvider>(context).community.name} for access to all events and resources.',
-            style: AppTextStyle.bodyMedium,
+            style: context.theme.textTheme.bodyMedium,
           ),
         ),
       ],
@@ -746,20 +749,8 @@ class _EventInfoState extends State<EventInfo> {
         eventProvider.event.isHosted || canEditCommunity;
     final isMobile = responsiveLayoutService.isMobile(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: context.theme.colorScheme.surfaceContainerLowest,
-        borderRadius: isMobile ? null : BorderRadius.circular(20),
-        boxShadow: isMobile
-            ? null
-            : [
-                BoxShadow(
-                  color: context.theme.colorScheme.scrim.withScrimOpacity,
-                  blurRadius: 34,
-                  offset: Offset(0, 14),
-                ),
-              ],
-      ),
+    return Card.outlined(
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -776,8 +767,7 @@ class _EventInfoState extends State<EventInfo> {
                   children: [
                     VerticalTimeAndDateIndicator(
                       shadow: false,
-                      padding:
-                          EdgeInsets.only(left: isMobile ? 0 : 16, right: 16),
+                      padding: EdgeInsets.only(right: 24),
                       time: DateTime.fromMillisecondsSinceEpoch(
                         (eventProvider
                                 .event.scheduledTime?.millisecondsSinceEpoch ??
@@ -812,7 +802,7 @@ class _EventInfoState extends State<EventInfo> {
                       ),
                   ],
                 ),
-                SizedBox(height: isMobile ? 0 : 20),
+                SizedBox(height: 20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -827,7 +817,7 @@ class _EventInfoState extends State<EventInfo> {
                       child: HeightConstrainedText(
                         _event.title ?? '',
                         maxLines: 3,
-                        style: AppTextStyle.headline2Light.copyWith(
+                        style: context.theme.textTheme.headlineMedium!.copyWith(
                           color: Theme.of(context).primaryColor,
                           decoration: _event.status == EventStatus.canceled
                               ? TextDecoration.lineThrough
@@ -850,9 +840,10 @@ class _EventInfoState extends State<EventInfo> {
                             }
                             return Text(
                               '#${definition.title} ',
-                              style: AppTextStyle.body.copyWith(
-                                color: context
-                                    .theme.colorScheme.onPrimaryContainer,
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
+                                color:
+                                    context.theme.colorScheme.onSurfaceVariant,
                               ),
                             );
                           },
@@ -888,12 +879,15 @@ class _EventInfoState extends State<EventInfo> {
                           onPressed: widget.onMessagePressed,
                           toolTipText: 'Message',
                           icon: CupertinoIcons.paperplane,
+                          color: context.theme.colorScheme.surfaceContainer,
+                          iconColor: context.theme.colorScheme.onSurface,
                         ),
                     ],
                   ),
                 ),
                 SizedBox(height: 10),
                 _buildJoinEventButton(),
+                SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -958,8 +952,8 @@ class _EventInfoState extends State<EventInfo> {
         SizedBox(width: 6),
         Text(
           type,
-          style: AppTextStyle.body
-              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+          style: context.theme.textTheme.bodyMedium!
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
       ],
     );

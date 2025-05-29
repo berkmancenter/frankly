@@ -19,6 +19,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_settings.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
@@ -183,7 +184,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     ].contains(LiveMeetingProvider.watch(context).activeUiState);
     final showBottomBar = ConferenceRoom.read(context) != null;
     return Scaffold(
-      backgroundColor: context.theme.colorScheme.primary,
+      backgroundColor: context.theme.colorScheme.surface,
       appBar: showAppBar ? _buildAppBar() : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
@@ -217,7 +218,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: Container(
-        color: context.theme.colorScheme.primary,
+        color: context.theme.colorScheme.surfaceContainer,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -230,11 +231,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     if (eventTabsController.widget.enableGuide &&
                         !suppressGuide)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.guideDarkBlue(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.book_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -250,11 +249,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableChat)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.chatBubble3White(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.forum_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -270,11 +267,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableUserSubmittedAgenda)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.lightBulbWhite(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.lightbulb_outline_rounded,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -301,11 +296,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableAdminPanel)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.gearWhite(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.settings_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -320,11 +313,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         },
                       ),
                     AppClickableWidget(
-                      child: ProxiedImage(
-                        null,
-                        asset: AppAsset.needHelpWhite(),
-                        width: 30,
-                        height: 30,
+                      child: Icon(
+                        Icons.help_outline_rounded,
+                        size: 30,
                       ),
                       onTap: () => GetHelpButton.getHelp(context),
                     ),
@@ -391,7 +382,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         break;
     }
 
-    return GlobalKeyedSubtree(label: 'primary-content', child: child);
+    return GlobalKeyedSubtree(label: context.l10n.primaryContent, child: child);
   }
 
   Widget _buildWaitingRoom() {
@@ -513,7 +504,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
           errorMessage: 'Something went wrong loading room. Please refresh!',
           loadingMessage: 'Connecting to room...',
-          textStyle: TextStyle(color: context.theme.colorScheme.onPrimary),
+          textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
           builder: (_, __) => Stack(
             children: [
               _buildMeeting(),
@@ -677,6 +668,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       participantAgendaItemDetailsList,
       presentParticipantIds,
     );
+    // Still using the format directly as it's just displaying numbers with a divider
+    // No specific localization string needed as this is a counter format
     return Text('$readyToMoveOnCount/${presentParticipantIds.length}');
   }
 
@@ -716,14 +709,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: context.theme.colorScheme.surfaceContainerLowest,
+          color: context.theme.colorScheme.surfaceContainerHighest,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Divider(
-                height: 1,
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,
@@ -970,17 +959,11 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
 
     final localOnClose = widget.onClose;
     final isAdmin = selectedTab == TabType.admin;
-    final Color backgroundColor;
-    if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
-      backgroundColor = context.theme.colorScheme.surface;
-    } else if (isAdmin) {
-      backgroundColor = context.theme.colorScheme.primary;
-    } else {
-      backgroundColor = context.theme.colorScheme.surfaceContainerLowest;
-    }
+
     return PointerInterceptor(
       child: Container(
         decoration: BoxDecoration(
+          color: context.theme.colorScheme.surfaceContainer,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -992,7 +975,6 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
               color: Colors.black.withOpacity(0.5),
             ),
           ],
-          color: backgroundColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

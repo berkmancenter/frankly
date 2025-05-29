@@ -10,6 +10,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum PrerequisiteTemplateWidgetType {
   overview,
@@ -81,7 +82,7 @@ class _PrerequisiteTemplateWidgetPageState
 
   Future<void> _showDeleteDialog() async {
     await ConfirmDialog(
-      title: 'Delete prerequisite template',
+      title: context.l10n.deletePrerequisiteTemplate,
       mainText: 'Are you sure want to delete?',
       onConfirm: (context) {
         Navigator.pop(context);
@@ -137,7 +138,7 @@ class _PrerequisiteTemplateWidgetPageState
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: widget.isWhiteBackground
-            ? context.theme.colorScheme.surface
+            ? context.theme.colorScheme.surfaceContainerLowest
             : context.theme.colorScheme.primary,
       ),
       child: Column(
@@ -145,9 +146,9 @@ class _PrerequisiteTemplateWidgetPageState
         children: [
           HeightConstrainedText(
             'Template',
-            style: AppTextStyle.subhead.copyWith(
+            style: context.theme.textTheme.titleSmall!.copyWith(
               color: widget.isWhiteBackground
-                  ? context.theme.colorScheme.primary
+                  ? context.theme.colorScheme.onSurface
                   : context.theme.colorScheme.onPrimary,
             ),
           ),
@@ -159,7 +160,8 @@ class _PrerequisiteTemplateWidgetPageState
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                      color: context.theme.colorScheme.outline,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: CustomStreamBuilder<List<Template>>(
@@ -190,7 +192,8 @@ class _PrerequisiteTemplateWidgetPageState
                         iconSize: 24,
                         elevation: 16,
                         style: TextStyle(
-                            color: context.theme.colorScheme.onPrimary),
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
                         borderRadius: BorderRadius.circular(10),
                         underline: SizedBox.shrink(),
                         iconEnabledColor: context.theme.colorScheme.primary,
@@ -209,9 +212,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   templates.isEmpty
                                       ? 'No Templates Available'
                                       : 'Choose Template',
-                                  style: AppTextStyle.body.copyWith(
-                                    color: context.theme.colorScheme.primary,
-                                  ),
+                                  style: context.theme.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -225,9 +226,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     template.title ?? '',
-                                    style: AppTextStyle.body.copyWith(
-                                      color: context.theme.colorScheme.primary,
-                                    ),
+                                    style: context.theme.textTheme.bodyMedium,
                                   ),
                                 ),
                               ),
@@ -246,9 +245,10 @@ class _PrerequisiteTemplateWidgetPageState
                                   (templates ?? []).isEmpty
                                       ? 'No Templates Available'
                                       : 'Choose Template',
-                                  style: AppTextStyle.body.copyWith(
+                                  style: context.theme.textTheme.bodyMedium!
+                                      .copyWith(
                                     color: widget.isWhiteBackground
-                                        ? context.theme.colorScheme.primary
+                                        ? context.theme.colorScheme.onSurface
                                         : context.theme.colorScheme.onPrimary,
                                   ),
                                 ),
@@ -264,9 +264,10 @@ class _PrerequisiteTemplateWidgetPageState
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     template.title ?? '',
-                                    style: AppTextStyle.body.copyWith(
+                                    style: context.theme.textTheme.bodyMedium!
+                                        .copyWith(
                                       color: widget.isWhiteBackground
-                                          ? context.theme.colorScheme.primary
+                                          ? context.theme.colorScheme.onSurface
                                           : context.theme.colorScheme.onPrimary,
                                     ),
                                   ),
@@ -322,7 +323,7 @@ class _PrerequisiteTemplateWidgetPageState
                 border: Border.all(
                   width: 1,
                   color: widget.isWhiteBackground
-                      ? context.theme.colorScheme.onPrimaryContainer
+                      ? context.theme.colorScheme.outline
                       : context.theme.colorScheme.primary,
                 ),
               ),
@@ -336,9 +337,10 @@ class _PrerequisiteTemplateWidgetPageState
                         Expanded(
                           child: Text(
                             'Prerequisite Template',
-                            style: AppTextStyle.subhead.copyWith(
+                            style:
+                                context.theme.textTheme.titleMedium!.copyWith(
                               color: widget.isWhiteBackground
-                                  ? context.theme.colorScheme.primary
+                                  ? context.theme.colorScheme.onSurface
                                   : context.theme.colorScheme.onPrimary,
                             ),
                           ),

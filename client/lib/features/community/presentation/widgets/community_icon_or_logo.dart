@@ -3,15 +3,13 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
-import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:data_models/community/community.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 /// This widget either shows the app icon or a logo of the selected community, if one is selected.
@@ -37,23 +35,22 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     if (currentCommunity != null && withNav && showOrganizationIcon) {
-      return CustomInkWell(
-        boxShape: BoxShape.circle,
-        onTap: () => routerDelegate.beamTo(
+      return IconButton(
+        onPressed: () => routerDelegate.beamTo(
           CommunityPageRoutes(
             communityDisplayId: currentCommunity.displayId,
           ).communityHome,
         ),
-        child: CommunityCircleIcon(
+        icon: CommunityCircleIcon(
           currentCommunity,
           withBorder: isMobile,
           isTooltipShown: false,
         ),
       );
     } else if (withNav) {
-      return CustomInkWell(
-        onTap: () => routerDelegate.beamTo(HomeLocation()),
-        child: _buildLogo(context: context, isMobile: isMobile),
+      return IconButton(
+        onPressed: () => routerDelegate.beamTo(HomeLocation()),
+        icon: _buildLogo(context: context, isMobile: isMobile),
       );
     } else if (currentCommunity != null) {
       return CommunityCircleIcon(
@@ -75,7 +72,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
           children: [
             // App logo
             Semantics(
-              label: 'Frankly Logo',
+              label: context.l10n.franklyLogo,
               child: Image.asset(
                 AppAsset.kLogoPng.path,
                 width: 100,
@@ -89,7 +86,7 @@ class CurrentCommunityIconOrLogo extends StatelessWidget {
             /*    
             SvgPicture.asset(
               AppAsset.kLogoSvg.path, 
-              semanticsLabel: 'Frankly Logo',
+              semanticsLabel: context.l10n.franklyLogo,
               width: 100,
               height: isMobile ? 40 : 80,         
               fit: BoxFit.contain,
@@ -129,7 +126,7 @@ class CommunityCircleIcon extends StatelessWidget {
   const CommunityCircleIcon(
     this.community, {
     this.withBorder = false,
-    this.imageHeight = 40,
+    this.imageHeight = 42,
     this.isTooltipShown = true,
     Key? key,
   }) : super(key: key);

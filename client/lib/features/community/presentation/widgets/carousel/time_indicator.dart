@@ -31,57 +31,41 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 110,
       padding: padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: isDisabled
-            ? context.theme.colorScheme.surfaceContainer
-            : context.theme.colorScheme.surface,
-        boxShadow: shadow
-            ? const [
-                AppDecoration.lightBoxShadow,
-              ]
-            : null,
-      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           HeightConstrainedText(
             DateFormat('MMM').format(time).toUpperCase(),
-            style: AppTextStyle.body.copyWith(
-              fontSize: 14,
+            style: context.theme.textTheme.bodySmall!.copyWith(
               color: isDisabled
-                  ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : context.theme.colorScheme.primary,
+                  ? context.theme.colorScheme.onSurface.withOpacity(0.75)
+                  : context.theme.colorScheme.onSurface,
             ),
           ),
           HeightConstrainedText(
             time.day.toString(),
-            style: AppTextStyle.headline2Light.copyWith(
-              height: .9,
-              fontSize: 34,
+            style: context.theme.textTheme.headlineMedium!.copyWith(
               color: isDisabled
-                  ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : context.theme.colorScheme.primary,
+                  ? context.theme.colorScheme.onSurface.withOpacity(0.75)
+                  : context.theme.colorScheme.onSurface,
             ),
           ),
           HeightConstrainedText(
             DateFormat('EEE').format(time),
-            style: AppTextStyle.body.copyWith(
-              fontSize: 14,
+            style: context.theme.textTheme.bodyMedium!.copyWith(
               color: isDisabled
-                  ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : context.theme.colorScheme.primary,
+                  ? context.theme.colorScheme.onSurface.withOpacity(0.75)
+                  : context.theme.colorScheme.onSurface,
             ),
           ),
           HeightConstrainedText(
             _timeString,
-            style: AppTextStyle.body.copyWith(
+            style: context.theme.textTheme.bodyMedium!.copyWith(
               fontSize: 14,
               color: isDisabled
-                  ? context.theme.colorScheme.scrim.withScrimOpacity
-                  : context.theme.colorScheme.primary,
+                  ? context.theme.colorScheme.onSurface.withOpacity(0.75)
+                  : context.theme.colorScheme.onSurface,
             ),
           ),
         ],

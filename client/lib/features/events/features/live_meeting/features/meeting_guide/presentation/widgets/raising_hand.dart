@@ -6,6 +6,7 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class RaisingHandToggle extends StatelessWidget {
   const RaisingHandToggle({
@@ -20,7 +21,7 @@ class RaisingHandToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: 'Raise your hand to join the speaker queue',
+      message: context.l10n.raiseHandToJoinSpeakerQueue,
       child: ActionButton(
         type: ActionButtonType.filled,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,

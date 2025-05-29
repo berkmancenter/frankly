@@ -19,6 +19,7 @@ import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_card_attribute.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum PrePostCardWidgetType { overview, edit }
 
@@ -82,7 +83,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     final title = _presenter.getTitle();
 
     await ConfirmDialog(
-      title: 'Delete $title agenda item',
+      title: context.l10n.deleteAgendaItemName(title),
       mainText: 'Are you sure want to delete?',
       onConfirm: (context) {
         Navigator.pop(context);
@@ -109,7 +110,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: context.theme.colorScheme.surfaceContainer,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   border: Border.all(
                     width: 1,
                     color: context.theme.colorScheme.outline,
@@ -125,7 +126,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                           Expanded(
                             child: Text(
                               title,
-                              style: AppTextStyle.subhead,
+                              style: context.theme.textTheme.titleLarge,
                             ),
                           ),
                           if (isEditIconShown)
@@ -207,11 +208,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           children: [
             Text(
               'What message do you want to show participants $beforeAfter the event?',
-              style: AppTextStyle.subhead,
+              style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 30),
             CustomTextField(
-              hintText: 'Enter Headline',
+              hintText: context.l10n.enterHeadline,
               initialValue: _model.prePostCard.headline,
               borderType: BorderType.outline,
               borderRadius: 10,
@@ -223,7 +224,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             SizedBox(height: 14),
             CustomTextField(
               hintText:
-                  'Enter Message. Eg, Take this survey $beforeAfter the event',
+                  'Enter message (e.g. "Take this survey $beforeAfter the event")',
               initialValue: _model.prePostCard.message,
               borderType: BorderType.outline,
               borderRadius: 10,
@@ -242,7 +243,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'Add action links participants should visit $beforeAfter the event',
-                style: AppTextStyle.subhead,
+                style: context.theme.textTheme.titleMedium,
               ),
               SizedBox(height: 30),
               if (prePostUrls.isNotEmpty) ...[
@@ -260,7 +261,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               ],
               AddMoreButton(
                 onPressed: () => _presenter.addNewActionLink(),
-                label: 'Add action link',
+                label: context.l10n.addActionLink,
               ),
             ],
           ),
@@ -274,10 +275,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               height: 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: context.theme.colorScheme.outline,
-                  width: 1,
-                ),
               ),
               child: Center(
                 child: AppClickableWidget(
@@ -342,13 +339,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             children: [
               HeightConstrainedText(
                 'URL Preview',
-                style: AppTextStyle.body
-                    .copyWith(color: context.theme.colorScheme.onPrimary),
+                style: context.theme.textTheme.bodyMedium,
               ),
               SizedBox(height: 4),
               HeightConstrainedText(
                 finalisedUrlFieldValue,
-                style: AppTextStyle.body,
               ),
             ],
           ),
@@ -400,12 +395,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               children: [
                 HeightConstrainedText(
                   'URL Preview',
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
                 SizedBox(height: 4),
                 HeightConstrainedText(
                   finalisedUrlFieldValue,
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -548,12 +543,12 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         children: [
           Text(
             _model.prePostCard.headline,
-            style: AppTextStyle.headline3,
+            style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 20),
           Text(
             _model.prePostCard.message,
-            style: AppTextStyle.subhead,
+            style: context.theme.textTheme.titleMedium,
           ),
           SizedBox(height: 20),
           if (prePostUrls.isNotEmpty)
@@ -615,7 +610,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                   SizedBox(width: 10),
                   Text(
                     'Add URL Parameter',
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ],
               ),
@@ -719,7 +714,7 @@ class _AttributeOptionState extends State<AttributeOption> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  hintText: 'URL Parameter',
+                  hintText: context.l10n.urlParameter,
                   controller: _textController,
                   initialValue: _textController.text,
                   borderType: BorderType.outline,
@@ -788,7 +783,7 @@ class _AttributeOptionState extends State<AttributeOption> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     attributeType.text,
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ),
               ),
@@ -801,7 +796,7 @@ class _AttributeOptionState extends State<AttributeOption> {
                 // Button which is in the selection list (when expanded)
                 child: Text(
                   e.text,
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EmptyPageContent extends StatelessWidget {
   final void Function()? onButtonPress;
@@ -30,7 +31,7 @@ class EmptyPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonColor = context.theme.colorScheme.primary;
-    final isSolid = buttonType == ActionButtonType.filled;
+
     return Container(
       height: 311,
       width: 524,
@@ -50,8 +51,8 @@ class EmptyPageContent extends StatelessWidget {
           ),
           SizedBox(height: 10),
           HeightConstrainedText(
-            titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(
+            titleText ?? context.l10n.noItems(type.name),
+            style: context.theme.textTheme.titleLarge!.copyWith(
               color: isBackgroundDark
                   ? context.theme.colorScheme.surface
                   : context.theme.colorScheme.onSurface,
@@ -62,8 +63,8 @@ class EmptyPageContent extends StatelessWidget {
             width: 205,
             child: HeightConstrainedText(
               subtitleText ??
-                  'When new ${type.name} are added, you\'ll see them here.',
-              style: AppTextStyle.eyebrowSmall.copyWith(
+                  context.l10n.whenNewItemsAdded(type.name),
+              style: context.theme.textTheme.labelLarge!.copyWith(
                 color: isBackgroundDark
                     ? context.theme.colorScheme.surface
                     : context.theme.colorScheme.onSurface,
@@ -74,12 +75,8 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 20),
           if (onButtonPress != null)
             ActionButton(
-              text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body.copyWith(
-                color:
-                    isSolid ? context.theme.colorScheme.onPrimary : buttonColor,
-              ),
-              color: isSolid ? buttonColor : null,
+              text: buttonText ?? type.buttonText(context),
+              color: buttonColor,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),
               type: buttonType,
@@ -121,18 +118,18 @@ extension EmptyPageTypeData on EmptyPageType {
     }
   }
 
-  String get buttonText {
+  String buttonText(BuildContext context) {
     switch (this) {
       case EmptyPageType.posts:
-        return 'Create a post';
+        return context.l10n.createAPost;
       case EmptyPageType.events:
-        return 'Create an event';
+        return context.l10n.createAnEvent;
       case EmptyPageType.announcements:
-        return 'Create an announcement';
+        return context.l10n.createAnAnnouncement;
       case EmptyPageType.resources:
-        return 'Create a resource';
+        return context.l10n.createAResource;
       case EmptyPageType.templates:
-        return 'Create a template';
+        return context.l10n.createATemplate;
       case EmptyPageType.chats:
         throw UnimplementedError('No empty page chat button');
       case EmptyPageType.suggestions:

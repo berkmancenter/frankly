@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/styles/styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
@@ -20,6 +21,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -166,8 +168,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
       child: FittedBox(
         fit: fit,
         clipBehavior: Clip.hardEdge,
-        child: Container(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
+        child: SizedBox(
           height: dimensions.height,
           width: dimensions.width,
           child: _buildVideoElement(),
@@ -179,7 +180,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildMutedOverlayEntry() {
     return Icon(
       Icons.mic_off_outlined,
-      color: context.theme.colorScheme.errorContainer,
+      color: context.theme.colorScheme.error,
       size: 17,
     );
   }
@@ -314,74 +315,71 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: context.theme.colorScheme.surfaceContainerHigh,
       child: Container(
-        color: context.theme.colorScheme.scrim.withScrimOpacity,
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: IntrinsicHeight(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: isMobile ? 16 : 30),
-                Flexible(
-                  child: Container(
-                    constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-                    child: UserProfileChip(
-                      userId: widget.participant.identity,
-                      showName: false,
-                      enableOnTap: false,
-                      imageHeight: 200,
-                      alignment: Alignment.center,
-                    ),
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.center,
+        child: IntrinsicHeight(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: isMobile ? 16 : 30),
+              Flexible(
+                child: Container(
+                  constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+                  child: UserProfileChip(
+                    userId: widget.participant.identity,
+                    showName: false,
+                    enableOnTap: false,
+                    imageHeight: 200,
+                    alignment: Alignment.center,
                   ),
                 ),
-                if (!isMobile) SizedBox(height: 10),
-                if (isConnecting)
-                  HeightConstrainedText(
-                    'Connecting...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: isMobile ? 12 : 16,
-                    ),
-                  )
-                else if (switchedOff && (_startedTimer?.isActive ?? false))
-                  Container(
-                    height: 20,
-                    alignment: Alignment.center,
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CustomLoadingIndicator(),
-                    ),
-                  )
-                else
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      HeightConstrainedText(
-                        'Video Off',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: isMobile ? 12 : 16,
-                        ),
-                      ),
-                      if (switchedOff) ...[
-                        SizedBox(width: 6),
-                        Icon(
-                          Icons.wifi_off,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: isMobile ? 12 : 16,
-                        ),
-                      ],
-                    ],
+              ),
+              if (!isMobile) SizedBox(height: 10),
+              if (isConnecting)
+                HeightConstrainedText(
+                  'Connecting...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: isMobile ? 12 : 16,
                   ),
-              ],
-            ),
+                )
+              else if (switchedOff && (_startedTimer?.isActive ?? false))
+                Container(
+                  height: 20,
+                  alignment: Alignment.center,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CustomLoadingIndicator(),
+                  ),
+                )
+              else
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HeightConstrainedText(
+                      'Video Off',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: isMobile ? 12 : 16,
+                      ),
+                    ),
+                    if (switchedOff) ...[
+                      SizedBox(width: 6),
+                      Icon(
+                        Icons.wifi_off,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: isMobile ? 12 : 16,
+                      ),
+                    ],
+                  ],
+                ),
+            ],
           ),
         ),
       ),
@@ -391,7 +389,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-aspect-ratio-clipped',
+      label: context.l10n.aspectRatioClipped.toString(),
       child: child,
     );
 
@@ -607,7 +605,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             .any((id) => id == widget.userId) ??
         false;
     return Semantics(
-      label: 'Participant Actions for user with ID ${widget.userId}',
+      label: context.l10n.participantActionsForUserWithId(widget.userId ?? ''),
       child: CustomInkWell(
         onTap: widget.isVisible
             ? () => _showMoreMenu(_getMenuItems(context: context))
@@ -622,8 +620,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
             size: 16,
             color: _isHovered
-                ? context.theme.colorScheme.onPrimary
-                : context.theme.colorScheme.outlineVariant,
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ),

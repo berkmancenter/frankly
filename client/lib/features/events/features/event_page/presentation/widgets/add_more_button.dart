@@ -1,6 +1,6 @@
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class AddMoreButton extends StatelessWidget {
@@ -15,41 +15,34 @@ class AddMoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomInkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: context.theme.colorScheme.outline,
+    return ActionButton(
+      type: ActionButtonType.filled,
+      color: context.theme.colorScheme.surfaceContainerHigh,
+      expand: true,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      contentAlign: ActionButtonContentAlignment.start,
+      onPressed: onPressed,
+      child: Row(
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: ShapeDecoration(
+              color: context.theme.colorScheme.primary,
+              shape: CircleBorder(),
+            ),
+            child: Icon(
+              Icons.add,
+              size: 12,
+              color: context.theme.colorScheme.onPrimary,
+            ),
           ),
-        ),
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Container(
-              width: 24,
-              height: 24,
-              decoration: ShapeDecoration(
-                color: context.theme.colorScheme.primary,
-                shape: CircleBorder(),
-              ),
-              child: Icon(
-                Icons.add,
-                size: 12,
-                color: context.theme.colorScheme.onPrimary,
-              ),
-            ),
-            SizedBox(width: 12),
-            HeightConstrainedText(
-              label,
-              style: AppTextStyle.subhead,
-            ),
-          ],
-        ),
+          SizedBox(width: 12),
+          HeightConstrainedText(
+            label,
+            style: context.theme.textTheme.titleMedium,
+          ),
+        ],
       ),
     );
   }
