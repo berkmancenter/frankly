@@ -306,8 +306,7 @@ class _DialogFlowState extends State<DialogFlow> {
           text: TextSpan(
             children: [
               TextSpan(
-                text:
-                     context.l10n
+                text: context.l10n
                     .bySigningInRegisteringOrUsing(Environment.appName),
                 style: AppTextStyle.body.copyWith(
                   color: context.theme.colorScheme.onPrimaryContainer,
@@ -369,31 +368,26 @@ class _DialogFlowState extends State<DialogFlow> {
               color: context.theme.colorScheme.primary,
               textColor: context.theme.colorScheme.onPrimary,
               borderRadius: BorderRadius.circular(10),
-              // padding: const EdgeInsets.all(20),
               onPressed: _isNextPageAvailable
                   ? () async {
-                      if (_createCommunity) {
-                        await cloudFunctionsCommunityService.updateCommunity(
-                          UpdateCommunityRequest(
-                            community: _community,
-                            keys: [
-                              Community.kFieldThemeDarkColor,
-                              Community.kFieldThemeLightColor,
-                            ],
-                          ),
-                        );
-                        analytics.logEvent(
-                          AnalyticsUpdateCommunityMetadataEvent(
-                            communityId: _community.id,
-                          ),
-                        );
-                      }
+                      final createdCommunityId =
+                          (await cloudFunctionsCommunityService.createCommunity(
+                        CreateCommunityRequest(
+                          community: _community,
+                        ),
+                      ))
+                              .communityId;
+                      analytics.logEvent(
+                        AnalyticsCreateCommunityEvent(
+                          communityId: createdCommunityId,
+                        ),
+                      );
 
                       // Immediately proceed to created community
                       Navigator.of(context).pop();
                       routerDelegate.beamTo(
                         CommunityPageRoutes(
-                          communityDisplayId: _community.displayId,
+                          communityDisplayId: createdCommunityId,
                         ).communityHome,
                       );
                     }
