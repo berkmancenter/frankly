@@ -4,6 +4,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
+import 'package:flutter/services.dart';
 
 class CreateCommunityTextFields extends StatefulWidget {
   final bool showChooseCustomDisplayId;
@@ -54,7 +55,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
       children: [
         _buildCreateCommunityTextField(
           controller: _nameController,
-
           maxLength: titleMaxCharactersLength,
           label: 'Name',
           onChanged: (String val) => {
@@ -67,16 +67,20 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           },
           focus: widget.nameFocus,
           helperText: 'You can change this later',
+          formatterRegex: '[0-9a-zA-Z]',
         ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
           label: 'Unique URL display name (Optional)',
           initialValue: _nameController.text,
+
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: widget.community.displayId.isNotEmpty
               ? 'https://app.frankly.org/${widget.community.displayId}'
               : null,
+          // Allow only numbers, lowercase letters, and dashes
+          formatterRegex: '[0-9a-z-+]',
         ),
       ],
     );
@@ -85,6 +89,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   Widget _buildCreateCommunityTextField({
     required String label,
     required void Function(String)? onChanged,
+    required String formatterRegex,
     TextEditingController? controller,
     String? hint,
     String? helperText,
@@ -113,6 +118,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           onChanged: onChanged,
           isOptional: isOptional,
           optionalPadding: const EdgeInsets.only(top: 12, right: 12),
+          inputFormatters:
+              FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
         ),
       );
 }
