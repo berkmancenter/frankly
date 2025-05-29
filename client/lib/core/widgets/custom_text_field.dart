@@ -315,9 +315,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
                   suffixIcon: widget.suffixIcon,
+                  
                 ),
                 autofocus: widget.autofocus,
                 readOnly: widget.readOnly,
+                enabled: !widget.readOnly,
                 keyboardType: widget.keyboardType,
               ),
               if (widget.isOptional &&
