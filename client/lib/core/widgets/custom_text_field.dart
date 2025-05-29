@@ -68,6 +68,9 @@ class CustomTextField extends StatefulWidget {
   /// Allow for custom keyboard type
   final TextInputType keyboardType;
 
+  /// Allow for custom input formatters
+  final TextInputFormatter? inputFormatters;
+
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
@@ -112,6 +115,7 @@ class CustomTextField extends StatefulWidget {
     this.optionalPadding,
     this.suffixIcon,
     this.keyboardType = TextInputType.text,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -293,7 +297,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   if (widget.isOnlyDigits)
                     FilteringTextInputFormatter.digitsOnly,
                   if (widget.numberThreshold != null)
-                    NumberThresholdFormatter(widget.numberThreshold!),
+                    NumberThresholdFormatter(widget.numberThreshold!)
+                  else if (widget.inputFormatters != null)
+                    widget.inputFormatters!,
                 ],
                 validator: widget.validator,
                 decoration: InputDecoration(
@@ -314,7 +320,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
                   suffixIcon: widget.suffixIcon,
-                  
                 ),
                 autofocus: widget.autofocus,
                 readOnly: widget.readOnly,
