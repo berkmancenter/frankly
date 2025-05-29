@@ -15,6 +15,7 @@ import 'package:client/core/localization/localization_helper.dart';
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
     this.showSignUp = true,
+    this.inModal = false,
     this.onComplete,
     Key? key,
   }) : super(key: key);
@@ -27,6 +28,7 @@ class SignInOptionsContent extends StatefulWidget {
   static const buttonGoogleKey = Key('google-button');
 
   final bool showSignUp;
+  final bool inModal;
   final void Function()? onComplete;
 
   @override
@@ -246,7 +248,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   }
 
   List<Widget> _buildSignIn() {
-    const minWidth = 260.0;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double googleButtonWidth = double.infinity;
+    if (widget.inModal && screenWidth <= 375 ) {
+      googleButtonWidth = 80;
+    }
+
     return [
       Align(
         alignment: Alignment.center,
@@ -405,7 +412,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Align(
         alignment: Alignment.center,
         child: Text(
-          context.l10n.or, 
+          context.l10n.or,
           style: context.theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -416,9 +423,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ActionButton(
           key: SignInOptionsContent.buttonGoogleKey,
-          // minWidth: minWidth,
-          maxTextWidth: 140,
           expand: true,
+          maxTextWidth: googleButtonWidth,
           onPressed: () => context.read<UserService>().signInWithGoogle(),
           type: ActionButtonType.outline,
           icon: Padding(
