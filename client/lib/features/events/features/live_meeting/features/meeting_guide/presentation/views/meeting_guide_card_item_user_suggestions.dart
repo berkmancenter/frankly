@@ -110,8 +110,6 @@ class _MeetingGuideCardItemUserSuggestionsState
           child: CustomTextField(
             controller: _textEditingController,
             padding: EdgeInsets.zero,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             onEditingComplete: () => _submitNotifier.submit(),
             textStyle: AppTextStyle.body
                 .copyWith(color: context.theme.colorScheme.primary),
@@ -196,7 +194,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                   child: UserProfileChip(
                     userId: participantAgendaItemDetails.userId,
                     textStyle: AppTextStyle.bodyMedium.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                        color: context.theme.colorScheme.onPrimaryContainer,),
                     showName: true,
                     showIsYou: true,
                     showBorder: true,
@@ -209,7 +207,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                     Text(
                       likeDislikeCount,
                       style: AppTextStyle.bodyMedium.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer),
+                          color: context.theme.colorScheme.onPrimaryContainer,),
                     ),
                     SizedBox(width: 5),
                     AppClickableWidget(
@@ -283,7 +281,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             Text(
               meetingUserSuggestion.suggestion,
               style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                  color: context.theme.colorScheme.onPrimaryContainer,),
             ),
           ],
         ),

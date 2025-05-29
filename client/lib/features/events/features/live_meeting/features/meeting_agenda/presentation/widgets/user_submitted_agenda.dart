@@ -215,7 +215,6 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             child: CustomTextField(
               controller: readProvider.newSubmissionController,
               padding: EdgeInsets.zero,
-              contentPadding: EdgeInsets.all(20),
               onEditingComplete:
                   canSubmit ? () => _submitController.submit() : null,
               maxLines: 1,
