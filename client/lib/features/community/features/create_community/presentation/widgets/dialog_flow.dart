@@ -52,7 +52,7 @@ class _DialogFlowState extends State<DialogFlow> {
       case 1:
         return context.l10n.welcomeToApp(Environment.appName);
       case 2:
-        return context.l10n.createYourSpace;
+        return context.l10n.createACommunity;
       default:
         return '';
     }
@@ -280,7 +280,7 @@ class _DialogFlowState extends State<DialogFlow> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ActionButton(
-              text: 'Finish',
+              text: context.l10n.finish,
               color: context.theme.colorScheme.primary,
               textColor: context.theme.colorScheme.onPrimary,
               borderRadius: BorderRadius.circular(10),
@@ -311,7 +311,7 @@ class _DialogFlowState extends State<DialogFlow> {
         ),
         SizedBox(height: 10),
         HeightConstrainedText(
-          'Congratulations!',
+          context.l10n.congratulations,
           textAlign: TextAlign.center,
           style: context.theme.textTheme.headlineLarge?.copyWith(
             fontWeight: FontWeight.bold,
@@ -323,7 +323,7 @@ class _DialogFlowState extends State<DialogFlow> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'You’ve successfully created your community ',
+                text: context.l10n.communitySuccessPrefix,
                 style: context.theme.textTheme.bodyLarge,
               ),
               TextSpan(text: '\n'),
@@ -342,7 +342,7 @@ class _DialogFlowState extends State<DialogFlow> {
         ),
         SizedBox(height: 10),
         Text(
-          'Start inviting members and creating events!',
+          context.l10n.communitySuccessSuffix,
           textAlign: TextAlign.center,
           style: context.theme.textTheme.bodyLarge,
         ),

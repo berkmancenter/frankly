@@ -56,7 +56,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         _buildCreateCommunityTextField(
           controller: _nameController,
           maxLength: titleMaxCharactersLength,
-          label: 'Name',
+          label: context.l10n.name,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
             widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
@@ -66,14 +66,14 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             }),
           },
           focus: widget.nameFocus,
-          helperText: 'You can change this later',
+          helperText: context.l10n.youCanChangeThisLater,
           // Allow only alphanumeric characters, spaces
           formatterRegex: r'[\s?\w?]',
         ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
-          label: 'Unique URL display name (Optional)',
+          label: context.l10n.uniqueUrlDisplayNameOptional,
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: widget.community.displayId.isNotEmpty
