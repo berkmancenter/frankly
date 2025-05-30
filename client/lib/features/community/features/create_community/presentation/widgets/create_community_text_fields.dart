@@ -67,14 +67,16 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           },
           focus: widget.nameFocus,
           helperText: 'You can change this later',
-          formatterRegex: '[0-9a-zA-Z]',
+          // Allow only alphanumeric characters, spaces
+
+          // ignore: unnecessary_string_escapes
+          formatterRegex: r'[\s?\w?]',
         ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
           label: 'Unique URL display name (Optional)',
           initialValue: _nameController.text,
-
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: widget.community.displayId.isNotEmpty
               ? 'https://app.frankly.org/${widget.community.displayId}'
