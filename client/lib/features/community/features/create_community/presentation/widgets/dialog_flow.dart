@@ -387,7 +387,10 @@ class _DialogFlowState extends State<DialogFlow> {
                       Navigator.of(context).pop();
                       routerDelegate.beamTo(
                         CommunityPageRoutes(
-                          communityDisplayId: createdCommunityId,
+                          // Use the displayId if available, otherwise use the createdCommunityId
+                          communityDisplayId: _community.displayId.isNotEmpty
+                              ? _community.displayId
+                              : createdCommunityId,
                         ).communityHome,
                       );
                     }
