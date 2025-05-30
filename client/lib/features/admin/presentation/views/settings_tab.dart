@@ -26,8 +26,9 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
 class SettingsTab extends StatefulHookWidget {
+  final void Function() onUpgradeTap;
 
-  const SettingsTab();
+  const SettingsTab({required this.onUpgradeTap});
 
   @override
   _SettingsTabState createState() => _SettingsTabState();
@@ -49,7 +50,7 @@ class _SettingsTabState extends State<SettingsTab> {
       child: CustomSwitchTile(
         text: title,
         style: AppTextStyle.body.copyWith(
-            color: hasWarning ? context.theme.colorScheme.error : null,),
+            color: hasWarning ? context.theme.colorScheme.error : null),
         val: value,
         onUpdate: onUpdate,
       ),
@@ -386,6 +387,8 @@ class _SettingsTabState extends State<SettingsTab> {
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildSettings(),
+        SizedBox(height: 40),
+        UpgradePerks(onUpgradeTap: () => widget.onUpgradeTap()),
       ],
     );
   }
@@ -395,6 +398,13 @@ class _SettingsTabState extends State<SettingsTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(flex: 5, child: _buildSettings()),
+        Spacer(),
+        Expanded(
+          flex: 2,
+          child: UpgradePerks(
+            onUpgradeTap: () => widget.onUpgradeTap(),
+          ),
+        ),
       ],
     );
   }
