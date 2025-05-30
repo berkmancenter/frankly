@@ -591,8 +591,7 @@ class SocialInputField extends StatelessWidget {
               color: context.theme.colorScheme.primary,
               fontSize: 16,
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onChanged: onChanged,
           ),
         ),
