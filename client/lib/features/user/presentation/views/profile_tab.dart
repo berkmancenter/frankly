@@ -196,7 +196,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                   color: context.theme.colorScheme.primary,
                   fontSize: 16,
                 ),
-                contentPadding:
+                padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onChanged: (value) {
                   controller.onChangedName(value);
