@@ -70,8 +70,13 @@ class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
       bannerImageUrl: community.bannerImageUrl ?? '',
       communitySettings: const CommunitySettings(),
       eventSettings: EventSettings.defaultSettings,
-      displayIds: [communityDocRef.documentID],
-    );
+      // Ensure displayIds is not empty
+      // If displayIds is empty, use the document ID as the first displayId
+      displayIds: [
+        community.displayIds.isNotEmpty
+            ? community.displayIds[0]
+            : communityDocRef.documentID,
+    ],);
 
     final agreementChangedFields = [PartnerAgreement.kFieldCommunityId];
     DocumentReference agreementRef;
