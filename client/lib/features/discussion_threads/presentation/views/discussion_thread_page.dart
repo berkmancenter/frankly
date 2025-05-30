@@ -71,9 +71,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
     await ConfirmDialog(
       title: context.l10n.deletePost,
       mainText: 'Are you sure want to delete this post?',
-      cancelText: 'No',
+      cancelText: context.l10n.no,
+      confirmText: context.l10n.yes,
       onCancel: (context) => Navigator.pop(context),
-      confirmText: 'Yes',
       onConfirm: (context) async {
         await alertOnError(context, () => _presenter.deleteThread());
         _goToThreadsPage();

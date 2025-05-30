@@ -193,10 +193,11 @@ class _ProfileTabState extends State<_ProfileTab> {
                 borderType: BorderType.outline,
                 borderRadius: 5,
                 textStyle: TextStyle(
-                    color: context.theme.colorScheme.primary, fontSize: 16,),
-                labelStyle: TextStyle(
-                    fontSize: 14.0,
-                    color: context.theme.colorScheme.onPrimaryContainer,),
+                  color: context.theme.colorScheme.primary,
+                  fontSize: 16,
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
@@ -209,9 +210,7 @@ class _ProfileTabState extends State<_ProfileTab> {
         SizedBox(height: 20),
         HeightConstrainedText(
           changeRecord.displayName ?? '',
-          style: AppTextStyle.headline3.copyWith(
-            color: context.theme.colorScheme.primary,
-          ),
+          style: AppTextStyle.headline3,
         ),
         if (profileIsSelf || adminViewingUser) ..._buildEmail(userInfo.id),
         SizedBox(height: 10),
@@ -231,8 +230,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                         .toString()
                         .replaceFirst('MembershipStatus.', '')
                         .capitalize(),
-                    style: AppTextStyle.body.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,),
+                    style: AppTextStyle.body,
                   ),
                 ],
               );
@@ -273,7 +271,6 @@ class _ProfileTabState extends State<_ProfileTab> {
             if (widget.isPreviewButtonVisible)
               ActionButton(
                 height: 48,
-                borderRadius: BorderRadius.circular(10),
                 onPressed: () => Dialogs.showAppDrawer(
                   context,
                   AppDrawerSide.right,
@@ -284,10 +281,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                   ),
                 ),
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-                color: context.theme.colorScheme.onPrimary,
                 text: 'Preview',
                 expand: false,
-                textColor: context.theme.colorScheme.primary,
               ),
             ActionButton(
               height: 48,
@@ -296,12 +291,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                       createTagPresenter.unsavedTags.isNotEmpty
                   ? () => alertOnError(context, () => _saveChanges())
                   : null,
-              color: Theme.of(context).primaryColor,
               text: 'Update Profile',
               expand: false,
-              textColor: controller.changeKeys.isNotEmpty
-                  ? context.theme.colorScheme.secondary
-                  : context.theme.colorScheme.surfaceContainerLowest,
             ),
           ],
         ),
@@ -343,9 +334,6 @@ class _ProfileTabState extends State<_ProfileTab> {
           padding: EdgeInsets.zero,
           textStyle:
               TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
-          labelStyle: TextStyle(
-              fontSize: 14.0,
-              color: context.theme.colorScheme.onPrimaryContainer,),
           initialValue: changeRecord.about,
           onChanged: (value) {
             controller.onChangedAboutMe(value);
@@ -394,10 +382,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                                 ? SizedBox.shrink()
                                 : HeightConstrainedText(
                                     '#${definition.title} ',
-                                    style: AppTextStyle.body.copyWith(
-                                      color: context
-                                          .theme.colorScheme.onPrimaryContainer,
-                                    ),
+                                    style: AppTextStyle.body,
                                   ),
                           ),
                       ],
@@ -428,7 +413,9 @@ class _ProfileTabState extends State<_ProfileTab> {
           HeightConstrainedText(
             widget.allowEdit ? 'Edit your profile' : '',
             style: AppTextStyle.headlineSmall.copyWith(
-                fontSize: 16, color: context.theme.colorScheme.primary,),
+              fontSize: 16,
+              color: context.theme.colorScheme.primary,
+            ),
           ),
           Spacer(),
           AppClickableWidget(
@@ -587,7 +574,9 @@ class SocialInputField extends StatelessWidget {
           padding: const EdgeInsets.only(top: 15.0),
           child: ProxiedImage(
             null,
-            asset: AppAsset(platform.socialMediaKey?.getInfo(context).logoUrl ?? ''),
+            asset: AppAsset(
+              platform.socialMediaKey?.getInfo(context).logoUrl ?? '',
+            ),
             width: 30,
           ),
         ),
@@ -599,10 +588,11 @@ class SocialInputField extends StatelessWidget {
             borderType: BorderType.outline,
             borderRadius: 5,
             textStyle: TextStyle(
-                color: context.theme.colorScheme.primary, fontSize: 16,),
-            labelStyle: TextStyle(
-                fontSize: 14.0,
-                color: context.theme.colorScheme.onPrimaryContainer,),
+              color: context.theme.colorScheme.primary,
+              fontSize: 16,
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onChanged: onChanged,
           ),
         ),
