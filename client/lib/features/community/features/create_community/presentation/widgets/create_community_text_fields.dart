@@ -68,8 +68,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           focus: widget.nameFocus,
           helperText: 'You can change this later',
           // Allow only alphanumeric characters, spaces
-
-          // ignore: unnecessary_string_escapes
           formatterRegex: r'[\s?\w?]',
         ),
         _buildCreateCommunityTextField(

@@ -1,24 +1,15 @@
-import 'package:client/core/utils/image_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
-import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/core/utils/validation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_preview_container.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/create_community_tags.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/private_community_checkbox.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/app.dart';
-import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
@@ -62,8 +53,6 @@ class _DialogFlowState extends State<DialogFlow> {
         return context.l10n.welcomeToApp(Environment.appName);
       case 2:
         return context.l10n.createYourSpace;
-      case 3:
-        return context.l10n.brandYourSpace;
       default:
         return '';
     }
@@ -115,24 +104,6 @@ class _DialogFlowState extends State<DialogFlow> {
         ),
       );
     } else if (_onStep == 2) {
-      final contactEmail = _community.contactEmail;
-      if (contactEmail != null &&
-          contactEmail.isNotEmpty &&
-          !isEmailValid(contactEmail)) {
-        showRegularToast(
-          context,
-          context.l10n.pleaseEnterValidEmail,
-          toastType: ToastType.failed,
-        );
-        return false;
-      }
-
-      // If logo is not provided, generate random image
-      if (isNullOrEmpty(_community.profileImageUrl)) {
-        _community =
-            _community.copyWith(profileImageUrl: generateRandomImageUrl());
-      }
-
       if (_createCommunity) {
         _createdCommunityId = (await cloudFunctionsCommunityService
                 .createCommunity(CreateCommunityRequest(community: _community)))
@@ -142,15 +113,6 @@ class _DialogFlowState extends State<DialogFlow> {
           analytics.logEvent(
             AnalyticsCreateCommunityEvent(communityId: createdCommunityId),
           );
-          var hasUpdatedImage = !isNullOrEmpty(_community.profileImageUrl) ||
-              !isNullOrEmpty(_community.bannerImageUrl);
-          if (hasUpdatedImage) {
-            analytics.logEvent(
-              AnalyticsUpdateCommunityImageEvent(
-                communityId: createdCommunityId,
-              ),
-            );
-          }
           setState(
             () => _community = _community.copyWith(id: createdCommunityId),
           );
@@ -165,51 +127,6 @@ class _DialogFlowState extends State<DialogFlow> {
   }
 
   void _resetScroll() => Scrollable.of(context).position.jumpTo(0);
-
-  Future<void> _updateBannerImage({
-    required String imageUrl,
-  }) async {
-    if (isNullOrEmpty(imageUrl) || imageUrl == _community.bannerImageUrl) {
-      return;
-    }
-
-    setState(() {
-      _community = _community.copyWith(bannerImageUrl: imageUrl);
-    });
-  }
-
-  Future<void> _updateProfileImage({
-    required String imageUrl,
-  }) async {
-    if (isNullOrEmpty(imageUrl) || imageUrl == _community.profileImageUrl) {
-      return;
-    }
-
-    setState(() {
-      _community = _community.copyWith(profileImageUrl: imageUrl);
-    });
-  }
-
-  Future<void> _updateContactEmail(String contactEmail) async {
-    if (isNullOrEmpty(contactEmail) ||
-        contactEmail == _community.contactEmail) {
-      return;
-    }
-
-    setState(() {
-      _community = _community.copyWith(contactEmail: contactEmail);
-    });
-  }
-
-  Future<void> _removeImage({
-    required bool isBannerImage,
-  }) async {
-    setState(() {
-      _community = isBannerImage
-          ? _community.copyWith(bannerImageUrl: null)
-          : _community.copyWith(profileImageUrl: null);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +172,6 @@ class _DialogFlowState extends State<DialogFlow> {
   Widget _buildStepContent() {
     switch (_onStep) {
       case 1:
-        // return _buildStepTwoContent();
         return _buildStepOneContent();
 
       case 2:
@@ -368,33 +284,12 @@ class _DialogFlowState extends State<DialogFlow> {
               color: context.theme.colorScheme.primary,
               textColor: context.theme.colorScheme.onPrimary,
               borderRadius: BorderRadius.circular(10),
-              onPressed: _isNextPageAvailable
-                  ? () async {
-                      final createdCommunityId =
-                          (await cloudFunctionsCommunityService.createCommunity(
-                        CreateCommunityRequest(
-                          community: _community,
-                        ),
-                      ))
-                              .communityId;
-                      analytics.logEvent(
-                        AnalyticsCreateCommunityEvent(
-                          communityId: createdCommunityId,
-                        ),
-                      );
-
-                      // Immediately proceed to created community
-                      Navigator.of(context).pop();
-                      routerDelegate.beamTo(
-                        CommunityPageRoutes(
-                          // Use the displayId if available, otherwise use the createdCommunityId
-                          communityDisplayId: _community.displayId.isNotEmpty
-                              ? _community.displayId
-                              : createdCommunityId,
-                        ).communityHome,
-                      );
-                    }
-                  : null,
+              onPressed: () async {
+                if (await _nextButtonAction()) {
+                  _resetScroll();
+                  setState(() => _onStep++);
+                }
+              },
             ),
           ],
         ),
@@ -404,58 +299,52 @@ class _DialogFlowState extends State<DialogFlow> {
 
   Widget _buildStepThreeContent() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.max,
       children: [
-        SizedBox(height: 30),
-        ChooseColorSection(
-          showTabs: false,
-          setDarkColor: (val) =>
-              _community = _community.copyWith(themeDarkColor: val),
-          setLightColor: (val) =>
-              _community = _community.copyWith(themeLightColor: val),
-          community: _community,
+        SizedBox(height: 10),
+        Image.asset(
+          AppAsset.kCongratulatoins.path,
+          width: 80,
+          height: 80,
+          fit: BoxFit.contain,
         ),
-        SizedBox(height: 22),
-        if (_createdCommunityId != null) ...[
-          CreateCommunityTags(_createdCommunityId!),
-          SizedBox(height: 40),
-        ],
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ActionButton(
-              text: context.l10n.finish,
-              borderRadius: BorderRadius.circular(10),
-              padding: const EdgeInsets.all(20),
-              onPressed: () async {
-                if (_createCommunity) {
-                  await cloudFunctionsCommunityService.updateCommunity(
-                    UpdateCommunityRequest(
-                      community: _community,
-                      keys: [
-                        Community.kFieldThemeDarkColor,
-                        Community.kFieldThemeLightColor,
-                      ],
-                    ),
-                  );
-                  analytics.logEvent(
-                    AnalyticsUpdateCommunityMetadataEvent(
-                      communityId: _community.id,
-                    ),
-                  );
-                }
-
-                // Immediately proceed to created community
-                Navigator.of(context).pop();
-                routerDelegate.beamTo(
-                  CommunityPageRoutes(
-                    communityDisplayId: _community.displayId,
-                  ).communityHome,
-                );
-              },
-            ),
-          ],
+        SizedBox(height: 10),
+        HeightConstrainedText(
+          'Congratulations!',
+          textAlign: TextAlign.center,
+          style: context.theme.textTheme.headlineLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'You’ve successfully created your community ',
+                style: context.theme.textTheme.bodyLarge,
+              ),
+              TextSpan(text: '\n'),
+              TextSpan(
+                text: _community.name,
+                style: context.theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: '.',
+                style: context.theme.textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          'Start inviting members and creating events!',
+          textAlign: TextAlign.center,
+          style: context.theme.textTheme.bodyLarge,
         ),
       ],
     );
