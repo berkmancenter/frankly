@@ -1,3 +1,4 @@
+import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/app_asset.dart';
@@ -105,9 +106,18 @@ class _DialogFlowState extends State<DialogFlow> {
       );
     } else if (_onStep == 2) {
       if (_createCommunity) {
-        _createdCommunityId = (await cloudFunctionsCommunityService
-                .createCommunity(CreateCommunityRequest(community: _community)))
-            .communityId;
+        try {
+          _createdCommunityId = (await cloudFunctionsCommunityService
+            .createCommunity(CreateCommunityRequest(community: _community)))
+              .communityId;
+        } catch (e, s) {
+          loggingService.log(e, logType: LogType.error);
+          loggingService.log(s, logType: LogType.error);
+
+          final sanitizedError = sanitizeError(e.toString());
+    
+          _createdCommunityId = null;
+        }
         final createdCommunityId = _createdCommunityId;
         if (createdCommunityId != null) {
           analytics.logEvent(
@@ -151,8 +161,7 @@ class _DialogFlowState extends State<DialogFlow> {
           SizedBox(height: 10),
         ],
         SizedBox(height: 40),
-        if (_onStep != 4)
-          HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
+        HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
         SizedBox(height: 10),
         HeightConstrainedText(
           _stepText,
@@ -161,7 +170,7 @@ class _DialogFlowState extends State<DialogFlow> {
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
-        if (_onStep != 2) ...[
+        if (_onStep == 1) ...[
           _buildNextButton(),
           SizedBox(height: 20),
         ],
