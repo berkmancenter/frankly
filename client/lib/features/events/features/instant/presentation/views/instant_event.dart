@@ -187,9 +187,12 @@ class _InstantEventState extends State<InstantEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: context.theme.colorScheme.surfaceContainerLowest,
-      child: _buildContent(),
+    return FocusFixer(
+      resizeForKeyboard: true,
+      child: Material(
+        color: context.theme.colorScheme.surfaceContainerLowest,
+        child: _buildContent(),
+      ),
     );
   }
 }

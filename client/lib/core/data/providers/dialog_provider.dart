@@ -16,7 +16,10 @@ Future<T?> showCustomDialog<T>({
   final provider = Provider.of<DialogProvider>(context, listen: false);
   provider.incrementDialogCount();
 
-  final content = Builder(builder: builder);
+  final content = FocusFixer(
+    resizeForKeyboard: resizeForKeyboard,
+    child: Builder(builder: builder),
+  );
 
   final result = await showDialog<T>(
     context: context,
