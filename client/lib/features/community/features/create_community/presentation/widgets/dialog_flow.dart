@@ -313,7 +313,7 @@ class _DialogFlowState extends State<DialogFlow> {
       children: [
         SizedBox(height: 10),
         Image.asset(
-          AppAsset.kCongratulatoins.path,
+          AppAsset.kCongratulations.path,
           width: 80,
           height: 80,
           fit: BoxFit.contain,

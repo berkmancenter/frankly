@@ -119,7 +119,7 @@ class AppAsset {
   static const AppAsset kSmileyWithPlusPng =
       AppAsset('media/smiley-with-plus.png');
 
-  static const AppAsset kCongratulatoins = AppAsset('media/congrats.png');
+  static const AppAsset kCongratulations = AppAsset('media/congrats.png');
 
   final String path;
   final bool isSvg;
