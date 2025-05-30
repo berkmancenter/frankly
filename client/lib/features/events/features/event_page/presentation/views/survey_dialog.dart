@@ -91,16 +91,13 @@ class SurveyDialog extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: ActionButton(
-              color: surveyPresenter.checkSurveyCompleted()
-                  ? context.theme.colorScheme.onPrimary
-                  : context.theme.colorScheme.onPrimaryContainer,
-              onPressed: () => surveyPresenter.checkSurveyCompleted()
-                  ? Navigator.of(context).pop(
-                      SurveyDialogResult(
-                        questions: surveyPresenter.surveyQuestions,
-                        zipCode: surveyPresenter.zipCodeController.text,
-                      ),
-                    )
+              onPressed: surveyPresenter.checkSurveyCompleted()
+                  ? () => Navigator.of(context).pop(
+                        SurveyDialogResult(
+                          questions: surveyPresenter.surveyQuestions,
+                          zipCode: surveyPresenter.zipCodeController.text,
+                        ),
+                      )
                   : null,
               text: 'Finish',
             ),
@@ -193,19 +190,14 @@ class SurveyDialog extends StatelessWidget {
     final isAnswerSelected = questionData.answerOptionId == answerOption.id;
 
     return ActionButton(
-      type: ActionButtonType.outline,
+      type:
+          isAnswerSelected ? ActionButtonType.filled : ActionButtonType.outline,
       onPressed: () => context.read<SurveyPresenter>().setQuestionAnswer(
             id: questionId,
             answerOptionId: answerOption.id,
           ),
       expand: expand,
-      color: _getButtonColor(
-          context: context, isAnswerSelected: isAnswerSelected, invert: false),
-      borderSide:
-          BorderSide(color: context.theme.colorScheme.primary, width: 1),
       borderRadius: BorderRadius.circular(30),
-      textColor: _getButtonColor(
-          context: context, isAnswerSelected: isAnswerSelected, invert: true),
       child: Flexible(
         flex: expand ? 1 : 0,
         child: Container(
@@ -215,31 +207,14 @@ class SurveyDialog extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: AppTextStyle.body.copyWith(
-              color: _getButtonColor(
-                context: context,
-                isAnswerSelected: isAnswerSelected,
-                invert: true,
-              ),
+            style: context.theme.textTheme.bodyMedium!.copyWith(
+              color: isAnswerSelected
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.primary,
             ),
           ),
         ),
       ),
     );
-  }
-
-  Color _getButtonColor({
-    required BuildContext context,
-    required bool isAnswerSelected,
-    required bool invert,
-  }) {
-    bool isDarkColor = !isAnswerSelected;
-    if (invert) {
-      isDarkColor = !isDarkColor;
-    }
-
-    return isDarkColor
-        ? context.theme.colorScheme.onPrimary
-        : context.theme.colorScheme.primary;
   }
 }

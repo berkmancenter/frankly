@@ -84,6 +84,7 @@ class _PrerequisiteTemplateWidgetPageState
     await ConfirmDialog(
       title: context.l10n.deletePrerequisiteTemplate,
       mainText: 'Are you sure want to delete?',
+      cancelText: context.l10n.cancel,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();

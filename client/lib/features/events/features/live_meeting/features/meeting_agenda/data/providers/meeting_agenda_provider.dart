@@ -602,6 +602,7 @@ class AgendaProvider with ChangeNotifier {
       final confirmed = await ConfirmDialog(
         mainText:
             'This agenda item just started! Are you sure you want to move on?',
+        cancelText: appLocalizationService.getLocalization().cancel,
       ).show();
       if (!confirmed) return;
     }
