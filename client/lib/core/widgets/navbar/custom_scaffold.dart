@@ -65,27 +65,25 @@ class CustomScaffoldState extends State<CustomScaffold> {
   @override
   Widget build(BuildContext context) {
     final navBarProvider = context.watch<NavBarProvider>();
-    return FocusFixer(
-      child: Scaffold(
-        backgroundColor: widget.bgColor,
+    return Scaffold(
+      backgroundColor: widget.bgColor,
 
-        // Floating action buttons should follow the theme of the scaffold
-        // instead of other nav elements.
-        floatingActionButton: widget.floatingActionButton != null
-            ? Theme(
-                data: widget.childTheme ?? Theme.of(context),
-                child: widget.floatingActionButton!,
-              )
-            : null,
-        endDrawer: SideBar(),
-        body: Column(
-          children: [
-            Expanded(
-              child: _buildMainContent(navBarProvider),
-            ),
-            if (widget.bottomNavigationBar != null) widget.bottomNavigationBar!,
-          ],
-        ),
+      // Floating action buttons should follow the theme of the scaffold
+      // instead of other nav elements.
+      floatingActionButton: widget.floatingActionButton != null
+          ? Theme(
+              data: widget.childTheme ?? Theme.of(context),
+              child: widget.floatingActionButton!,
+            )
+          : null,
+      endDrawer: SideBar(),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildMainContent(navBarProvider),
+          ),
+          if (widget.bottomNavigationBar != null) widget.bottomNavigationBar!,
+        ],
       ),
     );
   }
