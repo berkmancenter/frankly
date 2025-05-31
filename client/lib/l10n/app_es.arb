@@ -1,5 +1,30 @@
 {
   "@@locale": "es",
+  "aVIssues": "Problemas de A/V",
+  "about": "Acerca de",
+  "aboutUs": "Sobre Nosotros",
+  "accountExistsWithSameEmail": "Ya existe una cuenta con la misma dirección de email pero con un método de inicio de sesión diferente. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
+  "addACategory": "Agregar una categoría",
+  "addAPrerequisiteTemplate": "Agregar una plantilla de requisito previo",
+  "addAQuestion": "Agregar una pregunta",
+  "addActionLink": "Añadir enlace de acción",
+  "addAgendaItem": "Añadir elemento de agenda",
+  "addCategory": "Añadir una categoría",
+  "addComment": "Añadir comentario",
+  "addCommunityImages": "Añadir imágenes de comunidad",
+  "addNew": "+ Añadir nuevo",
+  "addOption": "Añadir opción",
+  "addPrerequisiteTemplate": "Añadir una plantilla de requisitos previos",
+  "addQuestion": "Añadir una pregunta",
+  "addSomethingHere": "Añadir algo aquí",
+  "admin": "Administrador",
+  "agreeAndContinue": "Aceptar y continuar",
+  "alreadyUserSignIn": "¿Ya eres usuario?",
+  "notUserSignUp": "¿No tienes una cuenta?",
+  "anonymous": "Anónimo",
+  "appDescription": "Una plataforma para deliberaciones en línea",
+  "appNameHome": "{appName} - Inicio",
+  "@appNameHome": {
   "@appNameTermsOfService": {
     "placeholders": {
       "appName": {
@@ -186,6 +211,10 @@
       }
     }
   },
+  "areYouSureYouWantToDeleteMedia": "¿Estás seguro de que quieres eliminar este medio?",
+  "areYouSureYouWantToRefreshTheGuide": "¿Estás seguro de que quieres actualizar la guía?",
+  "aspectRatioClipped": "Relación de aspecto recortada",
+  "videoElement": "{label}-elemento-video",
   "@videoElement": {
     "placeholders": {
       "label": {
@@ -308,6 +337,7 @@
   "contactEmail": "Correo de contacto",
   "copiedToClipboard": "¡Copiado al portapapeles!",
   "create": "Crear",
+  "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
   "createAPost": "Crear un post",
   "createAResource": "Crear un recurso",
   "createATemplate": "Crear una plantilla",
@@ -353,6 +383,7 @@
   "editYourCommunity": "Editar su comunidad",
   "email": "Email",
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
+  "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
   "endBreakoutRooms": "Finalizar salas de grupo",
   "endBreakouts": "Finalizar salas de grupo",
   "endTime": "Hora de finalización",
@@ -365,12 +396,14 @@
   "enterRoomNumber": "Ej: 2",
   "enterTitle": "Introducir título",
   "enterMessage": "Introducir mensaje",
+  "enterValidName": "Por favor, introduzca un nombre válido", 
   "enterVideoTitle": "Introducir título del vídeo",
   "enterWaitingRoomText": "Introducir texto de sala de espera (opcional)",
   "enterWaitingRoomTextOptional": "Ingrese el texto de la sala de espera (opcional)",
   "enterWordCloudPrompt": "Ingrese instrucción para la Nube de Palabras",
   "enterWordCloudPromptHint": "Ingrese instrucción para la Nube de Palabras",
   "error": "Error",
+  "or": "o",
   "errorLoadingCommunities": "Algo salió mal al cargar las comunidades. Por favor, actualice.",
   "errorLoadingEmail": "Error al cargar el Email.",
   "errorLoadingMemberships": "Algo salió mal al cargar las membresías. Por favor, actualice.",
@@ -411,6 +444,7 @@
   "helpCenter": "Centro de Ayuda",
   "hideAgendaItem": "Ocultar elemento de agenda",
   "hostIsSendingYouToBreakoutRoom": "El anfitrión le está enviando a una sala de grupos. ¿Unirse a la sala de grupos?",
+  "hidePassword": "Ocultar contraseña",
   "hosted": "Con anfitrión",
   "hostless": "Sin anfitrión",
   "iAgreeToThe": "Acepto los ",
@@ -421,6 +455,7 @@
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
   "introBeforeBreakouts": "Aproximadamente {duration} de introducción antes de las salas de grupos",
+  "insteadSuffix": " en cambio.",
   "introductionContent": "_¡Preséntense! Cada uno toma un minuto para responder una de las siguientes preguntas._\n\n* ¿Qué has hecho recientemente que fue muy divertido?\n* ¿Quién es tu personaje de dibujos animados favorito y por qué?\n* ¿Qué es algo que deseas lograr antes de morir?\n* ¿Qué película NO te gustó?\n",
   "introductions": "Introducciones",
   "joinAnEventWithMe": "¡Únase a un evento conmigo en {appName}!",
@@ -443,6 +478,7 @@
   "locked": "Bloqueado",
   "login": "Iniciar sesión",
   "logo": "Logotipo",
+  "loggingIn": "iniciando sesión",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
   "makeASuggestion": "Hacer una sugerencia",
@@ -515,6 +551,14 @@
   "owner": "Propietario",
   "participantActions": "Acciones del participante",
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
+  "@participantActionsForUserWithId": {
+    "description": "Etiqueta semántica para acciones del participante, con userId como parámetro.",
+    "placeholders": {
+      "userId": {
+        "type": "Object"
+      }
+    }
+  },
   "participantCount": "{count} participantes",
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
@@ -522,12 +566,15 @@
   "password": "Contraseña",
   "passwordInvalid": "La contraseña no es válida. Haga clic en Olvidé mi contraseña para restablecerla. O regístrese de nuevo con un email diferente.",
   "passwordResetLinkSent": "Enlace de restablecimiento de contraseña enviado a {email}",
+  "passwordRequirements": "Debe tener al menos 12 caracteres y contener una letra minúscula y una mayúscula.",
   "pasteOrEnterAUrl": "Pegue o ingrese una URL",
   "pasteOrEnterUrl": "Pegar o ingresar URL",
   "people": "personas",
   "person": "persona",
   "playsAt": "Comienza a las {time}",
   "pleaseEnterValidEmail": "Por favor, introduzca una dirección de email válida.",
+  "pleaseEnterPassword": "Por favor, introduzca una contraseña",
+  "pleaseEnterValidPassword": "Por favor, introduzca una contraseña válida",
   "pleaseLogInOrSignUp": "Por favor, inicia sesión o regístrate.",
   "postWasDeleted": "La publicación fue eliminada.",
   "posts": "Publicaciones",
@@ -546,6 +593,17 @@
   "questionGoesHere": "La pregunta va aquí",
   "questionWithNumber": "Pregunta {number}",
   "raiseHandJoinSpeakerQueue": "Levanta la mano para unirte a la cola de oradores",
+  "record": "Grabar",
+  "odometer": "Odómetro",
+  "previewAgenda": "Vista previa de la agenda",
+  "saveSettings": "Guardar configuración",
+  "showPassword": "Mostrar contraseña",
+  "restoreSettings": "Restaurar configuración predeterminada",
+  "devSettings": "Configuración para desarrolladores",
+  "changedFromDefault": "Cambiado del valor predeterminado",
+  "enterCategoryNum": "Ingrese Categoría {number}",
+  "meetingEndMessage": "Esta reunión ha terminado. Puede cerrar esta ventana.",
+  "meetingEndWithFollowMessage": "Esta reunión ha terminado. Puede cerrar esta ventana o visitar {name} para continuar la conversación.",
   "raiseHandToJoin": "Levante la mano para unirse a la cola de oradores",
   "raiseHandToJoinSpeakerQueue": "Levante la mano para unirse a la cola de oradores",
   "raiseYourHandToJoinTheSpeakerQueue": "Levanta la mano para unirte a la cola de oradores",
@@ -603,6 +661,14 @@
   "sidebarUnfollowButton": "Botón de dejar de seguir barra lateral",
   "followCommunityForAccess": "Sigue a {community} para acceder a todos los eventos y recursos.",
   "@followCommunityForAccess": {
+  "followCommunityButton": "Botón seguir comunidad",
+  "franklyLogo": "Logo de Frankly",
+  "signIn": "Iniciar sesión",
+  "signingUp": "registrándose",
+  "signUp": "Registrarse",
+  "signOut": "Cerrar sesión",
+  "signInToApp": "Iniciar sesión en {appName}",
+  "@signInToApp": {
     "placeholders": {
       "community": {
         "type": "String"

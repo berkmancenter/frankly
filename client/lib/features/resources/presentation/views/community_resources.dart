@@ -14,7 +14,7 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/tag_filter_widget.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -62,89 +62,85 @@ class _CommunityResourcesState extends State<_CommunityResources> {
             alignment: Alignment.centerLeft,
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 700),
-              child: CustomInkWell(
-                onTap: () => launch(resource.url!),
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(blurRadius: 5, color: AppColor.gray5),
-                    ],
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ProxiedImage(
-                        resource.image,
-                        borderRadius: BorderRadius.circular(10),
-                        width: 60,
-                        height: 60,
-                      ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            HeightConstrainedText(
-                              resource.title ?? '',
-                              style: AppTextStyle.bodyMedium
-                                  .copyWith(color: AppColor.gray1),
-                            ),
-                            SizedBox(height: 4),
-                            Wrap(
-                              children: [
-                                for (var tag in _resourcePresenter
-                                    .getResourceTags(resource))
-                                  CommunityTagBuilder(
-                                    tagDefinitionId: tag.definitionId,
-                                    builder: (_, isLoading, definition) =>
-                                        isLoading || definition == null
-                                            ? SizedBox.shrink()
-                                            : Text(
-                                                '#${definition.title}${_resourcePresenter.getResourceTags(resource).length > 1 ? ',' : ''} ',
-                                              ),
-                                  ),
-                              ],
-                            ),
-                          ],
+              child: Card.outlined(
+                color: context.theme.colorScheme.surfaceContainerLowest,
+                margin: EdgeInsets.zero,
+                child: CustomInkWell(
+                  onTap: () => launch(resource.url!),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ProxiedImage(
+                          resource.image,
+                          borderRadius: BorderRadius.circular(10),
+                          width: 60,
+                          height: 60,
                         ),
-                      ),
-                      if (canEditCommunity) ...[
-                        IconButton(
-                          onPressed: () => CreateCommunityResourceModal.show(
-                            context,
-                            resource: resource,
-                          ),
-                          icon: Icon(Icons.edit),
-                        ),
-                        SizedBox(height: 10),
-                        IconButton(
-                          onPressed: () async {
-                            final delete = await ConfirmDialog(
-                              mainText:
-                                  'Are you sure you want to delete this resource?',
-                            ).show();
-
-                            if (!delete) return;
-
-                            await alertOnError(
-                              context,
-                              () => firestoreCommunityResourceService
-                                  .deleteCommunityResource(
-                                communityId:
-                                    CommunityProvider.read(context).communityId,
-                                resourceId: resource.id,
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              HeightConstrainedText(
+                                resource.title ?? '',
+                                style: AppTextStyle.bodyMedium,
                               ),
-                            );
-                          },
-                          icon: Icon(Icons.delete),
+                              SizedBox(height: 4),
+                              Wrap(
+                                children: [
+                                  for (var tag in _resourcePresenter
+                                      .getResourceTags(resource))
+                                    CommunityTagBuilder(
+                                      tagDefinitionId: tag.definitionId,
+                                      builder: (_, isLoading, definition) =>
+                                          isLoading || definition == null
+                                              ? SizedBox.shrink()
+                                              : Text(
+                                                  '#${definition.title}${_resourcePresenter.getResourceTags(resource).length > 1 ? ',' : ''} ',
+                                                ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
+                        if (canEditCommunity) ...[
+                          IconButton(
+                            onPressed: () => CreateCommunityResourceModal.show(
+                              context,
+                              resource: resource,
+                            ),
+                            icon: Icon(Icons.edit),
+                          ),
+                          SizedBox(height: 10),
+                          IconButton(
+                            onPressed: () async {
+                              final delete = await ConfirmDialog(
+                                mainText:
+                                    'Are you sure you want to delete this resource?',
+                              ).show();
+
+                              if (!delete) return;
+
+                              await alertOnError(
+                                context,
+                                () => firestoreCommunityResourceService
+                                    .deleteCommunityResource(
+                                  communityId: CommunityProvider.read(context)
+                                      .communityId,
+                                  resourceId: resource.id,
+                                ),
+                              );
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
               ),

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/user/presentation/views/events_tab.dart';
 import 'package:client/features/user/presentation/views/notifications_tab.dart';
 import 'package:client/features/user/presentation/views/profile_tab.dart';
@@ -18,7 +17,6 @@ import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -125,7 +123,6 @@ class _UserSettingsPageState extends State<UserSettingsPage>
               );
               return CustomTabBar(
                 padding: padding,
-                isWhiteBackground: true,
               );
             },
           ),

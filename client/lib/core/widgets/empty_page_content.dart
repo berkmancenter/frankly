@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -22,28 +22,16 @@ class EmptyPageContent extends StatelessWidget {
     this.subtitleText,
     this.buttonText,
     this.showContainer = true,
-    this.buttonType = ActionButtonType.flat,
+    this.buttonType = ActionButtonType.filled,
     this.isBackgroundDark = false,
     this.isBackgroundPrimaryColor = false,
     Key? key,
   }) : super(key: key);
 
-  Color _getColor({bool subtitle = false}) {
-    if (isBackgroundDark) {
-      return AppColor.gray6;
-    } else if (isBackgroundPrimaryColor) {
-      return AppColor.gray1;
-    } else if (subtitle) {
-      return AppColor.gray3;
-    } else {
-      return AppColor.gray2;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final buttonColor = Theme.of(context).colorScheme.primary;
-    final isFlat = buttonType == ActionButtonType.flat;
+    final buttonColor = context.theme.colorScheme.primary;
+
 
     var typeName = type.name;
     if (type == EmptyPageType.posts) {
@@ -75,7 +63,7 @@ class EmptyPageContent extends StatelessWidget {
       decoration: showContainer
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             )
           : null,
       child: Column(
@@ -88,15 +76,23 @@ class EmptyPageContent extends StatelessWidget {
           SizedBox(height: 10),
           HeightConstrainedText(
             titleText ?? context.l10n.noItems(typeName),
-            style: AppTextStyle.headline4.copyWith(color: _getColor()),
+            style: context.theme.textTheme.titleLarge!.copyWith(
+              color: isBackgroundDark
+                  ? context.theme.colorScheme.surface
+                  : context.theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 20),
           SizedBox(
             width: 205,
             child: HeightConstrainedText(
-              subtitleText ?? context.l10n.whenNewItemsAdded(typeName),
-              style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: _getColor(subtitle: true)),
+              subtitleText ??
+                  context.l10n.whenNewItemsAdded(typeName),
+              style: context.theme.textTheme.labelLarge!.copyWith(
+                color: isBackgroundDark
+                    ? context.theme.colorScheme.surface
+                    : context.theme.colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -104,9 +100,7 @@ class EmptyPageContent extends StatelessWidget {
           if (onButtonPress != null)
             ActionButton(
               text: buttonText ?? type.buttonText(context),
-              textStyle: AppTextStyle.body
-                  .copyWith(color: isFlat ? AppColor.white : buttonColor),
-              color: isFlat ? buttonColor : null,
+              color: buttonColor,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),
               type: buttonType,

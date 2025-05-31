@@ -1,11 +1,10 @@
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/utils/agenda_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_user_suggestions_data.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -79,15 +78,14 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
             hintText: context.l10n.suggestions,
             maxLength: agendaSuggestionCharactersLength,
             maxLines: 1,
-            counterStyle: AppTextStyle.bodySmall.copyWith(
-              color: AppColor.darkBlue,
-            ),
+            counterStyle: context.theme.textTheme.bodySmall,
             onChanged: (value) => _presenter.updateTitle(value),
           ),
           SizedBox(height: 20),
           HeightConstrainedText(
             'Let participants suggest agenda items and then upvote or downvote.',
-            style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+            style: context.theme.textTheme.bodyMedium!
+                .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
         ],
       );

@@ -38,7 +38,7 @@ class AgendaProviderParams {
   final bool allowButtonForUserSubmittedAgenda;
   final bool agendaStartsCollapsed;
   final SubmitNotifier? saveNotifier;
-  final Color backgroundColor;
+
   final Color? labelColor;
   final bool isLivestream;
   final Color? highlightColor;
@@ -51,7 +51,6 @@ class AgendaProviderParams {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    required this.backgroundColor,
     required this.labelColor,
     required this.isLivestream,
     this.highlightColor,
@@ -603,6 +602,7 @@ class AgendaProvider with ChangeNotifier {
       final confirmed = await ConfirmDialog(
         mainText:
             'This agenda item just started! Are you sure you want to move on?',
+        cancelText: appLocalizationService.getLocalization().cancel,
       ).show();
       if (!confirmed) return;
     }

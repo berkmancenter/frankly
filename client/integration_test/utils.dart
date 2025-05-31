@@ -9,22 +9,24 @@ Future<void> signUpForApp(
   required String name,
   required String password,
 }) async {
-  await waitAndTap(tester, find.byKey(SignInWidget.signUpKey));
+  final nameFieldFinder = find.byKey(SignInOptionsContent.nameTextFieldKey);
 
-  await waitAndTap(tester, find.byKey(SignInOptionsContent.emailSignInKey));
+  await waitAndTap(tester, find.byKey(SignInWidget.signUpKey));
+  await wait(tester, timeout: Duration(seconds: 1));
+
+  // Name field goes away if switching to login
+  expect(nameFieldFinder.hitTestable(), isNot(findsOneWidget));
+
+  // Return to sign up
+  await waitAndTap(tester, find.byKey(SignInOptionsContent.buttonSubmitKey));
+  await wait(tester, timeout: Duration(seconds: 1));
+
+  expect(nameFieldFinder.hitTestable(), findsOneWidget);
 
   // Note: Putting in text by setting hte controller directly due to flutter bug:
   // https://github.com/flutter/flutter/issues/89749
 
-  final nameFieldFinder = find.byKey(SignInOptionsContent.nameTextFieldKey);
-  await waitAndAction(tester, nameFieldFinder, () async {
-    print('putting in name: $name');
-    (tester.firstWidget(nameFieldFinder) as CustomTextField).controller?.text =
-        name;
-  });
-  await wait(tester, timeout: Duration(seconds: 1));
-
-  await wait(tester, timeout: Duration(seconds: 2));
+  await wait(tester, timeout: Duration(seconds: 3));
   final emailFieldFinder = find.byKey(SignInOptionsContent.emailTextFieldKey);
   await waitAndAction(tester, emailFieldFinder, () async {
     print('putting in email: $email');
@@ -43,7 +45,7 @@ Future<void> signUpForApp(
   });
 
   await wait(tester, timeout: Duration(seconds: 1));
-  await waitAndTap(tester, find.byKey(SignInOptionsContent.signInSubmitKey));
+  await waitAndTap(tester, find.byKey(SignInOptionsContent.buttonSubmitKey));
 }
 
 Future<bool> waitAndTap(

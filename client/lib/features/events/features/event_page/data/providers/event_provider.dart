@@ -9,7 +9,6 @@ import 'package:csv/csv.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/utils/firestore_utils.dart';
@@ -353,6 +352,7 @@ class EventProvider with ChangeNotifier {
       mainText:
           'Are you sure you want to cancel $identifier participation in this event?',
       confirmText: 'Yes, cancel',
+      cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (cancelParticipation) {
       await firestoreEventService.removeParticipant(

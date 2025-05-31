@@ -5,7 +5,7 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 class RaisingHandToggle extends StatelessWidget {
@@ -23,7 +23,7 @@ class RaisingHandToggle extends StatelessWidget {
     return Tooltip(
       message: context.l10n.raiseHandToJoinSpeakerQueue,
       child: ActionButton(
-        type: ActionButtonType.flat,
+        type: ActionButtonType.filled,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         minWidth: 0,
         height: 0,
@@ -36,7 +36,9 @@ class RaisingHandToggle extends StatelessWidget {
           liveMeetingPath: AgendaProvider.read(context).liveMeetingPath,
           isHandRaised: !isHandRaised,
         ),
-        color: isHandRaised ? AppColor.darkBlue : AppColor.white,
+        color: isHandRaised
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.surfaceContainerLowest,
         padding: isCardMinimized
             ? EdgeInsets.zero
             : EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -45,7 +47,10 @@ class RaisingHandToggle extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               )
             : RoundedRectangleBorder(
-                side: BorderSide(width: 2.0, color: AppColor.darkBlue),
+                side: BorderSide(
+                  width: 2.0,
+                  color: context.theme.colorScheme.primary,
+                ),
                 borderRadius: BorderRadius.circular(30),
               ),
         child: ProxiedImage(

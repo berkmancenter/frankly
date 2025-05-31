@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
-import 'package:client/core/utils/platform_utils.dart';
 
 class SignInDialog extends StatefulWidget {
-  final bool isNewUser;
+  final bool showSignup;
   final bool isPurchasingSubscription;
   final bool isDismissable;
   final bool showEmailFormOnly;
 
   const SignInDialog({
     Key? key,
-    required this.isNewUser,
+    required this.showSignup,
     this.isPurchasingSubscription = false,
     this.isDismissable = true,
     this.showEmailFormOnly = false,
@@ -29,7 +28,7 @@ class SignInDialog extends StatefulWidget {
       resizeForKeyboard: false,
       isDismissible: isDismissable,
       builder: (_) => SignInDialog(
-        isNewUser: newUser,
+        showSignup: newUser,
         isPurchasingSubscription: isPurchasingSubscription,
         isDismissable: isDismissable,
         showEmailFormOnly: showEmailFormOnly,
@@ -45,31 +44,34 @@ class _SignInDialogState extends State<SignInDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+        
+      ),
       child: Stack(
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 300),
+            constraints: BoxConstraints(maxWidth: 400),
             child: ListView(
-              padding: EdgeInsets.all(20) + EdgeInsets.only(top: 20),
+              padding: EdgeInsets.all(40) + EdgeInsets.only(top: 30),
               shrinkWrap: true,
               children: [
                 SignInOptionsContent(
-                  isPurchasingSubscription: widget.isPurchasingSubscription,
-                  isNewUser: widget.isNewUser,
-                  showEmailFormOnly: widget.showEmailFormOnly,
+                  showSignUp: widget.showSignup,
                 ),
               ],
             ),
           ),
           if (widget.isDismissable)
             Positioned.fill(
+              right: 20,
+              top: 20, 
               child: Align(
                 alignment: Alignment.topRight,
-                child: IconButton(
+                child: IconButton(                  
                   icon: Icon(Icons.close),
                   onPressed: () => Navigator.of(context).pop(),
-                  padding: EdgeInsets.zero,
                 ),
               ),
             ),

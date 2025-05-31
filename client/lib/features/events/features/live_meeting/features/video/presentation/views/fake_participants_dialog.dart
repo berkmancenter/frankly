@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -41,12 +41,10 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
         HeightConstrainedText(
           context.l10n.fakeParticipantCount,
           textAlign: TextAlign.center,
-          style: body.copyWith(fontSize: 14),
         ),
         SizedBox(
           width: 60,
           child: CustomTextField(
-            textStyle: body,
             controller: _textController,
           ),
         ),
@@ -75,7 +73,10 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: Text(
               'Fake Participants',
-              style: TextStyle(color: AppColor.white, fontSize: 16),
+              style: TextStyle(
+                color: context.theme.colorScheme.onPrimary,
+                fontSize: 16,
+              ),
             ),
           ),
         ),
@@ -89,7 +90,7 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),

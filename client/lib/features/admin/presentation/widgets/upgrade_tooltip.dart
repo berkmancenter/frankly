@@ -3,11 +3,10 @@ import 'dart:math';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 /// This is wrapped around the widget which is anchored to the freemium 'Explore Plans' tooltip
@@ -64,8 +63,8 @@ class _UpgradeTooltipContentsState extends State<_UpgradeTooltipContents> {
               SizedBox(width: 8),
               HeightConstrainedText(
                 'Upgrade for access',
-                style:
-                    AppTextStyle.headline4.copyWith(color: AppColor.darkBlue),
+                style: AppTextStyle.headline4
+                    .copyWith(color: context.theme.colorScheme.primary),
               ),
             ],
           ),
@@ -77,8 +76,9 @@ class _UpgradeTooltipContentsState extends State<_UpgradeTooltipContents> {
                   child: ActionButton(
                     type: ActionButtonType.outline,
                     text: 'Explore Plans',
-                    borderSide: BorderSide(color: AppColor.darkBlue),
-                    textColor: AppColor.darkBlue,
+                    borderSide:
+                        BorderSide(color: context.theme.colorScheme.primary),
+                    textColor: context.theme.colorScheme.primary,
                     onPressed: _launchBilling,
                   ),
                 ),
@@ -202,7 +202,7 @@ class _TooltipContainerState extends State<_TooltipContainer> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   boxShadow: const [AppDecoration.lightBoxShadow],
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
@@ -212,7 +212,7 @@ class _TooltipContainerState extends State<_TooltipContainer> {
             Container(
               width: 18,
               height: 18,
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
               transform: Matrix4.identity()
                 ..translate(0, 10 * (widget.isBelowIcon ? 1 : -1))
                 ..rotateZ(pi / 4),
@@ -226,7 +226,7 @@ class _TooltipContainerState extends State<_TooltipContainer> {
           child: IconButton(
             icon: Icon(Icons.close),
             onPressed: widget.onClose,
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.primary,
           ),
         ),
       ],

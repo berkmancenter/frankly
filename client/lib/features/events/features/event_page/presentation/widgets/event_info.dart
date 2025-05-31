@@ -39,7 +39,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -233,7 +233,7 @@ class _EventInfoState extends State<EventInfo> {
           Navigator.pop(context);
         });
       },
-      cancelText: 'No, nevermind',
+      cancelText: context.l10n.cancel,
     ).show();
   }
 
@@ -324,6 +324,8 @@ class _EventInfoState extends State<EventInfo> {
   Widget _buildEditEvent() {
     final l10n = appLocalizationService.getLocalization();
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -353,6 +355,8 @@ class _EventInfoState extends State<EventInfo> {
   Widget _buildSettingIcon() {
     final l10n = appLocalizationService.getLocalization();
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -402,11 +406,7 @@ class _EventInfoState extends State<EventInfo> {
 
     return ActionButton(
       height: 64,
-      type: isEventOpen ? ActionButtonType.flat : ActionButtonType.outline,
-      color: isEventOpen ? Theme.of(context).colorScheme.primary : null,
-      textColor: isEventOpen
-          ? Theme.of(context).colorScheme.secondary
-          : Theme.of(context).colorScheme.primary,
+      type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () => alertOnError(context, () async {
@@ -466,20 +466,32 @@ class _EventInfoState extends State<EventInfo> {
       return WarningInfo(
         icon: CircleAvatar(
           radius: 12,
-          backgroundColor: AppColor.redLightMode,
-          child: Icon(Icons.school_outlined, size: 20, color: AppColor.white),
+          backgroundColor: context.theme.colorScheme.error,
+          child: Icon(
+            Icons.school_outlined,
+            size: 20,
+            color: context.theme.colorScheme.onPrimary,
+          ),
         ),
         title: context.l10n.prereqRequired,
       );
     } else if (isBanned) {
       return WarningInfo(
-        icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
-        title: context.l10n.banned,
+        icon: Icon(
+          Icons.info_outline,
+          size: 20,
+          color: context.theme.colorScheme.error,
+        ),
+        title: context.l10n.prereqRequired,
         message: context.l10n.removedFromEvent,
       );
     } else if (isLocked) {
       return WarningInfo(
-        icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
+        icon: Icon(
+          Icons.info_outline,
+          size: 20,
+          color: context.theme.colorScheme.error,
+        ),
         title: context.l10n.locked,
         message: context.l10n.eventIsLocked,
       );
@@ -493,7 +505,6 @@ class _EventInfoState extends State<EventInfo> {
         height: 64,
         text: 'FULL',
         expand: true,
-        color: Colors.blueGrey,
       );
     } else if (showJoinButton) {
       return Column(
@@ -508,8 +519,6 @@ class _EventInfoState extends State<EventInfo> {
               );
             }),
             expand: true,
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).colorScheme.secondary,
             text: 'RSVP',
           ),
           if (canShowFollowCommunity) ...[
@@ -564,20 +573,22 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.close,
             size: 20,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: HeightConstrainedText(
               l10n.cancelEvent,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],
@@ -590,20 +601,22 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelParticipation,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.close,
             size: 20,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: Text(
               l10n.cancel,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],
@@ -654,7 +667,9 @@ class _EventInfoState extends State<EventInfo> {
             SizedBox(width: 6),
             HeightConstrainedText(
               text,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             SizedBox(width: 20),
           ],
@@ -669,8 +684,8 @@ class _EventInfoState extends State<EventInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Checkbox(
-          activeColor: AppColor.darkBlue,
-          checkColor: AppColor.brightGreen,
+          activeColor: context.theme.colorScheme.primary,
+          checkColor: context.theme.colorScheme.onPrimary,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {
             if (value != null) {
@@ -686,7 +701,7 @@ class _EventInfoState extends State<EventInfo> {
             l10n.followCommunityForAccess(
               Provider.of<CommunityProvider>(context).community.name ?? '',
             ),
-            style: AppTextStyle.bodyMedium,
+            style: context.theme.textTheme.bodyMedium,
           ),
         ),
       ],
@@ -705,8 +720,8 @@ class _EventInfoState extends State<EventInfo> {
         url: _getShareUrl(),
         body: _getShareBody(),
         subject: 'Join my event on ${Environment.appName}!',
-        iconColor: Theme.of(context).colorScheme.primary,
-        iconBackgroundColor: AppColor.white,
+        iconColor: context.theme.colorScheme.primary,
+        iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         size: 40,
         iconSize: 20,
         wrapIcons: false,
@@ -739,20 +754,8 @@ class _EventInfoState extends State<EventInfo> {
         eventProvider.event.isHosted || canEditCommunity;
     final isMobile = responsiveLayoutService.isMobile(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: isMobile ? null : BorderRadius.circular(20),
-        boxShadow: isMobile
-            ? null
-            : [
-                BoxShadow(
-                  color: AppColor.black.withOpacity(0.25),
-                  blurRadius: 34,
-                  offset: Offset(0, 14),
-                ),
-              ],
-      ),
+    return Card.outlined(
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -769,8 +772,7 @@ class _EventInfoState extends State<EventInfo> {
                   children: [
                     VerticalTimeAndDateIndicator(
                       shadow: false,
-                      padding:
-                          EdgeInsets.only(left: isMobile ? 0 : 16, right: 16),
+                      padding: EdgeInsets.only(right: 24),
                       time: DateTime.fromMillisecondsSinceEpoch(
                         (eventProvider
                                 .event.scheduledTime?.millisecondsSinceEpoch ??
@@ -805,7 +807,7 @@ class _EventInfoState extends State<EventInfo> {
                       ),
                   ],
                 ),
-                SizedBox(height: isMobile ? 0 : 20),
+                SizedBox(height: 20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -820,7 +822,7 @@ class _EventInfoState extends State<EventInfo> {
                       child: HeightConstrainedText(
                         _event.title ?? '',
                         maxLines: 3,
-                        style: AppTextStyle.headline2Light.copyWith(
+                        style: context.theme.textTheme.headlineMedium!.copyWith(
                           color: Theme.of(context).primaryColor,
                           decoration: _event.status == EventStatus.canceled
                               ? TextDecoration.lineThrough
@@ -843,8 +845,11 @@ class _EventInfoState extends State<EventInfo> {
                             }
                             return Text(
                               '#${definition.title} ',
-                              style: AppTextStyle.body
-                                  .copyWith(color: AppColor.gray3),
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
+                                color:
+                                    context.theme.colorScheme.onSurfaceVariant,
+                              ),
                             );
                           },
                         ),
@@ -879,12 +884,15 @@ class _EventInfoState extends State<EventInfo> {
                           onPressed: widget.onMessagePressed,
                           toolTipText: 'Message',
                           icon: CupertinoIcons.paperplane,
+                          color: context.theme.colorScheme.surfaceContainer,
+                          iconColor: context.theme.colorScheme.onSurface,
                         ),
                     ],
                   ),
                 ),
                 SizedBox(height: 10),
                 _buildJoinEventButton(),
+                SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -947,7 +955,11 @@ class _EventInfoState extends State<EventInfo> {
       children: [
         ProxiedImage(null, asset: appAsset, width: 20, height: 20),
         SizedBox(width: 6),
-        Text(type, style: AppTextStyle.body.copyWith(color: AppColor.gray3)),
+        Text(
+          type,
+          style: context.theme.textTheme.bodyMedium!
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
+        ),
       ],
     );
   }

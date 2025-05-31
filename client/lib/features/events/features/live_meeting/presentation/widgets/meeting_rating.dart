@@ -10,7 +10,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,6 @@ class MeetingRating extends StatefulWidget {
     final l10n = appLocalizationService.getLocalization();
     return showCustomDialog<void>(
       builder: (innerContext) => Dialog(
-        backgroundColor: AppColor.darkBlue,
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: ConstrainedBox(
@@ -51,8 +50,7 @@ class MeetingRating extends StatefulWidget {
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
                       text: l10n.noThanks,
-                      color: Colors.transparent,
-                      textColor: AppColor.white,
+                      type: ActionButtonType.text,
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
@@ -111,10 +109,10 @@ class _MeetingRatingState extends State<MeetingRating> {
                 currentRating != null && value < currentRating
                     ? Icons.star
                     : Icons.star_outline,
-                color: AppColor.brightGreen,
+                color: context.theme.colorScheme.onSurface,
               );
             },
-            unratedColor: AppColor.white.withOpacity(0.5),
+            unratedColor: context.theme.colorScheme.outlineVariant,
             onRatingUpdate: (rating) => alertOnError(context, () async {
               setState(() => _currentRating = rating);
               final event = context.read<EventProvider>().event;
@@ -148,7 +146,7 @@ class _MeetingRatingState extends State<MeetingRating> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.close,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onSurfaceVariant,
             size: 35,
           ),
         ),
@@ -174,7 +172,7 @@ class _MeetingRatingState extends State<MeetingRating> {
               context.l10n.youLeftTheEvent,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.white,
+                color: context.theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -192,7 +190,6 @@ class _MeetingRatingState extends State<MeetingRating> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.headline1.copyWith(
-                      color: AppColor.white,
                       // Trying to keep from wrapping at the default dialog size due to:
                       // https://github.com/flutter/flutter/issues/89586
                       fontSize: 36,
@@ -207,7 +204,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      color: AppColor.white,
+                      color: context.theme.colorScheme.onSurface,
                     ),
                   ),
                 ),

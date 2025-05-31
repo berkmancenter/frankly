@@ -1,4 +1,5 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
@@ -13,7 +14,6 @@ import 'package:client/core/routing/locations.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -160,7 +160,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: AppColor.gray3,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           HeightConstrainedText(
@@ -168,7 +168,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
             ),
           ),
         ],
@@ -188,15 +188,7 @@ class _OnboardPageState extends State<OnboardPage> {
       type: ActionButtonType.outline,
       height: 48,
       expand: true,
-      borderRadius: BorderRadius.circular(10),
-      color: AppColor.white,
-      textStyle: body.copyWith(
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
-      ),
-      borderSide: BorderSide(
-        color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
-      ),
+      color: context.theme.colorScheme.surfaceContainerLowest,
       text: '${isAccountCreated ? 'Edit' : 'Set'} Linked Payee Account',
       onPressed: skip
           ? null
@@ -499,11 +491,11 @@ class _OnboardPageState extends State<OnboardPage> {
             : Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColor.black.withOpacity(0.35),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                       blurRadius: 20,
                       offset: Offset(0, 5),
                     ),

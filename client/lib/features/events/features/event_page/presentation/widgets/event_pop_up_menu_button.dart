@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -77,18 +77,18 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         onSelected: (value) => widget.onSelected(value),
         tooltip: context.l10n.showOptions,
         iconSize: kIconSize,
-        icon: Material(
-          shape: CircleBorder(),
-          color: _isHovered
-              ? AppColor.grayTransparent.withOpacity(0.45)
-              : AppColor.gray6,
-          child: Padding(
-            padding: EdgeInsets.all(iconPadding),
-            child: Icon(
-              Icons.more_horiz,
-              size: 20,
-              color: AppColor.darkerBlue,
-            ),
+        icon: Container(
+          decoration: BoxDecoration(
+            color: _isHovered
+                ? context.theme.colorScheme.scrim.withScrimOpacity
+                : context.theme.colorScheme.surfaceContainer,
+            shape: BoxShape.circle,
+          ),
+          padding: EdgeInsets.all(iconPadding),
+          child: Icon(
+            Icons.more_horiz,
+            size: 20,
+            color: context.theme.colorScheme.onSurface,
           ),
         ),
         itemBuilder: (context) {
@@ -107,14 +107,13 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                       iconAsset.path,
                       width: 20,
                       height: 20,
-                      color: AppColor.darkerBlue,
+                      color: context.theme.colorScheme.primary,
                     ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         text,
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.darkBlue),
+                        style: context.theme.textTheme.bodyLarge,
                       ),
                     ),
                   ],

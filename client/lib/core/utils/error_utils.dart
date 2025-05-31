@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:client/core/data/services/logging_service.dart';
+import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
@@ -79,6 +83,30 @@ Future<T?> alertOnError<T>(
 
     await showAlert(context, errorMessage ?? sanitizedError);
     return null;
+  }
+}
+
+// Return callback w/ both the sanitized error and either firebase error code or exception msg when action fails
+Future<void> authMessageOnError<T>(
+  Future<T> Function() action, {
+  required Function(String errorMessage, String code) errorCallback,
+Function()? callback ,
+}) async {
+  try {
+    await action();
+    callback!();
+  } catch (e, s) {
+    loggingService.log(e, logType: LogType.error);
+    loggingService.log(s, logType: LogType.error);
+
+    final sanitizedError = sanitizeError(e.toString());
+    
+    if (e is FirebaseAuthException) {
+      errorCallback(sanitizedError, e.code);
+    } else if (e is VisibleException) {
+      errorCallback(sanitizedError, e.msg);
+    }
+
   }
 }
 

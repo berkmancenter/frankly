@@ -21,6 +21,7 @@ Future<T?> guardCommunityMember<T>(
         mainText:
             'You must be a member of this space to participate. Would you like to join?',
         confirmText: 'Yes, Join!',
+        cancelText: context.l10n.cancel,
       ).show();
 
       if (!joinCommunity) return null;

@@ -13,7 +13,7 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/resources/community_resource.dart';
 import 'package:provider/provider.dart';
@@ -40,37 +40,6 @@ class CreateCommunityResourceModal extends StatelessWidget {
         child: CreateCommunityResourceModal(),
       ),
     ).show();
-  }
-
-  Widget _buildEditTitle(
-    CreateCommunityResourcePresenter createResourcePresenter,
-  ) {
-    return Row(
-      children: [
-        Expanded(
-          child: CustomTextField(
-            maxLines: 3,
-            initialValue: createResourcePresenter.resource.title,
-            onChanged: (value) => createResourcePresenter.updateTitle(value),
-            onEditingComplete: () => createResourcePresenter.onTapEditTitle(),
-          ),
-        ),
-        if (createResourcePresenter.isEditingTitle) ...[
-          SizedBox(width: 10),
-          CustomInkWell(
-            boxShape: BoxShape.circle,
-            onTap: () => createResourcePresenter.onTapEditTitle(),
-            child: CircleAvatar(
-              backgroundColor: AppColor.darkBlue,
-              child: Icon(
-                Icons.check,
-                color: AppColor.brightGreen,
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
   }
 
   Widget _buildResource(
@@ -101,11 +70,12 @@ class CreateCommunityResourceModal extends StatelessWidget {
               ),
               CircleAvatar(
                 maxRadius: 10,
-                backgroundColor: AppColor.white,
+                backgroundColor:
+                    context.theme.colorScheme.surfaceContainerLowest,
                 child: Icon(
                   Icons.edit,
                   size: 15,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -113,7 +83,36 @@ class CreateCommunityResourceModal extends StatelessWidget {
         ),
         SizedBox(width: 10),
         if (createResourcePresenter.showTitleField)
-          Expanded(child: _buildEditTitle(createResourcePresenter))
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomTextField(
+                    maxLines: 3,
+                    initialValue: createResourcePresenter.resource.title,
+                    onChanged: (value) =>
+                        createResourcePresenter.updateTitle(value),
+                    onEditingComplete: () =>
+                        createResourcePresenter.onTapEditTitle(),
+                  ),
+                ),
+                if (createResourcePresenter.isEditingTitle) ...[
+                  SizedBox(width: 10),
+                  CustomInkWell(
+                    boxShape: BoxShape.circle,
+                    onTap: () => createResourcePresenter.onTapEditTitle(),
+                    child: CircleAvatar(
+                      backgroundColor: context.theme.colorScheme.primary,
+                      child: Icon(
+                        Icons.check,
+                        color: context.theme.colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          )
         else
           Expanded(
             child: Wrap(
@@ -181,7 +180,7 @@ class CreateCommunityResourceModal extends StatelessWidget {
           SizedBox(height: 20),
           Divider(
             thickness: 1,
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
           SizedBox(height: 20),
           Container(
@@ -194,8 +193,8 @@ class CreateCommunityResourceModal extends StatelessWidget {
                         Navigator.pop(context);
                       })
                   : null,
-              color: AppColor.darkBlue,
-              textColor: AppColor.white,
+              color: context.theme.colorScheme.primary,
+              textColor: context.theme.colorScheme.onPrimary,
             ),
           ),
           SizedBox(height: 20),

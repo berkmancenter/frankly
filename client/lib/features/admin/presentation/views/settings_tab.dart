@@ -14,7 +14,7 @@ import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -38,10 +38,7 @@ class SettingsTab extends StatefulHookWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  final blueBackground = AppColor.darkBlue.withOpacity(0.1);
-
   final whiteBackground = Colors.white70;
-
   Community get community => Provider.of<CommunityProvider>(context).community;
 
   Widget _buildSettingsToggle(
@@ -55,8 +52,8 @@ class _SettingsTabState extends State<SettingsTab> {
       color: background,
       child: CustomSwitchTile(
         text: title,
-        style: AppTextStyle.body
-            .copyWith(color: hasWarning ? AppColor.redLightMode : null),
+        style: AppTextStyle.body.copyWith(
+            color: hasWarning ? context.theme.colorScheme.error : null),
         val: value,
         onUpdate: onUpdate,
       ),
@@ -98,7 +95,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           !settings.dontAllowMembersToCreateMeetings,
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   context.l10n.allowMembersToCreateTemplates,
@@ -119,7 +116,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       requireApprovalToJoin: !settings.requireApprovalToJoin,
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   context.l10n.enableWeeklyEmailDigests,
@@ -142,7 +139,7 @@ class _SettingsTabState extends State<SettingsTab> {
                         allowDonations: !settings.allowDonations,
                       ),
                     ),
-                    blueBackground,
+                    context.theme.colorScheme.primary.withOpacity(0.1),
                     hasWarning: donationWarning,
                   ),
                   if (donationWarning)
@@ -150,7 +147,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       '* Your payee account has not been fully set up, so donations will not '
                       'currently be accepted. You may need to link a bank account or accept '
                       'Stripe\'s terms of service.',
-                      style: TextStyle(color: AppColor.redLightMode),
+                      style: TextStyle(color: context.theme.colorScheme.error),
                     ),
                   SizedBox(height: 8),
                   _buildStripeConnectLink(context, agreement!),
@@ -179,7 +176,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           !(eventSettings.showChatMessagesInRealTime ?? true),
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   context.l10n.record,
@@ -199,7 +196,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       talkingTimer: !(eventSettings.talkingTimer ?? true),
                     ),
                   ),
-                  blueBackground,
+                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   context.l10n.agendaPreview,
@@ -284,7 +281,9 @@ class _SettingsTabState extends State<SettingsTab> {
               _devCommunitySettingsToggle(
                 settings[i],
                 settingsMap,
-                i.isEven ? whiteBackground : blueBackground,
+                i.isEven
+                    ? whiteBackground
+                    : context.theme.colorScheme.primary.withOpacity(0.1),
               ),
             SizedBox(height: 20),
             Text(
@@ -296,7 +295,9 @@ class _SettingsTabState extends State<SettingsTab> {
               _devEventSettingsToggle(
                 eventSettings[i],
                 eventSettingsMap,
-                i.isEven ? whiteBackground : blueBackground,
+                i.isEven
+                    ? whiteBackground
+                    : context.theme.colorScheme.primary.withOpacity(0.1),
               ),
             SizedBox(height: 80),
           ],

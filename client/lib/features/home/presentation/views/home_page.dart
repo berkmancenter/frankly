@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:client/features/home/presentation/widgets/my_communities_section.dart';
 import 'package:client/features/home/presentation/widgets/upcoming_events_section.dart';
 import 'package:client/features/home/presentation/widgets/sign_in_section.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/navbar/bottom_nav_bar.dart';
 import 'package:client/core/widgets/navbar/custom_scaffold.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

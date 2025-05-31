@@ -1,5 +1,5 @@
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,17 +23,17 @@ void showRegularToast(
 
   switch (toastType) {
     case ToastType.success:
-      backgroundColor = AppColor.lightGreen;
-      textColor = AppColor.darkGreen;
+      backgroundColor = context.theme.colorScheme.primary;
+      textColor = context.theme.colorScheme.onPrimary;
       iconPath = AppAsset.kCheckCircleSvg;
       break;
     case ToastType.neutral:
-      backgroundColor = AppColor.darkBlue;
-      textColor = AppColor.white;
+      backgroundColor = context.theme.colorScheme.primary;
+      textColor = context.theme.colorScheme.onPrimary;
       break;
     case ToastType.failed:
-      backgroundColor = AppColor.lightRed;
-      textColor = AppColor.redLightMode;
+      backgroundColor = context.theme.colorScheme.error;
+      textColor = context.theme.colorScheme.onError;
       iconPath = AppAsset.kExclamationSvg;
       break;
   }

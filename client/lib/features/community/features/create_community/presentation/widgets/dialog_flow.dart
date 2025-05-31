@@ -3,6 +3,7 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
@@ -19,7 +20,6 @@ import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -27,19 +27,19 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 
-class FreemiumDialogFlow extends StatefulWidget with ShowDialogMixin {
+class DialogFlow extends StatefulWidget with ShowDialogMixin {
   final bool showAppNameOnMobile;
 
-  const FreemiumDialogFlow({
+  const DialogFlow({
     this.showAppNameOnMobile = true,
     Key? key,
   }) : super(key: key);
 
   @override
-  _FreemiumDialogFlowState createState() => _FreemiumDialogFlowState();
+  _DialogFlowState createState() => _DialogFlowState();
 }
 
-class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
+class _DialogFlowState extends State<DialogFlow> {
   final FocusNode _aboutFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _taglineFocus = FocusNode();
@@ -237,7 +237,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
         if (_onStep != 4)
           HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
         SizedBox(height: 10),
-        HeightConstrainedText(_stepText, style: AppTextStyle.headline2),
+        HeightConstrainedText(_stepText, style: context.theme.textTheme.titleLarge),
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
@@ -269,8 +269,8 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
     return Align(
       alignment: Alignment.centerRight,
       child: ActionButton(
-        color: AppColor.darkBlue,
-        textColor: AppColor.brightGreen,
+        color: context.theme.colorScheme.primary,
+        textColor: context.theme.colorScheme.onPrimary,
         onPressed: _isNextPageAvailable
             ? () async {
                 if (await _nextButtonAction()) {
@@ -285,7 +285,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           padding: const EdgeInsets.only(left: 5.0),
           child: Icon(
             Icons.arrow_forward_ios,
-            color: AppColor.brightGreen,
+            color: context.theme.colorScheme.onPrimary,
             size: 18,
           ),
         ),
@@ -302,14 +302,17 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: context.l10n
+                text:
+                     context.l10n
                     .bySigningInRegisteringOrUsing(Environment.appName),
-                style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                style: AppTextStyle.body.copyWith(
+                  color: context.theme.colorScheme.onPrimaryContainer,
+                ),
               ),
               TextSpan(
                 text: context.l10n.appNameTermsOfService(Environment.appName),
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.accentBlue,
+                  color: context.theme.colorScheme.primary,
                   decoration: TextDecoration.underline,
                 ),
                 recognizer: TapGestureRecognizer()
@@ -318,7 +321,7 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
               TextSpan(
                 text: '.',
                 style: AppTextStyle.body.copyWith(
-                  color: AppColor.gray2,
+                  color: context.theme.colorScheme.onPrimaryContainer,
                 ),
               ),
             ],
@@ -334,10 +337,6 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PreviewContainer(
-          _community,
-          fieldToEmphasize: _focusedField,
-        ),
         SizedBox(height: 30),
         CreateCommunityTextFields(
           onNameChanged: (value) =>
@@ -409,13 +408,14 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
                       style: AppTextStyle.headline2.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
-                        color: AppColor.gray2,
+                        color: context.theme.colorScheme.onPrimaryContainer,
                       ),
                     ),
                     TextSpan(
                       text: context.l10n.whenYouUpgrade,
-                      style: AppTextStyle.eyebrowSmall
-                          .copyWith(color: AppColor.gray3),
+                      style: AppTextStyle.eyebrowSmall.copyWith(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ],
                 ),
@@ -432,8 +432,6 @@ class _FreemiumDialogFlowState extends State<FreemiumDialogFlow> {
           children: [
             ActionButton(
               text: context.l10n.finish,
-              color: AppColor.darkBlue,
-              textColor: AppColor.brightGreen,
               borderRadius: BorderRadius.circular(10),
               padding: const EdgeInsets.all(20),
               onPressed: () async {

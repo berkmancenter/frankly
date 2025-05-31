@@ -13,7 +13,6 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_word_cloud_data.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/templates/data/providers/template_page_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';

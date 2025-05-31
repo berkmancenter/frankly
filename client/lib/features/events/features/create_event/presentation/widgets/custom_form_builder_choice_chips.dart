@@ -1,7 +1,7 @@
+import 'package:client/styles/styles.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/features/events/presentation/widgets/custom_drag_scroll_behaviour.dart';
 
 /// Custom class that allow to add dotted border to the chips options created by form builder library
@@ -298,7 +298,7 @@ class CustomFormBuilderChoiceChip<T> extends FormBuilderField<T> {
                             materialTapTargetSize: materialTapTargetSize,
                             labelStyle: field.value == option.value
                                 ? labelStyle.copyWith(
-                                    color: AppColor.darkBlue,
+                                    color: context.theme.colorScheme.primary,
                                   )
                                 : labelStyle,
                             labelPadding: labelPadding,
