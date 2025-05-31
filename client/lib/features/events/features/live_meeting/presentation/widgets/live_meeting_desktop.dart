@@ -534,7 +534,7 @@ class EnterMeetingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HeightConstrainedText(
-                  'Welcome! Click here to enter the event:',
+                  context.l10n.enterMeetingPrompt,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -544,7 +544,7 @@ class EnterMeetingScreen extends StatelessWidget {
                 ActionButton(
                   key: MeetingDialog.enterMeetingPromptButton,
                   onPressed: () => provider.clickedEnterMeeting = true,
-                  text: 'Join Now',
+                  text: context.l10n.joinNow,
                 ),
               ],
             );

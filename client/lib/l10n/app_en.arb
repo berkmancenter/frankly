@@ -952,5 +952,14 @@
   "clearAll": "Clear all",
   "addBreakouts": "Add breakouts",
   "confirmRemoveAllAgendaItems": "Are you sure you want to remove all agenda items from the breakout rooms? You won't be able to undo this.",
-  "yesClear": "Yes, clear"
+  "yesClear": "Yes, clear",
+  "enterMeetingPrompt": "Welcome! Click here to enter the event:",
+  "joinNow": "Join Now",
+  "upcomingEvent": "Upcoming Event",
+  "history": "HISTORY",
+  "aboutMe": "About me",
+  "editYourProfile": "Edit your profile",
+  "preview": "Preview",
+  "updateProfile": "Update Profile",
+  "upcoming": "UPCOMING"
 }

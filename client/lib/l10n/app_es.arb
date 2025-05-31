@@ -997,8 +997,15 @@
   "troubleshootingGuide": "Guía de solución de problemas",
   "clearAll": "Limpiar todo",
   "addBreakouts": "Añadir salas de grupos",
-  "waitingRoom": "Sala de espera",
-  "livestream": "Transmisión en vivo",
   "confirmRemoveAllAgendaItems": "¿Estás seguro de que quieres eliminar todos los elementos de la agenda de las salas de grupos? No podrás deshacer esto.",
-  "yesClear": "Sí, limpiar"
+  "yesClear": "Sí, limpiar",
+  "enterMeetingPrompt": "¡Bienvenido! Haz clic aquí para unirte al evento:",
+  "joinNow": "Unirse ahora",
+  "upcomingEvent": "Evento Próximo",
+  "history": "HISTORIAL",
+  "aboutMe": "Sobre mí",
+  "editYourProfile": "Editar tu perfil",
+  "preview": "Vista previa",
+  "updateProfile": "Actualizar Perfil",
+  "upcoming": "PRÓXIMAMENTE"
 }

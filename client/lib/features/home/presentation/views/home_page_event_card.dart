@@ -16,6 +16,8 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/templates/template.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class HomePageEventCard extends StatefulWidget {
   final Event event;
   final Community? community;
@@ -110,13 +112,13 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               HeightConstrainedText(
-                widget.event.title ?? 'Upcoming Event',
+                widget.event.title ?? context.l10n.upcomingEvent,
                 style: AppTextStyle.bodyMedium.copyWith(fontSize: 18),
                 maxLines: responsiveLayoutService.isMobile(context) ? 3 : 2,
               ),
               if (widget.event.isLiveStream)
                 HeightConstrainedText(
-                  'Livestream',
+                  context.l10n.livestream,
                   style:
                       AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray3),
                 ),

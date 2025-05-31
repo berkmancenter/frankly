@@ -985,9 +985,15 @@
   "troubleshootingGuide": "故障排除指南",
   "clearAll": "清除全部",
   "addBreakouts": "新增分組討論",
-  "waitingRoom": "等待室",
-  "livestream": "直播",
   "confirmRemoveAllAgendaItems": "您確定要從分組討論室中移除所有議程項目嗎？您將無法撤銷此操作。",
-  "cancel": "取消",
-  "yesClear": "是的，清除"
+  "yesClear": "是的，清除",
+  "enterMeetingPrompt": "歡迎！點擊這裡加入活動：",
+  "joinNow": "立即加入",
+  "upcomingEvent": "即將到來的活動",
+  "history": "歷史",
+  "aboutMe": "關於我",
+  "editYourProfile": "編輯你的個人資料",
+  "preview": "預覽",
+  "updateProfile": "更新個人資料",
+  "upcoming": "即將到來"
 }

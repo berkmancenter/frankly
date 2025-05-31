@@ -994,7 +994,15 @@
   "troubleshootingGuide": "故障排除指南",
   "clearAll": "清除全部",
   "addBreakouts": "添加分组讨论",
-  "livestream": "直播",
   "confirmRemoveAllAgendaItems": "您确定要从分组讨论室中移除所有议程项目吗？您将无法撤销此操作。",
-  "yesClear": "是的，清除"
+  "yesClear": "是的，清除",
+  "enterMeetingPrompt": "欢迎！点击这里加入活动：",
+  "joinNow": "立即加入",
+  "upcomingEvent": "即将到来的活动",
+  "history": "历史",
+  "aboutMe": "关于我",
+  "editYourProfile": "编辑你的个人资料",
+  "preview": "预览",
+  "updateProfile": "更新个人资料",
+  "upcoming": "即将到来"
 }

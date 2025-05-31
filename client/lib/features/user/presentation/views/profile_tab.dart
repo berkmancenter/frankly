@@ -188,7 +188,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           if (widget.allowEdit)
             Expanded(
               child: CustomTextField(
-                labelText: 'Name',
+                labelText: context.l10n.name,
                 initialValue: changeRecord.displayName,
                 borderType: BorderType.outline,
                 borderRadius: 5,
@@ -283,7 +283,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                 ),
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 color: AppColor.brightGreen,
-                text: 'Preview',
+                text: context.l10n.preview,
                 expand: false,
                 textColor: AppColor.darkBlue,
               ),
@@ -295,7 +295,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                   ? () => alertOnError(context, () => _saveChanges())
                   : null,
               color: Theme.of(context).primaryColor,
-              text: 'Update Profile',
+              text: context.l10n.updateProfile,
               expand: false,
               textColor: controller.changeKeys.isNotEmpty
                   ? Theme.of(context).colorScheme.secondary
@@ -333,7 +333,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     return [
       if (widget.allowEdit)
         CustomTextField(
-          labelText: 'About me',
+          labelText: context.l10n.aboutMe,
           maxLines: 6,
           minLines: 6,
           borderRadius: 5,
@@ -423,7 +423,7 @@ class _ProfileTabState extends State<_ProfileTab> {
       Row(
         children: [
           HeightConstrainedText(
-            widget.allowEdit ? 'Edit your profile' : '',
+            widget.allowEdit ? context.l10n.editYourProfile : '',
             style: AppTextStyle.headlineSmall
                 .copyWith(fontSize: 16, color: AppColor.black),
           ),
