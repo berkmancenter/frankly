@@ -19,6 +19,9 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/features/community/presentation/widgets/featured_toggle_button.dart';
+import 'package:data_models/community/community.dart';
+
 
 
 enum TemplateActionType {

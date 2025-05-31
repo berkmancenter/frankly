@@ -209,7 +209,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'What message do you want to show participants $beforeAfter the event?',
+              l10n.whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent(beforeAfter),
               style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 30),

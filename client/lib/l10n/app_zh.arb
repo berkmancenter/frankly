@@ -649,6 +649,12 @@
   "signOut": "退出登录",
   "signInToApp": "登录到 {appName}",
   "@signInToApp": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "followCommunityForAccess": "关注{community}，即可访问所有活动和资源。",
   "@followCommunityForAccess": {
     "placeholders": {
@@ -1056,5 +1062,6 @@
   "editYourProfile": "编辑你的个人资料",
   "preview": "预览",
   "updateProfile": "更新个人资料",
-  "upcoming": "即将到来"
+  "upcoming": "即将到来",
+  "noannouncementsSentYet": "还没有公告"
 }

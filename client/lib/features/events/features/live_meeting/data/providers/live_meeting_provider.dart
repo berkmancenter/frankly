@@ -627,7 +627,7 @@ class LiveMeetingProvider with ChangeNotifier {
           mainText:
               l10n.hostIsSendingYouToBreakoutRoom,
           confirmText: l10n.yesJoin,
-          cancelText: appLocalizationService.getLocalization().cancel,
+          cancelText: l10n.cancel,
           onConfirm: (context) => alertOnError(context, () async {
             await firestoreLiveMeetingService
                 .updateAvailableForBreakoutSessionId(
@@ -638,7 +638,6 @@ class LiveMeetingProvider with ChangeNotifier {
             );
             Navigator.of(context).pop(true);
           }),
-          cancelText: l10n.noSkip,
         ).show();
       }
     }

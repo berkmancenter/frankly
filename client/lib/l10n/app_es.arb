@@ -1,5 +1,17 @@
 {
   "@@locale": "es",
+  "addBreakouts": "Añadir salas de grupos",
+  "confirmRemoveAllAgendaItems": "¿Estás seguro de que quieres eliminar todos los elementos de la agenda de las salas de grupos? No podrás deshacer esto.",
+  "yesClear": "Sí, limpiar",
+  "enterMeetingPrompt": "¡Bienvenido! Haz clic aquí para unirte al evento:",
+  "joinNow": "Unirse ahora",
+  "upcomingEvent": "Evento Próximo",
+  "history": "HISTORIAL",
+  "aboutMe": "Sobre mí",
+  "editYourProfile": "Editar tu perfil",
+  "preview": "Vista previa",
+  "updateProfile": "Actualizar Perfil",
+  "upcoming": "PRÓXIMAMENTE",
   "aVIssues": "Problemas de A/V",
   "about": "Acerca de",
   "aboutUs": "Sobre Nosotros",
@@ -25,6 +37,12 @@
   "appDescription": "Una plataforma para deliberaciones en línea",
   "appNameHome": "{appName} - Inicio",
   "@appNameHome": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "@appNameTermsOfService": {
     "placeholders": {
       "appName": {
@@ -661,6 +679,12 @@
   "sidebarUnfollowButton": "Botón de dejar de seguir barra lateral",
   "followCommunityForAccess": "Sigue a {community} para acceder a todos los eventos y recursos.",
   "@followCommunityForAccess": {
+    "placeholders": {
+      "community": {
+        "type": "String"
+      }
+    }
+  },
   "followCommunityButton": "Botón seguir comunidad",
   "franklyLogo": "Logo de Frankly",
   "signIn": "Iniciar sesión",
@@ -1073,5 +1097,6 @@
   "editYourProfile": "Editar tu perfil",
   "preview": "Vista previa",
   "updateProfile": "Actualizar Perfil",
-  "upcoming": "PRÓXIMAMENTE"
+  "upcoming": "PRÓXIMAMENTE",
+  "noannouncementsSentYet": "No se han enviado anuncios"
 }

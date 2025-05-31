@@ -319,6 +319,7 @@ class EventPageProvider with ChangeNotifier {
         title: l10n.cancelParticipation,
         mainText: l10n.areYouSureYouWantToCancel,
         confirmText: l10n.yesCancel,
+        cancelText: appLocalizationService.getLocalization().no,
       ).show();
       if (cancelParticipation) {
         await alertOnError(

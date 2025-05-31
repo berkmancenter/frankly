@@ -989,8 +989,7 @@
   "editYourProfile": "Edit your profile",
   "preview": "Preview",
   "updateProfile": "Update Profile",
-  "upcoming": "UPCOMING"
-}
+  "upcoming": "UPCOMING",
   "@whenNewItemsAdded": {
     "placeholders": {
       "name": {}
@@ -1001,5 +1000,6 @@
   "youHaventJoinedAnyCommunities": "You haven't joined any communities.",
   "logo": "Logo",
   "background": "Background",
-  "makeThisSpacePrivate": "Make this space private"
+  "makeThisSpacePrivate": "Make this space private",
+  "noannouncementsSentYet": "No Announcements sent yet"
 }

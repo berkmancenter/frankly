@@ -254,7 +254,7 @@ class _AddNewTemplateButton extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5, bottom: 10, right: 5),
               child: HeightConstrainedText(
-                'Create a new template',
+                context.l10n.createNewTemplate,
                 style: TextStyle(
                   fontSize: 13,
                   color: context.theme.colorScheme.primary,
