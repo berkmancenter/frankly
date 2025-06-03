@@ -196,8 +196,6 @@ class _ProfileTabState extends State<_ProfileTab> {
                   color: context.theme.colorScheme.primary,
                   fontSize: 16,
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
@@ -331,8 +329,6 @@ class _ProfileTabState extends State<_ProfileTab> {
           minLines: 6,
           borderRadius: 5,
           padding: EdgeInsets.zero,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
           textStyle:
               TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
           initialValue: changeRecord.about,
@@ -592,8 +588,6 @@ class SocialInputField extends StatelessWidget {
               color: context.theme.colorScheme.primary,
               fontSize: 16,
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onChanged: onChanged,
           ),
         ),

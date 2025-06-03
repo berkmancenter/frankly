@@ -96,7 +96,7 @@ class _BreakoutRoomDefinitionCardState
                           )
                         : null,
                   ),
-                  if (hasSmartMatchingCapability)
+                  // if (hasSmartMatchingCapability)
                     ActionButton(
                       text: context.l10n.smartMatch,
                       type: _assignmentMethod ==

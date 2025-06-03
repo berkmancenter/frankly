@@ -15,6 +15,7 @@ import 'package:client/core/localization/localization_helper.dart';
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
     this.showSignUp = true,
+    this.inModal = false,
     this.onComplete,
     Key? key,
   }) : super(key: key);
@@ -27,6 +28,7 @@ class SignInOptionsContent extends StatefulWidget {
   static const buttonGoogleKey = Key('google-button');
 
   final bool showSignUp;
+  final bool inModal;
   final void Function()? onComplete;
 
   @override
@@ -220,9 +222,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         style: context.theme.textTheme.bodyMedium,
         children: [
           TextSpan(
-            text: _showSignup
-                ? context.l10n.alreadyUserSignIn
-                : context.l10n.notUserSignUp,
+            text:
+                '${_showSignup ? context.l10n.alreadyUserSignIn : context.l10n.notUserSignUp} ',
           ),
           TextSpan(
             text: _showSignup ? context.l10n.signIn : context.l10n.signUp,
@@ -247,7 +248,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   }
 
   List<Widget> _buildSignIn() {
-    const minWidth = 260.0;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double googleButtonWidth = double.infinity;
+    if (widget.inModal && screenWidth <= 375 ) {
+      googleButtonWidth = 80;
+    }
+
     return [
       Align(
         alignment: Alignment.center,
@@ -264,6 +270,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             if (_showSignup)
               Column(
@@ -349,19 +357,23 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
-                child: ActionButton(
-                  // key: SignInOptionsContent.buttonSubmitKey,
-                  onPressed: () {
-                    // We have to disable password validation for now so the form validation can succeed without it
-                    setState(() {
-                      _ignorePassword = true;
-                    });
-                    if (_formKey.currentState!.validate()) {
-                      _resetPassword();
-                    }
-                  },
-                  type: ActionButtonType.text,
-                  text: context.l10n.forgotPassword,
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Forgot your password?',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        // We have to disable password validation for now so the form validation can succeed without it
+                        setState(() {
+                          _ignorePassword = true;
+                        });
+                        if (_formKey.currentState!.validate()) {
+                          _resetPassword();
+                        }
+                      },
+                    style: context.theme.textTheme.bodySmall?.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ),
             SizedBox(height: 9),
@@ -373,20 +385,23 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 textAlign: TextAlign.center,
               ),
             SizedBox(height: 9),
-            ActionButton(
-              key: SignInOptionsContent.buttonSubmitKey,
-              onPressed: () => authMessageOnError(
-                _onSubmit,
-                errorCallback: (error, code) => setState(
-                  () => _formError = code,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ActionButton(
+                key: SignInOptionsContent.buttonSubmitKey,
+                onPressed: () => authMessageOnError(
+                  _onSubmit,
+                  errorCallback: (error, code) => setState(
+                    () => _formError = code,
+                  ),
                 ),
+                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
+                type: ActionButtonType.filled,
+                expand: true,
+                textColor: Colors.white,
+                color: Colors.black,
+                text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
               ),
-              sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-              type: ActionButtonType.filled,
-              minWidth: minWidth,
-              textColor: Colors.white,
-              color: Colors.black,
-              text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
             ),
           ],
         ),
@@ -402,22 +417,26 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         ),
       ),
       SizedBox(height: 9),
-      ActionButton(
-        key: SignInOptionsContent.buttonGoogleKey,
-        minWidth: minWidth,
-        onPressed: () => context.read<UserService>().signInWithGoogle(),
-        type: ActionButtonType.outline,
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-          child: Image.asset(
-            'media/googleLogo.png',
-            width: 22,
-            height: 22,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ActionButton(
+          key: SignInOptionsContent.buttonGoogleKey,
+          expand: true,
+          maxTextWidth: googleButtonWidth,
+          onPressed: () => context.read<UserService>().signInWithGoogle(),
+          type: ActionButtonType.outline,
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+            child: Image.asset(
+              'media/googleLogo.png',
+              width: 22,
+              height: 22,
+            ),
           ),
+          text: _showSignup
+              ? context.l10n.signUpWithGoogle
+              : context.l10n.signInWithGoogle,
         ),
-        text: _showSignup
-            ? context.l10n.signUpWithGoogle
-            : context.l10n.signInWithGoogle,
       ),
     ];
   }

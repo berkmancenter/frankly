@@ -18,6 +18,7 @@ import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum TemplateActionType {
   create,
@@ -229,31 +230,32 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
   List<Widget> _buildTextFields() {
     final templatePresenter = context.watch<CreateTemplatePresenter>();
     return [
-      Align(
-        alignment: Alignment.topLeft,
-        child: CustomTextField(
-          labelText: 'Template name',
-          maxLines: 1,
-          maxLength: titleMaxCharactersLength,
-          initialValue: !isNullOrEmpty(templatePresenter.updatedTemplate.title)
-              ? templatePresenter.updatedTemplate.title
-              : null,
-          onChanged: (value) => templatePresenter.onChangeTitle(value),
-        ),
+      CustomTextField(
+        labelText: 'Template name',
+        maxLines: 1,
+        maxLength: titleMaxCharactersLength,
+        initialValue: !isNullOrEmpty(templatePresenter.updatedTemplate.title)
+            ? templatePresenter.updatedTemplate.title
+            : null,
+        onChanged: (value) => templatePresenter.onChangeTitle(value),
       ),
       SizedBox(height: 10),
-      Align(
-        alignment: Alignment.topLeft,
-        child: CustomTextField(
-          labelText: 'Description',
-          minLines: 4,
-          maxLines: 4,
-          initialValue:
-              !isNullOrEmpty(templatePresenter.updatedTemplate.description)
-                  ? templatePresenter.updatedTemplate.description
-                  : null,
-          onChanged: (value) => templatePresenter.onChangeDescription(value),
-        ),
+      CustomTextField(
+        labelText: 'Description',
+        keyboardType: TextInputType.multiline,
+        minLines: 4,
+        maxLines: 4,
+        initialValue:
+            !isNullOrEmpty(templatePresenter.updatedTemplate.description)
+                ? templatePresenter.updatedTemplate.description
+                : null,
+        onChanged: (value) => templatePresenter.onChangeDescription(value),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return context.l10n.enterValidName;
+          }
+          return null;
+        },
       ),
     ];
   }

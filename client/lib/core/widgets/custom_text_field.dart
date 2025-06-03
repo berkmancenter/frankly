@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:universal_html/js.dart' as universal_js;
@@ -26,7 +25,7 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
   final BorderType? borderType;
-  final EdgeInsets? contentPadding;
+
   final double borderRadius;
   final TextStyle? labelStyle;
   final Color? backgroundColor;
@@ -66,6 +65,9 @@ class CustomTextField extends StatefulWidget {
   /// Allow for custom suffix icon
   final Widget? suffixIcon;
 
+  /// Allow for custom keyboard type
+  final TextInputType keyboardType;
+
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
@@ -82,7 +84,6 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.borderType = BorderType.outline,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 10),
     this.borderRadius = 5,
     this.backgroundColor,
     this.focusNode,
@@ -110,6 +111,7 @@ class CustomTextField extends StatefulWidget {
     this.optionalTextStyle,
     this.optionalPadding,
     this.suffixIcon,
+    this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
   @override
@@ -175,6 +177,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
     }
 
     return InputBorder.none;
+  }
+
+  InputBorder _getFocusedBorder() {
+    if (widget.borderType == BorderType.underline) {
+      return UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: _getBorderColor(),
+          width: 2.0,
+        ),
+      );
+    }
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: _getBorderColor(),
+        width: 2.0,
+      ),
+      borderRadius: BorderRadius.circular(widget.borderRadius),
+    );
   }
 
   Color _getBorderColor({bool isError = false}) {
@@ -277,13 +297,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ],
                 validator: widget.validator,
                 decoration: InputDecoration(
-                  contentPadding: widget.contentPadding,
                   border: _getBorder(),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 3.0,
-                    ),
-                  ),
+                  focusedBorder: _getFocusedBorder(),
                   enabledBorder: _getBorder(),
                   errorBorder: _getBorder(isError: true),
                   labelText: widget.labelText,
@@ -299,10 +314,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
                   suffixIcon: widget.suffixIcon,
+                  
                 ),
                 autofocus: widget.autofocus,
                 readOnly: widget.readOnly,
-                keyboardType: TextInputType.multiline,
+                enabled: !widget.readOnly,
+                keyboardType: widget.keyboardType,
               ),
               if (widget.isOptional &&
                   !_focusNode.hasFocus &&
