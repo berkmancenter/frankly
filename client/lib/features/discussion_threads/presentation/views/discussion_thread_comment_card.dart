@@ -35,6 +35,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
     await ConfirmDialog(
       title: appLocalizationService.getLocalization().deleteComment,
       mainText: 'Are you sure you want to delete this comment?',
+      cancelText: appLocalizationService.getLocalization().cancel,
       onConfirm: (context) {
         Navigator.pop(context);
         onDeleteComment(discussionThreadComment);
@@ -81,7 +82,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                       return _DeletedCommentWidget();
                     } else {
                       return _buildCommentSection(
-                          context, discussionThreadComment);
+                        context,
+                        discussionThreadComment,
+                      );
                     }
                   },
                 ),
@@ -93,7 +96,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
   }
 
   Widget _buildCommentSection(
-      BuildContext context, DiscussionThreadComment discussionThreadComment) {
+    BuildContext context,
+    DiscussionThreadComment discussionThreadComment,
+  ) {
     final commentCreatorId = discussionThreadComment.creatorId;
     final isUsersComment = userService.currentUserId == commentCreatorId;
     final emotion = currentlySelectedEmotion(discussionThreadComment);

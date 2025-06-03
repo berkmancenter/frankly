@@ -218,7 +218,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       title: context.l10n.clearAgenda,
       mainText:
           'Are you sure you want to remove all agenda items from the breakout rooms? You won\'t be able to undo this.',
-      cancelText: 'Cancel',
+      cancelText: context.l10n.cancel,
       confirmText: 'Yes, clear',
       textAlign: TextAlign.start,
     ).show(context: context);
