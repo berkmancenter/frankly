@@ -128,7 +128,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         children: [
           Icon(
             Icons.account_circle,
-            color: context.theme.colorScheme.onPrimary,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 6),
           Flexible(

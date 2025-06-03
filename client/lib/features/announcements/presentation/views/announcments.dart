@@ -68,7 +68,7 @@ class _AnnouncementsState extends State<Announcements> {
                   final confirmedDelete = await ConfirmDialog(
                     mainText:
                         'Are you sure you want to delete this announcement?',
-                    cancelText: 'No, cancel',
+                    cancelText: context.l10n.no,
                   ).show();
 
                   if (confirmedDelete) {

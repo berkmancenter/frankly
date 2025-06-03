@@ -355,7 +355,9 @@ class NavBarState extends State<NavBar> implements NavBarView {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(color: context.theme.colorScheme.primary),
+            decoration: BoxDecoration(
+              color: context.theme.colorScheme.primaryContainer,
+            ),
             child: Column(
               children: [
                 Row(
@@ -365,9 +367,9 @@ class NavBarState extends State<NavBar> implements NavBarView {
                       child: StepProgressIndicator(
                         completedStepCount: completedStepCount,
                         totalSteps: totalSteps,
-                        backgroundColor:
-                            context.theme.colorScheme.surfaceContainer,
-                        progressColor: context.theme.colorScheme.primary,
+                        backgroundColor: context.theme.colorScheme.onPrimary,
+                        progressColor:
+                            context.theme.colorScheme.primaryFixedDim,
                       ),
                     ),
                     SizedBox(width: 10),
@@ -455,7 +457,9 @@ class NavBarState extends State<NavBar> implements NavBarView {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(color: context.theme.colorScheme.primary),
+            decoration: BoxDecoration(
+              color: context.theme.colorScheme.primaryContainer,
+            ),
             child: ConstrainedBody(
               maxWidth: 1100,
               child: Row(
@@ -500,9 +504,8 @@ class NavBarState extends State<NavBar> implements NavBarView {
                     child: StepProgressIndicator(
                       completedStepCount: completedStepCount,
                       totalSteps: totalSteps,
-                      backgroundColor:
-                          context.theme.colorScheme.surfaceContainer,
-                      progressColor: context.theme.colorScheme.primary,
+                      backgroundColor: context.theme.colorScheme.onPrimary,
+                      progressColor: context.theme.colorScheme.primaryFixedDim,
                     ),
                   ),
                   SizedBox(width: 10),

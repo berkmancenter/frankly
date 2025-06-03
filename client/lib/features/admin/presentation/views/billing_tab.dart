@@ -190,7 +190,7 @@ class _AdminBillingContainerContentState
               'Effective immediately you will be enrolled in the ${priceInfo.name} '
               '($priceString/mo.). You can update this at any time.',
           confirmText: 'Yes, update plan',
-          cancelText: 'No, nevermind',
+          cancelText: context.l10n.cancel,
         ).show();
 
         if (confirm) {
@@ -209,7 +209,7 @@ class _AdminBillingContainerContentState
             mainText:
                 'Immediately cancel your current plan and enroll in the free plan?',
             confirmText: 'Yes, cancel plan',
-            cancelText: 'No, nevermind',
+            cancelText: context.l10n.no,
           ).show();
 
           if (confirm) {
@@ -312,14 +312,16 @@ class _AdminBillingContainerContentState
                       child: HeightConstrainedText(
                         plan.name,
                         style: AppTextStyle.body.copyWith(
-                            color: context.theme.colorScheme.secondary),
+                          color: context.theme.colorScheme.secondary,
+                        ),
                       ),
                     ),
                     SizedBox(width: 8),
                     HeightConstrainedText(
                       plan.cost,
                       style: AppTextStyle.body.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer),
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ],
                 ),
@@ -369,8 +371,8 @@ class _AdminBillingContainerContentState
                       return HeightConstrainedText(
                         '${userInfo.displayName ?? 'The community owner'} ${emailText}is the billing manager',
                         style: AppTextStyle.body.copyWith(
-                            color:
-                                context.theme.colorScheme.onPrimaryContainer),
+                          color: context.theme.colorScheme.onPrimaryContainer,
+                        ),
                       );
                     },
                   ),
@@ -404,7 +406,8 @@ class _AdminBillingContainerContentState
             HeightConstrainedText(
               'You are the billing manager',
               style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer),
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
             SizedBox(width: 10),
             ActionButton(

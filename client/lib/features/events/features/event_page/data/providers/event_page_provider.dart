@@ -281,6 +281,7 @@ class EventPageProvider with ChangeNotifier {
       mainText: 'Are you sure you want to cancel event? This '
           'cannot be undone and will notify all participants.',
       confirmText: 'Yes, cancel',
+      cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (!cancel) return false;
 
@@ -316,7 +317,8 @@ class EventPageProvider with ChangeNotifier {
       final cancelParticipation = await ConfirmDialog(
         title: appLocalizationService.getLocalization().cancelParticipation,
         mainText: 'Are you sure you want to cancel?',
-        confirmText: 'Yes, cancel',
+        confirmText: appLocalizationService.getLocalization().yes,
+        cancelText: appLocalizationService.getLocalization().no,
       ).show();
       if (cancelParticipation) {
         await alertOnError(

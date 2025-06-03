@@ -108,7 +108,6 @@ class _AdminPanelState extends State<AdminPanel> {
   List<Widget> _buildBreakoutList() {
     return [
       Container(
-        color: context.theme.colorScheme.scrim.withScrimOpacity,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           children: [
@@ -568,6 +567,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             final confirmed = await ConfirmDialog(
               mainText:
                   'This will delete all existing meeting data. Are you sure you want to reset?',
+              cancelText: context.l10n.cancel,
             ).show(context: context);
             if (!confirmed) return;
             await agendaProvider.resetMeeting();
@@ -750,7 +750,9 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
   Widget build(BuildContext context) {
     final menuItems = _getMenuItems();
     return Semantics(
-      label: context.l10n.participantActionsForUserWithId(widget.providerParticipant?.userId ?? ''),
+      label: context.l10n.participantActionsForUserWithId(
+        widget.providerParticipant?.userId ?? '',
+      ),
       child: CustomInkWell(
         hoverColor: context.theme.colorScheme.scrim.withScrimOpacity,
         onTap: () => _showMoreMenu(menuItems),
@@ -878,7 +880,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                       if (needsHelp) ...[
                         Icon(
                           Icons.notifications,
-                          color: context.theme.colorScheme.error,
+                          color: context.theme.colorScheme.onErrorContainer,
                           size: 16,
                         ),
                         SizedBox(width: 4),
@@ -899,9 +901,9 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: needsHelp
-                                ? context.theme.colorScheme.error
+                                ? context.theme.colorScheme.onErrorContainer
                                 : (isCurrentRoom
-                                    ? Theme.of(context).primaryColor
+                                    ? context.theme.colorScheme.primary
                                     : context.theme.colorScheme.onPrimary),
                           ),
                         ),
@@ -1023,7 +1025,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                 await ConfirmDialog(
                   title: context.l10n.participantReassigned,
                   mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
-                  confirmText: 'Ok',
+                  confirmText: 'Continue',
                 ).show(context: context);
               }
             }),
@@ -1077,22 +1079,32 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               CustomInkWell(
                 onTap: widget.goBack,
                 child: Container(
-                  color: needsHelp
-                      ? context.theme.colorScheme.error
-                      : context.theme.colorScheme.scrim.withScrimOpacity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: needsHelp
+                        ? context.theme.colorScheme.error
+                        : context.theme.colorScheme.surfaceContainerLowest,
+                  ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 36),
+                      Icon(
+                        Icons.chevron_left,
+                        size: 36,
+                        color: needsHelp
+                            ? context.theme.colorScheme.onError
+                            : context.theme.colorScheme.onSurface,
+                      ),
                       SizedBox(width: 12),
                       Expanded(
                         child: HeightConstrainedText(
                           roomDisplayName,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
+                          style: context.theme.textTheme.titleLarge!.copyWith(
+                            color: needsHelp
+                                ? context.theme.colorScheme.onError
+                                : context.theme.colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -1100,8 +1112,12 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                       if (provider.currentBreakoutRoomId == localRoom.roomId &&
                           (!provider.userLeftBreakouts))
                         ActionButton(
-                          color: Colors.transparent,
-                          textColor: context.theme.colorScheme.onSurface,
+                          color: needsHelp
+                              ? context.theme.colorScheme.errorContainer
+                              : null,
+                          textColor: needsHelp
+                              ? context.theme.colorScheme.onErrorContainer
+                              : null,
                           onPressed: () async {
                             final reassignUser =
                                 provider.currentBreakoutRoomId ==
@@ -1127,10 +1143,10 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           },
                           color: needsHelp
                               ? context.theme.colorScheme.errorContainer
-                              : Colors.transparent,
+                              : null,
                           textColor: needsHelp
                               ? context.theme.colorScheme.onErrorContainer
-                              : context.theme.colorScheme.onSurface,
+                              : null,
                           text: 'Enter Room',
                         ),
                     ],
@@ -1139,7 +1155,8 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               ),
               if (localRoom.flagStatus == BreakoutRoomFlagStatus.needsHelp) ...[
                 SizedBox(height: 6),
-                ThickOutlineButton(
+                ActionButton(
+                  type: ActionButtonType.outline,
                   onPressed: () async {
                     final roomId = localRoom.roomId;
 
