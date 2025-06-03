@@ -5,21 +5,18 @@ import 'package:client/core/data/providers/dialog_provider.dart';
 
 class SignInDialog extends StatefulWidget {
   final bool showSignup;
-  final bool isPurchasingSubscription;
   final bool isDismissable;
   final bool showEmailFormOnly;
 
   const SignInDialog({
     Key? key,
     required this.showSignup,
-    this.isPurchasingSubscription = false,
     this.isDismissable = true,
     this.showEmailFormOnly = false,
   }) : super(key: key);
 
   static Future<void> show({
     bool newUser = true,
-    bool isPurchasingSubscription = false,
     bool isDismissable = true,
     bool showEmailFormOnly = false,
     BuildContext? context,
@@ -29,7 +26,6 @@ class SignInDialog extends StatefulWidget {
       isDismissible: isDismissable,
       builder: (_) => SignInDialog(
         showSignup: newUser,
-        isPurchasingSubscription: isPurchasingSubscription,
         isDismissable: isDismissable,
         showEmailFormOnly: showEmailFormOnly,
       ),
@@ -59,6 +55,7 @@ shape: RoundedRectangleBorder(
               children: [
                 SignInOptionsContent(
                   showSignUp: widget.showSignup,
+                  inModal: true,
                 ),
               ],
             ),

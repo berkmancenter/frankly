@@ -110,8 +110,6 @@ class _MeetingGuideCardItemUserSuggestionsState
           child: CustomTextField(
             controller: _textEditingController,
             padding: EdgeInsets.zero,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             onEditingComplete: () => _submitNotifier.submit(),
             textStyle: AppTextStyle.body
                 .copyWith(color: context.theme.colorScheme.primary),
