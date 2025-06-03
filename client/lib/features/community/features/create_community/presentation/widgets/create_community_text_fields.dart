@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
@@ -77,7 +78,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: widget.community.displayId.isNotEmpty
-              ? 'https://app.frankly.org/${widget.community.displayId}'
+              ? '${Environment.appUrl}/${widget.community.displayId}'
               : null,
           // Allow only numbers, lowercase letters, and dashes
           formatterRegex: '[0-9a-z-+]',
