@@ -107,15 +107,16 @@ class _DialogFlowState extends State<DialogFlow> {
     } else if (_onStep == 2) {
       if (_createCommunity) {
         try {
-          _createdCommunityId = (await cloudFunctionsCommunityService
-            .createCommunity(CreateCommunityRequest(community: _community)))
-              .communityId;
+          _createdCommunityId =
+              (await cloudFunctionsCommunityService.createCommunity(
+                      CreateCommunityRequest(community: _community)))
+                  .communityId;
         } catch (e, s) {
           loggingService.log(e, logType: LogType.error);
           loggingService.log(s, logType: LogType.error);
 
           final sanitizedError = sanitizeError(e.toString());
-    
+
           _createdCommunityId = null;
         }
         final createdCommunityId = _createdCommunityId;
@@ -234,7 +235,7 @@ class _DialogFlowState extends State<DialogFlow> {
                 text: context.l10n
                     .bySigningInRegisteringOrUsing(Environment.appName),
                 style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               TextSpan(
