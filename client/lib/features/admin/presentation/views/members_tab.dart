@@ -509,27 +509,32 @@ class _MembersTabState extends State<MembersTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HeightConstrainedText(
-                    'Manage Members (${membershipList!.length})',
-                    style: AppTextStyle.headline4,
-                  ),
-                  Tooltip(
-                    message: 'Download members data',
-                    child: ActionButton(
-                      height: 40,
-                      minWidth: 60,
-                      onPressed: () => _downloadMembersData(membershipList),
-                      borderRadius: BorderRadius.circular(15),
-                      padding: EdgeInsets.zero,
-                      color: context.theme.colorScheme.primary,
-                      icon: Icon(
-                        Icons.download,
-                        color: context.theme.colorScheme.onPrimary,
-                        size: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      HeightConstrainedText(
+                        'Manage Members (${membershipList!.length})',
+                        style: AppTextStyle.headline4,
                       ),
-                    ),
+                      SizedBox(width: 8),
+                      Tooltip(
+                        message: 'Download members data',
+                        child: ActionButton(
+                          type: ActionButtonType.outline,
+                          height: 40,
+                          minWidth: 60,
+                          onPressed: () => _downloadMembersData(membershipList),
+                          borderRadius: BorderRadius.circular(15),
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.download,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 24),
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: 400,
@@ -733,15 +738,15 @@ class RolePermissionListTile extends StatelessWidget {
                 child: Icon(
                   Icons.circle,
                   size: 4,
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
                   item,
-                  style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.onPrimaryContainer,
+                  style: context.theme.textTheme.bodyMedium!.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ),
@@ -788,6 +793,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
     if (newStatus == MembershipStatus.nonmember) {
       final delete = await ConfirmDialog(
         mainText: 'Are you sure you want to remove member?',
+        cancelText: context.l10n.cancel,
       ).show(context: context);
       if (!delete) return;
     }

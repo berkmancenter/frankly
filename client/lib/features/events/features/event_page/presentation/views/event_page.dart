@@ -200,6 +200,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
       builder: (context) {
         return ConfirmDialog(
           title: 'Are you sure you want to remove this message?',
+          cancelText: context.l10n.cancel,
           onCancel: (context) {
             Navigator.pop(context);
           },

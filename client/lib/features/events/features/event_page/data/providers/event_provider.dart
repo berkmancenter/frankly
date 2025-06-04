@@ -352,6 +352,7 @@ class EventProvider with ChangeNotifier {
       mainText:
           'Are you sure you want to cancel $identifier participation in this event?',
       confirmText: 'Yes, cancel',
+      cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (cancelParticipation) {
       await firestoreEventService.removeParticipant(

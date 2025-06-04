@@ -679,7 +679,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
     final agendaProvider = context.watch<AgendaProvider>();
 
-    const kIconSize = 20.0;
+    const kIconSize = 24.0;
     final isVideoOn = _presenter.isVideoOn();
     final isMicOn = _presenter.isMicOn();
     final isBottomSheetPresent = _presenter.isBottomSheetPresent();
@@ -709,7 +709,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: context.theme.colorScheme.surfaceContainerHighest,
+          color: context.theme.colorScheme.primaryContainer,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -721,13 +721,14 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 child: Row(
                   children: [
                     AppClickableWidget(
-                      child: ProxiedImage(
-                        null,
-                        asset: isVideoOn
-                            ? AppAsset.videoOnDarkBlue()
-                            : AppAsset.videoOffDarkBlue(),
-                        width: kIconSize,
-                        height: kIconSize,
+                      child: Icon(
+                        isVideoOn
+                            ? Icons.videocam_outlined
+                            : Icons.videocam_off_outlined,
+                        color: isVideoOn
+                            ? context.theme.colorScheme.onPrimary
+                            : context.theme.colorScheme.errorContainer,
+                        size: kIconSize,
                       ),
                       onTap: () async => await alertOnError(
                         context,
@@ -746,13 +747,12 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                                 context,
                                 () => _presenter.toggleAudio(),
                               ),
-                      child: ProxiedImage(
-                        null,
-                        asset: isMicOn
-                            ? AppAsset.audioOnDarkBlue()
-                            : AppAsset.audioOffDarkBlue(),
-                        width: kIconSize,
-                        height: kIconSize,
+                      child: Icon(
+                        isMicOn ? Icons.mic_outlined : Icons.mic_off_outlined,
+                        size: kIconSize,
+                        color: isMicOn
+                            ? context.theme.colorScheme.onPrimary
+                            : context.theme.colorScheme.errorContainer,
                       ),
                     ),
                     SizedBox(width: 10),
@@ -770,11 +770,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ];
                       },
                       onSelected: (itemAction) => itemAction(),
-                      child: ProxiedImage(
-                        null,
-                        asset: AppAsset.dotsVertical(),
-                        width: kIconSize,
-                        height: kIconSize,
+                      child: Icon(
+                        Icons.more_vert,
+                        size: kIconSize,
+                        color: context.theme.colorScheme.onPrimary,
                       ),
                     ),
                     if (!isBottomSheetPresent && isRaisedHandVisible)
@@ -805,11 +804,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       if (!isHosted || canUserControlMeeting) ...[
                         if (isBackButtonShown)
                           AppClickableWidget(
-                            child: ProxiedImage(
-                              null,
-                              asset: AppAsset.arrowLeft(),
-                              width: kIconSize,
-                              height: kIconSize,
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: kIconSize,
+                              color: context.theme.colorScheme.onPrimary,
                             ),
                             onTap: () => alertOnError(
                               context,
@@ -831,13 +829,12 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             child: FloatingActionButton(
                               backgroundColor:
                                   context.theme.colorScheme.primary,
-                              child: ProxiedImage(
-                                null,
-                                asset: readyToAdvance
-                                    ? AppAsset.kSpokenCheckMark
-                                    : AppAsset.arrowRightGreen(),
-                                width: kIconSize,
-                                height: kIconSize,
+                              child: Icon(
+                                readyToAdvance
+                                    ? Icons.check
+                                    : Icons.arrow_forward,
+                                size: kIconSize,
+                                color: context.theme.colorScheme.onPrimary,
                               ),
                               onPressed: () => alertOnError(
                                 context,

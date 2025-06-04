@@ -85,6 +85,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     await ConfirmDialog(
       title: context.l10n.deleteAgendaItemName(title),
       mainText: 'Are you sure want to delete?',
+      cancelText: context.l10n.cancel,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();

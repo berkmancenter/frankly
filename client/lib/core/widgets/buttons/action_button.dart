@@ -241,6 +241,7 @@ class _ActionButtonState extends State<ActionButton> {
             textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.onPrimary,
+            disabledBackgroundColor: widget.disabledColor,
             minimumSize: minimumSize,
             shape: shape,
           ),
@@ -257,6 +258,7 @@ class _ActionButtonState extends State<ActionButton> {
             textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.primary,
+            disabledForegroundColor: widget.disabledColor,
             minimumSize: minimumSize,
             shape: shape,
           ),
@@ -271,6 +273,7 @@ class _ActionButtonState extends State<ActionButton> {
             textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.primary,
+            disabledForegroundColor: widget.disabledColor,
             minimumSize: minimumSize,
             shape: shape,
           ),
