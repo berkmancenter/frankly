@@ -173,18 +173,15 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     }
 
     if (create) {
-      final localCreateFunction = widget.createFunction;
-
-      if (localCreateFunction != null) {
-        await localCreateFunction(_community);
+      if (widget.createFunction != null) {
+        await widget.createFunction!(_community);
       } else {
         await _createCommunity();
       }
       await context.read<CreateCommunityTagProvider>().submit();
     } else {
-      final localUpdateFunction = widget.updateFunction;
-      if (localUpdateFunction != null) {
-        await localUpdateFunction(_community);
+      if (widget.updateFunction != null) {
+        await widget.updateFunction!(_community);
       } else {
         await _updateCommunity();
       }
