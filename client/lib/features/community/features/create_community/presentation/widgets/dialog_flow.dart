@@ -109,7 +109,8 @@ class _DialogFlowState extends State<DialogFlow> {
         try {
           _createdCommunityId =
               (await cloudFunctionsCommunityService.createCommunity(
-                      CreateCommunityRequest(community: _community)))
+            CreateCommunityRequest(community: _community),
+          ))
                   .communityId;
         } catch (e, s) {
           loggingService.log(e, logType: LogType.error);
@@ -250,7 +251,7 @@ class _DialogFlowState extends State<DialogFlow> {
               TextSpan(
                 text: '.',
                 style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
