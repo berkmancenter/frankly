@@ -1,7 +1,6 @@
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -47,17 +46,6 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
 
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
-  final _nameController = TextEditingController();
-  final _displayIdController = TextEditingController();
-
-  String _formatDisplayIdFromName(String displayId) {
-    final String formattedDisplayId = displayId
-        .replaceAll(RegExp(r'[^a-zA-Z0-9-_]'), '-')
-        .replaceAll(RegExp(r'--+'), '-')
-        .replaceAll(RegExp(r'-+$'), '-')
-        .toLowerCase();
-    return formattedDisplayId;
-  }
 
   @override
   void initState() {
