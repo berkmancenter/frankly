@@ -262,7 +262,7 @@ class _DialogFlowState extends State<DialogFlow> {
               TextSpan(
                 text: '.',
                 style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onPrimaryContainer,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -283,7 +283,9 @@ class _DialogFlowState extends State<DialogFlow> {
           onNameChanged: (value) =>
               setState(() => _community = _community.copyWith(name: value)),
           onCustomDisplayIdChanged: (value) => setState(
-            () => _community = _community.copyWith(displayIds: [value]),
+            () => _community = _community.copyWith(
+              displayIds: value.isNotEmpty ? [value] : [],
+            ),
           ),
           nameFocus: _nameFocus,
           community: _community,

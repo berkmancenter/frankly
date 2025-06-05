@@ -222,7 +222,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
         AppTextStyle.bodySmall
-            .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
+            .copyWith(color: context.theme.colorScheme.onSurfaceVariant);
   }
 
   @override
