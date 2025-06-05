@@ -179,18 +179,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return InputBorder.none;
   }
 
-  InputBorder _getFocusedBorder() {
+  InputBorder _getFocusedBorder({bool isError = false}) {
     if (widget.borderType == BorderType.underline) {
       return UnderlineInputBorder(
         borderSide: BorderSide(
-          color: _getBorderColor(),
+          color: _getBorderColor(isError: isError),
           width: 2.0,
         ),
       );
     }
     return OutlineInputBorder(
       borderSide: BorderSide(
-        color: _getBorderColor(),
+        color: _getBorderColor(isError: isError),
         width: 2.0,
       ),
       borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -301,6 +301,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   focusedBorder: _getFocusedBorder(),
                   enabledBorder: _getBorder(),
                   errorBorder: _getBorder(isError: true),
+                  focusedErrorBorder: _getFocusedBorder(isError: true),
                   labelText: widget.labelText,
                   labelStyle: _buildLabelStyle(),
                   errorStyle: context.theme.textTheme.labelMedium!
