@@ -112,7 +112,7 @@ class CreateCommunityImageField extends StatelessWidget {
         height: 30,
         child: Icon(
           Icons.close,
-          color: context.theme.colorScheme.onPrimaryContainer,
+          color: context.theme.colorScheme.onSurfaceVariant,
           size: 20,
         ),
       ),
@@ -137,7 +137,7 @@ class CreateCommunityImageField extends StatelessWidget {
           ),
           child: Icon(
             Icons.add,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onSurfaceVariant,
             size: 20,
           ),
         ),
@@ -183,9 +183,7 @@ class CreateCommunityImageField extends StatelessWidget {
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
+              style: AppTextStyle.eyebrowSmall,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -194,9 +192,7 @@ class CreateCommunityImageField extends StatelessWidget {
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
+              style: AppTextStyle.eyebrowSmall,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -204,7 +200,7 @@ class CreateCommunityImageField extends StatelessWidget {
             HeightConstrainedText(
               context.l10n.optional,
               style: AppTextStyle.bodySmall.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
             ),
         ],

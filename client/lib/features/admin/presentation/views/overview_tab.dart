@@ -34,6 +34,8 @@ class OverviewTab extends StatefulHookWidget {
 
   const OverviewTab({required this.onUpgradeTap});
 
+  static const communityNameKey = Key('community-name');
+
   @override
   _OverviewTabState createState() => _OverviewTabState();
 }
@@ -41,6 +43,9 @@ class OverviewTab extends StatefulHookWidget {
 class _OverviewTabState extends State<OverviewTab> implements OverviewView {
   late final OverviewModel _model;
   late final OverviewPresenter _presenter;
+
+  final int titleMaxCharactersLength = 80;
+  final int customIdMaxCharactersLength = 80;
 
   @override
   void initState() {
@@ -153,7 +158,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                             Text(
                               'Now we’re talking!',
                               style: AppTextStyle.subhead.copyWith(
-                                  color: context.theme.colorScheme.secondary),
+                                color: context.theme.colorScheme.secondary,
+                              ),
                             ),
                           ],
                         )
@@ -172,7 +178,8 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                               child: Text(
                                 onboardingStep.title,
                                 style: AppTextStyle.subhead.copyWith(
-                                    color: context.theme.colorScheme.secondary),
+                                  color: context.theme.colorScheme.secondary,
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -322,8 +329,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                               child: RichText(
                                 text: TextSpan(
                                   style: AppTextStyle.body.copyWith(
-                                      color: context.theme.colorScheme
-                                          .onPrimaryContainer),
+                                    color: context
+                                        .theme.colorScheme.onSurfaceVariant,
+                                  ),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)

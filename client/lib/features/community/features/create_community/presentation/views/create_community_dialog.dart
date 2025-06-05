@@ -173,18 +173,15 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     }
 
     if (create) {
-      final localCreateFunction = widget.createFunction;
-
-      if (localCreateFunction != null) {
-        await localCreateFunction(_community);
+      if (widget.createFunction != null) {
+        await widget.createFunction!(_community);
       } else {
         await _createCommunity();
       }
       await context.read<CreateCommunityTagProvider>().submit();
     } else {
-      final localUpdateFunction = widget.updateFunction;
-      if (localUpdateFunction != null) {
-        await localUpdateFunction(_community);
+      if (widget.updateFunction != null) {
+        await widget.updateFunction!(_community);
       } else {
         await _updateCommunity();
       }
@@ -368,12 +365,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
             onCustomDisplayIdChanged: (value) => _displayId = value,
             onNameChanged: (value) =>
                 setState(() => _community = _community.copyWith(name: value)),
-            onTaglineChanged: (value) => setState(
-              () => _community = _community.copyWith(tagLine: value),
-            ),
-            onAboutChanged: (value) => setState(
-              () => _community = _community.copyWith(description: value),
-            ),
             community: _community,
           ),
         if (widget.showImageEdit)
