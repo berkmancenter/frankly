@@ -1,4 +1,5 @@
 import 'package:client/core/data/services/logging_service.dart';
+import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/app_asset.dart';
@@ -109,7 +110,8 @@ class _DialogFlowState extends State<DialogFlow> {
         try {
           _createdCommunityId =
               (await cloudFunctionsCommunityService.createCommunity(
-                      CreateCommunityRequest(community: _community)))
+            CreateCommunityRequest(community: _community),
+          ))
                   .communityId;
         } catch (e, s) {
           loggingService.log(e, logType: LogType.error);
@@ -126,6 +128,16 @@ class _DialogFlowState extends State<DialogFlow> {
           );
           setState(
             () => _community = _community.copyWith(id: createdCommunityId),
+          );
+          // Immediately proceed to created community
+          Navigator.of(context).pop();
+          routerDelegate.beamTo(
+            CommunityPageRoutes(
+              // Use the displayId if available, otherwise use the createdCommunityId
+              communityDisplayId: _community.displayId.isNotEmpty
+                  ? _community.displayId
+                  : createdCommunityId,
+            ).communityHome,
           );
         } else {
           Navigator.of(context).pop();
