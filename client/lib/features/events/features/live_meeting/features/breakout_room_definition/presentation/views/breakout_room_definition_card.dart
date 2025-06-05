@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide ReorderableList;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:intl/intl.dart';
+import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/breakout_room_definition/presentation/breakout_room_presenter.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
@@ -14,11 +15,15 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
@@ -55,9 +60,22 @@ class _BreakoutRoomDefinitionCardState
         _presenter.breakoutRoomDefinitionDetails.assignmentMethod;
     _questions = _presenter.breakoutRoomDefinitionDetails.breakoutQuestions;
 
-  final communityId = _presenter.eventProvider.communityId;
+    final canFetchCapabilities =
+        context.read<CommunityPermissionsProvider>().canModerateContent;
+    final communityId = _presenter.eventProvider.communityId;
     return Center(
-      child: Column(
+      child: CustomStreamBuilder<PlanCapabilityList?>(
+        entryFrom: '__BreakoutRoomsDialogState._buildContent',
+        stream: canFetchCapabilities
+            ? cloudFunctionsCommunityService
+                .getCommunityCapabilities(
+                  GetCommunityCapabilitiesRequest(communityId: communityId),
+                )
+                .asStream()
+            : Future.value(null).asStream(),
+        builder: (context, caps) {
+          final hasSmartMatchingCapability = caps?.hasSmartMatching ?? false;
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Wrap(
@@ -113,6 +131,8 @@ class _BreakoutRoomDefinitionCardState
               SizedBox(height: 30),
               _buildCardFields(),
             ],
+          );
+        },
       ),
     );
   }
@@ -162,7 +182,7 @@ class _BreakoutRoomDefinitionCardState
                   context.l10n.targetSizeQuestion,
                   style: AppTextStyle.body.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
-                  ),                  
+                  ),
                 ),
               ),
               FormBuilderSlider(

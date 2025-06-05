@@ -195,9 +195,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                 textStyle: TextStyle(
                   color: context.theme.colorScheme.primary,
                   fontSize: 16,
-                ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                ),                
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
@@ -327,7 +325,6 @@ class _ProfileTabState extends State<_ProfileTab> {
       if (widget.allowEdit)
         CustomTextField(
           labelText: 'About me',
-          keyboardType: TextInputType.multiline,
           maxLines: 6,
           minLines: 6,
           borderRadius: 5,
@@ -591,7 +588,6 @@ class SocialInputField extends StatelessWidget {
               color: context.theme.colorScheme.primary,
               fontSize: 16,
             ),
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onChanged: onChanged,
           ),
         ),
