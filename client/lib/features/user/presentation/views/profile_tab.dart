@@ -195,7 +195,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                 textStyle: TextStyle(
                   color: context.theme.colorScheme.primary,
                   fontSize: 16,
-                ),
+                ),                
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
