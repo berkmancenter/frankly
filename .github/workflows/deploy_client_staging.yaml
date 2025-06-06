@@ -86,6 +86,7 @@ jobs:
           envkey_MATOMO_URL: ${{ secrets.MATOMO_URL}}
           envkey_MATOMO_SITE_ID: ${{ secrets.MATOMO_SITE_ID}}
           envkey_APP_NAME: Frankly
+          envkey_APP_URL: https://app.frankly.org
           envkey_TERMS_URL: https://frankly.org/terms
           envkey_PRICING_URL: https://frankly.org/pricing
           envkey_ABOUT_URL: https://frankly.org
