@@ -313,9 +313,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
                     final id = devices
                         .firstWhere((d) => d.deviceId == deviceId)
                         .deviceId;
-                    if (id != null) {
-                      onChanged(id);
-                    }
+                    onChanged(id);
                   },
                   value: currentDeviceId,
                   icon: RotatedBox(
