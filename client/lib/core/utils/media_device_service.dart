@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:universal_html/html.dart' as html;
+import 'dart:async' show unawaited;
 
 class MediaDeviceService {
   List<MediaDeviceInfo> audioInputs = [];
@@ -41,33 +40,38 @@ class MediaDeviceService {
     camEnabled = enabled;
   }
 
-  Future<html.MediaStream> getUserMedia() async {
-    final Map<String, dynamic> constraints = {
-      'audio': micEnabled
+  Future<MediaStream> getUserMedia() async {
+    // Correctly define constraints to handle null device IDs by requesting default devices
+    final dynamic audioConstraint;
+    if (micEnabled) {
+      audioConstraint = selectedAudioInputId != null
           ? {'deviceId': selectedAudioInputId}
-          : false,
-      'video': camEnabled
+          : true; // Request default audio input if no ID is selected
+    } else {
+      audioConstraint = false;
+    }
+
+    final dynamic videoConstraint;
+    if (camEnabled) {
+      videoConstraint = selectedVideoInputId != null
           ? {'deviceId': selectedVideoInputId}
-          : false,
+          : true; // Request default video input if no ID is selected
+    } else {
+      videoConstraint = false;
+    }
+
+    final Map<String, dynamic> constraints = {
+      'audio': audioConstraint,
+      'video': videoConstraint,
     };
 
-    if (kIsWeb) {
-      // 在 Web 平台上，直接返回 html.MediaStream
-      return await html.window.navigator.mediaDevices!.getUserMedia(constraints);
-    } else {
-      // 在原生平台上，將 flutter_webrtc 的 MediaStream 轉換為 html.MediaStream
-      final stream = await navigator.mediaDevices.getUserMedia(constraints);
-      return stream as html.MediaStream;
-    }
+    // For all platforms, including web, use flutter_webrtc's getUserMedia directly.
+    // flutter_webrtc handles the platform-specifics internally.
+    return await navigator.mediaDevices.getUserMedia(constraints);
   }
 
-  // 修改方法以接受 html.MediaStream
-  void stopMediaStream(html.MediaStream? stream) {
+  void stopMediaStream(MediaStream? stream) {
     if (stream == null) return;
-
-    final tracks = stream.getTracks();
-    for (var i = 0; i < tracks.length; i++) {
-      tracks[i].stop();
-    }
+    stream.getTracks().forEach((track) => track.stop());
   }
 }

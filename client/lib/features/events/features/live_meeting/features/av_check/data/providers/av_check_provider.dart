@@ -18,7 +18,7 @@ class AvCheckProvider with ChangeNotifier {
   static const Size requestedSize = Size(720, 480);
 
   final MediaDeviceService _mediaService = MediaDeviceService();
-  html.MediaStream? _mediaStream;
+  MediaStream? _mediaStream;
   late html.VideoElement _div;
   late String _viewKey;
   late StreamSubscription _devicesSubscription;
@@ -31,7 +31,7 @@ class AvCheckProvider with ChangeNotifier {
 
   AvCheckProvider({required this.context});
 
-  html.MediaStream? get mediaStream => _mediaStream;
+  MediaStream? get mediaStream => _mediaStream;
 
   html.VideoElement get div => _div;
 
@@ -92,13 +92,13 @@ class AvCheckProvider with ChangeNotifier {
     final stream = await _mediaService.getUserMedia();
     _mediaService.stopMediaStream(_mediaStream);
     _mediaStream = stream;
-    _div.srcObject = _mediaStream;
+    _div.srcObject = _mediaStream as html.MediaStream;
 
     if (_mediaService.micEnabled && defaultMic != null) {
       _tracker?.dispose();
       _tracker = ParticipantAudioLevelTracker(
         onUpdate: () => notifyListeners(),
-        mediaStream: _mediaStream!,
+        mediaStream: _mediaStream! as html.MediaStream,
         trackName: defaultMic!,
       )..initialize();
     }
