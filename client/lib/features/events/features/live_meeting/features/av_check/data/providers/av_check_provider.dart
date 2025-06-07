@@ -11,14 +11,14 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:client/core/utils/media_device_service.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
+
 import 'package:universal_html/html.dart' as html;
 
 class AvCheckProvider with ChangeNotifier {
   static const Size requestedSize = Size(720, 480);
 
   final MediaDeviceService _mediaService = MediaDeviceService();
-  MediaStream? _mediaStream;
+  html.MediaStream? _mediaStream;
   late html.VideoElement _div;
   late String _viewKey;
   late StreamSubscription _devicesSubscription;
@@ -31,7 +31,7 @@ class AvCheckProvider with ChangeNotifier {
 
   AvCheckProvider({required this.context});
 
-  MediaStream? get mediaStream => _mediaStream;
+  html.MediaStream? get mediaStream => _mediaStream;
 
   html.VideoElement get div => _div;
 
@@ -47,7 +47,7 @@ class AvCheckProvider with ChangeNotifier {
 
   String? get errorText => _errorText;
 
-  List<MediaDeviceInfo>? get devicesList => [
+  List<html.MediaDeviceInfo>? get devicesList => [
         ..._mediaService.audioInputs,
         ..._mediaService.videoInputs,
       ];
@@ -92,13 +92,13 @@ class AvCheckProvider with ChangeNotifier {
     final stream = await _mediaService.getUserMedia();
     _mediaService.stopMediaStream(_mediaStream);
     _mediaStream = stream;
-    _div.srcObject = _mediaStream as html.MediaStream;
+    _div.srcObject = _mediaStream; // _mediaStream is now html.MediaStream?
 
     if (_mediaService.micEnabled && defaultMic != null) {
       _tracker?.dispose();
       _tracker = ParticipantAudioLevelTracker(
         onUpdate: () => notifyListeners(),
-        mediaStream: _mediaStream! as html.MediaStream,
+        mediaStream: _mediaStream!, // _mediaStream is now html.MediaStream
         trackName: defaultMic!,
       )..initialize();
     }
