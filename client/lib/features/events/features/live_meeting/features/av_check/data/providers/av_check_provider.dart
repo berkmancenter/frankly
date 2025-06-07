@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:js_util' as js_util;
 
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/audio_levels_model.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/firestore_utils.dart';
@@ -88,8 +90,8 @@ class AvCheckProvider with ChangeNotifier {
 
   Future<void> _updateMediaStream() async {
     final stream = await _mediaService.getUserMedia();
-    _mediaStream?.getTracks().forEach((track) => stopMediaTrack(track));
-    _mediaStream = stream as html.MediaStream;
+    _mediaService.stopMediaStream(_mediaStream);
+    _mediaStream = stream;
     _div.srcObject = _mediaStream;
 
     if (_mediaService.micEnabled && defaultMic != null) {
@@ -105,7 +107,7 @@ class AvCheckProvider with ChangeNotifier {
   @override
   void dispose() {
     _tracker?.dispose();
-    _mediaStream?.getTracks().forEach((track) => stopMediaTrack(track));
+    _mediaService.stopMediaStream(_mediaStream);
     _div.srcObject = null;
     _devicesSubscription.cancel();
     super.dispose();

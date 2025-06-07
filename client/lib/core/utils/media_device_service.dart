@@ -1,6 +1,7 @@
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:universal_html/html.dart' as html;
 
 class MediaDeviceService {
   List<MediaDeviceInfo> audioInputs = [];
@@ -40,7 +41,7 @@ class MediaDeviceService {
     camEnabled = enabled;
   }
 
-  Future<MediaStream> getUserMedia() async {
+  Future<html.MediaStream> getUserMedia() async {
     final Map<String, dynamic> constraints = {
       'audio': micEnabled
           ? {'deviceId': selectedAudioInputId}
@@ -50,6 +51,23 @@ class MediaDeviceService {
           : false,
     };
 
-    return await navigator.mediaDevices.getUserMedia(constraints);
+    if (kIsWeb) {
+      // 在 Web 平台上，直接返回 html.MediaStream
+      return await html.window.navigator.mediaDevices!.getUserMedia(constraints);
+    } else {
+      // 在原生平台上，將 flutter_webrtc 的 MediaStream 轉換為 html.MediaStream
+      final stream = await navigator.mediaDevices.getUserMedia(constraints);
+      return stream as html.MediaStream;
+    }
+  }
+
+  // 修改方法以接受 html.MediaStream
+  void stopMediaStream(html.MediaStream? stream) {
+    if (stream == null) return;
+
+    final tracks = stream.getTracks();
+    for (var i = 0; i < tracks.length; i++) {
+      tracks[i].stop();
+    }
   }
 }
