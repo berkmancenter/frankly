@@ -1,17 +1,13 @@
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/create_community_preview_container.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/private_community_checkbox.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/mixins.dart';
@@ -29,13 +25,12 @@ class DialogFlow extends StatefulWidget with ShowDialogMixin {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _DialogFlowState createState() => _DialogFlowState();
 }
 
 class _DialogFlowState extends State<DialogFlow> {
-  final FocusNode _aboutFocus = FocusNode();
   final FocusNode _nameFocus = FocusNode();
-  final FocusNode _taglineFocus = FocusNode();
   Community _community = Community(
     id: firestoreDatabase.generateNewCommunityId(),
     isPublic: true,
@@ -44,108 +39,58 @@ class _DialogFlowState extends State<DialogFlow> {
 
   int _onStep = 1;
   String? _createdCommunityId;
-  PreviewContainerField? _focusedField;
 
   // Development flag to turn on or off sending the data to firestore
   static const bool _createCommunity = true;
 
-  String get _stepText {
-    switch (_onStep) {
-      case 1:
-        return context.l10n.welcomeToApp(Environment.appName);
-      case 2:
-        return context.l10n.createACommunity;
-      default:
-        return '';
-    }
-  }
-
-  bool get _isNextPageAvailable {
-    switch (_onStep) {
-      case 1:
-        return true;
-      case 2:
-        return _notEmpty(_community.name);
-      default:
-        return false;
-    }
-  }
-
-  bool _notEmpty(String? val) => !isNullOrEmpty(val?.trim());
-
   @override
   void initState() {
-    _listenToFocusNodes();
     super.initState();
-  }
-
-  void _listenToFocusNodes() {
-    _aboutFocus.addListener(() {
-      if (_aboutFocus.hasFocus) {
-        setState(() => _focusedField = PreviewContainerField.about);
-      }
-    });
-    _nameFocus.addListener(() {
-      if (_nameFocus.hasFocus) {
-        setState(() => _focusedField = PreviewContainerField.name);
-      }
-    });
-    _taglineFocus.addListener(() {
-      if (_taglineFocus.hasFocus) {
-        setState(() => _focusedField = PreviewContainerField.tagline);
-      }
-    });
   }
 
   /// Returns true if UI should move to next step
   Future<bool> _nextButtonAction() async {
-    if (_onStep == 1) {
-      analytics.logEvent(
-        AnalyticsAgreeToTermsAndConditionsEvent(
-          userId: userService.currentUserId!,
-        ),
-      );
-    } else if (_onStep == 2) {
-      if (_createCommunity) {
-        try {
-          _createdCommunityId =
-              (await cloudFunctionsCommunityService.createCommunity(
-            CreateCommunityRequest(community: _community),
-          ))
-                  .communityId;
-        } catch (e, s) {
-          loggingService.log(e, logType: LogType.error);
-          loggingService.log(s, logType: LogType.error);
+    if (_createCommunity) {
+      try {
+        _createdCommunityId =
+            (await cloudFunctionsCommunityService.createCommunity(
+          CreateCommunityRequest(community: _community),
+        ))
+                .communityId;
+      } catch (e, s) {
+        loggingService.log(e, logType: LogType.error);
+        loggingService.log(s, logType: LogType.error);
 
-          final sanitizedError = sanitizeError(e.toString());
+        // TODO: Handle error properly
+        // final sanitizedError = sanitizeError(e.toString());
 
-          _createdCommunityId = null;
-        }
-        final createdCommunityId = _createdCommunityId;
-        if (createdCommunityId != null) {
-          analytics.logEvent(
-            AnalyticsCreateCommunityEvent(communityId: createdCommunityId),
-          );
-          setState(
-            () => _community = _community.copyWith(id: createdCommunityId),
-          );
-          // Immediately proceed to created community
-          Navigator.of(context).pop();
-          routerDelegate.beamTo(
-            CommunityPageRoutes(
-              // Use the displayId if available, otherwise use the createdCommunityId
-              communityDisplayId: _community.displayId.isNotEmpty
-                  ? _community.displayId
-                  : createdCommunityId,
-            ).communityHome,
-          );
-        } else {
-          Navigator.of(context).pop();
-          await showAlert(context, context.l10n.somethingWentWrongTryAgain);
-          return false;
-        }
+        _createdCommunityId = null;
+      }
+      final createdCommunityId = _createdCommunityId;
+      if (createdCommunityId != null) {
+        analytics.logEvent(
+          AnalyticsCreateCommunityEvent(communityId: createdCommunityId),
+        );
+        setState(
+          () => _community = _community.copyWith(id: createdCommunityId),
+        );
+        // Immediately proceed to created community
+        Navigator.of(context).pop();
+        routerDelegate.beamTo(
+          CommunityPageRoutes(
+            // Use the displayId if available, otherwise use the createdCommunityId
+            communityDisplayId: _community.displayId.isNotEmpty
+                ? _community.displayId
+                : createdCommunityId,
+          ).communityHome,
+        );
+      } else {
+        Navigator.of(context).pop();
+        await showAlert(context, context.l10n.somethingWentWrongTryAgain);
+        return false;
       }
     }
+
     return true;
   }
 
@@ -164,29 +109,14 @@ class _DialogFlowState extends State<DialogFlow> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (responsiveLayoutService.isMobile(context) &&
-            widget.showAppNameOnMobile) ...[
-          SizedBox(height: 30),
-          HeightConstrainedText(
-            Environment.appName,
-            style: AppTextStyle.headline2,
-          ),
-          SizedBox(height: 10),
-        ],
         SizedBox(height: 40),
-        HeightConstrainedText('$_onStep ${context.l10n.ofTotal(3)}'),
-        SizedBox(height: 10),
         HeightConstrainedText(
-          _stepText,
+          context.l10n.createACommunity,
           style: context.theme.textTheme.titleLarge,
         ),
         SizedBox(height: 10),
         _buildStepContent(),
         SizedBox(height: 40),
-        if (_onStep == 1) ...[
-          _buildNextButton(),
-          SizedBox(height: 20),
-        ],
       ],
     );
   }
@@ -199,81 +129,12 @@ class _DialogFlowState extends State<DialogFlow> {
       case 2:
         return _buildStepTwoContent();
 
-      case 3:
-        return _buildStepThreeContent();
-
       default:
         return SizedBox.shrink();
     }
   }
 
-  Widget _buildNextButton() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: ActionButton(
-        color: context.theme.colorScheme.primary,
-        textColor: context.theme.colorScheme.onPrimary,
-        onPressed: _isNextPageAvailable
-            ? () async {
-                if (await _nextButtonAction()) {
-                  _resetScroll();
-                  setState(() => _onStep++);
-                }
-              }
-            : null,
-        text: _onStep == 1 ? context.l10n.agreeAndContinue : context.l10n.next,
-        iconSide: ActionButtonIconSide.right,
-        icon: Padding(
-          padding: const EdgeInsets.only(left: 5.0),
-          child: Icon(
-            Icons.arrow_forward_ios,
-            color: context.theme.colorScheme.onPrimary,
-            size: 18,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildStepOneContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: context.l10n
-                    .bySigningInRegisteringOrUsing(Environment.appName),
-                style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              TextSpan(
-                text: context.l10n.appNameTermsOfService(Environment.appName),
-                style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.primary,
-                  decoration: TextDecoration.underline,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => launch(Environment.termsUrl),
-              ),
-              TextSpan(
-                text: '.',
-                style: AppTextStyle.body.copyWith(
-                  color: context.theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 40),
-      ],
-    );
-  }
-
-  Widget _buildStepTwoContent() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,7 +182,7 @@ class _DialogFlowState extends State<DialogFlow> {
     );
   }
 
-  Widget _buildStepThreeContent() {
+  Widget _buildStepTwoContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.max,
