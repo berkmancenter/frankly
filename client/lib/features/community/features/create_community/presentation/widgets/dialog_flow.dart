@@ -74,16 +74,6 @@ class _DialogFlowState extends State<DialogFlow> {
         setState(
           () => _community = _community.copyWith(id: createdCommunityId),
         );
-        // Immediately proceed to created community
-        Navigator.of(context).pop();
-        routerDelegate.beamTo(
-          CommunityPageRoutes(
-            // Use the displayId if available, otherwise use the createdCommunityId
-            communityDisplayId: _community.displayId.isNotEmpty
-                ? _community.displayId
-                : createdCommunityId,
-          ).communityHome,
-        );
       } else {
         Navigator.of(context).pop();
         await showAlert(context, context.l10n.somethingWentWrongTryAgain);
@@ -165,7 +155,7 @@ class _DialogFlowState extends State<DialogFlow> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ActionButton(
-              text: context.l10n.finish,
+              text: context.l10n.next,
               color: context.theme.colorScheme.primary,
               textColor: context.theme.colorScheme.onPrimary,
               borderRadius: BorderRadius.circular(10),
@@ -230,6 +220,30 @@ class _DialogFlowState extends State<DialogFlow> {
           context.l10n.communitySuccessSuffix,
           textAlign: TextAlign.center,
           style: context.theme.textTheme.bodyLarge,
+        ),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ActionButton(
+              text: context.l10n.finish,
+              color: context.theme.colorScheme.primary,
+              textColor: context.theme.colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(10),
+              onPressed: () {
+                // Proceed to created community
+                Navigator.of(context).pop();
+                routerDelegate.beamTo(
+                  CommunityPageRoutes(
+                    // Use the displayId if available, otherwise use the createdCommunityId
+                    communityDisplayId: _community.displayId.isNotEmpty
+                        ? _community.displayId
+                        : (_createdCommunityId ?? ''),
+                  ).communityHome,
+                );
+              },
+            ),
+          ],
         ),
       ],
     );
