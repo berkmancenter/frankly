@@ -195,7 +195,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                 textStyle: TextStyle(
                   color: context.theme.colorScheme.primary,
                   fontSize: 16,
-                ),                
+                ),
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
@@ -327,6 +327,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           labelText: 'About me',
           maxLines: 6,
           minLines: 6,
+          keyboardType: TextInputType.multiline,
           borderRadius: 5,
           padding: EdgeInsets.zero,
           textStyle:

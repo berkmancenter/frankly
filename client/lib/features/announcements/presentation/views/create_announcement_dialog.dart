@@ -68,6 +68,7 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
               labelText: 'Enter a message',
               minLines: 4,
               maxLines: 8,
+              keyboardType: TextInputType.multiline,
               onChanged: (value) => setState(() => _message = value),
             ),
             Padding(

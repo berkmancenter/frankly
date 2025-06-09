@@ -144,6 +144,8 @@ class _ManipulateDiscussionThreadPageState
                           hintText: context.l10n.typeSomething,
                           onChanged: (input) => _presenter.updateContent(input),
                           maxLines: 10,
+                          minLines: 4,
+                          keyboardType: TextInputType.multiline,
                         ),
                       ),
                     ),
