@@ -251,7 +251,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
     return CustomTextField(
       key: Key(dateString),
       labelText: 'Date',
-      readOnly: true,
       initialValue: dateString,
       maxLength: null,
       onTap: () async {
@@ -282,13 +281,12 @@ class EditEventDrawerState extends State<EditEventDrawer>
     return CustomTextField(
       key: Key(timeString),
       labelText: 'Time',
-      readOnly: true,
       initialValue: timeString,
       onTap: () async {
         final now = clock.now();
         final TimeOfDay? timeOfDay = await showTimePicker(
           context: context,
-          initialEntryMode: TimePickerEntryMode.input,
+          initialEntryMode: TimePickerEntryMode.dial,
           initialTime:
               TimeOfDay.fromDateTime(_model.event.scheduledTime ?? now),
         );
