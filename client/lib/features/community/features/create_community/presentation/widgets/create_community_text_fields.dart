@@ -37,8 +37,6 @@ class CreateCommunityTextFields extends StatefulWidget {
 class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
-  final _nameController = TextEditingController();
-  final _displayIdController = TextEditingController();
 
   String _formatDisplayIdFromName(String displayId) {
     final String formattedDisplayId = displayId
@@ -51,11 +49,16 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
 
   @override
   Widget build(BuildContext context) {
+    final nameController = TextEditingController(
+      text: widget.community.name ?? '',
+    );
+    final displayIdController =
+        TextEditingController(text: widget.community.displayId);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildCreateCommunityTextField(
-          controller: _nameController,
+          controller: nameController,
           maxLength: titleMaxCharactersLength,
           label: context.l10n.name,
           onChanged: (String val) => {
@@ -63,7 +66,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
             setState(() {
               // Update the displayId when the name changes
-              _displayIdController.text = _formatDisplayIdFromName(val);
+              displayIdController.text = _formatDisplayIdFromName(val);
             }),
           },
           focus: widget.nameFocus,
@@ -72,10 +75,10 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           formatterRegex: r'[\s?\w?]',
         ),
         _buildCreateCommunityTextField(
-          controller: _displayIdController,
+          controller: displayIdController,
           maxLength: customIdMaxCharactersLength,
           label: context.l10n.uniqueUrlDisplayNameOptional,
-          initialValue: _nameController.text,
+          initialValue: nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: widget.community.displayId.isNotEmpty
               ? '${Environment.appUrl}/${widget.community.displayId}'
