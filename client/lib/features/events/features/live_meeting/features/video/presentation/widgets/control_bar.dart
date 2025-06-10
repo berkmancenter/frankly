@@ -345,10 +345,10 @@ class ChatInput extends StatefulWidget {
   });
 
   @override
-  _ChatInputState createState() => _ChatInputState();
+  ChatInputState createState() => ChatInputState();
 }
 
-class _ChatInputState extends State<ChatInput> {
+class ChatInputState extends State<ChatInput> {
   final _sendController = SubmitNotifier();
 
   bool get canSubmit => !isNullOrEmpty(widget.controller.text.trim());
