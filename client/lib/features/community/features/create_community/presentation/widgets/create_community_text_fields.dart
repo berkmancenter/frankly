@@ -37,6 +37,17 @@ class CreateCommunityTextFields extends StatefulWidget {
 class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
+  late final TextEditingController _nameController;
+  late final TextEditingController _displayIdController;
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(
+      text: widget.community.name ?? '',
+    );
+    _displayIdController =
+        TextEditingController(text: widget.community.displayId);
+  }
 
   String _formatDisplayIdFromName(String displayId) {
     final String formattedDisplayId = displayId
@@ -49,16 +60,11 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
 
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController(
-      text: widget.community.name ?? '',
-    );
-    final displayIdController =
-        TextEditingController(text: widget.community.displayId);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildCreateCommunityTextField(
-          controller: nameController,
+          controller: _nameController,
           maxLength: titleMaxCharactersLength,
           label: context.l10n.name,
           onChanged: (String val) => {
@@ -66,7 +72,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
             setState(() {
               // Update the displayId when the name changes
-              displayIdController.text = _formatDisplayIdFromName(val);
+              _displayIdController.text = _formatDisplayIdFromName(val);
             }),
           },
           focus: widget.nameFocus,
@@ -75,13 +81,13 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           formatterRegex: r'[\s?\w?]',
         ),
         _buildCreateCommunityTextField(
-          controller: displayIdController,
+          controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
           label: context.l10n.uniqueUrlDisplayNameOptional,
-          initialValue: nameController.text,
+          initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
-          helperText: widget.community.displayId.isNotEmpty
-              ? '${Environment.appUrl}/${widget.community.displayId}'
+          helperText: _displayIdController.text.isNotEmpty
+              ? '${Environment.appUrl}/${_displayIdController.text}'
               : null,
           // Allow only numbers, lowercase letters, and dashes
           formatterRegex: '[0-9a-z-+]',
