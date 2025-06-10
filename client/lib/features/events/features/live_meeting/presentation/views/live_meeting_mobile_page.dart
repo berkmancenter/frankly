@@ -670,7 +670,12 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     );
     // Still using the format directly as it's just displaying numbers with a divider
     // No specific localization string needed as this is a counter format
-    return Text('$readyToMoveOnCount/${presentParticipantIds.length}');
+    return Text(
+      '$readyToMoveOnCount/${presentParticipantIds.length}',
+      style: context.theme.textTheme.bodyMedium?.copyWith(
+        color: context.theme.colorScheme.onPrimary,
+      ),
+    );
   }
 
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
