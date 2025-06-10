@@ -37,8 +37,17 @@ class CreateCommunityTextFields extends StatefulWidget {
 class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
-  final _nameController = TextEditingController();
-  final _displayIdController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _displayIdController;
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(
+      text: widget.community.name ?? '',
+    );
+    _displayIdController =
+        TextEditingController(text: widget.community.displayId);
+  }
 
   String _formatDisplayIdFromName(String displayId) {
     final String formattedDisplayId = displayId
@@ -77,8 +86,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           label: context.l10n.uniqueUrlDisplayNameOptional,
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
-          helperText: widget.community.displayId.isNotEmpty
-              ? '${Environment.appUrl}/${widget.community.displayId}'
+          helperText: _displayIdController.text.isNotEmpty
+              ? '${Environment.appUrl}/${_displayIdController.text}'
               : null,
           // Allow only numbers, lowercase letters, and dashes
           formatterRegex: '[0-9a-z-+]',

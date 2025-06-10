@@ -74,6 +74,7 @@ class Dialogs {
                     minLines: 3,
                     autofocus: true,
                     controller: textEditingController,
+                    keyboardType: TextInputType.multiline,
                     validator: validator,
                     labelText: labelText,
                   ),
