@@ -136,11 +136,9 @@ class DiscussionThreadCommentCard extends StatelessWidget {
           Container(
             alignment: Alignment.centerRight,
             child: AppClickableWidget(
-              child: ProxiedImage(
-                null,
-                asset: AppAsset.kTrashPng,
-                width: 20,
-                height: 20,
+              child: Icon(
+                Icons.delete,
+                size: 20,
               ),
               onTap: () => _showDeleteCommentDialog(discussionThreadComment),
             ),

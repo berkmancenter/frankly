@@ -496,11 +496,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ProxiedImage(
-              null,
-              asset: AppAsset.kChatBubble2Png,
-              width: 20,
-              height: 20,
+            Icon(
+              Icons.chat_bubble_outline,
+              size: 20,
             ),
             SizedBox(width: 10),
             Text(
