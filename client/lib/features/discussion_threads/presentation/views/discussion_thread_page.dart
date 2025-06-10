@@ -243,17 +243,14 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
                             children: [
                               HeightConstrainedText(
                                 '$commentCount ${commentCount == 1 ? 'comment' : 'comments'}',
-                                style: AppTextStyle.bodyMedium.copyWith(
-                                  color: context
-                                      .theme.colorScheme.onPrimaryContainer,
-                                ),
+                                style: AppTextStyle.bodyMedium,
                               ),
                               if (commentCount != 0)
                                 HeightConstrainedText(
                                   'Newest First', // Forced (mock) sorting
                                   style: AppTextStyle.bodyMedium.copyWith(
                                     color: context
-                                        .theme.colorScheme.onPrimaryContainer,
+                                        .theme.colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                             ],
@@ -508,8 +505,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             SizedBox(width: 10),
             Text(
               'Reply',
-              style: AppTextStyle.bodyMedium
-                  .copyWith(color: context.theme.colorScheme.primary),
+              style: AppTextStyle.bodyMedium,
             ),
           ],
         ),
