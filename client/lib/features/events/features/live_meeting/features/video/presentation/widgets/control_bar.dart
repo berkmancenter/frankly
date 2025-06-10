@@ -381,7 +381,6 @@ class ChatInputState extends State<ChatInput> {
           Expanded(
             child: CustomTextField(
               borderType: BorderType.none,
-              borderRadius: isMobile ? 25 : 10,
               backgroundColor:
                   context.theme.colorScheme.surfaceContainerHighest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
