@@ -202,7 +202,7 @@ class _ControlBarState extends State<ControlBar> {
     return AnimatedBuilder(
       animation: _liveMeetingProvider.conferenceRoomNotifier,
       builder: (context, __) => Container(
-        color: context.theme.colorScheme.primaryContainer,
+        color: context.theme.colorScheme.onPrimaryFixed,
         height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,7 +318,7 @@ class _EmojiButtonState extends State<EmojiButton> {
           vertical: 14,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.surfaceContainerLowest,
+          color: context.theme.colorScheme.surfaceContainerHighest,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
@@ -382,7 +382,8 @@ class _ChatInputState extends State<ChatInput> {
             child: CustomTextField(
               borderType: BorderType.none,
               borderRadius: isMobile ? 25 : 10,
-              backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+              backgroundColor:
+                  context.theme.colorScheme.surfaceContainerHighest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
               onEditingComplete:
                   canSubmit ? _sendController.submit : widget.controller.clear,
