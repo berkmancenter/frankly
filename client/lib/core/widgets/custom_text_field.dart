@@ -25,6 +25,7 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
   final BorderType? borderType;
+  final EdgeInsets? contentPadding;
 
   final double borderRadius;
   final TextStyle? labelStyle;
@@ -87,6 +88,7 @@ class CustomTextField extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.borderType = BorderType.outline,
+    this.contentPadding,
     this.borderRadius = 5,
     this.backgroundColor,
     this.focusNode,
@@ -303,6 +305,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ],
                 validator: widget.validator,
                 decoration: InputDecoration(
+                  contentPadding: widget.contentPadding,
                   border: _getBorder(),
                   focusedBorder: _getFocusedBorder(),
                   enabledBorder: _getBorder(),
