@@ -1,7 +1,10 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,7 +20,6 @@ import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/step_progress_indicator.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/app.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
@@ -54,14 +56,11 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
   @override
   Widget build(BuildContext context) {
     context.watch<CommunityProvider>();
-    final onboardingSteps = OnboardingStep.values.toList();
-    if (!kShowStripeFeatures) {
-      onboardingSteps.remove(OnboardingStep.createStripeAccount);
-    }
 
     final onboardingStep = _presenter.getCurrentOnboardingStep();
-    final totalSteps = onboardingSteps.length;
+    // final totalSteps = onboardingSteps.length;
     final isMobile = _presenter.isMobile(context);
+    Community community = _presenter.getCommunity();
 
     if (isMobile) {
       return Column(
@@ -115,92 +114,29 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         ],
       );
     } else {
-      return Row(
-        // Make sure it's locked as start. Otherwise after toggling selection of step,
-        // right section will glitch positions
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 5,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final containerWidth = constraints.maxWidth;
-
-                return Container(
-                  padding: const EdgeInsets.all(40),
-                  decoration: BoxDecoration(
-                    color: context.theme.colorScheme.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              HeightConstrainedText(
+                context.l10n.basicSettings,
+                style: context.theme.textTheme.titleMedium,
+              ),
+              CreateCommunityTextFields(
+                showChooseCustomDisplayId: true,
+                onCustomDisplayIdChanged: (value) => setState(
+                  () => community = community.copyWith(
+                    displayIds: value.isNotEmpty ? [value] : [],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (onboardingStep == null)
-                        Row(
-                          children: [
-                            SizedBox(width: 5),
-                            ProxiedImage(
-                              null,
-                              asset: AppAsset.kEmojiPartyPng,
-                              width: 24,
-                              height: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Now we’re talking!',
-                              style: AppTextStyle.subhead.copyWith(
-                                  color: context.theme.colorScheme.secondary,),
-                            ),
-                          ],
-                        )
-                      else
-                        Row(
-                          children: [
-                            SizedBox(width: 5),
-                            ProxiedImage(
-                              null,
-                              asset: onboardingStep.titleIconPath,
-                              width: 24,
-                              height: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                onboardingStep.title,
-                                style: AppTextStyle.subhead.copyWith(
-                                    color: context.theme.colorScheme.secondary,),
-                              ),
-                            ),
-                            SizedBox(
-                              // Pretty specific width constraint. We have to make sure that
-                              // `progress` line has enough but not too much space within the row.
-                              width: containerWidth / 2.6,
-                              child: _buildProgressSection(
-                                isMobile,
-                                totalSteps,
-                                onboardingStep,
-                              ),
-                            ),
-                          ],
-                        ),
-                      SizedBox(height: onboardingStep == null ? 10 : 30),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: totalSteps,
-                        itemBuilder: (context, index) {
-                          final onboardingStep = onboardingSteps[index];
-
-                          return _buildStepSection(onboardingStep);
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                ),
+                onNameChanged: (value) =>
+                    setState(() => community = community.copyWith(name: value)),
+                community: community,
+              ),
+            ],
           ),
-          Spacer(),
         ],
       );
     }
@@ -314,8 +250,9 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                               child: RichText(
                                 text: TextSpan(
                                   style: AppTextStyle.body.copyWith(
-                                      color: context.theme.colorScheme
-                                          .onPrimaryContainer,),
+                                    color: context
+                                        .theme.colorScheme.onPrimaryContainer,
+                                  ),
                                   children: [
                                     TextSpan(text: subtitle),
                                     if (learnMoreUrl != null)
@@ -333,7 +270,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                               ),
                             ),
                             SizedBox(height: 10),
-                            _buildBottomStepSection(onboardingStep),
+                            // _buildBottomStepSection(onboardingStep),
                           ],
                         )
                       // Make sure to user Container instead of SizedBox.shrink because Container
