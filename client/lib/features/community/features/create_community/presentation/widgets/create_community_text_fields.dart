@@ -11,10 +11,13 @@ class CreateCommunityTextFields extends StatefulWidget {
   final bool showChooseCustomDisplayId;
   final void Function(String) onNameChanged;
   final void Function(String) onCustomDisplayIdChanged;
+  final void Function(String)? onTaglineChanged;
+  final void Function(String)? onAboutChanged;
   final FocusNode? nameFocus;
   final FocusNode? aboutFocus;
   final Community community;
   final bool compact;
+  final bool showAllFields;
 
   final FocusNode? taglineFocus;
   const CreateCommunityTextFields({
@@ -22,11 +25,14 @@ class CreateCommunityTextFields extends StatefulWidget {
     Key? key,
     required this.onNameChanged,
     required this.onCustomDisplayIdChanged,
+    this.onTaglineChanged,
+    this.onAboutChanged,
     this.nameFocus,
     this.aboutFocus,
     this.taglineFocus,
     required this.community,
     this.compact = false,
+    this.showAllFields = false,
   }) : super(key: key);
 
   @override
@@ -37,6 +43,8 @@ class CreateCommunityTextFields extends StatefulWidget {
 class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
+  final int taglineMaxCharactersLength = 100;
+
   late final TextEditingController _nameController;
   late final TextEditingController _displayIdController;
   @override
@@ -80,6 +88,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           // Allow only alphanumeric characters, spaces
           formatterRegex: r'[\s?\w?]',
         ),
+        SizedBox(
+          height: widget.compact ? 0 : 10,
+        ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
@@ -92,6 +103,41 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           // Allow only numbers, lowercase letters, and dashes
           formatterRegex: '[0-9a-z-+]',
         ),
+        SizedBox(
+          height: widget.compact ? 0 : 10,
+        ),
+        if (widget.showAllFields)
+          Column(
+            children: [
+              _buildCreateCommunityTextField(
+                hint: 'Ex: Protecting the earth from all invaders',
+                label: 'Tagline',
+                initialValue: widget.community.tagLine,
+                onChanged: widget.onTaglineChanged,
+                maxLength: taglineMaxCharactersLength,
+                counterText:
+                    '${widget.community.tagLine?.length}/$taglineMaxCharactersLength',
+                focus: widget.taglineFocus,
+                minLines: 3,
+                maxLines: 3,
+                keyboardType: TextInputType.multiline,
+              ),
+              SizedBox(
+                height: widget.compact ? 0 : 10,
+              ),
+              _buildCreateCommunityTextField(
+                label: 'About',
+                hint: 'Add more detail as to the goals of this community',
+                initialValue: widget.community.description,
+                onChanged: widget.onAboutChanged,
+                focus: widget.aboutFocus,
+                isOptional: true,
+                maxLines: 3,
+                minLines: 3,
+                keyboardType: TextInputType.multiline,
+              ),
+            ],
+          ),
       ],
     );
   }
@@ -99,16 +145,19 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   Widget _buildCreateCommunityTextField({
     required String label,
     required void Function(String)? onChanged,
-    required String formatterRegex,
+    String? formatterRegex,
     TextEditingController? controller,
     String? hint,
     String? helperText,
     String? initialValue,
     String? counterText,
     int? maxLength,
+    int maxLines = 1,
+    int minLines = 1,
     double containerHeight = 78,
     FocusNode? focus,
     bool isOptional = false,
+    TextInputType keyboardType = TextInputType.text,
   }) =>
       Container(
         alignment: Alignment.topCenter,
@@ -119,6 +168,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           counterAlignment: Alignment.topRight,
           focusNode: focus,
           maxLength: maxLength,
+          maxLines: maxLines,
+          minLines: minLines,
           counterText: counterText,
           padding: EdgeInsets.zero,
           labelText: label,
@@ -128,8 +179,10 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           onChanged: onChanged,
           isOptional: isOptional,
           optionalPadding: const EdgeInsets.only(top: 12, right: 12),
-          inputFormatters:
-              FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
+          inputFormatters: formatterRegex == null
+              ? null
+              : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
+          keyboardType: keyboardType,
         ),
       );
 }
