@@ -66,7 +66,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Container(
                       width: 1,
-                      color: context.theme.colorScheme.onPrimaryContainer,
+                      color: context.theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -112,7 +112,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
             UserProfileChip(
               userId: commentCreatorId,
               textStyle: AppTextStyle.bodyMedium.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
+                color: context.theme.colorScheme.onSurfaceVariant,
               ),
               showName: true,
               showBorder: true,
@@ -129,19 +129,16 @@ class DiscussionThreadCommentCard extends StatelessWidget {
         SizedBox(height: 10),
         HeightConstrainedText(
           discussionThreadComment.comment,
-          style: AppTextStyle.body
-              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+          style: AppTextStyle.body,
         ),
         if (isUsersComment) ...[
           SizedBox(height: 10),
           Container(
             alignment: Alignment.centerRight,
             child: AppClickableWidget(
-              child: ProxiedImage(
-                null,
-                asset: AppAsset.kTrashPng,
-                width: 20,
-                height: 20,
+              child: Icon(
+                Icons.delete,
+                size: 20,
               ),
               onTap: () => _showDeleteCommentDialog(discussionThreadComment),
             ),

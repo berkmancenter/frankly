@@ -136,7 +136,6 @@ class _ChatWidgetState extends State<_ChatWidget> {
         Expanded(
           child: CustomTextField(
             key: Key('input-chat'),
-            padding: EdgeInsets.zero,
             backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
@@ -145,8 +144,8 @@ class _ChatWidgetState extends State<_ChatWidget> {
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,
-            borderRadius: 30,
             hintText: widget.messageInputHint,
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
             maxLength: 2000,
             hideCounter: true,
           ),
