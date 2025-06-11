@@ -361,22 +361,32 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
         ],
         if (widget.showAttributeEdit)
           CreateCommunityTextFields(
+            showAllFields: true,
             showChooseCustomDisplayId: widget.showChooseCustomDisplayId,
             onCustomDisplayIdChanged: (value) => _displayId = value,
             onNameChanged: (value) =>
                 setState(() => _community = _community.copyWith(name: value)),
+            onTaglineChanged: (value) => setState(
+              () => _community = _community.copyWith(tagLine: value),
+            ),
+            onAboutChanged: (value) => setState(
+              () => _community = _community.copyWith(description: value),
+            ),
             community: _community,
           ),
         if (widget.showImageEdit)
-          CreateCommunityImageFields(
-            bannerImageUrl: _community.bannerImageUrl,
-            profileImageUrl: _community.profileImageUrl,
-            updateBannerImage: (String imageUrl) =>
-                _updateBannerImage(imageUrl: imageUrl),
-            updateProfileImage: (String imageUrl) =>
-                _updateProfileImage(imageUrl: imageUrl),
-            removeImage: _removeImage,
+          SizedBox(
+            height: widget.compact ? 0 : 20,
           ),
+        CreateCommunityImageFields(
+          bannerImageUrl: _community.bannerImageUrl,
+          profileImageUrl: _community.profileImageUrl,
+          updateBannerImage: (String imageUrl) =>
+              _updateBannerImage(imageUrl: imageUrl),
+          updateProfileImage: (String imageUrl) =>
+              _updateProfileImage(imageUrl: imageUrl),
+          removeImage: _removeImage,
+        ),
         CustomTextField(
           hintText: context.l10n.contactEmail,
           labelText: 'Contact email',
