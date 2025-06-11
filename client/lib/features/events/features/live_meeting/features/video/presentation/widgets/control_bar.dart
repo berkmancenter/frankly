@@ -384,6 +384,7 @@ class ChatInputState extends State<ChatInput> {
               backgroundColor:
                   context.theme.colorScheme.surfaceContainerHighest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
               onEditingComplete:
                   canSubmit ? _sendController.submit : widget.controller.clear,
               controller: widget.controller,

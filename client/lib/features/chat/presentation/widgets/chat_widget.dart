@@ -145,6 +145,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             maxLines: 1,
             borderType: BorderType.none,
             hintText: widget.messageInputHint,
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
             maxLength: 2000,
             hideCounter: true,
           ),
