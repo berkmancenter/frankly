@@ -193,9 +193,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                 Expanded(
                   child: UserProfileChip(
                     userId: participantAgendaItemDetails.userId,
-                    textStyle: AppTextStyle.bodyMedium.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer,
-                    ),
+                    textStyle: AppTextStyle.bodyMedium,
                     showName: true,
                     showIsYou: true,
                     showBorder: true,
@@ -207,9 +205,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                   children: [
                     Text(
                       likeDislikeCount,
-                      style: AppTextStyle.bodyMedium.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: AppTextStyle.bodyMedium,
                     ),
                     SizedBox(width: 5),
                     AppClickableWidget(
@@ -282,9 +278,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             SizedBox(height: 10),
             Text(
               meetingUserSuggestion.suggestion,
-              style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
+              style: AppTextStyle.body,
             ),
           ],
         ),

@@ -121,7 +121,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),

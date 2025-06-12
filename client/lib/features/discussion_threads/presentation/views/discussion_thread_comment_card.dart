@@ -162,7 +162,7 @@ class _DeletedCommentWidget extends StatelessWidget {
           child: HeightConstrainedText(
             'Comment Deleted',
             style: AppTextStyle.bodyMedium
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+                .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
           ),
         ),
         SizedBox(height: 10),

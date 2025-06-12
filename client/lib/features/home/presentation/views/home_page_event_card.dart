@@ -117,7 +117,8 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
                 HeightConstrainedText(
                   'Livestream',
                   style: AppTextStyle.eyebrowSmall.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               SizedBox(height: 10),
               Row(
