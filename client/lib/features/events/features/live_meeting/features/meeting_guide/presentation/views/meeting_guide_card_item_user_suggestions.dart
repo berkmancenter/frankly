@@ -111,13 +111,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             controller: _textEditingController,
             padding: EdgeInsets.zero,
             onEditingComplete: () => _submitNotifier.submit(),
-            textStyle: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.primary),
-            hintStyle: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
             maxLines: 1,
-            borderRadius: 40,
-            borderColor: context.theme.colorScheme.onPrimaryContainer,
             fillColor: context.theme.colorScheme.surfaceContainerLowest,
             hintText: context.l10n.suggest,
           ),
