@@ -153,6 +153,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
         SizedBox(width: 10),
         ActionButton(
           shape: CircleBorder(),
+          color: context.theme.colorScheme.primary,
           minWidth: 58,
           padding: EdgeInsets.symmetric(vertical: 10),
           borderRadius: BorderRadius.circular(50),

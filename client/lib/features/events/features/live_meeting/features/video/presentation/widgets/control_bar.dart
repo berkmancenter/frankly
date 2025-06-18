@@ -415,6 +415,7 @@ class ChatInputState extends State<ChatInput> {
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                 ),
               ),

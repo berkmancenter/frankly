@@ -112,7 +112,6 @@ class _MeetingGuideCardItemWordCloudState
                   ActionButton(
                     height: 55,
                     minWidth: 20,
-                    color: context.theme.colorScheme.primary,
                     sendingIndicatorAlign:
                         ActionButtonSendingIndicatorAlign.none,
                     onPressed: _wordCloudResponseController.text != ''
@@ -120,7 +119,6 @@ class _MeetingGuideCardItemWordCloudState
                         : null,
                     child: Icon(
                       Icons.send,
-                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ],
