@@ -856,11 +856,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         agendaProvider.agendaItems.isNotEmpty) ...[
                       SizedBox(width: 10),
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.maximizeBlue(),
-                          width: kIconSize,
-                          height: kIconSize,
+                        child: Icon(
+                          Icons.book_outlined,
+                          size: kIconSize,
+                          color: context.theme.colorScheme.onPrimary,
                         ),
                         onTap: () => _presenter.toggleBottomSheetState(
                           LiveMeetingMobileBottomSheetState.partiallyVisible,
