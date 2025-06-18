@@ -128,6 +128,7 @@ class _MeetingGuideCardItemWordCloudState
             _buildViewTypeButtons(),
           ],
         ),
+        SizedBox(height: 18),
       ],
     );
   }
