@@ -120,9 +120,7 @@ class _MeetingGuideCardItemWordCloudState
                         : null,
                     child: Icon(
                       Icons.send,
-                      color: _wordCloudResponseController.text != ''
-                          ? context.theme.colorScheme.onPrimary
-                          : context.theme.colorScheme.onPrimaryContainer,
+                      color: context.theme.colorScheme.onPrimary,
                     ),
                   ),
                 ],
@@ -319,7 +317,8 @@ class _MeetingGuideCardItemWordCloudState
                           height: 8,
                           width: lineWidth,
                           decoration: BoxDecoration(
-                              color: context.theme.colorScheme.onPrimary),
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                       ),
                     ),
