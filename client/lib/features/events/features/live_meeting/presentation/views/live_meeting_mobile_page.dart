@@ -186,20 +186,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return Scaffold(
       backgroundColor: context.theme.colorScheme.surface,
       appBar: showAppBar ? _buildAppBar() : null,
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: isBottomSheetPresent && isRaisedHandVisible
-          ? FloatingActionButton(
-              backgroundColor: context.theme.colorScheme.primary,
-              child: ProxiedImage(
-                null,
-                asset: AppAsset.raisedHand(),
-                width: 20.0,
-                height: 20.0,
-              ),
-              onPressed: () => _presenter.toggleHandRaise(),
-            )
-          : null,
       body: _buildBody(),
       bottomNavigationBar:
           showBottomBar ? _buildBottomNavBar(isBottomSheetPresent) : null,
@@ -781,7 +767,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         color: context.theme.colorScheme.onPrimary,
                       ),
                     ),
-                    if (!isBottomSheetPresent && isRaisedHandVisible)
+                    if (isRaisedHandVisible)
                       Expanded(
                         child: Center(
                           child: SizedBox(
