@@ -137,6 +137,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
           child: CustomTextField(
             key: Key('input-chat'),
             backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+            padding: EdgeInsets.zero,
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
             onChanged: (_) => setState(() {}),
