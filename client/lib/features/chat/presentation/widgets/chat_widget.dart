@@ -163,7 +163,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             label: context.l10n.submitMessageButton,
             button: true,
             child: Icon(
-              CupertinoIcons.paperplane,
+              Icons.send,
               size: 30,
               color: context.theme.colorScheme.onPrimary,
             ),
