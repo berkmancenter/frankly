@@ -344,7 +344,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           child: HeightConstrainedText(
             changeRecord.about ?? '',
             style: AppTextStyle.body.copyWith(
-              color: context.theme.colorScheme.onPrimaryContainer,
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),

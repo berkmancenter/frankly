@@ -121,7 +121,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),
@@ -315,18 +315,18 @@ class _EmojiButtonState extends State<EmojiButton> {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: isMobile ? 12 : 20,
-          vertical: 14,
+          vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.surfaceContainerHighest,
+          color: context.theme.colorScheme.primaryContainer,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
           null,
           asset: widget.emoji.imageAssetPath,
           loadingColor: Colors.transparent,
-          width: 18,
-          height: 18,
+          width: 24,
+          height: 24,
         ),
       ),
     );
@@ -381,6 +381,7 @@ class ChatInputState extends State<ChatInput> {
           Expanded(
             child: CustomTextField(
               borderType: BorderType.none,
+              showFocusedBorder: false,
               backgroundColor:
                   context.theme.colorScheme.surfaceContainerHighest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
@@ -415,6 +416,7 @@ class ChatInputState extends State<ChatInput> {
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                 ),
               ),

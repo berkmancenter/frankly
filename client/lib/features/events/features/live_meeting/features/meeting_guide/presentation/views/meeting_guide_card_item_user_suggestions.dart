@@ -111,13 +111,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             controller: _textEditingController,
             padding: EdgeInsets.zero,
             onEditingComplete: () => _submitNotifier.submit(),
-            textStyle: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.primary),
-            hintStyle: AppTextStyle.body
-                .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
             maxLines: 1,
-            borderRadius: 40,
-            borderColor: context.theme.colorScheme.onPrimaryContainer,
             fillColor: context.theme.colorScheme.surfaceContainerLowest,
             hintText: context.l10n.suggest,
           ),
@@ -193,9 +187,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                 Expanded(
                   child: UserProfileChip(
                     userId: participantAgendaItemDetails.userId,
-                    textStyle: AppTextStyle.bodyMedium.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer,
-                    ),
+                    textStyle: AppTextStyle.bodyMedium,
                     showName: true,
                     showIsYou: true,
                     showBorder: true,
@@ -207,9 +199,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                   children: [
                     Text(
                       likeDislikeCount,
-                      style: AppTextStyle.bodyMedium.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,
-                      ),
+                      style: AppTextStyle.bodyMedium,
                     ),
                     SizedBox(width: 5),
                     AppClickableWidget(
@@ -282,9 +272,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             SizedBox(height: 10),
             Text(
               meetingUserSuggestion.suggestion,
-              style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
+              style: AppTextStyle.body,
             ),
           ],
         ),

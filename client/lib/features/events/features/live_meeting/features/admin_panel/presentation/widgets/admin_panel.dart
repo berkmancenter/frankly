@@ -195,7 +195,7 @@ class _AdminPanelState extends State<AdminPanel> {
           _MeetingControlsMenu(),
         ],
       ),
-      SizedBox(height: 8),
+      SizedBox(height: 12),
       if (!useMeetingProviderParticipants)
         Expanded(child: _buildPaginatedParticipants())
       else if (participantCount == 0)
@@ -215,6 +215,7 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
         ),
       ],
+      SizedBox(height: 12),
     ];
   }
 

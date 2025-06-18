@@ -138,7 +138,8 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
                       builder: (context) {
                         return SelectableLinkify(
                           text: item.content ?? '',
-                          textAlign: TextAlign.left,                 style: context.theme.textTheme.labelMedium,
+                          textAlign: TextAlign.left,
+                          style: context.theme.textTheme.labelMedium,
                           options: LinkifyOptions(looseUrl: true),
                           onOpen: (link) => launch(link.url),
                         );
@@ -234,13 +235,9 @@ class _UserSubmittedAgendaState extends State<UserSubmittedAgenda> {
             onPressed: canSubmit
                 ? () => alertOnError(context, () => readProvider.submit())
                 : null,
-            color: canSubmit
-                ? context.theme.colorScheme.primary
-                : context.theme.colorScheme.onPrimaryContainer,
             child: Icon(
               CupertinoIcons.paperplane,
               size: 30,
-              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ],

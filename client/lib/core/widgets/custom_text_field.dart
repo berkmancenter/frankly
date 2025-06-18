@@ -34,6 +34,7 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsets? textFieldPadding;
   final Color? borderColor;
   final bool unfocusOnSubmit;
+  final bool showFocusedBorder;
   final int? maxLength;
   final MaxLengthEnforcement? maxLengthEnforcement;
   final TextStyle? counterStyle;
@@ -95,6 +96,7 @@ class CustomTextField extends StatefulWidget {
     this.textFieldPadding,
     this.borderColor,
     this.unfocusOnSubmit = true,
+    this.showFocusedBorder = true,
     this.maxLength,
     this.maxLengthEnforcement,
     this.counterStyle,
@@ -186,6 +188,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   InputBorder _getFocusedBorder({bool isError = false}) {
+    if (!widget.showFocusedBorder) {
+      return InputBorder.none;
+    }
     if (widget.borderType == BorderType.underline) {
       return UnderlineInputBorder(
         borderSide: BorderSide(
