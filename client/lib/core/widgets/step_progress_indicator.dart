@@ -25,7 +25,7 @@ class StepProgressIndicator extends StatelessWidget {
             child: Container(
               height: 4,
               color: backgroundColor ??
-                  context.theme.colorScheme.onPrimaryContainer,
+                  context.theme.colorScheme.surfaceContainerHigh,
             ),
           ),
           LayoutBuilder(
