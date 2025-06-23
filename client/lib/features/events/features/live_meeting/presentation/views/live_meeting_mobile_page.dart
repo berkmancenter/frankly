@@ -19,6 +19,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_settings.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
@@ -31,14 +32,13 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/event_page/presentation/widgets/waiting_room.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -184,22 +184,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     ].contains(LiveMeetingProvider.watch(context).activeUiState);
     final showBottomBar = ConferenceRoom.read(context) != null;
     return Scaffold(
-      backgroundColor: AppColor.darkerBlue,
+      backgroundColor: context.theme.colorScheme.surface,
       appBar: showAppBar ? _buildAppBar() : null,
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: isBottomSheetPresent && isRaisedHandVisible
-          ? FloatingActionButton(
-              backgroundColor: AppColor.darkBlue,
-              child: ProxiedImage(
-                null,
-                asset: AppAsset.raisedHand(),
-                width: 20.0,
-                height: 20.0,
-              ),
-              onPressed: () => _presenter.toggleHandRaise(),
-            )
-          : null,
       body: _buildBody(),
       bottomNavigationBar:
           showBottomBar ? _buildBottomNavBar(isBottomSheetPresent) : null,
@@ -218,7 +204,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return PreferredSize(
       preferredSize: Size.fromHeight(60),
       child: Container(
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.surfaceContainer,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -231,11 +217,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     if (eventTabsController.widget.enableGuide &&
                         !suppressGuide)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.guideDarkBlue(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.book_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -251,11 +235,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableChat)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.chatBubble3White(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.forum_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -271,11 +253,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableUserSubmittedAgenda)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.lightBulbWhite(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.lightbulb_outline_rounded,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -302,11 +282,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                     if (eventTabsController.widget.enableAdminPanel)
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.gearWhite(),
-                          width: 30,
-                          height: 30,
+                        child: Icon(
+                          Icons.settings_outlined,
+                          size: 30,
                         ),
                         onTap: () {
                           final eventTabsController =
@@ -321,11 +299,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         },
                       ),
                     AppClickableWidget(
-                      child: ProxiedImage(
-                        null,
-                        asset: AppAsset.needHelpWhite(),
-                        width: 30,
-                        height: 30,
+                      child: Icon(
+                        Icons.help_outline_rounded,
+                        size: 30,
                       ),
                       onTap: () => GetHelpButton.getHelp(context),
                     ),
@@ -392,14 +368,14 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         break;
     }
 
-    return GlobalKeyedSubtree(label: 'primary-content', child: child);
+    return GlobalKeyedSubtree(label: context.l10n.primaryContent, child: child);
   }
 
   Widget _buildWaitingRoom() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       margin: const EdgeInsets.all(16),
       alignment: Alignment.center,
@@ -514,7 +490,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           stream: Stream.fromFuture(conferenceRoom.connectionFuture),
           errorMessage: 'Something went wrong loading room. Please refresh!',
           loadingMessage: 'Connecting to room...',
-          textStyle: TextStyle(color: AppColor.white),
+          textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
           builder: (_, __) => Stack(
             children: [
               _buildMeeting(),
@@ -526,7 +502,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 Container(
                   alignment: Alignment.topRight,
                   child: Container(
-                    color: AppColor.black.withOpacity(0.5),
+                    color: context.theme.colorScheme.scrim.withScrimOpacity,
                     height: 32,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
@@ -537,13 +513,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                           width: recordingPulseSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColor.redDarkMode,
+                            color: context.theme.colorScheme.errorContainer,
                           ),
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Recording',
-                          style: TextStyle(color: AppColor.white),
+                          style: TextStyle(
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                         SizedBox(width: 26),
                       ],
@@ -676,7 +654,14 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       participantAgendaItemDetailsList,
       presentParticipantIds,
     );
-    return Text('$readyToMoveOnCount/${presentParticipantIds.length}');
+    // Still using the format directly as it's just displaying numbers with a divider
+    // No specific localization string needed as this is a counter format
+    return Text(
+      '$readyToMoveOnCount/${presentParticipantIds.length}',
+      style: context.theme.textTheme.bodyMedium?.copyWith(
+        color: context.theme.colorScheme.onPrimary,
+      ),
+    );
   }
 
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
@@ -685,7 +670,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
     final agendaProvider = context.watch<AgendaProvider>();
 
-    const kIconSize = 20.0;
+    const kIconSize = 24.0;
     final isVideoOn = _presenter.isVideoOn();
     final isMicOn = _presenter.isMicOn();
     final isBottomSheetPresent = _presenter.isBottomSheetPresent();
@@ -694,200 +679,186 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     final participantAgendaItemDetailsStream =
         _presenter.getParticipantAgendaItemDetailsStream();
 
-    return UIMigration(
-      whiteBackground: true,
-      child: CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
-        entryFrom: '_MeetingGuideCard._buildBottomSection',
-        stream: participantAgendaItemDetailsStream,
-        height: 100,
-        builder: (context, participantAgendaItemDetailsList) {
-          final readyToAdvance =
-              _presenter.isReadyToAdvance(participantAgendaItemDetailsList);
-          final canUserControlMeeting = _presenter.canUserControlMeeting;
+    return CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
+      entryFrom: '_MeetingGuideCard._buildBottomSection',
+      stream: participantAgendaItemDetailsStream,
+      height: 100,
+      builder: (context, participantAgendaItemDetailsList) {
+        final readyToAdvance =
+            _presenter.isReadyToAdvance(participantAgendaItemDetailsList);
+        final canUserControlMeeting = _presenter.canUserControlMeeting;
 
-          final currentItem = _presenter.getCurrentAgendaItem();
-          final isMeetingStarted = _presenter.isMeetingStarted();
-          final meetingFinished = currentItem == null && isMeetingStarted;
-          final isHosted = _presenter.isHosted();
-          final isBackButtonShown = _presenter.isBackButtonShown();
+        final currentItem = _presenter.getCurrentAgendaItem();
+        final isMeetingStarted = _presenter.isMeetingStarted();
+        final meetingFinished = currentItem == null && isMeetingStarted;
+        final isHosted = _presenter.isHosted();
+        final isBackButtonShown = _presenter.isBackButtonShown();
 
-          final isRaisedHandVisible = _presenter.isRaisedHandVisible;
+        final isRaisedHandVisible = _presenter.isRaisedHandVisible;
 
-          final showReadyToMoveOn = !isHosted;
-          final isCardPending = _presenter.isCardPending();
+        final showReadyToMoveOn = !isHosted;
+        final isCardPending = _presenter.isCardPending();
 
-          return Container(
-            color: AppColor.white,
-            child: UIMigration(
-              whiteBackground: true,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Divider(height: 1, color: AppColor.gray5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
+        return Container(
+          color: context.theme.colorScheme.onPrimaryFixed,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20,
+                ),
+                child: Row(
+                  children: [
+                    AppClickableWidget(
+                      child: Icon(
+                        isVideoOn
+                            ? Icons.videocam_outlined
+                            : Icons.videocam_off_outlined,
+                        color: isVideoOn
+                            ? context.theme.colorScheme.onPrimary
+                            : context.theme.colorScheme.errorContainer,
+                        size: kIconSize,
+                      ),
+                      onTap: () async => await alertOnError(
+                        context,
+                        () => _presenter.toggleVideo(),
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        AppClickableWidget(
-                          child: ProxiedImage(
-                            null,
-                            asset: isVideoOn
-                                ? AppAsset.videoOnDarkBlue()
-                                : AppAsset.videoOffDarkBlue(),
-                            width: kIconSize,
-                            height: kIconSize,
+                    SizedBox(width: 10),
+                    AppClickableWidget(
+                      onTap: isAudioTemporarilyDisabled
+                          ? () => showRegularToast(
+                                context,
+                                'All participants are muted during video!',
+                                toastType: ToastType.success,
+                              )
+                          : () => AudioVideoErrorDialog.showOnError(
+                                context,
+                                () => _presenter.toggleAudio(),
+                              ),
+                      child: Icon(
+                        isMicOn ? Icons.mic_outlined : Icons.mic_off_outlined,
+                        size: kIconSize,
+                        color: isMicOn
+                            ? context.theme.colorScheme.onPrimary
+                            : context.theme.colorScheme.errorContainer,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    PopupMenuButton<FutureOr<void> Function()>(
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem(
+                            value: () => AudioVideoSettingsDialog(
+                              conferenceRoom: context.read<ConferenceRoom>(),
+                            ).show(),
+                            child: HeightConstrainedText(
+                              'Audio/Video Settings',
+                            ),
                           ),
-                          onTap: () async => await alertOnError(
-                            context,
-                            () => _presenter.toggleVideo(),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        AppClickableWidget(
-                          onTap: isAudioTemporarilyDisabled
-                              ? () => showRegularToast(
-                                    context,
-                                    'All participants are muted during video!',
-                                    toastType: ToastType.success,
-                                  )
-                              : () => AudioVideoErrorDialog.showOnError(
-                                    context,
-                                    () => _presenter.toggleAudio(),
-                                  ),
-                          child: ProxiedImage(
-                            null,
-                            asset: isMicOn
-                                ? AppAsset.audioOnDarkBlue()
-                                : AppAsset.audioOffDarkBlue(),
-                            width: kIconSize,
-                            height: kIconSize,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        UIMigration(
-                          whiteBackground: true,
-                          child: PopupMenuButton<FutureOr<void> Function()>(
-                            itemBuilder: (context) {
-                              return [
-                                PopupMenuItem(
-                                  value: () => AudioVideoSettingsDialog(
-                                    conferenceRoom:
-                                        context.read<ConferenceRoom>(),
-                                  ).show(),
-                                  child: HeightConstrainedText(
-                                    'Audio/Video Settings',
-                                  ),
-                                ),
-                              ];
-                            },
-                            onSelected: (itemAction) => itemAction(),
-                            child: ProxiedImage(
-                              null,
-                              asset: AppAsset.dotsVertical(),
-                              width: kIconSize,
-                              height: kIconSize,
+                        ];
+                      },
+                      onSelected: (itemAction) => itemAction(),
+                      child: Icon(
+                        Icons.more_vert,
+                        size: kIconSize,
+                        color: context.theme.colorScheme.onPrimary,
+                      ),
+                    ),
+                    if (isRaisedHandVisible)
+                      Expanded(
+                        child: Center(
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: FloatingActionButton(
+                              backgroundColor:
+                                  context.theme.colorScheme.primary,
+                              child: ProxiedImage(
+                                null,
+                                asset: AppAsset.raisedHand(),
+                                width: kIconSize,
+                                height: kIconSize,
+                              ),
+                              onPressed: () => _presenter.toggleHandRaise(),
                             ),
                           ),
                         ),
-                        if (!isBottomSheetPresent && isRaisedHandVisible)
-                          Expanded(
-                            child: Center(
-                              child: SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: FloatingActionButton(
-                                  backgroundColor: AppColor.darkBlue,
-                                  child: ProxiedImage(
-                                    null,
-                                    asset: AppAsset.raisedHand(),
-                                    width: kIconSize,
-                                    height: kIconSize,
-                                  ),
-                                  onPressed: () => _presenter.toggleHandRaise(),
-                                ),
-                              ),
-                            ),
-                          )
-                        else
-                          Spacer(),
-                        if (isCardPending)
-                          CountdownWidget()
-                        else ...[
-                          if (!isHosted || canUserControlMeeting) ...[
-                            if (isBackButtonShown)
-                              AppClickableWidget(
-                                child: ProxiedImage(
-                                  null,
-                                  asset: AppAsset.arrowLeft(),
-                                  width: kIconSize,
-                                  height: kIconSize,
-                                ),
-                                onTap: () => alertOnError(
-                                  context,
-                                  () => meetingGuideCardStore
-                                      .goToPreviousAgendaItem(),
-                                ),
-                              ),
-                            SizedBox(width: 10),
-                            if (showReadyToMoveOn)
-                              _buildReadyText(
-                                participantAgendaItemDetailsList ?? [],
-                              ),
-                            SizedBox(width: 10),
-                            if (!meetingFinished &&
-                                agendaProvider.agendaItems.isNotEmpty)
-                              SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: FloatingActionButton(
-                                  backgroundColor: AppColor.darkBlue,
-                                  child: ProxiedImage(
-                                    null,
-                                    asset: readyToAdvance
-                                        ? AppAsset.kSpokenCheckMark
-                                        : AppAsset.arrowRightGreen(),
-                                    width: kIconSize,
-                                    height: kIconSize,
-                                  ),
-                                  onPressed: () => alertOnError(
-                                    context,
-                                    () => agendaProvider.moveForward(
-                                      currentAgendaItemId:
-                                          _presenter.getCurrentAgendaItemId()!,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ],
-                        if (!isBottomSheetPresent &&
-                            agendaProvider.agendaItems.isNotEmpty) ...[
-                          SizedBox(width: 10),
+                      )
+                    else
+                      Spacer(),
+                    if (isCardPending)
+                      CountdownWidget()
+                    else ...[
+                      if (!isHosted || canUserControlMeeting) ...[
+                        if (isBackButtonShown)
                           AppClickableWidget(
-                            child: ProxiedImage(
-                              null,
-                              asset: AppAsset.maximizeBlue(),
-                              width: kIconSize,
-                              height: kIconSize,
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: kIconSize,
+                              color: context.theme.colorScheme.onPrimary,
                             ),
-                            onTap: () => _presenter.toggleBottomSheetState(
-                              LiveMeetingMobileBottomSheetState
-                                  .partiallyVisible,
+                            onTap: () => alertOnError(
+                              context,
+                              () => meetingGuideCardStore
+                                  .goToPreviousAgendaItem(),
                             ),
                           ),
-                        ],
+                        SizedBox(width: 10),
+                        if (showReadyToMoveOn)
+                          _buildReadyText(
+                            participantAgendaItemDetailsList ?? [],
+                          ),
+                        SizedBox(width: 10),
+                        if (!meetingFinished &&
+                            agendaProvider.agendaItems.isNotEmpty)
+                          SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: FloatingActionButton(
+                              backgroundColor:
+                                  context.theme.colorScheme.primary,
+                              child: Icon(
+                                readyToAdvance
+                                    ? Icons.check
+                                    : Icons.arrow_forward,
+                                size: kIconSize,
+                                color: context.theme.colorScheme.onPrimary,
+                              ),
+                              onPressed: () => alertOnError(
+                                context,
+                                () => agendaProvider.moveForward(
+                                  currentAgendaItemId:
+                                      _presenter.getCurrentAgendaItemId()!,
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
-                    ),
-                  ),
-                ],
+                    ],
+                    if (!isBottomSheetPresent &&
+                        agendaProvider.agendaItems.isNotEmpty) ...[
+                      SizedBox(width: 10),
+                      AppClickableWidget(
+                        child: Icon(
+                          Icons.book_outlined,
+                          size: kIconSize,
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
+                        onTap: () => _presenter.toggleBottomSheetState(
+                          LiveMeetingMobileBottomSheetState.partiallyVisible,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -975,17 +946,11 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
 
     final localOnClose = widget.onClose;
     final isAdmin = selectedTab == TabType.admin;
-    final Color backgroundColor;
-    if ([TabType.chat, TabType.suggestions].contains(selectedTab)) {
-      backgroundColor = AppColor.gray6;
-    } else if (isAdmin) {
-      backgroundColor = AppColor.darkBlue;
-    } else {
-      backgroundColor = AppColor.white;
-    }
+
     return PointerInterceptor(
       child: Container(
         decoration: BoxDecoration(
+          color: context.theme.colorScheme.surfaceContainer,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -997,7 +962,6 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
               color: Colors.black.withOpacity(0.5),
             ),
           ],
-          color: backgroundColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1010,7 +974,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                   height: 5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: AppColor.gray5,
+                    color: context.theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -1025,17 +989,16 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.close,
-                      color: isAdmin ? AppColor.white : AppColor.gray2,
+                      color: isAdmin
+                          ? context.theme.colorScheme.onPrimary
+                          : context.theme.colorScheme.onPrimaryContainer,
                       size: 20,
                     ),
                   ),
                 ),
               ),
             Expanded(
-              child: UIMigration(
-                whiteBackground: true,
-                child: _buildSelectedContent(context),
-              ),
+              child: _buildSelectedContent(context),
             ),
           ],
         ),
@@ -1063,11 +1026,8 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
         child: UserSubmittedAgenda(),
       );
     } else if (selectedTab == TabType.admin) {
-      return UIMigration(
-        whiteBackground: false,
-        child: AdminPanel(
-          padding: EdgeInsets.symmetric(horizontal: 6),
-        ),
+      return AdminPanel(
+        padding: EdgeInsets.symmetric(horizontal: 6),
       );
     } else {
       return MeetingGuideCardContent(

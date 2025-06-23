@@ -1,6 +1,6 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/styles/app_styles.dart';
 
 class CircleIconButton extends StatelessWidget {
   const CircleIconButton({
@@ -8,11 +8,15 @@ class CircleIconButton extends StatelessWidget {
     required this.onPressed,
     required this.toolTipText,
     required this.icon,
+    this.color,
+    this.iconColor,
   }) : super(key: key);
 
   final VoidCallback onPressed;
   final String toolTipText;
-  final Widget icon;
+  final IconData icon;
+  final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +28,14 @@ class CircleIconButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColor.gray6,
+            color: color ?? context.theme.colorScheme.primary,
           ),
           child: Padding(
             padding: EdgeInsets.all(10),
-            child: icon,
+            child: Icon(
+              icon,
+              color: iconColor ?? context.theme.colorScheme.onPrimary,
+            ),
           ),
         ),
       ),

@@ -1,13 +1,13 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:client/core/localization/localization_helper.dart';
 
 class AudioVideoErrorDialog extends StatelessWidget {
   final String error;
@@ -47,7 +47,7 @@ class AudioVideoErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.darkBlue,
+      backgroundColor: context.theme.colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6),
       ),
@@ -74,50 +74,41 @@ class AudioVideoErrorDialog extends StatelessWidget {
 }
 
 class AudioVideoErrorDisplay extends StatelessWidget {
-  final String error;
-  final Color textColor;
-
   const AudioVideoErrorDisplay({
     Key? key,
     required this.error,
-    this.textColor = AppColor.white,
+    this.textColor,
   }) : super(key: key);
 
+  final String error;
+  final Color? textColor;
+
   String _buildErrorText() {
+    final l10n = appLocalizationService.getLocalization();
     String errorText = error;
     if (errorText.contains('NotReadableError')) {
-      errorText =
-          'Unable to start microphone or camera. Ensure that no other app or tab is using '
-          'your microphone or camera and refresh. '
-          'If the problem persists, please restart your browser.';
+      errorText = l10n.avErrorNotReadable;
     } else if (errorText.contains('NotFoundError')) {
-      errorText = 'Your microphone or camera was not found. Please ensure your '
-          'input devices are connected and enabled for the browser in system '
-          'settings. If the problem persists, please restart your browser.';
+      errorText = l10n.avErrorNotFound;
     } else if (['OverconstrainedError', 'TypeError']
         .any((error) => errorText.contains(error))) {
-      errorText = 'Error getting camera and microphone media. Please refresh.';
+      errorText = l10n.avErrorMediaAccess;
     } else if (errorText.contains('NotAllowedError')) {
-      errorText =
-          'You must give permission to access your microphone and camera.'
-          '\nMore Info: https://support.google.com/chrome/answer/2693767';
+      errorText = l10n.avErrorPermissionRequired;
     } else if (errorText.contains('TwilioError')) {
-      errorText = 'You were disconnected. Please refresh to reconnect.';
+      errorText = l10n.avErrorDisconnected;
     } else if (errorText
         .toLowerCase()
         .contains('Invalid constraints'.toLowerCase())) {
-      errorText =
-          'Error connecting to microphone or camera. Please ensure your browser is updated'
-          ' and try again.';
+      errorText = l10n.avErrorConstraints;
     } else if (errorText.contains('TimeoutException')) {
-      errorText = 'Oops there was a network error, please try that again.';
+      errorText = l10n.avErrorNetwork;
     }
 
     if (errorText.contains(
       'TwilioError: Participant disconnected because of duplicate identity',
     )) {
-      errorText =
-          'Looks like you have successfully rejoined from a different device or browser.';
+      errorText = l10n.avErrorDuplicateIdentity;
     }
 
     return errorText;
@@ -139,11 +130,14 @@ class AudioVideoErrorDisplay extends StatelessWidget {
             ),
             text: _buildErrorText(),
             textAlign: TextAlign.center,
-            style: TextStyle(color: textColor, fontSize: 22),
+            style: TextStyle(
+              color: textColor ?? context.theme.colorScheme.onSurface,
+              fontSize: 22,
+            ),
           ),
           SizedBox(height: 16),
           ActionButton(
-            text: 'Refresh',
+            text: context.l10n.refresh,
             onPressed: () => html.window.location.reload(),
           ),
         ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/ui_migration.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 class WarningInfo extends StatelessWidget {
   final Widget icon;
@@ -21,37 +20,34 @@ class WarningInfo extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: AppColor.pink,
+        color: context.theme.colorScheme.errorContainer,
       ),
       child: Center(
-        child: UIMigration(
-          whiteBackground: true,
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              icon,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Builder(
-                  builder: (context) => RichText(
-                    text: TextSpan(
-                      text: '$title  ',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColor.redLightMode,
-                            fontWeight: FontWeight.w700,
-                          ),
-                      children: [
-                        TextSpan(
-                          text: message,
-                          style: Theme.of(context).textTheme.bodyLarge,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            icon,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Builder(
+                builder: (context) => RichText(
+                  text: TextSpan(
+                    text: '$title  ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: context.theme.colorScheme.error,
+                          fontWeight: FontWeight.w700,
                         ),
-                      ],
-                    ),
+                    children: [
+                      TextSpan(
+                        text: message,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
 class TimeInputForm extends StatefulWidget {
-  final bool isWhiteBackground;
   final Duration duration;
   final void Function(Duration) onUpdate;
   final bool isClockShowing;
 
   const TimeInputForm({
     Key? key,
-    required this.isWhiteBackground,
     required this.duration,
     required this.onUpdate,
     this.isClockShowing = false,
@@ -49,10 +47,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
         SizedBox(width: 4),
         HeightConstrainedText(
           ':',
-          style: AppTextStyle.bodyMedium.copyWith(
-            color:
-                widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white,
-          ),
+          style: context.theme.textTheme.bodyMedium,
         ),
         SizedBox(width: 4),
         _buildNumberInput(
@@ -82,7 +77,6 @@ class _TimeInputFormState extends State<TimeInputForm> {
         },
         isOnlyDigits: true,
         numberThreshold: 59,
-        useDarkMode: !widget.isWhiteBackground,
       ),
     );
   }

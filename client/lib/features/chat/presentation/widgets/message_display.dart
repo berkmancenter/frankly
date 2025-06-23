@@ -1,6 +1,7 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:intl/intl.dart';
@@ -12,11 +13,11 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MessageDisplay extends StatefulWidget {
   final ChatMessage message;
@@ -62,10 +63,12 @@ class MessageDisplayState extends State<MessageDisplay> {
           onEnter: (hover) => setState(() => _isHovered = true),
           onExit: (hover) => setState(() => _isHovered = false),
           child: Semantics(
-            label: 'Chat Message',
+            label: context.l10n.chatMessage,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              color: _isHovered ? AppColor.black.withOpacity(0.05) : null,
+              color: _isHovered
+                  ? context.theme.colorScheme.scrim.withScrimOpacity
+                  : null,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,25 +87,25 @@ class MessageDisplayState extends State<MessageDisplay> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             SelectableText(
-                              semanticsLabel: 'Message from',
+                              semanticsLabel: context.l10n.messageFrom,
                               snapshot.data?.displayName ?? '...',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                              style:
+                                  context.theme.textTheme.bodyLarge!.copyWith(
                                 color: Theme.of(context).isDark
-                                    ? AppColor.gray5
-                                    : AppColor.darkBlue,
+                                    ? context
+                                        .theme.colorScheme.onPrimaryContainer
+                                    : context.theme.colorScheme.primary,
                               ),
                             ),
                             SelectableText(
-                              semanticsLabel: 'Message time',
+                              semanticsLabel: context.l10n.messageTime,
                               ' $messageDate, $messageTime$messageTimeZone',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
                                 color: Theme.of(context).isDark
-                                    ? AppColor.gray5
-                                    : AppColor.darkBlue,
+                                    ? context
+                                        .theme.colorScheme.onPrimaryContainer
+                                    : context.theme.colorScheme.primary,
                               ),
                             ),
                             if (isMod)
@@ -117,9 +120,9 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 ),
                                 child: HeightConstrainedText(
                                   isAdmin ? 'ADMIN' : 'MOD',
-                                  style: TextStyle(
-                                    color: AppColor.white,
-                                    fontSize: 10,
+                                  style: context.theme.textTheme.labelMedium!
+                                      .copyWith(
+                                    color: context.theme.colorScheme.onPrimary,
                                   ),
                                 ),
                               ),
@@ -129,10 +132,7 @@ class MessageDisplayState extends State<MessageDisplay> {
                                 height: 14,
                                 width: 14,
                                 alignment: Alignment.center,
-                                child: CustomLoadingIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.blueGrey,
-                                ),
+                                child: CustomLoadingIndicator(),
                               ),
                           ],
                         ),
@@ -140,11 +140,10 @@ class MessageDisplayState extends State<MessageDisplay> {
                         if (_removed)
                           HeightConstrainedText(
                             'This message was removed.',
-                            style: TextStyle(
+                            style: context.theme.textTheme.bodyMedium!.copyWith(
                               color: Theme.of(context).isDark
-                                  ? AppColor.gray5
-                                  : AppColor.gray1,
-                              fontSize: 13,
+                                  ? context.theme.colorScheme.onPrimaryContainer
+                                  : context.theme.colorScheme.secondary,
                               fontStyle: FontStyle.italic,
                             ),
                           )
@@ -153,14 +152,14 @@ class MessageDisplayState extends State<MessageDisplay> {
                           // https://github.com/Cretezy/flutter_linkify/issues/59
                           // https://github.com/Cretezy/flutter_linkify/issues/54
                           Semantics(
-                            label: 'Message',
+                            label: context.l10n.chatMessage,
                             child: SelectableLinkify(
                               text: widget.message.message ?? '',
-                              style: TextStyle(
-                                fontSize: 15,
+                              style:
+                                  context.theme.textTheme.bodyLarge!.copyWith(
                                 color: Theme.of(context).isDark
-                                    ? AppColor.white
-                                    : AppColor.darkBlue,
+                                    ? context.theme.colorScheme.onPrimary
+                                    : context.theme.colorScheme.primary,
                               ),
                               options: LinkifyOptions(looseUrl: true),
                               onOpen: (link) async {
@@ -184,8 +183,8 @@ class MessageDisplayState extends State<MessageDisplay> {
                         child: Icon(
                           Icons.close,
                           color: Theme.of(context).isDark
-                              ? AppColor.gray6
-                              : AppColor.darkBlue,
+                              ? context.theme.colorScheme.surface
+                              : context.theme.colorScheme.primary,
                           size: 20,
                         ),
                       ),

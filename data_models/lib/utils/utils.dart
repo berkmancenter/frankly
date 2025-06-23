@@ -1,4 +1,3 @@
-import 'package:namefully/namefully.dart';
 
 /// Get a subset of fields after a model is converted to json. This is used
 /// when updating to make sure an update only updates the fields it cares

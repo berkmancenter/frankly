@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
@@ -5,17 +6,16 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 
@@ -46,24 +46,19 @@ class ParticipantsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: eventProvider,
-      builder: (context, _) => UIMigration(
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: UIMigration(
-            whiteBackground: true,
-            child: Container(
-              padding: const EdgeInsets.all(40),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Material(
-                  color: Colors.transparent,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: eventProvider.useParticipantCountEstimate
-                        ? _buildLivestreamEventLayout(context)
-                        : _buildRegularEventLayout(context),
-                  ),
-                ),
+      builder: (context, _) => GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          padding: const EdgeInsets.all(40),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Material(
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTap: () {},
+                child: eventProvider.useParticipantCountEstimate
+                    ? _buildLivestreamEventLayout(context)
+                    : _buildRegularEventLayout(context),
               ),
             ),
           ),
@@ -77,7 +72,7 @@ class ParticipantsDialog extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: 400),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -85,7 +80,7 @@ class ParticipantsDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildCloseDialogIcon(context),
-            _buildDialogTitle(),
+            _buildDialogTitle(context),
             Flexible(
               child: _buildLiveStreamEventParticipants(context),
             ),
@@ -104,7 +99,7 @@ class ParticipantsDialog extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             ),
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -112,7 +107,7 @@ class ParticipantsDialog extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   _buildCloseDialogIcon(context),
-                  _buildDialogTitle(),
+                  _buildDialogTitle(context),
                   ..._buildEventParticipants(context),
                 ],
               ),
@@ -136,22 +131,23 @@ class ParticipantsDialog extends StatelessWidget {
         icon: Icon(
           Icons.close,
           size: 40,
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
         ),
         onPressed: () => Navigator.of(context).pop(false),
       ),
     );
   }
 
-  Widget _buildDialogTitle() {
+  Widget _buildDialogTitle(BuildContext context) {
+    final l10n = appLocalizationService.getLocalization();
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
-        '${eventProvider.participantCount} Participant${eventProvider.participantCount > 1 ? 's' : ''}',
+        l10n.participantCount(eventProvider.participantCount),
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
         ),
         textAlign: TextAlign.center,
       ),
@@ -171,9 +167,10 @@ class ParticipantsDialog extends StatelessWidget {
         event: eventProvider.event,
       ),
       pageSize: 40,
-      emptyBuilder: (_) => HeightConstrainedText('No one is here yet.'),
-      errorBuilder: (_, __, ___) => HeightConstrainedText(
-        'Something went wrong loading participants. Please refresh.',
+      emptyBuilder: (context) =>
+          HeightConstrainedText(context.l10n.noOneIsHereYet),
+      errorBuilder: (context, __, ___) => HeightConstrainedText(
+        context.l10n.participantsLoadError,
       ),
     );
   }

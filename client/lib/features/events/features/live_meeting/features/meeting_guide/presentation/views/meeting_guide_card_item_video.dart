@@ -5,14 +5,15 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/live_stream/presentation/widgets/url_video_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/vimeo_video_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'meeting_guide_card_item_video_contract.dart';
 import '../../data/models/meeting_guide_card_item_video_model.dart';
@@ -77,7 +78,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
               },
             );
           } else {
-            return Center(child: Text('Cannot play YouTube video'));
+            return Center(child: Text(context.l10n.cannotPlayYouTubeVideo));
           }
         case AgendaItemVideoType.vimeo:
           final vimeoVideoId = _presenter.getVimeoVideoId(videoUrl);
@@ -88,7 +89,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
               child: VimeoVideoWidget(vimeoId: vimeoVideoId),
             );
           } else {
-            return Center(child: Text('Cannot play Vimeo video'));
+            return Center(child: Text(context.l10n.cannotPlayVimeoVideo));
           }
         case AgendaItemVideoType.url:
           return UrlVideoWidget(
@@ -176,7 +177,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
     final secondsFormatted = seconds.toString().padLeft(2, '0');
 
     return Container(
-      color: AppColor.darkBlue,
+      color: context.theme.colorScheme.primary,
       padding: EdgeInsets.all(5),
       child: Stack(
         children: [
@@ -185,7 +186,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
             icon: Icons.refresh,
             onPressed: onRewatch,
             color: Colors.transparent,
-            textColor: AppColor.white,
+            textColor: context.theme.colorScheme.onPrimary,
           ),
           Center(
             child: FittedBox(
@@ -196,25 +197,25 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
                   if (allReady)
                     HeightConstrainedText(
                       'Everyone is ready to move on.',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.white),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                     )
                   else ...[
                     HeightConstrainedText(
                       'Some people are still finishing the video.',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.white),
+                      style: AppTextStyle.subhead
+                          .copyWith(color: context.theme.colorScheme.onPrimary),
                     ),
                     if (totalTimeLeft > 0) ...[
                       HeightConstrainedText(
                         'We\'ll be ready in:',
-                        style: AppTextStyle.subhead
-                            .copyWith(color: AppColor.white),
+                        style: AppTextStyle.subhead.copyWith(
+                            color: context.theme.colorScheme.onPrimary),
                       ),
                       HeightConstrainedText(
                         '$minutes:$secondsFormatted',
-                        style: AppTextStyle.timeLarge
-                            .copyWith(color: AppColor.white),
+                        style: AppTextStyle.timeLarge.copyWith(
+                            color: context.theme.colorScheme.onPrimary),
                       ),
                     ],
                   ],

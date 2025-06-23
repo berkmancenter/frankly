@@ -1,41 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// Single source of truth for our styles
-// https://flutter.dev/docs/development/ui/layout/building-adaptive-apps#single-source-of-truth-for-styling
-class AppColor {
-  static const Color darkBlue = Color(0xFF303B5F);
-  static const Color darkGreen = Color(0xFF4E7E61);
-  static const Color brightGreen = Color(0xFF9BFBC2);
-  static const Color lightGreen = Color(0xFFDEF5E7);
-  static const Color darkerBlue = Color(0xFF27304C);
-  static const Color accentBlue = Color(0xFF203EA0);
-  static const Color accentBlueLight = Color(0xFF77E2FF);
-  static const Color redLightMode = Color(0xFF900E2D);
-  static const Color redDarkMode = Color(0xFFFF6868);
-  static const Color pink = Color(0xFFFFDFDF);
-  static const Color gray1 = Color(0xFF262734);
-  static const Color gray2 = Color(0xFF474752);
-  static const Color gray3 = Color(0xFF757584);
-  static const Color gray4 = Color(0xFFB2B9C5);
-  static const Color gray5 = Color(0xFFD1D7DF);
-  static const Color gray6 = Color(0xFFEBEDF1);
-  static const Color grayTransparent = Color(0x88757584);
-  static const Color transparent = Color(0x00000000);
-  static const Color black = Color(0xFF000000);
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color lightRed = Color(0xFFFFDFDF);
-  static const Color darkRed = Color(0xFF350F18);
-  static const Color lightYellow = Color(0xFFFFF9E8);
-  static const Color darkYellow = Color(0xFF946C00);
-  static Color grayHoverColor = Color(0x88757584).withOpacity(0.09);
-  static const List<Color> odometerColors = [
-    Color(0xffFF6868),
-    Color(0xff9BFBC2),
-    Color(0xff9BFBC2),
-    Color(0xff5EADF5),
-  ];
-}
+const List<Color> kOdometerColors = [
+  Color.fromARGB(255, 181, 0, 0),
+  Color.fromARGB(255, 190, 251, 155),
+  Color.fromARGB(255, 155, 251, 227),
+  Color.fromARGB(255, 136, 197, 255),
+];
 
 /// Class that holds custom [TextStyle]s.
 ///
@@ -43,7 +14,7 @@ class AppColor {
 /// For example, Line Height in Figma is 20 and Font Size is 10.
 /// [height] will become 20/10 => 2.
 class AppTextStyle {
-  static TextStyle headline1 = GoogleFonts.poppins(
+  static TextStyle headline1 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -52,7 +23,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline2 = GoogleFonts.poppins(
+  static TextStyle headline2 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -61,7 +32,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline2Light = GoogleFonts.poppins(
+  static TextStyle headline2Light = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w300,
       fontStyle: FontStyle.normal,
@@ -70,7 +41,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline3 = GoogleFonts.poppins(
+  static TextStyle headline3 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -79,7 +50,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headline4 = GoogleFonts.poppins(
+  static TextStyle headline4 = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -88,7 +59,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle headlineSmall = GoogleFonts.poppins(
+  static TextStyle headlineSmall = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
@@ -97,7 +68,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle subhead = GoogleFonts.poppins(
+  static TextStyle subhead = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontStyle: FontStyle.normal,
@@ -106,7 +77,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle eyebrow = GoogleFonts.poppins(
+  static TextStyle eyebrow = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -115,7 +86,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle eyebrowSmall = GoogleFonts.poppins(
+  static TextStyle eyebrowSmall = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -124,7 +95,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle body = GoogleFonts.poppins(
+  static TextStyle body = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -133,7 +104,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle bodyMedium = GoogleFonts.poppins(
+  static TextStyle bodyMedium = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w600,
       fontStyle: FontStyle.normal,
@@ -142,7 +113,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle bodySmall = GoogleFonts.poppins(
+  static TextStyle bodySmall = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -151,7 +122,7 @@ class AppTextStyle {
     ),
   );
 
-  static TextStyle timeLarge = GoogleFonts.poppins(
+  static TextStyle timeLarge = GoogleFonts.inter(
     textStyle: TextStyle(
       fontWeight: FontWeight.w200,
       fontStyle: FontStyle.normal,
@@ -177,6 +148,6 @@ class AppDecoration {
   static const BoxShadow lightBoxShadow = BoxShadow(
     blurRadius: 6,
     offset: Offset(2, 2),
-    color: AppColor.grayTransparent,
+    color: Color.fromARGB(82, 0, 0, 0),
   );
 }

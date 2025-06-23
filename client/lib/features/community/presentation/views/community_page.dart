@@ -1,6 +1,7 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
@@ -9,7 +10,6 @@ import 'package:client/features/community/presentation/widgets/community_page_fa
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/resources/presentation/views/create_community_resource_modal.dart';
 import 'package:client/features/resources/presentation/community_resources_presenter.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/bottom_nav_bar.dart';
 import 'package:client/core/widgets/navbar/custom_scaffold.dart';
@@ -18,7 +18,7 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
@@ -53,10 +53,10 @@ class CommunityPage extends StatefulWidget {
   }
 
   @override
-  _CommunityPageState createState() => _CommunityPageState();
+  CommunityPageState createState() => CommunityPageState();
 }
 
-class _CommunityPageState extends State<CommunityPage> {
+class CommunityPageState extends State<CommunityPage> {
   @override
   void initState() {
     context.read<NavBarProvider>().checkIfShouldResetNav();
@@ -81,7 +81,7 @@ class _CommunityPageState extends State<CommunityPage> {
         builder: (_, community) {
           final darkThemeColor =
               ThemeUtils.parseColor(community?.themeDarkColor) ??
-                  AppColor.darkBlue;
+                  context.theme.colorScheme.primary;
           final isOnPageWithDefaultColors =
               CheckCurrentLocation.isTemplatePage ||
                   CheckCurrentLocation.isEventPage ||
@@ -89,78 +89,78 @@ class _CommunityPageState extends State<CommunityPage> {
           final enableCustomColors = !isOnPageWithDefaultColors;
           final lightThemeColor =
               ThemeUtils.parseColor(community?.themeLightColor) ??
-                  AppColor.gray6;
+                  Theme.of(context).colorScheme.surface;
           return Consumer<UserService>(
             builder: (_, __, ___) => Consumer<UserDataService>(
               builder: (_, __, ___) {
-                final primaryColor =
-                    enableCustomColors ? darkThemeColor : AppColor.darkBlue;
-                final secondaryColor =
-                    enableCustomColors ? lightThemeColor : AppColor.brightGreen;
+                final primaryColor = enableCustomColors
+                    ? darkThemeColor
+                    : context.theme.colorScheme.primary;
+                final secondaryColor = enableCustomColors
+                    ? lightThemeColor
+                    : context.theme.colorScheme.secondary;
 
-                return Theme(
-                  data: Theme.of(context).copyWith(
-                    colorScheme: Theme.of(context).colorScheme.copyWith(
-                          primary: primaryColor,
-                          secondary: secondaryColor,
+                return ChangeNotifierProvider<CommunityPermissionsProvider>(
+                  create: (context) => CommunityPermissionsProvider(
+                    communityProvider: Provider.of<CommunityProvider>(
+                      context,
+                      listen: false,
+                    ),
+                  )..initialize(),
+                  child: Builder(
+                    builder: (context) {
+                      final isCreateMeetingAvailable =
+                          widget.isCreateEventFabVisible &&
+                              context
+                                  .watch<CommunityPermissionsProvider>()
+                                  .canCreateEvent;
+
+                      return CustomScaffold(
+                        bgColor: enableCustomColors ? lightThemeColor : null,
+                        fillViewport: widget.fillViewport,
+                        bottomNavigationBar: _showBottomNav
+                            ? CommunityBottomNavBar(
+                                showCreateMeetingButton:
+                                    isCreateMeetingAvailable,
+                              )
+                            : null,
+                        floatingActionButton: _buildFab(context),
+                        childTheme: Theme.of(context).copyWith(
+                          colorScheme: Theme.of(context).colorScheme.copyWith(
+                                primary: primaryColor,
+                                secondary: secondaryColor,
+                              ),
+                          switchTheme: SwitchTheme.of(context).copyWith(
+                            thumbColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return secondaryColor;
+                              } else {
+                                return primaryColor;
+                              }
+                            }),
+                            trackColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return primaryColor;
+                              } else {
+                                return context
+                                    .theme.colorScheme.onPrimaryContainer;
+                              }
+                            }),
+                          ),
+                          radioTheme: RadioTheme.of(context).copyWith(
+                            fillColor: WidgetStateColor.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return primaryColor;
+                              } else {
+                                return context
+                                    .theme.colorScheme.onPrimaryContainer;
+                              }
+                            }),
+                          ),
                         ),
-                    switchTheme: SwitchTheme.of(context).copyWith(
-                      thumbColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return secondaryColor;
-                        } else {
-                          return primaryColor;
-                        }
-                      }),
-                      trackColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return primaryColor;
-                        } else {
-                          return AppColor.gray4;
-                        }
-                      }),
-                    ),
-                    radioTheme: RadioTheme.of(context).copyWith(
-                      fillColor: WidgetStateColor.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return primaryColor;
-                        } else {
-                          return AppColor.gray4;
-                        }
-                      }),
-                    ),
-                  ),
-                  child: ChangeNotifierProvider<CommunityPermissionsProvider>(
-                    create: (context) => CommunityPermissionsProvider(
-                      communityProvider: Provider.of<CommunityProvider>(
-                        context,
-                        listen: false,
-                      ),
-                    )..initialize(),
-                    child: Builder(
-                      builder: (context) {
-                        final isCreateMeetingAvailable =
-                            widget.isCreateEventFabVisible &&
-                                context
-                                    .watch<CommunityPermissionsProvider>()
-                                    .canCreateEvent;
-
-                        return CustomScaffold(
-                          bgColor: enableCustomColors
-                              ? lightThemeColor
-                              : AppColor.gray6,
-                          fillViewport: widget.fillViewport,
-                          bottomNavigationBar: _showBottomNav
-                              ? CommunityBottomNavBar(
-                                  showCreateMeetingButton:
-                                      isCreateMeetingAvailable,
-                                )
-                              : null,
-                          floatingActionButton: _buildFab(context),
-                          child: widget.content,
-                        );
-                      },
-                    ),
+                        child: widget.content,
+                      );
+                    },
                   ),
                 );
               },
@@ -197,7 +197,7 @@ class _CommunityPageState extends State<CommunityPage> {
   }) =>
       isAvailable
           ? CommunityPageFloatingActionButton(
-              text: 'Create an event',
+              text: context.l10n.createAnEvent,
               onTap: () => CreateEventDialog.show(context),
             )
           : null;
@@ -211,7 +211,7 @@ class _CommunityPageState extends State<CommunityPage> {
             builder: (context) {
               return CommunityPageFloatingActionButton(
                 onTap: () => CreateCommunityResourceModal.show(context),
-                text: 'Add a resource',
+                text: context.l10n.addAResource,
               );
             },
           ),
@@ -220,7 +220,7 @@ class _CommunityPageState extends State<CommunityPage> {
 
   Widget? _buildDiscussionThreadsFab() {
     return CommunityPageFloatingActionButton(
-      text: 'Create post',
+      text: context.l10n.createPost,
       onTap: () => guardSignedIn(
         () => Navigator.push(
           context,

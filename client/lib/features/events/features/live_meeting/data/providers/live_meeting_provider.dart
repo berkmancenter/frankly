@@ -21,7 +21,7 @@ import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/hostless_action_fallback_controller.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -32,6 +32,7 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 abstract class MeetingProviderParticipant {
   String get userId;
@@ -621,6 +622,7 @@ class LiveMeetingProvider with ChangeNotifier {
           mainText:
               'Host is sending you to a breakout room. Join breakout room?',
           confirmText: 'Yes, join',
+          cancelText: appLocalizationService.getLocalization().cancel,
           onConfirm: (context) => alertOnError(context, () async {
             await firestoreLiveMeetingService
                 .updateAvailableForBreakoutSessionId(
@@ -631,7 +633,6 @@ class LiveMeetingProvider with ChangeNotifier {
             );
             Navigator.of(context).pop(true);
           }),
-          cancelText: 'No, skip',
         ).show();
       }
     }
@@ -748,9 +749,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
       await showCustomDialog(
         builder: (context) => AppShareDialog(
-          title: 'SPREAD THE WORD',
+          title: context.l10n.spreadTheWord,
           content: 'Who else would benefit from these events?',
-          iconBackgroundColor: AppColor.white,
           appShareData: AppShareData(
             subject: 'Join an event with me on ${Environment.appName}!',
             body: "Let's have a conversation on ${Environment.appName}!",
@@ -876,11 +876,13 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> endBreakoutRooms() async {
+    final l10n = appLocalizationService.getLocalization();
     final confirmed = await ConfirmDialog(
-      title: 'End Breakout Rooms',
+      title: l10n.endBreakoutRooms,
       subText:
           'Are you sure you want to end breakout rooms for all participants? \n\n'
           'This will send all participants back to the main room immediately.',
+      cancelText: l10n.cancel,
     ).show();
     if (confirmed) {
       final updatedLiveMeeting =
@@ -923,8 +925,9 @@ class LiveMeetingProvider with ChangeNotifier {
 
   Future<void> confirmProposeKick(String userId) async {
     final user = await firestoreUserService.getPublicUser(userId: userId);
+    final l10n = appLocalizationService.getLocalization();
     final reason = await ConfirmTextInputDialogue(
-      title: 'Propose to remove user?',
+      title: l10n.proposeToRemoveUser,
       subText:
           'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
           ' only take this action if the participant is behaving inappropriately.',

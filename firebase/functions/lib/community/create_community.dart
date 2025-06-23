@@ -48,18 +48,25 @@ class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
     final communityCollection = firestore.collection('/community/');
     final communityDocRef = communityCollection.document();
 
-    final communitiesWithMatchingId = await communityCollection
-        .where(
-          Community.kFieldDisplayIds,
-          arrayContains: communityDocRef.documentID,
-        )
-        .get();
-    final alreadyUsedMessage =
-        'The URL display name ${communityDocRef.documentID} is already taken.';
-    if (communitiesWithMatchingId.isNotEmpty) {
-      throw HttpsError(HttpsError.failedPrecondition, alreadyUsedMessage, null);
+    // Check if displayIds sent and if one is already in use
+    if (community.displayIds.isNotEmpty) {
+      print(
+          'Checking if displayIds ${community.displayIds} are already in use.',
+        );
+      final communitiesWithMatchingId = await communityCollection
+          .where(
+            Community.kFieldDisplayIds,
+            arrayContains: community.displayIds[0],
+          )
+          .get();
+      final alreadyUsedMessage =
+          'The URL display name ${community.displayIds[0]} is already taken.';
+      if (communitiesWithMatchingId.isNotEmpty) {
+        print(alreadyUsedMessage);
+        throw HttpsError(
+            HttpsError.failedPrecondition, alreadyUsedMessage, null,);
+      }
     }
-
     final userId = context.authUid;
 
     community = community.copyWith(
@@ -70,7 +77,13 @@ class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
       bannerImageUrl: community.bannerImageUrl ?? '',
       communitySettings: const CommunitySettings(),
       eventSettings: EventSettings.defaultSettings,
-      displayIds: [communityDocRef.documentID],
+      // Ensure displayIds is not empty
+      // If displayIds is empty, use the document ID as the first displayId
+      displayIds: [
+        community.displayIds.isNotEmpty
+            ? community.displayIds[0]
+            : communityDocRef.documentID,
+      ],
     );
 
     final agreementChangedFields = [PartnerAgreement.kFieldCommunityId];
@@ -105,7 +118,7 @@ class CreateCommunity extends OnCallMethod<CreateCommunityRequest> {
       if (doc.exists) {
         throw HttpsError(
           HttpsError.failedPrecondition,
-          alreadyUsedMessage,
+          'Community with ID ${communityDocRef.documentID} already exists.',
           null,
         );
       }

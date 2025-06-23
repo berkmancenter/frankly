@@ -1,9 +1,10 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/custom_scaffold.dart';
@@ -13,13 +14,13 @@ import 'package:client/core/routing/locations.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum OnboardStep {
   agreement,
@@ -159,7 +160,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: AppColor.gray3,
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
           ),
           HeightConstrainedText(
@@ -167,7 +168,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: AppColor.darkBlue,
+              color: context.theme.colorScheme.primary,
             ),
           ),
         ],
@@ -187,15 +188,7 @@ class _OnboardPageState extends State<OnboardPage> {
       type: ActionButtonType.outline,
       height: 48,
       expand: true,
-      borderRadius: BorderRadius.circular(10),
-      color: AppColor.white,
-      textStyle: body.copyWith(
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
-      ),
-      borderSide: BorderSide(
-        color: Theme.of(context).primaryColor.withOpacity(skip ? .35 : 1),
-      ),
+      color: context.theme.colorScheme.surfaceContainerLowest,
       text: '${isAccountCreated ? 'Edit' : 'Set'} Linked Payee Account',
       onPressed: skip
           ? null
@@ -223,7 +216,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Welcome to ${Environment.appName}',
+          title: context.l10n.welcomeToApp(Environment.appName),
           stepNum: 1,
           totalSteps: numSteps,
         ),
@@ -244,7 +237,7 @@ class _OnboardPageState extends State<OnboardPage> {
                   }
                 }),
               ),
-              HeightConstrainedText('I agree to the '),
+              HeightConstrainedText(context.l10n.iAgreeToThe),
               TextButton(
                 child: HeightConstrainedText(
                   '${Environment.appName} Subscription Services Agreement',
@@ -284,7 +277,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Set your payee account details',
+          title: context.l10n.setPayeeAccountDetails,
           stepNum: 2,
           totalSteps: numSteps,
         ),
@@ -307,7 +300,9 @@ class _OnboardPageState extends State<OnboardPage> {
                     }
                   }),
                 ),
-                HeightConstrainedText('Skip Stripe account setup for now'),
+                HeightConstrainedText(
+                  context.l10n.skipStripeAccountSetupForNow,
+                ),
                 SizedBox(width: 8),
               ],
             ),
@@ -341,7 +336,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Build your community space',
+          title: context.l10n.buildCommunitySpace,
           stepNum: numSteps - 1,
           totalSteps: numSteps,
         ),
@@ -368,7 +363,7 @@ class _OnboardPageState extends State<OnboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildTitle(
-          title: 'Add community images',
+          title: context.l10n.addCommunityImages,
           stepNum: numSteps,
           totalSteps: numSteps,
         ),
@@ -497,11 +492,11 @@ class _OnboardPageState extends State<OnboardPage> {
             : Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColor.black.withOpacity(0.35),
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
                       blurRadius: 20,
                       offset: Offset(0, 5),
                     ),

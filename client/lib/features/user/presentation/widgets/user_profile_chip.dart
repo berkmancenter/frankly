@@ -1,13 +1,14 @@
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/user/presentation/views/profile_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/profile_chip.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class UserProfileChip extends StatelessWidget {
   final String? userId;
@@ -54,7 +55,7 @@ class UserProfileChip extends StatelessWidget {
               width: imageHeight ?? 42,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.gray5,
+                color: context.theme.colorScheme.onPrimaryContainer,
               ),
             ),
           );
@@ -91,10 +92,11 @@ class UserProfileChip extends StatelessWidget {
         final String userName;
         if (showIsYou) {
           userName = isMyUser
-              ? 'You'
-              : name ?? snapshot.data?.displayName ?? 'Anonymous';
+              ? context.l10n.you
+              : name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
         } else {
-          userName = name ?? snapshot.data?.displayName ?? 'Anonymous';
+          userName =
+              name ?? snapshot.data?.displayName ?? context.l10n.anonymous;
         }
 
         return ProfileChip(

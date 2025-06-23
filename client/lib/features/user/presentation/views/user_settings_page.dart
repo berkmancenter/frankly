@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/user/presentation/views/events_tab.dart';
 import 'package:client/features/user/presentation/views/notifications_tab.dart';
 import 'package:client/features/user/presentation/views/profile_tab.dart';
@@ -18,9 +17,9 @@ import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class UserSettingsPage extends StatefulWidget {
   final String? communityId;
@@ -60,11 +59,11 @@ class _UserSettingsPageState extends State<UserSettingsPage>
   Widget _buildTabs() {
     List<CustomTabAndContent> tabsAndContent = [
       CustomTabAndContent(
-        tab: 'MY EVENTS',
+        tab: context.l10n.myEvents,
         content: (context) => EventsTab.create(),
       ),
       CustomTabAndContent(
-        tab: 'PROFILE',
+        tab: context.l10n.profile,
         content: (context) => ConstrainedBody(
           child: ChangeNotifierProvider(
             create: (_) => AppDrawerProvider(),
@@ -78,14 +77,14 @@ class _UserSettingsPageState extends State<UserSettingsPage>
         ),
       ),
       CustomTabAndContent(
-        tab: 'NOTIFICATIONS',
+        tab: context.l10n.notifications,
         content: (context) => ConstrainedBody(
           child: NotificationsTab(initialCommunityId: widget.communityId),
         ),
       ),
       if (kShowStripeFeatures)
         CustomTabAndContent(
-          tab: 'BILLING',
+          tab: context.l10n.billing,
           content: (context) => ConstrainedBody(child: SubscriptionsTab()),
         ),
     ];
@@ -124,7 +123,6 @@ class _UserSettingsPageState extends State<UserSettingsPage>
               );
               return CustomTabBar(
                 padding: padding,
-                isWhiteBackground: true,
               );
             },
           ),
@@ -136,12 +134,11 @@ class _UserSettingsPageState extends State<UserSettingsPage>
   @override
   Widget build(BuildContext buildContext) {
     return CustomScaffold(
-      bgColor: AppColor.gray6,
       child: Provider.of<UserService>(context).isSignedIn
           ? _buildTabs()
           : Container(
               alignment: Alignment.center,
-              child: Text('Must be logged in to access this section'),
+              child: Text(context.l10n.mustBeLoggedInToAccessThisSection),
             ),
     );
   }

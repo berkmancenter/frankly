@@ -1,17 +1,18 @@
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
-import 'package:dotted_border/dotted_border.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/freemium_dialog_flow.dart';
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
-import 'package:client/core/widgets/navbar/sidebar/nav_list_tile.dart';
-import 'package:client/core/widgets/navbar/sidebar/side_bar_navigation_button.dart';
+import 'package:client/core/widgets/navbar/sidebar/sidebar_navigation_list_item.dart';
 import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
@@ -19,13 +20,13 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart' as js_util;
+import 'package:client/core/localization/language_selector.dart';
 
 /// This is the side navigation drawer that appears when the hamburger icon is clicked. It contains
 /// links to sign in if the user is not signed in, otherwise it contains links to the user's communities
@@ -46,20 +47,17 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      whiteBackground: true,
-      child: Container(
-        width: AppSize.kSidebarWidth,
-        color: AppColor.white,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxHeight < 750) {
-              return _buildMobileLayout();
-            } else {
-              return _buildDesktopLayout();
-            }
-          },
-        ),
+    return Container(
+      width: AppSize.kSidebarWidth,
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxHeight < 750) {
+            return _buildMobileLayout();
+          } else {
+            return _buildDesktopLayout();
+          }
+        },
       ),
     );
   }
@@ -68,20 +66,16 @@ class _SideBarState extends State<SideBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _builSidebardHeader(),
+        _buildSidebarCloseButton(),
         Expanded(
-          child: Container(
-            color: AppColor.gray6,
-            child: CustomListView(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  color: AppColor.white,
-                  child: _buildNavigationOrSignIn(),
-                ),
-                _buildBottomSidebarButtons(),
-              ],
-            ),
+          child: CustomListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: _buildNavigationOrSignIn(),
+              ),
+              _buildBottomSidebarButtons(),
+            ],
           ),
         ),
       ],
@@ -91,7 +85,7 @@ class _SideBarState extends State<SideBar> {
   Widget _buildDesktopLayout() {
     return Column(
       children: [
-        _builSidebardHeader(),
+        _buildSidebarCloseButton(),
         Expanded(
           child: CustomListView(
             padding: const EdgeInsets.all(20),
@@ -105,14 +99,14 @@ class _SideBarState extends State<SideBar> {
     );
   }
 
-  Widget _builSidebardHeader() {
+  Widget _buildSidebarCloseButton() {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.only(top: 26, right: 26),
         child: Semantics(
           button: true,
-          label: 'Close',
+          label: context.l10n.close,
           child: CustomInkWell(
             onTap: () => Navigator.of(context).pop(),
             child: Icon(Icons.close, size: 20),
@@ -130,7 +124,6 @@ class _SideBarState extends State<SideBar> {
     } else {
       return SignInOptionsContent(
         onComplete: () => Navigator.of(context).pop(),
-        openDialogOnEmailProviderSelected: true,
       );
     }
   }
@@ -184,7 +177,7 @@ class _SideBarState extends State<SideBar> {
   Widget _buildSingleCommunityNav(Community community) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          NavListItem(
+          SidebarNavigationListItem(
             isCollapsible: false,
             community: community,
           ),
@@ -192,52 +185,72 @@ class _SideBarState extends State<SideBar> {
       );
 
   Widget _buildBottomSidebarButtons() {
-    const showHomeButton = true;
     final version =
         js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
-      color: AppColor.gray6,
+      color: context.theme.colorScheme.surface,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8),
-          if (showHomeButton)
-            Row(
-              children: [
-                SizedBox(width: 5),
-                ProxiedImage(
-                  null,
-                  asset: AppAsset.kLogoIconPng,
-                  width: 20,
-                  height: 20,
-                ),
-                SideBarNavigationButton(
-                  text: '${Environment.appName} Home',
-                  onTap: () => routerDelegate.beamTo(HomeLocation()),
-                  style: AppTextStyle.eyebrowSmall,
-                  verticalPadding: 6,
-                ),
-              ],
+          SizedBox(height: 12.0),
+          ActionButton(
+            type: ActionButtonType.text,
+            icon: Padding(
+              padding: const EdgeInsets.only(left: 4.0, right: 12.0),
+              child: ProxiedImage(
+                null,
+                asset: AppAsset.kLogoIconPng,
+                width: 20,
+                height: 20,
+              ),
             ),
-          SideBarNavigationButton(
-            text: 'Help Center',
-            onTap: () => launch(Environment.helpCenterUrl),
-            style: AppTextStyle.eyebrowSmall,
-            verticalPadding: 6,
+            text: '${Environment.appName} Home',
+            onPressed: () => routerDelegate.beamTo(HomeLocation()),
           ),
-          SideBarNavigationButton(
-            text: 'About ${Environment.appName}',
-            onTap: () => launch(Environment.aboutUrl),
-            style: AppTextStyle.eyebrowSmall,
-            verticalPadding: 6,
+          ActionButton(
+            text: context.l10n.language,
+            type: ActionButtonType.text,
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Text(
+                '🌐',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(context.l10n.selectLanguage),
+                  content: LanguageSelector(),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(context.l10n.close),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-          SideBarNavigationButton(
-            text: 'Privacy Policy',
-            onTap: () => launch(Environment.privacyPolicyUrl),
-            style: AppTextStyle.eyebrowSmall,
-            verticalPadding: 6,
+          ActionButton(
+            text: context.l10n.helpCenter,
+            type: ActionButtonType.text,
+            onPressed: () => launch(Environment.helpCenterUrl),
+          ),
+          ActionButton(
+            text: '${context.l10n.about} ${Environment.appName}',
+            type: ActionButtonType.text,
+            onPressed: () => launch(Environment.aboutUrl),
+          ),
+          ActionButton(
+            text: context.l10n.privacyPolicy,
+            type: ActionButtonType.text,
+            onPressed: () => launch(Environment.privacyPolicyUrl),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 24, 8, 24),
@@ -249,9 +262,8 @@ class _SideBarState extends State<SideBar> {
                     text: '.\n© ${Environment.copyrightStatement}',
                   ),
                 ],
-                style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: AppColor.gray2,
-                  fontSize: 12,
+                style: context.theme.textTheme.labelMedium!.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -262,9 +274,8 @@ class _SideBarState extends State<SideBar> {
               textAlign: TextAlign.right,
               text: TextSpan(
                 text: 'v$version',
-                style: AppTextStyle.eyebrowSmall.copyWith(
-                  color: AppColor.gray2,
-                  fontSize: 12,
+                style: context.theme.textTheme.labelMedium!.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -286,8 +297,7 @@ class AnimatedSidebarContent extends StatefulWidget {
 }
 
 class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
-  void _startCommunityTapped() =>
-      guardSignedIn(() => FreemiumDialogFlow().show());
+  void _startCommunityTapped() => guardSignedIn(() => DialogFlow().show());
 
   @override
   Widget build(BuildContext context) {
@@ -311,15 +321,15 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
         return Column(
           children: [
             for (final community in widget.communities) ...[
-              if (community != widget.communities.first) _buildDivider(),
-              NavListItem(
+              if (community != widget.communities.first) Divider(height: 16),
+              SidebarNavigationListItem(
                 community: community,
                 isOpenByDefault: (community == widget.communities.first) &&
                     CheckCurrentLocation.isCommunityRoute,
               ),
             ],
             if (owner || Uri.base.origin.contains('localhost')) ...[
-              _buildDivider(),
+              Divider(height: 16),
               _buildStartCommunity(),
             ],
           ],
@@ -328,45 +338,21 @@ class _AnimatedSidebarContentState extends State<AnimatedSidebarContent> {
     );
   }
 
-  Widget _buildDivider() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Container(
-          color: AppColor.gray5,
-          height: 1,
-        ),
-      );
-
   Widget _buildStartCommunity() => GestureDetector(
         onTap: _startCommunityTapped,
         child: Row(
           children: [
-            CustomInkWell(
-              boxShape: BoxShape.circle,
-              onTap: _startCommunityTapped,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColor.darkBlue,
-                ),
-                height: 40,
-                width: 40,
-                child: DottedBorder(
-                  borderType: BorderType.Circle,
-                  dashPattern: const [3, 3],
-                  color: AppColor.gray2,
-                  child: Center(
-                    child: Icon(
-                      Icons.add,
-                      color: AppColor.white,
-                    ),
-                  ),
-                ),
-              ),
+            CircleIconButton(
+              onPressed: _startCommunityTapped,
+              icon: Icons.add,
+              toolTipText: 'Start a community',
             ),
             SizedBox(width: 11),
             HeightConstrainedText(
-              'Start a community',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+              context.l10n.startCommunity,
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onSurface,
+              ),
             ),
           ],
         ),

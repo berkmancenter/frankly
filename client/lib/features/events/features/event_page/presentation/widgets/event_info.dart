@@ -14,24 +14,24 @@ import 'package:client/features/events/features/event_page/presentation/views/ev
 import 'package:client/features/events/features/edit_event/presentation/views/edit_event_drawer.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/calendar_menu_button.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/circle_icon_button.dart';
+import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_pop_up_menu_button.dart';
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
 import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/templates/presentation/widgets/prerequisite_template_widget.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
@@ -39,7 +39,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -49,8 +49,8 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/templates/template.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -223,7 +223,7 @@ class _EventInfoState extends State<EventInfo> {
 
   Future<void> _showRefreshGuideDialog() async {
     await ConfirmDialog(
-      title: 'Are you sure you want to refresh the guide?',
+      title: context.l10n.confirmRefreshGuide,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
       confirmText: 'Yes, refresh',
@@ -233,7 +233,7 @@ class _EventInfoState extends State<EventInfo> {
           Navigator.pop(context);
         });
       },
-      cancelText: 'No, nevermind',
+      cancelText: context.l10n.cancel,
     ).show();
   }
 
@@ -323,6 +323,8 @@ class _EventInfoState extends State<EventInfo> {
 
   Widget _buildEditEvent() {
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -345,20 +347,14 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Edit event',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          Icons.edit_outlined,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: Icons.edit_outlined,
     );
   }
 
   Widget _buildSettingIcon() {
     return CircleIconButton(
+      color: context.theme.colorScheme.surfaceContainer,
+      iconColor: context.theme.colorScheme.onSurface,
       onPressed: () => Dialogs.showAppDrawer(
         context,
         AppDrawerSide.right,
@@ -377,15 +373,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: 'Event Settings',
-      icon: SizedBox(
-        width: 20,
-        height: 20,
-        child: Icon(
-          CupertinoIcons.gear_alt,
-          size: 20,
-          color: AppColor.darkerBlue,
-        ),
-      ),
+      icon: CupertinoIcons.gear_alt,
     );
   }
 
@@ -415,11 +403,7 @@ class _EventInfoState extends State<EventInfo> {
 
     return ActionButton(
       height: 64,
-      type: isEventOpen ? ActionButtonType.flat : ActionButtonType.outline,
-      color: isEventOpen ? Theme.of(context).colorScheme.primary : null,
-      textColor: isEventOpen
-          ? Theme.of(context).colorScheme.secondary
-          : Theme.of(context).colorScheme.primary,
+      type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () => alertOnError(context, () async {
@@ -479,22 +463,34 @@ class _EventInfoState extends State<EventInfo> {
       return WarningInfo(
         icon: CircleAvatar(
           radius: 12,
-          backgroundColor: AppColor.redLightMode,
-          child: Icon(Icons.school_outlined, size: 20, color: AppColor.white),
+          backgroundColor: context.theme.colorScheme.error,
+          child: Icon(
+            Icons.school_outlined,
+            size: 20,
+            color: context.theme.colorScheme.onPrimary,
+          ),
         ),
-        title: 'Prerequisite Required',
+        title: context.l10n.prereqRequired,
       );
     } else if (isBanned) {
       return WarningInfo(
-        icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
-        title: 'Banned',
-        message: 'You were removed from this event and cannot rejoin.',
+        icon: Icon(
+          Icons.info_outline,
+          size: 20,
+          color: context.theme.colorScheme.error,
+        ),
+        title: context.l10n.prereqRequired,
+        message: context.l10n.removedFromEvent,
       );
     } else if (isLocked) {
       return WarningInfo(
-        icon: Icon(Icons.info_outline, size: 20, color: AppColor.redLightMode),
-        title: 'Locked',
-        message: 'This event is locked',
+        icon: Icon(
+          Icons.info_outline,
+          size: 20,
+          color: context.theme.colorScheme.error,
+        ),
+        title: context.l10n.locked,
+        message: context.l10n.eventIsLocked,
       );
     } else if (showEnterEventButton) {
       return PeriodicBuilder(
@@ -506,7 +502,6 @@ class _EventInfoState extends State<EventInfo> {
         height: 64,
         text: 'FULL',
         expand: true,
-        color: Colors.blueGrey,
       );
     } else if (showJoinButton) {
       return Column(
@@ -521,8 +516,6 @@ class _EventInfoState extends State<EventInfo> {
               );
             }),
             expand: true,
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).colorScheme.secondary,
             text: 'RSVP',
           ),
           if (canShowFollowCommunity) ...[
@@ -576,20 +569,22 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.close,
             size: 20,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: HeightConstrainedText(
               'Cancel event',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],
@@ -601,20 +596,22 @@ class _EventInfoState extends State<EventInfo> {
     return ActionButton(
       onPressed: _cancelParticipation,
       type: ActionButtonType.outline,
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.close,
             size: 20,
-            color: AppColor.gray3,
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
           SizedBox(width: 10),
           Flexible(
             child: Text(
               'Cancel',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],
@@ -664,7 +661,9 @@ class _EventInfoState extends State<EventInfo> {
             SizedBox(width: 6),
             HeightConstrainedText(
               text,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             SizedBox(width: 20),
           ],
@@ -678,8 +677,8 @@ class _EventInfoState extends State<EventInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Checkbox(
-          activeColor: AppColor.darkBlue,
-          checkColor: AppColor.brightGreen,
+          activeColor: context.theme.colorScheme.primary,
+          checkColor: context.theme.colorScheme.onPrimary,
           value: _joinCommunityDuringRsvp,
           onChanged: (value) {
             if (value != null) {
@@ -693,7 +692,7 @@ class _EventInfoState extends State<EventInfo> {
         Flexible(
           child: Text(
             'Follow ${Provider.of<CommunityProvider>(context).community.name} for access to all events and resources.',
-            style: AppTextStyle.bodyMedium,
+            style: context.theme.textTheme.bodyMedium,
           ),
         ),
       ],
@@ -712,8 +711,8 @@ class _EventInfoState extends State<EventInfo> {
         url: _getShareUrl(),
         body: _getShareBody(),
         subject: 'Join my event on ${Environment.appName}!',
-        iconColor: Theme.of(context).colorScheme.primary,
-        iconBackgroundColor: AppColor.white,
+        iconColor: context.theme.colorScheme.primary,
+        iconBackgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         size: 40,
         iconSize: 20,
         wrapIcons: false,
@@ -746,191 +745,177 @@ class _EventInfoState extends State<EventInfo> {
         eventProvider.event.isHosted || canEditCommunity;
     final isMobile = responsiveLayoutService.isMobile(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: isMobile ? null : BorderRadius.circular(20),
-        boxShadow: isMobile
-            ? null
-            : [
-                BoxShadow(
-                  color: AppColor.black.withOpacity(0.25),
-                  blurRadius: 34,
-                  offset: Offset(0, 14),
-                ),
-              ],
-      ),
-      child: UIMigration(
-        whiteBackground: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              // Specific padding for sides. at 20 iPhone X (375 width) overflows with
-              // `Add to calendar` button.
-              margin: EdgeInsets.only(left: 19, right: 19, top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      VerticalTimeAndDateIndicator(
-                        shadow: false,
-                        padding:
-                            EdgeInsets.only(left: isMobile ? 0 : 16, right: 16),
-                        time: DateTime.fromMillisecondsSinceEpoch(
-                          (eventProvider.event.scheduledTime
-                                  ?.millisecondsSinceEpoch ??
-                              0),
-                        ),
+    return Card.outlined(
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            // Specific padding for sides. at 20 iPhone X (375 width) overflows with
+            // `Add to calendar` button.
+            margin: EdgeInsets.only(left: 19, right: 19, top: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    VerticalTimeAndDateIndicator(
+                      shadow: false,
+                      padding: EdgeInsets.only(right: 24),
+                      time: DateTime.fromMillisecondsSinceEpoch(
+                        (eventProvider
+                                .event.scheduledTime?.millisecondsSinceEpoch ??
+                            0),
                       ),
-                      SizedBox(
-                        height: isMobile ? 90 : 100,
-                        width: isMobile ? 90 : 100,
-                        child: CustomStreamBuilder<Template>(
-                          entryFrom: '_EventInfoState.build',
-                          stream: Provider.of<TemplateProvider>(context)
-                              .templateFuture
-                              .asStream(),
-                          builder: (_, template) => ProxiedImage(
-                            eventProvider.event.image ?? template?.image,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                      if (_canEditEvent)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _buildOptionsIcon(),
-                            SizedBox(width: 5),
-                            _buildSettingIcon(),
-                            SizedBox(width: 5),
-                            _buildEditEvent(),
-                          ],
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: isMobile ? 0 : 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _buildEventVisibility(),
-                      _buildEventTypeName(),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: HeightConstrainedText(
-                          _event.title ?? '',
-                          maxLines: 3,
-                          style: AppTextStyle.headline2Light.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            decoration: _event.status == EventStatus.canceled
-                                ? TextDecoration.lineThrough
-                                : null,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  if (eventPageProvider.tags.isNotEmpty) ...[
-                    Wrap(
-                      children: [
-                        for (var tag in eventPageProvider.tags)
-                          CommunityTagBuilder(
-                            tagDefinitionId: tag.definitionId,
-                            builder: (_, isLoading, definition) {
-                              if (definition == null) {
-                                return const SizedBox.shrink();
-                              }
-                              return Text(
-                                '#${definition.title} ',
-                                style: AppTextStyle.body
-                                    .copyWith(color: AppColor.gray3),
-                              );
-                            },
-                          ),
-                      ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(
+                      height: isMobile ? 90 : 100,
+                      width: isMobile ? 90 : 100,
+                      child: CustomStreamBuilder<Template>(
+                        entryFrom: '_EventInfoState.build',
+                        stream: Provider.of<TemplateProvider>(context)
+                            .templateFuture
+                            .asStream(),
+                        builder: (_, template) => ProxiedImage(
+                          eventProvider.event.image ?? template?.image,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    if (_canEditEvent)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildOptionsIcon(),
+                          SizedBox(width: 5),
+                          _buildSettingIcon(),
+                          SizedBox(width: 5),
+                          _buildEditEvent(),
+                        ],
+                      ),
                   ],
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: CustomInkWell(
-                              onTap: canAccessParticipantListDetails
-                                  ? () => ParticipantsDialog(
-                                        eventProvider:
-                                            EventProvider.read(context),
-                                        eventPermissions: context
-                                            .read<EventPermissionsProvider>(),
-                                      ).show(context)
-                                  : null,
-                              child: EventPageParticipantsList(_event),
-                            ),
-                          ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildEventVisibility(),
+                    _buildEventTypeName(),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Flexible(
+                      child: HeightConstrainedText(
+                        _event.title ?? '',
+                        maxLines: 3,
+                        style: context.theme.textTheme.headlineMedium!.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          decoration: _event.status == EventStatus.canceled
+                              ? TextDecoration.lineThrough
+                              : null,
                         ),
-                        if (_canEditEvent)
-                          CircleIconButton(
-                            onPressed: widget.onMessagePressed,
-                            toolTipText: 'Message',
-                            icon: SizedBox(
-                              width: isMobile ? 30 : 20,
-                              height: isMobile ? 30 : 20,
-                              child: Icon(CupertinoIcons.paperplane),
-                            ),
-                          ),
-                      ],
+                      ),
                     ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                if (eventPageProvider.tags.isNotEmpty) ...[
+                  Wrap(
+                    children: [
+                      for (var tag in eventPageProvider.tags)
+                        CommunityTagBuilder(
+                          tagDefinitionId: tag.definitionId,
+                          builder: (_, isLoading, definition) {
+                            if (definition == null) {
+                              return const SizedBox.shrink();
+                            }
+                            return Text(
+                              '#${definition.title} ',
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
+                                color:
+                                    context.theme.colorScheme.onSurfaceVariant,
+                              ),
+                            );
+                          },
+                        ),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  _buildJoinEventButton(),
-                  Row(
+                  SizedBox(height: 20),
+                ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (canCancelParticipation || _canEditEvent)
-                        Expanded(child: _buildAddToCalendar()),
-                      if (canCancelParticipation) ...[
-                        Expanded(child: _buildCancelParticipationButton()),
-                      ] else if (context
-                              .watch<EventPermissionsProvider>()
-                              .canCancelEvent &&
-                          _event.status != EventStatus.canceled) ...[
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: _buildCancelEventButton(),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomInkWell(
+                            onTap: canAccessParticipantListDetails
+                                ? () => ParticipantsDialog(
+                                      eventProvider:
+                                          EventProvider.read(context),
+                                      eventPermissions: context
+                                          .read<EventPermissionsProvider>(),
+                                    ).show(context)
+                                : null,
+                            child: EventPageParticipantsList(_event),
+                          ),
                         ),
-                      ],
+                      ),
+                      if (_canEditEvent)
+                        CircleIconButton(
+                          onPressed: widget.onMessagePressed,
+                          toolTipText: 'Message',
+                          icon: CupertinoIcons.paperplane,
+                          color: context.theme.colorScheme.surfaceContainer,
+                          iconColor: context.theme.colorScheme.onSurface,
+                        ),
                     ],
                   ),
-                  if (showPrerequisiteWarning) ...[
-                    SizedBox(height: 10),
-                    PrerequisiteTemplateWidget(
-                      communityId: widget.event.communityId,
-                      prerequisiteTemplateId:
-                          widget.event.prerequisiteTemplateId!,
-                    ),
+                ),
+                SizedBox(height: 10),
+                _buildJoinEventButton(),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (canCancelParticipation || _canEditEvent)
+                      Expanded(child: _buildAddToCalendar()),
+                    if (canCancelParticipation) ...[
+                      Expanded(child: _buildCancelParticipationButton()),
+                    ] else if (context
+                            .watch<EventPermissionsProvider>()
+                            .canCancelEvent &&
+                        _event.status != EventStatus.canceled) ...[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _buildCancelEventButton(),
+                      ),
+                    ],
                   ],
+                ),
+                if (showPrerequisiteWarning) ...[
+                  SizedBox(height: 10),
+                  PrerequisiteTemplateWidget(
+                    communityId: widget.event.communityId,
+                    prerequisiteTemplateId:
+                        widget.event.prerequisiteTemplateId!,
+                  ),
                 ],
-              ),
+              ],
             ),
-            if (!showPrerequisiteWarning) _buildShareSection(),
-          ],
-        ),
+          ),
+          if (!showPrerequisiteWarning) _buildShareSection(),
+        ],
       ),
     );
   }
@@ -961,7 +946,11 @@ class _EventInfoState extends State<EventInfo> {
       children: [
         ProxiedImage(null, asset: appAsset, width: 20, height: 20),
         SizedBox(width: 6),
-        Text(type, style: AppTextStyle.body.copyWith(color: AppColor.gray3)),
+        Text(
+          type,
+          style: context.theme.textTheme.bodyMedium!
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
+        ),
       ],
     );
   }

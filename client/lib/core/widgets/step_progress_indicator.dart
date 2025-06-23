@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 
 class StepProgressIndicator extends StatelessWidget {
   const StepProgressIndicator({
     Key? key,
     required this.completedStepCount,
     required this.totalSteps,
-    this.backgroundColor = AppColor.gray5,
-    this.progressColor = AppColor.darkBlue,
+    this.backgroundColor,
+    this.progressColor,
   }) : super(key: key);
 
   final int completedStepCount;
   final int totalSteps;
-  final Color backgroundColor;
-  final Color progressColor;
+  final Color? backgroundColor;
+  final Color? progressColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,8 @@ class StepProgressIndicator extends StatelessWidget {
           Positioned.fill(
             child: Container(
               height: 4,
-              color: backgroundColor,
+              color: backgroundColor ??
+                  context.theme.colorScheme.surfaceContainerHigh,
             ),
           ),
           LayoutBuilder(
@@ -35,7 +36,7 @@ class StepProgressIndicator extends StatelessWidget {
                 duration: kTabScrollDuration,
                 height: 4,
                 width: completedStepCount * widthStep,
-                color: progressColor,
+                color: progressColor ?? context.theme.colorScheme.primary,
               );
             },
           ),

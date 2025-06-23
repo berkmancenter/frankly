@@ -13,12 +13,12 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
-import 'package:client/app.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community_tag.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import '../../../../../../core/routing/locations.dart';
 
@@ -34,7 +34,7 @@ Future<bool> verifyAvailableForEvent(Event event) async {
   final time = DateFormat('h:mm a').format(event.scheduledTime!);
 
   final cancel = await ConfirmDialog(
-    title: 'Confirm',
+    title: appLocalizationService.getLocalization().confirm,
     subText:
         'Please confirm that you are available at $time on $date to participate in this event.',
     confirmText: 'I\'ll be there!',
@@ -277,10 +277,11 @@ class EventPageProvider with ChangeNotifier {
 
   Future<bool> cancelEvent() async {
     final cancel = await ConfirmDialog(
-      title: 'Cancel Event',
+      title: appLocalizationService.getLocalization().cancelEvent,
       mainText: 'Are you sure you want to cancel event? This '
           'cannot be undone and will notify all participants.',
       confirmText: 'Yes, cancel',
+      cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (!cancel) return false;
 
@@ -314,9 +315,10 @@ class EventPageProvider with ChangeNotifier {
       await cancelEvent();
     } else if (eventProvider.isParticipant) {
       final cancelParticipation = await ConfirmDialog(
-        title: 'Cancel Participation',
+        title: appLocalizationService.getLocalization().cancelParticipation,
         mainText: 'Are you sure you want to cancel?',
-        confirmText: 'Yes, cancel',
+        confirmText: appLocalizationService.getLocalization().yes,
+        cancelText: appLocalizationService.getLocalization().no,
       ).show();
       if (cancelParticipation) {
         await alertOnError(

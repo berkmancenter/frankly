@@ -9,20 +9,20 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_card.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/memoized_builder.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/iterables.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'meeting_guide_card_item_word_cloud_contract.dart';
 import '../../data/models/meeting_guide_card_item_word_cloud_model.dart';
@@ -92,22 +92,19 @@ class _MeetingGuideCardItemWordCloudState
                   Flexible(
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 200),
-                      child: UIMigration(
-                        whiteBackground: true,
-                        child: CustomTextField(
-                          padding: EdgeInsets.zero,
-                          borderRadius: 10,
-                          labelText: 'Enter word',
-                          maxLines: 1,
-                          maxLength: 30,
-                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                          onChanged: (value) => updateView(),
-                          controller: _wordCloudResponseController,
-                          onEditingComplete: _submitInputWordCloudResponse,
-                          unfocusOnSubmit: false,
-                          counterText: '',
-                          hideCounter: true,
-                        ),
+                      child: CustomTextField(
+                        padding: EdgeInsets.zero,
+                        borderRadius: 10,
+                        labelText: 'Enter word',
+                        maxLines: 1,
+                        maxLength: 30,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                        onChanged: (value) => updateView(),
+                        controller: _wordCloudResponseController,
+                        onEditingComplete: _submitInputWordCloudResponse,
+                        unfocusOnSubmit: false,
+                        counterText: '',
+                        hideCounter: true,
                       ),
                     ),
                   ),
@@ -115,7 +112,6 @@ class _MeetingGuideCardItemWordCloudState
                   ActionButton(
                     height: 55,
                     minWidth: 20,
-                    color: AppColor.darkBlue,
                     sendingIndicatorAlign:
                         ActionButtonSendingIndicatorAlign.none,
                     onPressed: _wordCloudResponseController.text != ''
@@ -123,9 +119,6 @@ class _MeetingGuideCardItemWordCloudState
                         : null,
                     child: Icon(
                       Icons.send,
-                      color: _wordCloudResponseController.text != ''
-                          ? AppColor.brightGreen
-                          : AppColor.gray2,
                     ),
                   ),
                 ],
@@ -135,6 +128,7 @@ class _MeetingGuideCardItemWordCloudState
             _buildViewTypeButtons(),
           ],
         ),
+        SizedBox(height: 18),
       ],
     );
   }
@@ -152,21 +146,21 @@ class _MeetingGuideCardItemWordCloudState
           boxShape: BoxShape.circle,
           onTap: () => changeViewType(WordCloudViewType.cloud),
           child: Tooltip(
-            message: 'Word Cloud',
+            message: context.l10n.wordCloud,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
                 Icons.cloud,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.cloud
-                    ? AppColor.white
-                    : AppColor.darkBlue,
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -176,21 +170,21 @@ class _MeetingGuideCardItemWordCloudState
           boxShape: BoxShape.circle,
           onTap: () => changeViewType(WordCloudViewType.list),
           child: Tooltip(
-            message: 'Word List',
+            message: context.l10n.wordList,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.list
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
                 Icons.list,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.list
-                    ? AppColor.white
-                    : AppColor.darkBlue,
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -200,21 +194,21 @@ class _MeetingGuideCardItemWordCloudState
           boxShape: BoxShape.circle,
           onTap: () => changeViewType(WordCloudViewType.mine),
           child: Tooltip(
-            message: 'My Responses',
+            message: context.l10n.myResponses,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
-                    ? AppColor.darkBlue
+                    ? context.theme.colorScheme.primary
                     : Colors.transparent,
               ),
               child: Icon(
                 Icons.person,
                 size: 22,
                 color: _model.wordCloudViewType == WordCloudViewType.mine
-                    ? AppColor.white
-                    : AppColor.darkBlue,
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.primary,
               ),
             ),
           ),
@@ -321,8 +315,9 @@ class _MeetingGuideCardItemWordCloudState
                         child: Container(
                           height: 8,
                           width: lineWidth,
-                          decoration:
-                              BoxDecoration(color: AppColor.brightGreen),
+                          decoration: BoxDecoration(
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                       ),
                     ),
@@ -376,7 +371,8 @@ class _MeetingGuideCardItemWordCloudState
                   (1.5 + prominence) /
                   math.sqrt(math.sqrt(math.max(words.length, 6)));
 
-              final color = AppColor.darkBlue.withOpacity(.5 + prominence * .5);
+              final color = context.theme.colorScheme.primary
+                  .withOpacity(.5 + prominence * .5);
               if (currentResponses.contains(e.key)) {
                 return HeightConstrainedText(
                   ' ${e.key} ',
@@ -387,7 +383,7 @@ class _MeetingGuideCardItemWordCloudState
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     child: Tooltip(
-                      message: 'Press to promote',
+                      message: context.l10n.pressToPromote,
                       child: HeightConstrainedText(
                         ' ${e.key} ',
                         style: TextStyle(color: color, fontSize: size),

@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/admin/presentation/widgets/confirm_dialog_white.dart';
 import 'package:client/core/widgets/profile_chip.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
@@ -15,7 +15,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/admin/data/services/stripe_client_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -24,6 +24,7 @@ import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Shows subscription information  for the community and links to manage billing
 class AdminBillingTab extends StatefulWidget {
@@ -184,12 +185,12 @@ class _AdminBillingContainerContentState
             : formatter.format(priceInfo.priceInCents / 100.0);
 
         final confirm = await ConfirmDialogWhite(
-          title: 'Update to ${priceInfo.name}?',
+          title: context.l10n.updateToPlan(priceInfo.name),
           mainText:
               'Effective immediately you will be enrolled in the ${priceInfo.name} '
               '($priceString/mo.). You can update this at any time.',
           confirmText: 'Yes, update plan',
-          cancelText: 'No, nevermind',
+          cancelText: context.l10n.cancel,
         ).show();
 
         if (confirm) {
@@ -204,11 +205,11 @@ class _AdminBillingContainerContentState
       } else {
         if (_selectedPlan.typeCode == _freeSubscriptionType) {
           final confirm = await ConfirmDialogWhite(
-            title: 'Cancel current plan?',
+            title: context.l10n.cancelCurrentPlan,
             mainText:
                 'Immediately cancel your current plan and enroll in the free plan?',
             confirmText: 'Yes, cancel plan',
-            cancelText: 'No, nevermind',
+            cancelText: context.l10n.no,
           ).show();
 
           if (confirm) {
@@ -259,8 +260,8 @@ class _AdminBillingContainerContentState
               SizedBox(width: 10),
               ActionButton(
                 text: 'Update Plan',
-                color: AppColor.darkBlue,
-                textColor: AppColor.brightGreen,
+                color: context.theme.colorScheme.primary,
+                textColor: context.theme.colorScheme.onPrimary,
                 onPressed: _newPlanSelected
                     ? () => alertOnError(context, _updatePlanPressed)
                     : null,
@@ -277,8 +278,8 @@ class _AdminBillingContainerContentState
 
     return HeightConstrainedText(
       '${community.name ?? 'This Community'} is on the $planType Plan',
-      style:
-          AppTextStyle.subhead.copyWith(fontSize: 22, color: AppColor.darkBlue),
+      style: AppTextStyle.subhead
+          .copyWith(fontSize: 22, color: context.theme.colorScheme.primary),
     );
   }
 
@@ -286,11 +287,11 @@ class _AdminBillingContainerContentState
         constraints: BoxConstraints(maxWidth: 270),
         padding: const EdgeInsets.only(left: 15, right: 10),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 1,
-            color: AppColor.gray4,
+            color: context.theme.colorScheme.onPrimaryContainer,
           ),
         ),
         child: DropdownButton<Plan>(
@@ -310,14 +311,15 @@ class _AdminBillingContainerContentState
                     Flexible(
                       child: HeightConstrainedText(
                         plan.name,
-                        style:
-                            AppTextStyle.body.copyWith(color: AppColor.gray1),
+                        style: AppTextStyle.body,
                       ),
                     ),
                     SizedBox(width: 8),
                     HeightConstrainedText(
                       plan.cost,
-                      style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+                      style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -334,7 +336,8 @@ class _AdminBillingContainerContentState
       children: [
         HeightConstrainedText(
           'Contact the billing manager to update plan:',
-          style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray3),
+          style: AppTextStyle.eyebrowSmall
+              .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
         ),
         UserInfoBuilder(
           userId: context.watch<CommunityProvider>().community.creatorId,
@@ -365,8 +368,7 @@ class _AdminBillingContainerContentState
                           : '';
                       return HeightConstrainedText(
                         '${userInfo.displayName ?? 'The community owner'} ${emailText}is the billing manager',
-                        style:
-                            AppTextStyle.body.copyWith(color: AppColor.gray2),
+                        style: AppTextStyle.body,
                       );
                     },
                   ),
@@ -399,7 +401,9 @@ class _AdminBillingContainerContentState
             ),
             HeightConstrainedText(
               'You are the billing manager',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
             ),
             SizedBox(width: 10),
             ActionButton(
@@ -407,7 +411,7 @@ class _AdminBillingContainerContentState
               color: Colors.transparent,
               textStyle: TextStyle(
                 decoration: TextDecoration.underline,
-                color: AppColor.darkBlue,
+                color: context.theme.colorScheme.primary,
               ),
               sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
               onPressed: () async {

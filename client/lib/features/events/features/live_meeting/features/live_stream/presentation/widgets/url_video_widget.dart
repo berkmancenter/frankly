@@ -118,47 +118,45 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
     useEffect(
       () {
         final subscription = html.window.onMessage.listen((event) {
+          
           final messageObj = event.data;
 
-          if (messageObj['source'] == 'videojs') {
-            final String messageType = messageObj['type'];
-            print(messageObj);
-            print(
-              'currentTime type: ${messageObj['currentTime']?.runtimeType}',
-            );
-            print(
-              'videoDuration type: ${messageObj['videoDuration']?.runtimeType}',
-            );
-            final double currentTime = messageObj['currentTime'];
-            final double videoDuration = messageObj['videoDuration'];
-            final onReady = widget.onReady;
-            if (messageType == 'video-ready' && onReady != null) {
-              loggingService.log('message ready received: ${event.data}');
-              onReady();
-            }
-            final onEnded = widget.onEnded;
-            if (messageType == 'video-ended' && onEnded != null) {
-              loggingService.log('message ended received: ${event.data}');
-              onEnded();
-            }
-            if (messageType == 'video-error') {
-              loggingService.log('message error event received: ${event.data}');
-              if (widget.refreshOnError && !(_errorTimer?.isActive ?? false)) {
-                // Don't constantly restart due to an error. If another error occurs
-                // during this window, then it will not refresh.
-                _errorTimer = Timer(Duration(seconds: 5), () {});
-                setState(() => _keyValue = uuid.v1());
+          // Check if the messageObj is a Map and contains the 'source' key;
+          // we have to do this because the messageObj is a native JS object and can be anything coming from the onMessage Stream
+          if(messageObj is Map && messageObj.containsKey('source')) {
+            if (messageObj['source'] == 'videojs') {
+              final String messageType = messageObj['type'];
+              final double currentTime = messageObj['currentTime'];
+              final double videoDuration = messageObj['videoDuration'];
+              final onReady = widget.onReady;
+              if (messageType == 'video-ready' && onReady != null) {
+                loggingService.log('message ready received: ${event.data}');
+                onReady();
               }
+              final onEnded = widget.onEnded;
+              if (messageType == 'video-ended' && onEnded != null) {
+                loggingService.log('message ended received: ${event.data}');
+                onEnded();
+              }
+              if (messageType == 'video-error') {
+                loggingService.log('message error event received: ${event.data}');
+                if (widget.refreshOnError && !(_errorTimer?.isActive ?? false)) {
+                  // Don't constantly restart due to an error. If another error occurs
+                  // during this window, then it will not refresh.
+                  _errorTimer = Timer(Duration(seconds: 5), () {});
+                  setState(() => _keyValue = uuid.v1());
+                }
 
-              final onError = widget.onError;
-              if (onError != null) {
-                onError();
+                final onError = widget.onError;
+                if (onError != null) {
+                  onError();
+                }
               }
-            }
-            if (messageType == 'video-update') {
-              loggingService
-                  .log('message update event received: ${event.data}');
-              controller.add(UrlVideoPlayheadInfo(currentTime, videoDuration));
+              if (messageType == 'video-update') {
+                loggingService
+                    .log('message update event received: ${event.data}');
+                controller.add(UrlVideoPlayheadInfo(currentTime, videoDuration));
+              }
             }
           }
         });

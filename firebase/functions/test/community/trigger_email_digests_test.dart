@@ -4,7 +4,6 @@ import 'package:data_models/community/membership.dart';
 import 'package:data_models/community/community_user_settings.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
-import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/utils/infra/firebase_auth_utils.dart';
 import 'package:functions/utils/send_email_client.dart';
 import 'package:mocktail/mocktail.dart';

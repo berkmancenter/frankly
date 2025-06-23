@@ -2,13 +2,12 @@ import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveStreamInstructions extends StatelessWidget {
   const LiveStreamInstructions({this.whiteBackground = true});
@@ -25,7 +24,7 @@ class LiveStreamInstructions extends StatelessWidget {
         Clipboard.setData(ClipboardData(text: text));
         showRegularToast(
           context,
-          'Copied to clipboard!',
+          context.l10n.copiedToClipboard,
           toastType: ToastType.success,
         );
       },
@@ -116,18 +115,17 @@ class LiveStreamInstructions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      whiteBackground: whiteBackground,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: whiteBackground ? AppColor.white : AppColor.darkerBlue,
-        ),
-        alignment: Alignment.center,
-        child: _buildInstructions(context),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: whiteBackground
+            ? context.theme.colorScheme.surfaceContainerLowest
+            : context.theme.colorScheme.primary,
       ),
+      alignment: Alignment.center,
+      child: _buildInstructions(context),
     );
   }
 }

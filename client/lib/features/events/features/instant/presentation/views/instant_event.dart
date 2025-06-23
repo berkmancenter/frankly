@@ -12,12 +12,13 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class InstantEvent extends StatefulHookWidget {
   final String communityId;
@@ -79,7 +80,7 @@ class _InstantEventState extends State<InstantEvent> {
         communityId: communityId,
         templateId: templateId,
         nullableEventType: EventType.hosted,
-        title: 'Instant Meeting',
+        title: context.l10n.instantMeeting,
         scheduledTime: clockService.now(),
         isPublic: false,
         minParticipants: Event.defaultMinParticipants,
@@ -189,7 +190,7 @@ class _InstantEventState extends State<InstantEvent> {
     return FocusFixer(
       resizeForKeyboard: true,
       child: Material(
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
         child: _buildContent(),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 
 class ThickOutlineButton extends StatelessWidget {
   final Function()? onPressed;
@@ -21,7 +22,7 @@ class ThickOutlineButton extends StatelessWidget {
     this.icon,
     this.expand = false,
     this.minWidth = 0,
-    this.borderWidth = 1,
+    this.borderWidth = 0,
     this.eventName,
   }) : super(key: key);
 
@@ -29,7 +30,7 @@ class ThickOutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final lineColor = textColor ??
         DefaultTextStyle.of(context).style.color ??
-        Theme.of(context).primaryColor;
+       context.theme.primaryColor;
     return ActionButton(
       onPressed: onPressed,
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,

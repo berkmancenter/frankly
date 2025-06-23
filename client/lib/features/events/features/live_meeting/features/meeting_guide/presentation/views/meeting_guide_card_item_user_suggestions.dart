@@ -2,8 +2,8 @@ import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -11,7 +11,8 @@ import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:provider/provider.dart';
@@ -109,16 +110,10 @@ class _MeetingGuideCardItemUserSuggestionsState
           child: CustomTextField(
             controller: _textEditingController,
             padding: EdgeInsets.zero,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             onEditingComplete: () => _submitNotifier.submit(),
-            textStyle: AppTextStyle.body.copyWith(color: AppColor.black),
-            hintStyle: AppTextStyle.body.copyWith(color: AppColor.gray3),
             maxLines: 1,
-            borderRadius: 40,
-            borderColor: AppColor.gray3,
-            fillColor: AppColor.white,
-            hintText: 'Suggest',
+            fillColor: context.theme.colorScheme.surfaceContainerLowest,
+            hintText: context.l10n.suggest,
           ),
         ),
         SizedBox(width: 10),
@@ -131,7 +126,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             await _presenter.addSuggestion(_textEditingController.text);
             _textEditingController.clear();
           }),
-          color: AppColor.darkBlue,
+          color: context.theme.colorScheme.primary,
           child: ProxiedImage(
             null,
             asset: AppAsset.kAirplaneWhite,
@@ -178,8 +173,10 @@ class _MeetingGuideCardItemUserSuggestionsState
         padding: EdgeInsets.all(isMobile ? 10 : 20.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.gray6,
-          border: isMySuggestion ? Border.all(color: AppColor.darkBlue) : null,
+          color: context.theme.colorScheme.surface,
+          border: isMySuggestion
+              ? Border.all(color: context.theme.colorScheme.primary)
+              : null,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -190,8 +187,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                 Expanded(
                   child: UserProfileChip(
                     userId: participantAgendaItemDetails.userId,
-                    textStyle:
-                        AppTextStyle.bodyMedium.copyWith(color: AppColor.gray2),
+                    textStyle: AppTextStyle.bodyMedium,
                     showName: true,
                     showIsYou: true,
                     showBorder: true,
@@ -203,8 +199,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                   children: [
                     Text(
                       likeDislikeCount,
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.gray2),
+                      style: AppTextStyle.bodyMedium,
                     ),
                     SizedBox(width: 5),
                     AppClickableWidget(
@@ -251,9 +246,9 @@ class _MeetingGuideCardItemUserSuggestionsState
                         ),
                         onTap: () async {
                           final isSuccess = await ConfirmDialog(
-                            title: 'Remove Suggestion',
-                            confirmText: 'Remove',
-                            cancelText: 'Cancel',
+                            title: context.l10n.removeSuggestion,
+                            confirmText: context.l10n.remove,
+                            cancelText: context.l10n.cancel,
                             onConfirm: (context) =>
                                 Navigator.pop(context, true),
                           ).show();
@@ -277,7 +272,7 @@ class _MeetingGuideCardItemUserSuggestionsState
             SizedBox(height: 10),
             Text(
               meetingUserSuggestion.suggestion,
-              style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.body,
             ),
           ],
         ),

@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:client/features/events/features/live_meeting/features/breakout_room_definition/presentation/breakout_room_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:provider/src/provider.dart';
 import 'package:quiver/strings.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class CategoryCard extends StatefulWidget {
   final int position;
@@ -45,7 +46,7 @@ class _CategoryCardState extends State<CategoryCard> {
         children: [
           Expanded(
             child: CustomTextField(
-              labelText: 'Enter Category ${widget.position + 1}',
+              labelText: context.l10n.enterCategoryNum(widget.position + 1),
               maxLines: 1,
               maxLength: categoryCharactersMaxLength,
               initialValue: !isNullOrEmpty(_category) ? _category : null,
@@ -77,6 +78,7 @@ class _CategoryCardState extends State<CategoryCard> {
                   } else {
                     final delete = await ConfirmDialog(
                       mainText: 'Are you sure you want to delete?',
+                      cancelText: context.l10n.cancel,
                     ).show(context: context);
                     if (delete) {
                       await alertOnError(
@@ -89,7 +91,7 @@ class _CategoryCardState extends State<CategoryCard> {
                 },
                 child: Icon(
                   CupertinoIcons.trash,
-                  color: AppColor.white,
+                  color: context.theme.colorScheme.onPrimary,
                   size: 20,
                 ),
               ),

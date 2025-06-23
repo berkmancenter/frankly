@@ -1,6 +1,5 @@
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:data_models/templates/template.dart';
@@ -9,24 +8,30 @@ import 'package:provider/provider.dart';
 const _kDefaultLogoImageUrl = Environment.logoUrl;
 
 String get defaultInstantMeetingTemplateId => defaultInstantMeetingTemplate.id;
-Template get defaultInstantMeetingTemplate => Template(
-      id: 'instant-meeting-template',
-      // This required field will be set before writing to firestore.
-      collectionPath: '',
-      creatorId: userService.currentUserId!,
-      title: 'Instant Meeting',
-      image: _kDefaultLogoImageUrl,
-    );
+Template get defaultInstantMeetingTemplate {
+  final l10n = appLocalizationService.getLocalization();
+  return Template(
+    id: 'instant-meeting-template',
+    // This required field will be set before writing to firestore.
+    collectionPath: '',
+    creatorId: userService.currentUserId!,
+    title: l10n.instantMeeting,
+    image: _kDefaultLogoImageUrl,
+  );
+}
 
 const defaultTemplateId = 'misc';
-Template get defaultTemplate => Template(
-      id: defaultTemplateId,
-      // This required field will be set before writing to firestore.
-      collectionPath: '',
-      creatorId: userService.currentUserId!,
-      title: 'Miscellaneous',
-      image: _kDefaultLogoImageUrl,
-    );
+Template get defaultTemplate {
+  final l10n = appLocalizationService.getLocalization();
+  return Template(
+    id: defaultTemplateId,
+    // This required field will be set before writing to firestore.
+    collectionPath: '',
+    creatorId: userService.currentUserId!,
+    title: l10n.miscellaneous,
+    image: _kDefaultLogoImageUrl,
+  );
+}
 
 class TemplateProvider with ChangeNotifier {
   final String communityId;

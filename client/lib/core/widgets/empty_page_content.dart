@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EmptyPageContent extends StatelessWidget {
   final void Function()? onButtonPress;
@@ -21,28 +22,16 @@ class EmptyPageContent extends StatelessWidget {
     this.subtitleText,
     this.buttonText,
     this.showContainer = true,
-    this.buttonType = ActionButtonType.flat,
+    this.buttonType = ActionButtonType.filled,
     this.isBackgroundDark = false,
     this.isBackgroundPrimaryColor = false,
     Key? key,
   }) : super(key: key);
 
-  Color _getColor({bool subtitle = false}) {
-    if (isBackgroundDark) {
-      return AppColor.gray6;
-    } else if (isBackgroundPrimaryColor) {
-      return AppColor.gray1;
-    } else if (subtitle) {
-      return AppColor.gray3;
-    } else {
-      return AppColor.gray2;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final buttonColor = Theme.of(context).colorScheme.primary;
-    final isFlat = buttonType == ActionButtonType.flat;
+    final buttonColor = context.theme.colorScheme.primary;
+
     return Container(
       height: 311,
       width: 524,
@@ -50,7 +39,7 @@ class EmptyPageContent extends StatelessWidget {
       decoration: showContainer
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColor.white,
+              color: context.theme.colorScheme.surfaceContainerLowest,
             )
           : null,
       child: Column(
@@ -62,27 +51,32 @@ class EmptyPageContent extends StatelessWidget {
           ),
           SizedBox(height: 10),
           HeightConstrainedText(
-            titleText ?? 'No ${type.name}',
-            style: AppTextStyle.headline4.copyWith(color: _getColor()),
+            titleText ?? context.l10n.noItems(type.name),
+            style: context.theme.textTheme.titleLarge!.copyWith(
+              color: isBackgroundDark
+                  ? context.theme.colorScheme.surface
+                  : context.theme.colorScheme.onSurface,
+            ),
           ),
           SizedBox(height: 20),
           SizedBox(
             width: 205,
             child: HeightConstrainedText(
               subtitleText ??
-                  'When new ${type.name} are added, you\'ll see them here.',
-              style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: _getColor(subtitle: true)),
+                  context.l10n.whenNewItemsAdded(type.name),
+              style: context.theme.textTheme.labelLarge!.copyWith(
+                color: isBackgroundDark
+                    ? context.theme.colorScheme.surface
+                    : context.theme.colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
           SizedBox(height: 20),
           if (onButtonPress != null)
             ActionButton(
-              text: buttonText ?? type.buttonText,
-              textStyle: AppTextStyle.body
-                  .copyWith(color: isFlat ? AppColor.white : buttonColor),
-              color: isFlat ? buttonColor : null,
+              text: buttonText ?? type.buttonText(context),
+              color: buttonColor,
               onPressed: onButtonPress,
               borderRadius: BorderRadius.circular(10),
               type: buttonType,
@@ -124,18 +118,18 @@ extension EmptyPageTypeData on EmptyPageType {
     }
   }
 
-  String get buttonText {
+  String buttonText(BuildContext context) {
     switch (this) {
       case EmptyPageType.posts:
-        return 'Create a post';
+        return context.l10n.createAPost;
       case EmptyPageType.events:
-        return 'Create an event';
+        return context.l10n.createAnEvent;
       case EmptyPageType.announcements:
-        return 'Create an announcement';
+        return context.l10n.createAnAnnouncement;
       case EmptyPageType.resources:
-        return 'Create a resource';
+        return context.l10n.createAResource;
       case EmptyPageType.templates:
-        return 'Create a template';
+        return context.l10n.createATemplate;
       case EmptyPageType.chats:
         throw UnimplementedError('No empty page chat button');
       case EmptyPageType.suggestions:

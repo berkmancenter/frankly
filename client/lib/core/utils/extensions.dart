@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/chat/emotion.dart';
 import 'package:data_models/community/community.dart';
@@ -129,17 +129,17 @@ extension EmotionTypeExtension on EmotionType {
 }
 
 extension MembershipStatusUIExtension on MembershipStatus {
-  Widget get icon {
+  Widget icon(BuildContext context) {
     switch (this) {
       case MembershipStatus.member:
         return Icon(
           Icons.account_circle,
-          color: AppColor.darkerBlue,
+          color: context.theme.colorScheme.primary,
         );
       case MembershipStatus.admin:
         return Icon(
           Icons.local_police,
-          color: AppColor.darkerBlue,
+          color: context.theme.colorScheme.primary,
         );
       case MembershipStatus.facilitator:
         return ProxiedImage(
@@ -154,7 +154,7 @@ extension MembershipStatusUIExtension on MembershipStatus {
       case MembershipStatus.owner:
         return Icon(
           Icons.local_police,
-          color: AppColor.darkerBlue,
+          color: context.theme.colorScheme.primary,
         );
       case MembershipStatus.nonmember:
         return ProxiedImage(
@@ -164,7 +164,7 @@ extension MembershipStatusUIExtension on MembershipStatus {
       default:
         return Icon(
           Icons.account_circle,
-          color: AppColor.darkerBlue,
+          color: context.theme.colorScheme.primary,
         );
     }
   }

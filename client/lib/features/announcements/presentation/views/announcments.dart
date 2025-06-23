@@ -7,16 +7,16 @@ import 'package:client/features/announcements/data/providers/announcements_provi
 import 'package:client/features/announcements/presentation/views/create_announcement_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
+import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class Announcements extends StatefulWidget {
   const Announcements._();
@@ -45,7 +45,7 @@ class _AnnouncementsState extends State<Announcements> {
       onPressed: () => CreateAnnouncementDialog.show(
         communityId: context.read<CommunityProvider>().communityId,
       ),
-      text: 'New Announcement',
+      text: context.l10n.newAnnouncement,
     );
   }
 
@@ -58,7 +58,7 @@ class _AnnouncementsState extends State<Announcements> {
             Expanded(
               child: HeightConstrainedText(
                 announcement.title ?? 'Announcement',
-                style: body.copyWith(fontWeight: FontWeight.w700),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
             if (Provider.of<CommunityPermissionsProvider>(context)
@@ -68,7 +68,7 @@ class _AnnouncementsState extends State<Announcements> {
                   final confirmedDelete = await ConfirmDialog(
                     mainText:
                         'Are you sure you want to delete this announcement?',
-                    cancelText: 'No, cancel',
+                    cancelText: context.l10n.no,
                   ).show();
 
                   if (confirmedDelete) {
@@ -104,10 +104,7 @@ class _AnnouncementsState extends State<Announcements> {
         SelectableLinkify(
           text: announcement.message ?? '',
           textAlign: TextAlign.left,
-          style: body.copyWith(
-            fontSize: 14,
-            color: AppColor.gray3,
-          ),
+          style: context.theme.textTheme.bodyMedium,
           options: LinkifyOptions(looseUrl: true),
           onOpen: (link) => launch(link.url),
         ),
@@ -118,7 +115,7 @@ class _AnnouncementsState extends State<Announcements> {
 
   Widget _buildAnnouncements(List<Announcement> announcements) {
     if (announcements.isEmpty) {
-      return HeightConstrainedText('No announcements yet.');
+      return HeightConstrainedText(context.l10n.noAnnouncementsYet);
     }
 
     return SingleChildScrollView(
