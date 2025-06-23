@@ -183,7 +183,6 @@ class _LeaveRegularDialogState extends State<LeaveRegularDialog> {
     return ActionButton(
       type: ActionButtonType.filled,
       tooltipText: 'Hide Agenda Item',
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 0,
       height: 0,
       onPressed: widget.onMinimizeCard,

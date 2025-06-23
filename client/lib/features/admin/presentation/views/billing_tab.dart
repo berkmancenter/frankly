@@ -248,10 +248,10 @@ class _AdminBillingContainerContentState
         if (isUserBillingManager)
           _buildTitle(widget.subscription?.type ?? _freeSubscriptionType),
         SizedBox(height: 20),
-        if (isUserBillingManager)
-          _buildUserIsBillingManager()
-        else
-          _buildUserNotBillingManager(),
+        // if (isUserBillingManager)
+        _buildUserIsBillingManager(),
+        // else
+        // _buildUserNotBillingManager(),
         SizedBox(height: 20),
         if (isUserBillingManager)
           Wrap(
@@ -413,7 +413,6 @@ class _AdminBillingContainerContentState
                 decoration: TextDecoration.underline,
                 color: context.theme.colorScheme.primary,
               ),
-              sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
               onPressed: () async {
                 final community = context.read<CommunityProvider>().community;
                 final response = await cloudFunctionsPaymentsService

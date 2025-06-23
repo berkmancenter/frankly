@@ -372,7 +372,6 @@ class _MembersTabState extends State<MembersTab> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                   onPressed: () => alertOnError(
                     context,
                     () => _resolveRequest(request: request, approve: true),
@@ -396,7 +395,6 @@ class _MembersTabState extends State<MembersTab> {
                   ),
                   borderSide:
                       BorderSide(color: context.theme.colorScheme.error),
-                  sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                   onPressed: () => alertOnError(
                     context,
                     () => _resolveRequest(request: request, approve: false),

@@ -228,7 +228,6 @@ class _MeetingGuideTutorialState extends State<MeetingGuideTutorial> {
               ActionButton(
                 color: context.theme.colorScheme.primary,
                 textColor: context.theme.colorScheme.onPrimary,
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 text: 'Next',
                 onPressed: () => Navigator.pop(context),
               ),
