@@ -59,6 +59,7 @@ class AvCheckProvider with ChangeNotifier {
   }
 
   void initialize() async {
+    // Add a random string in case this page is accessed a second time before the tab is reloaded
     _viewKey = 'avCheck-${Random().nextDouble()}';
     _div = html.VideoElement()
       ..style.width = '100%'
