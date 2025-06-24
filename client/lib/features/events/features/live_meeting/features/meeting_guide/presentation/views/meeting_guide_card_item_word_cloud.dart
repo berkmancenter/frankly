@@ -112,7 +112,6 @@ class _MeetingGuideCardItemWordCloudState
                   ActionButton(
                     height: 55,
                     minWidth: 20,
-                    color: context.theme.colorScheme.primary,
                     sendingIndicatorAlign:
                         ActionButtonSendingIndicatorAlign.none,
                     onPressed: _wordCloudResponseController.text != ''
@@ -120,9 +119,6 @@ class _MeetingGuideCardItemWordCloudState
                         : null,
                     child: Icon(
                       Icons.send,
-                      color: _wordCloudResponseController.text != ''
-                          ? context.theme.colorScheme.onPrimary
-                          : context.theme.colorScheme.onPrimaryContainer,
                     ),
                   ),
                 ],
@@ -132,6 +128,7 @@ class _MeetingGuideCardItemWordCloudState
             _buildViewTypeButtons(),
           ],
         ),
+        SizedBox(height: 18),
       ],
     );
   }
@@ -319,7 +316,8 @@ class _MeetingGuideCardItemWordCloudState
                           height: 8,
                           width: lineWidth,
                           decoration: BoxDecoration(
-                              color: context.theme.colorScheme.onPrimary),
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
                         ),
                       ),
                     ),

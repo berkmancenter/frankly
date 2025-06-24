@@ -180,6 +180,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
               MeetingAgenda(
                 canUserEditAgenda:
                     context.watch<EventPermissionsProvider>().canEditEvent,
+                displayLocation: MeetingAgendaDisplayLocation.eventPage,
               ),
             ],
           ),

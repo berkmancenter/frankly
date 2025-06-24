@@ -160,7 +160,7 @@ class _OnboardPageState extends State<OnboardPage> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: context.theme.colorScheme.onPrimaryContainer,
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
           ),
           HeightConstrainedText(
@@ -301,7 +301,8 @@ class _OnboardPageState extends State<OnboardPage> {
                   }),
                 ),
                 HeightConstrainedText(
-                    context.l10n.skipStripeAccountSetupForNow),
+                  context.l10n.skipStripeAccountSetupForNow,
+                ),
                 SizedBox(width: 8),
               ],
             ),

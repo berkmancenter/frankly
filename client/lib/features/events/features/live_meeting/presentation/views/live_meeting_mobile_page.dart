@@ -187,20 +187,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     return Scaffold(
       backgroundColor: context.theme.colorScheme.surface,
       appBar: showAppBar ? _buildAppBar() : null,
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: isBottomSheetPresent && isRaisedHandVisible
-          ? FloatingActionButton(
-              backgroundColor: context.theme.colorScheme.primary,
-              child: ProxiedImage(
-                null,
-                asset: AppAsset.raisedHand(),
-                width: 20.0,
-                height: 20.0,
-              ),
-              onPressed: () => _presenter.toggleHandRaise(),
-            )
-          : null,
       body: _buildBody(),
       bottomNavigationBar:
           showBottomBar ? _buildBottomNavBar(isBottomSheetPresent) : null,
@@ -671,7 +657,12 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     );
     // Still using the format directly as it's just displaying numbers with a divider
     // No specific localization string needed as this is a counter format
-    return Text('$readyToMoveOnCount/${presentParticipantIds.length}');
+    return Text(
+      '$readyToMoveOnCount/${presentParticipantIds.length}',
+      style: context.theme.textTheme.bodyMedium?.copyWith(
+        color: context.theme.colorScheme.onPrimary,
+      ),
+    );
   }
 
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
@@ -710,7 +701,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         final isCardPending = _presenter.isCardPending();
 
         return Container(
-          color: context.theme.colorScheme.primaryContainer,
+          color: context.theme.colorScheme.onPrimaryFixed,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -777,7 +768,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         color: context.theme.colorScheme.onPrimary,
                       ),
                     ),
-                    if (!isBottomSheetPresent && isRaisedHandVisible)
+                    if (isRaisedHandVisible)
                       Expanded(
                         child: Center(
                           child: SizedBox(
@@ -852,11 +843,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         agendaProvider.agendaItems.isNotEmpty) ...[
                       SizedBox(width: 10),
                       AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.maximizeBlue(),
-                          width: kIconSize,
-                          height: kIconSize,
+                        child: Icon(
+                          Icons.book_outlined,
+                          size: kIconSize,
+                          color: context.theme.colorScheme.onPrimary,
                         ),
                         onTap: () => _presenter.toggleBottomSheetState(
                           LiveMeetingMobileBottomSheetState.partiallyVisible,

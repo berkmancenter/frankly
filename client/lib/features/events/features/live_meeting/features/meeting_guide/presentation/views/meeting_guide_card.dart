@@ -310,9 +310,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                           } else {
                             return HeightConstrainedText(
                               isNullOrEmpty(info.data?.displayName)
-                                ? context.l10n.welcome
-                                : context.l10n.welcomeName(
-                                    info.data?.displayName ?? ''),
+                                  ? context.l10n.welcome
+                                  : context.l10n.welcomeName(
+                                      info.data?.displayName ?? '',
+                                    ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.headline3.copyWith(
@@ -582,14 +583,17 @@ class CountdownWidget extends StatelessWidget {
                 child: HeightConstrainedText(
                   'Moving to the next agenda item...',
                   style: AppTextStyle.subhead
-                      .copyWith(color: context.theme.colorScheme.primary),
+                      .copyWith(color: context.theme.colorScheme.onPrimary),
                 ),
               ),
               SizedBox(width: 10),
             ],
             HeightConstrainedText(
               math.max(1, countdownSeconds).toString(),
-              style: TextStyle(fontSize: isMobile ? 24 : 38),
+              style: TextStyle(
+                fontSize: isMobile ? 24 : 38,
+                color: context.theme.colorScheme.onPrimary,
+              ),
             ),
           ],
         );

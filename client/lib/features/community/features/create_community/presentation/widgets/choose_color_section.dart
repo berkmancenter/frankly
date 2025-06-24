@@ -221,8 +221,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function() onTap,
   }) {
     final color = selected
-        ? context.theme.colorScheme.primary
-        : context.theme.colorScheme.onPrimaryContainer;
+        ? context.theme.colorScheme.onSurface
+        : context.theme.colorScheme.onSurfaceVariant;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -294,7 +294,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     final launchLink = TapGestureRecognizer()
       ..onTap = () => launch('https://color.review');
     final textStyle = AppTextStyle.body
-        .copyWith(color: context.theme.colorScheme.onPrimaryContainer);
+        .copyWith(color: context.theme.colorScheme.onSecondaryContainer);
     final linkStyle = AppTextStyle.body.copyWith(
       decoration: TextDecoration.underline,
       color: context.theme.colorScheme.primary,

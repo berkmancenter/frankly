@@ -231,6 +231,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
               borderRadius: 10,
               maxLength: 200,
               minLines: 3,
+              keyboardType: TextInputType.multiline,
               onChanged: (text) => _presenter.updateEnteredMessage(text),
               validator: (text) => _presenter.validateMessage(text),
             ),

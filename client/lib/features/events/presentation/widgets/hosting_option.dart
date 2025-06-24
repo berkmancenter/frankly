@@ -46,18 +46,15 @@ class _HostingOptionState extends State<HostingOption> {
         List<_HostingOptionType> hostingTypes = [
           _HostingOptionType(
             title: context.l10n.hosted,
-            isGated: false,
             eventType: EventType.hosted,
           ),
           if (widget.isHostlessEnabled)
             _HostingOptionType(
               title: context.l10n.hostless,
-              isGated: !(caps?.hasLivestreams ?? false),
               eventType: EventType.hostless,
             ),
           _HostingOptionType(
             title: context.l10n.livestream,
-            isGated: !(caps?.hasLivestreams ?? false),
             eventType: EventType.livestream,
           ),
         ];
@@ -69,16 +66,14 @@ class _HostingOptionState extends State<HostingOption> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 for (final type in hostingTypes)
-                  if (!type.isGated)
-                    _HostingRadioOption(
-                      onSelected: () {
-                        widget.selectedEventType(type.eventType);
-                        setState(() => _hostingOption = type.eventType);
-                      },
-                      isSelected: type.eventType == _hostingOption,
-                      isGated: type.isGated,
-                      title: type.title,
-                    ),
+                  _HostingRadioOption(
+                    onSelected: () {
+                      widget.selectedEventType(type.eventType);
+                      setState(() => _hostingOption = type.eventType);
+                    },
+                    isSelected: type.eventType == _hostingOption,
+                    title: type.title,
+                  ),
               ].intersperse(SizedBox(height: 14)).toList(),
             ),
           ),
@@ -90,25 +85,21 @@ class _HostingOptionState extends State<HostingOption> {
 
 class _HostingOptionType {
   final String title;
-  final bool isGated;
   final EventType eventType;
 
   _HostingOptionType({
     required this.title,
-    required this.isGated,
     required this.eventType,
   });
 }
 
 class _HostingRadioOption extends StatefulWidget {
-  final bool isGated;
   final bool isSelected;
   final void Function() onSelected;
   final String title;
 
   const _HostingRadioOption({
     Key? key,
-    this.isGated = true,
     required this.title,
     required this.isSelected,
     required this.onSelected,
@@ -120,11 +111,7 @@ class _HostingRadioOption extends StatefulWidget {
 
 class _HostingRadioOptionState extends State<_HostingRadioOption> {
   Color get color {
-    if (!widget.isGated) {
-      return context.theme.colorScheme.primary;
-    } else {
-      return context.theme.colorScheme.primary.withOpacity(0.38);
-    }
+    return context.theme.colorScheme.primary;
   }
 
   @override
