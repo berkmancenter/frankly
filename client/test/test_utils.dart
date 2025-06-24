@@ -13,11 +13,8 @@ class TestUtils {
     // Resets screen size after each test.
     addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
 
-    final renderView = WidgetsBinding.instance?.renderView;
+    final renderView = WidgetsBinding.instance.renderView;
 
-    if (renderView != null) {
-      renderView.configuration =
-          TestViewConfiguration(size: Size(width, height));
-    }
+    renderView.configuration = TestViewConfiguration(size: Size(width, height));
   }
 }
