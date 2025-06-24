@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
-import 'dart:ui' as ui;
+import 'dart:ui_web' as ui_web;
 import '../utils/media_device_service.dart';
 import '../data/providers/dialog_provider.dart';
 
@@ -31,7 +31,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         ..style.transform = 'scaleX(-1)'; // Mirror view
 
       // ignore: undefined_prefixed_name
-      ui.platformViewRegistry.registerViewFactory(
+      ui_web.platformViewRegistry.registerViewFactory(
         _viewType,
         (int viewId) => _videoElement,
       );
@@ -264,7 +264,7 @@ class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget
         ..style.transform = 'scaleX(-1)'; // Mirror view
 
       // ignore: undefined_prefixed_name
-      ui.platformViewRegistry.registerViewFactory(
+      ui_web.platformViewRegistry.registerViewFactory(
         _viewType,
         (int viewId) => _videoElement,
       );
