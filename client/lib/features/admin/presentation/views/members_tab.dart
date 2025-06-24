@@ -520,13 +520,13 @@ class _MembersTabState extends State<MembersTab> {
                         child: ActionButton(
                           type: ActionButtonType.outline,
                           height: 40,
-                          minWidth: 60,
+                          // minWidth: 60,
                           onPressed: () => _downloadMembersData(membershipList),
                           borderRadius: BorderRadius.circular(15),
                           padding: EdgeInsets.zero,
                           icon: Icon(
                             Icons.download,
-                            size: 20,
+                            // size: 20,
                           ),
                         ),
                       ),

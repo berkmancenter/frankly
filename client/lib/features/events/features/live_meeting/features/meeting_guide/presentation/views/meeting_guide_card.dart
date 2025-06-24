@@ -612,7 +612,6 @@ class _ReadyButton extends HookWidget {
       type: ActionButtonType.outline,
       textColor: context.theme.colorScheme.primary,
       icon: Icons.arrow_forward_ios,
-      iconSide: ActionButtonIconSide.right,
       onPressed: () => alertOnError(context, () async {
         await agendaProvider.moveForward(
           currentAgendaItemId: currentAgendaItemId,

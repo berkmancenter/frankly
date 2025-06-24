@@ -58,7 +58,7 @@ class ActionButton extends StatefulWidget {
 
   final String? tooltipText;
 
-  // Only used for outline button.
+  /// Only used for outline button.
   final BorderSide? borderSide;
 
   final Widget? child;
@@ -149,6 +149,21 @@ class _ActionButtonState extends State<ActionButton> {
     throw Exception('Icon must be a Widget or IconData instance.');
   }
 
+  Widget _buildLoading() {
+    // If color is either black, or button is filled, ensure that indicator is on primary color
+    Color loadingColor =
+        (widget.type == ActionButtonType.filled || widget.color == Colors.black)
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.primary;
+    return SizedBox(
+      height: widget.loadingHeight ?? 24,
+      width: widget.loadingHeight ?? 24,
+      child: CustomLoadingIndicator(
+        color: loadingColor,
+      ),
+    );
+  }
+
   Widget _buildButtonContents() {
     final text = widget.text;
     final mainAxisAlignment =
@@ -158,6 +173,9 @@ class _ActionButtonState extends State<ActionButton> {
                 ? MainAxisAlignment.start
                 : MainAxisAlignment.end;
     final child = widget.child;
+    final prefixPadding = widget.text != null
+        ? const EdgeInsets.only(right: 14)
+        : EdgeInsets.zero;
 
     return Padding(
       padding: widget.padding ?? EdgeInsets.zero,
@@ -168,12 +186,12 @@ class _ActionButtonState extends State<ActionButton> {
           // Show loading indicator only if waiting for action
           if (_waiting)
             Padding(
-              padding: const EdgeInsets.only(right: 14),
+              padding: prefixPadding,
               child: _buildLoading(),
             ),
           if (!_waiting && widget.icon != null)
             Padding(
-              padding: const EdgeInsets.only(right: 14),
+              padding: prefixPadding,
               child: _buildIcon(),
             ),
 
@@ -268,29 +286,23 @@ class _ActionButtonState extends State<ActionButton> {
     }
   }
 
-  Widget _buildLoading() {
-    // If color is either black, or button is filled, ensure that indicator is on primary color
-    Color loadingColor =
-        (widget.type == ActionButtonType.filled || widget.color == Colors.black)
-            ? context.theme.colorScheme.onPrimary
-            : context.theme.colorScheme.primary;
-    return SizedBox(
-      height: widget.loadingHeight ?? 24,
-      width: widget.loadingHeight ?? 24,
-      child: CustomLoadingIndicator(
-        color: loadingColor,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildTooltipWrappedButton() {
     final message = widget.tooltipText;
     if (message == null) return _buildButton();
 
     return Tooltip(
       message: message,
       child: _buildButton(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildTooltipWrappedButton(),
+      ],
     );
   }
 }

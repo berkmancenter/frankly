@@ -209,7 +209,6 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           size: 20,
         ),
       ),
-      iconSide: ActionButtonIconSide.right,
       padding: EdgeInsets.zero,
     );
   }
