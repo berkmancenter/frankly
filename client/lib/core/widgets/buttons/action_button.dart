@@ -288,14 +288,17 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Widget _buildLoading() {
+    // If color is either black, or button is filled, ensure that indicator is on primary color
+    Color loadingColor =
+        (widget.type == ActionButtonType.filled || widget.color == Colors.black)
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.primary;
     return SizedBox(
       height: widget.loadingHeight ?? 24,
       width: widget.loadingHeight ?? 24,
       child: CustomLoadingIndicator(
-          // color: (widget.color. == Colors.black || widget.color == null)
-          //     ? Colors.white
-          //     : Colors.black,
-          ),
+        color: loadingColor,
+      ),
     );
   }
 
