@@ -8,11 +8,6 @@ import 'package:client/core/widgets/height_constained_text.dart';
 
 enum ActionButtonType { filled, outline, text }
 
-enum ActionButtonIconSide {
-  left,
-  right,
-}
-
 enum ActionButtonContentAlignment {
   start,
   center,
@@ -57,14 +52,13 @@ class ActionButton extends StatefulWidget {
   final Map<String, dynamic>? eventParameters;
   final SubmitNotifier? controller;
   final ActionButtonContentAlignment contentAlign;
-  final ActionButtonIconSide iconSide;
 
   final double? loadingHeight;
   final double? height;
 
   final String? tooltipText;
 
-  /// Only used for outline button.
+  // Only used for outline button.
   final BorderSide? borderSide;
 
   final Widget? child;
@@ -92,7 +86,6 @@ class ActionButton extends StatefulWidget {
     this.eventParameters,
     this.controller,
     this.contentAlign = ActionButtonContentAlignment.center,
-    this.iconSide = ActionButtonIconSide.left,
     this.loadingHeight,
     this.height,
     this.tooltipText,
@@ -144,9 +137,7 @@ class _ActionButtonState extends State<ActionButton> {
       return widget.icon as Widget;
     } else if (widget.icon is IconData) {
       return Padding(
-        padding: widget.iconSide == ActionButtonIconSide.left
-            ? const EdgeInsets.only(right: 6)
-            : const EdgeInsets.only(left: 6),
+        padding: const EdgeInsets.only(right: 6),
         child: Icon(
           widget.icon,
           size: 18,
@@ -277,16 +268,6 @@ class _ActionButtonState extends State<ActionButton> {
     }
   }
 
-  Widget _buildTooltipWrappedButton() {
-    final message = widget.tooltipText;
-    if (message == null) return _buildButton();
-
-    return Tooltip(
-      message: message,
-      child: _buildButton(),
-    );
-  }
-
   Widget _buildLoading() {
     // If color is either black, or button is filled, ensure that indicator is on primary color
     Color loadingColor =
@@ -304,11 +285,12 @@ class _ActionButtonState extends State<ActionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildTooltipWrappedButton(),
-      ],
+    final message = widget.tooltipText;
+    if (message == null) return _buildButton();
+
+    return Tooltip(
+      message: message,
+      child: _buildButton(),
     );
   }
 }
