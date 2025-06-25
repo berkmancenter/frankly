@@ -180,11 +180,9 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 }
 
 class AudioVideoSettingsDialog extends StatelessWidget {
-  final dynamic conferenceRoom; // Keep parameter for interface compatibility but not used
-
+  
   const AudioVideoSettingsDialog({
     super.key,
-    required this.conferenceRoom,
   });
 
   Future<void> show() async {

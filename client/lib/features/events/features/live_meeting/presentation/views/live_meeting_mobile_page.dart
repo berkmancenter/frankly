@@ -752,7 +752,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         return [
                           PopupMenuItem(
                             value: () => AudioVideoSettingsDialog(
-                              conferenceRoom: context.read<ConferenceRoom>(),
                             ).show(),
                             child: HeightConstrainedText(
                               'Audio/Video Settings',

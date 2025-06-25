@@ -92,8 +92,7 @@ class _ControlBarState extends State<ControlBar> {
         itemBuilder: (context) => [
           PopupMenuItem(
             value: () =>
-                AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
-                    .show(),
+                AudioVideoSettingsDialog().show(),
             child: HeightConstrainedText(
               'Audio/Video Settings',
             ),
