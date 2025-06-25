@@ -99,7 +99,12 @@ class _AgendaItemImageState extends State<AgendaItemImage>
               Container(
                 color: context.theme.colorScheme.onPrimaryContainer,
                 height: kImageHeight,
-                child: isImageUploaded ? ProxiedImage(imageUrl) : null,
+                child: isImageUploaded
+                    ? ProxiedImage(
+                        imageUrl,
+                        width: double.infinity,
+                      )
+                    : null,
               ),
               if (!isImageUploaded) _buildUploadImage('Upload Image'),
             ],
@@ -128,7 +133,11 @@ class _AgendaItemImageState extends State<AgendaItemImage>
           else
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: ProxiedImage(imageUrl, height: kImageHeight),
+              child: ProxiedImage(
+                imageUrl,
+                height: kImageHeight,
+                width: double.infinity,
+              ),
             ),
         ],
       );

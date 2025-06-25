@@ -221,8 +221,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function() onTap,
   }) {
     final color = selected
-        ? context.theme.colorScheme.primary
-        : context.theme.colorScheme.onPrimaryContainer;
+        ? context.theme.colorScheme.onSurface
+        : context.theme.colorScheme.onSurfaceVariant;
     return GestureDetector(
       onTap: onTap,
       child: Column(

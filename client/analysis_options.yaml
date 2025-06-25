@@ -32,6 +32,5 @@ linter:
     prefer_const_constructors: false
     unawaited_futures: true
     require_trailing_commas: true
-
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

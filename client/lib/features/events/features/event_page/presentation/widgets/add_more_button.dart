@@ -6,18 +6,20 @@ import 'package:client/core/widgets/height_constained_text.dart';
 class AddMoreButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;
+  final Color? backgroundColor;
 
   const AddMoreButton({
     Key? key,
     required this.onPressed,
     required this.label,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ActionButton(
       type: ActionButtonType.filled,
-      color: context.theme.colorScheme.surfaceContainerHigh,
+      color: backgroundColor ?? context.theme.colorScheme.surfaceContainerHigh,
       expand: true,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       contentAlign: ActionButtonContentAlignment.start,

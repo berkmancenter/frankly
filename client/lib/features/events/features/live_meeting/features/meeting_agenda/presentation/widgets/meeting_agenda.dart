@@ -14,6 +14,11 @@ import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
+enum MeetingAgendaDisplayLocation {
+  eventPage,
+  meetingPage,
+}
+
 class MeetingAgendaWrapper extends StatelessWidget {
   const MeetingAgendaWrapper({
     required this.communityId,
@@ -62,6 +67,7 @@ class MeetingAgendaWrapper extends StatelessWidget {
           child ??
           MeetingAgenda(
             canUserEditAgenda: false,
+            displayLocation: MeetingAgendaDisplayLocation.eventPage,
           ),
     );
   }
@@ -69,10 +75,12 @@ class MeetingAgendaWrapper extends StatelessWidget {
 
 class MeetingAgenda extends StatefulWidget {
   final bool canUserEditAgenda;
+  final MeetingAgendaDisplayLocation displayLocation;
 
   const MeetingAgenda({
     Key? key,
     required this.canUserEditAgenda,
+    required this.displayLocation,
   }) : super(key: key);
 
   @override
@@ -145,6 +153,10 @@ class _MeetingAgendaState extends State<MeetingAgenda> {
             SizedBox(height: 20),
             AddMoreButton(
               label: context.l10n.addAgendaItem,
+              backgroundColor: widget.displayLocation ==
+                      MeetingAgendaDisplayLocation.meetingPage
+                  ? context.theme.colorScheme.surfaceDim
+                  : null,
               onPressed: () => agendaProvider.addNewUnsavedItem(),
             ),
           ],
