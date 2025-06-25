@@ -305,6 +305,7 @@
   "logout": "退出登录",
   "loopVideo": "循环播放视频",
   "makeASuggestion": "提出建议",
+  "manageCommunity": "管理社区",
   "manageJoinRequests": "管理加入请求 ({count})",
   "@manageJoinRequests": {
     "placeholders": {

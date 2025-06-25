@@ -94,19 +94,19 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
                     ),
                   ],
                 ),
-                if (onboardingStep != null)
-                  _buildProgressSection(isMobile, totalSteps, onboardingStep),
-                SizedBox(height: 15),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: totalSteps,
-                  itemBuilder: (context, index) {
-                    final onboardingStep = onboardingSteps[index];
+                // if (onboardingStep != null)
+                //   _buildProgressSection(isMobile, totalSteps, onboardingStep),
+                // SizedBox(height: 15),
+                // ListView.builder(
+                //   shrinkWrap: true,
+                //   physics: NeverScrollableScrollPhysics(),
+                //   itemCount: totalSteps,
+                //   itemBuilder: (context, index) {
+                //     final onboardingStep = onboardingSteps[index];
 
-                    return _buildStepSection(onboardingStep);
-                  },
-                ),
+                //     return _buildStepSection(onboardingStep);
+                //   },
+                // ),
               ],
             ),
           ),

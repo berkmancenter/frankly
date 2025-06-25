@@ -262,6 +262,7 @@
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
   "makeASuggestion": "Hacer una sugerencia",
+  "manageCommunity": "Administrar comunidad",
   "manageJoinRequests": "Administrar solicitudes de ingreso ({count})",
   "@manageJoinRequests": {
     "placeholders": {

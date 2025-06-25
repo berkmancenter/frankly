@@ -180,6 +180,7 @@
   "logout": "Logout",
   "loopVideo": "Loop Video",
   "makeASuggestion": "Make a suggestion",
+  "manageCommunity": "Manage Community",
   "manageJoinRequests": "Manage Join Requests ({count})",
   "maps": "Maps",
   "matchingOptions": "Matching Options",
