@@ -166,7 +166,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             child: HtmlElementView(viewType: _viewType),
           ),
         ] else ...[
-          const Text('🎥 Video Preview (Not available on this platform)'),
+          const Text('Video Preview (Not available on this platform)'),
           Container(
             width: 320,
             height: 240,
