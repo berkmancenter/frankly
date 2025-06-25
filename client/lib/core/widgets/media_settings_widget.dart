@@ -111,7 +111,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
           hint: const Text('Select audio input'),
         ),
         const SizedBox(height: 16),
-        const Text('📷 Video Input Device'),
+        const Text('Video Input Device'),
         DropdownButton<String>(
           value: _mediaService.selectedVideoInputId,
           items: _mediaService.videoInputs.map((device) {
