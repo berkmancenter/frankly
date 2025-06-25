@@ -9,7 +9,6 @@ import 'package:client/features/events/features/event_page/presentation/event_ta
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
-// import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_settings.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/talking_odometer.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
