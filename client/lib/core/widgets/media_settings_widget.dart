@@ -158,7 +158,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         ),
         const SizedBox(height: 20),
         if (kIsWeb) ...[
-          const Text('🎥 Video Preview'),
+          const Text('Video Preview'),
           Container(
             width: 320,
             height: 240,
