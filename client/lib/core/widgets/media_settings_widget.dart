@@ -196,10 +196,6 @@ class AudioVideoSettingsDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Color(0xFF5568FF),
-          width: 2,
-        ),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Container(
