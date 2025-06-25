@@ -98,7 +98,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: _displayIdController.text.isNotEmpty
-              ? '${Environment.appUrl}/${_displayIdController.text}'
+              ? '${Environment.appUrl}/space/${_displayIdController.text}'
               : null,
           // Allow only numbers, lowercase letters, and dashes
           formatterRegex: '[0-9a-z-+]',
