@@ -464,7 +464,7 @@ class AgoraParticipant with ChangeNotifier {
           publishCameraTrack: false,
         ),
       );
-      await _rtcEngine.enableLocalVideo(false);
+      print('Video publishing disabled, but camera resource kept for MediaDeviceService');
     }
 
     videoTrackEnabled = setEnabled;

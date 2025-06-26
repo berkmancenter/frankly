@@ -4,6 +4,8 @@ import 'package:universal_html/html.dart' as html;
 import 'dart:ui_web' as ui_web;
 import '../utils/media_device_service.dart';
 import '../data/providers/dialog_provider.dart';
+import '../../features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
+import '../../services.dart';
 
 class MediaSettingsWidget extends StatefulWidget {
   const MediaSettingsWidget({super.key});
@@ -42,8 +44,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   Future<void> initAll() async {
     await _mediaService.init();
     if (kIsWeb) {
-      // Only attempt to get user media and update preview if on web
-      // and after _videoElement has been initialized.
       await updatePreview();
     }
     if (mounted) {
@@ -55,48 +55,119 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     if (!kIsWeb) return;
     try {
       final stream = await _mediaService.getUserMedia();
-      _videoElement.srcObject = stream; // This can accept null to clear the stream
+      _videoElement.srcObject = stream;
+      print('Updated video preview with cloned stream');
+      
+      // 監聽視訊流結束事件，自動刷新
+      if (stream != null) {
+        final videoTracks = stream.getVideoTracks();
+        for (final track in videoTracks) {
+          track.onEnded.listen((_) {
+            print('Video track ended, refreshing preview...');
+            Future.delayed(Duration(milliseconds: 500), () {
+              if (mounted) {
+                updatePreview();
+              }
+            });
+          });
+        }
+      }
     } catch (e) {
       print('Error updating preview: $e');
       _videoElement.srcObject = null;
+      
+      // 如果獲取流失敗，嘗試強制刷新
+      try {
+        await _mediaService.forceRefreshStream();
+        final retryStream = await _mediaService.getUserMedia();
+        _videoElement.srcObject = retryStream;
+        print('Successfully refreshed video preview after error');
+      } catch (e2) {
+        print('Failed to refresh video preview: $e2');
+      }
+    }
+  }
+
+  /// 同步設備選擇到所有相關系統
+  Future<void> _syncDeviceSelection({
+    String? audioDeviceId,
+    String? videoDeviceId,
+  }) async {
+    try {
+      // 1. 更新 SharedPreferences（會議使用的預設設備）
+      if (audioDeviceId != null) {
+        await sharedPreferencesService.setDefaultMicrophoneId(audioDeviceId);
+        print('Synced audio device to SharedPreferences: $audioDeviceId');
+      }
+      
+      if (videoDeviceId != null) {
+        await sharedPreferencesService.setDefaultCameraId(videoDeviceId);
+        print('Synced video device to SharedPreferences: $videoDeviceId');
+      }
+      
+      // 2. 如果有活躍的會議，即時更新 Agora SDK 設備
+      if (mounted) {
+        final conferenceRoom = ConferenceRoom.read(context);
+        if (conferenceRoom?.room?.localParticipant != null) {
+          final participant = conferenceRoom!.room!.localParticipant!;
+          
+          // 更新音訊設備
+          if (audioDeviceId != null) {
+            try {
+              await participant.enableAudio(setEnabled: participant.audioTrackEnabled, deviceId: audioDeviceId);
+              print('Updated Agora audio device: $audioDeviceId');
+            } catch (e) {
+              print('Error updating Agora audio device: $e');
+            }
+          }
+          
+          // 更新視訊設備
+          if (videoDeviceId != null) {
+            try {
+              await participant.enableVideo(setEnabled: participant.videoTrackEnabled, deviceId: videoDeviceId);
+              print('Updated Agora video device: $videoDeviceId');
+            } catch (e) {
+              print('Error updating Agora video device: $e');
+            }
+          }
+        }
+      }
+      
+      print('Device selection fully synced');
+    } catch (e) {
+      print('Error syncing device selection: $e');
     }
   }
 
   @override
   void dispose() {
     if (kIsWeb) {
-      // Stop the tracks and clear srcObject
+      // 停止預覽流（這是克隆的流）
       final stream = _videoElement.srcObject;
       if (stream is html.MediaStream) {
-        stream.getTracks().forEach((track) => track.stop());
+        _mediaService.stopMediaStream(stream);
       }
       _videoElement.srcObject = null;
     }
+    
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Show loading indicator until media service is initialized (and devices are listed on web)
-    // For non-web, audioInputs will remain empty as per MediaDeviceService, so it might show loading indefinitely
-    // or an empty state depending on how MediaDeviceService.init() behaves for non-web.
-    // Current MediaDeviceService.init() makes them empty lists for non-web.
     if (kIsWeb && _mediaService.audioInputs.isEmpty && _mediaService.videoInputs.isEmpty) {
         // If on web and no devices yet, could be still loading or no devices found.
-        // Consider a more specific loading state if _mediaService.init() is still running.
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Audio Input Device'),
+        const Text('🎙 Audio Input Device'),
         DropdownButton<String>(
           value: _mediaService.selectedAudioInputId,
-          // If audioInputs is empty, map will produce an empty list, which is fine.
           items: _mediaService.audioInputs.map((device) {
             return DropdownMenuItem<String>(
               value: device.deviceId,
-              // device.label is non-nullable String in html.MediaDeviceInfo
               child: Text((device.label == null || device.label!.isEmpty) ? 'Unnamed Microphone' : device.label!),
             );
           }).toList(),
@@ -105,13 +176,17 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
               setState(() {
                 _mediaService.selectAudio(val);
               });
+              
+              // 同步設備選擇到所有系統
+              await _syncDeviceSelection(audioDeviceId: val);
+              
               await updatePreview();
             }
           },
           hint: const Text('Select audio input'),
         ),
         const SizedBox(height: 16),
-        const Text('Video Input Device'),
+        const Text('📷 Video Input Device'),
         DropdownButton<String>(
           value: _mediaService.selectedVideoInputId,
           items: _mediaService.videoInputs.map((device) {
@@ -125,6 +200,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
               setState(() {
                 _mediaService.selectVideo(val);
               });
+              
+              // 同步設備選擇到所有系統
+              await _syncDeviceSelection(videoDeviceId: val);
+              
               await updatePreview();
             }
           },
@@ -143,7 +222,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         ),
         const SizedBox(height: 20),
         if (kIsWeb) ...[
-          const Text('Video Preview'),
+          const Text('🎥 Video Preview'),
           Container(
             width: 320,
             height: 240,
@@ -151,7 +230,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             child: HtmlElementView(viewType: _viewType),
           ),
         ] else ...[
-          const Text('Video Preview (Not available on this platform)'),
+          const Text('🎥 Video Preview (Not available on this platform)'),
           Container(
             width: 320,
             height: 240,
@@ -205,7 +284,9 @@ class AudioVideoSettingsDialog extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: IconButton(
                   icon: Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                   padding: EdgeInsets.zero,
                 ),
               ),
@@ -266,21 +347,100 @@ class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget
     try {
       final stream = await _mediaService.getUserMedia();
       _videoElement.srcObject = stream;
+      print('Updated compact video preview with cloned stream');
+      
+      // 監聽視訊流結束事件，自動刷新
+      if (stream != null) {
+        final videoTracks = stream.getVideoTracks();
+        for (final track in videoTracks) {
+          track.onEnded.listen((_) {
+            print('Video track ended, refreshing preview...');
+            Future.delayed(Duration(milliseconds: 500), () {
+              if (mounted) {
+                updatePreview();
+              }
+            });
+          });
+        }
+      }
     } catch (e) {
       print('Error updating preview: $e');
       _videoElement.srcObject = null;
+      
+      // 如果獲取流失敗，嘗試強制刷新
+      try {
+        await _mediaService.forceRefreshStream();
+        final retryStream = await _mediaService.getUserMedia();
+        _videoElement.srcObject = retryStream;
+        print('Successfully refreshed video preview after error');
+      } catch (e2) {
+        print('Failed to refresh video preview: $e2');
+      }
+    }
+  }
+
+  /// 同步設備選擇到所有相關系統
+  Future<void> _syncDeviceSelection({
+    String? audioDeviceId,
+    String? videoDeviceId,
+  }) async {
+    try {
+      // 1. 更新 SharedPreferences（會議使用的預設設備）
+      if (audioDeviceId != null) {
+        await sharedPreferencesService.setDefaultMicrophoneId(audioDeviceId);
+        print('Synced audio device to SharedPreferences: $audioDeviceId');
+      }
+      
+      if (videoDeviceId != null) {
+        await sharedPreferencesService.setDefaultCameraId(videoDeviceId);
+        print('Synced video device to SharedPreferences: $videoDeviceId');
+      }
+      
+      // 2. 如果有活躍的會議，即時更新 Agora SDK 設備
+      if (mounted) {
+        final conferenceRoom = ConferenceRoom.read(context);
+        if (conferenceRoom?.room?.localParticipant != null) {
+          final participant = conferenceRoom!.room!.localParticipant!;
+          
+          // 更新音訊設備
+          if (audioDeviceId != null) {
+            try {
+              await participant.enableAudio(setEnabled: participant.audioTrackEnabled, deviceId: audioDeviceId);
+              print('Updated Agora audio device: $audioDeviceId');
+            } catch (e) {
+              print('Error updating Agora audio device: $e');
+            }
+          }
+          
+          // 更新視訊設備
+          if (videoDeviceId != null) {
+            try {
+              await participant.enableVideo(setEnabled: participant.videoTrackEnabled, deviceId: videoDeviceId);
+              print('Updated Agora video device: $videoDeviceId');
+            } catch (e) {
+              print('Error updating Agora video device: $e');
+            }
+          }
+        }
+      }
+      
+      print('Device selection fully synced');
+    } catch (e) {
+      print('Error syncing device selection: $e');
     }
   }
 
   @override
   void dispose() {
     if (kIsWeb) {
+      // 停止預覽流（這是克隆的流）
       final stream = _videoElement.srcObject;
       if (stream is html.MediaStream) {
-        stream.getTracks().forEach((track) => track.stop());
+        _mediaService.stopMediaStream(stream);
       }
       _videoElement.srcObject = null;
     }
+    
     super.dispose();
   }
 
@@ -288,6 +448,7 @@ class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget
   Widget build(BuildContext context) {
     if (kIsWeb && _mediaService.audioInputs.isEmpty && _mediaService.videoInputs.isEmpty) {
       // Still loading or no devices
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Column(
@@ -307,6 +468,10 @@ class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget
               setState(() {
                 _mediaService.selectAudio(val);
               });
+              
+              // 同步設備選擇到所有系統
+              await _syncDeviceSelection(audioDeviceId: val);
+              
               await updatePreview();
             }
           },
@@ -327,6 +492,10 @@ class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget
               setState(() {
                 _mediaService.selectVideo(val);
               });
+              
+              // 同步設備選擇到所有系統
+              await _syncDeviceSelection(videoDeviceId: val);
+              
               await updatePreview();
             }
           },
