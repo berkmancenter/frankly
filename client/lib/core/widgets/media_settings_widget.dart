@@ -237,17 +237,6 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
           },
           hint: const Text('Select video input'),
         ),
-        const SizedBox(height: 16),
-        ElevatedButton.icon(
-          onPressed: () async {
-            setState(() {
-              _mediaService.toggleCam(!_mediaService.camEnabled);
-            });
-            await updatePreview();
-          },
-          icon: Icon(_mediaService.camEnabled ? Icons.videocam : Icons.videocam_off),
-          label: Text(_mediaService.camEnabled ? 'Turn Off Camera' : 'Turn On Camera'),
-        ),
         const SizedBox(height: 20),
         if (kIsWeb) ...[
           const Text('Video Preview'),
