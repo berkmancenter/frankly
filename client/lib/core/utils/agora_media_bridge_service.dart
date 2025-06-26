@@ -5,8 +5,8 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'media_device_service.dart';
 
-/// Agora 媒體橋接服務
-/// 負責將 MediaDeviceService 的媒體流橋接到 Agora SDK
+/// Agora Media Bridge Service
+/// Responsible for bridging media streams from MediaDeviceService to Agora SDK
 class AgoraMediaBridgeService {
   static final AgoraMediaBridgeService _instance = AgoraMediaBridgeService._internal();
   factory AgoraMediaBridgeService() => _instance;
@@ -15,27 +15,27 @@ class AgoraMediaBridgeService {
   RtcEngine? _engine;
   final MediaDeviceService _mediaService = MediaDeviceService();
   
-  // 當前狀態
+  // Current state
   bool _isInitialized = false;
   bool _videoPublishEnabled = false;
   bool _isCustomVideoSourceSet = false;
   
-  // 視訊幀推送相關
+  // Video frame pushing related
   html.VideoElement? _videoElement;
   html.CanvasElement? _canvas;
   html.CanvasRenderingContext2D? _canvasContext;
   Timer? _frameTimer;
   
-  /// 暴露 MediaDeviceService 實例
+  /// Expose MediaDeviceService instance
   MediaDeviceService get mediaService => _mediaService;
 
-  /// 初始化橋接服務
+  /// Initialize bridge service
   Future<void> initialize(RtcEngine engine) async {
     if (_isInitialized) return;
     
     _engine = engine;
     
-    // 註冊回調函數
+    // Register callback functions
     _mediaService.registerAudioBridge(_onAudioPublishChanged);
     _mediaService.registerVideoBridge(_onVideoPublishChanged);
     _mediaService.registerVideoStreamBridge(_onVideoStreamChanged);
@@ -44,13 +44,13 @@ class AgoraMediaBridgeService {
     print('AgoraMediaBridgeService initialized');
   }
 
-  /// 處理音訊發布狀態變更
+  /// Handle audio publish state changes
   Future<void> _onAudioPublishChanged(bool enabled, String? deviceId) async {
     if (!_isInitialized || _engine == null) return;
     
     print('Audio publish changed: enabled=$enabled, deviceId=$deviceId');
     
-    // 總是設置音訊設備（不管是否發布）
+    // Always set audio device (regardless of whether it's publishing)
     if (deviceId != null) {
       try {
         await _engine!.getAudioDeviceManager().setRecordingDevice(deviceId);
@@ -60,16 +60,16 @@ class AgoraMediaBridgeService {
       }
     }
     
-    // 根據發布狀態控制音訊發布
+    // Control audio publishing based on publishing state
     if (enabled) {
-      // 啟用本地音訊
+      // Enable local audio
       await _engine!.enableLocalAudio(true);
       await _engine!.updateChannelMediaOptions(
         ChannelMediaOptions(publishMicrophoneTrack: true),
       );
       print('Enabled audio publishing to Agora');
     } else {
-      // 停用音訊發布，但保持設備連接
+      // Disable audio publishing but keep device connected
       await _engine!.updateChannelMediaOptions(
         ChannelMediaOptions(publishMicrophoneTrack: false),
       );
@@ -77,18 +77,18 @@ class AgoraMediaBridgeService {
     }
   }
 
-  /// 處理視訊發布狀態變更
+  /// Handle video publish state changes
   Future<void> _onVideoPublishChanged(bool enabled, String? deviceId) async {
     if (!_isInitialized || _engine == null) return;
     
     print('Video publish changed: enabled=$enabled, deviceId=$deviceId');
     
-    // 設置自定義視訊源（如果還沒設置）
+    // Set custom video source (if not already set)
     if (!_isCustomVideoSourceSet) {
       await _setupCustomVideoSource();
     }
     
-    // 總是設置視訊設備（不管是否發布）
+    // Always set video device (regardless of whether it's publishing)
     if (deviceId != null) {
       try {
         await _engine!.getVideoDeviceManager().setDevice(deviceId);
@@ -98,27 +98,27 @@ class AgoraMediaBridgeService {
       }
     }
     
-    // 根據發布狀態控制視訊發布
+    // Control video publishing based on publishing state
     _videoPublishEnabled = enabled;
     if (enabled) {
-      // 啟用視訊發布
+      // Enable video publishing
       await _engine!.enableLocalVideo(true);
       await _engine!.updateChannelMediaOptions(
         ChannelMediaOptions(publishCameraTrack: true),
       );
       print('Enabled video publishing to Agora');
     } else {
-      // 停用視訊發布
+      // Disable video publishing
       await _engine!.updateChannelMediaOptions(
         ChannelMediaOptions(publishCameraTrack: false),
       );
       print('Disabled video publishing to Agora');
-      // 停止視訊幀推送
+      // Stop video frame pushing
       _stopVideoFramePushing();
     }
   }
 
-  /// 處理視訊流變更
+  /// Handle video stream changes
   Future<void> _onVideoStreamChanged(html.MediaStream? stream) async {
     if (!_isInitialized || _engine == null) return;
     
@@ -131,31 +131,31 @@ class AgoraMediaBridgeService {
     }
   }
 
-  /// 設置自定義視訊源
+  /// Set custom video source
   Future<void> _setupCustomVideoSource() async {
     if (_engine == null || _isCustomVideoSourceSet) return;
     
     try {
-      // 獲取 MediaEngine 並設置外部視訊源
+      // Get MediaEngine and set external video source
       final mediaEngine = _engine!.getMediaEngine();
       await mediaEngine.setExternalVideoSource(
         enabled: true,
-        useTexture: false, // 使用 byte array 模式
+        useTexture: false, // Use byte array mode
         sourceType: ExternalVideoSourceType.videoFrame,
       );
       
       _isCustomVideoSourceSet = true;
       print('Custom video source enabled in Agora SDK');
       
-      // 準備視訊幀處理元素
+      // Prepare video frame processing elements
       if (kIsWeb) {
         _videoElement = html.VideoElement()
           ..autoplay = true
           ..muted = true
-          ..style.display = 'none'; // 隱藏元素
+          ..style.display = 'none'; // Hide element
         
         _canvas = html.CanvasElement()
-          ..style.display = 'none'; // 隱藏元素
+          ..style.display = 'none'; // Hide element
         
         _canvasContext = _canvas!.getContext('2d') as html.CanvasRenderingContext2D?;
         
@@ -166,7 +166,7 @@ class AgoraMediaBridgeService {
     }
   }
 
-  /// 開始推送視訊幀
+  /// Start pushing video frames
   Future<void> _startVideoFramePushing(html.MediaStream stream) async {
     if (!kIsWeb || _videoElement == null || _canvas == null || _canvasContext == null) {
       print('Cannot start video frame pushing: missing web elements');
@@ -174,10 +174,10 @@ class AgoraMediaBridgeService {
     }
     
     try {
-      // 設置視訊流到元素
+      // Set video stream to element
       _videoElement!.srcObject = stream;
       
-      // 等待視訊元素載入
+      // Wait for video element to load
       await _videoElement!.onLoadedMetadata.first;
       
       final width = _videoElement!.videoWidth;
@@ -188,13 +188,13 @@ class AgoraMediaBridgeService {
         return;
       }
       
-      // 設置 canvas 尺寸
+      // Set canvas size
       _canvas!.width = width;
       _canvas!.height = height;
       
       print('Starting video frame pushing: ${width}x$height');
       
-      // 開始定期推送視訊幀 (30 FPS)
+      // Start periodic video frame pushing (30 FPS)
       _frameTimer?.cancel();
       _frameTimer = Timer.periodic(Duration(milliseconds: 33), (_) {
         _pushVideoFrame(width, height);
@@ -205,28 +205,28 @@ class AgoraMediaBridgeService {
     }
   }
 
-  /// 推送單個視訊幀
+  /// Push single video frame
   Future<void> _pushVideoFrame(int width, int height) async {
     if (_videoElement == null || _canvas == null || _canvasContext == null || _engine == null) {
       return;
     }
     
     try {
-      // 將視訊幀繪製到 canvas
+      // Draw video frame to canvas
       _canvasContext!.drawImageScaled(_videoElement!, 0, 0, width, height);
       
-      // 獲取 RGBA 像素數據
+      // Get RGBA pixel data
       final imageData = _canvasContext!.getImageData(0, 0, width, height);
       final rgbaData = Uint8List.fromList(imageData.data);
       
-      // 直接使用 RGBA 格式推送到 Agora（不需要轉換）
+      // Push directly to Agora using RGBA format (no conversion needed)
       final mediaEngine = _engine!.getMediaEngine();
       await mediaEngine.pushVideoFrame(
         frame: ExternalVideoFrame(
           type: VideoBufferType.videoBufferRawData,
-          format: VideoPixelFormat.videoPixelRgba, // 直接使用 RGBA
+          format: VideoPixelFormat.videoPixelRgba, // Use RGBA directly
           buffer: rgbaData,
-          stride: width, // 對於 RGBA，stride 是像素寬度
+          stride: width, // For RGBA, stride is pixel width
           height: height,
           cropLeft: 0,
           cropTop: 0,
@@ -237,16 +237,16 @@ class AgoraMediaBridgeService {
         ),
       );
     } catch (e) {
-      // 避免在控制台中產生過多錯誤訊息
+      // Avoid generating too many error messages in the console
       if (e.toString().contains('pushVideoFrame')) {
-        // 可能是 API 調用問題，暫時忽略
+        // Possible API call issue, temporarily ignore
       } else {
         print('Error pushing video frame: $e');
       }
     }
   }
 
-  /// 停止推送視訊幀
+  /// Stop pushing video frames
   void _stopVideoFramePushing() {
     _frameTimer?.cancel();
     _frameTimer = null;
@@ -258,7 +258,7 @@ class AgoraMediaBridgeService {
     print('Stopped video frame pushing');
   }
 
-  /// 清理資源
+  /// Clean up resources
   void dispose() {
     _stopVideoFramePushing();
     

@@ -729,7 +729,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       onTap: () async => await alertOnError(
                         context,
                         () async {
-                          // 只控制發布到SDK，不關閉攝像頭（保持預覽功能）
+                          // Only control publishing to SDK, don't disable camera (maintain preview functionality)
                           await _mediaService.setVideoPublishToSDK(!isVideoOn);
                         },
                       ),
@@ -745,7 +745,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                           : () => AudioVideoErrorDialog.showOnError(
                                 context,
                                 () async {
-                                  // 只控制發布到SDK，不關閉麥克風（保持預覽功能）
+                                  // Only control publishing to SDK, don't disable microphone (maintain preview functionality)
                                   await _mediaService.setAudioPublishToSDK(!isMicOn);
                                 },
                               ),

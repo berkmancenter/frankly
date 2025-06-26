@@ -74,8 +74,8 @@ class _ControlBarState extends State<ControlBar> {
       onTap: () => AudioVideoErrorDialog.showOnError(
         context,
         () async {
-          // 只控制視訊發布到SDK，不關閉攝像頭
-          // 這樣預覽功能仍然可以正常工作
+          // Only control video publishing to SDK, don't disable camera
+          // This way preview functionality can still work normally
           await _mediaService.setVideoPublishToSDK(!isVideoOn);
         },
       ),

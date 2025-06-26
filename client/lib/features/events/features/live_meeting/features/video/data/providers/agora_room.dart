@@ -375,9 +375,9 @@ class AgoraRoom with ChangeNotifier {
     engine.enableLocalAudio(false);
     engine.release();
 
-    // 清理橋接服務
+    // Clean up bridge service
     _bridgeService.dispose();
-
+  
     super.dispose();
   }
 }
@@ -429,13 +429,13 @@ class AgoraParticipant with ChangeNotifier {
 
   Future<void> enableAudio({required bool setEnabled, String? deviceId}) async {
     if (isLocal && bridgeService != null) {
-      // 使用橋接服務來控制本地音訊
+      // Use bridge service to control local audio
       await bridgeService!.mediaService.setAudioPublishToSDK(setEnabled);
       audioTrackEnabled = setEnabled;
       return;
     }
 
-    // 遠程參與者或沒有橋接服務時的舊邏輯
+    // Legacy logic for remote participants or when bridge service is not available
     if (setEnabled) {
       if (deviceId != null) {
         try {
@@ -464,13 +464,13 @@ class AgoraParticipant with ChangeNotifier {
 
   Future<void> enableVideo({required bool setEnabled, String? deviceId}) async {
     if (isLocal && bridgeService != null) {
-      // 使用橋接服務來控制本地視訊
+      // Use bridge service to control local video
       await bridgeService!.mediaService.setVideoPublishToSDK(setEnabled);
       videoTrackEnabled = setEnabled;
       return;
     }
 
-    // 遠程參與者或沒有橋接服務時的舊邏輯
+    // Legacy logic for remote participants or when bridge service is not available
     if (setEnabled) {
       if (!videoLocalPreviewStarted) {
         videoLocalPreviewStarted = true;

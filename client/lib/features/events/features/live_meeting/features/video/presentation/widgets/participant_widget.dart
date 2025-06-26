@@ -626,8 +626,8 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
   }
 }
 
-/// 本地視訊預覽 Widget
-/// 使用 MediaDeviceService 的視訊流，而不是依賴 Agora SDK 的渲染
+/// Local video preview Widget
+/// Uses MediaDeviceService video stream instead of relying on Agora SDK rendering
 class _LocalVideoPreview extends StatefulWidget {
   @override
   _LocalVideoPreviewState createState() => _LocalVideoPreviewState();
@@ -638,7 +638,7 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
   html.VideoElement? _videoElement;
   Widget? _videoWidget;
   
-  // 追蹤上次的狀態，用於檢測變化
+  // Track last state for change detection
   bool _lastPublishVideoState = false;
   bool _lastCamEnabledState = true;
 
@@ -658,7 +658,7 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
 
   Future<void> _setupVideoPreview() async {
     if (!kIsWeb) {
-      // 非 Web 平台的處理
+      // Non-web platform handling
       setState(() {
         _videoWidget = Container(
           color: Colors.grey,
@@ -671,11 +671,11 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
     }
 
     try {
-      // 獲取媒體流
+      // Get media stream
       final stream = await _mediaService.getUserMedia();
       if (stream == null || !mounted) return;
 
-      // 創建 video 元素
+      // Create video element
       _videoElement = html.VideoElement()
         ..autoplay = true
         ..muted = true
@@ -684,14 +684,14 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
         ..style.objectFit = 'cover'
         ..srcObject = stream;
 
-      // 註冊 HTML 元素
+      // Register HTML element
       final viewType = 'local-video-preview-${DateTime.now().millisecondsSinceEpoch}';
       ui_web.platformViewRegistry.registerViewFactory(
         viewType,
         (int viewId) => _videoElement!,
       );
 
-      // 創建 Flutter Widget
+      // Create Flutter Widget
       final videoWidget = HtmlElementView(viewType: viewType);
 
       if (mounted) {
@@ -723,23 +723,23 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
 
   @override
   Widget build(BuildContext context) {
-    // 監聽 MediaDeviceService 的視訊發布狀態變化
+    // Listen to MediaDeviceService video publish state changes
     return ListenableBuilder(
       listenable: _mediaService,
       builder: (context, child) {
         final currentPublishVideoState = _mediaService.publishVideoToSDK;
         final currentCamEnabledState = _mediaService.camEnabled;
         
-        // 檢測狀態變化
+        // Detect state changes
         final publishStateChanged = _lastPublishVideoState != currentPublishVideoState;
         final camStateChanged = _lastCamEnabledState != currentCamEnabledState;
         
-        // 更新追蹤的狀態
+        // Update tracked state
         _lastPublishVideoState = currentPublishVideoState;
         _lastCamEnabledState = currentCamEnabledState;
         
-        // 根據視訊發布狀態決定是否顯示本地視訊預覽
-        // 如果沒有發布到SDK，顯示"Video Off"，但攝像頭仍然運行（供預覽使用）
+        // Decide whether to show local video preview based on video publish state
+        // If not publishing to SDK, show "Video Off", but camera is still running (for preview use)
         if (!currentPublishVideoState) {
           _cleanupVideoPreview();
           return Container(
@@ -750,7 +750,7 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
           );
         }
         
-        // 如果攝像頭關閉，也顯示"Camera Off"
+        // If camera is off, also show "Camera Off"
         if (!currentCamEnabledState) {
           _cleanupVideoPreview();
           return Container(
@@ -761,7 +761,7 @@ class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
           );
         }
         
-        // 如果要發布視訊且攝像頭開啟，但還沒有設置預覽，或者狀態發生變化，重新設置
+        // If video should be published and camera is on, but preview is not set up yet, or state has changed, re-setup
         if (_videoWidget == null || (publishStateChanged && currentPublishVideoState) || (camStateChanged && currentCamEnabledState)) {
           print('Setting up video preview due to state change: publishChanged=$publishStateChanged, camChanged=$camStateChanged');
           _setupVideoPreview();
