@@ -13,6 +13,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
 /// either from a preset list of color combinations or by entering custom 6-digit color strings
@@ -57,6 +58,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
 
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
+
+  final bool _colorPickerOpened = false;
 
   @override
   void initState() {
@@ -260,32 +263,40 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     }
   }
 
-  Widget _buildPresetColorsContent() => ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-          },
-        ),
-        child: SizedBox(
-          height: 120,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: <Widget>[
-              for (var i = 0;
-                  i < ThemeUtils().presetColorThemes(context).length;
-                  i++)
-                ThemePreview(
-                  selectedTheme: ThemeUtils().presetColorThemes(context)[i],
-                  isSelected: i == _selectedPresetIndex,
-                  onTap: () => _selectPreset(context, i),
-                  compact: true,
-                ),
-            ].intersperse(SizedBox(width: 13)).toList(),
+  Widget _buildPresetColorsContent() {
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 5,
+      mainAxisSpacing: 30,
+      crossAxisSpacing: 30,
+      physics: NeverScrollableScrollPhysics(),
+      children:
+          List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
+        return FloatingActionButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
           ),
-        ),
-      );
+          onPressed: () => _selectPreset(context, i),
+          backgroundColor:
+              ThemeUtils().presetColorThemes(context)[i].lightColor,
+          child: Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: _selectedPresetIndex == i
+                    ? Colors.white
+                    : Colors.transparent,
+                width: 5,
+              ),
+              shape: BoxShape.circle,
+              color: ThemeUtils().presetColorThemes(context)[i].darkColor,
+            ),
+          ),
+        );
+      }),
+    );
+  }
 
   Widget _buildCustomColorsContent() {
     const description =
@@ -322,11 +333,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           height: 141,
           child: Row(
             children: [
-              ThemePreview(
-                lightColorString: _currentLightColor,
-                darkColorString: _currentDarkColor,
-              ),
-              SizedBox(width: 20),
+              // ThemePreview(
+              //   lightColorString: _currentLightColor,
+              //   darkColorString: _currentDarkColor,
+              // ),
+              // SizedBox(width: 20),
               if (!constrained) ..._buildCustomTextFields(),
             ],
           ),
@@ -364,6 +375,14 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         SizedBox(width: 10),
         _buildCheckIcon(),
       ];
+// create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
+// ValueChanged<Color> callback
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
 
   Widget _buildChooseColorTextField({
     required String label,
@@ -374,6 +393,41 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         child: CustomTextField(
           controller: controller,
           onChanged: onChanged,
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Pick a color!'),
+                content: SingleChildScrollView(
+                  child: MaterialPicker(
+                    pickerColor: pickerColor,
+                    onColorChanged: changeColor,
+                  ),
+                  //
+                  // Use Block color picker:
+                  //
+                  // child: BlockPicker(
+                  //   pickerColor: currentColor,
+                  //   onColorChanged: changeColor,
+                  // ),
+                  //
+                  // child: MultipleChoiceBlockPicker(
+                  //   pickerColors: currentColors,
+                  //   onColorsChanged: changeColors,
+                  // ),
+                ),
+                actions: <Widget>[
+                  ElevatedButton(
+                    child: const Text('Got it'),
+                    onPressed: () {
+                      // setState(() => currentColor = pickerColor);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
           labelText: label,
           maxLength: 6,
           hideCounter: true,

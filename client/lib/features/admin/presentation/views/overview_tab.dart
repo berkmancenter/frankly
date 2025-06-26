@@ -2,6 +2,7 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:client/services.dart';
@@ -14,27 +15,38 @@ import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
-// import '../../data/models/overview_model.dart';
-// import '../overview_presenter.dart';
-
 class OverviewTab extends StatefulWidget {
   @override
   _OverviewTabState createState() => _OverviewTabState();
 }
 
 class _OverviewTabState extends State<OverviewTab> {
-  // late final OverviewModel _model;
-  // late final OverviewPresenter _presenter;
-
   late Community _community;
   late String _displayId;
 
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
+
+  Widget _buildSection(String label, Widget sectionContent, bool mobile) {
+    return Flex(
+      direction: mobile ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: mobile ? 0 : 46, vertical: 16),
+          child: HeightConstrainedText(
+            label,
+            style: context.theme.textTheme.titleLarge,
+            maxLines: 1,
+          ),
+        ),
+        sectionContent,
+        if (!mobile) Spacer(flex: 1),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,73 +56,83 @@ class _OverviewTabState extends State<OverviewTab> {
 
     context.watch<CommunityProvider>();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Flex(
-          direction: mobile ? Axis.vertical : Axis.horizontal,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 46, vertical: 16),
-              child: HeightConstrainedText(
-                context.l10n.basicSettings,
-                style: context.theme.textTheme.titleLarge,
-                maxLines: 1,
-
-              ),
-            ),
-            Flexible(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
-                child: CreateCommunityTextFields(
-                  showAllFields: true,
-                  showChooseCustomDisplayId: true,
-                  onCustomDisplayIdChanged: (value) => _displayId = value,
-                  onNameChanged: (value) => setState(
-                    () => _community = _community.copyWith(name: value),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints viewportConstraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: viewportConstraints.maxHeight),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildSection(
+                  context.l10n.basicSettings,
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0,
+                        vertical: 8.0,
+                      ),
+                      child: CreateCommunityTextFields(
+                        showAllFields: true,
+                        showChooseCustomDisplayId: true,
+                        onCustomDisplayIdChanged: (value) => _displayId = value,
+                        onNameChanged: (value) => setState(
+                          () => _community = _community.copyWith(name: value),
+                        ),
+                        onTaglineChanged: (value) => setState(
+                          () =>
+                              _community = _community.copyWith(tagLine: value),
+                        ),
+                        onAboutChanged: (value) => setState(
+                          () => _community =
+                              _community.copyWith(description: value),
+                        ),
+                        community: _community,
+                      ),
+                    ),
                   ),
-                  onTaglineChanged: (value) => setState(
-                    () => _community = _community.copyWith(tagLine: value),
-                  ),
-                  onAboutChanged: (value) => setState(
-                    () => _community = _community.copyWith(description: value),
-                  ),
-                  community: _community,
+                  mobile,
                 ),
-              ),
+                Divider(
+                  color: context.theme.colorScheme.onPrimaryContainer
+                      .withOpacity(0.5),
+                  height: 1,
+                ),
+                _buildSection(
+                  context.l10n.brandingAndTheme,
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0,
+                        vertical: 8.0,
+                      ),
+                      child: Column(
+                        children: [
+                          CreateCommunityImageFields(
+                            profileImageUrl: _community.profileImageUrl,
+                            updateProfileImage: (String imageUrl) =>
+                                _updateProfileImage(imageUrl: imageUrl),
+                            removeImage: _removeImage,
+                          ),
+                          ChooseColorSection(
+                            community: _community,
+                            setDarkColor: (val) => _community =
+                                _community.copyWith(themeDarkColor: val),
+                            setLightColor: (val) => _community =
+                                _community.copyWith(themeLightColor: val),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  mobile,
+                ),
+              ],
             ),
-            if(!mobile)
-            Spacer(flex:  1),
-          ],
-        ),
-        Divider(
-          color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
-          height: 1,
-        ),
-      ],
-      // HeightConstrainedText(
-      //   context.l10n.brandingAndTheme,
-      //   style: context.theme.textTheme.titleLarge,
-      //   maxLines: 1,
-      // )
-
-      // SizedBox(height: 10),
-      // HeightConstrainedText(
-      //   context.l10n.brandingAndTheme,
-      //   style: context.theme.textTheme.titleLarge,
-      //   maxLines: 1,
-      // ),
-      // SizedBox(height: 10),
-      //  CreateCommunityImageFields(
-      //   profileImageUrl: _community.profileImageUrl,
-      //   updateProfileImage: (String imageUrl) =>
-      //       _updateProfileImage(imageUrl: imageUrl),
-      //   removeImage: _removeImage,
-      // ),
+          ),
+        );
+      },
     );
   }
 
