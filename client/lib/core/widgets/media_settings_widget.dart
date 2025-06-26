@@ -191,7 +191,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('🎙 Audio Input Device'),
+        const Text('Audio Input Device'),
         DropdownButton<String>(
           value: _mediaService.selectedAudioInputId,
           items: _mediaService.audioInputs.map((device) {
@@ -215,7 +215,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
           hint: const Text('Select audio input'),
         ),
         const SizedBox(height: 16),
-        const Text('📷 Video Input Device'),
+        const Text('Video Input Device'),
         DropdownButton<String>(
           value: _mediaService.selectedVideoInputId,
           items: _mediaService.videoInputs.map((device) {
@@ -250,7 +250,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         ),
         const SizedBox(height: 20),
         if (kIsWeb) ...[
-          const Text('🎥 Video Preview'),
+          const Text('Video Preview'),
           Container(
             width: 200,
             height: 150,
@@ -258,7 +258,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             child: HtmlElementView(viewType: _viewType),
           ),
         ] else ...[
-          const Text('🎥 Video Preview (Not available on this platform)'),
+          const Text('Video Preview (Not available on this platform)'),
           Container(
             width: 200,
             height: 150,
