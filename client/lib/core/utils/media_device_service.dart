@@ -16,6 +16,9 @@ class MediaDeviceService extends ChangeNotifier {
   bool _publishAudioToSDK = false;
   bool _publishVideoToSDK = false;
 
+  // Track if we're currently providing a stream to SDK to avoid unnecessary null calls
+  bool _isProvidingStreamToSDK = false;
+
   // Singleton pattern to ensure only one instance globally
   static final MediaDeviceService _instance = MediaDeviceService._internal();
   factory MediaDeviceService() => _instance;
@@ -90,12 +93,24 @@ class MediaDeviceService extends ChangeNotifier {
     // Notify external SDK of video publish state change
     _onVideoPublishChanged?.call(enabled && camEnabled, selectedVideoInputId);
 
-    // If publishing video, provide media stream to external SDK
+    // Only provide/remove stream when there's an actual state change that requires it
     if (enabled && camEnabled) {
       final stream = await _getSharedStream();
-      _onVideoStreamChanged?.call(stream);
+      if (stream != null) {
+        _onVideoStreamChanged?.call(stream);
+        _isProvidingStreamToSDK = true;
+      }
+    } else if (enabled) {
+      // If enabled but camera is off, don't call the stream callback
+      // The publish state callback above already handles the disable case
+      
+      
+      print('Video publish enabled but camera is off, not updating stream');
     } else {
-      _onVideoStreamChanged?.call(null);
+      if (_isProvidingStreamToSDK) {
+        // _onVideoStreamChanged?.call(null);
+        _isProvidingStreamToSDK = false;
+      }
     }
 
     // Notify listeners of state change
@@ -210,9 +225,19 @@ class MediaDeviceService extends ChangeNotifier {
   Future<void> _updateVideoStreamToSDK() async {
     if (_publishVideoToSDK && camEnabled) {
       final stream = await _getSharedStream();
-      _onVideoStreamChanged?.call(stream);
+      if (stream != null) {
+        _onVideoStreamChanged?.call(stream);
+        _isProvidingStreamToSDK = true;
+      }
+    } else if (_publishVideoToSDK) {
+      // Publishing is enabled but camera is off - don't update stream
+      print('Video publishing enabled but camera off, not updating stream');
     } else {
-      _onVideoStreamChanged?.call(null);
+      // Not publishing - only call null if we were previously providing a stream
+      if (_isProvidingStreamToSDK) {
+        _onVideoStreamChanged?.call(null);
+        _isProvidingStreamToSDK = false;
+      }
     }
   }
 
@@ -231,7 +256,7 @@ class MediaDeviceService extends ChangeNotifier {
   Future<html.MediaStream?> _getSharedStream() async {
     if (!kIsWeb) {
       throw UnimplementedError(
-          'getUserMedia is not implemented for non-web platforms in this version.');
+          'getUserMedia is not implemented for non-web platforms in this version.',);
     }
 
     // If shared stream exists and devices have not changed, return it
@@ -350,6 +375,37 @@ class MediaDeviceService extends ChangeNotifier {
     }
   }
 
+  /// Get a media stream specifically for preview purposes (ignores current enable states)
+  /// This is used by MediaSettingsWidget to always show preview regardless of current device states
+  Future<html.MediaStream?> getPreviewStream() async {
+    if (!kIsWeb) {
+      throw UnimplementedError(
+          'getUserMedia is not implemented for non-web platforms in this version.',);
+    }
+
+    final dynamic audioConstraint = selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
+        ? {'deviceId': {'exact': selectedAudioInputId}}
+        : true;
+
+    final dynamic videoConstraint = selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
+        ? {'deviceId': {'exact': selectedVideoInputId}}
+        : true;
+
+    final Map<String, dynamic> constraints = {
+      'audio': audioConstraint,
+      'video': videoConstraint,
+    };
+
+    try {
+      final previewStream = await html.window.navigator.mediaDevices?.getUserMedia(constraints);
+      print('Created independent preview stream with audio: $selectedAudioInputId, video: $selectedVideoInputId');
+      return previewStream;
+    } catch (e) {
+      print('Error getting preview media: $e');
+      return null;
+    }
+  }
+
   /// Get the original shared media stream (not cloned, for direct control scenarios)
   Future<html.MediaStream?> getSharedMediaStream() async {
     return await _getSharedStream();
@@ -363,7 +419,7 @@ class MediaDeviceService extends ChangeNotifier {
       // If it's the shared stream, do not stop, only stop cloned streams
       if (stream == _sharedStream) {
         print(
-            'Warning: Attempting to stop shared stream. Use dispose() instead.');
+            'Warning: Attempting to stop shared stream. Use dispose() instead.',);
         return;
       }
 
@@ -384,6 +440,7 @@ class MediaDeviceService extends ChangeNotifier {
     _onVideoStreamChanged = null;
     _publishAudioToSDK = false;
     _publishVideoToSDK = false;
+    _isProvidingStreamToSDK = false;
     super.dispose();
   }
 
@@ -394,13 +451,13 @@ class MediaDeviceService extends ChangeNotifier {
     // Force trigger audio device sync
     if (_onAudioPublishChanged != null) {
       _onAudioPublishChanged!(
-          micEnabled && _publishAudioToSDK, selectedAudioInputId);
+          micEnabled && _publishAudioToSDK, selectedAudioInputId,);
     }
 
     // Force trigger video device sync
     if (_onVideoPublishChanged != null) {
       _onVideoPublishChanged!(
-          camEnabled && _publishVideoToSDK, selectedVideoInputId);
+          camEnabled && _publishVideoToSDK, selectedVideoInputId,);
     }
 
     // If currently publishing video, update media stream

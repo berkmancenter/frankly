@@ -17,43 +17,61 @@ class AudioVideoSettingsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Container(
-        constraints: BoxConstraints(maxWidth: 500),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Audio/Video Settings',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  SizedBox(height: 12),
-                  MediaSettingsWidget(),
-                ],
-              ),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  padding: EdgeInsets.zero,
+    final GlobalKey<MediaSettingsWidgetState> settingsKey = GlobalKey<MediaSettingsWidgetState>();
+    
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          // Ensure final sync before closing
+          await settingsKey.currentState?.finalizeDeviceSettings();
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      child: Dialog(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Audio/Video Settings',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    SizedBox(height: 12),
+                    MediaSettingsWidget(key: settingsKey),
+                  ],
                 ),
               ),
-            ),
-          ],
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () async {
+                      // Ensure final sync before closing
+                      await settingsKey.currentState?.finalizeDeviceSettings();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -61,7 +79,7 @@ class AudioVideoSettingsDialog extends StatelessWidget {
 }
 
 class MediaSettingsWidget extends StatefulWidget {
-  const MediaSettingsWidget();
+  const MediaSettingsWidget({Key? key}) : super(key: key);
 
   @override
   State<MediaSettingsWidget> createState() => MediaSettingsWidgetState();
@@ -71,6 +89,11 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   final MediaDeviceService _mediaService = MediaDeviceService();
   late html.VideoElement _videoElement;
   final String _viewType = 'compact-video-preview-element';
+  
+  // Independent preview stream management
+  html.MediaStream? _independentPreviewStream;
+  String? _previewAudioDeviceId;
+  String? _previewVideoDeviceId;
 
   @override
   void initState() {
@@ -97,6 +120,9 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   Future<void> initAll() async {
     await _mediaService.init();
     if (kIsWeb) {
+      // Initialize independent preview with current device selection
+      _previewAudioDeviceId = _mediaService.selectedAudioInputId;
+      _previewVideoDeviceId = _mediaService.selectedVideoInputId;
       await updatePreview();
     }
     if (mounted) {
@@ -104,19 +130,53 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     }
   }
 
+  /// Create completely independent preview stream
+  Future<html.MediaStream?> _createIndependentPreviewStream() async {
+    if (!kIsWeb) return null;
+
+    final dynamic audioConstraint = _previewAudioDeviceId != null && _previewAudioDeviceId!.isNotEmpty
+        ? {'deviceId': {'exact': _previewAudioDeviceId}}
+        : true;
+
+    final dynamic videoConstraint = _previewVideoDeviceId != null && _previewVideoDeviceId!.isNotEmpty
+        ? {'deviceId': {'exact': _previewVideoDeviceId}}
+        : true;
+
+    final Map<String, dynamic> constraints = {
+      'audio': audioConstraint,
+      'video': videoConstraint,
+    };
+
+    try {
+      final stream = await html.window.navigator.mediaDevices?.getUserMedia(constraints);
+      print('Created completely independent preview stream with audio: $_previewAudioDeviceId, video: $_previewVideoDeviceId');
+      return stream;
+    } catch (e) {
+      print('Error creating independent preview stream: $e');
+      return null;
+    }
+  }
+
   Future<void> updatePreview() async {
     if (!kIsWeb) return;
+    
+    // Stop old preview stream
+    if (_independentPreviewStream != null) {
+      _independentPreviewStream!.getTracks().forEach((track) => track.stop());
+      _independentPreviewStream = null;
+    }
+    
     try {
-      final stream = await _mediaService.getUserMedia();
-      _videoElement.srcObject = stream;
-      print('Updated compact video preview with cloned stream');
+      _independentPreviewStream = await _createIndependentPreviewStream();
+      _videoElement.srcObject = _independentPreviewStream;
+      print('Updated independent video preview');
 
       // Listen for video stream end event, auto refresh
-      if (stream != null) {
-        final videoTracks = stream.getVideoTracks();
+      if (_independentPreviewStream != null) {
+        final videoTracks = _independentPreviewStream!.getVideoTracks();
         for (final track in videoTracks) {
           track.onEnded.listen((_) {
-            print('Video track ended, refreshing preview...');
+            print('Independent preview track ended, refreshing...');
             Future.delayed(Duration(milliseconds: 500), () {
               if (mounted) {
                 updatePreview();
@@ -126,17 +186,17 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         }
       }
     } catch (e) {
-      print('Error updating preview: $e');
+      print('Error updating independent preview: $e');
       _videoElement.srcObject = null;
 
-      // If failed to get stream, try to force refresh
+      // If failed to get stream, try again after a short delay
       try {
-        await _mediaService.forceRefreshStream();
-        final retryStream = await _mediaService.getUserMedia();
-        _videoElement.srcObject = retryStream;
-        print('Successfully refreshed video preview after error');
+        await Future.delayed(Duration(milliseconds: 500));
+        _independentPreviewStream = await _createIndependentPreviewStream();
+        _videoElement.srcObject = _independentPreviewStream;
+        print('Successfully refreshed independent preview after error');
       } catch (e2) {
-        print('Failed to refresh video preview: $e2');
+        print('Failed to refresh independent preview: $e2');
       }
     }
   }
@@ -170,10 +230,11 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   @override
   void dispose() {
     if (kIsWeb) {
-      // Stop preview stream (this is a cloned stream)
-      final stream = _videoElement.srcObject;
-      if (stream is html.MediaStream) {
-        _mediaService.stopMediaStream(stream);
+      // Stop independent preview stream
+      if (_independentPreviewStream != null) {
+        _independentPreviewStream!.getTracks().forEach((track) => track.stop());
+        print('Stopped independent preview stream tracks');
+        _independentPreviewStream = null;
       }
       _videoElement.srcObject = null;
     }
@@ -193,7 +254,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       children: [
         const Text('Audio Input Device'),
         DropdownButton<String>(
-          value: _mediaService.selectedAudioInputId,
+          value: _previewAudioDeviceId,
           items: _mediaService.audioInputs.map((device) {
             return DropdownMenuItem<String>(
               value: device.deviceId,
@@ -203,12 +264,14 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
           onChanged: (val) async {
             if (val != null) {
               setState(() {
+                _previewAudioDeviceId = val;
                 _mediaService.selectAudio(val);
               });
 
               // Sync device selection to all systems
               await _syncDeviceSelection(audioDeviceId: val);
 
+              // Update independent preview with new device
               await updatePreview();
             }
           },
@@ -217,7 +280,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         const SizedBox(height: 16),
         const Text('Video Input Device'),
         DropdownButton<String>(
-          value: _mediaService.selectedVideoInputId,
+          value: _previewVideoDeviceId,
           items: _mediaService.videoInputs.map((device) {
             return DropdownMenuItem<String>(
               value: device.deviceId,
@@ -227,11 +290,14 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
           onChanged: (val) async {
             if (val != null) {
               setState(() {
+                _previewVideoDeviceId = val;
                 _mediaService.selectVideo(val);
               });
 
               // Sync device selection to all systems
               await _syncDeviceSelection(videoDeviceId: val);
+              
+              // Update independent preview with new device
               await updatePreview();
             }
           },
@@ -257,5 +323,36 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         ],
       ],
     );
+  }
+
+  /// Finalize device settings when closing the dialog
+  /// This ensures that the selected devices are applied to the actual media streams
+  Future<void> finalizeDeviceSettings() async {
+    try {
+      print('Finalizing device settings...');
+      
+      // 1. Ensure MediaDeviceService has the latest device selection
+      if (_previewAudioDeviceId != null) {
+        _mediaService.selectAudio(_previewAudioDeviceId!);
+        await sharedPreferencesService.setDefaultMicrophoneId(_previewAudioDeviceId!);
+        print('Finalized audio device: $_previewAudioDeviceId');
+      }
+      
+      if (_previewVideoDeviceId != null) {
+        _mediaService.selectVideo(_previewVideoDeviceId!);
+        await sharedPreferencesService.setDefaultCameraId(_previewVideoDeviceId!);
+        print('Finalized video device: $_previewVideoDeviceId');
+      }
+      
+      // 2. Force refresh the actual media stream to use new devices
+      await _mediaService.forceRefreshStream();
+      
+      // 3. Force sync to SDK to ensure bridge services get the new devices
+      await _mediaService.forceSyncToSDK();
+      
+      print('Device settings finalized successfully');
+    } catch (e) {
+      print('Error finalizing device settings: $e');
+    }
   }
 }
