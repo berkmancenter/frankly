@@ -91,6 +91,23 @@
   -->
   <script src="./agora/iris-web-rtc.js"></script>
 
+  <script type="application/javascript">
+    // Just filter out iris-web-rtc.js logs
+    (function() {
+      const originalConsoleLog = console.log;
+      
+      console.log = function(...args) {
+        // Check if the call stack comes from iris-web-rtc.js
+        const stack = new Error().stack;
+        if (stack && stack.includes('iris-web-rtc.js')) {
+          // Logs from iris-web-rtc.js, don't show
+          return;
+        }
+        // Other logs are displayed normally
+        originalConsoleLog.apply(console, args);
+      };
+    })();
+  </script>
 
   <script type="application/javascript">
     // Keep this in sync with the main.dart.js version below

@@ -32,7 +32,7 @@ class AgoraRoom with ChangeNotifier {
   final LiveMeetingProvider liveMeetingProvider;
   final ConferenceRoom conferenceRoom;
 
-  // 橋接服務
+  // Bridge service
   final AgoraMediaBridgeService _bridgeService = AgoraMediaBridgeService();
 
   AgoraRoom({
@@ -114,10 +114,14 @@ class AgoraRoom with ChangeNotifier {
     await engine.initialize(
       RtcEngineContext(
         appId: '76cd63ec061d4192ac03ff8cdde51395',
+        logConfig: LogConfig(
+          level: LogLevel.logLevelWarn, // Only show warning and error logs
+          filePath: '', // Don't write to file
+        ),
       ),
     );
 
-    // 初始化橋接服務
+    // Initialize bridge service
     await _bridgeService.initialize(engine);
 
     _localParticipant = AgoraParticipant(
