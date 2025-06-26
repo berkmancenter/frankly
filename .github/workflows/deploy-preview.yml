@@ -1,0 +1,101 @@
+name: Deploy to Staging Preview Channel
+on: workflow_dispatch
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+jobs:
+  build_and_deploy_preview:
+    name: Build & Deploy Preview
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            client:
+              - 'client/**'
+
+      - name: Set Up Flutter
+        if: steps.changes.outputs.client == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
+          channel: "stable"
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: "/home/runner/.pub-cache"
+
+      - name: Install Dependencies
+        if: steps.changes.outputs.client == 'true'
+        run: flutter pub get
+
+      - name: Update Product Version
+        if: steps.changes.outputs.client == 'true' 
+        run: |
+          sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
+
+      - name: Update Google Auth Client ID
+        if: steps.changes.outputs.client == 'true' 
+        run: |
+          sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
+
+      - name: Create .env file
+        if: steps.changes.outputs.client == 'true' 
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          envkey_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          envkey_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+          envkey_FIREBASE_PROJECT_ID: ${{ secrets.APP_STAGING_PROJECT_ID }}
+          envkey_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          envkey_FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+          envkey_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          envkey_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+          envkey_FUNCTIONS_URL_PREFIX: ${{ secrets.FUNCTIONS_URL_PREFIX }}
+          envkey_SHARE_LINK_URL: ${{ secrets.APP_STAGING_FULL_URL }}/share
+          envkey_ENABLE_FAKE_PARTICIPANTS: true
+          envkey_ENABLE_DEV_EVENT_SETTINGS: true
+          envkey_ENABLE_DEV_ADMIN_SETTINGS: true
+          envkey_ENABLE_TRACE_LOG: true
+          envkey_APP_NAME: Frankly
+          envkey_APP_URL: https://app.frankly.org
+          envkey_TERMS_URL: https://frankly.org/terms
+          envkey_PRICING_URL: https://frankly.org/pricing
+          envkey_ABOUT_URL: https://frankly.org
+          envkey_PRIVACY_POLICY_URL: https://frankly.org/privacy
+          envkey_HELP_CENTER_URL: https://rebootingsocialmedia.notion.site/Frankly-Help-Center-23b4f9a120a344d4af2b2ce44b2ae229
+          envkey_CREATE_TEMPLATE_HELP_URL: https://rebootingsocialmedia.notion.site/Creating-and-Managing-Events-552a42e4a09549b788e1901536a25965
+          envkey_CREATE_EVENT_HELP_URL: https://rebootingsocialmedia.notion.site/Creating-and-Managing-Events-552a42e4a09549b788e1901536a25965
+          envkey_TROUBLESHOOTING_GUIDE_URL: https://rebootingsocialmedia.notion.site/Troubleshooting-c6f922b816a742a9bba4bf000e84565d
+          envkey_LOGO_URL: https://res.cloudinary.com/dh0vegjku/image/upload/v1725488238/frankly_assets/Frankly-Icon-144x144_ex8nky.png
+          envkey_SIDEBAR_FOOTER: "Frankly is operated by the Applied Social Media Lab at the Berkman Klein Center for Internet & Society"
+          envkey_COPYRIGHT_STATEMENT: "2024 President and Fellows of Harvard College."
+          envkey_CLOUDINARY_IMAGE_PRESET: ${{ secrets.CLOUDINARY_IMAGE_PRESET }}
+          envkey_CLOUDINARY_VIDEO_PRESET: ${{ secrets.CLOUDINARY_VIDEO_PRESET }}
+          envkey_CLOUDINARY_DEFAULT_PRESET: ${{ secrets.CLOUDINARY_DEFAULT_PRESET }}
+          envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
+
+      - name: Build App
+        if: steps.changes.outputs.client == 'true' 
+        id: build_app
+        run: flutter build web --release web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
+
+      - name: Deploy to Preview Channel
+        if: steps.changes.outputs.client == 'true'
+        uses: FirebaseExtended/action-hosting-deploy@v0.9.0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          expires: 14d
+          projectId: ${{secrets.APP_STAGING_PROJECT_ID}}
