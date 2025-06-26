@@ -4,7 +4,6 @@ import 'package:universal_html/html.dart' as html;
 import 'dart:ui_web' as ui_web;
 import '../utils/media_device_service.dart';
 import '../data/providers/dialog_provider.dart';
-import '../../features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import '../../services.dart';
 
 class AudioVideoSettingsDialog extends StatelessWidget {
