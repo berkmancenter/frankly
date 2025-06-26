@@ -384,7 +384,7 @@ class MediaDeviceService extends ChangeNotifier {
     _onVideoStreamChanged = null;
     _publishAudioToSDK = false;
     _publishVideoToSDK = false;
-    print('MediaDeviceService disposed');
+    super.dispose();
   }
 
   /// Force sync current device settings to bridge service
