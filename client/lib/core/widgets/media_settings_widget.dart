@@ -38,7 +38,7 @@ class AudioVideoSettingsDialog extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 12),
-                  _CompactMediaSettingsWidget(),
+                  MediaSettingsWidget(),
                 ],
               ),
             ),
@@ -61,14 +61,14 @@ class AudioVideoSettingsDialog extends StatelessWidget {
   }
 }
 
-class _CompactMediaSettingsWidget extends StatefulWidget {
-  const _CompactMediaSettingsWidget();
+class MediaSettingsWidget extends StatefulWidget {
+  const MediaSettingsWidget();
 
   @override
-  State<_CompactMediaSettingsWidget> createState() => _CompactMediaSettingsWidgetState();
+  State<MediaSettingsWidget> createState() => MediaSettingsWidgetState();
 }
 
-class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget> {
+class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   final MediaDeviceService _mediaService = MediaDeviceService();
   late html.VideoElement _videoElement;
   final String _viewType = 'compact-video-preview-element';
