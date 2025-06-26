@@ -1,8 +1,8 @@
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, ChangeNotifier;
 import 'package:universal_html/html.dart' as html;
 
-class MediaDeviceService {
+class MediaDeviceService extends ChangeNotifier {
   List<html.MediaDeviceInfo> audioInputs = [];
   List<html.MediaDeviceInfo> videoInputs = [];
 
@@ -11,6 +11,10 @@ class MediaDeviceService {
 
   bool micEnabled = true;
   bool camEnabled = true;
+  
+  // 新增：控制是否向外部SDK（如Agora）發布媒體流
+  bool _publishAudioToSDK = false;
+  bool _publishVideoToSDK = false;
 
   // 單例模式，確保全域只有一個實例
   static final MediaDeviceService _instance = MediaDeviceService._internal();
@@ -25,6 +29,78 @@ class MediaDeviceService {
   String? _currentVideoDeviceId;
   bool _currentMicEnabled = true;
   bool _currentCamEnabled = true;
+
+  // 橋接回調函數，用於通知外部SDK狀態變更
+  Function(bool enabled, String? deviceId)? _onAudioPublishChanged;
+  Function(bool enabled, String? deviceId)? _onVideoPublishChanged;
+  Function(html.MediaStream? stream)? _onVideoStreamChanged;
+
+  // Getters for publish states
+  bool get publishAudioToSDK => _publishAudioToSDK;
+  bool get publishVideoToSDK => _publishVideoToSDK;
+
+  /// 註冊橋接回調函數
+  void registerAudioBridge(Function(bool enabled, String? deviceId) callback) {
+    _onAudioPublishChanged = callback;
+  }
+
+  void registerVideoBridge(Function(bool enabled, String? deviceId) callback) {
+    _onVideoPublishChanged = callback;
+  }
+
+  void registerVideoStreamBridge(Function(html.MediaStream? stream) callback) {
+    _onVideoStreamChanged = callback;
+  }
+
+  /// 控制音訊發布到外部SDK
+  Future<void> setAudioPublishToSDK(bool enabled) async {
+    if (_publishAudioToSDK == enabled) return;
+    
+    _publishAudioToSDK = enabled;
+    print('Audio publish to SDK: $enabled');
+    
+    // 如果要開始發布音訊，確保麥克風是開啟的
+    if (enabled && !micEnabled) {
+      print('Enabling microphone for audio publishing');
+      micEnabled = true;
+      _invalidateSharedStream(); // 重新創建流
+    }
+    
+    // 通知外部SDK音訊發布狀態變更
+    _onAudioPublishChanged?.call(enabled && micEnabled, selectedAudioInputId);
+    
+    // 通知監聽者狀態變更
+    notifyListeners();
+  }
+
+  /// 控制視訊發布到外部SDK
+  Future<void> setVideoPublishToSDK(bool enabled) async {
+    if (_publishVideoToSDK == enabled) return;
+    
+    _publishVideoToSDK = enabled;
+    print('Video publish to SDK: $enabled');
+    
+    // 如果要開始發布視訊，確保攝像頭是開啟的
+    if (enabled && !camEnabled) {
+      print('Enabling camera for video publishing');
+      camEnabled = true;
+      _invalidateSharedStream(); // 重新創建流
+    }
+    
+    // 通知外部SDK視訊發布狀態變更
+    _onVideoPublishChanged?.call(enabled && camEnabled, selectedVideoInputId);
+    
+    // 如果要發布視訊，提供媒體流給外部SDK
+    if (enabled && camEnabled) {
+      final stream = await _getSharedStream();
+      _onVideoStreamChanged?.call(stream);
+    } else {
+      _onVideoStreamChanged?.call(null);
+    }
+    
+    // 通知監聽者狀態變更
+    notifyListeners();
+  }
 
   Future<void> init() async {
     // Request permissions first
@@ -66,6 +142,12 @@ class MediaDeviceService {
     if (_currentAudioDeviceId != deviceId) {
       _invalidateSharedStream();
     }
+    
+    // 總是通知橋接服務設備變更（不管是否正在發布）
+    _onAudioPublishChanged?.call(micEnabled && _publishAudioToSDK, deviceId);
+    
+    // 通知監聽者狀態變更
+    notifyListeners();
   }
 
   void selectVideo(String deviceId) {
@@ -74,6 +156,16 @@ class MediaDeviceService {
     if (_currentVideoDeviceId != deviceId) {
       _invalidateSharedStream();
     }
+    
+    // 總是通知橋接服務設備變更（不管是否正在發布）
+    _onVideoPublishChanged?.call(camEnabled && _publishVideoToSDK, deviceId);
+    // 如果正在發布視訊，重新提供媒體流
+    if (_publishVideoToSDK) {
+      _updateVideoStreamToSDK();
+    }
+    
+    // 通知監聽者狀態變更
+    notifyListeners();
   }
 
   void toggleMic(bool enabled) {
@@ -82,6 +174,14 @@ class MediaDeviceService {
     if (_currentMicEnabled != enabled) {
       _invalidateSharedStream();
     }
+    
+    // 如果正在發布到SDK，通知變更
+    if (_publishAudioToSDK) {
+      _onAudioPublishChanged?.call(enabled, selectedAudioInputId);
+    }
+    
+    // 通知監聽者狀態變更
+    notifyListeners();
   }
 
   void toggleCam(bool enabled) {
@@ -89,6 +189,26 @@ class MediaDeviceService {
     // 視訊開關變更時需要重新創建流
     if (_currentCamEnabled != enabled) {
       _invalidateSharedStream();
+    }
+    
+    // 如果正在發布到SDK，通知變更
+    if (_publishVideoToSDK) {
+      _onVideoPublishChanged?.call(enabled, selectedVideoInputId);
+      // 重新提供媒體流
+      _updateVideoStreamToSDK();
+    }
+    
+    // 通知監聽者狀態變更
+    notifyListeners();
+  }
+
+  /// 更新視訊流到SDK
+  Future<void> _updateVideoStreamToSDK() async {
+    if (_publishVideoToSDK && camEnabled) {
+      final stream = await _getSharedStream();
+      _onVideoStreamChanged?.call(stream);
+    } else {
+      _onVideoStreamChanged?.call(null);
     }
   }
 
@@ -170,6 +290,11 @@ class MediaDeviceService {
     _invalidateSharedStream();
     // 重新獲取流
     await _getSharedStream();
+    
+    // 如果正在發布視訊到SDK，更新流
+    if (_publishVideoToSDK) {
+      await _updateVideoStreamToSDK();
+    }
   }
 
   /// 檢查共享流是否仍然有效
@@ -244,8 +369,36 @@ class MediaDeviceService {
   }
 
   /// 完全清理所有媒體資源
+  @override
   void dispose() {
     _invalidateSharedStream();
+    _onAudioPublishChanged = null;
+    _onVideoPublishChanged = null;
+    _onVideoStreamChanged = null;
+    _publishAudioToSDK = false;
+    _publishVideoToSDK = false;
     print('MediaDeviceService disposed');
+  }
+
+  /// 強制同步當前設備設置到橋接服務
+  Future<void> forceSyncToSDK() async {
+    print('Force syncing current device settings to SDK...');
+    
+    // 強制觸發音訊設備同步
+    if (_onAudioPublishChanged != null) {
+      _onAudioPublishChanged!(micEnabled && _publishAudioToSDK, selectedAudioInputId);
+    }
+    
+    // 強制觸發視訊設備同步
+    if (_onVideoPublishChanged != null) {
+      _onVideoPublishChanged!(camEnabled && _publishVideoToSDK, selectedVideoInputId);
+    }
+    
+    // 如果正在發布視訊，更新媒體流
+    if (_publishVideoToSDK) {
+      await _updateVideoStreamToSDK();
+    }
+    
+    print('Force sync completed');
   }
 }

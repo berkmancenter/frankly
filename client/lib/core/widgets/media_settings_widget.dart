@@ -105,33 +105,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         print('Synced video device to SharedPreferences: $videoDeviceId');
       }
       
-      // 2. 如果有活躍的會議，即時更新 Agora SDK 設備
-      if (mounted) {
-        final conferenceRoom = ConferenceRoom.read(context);
-        if (conferenceRoom?.room?.localParticipant != null) {
-          final participant = conferenceRoom!.room!.localParticipant!;
-          
-          // 更新音訊設備
-          if (audioDeviceId != null) {
-            try {
-              await participant.enableAudio(setEnabled: participant.audioTrackEnabled, deviceId: audioDeviceId);
-              print('Updated Agora audio device: $audioDeviceId');
-            } catch (e) {
-              print('Error updating Agora audio device: $e');
-            }
-          }
-          
-          // 更新視訊設備
-          if (videoDeviceId != null) {
-            try {
-              await participant.enableVideo(setEnabled: participant.videoTrackEnabled, deviceId: videoDeviceId);
-              print('Updated Agora video device: $videoDeviceId');
-            } catch (e) {
-              print('Error updating Agora video device: $e');
-            }
-          }
-        }
-      }
+      // 2. 強制同步設備設置到橋接服務和 Agora SDK
+      await _mediaService.forceSyncToSDK();
       
       print('Device selection fully synced');
     } catch (e) {
@@ -396,33 +371,8 @@ class _CompactMediaSettingsWidgetState extends State<_CompactMediaSettingsWidget
         print('Synced video device to SharedPreferences: $videoDeviceId');
       }
       
-      // 2. 如果有活躍的會議，即時更新 Agora SDK 設備
-      if (mounted) {
-        final conferenceRoom = ConferenceRoom.read(context);
-        if (conferenceRoom?.room?.localParticipant != null) {
-          final participant = conferenceRoom!.room!.localParticipant!;
-          
-          // 更新音訊設備
-          if (audioDeviceId != null) {
-            try {
-              await participant.enableAudio(setEnabled: participant.audioTrackEnabled, deviceId: audioDeviceId);
-              print('Updated Agora audio device: $audioDeviceId');
-            } catch (e) {
-              print('Error updating Agora audio device: $e');
-            }
-          }
-          
-          // 更新視訊設備
-          if (videoDeviceId != null) {
-            try {
-              await participant.enableVideo(setEnabled: participant.videoTrackEnabled, deviceId: videoDeviceId);
-              print('Updated Agora video device: $videoDeviceId');
-            } catch (e) {
-              print('Error updating Agora video device: $e');
-            }
-          }
-        }
-      }
+      // 2. 強制同步設備設置到橋接服務和 Agora SDK
+      await _mediaService.forceSyncToSDK();
       
       print('Device selection fully synced');
     } catch (e) {

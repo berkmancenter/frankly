@@ -21,6 +21,7 @@ import 'package:client/features/events/features/live_meeting/features/video/data
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart';
@@ -73,6 +74,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   StreamSubscription? _onConferenceRoomException;
   StreamSubscription? _onUnloadSubscription;
+
+  final MediaDeviceService _mediaService = MediaDeviceService();
 
   @override
   void initState() {
@@ -671,8 +674,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     final agendaProvider = context.watch<AgendaProvider>();
 
     const kIconSize = 24.0;
-    final isVideoOn = _presenter.isVideoOn();
-    final isMicOn = _presenter.isMicOn();
+    
+    final isVideoOn = _mediaService.publishVideoToSDK;
+    final isMicOn = _mediaService.publishAudioToSDK;
+    
     final isBottomSheetPresent = _presenter.isBottomSheetPresent();
     final isAudioTemporarilyDisabled = _presenter.isAudioTemporarilyDisabled();
 
@@ -723,7 +728,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       ),
                       onTap: () async => await alertOnError(
                         context,
-                        () => _presenter.toggleVideo(),
+                        () async {
+                          // 只控制發布到SDK，不關閉攝像頭（保持預覽功能）
+                          await _mediaService.setVideoPublishToSDK(!isVideoOn);
+                        },
                       ),
                     ),
                     SizedBox(width: 10),
@@ -736,7 +744,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               )
                           : () => AudioVideoErrorDialog.showOnError(
                                 context,
-                                () => _presenter.toggleAudio(),
+                                () async {
+                                  // 只控制發布到SDK，不關閉麥克風（保持預覽功能）
+                                  await _mediaService.setAudioPublishToSDK(!isMicOn);
+                                },
                               ),
                       child: Icon(
                         isMicOn ? Icons.mic_outlined : Icons.mic_off_outlined,

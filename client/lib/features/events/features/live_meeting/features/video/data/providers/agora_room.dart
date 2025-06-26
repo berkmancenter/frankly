@@ -12,6 +12,7 @@ import 'package:universal_html/html.dart';
 import '../../../../../../../../services.dart';
 import '../../../../../event_page/data/providers/event_provider.dart';
 import '../../../../data/providers/live_meeting_provider.dart';
+import '../../../../../../../../core/utils/agora_media_bridge_service.dart';
 import 'conference_room.dart';
 
 enum AgoraRoomState {
@@ -30,6 +31,9 @@ class AgoraRoom with ChangeNotifier {
   final EventProvider eventProvider;
   final LiveMeetingProvider liveMeetingProvider;
   final ConferenceRoom conferenceRoom;
+
+  // 橋接服務
+  final AgoraMediaBridgeService _bridgeService = AgoraMediaBridgeService();
 
   AgoraRoom({
     required this.channelName,
@@ -113,12 +117,16 @@ class AgoraRoom with ChangeNotifier {
       ),
     );
 
+    // 初始化橋接服務
+    await _bridgeService.initialize(engine);
+
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
       agoraUid: 0,
       isLocal: true,
       userId: userService.currentUserId!,
       token: token,
+      bridgeService: _bridgeService,
     )
       ..addListener(notifyListeners)
       ..audioTrackEnabled = enableAudio
@@ -363,6 +371,9 @@ class AgoraRoom with ChangeNotifier {
     engine.enableLocalAudio(false);
     engine.release();
 
+    // 清理橋接服務
+    _bridgeService.dispose();
+
     super.dispose();
   }
 }
@@ -388,6 +399,7 @@ class AgoraParticipant with ChangeNotifier {
     // User ID in the app
     required this.userId,
     this.token,
+    this.bridgeService,
   }) : _rtcEngineObj = rtcEngine;
 
   RtcEngine get _rtcEngine => _rtcEngineObj!;
@@ -396,6 +408,7 @@ class AgoraParticipant with ChangeNotifier {
   final String userId;
   final bool isLocal;
   final String? token;
+  final AgoraMediaBridgeService? bridgeService;
 
   String get identity => userId;
 
@@ -411,6 +424,14 @@ class AgoraParticipant with ChangeNotifier {
   MediaStreamTrack? get screenshareTrack => null;
 
   Future<void> enableAudio({required bool setEnabled, String? deviceId}) async {
+    if (isLocal && bridgeService != null) {
+      // 使用橋接服務來控制本地音訊
+      await bridgeService!.mediaService.setAudioPublishToSDK(setEnabled);
+      audioTrackEnabled = setEnabled;
+      return;
+    }
+
+    // 遠程參與者或沒有橋接服務時的舊邏輯
     if (setEnabled) {
       if (deviceId != null) {
         try {
@@ -438,6 +459,14 @@ class AgoraParticipant with ChangeNotifier {
   }
 
   Future<void> enableVideo({required bool setEnabled, String? deviceId}) async {
+    if (isLocal && bridgeService != null) {
+      // 使用橋接服務來控制本地視訊
+      await bridgeService!.mediaService.setVideoPublishToSDK(setEnabled);
+      videoTrackEnabled = setEnabled;
+      return;
+    }
+
+    // 遠程參與者或沒有橋接服務時的舊邏輯
     if (setEnabled) {
       if (!videoLocalPreviewStarted) {
         videoLocalPreviewStarted = true;

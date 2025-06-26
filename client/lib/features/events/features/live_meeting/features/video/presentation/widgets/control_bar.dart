@@ -20,6 +20,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/services/logging_service.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
@@ -43,6 +44,8 @@ class _ControlBarState extends State<ControlBar> {
   ConferenceRoom get _conferenceRoomRead =>
       LiveMeetingProvider.read(context).conferenceRoom!;
 
+  final MediaDeviceService _mediaService = MediaDeviceService();
+
   Widget _buildScreenShareButton() {
     if (!_conferenceRoomRead.isLocalSharingScreenActive &&
         _conferenceRoomRead.screenSharer != null) {
@@ -65,16 +68,22 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   Widget _buildVideoToggle() {
+    final isVideoOn = _mediaService.publishVideoToSDK;
+    
     return _IconButton(
       onTap: () => AudioVideoErrorDialog.showOnError(
         context,
-        () => _conferenceRoomRead.toggleVideoEnabled(),
+        () async {
+          // 只控制視訊發布到SDK，不關閉攝像頭
+          // 這樣預覽功能仍然可以正常工作
+          await _mediaService.setVideoPublishToSDK(!isVideoOn);
+        },
       ),
-      text: _conferenceRoom.videoEnabled ? 'Stop Video' : 'Start Video',
-      icon: _conferenceRoom.videoEnabled
+      text: isVideoOn ? 'Stop Video' : 'Start Video',
+      icon: isVideoOn
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
-      iconColor: _conferenceRoom.videoEnabled
+      iconColor: isVideoOn
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.errorContainer,
     );
@@ -133,6 +142,9 @@ class _ControlBarState extends State<ControlBar> {
     final double spacerWidth = isMobile ? 6 : 12;
     bool showTalkingTimer =
         !isMobile && context.watch<EventProvider>().enableTalkingTimer;
+    
+    final isAudioOn = _mediaService.publishAudioToSDK;
+    
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -142,7 +154,9 @@ class _ControlBarState extends State<ControlBar> {
           onTap: enabled
               ? () => AudioVideoErrorDialog.showOnError(
                     context,
-                    () => _conferenceRoomRead.toggleAudioEnabled(),
+                    () async {
+                      await _mediaService.setAudioPublishToSDK(!isAudioOn);
+                    },
                   )
               : () async {
                   showRegularToast(
@@ -151,11 +165,11 @@ class _ControlBarState extends State<ControlBar> {
                     toastType: ToastType.success,
                   );
                 },
-          text: _conferenceRoom.audioEnabled ? 'Mute' : 'Unmute',
-          icon: _conferenceRoom.audioEnabled
+          text: isAudioOn ? 'Mute' : 'Unmute',
+          icon: isAudioOn
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
-          iconColor: _conferenceRoom.audioEnabled
+          iconColor: isAudioOn
               ? context.theme.colorScheme.onPrimary
               : context.theme.colorScheme.errorContainer,
         ),

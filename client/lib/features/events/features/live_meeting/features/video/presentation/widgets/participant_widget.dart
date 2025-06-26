@@ -28,6 +28,11 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 
+import 'package:client/core/utils/media_device_service.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:universal_html/html.dart' as html;
+import 'dart:ui_web' as ui_web;
+
 import '../../data/providers/agora_room.dart';
 
 class GlobalKeyedSubtree extends StatelessWidget {
@@ -127,19 +132,11 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         controller: VideoViewController.remote(
           rtcEngine: conferenceRoom.room!.engine,
           canvas: VideoCanvas(uid: widget.participant.agoraUid),
-          connection: RtcConnection(channelId: 'test-channel'),
+          connection: RtcConnection(channelId: conferenceRoom.room!.channelName),
         ),
       );
     } else {
-      videoWidget = AgoraVideoView(
-        controller: VideoViewController(
-          rtcEngine: conferenceRoom.room!.engine,
-          canvas: const VideoCanvas(uid: 0),
-        ),
-        onAgoraVideoViewCreated: (viewId) {
-          //conferenceRoom.room!.engine.startPreview();
-        },
-      );
+      videoWidget = _LocalVideoPreview();
     }
 
     final child = GlobalKeyedSubtree(
@@ -625,6 +622,158 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// 本地視訊預覽 Widget
+/// 使用 MediaDeviceService 的視訊流，而不是依賴 Agora SDK 的渲染
+class _LocalVideoPreview extends StatefulWidget {
+  @override
+  _LocalVideoPreviewState createState() => _LocalVideoPreviewState();
+}
+
+class _LocalVideoPreviewState extends State<_LocalVideoPreview> {
+  final MediaDeviceService _mediaService = MediaDeviceService();
+  html.VideoElement? _videoElement;
+  Widget? _videoWidget;
+  
+  // 追蹤上次的狀態，用於檢測變化
+  bool _lastPublishVideoState = false;
+  bool _lastCamEnabledState = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastPublishVideoState = _mediaService.publishVideoToSDK;
+    _lastCamEnabledState = _mediaService.camEnabled;
+    _setupVideoPreview();
+  }
+
+  @override
+  void dispose() {
+    _cleanupVideoPreview();
+    super.dispose();
+  }
+
+  Future<void> _setupVideoPreview() async {
+    if (!kIsWeb) {
+      // 非 Web 平台的處理
+      setState(() {
+        _videoWidget = Container(
+          color: Colors.grey,
+          child: Center(
+            child: Text('Local Preview', style: TextStyle(color: Colors.white)),
+          ),
+        );
+      });
+      return;
+    }
+
+    try {
+      // 獲取媒體流
+      final stream = await _mediaService.getUserMedia();
+      if (stream == null || !mounted) return;
+
+      // 創建 video 元素
+      _videoElement = html.VideoElement()
+        ..autoplay = true
+        ..muted = true
+        ..style.width = '100%'
+        ..style.height = '100%'
+        ..style.objectFit = 'cover'
+        ..srcObject = stream;
+
+      // 註冊 HTML 元素
+      final viewType = 'local-video-preview-${DateTime.now().millisecondsSinceEpoch}';
+      ui_web.platformViewRegistry.registerViewFactory(
+        viewType,
+        (int viewId) => _videoElement!,
+      );
+
+      // 創建 Flutter Widget
+      final videoWidget = HtmlElementView(viewType: viewType);
+
+      if (mounted) {
+        setState(() {
+          _videoWidget = videoWidget;
+        });
+      }
+    } catch (e) {
+      print('Error setting up local video preview: $e');
+      if (mounted) {
+        setState(() {
+          _videoWidget = Container(
+            color: Colors.red,
+            child: Center(
+              child: Text('Preview Error', style: TextStyle(color: Colors.white)),
+            ),
+          );
+        });
+      }
+    }
+  }
+
+  void _cleanupVideoPreview() {
+    if (_videoElement != null) {
+      _videoElement!.srcObject = null;
+      _videoElement = null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // 監聽 MediaDeviceService 的視訊發布狀態變化
+    return ListenableBuilder(
+      listenable: _mediaService,
+      builder: (context, child) {
+        final currentPublishVideoState = _mediaService.publishVideoToSDK;
+        final currentCamEnabledState = _mediaService.camEnabled;
+        
+        // 檢測狀態變化
+        final publishStateChanged = _lastPublishVideoState != currentPublishVideoState;
+        final camStateChanged = _lastCamEnabledState != currentCamEnabledState;
+        
+        // 更新追蹤的狀態
+        _lastPublishVideoState = currentPublishVideoState;
+        _lastCamEnabledState = currentCamEnabledState;
+        
+        // 根據視訊發布狀態決定是否顯示本地視訊預覽
+        // 如果沒有發布到SDK，顯示"Video Off"，但攝像頭仍然運行（供預覽使用）
+        if (!currentPublishVideoState) {
+          _cleanupVideoPreview();
+          return Container(
+            color: Colors.black,
+            child: Center(
+              child: Text('Video Off', style: TextStyle(color: Colors.white)),
+            ),
+          );
+        }
+        
+        // 如果攝像頭關閉，也顯示"Camera Off"
+        if (!currentCamEnabledState) {
+          _cleanupVideoPreview();
+          return Container(
+            color: Colors.black,
+            child: Center(
+              child: Text('Camera Off', style: TextStyle(color: Colors.white)),
+            ),
+          );
+        }
+        
+        // 如果要發布視訊且攝像頭開啟，但還沒有設置預覽，或者狀態發生變化，重新設置
+        if (_videoWidget == null || (publishStateChanged && currentPublishVideoState) || (camStateChanged && currentCamEnabledState)) {
+          print('Setting up video preview due to state change: publishChanged=$publishStateChanged, camChanged=$camStateChanged');
+          _setupVideoPreview();
+        }
+        
+        return _videoWidget ?? Container(
+          color: Colors.black,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }
