@@ -9,29 +9,16 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 class CreateCommunityImageFields extends StatelessWidget {
-  final String? bannerImageUrl;
   final String? profileImageUrl;
-  final Future<void> Function(String) updateBannerImage;
   final Future<void> Function(String) updateProfileImage;
   final Future<void> Function({required bool isBannerImage}) removeImage;
 
   const CreateCommunityImageFields({
     Key? key,
-    this.bannerImageUrl,
     this.profileImageUrl,
-    required this.updateBannerImage,
     required this.updateProfileImage,
     required this.removeImage,
   }) : super(key: key);
-
-  Future<void> _editBannerPressed() async {
-    String? url =
-        await GetIt.instance<MediaHelperService>().pickImageViaCloudinary();
-    url = url?.trim();
-    if (url != null) {
-      await updateBannerImage(url);
-    }
-  }
 
   Future<void> _editLogoPressed() async {
     String? url =
@@ -49,8 +36,6 @@ class CreateCommunityImageFields extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildLogoField(context),
-        SizedBox(height: 16),
-        _buildBackgroundField(context),
       ],
     );
   }
@@ -63,17 +48,6 @@ class CreateCommunityImageFields extends StatelessWidget {
         isCircle: true,
         onImageSelect: updateProfileImage,
         image: profileImageUrl,
-        isOptional: true,
-      );
-
-  Widget _buildBackgroundField(BuildContext context) =>
-      CreateCommunityImageField(
-        text: context.l10n.background,
-        onTap: () => alertOnError(context, () => _editBannerPressed()),
-        onTapRemove: () =>
-            alertOnError(context, () => removeImage(isBannerImage: true)),
-        onImageSelect: updateBannerImage,
-        image: bannerImageUrl,
         isOptional: true,
       );
 }

@@ -1,3 +1,4 @@
+// TODO: This entire class will eventually be replaced by the overview tab in the new community management and will be deprecated then
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
 import 'package:client/styles/styles.dart';
@@ -379,10 +380,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
             height: widget.compact ? 0 : 20,
           ),
         CreateCommunityImageFields(
-          bannerImageUrl: _community.bannerImageUrl,
           profileImageUrl: _community.profileImageUrl,
-          updateBannerImage: (String imageUrl) =>
-              _updateBannerImage(imageUrl: imageUrl),
           updateProfileImage: (String imageUrl) =>
               _updateProfileImage(imageUrl: imageUrl),
           removeImage: _removeImage,
