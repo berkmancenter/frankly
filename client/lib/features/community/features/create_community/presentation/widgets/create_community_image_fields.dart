@@ -1,3 +1,4 @@
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -74,110 +75,81 @@ class CreateCommunityImageField extends StatelessWidget {
 
   bool get showImage => !isNullOrEmpty(image);
 
-  double get size => 30.0;
+  double get size => 80.0;
 
   Widget _buildRemoveImageIcon(BuildContext context) {
-    return CustomInkWell(
-      onTap: onTapRemove,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        alignment: Alignment.center,
-        width: 30,
-        height: 30,
-        child: Icon(
-          Icons.close,
-          color: context.theme.colorScheme.onSurfaceVariant,
-          size: 20,
-        ),
-      ),
-    );
+    return ActionButton(
+            text: context.l10n.remove,
+            onPressed: onTapRemove,
+            type: ActionButtonType.outline,
+            icon: Icon(Icons.delete),
+          );
   }
 
   Widget _buildInkWellWidget(BuildContext context) {
-    if (!showImage) {
-      return CustomInkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
-        child: Container(
-          alignment: Alignment.center,
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            color: context.theme.colorScheme.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
-            border: Border.all(
-              color: context.theme.colorScheme.onPrimaryContainer,
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: size + 10,
+            height: size + 10,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: !showImage ? context.theme.colorScheme.surfaceDim : Colors.transparent,
+              border: !showImage ? null : Border.all(
+                color: context.theme.colorScheme.primary,
+                width: 1,
+              ),
             ),
-          ),
-          child: Icon(
-            Icons.add,
-            color: context.theme.colorScheme.onSurfaceVariant,
-            size: 20,
-          ),
-        ),
-      );
-    } else {
-      return CustomInkWell(
-        boxShape: isCircle ? BoxShape.circle : null,
-        borderRadius: !isCircle ? BorderRadius.circular(5) : null,
-        onTap: onTap,
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-            border:
-                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
-            borderRadius:
-                (!isCircle && !showImage) ? BorderRadius.circular(5) : null,
-          ),
-          alignment: Alignment.center,
-          child: ProxiedImage(
+            alignment: Alignment.center,
+            child: !showImage ? Icon(
+              Icons.image_outlined,
+              color: context.theme.colorScheme.primary,
+              size: size,
+            ) : ProxiedImage(
             image,
             width: size,
             height: size,
           ),
-        ),
+          ),
+          SizedBox(width: 30),
+          ActionButton(
+            text: !showImage ? context.l10n.upload : context.l10n.edit,
+            onPressed: onTap,
+            type: ActionButtonType.outline,
+            icon: Icon(!showImage ? Icons.add : Icons.edit),
+          ),
+        ],
       );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Semantics(
-          button: true,
-          label: text,
-          child: _buildInkWellWidget(context),
+        HeightConstrainedText(
+          context.l10n.logo,
+          style: context.theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
         ),
-        SizedBox(width: 10),
-        if (showImage) ...[
-          Expanded(
-            child: HeightConstrainedText(
-              text,
-              style: AppTextStyle.eyebrowSmall,
-              overflow: TextOverflow.ellipsis,
+        SizedBox(height: 30),
+        Row(
+          children: [
+            Semantics(
+              button: true,
+              label: text,
+              child: _buildInkWellWidget(context),
             ),
-          ),
-          _buildRemoveImageIcon(context),
-        ] else ...[
-          Expanded(
-            child: HeightConstrainedText(
-              text,
-              style: AppTextStyle.eyebrowSmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (isOptional)
-            HeightConstrainedText(
-              context.l10n.optional,
-              style: AppTextStyle.bodySmall.copyWith(
-                color: context.theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-        ],
+            SizedBox(width: 10),
+            if (showImage)             
+              _buildRemoveImageIcon(context),
+          ],
+        ),
       ],
     );
   }

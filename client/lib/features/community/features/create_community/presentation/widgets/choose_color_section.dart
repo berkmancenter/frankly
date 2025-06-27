@@ -273,6 +273,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
       children:
           List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
         return FloatingActionButton(
+          // elevation: 20,
+          mini: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),
           ),
@@ -283,18 +285,19 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              border: Border.all(
-                color: _selectedPresetIndex == i
-                    ? Colors.white
-                    : Colors.transparent,
-                width: 5,
-              ),
               shape: BoxShape.circle,
               color: ThemeUtils().presetColorThemes(context)[i].darkColor,
             ),
+            child: Center(
+              child: Icon(
+                _selectedPresetIndex == i ? Icons.check : null,
+                color: context.theme.colorScheme.onPrimaryContainer,
+              ),
           ),
+        ),
         );
-      }),
+      }
+      ),
     );
   }
 
@@ -399,22 +402,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               builder: (context) => AlertDialog(
                 title: const Text('Pick a color!'),
                 content: SingleChildScrollView(
-                  child: MaterialPicker(
+                   child: ColorPicker
+                   (
                     pickerColor: pickerColor,
                     onColorChanged: changeColor,
                   ),
-                  //
-                  // Use Block color picker:
-                  //
-                  // child: BlockPicker(
-                  //   pickerColor: currentColor,
-                  //   onColorChanged: changeColor,
-                  // ),
-                  //
-                  // child: MultipleChoiceBlockPicker(
-                  //   pickerColors: currentColors,
-                  //   onColorsChanged: changeColors,
-                  // ),
                 ),
                 actions: <Widget>[
                   ElevatedButton(

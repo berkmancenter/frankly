@@ -598,6 +598,7 @@
       }
     }
   },
+  "upload": "上传",
   "urlParameter": "URL参数",
   "usersAreInBreakoutRooms": "用户在分组讨论室中。",
   "videoInputDevice": "视频输入设备：",
