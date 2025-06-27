@@ -1,4 +1,5 @@
 import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -32,13 +33,7 @@ class CreateCommunityImageFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildLogoField(context),
-      ],
-    );
+    return _buildLogoField(context);
   }
 
   Widget _buildLogoField(BuildContext context) => CreateCommunityImageField(
@@ -46,10 +41,8 @@ class CreateCommunityImageFields extends StatelessWidget {
         onTap: () => alertOnError(context, () => _editLogoPressed()),
         onTapRemove: () =>
             alertOnError(context, () => removeImage(isBannerImage: false)),
-        isCircle: true,
         onImageSelect: updateProfileImage,
         image: profileImageUrl,
-        isOptional: true,
       );
 }
 
@@ -57,19 +50,15 @@ class CreateCommunityImageField extends StatelessWidget {
   final String text;
   final void Function() onTap;
   final void Function() onTapRemove;
-  final bool isCircle;
   final String? image;
   final void Function(String)? onImageSelect;
-  final bool isOptional;
 
   const CreateCommunityImageField({
     required this.text,
     required this.onTap,
     required this.onTapRemove,
-    this.isCircle = false,
     this.image,
     this.onImageSelect,
-    this.isOptional = false,
     Key? key,
   }) : super(key: key);
 
@@ -77,53 +66,67 @@ class CreateCommunityImageField extends StatelessWidget {
 
   double get size => 80.0;
 
-  Widget _buildRemoveImageIcon(BuildContext context) {
-    return ActionButton(
-            text: context.l10n.remove,
-            onPressed: onTapRemove,
-            type: ActionButtonType.outline,
-            icon: Icon(Icons.delete),
-          );
-  }
-
   Widget _buildImageWidget(BuildContext context) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: size + 10,
-            height: size + 10,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: !showImage ? context.theme.colorScheme.surfaceDim : Colors.transparent,
-              border: !showImage ? null : Border.all(
-                color: context.theme.colorScheme.primary,
-                width: 1,
-              ),
+    final mobile = responsiveLayoutService.isMobile(context);
+    return Flex(
+      direction: mobile ? Axis.vertical : Axis.horizontal,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: size + 10,
+          height: size + 10,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: !showImage
+                ? context.theme.colorScheme.surfaceDim
+                : Colors.transparent,
+            border: !showImage
+                ? null
+                : Border.all(
+                    color: context.theme.colorScheme.primary,
+                    width: 1,
+                  ),
+          ),
+          alignment: Alignment.center,
+          child: !showImage
+              ? Icon(
+                  Icons.image_outlined,
+                  color: context.theme.colorScheme.primary,
+                  size: size,
+                )
+              : ProxiedImage(
+                  image,
+                  width: size,
+                  height: size,
+                ),
+        ),
+        SizedBox(width: 30, height: 30),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ActionButton(
+              text: !showImage ? context.l10n.upload : context.l10n.edit,
+              onPressed: onTap,
+              type: ActionButtonType.outline,
+              icon: Icon(!showImage ? Icons.add : Icons.edit),
             ),
-            alignment: Alignment.center,
-            child: !showImage ? Icon(
-              Icons.image_outlined,
-              color: context.theme.colorScheme.primary,
-              size: size,
-            ) : ProxiedImage(
-            image,
-            width: size,
-            height: size,
-          ),
-          ),
-          SizedBox(width: 30),
-          ActionButton(
-            text: !showImage ? context.l10n.upload : context.l10n.edit,
-            onPressed: onTap,
-            type: ActionButtonType.outline,
-            icon: Icon(!showImage ? Icons.add : Icons.edit),
-          ),
-        ],
-      );
+            if (showImage) ...[
+              SizedBox(width: 10),
+              ActionButton(
+                text: context.l10n.remove,
+                onPressed: onTapRemove,
+                type: ActionButtonType.outline,
+                icon: Icon(Icons.delete),
+              ),
+            ],
+          ],
+        ),
+      ],
+    );
   }
 
   @override
@@ -131,25 +134,14 @@ class CreateCommunityImageField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        HeightConstrainedText(
+        Text(
           context.l10n.logo,
           style: context.theme.textTheme.labelLarge?.copyWith(
             fontWeight: FontWeight.w900,
           ),
         ),
         SizedBox(height: 30),
-        Row(
-          children: [
-            Semantics(
-              button: true,
-              label: text,
-              child: _buildImageWidget(context),
-            ),
-            SizedBox(width: 10),
-            if (showImage)             
-              _buildRemoveImageIcon(context),
-          ],
-        ),
+        _buildImageWidget(context),
       ],
     );
   }

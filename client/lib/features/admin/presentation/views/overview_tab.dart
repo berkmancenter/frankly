@@ -115,6 +115,7 @@ class _OverviewTabState extends State<OverviewTab> {
                                 _updateProfileImage(imageUrl: imageUrl),
                             removeImage: _removeImage,
                           ),
+                          SizedBox(height: 30),
                           ChooseColorSection(
                             community: _community,
                             setDarkColor: (val) => _community =

@@ -1,5 +1,6 @@
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
@@ -55,6 +57,10 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
 
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
+
+    final Color _lightColor = Color(0xfff5f5f5);
+  Color darkColor = Color(0xff212121);
+
   @override
   void initState() {
     super.initState();
@@ -140,8 +146,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   }
 
   void _changeLightColorTextField(String val) {
-    if (ThemeUtils.isColorValid(_currentLightColor)) {
+    if (ThemeUtils.isColorValid(val)) {
       widget.setLightColor(_currentLightColor);
+// setState(() {
+//       _lightColor = ThemeUtils.parseColor(val);
+// });
     } else {
       widget.setLightColor('');
     }
@@ -157,6 +166,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   @override
   Widget build(BuildContext context) {
+    final mobile = responsiveLayoutService.isMobile(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -198,8 +209,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               ),
               body: TabBarView(
                 children: <Widget>[
-                  _buildPresetColorsContent(context),
-                  _buildCustomColorsContent(),
+                  _buildPresetColorsContent(context, mobile),
+                  _buildCustomColorsContent(mobile),
                 ],
               ),
             ),
@@ -209,130 +220,114 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     );
   }
 
-  Widget _buildColorTab({
-    required String text,
-    required bool selected,
-    required void Function() onTap,
-  }) {
-    final color = selected
-        ? context.theme.colorScheme.onSurface
-        : context.theme.colorScheme.onSurfaceVariant;
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 4, color: color),
+  Widget _buildPresetColorsContent(BuildContext context, bool mobile) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: mobile ? 3 : 5,
+        crossAxisSpacing: mobile ? 40 : 30,
+        mainAxisSpacing: 30,
+        children:
+            List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
+          return FloatingActionButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            onPressed: () => _selectPreset(context, i),
+            backgroundColor:
+                ThemeUtils().presetColorThemes(context)[i].lightColor,
+            child: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: ThemeUtils().presetColorThemes(context)[i].darkColor,
+              ),
+              child: Center(
+                child: Icon(
+                  _selectedPresetIndex == i ? Icons.check : null,
+                  color: context.theme.colorScheme.onPrimaryContainer,
+                ),
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  HeightConstrainedText(
-                    text.toUpperCase(),
-                    style: AppTextStyle.eyebrow.copyWith(color: color),
-                  ),
-                ],
-              ),
-            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Future<void> _buildColorPickerDialog(String currentColor,  Function(Color color) colorChanged,) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Pick a color!'),
+        content: SingleChildScrollView(
+          child: ColorPicker(
+            pickerColor: currentColor.isNotEmpty ? (ThemeUtils.parseColor(currentColor) ?? Colors.white) : Colors.white,
+            onColorChanged: (Color color) => colorChanged(color),
+          ),
+        ),
+        actions: <Widget>[
+          ActionButton(
+            text: 'Got it',
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPresetColorsContent(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      crossAxisCount: 5,
-      mainAxisSpacing: 30,
-      crossAxisSpacing: 30,
-      physics: NeverScrollableScrollPhysics(),
-      children:
-          List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
-        return FloatingActionButton(
-          // elevation: 20,
-          mini: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          onPressed: () => _selectPreset(context, i),
-          backgroundColor:
-              ThemeUtils().presetColorThemes(context)[i].lightColor,
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: ThemeUtils().presetColorThemes(context)[i].darkColor,
-            ),
-            child: Center(
-              child: Icon(
-                _selectedPresetIndex == i ? Icons.check : null,
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
-            ),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildCustomColorsContent() {
+  Widget _buildCustomColorsContent(bool mobile) {
     const description =
         'Choose one light color and one dark color. Colors must meet a 4.5:1 contrast ratio. For help selecting compliant colors, go to ';
     const linkText = 'color.review.';
     final launchLink = TapGestureRecognizer()
       ..onTap = () => launch('https://color.review');
 
-    return Row(
+    return Flex(
+      direction: mobile ? Axis.vertical : Axis.horizontal,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        IconButton(icon: Icon(Icons.water_drop, color: currentColor), onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Pick a color!'),
-                content: SingleChildScrollView(
-                  child: ColorPicker(
-                    pickerColor: _customLightColorController.text.isNotEmpty
-                        ? (ThemeUtils.parseColor(_customLightColorController.text) ?? pickerColor)
-                        : pickerColor,
-                    onColorChanged: changeColor,
-                  ),
-                ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    child: const Text('Got it'),
-                    onPressed: () {
-                      // setState(() => currentColor = pickerColor);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            );
-
-        },),
-        SizedBox(width: 10),
-        _buildChooseColorTextField(label: context.l10n.lightColorHex,
-          onChanged: _changeLightColorTextField,
-          controller: _customLightColorController,
-        ),
-        SizedBox(width: 10),
-        _buildChooseColorTextField(
-          label: context.l10n.darkColorHex,
-          onChanged: _changeDarkColorTextField,
-          controller: _customDarkColorController,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.water_drop,
+                color: _lightColor,),
+              onPressed: () {
+                _buildColorPickerDialog(
+                  _currentLightColor,
+                  (Color color) {
+                    _customLightColorController.text = color.toHexString();
+                    _changeLightColorTextField(_customLightColorController.text);
+                  },
+                );
+              },
+             
+            ),
+            SizedBox(width: 10),
+            _buildChooseColorTextField(
+              label: context.l10n.lightColorHex,
+              onChanged: _changeLightColorTextField,
+              controller: _customLightColorController,
+            ),
+          ],
         ),
       ],
     );
-        // _buildErrorMessage(),
+
+    // SizedBox(width: 10),
+    // _buildChooseColorTextField(
+    //   label: context.l10n.darkColorHex,
+    //   onChanged: _changeDarkColorTextField,
+    //   controller: _customDarkColorController,
+    // ),
+    // _buildErrorMessage(),
   }
 
   List<Widget> _buildCustomTextFields() => [
@@ -356,16 +351,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         SizedBox(width: 10),
         _buildCheckIcon(),
       ];
-// create some values
-  Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
-
-// ValueChanged<Color> callback
-  void changeColor(Color color) {
-    setState(() {_customLightColorController.text = color.toHexString()
-    ;currentColor = color;});
-  }
-
+  
   Widget _buildChooseColorTextField({
     required String label,
     required void Function(String) onChanged,
