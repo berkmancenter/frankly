@@ -86,7 +86,7 @@ class CreateCommunityImageField extends StatelessWidget {
           );
   }
 
-  Widget _buildInkWellWidget(BuildContext context) {
+  Widget _buildImageWidget(BuildContext context) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +143,7 @@ class CreateCommunityImageField extends StatelessWidget {
             Semantics(
               button: true,
               label: text,
-              child: _buildInkWellWidget(context),
+              child: _buildImageWidget(context),
             ),
             SizedBox(width: 10),
             if (showImage)             

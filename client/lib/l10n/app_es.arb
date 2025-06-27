@@ -176,6 +176,7 @@
   "createEvent": "Crear evento",
   "createACommunity": "Crear una comunidad",
   "currentParticipants": "Participantes\nactuales",
+  "custom": "Personalizado",
   "darkColorHex": "Color oscuro HEX#",
   "defineBreakoutsOptional": "Definir salas (Opcional)",
   "deleteAgendaItem": "Eliminar el elemento de agenda {title}",
@@ -364,6 +365,7 @@
   "postWasDeleted": "La publicación fue eliminada.",
   "posts": "Publicaciones",
   "prerequisiteRequired": "Requisito previo requerido",
+  "presets": "Preajustes",
   "pressToPromote": "Presione para promover",
   "primaryContent": "contenido-principal",
   "profile": "Perfil",
@@ -485,6 +487,7 @@
     }
   },
   "textCopied": "¡Texto copiado!",
+  "theme": "Tema",
   "thereWasAnErrorLoadingEventTemplates": "Hubo un error al cargar las plantillas de eventos.",
   "thisEventIsLocked": "Este evento está bloqueado",
   "thisUrlWasNotFound": "Esta URL no se encontró.",

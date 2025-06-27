@@ -177,6 +177,7 @@
   "createACommunity": "创建社区",
   "couldntFindAccount": "我們找不到此電子郵件對應的帳戶。嘗試 ",
   "currentParticipants": "当前\n参与者",
+  "custom": "自定义",
   "darkColorHex": "深色十六进制值",
   "defineBreakoutsOptional": "定义分组讨论（可选）",
   "deleteAgendaItem": "删除{title}议程项",
@@ -429,6 +430,7 @@
   "postWasDeleted": "帖子已删除。",
   "posts": "帖子",
   "prerequisiteRequired": "需要先决条件",
+  "presets": "预设",
   "pressToPromote": "点击推广",
   "primaryContent": "主要内容",
   "profile": "个人资料",
@@ -578,6 +580,7 @@
     }
   },
   "textCopied": "文本已复制！",
+  "theme": "主题",
   "thereWasAnErrorLoadingEventTemplates": "加载活动模板时出错。",
   "thisEventIsLocked": "此活动已锁定",
   "thisUrlWasNotFound": "未找到此URL。",
