@@ -93,23 +93,24 @@ class MediaDeviceService extends ChangeNotifier {
     // Notify external SDK of video publish state change
     _onVideoPublishChanged?.call(enabled && camEnabled, selectedVideoInputId);
 
-    // Only provide/remove stream when there's an actual state change that requires it
+    // Handle stream provision to SDK
     if (enabled && camEnabled) {
+      // Starting to publish - provide stream to SDK
       final stream = await _getSharedStream();
       if (stream != null) {
         _onVideoStreamChanged?.call(stream);
         _isProvidingStreamToSDK = true;
       }
     } else if (enabled) {
-      // If enabled but camera is off, don't call the stream callback
-      // The publish state callback above already handles the disable case
-      
-      
+      // Enabled but camera off - don't provide stream
       print('Video publish enabled but camera is off, not updating stream');
     } else {
+      // Stopping publication - DON'T remove stream, just let bridge service handle stopping
+      // The _onVideoPublishChanged call above will handle disabling the publishing
+      // while keeping the camera active for independent preview
       if (_isProvidingStreamToSDK) {
-        // _onVideoStreamChanged?.call(null);
         _isProvidingStreamToSDK = false;
+        print('Stopped publishing to SDK, but keeping camera and stream active for other uses');
       }
     }
 
@@ -205,9 +206,19 @@ class MediaDeviceService extends ChangeNotifier {
   /// Toggle camera on/off
   void toggleCam(bool enabled) {
     camEnabled = enabled;
-    // When video state changes, need to recreate stream
-    if (_currentCamEnabled != enabled) {
-      _invalidateSharedStream();
+    
+    // Only invalidate stream if camera is actually being turned off completely
+    // If camera is being turned on, or if we're just changing publish state, don't invalidate
+    if (!enabled) {
+      // Camera is being turned off completely - invalidate stream
+      if (_currentCamEnabled != enabled) {
+        _invalidateSharedStream();
+      }
+    } else {
+      // Camera is being turned on - only invalidate if device changed
+      if (_currentCamEnabled != enabled) {
+        _invalidateSharedStream();
+      }
     }
 
     // If currently publishing to SDK, notify change
@@ -233,10 +244,10 @@ class MediaDeviceService extends ChangeNotifier {
       // Publishing is enabled but camera is off - don't update stream
       print('Video publishing enabled but camera off, not updating stream');
     } else {
-      // Not publishing - only call null if we were previously providing a stream
+      // Not publishing - don't remove stream, just update tracking
       if (_isProvidingStreamToSDK) {
-        _onVideoStreamChanged?.call(null);
         _isProvidingStreamToSDK = false;
+        print('Not publishing to SDK, but keeping camera and stream active');
       }
     }
   }

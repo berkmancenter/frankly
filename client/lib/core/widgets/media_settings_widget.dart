@@ -86,14 +86,22 @@ class MediaSettingsWidget extends StatefulWidget {
 }
 
 class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
-  final MediaDeviceService _mediaService = MediaDeviceService();
   late html.VideoElement _videoElement;
-  final String _viewType = 'compact-video-preview-element';
+  // 使用唯一的 viewType 避免註冊衝突
+  final String _viewType = 'compact-video-preview-element-${DateTime.now().millisecondsSinceEpoch}';
   
-  // Independent preview stream management
+  // Completely independent device management (no MediaDeviceService dependency for preview)
+  final List<html.MediaDeviceInfo> _audioInputs = [];
+  final List<html.MediaDeviceInfo> _videoInputs = [];
   html.MediaStream? _independentPreviewStream;
   String? _previewAudioDeviceId;
   String? _previewVideoDeviceId;
+  
+  // 初始化狀態追蹤
+  bool _isInitializing = true;
+
+  // MediaDeviceService instance for one-way notification only
+  final MediaDeviceService _mediaService = MediaDeviceService();
 
   @override
   void initState() {
@@ -118,15 +126,65 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   }
 
   Future<void> initAll() async {
-    await _mediaService.init();
+    print('Starting initAll...');
+    _isInitializing = true;
+    if (mounted) setState(() {});
+    
+    await _initDevicesIndependently();
     if (kIsWeb) {
-      // Initialize independent preview with current device selection
-      _previewAudioDeviceId = _mediaService.selectedAudioInputId;
-      _previewVideoDeviceId = _mediaService.selectedVideoInputId;
+      // Load current device selection from SharedPreferences
+      _previewAudioDeviceId = sharedPreferencesService.getDefaultMicrophoneId();
+      _previewVideoDeviceId = sharedPreferencesService.getDefaultCameraId();
+      
+      print('Loaded from SharedPreferences - Audio: $_previewAudioDeviceId, Video: $_previewVideoDeviceId');
+      print('Available devices - Audio: ${_audioInputs.length}, Video: ${_videoInputs.length}');
+      
+      // Set defaults if none selected
+      if (_previewAudioDeviceId == null && _audioInputs.isNotEmpty) {
+        _previewAudioDeviceId = _audioInputs.first.deviceId;
+        print('Set default audio device: $_previewAudioDeviceId');
+      }
+      if (_previewVideoDeviceId == null && _videoInputs.isNotEmpty) {
+        _previewVideoDeviceId = _videoInputs.first.deviceId;
+        print('Set default video device: $_previewVideoDeviceId');
+      }
+      
+      print('Final device selection - Audio: $_previewAudioDeviceId, Video: $_previewVideoDeviceId');
       await updatePreview();
     }
+    
+    _isInitializing = false;
     if (mounted) {
       setState(() {});
+    }
+    print('initAll completed');
+  }
+
+  /// Initialize devices completely independently (no MediaDeviceService)
+  Future<void> _initDevicesIndependently() async {
+    if (!kIsWeb) return;
+    
+    try {
+      final devices = await html.window.navigator.mediaDevices?.enumerateDevices();
+      if (devices != null) {
+        _audioInputs.clear();
+        _videoInputs.clear();
+        
+        for (final device in devices) {
+          if (device is html.MediaDeviceInfo) {
+            if (device.kind == 'audioinput') {
+              _audioInputs.add(device);
+            } else if (device.kind == 'videoinput') {
+              _videoInputs.add(device);
+            }
+          }
+        }
+        print('Independently enumerated ${_audioInputs.length} audio and ${_videoInputs.length} video devices');
+      }
+    } catch (e) {
+      print('Error enumerating devices independently: $e');
+      _audioInputs.clear();
+      _videoInputs.clear();
     }
   }
 
@@ -147,9 +205,18 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       'video': videoConstraint,
     };
 
+    print('Creating independent preview stream with constraints: $constraints');
+
     try {
       final stream = await html.window.navigator.mediaDevices?.getUserMedia(constraints);
-      print('Created completely independent preview stream with audio: $_previewAudioDeviceId, video: $_previewVideoDeviceId');
+      if (stream != null) {
+        final videoTracks = stream.getVideoTracks();
+        final audioTracks = stream.getAudioTracks();
+        print('Created completely independent preview stream with ${videoTracks.length} video tracks and ${audioTracks.length} audio tracks');
+        print('Audio device: $_previewAudioDeviceId, Video device: $_previewVideoDeviceId');
+      } else {
+        print('getUserMedia returned null stream');
+      }
       return stream;
     } catch (e) {
       print('Error creating independent preview stream: $e');
@@ -160,6 +227,8 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   Future<void> updatePreview() async {
     if (!kIsWeb) return;
     
+    print('Starting updatePreview with audio: $_previewAudioDeviceId, video: $_previewVideoDeviceId');
+    
     // Stop old preview stream
     if (_independentPreviewStream != null) {
       _independentPreviewStream!.getTracks().forEach((track) => track.stop());
@@ -168,11 +237,16 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     
     try {
       _independentPreviewStream = await _createIndependentPreviewStream();
-      _videoElement.srcObject = _independentPreviewStream;
-      print('Updated independent video preview');
-
-      // Listen for video stream end event, auto refresh
+      
       if (_independentPreviewStream != null) {
+        print('Setting video element srcObject with stream: ${_independentPreviewStream!.getVideoTracks().length} video tracks');
+        _videoElement.srcObject = _independentPreviewStream;
+        
+        // Wait for video element to be ready
+        await _videoElement.onLoadedMetadata.first;
+        print('Video element loaded metadata successfully');
+
+        // Listen for video stream end event, auto refresh
         final videoTracks = _independentPreviewStream!.getVideoTracks();
         for (final track in videoTracks) {
           track.onEnded.listen((_) {
@@ -184,6 +258,11 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             });
           });
         }
+        
+        print('Updated independent video preview successfully');
+      } else {
+        print('Failed to create independent preview stream');
+        _videoElement.srcObject = null;
       }
     } catch (e) {
       print('Error updating independent preview: $e');
@@ -193,21 +272,23 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       try {
         await Future.delayed(Duration(milliseconds: 500));
         _independentPreviewStream = await _createIndependentPreviewStream();
-        _videoElement.srcObject = _independentPreviewStream;
-        print('Successfully refreshed independent preview after error');
+        if (_independentPreviewStream != null) {
+          _videoElement.srcObject = _independentPreviewStream;
+          print('Successfully refreshed independent preview after error');
+        }
       } catch (e2) {
         print('Failed to refresh independent preview: $e2');
       }
     }
   }
 
-  /// Sync device selection to all related systems
+  /// Sync device selection to SharedPreferences and notify MediaDeviceService (one-way)
   Future<void> _syncDeviceSelection({
     String? audioDeviceId,
     String? videoDeviceId,
   }) async {
     try {
-      // 1. Update SharedPreferences (default devices for meeting)
+      // 1. Save to SharedPreferences (for future sessions)
       if (audioDeviceId != null) {
         await sharedPreferencesService.setDefaultMicrophoneId(audioDeviceId);
         print('Synced audio device to SharedPreferences: $audioDeviceId');
@@ -218,10 +299,18 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         print('Synced video device to SharedPreferences: $videoDeviceId');
       }
 
-      // 2. Force sync device settings to bridge service and Agora SDK
-      await _mediaService.forceSyncToSDK();
+      // 2. One-way notification to MediaDeviceService (affects main video stream)
+      if (audioDeviceId != null) {
+        _mediaService.selectAudio(audioDeviceId);
+        print('Notified MediaDeviceService of audio device: $audioDeviceId');
+      }
 
-      print('Device selection fully synced');
+      if (videoDeviceId != null) {
+        _mediaService.selectVideo(videoDeviceId);
+        print('Notified MediaDeviceService of video device: $videoDeviceId');
+      }
+
+      print('Device selection synced: SharedPreferences + MediaDeviceService notification');
     } catch (e) {
       print('Error syncing device selection: $e');
     }
@@ -244,8 +333,8 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb && _mediaService.audioInputs.isEmpty && _mediaService.videoInputs.isEmpty) {
-      // Still loading or no devices
+    // 只在初始化過程中顯示 loading
+    if (_isInitializing) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -255,7 +344,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         const Text('Audio Input Device'),
         DropdownButton<String>(
           value: _previewAudioDeviceId,
-          items: _mediaService.audioInputs.map((device) {
+          items: _audioInputs.map((device) {
             return DropdownMenuItem<String>(
               value: device.deviceId,
               child: Text((device.label == null || device.label!.isEmpty) ? 'Unnamed Microphone' : device.label!),
@@ -265,10 +354,9 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             if (val != null) {
               setState(() {
                 _previewAudioDeviceId = val;
-                _mediaService.selectAudio(val);
               });
 
-              // Sync device selection to all systems
+              // Sync device selection to SharedPreferences only
               await _syncDeviceSelection(audioDeviceId: val);
 
               // Update independent preview with new device
@@ -281,7 +369,7 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         const Text('Video Input Device'),
         DropdownButton<String>(
           value: _previewVideoDeviceId,
-          items: _mediaService.videoInputs.map((device) {
+          items: _videoInputs.map((device) {
             return DropdownMenuItem<String>(
               value: device.deviceId,
               child: Text((device.label == null || device.label!.isEmpty) ? 'Unnamed Camera' : device.label!),
@@ -291,10 +379,9 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             if (val != null) {
               setState(() {
                 _previewVideoDeviceId = val;
-                _mediaService.selectVideo(val);
               });
 
-              // Sync device selection to all systems
+              // Sync device selection to SharedPreferences only
               await _syncDeviceSelection(videoDeviceId: val);
               
               // Update independent preview with new device
@@ -326,31 +413,37 @@ class MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   }
 
   /// Finalize device settings when closing the dialog
-  /// This ensures that the selected devices are applied to the actual media streams
+  /// Saves to SharedPreferences and notifies MediaDeviceService (one-way notification)
   Future<void> finalizeDeviceSettings() async {
     try {
-      print('Finalizing device settings...');
+      print('Finalizing device settings with one-way notification...');
       
-      // 1. Ensure MediaDeviceService has the latest device selection
+      // 1. Save to SharedPreferences (for future sessions)
+      if (_previewAudioDeviceId != null) {
+        await sharedPreferencesService.setDefaultMicrophoneId(_previewAudioDeviceId!);
+        print('Finalized audio device to SharedPreferences: $_previewAudioDeviceId');
+      }
+      
+      if (_previewVideoDeviceId != null) {
+        await sharedPreferencesService.setDefaultCameraId(_previewVideoDeviceId!);
+        print('Finalized video device to SharedPreferences: $_previewVideoDeviceId');
+      }
+      
+      // 2. One-way notification to MediaDeviceService (affects current session)
       if (_previewAudioDeviceId != null) {
         _mediaService.selectAudio(_previewAudioDeviceId!);
-        await sharedPreferencesService.setDefaultMicrophoneId(_previewAudioDeviceId!);
-        print('Finalized audio device: $_previewAudioDeviceId');
+        print('Notified MediaDeviceService of finalized audio device: $_previewAudioDeviceId');
       }
       
       if (_previewVideoDeviceId != null) {
         _mediaService.selectVideo(_previewVideoDeviceId!);
-        await sharedPreferencesService.setDefaultCameraId(_previewVideoDeviceId!);
-        print('Finalized video device: $_previewVideoDeviceId');
+        print('Notified MediaDeviceService of finalized video device: $_previewVideoDeviceId');
       }
       
-      // 2. Force refresh the actual media stream to use new devices
-      await _mediaService.forceRefreshStream();
-      
-      // 3. Force sync to SDK to ensure bridge services get the new devices
+      // 3. Force sync to ensure the main video stream uses new devices
       await _mediaService.forceSyncToSDK();
       
-      print('Device settings finalized successfully');
+      print('Device settings finalized: SharedPreferences + MediaDeviceService notification complete');
     } catch (e) {
       print('Error finalizing device settings: $e');
     }
