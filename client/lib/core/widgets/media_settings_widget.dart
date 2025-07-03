@@ -80,100 +80,125 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     // For non-web, audioInputs will remain empty as per MediaDeviceService, so it might show loading indefinitely
     // or an empty state depending on how MediaDeviceService.init() behaves for non-web.
     // Current MediaDeviceService.init() makes them empty lists for non-web.
-    if (kIsWeb && _mediaService.audioInputs.isEmpty && _mediaService.videoInputs.isEmpty) {
-        // If on web and no devices yet, could be still loading or no devices found.
-        // Consider a more specific loading state if _mediaService.init() is still running.
+    if (kIsWeb &&
+        _mediaService.audioInputs.isEmpty &&
+        _mediaService.videoInputs.isEmpty) {
+      // If on web and no devices yet, could be still loading or no devices found.
+      // Consider a more specific loading state if _mediaService.init() is still running.
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('🎙 Audio Input Device'),
-        DropdownButton<String>(
-          value: _mediaService.selectedAudioInputId,
-          // If audioInputs is empty, map will produce an empty list, which is fine.
-          items: _mediaService.audioInputs.map((device) {
-            return DropdownMenuItem<String>(
-              value: device.deviceId,
-              // device.label is non-nullable String in html.MediaDeviceInfo
-              child: Text((device.label == null || device.label!.isEmpty) ? 'Unnamed Microphone' : device.label!),
-            );
-          }).toList(),
-          onChanged: (val) async {
-            if (val != null) {
-              setState(() {
-                _mediaService.selectAudio(val);
-              });
-              await updatePreview();
-            }
-          },
-          hint: const Text('Select audio input'),
-        ),
-        const SizedBox(height: 16),
-        const Text('📷 Video Input Device'),
-        DropdownButton<String>(
-          value: _mediaService.selectedVideoInputId,
-          items: _mediaService.videoInputs.map((device) {
-            return DropdownMenuItem<String>(
-              value: device.deviceId,
-              child: Text((device.label == null || device.label!.isEmpty) ? 'Unnamed Camera' : device.label!),
-            );
-          }).toList(),
-          onChanged: (val) async {
-            if (val != null) {
-              setState(() {
-                _mediaService.selectVideo(val);
-              });
-              await updatePreview();
-            }
-          },
-          hint: const Text('Select video input'),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            ElevatedButton.icon(
-              onPressed: () async {
+    return AlertDialog(
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('🎙 Audio Input Device'),
+          DropdownButton<String>(
+            value: _mediaService.selectedAudioInputId,
+            // If audioInputs is empty, map will produce an empty list, which is fine.
+            items: _mediaService.audioInputs.map((device) {
+              return DropdownMenuItem<String>(
+                value: device.deviceId,
+                // device.label is non-nullable String in html.MediaDeviceInfo
+                child: Text(
+                  (device.label == null || device.label!.isEmpty)
+                      ? 'Unnamed Microphone'
+                      : device.label!,
+                ),
+              );
+            }).toList(),
+            onChanged: (val) async {
+              if (val != null) {
                 setState(() {
-                  _mediaService.toggleMic(!_mediaService.micEnabled);
+                  _mediaService.selectAudio(val);
                 });
                 await updatePreview();
-              },
-              icon: Icon(_mediaService.micEnabled ? Icons.mic : Icons.mic_off),
-              label: Text(_mediaService.micEnabled ? 'Mute Microphone' : 'Unmute Microphone'),
+              }
+            },
+            hint: const Text('Select audio input'),
+          ),
+          const SizedBox(height: 16),
+          const Text('📷 Video Input Device'),
+          DropdownButton<String>(
+            value: _mediaService.selectedVideoInputId,
+            items: _mediaService.videoInputs.map((device) {
+              return DropdownMenuItem<String>(
+                value: device.deviceId,
+                child: Text(
+                  (device.label == null || device.label!.isEmpty)
+                      ? 'Unnamed Camera'
+                      : device.label!,
+                ),
+              );
+            }).toList(),
+            onChanged: (val) async {
+              if (val != null) {
+                setState(() {
+                  _mediaService.selectVideo(val);
+                });
+                await updatePreview();
+              }
+            },
+            hint: const Text('Select video input'),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              ElevatedButton.icon(
+                onPressed: () async {
+                  setState(() {
+                    _mediaService.toggleMic(!_mediaService.micEnabled);
+                  });
+                  await updatePreview();
+                },
+                icon:
+                    Icon(_mediaService.micEnabled ? Icons.mic : Icons.mic_off),
+                label: Text(
+                  _mediaService.micEnabled
+                      ? 'Mute Microphone'
+                      : 'Unmute Microphone',
+                ),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  setState(() {
+                    _mediaService.toggleCam(!_mediaService.camEnabled);
+                  });
+                  await updatePreview();
+                },
+                icon: Icon(
+                  _mediaService.camEnabled
+                      ? Icons.videocam
+                      : Icons.videocam_off,
+                ),
+                label: Text(
+                  _mediaService.camEnabled
+                      ? 'Turn Off Camera'
+                      : 'Turn On Camera',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          if (kIsWeb) ...[
+            const Text('🎥 Video Preview'),
+            Container(
+              width: 320,
+              height: 240,
+              color: Colors.black,
+              child: HtmlElementView(viewType: _viewType),
             ),
-            const SizedBox(width: 16),
-            ElevatedButton.icon(
-              onPressed: () async {
-                setState(() {
-                  _mediaService.toggleCam(!_mediaService.camEnabled);
-                });
-                await updatePreview();
-              },
-              icon: Icon(_mediaService.camEnabled ? Icons.videocam : Icons.videocam_off),
-              label: Text(_mediaService.camEnabled ? 'Turn Off Camera' : 'Turn On Camera'),
+          ] else ...[
+            const Text('🎥 Video Preview (Not available on this platform)'),
+            Container(
+              width: 320,
+              height: 240,
+              color: Colors.grey,
+              child: const Center(child: Text('Preview N/A')),
             ),
           ],
-        ),
-        const SizedBox(height: 20),
-        if (kIsWeb) ...[
-          const Text('🎥 Video Preview'),
-          Container(
-            width: 320,
-            height: 240,
-            color: Colors.black,
-            child: HtmlElementView(viewType: _viewType),
-          ),
-        ] else ...[
-          const Text('🎥 Video Preview (Not available on this platform)'),
-          Container(
-            width: 320,
-            height: 240,
-            color: Colors.grey,
-            child: const Center(child: Text('Preview N/A')),
-          ),
         ],
-      ],
+      ),
     );
   }
 }
