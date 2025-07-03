@@ -13,15 +13,14 @@ class MediaDeviceService {
   bool camEnabled = true;
 
   Future<void> init() async {
-    // Request permissions first
     await Permission.microphone.request();
     await Permission.camera.request();
 
     if (kIsWeb) {
       try {
-        final devices = await html.window.navigator.mediaDevices?.enumerateDevices();
+        final devices =
+            await html.window.navigator.mediaDevices?.enumerateDevices();
         if (devices != null) {
-          // Filter for MediaDeviceInfo and correct kind
           audioInputs = devices
               .whereType<html.MediaDeviceInfo>()
               .where((d) => d.kind == 'audioinput')
@@ -31,19 +30,21 @@ class MediaDeviceService {
               .where((d) => d.kind == 'videoinput')
               .toList();
         }
-        // Set default selected device if none is selected and list is not empty
-        selectedAudioInputId ??= audioInputs.isNotEmpty ? audioInputs.first.deviceId : null;
-        selectedVideoInputId ??= videoInputs.isNotEmpty ? videoInputs.first.deviceId : null;
+
+        // Set the default selected device if it's currently null.
+        selectedAudioInputId ??=
+            audioInputs.isNotEmpty ? audioInputs.first.deviceId : null;
+        selectedVideoInputId ??=
+            videoInputs.isNotEmpty ? videoInputs.first.deviceId : null;
       } catch (e) {
-        print('Error enumerating devices: $e');
+        print('Error listing available devices: $e');
         audioInputs = [];
         videoInputs = [];
       }
     } else {
-      // For non-web platforms, initialize as empty lists for this minimal web version
+      // Only web is supported for now.
       audioInputs = [];
       videoInputs = [];
-      // Alternatively, one might throw UnimplementedError here in a stricter setup.
     }
   }
 
@@ -67,19 +68,25 @@ class MediaDeviceService {
     if (kIsWeb) {
       final dynamic audioConstraint;
       if (micEnabled) {
-        // Use 'exact' for deviceId constraint for stricter matching if an ID is provided
-        audioConstraint = selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
-            ? {'deviceId': {'exact': selectedAudioInputId}}
-            : true; // Request default audio input
+        // If a specific audio input was selected, pass it into 'exact'.
+        audioConstraint =
+            selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
+                ? {
+                    'deviceId': {'exact': selectedAudioInputId},
+                  }
+                : true; // Default
       } else {
         audioConstraint = false;
       }
 
       final dynamic videoConstraint;
       if (camEnabled) {
-        videoConstraint = selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
-            ? {'deviceId': {'exact': selectedVideoInputId}}
-            : true; // Request default video input
+        videoConstraint =
+            selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
+                ? {
+                    'deviceId': {'exact': selectedVideoInputId},
+                  }
+                : true; // Default
       } else {
         videoConstraint = false;
       }
@@ -96,14 +103,16 @@ class MediaDeviceService {
       }
 
       try {
-        return await html.window.navigator.mediaDevices?.getUserMedia(constraints);
+        return await html.window.navigator.mediaDevices
+            ?.getUserMedia(constraints);
       } catch (e) {
         print('Error getting user media: $e');
         return null;
       }
     } else {
-      // For non-web platforms, this functionality is not implemented in this version
-      throw UnimplementedError('getUserMedia is not implemented for non-web platforms in this version.');
+      throw UnimplementedError(
+        'getUserMedia error: Only web is supported.',
+      );
     }
   }
 
@@ -114,8 +123,7 @@ class MediaDeviceService {
         track.stop();
       });
     } else {
-      // For non-web platforms, do nothing or throw UnimplementedError
-      // throw UnimplementedError('stopMediaStream is not implemented for non-web platforms in this version.');
+      throw UnimplementedError('stopMediaStream error: Only web is supported.');
     }
   }
 }
