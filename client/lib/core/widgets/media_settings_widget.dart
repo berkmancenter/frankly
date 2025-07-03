@@ -1,3 +1,4 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
@@ -24,7 +25,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     _videoElement = html.VideoElement()
       ..id = _viewType
       ..autoplay = true
-      ..muted = true // Mute preview to avoid feedback loop if mic is on
+      ..muted = true
       ..style.width = '100%'
       ..style.height = '100%'
       ..style.objectFit = 'cover'
@@ -78,14 +79,15 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Audio Input Device'),
+          Text(
+            'Audio Input Device',
+            style: context.theme.textTheme.titleMedium,
+          ),
           DropdownButton<String>(
             value: _mediaService.selectedAudioInputId,
-            // If audioInputs is empty, map will produce an empty list, which is fine.
             items: _mediaService.audioInputs.map((device) {
               return DropdownMenuItem<String>(
                 value: device.deviceId,
-                // device.label is non-nullable String in html.MediaDeviceInfo
                 child: Text(
                   (device.label == null || device.label!.isEmpty)
                       ? 'Unnamed Microphone'
@@ -103,8 +105,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             },
             hint: const Text('Select audio input'),
           ),
-          const SizedBox(height: 16),
-          const Text('Video Input Device'),
+          const SizedBox(height: 24),
+          Text(
+            'Video Input Device',
+            style: context.theme.textTheme.titleMedium,
+          ),
           DropdownButton<String>(
             value: _mediaService.selectedVideoInputId,
             items: _mediaService.videoInputs.map((device) {
@@ -127,13 +132,25 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             },
             hint: const Text('Select video input'),
           ),
-          const SizedBox(height: 20),
-          const Text('Video Preview'),
-          Container(
-            width: 320,
-            height: 240,
-            color: Colors.black,
-            child: HtmlElementView(viewType: _viewType),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Video Preview',
+                style: context.theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: 320,
+                height: 240,
+                decoration: BoxDecoration(
+                  color: context.theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: HtmlElementView(viewType: _viewType),
+              ),
+            ],
           ),
         ],
       ),
