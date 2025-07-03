@@ -133,24 +133,21 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             hint: const Text('Select video input'),
           ),
           const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Video Preview',
-                style: context.theme.textTheme.titleMedium,
+          Text(
+            'Video Preview',
+            style: context.theme.textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              width: 320,
+              height: 240,
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.primary,
               ),
-              const SizedBox(height: 8),
-              Container(
-                width: 320,
-                height: 240,
-                decoration: BoxDecoration(
-                  color: context.theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: HtmlElementView(viewType: _viewType),
-              ),
-            ],
+              child: HtmlElementView(viewType: _viewType),
+            ),
           ),
         ],
       ),
