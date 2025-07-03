@@ -18,6 +18,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart' hide Participant;
 import 'package:pedantic/pedantic.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -361,26 +362,6 @@ class ConferenceRoom with ChangeNotifier {
     }
   }
 
-  Future<bool> _requestUserMediaPermission({bool? audio, bool? video}) async {
-    try {
-      final stream = await html.window.navigator.mediaDevices?.getUserMedia({
-        'audio': audio ?? false,
-        'video': video ?? false,
-      });
-      if (stream == null) {
-        return false;
-      }
-      print('Microphone permission granted.');
-      // Stop using the audio stream right away
-      stream.getTracks().forEach((track) => track.stop());
-      return true;
-    } catch (e) {
-      print('Microphone permission denied.');
-      print(e);
-      return false;
-    }
-  }
-
   Future<void> toggleVideoEnabled({
     bool? setEnabled,
     bool updateProvider = true,
@@ -388,8 +369,8 @@ class ConferenceRoom with ChangeNotifier {
     final updatedEnabledValue = setEnabled ?? !videoEnabled;
 
     if (updatedEnabledValue) {
-      final granted = await _requestUserMediaPermission(video: true);
-      if (!granted) {
+      final permissionStatus = await Permission.camera.request();
+      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
         await showAlert(
           navigatorState.context,
           'Error enabling camera. Please ensure you have granted permission.',
@@ -421,8 +402,8 @@ class ConferenceRoom with ChangeNotifier {
     final updatedEnabledValue = setEnabled ?? !audioEnabled;
 
     if (updatedEnabledValue) {
-      final granted = await _requestUserMediaPermission(audio: true);
-      if (!granted) {
+      final permissionStatus = await Permission.microphone.request();
+      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
         await showAlert(
           navigatorState.context,
           'Error enabling microphone. Please ensure you have granted permission.',
