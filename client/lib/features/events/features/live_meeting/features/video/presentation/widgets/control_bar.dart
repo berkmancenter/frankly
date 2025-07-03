@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
@@ -91,9 +92,12 @@ class _ControlBarState extends State<ControlBar> {
       child: PopupMenuButton<FutureOr<void> Function()>(
         itemBuilder: (context) => [
           PopupMenuItem(
-            value: () =>
-                AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
-                    .show(),
+            value: () => showDialog(
+              context: context,
+              builder: (context) {
+                return MediaSettingsWidget();
+              },
+            ),
             child: HeightConstrainedText(
               'Audio/Video Settings',
             ),

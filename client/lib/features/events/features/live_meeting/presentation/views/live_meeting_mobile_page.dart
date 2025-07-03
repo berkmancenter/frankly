@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -760,9 +761,12 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       itemBuilder: (context) {
                         return [
                           PopupMenuItem(
-                            value: () => AudioVideoSettingsDialog(
-                              conferenceRoom: context.read<ConferenceRoom>(),
-                            ).show(),
+                            value: () => showDialog(
+                              context: context,
+                              builder: (context) {
+                                return MediaSettingsWidget();
+                              },
+                            ),
                             child: HeightConstrainedText(
                               'Audio/Video Settings',
                             ),
