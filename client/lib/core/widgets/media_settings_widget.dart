@@ -75,6 +75,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Audio Input Device'),
