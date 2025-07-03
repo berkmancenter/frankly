@@ -77,7 +77,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🎙 Audio Input Device'),
+          const Text('Audio Input Device'),
           DropdownButton<String>(
             value: _mediaService.selectedAudioInputId,
             // If audioInputs is empty, map will produce an empty list, which is fine.
@@ -103,7 +103,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             hint: const Text('Select audio input'),
           ),
           const SizedBox(height: 16),
-          const Text('📷 Video Input Device'),
+          const Text('Video Input Device'),
           DropdownButton<String>(
             value: _mediaService.selectedVideoInputId,
             items: _mediaService.videoInputs.map((device) {
@@ -166,7 +166,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             ],
           ),
           const SizedBox(height: 20),
-          const Text('🎥 Video Preview'),
+          const Text('Video Preview'),
           Container(
             width: 320,
             height: 240,
