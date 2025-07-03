@@ -127,45 +127,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             },
             hint: const Text('Select video input'),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              ElevatedButton.icon(
-                onPressed: () async {
-                  setState(() {
-                    _mediaService.toggleMic(!_mediaService.micEnabled);
-                  });
-                  await updatePreview();
-                },
-                icon:
-                    Icon(_mediaService.micEnabled ? Icons.mic : Icons.mic_off),
-                label: Text(
-                  _mediaService.micEnabled
-                      ? 'Mute Microphone'
-                      : 'Unmute Microphone',
-                ),
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton.icon(
-                onPressed: () async {
-                  setState(() {
-                    _mediaService.toggleCam(!_mediaService.camEnabled);
-                  });
-                  await updatePreview();
-                },
-                icon: Icon(
-                  _mediaService.camEnabled
-                      ? Icons.videocam
-                      : Icons.videocam_off,
-                ),
-                label: Text(
-                  _mediaService.camEnabled
-                      ? 'Turn Off Camera'
-                      : 'Turn On Camera',
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: 20),
           const Text('Video Preview'),
           Container(
