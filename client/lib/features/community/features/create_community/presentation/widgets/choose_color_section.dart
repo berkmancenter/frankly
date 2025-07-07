@@ -1,17 +1,14 @@
-import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/theme_preview_container.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
@@ -45,21 +42,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   String? _selectedColorErrorMessage;
 
   String get _currentLightColor => _customLightColorController.text;
-
   String get _currentDarkColor => _customDarkColorController.text;
 
-  bool get _isSelectedColorComboValid => ThemeUtils.isColorComboValid(
-        context,
-        _currentLightColor,
-        _currentDarkColor,
-      );
-
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
-
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
 
-    final Color _lightColor = Color(0xfff5f5f5);
-  Color darkColor = Color(0xff212121);
+  Color _lightColor = Color(0xff000000);
+  Color _darkColor = Color(0xff212121);
 
   @override
   void initState() {
@@ -109,26 +98,26 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedColorErrorMessage = 'Light color must be lighter';
+          _selectedColorErrorMessage = context.l10n.colorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           secondColor,
         )) {
           _selectedColorErrorMessage =
-              'Contrast ratio must be greater than 4.5';
+              context.l10n.contrastRatioMustBeGreaterThan4_5;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           context.theme.colorScheme.secondary,
         )) {
-          _selectedColorErrorMessage = 'Light color must be lighter';
+          _selectedColorErrorMessage = context.l10n.colorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
           context.theme.colorScheme.surface,
         )) {
-          _selectedColorErrorMessage = 'Dark color must be darker';
+          _selectedColorErrorMessage = context.l10n.colorMustBeDarker;
         }
       } else {
         _selectedColorErrorMessage = null;
@@ -136,25 +125,20 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     });
   }
 
-  void _changeDarkColorTextField(String val) {
-    if (ThemeUtils.isColorValid(_currentDarkColor)) {
-      widget.setDarkColor(_currentDarkColor);
-    } else {
-      widget.setDarkColor('');
-    }
+  void _changeDarkColorTextField(Color val) {
+    widget.setDarkColor(_currentDarkColor);
     _checkChosenColorConstraints();
+    setState(() {
+      _darkColor = val;
+    });
   }
 
-  void _changeLightColorTextField(String val) {
-    if (ThemeUtils.isColorValid(val)) {
-      widget.setLightColor(_currentLightColor);
-// setState(() {
-//       _lightColor = ThemeUtils.parseColor(val);
-// });
-    } else {
-      widget.setLightColor('');
-    }
+  void _changeLightColorTextField(Color val) {
+    widget.setLightColor(ThemeUtils.convertToHexString(val));
     _checkChosenColorConstraints();
+    setState(() {
+      _lightColor = val;
+    });
   }
 
   void _selectPreset(BuildContext context, int index) {
@@ -257,14 +241,19 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     );
   }
 
-  Future<void> _buildColorPickerDialog(String currentColor,  Function(Color color) colorChanged,) async {
+  Future<void> _buildColorPickerDialog(
+    String currentColor,
+    Function(Color color) colorChanged,
+  ) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Pick a color!'),
         content: SingleChildScrollView(
           child: ColorPicker(
-            pickerColor: currentColor.isNotEmpty ? (ThemeUtils.parseColor(currentColor) ?? Colors.white) : Colors.white,
+            pickerColor: currentColor.isNotEmpty
+                ? (ThemeUtils.parseColor(currentColor) ?? Colors.white)
+                : Colors.white,
             onColorChanged: (Color color) => colorChanged(color),
           ),
         ),
@@ -281,118 +270,102 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   }
 
   Widget _buildCustomColorsContent(bool mobile) {
-    const description =
-        'Choose one light color and one dark color. Colors must meet a 4.5:1 contrast ratio. For help selecting compliant colors, go to ';
-    const linkText = 'color.review.';
-    final launchLink = TapGestureRecognizer()
-      ..onTap = () => launch('https://color.review');
-
-    return Flex(
-      direction: mobile ? Axis.vertical : Axis.horizontal,
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.water_drop,
-                color: _lightColor,),
-              onPressed: () {
-                _buildColorPickerDialog(
-                  _currentLightColor,
-                  (Color color) {
-                    _customLightColorController.text = color.toHexString();
-                    _changeLightColorTextField(_customLightColorController.text);
-                  },
-                );
-              },
-             
-            ),
-            SizedBox(width: 10),
-            _buildChooseColorTextField(
-              label: context.l10n.lightColorHex,
-              onChanged: _changeLightColorTextField,
-              controller: _customLightColorController,
-            ),
-          ],
-        ),
-      ],
-    );
-
-    // SizedBox(width: 10),
-    // _buildChooseColorTextField(
-    //   label: context.l10n.darkColorHex,
-    //   onChanged: _changeDarkColorTextField,
-    //   controller: _customDarkColorController,
-    // ),
-    // _buildErrorMessage(),
-  }
-
-  List<Widget> _buildCustomTextFields() => [
-        SizedBox(
-          width: 150,
-          child: Column(
+    return SizedBox(
+      height: 200,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flex(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            direction: mobile ? Axis.vertical : Axis.horizontal,
             children: [
+              IconButton(
+                icon: Icon(
+                  Icons.water_drop,
+                  color: _lightColor,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withAlpha(50),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  _buildColorPickerDialog(
+                    _currentLightColor,
+                    (Color color) {
+                      _customLightColorController.text =
+                          color.toHexString().substring(2, 8);
+                      _changeLightColorTextField(color);
+                    },
+                  );
+                },
+              ),
               _buildChooseColorTextField(
                 label: context.l10n.lightColorHex,
                 onChanged: _changeLightColorTextField,
                 controller: _customLightColorController,
               ),
+              IconButton(
+                icon: Icon(
+                  Icons.water_drop,
+                  color: _darkColor,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withAlpha(50),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  _buildColorPickerDialog(
+                    _currentDarkColor,
+                    (Color color) {
+                      _customDarkColorController.text =
+                          color.toHexString().substring(2, 8);
+                      _changeDarkColorTextField(color);
+                    },
+                  );
+                },
+              ),
               _buildChooseColorTextField(
-                onChanged: _changeDarkColorTextField,
                 label: context.l10n.darkColorHex,
+                onChanged: _changeDarkColorTextField,
                 controller: _customDarkColorController,
               ),
             ],
           ),
-        ),
-        SizedBox(width: 10),
-        _buildCheckIcon(),
-      ];
-  
+          _buildErrorMessage(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildChooseColorTextField({
     required String label,
-    required void Function(String) onChanged,
+    required void Function(Color) onChanged,
     required TextEditingController controller,
   }) =>
       Expanded(
         child: CustomTextField(
-          controller: controller,
-          onChanged: onChanged,
           labelText: label,
           maxLength: 6,
           hideCounter: true,
           prefixText: '#',
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           borderType: BorderType.underline,
-        ),
-      );
-
-  Widget _buildCheckIcon() => Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isSelectedColorComboValid
-                ? context.theme.colorScheme.onPrimary.withAlpha(40)
-                : null,
-            border: Border.all(
-              color: _isSelectedColorComboValid
-                  ? context.theme.colorScheme.primary
-                  : context.theme.colorScheme.onPrimaryContainer,
-            ),
-          ),
-          child: Center(
-            child: Icon(
-              Icons.check,
-              color: _isSelectedColorComboValid
-                  ? context.theme.colorScheme.secondary
-                  : context.theme.colorScheme.onPrimaryContainer,
-            ),
-          ),
+          controller: controller,
+          padding: EdgeInsets.zero,
+          onChanged: (text) {
+            final color = ThemeUtils.parseColor(text);
+            if (color != null) {
+              onChanged(color);
+            }
+          },
+          validator: (value) =>
+              ThemeUtils.isColorValid(value) ? null : context.l10n.mustBeValidHexColor,
         ),
       );
 
