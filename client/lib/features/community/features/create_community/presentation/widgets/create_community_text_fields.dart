@@ -18,6 +18,7 @@ class CreateCommunityTextFields extends StatefulWidget {
   final Community community;
   final bool compact;
   final bool showAllFields;
+  final bool autoGenerateUrl;
 
   final FocusNode? taglineFocus;
   const CreateCommunityTextFields({
@@ -33,6 +34,7 @@ class CreateCommunityTextFields extends StatefulWidget {
     required this.community,
     this.compact = false,
     this.showAllFields = false,
+    this.autoGenerateUrl = true,
   }) : super(key: key);
 
   @override
@@ -77,11 +79,13 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           label: context.l10n.name,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
-            widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
-            setState(() {
-              // Update the displayId when the name changes
-              _displayIdController.text = _formatDisplayIdFromName(val);
-            }),
+            if(widget.autoGenerateUrl){
+              widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
+              setState(() {
+                // Update the displayId when the name changes
+                _displayIdController.text = _formatDisplayIdFromName(val);
+              }),
+            },
           },
           focus: widget.nameFocus,
           helperText: context.l10n.youCanChangeThisLater,

@@ -362,6 +362,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
         if (widget.showAttributeEdit)
           CreateCommunityTextFields(
             showAllFields: true,
+            autoGenerateUrl: widget.isCreateCommunity,
             showChooseCustomDisplayId: widget.showChooseCustomDisplayId,
             onCustomDisplayIdChanged: (value) => _displayId = value,
             onNameChanged: (value) =>
