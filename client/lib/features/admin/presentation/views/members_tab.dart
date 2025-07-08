@@ -1,32 +1,28 @@
 import 'dart:convert';
 
+import 'package:client/core/data/services/location_service.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:csv/csv.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/upgrade_icon.dart';
-import 'package:client/features/admin/presentation/widgets/upgrade_tooltip.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
-import 'package:client/app.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/community/membership_request.dart';
-import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/iterables.dart';
 import 'package:universal_html/html.dart' as html;
@@ -46,6 +42,73 @@ const _adminStatusMap = <MembershipStatus, String>{
 class MembersTab extends StatefulWidget {
   @override
   _MembersTabState createState() => _MembersTabState();
+}
+
+/*
+  * This class is used to display a list of memberships in a DataTable.
+  * It allows for sorting and filtering of memberships.
+  */
+
+// The DataTableSource implementation for the Memberships DataTable.
+class MembershipDataSource extends DataTableSource {
+  BuildContext context;
+
+  MembershipDataSource(List<Membership>? membershipList, this.context)
+      : _membershipList = membershipList ?? [];
+
+  final List<Membership> _membershipList;
+ 
+  @override
+  int get rowCount => _membershipList.length;
+
+  // Build a DataRow for each membership entry
+  DataRow _buildMembershipEntry(
+    int index,
+    Membership membership,
+  ) {
+    PublicUserInfo? userInfo = UserInfoProvider.forUser(membership.userId).info;
+    return DataRow(
+      color: WidgetStateProperty.all(
+        index.isEven
+            ? context.theme.colorScheme.surfaceContainerLow
+            : Colors.white70,
+      ),
+      cells: <DataCell>[
+        DataCell(
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  userInfo?.imageUrl ?? '',
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                userInfo?.displayName ?? 'Unknown',
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          ChangeMembershipDropdown(
+            membership: membership,
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  DataRow? getRow(int index) {
+    final membership = _membershipList[index];
+    return _buildMembershipEntry(index, membership);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => 0;
 }
 
 class _MembersTabState extends State<MembersTab> {
@@ -200,42 +263,6 @@ class _MembersTabState extends State<MembersTab> {
                 return SizedBox.shrink();
               },
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMembershipEntry(
-    int index,
-    Membership membership,
-    bool allowPromoteToAdmin,
-    bool allowPromoteToFacilitator,
-  ) {
-    return Container(
-      key: Key(membership.userId),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-      color: index.isEven
-          ? context.theme.colorScheme.primary.withOpacity(0.1)
-          : Colors.white70,
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 50,
-        runSpacing: 8,
-        children: [
-          UserProfileChip(
-            key: Key('user-profile-chip-${membership.userId}'),
-            userId: membership.userId,
-            imageHeight: 32,
-            textStyle: TextStyle(
-              color: context.theme.colorScheme.primary,
-            ),
-          ),
-          ChangeMembershipDropdown(
-            membership: membership,
-            allowPromoteToAdmin: allowPromoteToAdmin,
-            allowPromoteToFacilitator: allowPromoteToFacilitator,
           ),
         ],
       ),
@@ -462,43 +489,32 @@ class _MembersTabState extends State<MembersTab> {
     );
   }
 
+  Widget _buildTable(DataTableSource dataSource) {
+    return PaginatedDataTable(
+      headingRowColor: WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
+      columns: const <DataColumn>[
+        DataColumn(label: Text('Member')),
+        DataColumn(label: Text('Role')),
+      ],
+      source: dataSource,
+    );
+  }
+
   Widget _buildMembersSection() {
     return CustomStreamBuilder<List<Membership>>(
       stream: _memberships,
       entryFrom: '_MembersTabState._buildMembersSection',
       errorMessage: 'Something went wrong loading memberships. Please refresh.',
-      builder: (context, allMembershipDocs) =>
-          MemoizedStreamBuilder<PlanCapabilityList>(
-        streamGetter: () => cloudFunctionsCommunityService
-            .getCommunityCapabilities(
-              GetCommunityCapabilitiesRequest(
-                communityId: context.read<CommunityProvider>().communityId,
-              ),
-            )
-            .asStream(),
-        entryFrom: '_MembersTabState._buildMembersSection_2',
-        builder: (context, caps) {
-          final membershipList = allMembershipDocs
-              ?.where((element) => !(element.invisible))
-              .toList();
+      builder: (context, allMembershipDocs) {
+        final membershipList = allMembershipDocs
+            ?.where((element) => !(element.invisible))
+            .toList();
 
-          final adminCapabilityCount = caps?.adminCount ?? 0;
-          // Count mods + admins in total allowed admin count
-          final adminCount =
-              membershipList?.where((element) => element.isMod).length;
-          final allowPromoteToAdmin =
-              adminCount != null && adminCount < adminCapabilityCount;
-
-          final facilitatorCapabilityCount = caps?.facilitatorCount ?? 0;
-          final facilitatorCount = membershipList
-              ?.where(
-                (element) => element.status == MembershipStatus.facilitator,
-              )
-              .length;
-          final allowPromoteToFacilitator = facilitatorCount != null &&
-              facilitatorCount < facilitatorCapabilityCount;
-
-          return Align(
+        return SingleChildScrollView(
+          padding: EdgeInsets.all(12.0),
+          child: _buildTable(MembershipDataSource(membershipList, context)),
+        );
+        /*       return Align(
             alignment: Alignment.centerLeft,
             child: Container(
               padding: EdgeInsets.all(20),
@@ -582,8 +598,8 @@ class _MembersTabState extends State<MembersTab> {
               ),
             ),
           );
-        },
-      ),
+         */
+      },
     );
   }
 
@@ -627,10 +643,6 @@ class _MembersTabState extends State<MembersTab> {
               _buildMembersSection(),
             ],
           ),
-        ),
-        SizedBox(width: 20),
-        Expanded(
-          child: _buildPermissionMessage(),
         ),
       ],
     );
@@ -759,13 +771,9 @@ class RolePermissionListTile extends StatelessWidget {
 
 class ChangeMembershipDropdown extends StatefulWidget {
   final Membership membership;
-  final bool allowPromoteToAdmin;
-  final bool allowPromoteToFacilitator;
 
   const ChangeMembershipDropdown({
     required this.membership,
-    required this.allowPromoteToAdmin,
-    required this.allowPromoteToFacilitator,
   });
 
   @override
@@ -775,34 +783,54 @@ class ChangeMembershipDropdown extends StatefulWidget {
 
 class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   bool _isLoading = false;
-  bool _showUpgradeTooltip = false;
 
   bool get _disableOverride =>
       widget.membership.status == MembershipStatus.owner;
 
-  Future<void> _updateMembership(MembershipStatus? newStatus) async {
-    if ((newStatus?.isMod ?? false) && !widget.allowPromoteToAdmin) {
-      setState(() => _showUpgradeTooltip = true);
-      return;
-    } else if (newStatus == MembershipStatus.facilitator &&
-        !widget.allowPromoteToFacilitator) {
-      setState(() => _showUpgradeTooltip = true);
-      return;
-    }
+  Future<bool> confirmRemoveDialog(String communityName) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Are you sure?'),
+          content: Text(context.l10n.confirmRemoveUser(
+            UserInfoProvider.forUser(widget.membership.userId)
+                    .info
+                    ?.displayName ??
+                '{NAME NOT FOUND}',communityName,
+          ),),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text(context.l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(context.l10n.confirm),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
+  Future<void> _updateMembership(MembershipStatus? newStatus) async {
+    CommunityProvider communityProvider = Provider.of<CommunityProvider>(context, listen: false);
     if (newStatus == MembershipStatus.nonmember) {
-      final delete = await ConfirmDialog(
-        mainText: 'Are you sure you want to remove member?',
-        cancelText: context.l10n.cancel,
-      ).show(context: context);
+      final delete = await confirmRemoveDialog(
+        communityProvider.community.name ?? 'Community',
+      );
       if (!delete) return;
     }
     setState(() => _isLoading = true);
     await alertOnError(
       context,
       () => userDataService.changeCommunityMembership(
-        communityId:
-            Provider.of<CommunityProvider>(context, listen: false).communityId,
+        communityId: communityProvider.community.id,
         userId: widget.membership.userId,
         newStatus: newStatus!,
       ),
@@ -813,139 +841,33 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   @override
   Widget build(BuildContext context) {
     final disableDropdown = _isLoading || _disableOverride;
-    final isMobile = responsiveLayoutService.isMobile(context);
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (_isLoading)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            child: CustomLoadingIndicator(),
-          ),
-        if (!isMobile) Flexible(flex: 3, child: SizedBox()),
-        Flexible(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            decoration: BoxDecoration(
-              color: context.theme.colorScheme.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: context.theme.colorScheme.onPrimaryContainer,
-              ),
+
+    if (_isLoading) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        child: CustomLoadingIndicator(),
+      );
+    }
+
+    return DropdownButton<MembershipStatus>(
+      value: widget.membership.status,
+      onChanged: disableDropdown ? null : _updateMembership,
+      items: [
+        MembershipStatus.owner,
+        MembershipStatus.admin,
+        MembershipStatus.mod,
+        MembershipStatus.facilitator,
+        MembershipStatus.member,
+        MembershipStatus.attendee,
+        MembershipStatus.nonmember,
+      ]
+          .map(
+            (value) => DropdownMenuItem<MembershipStatus>(
+              value: value,
+              child: Text(value.name.capitalize()),
             ),
-            child: UpgradeTooltip(
-              isTooltipVisible:
-                  kShowStripeFeatures ? _showUpgradeTooltip : false,
-              isBelowIcon: false,
-              onCloseIconTap: () => setState(() => _showUpgradeTooltip = false),
-              child: DropdownButton<MembershipStatus>(
-                itemHeight: null,
-                value: widget.membership.status,
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 24,
-                elevation: 16,
-                isExpanded: true,
-                borderRadius: BorderRadius.circular(10),
-                style: TextStyle(
-                  color: disableDropdown
-                      ? context.theme.colorScheme.onPrimaryContainer
-                      : context.theme.colorScheme.onSurface,
-                ),
-                underline: SizedBox.shrink(),
-                iconEnabledColor: context.theme.colorScheme.primary,
-                onChanged: disableDropdown ? null : _updateMembership,
-                selectedItemBuilder: (BuildContext context) => [
-                  if (widget.membership.status == MembershipStatus.owner)
-                    MembershipStatus.owner,
-                  MembershipStatus.admin,
-                  MembershipStatus.mod,
-                  MembershipStatus.facilitator,
-                  MembershipStatus.member,
-                  MembershipStatus.attendee,
-                  MembershipStatus.nonmember,
-                ]
-                    .map(
-                      (value) => DropdownMenuItem<MembershipStatus>(
-                        value: value,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            value.icon(context),
-                            SizedBox(width: 4),
-                            Text(
-                              _adminStatusMap[value] ??
-                                  value
-                                      .toString()
-                                      .replaceFirst('MembershipStatus.', '')
-                                      .capitalize(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList(),
-                items: [
-                  if (widget.membership.status == MembershipStatus.owner)
-                    MembershipStatus.owner,
-                  MembershipStatus.admin,
-                  MembershipStatus.mod,
-                  MembershipStatus.facilitator,
-                  MembershipStatus.member,
-                  MembershipStatus.attendee,
-                  MembershipStatus.nonmember,
-                ].map(
-                  (value) {
-                    final isCurrentStatus = widget.membership.status == value;
-                    final isUnallowedAdminPromotion =
-                        !widget.allowPromoteToAdmin && value.isMod;
-                    final isUnallowedFacilitatorPromotion =
-                        !widget.allowPromoteToFacilitator &&
-                            value == MembershipStatus.facilitator;
-                    final isDisabled = !isCurrentStatus &&
-                        (isUnallowedAdminPromotion ||
-                            isUnallowedFacilitatorPromotion);
-                    final textStyle = AppTextStyle.body.copyWith(
-                      color: isDisabled
-                          ? context.theme.colorScheme.secondary.withOpacity(.5)
-                          : context.theme.colorScheme.secondary,
-                    );
-                    return DropdownMenuItem<MembershipStatus>(
-                      value: value,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          isDisabled
-                              ? UpgradeIcon(isDisabledColor: true)
-                              : value.icon(context),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                HeightConstrainedText(
-                                  _adminStatusMap[value] ??
-                                      value
-                                          .toString()
-                                          .replaceFirst('MembershipStatus.', '')
-                                          .capitalize(),
-                                  style: textStyle,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ).toList(),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 10),
-      ],
+          )
+          .toList(),
     );
   }
 }

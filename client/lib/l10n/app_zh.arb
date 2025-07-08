@@ -168,6 +168,7 @@
   "confirmDelete": "确定要删除吗？",
   "confirmDeleteMedia": "您确定要删除媒体吗？",
   "confirmRefreshGuide": "您确定要刷新指南吗？",
+  "confirmRemoveUser": "您确定要将 {userName} 从 {communityName} 中移除吗？", 
   "contactEmail": "联系邮箱",
   "contrastRatioMustBeGreaterThan4_5": "对比度比率必须大于4.5",
   "createAPost": "创建一篇文章",
@@ -759,6 +760,16 @@
     "placeholders": {
       "appName": {
         "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveUser": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      },
+      "communityName": {
+        "type": "String"
       }
     }
   },

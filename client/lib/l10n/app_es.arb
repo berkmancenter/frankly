@@ -167,6 +167,7 @@
   "confirmDelete": "¿Está seguro de que desea eliminar?",
   "confirmDeleteMedia": "¿Estás seguro de que quieres eliminar el medio?",
   "confirmRefreshGuide": "¿Estás seguro de que quieres actualizar la guía?",
+  "confirmRemoveUser": "¿Estás seguro de que quieres eliminar a {userName} de {communityName}?",
   "contactEmail": "Correo de contacto",
   "contrastRatioMustBeGreaterThan4_5": "El ratio de contraste debe ser mayor que 4.5",
   "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
@@ -648,6 +649,16 @@
     "placeholders": {
       "appName": {
         "type": "Object"
+      }
+    }
+  },
+  "@confirmRemoveUser": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      },
+      "communityName": {
+        "type": "String"
       }
     }
   },

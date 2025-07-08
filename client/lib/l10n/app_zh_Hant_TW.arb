@@ -90,6 +90,7 @@
   "confirmDelete": "確定要刪除嗎？",
   "confirmDeleteMedia": "您確定要刪除媒體嗎？",
   "confirmRefreshGuide": "您確定要重新整理指南嗎？",
+  "confirmRemoveUser": "您確定要將 {userName} 從 {communityName} 中移除嗎？",
   "contactEmail": "聯絡電郵",
   "contrastRatioMustBeGreaterThan4_5": "對比度比率必須大於4.5",
   "couldntFindAccount": "我们找不到使用此邮箱的账户。请尝试 ",
@@ -643,6 +644,17 @@
       },
       "intro": {
         "type": "Object"
+      }
+    }
+  },
+
+  "@confirmRemoveUser": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      },
+      "communityName": {
+        "type": "String"
       }
     }
   },

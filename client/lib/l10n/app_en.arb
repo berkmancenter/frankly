@@ -83,6 +83,7 @@
   "confirmDelete": "Are you sure you want to delete?",
   "confirmDeleteMedia": "Are you sure you want to delete media?",
   "confirmRefreshGuide": "Are you sure you want to refresh the guide?",
+  "confirmRemoveUser": "Are you sure you want to remove {userName} from {communityName}?",
   "contactEmail": "Contact email",
   "contrastRatioMustBeGreaterThan4_5": "Contrast ratio must be greater than 4.5",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
@@ -477,6 +478,16 @@
   "@bySigningInRegisteringOrUsing": {
     "placeholders": {
       "appName": {}
+    }
+  },
+  "@confirmRemoveUser": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      },
+      "communityName": {
+        "type": "String"
+      }
     }
   },
   "@deleteAgendaItem": {
