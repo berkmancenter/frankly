@@ -3,6 +3,11 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
 
 class MediaDeviceService {
+  // Singleton class
+  static final MediaDeviceService _instance = MediaDeviceService._internal();
+  factory MediaDeviceService() => _instance;
+  MediaDeviceService._internal();
+
   List<html.MediaDeviceInfo> audioInputs = [];
   List<html.MediaDeviceInfo> videoInputs = [];
 
