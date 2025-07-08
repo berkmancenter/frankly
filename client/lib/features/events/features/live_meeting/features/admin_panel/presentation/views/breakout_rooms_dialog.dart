@@ -111,7 +111,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         Text(
           text,
           textAlign: TextAlign.center,
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
+          style: context.theme.textTheme.bodyMedium,
         ),
       ],
     );
@@ -123,11 +123,11 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
       children: [
         Text(
           _participantCount.toString(),
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 20),
+          style: context.theme.textTheme.titleMedium,
         ),
         Text(
           context.l10n.currentParticipants,
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
+          style: context.theme.textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
       ],
@@ -299,8 +299,9 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
                     child: Text(
                       'Breakout Rooms',
                       style: TextStyle(
-                          color: context.theme.colorScheme.onPrimary,
-                          fontSize: 16),
+                        color: context.theme.colorScheme.onPrimary,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),

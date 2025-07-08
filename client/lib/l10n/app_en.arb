@@ -73,7 +73,7 @@
   "close": "Close",
   "closeEdit": "Close Edit",
   "communitySuccessPrefix": "You’ve successfully created your community",
-  "communitySuccessSuffix": "Start inviting members and creating events!",
+  "communitySuccessSuffix": "Click the pencil icon in the top right to edit your community settings.",
   "congratulations": "Congratulations!",
   "confirm": "Confirm",
   "confirmDelete": "Are you sure you want to delete?",

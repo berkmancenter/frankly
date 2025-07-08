@@ -124,7 +124,7 @@ class _ControlBarState extends State<ControlBar> {
           child: Icon(
             Icons.more_horiz,
             size: 32,
-            color: context.theme.colorScheme.onPrimaryContainer,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),
@@ -205,7 +205,7 @@ class _ControlBarState extends State<ControlBar> {
     return AnimatedBuilder(
       animation: _liveMeetingProvider.conferenceRoomNotifier,
       builder: (context, __) => Container(
-        color: context.theme.colorScheme.primaryContainer,
+        color: context.theme.colorScheme.onPrimaryFixed,
         height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,18 +318,18 @@ class _EmojiButtonState extends State<EmojiButton> {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: isMobile ? 12 : 20,
-          vertical: 14,
+          vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.surfaceContainerLowest,
+          color: context.theme.colorScheme.primaryContainer,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
           null,
           asset: widget.emoji.imageAssetPath,
           loadingColor: Colors.transparent,
-          width: 18,
-          height: 18,
+          width: 24,
+          height: 24,
         ),
       ),
     );
@@ -348,10 +348,10 @@ class ChatInput extends StatefulWidget {
   });
 
   @override
-  _ChatInputState createState() => _ChatInputState();
+  ChatInputState createState() => ChatInputState();
 }
 
-class _ChatInputState extends State<ChatInput> {
+class ChatInputState extends State<ChatInput> {
   final _sendController = SubmitNotifier();
 
   bool get canSubmit => !isNullOrEmpty(widget.controller.text.trim());
@@ -384,9 +384,11 @@ class _ChatInputState extends State<ChatInput> {
           Expanded(
             child: CustomTextField(
               borderType: BorderType.none,
-              borderRadius: isMobile ? 25 : 10,
-              backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+              showFocusedBorder: false,
+              backgroundColor:
+                  context.theme.colorScheme.surfaceContainerHighest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
               onEditingComplete:
                   canSubmit ? _sendController.submit : widget.controller.clear,
               controller: widget.controller,
@@ -417,6 +419,7 @@ class _ChatInputState extends State<ChatInput> {
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                 ),
               ),

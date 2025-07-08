@@ -88,6 +88,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ),
           CustomTextField(
             minLines: 3,
+            keyboardType: TextInputType.multiline,
             borderType: BorderType.outline,
             borderRadius: 10,
             initialValue: _model.waitingRoomInfo.content,
@@ -165,7 +166,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
               Expanded(
                 child: HeightConstrainedText(
                   context.l10n.bufferTimeDescription(
-                        waitingBufferDurationDescription,),
+                    waitingBufferDurationDescription,
+                  ),
                   style: AppTextStyle.body,
                 ),
               ),
@@ -235,7 +237,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                 Expanded(
                   child: HeightConstrainedText(
                     context.l10n
-                          .introBeforeBreakouts(introLengthDurationDescription),
+                        .introBeforeBreakouts(introLengthDurationDescription),
                     style: AppTextStyle.body,
                   ),
                 ),
@@ -245,8 +247,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           SizedBox(height: 18),
           HeightConstrainedText(
             'Participants will be sent into rooms at $breakoutsInitiationTime ${context.l10n.bufferAndIntroTime(
-                      waitingBufferDurationDescription,
-                      introLengthDurationDescription,)}',
+              waitingBufferDurationDescription,
+              introLengthDurationDescription,
+            )}',
             style: AppTextStyle.subhead,
           ),
           SizedBox(height: 10),
