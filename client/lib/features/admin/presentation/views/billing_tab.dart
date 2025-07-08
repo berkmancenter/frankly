@@ -311,16 +311,14 @@ class _AdminBillingContainerContentState
                     Flexible(
                       child: HeightConstrainedText(
                         plan.name,
-                        style: AppTextStyle.body.copyWith(
-                          color: context.theme.colorScheme.secondary,
-                        ),
+                        style: AppTextStyle.body,
                       ),
                     ),
                     SizedBox(width: 8),
                     HeightConstrainedText(
                       plan.cost,
                       style: AppTextStyle.body.copyWith(
-                        color: context.theme.colorScheme.onPrimaryContainer,
+                        color: context.theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -370,9 +368,7 @@ class _AdminBillingContainerContentState
                           : '';
                       return HeightConstrainedText(
                         '${userInfo.displayName ?? 'The community owner'} ${emailText}is the billing manager',
-                        style: AppTextStyle.body.copyWith(
-                          color: context.theme.colorScheme.onPrimaryContainer,
-                        ),
+                        style: AppTextStyle.body,
                       );
                     },
                   ),

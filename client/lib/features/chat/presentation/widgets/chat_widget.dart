@@ -139,8 +139,8 @@ class _ChatWidgetState extends State<_ChatWidget> {
         Expanded(
           child: CustomTextField(
             key: Key('input-chat'),
-            padding: EdgeInsets.zero,
             backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+            padding: EdgeInsets.zero,
             onEditingComplete:
                 canSubmit ? () => _sendController.submit() : null,
             onChanged: (_) => setState(() {}),
@@ -148,8 +148,8 @@ class _ChatWidgetState extends State<_ChatWidget> {
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,
-            borderRadius: 30,
             hintText: widget.messageInputHint,
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
             maxLength: 2000,
             hideCounter: true,
           ),
@@ -157,6 +157,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
         SizedBox(width: 10),
         ActionButton(
           shape: CircleBorder(),
+          color: context.theme.colorScheme.primary,
           minWidth: 58,
           padding: EdgeInsets.symmetric(vertical: 10),
           borderRadius: BorderRadius.circular(50),
@@ -166,7 +167,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             label: context.l10n.submitMessageButton,
             button: true,
             child: Icon(
-              CupertinoIcons.paperplane,
+              Icons.send,
               size: 30,
               color: context.theme.colorScheme.onPrimary,
             ),

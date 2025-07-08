@@ -119,7 +119,8 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
                 HeightConstrainedText(
                   context.l10n.livestream,
                   style: AppTextStyle.eyebrowSmall.copyWith(
-                      color: context.theme.colorScheme.onPrimaryContainer),
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               SizedBox(height: 10),
               Row(

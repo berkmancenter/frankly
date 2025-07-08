@@ -850,7 +850,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                 style: TextStyle(
                   color: disableDropdown
                       ? context.theme.colorScheme.onPrimaryContainer
-                      : context.theme.colorScheme.primary,
+                      : context.theme.colorScheme.onSurface,
                 ),
                 underline: SizedBox.shrink(),
                 iconEnabledColor: context.theme.colorScheme.primary,

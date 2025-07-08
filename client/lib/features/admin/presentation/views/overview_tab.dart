@@ -270,7 +270,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
     return Text(
       '$completedStepCount/$totalSteps',
       style: AppTextStyle.body
-          .copyWith(color: context.theme.colorScheme.onPrimaryContainer),
+          .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
     );
   }
 

@@ -212,6 +212,7 @@ class _MeetingDialogState extends State<MeetingDialog> {
               meetingAgendaBuilder: (context) => MeetingAgenda(
                 canUserEditAgenda:
                     context.watch<EventPermissionsProvider>().canEditEvent,
+                displayLocation: MeetingAgendaDisplayLocation.meetingPage,
               ),
               enableGuide: enableGuide,
               enableUserSubmittedAgenda:

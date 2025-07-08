@@ -40,6 +40,8 @@ class AgendaItemText extends StatelessWidget {
             initialValue: agendaItemTextData.content,
             labelText: context.l10n.content,
             hintText: context.l10n.keepItShort,
+            minLines: 4,
+            keyboardType: TextInputType.multiline,
             onChanged: (value) {
               agendaItemTextData.content = value;
               onChanged(agendaItemTextData);

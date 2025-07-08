@@ -106,8 +106,8 @@ class AgoraRoom with ChangeNotifier {
   }
 
   Future<void> connect({
-    bool enableAudio = false,
-    bool enableVideo = false,
+    bool enableAudio = true,
+    bool enableVideo = true,
   }) async {
     engine = createAgoraRtcEngine();
 

@@ -137,6 +137,7 @@ class _TemplatePageState extends State<TemplatePage>
               canUserEditAgenda: context
                   .watch<CommunityPermissionsProvider>()
                   .canEditTemplate(template),
+              displayLocation: MeetingAgendaDisplayLocation.eventPage,
             ),
           ),
         ],
