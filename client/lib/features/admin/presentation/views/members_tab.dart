@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:client/core/data/services/location_service.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:csv/csv.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
@@ -34,14 +33,9 @@ extension StringExtension on String {
     return '${this[0].toUpperCase()}${substring(1)}';
   }
 }
-
-const _adminStatusMap = <MembershipStatus, String>{
-  MembershipStatus.mod: 'Moderator',
-};
-
 class MembersTab extends StatefulWidget {
   @override
-  _MembersTabState createState() => _MembersTabState();
+  MembersTabState createState() => MembersTabState();
 }
 
 /*
@@ -114,7 +108,7 @@ class MembershipDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-class _MembersTabState extends State<MembersTab> {
+class MembersTabState extends State<MembersTab> {
   final whiteBackground = Colors.white70;
 
   late Stream<List<Membership>> _memberships;
@@ -202,53 +196,31 @@ class _MembersTabState extends State<MembersTab> {
     }
   }
 
-  Widget _buildSearchBarField(List<Membership> memberships) {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search',
-        border: InputBorder.none,
-      ),
-      onChanged: (value) {
-        setState(() {
-          _currentSearch = value;
-          _loadUsersFuture ??= Future.wait([
-            _loadAllUserInfoDetails(memberships),
-            ...memberships.map(
-              (m) => UserAdminDetailsProvider.forUser(m.userId).getInfoFuture(
-                communityId: CommunityProvider.read(context).communityId,
-              ),
-            ),
-          ]);
-        });
-      },
-    );
-  }
-
+  // final filteredMembers = _filterMemberships(membershipList);
   Widget _buildSearchBar(List<Membership> memberships) {
     return Container(
       constraints: BoxConstraints(maxWidth: 450),
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: context.theme.colorScheme.surfaceContainerLowest,
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(
-                      Icons.search,
-                      color: context.theme.colorScheme.secondary,
+            child: CustomTextField(
+              hintText: 'Filter member list by name',
+              prefixIcon: Icon(Icons.search),
+              onChanged: (value) {
+                setState(() {
+                  _currentSearch = value;
+                  _loadUsersFuture ??= Future.wait([
+                    _loadAllUserInfoDetails(memberships),
+                    ...memberships.map(
+                      (m) => UserAdminDetailsProvider.forUser(m.userId)
+                          .getInfoFuture(
+                        communityId:
+                            CommunityProvider.read(context).communityId,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: _buildSearchBarField(memberships),
-                  ),
-                ],
-              ),
+                  ]);
+                });
+              },
             ),
           ),
           SizedBox(
@@ -513,93 +485,31 @@ class _MembersTabState extends State<MembersTab> {
             ?.where((element) => !(element.invisible))
             .toList();
 
-        return _buildTable(MembershipDataSource(membershipList, context));
-        /*       return Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      HeightConstrainedText(
-                        'Manage Members (${membershipList!.length})',
-                        style: AppTextStyle.headline4,
-                      ),
-                      SizedBox(width: 8),
-                      Tooltip(
-                        message: 'Download members data',
-                        child: ActionButton(
-                          type: ActionButtonType.outline,
-                          height: 40,
-                          minWidth: 60,
-                          onPressed: () => _downloadMembersData(membershipList),
-                          borderRadius: BorderRadius.circular(15),
-                          padding: EdgeInsets.zero,
-                          icon: Icon(
-                            Icons.download,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 400,
-                      maxWidth: !responsiveLayoutService.isMobile(context)
-                          ? 600
-                          : 400,
-                    ),
-                    child: AnimatedBuilder(
-                      animation: Listenable.merge(
-                        [
-                          ...membershipList
-                              .map((m) => UserInfoProvider.forUser(m.userId)),
-                          ...membershipList.map(
-                            (m) => UserAdminDetailsProvider.forUser(m.userId),
-                          ),
-                        ],
-                      ),
-                      builder: (_, __) {
-                        final filteredMembers =
-                            _filterMemberships(membershipList);
-                        if (filteredMembers.isEmpty &&
-                            !isNullOrEmpty(_currentSearch)) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text('No matching members found.'),
-                          );
-                        }
+        if (membershipList != null && membershipList.isNotEmpty) {
+          // If there is a current search, run filter and return filtered table
+          if (!isNullOrEmpty(_currentSearch)) {
+            final filteredMembers = _filterMemberships(membershipList);
+            if (filteredMembers.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(context.l10n.noMatchingMembersFound),
+              );
+            }
+            return _buildTable(MembershipDataSource(filteredMembers, context));
+          }
 
-                        return ListView(
-                          shrinkWrap: true,
-                          children: [
-                            for (var i = 0; i < filteredMembers.length; i++)
-                              _buildMembershipEntry(
-                                i,
-                                filteredMembers[i],
-                                allowPromoteToAdmin,
-                                allowPromoteToFacilitator,
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          // If there is no current search, return table with all memberships
+          return _buildTable(MembershipDataSource(membershipList, context));
+        } else if (membershipList == null) {
+          return Center(
+            child: CustomLoadingIndicator(),
           );
-         */
-      },
+        }
+        // There is a problem
+        return Center(
+          child: Text(context.l10n.errorLoadingMemberships),
+        );
+           },
     );
   }
 
@@ -704,7 +614,8 @@ class ChangeMembershipDropdown extends StatefulWidget {
 class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   bool _isLoading = false;
 
-  bool get _disableOverride => widget.membership.status == MembershipStatus.owner;
+  bool get _disableOverride =>
+      widget.membership.status == MembershipStatus.owner;
 
   Future<bool> confirmRemoveDialog(String communityName) async {
     return await showDialog(
@@ -802,7 +713,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                 value: value,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
                       value.name.capitalize(),
@@ -810,7 +721,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Flexible(
+                    Expanded(
                       child: Text(
                         value.permissions,
                         style: context.theme.textTheme.bodySmall,
