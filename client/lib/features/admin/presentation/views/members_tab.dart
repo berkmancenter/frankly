@@ -33,6 +33,7 @@ extension StringExtension on String {
     return '${this[0].toUpperCase()}${substring(1)}';
   }
 }
+
 class MembersTab extends StatefulWidget {
   @override
   MembersTabState createState() => MembersTabState();
@@ -509,7 +510,7 @@ class MembersTabState extends State<MembersTab> {
         return Center(
           child: Text(context.l10n.errorLoadingMemberships),
         );
-           },
+      },
     );
   }
 
@@ -527,8 +528,20 @@ class MembersTabState extends State<MembersTab> {
             entryFrom: '_MembersTabState._build',
             errorMessage:
                 'Something went wrong loading memberships. Please refresh.',
-            builder: (context, membershipList) =>
+            builder: (context, membershipList) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 _buildSearchBar(membershipList ?? []),
+                ActionButton(
+                  text: 'Download Members Data',
+                  type: ActionButtonType.text,
+                  icon: Icon(Icons.file_download_outlined),
+                  onPressed: () => _downloadMembersData(
+                    membershipList ?? [],
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 20),
           Row(
