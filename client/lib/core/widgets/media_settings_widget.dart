@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
 import 'dart:ui' as ui;
-import '../utils/media_device_service.dart';
+import 'package:client/core/utils/media_device_service.dart';
 
 /// This widget is only designed for web. When expanding to other platforms,
 /// this widget should be refactored to ensure compatibility.
@@ -17,7 +17,8 @@ class MediaSettingsWidget extends StatefulWidget {
 class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   final MediaDeviceService _mediaService = MediaDeviceService();
   late html.VideoElement _videoElement;
-  final String _viewType = 'video-preview-element';
+  final String _viewType =
+      'video-preview-element-${DateTime.now().millisecondsSinceEpoch}';
 
   @override
   void initState() {
@@ -42,17 +43,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   Future<void> initAll() async {
     await _mediaService.init();
     await updatePreview();
-
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   Future<void> updatePreview() async {
     try {
-      final stream = await _mediaService.getUserMedia();
-      _videoElement.srcObject =
-          stream; // This can accept null to clear the stream
+      await _mediaService.getUserMedia(
+        mediaStreamLocation: MediaStreamLocation.preview,
+      );
+      _videoElement.srcObject = _mediaService.previewMediaStream;
     } catch (e) {
       print('Error updating preview: $e');
       _videoElement.srcObject = null;
@@ -61,14 +59,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   @override
   void dispose() {
-    if (kIsWeb) {
-      // Stop the tracks and clear srcObject
-      final stream = _videoElement.srcObject;
-      if (stream is html.MediaStream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-      _videoElement.srcObject = null;
-    }
+    _mediaService.stopMediaStream(
+      mediaStreamLocation: MediaStreamLocation.preview,
+    );
+    _videoElement.srcObject = null;
+    _videoElement.remove();
     super.dispose();
   }
 
