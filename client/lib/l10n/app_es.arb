@@ -320,7 +320,7 @@
   "noDevicesFound": "No se encontraron dispositivos.",
   "noEventsFound": "No se encontraron eventos.",
   "noItems": "No hay {name}",
-  "noMatchingMembersFound": "No se encontraron miembros coincidentes.",
+  "noMatchingMembersFound": "No se encontraron resultados. Por favor, modifique sus palabras de búsqueda.",
   "noOneIsHereYet": "Nadie está aquí todavía.",
   "noOneIsHereYet1": "Nadie está aquí todavía.",
   "noPendingJoinRequests": "No hay solicitudes de ingreso pendientes",

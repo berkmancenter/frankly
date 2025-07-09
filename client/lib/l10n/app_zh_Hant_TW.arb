@@ -218,7 +218,7 @@
   "noDevicesFound": "未找到設備。",
   "noEventsFound": "未找到活動。",
   "noItems": "沒有{name}",
-  "noMatchingMembersFound": "未找到匹配的成員。",
+  "noMatchingMembersFound": "未找到結果。請修改您的搜索詞。",
   "noOneIsHereYet": "還沒有人在這裡。",
   "noOneIsHereYet1": "還沒有人在這裡。",
   "noPendingJoinRequests": "沒有待處理的加入請求",

@@ -223,7 +223,7 @@
   "noDevicesFound": "No devices found.",
   "noEventsFound": "No events found",
   "noItems": "No {name}",
-  "noMatchingMembersFound": "No matching members found.",
+  "noMatchingMembersFound": "No results found. Please modify your search words.",
   "noOneIsHereYet": "No one is here yet.",
   "noOneIsHereYet1": "No one is here yet",
   "noPendingJoinRequests": "No Pending Join Requests",
