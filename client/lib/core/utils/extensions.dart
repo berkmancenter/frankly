@@ -169,34 +169,20 @@ extension MembershipStatusUIExtension on MembershipStatus {
     }
   }
 
-  List<String> get permissions {
+String get permissions {
     switch (this) {
-      case MembershipStatus.attendee:
-        return ['Has attended an event, but has not become a community member'];
       case MembershipStatus.member:
-        return ['Participates as the community allows'];
+        return 'Someone who has joined the community. May attend events, create posts, and receive community announcements.';
       case MembershipStatus.admin:
-        return [
-          'All mod capabilities',
-          'Access all community settings',
-          'Manages data (including billing & memberships)',
-        ];
+        return 'Full control over community settings, member roles, and all content.';
       case MembershipStatus.facilitator:
-        return [
-          'All member capabilities',
-          'Hosts events',
-          'Evenly spread among breakouts when applicable',
-        ];
+        return 'Can schedule and host events based on existing templates.';
       case MembershipStatus.mod:
-        return [
-          'Moderates community',
-          'Manages content (guides, resources)',
-          'Acts as admin within events',
-        ];
+        return 'Can create/edit templates and events, remove unwanted content, move participants between rooms, and respond to help requests.';
       case MembershipStatus.owner:
-        return ['All admin capabilities', 'Can add/remove other admin'];
+        return 'All admin capabilities, Can add/remove other admin';
       default:
-        return [];
+        return '';
     }
   }
 }

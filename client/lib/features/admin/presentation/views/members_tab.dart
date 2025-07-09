@@ -57,7 +57,7 @@ class MembershipDataSource extends DataTableSource {
       : _membershipList = membershipList ?? [];
 
   final List<Membership> _membershipList;
- 
+
   @override
   int get rowCount => _membershipList.length;
 
@@ -69,24 +69,27 @@ class MembershipDataSource extends DataTableSource {
     PublicUserInfo? userInfo = UserInfoProvider.forUser(membership.userId).info;
     return DataRow(
       color: WidgetStateProperty.all(
-        index.isEven
+        index.isOdd
             ? context.theme.colorScheme.surfaceContainerLow
             : Colors.white70,
       ),
       cells: <DataCell>[
         DataCell(
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  userInfo?.imageUrl ?? '',
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    userInfo?.imageUrl ?? '',
+                  ),
                 ),
-              ),
-              SizedBox(width: 8),
-              Text(
-                userInfo?.displayName ?? 'Unknown',
-              ),
-            ],
+                SizedBox(width: 8),
+                Text(
+                  userInfo?.displayName ?? 'Unknown',
+                ),
+              ],
+            ),
           ),
         ),
         DataCell(
@@ -127,7 +130,6 @@ class _MembersTabState extends State<MembersTab> {
       MembershipStatus.mod,
       MembershipStatus.facilitator,
       MembershipStatus.member,
-      MembershipStatus.attendee,
     ];
 
     final aStatus = a.status;
@@ -491,7 +493,8 @@ class _MembersTabState extends State<MembersTab> {
 
   Widget _buildTable(DataTableSource dataSource) {
     return PaginatedDataTable(
-      headingRowColor: WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
+      headingRowColor:
+          WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
       columns: const <DataColumn>[
         DataColumn(label: Text('Member')),
         DataColumn(label: Text('Role')),
@@ -510,10 +513,7 @@ class _MembersTabState extends State<MembersTab> {
             ?.where((element) => !(element.invisible))
             .toList();
 
-        return SingleChildScrollView(
-          padding: EdgeInsets.all(12.0),
-          child: _buildTable(MembershipDataSource(membershipList, context)),
-        );
+        return _buildTable(MembershipDataSource(membershipList, context));
         /*       return Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -607,109 +607,29 @@ class _MembersTabState extends State<MembersTab> {
   Widget build(BuildContext context) {
     final requiresApproval =
         context.read<CommunityProvider>().settings.requireApprovalToJoin;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 8),
-        CustomStreamBuilder<List<Membership>>(
-          stream: _memberships,
-          entryFrom: '_MembersTabState._build',
-          errorMessage:
-              'Something went wrong loading memberships. Please refresh.',
-          builder: (context, membershipList) =>
-              _buildSearchBar(membershipList ?? []),
-        ),
-        SizedBox(height: 20),
-        if (responsiveLayoutService.isMobile(context))
-          _buildMobileView(requiresApproval: requiresApproval)
-        else
-          _buildDesktopView(requiresApproval: requiresApproval),
-      ],
-    );
-  }
-
-  Widget _buildDesktopView({required bool requiresApproval}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 2,
-          child: CustomListView(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 8),
+          CustomStreamBuilder<List<Membership>>(
+            stream: _memberships,
+            entryFrom: '_MembersTabState._build',
+            errorMessage:
+                'Something went wrong loading memberships. Please refresh.',
+            builder: (context, membershipList) =>
+                _buildSearchBar(membershipList ?? []),
+          ),
+          SizedBox(height: 20),
+          Row(
             children: [
-              if (requiresApproval) ...[
-                _buildRequestsSection(),
-                SizedBox(height: 20),
-              ],
-              _buildMembersSection(),
+              Expanded(
+                child: _buildMembersSection(),
+              ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMobileView({required bool requiresApproval}) {
-    return Column(
-      children: [
-        CustomListView(
-          children: [
-            if (requiresApproval) ...[
-              _buildRequestsSection(),
-              SizedBox(height: 20),
-            ],
-            _buildMembersSection(),
-          ],
-        ),
-        SizedBox(height: 20),
-        _buildPermissionMessage(),
-      ],
-    );
-  }
-
-  CustomListView _buildPermissionMessage() {
-    return CustomListView(
-      children: [
-        Text(
-          'Roles',
-          style: AppTextStyle.headline3,
-        ),
-        SizedBox(height: 20),
-        RolePermissionListTile(
-          title: context.l10n.roleOwner,
-          icon: MembershipStatus.owner.icon(context),
-          permissions: MembershipStatus.owner.permissions,
-        ),
-        SizedBox(height: 20),
-        RolePermissionListTile(
-          title: context.l10n.roleAdmin,
-          icon: MembershipStatus.admin.icon(context),
-          permissions: MembershipStatus.admin.permissions,
-        ),
-        SizedBox(height: 20),
-        RolePermissionListTile(
-          title: context.l10n.roleModerator,
-          icon: MembershipStatus.mod.icon(context),
-          permissions: MembershipStatus.mod.permissions,
-        ),
-        SizedBox(height: 20),
-        RolePermissionListTile(
-          title: context.l10n.roleFacilitator,
-          icon: MembershipStatus.facilitator.icon(context),
-          permissions: MembershipStatus.facilitator.permissions,
-        ),
-        SizedBox(height: 20),
-        RolePermissionListTile(
-          title: context.l10n.roleMember,
-          icon: MembershipStatus.member.icon(context),
-          permissions: MembershipStatus.member.permissions,
-        ),
-        SizedBox(height: 20),
-        RolePermissionListTile(
-          title: context.l10n.roleAttendee,
-          icon: MembershipStatus.member.icon(context),
-          permissions: MembershipStatus.attendee.permissions,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -784,8 +704,7 @@ class ChangeMembershipDropdown extends StatefulWidget {
 class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   bool _isLoading = false;
 
-  bool get _disableOverride =>
-      widget.membership.status == MembershipStatus.owner;
+  bool get _disableOverride => widget.membership.status == MembershipStatus.owner;
 
   Future<bool> confirmRemoveDialog(String communityName) async {
     return await showDialog(
@@ -793,12 +712,15 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Are you sure?'),
-          content: Text(context.l10n.confirmRemoveUser(
-            UserInfoProvider.forUser(widget.membership.userId)
-                    .info
-                    ?.displayName ??
-                '{NAME NOT FOUND}',communityName,
-          ),),
+          content: Text(
+            context.l10n.confirmRemoveUser(
+              UserInfoProvider.forUser(widget.membership.userId)
+                      .info
+                      ?.displayName ??
+                  '{NAME NOT FOUND}',
+              communityName,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -819,13 +741,15 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   }
 
   Future<void> _updateMembership(MembershipStatus? newStatus) async {
-    CommunityProvider communityProvider = Provider.of<CommunityProvider>(context, listen: false);
-    if (newStatus == MembershipStatus.nonmember) {
-      final delete = await confirmRemoveDialog(
-        communityProvider.community.name ?? 'Community',
-      );
-      if (!delete) return;
-    }
+    CommunityProvider communityProvider =
+        Provider.of<CommunityProvider>(context, listen: false);
+    // TODO: Use for owner role?
+    // if (newStatus == MembershipStatus.nonmember) {
+    //   final delete = await confirmRemoveDialog(
+    //     communityProvider.community.name ?? 'Community',
+    //   );
+    //   if (!delete) return;
+    // }
     setState(() => _isLoading = true);
     await alertOnError(
       context,
@@ -849,25 +773,57 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       );
     }
 
-    return DropdownButton<MembershipStatus>(
-      value: widget.membership.status,
-      onChanged: disableDropdown ? null : _updateMembership,
-      items: [
-        MembershipStatus.owner,
-        MembershipStatus.admin,
-        MembershipStatus.mod,
-        MembershipStatus.facilitator,
-        MembershipStatus.member,
-        MembershipStatus.attendee,
-        MembershipStatus.nonmember,
-      ]
-          .map(
-            (value) => DropdownMenuItem<MembershipStatus>(
-              value: value,
-              child: Text(value.name.capitalize()),
-            ),
-          )
-          .toList(),
+    return Container(
+      width: double.infinity,
+      height: 100,
+      constraints: BoxConstraints(maxWidth: 280, maxHeight: 400), //Example
+      child: DropdownButton<MembershipStatus>(
+        value: widget.membership.status,
+        onChanged: disableDropdown ? null : _updateMembership,
+        selectedItemBuilder: (context) => MembershipStatus.values
+            .map(
+              (status) => Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  status.name.capitalize(),
+                ),
+              ),
+            )
+            .toList(),
+        items: MembershipStatus.values
+            .where(
+              (value) =>
+                  value.name != 'nonmember' &&
+                  value.name != 'attendee' &&
+                  value.name != 'banned',
+            )
+            .map(
+              (value) => DropdownMenuItem<MembershipStatus>(
+                value: value,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      value.name.capitalize(),
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        value.permissions,
+                        style: context.theme.textTheme.bodySmall,
+                        softWrap: true,
+                        maxLines: 3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
