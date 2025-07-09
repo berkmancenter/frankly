@@ -67,12 +67,14 @@ class MediaDeviceService {
     }
   }
 
-  void selectAudio(String deviceId) {
+  Future<void> selectAudio(String deviceId) async {
     selectedAudioInputId = deviceId;
+    await getUserMedia(mediaStreamLocation: MediaStreamLocation.all);
   }
 
-  void selectVideo(String deviceId) {
+  Future<void> selectVideo(String deviceId) async {
     selectedVideoInputId = deviceId;
+    await getUserMedia(mediaStreamLocation: MediaStreamLocation.all);
   }
 
   void toggleMic(bool enabled) {
