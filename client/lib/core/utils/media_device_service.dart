@@ -42,7 +42,7 @@ class MediaDeviceService {
         selectedVideoInputId ??=
             videoInputs.isNotEmpty ? videoInputs.first.deviceId : null;
       } catch (e) {
-        print('Error listing available devices: $e');
+        loggingService.log('Error listing available devices: $e');
         audioInputs = [];
         videoInputs = [];
       }
@@ -103,16 +103,17 @@ class MediaDeviceService {
 
       // If both are false, return null or handle as an error, as getUserMedia might fail.
       if (audioConstraint == false && videoConstraint == false) {
-        print('Both audio and video are disabled. Cannot getUserMedia.');
-        return null;
+        loggingService
+            .log('Both audio and video are disabled. Cannot getUserMedia.');
+        return;
       }
 
       try {
         return await html.window.navigator.mediaDevices
             ?.getUserMedia(constraints);
       } catch (e) {
-        print('Error getting user media: $e');
-        return null;
+        loggingService.log('Error getting user media: $e');
+        _mediaStream = null;
       }
     } else {
       throw UnimplementedError(
