@@ -1,9 +1,10 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -25,8 +26,14 @@ import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
-class SettingsTab extends StatefulHookWidget {
+/// Enum to define the position of the toggle switch in settings
+enum TogglePosition {
+  none,
+  top,
+  bottom,
+}
 
+class SettingsTab extends StatefulHookWidget {
   const SettingsTab();
 
   @override
@@ -40,25 +47,87 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _buildSettingsToggle(
     String title,
     bool value,
-    void Function(dynamic) onUpdate,
-    Color background, {
+    void Function(dynamic) onUpdate, {
+    TogglePosition position = TogglePosition.none,
     bool hasWarning = false,
   }) {
+    // If the position is none, we don't need to apply any special border radius
+    BorderRadius radius = BorderRadius.zero;
+    if (position == TogglePosition.top) {
+      radius = BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
+      );
+    } else if (position == TogglePosition.bottom) {
+      radius = BorderRadius.only(
+        bottomLeft: Radius.circular(16),
+        bottomRight: Radius.circular(16),
+      );
+    }
     return Material(
-      color: background,
-      child: CustomSwitchTile(
-        text: title,
-        style: AppTextStyle.body.copyWith(
-            color: hasWarning ? context.theme.colorScheme.error : null,),
-        val: value,
-        onUpdate: onUpdate,
+      shape: RoundedRectangleBorder(
+        borderRadius: radius,
+      ),
+      color: hasWarning
+          ? context.theme.colorScheme.error.withOpacity(0.1)
+          : whiteBackground,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        child: Column(
+          children: [
+            CustomSwitchTile(
+              text: title,
+              style: AppTextStyle.body.copyWith(
+                color: hasWarning ? context.theme.colorScheme.error : null,
+              ),
+              val: value,
+              onUpdate: onUpdate,
+            ),
+            SizedBox(height: 8),
+            if (position != TogglePosition.bottom)
+              Divider(
+                height: 1,
+                color: context.theme.colorScheme.onSurface.withOpacity(0.12),
+              ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildSettingsSection() {
+  Widget _buildSettingsSection({
+    required Widget helperText,
+    required List<Widget> toggles,
+    bool isMobile = false,
+  }) {
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 16),
+          helperText,
+          SizedBox(height: 16),
+          ...toggles,
+        ],
+      );
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: helperText,
+        ),
+        Expanded(flex: 4, child: Column(children: toggles)),
+      ],
+    );
+  }
+
+  Widget _buildSettings(bool isMobile) {
     final settings = Provider.of<CommunityProvider>(context).settings;
     final eventSettings = Provider.of<CommunityProvider>(context).eventSettings;
+
     return CustomStreamBuilder<PartnerAgreement?>(
       stream: useMemoized(
         () => firestoreAgreementsService
@@ -70,18 +139,16 @@ class _SettingsTabState extends State<SettingsTab> {
         final donationWarning =
             !(agreement?.stripeConnectedAccountActive ?? false) &&
                 community.settingsMigration.allowDonations;
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-            constraints: BoxConstraints(maxWidth: 585),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Settings',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(height: 8),
+        return Column(
+          children: [
+            _buildSettingsSection(
+              isMobile: isMobile,
+              helperText: HeightConstrainedText(
+                context.l10n.communitySettings,
+                style: context.theme.textTheme.titleLarge,
+                maxLines: 1,
+              ),
+              toggles: [
                 _buildSettingsToggle(
                   'Allow members to create events',
                   !settings.dontAllowMembersToCreateMeetings,
@@ -91,7 +158,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           !settings.dontAllowMembersToCreateMeetings,
                     ),
                   ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
+                  position: TogglePosition.top,
                 ),
                 _buildSettingsToggle(
                   'Allow members to create templates',
@@ -102,7 +169,6 @@ class _SettingsTabState extends State<SettingsTab> {
                           !settings.allowUnofficialTemplates,
                     ),
                   ),
-                  whiteBackground,
                 ),
                 _buildSettingsToggle(
                   'Require approval for new members',
@@ -112,7 +178,6 @@ class _SettingsTabState extends State<SettingsTab> {
                       requireApprovalToJoin: !settings.requireApprovalToJoin,
                     ),
                   ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Enable weekly email digests of upcoming events',
@@ -122,11 +187,11 @@ class _SettingsTabState extends State<SettingsTab> {
                       disableEmailDigests: !settings.disableEmailDigests,
                     ),
                   ),
-                  whiteBackground,
+                  position: !kShowStripeFeatures
+                      ? TogglePosition.bottom
+                      : TogglePosition.none,
                 ),
-                if (kShowStripeFeatures
-                    ? agreement?.allowPayments ?? false
-                    : false) ...[
+                if (kShowStripeFeatures) ...[
                   _buildSettingsToggle(
                     'Allow users to donate funds${donationWarning ? ' *' : ''}',
                     settings.allowDonations,
@@ -135,24 +200,49 @@ class _SettingsTabState extends State<SettingsTab> {
                         allowDonations: !settings.allowDonations,
                       ),
                     ),
-                    context.theme.colorScheme.primary.withOpacity(0.1),
                     hasWarning: donationWarning,
+                    position: TogglePosition.bottom,
                   ),
                   if (donationWarning)
-                    HeightConstrainedText(
-                      '* Your payee account has not been fully set up, so donations will not '
-                      'currently be accepted. You may need to link a bank account or accept '
-                      'Stripe\'s terms of service.',
-                      style: TextStyle(color: context.theme.colorScheme.error),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: HeightConstrainedText(
+                        '* Your payee account has not been fully set up, so donations will not '
+                        'currently be accepted. You may need to link a bank account or accept '
+                        'Stripe\'s terms of service.',
+                        style:
+                            TextStyle(color: context.theme.colorScheme.error),
+                      ),
                     ),
                   SizedBox(height: 8),
                   _buildStripeConnectLink(context, agreement!),
                 ],
-                SizedBox(height: 30),
-                HeightConstrainedText(
-                  'Default event settings',
-                  style: AppTextStyle.subhead,
-                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            _buildSettingsSection(
+              isMobile: isMobile,
+              helperText: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    context.l10n.eventSettings,
+                    style: context.theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    context.l10n.eventSettingsDescription,
+                    style: context.theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+              toggles: [
                 _buildSettingsToggle(
                   'Chat',
                   eventSettings.chat ?? true,
@@ -161,7 +251,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       chat: !(eventSettings.chat ?? true),
                     ),
                   ),
-                  whiteBackground,
+                  position: TogglePosition.top,
                 ),
                 _buildSettingsToggle(
                   'Floating Chat',
@@ -172,7 +262,6 @@ class _SettingsTabState extends State<SettingsTab> {
                           !(eventSettings.showChatMessagesInRealTime ?? true),
                     ),
                   ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Record',
@@ -182,7 +271,6 @@ class _SettingsTabState extends State<SettingsTab> {
                       alwaysRecord: !(eventSettings.alwaysRecord ?? true),
                     ),
                   ),
-                  whiteBackground,
                 ),
                 _buildSettingsToggle(
                   'Odometer',
@@ -192,7 +280,6 @@ class _SettingsTabState extends State<SettingsTab> {
                       talkingTimer: !(eventSettings.talkingTimer ?? true),
                     ),
                   ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
                   'Agenda preview',
@@ -202,11 +289,12 @@ class _SettingsTabState extends State<SettingsTab> {
                       agendaPreview: !(eventSettings.agendaPreview ?? true),
                     ),
                   ),
-                  whiteBackground,
+                  position: TogglePosition.bottom,
                 ),
               ],
             ),
-          ),
+            if (Environment.enableDevAdminSettings) _buildDevSettingsSection(),
+          ],
         );
       },
     );
@@ -240,12 +328,14 @@ class _SettingsTabState extends State<SettingsTab> {
     BuildContext context,
     PartnerAgreement agreement,
   ) {
-    return ActionButton(
-      text:
-          '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
-      onPressed: () =>
-          alertOnError(context, () => _stripeButtonPressed(agreement)),
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
+    return Center(
+      child: ActionButton(
+        text:
+            '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
+        onPressed: () =>
+            alertOnError(context, () => _stripeButtonPressed(agreement)),
+        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
+      ),
     );
   }
 
@@ -261,43 +351,68 @@ class _SettingsTabState extends State<SettingsTab> {
         .where((element) => settingsMap[element] is bool?)
         .toList();
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        constraints: BoxConstraints(maxWidth: 600),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Dev Settings - Community Settings',
-              style: Theme.of(context).textTheme.titleMedium,
+    return Material(
+      elevation: 6,
+      shadowColor: Colors.deepPurple,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Dev Settings',
+            style: context.theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: Colors.deepPurpleAccent,
             ),
-            SizedBox(height: 8),
-            for (var i = 0; i < settings.length; i++)
-              _devCommunitySettingsToggle(
-                settings[i],
-                settingsMap,
-                i.isEven
-                    ? whiteBackground
-                    : context.theme.colorScheme.primary.withOpacity(0.1),
-              ),
-            SizedBox(height: 20),
-            Text(
-              'Dev Settings - Default Event Settings',
-              style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Community Settings',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(height: 8),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 4,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
             ),
-            SizedBox(height: 8),
-            for (var i = 0; i < eventSettings.length; i++)
-              _devEventSettingsToggle(
-                eventSettings[i],
-                eventSettingsMap,
-                i.isEven
-                    ? whiteBackground
-                    : context.theme.colorScheme.primary.withOpacity(0.1),
-              ),
-            SizedBox(height: 80),
-          ],
-        ),
+            itemCount: settings.length,
+            itemBuilder: (context, i) => _devCommunitySettingsToggle(
+              settings[i],
+              settingsMap,
+              i.isEven
+                  ? whiteBackground
+                  : context.theme.colorScheme.primary.withOpacity(0.1),
+            ),
+          ),
+          SizedBox(height: 20),
+          for (var i = 0; i < settings.length; i++)
+            _devCommunitySettingsToggle(
+              settings[i],
+              settingsMap,
+              i.isEven
+                  ? whiteBackground
+                  : context.theme.colorScheme.primary.withOpacity(0.1),
+            ),
+          SizedBox(height: 20),
+          Text(
+            'Dev Settings - Default Event Settings',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(height: 8),
+          for (var i = 0; i < eventSettings.length; i++)
+            _devEventSettingsToggle(
+              eventSettings[i],
+              eventSettingsMap,
+              i.isEven
+                  ? whiteBackground
+                  : context.theme.colorScheme.primary.withOpacity(0.1),
+            ),
+          SizedBox(height: 80),
+        ],
       ),
     );
   }
@@ -319,7 +434,6 @@ class _SettingsTabState extends State<SettingsTab> {
       settingKey,
       settingMap[settingKey] ?? true,
       (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings)),
-      background,
     );
   }
 
@@ -337,7 +451,6 @@ class _SettingsTabState extends State<SettingsTab> {
       settingKey,
       settingMap[settingKey] ?? true,
       (val) => _toggleEventSetting(EventSettings.fromJson(newSettings)),
-      background,
     );
   }
 
@@ -373,39 +486,11 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   Widget build(BuildContext context) {
     final isMobile = responsiveLayoutService.isMobile(context);
-
-    if (isMobile) {
-      return _buildMobileLayout();
-    } else {
-      return _buildDesktopLayout();
-    }
-  }
-
-  Widget _buildMobileLayout() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return ListView(
       children: [
-        _buildSettings(),
-      ],
-    );
-  }
-
-  Widget _buildDesktopLayout() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(flex: 5, child: _buildSettings()),
-      ],
-    );
-  }
-
-  Widget _buildSettings() {
-    return CustomListView(
-      children: [
-        _buildSettingsSection(),
-        SizedBox(height: 80),
-        if (Environment.enableDevAdminSettings)
-          ConstrainedBody(child: _buildDevSettingsSection()),
+        if (!isMobile) SizedBox(height: 38),
+        _buildSettings(isMobile),
+        if (!isMobile) Spacer(flex: 1),
       ],
     );
   }

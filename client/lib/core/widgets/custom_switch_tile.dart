@@ -2,6 +2,7 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:flutter/material.dart';
 
 class CustomSwitchTile extends StatefulWidget {
   final String? text;
@@ -40,19 +41,20 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: HeightConstrainedText(
                       widget.text ?? '',
-                      style: widget.style ?? context.theme.textTheme.bodyMedium,
+                      style: widget.style ?? context.theme.textTheme.bodyLarge,
                       maxLines: 2,
                     ),
                   ),
             ),
             SizedBox(
-              width: 54,
+              width: 52,
               height: 32,
-              child: CupertinoSwitch(
-                trackColor:
-                    context.theme.colorScheme.onSurface.withOpacity(0.12),
-                activeColor: context.theme.colorScheme.primary,
-                thumbColor: context.theme.colorScheme.surface,
+              child: Switch(
+                // trackColor: WidgetStateProperty.all(
+                //     context.theme.colorScheme.onSurface.withOpacity(0.12),
+                // ),
+                // activeColor: Colors.amber,
+                thumbColor: WidgetStateProperty.all(context.theme.colorScheme.surface),
                 value: widget.val,
                 onChanged: widget.onUpdate,
               ),
