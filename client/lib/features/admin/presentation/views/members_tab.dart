@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:client/config/environment.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:csv/csv.dart';
@@ -468,9 +470,48 @@ class MembersTabState extends State<MembersTab> {
     return PaginatedDataTable(
       headingRowColor:
           WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
-      columns: const <DataColumn>[
+      columns: <DataColumn>[
         DataColumn(label: Text('Member')),
-        DataColumn(label: Text('Role')),
+        DataColumn(
+          label: Row(
+            children: [
+              Text('Role'),
+              IconButton(
+                icon: Icon(Icons.info_outline),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        actionsAlignment: MainAxisAlignment.center,
+                        actionsOverflowDirection: VerticalDirection.down,
+                        actionsPadding:
+                            const EdgeInsets.symmetric(vertical: 16.0),
+                        semanticLabel: 'Role Permissions Help Center Dialog',
+                        content: Text(
+                            context.l10n.memberRolesHelpMessage,),
+                        actions: [
+                          TextButton(
+                            onPressed: () => launch(Environment.helpCenterUrl),
+                            child: Text('${context.l10n.goTo} ${context.l10n.helpCenter}', style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          SizedBox(width: 40),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(context.l10n.close),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        
       ],
       source: dataSource,
     );
@@ -480,7 +521,7 @@ class MembersTabState extends State<MembersTab> {
     return CustomStreamBuilder<List<Membership>>(
       stream: _memberships,
       entryFrom: '_MembersTabState._buildMembersSection',
-      errorMessage: 'Something went wrong loading memberships. Please refresh.',
+      errorMessage: context.l10n.errorLoadingMemberships,
       builder: (context, allMembershipDocs) {
         final membershipList = allMembershipDocs
             ?.where((element) => !(element.invisible))
@@ -526,14 +567,13 @@ class MembersTabState extends State<MembersTab> {
           CustomStreamBuilder<List<Membership>>(
             stream: _memberships,
             entryFrom: '_MembersTabState._build',
-            errorMessage:
-                'Something went wrong loading memberships. Please refresh.',
+            errorMessage: context.l10n.errorLoadingMemberships,
             builder: (context, membershipList) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildSearchBar(membershipList ?? []),
                 ActionButton(
-                  text: 'Download Members Data',
+                  text: context.l10n.downloadMembersData,
                   type: ActionButtonType.text,
                   icon: Icon(Icons.file_download_outlined),
                   onPressed: () => _downloadMembersData(
