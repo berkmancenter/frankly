@@ -700,10 +700,11 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
     return Container(
       width: double.infinity,
       height: 100,
-      constraints: BoxConstraints(maxWidth: 280, maxHeight: 400), //Example
+      constraints: BoxConstraints(maxWidth: 280, maxHeight: 400),
       child: DropdownButton<MembershipStatus>(
         value: widget.membership.status,
         onChanged: disableDropdown ? null : _updateMembership,
+        itemHeight: null,
         selectedItemBuilder: (context) => MembershipStatus.values
             .map(
               (status) => Container(
@@ -724,25 +725,26 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
             .map(
               (value) => DropdownMenuItem<MembershipStatus>(
                 value: value,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      value.name.capitalize(),
-                      style: context.theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value.name.capitalize(),
+                        style: context.theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Text(
+                      Text(
                         value.permissions,
                         style: context.theme.textTheme.bodySmall,
                         softWrap: true,
                         maxLines: 3,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             )
