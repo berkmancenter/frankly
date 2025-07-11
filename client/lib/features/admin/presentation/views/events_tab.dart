@@ -1,4 +1,7 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,11 +12,9 @@ import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/core/routing/locations.dart';
 
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:universal_html/html.dart' as html;
@@ -51,64 +52,13 @@ class _EventsTabState extends State<EventsTab> {
     );
   }
 
-  Widget _buildEventHeaders({required bool showDetails}) {
-    return Row(
-      children: [
-        _buildRowEntry(
-          width: 200,
-          child: Text(
-            'Date',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        _buildRowEntry(
-          width: 320,
-          child: Text(
-            'Title',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        if (showDetails)
-          _buildRowEntry(
-            width: 70,
-            child: Text(
-              'Visibility',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        if (showDetails)
-          _buildRowEntry(
-            width: 80,
-            child: Text(
-              'Live?',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        if (showDetails)
-          _buildRowEntry(
-            width: 100,
-            child: Text(
-              'Num Participants',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        _buildRowEntry(
-          width: 170,
-          child: Text(
-            'Recordings',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildRecordingSection(Event event) {
     if (!(event.eventSettings?.alwaysRecord ?? false)) {
       return Text('');
     } else {
       return ActionButton(
-        type: ActionButtonType.outline,
+        type: ActionButtonType.text,
+        icon: Icon(Icons.file_download_outlined),
         loadingHeight: 16,
         borderSide: BorderSide(color: Theme.of(context).primaryColor),
         textColor: Theme.of(context).primaryColor,
@@ -143,7 +93,7 @@ class _EventsTabState extends State<EventsTab> {
           },
         ),
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
-        text: 'Download',
+        text: context.l10n.dataDownload,
       );
     }
   }
@@ -157,49 +107,90 @@ class _EventsTabState extends State<EventsTab> {
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
 
-    return Container(
-      color: index.isEven
-          ? context.theme.colorScheme.primary.withOpacity(0.1)
-          : Colors.white70,
-      child: Row(
-        children: [
-          _buildRowEntry(
-            width: 200,
-            child: GestureDetector(
-              onTap: () => routerDelegate.beamTo(
-                CommunityPageRoutes(
-                  communityDisplayId: CommunityProvider.read(context).displayId,
-                ).eventPage(
-                  templateId: event.templateId,
-                  eventId: event.id,
-                ),
-              ),
-              child: HeightConstrainedText(
-                '$time $timezone',
-                style: TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
+    return Flex(
+      direction: responsiveLayoutService.isMobile(context)
+          ? Axis.vertical
+          : Axis.horizontal,
+      children: [
+        Row(
+          children: [
+            ProxiedImage(
+              event.image,
+              width: 80,
+              height: 80,
             ),
-          ),
-          _buildRowEntry(
-            width: 320,
-            child: HeightConstrainedText(event.title ?? event.id),
-          ),
-          if (showDetails)
-            _buildRowEntry(
-              width: 70,
-              child: HeightConstrainedText(
-                event.isPublic == true ? 'Public' : 'Private',
-              ),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  event.title ?? 'NO TITLE',
+                  style: context.theme.textTheme.titleLarge,
+                ),
+                Text(
+                  '$time $timezone',
+                  style: context.theme.textTheme.bodyMedium,
+                ),
+              ],
             ),
-          _buildRowEntry(
-            width: 170,
-            child: _buildRecordingSection(event),
-          ),
-        ],
-      ),
+          ],
+        ),
+        SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.group_outlined,
+                ),
+                Text(
+                  '${EventProvider.fromEvent(
+                    event,
+                    communityProvider: CommunityProvider.read(context),
+                  ).eventParticipants.length} participants',
+                  style: context.theme.textTheme.labelLarge,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  event.isPublic == true
+                      ? Icons.language_outlined
+                      : Icons.lock_outline,
+                ),
+              
+                Text(
+                  event.isPublic == true ? 'Public' : 'Private',
+                  style: context.theme.textTheme.labelLarge,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  event.isLiveStream ? Icons.live_tv_outlined : event.isHosted
+                      ? Icons.waving_hand_outlined
+                      : Icons.chair_outlined,
+                ),
+            Text(
+              event.isLiveStream
+                  ? 'Live'
+                  : event.isHosted
+                      ? 'Hosted'
+                      : 'Hostless',
+              style: context.theme.textTheme.labelLarge,
+            ),
+              ],
+            ),
+          ],
+        ),
+        _buildRowEntry(
+          width: 170,
+          child: _buildRecordingSection(event),
+        ),
+      ],
     );
   }
 
@@ -210,13 +201,10 @@ class _EventsTabState extends State<EventsTab> {
     return CustomListView(
       children: [
         for (int i = 0; i < events.length; i++)
-          FittedBox(
-            fit: BoxFit.fitWidth,
-            child: _buildEventRow(
-              index: i,
-              event: events[i],
-              showDetails: showDetails,
-            ),
+          _buildEventRow(
+            index: i,
+            event: events[i],
+            showDetails: showDetails,
           ),
       ],
     );
@@ -236,25 +224,28 @@ class _EventsTabState extends State<EventsTab> {
           );
         }
 
-        return CustomListView(
+        return Column(
           children: [
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: _buildEventHeaders(showDetails: showDetails),
+            SizedBox(
+              height: 32,
             ),
-            _buildEventsList(
-              events: events.take(_numToShow).toList(),
-              showDetails: showDetails,
-            ),
-            if (_numToShow < events.length)
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                alignment: Alignment.center,
-                child: ActionButton(
-                  onPressed: () => setState(() => _numToShow += 10),
-                  text: 'View more',
+            CustomListView(
+              children: [
+                _buildEventsList(
+                  events: events.take(_numToShow).toList(),
+                  showDetails: showDetails,
                 ),
-              ),
+                if (_numToShow < events.length)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    alignment: Alignment.center,
+                    child: ActionButton(
+                      onPressed: () => setState(() => _numToShow += 10),
+                      text: 'View more',
+                    ),
+                  ),
+              ],
+            ),
           ],
         );
       },

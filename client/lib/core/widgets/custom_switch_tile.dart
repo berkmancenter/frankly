@@ -1,5 +1,4 @@
 import 'package:client/styles/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:flutter/material.dart';
@@ -50,10 +49,6 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
               width: 52,
               height: 32,
               child: Switch(
-                // trackColor: WidgetStateProperty.all(
-                //     context.theme.colorScheme.onSurface.withOpacity(0.12),
-                // ),
-                // activeColor: Colors.amber,
                 thumbColor: WidgetStateProperty.all(context.theme.colorScheme.surface),
                 value: widget.val,
                 onChanged: widget.onUpdate,

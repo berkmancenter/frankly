@@ -293,7 +293,8 @@ class _SettingsTabState extends State<SettingsTab> {
                 ),
               ],
             ),
-            if (Environment.enableDevAdminSettings) _buildDevSettingsSection(),
+            SizedBox(height: 20),
+            if (Environment.enableDevAdminSettings) _buildDevSettingsSection(isMobile ),
           ],
         );
       },
@@ -339,7 +340,7 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
-  Widget _buildDevSettingsSection() {
+  Widget _buildDevSettingsSection(bool isMobile) {
     final settingsMap = context.watch<CommunityProvider>().settings.toJson();
     final settings = settingsMap.keys
         .where((element) => settingsMap[element] is bool)
@@ -351,15 +352,12 @@ class _SettingsTabState extends State<SettingsTab> {
         .where((element) => settingsMap[element] is bool?)
         .toList();
 
-    return Material(
-      elevation: 6,
-      shadowColor: Colors.deepPurple,
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Dev Settings',
-            style: context.theme.textTheme.titleLarge?.copyWith(
+            style: context.theme.textTheme.displayMedium?.copyWith(
               fontWeight: FontWeight.w900,
               color: Colors.deepPurpleAccent,
             ),
@@ -367,53 +365,55 @@ class _SettingsTabState extends State<SettingsTab> {
           SizedBox(height: 8),
           Text(
             'Community Settings',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: Colors.purpleAccent,
+            ),
           ),
           SizedBox(height: 8),
           GridView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+              crossAxisCount: isMobile ? 1 : 3,
               childAspectRatio: 4,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
             ),
             itemCount: settings.length,
             itemBuilder: (context, i) => _devCommunitySettingsToggle(
               settings[i],
               settingsMap,
-              i.isEven
-                  ? whiteBackground
-                  : context.theme.colorScheme.primary.withOpacity(0.1),
+              whiteBackground,
             ),
           ),
           SizedBox(height: 20),
-          for (var i = 0; i < settings.length; i++)
-            _devCommunitySettingsToggle(
-              settings[i],
-              settingsMap,
-              i.isEven
-                  ? whiteBackground
-                  : context.theme.colorScheme.primary.withOpacity(0.1),
-            ),
-          SizedBox(height: 20),
-          Text(
-            'Dev Settings - Default Event Settings',
-            style: Theme.of(context).textTheme.titleMedium,
+         Text(
+          'Event Settings',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Colors.purpleAccent,
+              ),
+        ),
+        SizedBox(height: 8),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isMobile ? 1 : 3,
+            childAspectRatio: 4,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
           ),
-          SizedBox(height: 8),
-          for (var i = 0; i < eventSettings.length; i++)
-            _devEventSettingsToggle(
-              eventSettings[i],
-              eventSettingsMap,
-              i.isEven
-                  ? whiteBackground
-                  : context.theme.colorScheme.primary.withOpacity(0.1),
-            ),
-          SizedBox(height: 80),
+          itemCount: eventSettings.length,
+          itemBuilder: (context, i) => _devEventSettingsToggle(
+            eventSettings[i],
+            eventSettingsMap,
+            i.isEven
+                ? whiteBackground
+                : context.theme.colorScheme.primary.withOpacity(0.1),
+          ),
+        ),
         ],
-      ),
+
     );
   }
 
@@ -434,6 +434,7 @@ class _SettingsTabState extends State<SettingsTab> {
       settingKey,
       settingMap[settingKey] ?? true,
       (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings)),
+      position: TogglePosition.bottom,
     );
   }
 

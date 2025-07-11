@@ -182,6 +182,7 @@
   "createACommunity": "Crear una comunidad",
   "currentParticipants": "Participantes\nactuales",
   "custom": "Personalizado",
+  "dataDownload": "Descarga de datos",
   "darkColorHex": "Color oscuro HEX#",
   "defineBreakoutsOptional": "Definir salas (Opcional)",
   "deleteAgendaItem": "Eliminar el elemento de agenda {title}",
