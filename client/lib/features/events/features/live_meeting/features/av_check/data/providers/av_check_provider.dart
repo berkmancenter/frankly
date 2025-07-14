@@ -1,31 +1,29 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:js_util' as js_util;
 
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/audio_levels_model.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
-import 'package:client/core/utils/media_device_service.dart';
-
 import 'package:universal_html/html.dart' as html;
 
 class AvCheckProvider with ChangeNotifier {
   static const Size requestedSize = Size(720, 480);
 
-  final MediaDeviceService _mediaService = MediaDeviceService();
   html.MediaStream? _mediaStream;
   late html.VideoElement _div;
   late String _viewKey;
+  BehaviorSubjectWrapper<List?>? _devicesStream;
   late StreamSubscription _devicesSubscription;
   final BuildContext context;
 
   bool _cameraOn = true;
   bool _micOn = true;
+  String? _defaultMic;
+  String? _defaultCamera;
   ParticipantAudioLevelTracker? _tracker;
   String? _errorText;
 
@@ -39,18 +37,16 @@ class AvCheckProvider with ChangeNotifier {
 
   bool get micOn => _micOn;
 
-  String? get defaultMic => _mediaService.selectedAudioInputId;
+  String? get defaultMic => _defaultMic;
 
-  String? get defaultCamera => _mediaService.selectedVideoInputId;
+  String? get defaultCamera => _defaultCamera;
 
   String get viewKey => _viewKey;
 
   String? get errorText => _errorText;
 
-  List<html.MediaDeviceInfo>? get devicesList => [
-        ..._mediaService.audioInputs,
-        ..._mediaService.videoInputs,
-      ];
+  List<html.MediaDeviceInfo>? get devicesList =>
+      _devicesStream?.value?.map((e) => e as html.MediaDeviceInfo).toList();
 
   int get currentAudioLevel {
     double level = max(_tracker?.currentAudioLevel?.volume ?? -100, -100);
@@ -59,6 +55,7 @@ class AvCheckProvider with ChangeNotifier {
   }
 
   void initialize() async {
+    // Add a random string in case this page is accessed a second time before the tab is reloaded
     _viewKey = 'avCheck-${Random().nextDouble()}';
     _div = html.VideoElement()
       ..style.width = '100%'
@@ -70,16 +67,25 @@ class AvCheckProvider with ChangeNotifier {
     });
 
     try {
-      await _mediaService.init();
-      await _updateMediaStream();
+      _mediaStream = await html.window.navigator.mediaDevices!.getUserMedia({
+        'audio': true,
+        'video': {
+          'width': {'ideal': requestedSize.width},
+          'height': {'ideal': requestedSize.height},
+          'frameRate': {'ideal': 24},
+        },
+      });
     } catch (e) {
       _errorText = e.toString();
       notifyListeners();
     }
+    _devicesStream = wrapInBehaviorSubject(
+      html.window.navigator.mediaDevices?.enumerateDevices().asStream() ??
+          Stream.value(null),
+    );
 
-    _devicesSubscription = Stream.periodic(const Duration(seconds: 2)).listen((_) async {
-      await _mediaService.init();
-      if (defaultMic == null || defaultCamera == null) {
+    _devicesSubscription = _devicesStream!.listen((devices) {
+      if (_defaultMic == null || _defaultCamera == null) {
         _setDefaults();
       }
       notifyListeners();
@@ -88,27 +94,36 @@ class AvCheckProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _updateMediaStream() async {
-    final stream = await _mediaService.getUserMedia();
-    _mediaService.stopMediaStream(_mediaStream);
-    _mediaStream = stream;
-    _div.srcObject = _mediaStream; // _mediaStream is now html.MediaStream?
+  void _getMediaStream() async {
+    final newMediaStream =
+        await html.window.navigator.mediaDevices?.getUserMedia({
+      'video': {
+        'deviceId': _defaultCamera,
+        'width': {'ideal': requestedSize.width},
+        'height': {'ideal': requestedSize.height},
+        'frameRate': {'ideal': 24},
+      },
+      'audio': {'deviceId': _defaultMic},
+    });
 
-    if (_mediaService.micEnabled && defaultMic != null) {
-      _tracker?.dispose();
-      _tracker = ParticipantAudioLevelTracker(
-        onUpdate: () => notifyListeners(),
-        mediaStream: _mediaStream!, // _mediaStream is now html.MediaStream
-        trackName: defaultMic!,
-      )..initialize();
-    }
+    _mediaStream?.getTracks().forEach((track) => stopMediaTrack(track));
+    _mediaStream = newMediaStream;
+    _div.srcObject = _mediaStream;
+
+    _tracker?.dispose();
+    _tracker = ParticipantAudioLevelTracker(
+      onUpdate: () => notifyListeners(),
+      mediaStream: _mediaStream!,
+      trackName: _defaultMic!,
+    )..initialize();
   }
 
   @override
   void dispose() {
     _tracker?.dispose();
-    _mediaService.stopMediaStream(_mediaStream);
+    _mediaStream?.getTracks().forEach((track) => stopMediaTrack(track));
     _div.srcObject = null;
+    _devicesStream?.dispose();
     _devicesSubscription.cancel();
     super.dispose();
   }
@@ -117,58 +132,52 @@ class AvCheckProvider with ChangeNotifier {
     sharedPreferencesService.setAvCheckComplete(
       cameraOnByDefault: _cameraOn,
       micOnByDefault: _micOn,
-      defaultCamera: defaultCamera ?? '',
-      defaultMic: defaultMic ?? '',
+      defaultCamera: _defaultCamera ?? '',
+      defaultMic: _defaultMic ?? '',
     );
     updateQueryParameterToJoinEvent();
   }
 
   void _setDefaults() {
-    final cameraDevices = _mediaService.videoInputs;
-    final micDevices = _mediaService.audioInputs;
-    
-    _mediaService.selectedVideoInputId ??= cameraDevices
-          .firstWhereOrNull(
-            (d) => d.deviceId == sharedPreferencesService.getDefaultCameraId(),
-          )
-          ?.deviceId ??
-          cameraDevices.firstOrNull?.deviceId;
-    
-    _mediaService.selectedAudioInputId ??= micDevices
-          .firstWhereOrNull(
-            (d) => d.deviceId == sharedPreferencesService.getDefaultMicrophoneId(),
-          )
-          ?.deviceId ??
-          micDevices.firstOrNull?.deviceId;
+    final cameraDevices = devicesList?.where((d) => d.kind == 'videoInput');
+    final micDevices = devicesList?.where((d) => d.kind == 'audioInput');
+    _defaultCamera ??= cameraDevices
+            ?.firstWhereOrNull(
+              (d) =>
+                  d.deviceId == sharedPreferencesService.getDefaultCameraId(),
+            )
+            ?.deviceId ??
+        cameraDevices?.firstOrNull?.deviceId;
+    _defaultMic ??= micDevices
+            ?.firstWhereOrNull(
+              (d) =>
+                  d.deviceId ==
+                  sharedPreferencesService.getDefaultMicrophoneId(),
+            )
+            ?.deviceId ??
+        micDevices?.firstOrNull?.deviceId;
   }
 
   void toggleVideo() {
     _cameraOn = !_cameraOn;
-    _mediaService.toggleCam(_cameraOn);
-    if (_cameraOn) {
-      _updateMediaStream();
-    } else {
-      _div.srcObject = null;
-    }
+    if (_cameraOn) _div.srcObject = _mediaStream;
     notifyListeners();
   }
 
   void toggleMic() {
     _micOn = !_micOn;
-    _mediaService.toggleMic(_micOn);
-    _updateMediaStream();
     notifyListeners();
   }
 
-  void selectMic(String deviceId) {
-    _mediaService.selectAudio(deviceId);
-    _updateMediaStream();
+  void selectMic(String info) {
+    _defaultMic = info;
+    _getMediaStream();
     notifyListeners();
   }
 
-  void selectCamera(String deviceId) {
-    _mediaService.selectVideo(deviceId);
-    _updateMediaStream();
+  void selectCamera(String info) {
+    _defaultCamera = info;
+    _getMediaStream();
     notifyListeners();
   }
 }
