@@ -33,9 +33,6 @@ class MediaDeviceService {
   bool camEnabled = true;
 
   Future<void> init() async {
-    await Permission.microphone.request();
-    await Permission.camera.request();
-
     if (kIsWeb) {
       try {
         final devices =
@@ -97,6 +94,7 @@ class MediaDeviceService {
 
       final dynamic audioConstraint;
       if (micEnabled) {
+        await Permission.microphone.request();
         // If a specific audio input was selected, pass it into 'exact'.
         audioConstraint =
             selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
@@ -110,6 +108,7 @@ class MediaDeviceService {
 
       final dynamic videoConstraint;
       if (camEnabled) {
+        await Permission.camera.request();
         videoConstraint =
             selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
                 ? {
