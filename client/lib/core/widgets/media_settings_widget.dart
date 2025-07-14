@@ -91,9 +91,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             }).toList(),
             onChanged: (val) async {
               if (val != null) {
-                setState(() {
-                  _mediaService.selectAudio(val);
-                });
+                await _mediaService.selectAudioDevice(val);
                 await updatePreview();
               }
             },
@@ -118,9 +116,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             }).toList(),
             onChanged: (val) async {
               if (val != null) {
-                setState(() {
-                  _mediaService.selectVideo(val);
-                });
+                await _mediaService.selectVideoDevice(val);
                 await updatePreview();
               }
             },

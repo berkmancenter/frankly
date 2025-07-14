@@ -65,12 +65,12 @@ class MediaDeviceService {
     }
   }
 
-  Future<void> selectAudio(String deviceId) async {
+  Future<void> selectAudioDevice(String deviceId) async {
     selectedAudioInputId = deviceId;
     await getUserMedia(mediaStreamLocation: MediaStreamLocation.all);
   }
 
-  Future<void> selectVideo(String deviceId) async {
+  Future<void> selectVideoDevice(String deviceId) async {
     selectedVideoInputId = deviceId;
     await getUserMedia(mediaStreamLocation: MediaStreamLocation.all);
   }
