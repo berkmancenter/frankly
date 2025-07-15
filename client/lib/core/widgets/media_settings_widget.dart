@@ -42,6 +42,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   Future<void> initAll() async {
     await _mediaService.init();
     await updatePreview();
+    setState(() {});
   }
 
   Future<void> updatePreview() async {
@@ -91,6 +92,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             }).toList(),
             onChanged: (val) async {
               if (val != null) {
+                setState(() {});
                 await _mediaService.selectAudioDevice(val);
                 await updatePreview();
               }
@@ -116,6 +118,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             }).toList(),
             onChanged: (val) async {
               if (val != null) {
+                setState(() {});
                 await _mediaService.selectVideoDevice(val);
                 await updatePreview();
               }
