@@ -101,6 +101,8 @@ class AgoraRoom with ChangeNotifier {
     }
   }
 
+  html.MediaStream? _localMediaStream;
+  final MediaDeviceService mediaDeviceService = MediaDeviceService();
   Future<void> connect({
     bool enableAudio = true,
     bool enableVideo = true,
