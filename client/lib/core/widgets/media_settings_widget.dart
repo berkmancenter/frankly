@@ -94,7 +94,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
               if (val != null) {
                 setState(() {});
                 await _mediaService.selectAudioDevice(val);
-                await updatePreview();
+                // No need to update preview for now as audio is not previewed.
               }
             },
             hint: const Text('Select audio input'),
