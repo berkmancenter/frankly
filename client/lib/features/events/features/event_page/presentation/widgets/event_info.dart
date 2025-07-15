@@ -363,7 +363,7 @@ class _EventInfoState extends State<EventInfo> {
           ),
         ),
       ),
-      toolTipText: 'Event Settings',
+      toolTipText: context.l10n.eventSettings,
       icon: CupertinoIcons.gear_alt,
     );
   }
@@ -625,7 +625,7 @@ class _EventInfoState extends State<EventInfo> {
         size: 20,
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
-      text: 'Cancel event',
+      text: context.l10n.cancelEvent,
       textStyle: context.theme.textTheme.bodyMedium!.copyWith(
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
@@ -642,7 +642,7 @@ class _EventInfoState extends State<EventInfo> {
         size: 24,
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
-      text: 'Message participants',
+      text: context.l10n.messageParticipants,
       textStyle: context.theme.textTheme.titleMedium!.copyWith(
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
@@ -665,7 +665,7 @@ class _EventInfoState extends State<EventInfo> {
           SizedBox(width: 10),
           Flexible(
             child: Text(
-              'Cancel',
+              context.l10n.cancel,
               style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
@@ -692,7 +692,7 @@ class _EventInfoState extends State<EventInfo> {
         if (isPublic) {
           if (_canEditEvent) {
             text =
-                '${context.l10n.publicVisibility}${featuredItems!.any((f) => f.documentPath == docPath) && _canModerateEvent ? ', Featured' : ''}';
+                '${context.l10n.publicVisibility}${featuredItems!.any((f) => f.documentPath == docPath) && _canModerateEvent ? ', ${context.l10n.featured}' : ''}';
             appAsset = AppAsset.kGlobePng;
           } else {
             text = null;
@@ -993,11 +993,11 @@ class _EventInfoState extends State<EventInfo> {
         appAsset = null;
         break;
       case EventType.hostless:
-        type = 'Hostless';
+        type = context.l10n.hostless;
         appAsset = AppAsset.kHostlessPng;
         break;
       case EventType.livestream:
-        type = 'Livestream';
+        type = context.l10n.livestream;
         appAsset = AppAsset.kPlayScreenPng;
         break;
     }
