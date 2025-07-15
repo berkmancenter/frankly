@@ -5,7 +5,6 @@ import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -364,7 +363,7 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ),
       toolTipText: context.l10n.eventSettings,
-      icon: CupertinoIcons.gear_alt,
+      icon: Icons.settings_outlined,
     );
   }
 
@@ -587,7 +586,7 @@ class _EventInfoState extends State<EventInfo> {
               type: ActionButtonType.outline,
               color: context.theme.colorScheme.surfaceContainerLowest,
               icon: Icon(
-                CupertinoIcons.calendar_badge_plus,
+                Icons.calendar_month_outlined,
                 size: 20,
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
@@ -638,7 +637,7 @@ class _EventInfoState extends State<EventInfo> {
       type: ActionButtonType.outline,
       color: context.theme.colorScheme.surfaceContainerLowest,
       icon: Icon(
-        CupertinoIcons.paperplane,
+        Icons.send_outlined,
         size: 24,
         color: context.theme.colorScheme.onSurfaceVariant,
       ),
