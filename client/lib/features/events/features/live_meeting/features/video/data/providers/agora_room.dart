@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:universal_html/html.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '../../../../../../../../services.dart';
 import '../../../../../event_page/data/providers/event_provider.dart';
