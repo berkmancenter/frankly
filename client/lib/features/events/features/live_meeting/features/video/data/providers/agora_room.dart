@@ -361,6 +361,9 @@ class AgoraRoom with ChangeNotifier {
     engine.unregisterEventHandler(_rtcEngineEventHandler);
     engine.leaveChannel();
     engine.stopPreview();
+    mediaDeviceService.stopMediaStream(
+      mediaStreamLocation: MediaStreamLocation.all,
+    );
     engine.enableLocalVideo(false);
     engine.enableLocalAudio(false);
     engine.release();
