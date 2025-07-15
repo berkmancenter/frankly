@@ -548,8 +548,7 @@ class _EventInfoState extends State<EventInfo> {
                   ),
                   Offset.zero & overlay.size,
                 );
-                final selection =
-                    await showMenu<CalendarMenuSelection>(
+                final selection = await showMenu<CalendarMenuSelection>(
                   context: context,
                   position: position,
                   shape: RoundedRectangleBorder(
@@ -713,7 +712,9 @@ class _EventInfoState extends State<EventInfo> {
         return Row(
           children: [
             Tooltip(
-              message: isPublic ? context.l10n.publicVisibility : context.l10n.privateVisibility,
+              message: isPublic
+                  ? context.l10n.publicVisibility
+                  : context.l10n.privateVisibility,
               child: ProxiedImage(null, asset: appAsset, width: 20, height: 20),
             ),
             SizedBox(width: 6),
@@ -871,12 +872,15 @@ class _EventInfoState extends State<EventInfo> {
                     if (scheduledTime == null) return SizedBox.shrink();
                     final date = DateFormat('EEE, MMM d').format(scheduledTime);
                     final startFmt = DateFormat('h:mma').format(scheduledTime);
-                    final start = startFmt.substring(0, startFmt.length - 1).toLowerCase();
+                    final start = startFmt
+                        .substring(0, startFmt.length - 1)
+                        .toLowerCase();
                     final endDateTime = scheduledTime.add(
                       Duration(minutes: eventProvider.event.durationInMinutes),
                     );
                     final endFmt = DateFormat('h:mma').format(endDateTime);
-                    final end = endFmt.substring(0, endFmt.length - 1).toLowerCase();
+                    final end =
+                        endFmt.substring(0, endFmt.length - 1).toLowerCase();
                     return HeightConstrainedText(
                       '$date, $start - $end',
                       style: context.theme.textTheme.titleMedium!.copyWith(
@@ -947,15 +951,18 @@ class _EventInfoState extends State<EventInfo> {
                 SizedBox(height: 10),
                 _buildJoinEventButton(),
                 SizedBox(height: 10),
-                if (canCancelParticipation || _canEditEvent) ...[                  SizedBox(height: 4),
+                if (canCancelParticipation || _canEditEvent) ...[
+                  SizedBox(height: 4),
                   Center(child: _buildAddToCalendar()),
                 ],
-                if (canCancelParticipation) ...[                  SizedBox(height: 4),
+                if (canCancelParticipation) ...[
+                  SizedBox(height: 4),
                   Center(child: _buildCancelParticipationButton()),
                 ] else if (context
                         .watch<EventPermissionsProvider>()
                         .canCancelEvent &&
-                    _event.status != EventStatus.canceled) ...[                  SizedBox(height: 4),
+                    _event.status != EventStatus.canceled) ...[
+                  SizedBox(height: 4),
                   Center(child: _buildCancelEventButton()),
                 ],
                 if (_canEditEvent)
