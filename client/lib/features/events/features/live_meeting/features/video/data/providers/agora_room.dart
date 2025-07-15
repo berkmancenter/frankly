@@ -25,6 +25,7 @@ enum AgoraRoomState {
 class AgoraRoom with ChangeNotifier {
   late final RtcEngine engine;
   late final RtcEngineEventHandler _rtcEngineEventHandler;
+  late final MediaEngine mediaEngine;
 
   final String channelName;
   final String token;
@@ -115,6 +116,7 @@ class AgoraRoom with ChangeNotifier {
         appId: '76cd63ec061d4192ac03ff8cdde51395',
       ),
     );
+    mediaEngine = engine.getMediaEngine();
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
