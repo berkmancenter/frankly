@@ -82,6 +82,7 @@ class EndMeetingForAll extends OnCallMethod<EndMeetingForAllRequest> {
       event: event,
       agoraUtils: agoraUtils,
       notificationsUtils: notificationsUtils,
+      callerUid: context.authUid,
     );
   }
 }

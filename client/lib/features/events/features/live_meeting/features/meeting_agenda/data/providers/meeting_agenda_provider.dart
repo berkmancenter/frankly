@@ -11,7 +11,6 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -372,43 +371,6 @@ class AgendaProvider with ChangeNotifier {
         timestamp: serverTime.toUtc(),
       ),
     );
-
-    if (nextAgendaItem == null) {
-      final communityId = event?.communityId;
-      final eventId = event?.id;
-      final templateId = event?.templateId;
-
-      if (communityId == null || eventId == null) {
-        loggingService.log(
-          'AgendaProvider.finishAgendaItem: communityId or eventId is null',
-          logType: LogType.error,
-        );
-        return;
-      }
-      final LiveMeetingEvent? firstAgendaItem = currentLiveMeeting?.events
-          .where((e) => e.event == LiveMeetingEventType.agendaItemStarted)
-          .firstOrNull;
-      final DateTime? startTime = firstAgendaItem?.timestamp;
-      if (startTime == null) {
-        loggingService.log(
-          'Error determining event start time when logging analytics. Duration will be set to zero.',
-          logType: LogType.error,
-        );
-      }
-      final int durationInSeconds =
-          startTime == null ? 0 : serverTime.difference(startTime).inSeconds;
-
-      analytics.logEvent(
-        AnalyticsCompleteEventEvent(
-          communityId: communityId,
-          eventId: eventId,
-          asHost: (event?.eventType != EventType.hostless) &&
-              event?.creatorId == userService.currentUserId,
-          templateId: templateId,
-          duration: durationInSeconds,
-        ),
-      );
-    }
   }
 
   Future<void> goToPreviousAgendaItem(String? previousAgendaItemId) async {
