@@ -870,16 +870,11 @@ class _EventInfoState extends State<EventInfo> {
                     final scheduledTime = eventProvider.event.scheduledTime;
                     if (scheduledTime == null) return SizedBox.shrink();
                     final date = DateFormat('EEE, MMM d').format(scheduledTime);
-                    final startFmt = DateFormat('h:mma').format(scheduledTime);
-                    final start = startFmt
-                        .substring(0, startFmt.length - 1)
-                        .toLowerCase();
+                    final start = formatTimeShort(scheduledTime);
                     final endDateTime = scheduledTime.add(
                       Duration(minutes: eventProvider.event.durationInMinutes),
                     );
-                    final endFmt = DateFormat('h:mma').format(endDateTime);
-                    final end =
-                        endFmt.substring(0, endFmt.length - 1).toLowerCase();
+                    final end = formatTimeShort(endDateTime);
                     return HeightConstrainedText(
                       '$date, $start - $end',
                       style: context.theme.textTheme.titleMedium!.copyWith(

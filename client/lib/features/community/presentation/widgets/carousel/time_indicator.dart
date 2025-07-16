@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:client/core/utils/date_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
@@ -22,15 +23,10 @@ class VerticalTimeAndDateIndicator extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  String _formatTime(DateTime t) {
-    final timeString = DateFormat('h:mma').format(t);
-    return timeString.substring(0, timeString.length - 1).toLowerCase();
-  }
-
   String get _timeString {
-    final start = _formatTime(time);
+    final start = formatTimeShort(time);
     if (endTime == null) return start;
-    return '$start - ${_formatTime(endTime!)}';
+    return '$start - ${formatTimeShort(endTime!)}';
   }
 
   @override
