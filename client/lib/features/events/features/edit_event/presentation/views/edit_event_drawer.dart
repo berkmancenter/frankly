@@ -1,5 +1,6 @@
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,24 +11,21 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/events/features/edit_event/presentation/widgets/app_radio_list_tile.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
 import 'package:client/features/events/presentation/widgets/event_participants_list.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 import 'edit_event_contract.dart';
@@ -38,10 +36,10 @@ class EditEventDrawer extends StatefulWidget {
   const EditEventDrawer({Key? key}) : super(key: key);
 
   @override
-  _EditEventDrawerState createState() => _EditEventDrawerState();
+  EditEventDrawerState createState() => EditEventDrawerState();
 }
 
-class _EditEventDrawerState extends State<EditEventDrawer>
+class EditEventDrawerState extends State<EditEventDrawer>
     implements EditEventView {
   final ScrollController _scrollController = ScrollController();
   late final EditEventModel _model;
@@ -61,7 +59,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     context.watch<AppDrawerProvider>();
 
     return Material(
-      color: AppColor.white,
+      color: context.theme.colorScheme.surfaceContainerLowest,
       child: _buildBody(),
     );
   }
@@ -82,85 +80,81 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     final canBuildParticipantCountSection =
         _presenter.canBuildParticipantCountSection();
 
-    return UIMigration(
-      whiteBackground: true,
-      child: Column(
-        children: [
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Edit event',
-                  style: AppTextStyle.headlineSmall
-                      .copyWith(fontSize: 16, color: AppColor.black),
-                ),
-                Semantics(
-                  label: 'Close Edit',
-                  child: AppClickableWidget(
-                    child: ProxiedImage(
-                      null,
-                      asset: AppAsset.kXPng,
-                      width: 24,
-                      height: 24,
-                    ),
-                    onTap: () {
-                      if (_presenter.wereChangesMade()) {
-                        _presenter.showConfirmChangesDialog();
-                      } else {
-                        closeDrawer();
-                      }
-                    },
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Edit event',
+                style: context.theme.textTheme.headlineSmall,
+              ),
+              Semantics(
+                label: context.l10n.closeEdit,
+                child: AppClickableWidget(
+                  child: ProxiedImage(
+                    null,
+                    asset: AppAsset.kXPng,
+                    width: 24,
+                    height: 24,
                   ),
+                  onTap: () {
+                    if (_presenter.wereChangesMade()) {
+                      _presenter.showConfirmChangesDialog();
+                    } else {
+                      closeDrawer();
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              controller: _scrollController,
-              children: [
-                _buildEventTypeSection(),
-                SizedBox(height: 20),
-                _buildImageSection(),
-                SizedBox(height: 20),
-                _buildTitleSection(),
-                SizedBox(height: 20),
-                _buildDescriptionSection(),
-                SizedBox(height: 20),
-                _buildIsPublicSection(),
-                SizedBox(height: 20),
-                _buildDateSection(),
-                SizedBox(height: 20),
-                _buildTimeSection(),
-                // Have slightly higher spacing, because for some reason,
-                // widget above have less spacing around itself. Thus by having more spacing all
-                // spacing visually looks equal.
-                SizedBox(height: 30),
-                _buildDurationSection(),
-                SizedBox(height: 20),
-                if (isPlatformSelectionFeatureEnabled) ...[
-                  _buildPlatformSelectionSection(),
-                  SizedBox(height: 20),
-                ],
-                if (canBuildParticipantCountSection) ...[
-                  _buildParticipantCountSection(),
-                  SizedBox(height: 20),
-                ],
-                _buildParticipantsSection(),
-                SizedBox(height: 20),
-                _buildBottomButtonsSection(),
+        ),
+        SizedBox(height: 20),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            controller: _scrollController,
+            children: [
+              _buildEventTypeSection(),
+              SizedBox(height: 20),
+              _buildImageSection(),
+              SizedBox(height: 20),
+              _buildTitleSection(),
+              SizedBox(height: 20),
+              _buildDescriptionSection(),
+              SizedBox(height: 20),
+              _buildIsPublicSection(),
+              SizedBox(height: 20),
+              _buildDateSection(),
+              SizedBox(height: 20),
+              _buildTimeSection(),
+              // Have slightly higher spacing, because for some reason,
+              // widget above have less spacing around itself. Thus by having more spacing all
+              // spacing visually looks equal.
+              SizedBox(height: 30),
+              _buildDurationSection(),
+              SizedBox(height: 20),
+              if (isPlatformSelectionFeatureEnabled) ...[
+                _buildPlatformSelectionSection(),
                 SizedBox(height: 20),
               ],
-            ),
+              if (canBuildParticipantCountSection) ...[
+                _buildParticipantCountSection(),
+                SizedBox(height: 20),
+              ],
+              _buildParticipantsSection(),
+              SizedBox(height: 20),
+              _buildBottomButtonsSection(),
+              SizedBox(height: 20),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -193,7 +187,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       children: [
         Text(
           'Image',
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: context.theme.textTheme.bodyLarge!
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
         Spacer(),
         InkWell(
@@ -238,6 +233,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     return CustomSwitchTile(
       val: _model.event.isPublic,
       text: 'Public',
+      style: context.theme.textTheme.bodyLarge,
       onUpdate: (value) => _presenter.updateIsPublic(value),
     );
   }
@@ -255,7 +251,6 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     return CustomTextField(
       key: Key(dateString),
       labelText: 'Date',
-      readOnly: true,
       initialValue: dateString,
       maxLength: null,
       onTap: () async {
@@ -286,12 +281,12 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     return CustomTextField(
       key: Key(timeString),
       labelText: 'Time',
-      readOnly: true,
       initialValue: timeString,
       onTap: () async {
         final now = clock.now();
         final TimeOfDay? timeOfDay = await showTimePicker(
           context: context,
+          initialEntryMode: TimePickerEntryMode.dial,
           initialTime:
               TimeOfDay.fromDateTime(_model.event.scheduledTime ?? now),
         );
@@ -313,31 +308,30 @@ class _EditEventDrawerState extends State<EditEventDrawer>
       isDense: true,
       hint: HeightConstrainedText(
         'Choose duration',
-        style: AppTextStyle.bodySmall.copyWith(
-          color: AppColor.gray1,
-        ),
+        style: context.theme.textTheme.bodySmall,
       ),
       icon: Icon(
         CupertinoIcons.chevron_down,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.primary,
       ),
       iconSize: 20,
       elevation: 16,
       decoration: InputDecoration(
-        fillColor: AppColor.white,
+        fillColor: context.theme.colorScheme.surfaceContainerLowest,
         filled: true,
         label: HeightConstrainedText(
           'Length',
-          style: AppTextStyle.bodySmall.copyWith(
-            color: AppColor.gray4,
+          style: context.theme.textTheme.bodySmall!.copyWith(
+            color: context.theme.colorScheme.onSurfaceVariant,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(color: AppColor.gray4),
+          borderSide:
+              BorderSide(color: context.theme.colorScheme.onSurfaceVariant),
         ),
       ),
-      iconEnabledColor: AppColor.darkBlue,
+      iconEnabledColor: context.theme.colorScheme.primary,
       onChanged: (value) {
         if (value != null) {
           _presenter.updateEventDuration(value);
@@ -353,7 +347,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
               alignment: Alignment.centerLeft,
               child: Text(
                 durationString(duration, readAsHuman: true),
-                style: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+                style: context.theme.textTheme.titleSmall,
               ),
             ),
           ),
@@ -365,8 +359,14 @@ class _EditEventDrawerState extends State<EditEventDrawer>
     final peopleCount = _model.event.maxParticipants ?? 0;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text('Maximum'),
-      trailing: Text('$peopleCount ${peopleCount == 1 ? 'person' : 'people'}'),
+      title: Text(
+        context.l10n.maximum,
+        style: context.theme.textTheme.bodyLarge,
+      ),
+      trailing: Text(
+        '$peopleCount ${peopleCount == 1 ? context.l10n.person : context.l10n.people}',
+        style: context.theme.textTheme.bodyLarge,
+      ),
       onTap: () async {
         final isMobile = _presenter.isMobile(context);
         final maxParticipants = _model.event.maxParticipants ?? 8;
@@ -374,7 +374,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         final selectedNumber = await Dialogs.showSelectNumberDialog(
           context,
           isMobile: isMobile,
-          title: 'Select max. participant count',
+          title: context.l10n.selectMaxParticipantCount,
           minNumber: 2,
           maxNumber: 50,
           currentNumber: maxParticipants.toDouble(),
@@ -398,8 +398,6 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           text: 'Save Event',
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
@@ -409,7 +407,8 @@ class _EditEventDrawerState extends State<EditEventDrawer>
         ActionButton(
           expand: true,
           type: ActionButtonType.outline,
-          textColor: AppColor.redLightMode,
+          color: context.theme.colorScheme.error,
+          textColor: context.theme.colorScheme.error,
           text: 'Cancel event',
           onPressed: () =>
               alertOnError(context, () => _presenter.cancelEvent()),
@@ -445,7 +444,7 @@ class _EditEventDrawerState extends State<EditEventDrawer>
                   ? externalPlatform.platformKey.info.title
                   : '${Environment.appName} Video',
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyle.subhead,
+              style: context.theme.textTheme.bodyLarge,
             ),
           ),
           SizedBox(width: 10),

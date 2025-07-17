@@ -1,18 +1,18 @@
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/utils/theme_creation_utility.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/theme_preview_container.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
 /// either from a preset list of color combinations or by entering custom 6-digit color strings
@@ -48,8 +48,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   String get _currentDarkColor => _customDarkColorController.text;
 
-  bool get _isSelectedColorComboValid =>
-      ThemeUtils.isColorComboValid(_currentLightColor, _currentDarkColor);
+  bool get _isSelectedColorComboValid => ThemeUtils.isColorComboValid(
+        context,
+        _currentLightColor,
+        _currentDarkColor,
+      );
 
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
 
@@ -57,12 +60,17 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   @override
   void initState() {
+    super.initState();
     _customLightColorController =
         TextEditingController(text: _currentCommunityLightColor);
     _customDarkColorController =
         TextEditingController(text: _currentCommunityDarkColor);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _determineSelectedColorScheme();
-    super.initState();
   }
 
   @override
@@ -76,11 +84,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     final currentDarkColor = ThemeUtils.parseColor(_currentCommunityDarkColor);
     final currentLightColor =
         ThemeUtils.parseColor(_currentCommunityLightColor);
-    _selectedPresetIndex = ThemeUtils.presetColorThemes.indexWhere(
-      (theme) =>
-          theme.darkColor == currentDarkColor &&
-          theme.lightColor == currentLightColor,
-    );
+    _selectedPresetIndex = ThemeUtils().presetColorThemes(context).indexWhere(
+          (theme) =>
+              theme.darkColor == currentDarkColor &&
+              theme.lightColor == currentLightColor,
+        );
     final customColorsSpecified = _currentCommunityDarkColor != null &&
         _currentCommunityLightColor != null;
     _isPresetSelected =
@@ -92,24 +100,30 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     setState(() {
       if (ThemeUtils.isColorValid(_currentLightColor) &&
           ThemeUtils.isColorValid(_currentDarkColor)) {
-        final firstColor =
-            ThemeUtils.parseColor(_currentLightColor) ?? AppColor.gray6;
-        final secondColor =
-            ThemeUtils.parseColor(_currentDarkColor) ?? AppColor.darkBlue;
+        final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
+            context.theme.colorScheme.surface;
+        final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
+            context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
           _selectedColorErrorMessage = 'Light color must be lighter';
-        } else if (!ThemeUtils.isContrastRatioValid(firstColor, secondColor)) {
+        } else if (!ThemeUtils.isContrastRatioValid(
+          context,
+          firstColor,
+          secondColor,
+        )) {
           _selectedColorErrorMessage =
               'Contrast ratio must be greater than 4.5';
         } else if (!ThemeUtils.isContrastRatioValid(
+          context,
           firstColor,
-          AppColor.gray1,
+          context.theme.colorScheme.secondary,
         )) {
           _selectedColorErrorMessage = 'Light color must be lighter';
         } else if (!ThemeUtils.isContrastRatioValid(
+          context,
           secondColor,
-          AppColor.gray6,
+          context.theme.colorScheme.surface,
         )) {
           _selectedColorErrorMessage = 'Dark color must be darker';
         }
@@ -137,9 +151,10 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     _checkChosenColorConstraints();
   }
 
-  void _selectPreset(int index) {
-    widget.setDarkColor(ThemeUtils.darkColorStringFromTheme(index));
-    widget.setLightColor(ThemeUtils.lightColorStringFromTheme(index));
+  void _selectPreset(BuildContext context, int index) {
+    widget.setDarkColor(ThemeUtils().darkColorStringFromTheme(context, index));
+    widget
+        .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
     setState(() => _selectedPresetIndex = index);
   }
 
@@ -205,7 +220,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required bool selected,
     required void Function() onTap,
   }) {
-    final color = selected ? AppColor.darkBlue : AppColor.gray4;
+    final color = selected
+        ? context.theme.colorScheme.onSurface
+        : context.theme.colorScheme.onSurfaceVariant;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -256,11 +273,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             children: <Widget>[
-              for (var i = 0; i < ThemeUtils.presetColorThemes.length; i++)
+              for (var i = 0;
+                  i < ThemeUtils().presetColorThemes(context).length;
+                  i++)
                 ThemePreview(
-                  selectedTheme: ThemeUtils.presetColorThemes[i],
+                  selectedTheme: ThemeUtils().presetColorThemes(context)[i],
                   isSelected: i == _selectedPresetIndex,
-                  onTap: () => _selectPreset(i),
+                  onTap: () => _selectPreset(context, i),
                   compact: true,
                 ),
             ].intersperse(SizedBox(width: 13)).toList(),
@@ -274,10 +293,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     const linkText = 'color.review.';
     final launchLink = TapGestureRecognizer()
       ..onTap = () => launch('https://color.review');
-    final textStyle = AppTextStyle.body.copyWith(color: AppColor.gray2);
+    final textStyle = AppTextStyle.body
+        .copyWith(color: context.theme.colorScheme.onSecondaryContainer);
     final linkStyle = AppTextStyle.body.copyWith(
       decoration: TextDecoration.underline,
-      color: AppColor.accentBlue,
+      color: context.theme.colorScheme.primary,
     );
 
     final constrained = MediaQuery.of(context).size.width < 475;
@@ -329,13 +349,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           child: Column(
             children: [
               _buildChooseColorTextField(
-                label: 'Light Color HEX#',
+                label: context.l10n.lightColorHex,
                 onChanged: _changeLightColorTextField,
                 controller: _customLightColorController,
               ),
               _buildChooseColorTextField(
                 onChanged: _changeDarkColorTextField,
-                label: 'Dark Color HEX#',
+                label: context.l10n.darkColorHex,
                 controller: _customDarkColorController,
               ),
             ],
@@ -369,20 +389,20 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _isSelectedColorComboValid
-                ? AppColor.brightGreen.withAlpha(40)
+                ? context.theme.colorScheme.onPrimary.withAlpha(40)
                 : null,
             border: Border.all(
               color: _isSelectedColorComboValid
-                  ? AppColor.darkBlue
-                  : AppColor.gray3,
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           child: Center(
             child: Icon(
               Icons.check,
               color: _isSelectedColorComboValid
-                  ? AppColor.darkGreen
-                  : AppColor.gray4,
+                  ? context.theme.colorScheme.secondary
+                  : context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
         ),
@@ -396,7 +416,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             HeightConstrainedText(
               _selectedColorErrorMessage!,
               style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: AppColor.redLightMode),
+                  .copyWith(color: context.theme.colorScheme.error),
             ),
           ],
         ],

@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';
 
@@ -27,6 +30,7 @@ void main() {
 
   setUpAll(() {
     GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
+    GetIt.instance.registerSingleton(AppLocalizationService());
   });
 
   tearDownAll(() async {
@@ -93,6 +97,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -127,6 +139,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -162,6 +182,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -197,6 +225,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,

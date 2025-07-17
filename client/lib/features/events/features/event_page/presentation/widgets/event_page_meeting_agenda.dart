@@ -12,14 +12,14 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/views/waiting_room_widget.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EventPageMeetingAgenda extends StatefulWidget {
   const EventPageMeetingAgenda({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       return Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: context.theme.colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -48,7 +48,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           children: [
             HeightConstrainedText(
               'Add breakouts',
-              style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+              style: context.theme.textTheme.titleLarge!
+                  .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
             ),
             SizedBox(height: 10),
             BreakoutRoomDefinitionWidget(),
@@ -57,8 +58,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       );
     } else {
       return AddMoreButton(
-        isWhiteBackground: true,
-        label: 'Define Breakouts (Optional)',
+        label: context.l10n.defineBreakoutsOptional,
         onPressed: () => alertOnError(context, () async {
           final updatedEvent = event.copyWith(
             breakoutRoomDefinition: eventProvider.defaultBreakoutRoomDefinition,
@@ -93,98 +93,98 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
         !EventProvider.watch(context).event.isHosted ||
             eventProvider.allowPredefineBreakoutsOnHosted;
 
-    return UIMigration(
-      child: MeetingAgendaWrapper(
-        allowButtonForUserSubmittedAgenda:
-            context.watch<EventPermissionsProvider>().canParticipate,
-        communityId: context.watch<CommunityProvider>().communityId,
-        template: templateProvider.template,
-        event: event,
-        isLivestream: event.isLiveStream,
-        backgroundColor: AppColor.darkerBlue,
-        agendaStartsCollapsed: true,
-        child: Column(
-          children: [
-            if (canEdit && [EventType.hostless].contains(event.eventType)) ...[
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeightConstrainedText(
-                      'Waiting Room',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
-                    ),
-                    SizedBox(height: 10),
-                    WaitingRoomWidget(event: event),
-                  ],
-                ),
+    return MeetingAgendaWrapper(
+      allowButtonForUserSubmittedAgenda:
+          context.watch<EventPermissionsProvider>().canParticipate,
+      communityId: context.watch<CommunityProvider>().communityId,
+      template: templateProvider.template,
+      event: event,
+      isLivestream: event.isLiveStream,
+      agendaStartsCollapsed: true,
+      child: Column(
+        children: [
+          if (canEdit && [EventType.hostless].contains(event.eventType)) ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(20),
               ),
-              SizedBox(height: 20),
-            ],
-            if (canEdit &&
-                EventProvider.watch(context).isLiveStream &&
-                !responsiveLayoutService.isMobile(context)) ...[
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeightConstrainedText(
-                      'Livestream',
-                      style:
-                          AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeightConstrainedText(
+                    'Waiting Room',
+                    style: context.theme.textTheme.titleLarge!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
                     ),
-                    SizedBox(height: 10),
-                    LiveStreamInstructions(whiteBackground: true),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+                  WaitingRoomWidget(event: event),
+                ],
               ),
-              SizedBox(height: 20),
-            ],
-            if (canEdit && allowBreakoutsDefinition) ...[
-              _buildBreakoutsSection(),
-              SizedBox(height: 20),
-            ],
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (agendaItems.isNotEmpty)
-                  if (responsiveLayoutService.isMobile(context)) ...[
-                    _buildAgendaTitle(),
-                    if (canEdit)
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: _buildClearAllButton(),
-                      ),
-                  ] else
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: _buildAgendaTitle(),
-                        ),
-                        if (canEdit) _buildClearAllButton(),
-                      ],
-                    ),
-                SizedBox(height: 10),
-                MeetingAgenda(
-                  canUserEditAgenda:
-                      context.watch<EventPermissionsProvider>().canEditEvent,
-                ),
-              ],
             ),
+            SizedBox(height: 20),
           ],
-        ),
+          if (canEdit &&
+              EventProvider.watch(context).isLiveStream &&
+              !responsiveLayoutService.isMobile(context)) ...[
+            Container(
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeightConstrainedText(
+                    'Livestream',
+                    style: context.theme.textTheme.titleLarge!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  LiveStreamInstructions(whiteBackground: true),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+          ],
+          if (canEdit && allowBreakoutsDefinition) ...[
+            _buildBreakoutsSection(),
+            SizedBox(height: 20),
+          ],
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (agendaItems.isNotEmpty)
+                if (responsiveLayoutService.isMobile(context)) ...[
+                  _buildAgendaTitle(),
+                  if (canEdit)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: _buildClearAllButton(),
+                    ),
+                ] else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: _buildAgendaTitle(),
+                      ),
+                      if (canEdit) _buildClearAllButton(),
+                    ],
+                  ),
+              SizedBox(height: 10),
+              MeetingAgenda(
+                canUserEditAgenda:
+                    context.watch<EventPermissionsProvider>().canEditEvent,
+                displayLocation: MeetingAgendaDisplayLocation.eventPage,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -192,19 +192,22 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildAgendaTitle() {
     return HeightConstrainedText(
       'Agenda',
-      style: AppTextStyle.subhead.copyWith(color: AppColor.gray1),
+      style: context.theme.textTheme.titleLarge,
     );
   }
 
   Widget _buildClearAllButton() {
     return ActionButton(
-      color: Colors.transparent,
-      textColor: AppColor.darkBlue,
+      type: ActionButtonType.text,
       onPressed: () => _showClearAgendaItemsDialog(),
       text: 'Clear all',
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
-        child: Icon(Icons.close, color: AppColor.darkBlue, size: 20),
+        child: Icon(
+          Icons.close,
+          color: context.theme.colorScheme.primary,
+          size: 20,
+        ),
       ),
       iconSide: ActionButtonIconSide.right,
       padding: EdgeInsets.zero,
@@ -213,10 +216,10 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
 
   Future<void> _showClearAgendaItemsDialog() async {
     final delete = await ConfirmDialog(
-      title: 'Clear agenda?',
+      title: context.l10n.clearAgenda,
       mainText:
           'Are you sure you want to remove all agenda items from the breakout rooms? You won\'t be able to undo this.',
-      cancelText: 'Cancel',
+      cancelText: context.l10n.cancel,
       confirmText: 'Yes, clear',
       textAlign: TextAlign.start,
     ).show(context: context);

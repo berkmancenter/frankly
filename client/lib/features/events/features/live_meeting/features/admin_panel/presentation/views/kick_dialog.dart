@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class KickDialogResult {
   final bool kickParticipant;
@@ -32,7 +33,7 @@ class _KickDialogState extends State<KickDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),
@@ -41,13 +42,12 @@ class _KickDialogState extends State<KickDialog> {
         borderRadius: BorderRadius.circular(6),
       ),
       actionsPadding: const EdgeInsets.symmetric(horizontal: 12),
-      title: Text('Remove Participant'),
+      title: Text(context.l10n.removeParticipant),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          HeightConstrainedText(
-              'Remove ${widget.userName ?? 'this user'} from the meeting? '
-              'They will not be able to rejoin.'),
+          HeightConstrainedText(context.l10n.confirmRemoveParticipant(
+              widget.userName ?? context.l10n.thisUser)),
           FormBuilderCheckbox(
             name: 'lock',
             onChanged: (value) => _lockRoom = value ?? false,
@@ -71,7 +71,7 @@ class _KickDialogState extends State<KickDialog> {
           child: TextButton(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Text('Remove Participant'),
+              child: Text(context.l10n.removeParticipant),
             ),
             onPressed: () => Navigator.of(context).pop(
               KickDialogResult(
@@ -86,7 +86,7 @@ class _KickDialogState extends State<KickDialog> {
           child: TextButton(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Text('No, Cancel'),
+              child: Text(context.l10n.noCancel),
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),

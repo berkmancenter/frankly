@@ -5,7 +5,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_poll_presenter.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/survey_answer_tile.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AgendaItemPoll extends StatefulWidget {
   final bool isEditMode;
@@ -60,36 +60,29 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
   @override
   Widget build(BuildContext context) {
     if (_model.isEditMode) {
-      return UIMigration(
-        whiteBackground: true,
-        child: Column(
-          key: Key('poll-${_model.pollStateKey}'),
-          children: [
-            CustomTextField(
-              initialValue: _model.agendaItemPollData.question,
-              labelText: 'Poll Question',
-              hintText: 'Question goes here',
-              maxLines: null,
-              onChanged: (value) => _presenter.updatePollQuestion(value),
-            ),
-            SizedBox(height: 16),
-            ..._buildAnswersEdit(),
-          ],
-        ),
+      return Column(
+        key: Key('poll-${_model.pollStateKey}'),
+        children: [
+          CustomTextField(
+            initialValue: _model.agendaItemPollData.question,
+            labelText: 'Poll Question',
+            hintText: context.l10n.questionGoesHere,
+            onChanged: (value) => _presenter.updatePollQuestion(value),
+          ),
+          SizedBox(height: 16),
+          ..._buildAnswersEdit(),
+        ],
       );
     } else {
-      return UIMigration(
-        whiteBackground: true,
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          shrinkWrap: true,
-          itemCount: _model.agendaItemPollData.answers.length,
-          itemBuilder: (context, index) {
-            final String answer = _model.agendaItemPollData.answers[index];
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        shrinkWrap: true,
+        itemCount: _model.agendaItemPollData.answers.length,
+        itemBuilder: (context, index) {
+          final String answer = _model.agendaItemPollData.answers[index];
 
-            return SurveyAnswerTile(answer: answer);
-          },
-        ),
+          return SurveyAnswerTile(answer: answer);
+        },
       );
     }
   }
@@ -111,16 +104,17 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
               Expanded(
                 child: CustomTextField(
                   initialValue: answer,
+                  padding: EdgeInsets.zero,
                   maxLines: 1,
                   onChanged: (value) => _presenter.updateAnswer(value, index),
                 ),
               ),
+              SizedBox(width: 8),
               IconButton(
                 icon: const Icon(Icons.delete_forever),
                 splashRadius: 20,
-                tooltip: 'Delete option',
+                tooltip: context.l10n.deleteOption,
                 hoverColor: Colors.black26,
-                padding: const EdgeInsets.all(14),
                 onPressed: () => _presenter.removeAnswer(index),
               ),
             ],
@@ -135,7 +129,7 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
             SizedBox(width: 15),
             Expanded(
               child: CustomTextField(
-                hintText: 'Add option',
+                hintText: context.l10n.addOption,
                 maxLines: 1,
                 onChanged: (value) => _presenter.addAnswer(value),
               ),

@@ -3,13 +3,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialogue.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/stream_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event_proposal.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 void useKickProposalListeners(BuildContext context) {
   final liveMeetingProvider = LiveMeetingProvider.watch(context);
@@ -146,7 +146,7 @@ Future<String?> _kickProposalConfirmation(
   final targetUser = await targetUserFuture;
   final initiatingUser = await initiatingUserFuture;
   return ConfirmTextInputDialogue(
-    title: 'Kick out ${targetUser.displayName}?',
+    title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
     subText: '${initiatingUser.displayName} started a vote to kick'
         ' ${targetUser.displayName} out of the event. Do you want to'
         ' kick them out? They will not be allowed back in.',

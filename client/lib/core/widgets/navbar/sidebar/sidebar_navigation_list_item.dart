@@ -1,0 +1,154 @@
+import 'dart:math';
+
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:flutter/material.dart';
+import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/widgets/custom_ink_well.dart';
+import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
+import 'package:client/core/widgets/navbar/sidebar/community_side_bar_navigation.dart';
+import 'package:client/core/routing/locations.dart';
+import 'package:client/features/user/data/services/user_data_service.dart';
+import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/services.dart';
+import 'package:client/core/widgets/stream_utils.dart';
+import 'package:client/styles/styles.dart';
+import 'package:data_models/community/community.dart';
+import 'package:provider/provider.dart';
+
+class SidebarNavigationListItem extends StatefulWidget {
+  final Community community;
+  final bool isCollapsible;
+  final bool buttonActive;
+  final bool isOpenByDefault;
+
+  const SidebarNavigationListItem({
+    this.isOpenByDefault = true,
+    this.isCollapsible = true,
+    this.buttonActive = true,
+    required this.community,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<SidebarNavigationListItem> createState() =>
+      _SidebarNavigationListItemState();
+}
+
+class _SidebarNavigationListItemState extends State<SidebarNavigationListItem> {
+  late bool isOpen = widget.isOpenByDefault ? true : false;
+
+  void _activateTitle() => setState(() => isOpen = !isOpen);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildTitleRow(),
+        if (isOpen) _buildNavLinks(),
+      ],
+    );
+  }
+
+  Widget _buildTitleRow() {
+    final initialCommunityRoute =
+        CommunityPageRoutes(communityDisplayId: widget.community.displayId);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomInkWell(
+          hoverColor: Colors.transparent,
+          onTap: () =>
+              routerDelegate.beamTo(initialCommunityRoute.communityHome),
+          child: CommunityCircleIcon(
+            widget.community,
+            withBorder: true,
+          ),
+        ),
+        SizedBox(width: 8),
+        Flexible(
+          child: ActionButton(
+            type: ActionButtonType.text,
+            text: widget.community.name ?? 'Unnamed Community',
+            onPressed: () =>
+                routerDelegate.beamTo(initialCommunityRoute.communityHome),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+            textStyle: context.theme.textTheme.titleMedium,
+            expand: true,
+            maxTextWidth: 200,
+            contentAlign: ActionButtonContentAlignment.start,
+          ),
+        ),
+        SizedBox(width: 8),
+        if (widget.isCollapsible)
+          CustomInkWell(
+            hoverColor: Colors.transparent,
+            onTap: _activateTitle,
+            child: Transform.rotate(
+              angle: pi / 2 + (isOpen ? pi : 0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildNavLinks() =>
+      CommunitySidebarNavLinks(community: widget.community);
+}
+
+class CommunitySidebarNavLinks extends StatelessWidget {
+  final Community community;
+
+  const CommunitySidebarNavLinks({required this.community, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final userIsMember =
+        context.watch<UserDataService>().isMember(communityId: community.id);
+    final userIsAdmin =
+        CommunityPermissionsProvider.canEditCommunityFromId(community.id);
+
+    if (userIsMember) {
+      return MemoizedStreamBuilder<bool>(
+        streamGetter: () => firestoreCommunityResourceService
+            .communityHasResources(communityId: community.id),
+        keys: const [],
+        entryFrom: 'CommunitySidebarNavLinks.build',
+        showLoading: false,
+        builder: (context, showLinks) {
+          return CommunitySideBarNavigation(
+            community: community,
+            showResources: (showLinks != null && (showLinks)) || userIsAdmin,
+            showAdmin: userIsAdmin,
+            enableDiscussionThreads:
+                community.settingsMigration.enableDiscussionThreads,
+            showLeaveCommunity: !userIsAdmin,
+          );
+        },
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Semantics(
+          label: context.l10n.sidebarFollowCommunityButton,
+          identifier: 'sidebar_follow_community_button',
+          button: true,
+          child: CommunityMembershipButton(
+            community,
+            minWidth: 315,
+          ),
+        ),
+      );
+    }
+  }
+}

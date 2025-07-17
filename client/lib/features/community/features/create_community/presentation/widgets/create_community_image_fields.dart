@@ -4,8 +4,9 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class CreateCommunityImageFields extends StatelessWidget {
   final String? bannerImageUrl;
@@ -55,7 +56,7 @@ class CreateCommunityImageFields extends StatelessWidget {
   }
 
   Widget _buildLogoField(BuildContext context) => CreateCommunityImageField(
-        text: 'Logo',
+        text: context.l10n.logo,
         onTap: () => alertOnError(context, () => _editLogoPressed()),
         onTapRemove: () =>
             alertOnError(context, () => removeImage(isBannerImage: false)),
@@ -67,7 +68,7 @@ class CreateCommunityImageFields extends StatelessWidget {
 
   Widget _buildBackgroundField(BuildContext context) =>
       CreateCommunityImageField(
-        text: 'Background',
+        text: context.l10n.background,
         onTap: () => alertOnError(context, () => _editBannerPressed()),
         onTapRemove: () =>
             alertOnError(context, () => removeImage(isBannerImage: true)),
@@ -101,7 +102,7 @@ class CreateCommunityImageField extends StatelessWidget {
 
   double get size => 30.0;
 
-  Widget _buildRemoveImageIcon() {
+  Widget _buildRemoveImageIcon(BuildContext context) {
     return CustomInkWell(
       onTap: onTapRemove,
       borderRadius: BorderRadius.circular(15),
@@ -111,14 +112,14 @@ class CreateCommunityImageField extends StatelessWidget {
         height: 30,
         child: Icon(
           Icons.close,
-          color: AppColor.gray2,
+          color: context.theme.colorScheme.onSurfaceVariant,
           size: 20,
         ),
       ),
     );
   }
 
-  Widget _buildInkWellWidget() {
+  Widget _buildInkWellWidget(BuildContext context) {
     if (!showImage) {
       return CustomInkWell(
         onTap: onTap,
@@ -128,15 +129,15 @@ class CreateCommunityImageField extends StatelessWidget {
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-            color: AppColor.white,
+            color: context.theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
             border: Border.all(
-              color: AppColor.gray2,
+              color: context.theme.colorScheme.onPrimaryContainer,
             ),
           ),
           child: Icon(
             Icons.add,
-            color: AppColor.gray2,
+            color: context.theme.colorScheme.onSurfaceVariant,
             size: 20,
           ),
         ),
@@ -152,7 +153,8 @@ class CreateCommunityImageField extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-            border: Border.all(color: AppColor.gray4),
+            border:
+                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
             borderRadius:
                 (!isCircle && !showImage) ? BorderRadius.circular(5) : null,
           ),
@@ -171,29 +173,35 @@ class CreateCommunityImageField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Semantics(button: true, label: text, child: _buildInkWellWidget()),
+        Semantics(
+          button: true,
+          label: text,
+          child: _buildInkWellWidget(context),
+        ),
         SizedBox(width: 10),
         if (showImage) ...[
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          _buildRemoveImageIcon(),
+          _buildRemoveImageIcon(context),
         ] else ...[
           Expanded(
             child: HeightConstrainedText(
               text,
-              style: AppTextStyle.eyebrowSmall.copyWith(color: AppColor.gray2),
+              style: AppTextStyle.eyebrowSmall,
               overflow: TextOverflow.ellipsis,
             ),
           ),
           if (isOptional)
             HeightConstrainedText(
-              'Optional',
-              style: AppTextStyle.bodySmall.copyWith(color: AppColor.gray3),
+              context.l10n.optional,
+              style: AppTextStyle.bodySmall.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
         ],
       ],

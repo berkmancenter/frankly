@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/events/features/live_meeting/presentation/widgets/troubleshoot_av.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AudioVideoSettingsDialog extends HookWidget {
   final ConferenceRoom conferenceRoom;
@@ -21,6 +21,7 @@ class AudioVideoSettingsDialog extends HookWidget {
   }
 
   List<Widget> _buildVideoDevicesDropdown({
+    required BuildContext context,
     required List<VideoDeviceInfo> allDevices,
     required Function(VideoDeviceInfo) onChanged,
     String? currentDeviceId,
@@ -41,21 +42,18 @@ class AudioVideoSettingsDialog extends HookWidget {
     return [
       HeightConstrainedText(
         title,
-        style: body.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        style: context.theme.textTheme.titleSmall,
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
-        HeightConstrainedText('No devices found.')
+        HeightConstrainedText(context.l10n.noDevicesFound)
       else
         Container(
           width: 287,
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.gray3),
+            border: Border.all(color: context.theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButton<String>(
@@ -71,7 +69,6 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style: body.copyWith(color: AppColor.black),
                   ),
                 ),
             ],
@@ -82,6 +79,7 @@ class AudioVideoSettingsDialog extends HookWidget {
   }
 
   List<Widget> _buildAudioDevicesDropdown({
+    required BuildContext context,
     required List<AudioDeviceInfo> allDevices,
     required Function(AudioDeviceInfo) onChanged,
     String? currentDeviceId,
@@ -102,21 +100,18 @@ class AudioVideoSettingsDialog extends HookWidget {
     return [
       HeightConstrainedText(
         title,
-        style: body.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        style: context.theme.textTheme.titleSmall,
       ),
       SizedBox(height: 8),
       if (devices.isEmpty)
-        HeightConstrainedText('No devices found.')
+        HeightConstrainedText(context.l10n.noDevicesFound)
       else
         Container(
           width: 287,
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColor.gray3),
+            border: Border.all(color: context.theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButton<String>(
@@ -132,7 +127,6 @@ class AudioVideoSettingsDialog extends HookWidget {
                   child: HeightConstrainedText(
                     '${device.deviceId == 'default' ? '(Default) ' : ''}${device.deviceName}',
                     softWrap: false,
-                    style: body.copyWith(color: AppColor.black),
                   ),
                 ),
             ],
@@ -175,7 +169,7 @@ class AudioVideoSettingsDialog extends HookWidget {
     return AnimatedBuilder(
       animation: conferenceRoom,
       builder: (_, __) => Dialog(
-        backgroundColor: AppColor.white,
+        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Color(0xFF5568FF),
@@ -183,102 +177,97 @@ class AudioVideoSettingsDialog extends HookWidget {
           ),
           borderRadius: BorderRadius.circular(6),
         ),
-        child: UIMigration(
-          whiteBackground: true,
-          child: Container(
-            constraints: BoxConstraints(maxWidth: 500),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: CustomStreamBuilder<List<AudioDeviceInfo>>(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: CustomStreamBuilder<List<AudioDeviceInfo>>(
+                  entryFrom: 'AudioVideoSettingsDialog.build',
+                  stream: audioDevicesFuture.asStream(),
+                  builder: (context, audioDevicesList) =>
+                      CustomStreamBuilder<List<VideoDeviceInfo>>(
                     entryFrom: 'AudioVideoSettingsDialog.build',
-                    stream: audioDevicesFuture.asStream(),
-                    builder: (context, audioDevicesList) =>
-                        CustomStreamBuilder<List<VideoDeviceInfo>>(
-                      entryFrom: 'AudioVideoSettingsDialog.build',
-                      stream: videoDevicesFuture.asStream(),
-                      builder: (context, videoDevicesList) {
-                        if (videoDevicesList == null ||
-                            audioDevicesList == null) {
-                          return CircularProgressIndicator();
-                        }
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            HeightConstrainedText(
-                              'Audio/Video Settings',
-                              style: body.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 22,
-                              ),
-                            ),
-                            SizedBox(height: 12),
-                            ..._buildAudioDevicesDropdown(
-                              onChanged: (device) {
-                                final id = device.deviceId;
-                                if (id != null &&
-                                    sharedPreferencesService
-                                            .getDefaultMicrophoneId() !=
-                                        id) {
+                    stream: videoDevicesFuture.asStream(),
+                    builder: (context, videoDevicesList) {
+                      if (videoDevicesList == null ||
+                          audioDevicesList == null) {
+                        return CircularProgressIndicator();
+                      }
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          HeightConstrainedText(
+                            'Audio/Video Settings',
+                            style: context.theme.textTheme.titleMedium,
+                          ),
+                          SizedBox(height: 12),
+                          ..._buildAudioDevicesDropdown(
+                            context: context,
+                            onChanged: (device) {
+                              final id = device.deviceId;
+                              if (id != null &&
                                   sharedPreferencesService
-                                      .setDefaultMicrophoneId(id);
-                                  if (conferenceRoom.audioEnabled) {
-                                    conferenceRoom.toggleAudioEnabled(
-                                      setEnabled: true,
-                                    );
-                                  }
+                                          .getDefaultMicrophoneId() !=
+                                      id) {
+                                sharedPreferencesService
+                                    .setDefaultMicrophoneId(id);
+                                if (conferenceRoom.audioEnabled) {
+                                  conferenceRoom.toggleAudioEnabled(
+                                    setEnabled: true,
+                                  );
                                 }
-                              },
-                              currentDeviceId: sharedPreferencesService
-                                  .getDefaultMicrophoneId(),
-                              allDevices: audioDevicesList,
-                              title: 'Audio Input Device:',
-                            ),
-                            ..._buildVideoDevicesDropdown(
-                              onChanged: (device) {
-                                final id = device.deviceId;
-                                if (id != null &&
-                                    sharedPreferencesService
-                                            .getDefaultCameraId() !=
-                                        id) {
+                              }
+                            },
+                            currentDeviceId: sharedPreferencesService
+                                .getDefaultMicrophoneId(),
+                            allDevices: audioDevicesList,
+                            title: context.l10n.audioInputDevice,
+                          ),
+                          ..._buildVideoDevicesDropdown(
+                            context: context,
+                            onChanged: (device) {
+                              final id = device.deviceId;
+                              if (id != null &&
                                   sharedPreferencesService
-                                      .setDefaultCameraId(id);
-                                  if (conferenceRoom.videoEnabled) {
-                                    conferenceRoom.toggleVideoEnabled(
-                                      setEnabled: true,
-                                    );
-                                  }
+                                          .getDefaultCameraId() !=
+                                      id) {
+                                sharedPreferencesService.setDefaultCameraId(id);
+                                if (conferenceRoom.videoEnabled) {
+                                  conferenceRoom.toggleVideoEnabled(
+                                    setEnabled: true,
+                                  );
                                 }
-                              },
-                              currentDeviceId:
-                                  sharedPreferencesService.getDefaultCameraId(),
-                              allDevices: videoDevicesList,
-                              title: 'Video Input Device:',
-                            ),
-                            if (!responsiveLayoutService.isMobile(context)) ...[
-                              SizedBox(height: 10),
-                              TroubleshootIssuesButton(),
-                            ],
+                              }
+                            },
+                            currentDeviceId:
+                                sharedPreferencesService.getDefaultCameraId(),
+                            allDevices: videoDevicesList,
+                            title: context.l10n.videoInputDevice,
+                          ),
+                          if (!responsiveLayoutService.isMobile(context)) ...[
+                            SizedBox(height: 10),
+                            TroubleshootIssuesButton(),
                           ],
-                        );
-                      },
-                    ),
+                        ],
+                      );
+                    },
                   ),
                 ),
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                      padding: EdgeInsets.zero,
-                    ),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                    padding: EdgeInsets.zero,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

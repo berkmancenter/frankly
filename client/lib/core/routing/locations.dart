@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/features/create_community/presentation/views/new_space_page.dart';
 import 'package:client/features/home/presentation/views/home_page.dart';
 import 'package:client/features/admin/presentation/views/community_admin.dart';
@@ -16,7 +17,6 @@ import 'package:client/features/templates/presentation/views/template_page.dart'
 import 'package:client/features/user/presentation/views/email_unsubscribe.dart';
 import 'package:client/features/user/presentation/views/user_settings_page.dart';
 import 'package:client/core/widgets/initial_loading_widget.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/config/environment.dart';
 
 final routerDelegate = BeamerDelegate(
@@ -55,9 +55,11 @@ void updateQueryParameterToJoinEvent() {
   );
 }
 
-final notFoundPage = Scaffold(
-  body: Center(
-    child: Text('This URL was not found.'),
+final notFoundPage = Builder(
+  builder: (context) => Scaffold(
+    body: Center(
+      child: Text(context.l10n.thisUrlWasNotFound),
+    ),
   ),
 );
 
@@ -66,11 +68,8 @@ BeamPage _buildBeamPage({
   String title = Environment.appName,
   required Widget child,
 }) {
-  Widget tempWidget = UIMigration(
-    whiteBackground: true,
-    child: InitialLoadingWidget(
-      child: child,
-    ),
+  Widget tempWidget = InitialLoadingWidget(
+    child: child,
   );
 
   return BeamPage(
@@ -88,7 +87,7 @@ class HomeLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('home'),
-          title: '${Environment.appName} - Home',
+          title: context.l10n.appNameHome(Environment.appName),
           child: HomePage(),
         ),
       ];
@@ -102,7 +101,7 @@ class NewSpaceLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('newspace'),
-          title: '${Environment.appName} - Welcome',
+          title: context.l10n.appNameWelcome(Environment.appName),
           child: NewSpacePage(),
         ),
       ];
@@ -140,7 +139,7 @@ class UserSettingsLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('settings-${state.uri}'),
-          title: '${Environment.appName} - User Settings',
+          title: context.l10n.appNameUserSettings(Environment.appName),
           child: UserSettingsPage(
             communityId: state.queryParameters['communityId'],
             initialSection:
@@ -160,7 +159,7 @@ class EmailUnsubscribeLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('emailunsubscribe'),
-          title: '${Environment.appName} - Unsubscribe',
+          title: context.l10n.appNameUnsubscribe(Environment.appName),
           child:
               EmailUnsubscribePage(data: state.queryParameters['data'] ?? ''),
         ),

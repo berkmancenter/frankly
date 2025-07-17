@@ -1,14 +1,13 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/admin/data/services/stripe_client_service.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -84,7 +83,7 @@ class _DonateWidgetState extends State<DonateWidget> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.close,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: 35,
           ),
         ),
@@ -110,7 +109,7 @@ class _DonateWidgetState extends State<DonateWidget> {
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 18,
-              color: AppColor.white,
+              color: context.theme.colorScheme.onPrimary,
             ),
           ),
         ),
@@ -128,11 +127,15 @@ class _DonateWidgetState extends State<DonateWidget> {
         }),
         child: Container(
           alignment: Alignment.center,
-          color: selected ? AppColor.brightGreen : Colors.transparent,
+          color: selected
+              ? context.theme.colorScheme.onPrimary
+              : Colors.transparent,
           child: HeightConstrainedText(
             '\$$dollars',
             style: TextStyle(
-              color: selected ? AppColor.darkBlue : AppColor.white,
+              color: selected
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onPrimary,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -153,11 +156,15 @@ class _DonateWidgetState extends State<DonateWidget> {
         }),
         child: Container(
           alignment: Alignment.center,
-          color: _isOtherSelected ? AppColor.brightGreen : Colors.transparent,
+          color: _isOtherSelected
+              ? context.theme.colorScheme.onPrimary
+              : Colors.transparent,
           child: HeightConstrainedText(
             'Other',
             style: TextStyle(
-              color: _isOtherSelected ? AppColor.darkBlue : AppColor.white,
+              color: _isOtherSelected
+                  ? context.theme.colorScheme.primary
+                  : context.theme.colorScheme.onPrimary,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -170,7 +177,7 @@ class _DonateWidgetState extends State<DonateWidget> {
   Widget _buildOtherTextInput() {
     final hasError = !isNullOrEmpty(_otherAmountController.text) &&
         _otherCentsParsed == null;
-    final style = TextStyle(color: AppColor.brightGreen);
+    final style = TextStyle(color: context.theme.colorScheme.onPrimary);
 
     return TextFormField(
       controller: _otherAmountController,
@@ -197,7 +204,7 @@ class _DonateWidgetState extends State<DonateWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        border: Border.all(color: AppColor.white),
+        border: Border.all(color: context.theme.colorScheme.onPrimary),
       ),
       height: 50,
       child: ClipRRect(
@@ -206,13 +213,13 @@ class _DonateWidgetState extends State<DonateWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildDonationButton(10),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildDonationButton(25),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildDonationButton(50),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildDonationButton(100),
-            Container(width: 1, color: AppColor.white),
+            Container(width: 1, color: context.theme.colorScheme.onPrimary),
             _buildOtherButton(),
           ],
         ),
@@ -236,10 +243,14 @@ class _DonateWidgetState extends State<DonateWidget> {
     return ActionButton(
       text: enabled ? 'Donate \$$donationDisplay' : 'Donate',
       sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.interior,
-      color: enabled ? AppColor.brightGreen : AppColor.gray4,
+      color: enabled
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.onPrimaryContainer,
       height: 55,
       textStyle: TextStyle(
-        color: enabled ? AppColor.darkBlue : AppColor.white,
+        color: enabled
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.onPrimary,
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
@@ -253,7 +264,7 @@ class _DonateWidgetState extends State<DonateWidget> {
       color: Colors.transparent,
       height: 55,
       textStyle: TextStyle(
-        color: AppColor.white,
+        color: context.theme.colorScheme.onPrimary,
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
@@ -267,77 +278,74 @@ class _DonateWidgetState extends State<DonateWidget> {
       child: Dialog(
         insetPadding: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: AppColor.darkBlue,
-        child: UIMigration(
-          whiteBackground: true,
-          child: Stack(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                constraints: BoxConstraints(maxWidth: 600),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 25),
-                      if (!isNullOrEmpty(widget.subHeader)) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                          child: HeightConstrainedText(
-                            widget.subHeader.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                            ),
+        backgroundColor: context.theme.colorScheme.primary,
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              constraints: BoxConstraints(maxWidth: 600),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 25),
+                    if (!isNullOrEmpty(widget.subHeader)) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                        child: HeightConstrainedText(
+                          widget.subHeader.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: context.theme.colorScheme.onPrimary,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
                           ),
                         ),
-                        SizedBox(height: 18),
-                      ],
-                      HeightConstrainedText(
-                        widget.headline,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.headline1.copyWith(
-                          color: AppColor.white,
-                        ),
                       ),
                       SizedBox(height: 18),
-                      HeightConstrainedText(
-                        widget.community.donationDialogText ??
-                            'If you enjoyed this event, support ${widget.community.name}.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColor.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(height: 18),
-                      _buildCommunityDescriptor(),
-                      SizedBox(height: 18),
-                      _buildDonationButtons(),
-                      if (_isOtherSelected) ...[
-                        SizedBox(height: 18),
-                        _buildOtherTextInput(),
-                      ],
-                      SizedBox(height: 18),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildSkip(),
-                          _buildDonate(),
-                        ],
-                      ),
                     ],
-                  ),
+                    HeightConstrainedText(
+                      widget.headline,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.headline1.copyWith(
+                        color: context.theme.colorScheme.onPrimary,
+                      ),
+                    ),
+                    SizedBox(height: 18),
+                    HeightConstrainedText(
+                      widget.community.donationDialogText ??
+                          'If you enjoyed this event, support ${widget.community.name}.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: context.theme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 18),
+                    _buildCommunityDescriptor(),
+                    SizedBox(height: 18),
+                    _buildDonationButtons(),
+                    if (_isOtherSelected) ...[
+                      SizedBox(height: 18),
+                      _buildOtherTextInput(),
+                    ],
+                    SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSkip(),
+                        _buildDonate(),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Positioned.fill(
-                child: _buildExitButton(),
-              ),
-            ],
-          ),
+            ),
+            Positioned.fill(
+              child: _buildExitButton(),
+            ),
+          ],
         ),
       ),
     );

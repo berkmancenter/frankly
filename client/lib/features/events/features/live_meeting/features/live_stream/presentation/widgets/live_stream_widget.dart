@@ -10,10 +10,11 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/app.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveStreamWidget extends StatefulWidget {
   const LiveStreamWidget({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       alignment: Alignment.center,
       child: Column(
@@ -99,7 +100,7 @@ class _LiveStreamWidgetState extends State<LiveStreamWidget> {
     if (_showLiveStream) {
       _currentlyPlayingLiveStream = true;
       return RefreshKeyWidget(
-        backgroundColor: AppColor.black,
+        backgroundColor: context.theme.colorScheme.primary,
         child: UrlVideoWidget(
           playbackUrl: url,
           playbackType: 'application/x-mpegURL',
@@ -163,7 +164,7 @@ class _RefreshKeyWidgetState extends State<RefreshKeyWidget> {
         Align(
           alignment: Alignment.topRight,
           child: Tooltip(
-            message: 'Refresh Connection',
+            message: context.l10n.refreshConnection,
             child: CustomPointerInterceptor(
               child: CustomInkWell(
                 onTap: () {
@@ -172,8 +173,13 @@ class _RefreshKeyWidgetState extends State<RefreshKeyWidget> {
                 },
                 child: Container(
                   padding: EdgeInsets.all(4),
-                  color: widget.backgroundColor ?? Color(0xFF262F4C),
-                  child: Icon(Icons.refresh, size: 24, color: AppColor.white),
+                  color: widget.backgroundColor ??
+                      context.theme.colorScheme.surfaceContainer,
+                  child: Icon(
+                    Icons.refresh,
+                    size: 24,
+                    color: context.theme.colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),

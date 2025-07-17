@@ -2,11 +2,9 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/ui_migration.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 
 const _kTroubleshootingGuideUrl = Environment.troubleshootingGuideUrl;
@@ -70,7 +68,7 @@ class NeedHelpDialog extends StatelessWidget {
                   icon: Icon(
                     Icons.close,
                     size: 40,
-                    color: AppColor.darkBlue,
+                    color: context.theme.colorScheme.primary,
                   ),
                   onPressed: () => Navigator.of(context).pop(false),
                 ),
@@ -101,7 +99,7 @@ class NeedHelpDialog extends StatelessWidget {
                 text: TextSpan(
                   text: 'Need more help? ',
                   style: AppTextStyle.bodyMedium.copyWith(
-                    color: AppColor.gray2,
+                    color: context.theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
                   children: [
@@ -109,7 +107,7 @@ class NeedHelpDialog extends StatelessWidget {
                       text: 'Troubleshooting Guide',
                       style: AppTextStyle.bodyMedium.copyWith(
                         fontWeight: FontWeight.w500,
-                        color: AppColor.accentBlue,
+                        color: context.theme.colorScheme.primary,
                         decoration: TextDecoration.underline,
                       ),
                       recognizer: TapGestureRecognizer()
@@ -127,13 +125,10 @@ class NeedHelpDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UIMigration(
-      whiteBackground: true,
-      child: Align(
-        alignment: Alignment.center,
-        child: Builder(
-          builder: (context) => _buildDialog(context),
-        ),
+    return Align(
+      alignment: Alignment.center,
+      child: Builder(
+        builder: (context) => _buildDialog(context),
       ),
     );
   }

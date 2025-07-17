@@ -1,6 +1,7 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:client/features/admin/presentation/views/members_tab.dart';
@@ -8,8 +9,8 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/user/presentation/create_profile_tag_presenter.dart';
 import 'package:client/features/user/presentation/profile_tab_controller.dart';
 import 'package:client/features/user/data/models/social_media_item_data.dart';
-import 'package:client/core/widgets/action_button.dart';
-import 'package:client/core/widgets/app_clickable_widget.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
 import 'package:client/features/community/presentation/widgets/create_tag_widget.dart';
 import 'package:client/core/widgets/editable_image.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -17,7 +18,6 @@ import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/core/widgets/profile_picture.dart';
 import 'package:client/features/community/data/providers/user_admin_details_builder.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
@@ -25,13 +25,13 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class ProfileTab extends StatelessWidget {
   final bool showTitle;
@@ -64,7 +64,7 @@ class ProfileTab extends StatelessWidget {
       builder: (_, userInfo) {
         if (userInfo == null) {
           return HeightConstrainedText(
-            'There was an error loading profile info.',
+            context.l10n.errorLoadingProfileInfo,
           );
         }
         return ChangeNotifierProvider(
@@ -115,7 +115,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     final localStatus = status;
     if (localStatus == null) return SizedBox.shrink();
 
-    return localStatus.icon;
+    return localStatus.icon(context);
   }
 
   List<Widget> _buildEmail(String userId) {
@@ -135,7 +135,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           }
           final email = detailsSnapshot.data?.email;
           if (detailsSnapshot.hasError || email == null || email.isEmpty) {
-            return Text('Error loading email.');
+            return Text(context.l10n.errorLoadingEmail);
           }
           return SelectableText(
             email,
@@ -192,10 +192,10 @@ class _ProfileTabState extends State<_ProfileTab> {
                 initialValue: changeRecord.displayName,
                 borderType: BorderType.outline,
                 borderRadius: 5,
-                textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-                labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                textStyle: TextStyle(
+                  color: context.theme.colorScheme.primary,
+                  fontSize: 16,
+                ),
                 onChanged: (value) {
                   controller.onChangedName(value);
                   context.read<AppDrawerProvider>().setUnsavedChanges(true);
@@ -208,9 +208,7 @@ class _ProfileTabState extends State<_ProfileTab> {
         SizedBox(height: 20),
         HeightConstrainedText(
           changeRecord.displayName ?? '',
-          style: AppTextStyle.headline3.copyWith(
-            color: AppColor.darkBlue,
-          ),
+          style: AppTextStyle.headline3,
         ),
         if (profileIsSelf || adminViewingUser) ..._buildEmail(userInfo.id),
         SizedBox(height: 10),
@@ -230,7 +228,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                         .toString()
                         .replaceFirst('MembershipStatus.', '')
                         .capitalize(),
-                    style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+                    style: AppTextStyle.body,
                   ),
                 ],
               );
@@ -271,7 +269,6 @@ class _ProfileTabState extends State<_ProfileTab> {
             if (widget.isPreviewButtonVisible)
               ActionButton(
                 height: 48,
-                borderRadius: BorderRadius.circular(10),
                 onPressed: () => Dialogs.showAppDrawer(
                   context,
                   AppDrawerSide.right,
@@ -282,10 +279,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                   ),
                 ),
                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-                color: AppColor.brightGreen,
                 text: 'Preview',
                 expand: false,
-                textColor: AppColor.darkBlue,
               ),
             ActionButton(
               height: 48,
@@ -294,12 +289,8 @@ class _ProfileTabState extends State<_ProfileTab> {
                       createTagPresenter.unsavedTags.isNotEmpty
                   ? () => alertOnError(context, () => _saveChanges())
                   : null,
-              color: Theme.of(context).primaryColor,
               text: 'Update Profile',
               expand: false,
-              textColor: controller.changeKeys.isNotEmpty
-                  ? Theme.of(context).colorScheme.secondary
-                  : AppColor.white,
             ),
           ],
         ),
@@ -336,12 +327,11 @@ class _ProfileTabState extends State<_ProfileTab> {
           labelText: 'About me',
           maxLines: 6,
           minLines: 6,
+          keyboardType: TextInputType.multiline,
           borderRadius: 5,
           padding: EdgeInsets.zero,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-          textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-          labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
+          textStyle:
+              TextStyle(color: context.theme.colorScheme.primary, fontSize: 16),
           initialValue: changeRecord.about,
           onChanged: (value) {
             controller.onChangedAboutMe(value);
@@ -354,7 +344,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           child: HeightConstrainedText(
             changeRecord.about ?? '',
             style: AppTextStyle.body.copyWith(
-              color: AppColor.gray2,
+              color: context.theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -377,7 +367,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                     HeightConstrainedText(
                       'Tags',
                       style: AppTextStyle.headline4.copyWith(
-                        color: AppColor.darkBlue,
+                        color: context.theme.colorScheme.primary,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -390,9 +380,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                                 ? SizedBox.shrink()
                                 : HeightConstrainedText(
                                     '#${definition.title} ',
-                                    style: AppTextStyle.body.copyWith(
-                                      color: AppColor.gray3,
-                                    ),
+                                    style: AppTextStyle.body,
                                   ),
                           ),
                       ],
@@ -410,8 +398,6 @@ class _ProfileTabState extends State<_ProfileTab> {
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),
           onTapTag: (tag) =>
               alertOnError(context, () => createTagPresenter.onTapTag(tag)),
-          tagBackgroundColor: AppColor.brightGreen,
-          tagTextColor: AppColor.darkBlue,
         );
       },
     );
@@ -424,8 +410,10 @@ class _ProfileTabState extends State<_ProfileTab> {
         children: [
           HeightConstrainedText(
             widget.allowEdit ? 'Edit your profile' : '',
-            style: AppTextStyle.headlineSmall
-                .copyWith(fontSize: 16, color: AppColor.black),
+            style: AppTextStyle.headlineSmall.copyWith(
+              fontSize: 16,
+              color: context.theme.colorScheme.primary,
+            ),
           ),
           Spacer(),
           AppClickableWidget(
@@ -451,10 +439,11 @@ class _ProfileTabState extends State<_ProfileTab> {
   }
 
   Widget _buildFAIcon(
+    BuildContext context,
     IconData icon, {
     required void Function() onTap,
   }) {
-    const foregroundColor = AppColor.darkBlue;
+    final foregroundColor = context.theme.colorScheme.primary;
 
     final size = responsiveLayoutService.getDynamicSize(context, 35.0);
     final iconSize = responsiveLayoutService.getDynamicSize(context, 20.0);
@@ -474,7 +463,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           padding: EdgeInsets.all(6.0),
           child: Icon(
             icon,
-            color: AppColor.white,
+            color: context.theme.colorScheme.onPrimary,
             size: iconSize,
           ),
         ),
@@ -488,21 +477,25 @@ class _ProfileTabState extends State<_ProfileTab> {
     switch (key) {
       case SocialMediaKey.facebook:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.facebookF,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.instagram:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.instagram,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.linkedin:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.linkedin,
           onTap: () => launch(item.url!),
         );
       case SocialMediaKey.twitter:
         return _buildFAIcon(
+          context,
           FontAwesomeIcons.twitter,
           onTap: () => launch(item.url!),
         );
@@ -542,22 +535,19 @@ class _ProfileTabState extends State<_ProfileTab> {
       );
     } else {
       return Material(
-        color: AppColor.white,
-        child: UIMigration(
-          whiteBackground: true,
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _buildContentList(controller.userInfo),
-                  ),
+        color: context.theme.colorScheme.surfaceContainerLowest,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _buildContentList(controller.userInfo),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -582,21 +572,23 @@ class SocialInputField extends StatelessWidget {
           padding: const EdgeInsets.only(top: 15.0),
           child: ProxiedImage(
             null,
-            asset: AppAsset(platform.socialMediaKey?.info.logoUrl ?? ''),
+            asset: AppAsset(
+              platform.socialMediaKey?.getInfo(context).logoUrl ?? '',
+            ),
             width: 30,
           ),
         ),
         SizedBox(width: 15),
         Expanded(
           child: CustomTextField(
-            labelText: platform.socialMediaKey?.info.title,
+            labelText: platform.socialMediaKey?.getInfo(context).title,
             initialValue: platform.url,
             borderType: BorderType.outline,
             borderRadius: 5,
-            textStyle: TextStyle(color: AppColor.black, fontSize: 16),
-            labelStyle: TextStyle(fontSize: 14.0, color: AppColor.gray2),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+            textStyle: TextStyle(
+              color: context.theme.colorScheme.primary,
+              fontSize: 16,
+            ),
             onChanged: onChanged,
           ),
         ),

@@ -18,14 +18,14 @@ import 'package:client/features/events/features/live_meeting/features/live_strea
 import 'package:client/features/events/features/event_page/presentation/widgets/waiting_room.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -35,6 +35,7 @@ import 'package:data_models/chat/chat.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class LiveMeetingDesktopLayout extends StatefulWidget {
   const LiveMeetingDesktopLayout({Key? key}) : super(key: key);
@@ -114,10 +115,10 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
 
   Widget _buildEventTabsContent() {
     return GlobalKeyedSubtree(
-      label: 'event-tabs-content',
+      label: context.l10n.eventTabsContent,
       child: Container(
         width: 400,
-        color: AppColor.darkBlue,
+        color: context.theme.colorScheme.surfaceContainer,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,10 +138,10 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                           ).expanded = false;
                         },
                         child: CircleAvatar(
-                          backgroundColor: AppColor.darkerBlue,
+                          backgroundColor: Colors.transparent,
                           child: Icon(
                             Icons.close,
-                            color: AppColor.brightGreen,
+                            color: context.theme.colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -162,7 +163,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
             ),
             Container(
               width: 1,
-              color: AppColor.white.withOpacity(0.5),
+              color: context.theme.colorScheme.surfaceContainer,
             ),
           ],
         ),
@@ -199,7 +200,7 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: AppColor.black.withOpacity(0.2),
+                      color: context.theme.colorScheme.surface,
                       child: Stack(
                         children: [
                           Row(
@@ -390,7 +391,7 @@ class _FloatingChatState extends State<FloatingChat> {
         position: _getPositionTransition(animation),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColor.darkBlue,
+            color: context.theme.colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
@@ -466,7 +467,7 @@ class _RefreshableBreakoutRoomState extends State<RefreshableBreakoutRoom> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColor.white,
+        color: context.theme.colorScheme.surfaceContainerLowest,
       ),
       margin: const EdgeInsets.all(16),
       alignment: Alignment.center,
@@ -633,7 +634,7 @@ class BreakoutStatusInformation extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(
-            child: HeightConstrainedText('Users are in breakout rooms.'),
+            child: HeightConstrainedText(context.l10n.usersAreInBreakoutRooms),
           ),
           SizedBox(width: 10),
           ActionButton(

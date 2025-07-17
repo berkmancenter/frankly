@@ -1,5 +1,5 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
 
 class SurveyAnswerTile extends StatelessWidget {
   final String answer;
@@ -24,7 +24,8 @@ class SurveyAnswerTile extends StatelessWidget {
         SizedBox(height: 10),
         Text(
           answer,
-          style: AppTextStyle.body.copyWith(color: AppColor.gray2),
+          style: context.theme.textTheme.bodyMedium!
+              .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),
         Row(
           children: [
@@ -47,13 +48,17 @@ class SurveyAnswerTile extends StatelessWidget {
                       Container(
                         height: kIndicatorHeight,
                         width: maxWidth,
-                        decoration: _getBoxDecoration(AppColor.gray5),
+                        decoration: _getBoxDecoration(
+                          context.theme.colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       // Indicator that represents percentage of votes
                       AnimatedContainer(
                         height: kIndicatorHeight,
                         width: step * answeredParticipants,
-                        decoration: _getBoxDecoration(AppColor.darkBlue),
+                        decoration: _getBoxDecoration(
+                          context.theme.colorScheme.primary,
+                        ),
                         duration: kTabScrollDuration,
                       ),
                     ],
@@ -64,7 +69,9 @@ class SurveyAnswerTile extends StatelessWidget {
             SizedBox(width: 10),
             Text(
               '$answeredParticipants/$totalParticipants',
-              style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),

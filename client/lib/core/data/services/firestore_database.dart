@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
@@ -100,16 +99,26 @@ class FirestoreDatabase {
   BehaviorSubjectWrapper<Community> communityStream(String displayId) =>
       wrapInBehaviorSubject(
         firestore
-            .collection(communityCollectionName)
-            .where('displayIds', arrayContains: displayId)
-            .snapshots()
-            .map((s) => s.docs)
-            .asyncMap((docs) async {
-          if (docs.isEmpty) throw FirestoreNotFoundException();
-
-          final community = await _convertCommunityAsync(docs.first);
+        .collection(communityCollectionName)
+        .where('displayIds', arrayContains: displayId)
+        .snapshots()
+        .map((s) => s.docs)
+        .asyncMap((docs) async {
+          if (docs.isNotEmpty) {
+            final community = await _convertCommunityAsync(docs.first);
+            if (community == null) throw FirestoreNotFoundException();
+            return community;
+          }
+          // Fallback: try to get by document ID
+          final doc = await firestore
+          .collection(communityCollectionName)
+          .doc(displayId)
+          .get();
+          if (!doc.exists || doc.data() == null) {
+            throw FirestoreNotFoundException();
+          }
+          final community = await _convertCommunityAsync(doc);
           if (community == null) throw FirestoreNotFoundException();
-
           return community;
         }),
       );

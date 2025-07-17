@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class EditableImage extends StatefulWidget {
   final Widget child;
@@ -55,7 +56,7 @@ class _EditableImageState extends State<EditableImage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Semantics(
-                      label: 'Edit Image',
+                      label: context.l10n.editImage,
                       child: widget.icon ??
                           Container(
                             decoration: BoxDecoration(

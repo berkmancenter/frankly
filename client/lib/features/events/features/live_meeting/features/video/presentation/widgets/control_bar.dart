@@ -13,15 +13,15 @@ import 'package:client/features/events/features/live_meeting/features/video/data
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/talking_odometer.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -74,8 +74,9 @@ class _ControlBarState extends State<ControlBar> {
       icon: _conferenceRoom.videoEnabled
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
-      iconColor:
-          _conferenceRoom.videoEnabled ? AppColor.white : AppColor.redDarkMode,
+      iconColor: _conferenceRoom.videoEnabled
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.errorContainer,
     );
   }
 
@@ -86,46 +87,41 @@ class _ControlBarState extends State<ControlBar> {
     const enableScreenshare = false;
 
     final mediaDevices = html.window.navigator.mediaDevices;
-    return UIMigration(
-      whiteBackground: true,
-      child: CustomInkWell(
-        hoverColor: AppColor.white.withOpacity(0.15),
-        forceHighlightOnHover: true,
-        child: PopupMenuButton<FutureOr<void> Function()>(
-          itemBuilder: (context) => [
+    return CustomInkWell(
+      child: PopupMenuButton<FutureOr<void> Function()>(
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: () =>
+                AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
+                    .show(),
+            child: HeightConstrainedText(
+              'Audio/Video Settings',
+            ),
+          ),
+          if (enableScreenshare &&
+              !responsiveLayoutService.isMobile(context) &&
+              mediaDevices != null &&
+              js_util.hasProperty(mediaDevices, 'getDisplayMedia') &&
+              context.read<EventProvider>().enableScreenshare)
             PopupMenuItem(
-              value: () =>
-                  AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
-                      .show(),
-              child: HeightConstrainedText(
-                'Audio/Video Settings',
-              ),
+              enabled: enabled,
+              value: enabled
+                  ? () => alertOnError(
+                        context,
+                        () => _conferenceRoomRead.toggleScreenShare(),
+                      )
+                  : null,
+              child: _buildScreenShareButton(),
             ),
-            if (enableScreenshare &&
-                !responsiveLayoutService.isMobile(context) &&
-                mediaDevices != null &&
-                js_util.hasProperty(mediaDevices, 'getDisplayMedia') &&
-                context.read<EventProvider>().enableScreenshare)
-              PopupMenuItem(
-                enabled: enabled,
-                value: enabled
-                    ? () => alertOnError(
-                          context,
-                          () => _conferenceRoomRead.toggleScreenShare(),
-                        )
-                    : null,
-                child: _buildScreenShareButton(),
-              ),
-          ],
-          onSelected: (itemAction) => itemAction(),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.more_horiz,
-              size: 32,
-              color: AppColor.white,
-            ),
+        ],
+        onSelected: (itemAction) => itemAction(),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.more_horiz,
+            size: 32,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),
@@ -161,8 +157,8 @@ class _ControlBarState extends State<ControlBar> {
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
           iconColor: _conferenceRoom.audioEnabled
-              ? AppColor.white
-              : AppColor.redDarkMode,
+              ? context.theme.colorScheme.onPrimary
+              : context.theme.colorScheme.errorContainer,
         ),
         _buildMoreOptionsButton(),
         SizedBox(width: spacerWidth),
@@ -187,8 +183,8 @@ class _ControlBarState extends State<ControlBar> {
       child: ActionButton(
         onPressed: () => LiveMeetingProvider.read(context).leaveMeeting(),
         text: 'Leave',
-        color: AppColor.redLightMode,
-        textColor: AppColor.white,
+        color: context.theme.colorScheme.error,
+        textColor: context.theme.colorScheme.onPrimary,
         sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       ),
     );
@@ -206,7 +202,7 @@ class _ControlBarState extends State<ControlBar> {
     return AnimatedBuilder(
       animation: _liveMeetingProvider.conferenceRoomNotifier,
       builder: (context, __) => Container(
-        color: AppColor.gray1,
+        color: context.theme.colorScheme.onPrimaryFixed,
         height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -319,18 +315,18 @@ class _EmojiButtonState extends State<EmojiButton> {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: isMobile ? 12 : 20,
-          vertical: 14,
+          vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: AppColor.gray2,
+          color: context.theme.colorScheme.primaryContainer,
           borderRadius: borderRadius,
         ),
         child: ProxiedImage(
           null,
           asset: widget.emoji.imageAssetPath,
           loadingColor: Colors.transparent,
-          width: 18,
-          height: 18,
+          width: 24,
+          height: 24,
         ),
       ),
     );
@@ -349,10 +345,10 @@ class ChatInput extends StatefulWidget {
   });
 
   @override
-  _ChatInputState createState() => _ChatInputState();
+  ChatInputState createState() => ChatInputState();
 }
 
-class _ChatInputState extends State<ChatInput> {
+class ChatInputState extends State<ChatInput> {
   final _sendController = SubmitNotifier();
 
   bool get canSubmit => !isNullOrEmpty(widget.controller.text.trim());
@@ -384,16 +380,12 @@ class _ChatInputState extends State<ChatInput> {
         children: [
           Expanded(
             child: CustomTextField(
-              cursorColor: AppColor.white,
               borderType: BorderType.none,
-              textStyle: body.copyWith(color: AppColor.white),
-              hintStyle: body.copyWith(color: AppColor.gray2),
-              backgroundColor: AppColor.gray2,
-              borderRadius: isMobile ? 25 : 10,
+              showFocusedBorder: false,
+              backgroundColor:
+                  context.theme.colorScheme.surfaceContainerHighest,
               padding: isMobile ? EdgeInsets.only(bottom: 6) : EdgeInsets.zero,
-              contentPadding: isMobile
-                  ? EdgeInsets.symmetric(horizontal: 14, vertical: 12)
-                  : EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
               onEditingComplete:
                   canSubmit ? _sendController.submit : widget.controller.clear,
               controller: widget.controller,
@@ -412,18 +404,19 @@ class _ChatInputState extends State<ChatInput> {
                 bottom: isMobile ? 4 : 0,
               ),
               child: Semantics(
-                label: 'Submit Chat Button',
+                label: context.l10n.submitChatButton,
                 button: true,
                 child: ActionButton(
                   minWidth: 20,
-                  color: AppColor.darkBlue,
+                  color: context.theme.colorScheme.surface,
+                  disabledColor: context.theme.colorScheme.primaryFixedDim,
+                  textColor: context.theme.colorScheme.onSurface,
                   controller: _sendController,
                   onPressed: canSubmit ? _sendMessage : null,
-                  disabledColor: AppColor.white.withOpacity(0.3),
                   height: isMobile ? 50 : 55,
                   child: Icon(
                     Icons.send,
-                    color: canSubmit ? AppColor.brightGreen : AppColor.gray2,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -435,17 +428,17 @@ class _ChatInputState extends State<ChatInput> {
 }
 
 class _IconButton extends StatefulWidget {
-  final Future<void> Function() onTap;
-  final String text;
-  final IconData icon;
-  final Color iconColor;
-
   const _IconButton({
     required this.onTap,
     required this.text,
     required this.icon,
-    this.iconColor = AppColor.white,
+    this.iconColor,
   });
+
+  final Future<void> Function() onTap;
+  final String text;
+  final IconData icon;
+  final Color? iconColor;
 
   @override
   _IconButtonState createState() => _IconButtonState();
@@ -457,6 +450,7 @@ class _IconButtonState extends State<_IconButton> {
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
+      hoverColor: context.theme.colorScheme.surface.withScrimOpacity,
       onTap: () async {
         if (_isSending) return;
         setState(() => _isSending = true);
@@ -475,7 +469,6 @@ class _IconButtonState extends State<_IconButton> {
 
         setState(() => _isSending = false);
       },
-      hoverColor: AppColor.white.withOpacity(0.15),
       child: Container(
         padding: const EdgeInsets.all(2),
         constraints: BoxConstraints(
@@ -491,15 +484,19 @@ class _IconButtonState extends State<_IconButton> {
               child: Icon(
                 widget.icon,
                 size: 34,
-                color: _isSending ? AppColor.gray3 : widget.iconColor,
+                color: _isSending
+                    ? context.theme.colorScheme.onPrimaryContainer
+                    : widget.iconColor ?? context.theme.colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: 2),
             HeightConstrainedText(
               widget.text,
               textAlign: TextAlign.center,
-              style: body.copyWith(
-                color: _isSending ? AppColor.gray3 : AppColor.white,
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: _isSending
+                    ? context.theme.colorScheme.onPrimaryContainer
+                    : context.theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
                 height: 1.05,
               ),

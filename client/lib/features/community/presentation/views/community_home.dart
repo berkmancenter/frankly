@@ -7,22 +7,21 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/presentation/widgets/about_section.dart';
 import 'package:client/features/community/presentation/widgets/carousel/carousel_initializer.dart';
-import 'package:client/features/community/presentation/widgets/event_widget.dart';
+import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/presentation/widgets/edit_community_button.dart';
 import 'package:client/features/community/data/providers/community_home_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/features/community/presentation/widgets/share_section.dart';
 import 'package:client/features/community/presentation/widgets/donate_widget.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/community/presentation/widgets/community_membership_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
-import 'package:client/core/widgets/thick_outline_button.dart';
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -41,10 +40,7 @@ class CommunityHome extends StatefulWidget {
       create: (context) => CommunityHomeProvider(
         communityProvider: context.read<CommunityProvider>(),
       ),
-      child: UIMigration(
-        whiteBackground: true,
-        child: CommunityHome._(),
-      ),
+      child: CommunityHome._(),
     );
   }
 
@@ -193,13 +189,12 @@ class _CommunityHomeState extends State<CommunityHome> {
           if (!userDataService.isMember(communityId: community.id)) ...[
             CommunityMembershipButton(
               community,
-              bgColor: Theme.of(context).colorScheme.primary,
             ),
             SizedBox(width: 12),
           ],
           if (showDonation)
             ThickOutlineButton(
-              text: 'Donate',
+              text: context.l10n.donate,
               eventName: 'donate_pressed',
               backgroundColor: Colors.white,
               onPressed: () => guardSignedIn(
@@ -270,13 +265,13 @@ class _CommunityHomeState extends State<CommunityHome> {
                 child: HeightConstrainedText(
                   'Upcoming Events',
                   style: AppTextStyle.headline4.copyWith(
-                    color: AppColor.gray1,
+                    color: context.theme.colorScheme.secondary,
                   ),
                 ),
               ),
               SizedBox(height: 10),
               for (var i = 0; i < min(events.length, _eventsToShow); i++) ...[
-                EventWidget(events[i]),
+                EventCard(events[i]),
                 SizedBox(height: 20),
               ],
               if (events.length > _eventsToShow)
@@ -321,7 +316,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           return EmptyPageContent(
             type: EmptyPageType.events,
             subtitleText: (communityHasEvents ?? true)
-                ? 'No events'
+                ? context.l10n.noEventsFound
                 : 'Create your first event!',
             onButtonPress: () => CreateEventDialog.show(context),
           );
@@ -337,14 +332,16 @@ class _CommunityHomeState extends State<CommunityHome> {
         if (email != null && email.isNotEmpty) ...[
           Text(
             'Contact',
-            style: AppTextStyle.headline4.copyWith(color: AppColor.gray1),
+            style: AppTextStyle.headline4
+                .copyWith(color: context.theme.colorScheme.secondary),
           ),
           SizedBox(height: 10),
           GestureDetector(
             onTap: () => url_launcher.launch('mailto:$email'),
             child: Text(
               email,
-              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.gray1),
+              style: AppTextStyle.bodyMedium
+                  .copyWith(color: context.theme.colorScheme.secondary),
             ),
           ),
           SizedBox(height: 10),

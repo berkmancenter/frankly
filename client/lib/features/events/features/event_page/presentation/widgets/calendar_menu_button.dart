@@ -1,7 +1,8 @@
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum CalendarMenuSelection {
   google,
@@ -42,7 +43,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: _isHovered ? AppColor.grayHoverColor : null,
+          color: _isHovered ? context.theme.colorScheme.primaryFixed : null,
         ),
         child: TooltipTheme(
           data: TooltipThemeData(
@@ -60,12 +61,14 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                 Icon(
                   CupertinoIcons.calendar_badge_plus,
                   size: 20,
-                  color: AppColor.gray3,
+                  color: context.theme.colorScheme.onSurfaceVariant,
                 ),
                 SizedBox(width: 10),
                 HeightConstrainedText(
-                  'Add to calendar',
-                  style: AppTextStyle.body.copyWith(color: AppColor.gray3),
+                  context.l10n.addToCalendar,
+                  style: context.theme.textTheme.bodyMedium!.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -80,8 +83,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
                       width: 100,
                       child: HeightConstrainedText(
                         text,
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.darkBlue),
+                        style: context.theme.textTheme.bodyLarge,
                       ),
                     ),
                   );
@@ -97,13 +99,13 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
   String _getText(CalendarMenuSelection calendarMenuSelection) {
     switch (calendarMenuSelection) {
       case CalendarMenuSelection.google:
-        return 'Google ';
+        return context.l10n.googleCalendar;
       case CalendarMenuSelection.outlook:
-        return 'Outlook';
+        return context.l10n.outlookCalendar;
       case CalendarMenuSelection.office365:
-        return 'Office 365';
+        return context.l10n.office365Calendar;
       case CalendarMenuSelection.ical:
-        return 'iCal';
+        return context.l10n.iCalCalendar;
     }
   }
 }

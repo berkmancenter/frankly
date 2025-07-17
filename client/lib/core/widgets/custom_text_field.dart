@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:universal_html/js.dart' as universal_js;
 
 enum BorderType {
@@ -15,9 +15,10 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsets padding;
   final String? labelText;
   final String? hintText;
+  final String? helperText;
   final String? initialValue;
-  final int? maxLines;
-  final int? minLines;
+  final int maxLines;
+  final int minLines;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextEditingController? controller;
@@ -25,6 +26,7 @@ class CustomTextField extends StatefulWidget {
   final Function()? onEditingComplete;
   final BorderType? borderType;
   final EdgeInsets? contentPadding;
+
   final double borderRadius;
   final TextStyle? labelStyle;
   final Color? backgroundColor;
@@ -32,6 +34,7 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsets? textFieldPadding;
   final Color? borderColor;
   final bool unfocusOnSubmit;
+  final bool showFocusedBorder;
   final int? maxLength;
   final MaxLengthEnforcement? maxLengthEnforcement;
   final TextStyle? counterStyle;
@@ -48,7 +51,6 @@ class CustomTextField extends StatefulWidget {
   final bool hideCounter;
   final void Function()? onTap;
   final bool obscureText;
-  final bool useDarkMode;
 
   /// Defines if `Optional` is present at the end of the line.
   final bool isOptional;
@@ -62,29 +64,39 @@ class CustomTextField extends StatefulWidget {
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
 
+  /// Allow for custom suffix icon
+  final Widget? suffixIcon;
+
+  /// Allow for custom keyboard type
+  final TextInputType keyboardType;
+
+  /// Allow for custom input formatters
+  final TextInputFormatter? inputFormatters;
+
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
     this.labelText,
     this.hintText,
     this.initialValue,
-    this.maxLines = 3,
+    this.maxLines = 1,
     this.minLines = 1,
     this.textStyle,
     this.hintStyle,
+    this.helperText,
     this.labelStyle,
     this.controller,
     this.onChanged,
     this.onEditingComplete,
     this.borderType = BorderType.outline,
-    this.contentPadding =
-        const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+    this.contentPadding,
     this.borderRadius = 5,
-    this.backgroundColor = AppColor.white,
+    this.backgroundColor,
     this.focusNode,
     this.textFieldPadding,
     this.borderColor,
     this.unfocusOnSubmit = true,
+    this.showFocusedBorder = true,
     this.maxLength,
     this.maxLengthEnforcement,
     this.counterStyle,
@@ -102,10 +114,12 @@ class CustomTextField extends StatefulWidget {
     this.hideCounter = false,
     this.onTap,
     this.obscureText = false,
-    this.useDarkMode = false,
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
+    this.suffixIcon,
+    this.keyboardType = TextInputType.text,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -115,13 +129,26 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   late FocusNode _focusNode;
   late TextEditingController _controller;
-  bool _shiftPressed = false;
+  bool _hasFocus = false;
+  bool _hasMouseHover = false;
 
   void _unfocus() {
     if (kIsWeb) {
       universal_js.context.callMethod('focus');
     }
     FocusNode().requestFocus();
+  }
+
+  void _onExitMouse(PointerEvent details) {
+    setState(() {
+      _hasMouseHover = false;
+    });
+  }
+
+  void _onEnterMouse(PointerEvent details) {
+    setState(() {
+      _hasMouseHover = true;
+    });
   }
 
   @override
@@ -131,16 +158,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ??
         TextEditingController(text: widget.initialValue ?? '');
+
+    _focusNode.addListener(() {
+      setState(() {
+        _hasFocus = _focusNode.hasFocus;
+      });
+    });
   }
 
   InputBorder _getBorder({bool isError = false}) {
     if (widget.borderType == BorderType.outline) {
       return OutlineInputBorder(
         borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
           width: 1.0,
         ),
         borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -148,10 +178,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     } else if (widget.borderType == BorderType.underline) {
       return UnderlineInputBorder(
         borderSide: BorderSide(
-          color: widget.borderColor ??
-              (widget.useDarkMode
-                  ? _getDarkModeBorderColor(isError: isError)
-                  : _getBorderColor(isError: isError)),
+          color: widget.borderColor ?? _getBorderColor(isError: isError),
           width: 1.0,
         ),
       );
@@ -160,79 +187,64 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return InputBorder.none;
   }
 
-  Color _getBorderColor({bool isError = false}) {
-    return isError
-        ? AppColor.lightRed
-        : _focusNode.hasFocus
-            ? AppColor.accentBlue
-            : AppColor.gray4;
+  InputBorder _getFocusedBorder({bool isError = false}) {
+    if (!widget.showFocusedBorder) {
+      return InputBorder.none;
+    }
+    if (widget.borderType == BorderType.underline) {
+      return UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: _getBorderColor(isError: isError),
+          width: 2.0,
+        ),
+      );
+    }
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: _getBorderColor(isError: isError),
+        width: 2.0,
+      ),
+      borderRadius: BorderRadius.circular(widget.borderRadius),
+    );
   }
 
-  Color _getDarkModeBorderColor({bool isError = false}) {
+  Color _getBorderColor({bool isError = false}) {
     return isError
-        ? AppColor.redDarkMode
-        : _focusNode.hasFocus
-            ? AppColor.accentBlueLight
-            : AppColor.gray5;
+        ? context.theme.colorScheme.errorContainer
+        : _focusNode.hasFocus || _hasMouseHover
+            ? context.theme.colorScheme.primary
+            : context.theme.colorScheme.onPrimaryContainer;
   }
 
   TextStyle _buildLabelStyle() {
     return widget.labelStyle ??
         AppTextStyle.bodySmall.copyWith(
           color: _focusNode.hasFocus
-              ? (widget.useDarkMode
-                  ? AppColor.accentBlueLight
-                  : AppColor.accentBlue)
-              : (widget.useDarkMode ? AppColor.gray5 : AppColor.gray4),
-        );
-  }
-
-  TextStyle _buildTextStyle({bool isError = false}) {
-    return widget.textStyle ??
-        AppTextStyle.body.copyWith(
-          color: isError
-              ? (widget.useDarkMode
-                  ? AppColor.redDarkMode
-                  : AppColor.redLightMode)
-              : (widget.useDarkMode ? AppColor.white : AppColor.gray2),
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.onSurfaceVariant,
+          fontWeight: _hasFocus ? FontWeight.bold : FontWeight.normal,
         );
   }
 
   TextStyle _buildOptionalTextStyle() {
     return widget.optionalTextStyle ??
-        AppTextStyle.bodySmall.copyWith(color: AppColor.gray3);
+        AppTextStyle.bodySmall
+            .copyWith(color: context.theme.colorScheme.onSurfaceVariant);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.padding,
-      child: Container(
-        padding: widget.textFieldPadding,
-        decoration: BoxDecoration(
-          color: widget.backgroundColor,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-        ),
-        child: KeyboardListener(
-          focusNode: FocusNode(),
-          onKeyEvent: (event) {
-            final isEventShiftKey =
-                event.logicalKey == LogicalKeyboardKey.shiftLeft ||
-                    event.logicalKey == LogicalKeyboardKey.shiftRight;
-            if (_shiftPressed != isEventShiftKey) {
-              setState(() => _shiftPressed = isEventShiftKey);
-            }
-
-            if (widget.onEditingComplete != null &&
-                event.runtimeType == KeyDownEvent &&
-                !isEventShiftKey &&
-                event.logicalKey == LogicalKeyboardKey.enter) {
-              widget.onEditingComplete!();
-              if (widget.unfocusOnSubmit) {
-                _unfocus();
-              }
-            }
-          },
+      child: MouseRegion(
+        onEnter: _onEnterMouse,
+        onExit: _onExitMouse,
+        child: Container(
+          padding: widget.textFieldPadding,
+          decoration: BoxDecoration(
+            color: widget.backgroundColor,
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+          ),
           child: Stack(
             children: [
               TextFormField(
@@ -243,24 +255,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     localOnTap();
                   }
                 },
-                focusNode: _focusNode,
-                textInputAction: TextInputAction.none,
                 onChanged: (text) {
                   final onChanged = widget.onChanged;
                   if (onChanged != null) {
                     onChanged(text);
                   }
                 },
+                onFieldSubmitted: (value) {
+                  widget.onEditingComplete?.call();
+                },
+                focusNode: _focusNode,
+                textInputAction: TextInputAction.none,
                 controller: _controller,
-                style: _buildTextStyle(),
+                style: widget.textStyle ?? context.theme.textTheme.bodyMedium,
                 onEditingComplete: widget.onEditingComplete,
-                maxLines: widget.maxLines,
+                // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
+                // while not having to specify max lines for every single usage 🙄
+                maxLines: !widget.minLines.compareTo(widget.maxLines).isNegative
+                    ? widget.minLines
+                    : widget.maxLines,
                 minLines: widget.minLines,
                 obscureText: widget.obscureText,
-                cursorColor: widget.cursorColor ??
-                    (widget.useDarkMode
-                        ? AppColor.accentBlueLight
-                        : AppColor.accentBlue),
+                cursorColor:
+                    widget.cursorColor ?? context.theme.colorScheme.primary,
+                cursorHeight: 20,
                 autovalidateMode: widget.autovalidateMode,
                 maxLength: widget.maxLength,
                 buildCounter: (
@@ -283,36 +301,39 @@ class _CustomTextFieldState extends State<CustomTextField> {
                         : null,
                 maxLengthEnforcement: widget.maxLengthEnforcement,
                 inputFormatters: [
-                  if (!_shiftPressed &&
-                      !responsiveLayoutService.isMobile(context) &&
-                      widget.onEditingComplete != null)
-                    DoNotAllowNewLineAtEnd(),
                   if (widget.isOnlyDigits)
                     FilteringTextInputFormatter.digitsOnly,
                   if (widget.numberThreshold != null)
-                    NumberThresholdFormatter(widget.numberThreshold!),
+                    NumberThresholdFormatter(widget.numberThreshold!)
+                  else if (widget.inputFormatters != null)
+                    widget.inputFormatters!,
                 ],
                 validator: widget.validator,
                 decoration: InputDecoration(
                   contentPadding: widget.contentPadding,
                   border: _getBorder(),
-                  focusedBorder: _getBorder(),
+                  focusedBorder: _getFocusedBorder(),
                   enabledBorder: _getBorder(),
                   errorBorder: _getBorder(isError: true),
+                  focusedErrorBorder: _getFocusedBorder(isError: true),
                   labelText: widget.labelText,
                   labelStyle: _buildLabelStyle(),
-                  errorStyle: _buildTextStyle(isError: true),
+                  errorStyle: context.theme.textTheme.labelMedium!
+                      .copyWith(color: context.theme.colorScheme.error),
                   prefixText: widget.prefixText,
                   prefixStyle: widget.textStyle,
                   alignLabelWithHint: true,
                   hintText: widget.hintText,
-                  hintStyle: _buildTextStyle(),
+                  hintStyle: context.theme.textTheme.bodyMedium,
+                  helperText: widget.helperText,
                   fillColor: widget.fillColor,
                   filled: widget.fillColor != null,
+                  suffixIcon: widget.suffixIcon,
                 ),
                 autofocus: widget.autofocus,
                 readOnly: widget.readOnly,
-                keyboardType: TextInputType.multiline,
+                enabled: !widget.readOnly,
+                keyboardType: widget.keyboardType,
               ),
               if (widget.isOptional &&
                   !_focusNode.hasFocus &&
@@ -322,7 +343,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   child: Padding(
                     padding: _buildOptionalPadding(),
                     child: Text(
-                      'Optional',
+                      context.l10n.optional,
                       style: _buildOptionalTextStyle(),
                     ),
                   ),

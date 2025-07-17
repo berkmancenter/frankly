@@ -5,12 +5,12 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_model.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_image_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/ui_migration.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class AgendaItemImage extends StatefulWidget {
   final bool isEditMode;
@@ -81,65 +81,65 @@ class _AgendaItemImageState extends State<AgendaItemImage>
     final isImageUploaded = _presenter.isValidImage();
 
     if (isEditMode) {
-      return UIMigration(
-        whiteBackground: true,
-        child: Column(
-          children: [
-            CustomTextField(
-              initialValue: _model.agendaItemImageData.title,
-              labelText: 'Title',
-              hintText: 'Enter Image title',
-              maxLength: agendaTitleCharactersLength,
-              counterStyle: AppTextStyle.bodySmall.copyWith(
-                color: AppColor.darkBlue,
+      return Column(
+        children: [
+          CustomTextField(
+            initialValue: _model.agendaItemImageData.title,
+            labelText: 'Title',
+            hintText: context.l10n.enterImageTitle,
+            maxLength: agendaTitleCharactersLength,
+            counterStyle: context.theme.textTheme.bodySmall,
+            maxLines: 1,
+            onChanged: (value) => _presenter.updateImageTitle(value),
+          ),
+          SizedBox(height: 20),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                color: context.theme.colorScheme.onPrimaryContainer,
+                height: kImageHeight,
+                child: isImageUploaded
+                    ? ProxiedImage(
+                        imageUrl,
+                        width: double.infinity,
+                      )
+                    : null,
               ),
-              maxLines: 1,
-              onChanged: (value) => _presenter.updateImageTitle(value),
-            ),
-            SizedBox(height: 20),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  color: AppColor.gray5,
-                  height: kImageHeight,
-                  child: isImageUploaded ? ProxiedImage(imageUrl) : null,
+              if (!isImageUploaded) _buildUploadImage('Upload Image'),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  controller: _textEditingController,
+                  labelText: 'Image URL',
+                  onChanged: (value) => _presenter.updateImageUrl(value),
                 ),
-                if (!isImageUploaded) _buildUploadImage('Upload Image'),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomTextField(
-                    controller: _textEditingController,
-                    labelText: 'Image URL',
-                    maxLines: null,
-                    onChanged: (value) => _presenter.updateImageUrl(value),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            if (isImageUploaded) _buildUploadImage('Upload New Image'),
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          if (isImageUploaded) _buildUploadImage('Upload New Image'),
+        ],
       );
     } else {
-      return UIMigration(
-        whiteBackground: true,
-        child: Column(
-          children: [
-            if (imageUrl.isEmpty)
-              HeightConstrainedText('(Image URL is not set.)')
-            else
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: ProxiedImage(imageUrl, height: kImageHeight),
+      return Column(
+        children: [
+          if (imageUrl.isEmpty)
+            HeightConstrainedText(context.l10n.imageUrlNotSet)
+          else
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: ProxiedImage(
+                imageUrl,
+                height: kImageHeight,
+                width: double.infinity,
               ),
-          ],
-        ),
+            ),
+        ],
       );
     }
   }
@@ -151,8 +151,6 @@ class _AgendaItemImageState extends State<AgendaItemImage>
 
   Widget _buildUploadImage(String text) {
     return ActionButton(
-      color: AppColor.darkBlue,
-      textColor: AppColor.brightGreen,
       text: text,
       onPressed: () async {
         await alertOnError(context, () async {

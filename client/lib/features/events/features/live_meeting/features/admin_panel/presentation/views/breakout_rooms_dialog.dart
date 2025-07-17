@@ -7,10 +7,10 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
@@ -18,6 +18,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum _BreakoutRoomsDialogState {
   start,
@@ -110,7 +111,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         Text(
           text,
           textAlign: TextAlign.center,
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
+          style: context.theme.textTheme.bodyMedium,
         ),
       ],
     );
@@ -122,11 +123,11 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
       children: [
         Text(
           _participantCount.toString(),
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 20),
+          style: context.theme.textTheme.titleMedium,
         ),
         Text(
-          'Current\nParticipants',
-          style: DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
+          context.l10n.currentParticipants,
+          style: context.theme.textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
       ],
@@ -142,7 +143,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         Icon(Icons.arrow_right_alt),
         SizedBox(width: 18),
         _buildNumPicker(
-          text: 'Target Participants\nPer Room',
+          text: context.l10n.targetParticipantsPerRoom,
           value: _numPerRoom,
           onChanged: (value) => setState(() {
             _numPerRoom = value;
@@ -165,8 +166,8 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           context,
           () => _startBreakouts(BreakoutAssignmentMethod.targetPerRoom),
         ),
-        text: 'Randomly Assign',
-        color: AppColor.brightGreen,
+        text: context.l10n.randomlyAssign,
+        color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
@@ -174,7 +175,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            'Number of rooms may change if participants drop off.',
+            context.l10n.roomsCountMayChange,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -195,12 +196,12 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
           context,
           () => _startBreakouts(BreakoutAssignmentMethod.smartMatch),
         ),
-        text: 'Smart Match Participants',
-        color: AppColor.brightGreen,
+        text: context.l10n.smartMatchParticipants,
+        color: context.theme.colorScheme.onPrimary,
         textColor: Theme.of(context).primaryColor,
       ),
       SizedBox(height: 12),
-      HeightConstrainedText('Or'),
+      HeightConstrainedText(context.l10n.or),
     ];
   }
 
@@ -249,7 +250,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
               'Asking participants to join breakout rooms.\nBreakout rooms will start in...$timeRemaining',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.black,
+                color: context.theme.colorScheme.primary,
                 fontSize: 16,
               ),
             );
@@ -269,7 +270,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: Color(0xFF5568FF),
@@ -297,7 +298,10 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: Text(
                       'Breakout Rooms',
-                      style: TextStyle(color: AppColor.white, fontSize: 16),
+                      style: TextStyle(
+                        color: context.theme.colorScheme.onPrimary,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),

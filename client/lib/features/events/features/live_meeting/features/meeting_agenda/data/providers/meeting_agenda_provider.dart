@@ -6,7 +6,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/data/services/logging_service.dart';
@@ -17,21 +17,18 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
-List<AgendaItem> defaultAgendaItems(String communityId) => <AgendaItem>[
-      AgendaItem(
-        id: 'default-intro-0',
-        title: 'Introductions',
-        content: '''
-_Introduce yourselves!  Each take one minute to answer one of the following questions._
-
-* What's something you did recently that was a lot of fun?
-* Who is your favorite cartoon character and why?
-* What’s one thing you wish to accomplish before you die?
-* What movie did you NOT like?
-''',
-      ),
-    ];
+List<AgendaItem> defaultAgendaItems(String communityId) {
+  final l10n = appLocalizationService.getLocalization();
+  return <AgendaItem>[
+    AgendaItem(
+      id: 'default-intro-0',
+      title: l10n.introductions,
+      content: l10n.introductionContent,
+    ),
+  ];
+}
 
 class AgendaProviderParams {
   final String communityId;
@@ -41,7 +38,7 @@ class AgendaProviderParams {
   final bool allowButtonForUserSubmittedAgenda;
   final bool agendaStartsCollapsed;
   final SubmitNotifier? saveNotifier;
-  final Color backgroundColor;
+
   final Color? labelColor;
   final bool isLivestream;
   final Color? highlightColor;
@@ -54,7 +51,6 @@ class AgendaProviderParams {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    required this.backgroundColor,
     required this.labelColor,
     required this.isLivestream,
     this.highlightColor,
@@ -606,6 +602,7 @@ class AgendaProvider with ChangeNotifier {
       final confirmed = await ConfirmDialog(
         mainText:
             'This agenda item just started! Are you sure you want to move on?',
+        cancelText: appLocalizationService.getLocalization().cancel,
       ).show();
       if (!confirmed) return;
     }

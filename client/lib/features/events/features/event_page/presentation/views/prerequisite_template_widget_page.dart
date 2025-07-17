@@ -1,17 +1,16 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/presentation/views/pre_post_card_widget_contract.dart';
 import 'package:client/features/events/features/event_page/data/models/prerequisite_template_widget_model.dart';
 import 'package:client/features/events/features/event_page/presentation/prerequisite_template_widget_presenter.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/ui_migration.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum PrerequisiteTemplateWidgetType {
   overview,
@@ -83,8 +82,9 @@ class _PrerequisiteTemplateWidgetPageState
 
   Future<void> _showDeleteDialog() async {
     await ConfirmDialog(
-      title: 'Delete prerequisite template',
+      title: context.l10n.deletePrerequisiteTemplate,
       mainText: 'Are you sure want to delete?',
+      cancelText: context.l10n.cancel,
       onConfirm: (context) {
         Navigator.pop(context);
         widget.onDelete();
@@ -118,13 +118,14 @@ class _PrerequisiteTemplateWidgetPageState
               }
             },
             backgroundColor: widget.isWhiteBackground
-                ? AppColor.darkBlue
-                : AppColor.brightGreen,
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.onPrimary,
             child: Icon(
               Icons.check,
               size: 16,
-              color:
-                  widget.isWhiteBackground ? AppColor.white : AppColor.darkBlue,
+              color: widget.isWhiteBackground
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.primary,
             ),
           ),
         ),
@@ -137,16 +138,19 @@ class _PrerequisiteTemplateWidgetPageState
       padding: const EdgeInsets.all(14.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: widget.isWhiteBackground ? AppColor.gray6 : AppColor.darkerBlue,
+        color: widget.isWhiteBackground
+            ? context.theme.colorScheme.surfaceContainerLowest
+            : context.theme.colorScheme.primary,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           HeightConstrainedText(
             'Template',
-            style: AppTextStyle.subhead.copyWith(
-              color:
-                  widget.isWhiteBackground ? AppColor.darkBlue : AppColor.white,
+            style: context.theme.textTheme.titleSmall!.copyWith(
+              color: widget.isWhiteBackground
+                  ? context.theme.colorScheme.onSurface
+                  : context.theme.colorScheme.onPrimary,
             ),
           ),
           SizedBox(height: 10),
@@ -156,7 +160,9 @@ class _PrerequisiteTemplateWidgetPageState
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColor.gray3),
+                    border: Border.all(
+                      color: context.theme.colorScheme.outline,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: CustomStreamBuilder<List<Template>>(
@@ -181,15 +187,17 @@ class _PrerequisiteTemplateWidgetPageState
                         icon: Icon(
                           CupertinoIcons.chevron_down,
                           color: widget.isWhiteBackground
-                              ? AppColor.darkBlue
-                              : AppColor.white,
+                              ? context.theme.colorScheme.primary
+                              : context.theme.colorScheme.onPrimary,
                         ),
                         iconSize: 24,
                         elevation: 16,
-                        style: TextStyle(color: AppColor.white),
+                        style: TextStyle(
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
                         borderRadius: BorderRadius.circular(10),
                         underline: SizedBox.shrink(),
-                        iconEnabledColor: AppColor.darkBlue,
+                        iconEnabledColor: context.theme.colorScheme.primary,
                         onChanged: (templateId) =>
                             _presenter.onChangedTemplate(templateId),
                         items: [
@@ -205,9 +213,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   templates.isEmpty
                                       ? 'No Templates Available'
                                       : 'Choose Template',
-                                  style: AppTextStyle.body.copyWith(
-                                    color: AppColor.darkBlue,
-                                  ),
+                                  style: context.theme.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -221,9 +227,7 @@ class _PrerequisiteTemplateWidgetPageState
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     template.title ?? '',
-                                    style: AppTextStyle.body.copyWith(
-                                      color: AppColor.darkBlue,
-                                    ),
+                                    style: context.theme.textTheme.bodyMedium,
                                   ),
                                 ),
                               ),
@@ -242,10 +246,11 @@ class _PrerequisiteTemplateWidgetPageState
                                   (templates ?? []).isEmpty
                                       ? 'No Templates Available'
                                       : 'Choose Template',
-                                  style: AppTextStyle.body.copyWith(
+                                  style: context.theme.textTheme.bodyMedium!
+                                      .copyWith(
                                     color: widget.isWhiteBackground
-                                        ? AppColor.darkBlue
-                                        : AppColor.white,
+                                        ? context.theme.colorScheme.onSurface
+                                        : context.theme.colorScheme.onPrimary,
                                   ),
                                 ),
                               ),
@@ -260,10 +265,11 @@ class _PrerequisiteTemplateWidgetPageState
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     template.title ?? '',
-                                    style: AppTextStyle.body.copyWith(
+                                    style: context.theme.textTheme.bodyMedium!
+                                        .copyWith(
                                       color: widget.isWhiteBackground
-                                          ? AppColor.darkBlue
-                                          : AppColor.white,
+                                          ? context.theme.colorScheme.onSurface
+                                          : context.theme.colorScheme.onPrimary,
                                     ),
                                   ),
                                 ),
@@ -288,7 +294,9 @@ class _PrerequisiteTemplateWidgetPageState
       key: Key('prePostCardWidget-overviewPrePostCard'),
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        color: widget.isWhiteBackground ? AppColor.gray6 : AppColor.darkBlue,
+        color: widget.isWhiteBackground
+            ? context.theme.colorScheme.surface
+            : context.theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -303,93 +311,91 @@ class _PrerequisiteTemplateWidgetPageState
     final isEditIconShown = _presenter.isEditIconShown();
 
     return Material(
-      child: UIMigration(
-        whiteBackground: widget.isWhiteBackground,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: widget.isWhiteBackground
+                    ? context.theme.colorScheme.surfaceContainerLowest
+                    : context.theme.colorScheme.primary,
+                border: Border.all(
+                  width: 1,
                   color: widget.isWhiteBackground
-                      ? AppColor.white
-                      : AppColor.darkBlue,
-                  border: Border.all(
-                    width: 1,
-                    color: widget.isWhiteBackground
-                        ? AppColor.gray5
-                        : AppColor.darkBlue,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () => _presenter.toggleExpansion(),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Prerequisite Template',
-                              style: AppTextStyle.subhead.copyWith(
-                                color: widget.isWhiteBackground
-                                    ? AppColor.darkBlue
-                                    : AppColor.white,
-                              ),
-                            ),
-                          ),
-                          if (_model.isEditable)
-                            IconButton(
-                              key: Key(
-                                'prerequisiteTemplateWidgetPage-deleteCard',
-                              ),
-                              icon: Icon(
-                                Icons.delete,
-                                color: widget.isWhiteBackground
-                                    ? AppColor.darkBlue
-                                    : AppColor.white,
-                              ),
-                              onPressed: () => _showDeleteDialog(),
-                            ),
-                          if (isEditIconShown)
-                            IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                                color: widget.isWhiteBackground
-                                    ? AppColor.darkBlue
-                                    : AppColor.white,
-                              ),
-                              onPressed: () => _presenter.updateCardType(),
-                            ),
-                          IconButton(
-                            icon: Icon(
-                              _model.isExpanded
-                                  ? Icons.expand_less
-                                  : Icons.expand_more,
-                              color: widget.isWhiteBackground
-                                  ? AppColor.darkBlue
-                                  : AppColor.white,
-                            ),
-                            onPressed: () => _presenter.toggleExpansion(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (_model.isExpanded) SizedBox(height: 20),
-                    // Apply additional animation for more fancy experience
-                    AnimatedSize(
-                      duration: kTabScrollDuration,
-                      curve: Curves.easeIn,
-                      child: Container(
-                        child: _model.isExpanded ? _buildCardContent() : null,
-                      ),
-                    ),
-                  ],
+                      ? context.theme.colorScheme.outline
+                      : context.theme.colorScheme.primary,
                 ),
               ),
-            ],
-          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () => _presenter.toggleExpansion(),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Prerequisite Template',
+                            style:
+                                context.theme.textTheme.titleMedium!.copyWith(
+                              color: widget.isWhiteBackground
+                                  ? context.theme.colorScheme.onSurface
+                                  : context.theme.colorScheme.onPrimary,
+                            ),
+                          ),
+                        ),
+                        if (_model.isEditable)
+                          IconButton(
+                            key: Key(
+                              'prerequisiteTemplateWidgetPage-deleteCard',
+                            ),
+                            icon: Icon(
+                              Icons.delete,
+                              color: widget.isWhiteBackground
+                                  ? context.theme.colorScheme.primary
+                                  : context.theme.colorScheme.onPrimary,
+                            ),
+                            onPressed: () => _showDeleteDialog(),
+                          ),
+                        if (isEditIconShown)
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: widget.isWhiteBackground
+                                  ? context.theme.colorScheme.primary
+                                  : context.theme.colorScheme.onPrimary,
+                            ),
+                            onPressed: () => _presenter.updateCardType(),
+                          ),
+                        IconButton(
+                          icon: Icon(
+                            _model.isExpanded
+                                ? Icons.expand_less
+                                : Icons.expand_more,
+                            color: widget.isWhiteBackground
+                                ? context.theme.colorScheme.primary
+                                : context.theme.colorScheme.onPrimary,
+                          ),
+                          onPressed: () => _presenter.toggleExpansion(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (_model.isExpanded) SizedBox(height: 20),
+                  // Apply additional animation for more fancy experience
+                  AnimatedSize(
+                    duration: kTabScrollDuration,
+                    curve: Curves.easeIn,
+                    child: Container(
+                      child: _model.isExpanded ? _buildCardContent() : null,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

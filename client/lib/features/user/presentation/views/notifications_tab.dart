@@ -13,6 +13,7 @@ import 'package:data_models/community/community.dart';
 import 'package:data_models/community/community_user_settings.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class NotificationsTab extends StatefulHookWidget {
   final String? initialCommunityId;
@@ -147,7 +148,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
             Container(
               padding: EdgeInsets.only(bottom: 12),
               child: HeightConstrainedText(
-                'Settings for $communityDisplay',
+                context.l10n.settingsFor(communityDisplay ?? ''),
                 style: TextStyle(
                   color: Color.fromARGB(128, 0, 0, 0),
                 ),
@@ -167,7 +168,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
                 ),
                 Flexible(
                   child: HeightConstrainedText(
-                    'Notify me about new announcements',
+                    context.l10n.notifyMeAboutNewAnnouncements,
                   ),
                 ),
               ],
@@ -185,7 +186,8 @@ class _NotificationsTabState extends State<NotificationsTab> {
                   ),
                 ),
                 Flexible(
-                  child: HeightConstrainedText('Notify me about new events'),
+                  child: HeightConstrainedText(
+                      context.l10n.notifyMeAboutNewEvents),
                 ),
               ],
             ),
@@ -199,21 +201,20 @@ class _NotificationsTabState extends State<NotificationsTab> {
     return CustomStreamBuilder<List<Membership>>(
       entryFrom: '_NotificationsTabState._buildContent1',
       stream: _memberships,
-      errorMessage: 'Something went wrong loading memberships. Please refresh.',
+      errorMessage: context.l10n.errorLoadingMemberships,
       builder: (context, membershipList) {
         final nonNullActiveCommunityId = _activeCommunityId;
         if (nonNullActiveCommunityId == null) {
           return Padding(
             padding: EdgeInsets.all(20),
-            child:
-                HeightConstrainedText('No ${Environment.appName} memberships.'),
+            child: HeightConstrainedText(
+                '${context.l10n.no} ${Environment.appName} ${context.l10n.memberships}.'),
           );
         }
         return CustomStreamBuilder<List<Community>>(
           entryFrom: '_NotificationsTabState._buildContent2',
           stream: Provider.of<UserDataService>(context).userCommunities,
-          errorMessage:
-              'Something went wrong loading communities. Please refresh.',
+          errorMessage: context.l10n.errorLoadingCommunities,
           builder: (context, communitiesList) {
             final communityLookup = {
               for (var j in communitiesList ?? <Community>[]) j.id: j,
@@ -227,7 +228,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      HeightConstrainedText('Select space:'),
+                      HeightConstrainedText(context.l10n.selectSpace),
                       Flexible(
                         child: Container(
                           margin: EdgeInsets.only(left: 15),

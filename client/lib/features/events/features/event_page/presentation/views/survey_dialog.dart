@@ -1,16 +1,14 @@
 import 'package:client/core/utils/random_utils.dart';
+import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/survey_presenter.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/action_button.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/create_dialog_ui_migration.dart';
-import 'package:client/core/widgets/ui_migration.dart';
 import 'package:client/app.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -71,47 +69,41 @@ class SurveyDialog extends StatelessWidget {
     const String description =
         'Please answer a few questions so we can match you with the right group.';
 
-    return UIMigration(
-      whiteBackground: true,
-      child: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 40),
-            HeightConstrainedText(
-              'Finish RSVP',
-              style: AppTextStyle.headline1,
-            ),
-            SizedBox(height: spacerHeight),
-            HeightConstrainedText(
-              description,
-              style: AppTextStyle.bodyMedium,
-            ),
-            SizedBox(height: spacerHeight),
-            for (var questionData in surveyPresenter.surveyQuestions)
-              _buildQuestionInfo(context, questionData),
-            SizedBox(height: spacerHeight),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ActionButton(
-                color: surveyPresenter.checkSurveyCompleted()
-                    ? AppColor.brightGreen
-                    : AppColor.gray4,
-                onPressed: () => surveyPresenter.checkSurveyCompleted()
-                    ? Navigator.of(context).pop(
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 40),
+          HeightConstrainedText(
+            'Finish RSVP',
+            style: AppTextStyle.headline1,
+          ),
+          SizedBox(height: spacerHeight),
+          HeightConstrainedText(
+            description,
+            style: AppTextStyle.bodyMedium,
+          ),
+          SizedBox(height: spacerHeight),
+          for (var questionData in surveyPresenter.surveyQuestions)
+            _buildQuestionInfo(context, questionData),
+          SizedBox(height: spacerHeight),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ActionButton(
+              onPressed: surveyPresenter.checkSurveyCompleted()
+                  ? () => Navigator.of(context).pop(
                         SurveyDialogResult(
                           questions: surveyPresenter.surveyQuestions,
                           zipCode: surveyPresenter.zipCodeController.text,
                         ),
                       )
-                    : null,
-                text: 'Finish',
-              ),
+                  : null,
+              text: 'Finish',
             ),
-            SizedBox(height: spacerHeight),
-          ],
-        ),
+          ),
+          SizedBox(height: spacerHeight),
+        ],
       ),
     );
   }
@@ -198,17 +190,14 @@ class SurveyDialog extends StatelessWidget {
     final isAnswerSelected = questionData.answerOptionId == answerOption.id;
 
     return ActionButton(
-      type: ActionButtonType.outline,
+      type:
+          isAnswerSelected ? ActionButtonType.filled : ActionButtonType.outline,
       onPressed: () => context.read<SurveyPresenter>().setQuestionAnswer(
             id: questionId,
             answerOptionId: answerOption.id,
           ),
       expand: expand,
-      color: _getButtonColor(isAnswerSelected: isAnswerSelected, invert: false),
-      borderSide: BorderSide(color: AppColor.darkBlue, width: 1),
       borderRadius: BorderRadius.circular(30),
-      textColor:
-          _getButtonColor(isAnswerSelected: isAnswerSelected, invert: true),
       child: Flexible(
         flex: expand ? 1 : 0,
         child: Container(
@@ -218,27 +207,14 @@ class SurveyDialog extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: AppTextStyle.body.copyWith(
-              color: _getButtonColor(
-                isAnswerSelected: isAnswerSelected,
-                invert: true,
-              ),
+            style: context.theme.textTheme.bodyMedium!.copyWith(
+              color: isAnswerSelected
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.primary,
             ),
           ),
         ),
       ),
     );
-  }
-
-  Color _getButtonColor({
-    required bool isAnswerSelected,
-    required bool invert,
-  }) {
-    bool isDarkColor = !isAnswerSelected;
-    if (invert) {
-      isDarkColor = !isDarkColor;
-    }
-
-    return isDarkColor ? AppColor.white : AppColor.darkBlue;
   }
 }

@@ -5,8 +5,9 @@ import 'package:client/features/events/features/live_meeting/features/video/pres
 import 'package:client/features/events/features/live_meeting/features/video/data/models/talking_odometer_model.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/talking_odometer_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/colorful_meter.dart';
-import 'package:client/styles/app_styles.dart';
+import 'package:client/styles/styles.dart';
 import 'package:client/core/utils/extensions.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// Shows a meter indicating to the user if they have been speaking more, less, or the same as
 /// everyone else in the meeting.
@@ -64,19 +65,19 @@ class _TalkingOdometerState extends State<TalkingOdometer>
         key: _model.tooltipKey,
         triggerMode: TooltipTriggerMode.manual,
         message: message,
-        textStyle: AppTextStyle.body.copyWith(color: AppColor.darkBlue),
+        textStyle: AppTextStyle.body,
         verticalOffset: 40,
         preferBelow: false,
         padding: const EdgeInsets.all(30),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColor.white,
+          color: context.theme.colorScheme.surfaceContainerLowest,
         ),
         child: ColorfulMeter(
           value: applyWarning ? adjustedValue : value,
           title: _presenter.userTotalTalkingTime
               .getFormattedTime(showHours: false),
-          subtitle: 'mins',
+          subtitle: context.l10n.mins,
         ),
       ),
     );
