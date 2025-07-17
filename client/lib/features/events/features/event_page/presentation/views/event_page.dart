@@ -150,58 +150,60 @@ class EventPageState extends State<EventPage> implements EventPageView {
     bool showConfirm = true,
     bool joinCommunity = false,
   }) async {
-    final eventPageProvider = context.read<EventPageProvider>();
-    final event = eventPageProvider.eventProvider.event;
-    final communityProvider =
-        Provider.of<CommunityProvider>(context, listen: false);
-    JoinEventResults joinResults = await alertOnError<JoinEventResults>(
-          context,
-          () => eventPageProvider.joinEvent(
-            showConfirm: showConfirm,
-            joinCommunity: joinCommunity,
-          ),
-        ) ??
-        JoinEventResults(isJoined: false);
+    await alertOnError(context, () async {
+      final eventPageProvider = context.read<EventPageProvider>();
+      final event = eventPageProvider.eventProvider.event;
+      final communityProvider =
+          Provider.of<CommunityProvider>(context, listen: false);
+      JoinEventResults joinResults = await alertOnError<JoinEventResults>(
+            context,
+            () => eventPageProvider.joinEvent(
+              showConfirm: showConfirm,
+              joinCommunity: joinCommunity,
+            ),
+          ) ??
+          JoinEventResults(isJoined: false);
 
-    if (!joinResults.isJoined) {
-      // Don't join the meeting if joinEvent returns false.
-      return;
-    }
+      if (!joinResults.isJoined) {
+        // Don't join the meeting if joinEvent returns false.
+        return;
+      }
 
-    // Check if the event is using an external platform.
-    final externalPlatform = event.externalPlatform ??
-        PlatformItem(platformKey: PlatformKey.community);
-    final platformSelectionEnabled =
-        communityProvider.settings.enablePlatformSelection;
+      // Check if the event is using an external platform.
+      final externalPlatform = event.externalPlatform ??
+          PlatformItem(platformKey: PlatformKey.community);
+      final platformSelectionEnabled =
+          communityProvider.settings.enablePlatformSelection;
 
-    if (platformSelectionEnabled &&
-        externalPlatform.platformKey != PlatformKey.community) {
-      await launch(externalPlatform.url ?? '');
-    }
+      if (platformSelectionEnabled &&
+          externalPlatform.platformKey != PlatformKey.community) {
+        await launch(externalPlatform.url ?? '');
+      }
 
-    // Not using an external platform. Enter the meeting normally.
-    if (!mounted) return;
-    await alertOnError(
-      context,
-      () => eventPageProvider.enterMeeting(
-        surveyQuestions: joinResults.surveyQuestions,
-      ),
-    );
+      // Not using an external platform. Enter the meeting normally.
+      if (!mounted) return;
+      await alertOnError(
+        context,
+        () => eventPageProvider.enterMeeting(
+          surveyQuestions: joinResults.surveyQuestions,
+        ),
+      );
 
-    // Log enter event in analytics.
-    final communityId = event.communityId;
-    final eventId = event.id;
-    final templateId = event.templateId;
-    final isHost = (event.eventType != EventType.hostless) &&
-        event.creatorId == userService.currentUserId;
-    analytics.logEvent(
-      AnalyticsEnterEventEvent(
-        communityId: communityId,
-        eventId: eventId,
-        asHost: isHost,
-        templateId: templateId,
-      ),
-    );
+      // Log enter event in analytics.
+      final communityId = event.communityId;
+      final eventId = event.id;
+      final templateId = event.templateId;
+      final isHost = (event.eventType != EventType.hostless) &&
+          event.creatorId == userService.currentUserId;
+      analytics.logEvent(
+        AnalyticsEnterEventEvent(
+          communityId: communityId,
+          eventId: eventId,
+          asHost: isHost,
+          templateId: templateId,
+        ),
+      );
+    });
   }
 
   Future<void> _showSendMessageDialog() async {
