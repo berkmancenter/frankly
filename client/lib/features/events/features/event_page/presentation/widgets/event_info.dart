@@ -403,8 +403,7 @@ class _EventInfoState extends State<EventInfo> {
       type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () async =>
-          await widget.onJoinEvent(showConfirm: difference.inMinutes >= 10),
+      onPressed: () async => await widget.onJoinEvent(),
       text: text,
     );
   }
