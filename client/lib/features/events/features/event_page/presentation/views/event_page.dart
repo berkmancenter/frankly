@@ -148,6 +148,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
   Future<void> _joinEvent({
     bool showConfirm = true,
+    bool enterMeeting = false,
     bool joinCommunity = false,
   }) async {
     await alertOnError(context, () async {
@@ -166,6 +167,10 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
       if (!joinResults.isJoined) {
         // Don't join the meeting if joinEvent returns false.
+        return;
+      }
+
+      if (!enterMeeting) {
         return;
       }
 
@@ -261,7 +266,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
       children: [
         if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
           CustomInkWell(
-            onTap: () => _joinEvent(),
+            onTap: () => _joinEvent(enterMeeting: true),
             child: SizedBox(
               height: 380,
               child: Stack(
@@ -290,7 +295,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                         SizedBox(height: 10),
                         ActionButton(
                           text: 'Enter Event',
-                          onPressed: () => _joinEvent(),
+                          onPressed: () => _joinEvent(enterMeeting: true),
                           height: 65,
                           sendingIndicatorAlign:
                               ActionButtonSendingIndicatorAlign.none,

@@ -68,6 +68,7 @@ class EventInfo extends StatefulHookWidget {
   final EventPagePresenter eventPagePresenter;
   final Future<void> Function({
     bool showConfirm,
+    bool enterMeeting,
     bool joinCommunity,
   }) onJoinEvent;
 
@@ -379,6 +380,7 @@ class _EventInfoState extends State<EventInfo> {
 
   ActionButton _buildEnterEvent(DateTime scheduled) {
     const kEventOpenText = 'Enter Event';
+    bool shouldJoinMeeting = false;
     final now = clockService.now();
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
@@ -389,6 +391,7 @@ class _EventInfoState extends State<EventInfo> {
     } else if (daysDifference == 1) {
       text = 'Starts Tomorrow';
     } else if (daysDifference == 0 && difference.inMinutes > 9) {
+      shouldJoinMeeting = true;
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
       text = 'Event Ended';
@@ -403,7 +406,8 @@ class _EventInfoState extends State<EventInfo> {
       type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () async => await widget.onJoinEvent(),
+      onPressed: () async =>
+          await widget.onJoinEvent(enterMeeting: shouldJoinMeeting),
       text: text,
     );
   }
@@ -459,6 +463,7 @@ class _EventInfoState extends State<EventInfo> {
         message: context.l10n.eventIsLocked,
       );
     } else if (showEnterEventButton) {
+      // Should only be shown within 15 minutes of the event start time
       return PeriodicBuilder(
         period: Duration(milliseconds: 1000),
         builder: (_) => _buildEnterEvent(startTime),
@@ -479,6 +484,7 @@ class _EventInfoState extends State<EventInfo> {
               await widget.onJoinEvent(
                 joinCommunity:
                     canShowFollowCommunity ? _joinCommunityDuringRsvp : false,
+                enterMeeting: false,
               );
             }),
             expand: true,
