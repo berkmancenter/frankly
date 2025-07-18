@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:beamer/beamer.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
 import 'package:collection/collection.dart';
@@ -183,6 +184,7 @@ class ConferenceRoom with ChangeNotifier {
       participants.firstWhereOrNull((p) => p.identity == screenSharerUserId);
 
   AgoraRoom? get room => _room;
+  final MediaDeviceService mediaDeviceService = MediaDeviceService();
 
   String? get dominantSpeakerSid =>
       _debouncedDominantSpeakerStream?.value?.userId;
@@ -381,7 +383,7 @@ class ConferenceRoom with ChangeNotifier {
       () async {
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
-          deviceId: sharedPreferencesService.getDefaultCameraId(),
+          deviceId: mediaDeviceService.selectedVideoInputId,
         );
         if (updateProvider) {
           liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
@@ -420,7 +422,7 @@ class ConferenceRoom with ChangeNotifier {
         final audioEnableFutures = [
           _room!.localParticipant!.enableAudio(
             setEnabled: updatedEnabledValue,
-            deviceId: sharedPreferencesService.getDefaultMicrophoneId(),
+            deviceId: mediaDeviceService.selectedAudioInputId,
           ),
           if ((liveMeetingProvider
                       .eventProvider.selfParticipant?.muteOverride ??
