@@ -47,9 +47,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   Future<void> updatePreview() async {
     try {
-      await _mediaService.getUserMedia(
-        mediaStreamLocation: MediaStreamLocation.preview,
-      );
+      await _mediaService.getUserMedia();
       _videoElement.srcObject = _mediaService.previewMediaStream;
     } catch (e) {
       print('Error updating preview: $e');
@@ -59,9 +57,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   @override
   void dispose() {
-    _mediaService.stopMediaStream(
-      mediaStreamLocation: MediaStreamLocation.preview,
-    );
+    _mediaService.stopPreviewMediaStream();
     _videoElement.srcObject = null;
     _videoElement.remove();
     super.dispose();

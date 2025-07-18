@@ -3,12 +3,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
 
-enum MediaStreamLocation {
-  all,
-  meeting,
-  preview,
-}
-
 /// Currently only implemented for web.
 class MediaDeviceService {
   // Singleton class
@@ -16,10 +10,7 @@ class MediaDeviceService {
   factory MediaDeviceService() => _instance;
   MediaDeviceService._internal();
 
-  // Displayed media stream
-  html.MediaStream? _mediaStream;
-  html.MediaStream? get mediaStream => _mediaStream;
-  // Preview media stream
+  // Media stream for local A/V preview
   html.MediaStream? _previewMediaStream;
   html.MediaStream? get previewMediaStream => _previewMediaStream;
 
@@ -67,12 +58,12 @@ class MediaDeviceService {
 
   Future<void> selectAudioDevice(String deviceId) async {
     selectedAudioInputId = deviceId;
-    await getUserMedia(mediaStreamLocation: MediaStreamLocation.all);
+    await getUserMedia();
   }
 
   Future<void> selectVideoDevice(String deviceId) async {
     selectedVideoInputId = deviceId;
-    await getUserMedia(mediaStreamLocation: MediaStreamLocation.all);
+    await getUserMedia();
   }
 
   void toggleMic(bool enabled) {
@@ -84,9 +75,7 @@ class MediaDeviceService {
   }
 
   /// HTML method for getting a MediaStream based on selected devices and permissions.
-  Future<void> getUserMedia({
-    required MediaStreamLocation mediaStreamLocation,
-  }) async {
+  Future<void> getUserMedia() async {
     if (kIsWeb) {
       if (!micEnabled && !camEnabled) {
         return;
@@ -134,21 +123,10 @@ class MediaDeviceService {
       try {
         final newMediaStream =
             await html.window.navigator.mediaDevices?.getUserMedia(constraints);
-        switch (mediaStreamLocation) {
-          case MediaStreamLocation.all:
-            _mediaStream = newMediaStream;
-            _previewMediaStream = newMediaStream;
-            break;
-          case MediaStreamLocation.meeting:
-            _mediaStream = newMediaStream;
-            break;
-          case MediaStreamLocation.preview:
-            _previewMediaStream = newMediaStream;
-            break;
-        }
+        _previewMediaStream = newMediaStream;
       } catch (e) {
         loggingService.log('Error getting user media: $e');
-        _mediaStream = null;
+        _previewMediaStream = null;
       }
     } else {
       throw UnimplementedError(
@@ -157,23 +135,13 @@ class MediaDeviceService {
     }
   }
 
-  void stopMediaStream({required MediaStreamLocation mediaStreamLocation}) {
+  void stopPreviewMediaStream() {
     if (kIsWeb) {
-      if (_mediaStream == null && _previewMediaStream == null) return;
-      if (mediaStreamLocation == MediaStreamLocation.preview ||
-          mediaStreamLocation == MediaStreamLocation.all) {
-        _previewMediaStream?.getTracks().forEach((track) {
-          track.stop();
-        });
-        _previewMediaStream = null;
-      }
-      if (mediaStreamLocation == MediaStreamLocation.meeting ||
-          mediaStreamLocation == MediaStreamLocation.all) {
-        _mediaStream?.getTracks().forEach((track) {
-          track.stop();
-        });
-        _mediaStream = null;
-      }
+      if (_previewMediaStream == null) return;
+      _previewMediaStream?.getTracks().forEach((track) {
+        track.stop();
+      });
+      _previewMediaStream = null;
     } else {
       throw UnimplementedError('stopMediaStream error: Only web is supported.');
     }
