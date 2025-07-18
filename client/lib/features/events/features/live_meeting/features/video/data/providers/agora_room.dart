@@ -102,7 +102,6 @@ class AgoraRoom with ChangeNotifier {
     }
   }
 
-  html.MediaStream? _localMediaStream;
   final MediaDeviceService mediaDeviceService = MediaDeviceService();
   Future<void> connect({
     bool enableAudio = true,
@@ -353,8 +352,6 @@ class AgoraRoom with ChangeNotifier {
         autoSubscribeAudio: true,
         autoSubscribeVideo: true,
         enableAudioRecordingOrPlayout: true,
-        // publishCustomVideoTrack: _customVideoTrackId != null,
-        // customVideoTrackId: _customVideoTrackId,
       ),
     );
   }
@@ -363,9 +360,6 @@ class AgoraRoom with ChangeNotifier {
   dispose() {
     engine.unregisterEventHandler(_rtcEngineEventHandler);
     engine.leaveChannel();
-    mediaDeviceService.stopMediaStream(
-      mediaStreamLocation: MediaStreamLocation.all,
-    );
     engine.enableLocalVideo(false);
     engine.enableLocalAudio(false);
     engine.release();
@@ -415,7 +409,7 @@ class AgoraParticipant with ChangeNotifier {
   bool videoTrackEnabled = true;
 
   final MediaDeviceService mediaDeviceService = MediaDeviceService();
-  MediaStreamTrack? get screenshareTrack => null;
+  html.MediaStreamTrack? get screenshareTrack => null;
 
   Future<void> enableAudio({required bool setEnabled, String? deviceId}) async {
     print('TODO: enable audio with deviceId: $deviceId');
