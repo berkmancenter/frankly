@@ -39,11 +39,26 @@ class MediaDeviceService {
               .toList();
         }
 
-        // Set the default selected device if it's currently null.
+        // First, check for defaults from shared preferences.
+        selectedAudioInputId =
+            sharedPreferencesService.getDefaultMicrophoneId();
+        selectedVideoInputId = sharedPreferencesService.getDefaultCameraId();
+
+        // If no defaults, use the first available device.
         selectedAudioInputId ??=
             audioInputs.isNotEmpty ? audioInputs.first.deviceId : null;
         selectedVideoInputId ??=
             videoInputs.isNotEmpty ? videoInputs.first.deviceId : null;
+
+        // Update shared preferences with default devices
+        if (selectedAudioInputId != null) {
+          await sharedPreferencesService
+              .setDefaultMicrophoneId(selectedAudioInputId!);
+        }
+        if (selectedAudioInputId != null) {
+          await sharedPreferencesService
+              .setDefaultCameraId(selectedVideoInputId!);
+        }
       } catch (e) {
         loggingService.log('Error listing available devices: $e');
         audioInputs = [];
@@ -58,11 +73,14 @@ class MediaDeviceService {
 
   Future<void> selectAudioDevice(String deviceId) async {
     selectedAudioInputId = deviceId;
+    await sharedPreferencesService
+        .setDefaultMicrophoneId(selectedAudioInputId!);
     await getUserMedia();
   }
 
   Future<void> selectVideoDevice(String deviceId) async {
     selectedVideoInputId = deviceId;
+    await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
     await getUserMedia();
   }
 
