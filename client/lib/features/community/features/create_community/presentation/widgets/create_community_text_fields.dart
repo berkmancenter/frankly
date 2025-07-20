@@ -47,6 +47,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
 
   late final TextEditingController _nameController;
   late final TextEditingController _displayIdController;
+
+  bool get _showTaglineCounter => widget.community.tagLine != null && widget.community.tagLine!.isNotEmpty;
   @override
   void initState() {
     super.initState();
