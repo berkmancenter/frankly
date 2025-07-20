@@ -930,8 +930,8 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   Widget _buildEventTypeName() {
-    final String? type;
-    final AppAsset? appAsset;
+    String? type;
+    AppAsset? appAsset;
     switch (_eventProvider.event.eventType) {
       case EventType.hosted:
         type = null;

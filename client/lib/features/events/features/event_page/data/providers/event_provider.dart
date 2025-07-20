@@ -18,9 +18,10 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/chat/chat_suggestion_data.dart';
 import 'package:data_models/community/member_details.dart';
 import 'package:data_models/templates/template.dart';
+import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:universal_html/html.dart';
+import 'package:universal_html/html.dart' as html;
 
 class EventProvider with ChangeNotifier {
   final CommunityProvider communityProvider;
@@ -435,7 +436,7 @@ class EventProvider with ChangeNotifier {
     final content = stringToBase64.encode(csv);
     final fileName = 'registration-data-$eventId.csv';
 
-    AnchorElement(
+    html.AnchorElement(
       href: 'data:application/octet-stream;charset=utf-8;base64,$content',
     )
       ..setAttribute('download', fileName)
@@ -510,7 +511,7 @@ class EventProvider with ChangeNotifier {
     final content = stringToBase64.encode(csv);
     final fileName = 'chats-suggestions-data-$eventId.csv';
 
-    AnchorElement(
+    html.AnchorElement(
       href: 'data:application/octet-stream;charset=utf-8;base64,$content',
     )
       ..setAttribute('download', fileName)
