@@ -152,7 +152,7 @@ class _ActionButtonState extends State<ActionButton> {
   Widget _buildLoading() {
     // If color is either black, or button is filled, ensure that indicator is on primary color
     Color loadingColor =
-        (widget.type == ActionButtonType.filled || widget.color == Colors.black)
+        (widget.type == ActionButtonType.filled || widget.color == context.theme.colorScheme.primary)
             ? context.theme.colorScheme.onPrimary
             : context.theme.colorScheme.primary;
     return SizedBox(
