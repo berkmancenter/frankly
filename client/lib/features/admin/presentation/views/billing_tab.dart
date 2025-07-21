@@ -248,10 +248,7 @@ class _AdminBillingContainerContentState
         if (isUserBillingManager)
           _buildTitle(widget.subscription?.type ?? _freeSubscriptionType),
         SizedBox(height: 20),
-        // if (isUserBillingManager)
         _buildUserIsBillingManager(),
-        // else
-        // _buildUserNotBillingManager(),
         SizedBox(height: 20),
         if (isUserBillingManager)
           Wrap(

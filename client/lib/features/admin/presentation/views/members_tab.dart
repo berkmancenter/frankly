@@ -526,7 +526,6 @@ class _MembersTabState extends State<MembersTab> {
                           padding: EdgeInsets.zero,
                           icon: Icon(
                             Icons.download,
-                            // size: 20,
                           ),
                         ),
                       ),
