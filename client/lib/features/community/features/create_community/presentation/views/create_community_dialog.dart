@@ -430,7 +430,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       text: widget.submitText ?? submitText,
       expand: widget.compact,
       color: Theme.of(context).primaryColor,
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.left,
     );
     if (widget.compact) {
       return button;

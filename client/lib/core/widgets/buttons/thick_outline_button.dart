@@ -30,10 +30,9 @@ class ThickOutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final lineColor = textColor ??
         DefaultTextStyle.of(context).style.color ??
-       context.theme.primaryColor;
+        context.theme.primaryColor;
     return ActionButton(
       onPressed: onPressed,
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       type: ActionButtonType.outline,
       borderSide: BorderSide(
         color: lineColor,
