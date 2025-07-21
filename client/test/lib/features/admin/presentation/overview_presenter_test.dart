@@ -5,8 +5,16 @@ import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../mocked_classes.mocks.dart';
+import '../../../../test_helpers.dart';
 
 void main() {
+  setUpAll(() {
+    TestHelpers.setupLocalizationForTests();
+  });
+  
+  tearDownAll(() async {
+    await TestHelpers.cleanupAfterTests();
+  });
   final mockBuildContext = MockBuildContext();
   final mockView = MockOverviewView();
   final mockCommunityProvider = MockCommunityProvider();

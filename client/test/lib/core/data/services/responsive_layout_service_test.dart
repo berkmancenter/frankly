@@ -4,9 +4,18 @@ import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../mocked_classes.mocks.dart';
+import '../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() {
+    TestHelpers.setupLocalizationForTests();
+  });
+  
+  tearDownAll(() async {
+    await TestHelpers.cleanupAfterTests();
+  });
 
   final MockMediaQueryData mockMediaQueryData = MockMediaQueryData();
   final MockBuildContext mockBuildContext = MockBuildContext();

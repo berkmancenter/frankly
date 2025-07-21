@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
+import 'package:client/core/localization/app_localization_service.dart';
+
+/// Test helper functions for setting up common test dependencies
+class TestHelpers {
+  /// Initialize GetIt and AppLocalizationService for tests
+  static void setupLocalizationForTests() {
+    // Check if already registered, if so skip setup
+    if (GetIt.instance.isRegistered<AppLocalizationService>()) {
+      try {
+        // Create a minimal mock localization and set it
+        final mockLocalizations = _MockAppLocalizations();
+        GetIt.instance.get<AppLocalizationService>().setLocalization(mockLocalizations);
+      } catch (e) {
+        // If error setting localization, service might be in bad state, reset and try again
+        GetIt.instance.unregister<AppLocalizationService>();
+        GetIt.instance.registerSingleton<AppLocalizationService>(AppLocalizationService());
+        final mockLocalizations = _MockAppLocalizations();
+        GetIt.instance.get<AppLocalizationService>().setLocalization(mockLocalizations);
+      }
+      return;
+    }
+    
+    // Register AppLocalizationService
+    GetIt.instance.registerSingleton<AppLocalizationService>(AppLocalizationService());
+    
+    // Create a minimal mock localization and set it
+    final mockLocalizations = _MockAppLocalizations();
+    GetIt.instance.get<AppLocalizationService>().setLocalization(mockLocalizations);
+  }
+  
+  /// Clean up GetIt registrations after tests
+  static Future<void> cleanupAfterTests() async {
+    await GetIt.instance.reset();
+  }
+}
+
+/// Minimal mock implementation of AppLocalizations for testing
+class _MockAppLocalizations extends AppLocalizations {
+  _MockAppLocalizations() : super('en');
+  
+  // Override only the methods we need for testing
+  @override
+  String get lookingGood => 'Looking Good';
+  
+  @override
+  String get getPeopleTalking => 'Get People Talking';
+  
+  @override
+  String get getItOnTheBooks => 'Get It On The Books';
+  
+  @override
+  String get startProcessingPayments => 'Start Processing Payments';
+  
+  @override
+  String get brandSpace => 'Brand Space';
+  
+  @override
+  String get createGuide => 'Create Guide';
+  
+  @override
+  String get hostEvent => 'Host Event';
+  
+  @override
+  String get inviteYourPeople => 'Invite Your People';
+  
+  @override
+  String get linkYourStripeAccount => 'Link Your Stripe Account';
+  
+  // Add more getters as needed for other tests
+  @override
+  String deleteAgendaItemName(Object name) => 'Delete $name';
+  
+  @override
+  String get cancel => 'Cancel';
+  
+  // Override the noSuchMethod to return empty string for any missing getters
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    if (invocation.isGetter) {
+      return 'Mock String';
+    }
+    return super.noSuchMethod(invocation);
+  }
+} 

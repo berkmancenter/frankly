@@ -1,11 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/services.dart';
 
+import '../../../test_helpers.dart';
+
 void main() {
+  setUpAll(() {
+    // Setup localization for tests using shared helper
+    TestHelpers.setupLocalizationForTests();
+  });
+  
+  tearDownAll(() async {
+    await TestHelpers.cleanupAfterTests();
+  });
   group('DateTimeExtension', () {
     group('getFormattedTime', () {
       test('default', () {

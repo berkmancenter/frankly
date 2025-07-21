@@ -8,8 +8,16 @@ import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mocked_classes.mocks.dart';
+import '../../../../../test_helpers.dart';
 
 void main() {
+  setUpAll(() {
+    TestHelpers.setupLocalizationForTests();
+  });
+  
+  tearDownAll(() async {
+    await TestHelpers.cleanupAfterTests();
+  });
   final mockFirestoreDatabase = MockFirestoreDatabase();
   final mockFirebaseFirestore = MockFirebaseFirestore();
   final mockCollectionReference =

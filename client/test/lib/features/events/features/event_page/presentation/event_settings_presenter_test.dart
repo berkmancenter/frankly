@@ -7,9 +7,18 @@ import 'package:data_models/templates/template.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() {
+    TestHelpers.setupLocalizationForTests();
+  });
+  
+  tearDownAll(() async {
+    await TestHelpers.cleanupAfterTests();
+  });
 
   final mockContext = MockBuildContext();
   final mockView = MockEventSettingsView();

@@ -9,9 +9,18 @@ import 'package:data_models/events/pre_post_url_params.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() {
+    TestHelpers.setupLocalizationForTests();
+  });
+  
+  tearDownAll(() async {
+    await TestHelpers.cleanupAfterTests();
+  });
 
   final MockBuildContext mockBuildContext = MockBuildContext();
   final MockPrePostEventDialogView mockView = MockPrePostEventDialogView();
