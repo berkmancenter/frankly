@@ -112,6 +112,31 @@ class _MockAppLocalizations extends AppLocalizations {
   @override
   String get textTitle => 'Text Title';
   
+  // Error messages for agenda item validation
+  @override
+  String get questionIsRequired => 'Question is required';
+  
+  @override
+  String get answersIsRequired => 'Please add some answers';
+  
+  @override
+  String get wordCloudPromptIsRequired => 'Word Cloud prompt is required';
+  
+  @override
+  String get titleIsRequired => 'Title is required';
+  
+  @override
+  String get imageUrlIsRequired => 'Image URL is required';
+  
+  @override
+  String get videoUrlIsRequired => 'Video URL is required';
+  
+  @override
+  String get contentIsRequired => 'Content is required';
+  
+  @override
+  String get messageIsRequired => 'Message is required';
+  
   // Override the noSuchMethod to return empty string for any missing getters
   @override
   dynamic noSuchMethod(Invocation invocation) {
