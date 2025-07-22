@@ -62,6 +62,14 @@ enum _ParticipantStatus {
 }
 
 class EventInfo extends StatefulHookWidget {
+  const EventInfo({
+    Key? key,
+    required this.event,
+    required this.onMessagePressed,
+    required this.onJoinEvent,
+    required this.eventPagePresenter,
+  }) : super(key: key);
+
   static const Key enterEventButtonKey = Key('enter-button');
   static const Key rsvpButtonKey = Key('rsvp-button');
 
@@ -73,14 +81,6 @@ class EventInfo extends StatefulHookWidget {
     bool enterMeeting,
     bool joinCommunity,
   }) onJoinEvent;
-
-  const EventInfo({
-    Key? key,
-    required this.event,
-    required this.onMessagePressed,
-    required this.onJoinEvent,
-    required this.eventPagePresenter,
-  }) : super(key: key);
 
   @override
   _EventInfoState createState() => _EventInfoState();
