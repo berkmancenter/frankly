@@ -112,8 +112,6 @@ class _MeetingGuideCardItemWordCloudState
                   ActionButton(
                     height: 55,
                     minWidth: 20,
-                    sendingIndicatorAlign:
-                        ActionButtonSendingIndicatorAlign.none,
                     onPressed: _wordCloudResponseController.text != ''
                         ? _submitInputWordCloudResponse
                         : null,

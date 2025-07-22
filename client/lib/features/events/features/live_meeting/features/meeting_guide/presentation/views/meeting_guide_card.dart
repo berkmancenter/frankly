@@ -196,7 +196,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               ActionButton(
                 type: ActionButtonType.filled,
                 tooltipText: context.l10n.hideAgendaItem,
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: widget.onMinimizeCard,
                 color: context.theme.colorScheme.surfaceContainerLowest,
                 padding: EdgeInsets.zero,
@@ -338,8 +337,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                           type: ActionButtonType.filled,
                           color: context.theme.colorScheme.surfaceContainer,
                           textColor: context.theme.colorScheme.onSurface,
-                          sendingIndicatorAlign:
-                              ActionButtonSendingIndicatorAlign.none,
                           onPressed: () => alertOnError(context, () async {
                             final currentAgendaItemId =
                                 _presenter.getCurrentAgendaItemId();
@@ -498,8 +495,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       ActionButton(
                         color: Colors.transparent,
                         textColor: context.theme.colorScheme.primary,
-                        sendingIndicatorAlign:
-                            ActionButtonSendingIndicatorAlign.none,
                         icon: Icons.arrow_back_ios,
                         text: 'Back',
                         onPressed: () => _presenter.goToPreviousAgendaItem(),
@@ -536,8 +531,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       ActionButton(
                         type: ActionButtonType.outline,
                         textColor: context.theme.colorScheme.primary,
-                        sendingIndicatorAlign:
-                            ActionButtonSendingIndicatorAlign.none,
                         text: 'Ready',
                         icon: Icons.check_circle_outline,
                       )
@@ -618,9 +611,7 @@ class _ReadyButton extends HookWidget {
       color: Colors.transparent,
       type: ActionButtonType.outline,
       textColor: context.theme.colorScheme.primary,
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       icon: Icons.arrow_forward_ios,
-      iconSide: ActionButtonIconSide.right,
       onPressed: () => alertOnError(context, () async {
         await agendaProvider.moveForward(
           currentAgendaItemId: currentAgendaItemId,

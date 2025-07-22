@@ -6,21 +6,7 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
-enum ActionButtonSendingIndicatorAlign {
-  left,
-  right,
-
-  /// Loading indicator is not shown.
-  none,
-  interior,
-}
-
 enum ActionButtonType { filled, outline, text }
-
-enum ActionButtonIconSide {
-  left,
-  right,
-}
 
 enum ActionButtonContentAlignment {
   start,
@@ -65,9 +51,7 @@ class ActionButton extends StatefulWidget {
   final String? eventName;
   final Map<String, dynamic>? eventParameters;
   final SubmitNotifier? controller;
-  final ActionButtonSendingIndicatorAlign sendingIndicatorAlign;
   final ActionButtonContentAlignment contentAlign;
-  final ActionButtonIconSide iconSide;
 
   final double? loadingHeight;
   final double? height;
@@ -101,9 +85,7 @@ class ActionButton extends StatefulWidget {
     this.eventName,
     this.eventParameters,
     this.controller,
-    this.sendingIndicatorAlign = ActionButtonSendingIndicatorAlign.left,
     this.contentAlign = ActionButtonContentAlignment.center,
-    this.iconSide = ActionButtonIconSide.left,
     this.loadingHeight,
     this.height,
     this.tooltipText,
@@ -116,7 +98,7 @@ class ActionButton extends StatefulWidget {
 }
 
 class _ActionButtonState extends State<ActionButton> {
-  bool _isSending = false;
+  bool _waiting = false;
 
   @override
   void initState() {
@@ -132,9 +114,9 @@ class _ActionButtonState extends State<ActionButton> {
   }
 
   Future<void> _runAction() async {
-    if (_isSending) return;
+    if (_waiting) return;
 
-    setState(() => _isSending = true);
+    setState(() => _waiting = true);
 
     // Errors should be handled in the passed in [onPressed].
     final onPressed = widget.onPressed;
@@ -142,7 +124,7 @@ class _ActionButtonState extends State<ActionButton> {
       await swallowErrors(onPressed);
     }
 
-    setState(() => _isSending = false);
+    setState(() => _waiting = false);
   }
 
   @override
@@ -155,9 +137,7 @@ class _ActionButtonState extends State<ActionButton> {
       return widget.icon as Widget;
     } else if (widget.icon is IconData) {
       return Padding(
-        padding: widget.iconSide == ActionButtonIconSide.left
-            ? const EdgeInsets.only(right: 6)
-            : const EdgeInsets.only(left: 6),
+        padding: const EdgeInsets.only(right: 6),
         child: Icon(
           widget.icon,
           size: 18,
@@ -169,10 +149,22 @@ class _ActionButtonState extends State<ActionButton> {
     throw Exception('Icon must be a Widget or IconData instance.');
   }
 
+  Widget _buildLoading() {
+    // If color is either black, or button is filled, ensure that indicator is on primary color
+    Color loadingColor =
+        (widget.type == ActionButtonType.filled || widget.color == context.theme.colorScheme.primary)
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.primary;
+    return SizedBox(
+      height: widget.loadingHeight ?? 24,
+      width: widget.loadingHeight ?? 24,
+      child: CustomLoadingIndicator(
+        color: loadingColor,
+      ),
+    );
+  }
+
   Widget _buildButtonContents() {
-    final showSendingIndicatorInterior = widget.sendingIndicatorAlign ==
-            ActionButtonSendingIndicatorAlign.interior &&
-        _isSending;
     final text = widget.text;
     final mainAxisAlignment =
         widget.contentAlign == ActionButtonContentAlignment.center
@@ -181,6 +173,9 @@ class _ActionButtonState extends State<ActionButton> {
                 ? MainAxisAlignment.start
                 : MainAxisAlignment.end;
     final child = widget.child;
+    final prefixPadding = widget.text != null
+        ? const EdgeInsets.only(right: 14)
+        : EdgeInsets.zero;
 
     return Padding(
       padding: widget.padding ?? EdgeInsets.zero,
@@ -188,18 +183,18 @@ class _ActionButtonState extends State<ActionButton> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: mainAxisAlignment,
         children: [
-          if (widget.iconSide == ActionButtonIconSide.left &&
-              widget.icon != null &&
-              !showSendingIndicatorInterior)
-            _buildIcon(),
-          if (showSendingIndicatorInterior) ...[
-            SizedBox(
-              height: 18,
-              width: 18,
-              child: CustomLoadingIndicator(),
+          // Show loading indicator only if waiting for action
+          if (_waiting)
+            Padding(
+              padding: prefixPadding,
+              child: _buildLoading(),
             ),
-            SizedBox(width: 10),
-          ],
+          if (!_waiting && widget.icon != null)
+            Padding(
+              padding: prefixPadding,
+              child: _buildIcon(),
+            ),
+
           if (text != null)
             ConstrainedBox(
               constraints: BoxConstraints(
@@ -209,13 +204,8 @@ class _ActionButtonState extends State<ActionButton> {
                 text,
                 maxLines: widget.maxLines,
               ),
-            )
-          else if (child != null)
-            child,
-          if (widget.iconSide == ActionButtonIconSide.right &&
-              widget.icon != null &&
-              !showSendingIndicatorInterior)
-            _buildIcon(),
+            ),
+          if (text == null && child != null) child,
         ],
       ),
     );
@@ -228,8 +218,7 @@ class _ActionButtonState extends State<ActionButton> {
         );
     final minimumSize = Size(widget.minWidth ?? 96, widget.height ?? 50);
 
-    final onPressed =
-        widget.onPressed != null && !_isSending ? _runAction : null;
+    final onPressed = widget.onPressed != null && !_waiting ? _runAction : null;
 
     final Widget button;
     switch (widget.type) {
@@ -237,7 +226,7 @@ class _ActionButtonState extends State<ActionButton> {
         button = FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
-            backgroundColor: widget.color ?? context.theme.colorScheme.primary,
+            backgroundColor: widget.color,
             textStyle: widget.textStyle,
             foregroundColor:
                 widget.textColor ?? context.theme.colorScheme.onPrimary,
@@ -307,38 +296,12 @@ class _ActionButtonState extends State<ActionButton> {
     );
   }
 
-  Widget _buildLoading() {
-    if (widget.loadingHeight == null) {
-      return CustomLoadingIndicator();
-    } else {
-      return SizedBox(
-        height: widget.loadingHeight,
-        width: widget.loadingHeight,
-        child: CustomLoadingIndicator(),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (widget.sendingIndicatorAlign ==
-                ActionButtonSendingIndicatorAlign.left &&
-            _isSending)
-          Padding(
-            padding: const EdgeInsets.only(right: 14),
-            child: _buildLoading(),
-          ),
         _buildTooltipWrappedButton(),
-        if (widget.sendingIndicatorAlign ==
-                ActionButtonSendingIndicatorAlign.right &&
-            _isSending)
-          Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: _buildLoading(),
-          ),
       ],
     );
   }

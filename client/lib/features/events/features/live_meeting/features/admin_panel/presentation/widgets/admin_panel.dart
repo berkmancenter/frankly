@@ -994,7 +994,6 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
           ActionButton(
             color: Colors.transparent,
             textColor: context.theme.colorScheme.onSurface,
-            sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
             onPressed: () => alertOnError(context, () async {
               final ReassignResult? newRoomAssignment =
                   await ReassignBreakoutRoomDialog(
