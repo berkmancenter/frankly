@@ -54,8 +54,6 @@ class MeetingRating extends StatefulWidget {
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
-                      sendingIndicatorAlign:
-                          ActionButtonSendingIndicatorAlign.none,
                       text: l10n.next,
                       color: AppColor.brightGreen,
                       textColor: AppColor.darkBlue,

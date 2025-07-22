@@ -268,8 +268,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
                           text: l10n.enterEvent,
                           onPressed: _startMeeting,
                           height: 65,
-                          sendingIndicatorAlign:
-                              ActionButtonSendingIndicatorAlign.none,
                         ),
                       ],
                     ),

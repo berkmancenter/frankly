@@ -188,7 +188,6 @@ class _ControlBarState extends State<ControlBar> {
         text: context.l10n.leave,
         color: context.theme.colorScheme.error,
         textColor: context.theme.colorScheme.onPrimary,
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       ),
     );
   }

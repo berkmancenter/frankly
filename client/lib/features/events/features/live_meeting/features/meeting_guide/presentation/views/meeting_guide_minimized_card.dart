@@ -109,7 +109,6 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
             child: ActionButton(
               tooltipText: context.l10n.showAgendaItem,
               type: ActionButtonType.filled,
-              sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
               minWidth: 40,
               onPressed: widget.onExpandCard,
               color: context.theme.colorScheme.surfaceContainerLowest,
@@ -148,7 +147,6 @@ class _ForwardButton extends HookWidget {
 
     return ActionButton(
       type: ActionButtonType.filled,
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       minWidth: 40,
       onPressed: () => alertOnError(context, () async {
         await agendaProvider.moveForward(

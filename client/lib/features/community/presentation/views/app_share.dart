@@ -141,7 +141,6 @@ class _AppShareDialogState extends State<AppShareDialog> {
 
   Widget _buildFinishButton() => ActionButton(
         onPressed: () => Navigator.of(context).pop(),
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         text: context.l10n.finish,
       );
 

@@ -704,7 +704,6 @@ class _AttributeOptionState extends State<AttributeOption> {
           Icons.edit,
         ),
       ),
-      iconSide: ActionButtonIconSide.right,
       padding: EdgeInsets.all(10),
       borderRadius: BorderRadius.circular(30),
     );

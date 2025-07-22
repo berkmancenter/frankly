@@ -278,7 +278,6 @@ class _ProfileTabState extends State<_ProfileTab> {
                     currentUserId: userService.currentUserId!,
                   ),
                 ),
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 text: context.l10n.preview,
                 expand: false,
               ),

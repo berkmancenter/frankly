@@ -378,7 +378,6 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         return ActionButton(
           text: context.l10n.editYourCommunity,
           icon: Icon(Icons.edit, size: 20),
-          iconSide: ActionButtonIconSide.right,
           textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
           borderSide: BorderSide(color: context.theme.colorScheme.primary),
@@ -392,7 +391,6 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         return ActionButton(
           text: context.l10n.newTemplate,
           icon: Icon(Icons.add, size: 20),
-          iconSide: ActionButtonIconSide.right,
           textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
           borderSide: BorderSide(color: context.theme.colorScheme.primary),
@@ -408,7 +406,6 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
         return ActionButton(
           text: context.l10n.newEvent,
           icon: Icon(Icons.add, size: 20),
-          iconSide: ActionButtonIconSide.right,
           textColor: context.theme.colorScheme.primary,
           type: ActionButtonType.outline,
           borderSide: BorderSide(color: context.theme.colorScheme.primary),
