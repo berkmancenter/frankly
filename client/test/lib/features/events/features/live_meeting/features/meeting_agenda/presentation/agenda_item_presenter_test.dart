@@ -1,5 +1,6 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_model.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_data.dart';
@@ -13,9 +14,15 @@ import 'package:data_models/events/event.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() async {
+    await GetIt.instance.reset();
+    TestHelpers.setupLocalizationForTests();
+  });
 
   final mockBuildContext = MockBuildContext();
   final mockView = MockAgendaItemView();

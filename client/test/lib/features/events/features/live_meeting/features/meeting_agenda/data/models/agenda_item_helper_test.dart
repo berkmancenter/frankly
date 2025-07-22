@@ -9,8 +9,10 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_word_cloud_data.dart';
 import 'package:data_models/events/event.dart';
 import 'package:mockito/mockito.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../../../../test_helpers.dart';
 
 void main() {
   final MockMeetingGuideCardStore mockMeetingGuideCardStore =
@@ -19,7 +21,9 @@ void main() {
 
   final AgendaItemHelper helper = AgendaItemHelper();
 
-  tearDown(() {
+  setUp(() async {
+    await GetIt.instance.reset();
+    TestHelpers.setupLocalizationForTests();
     reset(mockMeetingGuideCardStore);
     reset(mockAgendaProvider);
   });

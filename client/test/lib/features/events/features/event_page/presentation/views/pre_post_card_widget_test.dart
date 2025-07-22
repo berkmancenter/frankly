@@ -14,17 +14,29 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/services.dart';
+import 'package:data_models/cloud_functions/requests.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';
 import '../../../../../../../test_helpers.dart';
 
 void main() {
-  setUpAll(() {
+  setUpAll(() async {
+    await GetIt.instance.reset();
     TestHelpers.setupLocalizationForTests();
+    if (!GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
+      GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
+    }
   });
   
   tearDownAll(() async {
+    await GetIt.instance.reset();
     await TestHelpers.cleanupAfterTests();
+  });
+
+  tearDown(() async {
+    if (GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
+      GetIt.instance.unregister<CloudFunctionsCommunityService>();
+    }
   });
   final Event event = Event(
     id: 'eventId',
@@ -36,15 +48,6 @@ void main() {
   );
 
   late MockUserServiceNullable mockUserService;
-
-  setUpAll(() {
-    GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
-    GetIt.instance.registerSingleton(AppLocalizationService());
-  });
-
-  tearDownAll(() async {
-    await GetIt.instance.reset();
-  });
 
   Finder getDeleteCardIconFinder() {
     return find.byKey(Key('prePostCardWidgetPage-deleteCard'));
@@ -112,6 +115,17 @@ void main() {
   setUp(() {
     mockUserService = MockUserServiceNullable();
     when(mockUserService.currentUserId).thenReturn('userId');
+    
+    // Mock CloudFunctionsCommunityService to return userAdminDetails
+    final mockCloudFunctionsService = MockCloudFunctionsCommunityService();
+    when(mockCloudFunctionsService.getUserAdminDetails(any)).thenAnswer((_) async => 
+      GetUserAdminDetailsResponse(userAdminDetails: [UserAdminDetails(email: 'test@email.com')]),);
+    
+    // Register the mock service if not already registered
+    if (GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
+      GetIt.instance.unregister<CloudFunctionsCommunityService>();
+    }
+    GetIt.instance.registerSingleton<CloudFunctionsCommunityService>(mockCloudFunctionsService);
   });
 
   testWidgets('If editable is false, do not show edit menu nor edit icon',

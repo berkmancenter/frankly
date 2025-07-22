@@ -1,6 +1,7 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/edit_event/data/models/edit_event_model.dart';
 import 'package:client/features/events/features/edit_event/presentation/edit_event_presenter.dart';
 import 'package:client/core/utils/firestore_utils.dart';
@@ -9,9 +10,15 @@ import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() async {
+    await GetIt.instance.reset();
+    TestHelpers.setupLocalizationForTests();
+  });
 
   final mockContext = MockBuildContext();
   final mockView = MockEditEventView();

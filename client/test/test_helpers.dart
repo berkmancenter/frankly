@@ -76,6 +76,42 @@ class _MockAppLocalizations extends AppLocalizations {
   @override
   String get cancel => 'Cancel';
   
+  @override
+  String whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent(String type) => 'What message do you want to show participants before/after the event?';
+  
+  @override
+  String addActionLinksParticipantsShouldVisitBeforeAfterTheEvent(String type) => 'Add action links participants should visit before/after the event';
+  
+  // Event type titles
+  @override
+  String get hosted => 'Hosted';
+  
+  @override
+  String get hostless => 'Hostless';
+  
+  @override
+  String get livestream => 'Livestream';
+  
+  // Agenda item type titles
+  @override
+  String get question => 'Question';
+  
+  @override
+  String get wordCloud => 'Word Cloud';
+  
+  @override
+  String get suggestions => 'Suggestions';
+  
+  @override
+  String get video => 'Video';
+  
+  @override
+  String get image => 'Image';
+  
+  // For text agenda items - this might be a method that returns a default title
+  @override
+  String get textTitle => 'Text Title';
+  
   // Override the noSuchMethod to return empty string for any missing getters
   @override
   dynamic noSuchMethod(Invocation invocation) {

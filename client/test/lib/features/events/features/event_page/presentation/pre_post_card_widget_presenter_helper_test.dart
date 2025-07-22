@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:client/features/events/features/event_page/presentation/pre_post_card_widget_presenter.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:mockito/mockito.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
 
@@ -14,7 +15,8 @@ void main() {
   final PrePostCardWidgetPresenterHelper helper =
       PrePostCardWidgetPresenterHelper();
 
-  setUp(() {
+  setUp(() async {
+    await GetIt.instance.reset();
     when(mockUserService.currentUserId).thenReturn('userId');
   });
 
