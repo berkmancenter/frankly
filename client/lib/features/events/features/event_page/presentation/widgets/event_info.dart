@@ -76,7 +76,7 @@ class EventInfo extends StatefulHookWidget {
   final Event event;
   final void Function() onMessagePressed;
   final EventPagePresenter eventPagePresenter;
-  final Future<void> Function({
+  final Future<bool> Function({
     bool showConfirm,
     bool enterMeeting,
     bool joinCommunity,
@@ -382,7 +382,6 @@ class _EventInfoState extends State<EventInfo> {
 
   ActionButton _buildEnterEvent(DateTime scheduled) {
     const kEventOpenText = 'Enter Event';
-    bool shouldJoinMeeting = false;
     final now = clockService.now();
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
@@ -408,8 +407,18 @@ class _EventInfoState extends State<EventInfo> {
       type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () async =>
-          await widget.onJoinEvent(enterMeeting: shouldJoinMeeting),
+      onPressed: () async {
+        final successfullyJoined =
+            await widget.onJoinEvent(enterMeeting: isEventOpen);
+        if (!isEventOpen && !successfullyJoined) {
+          // If the event is not open yet, we expect user not to be able to join.
+          await showAlert(
+            context,
+            'The event has not started yet. We\'ll see you soon!',
+          );
+          return;
+        }
+      },
       text: text,
     );
   }
