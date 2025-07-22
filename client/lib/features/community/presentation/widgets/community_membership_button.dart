@@ -79,7 +79,6 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
                 color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: () => _requestCommunityMembership(),
               );
             } else if ([
@@ -91,7 +90,6 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
                 color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: null,
               );
             } else {
@@ -100,7 +98,6 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
                 color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 onPressed: () => alertOnError(
                   context,
                   () => userDataService.requestChangeCommunityMembership(
@@ -119,7 +116,6 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
         color: context.theme.colorScheme.primary,
         minWidth: widget.minWidth,
         height: widget.height,
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         onPressed: () => alertOnError(
           context,
           () => userDataService.requestChangeCommunityMembership(

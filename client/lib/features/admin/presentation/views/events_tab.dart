@@ -92,7 +92,6 @@ class _EventsTabState extends State<EventsTab> {
             html.Url.revokeObjectUrl(blobUrl);
           },
         ),
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
         text: context.l10n.dataDownload,
       );
     }

@@ -242,7 +242,6 @@ class _DonateWidgetState extends State<DonateWidget> {
 
     return ActionButton(
       text: enabled ? 'Donate \$$donationDisplay' : 'Donate',
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.interior,
       color: enabled
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.onPrimaryContainer,

@@ -376,7 +376,6 @@ class MembersTabState extends State<MembersTab> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                   onPressed: () => alertOnError(
                     context,
                     () => _resolveRequest(request: request, approve: true),
@@ -400,7 +399,6 @@ class MembersTabState extends State<MembersTab> {
                   ),
                   borderSide:
                       BorderSide(color: context.theme.colorScheme.error),
-                  sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                   onPressed: () => alertOnError(
                     context,
                     () => _resolveRequest(request: request, approve: false),
@@ -557,8 +555,6 @@ class MembersTabState extends State<MembersTab> {
 
   @override
   Widget build(BuildContext context) {
-    final requiresApproval =
-        context.read<CommunityProvider>().settings.requireApprovalToJoin;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

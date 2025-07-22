@@ -24,7 +24,6 @@ class RaisingHandToggle extends StatelessWidget {
       message: context.l10n.raiseHandToJoinSpeakerQueue,
       child: ActionButton(
         type: ActionButtonType.filled,
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
         minWidth: 0,
         height: 0,
         onPressed: () => firestoreMeetingGuideService.toggleHandRaise(

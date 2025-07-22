@@ -570,24 +570,14 @@ class _EventInfoState extends State<EventInfo> {
       onPressed: _cancelEvent,
       type: ActionButtonType.outline,
       color: context.theme.colorScheme.surfaceContainerLowest,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.close,
-            size: 20,
-            color: context.theme.colorScheme.onSurfaceVariant,
-          ),
-          SizedBox(width: 10),
-          Flexible(
-            child: HeightConstrainedText(
-              'Cancel event',
-              style: context.theme.textTheme.bodyMedium!.copyWith(
-                color: context.theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ),
-        ],
+      icon: Icon(
+        Icons.close,
+        size: 20,
+        color: context.theme.colorScheme.onSurfaceVariant,
+      ),
+      text: 'Cancel event',
+      textStyle: context.theme.textTheme.bodyMedium!.copyWith(
+        color: context.theme.colorScheme.onSurfaceVariant,
       ),
     );
   }
