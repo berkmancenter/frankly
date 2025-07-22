@@ -146,7 +146,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
     if (mounted) setState(() {});
   }
 
-  Future<void> _joinEvent({
+  /// Shows RSVP dialog and any CTAs.
+  /// Returns whether the user successfully joined.
+  Future<bool> _joinEvent({
     bool showConfirm = true,
     bool enterMeeting = false,
     bool joinCommunity = false,
@@ -167,11 +169,11 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
       if (!joinResults.isJoined) {
         // Don't join the meeting if joinEvent returns false.
-        return;
+        return false;
       }
 
       if (!enterMeeting) {
-        return;
+        return false;
       }
 
       // Check if the event is using an external platform.
@@ -183,10 +185,11 @@ class EventPageState extends State<EventPage> implements EventPageView {
       if (platformSelectionEnabled &&
           externalPlatform.platformKey != PlatformKey.community) {
         await launch(externalPlatform.url ?? '');
+        return true;
       }
 
+      if (!mounted) return false;
       // Not using an external platform. Enter the meeting normally.
-      if (!mounted) return;
       await alertOnError(
         context,
         () => eventPageProvider.enterMeeting(
@@ -208,7 +211,10 @@ class EventPageState extends State<EventPage> implements EventPageView {
           templateId: templateId,
         ),
       );
+      return true;
     });
+    // If user joined, should not reach this point.
+    return false;
   }
 
   Future<void> _showSendMessageDialog() async {
