@@ -54,6 +54,8 @@ import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
+const kMinutesBeforeEventToJoin = 15;
+
 enum _ParticipantStatus {
   needsParticipants,
   full,
@@ -390,8 +392,8 @@ class _EventInfoState extends State<EventInfo> {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
       text = 'Starts Tomorrow';
-    } else if (daysDifference == 0 && difference.inMinutes > 9) {
-      shouldJoinMeeting = true;
+    } else if (daysDifference == 0 &&
+        difference.inMinutes > kMinutesBeforeEventToJoin) {
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
       text = 'Event Ended';
@@ -426,9 +428,10 @@ class _EventInfoState extends State<EventInfo> {
 
     final showEnterEventButton = _isParticipant ||
         (showJoinButton &&
-            clockService
-                .now()
-                .isAfter(startTime.subtract(Duration(minutes: 15))));
+            clockService.now().isAfter(
+                  startTime
+                      .subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
+                ));
     if (showPrerequisiteWarning) {
       return WarningInfo(
         icon: CircleAvatar(

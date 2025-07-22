@@ -259,7 +259,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
   bool _isEnterEventGraphicShown(DateTime scheduled) {
     final now = clockService.now();
-    final beforeMeetingCutoff = scheduled.subtract(Duration(minutes: 10));
+    final beforeMeetingCutoff =
+        scheduled.subtract(Duration(minutes: kMinutesBeforeEventToJoin));
     final afterMeetingCutoff = scheduled.add(Duration(hours: 2));
 
     return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
