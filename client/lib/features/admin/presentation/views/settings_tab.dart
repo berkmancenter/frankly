@@ -335,7 +335,6 @@ class _SettingsTabState extends State<SettingsTab> {
             '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
         onPressed: () =>
             alertOnError(context, () => _stripeButtonPressed(agreement)),
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
       ),
     );
   }

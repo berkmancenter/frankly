@@ -106,91 +106,112 @@ class _EventsTabState extends State<EventsTab> {
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
 
-    return Flex(
-      direction: responsiveLayoutService.isMobile(context)
-          ? Axis.vertical
-          : Axis.horizontal,
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            ProxiedImage(
-              event.image,
-              width: 80,
-              height: 80,
-            ),
-            const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  event.title ?? 'NO TITLE',
-                  style: context.theme.textTheme.titleLarge,
-                ),
-                Text(
-                  '$time $timezone',
-                  style: context.theme.textTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ],
+        ProxiedImage(
+          event.image,
+          width: 80,
+          height: 80,
         ),
-        SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.group_outlined,
+        SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                event.title ?? 'NO TITLE',
+                style: context.theme.textTheme.titleLarge,
+              ),
+              Text(
+                '$time $timezone',
+                style: context.theme.textTheme.bodyMedium,
+              ),
+              SizedBox(height: 20,),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 100),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.group_outlined,
+                              ),
+                              Text(
+                                '${EventProvider.fromEvent(
+                                  event,
+                                  communityProvider:
+                                      CommunityProvider.read(context),
+                                ).eventParticipants.length} participants',
+                                style: context.theme.textTheme.labelLarge,
+                              ),
+                            ],
+                          ),
+                          // SizedBox(width: 48),
+                          Row(
+                            children: [
+                              Icon(
+                                event.isPublic == true
+                                    ? Icons.language_outlined
+                                    : Icons.lock_outline,
+                              ),
+                              Text(
+                                event.isPublic == true ? 'Public' : 'Private',
+                                style: context.theme.textTheme.labelLarge,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                event.isLiveStream
+                                    ? Icons.live_tv_outlined
+                                    : event.isHosted
+                                        ? Icons.waving_hand_outlined
+                                        : Icons.chair_outlined,
+                              ),
+                              Text(
+                                event.isLiveStream
+                                    ? 'Live'
+                                    : event.isHosted
+                                        ? 'Hosted'
+                                        : 'Hostless',
+                                style: context.theme.textTheme.labelLarge,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                     Expanded(
+                      child: SizedBox.shrink(),),
+                  ],
                 ),
-                Text(
-                  '${EventProvider.fromEvent(
-                    event,
-                    communityProvider: CommunityProvider.read(context),
-                  ).eventParticipants.length} participants',
-                  style: context.theme.textTheme.labelLarge,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(
-                  event.isPublic == true
-                      ? Icons.language_outlined
-                      : Icons.lock_outline,
-                ),
-              
-                Text(
-                  event.isPublic == true ? 'Public' : 'Private',
-                  style: context.theme.textTheme.labelLarge,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(
-                  event.isLiveStream ? Icons.live_tv_outlined : event.isHosted
-                      ? Icons.waving_hand_outlined
-                      : Icons.chair_outlined,
-                ),
-            Text(
-              event.isLiveStream
-                  ? 'Live'
-                  : event.isHosted
-                      ? 'Hosted'
-                      : 'Hostless',
-              style: context.theme.textTheme.labelLarge,
-            ),
-              ],
-            ),
-          ],
-        ),
-        _buildRowEntry(
-          width: 170,
-          child: _buildRecordingSection(event),
+              ),
+            ],
+          ),
         ),
       ],
     );
+
+    // Flex(
+    //   direction: responsiveLayoutService.isMobile(context)
+    //       ? Axis.vertical
+    //       : Axis.horizontal,
+    //   children: [
+    // SizedBox(height: 8),
+    // _buildRowEntry(
+    //   width: 170,
+    //   child: _buildRecordingSection(event),
+    //   ),
+    // ],
+    // );
   }
 
   Widget _buildEventsList({
