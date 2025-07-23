@@ -406,6 +406,7 @@
   "billing": "Billing",
   "finish": "Finish",
   "updateToPlan": "Update to {name} plan",
+  "registered": "Registered",
   "roleOwner": "Owner",
   "roleAdmin": "Admin",
   "roleModerator": "Moderator",
