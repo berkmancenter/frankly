@@ -184,7 +184,7 @@ class ConferenceRoom with ChangeNotifier {
       participants.firstWhereOrNull((p) => p.identity == screenSharerUserId);
 
   AgoraRoom? get room => _room;
-  final MediaDeviceService mediaDeviceService = MediaDeviceService();
+  MediaDeviceService? get mediaDeviceService => _room?.mediaDeviceService;
 
   String? get dominantSpeakerSid =>
       _debouncedDominantSpeakerStream?.value?.userId;
@@ -361,6 +361,21 @@ class ConferenceRoom with ChangeNotifier {
     }
   }
 
+  Future<void> selectAudioDevice({required String deviceId}) async {
+    await mediaDeviceService?.selectAudioDevice(deviceId: deviceId);
+    await _room?.localParticipant?.updateAudioDevice();
+  }
+
+  Future<void> selectVideoDevice({
+    required String deviceId,
+    Function? updateLocalPreview,
+  }) async {
+    await mediaDeviceService?.selectVideoDevice(deviceId: deviceId);
+    // Update local preview first if provided.
+    updateLocalPreview?.call();
+    await _room?.localParticipant?.updateVideoDevice();
+  }
+
   Future<void> toggleVideoEnabled({
     bool? setEnabled,
     bool updateProvider = true,
@@ -383,7 +398,6 @@ class ConferenceRoom with ChangeNotifier {
       () async {
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
-          deviceId: mediaDeviceService.selectedVideoInputId,
         );
         if (updateProvider) {
           liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
@@ -422,7 +436,6 @@ class ConferenceRoom with ChangeNotifier {
         final audioEnableFutures = [
           _room!.localParticipant!.enableAudio(
             setEnabled: updatedEnabledValue,
-            deviceId: mediaDeviceService.selectedAudioInputId,
           ),
           if ((liveMeetingProvider
                       .eventProvider.selfParticipant?.muteOverride ??
