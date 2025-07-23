@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
@@ -8,7 +9,9 @@ import 'package:client/core/utils/media_device_service.dart';
 /// This widget is only designed for web. When expanding to other platforms,
 /// this widget should be refactored to ensure compatibility.
 class MediaSettingsWidget extends StatefulWidget {
-  const MediaSettingsWidget({super.key});
+  const MediaSettingsWidget({super.key, required this.conferenceRoom});
+
+  final ConferenceRoom conferenceRoom;
 
   @override
   State<MediaSettingsWidget> createState() => _MediaSettingsWidgetState();
@@ -89,7 +92,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             onChanged: (val) async {
               if (val != null) {
                 setState(() {});
-                await _mediaService.selectAudioDevice(val);
+                await widget.conferenceRoom.selectAudioDevice(deviceId: val);
                 // No need to update preview for now as audio is not previewed.
               }
             },
@@ -115,8 +118,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             onChanged: (val) async {
               if (val != null) {
                 setState(() {});
-                await _mediaService.selectVideoDevice(val);
-                await updatePreview();
+                await widget.conferenceRoom.selectVideoDevice(
+                  deviceId: val,
+                  updateLocalPreview: () async {
+                    await updatePreview();
+                  },
+                );
               }
             },
             hint: const Text('Select video input'),
