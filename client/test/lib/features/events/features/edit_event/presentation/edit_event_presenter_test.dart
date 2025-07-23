@@ -8,6 +8,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
 import '../../../../../../test_helpers.dart';
@@ -108,13 +109,13 @@ void main() {
         final String result;
         switch (eventType) {
           case EventType.hosted:
-            result = 'Hosted';
+            result = GetIt.instance.get<AppLocalizationService>().getLocalization().hosted;
             break;
           case EventType.hostless:
-            result = 'Hostless';
+            result = GetIt.instance.get<AppLocalizationService>().getLocalization().hostless;
             break;
           case EventType.livestream:
-            result = 'Livestream';
+            result = GetIt.instance.get<AppLocalizationService>().getLocalization().livestream;
             break;
         }
 

@@ -22,7 +22,11 @@ import '../../../../../../../test_helpers.dart';
 void main() {
   setUpAll(() async {
     await GetIt.instance.reset();
-    TestHelpers.setupLocalizationForTests();
+    // Setup localization for tests using actual localization files
+    GetIt.instance.registerSingleton<AppLocalizationService>(AppLocalizationService());
+    final actualLocalizations = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance.get<AppLocalizationService>().setLocalization(actualLocalizations);
+    
     if (!GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
       GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
     }
@@ -272,21 +276,13 @@ void main() {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           locale: const Locale('en'),
-          home: Builder(
-            builder: (context) {
-              // Initialize the app localization service
-              final localizations = AppLocalizations.of(context)!;
-              appLocalizationService.setLocalization(localizations);
-              
-              return PrePostCardWidgetPage(
-                prePostCardType: PrePostCardType.preEvent,
-                event: event,
-                onUpdate: (_) {},
-                onDelete: () {},
-                isEditable: true,
-                prePostCardWidgetType: PrePostCardWidgetType.edit,
-              );
-            },
+          home: PrePostCardWidgetPage(
+            prePostCardType: PrePostCardType.preEvent,
+            event: event,
+            onUpdate: (_) {},
+            onDelete: () {},
+            isEditable: true,
+            prePostCardWidgetType: PrePostCardWidgetType.edit,
           ),
         ),
       ),

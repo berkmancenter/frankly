@@ -6,17 +6,20 @@ import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/services.dart';
-
-import '../../../test_helpers.dart';
+import 'package:get_it/get_it.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 
 void main() {
-  setUpAll(() {
-    // Setup localization for tests using shared helper
-    TestHelpers.setupLocalizationForTests();
+  setUpAll(() async {
+    // Setup localization for tests using actual localization files
+    GetIt.instance.registerSingleton<AppLocalizationService>(AppLocalizationService());
+    // Use the actual AppLocalizations implementation
+    final actualLocalizations = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance.get<AppLocalizationService>().setLocalization(actualLocalizations);
   });
   
   tearDownAll(() async {
-    await TestHelpers.cleanupAfterTests();
+    await GetIt.instance.reset();
   });
   group('DateTimeExtension', () {
     group('getFormattedTime', () {
@@ -391,19 +394,19 @@ void main() {
 
           switch (onboardingStep) {
             case OnboardingStep.brandSpace:
-              expectedResult = appLocalizationService.getLocalization().lookingGood;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().lookingGood;
               break;
             case OnboardingStep.createGuide:
-              expectedResult = appLocalizationService.getLocalization().lookingGood;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().lookingGood;
               break;
             case OnboardingStep.hostEvent:
-              expectedResult = appLocalizationService.getLocalization().getPeopleTalking;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().getPeopleTalking;
               break;
             case OnboardingStep.inviteSomeone:
-              expectedResult = appLocalizationService.getLocalization().getItOnTheBooks;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().getItOnTheBooks;
               break;
             case OnboardingStep.createStripeAccount:
-              expectedResult = appLocalizationService.getLocalization().startProcessingPayments;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().startProcessingPayments;
               break;
           }
 
@@ -424,19 +427,19 @@ void main() {
           final String expectedResult;
           switch (onboardingStep) {
             case OnboardingStep.brandSpace:
-              expectedResult = appLocalizationService.getLocalization().brandSpace;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().brandSpace;
               break;
             case OnboardingStep.createGuide:
-              expectedResult = appLocalizationService.getLocalization().createGuide;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().createGuide;
               break;
             case OnboardingStep.hostEvent:
-              expectedResult = appLocalizationService.getLocalization().hostEvent;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().hostEvent;
               break;
             case OnboardingStep.inviteSomeone:
-              expectedResult = appLocalizationService.getLocalization().inviteYourPeople;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().inviteYourPeople;
               break;
             case OnboardingStep.createStripeAccount:
-              expectedResult = appLocalizationService.getLocalization().linkYourStripeAccount;
+              expectedResult = GetIt.instance.get<AppLocalizationService>().getLocalization().linkYourStripeAccount;
               break;
           }
 

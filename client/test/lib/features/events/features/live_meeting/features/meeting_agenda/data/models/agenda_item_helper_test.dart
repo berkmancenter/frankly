@@ -10,6 +10,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:data_models/events/event.dart';
 import 'package:mockito/mockito.dart';
 import 'package:get_it/get_it.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 
 import '../../../../../../../../../mocked_classes.mocks.dart';
 import '../../../../../../../../../test_helpers.dart';
@@ -605,7 +606,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Title is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().titleIsRequired);
         });
 
         test('content', () {
@@ -616,7 +617,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Message is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().messageIsRequired);
         });
       });
     });
@@ -644,7 +645,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Title is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().titleIsRequired);
         });
 
         test('content', () {
@@ -656,7 +657,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Video URL is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().videoUrlIsRequired);
         });
       });
     });
@@ -682,7 +683,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Title is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().titleIsRequired);
         });
 
         test('url', () {
@@ -693,7 +694,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Image URL is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().imageUrlIsRequired);
         });
       });
     });
@@ -719,7 +720,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Question is required');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().questionIsRequired);
         });
 
         test('answers', () {
@@ -730,7 +731,7 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Please add some answers');
+          expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().answersIsRequired);
         });
       });
     });
@@ -755,7 +756,7 @@ void main() {
 
         final result = helper.areRequiredFieldsInput(model);
 
-        expect(result, 'Word Cloud prompt is required');
+                  expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().wordCloudPromptIsRequired);
       });
     });
   });

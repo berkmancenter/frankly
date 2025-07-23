@@ -1,23 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:mockito/mockito.dart';
+import 'package:get_it/get_it.dart';
+import 'package:client/core/localization/app_localization_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
-import '../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   
-  setUpAll(() {
-    TestHelpers.setupLocalizationForTests();
+  setUpAll(() async {
+    // Setup localization for tests using actual localization files
+    GetIt.instance.registerSingleton<AppLocalizationService>(AppLocalizationService());
+    final actualLocalizations = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance.get<AppLocalizationService>().setLocalization(actualLocalizations);
   });
   
   tearDownAll(() async {
-    await TestHelpers.cleanupAfterTests();
+    await GetIt.instance.reset();
   });
 
   final mockContext = MockBuildContext();
@@ -146,8 +152,8 @@ void main() {
 
     test('getTitle', () {
       final title = presenter.getTitle();
-      expect(title.isNotEmpty, isTrue);
-      // Title should contain localized text, not hardcoded English
+      final expectedTitle = GetIt.instance.get<AppLocalizationService>().getLocalization().eventSettings;
+      expect(title, expectedTitle);
     });
 
     test('getFloatingChatToggleValue', () {
@@ -233,8 +239,8 @@ void main() {
 
     test('getTitle', () {
       final title = presenter.getTitle();
-      expect(title.isNotEmpty, isTrue);
-      // Title should contain localized text, not hardcoded English
+      final expectedTitle = GetIt.instance.get<AppLocalizationService>().getLocalization().templateSettings;
+      expect(title, expectedTitle);
     });
   });
 }

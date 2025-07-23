@@ -9,7 +9,7 @@ import '../../../../test_helpers.dart';
 
 void main() {
   setUpAll(() {
-    TestHelpers.setupLocalizationForTests();
+    // No localization needed for this test
   });
   
   tearDownAll(() async {

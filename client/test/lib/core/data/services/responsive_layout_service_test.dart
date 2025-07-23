@@ -10,7 +10,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   
   setUpAll(() {
-    TestHelpers.setupLocalizationForTests();
+    // No localization needed for this test
   });
   
   tearDownAll(() async {
