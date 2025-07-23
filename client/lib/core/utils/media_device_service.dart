@@ -71,17 +71,21 @@ class MediaDeviceService {
     }
   }
 
-  Future<void> selectAudioDevice(String deviceId) async {
+  Future<void> selectAudioDevice({
+    required String deviceId,
+  }) async {
     selectedAudioInputId = deviceId;
+    await getUserMedia();
     await sharedPreferencesService
         .setDefaultMicrophoneId(selectedAudioInputId!);
-    await getUserMedia();
   }
 
-  Future<void> selectVideoDevice(String deviceId) async {
+  Future<void> selectVideoDevice({
+    required String deviceId,
+  }) async {
     selectedVideoInputId = deviceId;
-    await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
     await getUserMedia();
+    await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
   }
 
   void toggleMic(bool enabled) {
