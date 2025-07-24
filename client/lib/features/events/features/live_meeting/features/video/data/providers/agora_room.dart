@@ -401,11 +401,13 @@ class AgoraParticipant with ChangeNotifier {
 
   int? volume = 0;
 
-  bool audioTrackEnabled = true;
+  MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
+  bool audioTrackEnabled = true;
+  // This local preview is used for displaying user's video to self.
+  bool videoLocalPreviewStarted = false;
   bool videoTrackEnabled = true;
 
-  final MediaDeviceService mediaDeviceService = MediaDeviceService();
   html.MediaStreamTrack? get screenshareTrack => null;
 
   Future<void> enableAudio({required bool setEnabled, String? deviceId}) async {
