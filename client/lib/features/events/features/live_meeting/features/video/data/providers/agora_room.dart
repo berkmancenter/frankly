@@ -138,6 +138,16 @@ class AgoraRoom with ChangeNotifier {
         _state = AgoraRoomState.CONNECTED;
 
         unawaited(conferenceRoom.onConnected(this));
+
+        print('Joined with audio: $enableAudio and video: $enableVideo');
+
+        if (enableVideo) {
+          await conferenceRoom.toggleVideoEnabled(setEnabled: true);
+        }
+        if (enableAudio) {
+          await conferenceRoom.toggleAudioEnabled(setEnabled: true);
+        }
+
         conferenceRoom.onLocalParticipantChanges();
 
         notifyListeners();
@@ -150,14 +160,6 @@ class AgoraRoom with ChangeNotifier {
           smooth: 3,
           reportVad: true,
         );
-
-        print('Joined with audio: $enableAudio and video: $enableVideo');
-        if (enableVideo) {
-          await conferenceRoom.toggleVideoEnabled(setEnabled: true);
-        }
-        if (enableAudio) {
-          await conferenceRoom.toggleAudioEnabled(setEnabled: true);
-        }
       },
       onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
         print(
@@ -182,7 +184,9 @@ class AgoraRoom with ChangeNotifier {
         )
           ..videoTrackEnabled = !(_videoMutedState[rUid] ?? false)
           ..audioTrackEnabled = !(_audioMutedState[rUid] ?? false);
-
+        print(
+          'adding participant ${participant.userId} ${participant.videoTrackEnabled}',
+        );
         _remoteParticipants.add(participant);
 
         conferenceRoom.onParticipantConnected();
@@ -336,10 +340,6 @@ class AgoraRoom with ChangeNotifier {
 
     await engine.enableVideo();
     await engine.enableAudio();
-    await engine.muteAllRemoteAudioStreams(false);
-
-    await engine.enableLocalVideo(false);
-    await engine.enableLocalAudio(false);
 
     await engine.joinChannel(
       channelId: channelName,
@@ -351,6 +351,8 @@ class AgoraRoom with ChangeNotifier {
         autoSubscribeAudio: true,
         autoSubscribeVideo: true,
         enableAudioRecordingOrPlayout: true,
+        publishCameraTrack: enableVideo,
+        publishMicrophoneTrack: enableAudio,
       ),
     );
   }
@@ -359,6 +361,7 @@ class AgoraRoom with ChangeNotifier {
   dispose() {
     engine.unregisterEventHandler(_rtcEngineEventHandler);
     engine.leaveChannel();
+    engine.stopPreview();
     engine.enableLocalVideo(false);
     engine.enableLocalAudio(false);
     engine.release();
@@ -412,18 +415,26 @@ class AgoraParticipant with ChangeNotifier {
 
   html.MediaStreamTrack? get screenshareTrack => null;
 
-  Future<void> enableAudio({required bool setEnabled, String? deviceId}) async {
-    print('TODO: enable audio with deviceId: $deviceId');
-    print('setenabled: $setEnabled');
-    if (setEnabled) {
-      if (deviceId != null) {
-        try {
-          await _rtcEngine.getAudioDeviceManager().setRecordingDevice(deviceId);
-        } catch (e) {
-          print('Error setting device ID $deviceId');
-        }
-      }
+  Future<void> updateAudioDevice() async {
+    print(
+      'media device service selected device: ${mediaDeviceService.selectedAudioInputId}',
+    );
+    await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
+          mediaDeviceService.selectedAudioInputId ?? '',
+        );
+  }
 
+  Future<void> updateVideoDevice() async {
+    print(
+      'media device service selected device: ${mediaDeviceService.selectedVideoInputId}',
+    );
+    await _rtcEngine.getVideoDeviceManager().setDevice(
+          mediaDeviceService.selectedVideoInputId ?? '',
+        );
+  }
+
+  Future<void> enableAudio({required bool setEnabled}) async {
+    if (setEnabled) {
       await _rtcEngine.enableLocalAudio(true);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
@@ -441,16 +452,12 @@ class AgoraParticipant with ChangeNotifier {
     audioTrackEnabled = setEnabled;
   }
 
-  Future<void> enableVideo({required bool setEnabled, String? deviceId}) async {
+  Future<void> enableVideo({required bool setEnabled}) async {
     if (setEnabled) {
-      if (deviceId != null) {
-        try {
-          await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
-        } catch (e) {
-          print('Error setting device ID $deviceId');
-        }
+      if (!videoLocalPreviewStarted) {
+        videoLocalPreviewStarted = true;
+        await _rtcEngine.startPreview();
       }
-
       await _rtcEngine.enableLocalVideo(true);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
