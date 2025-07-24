@@ -6,6 +6,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/features/admin/utils/member_data.dart';
 import 'package:csv/csv.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -26,8 +27,7 @@ import 'package:data_models/community/membership.dart';
 import 'package:data_models/community/membership_request.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/iterables.dart';
-import 'package:universal_html/html.dart' as html;
-
+ 
 extension StringExtension on String {
   String capitalize() {
     if (isNullOrEmpty(this)) return this;
@@ -257,54 +257,6 @@ class MembersTabState extends State<MembersTab> {
         approve: approve,
       ),
     );
-  }
-
-  Future<void> _downloadMembersData(List<Membership> membershipList) async {
-    final membersList = membershipList.map((member) => member.userId).toList();
-    final communityId =
-        Provider.of<CommunityProvider>(context, listen: false).communityId;
-
-    if (membersList.isNotEmpty) {
-      await alertOnError(context, () async {
-        final members = await userService.getMemberDetails(
-          membersList: membersList,
-          communityId: communityId,
-        );
-        if (members.isNotEmpty) {
-          List<List<dynamic>> rows = [];
-
-          List<dynamic> firstRow = [];
-          firstRow.add('#');
-          firstRow.add('Name');
-          firstRow.add('Email');
-          firstRow.add('Member status');
-          rows.add(firstRow);
-
-          for (var member in members) {
-            final memberIndex = members.indexOf(member);
-            rows.add([
-              memberIndex + 1,
-              member.displayName ?? '',
-              member.email,
-              EnumToString.convertToString(member.membership?.status),
-            ]);
-          }
-
-          String csv = const ListToCsvConverter().convert(rows);
-
-          final base64String = utf8.fuse(base64);
-          final content = base64String.encode(csv);
-          final fileName = 'members-data-$communityId.csv';
-
-          html.AnchorElement(
-            href:
-                'data:application/octet-stream;charset=utf-16le;base64,$content',
-          )
-            ..setAttribute('download', fileName)
-            ..click();
-        }
-      });
-    }
   }
 
   Widget _buildRequestEntry(int index, MembershipRequest request) {
@@ -572,7 +524,8 @@ class MembersTabState extends State<MembersTab> {
                   text: context.l10n.downloadMembersData,
                   type: ActionButtonType.text,
                   icon: Icon(Icons.file_download_outlined),
-                  onPressed: () => _downloadMembersData(
+                  onPressed: () => MemberDataUtils.downloadMembersData(
+                    context,
                     membershipList ?? [],
                   ),
                 ),

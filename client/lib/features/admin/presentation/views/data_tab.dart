@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/features/admin/utils/member_data.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +32,7 @@ class DataTab extends StatefulWidget {
 
 class _DataTabState extends State<DataTab> {
   late BehaviorSubjectWrapper<List<Event>> _allEvents;
+  late UserService _userService;
   int _currentStartIndex = 0;
 
   @override
@@ -36,6 +42,7 @@ class _DataTabState extends State<DataTab> {
     _allEvents = firestoreEventService.communityEvents(
       communityId: CommunityProvider.read(context).communityId,
     );
+    _userService = UserService();
 
     _currentStartIndex = 0;
   }
@@ -46,17 +53,11 @@ class _DataTabState extends State<DataTab> {
     super.dispose();
   }
 
-  Widget _buildRecordingSection(Event event) {
-    if (!(event.eventSettings?.alwaysRecord ?? false)) {
-      return Text('');
-    } else {
-      return ActionButton(
-        type: ActionButtonType.text,
-        icon: Icon(Icons.file_download_outlined),
-        loadingHeight: 16,
-        borderSide: BorderSide(color: Theme.of(context).primaryColor),
-        textColor: Theme.of(context).primaryColor,
-        onPressed: () => alertOnError(
+  Widget _buildDowloadButton(Event event, bool eventInPast) {
+    pressedHandler() async {
+      // If the event is in the past, download the recording
+      if (eventInPast) {
+        await alertOnError(
           context,
           () async {
             final idToken =
@@ -74,9 +75,7 @@ class _DataTabState extends State<DataTab> {
             );
 
             final content = response.bodyBytes;
-
             final blob = html.Blob([content]);
-
             final blobUrl = html.Url.createObjectUrlFromBlob(blob);
 
             final anchor = html.AnchorElement(href: blobUrl)
@@ -85,27 +84,78 @@ class _DataTabState extends State<DataTab> {
 
             html.Url.revokeObjectUrl(blobUrl);
           },
-        ),
-        text: context.l10n.dataDownload,
+        );
+        return;
+      }
+
+      // If the event is not in the past, download the registration data
+      final communityProvider = CommunityProvider.read(context);
+      final participants = EventProvider.fromEvent(
+        event,
+        communityProvider: communityProvider,
+      ).eventParticipants;
+      final List<String> userIds = participants.map((p) => p.id).toList();
+      final members = await _userService.getMemberDetails(
+        membersList: userIds,
+        communityId: communityProvider.communityId,
+        eventPath: event.fullPath,
+      );
+
+      await EventProvider.fromEvent(
+        event,
+        communityProvider: communityProvider,
+      ).generateRegistrationDataCsvFile(
+        eventId: event.id,
+        registrationData: members,
       );
     }
+
+    // If the event is in the past and not set to always record, or in future and there are no registrants, do not show the download button
+    if (eventInPast && !(event.eventSettings?.alwaysRecord ?? false) ||
+        (!eventInPast &&
+            EventProvider.fromEvent(
+              event,
+              communityProvider: CommunityProvider.read(context),
+            ).eventParticipants.isEmpty)) {
+      return Text('');
+    }
+
+    return ActionButton(
+      type: ActionButtonType.text,
+      icon: Icon(Icons.file_download_outlined),
+      loadingHeight: 16,
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () => pressedHandler(),
+      text: eventInPast ? context.l10n.dataDownload : context.l10n.registrationDataDownload,
+    );
   }
 
-  Widget _buildEventRow({
+  Future<Widget> _buildEventRow ({
     required int index,
     required Event event,
     required bool isMobile,
-  }) {
+  }) async {
     final timeFormat = DateFormat('MMM d yyyy, h:mma');
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
+    final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
+
+
+    final communityProvider = CommunityProvider.read(context);
+      final participants = EventProvider.fromEvent(
+        event,
+        communityProvider: communityProvider,
+      ).eventParticipants;
+      final List<String> userIds = participants.map((p) => p.id).toList();
+      final members = await _userService.getMemberDetails(
+        membersList: userIds,
+        communityId: communityProvider.communityId,
+        eventPath: event.fullPath,
+      );
 
     // Determine to show participants or those registered based on the event time
-    final participantsLabel = '${EventProvider.fromEvent(
-      event,
-      communityProvider: CommunityProvider.read(context),
-    ).eventParticipants.length} ${event.scheduledTime!.isBefore(DateTime.now()) ? context.l10n.participants : context.l10n.registered}';
-
+    final participantsLabel = '${members.length} ${eventInPast ? context.l10n.participants : context.l10n.registered}';
     // This widget builds a row for each event, displaying its details;
     // it is used in differerent parts of the layout depending on the device type.
     // It includes the event's participants, public/private status, and type.
@@ -166,63 +216,77 @@ class _DataTabState extends State<DataTab> {
         SizedBox(
           height: 10,
         ),
-        Flex(
-          direction: isMobile ? Axis.vertical : Axis.horizontal,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                ProxiedImage(
-                  event.image,
-                  width: 80,
-                  height: 80,
-                ),
-                SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      event.title ?? 'NO TITLE',
-                      style: context.theme.textTheme.titleLarge,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      '$time $timezone',
-                      style: context.theme.textTheme.bodyMedium,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    if (!isMobile) ...[
-                      ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxHeight: 100, maxWidth: 400),
-                        child: Expanded(child: detailsWidget),
+        InkWell(
+          onTap: () {
+            routerDelegate.beamTo(
+              CommunityPageRoutes(
+                communityDisplayId:
+                    CommunityProvider.readOrNull(context)?.displayId ??
+                        event.communityId,
+              ).eventPage(
+                templateId: event.templateId,
+                eventId: event.id,
+              ),
+            );
+          },
+          child: Flex(
+            direction: isMobile ? Axis.vertical : Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  ProxiedImage(
+                    event.image,
+                    width: 80,
+                    height: 80,
+                  ),
+                  SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        event.title ?? 'NO TITLE',
+                        style: context.theme.textTheme.titleLarge,
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '$time $timezone',
+                        style: context.theme.textTheme.bodyMedium,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      if (!isMobile) ...[
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxHeight: 100, maxWidth: 400),
+                          child: Expanded(child: detailsWidget),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
+                ],
+              ),
+              if (isMobile) ...[
+                SizedBox(
+                  height: 10,
                 ),
+                detailsWidget,
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: _buildDowloadButton(event, eventInPast),
+                ),
+              ] else ...[
+                _buildDowloadButton(event, eventInPast),
               ],
-            ),
-            if (isMobile) ...[
-              SizedBox(
-                height: 10,
-              ),
-              detailsWidget,
-              SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: _buildRecordingSection(event),
-              ),
-            ] else ...[
-              _buildRecordingSection(event),
             ],
-          ],
+          ),
         ),
         Divider(),
       ],
@@ -260,10 +324,19 @@ class _DataTabState extends State<DataTab> {
                         for (int i = _currentStartIndex;
                             i < _currentStartIndex + 5 && i < events.length;
                             i++)
-                          _buildEventRow(
-                            index: i,
-                            event: events[i],
-                            isMobile: isMobile,
+                          FutureBuilder<Widget>(
+                            future: _buildEventRow(
+                              index: i,
+                              event: events[i],
+                              isMobile: isMobile,
+                            ),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return snapshot.data!;
+                              } else {
+                                return Center(child: CircularProgressIndicator());
+                              }
+                            },
                           ),
                       ],
                     ),

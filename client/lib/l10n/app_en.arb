@@ -407,6 +407,7 @@
   "finish": "Finish",
   "updateToPlan": "Update to {name} plan",
   "registered": "Registered",
+  "registrationDataDownload": "Registration Data Download",
   "roleOwner": "Owner",
   "roleAdmin": "Admin",
   "roleModerator": "Moderator",
