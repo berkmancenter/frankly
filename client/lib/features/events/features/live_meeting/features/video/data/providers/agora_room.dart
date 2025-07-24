@@ -40,9 +40,6 @@ class AgoraRoom with ChangeNotifier {
     required this.conferenceRoom,
   });
 
-  bool connectedWithAudioEnabled = false;
-  bool connectedWithVideoEnabled = false;
-
   AgoraRoomState _state = AgoraRoomState.CONNECTING;
   AgoraRoomState get state => _state;
 
