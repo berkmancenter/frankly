@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
@@ -20,12 +18,14 @@ import 'package:client/core/utils/platform_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:universal_html/html.dart' as html;
 
-class EventsTab extends StatefulWidget {
+class DataTab extends StatefulWidget {
+  const DataTab({Key? key}) : super(key: key);
+
   @override
-  _EventsTabState createState() => _EventsTabState();
+  State<DataTab> createState() => _DataTabState();
 }
 
-class _EventsTabState extends State<EventsTab> {
+class _DataTabState extends State<DataTab> {
   late BehaviorSubjectWrapper<List<Event>> _allEvents;
   int _currentStartIndex = 0;
 
@@ -243,15 +243,6 @@ class _EventsTabState extends State<EventsTab> {
           );
         }
 
-/*         var fakeEvents = List.generate(
-          80,
-          (i) => events[0].copyWith(
-            title: 'Fake Event ${i + 1}',
-            scheduledTime: clockService.now().add(Duration(days: i)),
-            image: 'https://picsum.photos/200/300?random=$i',
-          ),
-        );
- */
         return Column(
           children: [
             SizedBox(

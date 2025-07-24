@@ -5,8 +5,7 @@ import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/admin/presentation/views/billing_tab.dart';
-import 'package:client/features/admin/presentation/views/events_tab.dart';
+import 'package:client/features/admin/presentation/views/data_tab.dart';
 import 'package:client/features/admin/presentation/views/members_tab.dart';
 import 'package:client/features/admin/presentation/views/overview_tab.dart';
 import 'package:client/features/admin/presentation/views/settings_tab.dart';
@@ -16,7 +15,6 @@ import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/js.dart';
 
 class CommunityAdmin extends StatefulWidget {
   final String? tab;
@@ -109,7 +107,7 @@ class _CommunityAdminState extends State<CommunityAdmin>
                     tabs: [
                       Tab(
                         child:
-                            _buildTab(context, 'Overview', Icons.edit, mobile),
+                            _buildTab(context, 'Profile', Icons.edit, mobile),
                       ),
                       Tab(
                         child: _buildTab(context, 'Members',
@@ -130,8 +128,8 @@ class _CommunityAdminState extends State<CommunityAdmin>
                   children: [
                     OverviewTab(),
                     MembersTab(),
+                    DataTab(),
                     SettingsTab(),
-                    AdminBillingTab(),
                   ],
               ),
             ),
