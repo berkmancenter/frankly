@@ -55,6 +55,8 @@ class AgoraRoom with ChangeNotifier {
   final Map<int, bool> _audioMutedState = {};
   final Map<int, bool> _videoMutedState = {};
 
+  final MediaDeviceService mediaDeviceService = MediaDeviceService();
+
   final _dominantSpeakerStream = BehaviorSubject<AgoraParticipant?>();
   BehaviorSubject<AgoraParticipant?> get dominantSpeakerStream =>
       _dominantSpeakerStream;
@@ -99,7 +101,6 @@ class AgoraRoom with ChangeNotifier {
     }
   }
 
-  final MediaDeviceService mediaDeviceService = MediaDeviceService();
   Future<void> connect({
     bool enableAudio = true,
     bool enableVideo = true,
@@ -111,6 +112,7 @@ class AgoraRoom with ChangeNotifier {
         appId: '76cd63ec061d4192ac03ff8cdde51395',
       ),
     );
+    await mediaDeviceService.init();
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
