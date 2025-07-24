@@ -57,7 +57,7 @@ class MediaDeviceService {
           await sharedPreferencesService
               .setDefaultMicrophoneId(selectedAudioInputId!);
         }
-        if (selectedAudioInputId != null) {
+        if (selectedVideoInputId != null) {
           await sharedPreferencesService
               .setDefaultCameraId(selectedVideoInputId!);
         }
