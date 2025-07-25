@@ -100,7 +100,7 @@ class ThemeUtils {
       context.theme.colorScheme.surface,
     );
     final lightColorIsLightEnough = isContrastRatioValid(
-        context, lightColor, context.theme.colorScheme.secondary);
+        context, lightColor, context.theme.colorScheme.primary,);
 
     return validRatio &&
         lightDarkCorrect &&
