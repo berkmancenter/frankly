@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
@@ -67,7 +67,7 @@ class ThemePreview extends StatelessWidget {
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: context.theme.colorScheme.primary, width: 1.5),
+                    color: context.theme.colorScheme.primary, width: 1.5,),
               )
             : null,
         child: Container(
