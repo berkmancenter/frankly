@@ -33,11 +33,21 @@ class MediaDeviceService {
         if (devices != null) {
           audioInputs = devices
               .whereType<html.MediaDeviceInfo>()
-              .where((d) => d.kind == 'audioinput')
+              .where(
+                (d) =>
+                    d.kind == 'audioinput' &&
+                    d.label != null &&
+                    d.label!.isNotEmpty,
+              )
               .toList();
           videoInputs = devices
               .whereType<html.MediaDeviceInfo>()
-              .where((d) => d.kind == 'videoinput')
+              .where(
+                (d) =>
+                    d.kind == 'videoinput' &&
+                    d.label != null &&
+                    d.label!.isNotEmpty,
+              )
               .toList();
         }
 
