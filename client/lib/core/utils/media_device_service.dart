@@ -117,27 +117,37 @@ class MediaDeviceService {
 
       final dynamic audioConstraint;
       if (micEnabled) {
-        await Permission.microphone.request();
-        // If a specific audio input was selected, pass it into 'exact'.
-        audioConstraint =
-            selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
-                ? {
-                    'deviceId': {'exact': selectedAudioInputId},
-                  }
-                : true; // Default
+        {
+          final micPermissions = await Permission.microphone.request();
+          if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
+            audioConstraint = false;
+          } else {
+            // If a specific audio input was selected, pass it into 'exact'.
+            audioConstraint =
+                selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
+                    ? {
+                        'deviceId': {'exact': selectedAudioInputId},
+                      }
+                    : true;
+          }
+        }
       } else {
         audioConstraint = false;
       }
 
       final dynamic videoConstraint;
       if (camEnabled) {
-        await Permission.camera.request();
-        videoConstraint =
-            selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
-                ? {
-                    'deviceId': {'exact': selectedVideoInputId},
-                  }
-                : true; // Default
+        final camPermissions = await Permission.camera.request();
+        if (camPermissions.isDenied || camPermissions.isPermanentlyDenied) {
+          videoConstraint = false;
+        } else {
+          videoConstraint =
+              selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
+                  ? {
+                      'deviceId': {'exact': selectedVideoInputId},
+                    }
+                  : true;
+        }
       } else {
         videoConstraint = false;
       }
