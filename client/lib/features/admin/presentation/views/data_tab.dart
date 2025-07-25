@@ -8,6 +8,7 @@ import 'package:client/features/admin/utils/member_data.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
+import 'package:data_models/events/event_message.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -53,7 +54,11 @@ class _DataTabState extends State<DataTab> {
     super.dispose();
   }
 
-  Widget _buildDowloadButton(Event event, bool eventInPast) {
+  Widget _buildDowloadButton(
+    Event event,
+    Iterable<Participant> participants,
+    bool eventInPast,
+  ) {
     pressedHandler() async {
       // If the event is in the past, download the recording
       if (eventInPast) {
@@ -90,10 +95,7 @@ class _DataTabState extends State<DataTab> {
 
       // If the event is not in the past, download the registration data
       final communityProvider = CommunityProvider.read(context);
-      final participants = EventProvider.fromEvent(
-        event,
-        communityProvider: communityProvider,
-      ).eventParticipants;
+
       final List<String> userIds = participants.map((p) => p.id).toList();
       final members = await _userService.getMemberDetails(
         membersList: userIds,
@@ -101,10 +103,13 @@ class _DataTabState extends State<DataTab> {
         eventPath: event.fullPath,
       );
 
-      await EventProvider.fromEvent(
+      EventProvider provider = EventProvider.fromEvent(
         event,
         communityProvider: communityProvider,
-      ).generateRegistrationDataCsvFile(
+      );
+
+      provider.initialize();
+      await provider.generateRegistrationDataCsvFile(
         eventId: event.id,
         registrationData: members,
       );
@@ -112,11 +117,7 @@ class _DataTabState extends State<DataTab> {
 
     // If the event is in the past and not set to always record, or in future and there are no registrants, do not show the download button
     if (eventInPast && !(event.eventSettings?.alwaysRecord ?? false) ||
-        (!eventInPast &&
-            EventProvider.fromEvent(
-              event,
-              communityProvider: CommunityProvider.read(context),
-            ).eventParticipants.isEmpty)) {
+        (!eventInPast && participants.isEmpty)) {
       return Text('');
     }
 
@@ -127,11 +128,26 @@ class _DataTabState extends State<DataTab> {
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
       onPressed: () => pressedHandler(),
-      text: eventInPast ? context.l10n.dataDownload : context.l10n.registrationDataDownload,
+      text: eventInPast
+          ? context.l10n.dataDownload
+          : context.l10n.registrationDataDownload,
     );
   }
 
-  Future<Widget> _buildEventRow ({
+  Future<Iterable<Participant>> _getEventParticipants(Event event) async {
+    final participantsWrapper = firestoreEventService.eventParticipantsStream(
+      communityId: event.communityId,
+      templateId: event.templateId,
+      eventId: event.id,
+    );
+    final participants = await participantsWrapper.stream
+        .map((s) => s.where((p) => p.status == ParticipantStatus.active))
+        .first;
+    await participantsWrapper.dispose();
+    return participants;
+  }
+
+  Future<Widget> _buildEventRow({
     required int index,
     required Event event,
     required bool isMobile,
@@ -140,22 +156,13 @@ class _DataTabState extends State<DataTab> {
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
+    final participants = await _getEventParticipants(event);
 
-
-    final communityProvider = CommunityProvider.read(context);
-      final participants = EventProvider.fromEvent(
-        event,
-        communityProvider: communityProvider,
-      ).eventParticipants;
-      final List<String> userIds = participants.map((p) => p.id).toList();
-      final members = await _userService.getMemberDetails(
-        membersList: userIds,
-        communityId: communityProvider.communityId,
-        eventPath: event.fullPath,
-      );
+    if (!context.mounted) return SizedBox.shrink();
 
     // Determine to show participants or those registered based on the event time
-    final participantsLabel = '${members.length} ${eventInPast ? context.l10n.participants : context.l10n.registered}';
+    final participantsLabel =
+        '${participants.length} ${eventInPast ? (participants.length == 1 ? context.l10n.participant : context.l10n.participants) : context.l10n.registered}';
     // This widget builds a row for each event, displaying its details;
     // it is used in differerent parts of the layout depending on the device type.
     // It includes the event's participants, public/private status, and type.
@@ -264,7 +271,7 @@ class _DataTabState extends State<DataTab> {
                         ConstrainedBox(
                           constraints:
                               BoxConstraints(maxHeight: 100, maxWidth: 400),
-                          child: Expanded(child: detailsWidget),
+                          child: detailsWidget,
                         ),
                       ],
                     ],
@@ -280,10 +287,10 @@ class _DataTabState extends State<DataTab> {
                   height: 10,
                 ),
                 Center(
-                  child: _buildDowloadButton(event, eventInPast),
+                  child: _buildDowloadButton(event, participants, eventInPast),
                 ),
               ] else ...[
-                _buildDowloadButton(event, eventInPast),
+                _buildDowloadButton(event, participants, eventInPast),
               ],
             ],
           ),
@@ -333,9 +340,21 @@ class _DataTabState extends State<DataTab> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return snapshot.data!;
-                              } else {
-                                return Center(child: CircularProgressIndicator());
                               }
+                              if (snapshot.hasError) {
+                                return Text(
+                                  context.l10n.errorOccurred,
+                                  style: context.theme.textTheme.bodyLarge,
+                                );
+                              }
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: const [
+                                  CircularProgressIndicator(),
+                                ],
+                              );
                             },
                           ),
                       ],
@@ -391,6 +410,13 @@ class _DataTabState extends State<DataTab> {
           ],
         );
       },
+      errorBuilder: (context) => SizedBox(
+        height: 100,
+        child: Text(
+          context.l10n.errorLoadingEvents,
+          style: context.theme.textTheme.bodyLarge,
+        ),
+      ),
     );
   }
 }

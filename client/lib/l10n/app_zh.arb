@@ -257,6 +257,7 @@
   "errorLoadingEmail": "加载电子邮件时出错。",
   "errorLoadingMemberships": "加载会员资格时出错。请刷新。",
   "errorLoadingProfileInfo": "加载个人资料时出错。",
+  "errorLoadingEvents": "加载事件时出错。请刷新。",
   "errorOccurred": "发生错误",
   "somethingWentWrong": "出了点问题",
   "eventDescription": "活动描述",
@@ -417,6 +418,7 @@
     }
   },
   "participantReassigned": "参与者已重新分配",
+  "participant": "参与者",
   "participants": "参与者",
   "participantsLoadError": "加载参与者时出现问题。请刷新。",
   "password": "密码",

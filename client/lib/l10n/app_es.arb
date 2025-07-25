@@ -228,6 +228,7 @@
   "errorLoadingEmail": "Error al cargar el Email.",
   "errorLoadingMemberships": "Algo salió mal al cargar las membresías. Por favor, actualice.",
   "errorLoadingProfileInfo": "Hubo un error al cargar la información del perfil.",
+  "errorLoadingEvents": "Algo salió mal al cargar los eventos. Por favor, actualice.",
   "errorOccurred": "Se produjo un error",
   "somethingWentWrong": "Algo salió mal",
   "eventDescription": "Descripción del evento",
@@ -359,6 +360,7 @@
     }
   },
   "participantReassigned": "Participante reasignado",
+  "participant": "Participante",
   "participants": "Participantes",
   "participantsLoadError": "Algo salió mal al cargar los participantes. Por favor, actualice.",
   "password": "Contraseña",

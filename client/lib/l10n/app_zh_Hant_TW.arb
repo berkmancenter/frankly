@@ -141,6 +141,7 @@
   "errorLoadingEmail": "加載電子郵件時出錯。",
   "errorLoadingMemberships": "載入會員資格時出錯。請重新整理。",
   "errorLoadingProfileInfo": "載入個人資料時發生錯誤。",
+  "errorLoadingEvents": "載入事件時出錯。請重新整理。",
   "errorOccurred": "發生錯誤",
   "somethingWentWrong": "出了些問題",
   "eventDescription": "活動描述",
@@ -249,6 +250,7 @@
     }
   },
   "participantReassigned": "參與者已重新分配",
+  "participant": "參與者",
   "participants": "參與者",
   "participantsLoadError": "載入參與者時出現問題。請刷新。",
   "password": "密碼",

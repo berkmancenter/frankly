@@ -147,6 +147,7 @@
   "errorLoadingEmail": "Error loading email.",
   "errorLoadingMemberships": "Something went wrong loading memberships. Please refresh.",
   "errorLoadingProfileInfo": "There was an error loading profile info.",
+  "errorLoadingEvents": "Something went wrong loading events. Please refresh.",
   "errorOccurred": "An error occurred",
   "somethingWentWrong": "Something went wrong",
   "eventDescription": "Event Description",
@@ -252,6 +253,7 @@
     }
   },
   "participantReassigned": "Participant Reassigned",
+  "participant": "Participant",
   "participants": "Participants",
   "participantsLoadError": "Something went wrong loading participants. Please refresh.",
   "password": "Password",
