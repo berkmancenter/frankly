@@ -34,6 +34,7 @@
   "appTitleUnsubscribe": "{appName} - Unsubscribe",
   "appTitleUserSettings": "{appName} - User Settings",
   "appTitleWelcome": "{appName} - Welcome",
+  "areYouSure": "Are you sure?",
   "areYouSureYouWantToDeleteMedia": "Are you sure you want to delete media?",
   "areYouSureYouWantToRefreshTheGuide": "Are you sure you want to refresh the guide?",
   "aspectRatioClipped": "Aspect ratio clipped",
@@ -84,7 +85,7 @@
   "confirmDelete": "Are you sure you want to delete?",
   "confirmDeleteMedia": "Are you sure you want to delete media?",
   "confirmRefreshGuide": "Are you sure you want to refresh the guide?",
-  "confirmRemoveUser": "Are you sure you want to remove {userName} from {communityName}?",
+  "confirmMakeOwner": "Are you sure you want to make {userName} an owner of {communityName}? This will give them all possible permissions in this community, including the ability to delete it.",
   "contactEmail": "Contact email",
   "contrastRatioMustBeGreaterThan4_5": "Contrast ratio must be greater than 4.5",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
@@ -490,7 +491,7 @@
       "appName": {}
     }
   },
-  "@confirmRemoveUser": {
+  "@confirmMakeOwner": {
     "placeholders": {
       "userName": {
         "type": "String"

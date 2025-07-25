@@ -104,6 +104,7 @@
       }
     }
   },
+  "areYouSure": "¿Estás seguro?",
   "areYouSureYouWantToDeleteMedia": "¿Estás seguro de que quieres eliminar este medio?",
   "areYouSureYouWantToRefreshTheGuide": "¿Estás seguro de que quieres actualizar la guía?",
   "aspectRatioClipped": "Relación de aspecto recortada",
@@ -168,7 +169,7 @@
   "confirmDelete": "¿Está seguro de que desea eliminar?",
   "confirmDeleteMedia": "¿Estás seguro de que quieres eliminar el medio?",
   "confirmRefreshGuide": "¿Estás seguro de que quieres actualizar la guía?",
-  "confirmRemoveUser": "¿Estás seguro de que quieres eliminar a {userName} de {communityName}?",
+  "confirmMakeOwner": "¿Está seguro de que desea convertir a {userName} en propietario de {communityName}? Esto le dará todos los permisos posibles en esta comunidad, incluida la capacidad de eliminarla.",
   "contactEmail": "Correo de contacto",
   "contrastRatioMustBeGreaterThan4_5": "El ratio de contraste debe ser mayor que 4.5",
   "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
@@ -662,7 +663,7 @@
       }
     }
   },
-  "@confirmRemoveUser": {
+  "@confirmMakeOwner": {
     "placeholders": {
       "userName": {
         "type": "String"

@@ -104,6 +104,7 @@
       }
     }
   },
+  "areYouSure": "您确定吗？",
   "areYouSureYouWantToDeleteMedia": "您确定要删除媒体吗？",
   "areYouSureYouWantToRefreshTheGuide": "您确定要刷新指南吗？",
   "aspectRatioClipped": "纵横比裁剪",
@@ -169,7 +170,7 @@
   "confirmDelete": "确定要删除吗？",
   "confirmDeleteMedia": "您确定要删除媒体吗？",
   "confirmRefreshGuide": "您确定要刷新指南吗？",
-  "confirmRemoveUser": "您确定要将 {userName} 从 {communityName} 中移除吗？", 
+  "confirmMakeOwner": "您确定要将 {userName} 变更为 {communityName} 的拥有者吗？这将赋予他们在此社区中的所有可能权限，包括删除社区的能力。",
   "contactEmail": "联系邮箱",
   "contrastRatioMustBeGreaterThan4_5": "对比度比率必须大于4.5",
   "createAPost": "创建一篇文章",
@@ -773,7 +774,7 @@
       }
     }
   },
-  "@confirmRemoveUser": {
+  "@confirmMakeOwner": {
     "placeholders": {
       "userName": {
         "type": "String"

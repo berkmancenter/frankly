@@ -350,6 +350,8 @@ class MembersTabState extends State<MembersTab> {
             entryFrom: '_MembersTabState._build',
             errorMessage: context.l10n.errorLoadingMemberships,
             builder: (context, membershipList) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
               children: [
                 _buildSearchBar(membershipList ?? []),
                 if (!isMobile)
@@ -452,14 +454,14 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   bool get _disableOverride =>
       widget.membership.status == MembershipStatus.owner;
 
-  Future<bool> confirmRemoveDialog(String communityName) async {
+  Future<bool> confirmOwnerDialog(String communityName) async {
     return await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Are you sure?'),
+          title: Text(context.l10n.areYouSure),
           content: Text(
-            context.l10n.confirmRemoveUser(
+            context.l10n.confirmMakeOwner(
               UserInfoProvider.forUser(widget.membership.userId)
                       .info
                       ?.displayName ??
@@ -489,13 +491,13 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   Future<void> _updateMembership(MembershipStatus? newStatus) async {
     CommunityProvider communityProvider =
         Provider.of<CommunityProvider>(context, listen: false);
-    // TODO: Use for owner role?
-    // if (newStatus == MembershipStatus.nonmember) {
-    //   final delete = await confirmRemoveDialog(
-    //     communityProvider.community.name ?? 'Community',
-    //   );
-    //   if (!delete) return;
-    // }
+    // Warn user if they are changing to owner
+    if (newStatus == MembershipStatus.owner) {
+      final confirm = await confirmOwnerDialog(
+        communityProvider.community.name ?? 'Community',
+      );
+      if (!confirm) return;
+    }
     setState(() => _isLoading = true);
     await alertOnError(
       context,
@@ -538,6 +540,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
             )
             .toList(),
         items: MembershipStatus.values
+        // Exclude nonmember, attendee, and banned statuses
             .where(
               (value) =>
                   value.name != 'nonmember' &&

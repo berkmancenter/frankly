@@ -107,11 +107,11 @@ class _CommunityAdminState extends State<CommunityAdmin>
                     tabs: [
                       Tab(
                         child:
-                            _buildTab(context, 'Profile', Icons.edit, mobile),
+                            _buildTab(context, 'Profile', Icons.edit_square, mobile),
                       ),
                       Tab(
                         child: _buildTab(context, 'Members',
-                            Icons.groups_3_outlined, mobile,),
+                            Icons.group_outlined, mobile,),
                       ),
                       Tab(
                         child: _buildTab(context, 'Data',

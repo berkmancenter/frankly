@@ -34,6 +34,7 @@
   "appTitleUnsubscribe": "{appName} - 取消訂閱",
   "appTitleUserSettings": "{appName} - 用戶設定",
   "appTitleWelcome": "{appName} - 歡迎",
+  "areYouSure": "您確定嗎？",
   "areYouSureYouWantToDeleteMedia": "您確定要刪除媒體嗎？",
   "areYouSureYouWantToRefreshTheGuide": "您確定要刷新指南嗎？",
   "aspectRatioClipped": "長寬比剪裁",
@@ -91,7 +92,7 @@
   "confirmDelete": "確定要刪除嗎？",
   "confirmDeleteMedia": "您確定要刪除媒體嗎？",
   "confirmRefreshGuide": "您確定要重新整理指南嗎？",
-  "confirmRemoveUser": "您確定要將 {userName} 從 {communityName} 中移除嗎？",
+  "confirmMakeOwner": "您確定要將 {userName} 變更為 {communityName} 的擁有者嗎？這將賦予他們在此社區中的所有可能權限，包括刪除社區的能力。",
   "contactEmail": "聯絡電郵",
   "contrastRatioMustBeGreaterThan4_5": "對比度比率必須大於4.5",
   "couldntFindAccount": "我们找不到使用此邮箱的账户。请尝试 ",
@@ -658,7 +659,7 @@
     }
   },
 
-  "@confirmRemoveUser": {
+  "@confirmMakeOwner": {
     "placeholders": {
       "userName": {
         "type": "String"
