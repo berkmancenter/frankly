@@ -199,220 +199,52 @@ class MembersTabState extends State<MembersTab> {
     }
   }
 
-  // final filteredMembers = _filterMemberships(membershipList);
   Widget _buildSearchBar(List<Membership> memberships) {
-    return Container(
+    return Flexible(
+      child: Container(
       constraints: BoxConstraints(maxWidth: 450),
       child: Row(
         children: [
-          Expanded(
-            child: CustomTextField(
-              hintText: 'Filter member list by name',
-              prefixIcon: Icon(Icons.search),
-              onChanged: (value) {
-                setState(() {
-                  _currentSearch = value;
-                  _loadUsersFuture ??= Future.wait([
-                    _loadAllUserInfoDetails(memberships),
-                    ...memberships.map(
-                      (m) => UserAdminDetailsProvider.forUser(m.userId)
-                          .getInfoFuture(
-                        communityId:
-                            CommunityProvider.read(context).communityId,
-                      ),
-                    ),
-                  ]);
-                });
-              },
-            ),
+        Expanded(
+          child:
+           CustomTextField(
+          hintText: 'Filter member list by name',
+          prefixIcon: Icon(Icons.search),
+          onChanged: (value) {
+            setState(() {
+            _currentSearch = value;
+            _loadUsersFuture ??= Future.wait([
+              _loadAllUserInfoDetails(memberships),
+              ...memberships.map(
+              (m) => UserAdminDetailsProvider.forUser(m.userId)
+                .getInfoFuture(
+                communityId:
+                  CommunityProvider.read(context).communityId,
+              ),
+              ),
+            ]);
+            });
+          },
           ),
-          SizedBox(
-            width: 80,
-            child: FutureBuilder(
-              future: _loadUsersFuture,
-              builder: (_, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CustomLoadingIndicator(),
-                  );
-                }
+        ),
+        SizedBox(
+          width: 80,
+          child: FutureBuilder(
+          future: _loadUsersFuture,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CustomLoadingIndicator(),
+            );
+            }
 
-                return SizedBox.shrink();
-              },
-            ),
+            return SizedBox.shrink();
+          },
           ),
+        ),
         ],
       ),
-    );
-  }
-
-  Future<void> _resolveRequest({
-    required MembershipRequest request,
-    required bool approve,
-  }) async {
-    await cloudFunctionsCommunityService.resolveJoinRequest(
-      ResolveJoinRequestRequest(
-        communityId: request.communityId,
-        userId: request.userId,
-        approve: approve,
       ),
-    );
-  }
-
-  Widget _buildRequestEntry(int index, MembershipRequest request) {
-    return Container(
-      key: Key(request.userId),
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
-      color: index.isEven
-          ? context.theme.colorScheme.primary.withOpacity(0.1)
-          : Colors.white70,
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          IntrinsicWidth(
-            child: UserProfileChip(
-              key: Key('user-profile-chip-${request.userId}'),
-              userId: request.userId,
-              imageHeight: 32,
-              textStyle: TextStyle(
-                color: context.theme.colorScheme.primary,
-              ),
-            ),
-          ),
-          UserAdminDetailsBuilder(
-            userId: request.userId,
-            communityId: request.communityId,
-            builder: (_, loading, detailsSnapshot) {
-              if (loading) {
-                return Container(
-                  height: 50,
-                  width: 50,
-                  alignment: Alignment.center,
-                  child: CustomLoadingIndicator(),
-                );
-              }
-
-              final email = detailsSnapshot.data?.email;
-              final isError =
-                  detailsSnapshot.hasError || email == null || email.isEmpty;
-
-              const errorText = 'Error loading email.';
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: SelectableText(
-                  isError ? errorText : email,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 12),
-                  textAlign: TextAlign.center,
-                ),
-              );
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: !responsiveLayoutService.isMobile(context)
-                ? MainAxisSize.min
-                : MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: ActionButton(
-                  height: 44,
-                  minWidth: 44,
-                  padding: EdgeInsets.zero,
-                  color: context.theme.colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  onPressed: () => alertOnError(
-                    context,
-                    () => _resolveRequest(request: request, approve: true),
-                  ),
-                  child: Icon(
-                    Icons.check,
-                    color: context.theme.colorScheme.tertiaryFixed,
-                    size: 20,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: ActionButton(
-                  height: 44,
-                  minWidth: 44,
-                  padding: EdgeInsets.zero,
-                  type: ActionButtonType.outline,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  borderSide:
-                      BorderSide(color: context.theme.colorScheme.error),
-                  onPressed: () => alertOnError(
-                    context,
-                    () => _resolveRequest(request: request, approve: false),
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    color: context.theme.colorScheme.error,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRequestList(List<MembershipRequest> requestList) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 400, maxWidth: 600),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          for (var i = 0; i < requestList.length; i++)
-            _buildRequestEntry(i, requestList[i]),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRequestsSection() {
-    return CustomStreamBuilder<List<MembershipRequest>>(
-      entryFrom: '_MembersTabState._buildRequestsSection',
-      stream: _requests,
-      errorMessage: 'Something went wrong loading requests. Please refresh.',
-      showLoading: false,
-      builder: (context, requestList) {
-        if ((requestList ?? []).isEmpty) {
-          return SizedBox.shrink();
-        }
-        return Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: context.theme.colorScheme.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeightConstrainedText(
-                requestList!.isEmpty
-                    ? 'No Pending Join Requests'
-                    : 'Manage Join Requests (${requestList.length})',
-                style: AppTextStyle.headline4,
-              ),
-              SizedBox(height: 8),
-              if (requestList.isNotEmpty) _buildRequestList(requestList),
-            ],
-          ),
-        );
-      },
     );
   }
 
@@ -507,6 +339,7 @@ class MembersTabState extends State<MembersTab> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = responsiveLayoutService.isMobile(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -517,18 +350,18 @@ class MembersTabState extends State<MembersTab> {
             entryFrom: '_MembersTabState._build',
             errorMessage: context.l10n.errorLoadingMemberships,
             builder: (context, membershipList) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildSearchBar(membershipList ?? []),
-                ActionButton(
-                  text: context.l10n.downloadMembersData,
-                  type: ActionButtonType.text,
-                  icon: Icon(Icons.file_download_outlined),
-                  onPressed: () => MemberDataUtils.downloadMembersData(
-                    context,
-                    membershipList ?? [],
+                if (!isMobile)
+                  ActionButton(
+                    text: context.l10n.downloadMembersData,
+                    type: ActionButtonType.text,
+                    icon: Icon(Icons.file_download_outlined),
+                    onPressed: () => MemberDataUtils.downloadMembersData(
+                      context,
+                      membershipList ?? [],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
