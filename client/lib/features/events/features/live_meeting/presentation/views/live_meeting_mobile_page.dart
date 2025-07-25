@@ -749,12 +749,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     SizedBox(width: 10),
                     PopupMenuButton<FutureOr<void> Function()>(
                       itemBuilder: (context) {
+                        final conferenceRoom = context.read<ConferenceRoom>();
                         return [
                           PopupMenuItem(
                             value: () => showDialog(
                               context: context,
                               builder: (context) {
-                                return MediaSettingsWidget();
+                                return MediaSettingsWidget(
+                                  conferenceRoom: conferenceRoom,
+                                );
                               },
                             ),
                             child: HeightConstrainedText(
