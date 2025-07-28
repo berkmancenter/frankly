@@ -106,7 +106,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedColorErrorMessage = 'Light color must be lighter';
+          _selectedColorErrorMessage = 'Light color is not light enough.';
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
@@ -119,13 +119,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           firstColor,
           context.theme.colorScheme.secondary,
         )) {
-          _selectedColorErrorMessage = 'Light color must be lighter';
+          _selectedColorErrorMessage = 'Light color is not light enough.';
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
           context.theme.colorScheme.surface,
         )) {
-          _selectedColorErrorMessage = 'Dark color must be darker';
+          _selectedColorErrorMessage = 'Dark color is not dark enough.';
         }
       } else {
         _selectedColorErrorMessage = null;
