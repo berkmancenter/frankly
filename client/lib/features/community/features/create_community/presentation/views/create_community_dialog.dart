@@ -164,6 +164,15 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       _community.themeDarkColor,
     );
 
+    if (!isThemeValid) {
+      showRegularToast(
+        context,
+        'Please select a valid color combination for your community theme.',
+        toastType: ToastType.failed,
+      );
+      return;
+    }
+
     final contactEmail = _community.contactEmail;
     if (contactEmail != null &&
         contactEmail.isNotEmpty &&
