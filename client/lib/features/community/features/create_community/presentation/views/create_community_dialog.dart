@@ -158,7 +158,11 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       );
     }
 
-    _verifyContrastOfSelectedTheme();
+    final isThemeValid = ThemeUtils.isColorComboValid(
+      context,
+      _community.themeLightColor,
+      _community.themeDarkColor,
+    );
 
     final contactEmail = _community.contactEmail;
     if (contactEmail != null &&
@@ -197,22 +201,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
           ).communityHome,
         );
       }
-    }
-  }
-
-  void _verifyContrastOfSelectedTheme() {
-    final light = _community.themeLightColor ?? '';
-    final dark = _community.themeDarkColor ?? '';
-    if (light.isEmpty && dark.isEmpty) return;
-
-    final valid = ThemeUtils.isColorComboValid(
-      context,
-      _community.themeLightColor,
-      _community.themeDarkColor,
-    );
-
-    if (!valid) {
-      _community = _community.copyWith(themeDarkColor: '', themeLightColor: '');
     }
   }
 
