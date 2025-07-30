@@ -176,10 +176,7 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
     final buttonTextNotEmpty = buttonText != null && buttonText.isNotEmpty;
     return ActionButton(
       color: context.theme.colorScheme.primary,
-      type: ActionButtonType.outline,
-      borderSide:
-          BorderSide(color: context.theme.colorScheme.onPrimary, width: 1),
-      textColor: context.theme.colorScheme.onPrimary,
+      type: ActionButtonType.filled,
       text: buttonTextNotEmpty ? buttonText : 'Open Link',
       onPressed: () =>
           alertOnError(context, () => _presenter.launchSurvey(urlParams)),
