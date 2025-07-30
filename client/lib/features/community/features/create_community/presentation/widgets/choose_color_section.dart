@@ -381,29 +381,26 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
       );
 
-  Widget _buildCheckIcon() => Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
+  Widget _buildCheckIcon() => Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _isSelectedColorComboValid
+              ? context.theme.colorScheme.surfaceContainer
+              : null,
+          border: Border.all(
             color: _isSelectedColorComboValid
-                ? context.theme.colorScheme.onPrimary.withAlpha(40)
-                : null,
-            border: Border.all(
-              color: _isSelectedColorComboValid
-                  ? context.theme.colorScheme.primary
-                  : context.theme.colorScheme.onPrimaryContainer,
-            ),
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.outline,
           ),
-          child: Center(
-            child: Icon(
-              Icons.check,
-              color: _isSelectedColorComboValid
-                  ? context.theme.colorScheme.secondary
-                  : context.theme.colorScheme.onPrimaryContainer,
-            ),
+        ),
+        child: Center(
+          child: Icon(
+            _isSelectedColorComboValid ? Icons.check : Icons.close,
+            color: _isSelectedColorComboValid
+                ? context.theme.colorScheme.onSurface
+                : context.theme.colorScheme.outline,
           ),
         ),
       );
