@@ -77,57 +77,90 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             'Audio Input Device',
             style: context.theme.textTheme.titleMedium,
           ),
-          DropdownButton<String>(
-            value: _mediaService.selectedAudioInputId,
-            items: _mediaService.audioInputs.map((device) {
-              return DropdownMenuItem<String>(
-                value: device.deviceId,
-                child: Text(
-                  (device.label == null || device.label!.isEmpty)
-                      ? 'Unnamed Microphone'
-                      : device.label!,
+          _mediaService.audioInputs.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Text(
+                    'No audio devices available. Please check permissions.',
+                    style: context.theme.textTheme.bodyMedium!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                )
+              : DropdownButton<String>(
+                  // Prevent dropdown errors by first checking that the selected
+                  // device still exists in available inputs.
+                  value: _mediaService.audioInputs.any(
+                    (device) =>
+                        device.deviceId == _mediaService.selectedAudioInputId,
+                  )
+                      ? _mediaService.selectedAudioInputId
+                      : null,
+                  items: _mediaService.audioInputs.map((device) {
+                    return DropdownMenuItem<String>(
+                      value: device.deviceId,
+                      child: Text(
+                        device.label!,
+                        style: context.theme.textTheme.titleMedium,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (val) async {
+                    if (val != null) {
+                      setState(() {});
+                      await widget.conferenceRoom
+                          .selectAudioDevice(deviceId: val);
+                      // No need to update preview for now as audio is not previewed.
+                    }
+                  },
+                  hint: const Text('Select audio input'),
                 ),
-              );
-            }).toList(),
-            onChanged: (val) async {
-              if (val != null) {
-                setState(() {});
-                await widget.conferenceRoom.selectAudioDevice(deviceId: val);
-                // No need to update preview for now as audio is not previewed.
-              }
-            },
-            hint: const Text('Select audio input'),
-          ),
           const SizedBox(height: 24),
           Text(
             'Video Input Device',
             style: context.theme.textTheme.titleMedium,
           ),
-          DropdownButton<String>(
-            value: _mediaService.selectedVideoInputId,
-            items: _mediaService.videoInputs.map((device) {
-              return DropdownMenuItem<String>(
-                value: device.deviceId,
-                child: Text(
-                  (device.label == null || device.label!.isEmpty)
-                      ? 'Unnamed Camera'
-                      : device.label!,
-                ),
-              );
-            }).toList(),
-            onChanged: (val) async {
-              if (val != null) {
-                setState(() {});
-                await widget.conferenceRoom.selectVideoDevice(
-                  deviceId: val,
-                  updateLocalPreview: () async {
-                    await updatePreview();
+          _mediaService.videoInputs.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Text(
+                    'No video devices available. Please check permissions.',
+                    style: context.theme.textTheme.bodyMedium!.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                )
+              : DropdownButton<String>(
+                  // Prevent dropdown errors by first checking that the selected
+                  // device still exists in available inputs.
+                  value: _mediaService.videoInputs.any(
+                    (device) =>
+                        device.deviceId == _mediaService.selectedVideoInputId,
+                  )
+                      ? _mediaService.selectedVideoInputId
+                      : null,
+                  items: _mediaService.videoInputs.map((device) {
+                    return DropdownMenuItem<String>(
+                      value: device.deviceId,
+                      child: Text(
+                        device.label!,
+                        style: context.theme.textTheme.titleMedium,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (val) async {
+                    if (val != null) {
+                      setState(() {});
+                      await widget.conferenceRoom.selectVideoDevice(
+                        deviceId: val,
+                        updateLocalPreview: () async {
+                          await updatePreview();
+                        },
+                      );
+                    }
                   },
-                );
-              }
-            },
-            hint: const Text('Select video input'),
-          ),
+                  hint: const Text('Select video input'),
+                ),
           const SizedBox(height: 24),
           Text(
             'Video Preview',
