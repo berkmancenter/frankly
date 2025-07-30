@@ -204,18 +204,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     final light = _community.themeLightColor ?? '';
     final dark = _community.themeDarkColor ?? '';
     if (light.isEmpty && dark.isEmpty) return;
-    if (!ThemeUtils.isColorValid(light)) {
-      _community = _community.copyWith(
-        themeLightColor:
-            ThemeUtils.convertToHexString(context.theme.colorScheme.surface),
-      );
-    }
-    if (!ThemeUtils.isColorValid(dark)) {
-      _community = _community.copyWith(
-        themeDarkColor:
-            ThemeUtils.convertToHexString(context.theme.colorScheme.primary),
-      );
-    }
 
     final valid = ThemeUtils.isColorComboValid(
       context,
