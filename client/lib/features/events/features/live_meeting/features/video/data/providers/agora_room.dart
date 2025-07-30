@@ -415,7 +415,7 @@ class AgoraParticipant with ChangeNotifier {
 
   html.MediaStreamTrack? get screenshareTrack => null;
 
-  Future<void> updateAudioDevice() async {
+  Future<void> updateAgoraAudioDevice() async {
     print(
       'media device service selected device: ${mediaDeviceService.selectedAudioInputId}',
     );
@@ -424,7 +424,7 @@ class AgoraParticipant with ChangeNotifier {
         );
   }
 
-  Future<void> updateVideoDevice() async {
+  Future<void> updateAgoraVideoDevice() async {
     print(
       'media device service selected device: ${mediaDeviceService.selectedVideoInputId}',
     );

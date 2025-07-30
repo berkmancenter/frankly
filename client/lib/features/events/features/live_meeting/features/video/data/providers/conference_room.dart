@@ -363,7 +363,7 @@ class ConferenceRoom with ChangeNotifier {
 
   Future<void> selectAudioDevice({required String deviceId}) async {
     await mediaDeviceService?.selectAudioDevice(deviceId: deviceId);
-    await _room?.localParticipant?.updateAudioDevice();
+    await _room?.localParticipant?.updateAgoraAudioDevice();
   }
 
   Future<void> selectVideoDevice({
@@ -373,7 +373,7 @@ class ConferenceRoom with ChangeNotifier {
     await mediaDeviceService?.selectVideoDevice(deviceId: deviceId);
     // Update local preview first if provided.
     updateLocalPreview?.call();
-    await _room?.localParticipant?.updateVideoDevice();
+    await _room?.localParticipant?.updateAgoraVideoDevice();
   }
 
   Future<void> toggleVideoEnabled({
@@ -393,11 +393,10 @@ class ConferenceRoom with ChangeNotifier {
       }
     }
 
-    await _room?.localParticipant?.updateVideoDevice();
-
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
+        await _room!.localParticipant!.updateAgoraVideoDevice();
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
         );
@@ -427,8 +426,6 @@ class ConferenceRoom with ChangeNotifier {
       }
     }
 
-    await _room?.localParticipant?.updateAudioDevice();
-
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _audioTogglingLock.synchronized(
       () async {
@@ -436,6 +433,8 @@ class ConferenceRoom with ChangeNotifier {
             liveMeetingProvider.audioTemporarilyDisabled) {
           return;
         }
+
+        await _room!.localParticipant!.updateAgoraAudioDevice();
 
         final audioEnableFutures = [
           _room!.localParticipant!.enableAudio(
