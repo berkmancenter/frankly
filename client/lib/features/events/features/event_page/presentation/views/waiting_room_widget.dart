@@ -168,7 +168,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   context.l10n.bufferTimeDescription(
                     waitingBufferDurationDescription,
                   ),
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             ],
@@ -182,7 +182,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             ),
             Text(
               context.l10n.playsAt(introStartTime),
-              style: AppTextStyle.bodyMedium,
+              style: context.theme.textTheme.bodyMedium,
             ),
             SizedBox(height: 20),
             MediaItemSection(
@@ -234,7 +234,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   child: HeightConstrainedText(
                     context.l10n
                         .introBeforeBreakouts(introLengthDurationDescription),
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ),
               ],
