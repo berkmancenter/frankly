@@ -242,13 +242,13 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ],
           SizedBox(height: 18),
           HeightConstrainedText(
-            'Participants will be sent into rooms at $breakoutsInitiationTime ${context.l10n.bufferAndIntroTime(
+            'Participants will be sent into rooms at $breakoutsInitiationTime.\n${context.l10n.bufferAndIntroTime(
               waitingBufferDurationDescription,
               introLengthDurationDescription,
-            )}',
-            style: AppTextStyle.subhead,
+            )}.',
+            style: context.theme.textTheme.titleMedium,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
