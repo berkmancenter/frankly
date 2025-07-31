@@ -175,18 +175,14 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ),
           SizedBox(height: 20),
           if (_presenter.enableIntroVideo) ...[
-            RichText(
-              text: TextSpan(
-                text: 'Intro Image/Video',
-                style: AppTextStyle.subhead
-                    .copyWith(color: context.theme.colorScheme.primary),
-                children: [
-                  TextSpan(
-                    text: context.l10n.playsAt(introStartTime),
-                    style: AppTextStyle.bodyMedium,
-                  ),
-                ],
-              ),
+            Text(
+              'Intro Image/Video',
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.primary),
+            ),
+            Text(
+              context.l10n.playsAt(introStartTime),
+              style: AppTextStyle.bodyMedium,
             ),
             SizedBox(height: 20),
             MediaItemSection(
