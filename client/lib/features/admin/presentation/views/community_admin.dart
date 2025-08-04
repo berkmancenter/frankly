@@ -22,10 +22,10 @@ class CommunityAdmin extends StatefulWidget {
   const CommunityAdmin({required this.tab});
 
   @override
-  _CommunityAdminState createState() => _CommunityAdminState();
+  CommunityAdminState createState() => CommunityAdminState();
 }
 
-class _CommunityAdminState extends State<CommunityAdmin>
+class CommunityAdminState extends State<CommunityAdmin>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
@@ -49,8 +49,8 @@ class _CommunityAdminState extends State<CommunityAdmin>
         HeightConstrainedText(
           text,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
-            fontSize: mobile ? 11 : 16,
-          ),
+                fontSize: mobile ? 11 : 16,
+              ),
           maxLines: 1,
         ),
       ],
@@ -106,35 +106,52 @@ class _CommunityAdminState extends State<CommunityAdmin>
                   bottom: TabBar(
                     tabs: [
                       Tab(
-                        child:
-                            _buildTab(context, 'Profile', Icons.edit_square, mobile),
-                      ),
-                      Tab(
-                        child: _buildTab(context, 'Members',
-                            Icons.group_outlined, mobile,),
-                      ),
-                      Tab(
-                        child: _buildTab(context, 'Data',
-                            Icons.downloading_outlined, mobile,),
+                        child: _buildTab(
+                          context,
+                          context.l10n.profile,
+                          Icons.edit_square,
+                          mobile,
+                        ),
                       ),
                       Tab(
                         child: _buildTab(
-                            context, 'Settings', Icons.settings, mobile,),
+                          context,
+                          context.l10n.members,
+                          Icons.group_outlined,
+                          mobile,
+                        ),
+                      ),
+                      Tab(
+                        child: _buildTab(
+                          context,
+                          context.l10n.data,
+                          Icons.downloading_outlined,
+                          mobile,
+                        ),
+                      ),
+                      Tab(
+                        child: _buildTab(
+                          context,
+                          context.l10n.settings,
+                          Icons.settings,
+                          mobile,
+                        ),
                       ),
                     ],
                   ),
-                  
-                ),body: TabBarView(
+                ),
+                body: TabBarView(
                   children: [
                     OverviewTab(),
                     MembersTab(),
                     DataTab(),
                     SettingsTab(),
                   ],
+                ),
               ),
             ),
           ),
-      ),],
+        ],
       ),
     );
   }

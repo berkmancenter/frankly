@@ -1,7 +1,5 @@
-import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
@@ -168,9 +166,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
-            child: Scaffold(
-              appBar: AppBar(
-                bottom: TabBar(
+            child: Column(
+              children: [
+                TabBar(
                   tabs: <Widget>[
                     Tab(
                       child: Text(
@@ -190,13 +188,15 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
                     ),
                   ],
                 ),
-              ),
-              body: TabBarView(
-                children: <Widget>[
-                  _buildPresetColorsContent(context, mobile),
-                  _buildCustomColorsContent(mobile),
-                ],
-              ),
+                Expanded(
+                  child: TabBarView(
+                    children: <Widget>[
+                      _buildPresetColorsContent(context, mobile),
+                      _buildCustomColorsContent(mobile),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -208,10 +208,10 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: GridView.count(
-        shrinkWrap: true,
         crossAxisCount: mobile ? 3 : 5,
         crossAxisSpacing: mobile ? 40 : 30,
         mainAxisSpacing: 30,
+        shrinkWrap: true,
         children:
             List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
           return FloatingActionButton(
