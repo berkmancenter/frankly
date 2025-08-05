@@ -173,6 +173,7 @@
   "confirmMakeOwner": "您确定要将 {userName} 变更为 {communityName} 的拥有者吗？这将赋予他们在此社区中的所有可能权限，包括删除社区的能力。",
   "contactEmail": "联系邮箱",
   "contrastRatioMustBeGreaterThan4_5": "对比度比率必须大于4.5",
+  "create": "创建",
   "createAPost": "创建一篇文章",
   "createAResource": "创建一个资源",
   "createATemplate": "创建一个模板",
@@ -197,6 +198,7 @@
     }
   },
   "deleteAgendaItemGeneral": "删除议程项",
+  "displayIdWarning": "URL 显示名称只能包含字母、数字和连字符。",
   "roomNumber": "房间号码",
   "enterRoomNumber": "输入房间号码",
   "view": "查看",
