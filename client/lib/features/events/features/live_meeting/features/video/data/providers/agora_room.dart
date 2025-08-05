@@ -438,6 +438,7 @@ class AgoraParticipant with ChangeNotifier {
 
   Future<void> enableAudio({required bool setEnabled}) async {
     if (setEnabled) {
+      await updateAgoraAudioDevice();
       await _rtcEngine.enableLocalAudio(true);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
@@ -461,6 +462,7 @@ class AgoraParticipant with ChangeNotifier {
         videoLocalPreviewStarted = true;
         await _rtcEngine.startPreview();
       }
+      await updateAgoraVideoDevice();
       await _rtcEngine.enableLocalVideo(true);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(

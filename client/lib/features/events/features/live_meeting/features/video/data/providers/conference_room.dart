@@ -396,7 +396,6 @@ class ConferenceRoom with ChangeNotifier {
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
-        await _room!.localParticipant!.updateAgoraVideoDevice();
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
         );
@@ -433,8 +432,6 @@ class ConferenceRoom with ChangeNotifier {
             liveMeetingProvider.audioTemporarilyDisabled) {
           return;
         }
-
-        await _room!.localParticipant!.updateAgoraAudioDevice();
 
         final audioEnableFutures = [
           _room!.localParticipant!.enableAudio(
