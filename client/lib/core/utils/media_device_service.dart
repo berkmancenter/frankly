@@ -117,19 +117,17 @@ class MediaDeviceService {
 
       final dynamic audioConstraint;
       if (micEnabled) {
-        {
-          final micPermissions = await Permission.microphone.request();
-          if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
-            audioConstraint = false;
-          } else {
-            // If a specific audio input was selected, pass it into 'exact'.
-            audioConstraint =
-                selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
-                    ? {
-                        'deviceId': {'exact': selectedAudioInputId},
-                      }
-                    : true;
-          }
+        final micPermissions = await Permission.microphone.request();
+        if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
+          audioConstraint = false;
+        } else {
+          // If a specific audio input was selected, pass it into 'exact'.
+          audioConstraint =
+              selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
+                  ? {
+                      'deviceId': {'exact': selectedAudioInputId},
+                    }
+                  : true;
         }
       } else {
         audioConstraint = false;
