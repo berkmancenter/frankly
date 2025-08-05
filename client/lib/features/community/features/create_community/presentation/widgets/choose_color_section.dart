@@ -45,8 +45,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
 
-  Color _lightColor = Color(0xff000000);
-  Color _darkColor = Color(0xff212121);
+  late Color _lightColor =  Color(0xffffffff);
+  late Color _darkColor = Color(0xff212121);
 
   @override
   void initState() {
@@ -55,6 +55,12 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         TextEditingController(text: _currentCommunityLightColor);
     _customDarkColorController =
         TextEditingController(text: _currentCommunityDarkColor);
+         _lightColor = _currentLightColor.isNotEmpty
+        ? ThemeUtils.parseColor(_currentLightColor)!
+        : Color(0xffffffff);
+    _darkColor = _currentDarkColor.isNotEmpty
+        ? ThemeUtils.parseColor(_currentDarkColor)!
+        : Color(0xff212121);
   }
 
   @override
@@ -116,6 +122,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           context.theme.colorScheme.surface,
         )) {
           _selectedColorErrorMessage = context.l10n.colorMustBeDarker;
+        }
+        else {
+          _selectedColorErrorMessage = null;
+          widget.setLightColor(_currentLightColor);
+          widget.setDarkColor(_currentDarkColor);
         }
       } else {
         _selectedColorErrorMessage = null;
@@ -206,12 +217,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   Widget _buildPresetColorsContent(BuildContext context, bool mobile) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16),
       child: GridView.count(
         crossAxisCount: mobile ? 3 : 5,
         crossAxisSpacing: mobile ? 40 : 30,
         mainAxisSpacing: 30,
         shrinkWrap: true,
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         children:
             List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
           return FloatingActionButton(
@@ -270,77 +282,78 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   }
 
   Widget _buildCustomColorsContent(bool mobile) {
-    return SizedBox(
-      height: 200,
-      child: Column(
+
+    List<Widget> children = [
+              IconButton(
+            icon: Icon(
+              Icons.water_drop,
+              color: _lightColor,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            onPressed: () {
+              _buildColorPickerDialog(
+                _currentLightColor,
+                (Color color) {
+                  _customLightColorController.text =
+                      color.toHexString().substring(2, 8);
+                  _changeLightColorTextField(color);
+                },
+              );
+            },
+          ),
+          _buildChooseColorTextField(
+            label: context.l10n.lightColorHex,
+            onChanged: _changeLightColorTextField,
+            controller: _customLightColorController,
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.water_drop,
+              color: _darkColor,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            onPressed: () {
+              _buildColorPickerDialog(
+                _currentDarkColor,
+                (Color color) {
+                  _customDarkColorController.text =
+                      color.toHexString().substring(2, 8);
+                  _changeDarkColorTextField(color);
+                },
+              );
+            },
+          ),
+          _buildChooseColorTextField(
+            label: context.l10n.darkColorHex,
+            onChanged: _changeDarkColorTextField,
+            controller: _customDarkColorController,
+          ),
+    ];
+    return Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flex(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            direction: mobile ? Axis.vertical : Axis.horizontal,
-            children: [
-              IconButton(
-                icon: Icon(
-                  Icons.water_drop,
-                  color: _lightColor,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black.withAlpha(50),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                onPressed: () {
-                  _buildColorPickerDialog(
-                    _currentLightColor,
-                    (Color color) {
-                      _customLightColorController.text =
-                          color.toHexString().substring(2, 8);
-                      _changeLightColorTextField(color);
-                    },
-                  );
-                },
-              ),
-              _buildChooseColorTextField(
-                label: context.l10n.lightColorHex,
-                onChanged: _changeLightColorTextField,
-                controller: _customLightColorController,
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.water_drop,
-                  color: _darkColor,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black.withAlpha(50),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                onPressed: () {
-                  _buildColorPickerDialog(
-                    _currentDarkColor,
-                    (Color color) {
-                      _customDarkColorController.text =
-                          color.toHexString().substring(2, 8);
-                      _changeDarkColorTextField(color);
-                    },
-                  );
-                },
-              ),
-              _buildChooseColorTextField(
-                label: context.l10n.darkColorHex,
-                onChanged: _changeDarkColorTextField,
-                controller: _customDarkColorController,
-              ),
-            ],
-          ),
-          _buildErrorMessage(),
-        ],
-      ),
-    );
+          if(mobile) ...children,
+          if (!mobile) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: children,
+            ),
+          ],
+ 
+        _buildErrorMessage(),
+      ],
+);
   }
 
   Widget _buildChooseColorTextField({
@@ -348,8 +361,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function(Color) onChanged,
     required TextEditingController controller,
   }) =>
-      Expanded(
-        child: CustomTextField(
+      CustomTextField(
           labelText: label,
           maxLength: 6,
           hideCounter: true,
@@ -366,8 +378,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           },
           validator: (value) =>
               ThemeUtils.isColorValid(value) ? null : context.l10n.mustBeValidHexColor,
-        ),
-      );
+        );
 
   Widget _buildErrorMessage() => Column(
         mainAxisSize: MainAxisSize.min,
