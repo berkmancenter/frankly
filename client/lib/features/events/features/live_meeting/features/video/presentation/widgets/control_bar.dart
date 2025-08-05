@@ -94,7 +94,9 @@ class _ControlBarState extends State<ControlBar> {
             value: () => showDialog(
               context: context,
               builder: (context) {
-                return MediaSettingsWidget();
+                return MediaSettingsWidget(
+                  conferenceRoom: _conferenceRoomRead,
+                );
               },
             ),
             child: HeightConstrainedText(
