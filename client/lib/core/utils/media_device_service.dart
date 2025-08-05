@@ -8,9 +8,9 @@ import 'package:universal_html/html.dart' as html;
 /// Currently only implemented for web.
 class MediaDeviceService {
   // Singleton class
+  MediaDeviceService._internal();
   static final MediaDeviceService _instance = MediaDeviceService._internal();
   factory MediaDeviceService() => _instance;
-  MediaDeviceService._internal();
 
   // Media stream for local A/V preview
   html.MediaStream? _previewMediaStream;
