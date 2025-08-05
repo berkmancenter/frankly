@@ -473,7 +473,9 @@ class ConferenceRoom with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> onConnected(AgoraRoom room) async {
+  Future<void> onConnected({
+    required AgoraRoom room,
+  }) async {
     Debug.log('ConferenceRoom._onConnected => state: ${room.state}');
 
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(

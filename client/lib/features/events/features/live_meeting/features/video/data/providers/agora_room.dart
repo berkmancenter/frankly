@@ -137,7 +137,7 @@ class AgoraRoom with ChangeNotifier {
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
         _state = AgoraRoomState.CONNECTED;
 
-        unawaited(conferenceRoom.onConnected(this));
+        unawaited(conferenceRoom.onConnected(room: this));
 
         print('Joined with audio: $enableAudio and video: $enableVideo');
 
