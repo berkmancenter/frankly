@@ -458,10 +458,6 @@ class AgoraParticipant with ChangeNotifier {
 
   Future<void> enableVideo({required bool setEnabled}) async {
     if (setEnabled) {
-      if (!videoLocalPreviewStarted) {
-        videoLocalPreviewStarted = true;
-        await _rtcEngine.startPreview();
-      }
       await updateAgoraVideoDevice();
       await _rtcEngine.enableLocalVideo(true);
       await _rtcEngine.updateChannelMediaOptions(
@@ -469,6 +465,10 @@ class AgoraParticipant with ChangeNotifier {
           publishCameraTrack: true,
         ),
       );
+      if (!videoLocalPreviewStarted) {
+        videoLocalPreviewStarted = true;
+        await _rtcEngine.startPreview();
+      }
     } else {
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
