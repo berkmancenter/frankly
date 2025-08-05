@@ -422,18 +422,12 @@ class AgoraParticipant with ChangeNotifier {
   html.MediaStreamTrack? get screenshareTrack => null;
 
   Future<void> updateAgoraAudioDevice() async {
-    print(
-      'media device service selected device: ${mediaDeviceService.selectedAudioInputId}',
-    );
     await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
           mediaDeviceService.selectedAudioInputId ?? '',
         );
   }
 
   Future<void> updateAgoraVideoDevice() async {
-    print(
-      'media device service selected device: ${mediaDeviceService.selectedVideoInputId}',
-    );
     await _rtcEngine.getVideoDeviceManager().setDevice(
           mediaDeviceService.selectedVideoInputId ?? '',
         );
