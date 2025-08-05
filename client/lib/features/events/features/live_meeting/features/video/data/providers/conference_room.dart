@@ -517,24 +517,7 @@ class ConferenceRoom with ChangeNotifier {
     print('updated live meeting participants');
     notifyListeners();
     _completer.complete(room);
-
-    final isTest = (routerDelegate.currentBeamLocation.state as BeamState)
-            .queryParameters['test'] !=
-        null;
-    if (isTest) {
-      if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {
-        await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
-          () => toggleAudioEnabled(setEnabled: true),
-        );
-      }
-      if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
-        await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
-          () => toggleVideoEnabled(setEnabled: true),
-        );
-      }
-    } else if (liveMeetingProvider.shouldStartLocalAudioOn ||
+    if (liveMeetingProvider.shouldStartLocalAudioOn ||
         liveMeetingProvider.shouldStartLocalVideoOn) {
       unawaited(_promptToTurnOnVideo());
     }
