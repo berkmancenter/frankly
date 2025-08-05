@@ -37,7 +37,8 @@ class MediaDeviceService {
                 (d) =>
                     d.kind == 'audioinput' &&
                     d.label != null &&
-                    d.label!.isNotEmpty,
+                    d.label!.isNotEmpty &&
+                    d.label != 'default',
               )
               .toList();
           videoInputs = devices
@@ -46,7 +47,8 @@ class MediaDeviceService {
                 (d) =>
                     d.kind == 'videoinput' &&
                     d.label != null &&
-                    d.label!.isNotEmpty,
+                    d.label!.isNotEmpty &&
+                    d.label != 'default',
               )
               .toList();
         }
