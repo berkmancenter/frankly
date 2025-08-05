@@ -411,10 +411,10 @@ class AgoraParticipant with ChangeNotifier {
 
   MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
-  bool audioTrackEnabled = true;
+  bool audioTrackEnabled = false;
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
-  bool videoTrackEnabled = true;
+  bool videoTrackEnabled = false;
 
   html.MediaStreamTrack? get screenshareTrack => null;
 
