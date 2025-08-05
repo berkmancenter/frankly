@@ -338,8 +338,13 @@ class AgoraRoom with ChangeNotifier {
 
     engine.registerEventHandler(_rtcEngineEventHandler);
 
-    await engine.enableVideo();
+    // Enable audio and video modules so receiving works.
     await engine.enableAudio();
+    await engine.enableVideo();
+    // Start with local video and audio capture disabled. This prevents
+    // the video/audio being enabled with the wrong device.
+    await engine.enableLocalVideo(false);
+    await engine.enableLocalAudio(false);
 
     await engine.joinChannel(
       channelId: channelName,
@@ -351,8 +356,6 @@ class AgoraRoom with ChangeNotifier {
         autoSubscribeAudio: true,
         autoSubscribeVideo: true,
         enableAudioRecordingOrPlayout: true,
-        publishCameraTrack: enableVideo,
-        publishMicrophoneTrack: enableAudio,
       ),
     );
   }
