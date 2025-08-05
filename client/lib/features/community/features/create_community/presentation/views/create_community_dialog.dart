@@ -142,7 +142,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     final regex = RegExp('^[a-zA-Z0-9-]*\$');
     if (!regex.hasMatch(_displayId)) {
       throw VisibleException(
-        'URL display name can only contain letters, numbers, and dashes.',
+        context.l10n.displayIdWarning,  
       );
     }
 
@@ -167,7 +167,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
         !isEmailValid(contactEmail)) {
       showRegularToast(
         context,
-        'Please enter a valid email',
+        context.l10n.pleaseEnterValidEmail,
         toastType: ToastType.failed,
       );
       return;
@@ -267,30 +267,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
     Navigator.of(context).pop();
   }
 
-  Future<void> _updateBannerImage({
-    required String imageUrl,
-  }) async {
-    if (isNullOrEmpty(imageUrl) || imageUrl == _community.bannerImageUrl) {
-      return;
-    }
-
-    setState(() {
-      _community = _community.copyWith(bannerImageUrl: imageUrl);
-    });
-
-    if (!isNullOrEmpty(_community.id)) {
-      await cloudFunctionsCommunityService.updateCommunity(
-        UpdateCommunityRequest(
-          community: _community,
-          keys: [Community.kFieldBannerImageUrl],
-        ),
-      );
-      analytics.logEvent(
-        AnalyticsUpdateCommunityImageEvent(communityId: _community.id),
-      );
-    }
-  }
-
   Future<void> _updateProfileImage({
     required String imageUrl,
   }) async {
@@ -302,43 +278,19 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       _community = _community.copyWith(profileImageUrl: imageUrl);
     });
 
-    if (!isNullOrEmpty(_community.id)) {
-      await cloudFunctionsCommunityService.updateCommunity(
-        UpdateCommunityRequest(
-          community: _community,
-          keys: [Community.kFieldProfileImageUrl],
-        ),
-      );
-      analytics.logEvent(
-        AnalyticsUpdateCommunityImageEvent(communityId: _community.id),
-      );
-    }
+    await cloudFunctionsCommunityService.updateProfileImage(
+      imageUrl: imageUrl,
+      community: _community,
+    );
   }
 
-  Future<void> _removeImage({
-    required bool isBannerImage,
-  }) async {
+  Future<void> _removeImage() async {
     setState(() {
-      _community = isBannerImage
-          ? _community.copyWith(bannerImageUrl: null)
-          : _community.copyWith(profileImageUrl: null);
+      _community = _community.copyWith(profileImageUrl: null);
     });
-
-    if (!isNullOrEmpty(_community.id)) {
-      await cloudFunctionsCommunityService.updateCommunity(
-        UpdateCommunityRequest(
-          community: _community,
-          keys: [
-            isBannerImage
-                ? Community.kFieldBannerImageUrl
-                : Community.kFieldProfileImageUrl,
-          ],
-        ),
+    await cloudFunctionsCommunityService.removeImage(
+      community: _community,
       );
-      analytics.logEvent(
-        AnalyticsUpdateCommunityImageEvent(communityId: _community.id),
-      );
-    }
   }
 
   @override
@@ -423,7 +375,8 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
   }
 
   Widget _buildSubmit() {
-    final submitText = widget.isCreateCommunity ? 'Create' : 'Update';
+    final submitText =
+        widget.isCreateCommunity ? context.l10n.create : context.l10n.save;
     final button = ActionButton(
       onPressed: () => alertOnError(context, _submitFunction),
       text: widget.submitText ?? submitText,

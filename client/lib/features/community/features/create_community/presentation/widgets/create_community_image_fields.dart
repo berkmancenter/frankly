@@ -13,7 +13,7 @@ import 'package:client/core/localization/localization_helper.dart';
 class CreateCommunityImageFields extends StatelessWidget {
   final String? profileImageUrl;
   final Future<void> Function(String) updateProfileImage;
-  final Future<void> Function({required bool isBannerImage}) removeImage;
+  final Future<void> Function() removeImage;
 
   const CreateCommunityImageFields({
     Key? key,
@@ -40,7 +40,7 @@ class CreateCommunityImageFields extends StatelessWidget {
         text: context.l10n.logo,
         onTap: () => alertOnError(context, () => _editLogoPressed()),
         onTapRemove: () =>
-            alertOnError(context, () => removeImage(isBannerImage: false)),
+            alertOnError(context, () => removeImage()),
         onImageSelect: updateProfileImage,
         image: profileImageUrl,
       );
