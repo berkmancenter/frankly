@@ -30,6 +30,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       ..id = _viewType
       ..autoplay = true
       ..muted = true
+      ..setAttribute(
+        'playsinline',
+        'true',
+      ) // Stop iOS Safari from going fullscreen
+      ..setAttribute('webkit-playsinline', 'true')
+      ..setAttribute('disablePictureInPicture', 'true')
       ..style.width = '100%'
       ..style.height = '100%'
       ..style.objectFit = 'cover'
