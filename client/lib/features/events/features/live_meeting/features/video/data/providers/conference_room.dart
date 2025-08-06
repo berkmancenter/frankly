@@ -389,6 +389,7 @@ class ConferenceRoom with ChangeNotifier {
           navigatorState.context,
           'Error enabling camera. Please ensure you have granted permission.',
         );
+        _room?.localParticipant?.videoTrackEnabled = false;
         return;
       }
     }
@@ -421,6 +422,7 @@ class ConferenceRoom with ChangeNotifier {
           navigatorState.context,
           'Error enabling microphone. Please ensure you have granted permission.',
         );
+        _room?.localParticipant?.audioTrackEnabled = false;
         return;
       }
     }
