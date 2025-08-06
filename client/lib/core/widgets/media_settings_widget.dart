@@ -49,7 +49,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   }
 
   Future<void> initAll() async {
-    await _mediaService.init();
+    await _mediaService.init(
+      enableMic: true,
+      enableCamera: true,
+    );
     await updatePreview();
     if (!mounted) return;
     setState(() {});

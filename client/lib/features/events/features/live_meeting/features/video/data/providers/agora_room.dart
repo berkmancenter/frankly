@@ -112,7 +112,10 @@ class AgoraRoom with ChangeNotifier {
         appId: '76cd63ec061d4192ac03ff8cdde51395',
       ),
     );
-    await mediaDeviceService.init();
+    await mediaDeviceService.init(
+      enableCamera: enableAudio,
+      enableMic: enableVideo,
+    );
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
@@ -145,10 +148,7 @@ class AgoraRoom with ChangeNotifier {
           await conferenceRoom.toggleAudioEnabled(setEnabled: true);
         }
         if (enableVideo) {
-          await Future.delayed(
-            Duration(seconds: 1),
-            () async => conferenceRoom.toggleVideoEnabled(setEnabled: true),
-          );
+          await conferenceRoom.toggleVideoEnabled(setEnabled: true);
         }
 
         conferenceRoom.onLocalParticipantChanges();

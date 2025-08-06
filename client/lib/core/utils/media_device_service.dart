@@ -22,12 +22,26 @@ class MediaDeviceService {
   String? selectedAudioInputId;
   String? selectedVideoInputId;
 
-  bool micEnabled = true;
-  bool camEnabled = true;
+  bool micEnabled = false;
+  bool camEnabled = false;
 
-  Future<void> init() async {
+  Future<void> init({
+    required bool enableMic,
+    required bool enableCamera,
+  }) async {
     if (kIsWeb) {
       try {
+        micEnabled = enableMic;
+        camEnabled = enableCamera;
+
+        // Start by requesting permissions so that devices can be listed.
+        if (micEnabled) {
+          await Permission.microphone.request();
+        }
+        if (camEnabled) {
+          await Permission.camera.request();
+        }
+
         final devices =
             await html.window.navigator.mediaDevices?.enumerateDevices();
         if (devices != null) {
