@@ -127,7 +127,7 @@ class MediaDeviceService {
           audioConstraint =
               selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
                   ? {
-                      'deviceId': {'ideal': selectedAudioInputId},
+                      'deviceId': {'exact': selectedAudioInputId},
                     }
                   : true;
         }
@@ -144,7 +144,7 @@ class MediaDeviceService {
           videoConstraint =
               selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
                   ? {
-                      'deviceId': {'ideal': selectedVideoInputId},
+                      'deviceId': {'exact': selectedVideoInputId},
                     }
                   : true;
         }
