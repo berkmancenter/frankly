@@ -202,7 +202,18 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                         color:
                             context.theme.colorScheme.surfaceContainerHighest,
                       ),
-                      child: HtmlElementView(viewType: _viewType),
+                      child: _mediaService.videoInputs.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No video devices available.',
+                                style: context.theme.textTheme.bodyMedium!
+                                    .copyWith(
+                                  color: context
+                                      .theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            )
+                          : HtmlElementView(viewType: _viewType),
                     ),
                   ),
                   const SizedBox(height: 16),
