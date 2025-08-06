@@ -366,13 +366,15 @@ class ConferenceRoom with ChangeNotifier {
     await _room?.localParticipant?.updateAgoraAudioDevice();
   }
 
-  Future<void> selectVideoDevice({
+  Future<void> selectVideoPreviewDevice({
     required String deviceId,
-    Function? updateLocalPreview,
+    required Function updateLocalPreview,
   }) async {
     await mediaDeviceService?.selectVideoDevice(deviceId: deviceId);
-    // Update local preview first if provided.
-    updateLocalPreview?.call();
+    updateLocalPreview.call();
+  }
+
+  Future<void> selectVideoDevice({required String deviceId}) async {
     await _room?.localParticipant?.updateAgoraVideoDevice();
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   late html.VideoElement _videoElement;
   final String _viewType =
       'video-preview-element-${DateTime.now().millisecondsSinceEpoch}';
+
+  String? initialAudioDeviceId;
+  // Since this doesn't have a preview, just store current selection in a String.
+  String? selectedAudioDeviceId;
+  String? initialVideoDeviceId;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -53,6 +60,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       requestMic: true,
       requestCamera: true,
     );
+
+    initialAudioDeviceId = _mediaService.selectedAudioInputId;
+    selectedAudioDeviceId = _mediaService.selectedAudioInputId;
+
+    initialVideoDeviceId = _mediaService.selectedVideoInputId;
+
     await updatePreview();
     if (!mounted) return;
     setState(() {});
@@ -101,10 +114,9 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   // Prevent dropdown errors by first checking that the selected
                   // device still exists in available inputs.
                   value: _mediaService.audioInputs.any(
-                    (device) =>
-                        device.deviceId == _mediaService.selectedAudioInputId,
+                    (device) => device.deviceId == selectedAudioDeviceId,
                   )
-                      ? _mediaService.selectedAudioInputId
+                      ? selectedAudioDeviceId
                       : null,
                   items: _mediaService.audioInputs.map((device) {
                     return DropdownMenuItem<String>(
@@ -117,10 +129,9 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   }).toList(),
                   onChanged: (val) async {
                     if (val != null) {
-                      setState(() {});
-                      await widget.conferenceRoom
-                          .selectAudioDevice(deviceId: val);
-                      // No need to update preview for now as audio is not previewed.
+                      setState(() {
+                        selectedAudioDeviceId = val;
+                      });
                     }
                   },
                   hint: const Text('Select audio input'),
@@ -161,7 +172,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   onChanged: (val) async {
                     if (val != null) {
                       setState(() {});
-                      await widget.conferenceRoom.selectVideoDevice(
+                      await widget.conferenceRoom.selectVideoPreviewDevice(
                         deviceId: val,
                         updateLocalPreview: () async {
                           await updatePreview();
@@ -172,21 +183,52 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   hint: const Text('Select video input'),
                 ),
           const SizedBox(height: 24),
-          Text(
-            'Video Preview',
-            style: context.theme.textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              width: 320,
-              height: 240,
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.primary,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Video Preview',
+                    style: context.theme.textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      width: 320,
+                      height: 240,
+                      decoration: BoxDecoration(
+                        color:
+                            context.theme.colorScheme.surfaceContainerHighest,
+                      ),
+                      child: HtmlElementView(viewType: _viewType),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ActionButton(
+                    text: 'Save',
+                    onPressed: _mediaService.selectedVideoInputId ==
+                                initialVideoDeviceId &&
+                            selectedAudioDeviceId == initialAudioDeviceId
+                        ? null
+                        : () async {
+                            await widget.conferenceRoom.selectVideoDevice(
+                              deviceId: _mediaService.selectedVideoInputId!,
+                            );
+                            await widget.conferenceRoom.selectAudioDevice(
+                              deviceId: _mediaService.selectedAudioInputId!,
+                            );
+                            setState(() {
+                              initialVideoDeviceId =
+                                  _mediaService.selectedVideoInputId;
+                              initialAudioDeviceId = selectedAudioDeviceId;
+                            });
+                          },
+                  ),
+                ],
               ),
-              child: HtmlElementView(viewType: _viewType),
-            ),
+            ],
           ),
         ],
       ),
