@@ -68,7 +68,9 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
     await updatePreview();
     if (!mounted) return;
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> updatePreview() async {
@@ -171,13 +173,16 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   }).toList(),
                   onChanged: (val) async {
                     if (val != null) {
-                      setState(() {});
+                      setState(() {
+                        isLoading = true;
+                      });
                       await widget.conferenceRoom.selectVideoPreviewDevice(
                         deviceId: val,
-                        updateLocalPreview: () async {
-                          await updatePreview();
-                        },
+                        updateLocalPreview: updatePreview,
                       );
+                      setState(() {
+                        isLoading = false;
+                      });
                     }
                   },
                   hint: const Text('Select video input'),
@@ -213,7 +218,19 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 ),
                               ),
                             )
-                          : HtmlElementView(viewType: _viewType),
+                          : Stack(
+                              children: [
+                                HtmlElementView(viewType: _viewType),
+                                isLoading
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                          color: context
+                                              .theme.colorScheme.onPrimary,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
+                            ),
                     ),
                   ),
                   const SizedBox(height: 16),

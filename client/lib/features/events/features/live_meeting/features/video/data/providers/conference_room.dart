@@ -368,10 +368,10 @@ class ConferenceRoom with ChangeNotifier {
 
   Future<void> selectVideoPreviewDevice({
     required String deviceId,
-    required Function updateLocalPreview,
+    required Future<void> Function() updateLocalPreview,
   }) async {
     await mediaDeviceService?.selectVideoDevice(deviceId: deviceId);
-    updateLocalPreview.call();
+    await updateLocalPreview();
   }
 
   Future<void> selectVideoDevice({required String deviceId}) async {
