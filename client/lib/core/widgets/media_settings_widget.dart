@@ -19,72 +19,51 @@ class MediaSettingsWidget extends StatefulWidget {
 
 class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   final MediaDeviceService _mediaService = MediaDeviceService();
-  html.VideoElement? _videoElement;
+  late html.VideoElement _videoElement;
   final String _viewType =
       'video-preview-element-${DateTime.now().millisecondsSinceEpoch}';
-  bool _isMobileWeb = false;
 
   @override
   void initState() {
     super.initState();
-    _maybeInitializeVideoPreview();
-    init();
+    _videoElement = html.VideoElement()
+      ..id = _viewType
+      ..autoplay = true
+      ..muted = true
+      ..style.width = '100%'
+      ..style.height = '100%'
+      ..style.objectFit = 'cover'
+      ..style.transform = 'scaleX(-1)'; // Mirror view
+
+    ui_web.platformViewRegistry.registerViewFactory(
+      _viewType,
+      (int viewId) => _videoElement,
+    );
+    initAll();
   }
 
-  void _maybeInitializeVideoPreview() async {
-    // Get the user agent
-    final userAgent = html.window.navigator.userAgent.toLowerCase();
-
-    // Check if it contains mobile identifiers
-    _isMobileWeb = userAgent.contains('mobi') ||
-        userAgent.contains('android') ||
-        userAgent.contains('iphone') ||
-        userAgent.contains('ipad') ||
-        html.window.innerWidth! <= 768;
-
-    if (!_isMobileWeb) {
-      _videoElement = html.VideoElement()
-        ..id = _viewType
-        ..autoplay = true
-        ..muted = true
-        ..style.width = '100%'
-        ..style.height = '100%'
-        ..style.objectFit = 'cover'
-        ..style.transform = 'scaleX(-1)'; // Mirror view
-
-      ui_web.platformViewRegistry.registerViewFactory(
-        _viewType,
-        (int viewId) => _videoElement,
-      );
-    }
-  }
-
-  Future<void> init() async {
+  Future<void> initAll() async {
     await _mediaService.init();
-    if (_isMobileWeb) {
-      await updatePreview();
-      if (!mounted) return;
-      setState(() {});
-    }
+    await updatePreview();
+    if (!mounted) return;
+    setState(() {});
   }
 
   Future<void> updatePreview() async {
-    if (_isMobileWeb) return;
-
     try {
       await _mediaService.getUserMedia();
-      _videoElement?.srcObject = _mediaService.previewMediaStream;
+      _videoElement.srcObject = _mediaService.previewMediaStream;
     } catch (e) {
       print('Error updating preview: $e');
-      _videoElement?.srcObject = null;
+      _videoElement.srcObject = null;
     }
   }
 
   @override
   void dispose() {
     _mediaService.stopPreviewMediaStream();
-    _videoElement?.srcObject = null;
-    _videoElement?.remove();
+    _videoElement.srcObject = null;
+    _videoElement.remove();
     super.dispose();
   }
 
@@ -183,29 +162,23 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   },
                   hint: const Text('Select video input'),
                 ),
-          if (!_isMobileWeb)
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-                Text(
-                  'Video Preview',
-                  style: context.theme.textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    width: 320,
-                    height: 240,
-                    decoration: BoxDecoration(
-                      color: context.theme.colorScheme.primary,
-                    ),
-                    child: HtmlElementView(viewType: _viewType),
-                  ),
-                ),
-              ],
+          const SizedBox(height: 24),
+          Text(
+            'Video Preview',
+            style: context.theme.textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              width: 320,
+              height: 240,
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.primary,
+              ),
+              child: HtmlElementView(viewType: _viewType),
             ),
+          ),
         ],
       ),
     );
