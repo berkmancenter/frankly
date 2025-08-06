@@ -87,6 +87,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   @override
   void dispose() {
     _mediaService.stopPreviewMediaStream();
+    // If user doesn't save, we need to reset the video preview device
+    widget.conferenceRoom.selectVideoPreviewDevice(
+      deviceId: initialVideoDeviceId ?? '',
+      updateLocalPreview: updatePreview,
+    );
     _videoElement.srcObject = null;
     _videoElement.remove();
     super.dispose();
