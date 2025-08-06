@@ -42,9 +42,8 @@ class MembersTab extends StatefulWidget {
 }
 
 /*
-  * This class is used to display a list of memberships in a DataTable.
-  * It allows for sorting and filtering of memberships.
-  */
+  This class is used to display a list of memberships in a DataTable. It allows for sorting and filtering of memberships.
+*/
 
 // The DataTableSource implementation for the Memberships DataTable.
 class MembershipDataSource extends DataTableSource {

@@ -227,6 +227,7 @@
   "enterWaitingRoomTextOptional": "Ingrese el texto de la sala de espera (opcional)",
   "enterWordCloudPrompt": "Introducir indicación para nube de palabras",
   "error": "Error",
+  "ok": "Hecho",
   "or": "o",
   "errorLoadingCommunities": "Algo salió mal al cargar las comunidades. Por favor, actualice.",
   "errorLoadingEmail": "Error al cargar el Email.",

@@ -272,7 +272,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         actions: <Widget>[
           ActionButton(
-            text: 'Got it',
+            text: context.l10n.ok,
             onPressed: () {
               Navigator.of(context).pop();
             },
