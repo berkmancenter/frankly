@@ -422,15 +422,30 @@ class AgoraParticipant with ChangeNotifier {
   html.MediaStreamTrack? get screenshareTrack => null;
 
   Future<void> updateAgoraAudioDevice() async {
-    await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
-          mediaDeviceService.selectedAudioInputId ?? '',
-        );
+    final deviceId = mediaDeviceService.selectedAudioInputId;
+    try {
+      if (deviceId == null) {
+        throw Exception('No audio devices found.');
+      }
+
+      await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
+            deviceId,
+          );
+    } catch (e) {
+      print('Error setting device ID $deviceId. $e');
+    }
   }
 
   Future<void> updateAgoraVideoDevice() async {
-    await _rtcEngine.getVideoDeviceManager().setDevice(
-          mediaDeviceService.selectedVideoInputId ?? '',
-        );
+    final deviceId = mediaDeviceService.selectedVideoInputId;
+    try {
+      if (deviceId == null) {
+        throw Exception('No video devices found.');
+      }
+      await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
+    } catch (e) {
+      print('Error setting device ID $deviceId. $e');
+    }
   }
 
   Future<void> enableAudio({required bool setEnabled}) async {
