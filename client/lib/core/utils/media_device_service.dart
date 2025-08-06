@@ -22,23 +22,17 @@ class MediaDeviceService {
   String? selectedAudioInputId;
   String? selectedVideoInputId;
 
-  bool micEnabled = false;
-  bool camEnabled = false;
-
   Future<void> init({
-    required bool enableMic,
-    required bool enableCamera,
+    required bool requestMic,
+    required bool requestCamera,
   }) async {
     if (kIsWeb) {
       try {
-        micEnabled = enableMic;
-        camEnabled = enableCamera;
-
         // Start by requesting permissions so that devices can be listed.
-        if (micEnabled) {
+        if (requestMic) {
           await Permission.microphone.request();
         }
-        if (camEnabled) {
+        if (requestCamera) {
           await Permission.camera.request();
         }
 
@@ -116,54 +110,36 @@ class MediaDeviceService {
     await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
   }
 
-  void toggleMic(bool enabled) {
-    micEnabled = enabled;
-  }
-
-  void toggleCam(bool enabled) {
-    camEnabled = enabled;
-  }
-
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
     if (kIsWeb) {
-      if (!micEnabled && !camEnabled) {
-        return;
-      }
-
       final dynamic audioConstraint;
-      if (micEnabled) {
-        final micPermissions = await Permission.microphone.request();
-        if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
-          audioConstraint = false;
-        } else {
-          // If a specific audio input was selected, pass it into 'exact'.
-          audioConstraint =
-              selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
-                  ? {
-                      'deviceId': {'exact': selectedAudioInputId},
-                    }
-                  : true;
-        }
-      } else {
+
+      final micPermissions = await Permission.microphone.request();
+      if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
         audioConstraint = false;
+      } else {
+        // If a specific audio input was selected, pass it into 'exact'.
+        audioConstraint =
+            selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
+                ? {
+                    'deviceId': {'exact': selectedAudioInputId},
+                  }
+                : true;
       }
 
       final dynamic videoConstraint;
-      if (camEnabled) {
-        final camPermissions = await Permission.camera.request();
-        if (camPermissions.isDenied || camPermissions.isPermanentlyDenied) {
-          videoConstraint = false;
-        } else {
-          videoConstraint =
-              selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
-                  ? {
-                      'deviceId': {'exact': selectedVideoInputId},
-                    }
-                  : true;
-        }
-      } else {
+
+      final camPermissions = await Permission.camera.request();
+      if (camPermissions.isDenied || camPermissions.isPermanentlyDenied) {
         videoConstraint = false;
+      } else {
+        videoConstraint =
+            selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
+                ? {
+                    'deviceId': {'exact': selectedVideoInputId},
+                  }
+                : true;
       }
 
       final Map<String, dynamic> constraints = {

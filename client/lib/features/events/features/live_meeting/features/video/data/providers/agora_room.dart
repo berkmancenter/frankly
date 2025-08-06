@@ -113,8 +113,8 @@ class AgoraRoom with ChangeNotifier {
       ),
     );
     await mediaDeviceService.init(
-      enableCamera: enableAudio,
-      enableMic: enableVideo,
+      requestMic: enableAudio,
+      requestCamera: enableVideo,
     );
 
     _localParticipant = AgoraParticipant(
