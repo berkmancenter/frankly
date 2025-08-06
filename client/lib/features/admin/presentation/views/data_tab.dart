@@ -50,7 +50,8 @@ class _DataTabState extends State<DataTab> {
     super.dispose();
   }
 
-  Future<void> downloadRegistrantList(Event event, Iterable<Participant> participants) async {
+  Future<void> downloadRegistrantList(
+      Event event, Iterable<Participant> participants,) async {
     final communityProvider = CommunityProvider.read(context);
 
     final List<String> userIds = participants.map((p) => p.id).toList();
@@ -69,58 +70,7 @@ class _DataTabState extends State<DataTab> {
     await provider.generateRegistrationDataCsvFile(
       eventId: event.id,
       registrationData: members,
-    );  }
-
-  void pressedHandler({
-    required BuildContext context,
-    required Event event,
-    required Iterable<Participant> participants,
-    required bool eventInPast,
-    required bool registrantListSelected,
-    required bool recordingSelected,
-  }) async {
-    // If the event is in the past, download the recording
-    if (recordingSelected) {
-      await alertOnError(
-        context,
-        () async {
-          final idToken =
-              await userService.firebaseAuth.currentUser?.getIdToken();
-
-          var downloadTriggerUrl =
-              '${Environment.functionsUrlPrefix}/downloadRecording';
-
-          final response = await http.post(
-            Uri.parse(downloadTriggerUrl),
-            headers: {'Authorization': 'Bearer $idToken'},
-            body: {
-              'eventPath': event.fullPath,
-            },
-          );
-
-          final content = response.bodyBytes;
-          final blob = html.Blob([content]);
-          final blobUrl = html.Url.createObjectUrlFromBlob(blob);
-
-          final anchor = html.AnchorElement(href: blobUrl)
-            ..setAttribute('download', 'recording.zip');
-          anchor.click();
-
-          html.Url.revokeObjectUrl(blobUrl);
-        },
-      );
-      // return;
-    }
-
-    // If the selected data includes 'registrantList', download the registration data
-    if (registrantListSelected) {
-      await alertOnError(
-        context,
-        () async {
-          await downloadRegistrantList(event, participants);
-        },
-      );
-    }
+    );
   }
 
   Widget _buildDowloadButton(
@@ -135,44 +85,103 @@ class _DataTabState extends State<DataTab> {
         builder: (BuildContext context) {
           bool recordingSelected = true;
           bool registrantListSelected = true;
+
+          void pressedHandler() async {
+            // If the selected data includes 'recording', download the recording
+            if (recordingSelected) {
+              await alertOnError(
+                context,
+                () async {
+                  final idToken =
+                      await userService.firebaseAuth.currentUser?.getIdToken();
+
+                  var downloadTriggerUrl =
+                      '${Environment.functionsUrlPrefix}/downloadRecording';
+
+                  final response = await http.post(
+                    Uri.parse(downloadTriggerUrl),
+                    headers: {'Authorization': 'Bearer $idToken'},
+                    body: {
+                      'eventPath': event.fullPath,
+                    },
+                  );
+
+                  final content = response.bodyBytes;
+                  final blob = html.Blob([content]);
+                  final blobUrl = html.Url.createObjectUrlFromBlob(blob);
+
+                  final anchor = html.AnchorElement(href: blobUrl)
+                    ..setAttribute('download', 'recording.zip');
+                  anchor.click();
+
+                  html.Url.revokeObjectUrl(blobUrl);
+                },
+              );
+            }
+
+            // If registrant data selected, download it
+            if (registrantListSelected) {
+              await alertOnError(
+                context,
+                () async {
+                  await downloadRegistrantList(event, participants);
+                },
+              );
+            }
+            Navigator.of(context).pop();
+          }
+
           return AlertDialog(
-            title: const Text('Select Data to Download'),
-            surfaceTintColor: context.theme.colorScheme.surface,
+            title: Text(context.l10n.selectDataToDownload),
+            backgroundColor:  context.theme.colorScheme.outlineVariant,
+            contentPadding: EdgeInsets.zero,
+            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
             content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      CheckboxListTile(
-                        title: Text('Registrant List'),
-                        checkColor: Colors.white,
-                        fillColor:
-                            WidgetStatePropertyAll(context.theme.primaryColor),
-                        value: registrantListSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            registrantListSelected = !registrantListSelected;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Recording'),
-                        checkColor: Colors.white,
-                        fillColor:
-                            WidgetStatePropertyAll(context.theme.primaryColor),
-                        value: recordingSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            recordingSelected = value!;
-                          });
-                        },
-                      ),
-                    ],
+                // Wrap the content in a Material widget with white background
+                return Material(
+                  color: context.theme.colorScheme.surfaceBright,
+                  child: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        CheckboxListTile(
+                          title: Text(context.l10n.registrantList),
+                          checkColor: Colors.white,
+                          fillColor:
+                              WidgetStatePropertyAll(context.theme.primaryColor),
+                              controlAffinity: ListTileControlAffinity.leading,
+                          value: registrantListSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              registrantListSelected = !registrantListSelected;
+                            });
+                          },
+                        ),
+                        CheckboxListTile(
+                          title: Text(context.l10n.recording),
+                          checkColor: Colors.white,
+                          fillColor:
+                              WidgetStatePropertyAll(context.theme.primaryColor),
+                              controlAffinity: ListTileControlAffinity.leading,
+                          value: recordingSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              recordingSelected = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
             actions: <Widget>[
+              Padding(padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+               child:Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+
               ActionButton(
                 type: ActionButtonType.text,
                 text: context.l10n.cancel,
@@ -182,15 +191,10 @@ class _DataTabState extends State<DataTab> {
               ),
               ActionButton(
                 type: ActionButtonType.filled,
-                text: context.l10n.dataDownload,
-                onPressed: () => pressedHandler(
-                    context: context,
-                    event: event,
-                    participants: participants,
-                    eventInPast: eventInPast,
-                    registrantListSelected: registrantListSelected,
-                    recordingSelected: recordingSelected,),
+                text: context.l10n.download,
+                onPressed: (!recordingSelected && !registrantListSelected) ? null: () => pressedHandler(),
               ),
+               ],),),
             ],
           );
         },
@@ -209,7 +213,10 @@ class _DataTabState extends State<DataTab> {
       loadingHeight: 16,
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
-      onPressed: () => !eventInPast ? downloadRegistrantList(event, participants) : openAlert(),
+      // If event is upcoming, download registrant list, otherwise open alert dialog
+      onPressed: () => !eventInPast
+          ? downloadRegistrantList(event, participants)
+          : openAlert(),
       text: eventInPast
           ? context.l10n.dataDownload
           : context.l10n.registrationDataDownload,
