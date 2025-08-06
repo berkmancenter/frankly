@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/styles/styles.dart';
@@ -241,17 +242,26 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             selectedAudioDeviceId == initialAudioDeviceId
                         ? null
                         : () async {
-                            await widget.conferenceRoom.selectVideoDevice(
-                              deviceId: _mediaService.selectedVideoInputId!,
-                            );
-                            await widget.conferenceRoom.selectAudioDevice(
-                              deviceId: _mediaService.selectedAudioInputId!,
-                            );
-                            setState(() {
-                              initialVideoDeviceId =
-                                  _mediaService.selectedVideoInputId;
-                              initialAudioDeviceId = selectedAudioDeviceId;
-                            });
+                            try {
+                              await widget.conferenceRoom.selectVideoDevice(
+                                deviceId: _mediaService.selectedVideoInputId!,
+                              );
+                              await widget.conferenceRoom.selectAudioDevice(
+                                deviceId: _mediaService.selectedAudioInputId!,
+                              );
+                              setState(() {
+                                initialVideoDeviceId =
+                                    _mediaService.selectedVideoInputId;
+                                initialAudioDeviceId = selectedAudioDeviceId;
+                              });
+                            } catch (e) {
+                              if (!context.mounted) return;
+                              showRegularToast(
+                                context,
+                                'Error saving media settings. Please try again or contact support.',
+                                toastType: ToastType.failed,
+                              );
+                            }
                           },
                   ),
                 ],
