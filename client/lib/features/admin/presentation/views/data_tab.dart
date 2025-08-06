@@ -1,14 +1,10 @@
-import 'dart:math';
-
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/features/admin/utils/member_data.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
-import 'package:data_models/events/event_message.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -54,64 +50,150 @@ class _DataTabState extends State<DataTab> {
     super.dispose();
   }
 
+  Future<void> downloadRegistrantList(Event event, Iterable<Participant> participants) async {
+    final communityProvider = CommunityProvider.read(context);
+
+    final List<String> userIds = participants.map((p) => p.id).toList();
+    final members = await _userService.getMemberDetails(
+      membersList: userIds,
+      communityId: communityProvider.communityId,
+      eventPath: event.fullPath,
+    );
+
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+
+    provider.initialize();
+    await provider.generateRegistrationDataCsvFile(
+      eventId: event.id,
+      registrationData: members,
+    );  }
+
+  void pressedHandler({
+    required BuildContext context,
+    required Event event,
+    required Iterable<Participant> participants,
+    required bool eventInPast,
+    required bool registrantListSelected,
+    required bool recordingSelected,
+  }) async {
+    // If the event is in the past, download the recording
+    if (recordingSelected) {
+      await alertOnError(
+        context,
+        () async {
+          final idToken =
+              await userService.firebaseAuth.currentUser?.getIdToken();
+
+          var downloadTriggerUrl =
+              '${Environment.functionsUrlPrefix}/downloadRecording';
+
+          final response = await http.post(
+            Uri.parse(downloadTriggerUrl),
+            headers: {'Authorization': 'Bearer $idToken'},
+            body: {
+              'eventPath': event.fullPath,
+            },
+          );
+
+          final content = response.bodyBytes;
+          final blob = html.Blob([content]);
+          final blobUrl = html.Url.createObjectUrlFromBlob(blob);
+
+          final anchor = html.AnchorElement(href: blobUrl)
+            ..setAttribute('download', 'recording.zip');
+          anchor.click();
+
+          html.Url.revokeObjectUrl(blobUrl);
+        },
+      );
+      // return;
+    }
+
+    // If the selected data includes 'registrantList', download the registration data
+    if (registrantListSelected) {
+      await alertOnError(
+        context,
+        () async {
+          await downloadRegistrantList(event, participants);
+        },
+      );
+    }
+  }
+
   Widget _buildDowloadButton(
     Event event,
     Iterable<Participant> participants,
     bool eventInPast,
   ) {
-    pressedHandler() async {
-      // If the event is in the past, download the recording
-      if (eventInPast) {
-        await alertOnError(
-          context,
-          () async {
-            final idToken =
-                await userService.firebaseAuth.currentUser?.getIdToken();
-
-            var downloadTriggerUrl =
-                '${Environment.functionsUrlPrefix}/downloadRecording';
-
-            final response = await http.post(
-              Uri.parse(downloadTriggerUrl),
-              headers: {'Authorization': 'Bearer $idToken'},
-              body: {
-                'eventPath': event.fullPath,
+    Future<void> openAlert() {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          bool recordingSelected = true;
+          bool registrantListSelected = true;
+          return AlertDialog(
+            title: const Text('Select Data to Download'),
+            surfaceTintColor: context.theme.colorScheme.surface,
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      CheckboxListTile(
+                        title: Text('Registrant List'),
+                        checkColor: Colors.white,
+                        fillColor:
+                            WidgetStatePropertyAll(context.theme.primaryColor),
+                        value: registrantListSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            registrantListSelected = !registrantListSelected;
+                          });
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: Text('Recording'),
+                        checkColor: Colors.white,
+                        fillColor:
+                            WidgetStatePropertyAll(context.theme.primaryColor),
+                        value: recordingSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            recordingSelected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                );
               },
-            );
-
-            final content = response.bodyBytes;
-            final blob = html.Blob([content]);
-            final blobUrl = html.Url.createObjectUrlFromBlob(blob);
-
-            final anchor = html.AnchorElement(href: blobUrl)
-              ..setAttribute('download', 'recording.zip');
-            anchor.click();
-
-            html.Url.revokeObjectUrl(blobUrl);
-          },
-        );
-        return;
-      }
-
-      // If the event is not in the past, download the registration data
-      final communityProvider = CommunityProvider.read(context);
-
-      final List<String> userIds = participants.map((p) => p.id).toList();
-      final members = await _userService.getMemberDetails(
-        membersList: userIds,
-        communityId: communityProvider.communityId,
-        eventPath: event.fullPath,
-      );
-
-      EventProvider provider = EventProvider.fromEvent(
-        event,
-        communityProvider: communityProvider,
-      );
-
-      provider.initialize();
-      await provider.generateRegistrationDataCsvFile(
-        eventId: event.id,
-        registrationData: members,
+            ),
+            actions: <Widget>[
+              ActionButton(
+                type: ActionButtonType.text,
+                text: context.l10n.cancel,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ActionButton(
+                type: ActionButtonType.filled,
+                text: context.l10n.dataDownload,
+                onPressed: () => pressedHandler(
+                    context: context,
+                    event: event,
+                    participants: participants,
+                    eventInPast: eventInPast,
+                    registrantListSelected: registrantListSelected,
+                    recordingSelected: recordingSelected,),
+              ),
+            ],
+          );
+        },
       );
     }
 
@@ -127,7 +209,7 @@ class _DataTabState extends State<DataTab> {
       loadingHeight: 16,
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
-      onPressed: () => pressedHandler(),
+      onPressed: () => !eventInPast ? downloadRegistrantList(event, participants) : openAlert(),
       text: eventInPast
           ? context.l10n.dataDownload
           : context.l10n.registrationDataDownload,
