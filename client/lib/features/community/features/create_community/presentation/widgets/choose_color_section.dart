@@ -173,8 +173,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 30),
         SizedBox(
-          height: 400,
-          child: DefaultTabController(
+          height: 300,
+          child:
+           DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
             child: Column(
@@ -342,6 +343,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     return Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if(mobile) ...children,
           if (!mobile) ...[
@@ -361,7 +363,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function(Color) onChanged,
     required TextEditingController controller,
   }) =>
-      CustomTextField(
+      Expanded(
+          child: CustomTextField(
           labelText: label,
           maxLength: 6,
           hideCounter: true,
@@ -378,6 +381,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           },
           validator: (value) =>
               ThemeUtils.isColorValid(value) ? null : context.l10n.mustBeValidHexColor,
+        ),
         );
 
   Widget _buildErrorMessage() => Column(
