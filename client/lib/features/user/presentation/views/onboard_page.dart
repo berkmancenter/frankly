@@ -2,7 +2,6 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
@@ -338,15 +337,15 @@ class _OnboardPageState extends State<OnboardPage> {
           stepNum: numSteps - 1,
           totalSteps: numSteps,
         ),
-        CreateCommunityDialog(
-          community: community,
-          createFunction: (community) => _createCommunity(community, agreement),
-          updateFunction: _updateCommunityAttributes,
-          submitText: '${create ? 'Create' : 'Update'} and Continue',
-          compact: true,
-          showTitle: false,
-          showImageEdit: false,
-        ),
+        // CreateCommunityDialog(
+        //   community: community,
+        //   createFunction: (community) => _createCommunity(community, agreement),
+        //   updateFunction: _updateCommunityAttributes,
+        //   submitText: '${create ? 'Create' : 'Update'} and Continue',
+        //   compact: true,
+        //   showTitle: false,
+        //   showImageEdit: false,
+        // ),
       ],
     );
   }
@@ -365,14 +364,14 @@ class _OnboardPageState extends State<OnboardPage> {
           stepNum: numSteps,
           totalSteps: numSteps,
         ),
-        CreateCommunityDialog(
-          community: community,
-          updateFunction: _updateCommunityImages,
-          submitText: 'Update and Finish',
-          compact: true,
-          showTitle: false,
-          showAttributeEdit: false,
-        ),
+        // CreateCommunityDialog(
+        //   community: community,
+        //   updateFunction: _updateCommunityImages,
+        //   submitText: 'Update and Finish',
+        //   compact: true,
+        //   showTitle: false,
+        //   showAttributeEdit: false,
+        // ),
       ],
     );
   }
