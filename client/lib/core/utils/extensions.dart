@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ import 'package:data_models/chat/emotion.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_html/js.dart';
 
 export 'package:data_models/events/event.dart';
 export 'package:data_models/chat/emotion.dart';
@@ -169,18 +171,18 @@ extension MembershipStatusUIExtension on MembershipStatus {
     }
   }
 
-String get permissions {
+String permissions(BuildContext context) {
     switch (this) {
       case MembershipStatus.member:
-        return 'Someone who has joined the community. May attend events, create posts, and receive community announcements.';
+        return context.l10n.permissionsMemberDescription;
       case MembershipStatus.admin:
-        return 'Full control over community settings, member roles, and all content.';
+        return context.l10n.permissionsAdminDescription;
       case MembershipStatus.facilitator:
-        return 'Can schedule and host events based on existing templates.';
+        return context.l10n.permissionsFacilitatorDescription;
       case MembershipStatus.mod:
-        return 'Can create/edit templates and events, remove unwanted content, move participants between rooms, and respond to help requests.';
+        return context.l10n.permissionsModeratorDescription;
       case MembershipStatus.owner:
-        return 'All admin capabilities, Can add/remove other admin';
+        return context.l10n.permissionsOwnerDescription;
       default:
         return '';
     }

@@ -562,7 +562,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                         ),
                       ),
                       Text(
-                        value.permissions,
+                        value.permissions(context),
                         style: context.theme.textTheme.bodySmall,
                         softWrap: true,
                         maxLines: 3,
