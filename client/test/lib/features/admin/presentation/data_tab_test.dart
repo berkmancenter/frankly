@@ -19,11 +19,11 @@ import '../../../../mocked_classes.mocks.dart';
 void main() {
 
   final mockClockService = MockClockService();
+  final  mockCommunityProvider = MockCommunityProvider();
   when(mockClockService.now()).thenReturn(DateTime.now());
   GetIt.instance.registerSingleton<ClockService>(mockClockService);
   
   late List<MockEvent> mockAllEvents;
-  late MockCommunityProvider mockCommunityProvider;
 
   setUp(() {
     mockAllEvents = List.generate(
@@ -43,7 +43,6 @@ void main() {
           ) as MockEvent,
         );
 
-    mockCommunityProvider = MockCommunityProvider();
   });
 
   Widget createWidgetUnderTest() {
