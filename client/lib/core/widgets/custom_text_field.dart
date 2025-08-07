@@ -64,7 +64,7 @@ class CustomTextField extends StatefulWidget {
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
 
-  /// Allow for custom suffix icon
+  /// Allow for custom prefix icon
   final Widget? prefixIcon;
 
   /// Allow for custom suffix icon
