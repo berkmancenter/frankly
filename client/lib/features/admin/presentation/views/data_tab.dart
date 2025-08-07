@@ -13,7 +13,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/config/environment.dart';
-
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
