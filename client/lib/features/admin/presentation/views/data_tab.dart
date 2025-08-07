@@ -51,7 +51,9 @@ class _DataTabState extends State<DataTab> {
   }
 
   Future<void> downloadRegistrantList(
-      Event event, Iterable<Participant> participants,) async {
+    Event event,
+    Iterable<Participant> participants,
+  ) async {
     final communityProvider = CommunityProvider.read(context);
 
     final List<String> userIds = participants.map((p) => p.id).toList();
@@ -131,15 +133,14 @@ class _DataTabState extends State<DataTab> {
             Navigator.of(context).pop();
           }
 
-          return AlertDialog(
-            title: Text(context.l10n.selectDataToDownload),
-            backgroundColor:  context.theme.colorScheme.outlineVariant,
-            contentPadding: EdgeInsets.zero,
-            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                // Wrap the content in a Material widget with white background
-                return Material(
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return AlertDialog(
+                title: Text(context.l10n.selectDataToDownload),
+                backgroundColor: context.theme.colorScheme.outlineVariant,
+                contentPadding: EdgeInsets.zero,
+                titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
+                content: Material(
                   color: context.theme.colorScheme.surfaceBright,
                   child: SingleChildScrollView(
                     child: ListBody(
@@ -147,9 +148,9 @@ class _DataTabState extends State<DataTab> {
                         CheckboxListTile(
                           title: Text(context.l10n.registrantList),
                           checkColor: Colors.white,
-                          fillColor:
-                              WidgetStatePropertyAll(context.theme.primaryColor),
-                              controlAffinity: ListTileControlAffinity.leading,
+                          fillColor: WidgetStatePropertyAll(
+                              context.theme.primaryColor,),
+                          controlAffinity: ListTileControlAffinity.leading,
                           value: registrantListSelected,
                           onChanged: (value) {
                             setState(() {
@@ -160,9 +161,9 @@ class _DataTabState extends State<DataTab> {
                         CheckboxListTile(
                           title: Text(context.l10n.recording),
                           checkColor: Colors.white,
-                          fillColor:
-                              WidgetStatePropertyAll(context.theme.primaryColor),
-                              controlAffinity: ListTileControlAffinity.leading,
+                          fillColor: WidgetStatePropertyAll(
+                              context.theme.primaryColor,),
+                          controlAffinity: ListTileControlAffinity.leading,
                           value: recordingSelected,
                           onChanged: (value) {
                             setState(() {
@@ -173,29 +174,34 @@ class _DataTabState extends State<DataTab> {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-            actions: <Widget>[
-              Padding(padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-               child:Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-
-              ActionButton(
-                type: ActionButtonType.text,
-                text: context.l10n.cancel,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ActionButton(
-                type: ActionButtonType.filled,
-                text: context.l10n.download,
-                onPressed: (!recordingSelected && !registrantListSelected) ? null: () => pressedHandler(),
-              ),
-               ],),),
-            ],
+                ),
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ActionButton(
+                          type: ActionButtonType.text,
+                          text: context.l10n.cancel,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        ActionButton(
+                          type: ActionButtonType.filled,
+                          text: context.l10n.download,
+                          onPressed:
+                              (!recordingSelected && !registrantListSelected)
+                                  ? null
+                                  : () => pressedHandler(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           );
         },
       );
