@@ -1,12 +1,13 @@
+import 'package:client/core/data/services/clock_service.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:client/features/admin/presentation/views/data_tab.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/firestore_utils.dart';
-import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
 
 import '../../../../mocked_classes.mocks.dart';
@@ -16,6 +17,11 @@ import '../../../../mocked_classes.mocks.dart';
   CommunityProvider,
 ])
 void main() {
+
+  final mockClockService = MockClockService();
+  when(mockClockService.now()).thenReturn(DateTime.now());
+  GetIt.instance.registerSingleton<ClockService>(mockClockService);
+  
   late List<MockEvent> mockAllEvents;
   late MockCommunityProvider mockCommunityProvider;
 
@@ -25,7 +31,7 @@ void main() {
           (i) => Event(
             id: 'test-event-${i + 1}',
             title: 'Test Event ${i + 1}',
-            scheduledTime: clockService.now().add(Duration(days: i)),
+            scheduledTime: mockClockService.now().add(Duration(days: i)),
             communityId: mockCommunityProvider.communityId,
             status: EventStatus.active,
             isPublic: true,
