@@ -144,7 +144,6 @@ class _OnboardPageState extends State<OnboardPage> {
         text: text,
         onPressed: onNextPressed,
         color: Theme.of(context).primaryColor,
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.left,
       ),
     );
   }
@@ -200,7 +199,6 @@ class _OnboardPageState extends State<OnboardPage> {
                   cloudFunctionsPaymentsService,
                 ),
               ),
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
     );
   }
 

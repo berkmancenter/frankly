@@ -52,8 +52,6 @@ class MeetingRating extends StatefulWidget {
                     ),
                     ActionButton(
                       onPressed: () => Navigator.of(innerContext).pop(),
-                      sendingIndicatorAlign:
-                          ActionButtonSendingIndicatorAlign.none,
                       text: 'Next',
                     ),
                   ],

@@ -304,8 +304,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
                           text: 'Enter Event',
                           onPressed: () => _joinEvent(enterMeeting: true),
                           height: 65,
-                          sendingIndicatorAlign:
-                              ActionButtonSendingIndicatorAlign.none,
                         ),
                       ],
                     ),

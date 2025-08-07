@@ -250,7 +250,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
   List<Widget> _buildSignIn() {
     double screenWidth = MediaQuery.of(context).size.width;
     double googleButtonWidth = double.infinity;
-    if (widget.inModal && screenWidth <= 375 ) {
+    if (widget.inModal && screenWidth <= 375) {
       googleButtonWidth = 80;
     }
 
@@ -395,7 +395,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     () => _formError = code,
                   ),
                 ),
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 type: ActionButtonType.filled,
                 expand: true,
                 textColor: Colors.white,
