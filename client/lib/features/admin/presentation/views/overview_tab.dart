@@ -5,6 +5,7 @@ import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/utils/validation_utils.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/data/providers/community_tag_provider.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';

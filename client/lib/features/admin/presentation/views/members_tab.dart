@@ -20,7 +20,7 @@ import 'package:data_models/community/membership.dart';
 import 'package:data_models/community/membership_request.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/iterables.dart';
- 
+
 extension StringExtension on String {
   String capitalize() {
     if (isNullOrEmpty(this)) return this;
@@ -194,48 +194,47 @@ class MembersTabState extends State<MembersTab> {
   Widget _buildSearchBar(List<Membership> memberships) {
     return Flexible(
       child: Container(
-      constraints: BoxConstraints(maxWidth: 450),
-      child: Row(
-        children: [
-        Expanded(
-          child:
-           CustomTextField(
-          hintText: 'Filter member list by name',
-          prefixIcon: Icon(Icons.search),
-          onChanged: (value) {
-            setState(() {
-            _currentSearch = value;
-            _loadUsersFuture ??= Future.wait([
-              _loadAllUserInfoDetails(memberships),
-              ...memberships.map(
-              (m) => UserAdminDetailsProvider.forUser(m.userId)
-                .getInfoFuture(
-                communityId:
-                  CommunityProvider.read(context).communityId,
+        constraints: BoxConstraints(maxWidth: 450),
+        child: Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                hintText: 'Filter member list by name',
+                prefixIcon: Icon(Icons.search),
+                onChanged: (value) {
+                  setState(() {
+                    _currentSearch = value;
+                    _loadUsersFuture ??= Future.wait([
+                      _loadAllUserInfoDetails(memberships),
+                      ...memberships.map(
+                        (m) => UserAdminDetailsProvider.forUser(m.userId)
+                            .getInfoFuture(
+                          communityId:
+                              CommunityProvider.read(context).communityId,
+                        ),
+                      ),
+                    ]);
+                  });
+                },
               ),
-              ),
-            ]);
-            });
-          },
-          ),
-        ),
-        SizedBox(
-          width: 80,
-          child: FutureBuilder(
-          future: _loadUsersFuture,
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CustomLoadingIndicator(),
-            );
-            }
+            ),
+            SizedBox(
+              width: 80,
+              child: FutureBuilder(
+                future: _loadUsersFuture,
+                builder: (_, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CustomLoadingIndicator(),
+                    );
+                  }
 
-            return SizedBox.shrink();
-          },
-          ),
+                  return SizedBox.shrink();
+                },
+              ),
+            ),
+          ],
         ),
-        ],
-      ),
       ),
     );
   }
@@ -250,42 +249,61 @@ class MembersTabState extends State<MembersTab> {
           label: Row(
             children: [
               Text('Role'),
-              IconButton(
-                icon: Icon(Icons.info_outline),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        actionsAlignment: MainAxisAlignment.center,
-                        actionsOverflowDirection: VerticalDirection.down,
-                        actionsPadding:
-                            const EdgeInsets.symmetric(vertical: 16.0),
-                        semanticLabel: 'Role Permissions Help Center Dialog',
-                        content: Text(
-                            context.l10n.memberRolesHelpMessage,),
-                        actions: [
-                          TextButton(
-                            onPressed: () => launch(Environment.helpCenterUrl),
-                            child: Text('${context.l10n.goTo} ${context.l10n.helpCenter}', style: TextStyle(fontWeight: FontWeight.bold)),
+              Tooltip(
+                enableTapToDismiss: false,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.24),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                      offset: Offset(
+                        2,
+                        2,
+                      ),
+                    ),
+                  ],
+                  color: context.theme.colorScheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(12),
+                  
+                ),
+                richMessage: TextSpan(
+                  children: <InlineSpan>[
+                    WidgetSpan(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                           context.l10n.rolesTooltip,
+                            style: TextStyle(
+                              color: context.theme.colorScheme.onSurfaceVariant,
+                              fontSize: 14,
+                            ),
                           ),
-                          SizedBox(width: 40),
+                          SizedBox(height: 8),
                           TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(context.l10n.close),
+                            onPressed: () => launch(Environment.helpCenterManagingCommunityUrl),
+                            child: Text(
+                              '${context.l10n.goTo} ${context.l10n.seeManagingYourCommunity}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
-                      );
-                    },
-                  );
-                },
+                      ),
+                    ),
+                  ],
+                ),
+                // The child widget that triggers the tooltip
+                child: IconButton(
+                  icon: Icon(Icons.info_outline),
+                  onPressed: () {},
+                ),
               ),
             ],
           ),
         ),
-        
       ],
       source: dataSource,
     );
@@ -343,7 +361,6 @@ class MembersTabState extends State<MembersTab> {
             errorMessage: context.l10n.errorLoadingMemberships,
             builder: (context, membershipList) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               children: [
                 _buildSearchBar(membershipList ?? []),
                 if (!isMobile)
@@ -532,7 +549,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
             )
             .toList(),
         items: MembershipStatus.values
-        // Exclude nonmember, attendee, and banned statuses
+            // Exclude nonmember, attendee, and banned statuses
             .where(
               (value) =>
                   value.name != 'nonmember' &&
