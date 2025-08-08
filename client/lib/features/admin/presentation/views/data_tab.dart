@@ -222,9 +222,7 @@ class _DataTabState extends State<DataTab> {
       onPressed: () => !eventInPast
           ? downloadRegistrantList(event, participants)
           : openAlert(),
-      text: eventInPast
-          ? context.l10n.dataDownload
-          : context.l10n.registrationDataDownload,
+      text: context.l10n.dataDownload,
     );
   }
 

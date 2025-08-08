@@ -15,12 +15,12 @@ class CreateCommunityTextFields extends StatefulWidget {
   final void Function(String)? onAboutChanged;
   final FocusNode? nameFocus;
   final FocusNode? aboutFocus;
+  final FocusNode? taglineFocus;
   final Community community;
   final bool compact;
   final bool showAllFields;
   final bool autoGenerateUrl;
-
-  final FocusNode? taglineFocus;
+  final BorderType borderType;
   const CreateCommunityTextFields({
     this.showChooseCustomDisplayId = false,
     Key? key,
@@ -35,6 +35,7 @@ class CreateCommunityTextFields extends StatefulWidget {
     this.compact = false,
     this.showAllFields = false,
     this.autoGenerateUrl = true,
+    this.borderType = BorderType.underline,
   }) : super(key: key);
 
   @override
@@ -77,6 +78,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           controller: _nameController,
           maxLength: titleMaxCharactersLength,
           label: context.l10n.name,
+          borderType: widget.borderType,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
             if(widget.autoGenerateUrl){
@@ -99,6 +101,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
           label: context.l10n.uniqueUrlDisplayNameOptional,
+          borderType: widget.borderType,
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: _displayIdController.text.isNotEmpty
@@ -114,8 +117,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           Column(
             children: [
               _buildCreateCommunityTextField(
-                hint: 'Ex: Protecting the earth from all invaders',
-                label: 'Tagline',
+                hint: context.l10n.taglineHint,
+                label: context.l10n.tagline,
+                borderType: widget.borderType,
                 initialValue: widget.community.tagLine,
                 onChanged: widget.onTaglineChanged,
                 maxLength: taglineMaxCharactersLength,
@@ -130,8 +134,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 height: widget.compact ? 0 : 10,
               ),
               _buildCreateCommunityTextField(
-                label: 'About',
-                hint: 'Add more detail as to the goals of this community',
+                hint: context.l10n.communityDescriptionHint,
+                label: context.l10n.communityDescription,
+                borderType: widget.borderType,
                 initialValue: widget.community.description,
                 onChanged: widget.onAboutChanged,
                 focus: widget.aboutFocus,
@@ -162,13 +167,14 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     FocusNode? focus,
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
+    BorderType borderType = BorderType.underline,
   }) =>
       Container(
         alignment: Alignment.topCenter,
         height: containerHeight,
         child: CustomTextField(
           controller: controller,
-          borderType: BorderType.underline,
+          borderType: borderType,
           counterAlignment: Alignment.topRight,
           focusNode: focus,
           maxLength: maxLength,

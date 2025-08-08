@@ -96,14 +96,15 @@ class CommunityAdminState extends State<CommunityAdmin>
             style: context.theme.textTheme.headlineMedium,
             textAlign: TextAlign.left,
           ),
-          SizedBox(height: 30),
           SizedBox(
-            height: 600,
+            height: mobile ? 1200 : 1000,
             child: DefaultTabController(
               length: 4,
               child: Scaffold(
                 appBar: AppBar(
+                  toolbarHeight: 20,
                   bottom: TabBar(
+                    indicatorSize: TabBarIndicatorSize.tab,
                     tabs: [
                       Tab(
                         child: _buildTab(
