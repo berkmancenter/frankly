@@ -201,7 +201,10 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         ],
       );
     } else {
-      return _buildInitializedVideo(videoUrl);
+      // Replace '/upload' in the URL with '/upload/q_auto:good' for Cloudinary optimization, if not present
+      final optimizedUrl = videoUrl.replaceFirst('/upload', '/upload/q_auto:good');
+      return _buildInitializedVideo(!videoUrl.contains('/upload/q_auto:good') ? optimizedUrl : videoUrl);
+
     }
   }
 
