@@ -248,17 +248,22 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                         ? null
                         : () async {
                             try {
-                              await widget.conferenceRoom.selectVideoDevice(
-                                deviceId: _mediaService.selectedVideoInputId!,
-                              );
-                              await widget.conferenceRoom.selectAudioDevice(
-                                deviceId: _mediaService.selectedAudioInputId!,
-                              );
-                              setState(() {
+                              if (_mediaService.selectedVideoInputId !=
+                                  initialVideoDeviceId) {
+                                await widget.conferenceRoom.selectVideoDevice(
+                                  deviceId: _mediaService.selectedVideoInputId!,
+                                );
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
+                              }
+                              if (selectedAudioDeviceId !=
+                                  initialAudioDeviceId) {
+                                await widget.conferenceRoom.selectAudioDevice(
+                                  deviceId: _mediaService.selectedAudioInputId!,
+                                );
                                 initialAudioDeviceId = selectedAudioDeviceId;
-                              });
+                              }
+                              setState(() {});
                             } catch (e) {
                               if (!context.mounted) return;
                               showRegularToast(
