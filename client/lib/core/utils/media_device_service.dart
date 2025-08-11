@@ -113,11 +113,11 @@ class MediaDeviceService {
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
     if (kIsWeb) {
-      final dynamic audioConstraint;
+      final Map<String, dynamic>? audioConstraint;
 
       final micPermissions = await Permission.microphone.request();
       if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
-        audioConstraint = false;
+        audioConstraint = null;
       } else {
         // If a specific audio input was selected, pass it into 'exact'.
         audioConstraint =
@@ -125,34 +125,27 @@ class MediaDeviceService {
                 ? {
                     'deviceId': {'exact': selectedAudioInputId},
                   }
-                : true;
+                : null;
       }
 
-      final dynamic videoConstraint;
+      final Map<String, dynamic>? videoConstraint;
 
       final camPermissions = await Permission.camera.request();
       if (camPermissions.isDenied || camPermissions.isPermanentlyDenied) {
-        videoConstraint = false;
+        videoConstraint = null;
       } else {
         videoConstraint =
             selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
                 ? {
                     'deviceId': {'exact': selectedVideoInputId},
                   }
-                : true;
+                : null;
       }
 
       final Map<String, dynamic> constraints = {
         if (audioConstraint != null) 'audio': audioConstraint,
         if (videoConstraint != null) 'video': videoConstraint,
       };
-
-      // If both are false, return null or handle as an error, as getUserMedia might fail.
-      if (audioConstraint == false && videoConstraint == false) {
-        loggingService
-            .log('Both audio and video are disabled. Cannot getUserMedia.');
-        return;
-      }
 
       try {
         final newMediaStream =
