@@ -242,16 +242,19 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   const SizedBox(height: 16),
                   ActionButton(
                     text: 'Save',
-                    onPressed: _mediaService.selectedVideoInputId ==
+                    onPressed: (_mediaService.selectedVideoInputId ==
                                 initialVideoDeviceId &&
-                            selectedAudioDeviceId == initialAudioDeviceId
+                            selectedAudioDeviceId == initialAudioDeviceId)
                         ? null
                         : () async {
                             try {
                               if (_mediaService.selectedVideoInputId !=
                                   initialVideoDeviceId) {
-                                await widget.conferenceRoom.selectVideoDevice(
-                                  deviceId: _mediaService.selectedVideoInputId!,
+                                await widget.conferenceRoom.toggleVideoEnabled(
+                                  setEnabled: false,
+                                );
+                                await widget.conferenceRoom.toggleVideoEnabled(
+                                  setEnabled: true,
                                 );
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
@@ -259,7 +262,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               if (selectedAudioDeviceId !=
                                   initialAudioDeviceId) {
                                 await widget.conferenceRoom.selectAudioDevice(
-                                  deviceId: _mediaService.selectedAudioInputId!,
+                                  deviceId: selectedAudioDeviceId!,
+                                );
+                                await widget.conferenceRoom.toggleAudioEnabled(
+                                  setEnabled: false,
+                                );
+                                await widget.conferenceRoom.toggleAudioEnabled(
+                                  setEnabled: true,
                                 );
                                 initialAudioDeviceId = selectedAudioDeviceId;
                               }
