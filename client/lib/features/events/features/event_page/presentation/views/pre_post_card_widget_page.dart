@@ -319,7 +319,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         finalisedUrl.isEmpty ? 'URL invalid' : finalisedUrl;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(width: 10),
         _buildEnterButtonTextField(urlIndex),
@@ -421,6 +421,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ..._buildPrePostCardAttributes(urlIndex),
                   if (availableAttributeTypes.isNotEmpty)
