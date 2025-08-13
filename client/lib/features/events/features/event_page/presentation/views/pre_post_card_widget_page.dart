@@ -640,15 +640,20 @@ class AttributeOption extends StatefulWidget {
 }
 
 class _AttributeOptionState extends State<AttributeOption> {
-  late bool isEditMode;
+  bool isEditMode = false;
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
-    isEditMode = isNullOrEmpty(widget.attribute.queryParam);
-    _textController = TextEditingController(text: widget.attribute.queryParam);
+    if (isNullOrEmpty(widget.attribute.queryParam)) {
+      isEditMode = true;
+      _textController = TextEditingController(text: widget.attribute.type.name);
+    } else {
+      _textController =
+          TextEditingController(text: widget.attribute.queryParam);
+    }
   }
 
   @override
