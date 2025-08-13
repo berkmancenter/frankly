@@ -659,22 +659,19 @@ class _AttributeOptionState extends State<AttributeOption> {
   }
 
   Widget _buildAttributeSelectedView() {
-    return ActionButton(
-      onPressed: () {
-        setState(() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ActionButton(
+        onPressed: () => setState(() {
           isEditMode = true;
-        });
-      },
-      text: widget.attribute.type.text,
-      color: context.theme.colorScheme.onPrimary,
-      icon: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Icon(
+        }),
+        text: widget.attribute.type.text,
+        color: context.theme.colorScheme.surfaceContainer,
+        textColor: context.theme.colorScheme.onSurface,
+        icon: Icon(
           Icons.edit,
         ),
       ),
-      padding: EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(30),
     );
   }
 
