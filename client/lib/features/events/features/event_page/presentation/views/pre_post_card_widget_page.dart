@@ -353,7 +353,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         SizedBox(height: 15),
         if (attributes.isNotEmpty) ..._buildPrePostCardAttributes(urlIndex),
         if (availableAttributeTypes.isNotEmpty)
-          _buildAddURLParameterButton(urlIndex),
+          ActionButton(
+            onPressed: () => _presenter.addNewURLParamRow(urlIndex),
+            icon: Icon(Icons.add),
+            text: 'Add URL Parameter',
+          ),
       ],
     );
   }
@@ -420,7 +424,11 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                 children: [
                   ..._buildPrePostCardAttributes(urlIndex),
                   if (availableAttributeTypes.isNotEmpty)
-                    _buildAddURLParameterButton(urlIndex),
+                    ActionButton(
+                      onPressed: () => _presenter.addNewURLParamRow(urlIndex),
+                      icon: Icon(Icons.add),
+                      text: 'Add URL Parameter',
+                    ),
                 ],
               ),
             ),
@@ -585,42 +593,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return SizedBox.shrink();
-  }
-
-  Widget _buildAddURLParameterButton(int urlIndex) {
-    // Complex UI in order to keep button on most left side and have nice splash while clicking it.
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            customBorder:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            onTap: () => _presenter.addNewURLParamRow(urlIndex),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.add,
-                    size: 20,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Add URL Parameter',
-                    style: context.theme.textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildDeleteActionLink(int urlIndex) {
