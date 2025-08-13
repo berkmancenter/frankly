@@ -247,6 +247,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             selectedAudioDeviceId == initialAudioDeviceId)
                         ? null
                         : () async {
+                            final savedInitialVideoDeviceId =
+                                initialVideoDeviceId;
+                            final savedSelectedAudioDeviceId =
+                                initialAudioDeviceId;
+
                             try {
                               if (_mediaService.selectedVideoInputId !=
                                   initialVideoDeviceId) {
@@ -275,6 +280,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               setState(() {});
                             } catch (e) {
                               if (!context.mounted) return;
+                              // Reset to initial values if save fails
+                              initialVideoDeviceId = savedInitialVideoDeviceId;
+                              initialAudioDeviceId = savedSelectedAudioDeviceId;
+                              setState(() {});
                               showRegularToast(
                                 context,
                                 'Error saving media settings. Please try again or contact support.',
