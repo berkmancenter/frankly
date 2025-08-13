@@ -353,10 +353,13 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         SizedBox(height: 15),
         if (attributes.isNotEmpty) ..._buildPrePostCardAttributes(urlIndex),
         if (availableAttributeTypes.isNotEmpty)
-          ActionButton(
-            onPressed: () => _presenter.addNewURLParamRow(urlIndex),
-            icon: Icon(Icons.add),
-            text: 'Add URL Parameter',
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: ActionButton(
+              onPressed: () => _presenter.addNewURLParamRow(urlIndex),
+              icon: Icon(Icons.add),
+              text: 'Add URL Parameter',
+            ),
           ),
       ],
     );
@@ -425,10 +428,13 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
                 children: [
                   ..._buildPrePostCardAttributes(urlIndex),
                   if (availableAttributeTypes.isNotEmpty)
-                    ActionButton(
-                      onPressed: () => _presenter.addNewURLParamRow(urlIndex),
-                      icon: Icon(Icons.add),
-                      text: 'Add URL Parameter',
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: ActionButton(
+                        onPressed: () => _presenter.addNewURLParamRow(urlIndex),
+                        icon: Icon(Icons.add),
+                        text: 'Add URL Parameter',
+                      ),
                     ),
                 ],
               ),
@@ -502,7 +508,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             availableAttributeTypes = _presenter
                 .getAvailableAttributeTypes(prePostUrls[urlIndex].attributes);
           }
-
           return AttributeOption(
             key: Key(attribute.type.toString()),
             attribute: attribute,
@@ -537,7 +542,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           );
         },
       ),
-      SizedBox(height: 20),
+      SizedBox(height: 8),
     ];
   }
 
