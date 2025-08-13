@@ -154,6 +154,13 @@ class MediaDeviceService {
       } catch (e) {
         loggingService.log('Error getting user media: $e');
         _previewMediaStream = null;
+        // Clear stored device preferences if getUserMedia fails.
+        if (selectedAudioInputId != null) {
+          await sharedPreferencesService.clearDefaultCameraId();
+        }
+        if (selectedVideoInputId != null) {
+          await sharedPreferencesService.clearDefaultCameraId();
+        }
       }
     } else {
       throw UnimplementedError(
