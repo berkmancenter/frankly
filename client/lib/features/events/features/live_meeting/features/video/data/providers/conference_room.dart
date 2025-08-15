@@ -361,23 +361,6 @@ class ConferenceRoom with ChangeNotifier {
     }
   }
 
-  Future<void> selectAudioDevice({required String deviceId}) async {
-    await mediaDeviceService?.selectAudioDevice(deviceId: deviceId);
-    await _room?.localParticipant?.updateAgoraAudioDevice();
-  }
-
-  Future<void> selectVideoPreviewDevice({
-    required String deviceId,
-    required Future<void> Function() updateLocalPreview,
-  }) async {
-    await mediaDeviceService?.selectVideoDevice(deviceId: deviceId);
-    await updateLocalPreview();
-  }
-
-  Future<void> selectVideoDevice({required String deviceId}) async {
-    await _room?.localParticipant?.updateAgoraVideoDevice();
-  }
-
   Future<void> toggleVideoEnabled({
     bool? setEnabled,
     bool updateProvider = true,

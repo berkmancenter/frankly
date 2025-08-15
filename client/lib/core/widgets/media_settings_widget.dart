@@ -85,13 +85,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     _mediaService.stopPreviewMediaStream();
     // If user doesn't save, we need to reset the video preview device
-    widget.conferenceRoom.selectVideoPreviewDevice(
+    await _mediaService.selectVideoDevice(
       deviceId: initialVideoDeviceId ?? '',
-      updateLocalPreview: updatePreview,
     );
+    await updatePreview();
     _videoElement.srcObject = null;
     _videoElement.remove();
     super.dispose();
@@ -182,10 +182,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       setState(() {
                         isLoading = true;
                       });
-                      await widget.conferenceRoom.selectVideoPreviewDevice(
+                      await _mediaService.selectVideoDevice(
                         deviceId: val,
-                        updateLocalPreview: updatePreview,
                       );
+                      await updatePreview();
                       setState(() {
                         isLoading = false;
                       });
@@ -266,7 +266,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               }
                               if (selectedAudioDeviceId !=
                                   initialAudioDeviceId) {
-                                await widget.conferenceRoom.selectAudioDevice(
+                                await _mediaService.selectAudioDevice(
                                   deviceId: selectedAudioDeviceId!,
                                 );
                                 await widget.conferenceRoom.toggleAudioEnabled(
