@@ -598,7 +598,6 @@ class _SelectableNavigationButton extends StatelessWidget {
     return ActionButton(
       type: ActionButtonType.text,
       onPressed: onTap,
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       child: Container(
         decoration: isSelected
             ? BoxDecoration(

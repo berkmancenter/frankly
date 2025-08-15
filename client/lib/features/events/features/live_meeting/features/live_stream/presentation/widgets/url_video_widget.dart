@@ -62,9 +62,16 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
 
   String get encodedUrl {
     String playbackUrl = widget.playbackUrl;
-    if (playbackUrl.startsWith('http://') &&
-        playbackUrl.contains('cloudinary')) {
-      playbackUrl = playbackUrl.replaceFirst('http://', 'https://');
+    if (playbackUrl.contains('cloudinary')) {
+      if (playbackUrl.startsWith('http://')) {
+        playbackUrl = playbackUrl.replaceFirst('http://', 'https://');
+      }
+
+      // Replace '/upload' in the URL with '/upload/q_auto:good' for Cloudinary optimization, if not present
+      if (!playbackUrl.contains('/upload/q_auto:good')) {
+        playbackUrl = playbackUrl.replaceFirst('/upload', '/upload/q_auto:good');
+      }
+
     }
     final encodedLink = Uri.encodeQueryComponent(playbackUrl);
     String url = './stream/playback.html?url=$encodedLink'

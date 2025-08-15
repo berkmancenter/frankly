@@ -11,7 +11,7 @@ class CustomLoadingIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: CircularProgressIndicator(
-        strokeWidth: 4.0,
+        strokeWidth: 3.0,
         color: color,
       ),
     );

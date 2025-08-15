@@ -190,7 +190,6 @@ class _ControlBarState extends State<ControlBar> {
         text: 'Leave',
         color: context.theme.colorScheme.error,
         textColor: context.theme.colorScheme.onPrimary,
-        sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
       ),
     );
   }

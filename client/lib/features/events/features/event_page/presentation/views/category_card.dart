@@ -62,7 +62,6 @@ class _CategoryCardState extends State<CategoryCard> {
               margin: EdgeInsets.only(bottom: 10),
               child: ActionButton(
                 type: ActionButtonType.outline,
-                sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
                 height: 50,
                 minWidth: 44,
                 shape: RoundedRectangleBorder(

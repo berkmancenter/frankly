@@ -97,20 +97,20 @@ class _BreakoutRoomDefinitionCardState
                         : null,
                   ),
                   // if (hasSmartMatchingCapability)
-                    ActionButton(
-                      text: context.l10n.smartMatch,
-                      type: _assignmentMethod ==
-                              BreakoutAssignmentMethod.smartMatch
-                          ? ActionButtonType.filled
-                          : ActionButtonType.outline,
-                      onPressed: () => _assignmentMethod !=
-                              BreakoutAssignmentMethod.smartMatch
-                          ? _presenter.updateAssignmentMethod(
-                              assignmentMethod:
-                                  BreakoutAssignmentMethod.smartMatch,
-                            )
-                          : null,
-                    ),
+                  ActionButton(
+                    text: context.l10n.smartMatch,
+                    type:
+                        _assignmentMethod == BreakoutAssignmentMethod.smartMatch
+                            ? ActionButtonType.filled
+                            : ActionButtonType.outline,
+                    onPressed: () =>
+                        _assignmentMethod != BreakoutAssignmentMethod.smartMatch
+                            ? _presenter.updateAssignmentMethod(
+                                assignmentMethod:
+                                    BreakoutAssignmentMethod.smartMatch,
+                              )
+                            : null,
+                  ),
                   if (_enableBreakoutCategory)
                     ActionButton(
                       text: context.l10n.byCategory,
@@ -521,7 +521,6 @@ class _QuestionCardState extends State<QuestionCard> {
           size: 20,
         ),
       ),
-      iconSide: ActionButtonIconSide.right,
     );
   }
 
