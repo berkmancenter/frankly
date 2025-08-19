@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
+import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:ui_web' as ui_web;
 import 'package:client/core/utils/media_device_service.dart';
+
+const _kTotalDialogContentPadding = 88.0;
 
 /// This widget is only designed for web. When expanding to other platforms,
 /// this widget should be refactored to ensure compatibility.
@@ -100,6 +103,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      insetPadding: responsiveLayoutService.isMobile(context)
+          ? EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0)
+          : null, // Default
+
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,6 +142,26 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       ),
                     );
                   }).toList(),
+                  selectedItemBuilder: (BuildContext context) {
+                    return _mediaService.audioInputs.map<Widget>((device) {
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        constraints: BoxConstraints(
+                          maxWidth: 400,
+                        ),
+                        // 24px for the dropdown arrow
+                        width: MediaQuery.of(context).size.width -
+                            _kTotalDialogContentPadding -
+                            24,
+                        child: Text(
+                          device.label!,
+                          style: context.theme.textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                      );
+                    }).toList();
+                  },
                   onChanged: (val) async {
                     if (val != null) {
                       setState(() {
@@ -177,6 +204,26 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       ),
                     );
                   }).toList(),
+                  selectedItemBuilder: (BuildContext context) {
+                    return _mediaService.videoInputs.map<Widget>((device) {
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        constraints: BoxConstraints(
+                          maxWidth: 400,
+                        ),
+                        // 24px for the dropdown arrow
+                        width: MediaQuery.of(context).size.width -
+                            _kTotalDialogContentPadding -
+                            24,
+                        child: Text(
+                          device.label!,
+                          style: context.theme.textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                      );
+                    }).toList();
+                  },
                   onChanged: (val) async {
                     if (val != null) {
                       setState(() {
@@ -207,8 +254,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
-                      width: 320,
-                      height: 240,
+                      constraints: const BoxConstraints(
+                        maxHeight: 240,
+                        maxWidth: 320,
+                      ),
+                      width: MediaQuery.of(context).size.width -
+                          _kTotalDialogContentPadding,
                       decoration: BoxDecoration(
                         color:
                             context.theme.colorScheme.surfaceContainerHighest,
