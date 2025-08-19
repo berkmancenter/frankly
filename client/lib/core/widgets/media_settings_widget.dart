@@ -345,6 +345,15 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 );
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
+                                // Re-enable the preview.
+                                await updatePreview();
+                                if (context.mounted) {
+                                  showRegularToast(
+                                    context,
+                                    'Video device updated.',
+                                    toastType: ToastType.success,
+                                  );
+                                }
                               }
                               if (selectedAudioDeviceId !=
                                   initialAudioDeviceId) {
@@ -358,6 +367,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   setEnabled: true,
                                 );
                                 initialAudioDeviceId = selectedAudioDeviceId;
+                                if (context.mounted) {
+                                  showRegularToast(
+                                    context,
+                                    'Audio device updated.',
+                                    toastType: ToastType.success,
+                                  );
+                                }
                               }
                             } catch (e) {
                               if (!context.mounted) return;
