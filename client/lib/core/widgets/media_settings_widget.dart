@@ -33,6 +33,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   String? selectedAudioDeviceId;
   String? initialVideoDeviceId;
   bool isLoading = true;
+  bool isLoadingCameraChange = false;
 
   @override
   void initState() {
@@ -147,7 +148,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       return Container(
                         alignment: Alignment.centerLeft,
                         constraints: BoxConstraints(
-                          maxWidth: 400,
+                          maxWidth: 320,
                         ),
                         // 24px for the dropdown arrow
                         width: MediaQuery.of(context).size.width -
@@ -209,7 +210,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       return Container(
                         alignment: Alignment.centerLeft,
                         constraints: BoxConstraints(
-                          maxWidth: 400,
+                          maxWidth: 320,
                         ),
                         // 24px for the dropdown arrow
                         width: MediaQuery.of(context).size.width -
@@ -278,14 +279,38 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           : Stack(
                               children: [
                                 HtmlElementView(viewType: _viewType),
-                                isLoading
-                                    ? Center(
-                                        child: CircularProgressIndicator(
-                                          color: context
-                                              .theme.colorScheme.onPrimary,
+                                isLoadingCameraChange
+                                    ?
+                                    // Cover the video element while setting video source
+                                    Container(
+                                        color: context.theme.colorScheme
+                                            .surfaceContainerHighest,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            CircularProgressIndicator(
+                                              color: context.theme.colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                            const SizedBox(height: 16),
+                                            Text(
+                                              'Updating your meeting video...',
+                                              style: context
+                                                  .theme.textTheme.bodyMedium,
+                                            ),
+                                          ],
                                         ),
                                       )
-                                    : const SizedBox.shrink(),
+                                    : isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator(
+                                              color: context
+                                                  .theme.colorScheme.onPrimary,
+                                            ),
+                                          )
+                                        : const SizedBox.shrink(),
                               ],
                             ),
                     ),
@@ -306,6 +331,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             try {
                               if (_mediaService.selectedVideoInputId !=
                                   initialVideoDeviceId) {
+                                // Stop preview so camera is only being used by
+                                // one source.
+                                setState(() {
+                                  isLoadingCameraChange = true;
+                                });
+                                _mediaService.stopPreviewMediaStream();
                                 await widget.conferenceRoom.toggleVideoEnabled(
                                   setEnabled: false,
                                 );
@@ -328,19 +359,24 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 );
                                 initialAudioDeviceId = selectedAudioDeviceId;
                               }
-                              setState(() {});
                             } catch (e) {
                               if (!context.mounted) return;
                               // Reset to initial values if save fails
-                              initialVideoDeviceId = savedInitialVideoDeviceId;
+                              _mediaService.selectedVideoInputId =
+                                  savedInitialVideoDeviceId;
+                              initialAudioDeviceId = savedInitialVideoDeviceId;
                               initialAudioDeviceId = savedSelectedAudioDeviceId;
-                              setState(() {});
                               showRegularToast(
                                 context,
                                 'Error saving media settings. Please try again or contact support.',
                                 toastType: ToastType.failed,
                               );
+                              // Re-enable the preview.
+                              await updatePreview();
                             }
+                            setState(() {
+                              isLoadingCameraChange = false;
+                            });
                           },
                   ),
                 ],
