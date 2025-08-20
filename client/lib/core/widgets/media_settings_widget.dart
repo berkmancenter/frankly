@@ -352,6 +352,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                       .toggleVideoEnabled(
                                     setEnabled: true,
                                   );
+                                } else {
+                                  // Still need to attempt to update the Agora
+                                  // device to catch any errors.
+                                  await widget
+                                      .conferenceRoom.room?.localParticipant
+                                      ?.updateAgoraVideoDevice();
                                 }
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
@@ -378,6 +384,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                       .toggleAudioEnabled(
                                     setEnabled: true,
                                   );
+                                } else {
+                                  // Still need to attempt to update the Agora
+                                  // device to catch any errors.
+                                  await widget
+                                      .conferenceRoom.room?.localParticipant
+                                      ?.updateAgoraAudioDevice();
                                 }
                                 initialAudioDeviceId = selectedAudioDeviceId;
                                 if (context.mounted) {
