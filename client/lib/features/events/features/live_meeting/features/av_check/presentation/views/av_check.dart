@@ -64,7 +64,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
       return Center(
         child: AudioVideoErrorDisplay(
           error: error,
-          textColor: context.theme.colorScheme.secondary,
+          textColor: context.theme.colorScheme.onSurfaceVariant,
         ),
       );
     }
@@ -348,7 +348,9 @@ class _AvCheckPageState extends State<_AvCheckPage> {
     );
   }
 
-  Widget _buildDropdownItem(html.MediaDeviceInfo device, {Color textColor = Colors.white}) => Center(
+  Widget _buildDropdownItem(html.MediaDeviceInfo device,
+          {Color textColor = Colors.white}) =>
+      Center(
         child: SizedBox(
           width: 240,
           child: HeightConstrainedText(
