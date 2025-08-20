@@ -32,6 +32,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   // Since this doesn't have a preview, just store current selection in a String.
   String? selectedAudioDeviceId;
   String? initialVideoDeviceId;
+  // Used to ensure A/V maintains the same state (e.g. person stays muted even if
+  // they change devices).
+  bool userVideoEnabled = false;
+  bool userAudioEnabled = false;
+
   bool isLoading = true;
   bool isLoadingCameraChange = false;
 
@@ -68,8 +73,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
     selectedAudioDeviceId = _mediaService.selectedAudioInputId;
-
     initialVideoDeviceId = _mediaService.selectedVideoInputId;
+
+    userAudioEnabled = widget.conferenceRoom.audioEnabled;
+    userVideoEnabled = widget.conferenceRoom.videoEnabled;
 
     await updatePreview();
     if (!mounted) return;
@@ -90,6 +97,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   @override
   void dispose() async {
+    super.dispose();
     _mediaService.stopPreviewMediaStream();
     // If user doesn't save, we need to reset the video preview device
     await _mediaService.selectVideoDevice(
@@ -98,7 +106,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     await updatePreview();
     _videoElement.srcObject = null;
     _videoElement.remove();
-    super.dispose();
   }
 
   @override
@@ -340,9 +347,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 await widget.conferenceRoom.toggleVideoEnabled(
                                   setEnabled: false,
                                 );
-                                await widget.conferenceRoom.toggleVideoEnabled(
-                                  setEnabled: true,
-                                );
+                                if (userVideoEnabled) {
+                                  await widget.conferenceRoom
+                                      .toggleVideoEnabled(
+                                    setEnabled: true,
+                                  );
+                                }
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
                                 // Re-enable the preview.
@@ -363,9 +373,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 await widget.conferenceRoom.toggleAudioEnabled(
                                   setEnabled: false,
                                 );
-                                await widget.conferenceRoom.toggleAudioEnabled(
-                                  setEnabled: true,
-                                );
+                                if (userAudioEnabled) {
+                                  await widget.conferenceRoom
+                                      .toggleAudioEnabled(
+                                    setEnabled: true,
+                                  );
+                                }
                                 initialAudioDeviceId = selectedAudioDeviceId;
                                 if (context.mounted) {
                                   showRegularToast(
@@ -382,6 +395,16 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   savedInitialVideoDeviceId;
                               initialAudioDeviceId = savedInitialVideoDeviceId;
                               initialAudioDeviceId = savedSelectedAudioDeviceId;
+                              if (userAudioEnabled) {
+                                await widget.conferenceRoom.toggleAudioEnabled(
+                                  setEnabled: true,
+                                );
+                              }
+                              if (userVideoEnabled) {
+                                await widget.conferenceRoom.toggleVideoEnabled(
+                                  setEnabled: true,
+                                );
+                              }
                               showRegularToast(
                                 context,
                                 'Error saving media settings. Please try again or contact support.',
