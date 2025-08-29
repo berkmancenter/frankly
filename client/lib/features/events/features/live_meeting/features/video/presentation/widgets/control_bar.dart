@@ -96,6 +96,7 @@ class _ControlBarState extends State<ControlBar> {
               builder: (context) {
                 return MediaSettingsWidget(
                   conferenceRoom: _conferenceRoomRead,
+                  shouldShowVideoPreview: false,
                 );
               },
             ),

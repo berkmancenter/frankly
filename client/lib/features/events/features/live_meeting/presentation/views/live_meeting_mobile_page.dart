@@ -757,6 +757,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               builder: (context) {
                                 return MediaSettingsWidget(
                                   conferenceRoom: conferenceRoom,
+                                  // Do not show video preview on mobile due to
+                                  // limitations with number of sources
+                                  // that can access the camera at once on mobile.
+                                  shouldShowVideoPreview: false,
                                 );
                               },
                             ),
