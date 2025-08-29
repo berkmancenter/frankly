@@ -47,7 +47,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeightConstrainedText(
-              'Add breakouts',
+              context.l10n.addBreakouts,
               style: context.theme.textTheme.titleLarge!
                   .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
             ),
@@ -114,7 +114,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeightConstrainedText(
-                    'Waiting Room',
+                    context.l10n.waitingRoom,
                     style: context.theme.textTheme.titleLarge!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -139,7 +139,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeightConstrainedText(
-                    'Livestream',
+                    context.l10n.livestream,
                     style: context.theme.textTheme.titleLarge!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -190,8 +190,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   }
 
   Widget _buildAgendaTitle() {
+    final l10n = appLocalizationService.getLocalization();
     return HeightConstrainedText(
-      'Agenda',
+      l10n.agenda,
       style: context.theme.textTheme.titleLarge,
     );
   }
@@ -200,7 +201,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
     return ActionButton(
       type: ActionButtonType.text,
       onPressed: () => _showClearAgendaItemsDialog(),
-      text: 'Clear all',
+      text: context.l10n.clearAll,
       icon: Padding(
         padding: const EdgeInsets.only(left: 5),
         child: Icon(
@@ -216,10 +217,9 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Future<void> _showClearAgendaItemsDialog() async {
     final delete = await ConfirmDialog(
       title: context.l10n.clearAgenda,
-      mainText:
-          'Are you sure you want to remove all agenda items from the breakout rooms? You won\'t be able to undo this.',
+      mainText: context.l10n.confirmRemoveAllAgendaItems,
       cancelText: context.l10n.cancel,
-      confirmText: 'Yes, clear',
+      confirmText: context.l10n.yesClear,
       textAlign: TextAlign.start,
     ).show(context: context);
 

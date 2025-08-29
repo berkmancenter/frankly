@@ -188,7 +188,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           if (widget.allowEdit)
             Expanded(
               child: CustomTextField(
-                labelText: 'Name',
+                labelText: context.l10n.name,
                 initialValue: changeRecord.displayName,
                 borderType: BorderType.outline,
                 borderRadius: 5,
@@ -278,7 +278,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                     currentUserId: userService.currentUserId!,
                   ),
                 ),
-                text: 'Preview',
+                text: context.l10n.preview,
                 expand: false,
               ),
             ActionButton(
@@ -288,7 +288,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                       createTagPresenter.unsavedTags.isNotEmpty
                   ? () => alertOnError(context, () => _saveChanges())
                   : null,
-              text: 'Update Profile',
+              text: context.l10n.updateProfile,
               expand: false,
             ),
           ],
@@ -323,7 +323,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     return [
       if (widget.allowEdit)
         CustomTextField(
-          labelText: 'About me',
+          labelText: context.l10n.aboutMe,
           maxLines: 6,
           minLines: 6,
           keyboardType: TextInputType.multiline,
@@ -408,7 +408,7 @@ class _ProfileTabState extends State<_ProfileTab> {
       Row(
         children: [
           HeightConstrainedText(
-            widget.allowEdit ? 'Edit your profile' : '',
+            widget.allowEdit ? context.l10n.editYourProfile : '',
             style: AppTextStyle.headlineSmall.copyWith(
               fontSize: 16,
               color: context.theme.colorScheme.primary,

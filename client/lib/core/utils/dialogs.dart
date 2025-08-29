@@ -12,6 +12,7 @@ import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/widgets/keyboard_util_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class Dialogs {
   static Future<String?> showComposeMessageDialog(
@@ -164,7 +165,7 @@ class Dialogs {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ActionButton(
-                      text: 'Update',
+                      text: context.l10n.update,
                       onPressed: () => Navigator.pop(context, selectedValue),
                     ),
                   ],
@@ -325,7 +326,7 @@ class ConfirmDialogLayer extends StatelessWidget {
           children: [
             Spacer(),
             HeightConstrainedText(
-              'Save changes?',
+              context.l10n.saveChanges,
               style: context.theme.textTheme.titleMedium!,
             ),
             SizedBox(height: 20),
@@ -335,14 +336,14 @@ class ConfirmDialogLayer extends StatelessWidget {
                 ActionButton(
                   type: ActionButtonType.outline,
                   textColor: context.theme.colorScheme.primary,
-                  text: 'Discard',
+                  text: context.l10n.discard,
                   onPressed: () => Navigator.pop(context),
                 ),
                 SizedBox(width: 10),
                 ActionButton(
                   color: context.theme.colorScheme.primary,
                   textColor: context.theme.colorScheme.onPrimary,
-                  text: 'Save',
+                  text: context.l10n.save,
                   onPressed: onSaveChanges,
                 ),
               ],

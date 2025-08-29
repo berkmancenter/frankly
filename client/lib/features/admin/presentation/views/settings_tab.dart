@@ -25,6 +25,9 @@ import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
+import 'package:client/core/localization/localization_helper.dart';
+
+
 class SettingsTab extends StatefulHookWidget {
   final void Function() onUpgradeTap;
 
@@ -80,12 +83,12 @@ class _SettingsTabState extends State<SettingsTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Settings',
+                  context.l10n.settings,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 8),
                 _buildSettingsToggle(
-                  'Allow members to create events',
+                  context.l10n.allowMembersToCreateEvents,
                   !settings.dontAllowMembersToCreateMeetings,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -96,7 +99,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
-                  'Allow members to create templates',
+                  context.l10n.allowMembersToCreateTemplates,
                   settings.allowUnofficialTemplates,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -107,7 +110,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
-                  'Require approval for new members',
+                  context.l10n.requireApprovalForNewMembers,
                   settings.requireApprovalToJoin,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -117,7 +120,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
-                  'Enable weekly email digests of upcoming events',
+                  context.l10n.enableWeeklyEmailDigests,
                   !settings.disableEmailDigests,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
@@ -130,7 +133,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     ? agreement?.allowPayments ?? false
                     : false) ...[
                   _buildSettingsToggle(
-                    'Allow users to donate funds${donationWarning ? ' *' : ''}',
+                    '${context.l10n.allowUsersToDonateFunds}${donationWarning ? ' *' : ''}',
                     settings.allowDonations,
                     (val) => _toggleCommunitySetting(
                       settings.copyWith(
@@ -152,11 +155,11 @@ class _SettingsTabState extends State<SettingsTab> {
                 ],
                 SizedBox(height: 30),
                 HeightConstrainedText(
-                  'Default event settings',
+                  context.l10n.defaultEventSettings,
                   style: AppTextStyle.subhead,
                 ),
                 _buildSettingsToggle(
-                  'Chat',
+                  context.l10n.chat,
                   eventSettings.chat ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -166,7 +169,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
-                  'Floating Chat',
+                  context.l10n.floatingChat,
                   eventSettings.showChatMessagesInRealTime ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -177,7 +180,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
-                  'Record',
+                  context.l10n.record,
                   eventSettings.alwaysRecord ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -187,7 +190,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
-                  'Odometer',
+                  context.l10n.odometer,
                   eventSettings.talkingTimer ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -197,7 +200,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
-                  'Agenda preview',
+                  context.l10n.agendaPreview,
                   eventSettings.agendaPreview ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
@@ -270,7 +273,7 @@ class _SettingsTabState extends State<SettingsTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Dev Settings - Community Settings',
+              context.l10n.devSettingsCommunitySettings,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(height: 8),
@@ -284,7 +287,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
             SizedBox(height: 20),
             Text(
-              'Dev Settings - Default Event Settings',
+              context.l10n.devSettingsDefaultEventSettings,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(height: 8),
@@ -317,7 +320,7 @@ class _SettingsTabState extends State<SettingsTab> {
       ]);
 
     return _buildSettingsToggle(
-      settingKey,
+      _getLocalizedSettingName(settingKey),
       settingMap[settingKey] ?? true,
       (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings)),
       background,
@@ -335,11 +338,42 @@ class _SettingsTabState extends State<SettingsTab> {
     };
 
     return _buildSettingsToggle(
-      settingKey,
+      _getLocalizedSettingName(settingKey),
       settingMap[settingKey] ?? true,
       (val) => _toggleEventSetting(EventSettings.fromJson(newSettings)),
       background,
     );
+  }
+
+  String _getLocalizedSettingName(String settingKey) {
+    final localizationMap = {
+      'allowDonations': context.l10n.allowDonations,
+      'allowUnofficialTemplates': context.l10n.allowUnofficialTemplates,
+      'disableEmailDigests': context.l10n.disableEmailDigests,
+      'dontAllowMembersToCreateMeetings': context.l10n.dontAllowMembersToCreateMeetings,
+      'enableDiscussionThreads': context.l10n.enableDiscussionThreads,
+      'enableHostless': context.l10n.enableHostless,
+      'enablePlatformSelection': context.l10n.enablePlatformSelection,
+      'multiplePeopleOnStage': context.l10n.multiplePeopleOnStage,
+      'multipleVideoTypes': context.l10n.multipleVideoTypes,
+      'requireApprovalToJoin': context.l10n.requireApprovalToJoin,
+      'enableUpdatedLiveMeetingMobile': context.l10n.enableUpdatedLiveMeetingMobile,
+      'enableAVCheck': context.l10n.enableAVCheck,
+      'chat': context.l10n.chat,
+      'showChatMessagesInRealTime': context.l10n.showChatMessagesInRealTime,
+      'alwaysRecord': context.l10n.alwaysRecord,
+      'talkingTimer': context.l10n.talkingTimer,
+      'agendaPreview': context.l10n.agendaPreview,
+      'reminderEmails': context.l10n.reminderEmails,
+      'allowPredefineBreakoutsOnHosted': context.l10n.allowPredefineBreakoutsOnHosted,
+      'defaultStageView': context.l10n.defaultStageView,
+      'enableBreakoutsByCategory': context.l10n.enableBreakoutsByCategory,
+      'allowMultiplePeopleOnStage': context.l10n.allowMultiplePeopleOnStage,
+      'showSmartMatchingForBreakouts': context.l10n.showSmartMatchingForBreakouts,
+      'enablePrerequisites': context.l10n.enablePrerequisites,
+    };
+
+    return localizationMap[settingKey] ?? settingKey;
   }
 
   Future<void> _stripeButtonPressed(PartnerAgreement agreement) async {

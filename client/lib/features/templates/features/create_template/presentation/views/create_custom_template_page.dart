@@ -19,6 +19,11 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/features/community/presentation/widgets/featured_toggle_button.dart';
+import 'package:data_models/community/community.dart';
+
+
+import 'package:client/core/localization/localization_helper.dart';
 
 enum TemplateActionType {
   create,
@@ -228,10 +233,11 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
   }
 
   List<Widget> _buildTextFields() {
+    final l10n = appLocalizationService.getLocalization();
     final templatePresenter = context.watch<CreateTemplatePresenter>();
     return [
       CustomTextField(
-        labelText: 'Template name',
+        labelText: l10n.templateName,
         maxLines: 1,
         maxLength: titleMaxCharactersLength,
         initialValue: !isNullOrEmpty(templatePresenter.updatedTemplate.title)
@@ -241,7 +247,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
       ),
       SizedBox(height: 10),
       CustomTextField(
-        labelText: 'Description',
+        labelText: l10n.description,
         keyboardType: TextInputType.multiline,
         minLines: 4,
         maxLines: 4,
@@ -258,6 +264,25 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
         },
       ),
     ];
+  }
+
+  Widget _buildFeaturedToggle() {
+    final l10n = appLocalizationService.getLocalization();
+    final templatePresenter = context.watch<CreateTemplatePresenter>();
+    return FeaturedToggleButton(
+      controlAffinity: ListTileControlAffinity.leading,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      textColor: AppColor.darkBlue,
+      communityId: templatePresenter.communityProvider.communityId,
+      label:
+          l10n.featureOnHomepage(templatePresenter.communityProvider.community.name ?? ''),
+      documentId: templatePresenter.updatedTemplate.id,
+      documentPath:
+          '/community/${templatePresenter.communityProvider.communityId}/templates/${templatePresenter.updatedTemplate.id}',
+      featuredType: FeaturedType.template,
+    );
   }
 
   @override

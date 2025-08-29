@@ -27,6 +27,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingDialog extends StatefulWidget {
   static const enterMeetingPromptButton = Key('enter-meeting-prompt');
@@ -140,7 +141,7 @@ class _MeetingDialogState extends State<MeetingDialog> {
               ],
             ),
           ),
-          loadingMessage: 'Loading room. Please wait...',
+          loadingMessage: context.l10n.loadingRoomPleaseWait,
           buildWhileLoading: true,
           builder: (_, response) {
             if (response == null) {
@@ -230,24 +231,25 @@ class _MeetingDialogState extends State<MeetingDialog> {
   }
 
   Widget _buildLoading() {
+    final l10n = appLocalizationService.getLocalization();
     return Center(
       child: CustomStreamBuilder(
         entryFrom: '_MeetingDialogState._buildLoading1',
         stream: eventProvider.eventStream,
-        errorMessage: 'There was an error loading event details.',
+        errorMessage: l10n.errorLoadingEventDetails,
         builder: (_, __) => CustomStreamBuilder(
           entryFrom: '_MeetingDialogState._buildLoading2',
           stream: eventProvider.selfParticipantStream,
-          errorMessage: 'There was an error loading event details.',
+          errorMessage: l10n.errorLoadingEventDetails,
           builder: (_, __) => CustomStreamBuilder(
             entryFrom: '_MeetingDialogState._buildLoading3',
             stream: eventProvider.eventParticipantsStream,
-            errorMessage: 'There was an error loading event details.',
+            errorMessage: l10n.errorLoadingEventDetails,
             builder: (_, __) => CustomStreamBuilder(
               entryFrom: '_MeetingDialogState._buildLoading4',
               stream:
                   Provider.of<LiveMeetingProvider>(context).liveMeetingStream,
-              errorMessage: 'There was an error loading event details.',
+              errorMessage: l10n.errorLoadingEventDetails,
               builder: (context, __) => _buildAgendaWrapper(context),
             ),
           ),

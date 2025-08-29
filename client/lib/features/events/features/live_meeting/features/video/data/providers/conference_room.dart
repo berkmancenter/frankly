@@ -369,7 +369,15 @@ class ConferenceRoom with ChangeNotifier {
       }
       print('Microphone permission granted.');
       // Stop using the audio stream right away
-      stream.getTracks().forEach((track) => track.stop());
+      stream.getTracks().forEach((track) {
+        try {
+          // Use js_util to call the native stop method
+          js_util.callMethod(track, 'stop', []);
+        } catch (e) {
+          // If stop method doesn't exist, try to disable the track
+          js_util.setProperty(track, 'enabled', false);
+        }
+      });
       return true;
     } catch (e) {
       print('Microphone permission denied.');

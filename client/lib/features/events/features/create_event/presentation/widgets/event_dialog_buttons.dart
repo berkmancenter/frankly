@@ -4,6 +4,7 @@ import 'package:client/features/events/features/create_event/data/providers/crea
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class DialogBackButton extends StatelessWidget {
   const DialogBackButton({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class DialogBackButton extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Back',
+                    context.l10n.back,
                     style: AppTextStyle.body
                         .copyWith(color: context.theme.colorScheme.primary),
                   ),
@@ -54,8 +55,8 @@ class NextOrSubmitButton extends StatelessWidget {
               })
             : dialogModel.goNext(),
         text: dialogModel.isFinalPage
-            ? (dialogModel.isEdit ? 'Update Event' : 'Create Event')
-            : 'Next',
+            ? (dialogModel.isEdit ? context.l10n.updateEvent : context.l10n.createEvent)
+            : context.l10n.next,
       ),
     );
   }

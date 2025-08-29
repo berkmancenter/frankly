@@ -9,6 +9,8 @@ import 'package:client/features/events/features/live_meeting/features/video/data
 import 'package:client/core/utils/extensions.dart';
 import 'package:normal/normal.dart';
 import 'package:provider/provider.dart';
+import 'package:client/services.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 enum TalkingState {
   talking,
@@ -196,6 +198,8 @@ class TalkingOdometerPresenter {
     );
     final String message;
 
+    final l10n = appLocalizationService.getLocalization();
+
     switch (_model.talkingState) {
       case TalkingState.talking:
         message =
@@ -217,7 +221,8 @@ class TalkingOdometerPresenter {
     } else {
       final speakingTime =
           userTotalTalkingTime.getFormattedTime(showHours: false);
-      return 'You\'ve spoken for $speakingTime in this meeting.';
+
+      return l10n.youveSpokenFor(speakingTime);
     }
   }
 

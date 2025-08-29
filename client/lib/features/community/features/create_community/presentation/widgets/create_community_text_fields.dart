@@ -47,6 +47,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
 
   late final TextEditingController _nameController;
   late final TextEditingController _displayIdController;
+
+  bool get _showTaglineCounter => widget.community.tagLine != null && widget.community.tagLine!.isNotEmpty;
   @override
   void initState() {
     super.initState();
@@ -75,6 +77,40 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           controller: _nameController,
           maxLength: titleMaxCharactersLength,
           label: context.l10n.name,
+          hint: context.l10n.nameHint,
+          initialValue: widget.community.name,
+          onChanged: widget.onNameChanged,
+          focus: widget.nameFocus,
+        ),
+        if (widget.showChooseCustomDisplayId) ...[
+          _buildCreateCommunityTextField(
+            label: context.l10n.uniqueUrlDisplayName,
+            hint: context.l10n.uniqueUrlDisplayNameHint,
+            initialValue: widget.community.displayId,
+            onChanged: widget.onCustomDisplayIdChanged,
+          ),
+        ],
+        _buildCreateCommunityTextField(
+          label: context.l10n.tagline,
+          hint: context.l10n.taglineHint,
+          initialValue: widget.community.tagLine,
+          onChanged: widget.onTaglineChanged,
+          maxLength: taglineMaxCharactersLength,
+          counterText: _showTaglineCounter
+              ? '${widget.community.tagLine!.length}/$taglineMaxCharactersLength'
+              : '',
+          minLines: 3,
+          focus: widget.taglineFocus,
+          containerHeight: 118,
+        ),
+        _buildCreateCommunityTextField(
+          label: context.l10n.about,
+          hint: context.l10n.communityGoalsHint,
+          maxLines: 3,
+          minLines: 3,
+          initialValue: widget.community.description,
+          containerHeight: 108,
+          isOptional: true,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
             widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),

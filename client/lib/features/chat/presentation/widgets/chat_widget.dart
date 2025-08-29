@@ -16,15 +16,18 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/chat/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/services.dart';
 
 class ChatWidget extends StatelessWidget {
+  final l10n = appLocalizationService.getLocalization();
+
   final String parentPath;
   final ChatModel? chatModel;
   final String messageInputHint;
   final bool shouldGuardCommunityMember;
   final bool allowBroadcast;
 
-  const ChatWidget({
+  ChatWidget({
     required this.parentPath,
     this.chatModel,
     this.messageInputHint = 'Enter message',
@@ -35,7 +38,7 @@ class ChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatWidget = _ChatWidget(
-      messageInputHint: messageInputHint,
+      messageInputHint: l10n.enterMessage,
       shouldGuardCommunityMember: shouldGuardCommunityMember,
       allowBroadcast: allowBroadcast,
     );
@@ -122,8 +125,8 @@ class _ChatWidgetState extends State<_ChatWidget> {
   Widget _buildDefaultMessage() => Center(
         child: EmptyPageContent(
           type: EmptyPageType.chats,
-          titleText: 'Welcome!',
-          subtitleText: 'Introduce yourself to help break the ice 😉',
+          titleText: context.l10n.welcome,
+          subtitleText: context.l10n.introduceYourselfToHelpBreakTheIce,
           showContainer: false,
           isBackgroundDark: Theme.of(context).isDark,
         ),

@@ -13,10 +13,35 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:client/core/localization/app_localization_service.dart';
+import 'package:client/services.dart';
+import 'package:data_models/cloud_functions/requests.dart';
 
 import '../../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../../test_helpers.dart';
 
 void main() {
+  setUpAll(() async {
+    await GetIt.instance.reset();
+    // Setup localization for tests using actual localization files
+    GetIt.instance.registerSingleton<AppLocalizationService>(AppLocalizationService());
+    final actualLocalizations = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance.get<AppLocalizationService>().setLocalization(actualLocalizations);
+    
+    if (!GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
+      GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
+    }
+  });
+  
+  tearDownAll(() async {
+    await GetIt.instance.reset();
+    await TestHelpers.cleanupAfterTests();
+  });
+
+  tearDown(() async {
+    if (GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
+      GetIt.instance.unregister<CloudFunctionsCommunityService>();
+    }
+  });
   final Event event = Event(
     id: 'eventId',
     collectionPath: 'eventCollectionPath',
@@ -27,15 +52,6 @@ void main() {
   );
 
   late MockUserServiceNullable mockUserService;
-
-  setUpAll(() {
-    GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
-    GetIt.instance.registerSingleton(AppLocalizationService());
-  });
-
-  tearDownAll(() async {
-    await GetIt.instance.reset();
-  });
 
   Finder getDeleteCardIconFinder() {
     return find.byKey(Key('prePostCardWidgetPage-deleteCard'));
@@ -60,7 +76,23 @@ void main() {
   }
 
   Finder getExpandCollapseInkWellFinder() {
-    return find.byWidgetPredicate((widget) => widget is InkWell).first;
+    // Try finding IconButton by type first
+    final iconButtons = find.byType(IconButton);
+    if (iconButtons.evaluate().isNotEmpty) {
+      // If there are multiple IconButtons, find the one with expand/collapse icons
+      for (final element in iconButtons.evaluate()) {
+        final widget = element.widget as IconButton;
+        if (widget.icon is Icon) {
+          final icon = widget.icon as Icon;
+          if (icon.icon == Icons.expand_more || icon.icon == Icons.expand_less) {
+            return find.byWidget(widget);
+          }
+        }
+      }
+      // If no specific expand/collapse icon found, return the last IconButton
+      return iconButtons.last;
+    }
+    return iconButtons;
   }
 
   Finder getOverviewPrePostCardFinder() {
@@ -87,6 +119,17 @@ void main() {
   setUp(() {
     mockUserService = MockUserServiceNullable();
     when(mockUserService.currentUserId).thenReturn('userId');
+    
+    // Mock CloudFunctionsCommunityService to return userAdminDetails
+    final mockCloudFunctionsService = MockCloudFunctionsCommunityService();
+    when(mockCloudFunctionsService.getUserAdminDetails(any)).thenAnswer((_) async => 
+      GetUserAdminDetailsResponse(userAdminDetails: [UserAdminDetails(email: 'test@email.com')]),);
+    
+    // Register the mock service if not already registered
+    if (GetIt.instance.isRegistered<CloudFunctionsCommunityService>()) {
+      GetIt.instance.unregister<CloudFunctionsCommunityService>();
+    }
+    GetIt.instance.registerSingleton<CloudFunctionsCommunityService>(mockCloudFunctionsService);
   });
 
   testWidgets('If editable is false, do not show edit menu nor edit icon',
@@ -245,13 +288,22 @@ void main() {
       ),
     );
 
+    await tester.pumpAndSettle();
+    
+    // Wait for localization to be fully initialized
+    await tester.pump();
+
     expect(getEditButtonFinder(), findsNothing);
     expect(getExpandIconFinder(), findsNothing);
     expect(getCollapseIconFinder(), findsOneWidget);
     expect(getOverviewPrePostCardFinder(), findsNothing);
     expect(getEditablePrePostCardFinder(), findsOneWidget);
 
-    await tester.tap(getExpandCollapseInkWellFinder().first);
+    // Find the expand/collapse icon specifically by its icon type
+    final expandCollapseButton = find.byIcon(Icons.expand_less);
+    expect(expandCollapseButton, findsOneWidget);
+    
+    await tester.tap(expandCollapseButton);
     await tester.pumpAndSettle();
 
     expect(getEditButtonFinder(), findsNothing);
@@ -270,6 +322,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -306,6 +366,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -348,6 +416,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -392,6 +468,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -430,6 +514,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -470,6 +562,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -508,6 +608,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -520,9 +628,13 @@ void main() {
     );
 
     await tester.pumpAndSettle();
+    
+    // Wait for localization to be fully initialized
+    await tester.pump();
 
     expect(getDeleteCardIconFinder(), findsOneWidget);
 
+    expect(getExpandCollapseInkWellFinder(), findsAtLeastNWidgets(1));
     await tester.tap(getExpandCollapseInkWellFinder().first);
     await tester.pumpAndSettle();
 
@@ -536,6 +648,14 @@ void main() {
           ChangeNotifierProvider<UserService>(create: (_) => mockUserService),
         ],
         child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           home: PrePostCardWidgetPage(
             prePostCardType: PrePostCardType.preEvent,
             event: event,
@@ -548,9 +668,13 @@ void main() {
     );
 
     await tester.pumpAndSettle();
+    
+    // Wait for localization to be fully initialized
+    await tester.pump();
 
     expect(getDeleteCardIconFinder(), findsNothing);
 
+    expect(getExpandCollapseInkWellFinder(), findsAtLeastNWidgets(1));
     await tester.tap(getExpandCollapseInkWellFinder().first);
     await tester.pumpAndSettle();
 

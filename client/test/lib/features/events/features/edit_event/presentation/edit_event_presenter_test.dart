@@ -1,17 +1,25 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/edit_event/data/models/edit_event_model.dart';
 import 'package:client/features/events/features/edit_event/presentation/edit_event_presenter.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/community/community.dart';
 import 'package:mockito/mockito.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 
 import '../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() async {
+    await GetIt.instance.reset();
+    TestHelpers.setupLocalizationForTests();
+  });
 
   final mockContext = MockBuildContext();
   final mockView = MockEditEventView();
@@ -101,13 +109,13 @@ void main() {
         final String result;
         switch (eventType) {
           case EventType.hosted:
-            result = 'Hosted';
+            result = GetIt.instance.get<AppLocalizationService>().getLocalization().hosted;
             break;
           case EventType.hostless:
-            result = 'Hostless';
+            result = GetIt.instance.get<AppLocalizationService>().getLocalization().hostless;
             break;
           case EventType.livestream:
-            result = 'Livestream';
+            result = GetIt.instance.get<AppLocalizationService>().getLocalization().livestream;
             break;
         }
 

@@ -189,13 +189,14 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Widget _buildEditablePrePostCard() {
+    final l10n = appLocalizationService.getLocalization();
     final String beforeAfter;
     switch (widget.prePostCardType) {
       case PrePostCardType.preEvent:
-        beforeAfter = 'before';
+        beforeAfter = l10n.before;
         break;
       case PrePostCardType.postEvent:
-        beforeAfter = 'after';
+        beforeAfter = l10n.after;
         break;
     }
 
@@ -208,7 +209,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'What message do you want to show participants $beforeAfter the event?',
+              l10n.whatMessageDoYouWantToShowParticipantsBeforeAfterTheEvent(beforeAfter),
               style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 30),
@@ -244,7 +245,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightConstrainedText(
-                'Add action links participants should visit $beforeAfter the event',
+                l10n.addActionLinksParticipantsShouldVisitBeforeAfterTheEvent(beforeAfter),
                 style: context.theme.textTheme.titleMedium,
               ),
               SizedBox(height: 30),
@@ -446,6 +447,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Widget _buildEnterButtonTextField(int urlIndex) {
+    final l10n = appLocalizationService.getLocalization();
     final prePostUrls = _model.prePostCard.prePostUrls;
     String? buttonText;
 
@@ -454,7 +456,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return CustomTextField(
-      labelText: 'Button Text',
+      labelText: l10n.buttonText,
       initialValue: buttonText,
       borderType: BorderType.outline,
       borderRadius: 10,
@@ -466,6 +468,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
   }
 
   Widget _buildEnterUrlTextField(int urlIndex) {
+    final l10n = appLocalizationService.getLocalization();
     final prePostUrls = _model.prePostCard.prePostUrls;
     String? surveyUrl;
 
@@ -474,7 +477,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return CustomTextField(
-      labelText: 'Enter URL',
+      labelText: l10n.enterUrl,
       initialValue: surveyUrl,
       borderType: BorderType.outline,
       borderRadius: 10,

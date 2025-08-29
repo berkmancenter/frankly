@@ -200,7 +200,7 @@ class AudioVideoSettingsDialog extends HookWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           HeightConstrainedText(
-                            'Audio/Video Settings',
+                            context.l10n.audioVideoSettings,
                             style: context.theme.textTheme.titleMedium,
                           ),
                           SizedBox(height: 12),

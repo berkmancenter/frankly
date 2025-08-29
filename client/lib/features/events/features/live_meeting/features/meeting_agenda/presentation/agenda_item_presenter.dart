@@ -22,6 +22,8 @@ import 'package:provider/provider.dart';
 import 'views/agenda_item_contract.dart';
 import '../data/models/agenda_item_model.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class AgendaItemPresenter {
   final AgendaItemView _view;
   final AgendaItemModel _model;
@@ -124,14 +126,17 @@ class AgendaItemPresenter {
   }
 
   void duplicateCard() {
+    final l10n = appLocalizationService.getLocalization();
     _agendaProvider.addNewUnsavedItem(agendaItem: _model.agendaItem);
     _view.showMessage(
-      'Agenda item was duplicated!',
+      l10n.agendaItemDuplicated,
       toastType: ToastType.success,
     );
   }
 
   Future<void> saveContent() async {
+    final l10n = appLocalizationService.getLocalization();
+
     final agendaItemType = _model.agendaItem.type;
 
     final errorMessage = _helper.areRequiredFieldsInput(_model);
@@ -205,7 +210,7 @@ class AgendaItemPresenter {
         debugPrint(e.toString());
         rethrow;
       }
-      _view.showMessage('Agenda item was saved', toastType: ToastType.success);
+      _view.showMessage(l10n.agendaItemSaved, toastType: ToastType.success);
     }
 
     _model.isEditMode = false;
@@ -318,27 +323,28 @@ class AgendaItemPresenter {
   }
 
   String getTitle() {
+    final l10n = appLocalizationService.getLocalization();
     final agendaItemType = _model.agendaItem.type;
 
     switch (agendaItemType) {
       case AgendaItemType.text:
         final title = _model.agendaItemTextData.title;
-        return title.isEmpty ? 'Text Title' : title;
+        return title.isEmpty ? l10n.textTitle : title;
       case AgendaItemType.video:
         final title = _model.agendaItemVideoData.title;
-        return title.isEmpty ? 'Video' : title;
+        return title.isEmpty ? l10n.video : title;
       case AgendaItemType.image:
         final title = _model.agendaItemImageData.title;
-        return title.isEmpty ? 'Image' : title;
+        return title.isEmpty ? l10n.image : title;
       case AgendaItemType.poll:
         final question = _model.agendaItemPollData.question;
-        return question.isEmpty ? 'Question' : question;
+        return question.isEmpty ? l10n.question : question;
       case AgendaItemType.wordCloud:
         final prompt = _model.agendaItemWordCloudData.prompt;
-        return prompt.isEmpty ? 'Word Cloud' : prompt;
+        return prompt.isEmpty ? l10n.wordCloud : prompt;
       case AgendaItemType.userSuggestions:
         final title = _model.agendaItemUserSuggestionsData.headline;
-        return title.isEmpty ? 'Suggestions' : title;
+        return title.isEmpty ? l10n.suggestions : title;
     }
   }
 
@@ -454,53 +460,54 @@ class AgendaItemHelper {
 
   String? areRequiredFieldsInput(AgendaItemModel model) {
     final agendaItemType = model.agendaItem.type;
+    final l10n = appLocalizationService.getLocalization();
 
     switch (agendaItemType) {
       case AgendaItemType.text:
         if (model.agendaItemTextData.title.trim().isEmpty) {
-          return 'Title is required';
+          return l10n.titleIsRequired;
         }
 
         if (model.agendaItemTextData.content.trim().isEmpty) {
-          return 'Message is required';
+          return l10n.messageIsRequired;
         }
         break;
       case AgendaItemType.video:
         if (model.agendaItemVideoData.title.trim().isEmpty) {
-          return 'Title is required';
+          return l10n.titleIsRequired;
         }
 
         if (model.agendaItemVideoData.url.trim().isEmpty) {
-          return 'Video URL is required';
+          return l10n.videoUrlIsRequired;
         }
         break;
       case AgendaItemType.image:
         if (model.agendaItemImageData.title.trim().isEmpty) {
-          return 'Title is required';
+          return l10n.titleIsRequired;
         }
 
         if (model.agendaItemImageData.url.trim().isEmpty) {
-          return 'Image URL is required';
+          return l10n.imageUrlIsRequired;
         }
         break;
       case AgendaItemType.poll:
         if (model.agendaItemPollData.question.trim().isEmpty) {
-          return 'Question is required';
+          return l10n.questionIsRequired;
         }
 
         if (model.agendaItemPollData.answers.isEmpty) {
-          return 'Please add some answers';
+          return l10n.answersIsRequired;
         }
 
         break;
       case AgendaItemType.wordCloud:
         if (model.agendaItemWordCloudData.prompt.trim().isEmpty) {
-          return 'Word Cloud prompt is required';
+          return l10n.wordCloudPromptIsRequired;
         }
         break;
       case AgendaItemType.userSuggestions:
         if (model.agendaItemUserSuggestionsData.headline.trim().isEmpty) {
-          return 'Headline is required';
+          return l10n.headlineIsRequired;
         }
         break;
     }

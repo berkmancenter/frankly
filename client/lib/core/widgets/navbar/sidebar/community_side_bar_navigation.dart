@@ -7,7 +7,7 @@ import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
-
+import 'package:client/core/localization/localization_helper.dart';
 class CommunitySideBarNavigation extends StatelessWidget {
   final bool showAdmin;
   final bool enableDiscussionThreads;
@@ -35,7 +35,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         SizedBox(height: 12),
         ActionButton(
           type: ActionButtonType.text,
-          text: 'Events',
+          text: context.l10n.sidebarEventsButton,
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.eventsPage),
           textStyle: context.theme.textTheme.bodyLarge,
@@ -46,7 +46,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         if (enableDiscussionThreads) ...[
           ActionButton(
             type: ActionButtonType.text,
-            text: 'Posts',
+            text: context.l10n.sidebarPostsButton,
             onPressed: () => routerDelegate
                 .beamTo(initialCommunityRoute.discussionThreadsPage),
             textStyle: context.theme.textTheme.bodyLarge,
@@ -58,7 +58,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         if (showResources) ...[
           ActionButton(
             type: ActionButtonType.text,
-            text: 'Resources',
+            text: context.l10n.sidebarResourcesButton,
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.resourcesPage),
             textStyle: context.theme.textTheme.bodyLarge,
@@ -69,7 +69,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         ],
         ActionButton(
           type: ActionButtonType.text,
-          text: 'Templates',
+          text: context.l10n.sidebarTemplatesButton,
           onPressed: () =>
               routerDelegate.beamTo(initialCommunityRoute.browseTemplatesPage),
           textStyle: context.theme.textTheme.bodyLarge,
@@ -84,7 +84,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
             button: true,
             child: ActionButton(
               type: ActionButtonType.text,
-              text: 'Unfollow',
+              text: context.l10n.unfollow,
               onPressed: () => alertOnError(
                 context,
                 () => Provider.of<UserDataService>(context, listen: false)
@@ -102,7 +102,7 @@ class CommunitySideBarNavigation extends StatelessWidget {
         if (showAdmin) ...[
           ActionButton(
             type: ActionButtonType.text,
-            text: 'Admin',
+            text: context.l10n.sidebarAdminButton,
             onPressed: () =>
                 routerDelegate.beamTo(initialCommunityRoute.communityAdmin()),
             textStyle: context.theme.textTheme.bodyLarge,

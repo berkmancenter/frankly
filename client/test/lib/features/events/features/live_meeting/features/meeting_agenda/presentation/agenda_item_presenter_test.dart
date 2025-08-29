@@ -1,5 +1,6 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_model.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_data.dart';
@@ -11,11 +12,18 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:data_models/events/event.dart';
 import 'package:mockito/mockito.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 
 import '../../../../../../../../mocked_classes.mocks.dart';
+import '../../../../../../../../test_helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  
+  setUpAll(() async {
+    await GetIt.instance.reset();
+    TestHelpers.setupLocalizationForTests();
+  });
 
   final mockBuildContext = MockBuildContext();
   final mockView = MockAgendaItemView();
@@ -539,22 +547,22 @@ void main() {
 
           switch (agendaItemType) {
             case AgendaItemType.text:
-              expect(result, 'Text Title');
+              expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().textTitle);
               break;
             case AgendaItemType.video:
-              expect(result, 'Video');
+              expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().video);
               break;
             case AgendaItemType.image:
-              expect(result, 'Image');
+              expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().image);
               break;
             case AgendaItemType.poll:
-              expect(result, 'Question');
+              expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().question);
               break;
             case AgendaItemType.wordCloud:
-              expect(result, 'Word Cloud');
+              expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().wordCloud);
               break;
             case AgendaItemType.userSuggestions:
-              expect(result, 'Suggestions');
+              expect(result, GetIt.instance.get<AppLocalizationService>().getLocalization().suggestions);
               break;
           }
         });

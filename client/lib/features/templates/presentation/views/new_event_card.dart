@@ -19,6 +19,7 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class NewEventCard extends StatefulWidget {
   final Template template;
@@ -78,6 +79,7 @@ class _NewEventCardState extends State<NewEventCard> {
 
   Widget _buildTitleAndHelpIcon() {
     final isMobile = responsiveLayoutService.isMobile(context);
+    final l10n = appLocalizationService.getLocalization();
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -85,7 +87,7 @@ class _NewEventCardState extends State<NewEventCard> {
       children: [
         Flexible(
           child: HeightConstrainedText(
-            'Create an event ${isMobile ? '' : '\n'}from this template',
+            l10n.createEventFromTemplate(isMobile ? '' : '\n'),
             style: AppTextStyle.headline4,
           ),
         ),
@@ -108,6 +110,7 @@ class _NewEventCardState extends State<NewEventCard> {
       );
 
   Widget _buildCreateEventButton() {
+    final l10n = appLocalizationService.getLocalization();
     final onTap = widget.onCreateEventTap;
 
     return Align(
@@ -132,7 +135,7 @@ class _NewEventCardState extends State<NewEventCard> {
             );
           }
         },
-        text: 'Create event',
+        text: l10n.createEvent,
       ),
     );
   }

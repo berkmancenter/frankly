@@ -40,6 +40,7 @@ import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:skeleton_text/skeleton_text.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 class MeetingGuideCard extends StatefulWidget {
   final void Function() onMinimizeCard;
@@ -496,7 +497,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         color: Colors.transparent,
                         textColor: context.theme.colorScheme.primary,
                         icon: Icons.arrow_back_ios,
-                        text: 'Back',
+                        text: context.l10n.back,
                         onPressed: () => _presenter.goToPreviousAgendaItem(),
                       ),
                     Spacer(),
@@ -517,8 +518,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Tooltip(
                         message:
-                            '$readyToMoveOnCount out of ${presentParticipantIds.length} participants '
-                            'are ready to move on.',
+                            context.l10n.readyToMoveOnTooltip(
+                              readyToMoveOnCount,
+                              presentParticipantIds.length,
+                            ),
                         child: Text(
                           '$readyToMoveOnCount/${presentParticipantIds.length}',
                           style: AppTextStyle.body.copyWith(
@@ -531,7 +534,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       ActionButton(
                         type: ActionButtonType.outline,
                         textColor: context.theme.colorScheme.primary,
-                        text: 'Ready',
+                        text: context.l10n.ready,
                         icon: Icons.check_circle_outline,
                       )
                     else
@@ -574,7 +577,7 @@ class CountdownWidget extends StatelessWidget {
             if (!isMobile) ...[
               Expanded(
                 child: HeightConstrainedText(
-                  'Moving to the next agenda item...',
+                  context.l10n.nextAgendaItem,
                   style: AppTextStyle.subhead
                       .copyWith(color: context.theme.colorScheme.onPrimary),
                 ),
@@ -607,7 +610,7 @@ class _ReadyButton extends HookWidget {
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      tooltipText: 'Click Next when you’re ready to move on.',
+      tooltipText: context.l10n.clickNextWhenYouAreReadyToMoveOn,
       color: Colors.transparent,
       type: ActionButtonType.outline,
       textColor: context.theme.colorScheme.primary,
@@ -617,7 +620,7 @@ class _ReadyButton extends HookWidget {
           currentAgendaItemId: currentAgendaItemId,
         );
       }),
-      text: 'Next',
+      text: context.l10n.next,
     );
   }
 }

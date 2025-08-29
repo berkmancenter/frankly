@@ -14,6 +14,10 @@ import 'package:provider/provider.dart';
 export 'package:data_models/events/event.dart';
 export 'package:data_models/chat/emotion.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/services.dart';
+
+
 extension DateTimeExtension on DateTime {
   /// More references for date formats - https://www.journaldev.com/17899/java-simpledateformat-java-date-format
   String getFormattedTime({String format = 'h:mm a'}) {
@@ -237,30 +241,31 @@ extension OnboardingStepExtension on OnboardingStep {
   String get title {
     switch (this) {
       case OnboardingStep.brandSpace:
-        return 'Looking good';
+        return appLocalizationService.getLocalization().lookingGood;
       case OnboardingStep.createGuide:
-        return 'Looking good';
+        return appLocalizationService.getLocalization().lookingGood;
       case OnboardingStep.hostEvent:
-        return 'Get people talking';
+        return appLocalizationService.getLocalization().getPeopleTalking;
       case OnboardingStep.inviteSomeone:
-        return 'Get it on the books';
+        return appLocalizationService.getLocalization().getItOnTheBooks;
       case OnboardingStep.createStripeAccount:
-        return 'Start processing payments';
+        return appLocalizationService.getLocalization().startProcessingPayments;
     }
   }
+
 
   String get sectionTitle {
     switch (this) {
       case OnboardingStep.brandSpace:
-        return 'Brand your space';
+        return appLocalizationService.getLocalization().brandSpace;
       case OnboardingStep.createGuide:
-        return 'Create a template';
+        return appLocalizationService.getLocalization().createGuide;
       case OnboardingStep.hostEvent:
-        return 'Schedule an event';
+        return appLocalizationService.getLocalization().hostEvent;
       case OnboardingStep.inviteSomeone:
-        return 'Invite your people';
+        return appLocalizationService.getLocalization().inviteYourPeople;
       case OnboardingStep.createStripeAccount:
-        return 'Link your Stripe account';
+        return appLocalizationService.getLocalization().linkYourStripeAccount;
     }
   }
 }

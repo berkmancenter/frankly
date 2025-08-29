@@ -127,7 +127,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
                 child: ActionButton(
                   color: context.theme.colorScheme.primary,
                   onPressed: widget.onAddNew,
-                  text: 'Add New',
+                  text: context.l10n.addNew,
                 ),
               ),
           ],

@@ -14,6 +14,7 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/community/community_tag.dart';
 import 'package:data_models/community/community_tag_definition.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is a widget that shows the create tag section
 /// displays existing tags and add tag field
@@ -93,7 +94,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
           SizedBox(width: 5),
         ],
         HeightConstrainedText(
-          widget.titleText ?? (widget.isFeaturedTag ? 'Featured Tags' : 'Tags'),
+          widget.titleText ?? (widget.isFeaturedTag ? context.l10n.featuredTags : context.l10n.tags),
           style: AppTextStyle.body,
         ),
         SizedBox(width: 15),
@@ -130,11 +131,12 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
   }
 
   Widget _buildAddTagField() {
+    final l10n = appLocalizationService.getLocalization();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeightConstrainedText(
-          'Add a new tag',
+          l10n.addNewTag,
         ),
         Row(
           children: [
@@ -239,7 +241,10 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
             color: context.theme.colorScheme.primary,
             textColor: context.theme.colorScheme.primary,
             onPressed: () => _onTapAddButton(),
-            text: 'Add tag',
+            child: HeightConstrainedText(
+              context.l10n.addTag,
+              style: TextStyle(color: AppColor.darkBlue),
+            ),
           ),
         ],
       ),

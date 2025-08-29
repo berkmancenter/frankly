@@ -24,6 +24,8 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 
 class CreateCommunityDialog extends StatelessWidget with ShowDialogMixin {
   final Community? community;
@@ -166,7 +168,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
         !isEmailValid(contactEmail)) {
       showRegularToast(
         context,
-        'Please enter a valid email',
+        context.l10n.pleaseEnterValidEmail,
         toastType: ToastType.failed,
       );
       return;
@@ -448,7 +450,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       entryFrom: 'CreateCommunityDialog._buildAddTagsSection',
       stream: createCommunityTagProvider.communityTagsStream,
       builder: (context, _) => CreateTagWidget(
-        titleText: 'Add Tags',
+        titleText: context.l10n.addTags,
         showIcon: false,
         tags: Provider.of<CreateCommunityTagProvider>(context).tags,
         onAddTag: (title) => alertOnError(

@@ -40,6 +40,8 @@ import 'package:provider/provider.dart';
 
 import '../event_page_presenter.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
 class EventPage extends StatefulWidget {
   final String templateId;
   final String eventId;
@@ -183,8 +185,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
       isMobile: isMobile,
       labelText: 'Message',
       validator: (message) =>
-          message == null || message.isEmpty ? 'Message cannot be empty' : null,
-      positiveButtonText: 'Send',
+          message == null || message.isEmpty ? context.l10n.messageCannotBeEmpty : null,
+      positiveButtonText: context.l10n.send,
     );
 
     if (!mounted) return;
@@ -199,7 +201,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
     await showCustomDialog(
       builder: (context) {
         return ConfirmDialog(
-          title: 'Are you sure you want to remove this message?',
+          title: context.l10n.areYouSureYouWantToRemoveThisMessage,
           cancelText: context.l10n.cancel,
           onCancel: (context) {
             Navigator.pop(context);
@@ -226,6 +228,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
   }
 
   Widget _buildGuide() {
+
+    final l10n = appLocalizationService.getLocalization();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,14 +258,14 @@ class EventPageState extends State<EventPage> implements EventPageView {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         HeightConstrainedText(
-                          'The event is starting',
+                          l10n.eventIsStarting,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),
                         ),
                         SizedBox(height: 10),
                         ActionButton(
-                          text: 'Enter Event',
+                          text: l10n.enterEvent,
                           onPressed: _startMeeting,
                           height: 65,
                         ),
@@ -370,6 +375,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
   }
 
   Widget _buildEditTemplateMessage() {
+    final l10n = appLocalizationService.getLocalization();
     String templateId = event.templateId;
     return Container(
       color: context.theme.colorScheme.surfaceContainerHigh,
@@ -383,20 +389,20 @@ class EventPageState extends State<EventPage> implements EventPageView {
             Expanded(
               child: RichText(
                 text: TextSpan(
-                  text: 'You are editing an event. \n',
+                  text: l10n.youAreEditingAnEvent,
                   style: context.theme.textTheme.titleMedium!.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                     fontSize: 16,
                   ),
                   children: [
                     TextSpan(
-                      text: 'If you want to edit future instances, ',
+                      text: l10n.ifYouWantToEditFutureInstances,
                       style: context.theme.textTheme.bodyMedium!.copyWith(
                         color: context.theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     TextSpan(
-                      text: 'edit the template.',
+                      text: l10n.editTheTemplate,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => routerDelegate.beamTo(
                               CommunityPageRoutes(

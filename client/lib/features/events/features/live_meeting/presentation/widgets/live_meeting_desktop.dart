@@ -63,12 +63,13 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
 
   Widget _buildMeetingLoading() {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
+    final l10n = appLocalizationService.getLocalization();
 
     return CustomStreamBuilder<GetMeetingJoinInfoResponse>(
       key: ObjectKey(liveMeetingProvider.getCurrentMeetingJoinInfo()),
       entryFrom: '_buildConferenceRoomWrapper.build',
       stream: liveMeetingProvider.getCurrentMeetingJoinInfo()!.asStream(),
-      loadingMessage: 'Loading room. Please wait...',
+      loadingMessage: l10n.loadingRoomPleaseWait,
       builder: (_, response) {
         if (liveMeetingProvider.activeUiState == MeetingUiState.breakoutRoom) {
           return _buildBreakoutRoom(liveMeetingProvider.currentBreakoutRoomId!);
@@ -533,7 +534,7 @@ class EnterMeetingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HeightConstrainedText(
-                  'Welcome! Click here to enter the event:',
+                  context.l10n.enterMeetingPrompt,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -543,7 +544,7 @@ class EnterMeetingScreen extends StatelessWidget {
                 ActionButton(
                   key: MeetingDialog.enterMeetingPromptButton,
                   onPressed: () => provider.clickedEnterMeeting = true,
-                  text: 'Join Now',
+                  text: context.l10n.joinNow,
                 ),
               ],
             );

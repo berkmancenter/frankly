@@ -14,6 +14,9 @@ import '../../../../../event_page/data/providers/event_provider.dart';
 import '../../../../data/providers/live_meeting_provider.dart';
 import 'conference_room.dart';
 
+import 'package:client/core/localization/localization_helper.dart';
+
+
 enum AgoraRoomState {
   CONNECTING,
   CONNECTED,
@@ -30,6 +33,7 @@ class AgoraRoom with ChangeNotifier {
   final EventProvider eventProvider;
   final LiveMeetingProvider liveMeetingProvider;
   final ConferenceRoom conferenceRoom;
+
 
   AgoraRoom({
     required this.channelName,
@@ -107,11 +111,14 @@ class AgoraRoom with ChangeNotifier {
   }) async {
     engine = createAgoraRtcEngine();
 
+
     await engine.initialize(
       RtcEngineContext(
         appId: '76cd63ec061d4192ac03ff8cdde51395',
       ),
     );
+
+    final l10n = appLocalizationService.getLocalization();
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
@@ -125,11 +132,12 @@ class AgoraRoom with ChangeNotifier {
       ..videoTrackEnabled = enableVideo;
 
     _rtcEngineEventHandler = RtcEngineEventHandler(
+      
       onError: (ErrorCodeType err, String msg) {
         print('[onError] err: $err, msg: $msg');
         if (err == ErrorCodeType.errJoinChannelRejected) {
           conferenceRoom.setConnectError(
-            'Could not join room. Please refresh and try again',
+            l10n.liveMeetingCouldNotJoinRoomPleaseRefreshAndTryAgain,
           );
         }
       },

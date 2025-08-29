@@ -142,6 +142,7 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
   }
 
   Widget _buildContent() {
+    final l10n = appLocalizationService.getLocalization();
     final provider = Provider.of<EventTabsControllerState>(context).widget;
     final isMobile = responsiveLayoutService.isMobile(context);
 
@@ -150,14 +151,14 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
         _buildTab(
           tabType: TabType.guide,
           icon: Icons.book_outlined,
-          text: 'Agenda',
+          text: l10n.agenda,
         ),
       if (provider.enableChat)
         _buildTab(
           tabType: TabType.chat,
           unreadMessages: Provider.of<ChatModel>(context).numUnreadMessages,
           icon: Icons.comment_outlined,
-          text: 'Chat',
+          text: l10n.chat,
         ),
       if (provider.enableUserSubmittedAgenda)
         _buildTab(
@@ -165,13 +166,13 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
           unreadMessages: Provider.of<UserSubmittedAgendaProvider>(context)
               .numUnreadSuggestions,
           icon: Icons.book_outlined,
-          text: 'Suggest',
+          text: l10n.suggest,
         ),
       if (provider.enableAdminPanel)
         _buildTab(
           tabType: TabType.admin,
           icon: Icons.settings_outlined,
-          text: 'Admin',
+          text: l10n.admin,
         ),
     ];
 

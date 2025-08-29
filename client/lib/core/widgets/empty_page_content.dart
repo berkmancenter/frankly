@@ -32,6 +32,30 @@ class EmptyPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final buttonColor = context.theme.colorScheme.primary;
 
+
+    var typeName = type.name;
+    if (type == EmptyPageType.posts) {
+      typeName = context.l10n.posts;
+    }
+    if (type == EmptyPageType.suggestions) {
+      typeName = context.l10n.suggestions;
+    }
+    if (type == EmptyPageType.chats) {
+      typeName = context.l10n.chat;
+    }
+    if (type == EmptyPageType.templates) {
+      typeName = context.l10n.templates;
+    }
+    if (type == EmptyPageType.resources) {
+      typeName = context.l10n.resources;
+    }
+    if (type == EmptyPageType.announcements) {
+      typeName = context.l10n.announcements;
+    }
+    if (type == EmptyPageType.events) {
+      typeName = context.l10n.events;
+    }
+
     return Container(
       height: 311,
       width: 524,
@@ -51,7 +75,7 @@ class EmptyPageContent extends StatelessWidget {
           ),
           SizedBox(height: 10),
           HeightConstrainedText(
-            titleText ?? context.l10n.noItems(type.name),
+            titleText ?? context.l10n.noItems(typeName),
             style: context.theme.textTheme.titleLarge!.copyWith(
               color: isBackgroundDark
                   ? context.theme.colorScheme.surface
@@ -63,7 +87,7 @@ class EmptyPageContent extends StatelessWidget {
             width: 205,
             child: HeightConstrainedText(
               subtitleText ??
-                  context.l10n.whenNewItemsAdded(type.name),
+                  context.l10n.whenNewItemsAdded(typeName),
               style: context.theme.textTheme.labelLarge!.copyWith(
                 color: isBackgroundDark
                     ? context.theme.colorScheme.surface
