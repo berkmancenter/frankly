@@ -48,6 +48,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   @override
   void initState() {
     super.initState();
+    initAll();
+
     if (!widget.shouldShowVideoPreview) {
       isLoading = false;
       return;
@@ -71,7 +73,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       _viewType,
       (int viewId) => _videoElement,
     );
-    initAll();
   }
 
   Future<void> initAll() async {
@@ -260,198 +261,217 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   hint: const Text('Select video input'),
                 ),
           const SizedBox(height: 24),
-          if (widget.shouldShowVideoPreview)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'Video Preview',
-                      style: context.theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        constraints: const BoxConstraints(
-                          maxHeight: 240,
-                          maxWidth: 320,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  if (widget.shouldShowVideoPreview)
+                    Column(
+                      children: [
+                        Text(
+                          'Video Preview',
+                          style: context.theme.textTheme.titleMedium,
                         ),
-                        width: MediaQuery.of(context).size.width -
-                            _kTotalDialogContentPadding,
-                        decoration: BoxDecoration(
-                          color:
-                              context.theme.colorScheme.surfaceContainerHighest,
-                        ),
-                        child: _mediaService.videoInputs.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'No video devices available.',
-                                  style: context.theme.textTheme.bodyMedium!
-                                      .copyWith(
-                                    color: context
-                                        .theme.colorScheme.onSurfaceVariant,
-                                  ),
-                                ),
-                              )
-                            : Stack(
-                                children: [
-                                  HtmlElementView(viewType: _viewType),
-                                  isLoadingCameraChange
-                                      ?
-                                      // Cover the video element while setting video source
-                                      Container(
-                                          color: context.theme.colorScheme
-                                              .surfaceContainerHighest,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              CircularProgressIndicator(
-                                                color: context.theme.colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
-                                              const SizedBox(height: 16),
-                                              Text(
-                                                'Updating your meeting video...',
-                                                style: context
-                                                    .theme.textTheme.bodyMedium,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : isLoading
-                                          ? Center(
-                                              child: CircularProgressIndicator(
-                                                color: context.theme.colorScheme
-                                                    .onPrimary,
+                        const SizedBox(height: 8),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                              maxHeight: 240,
+                              maxWidth: 320,
+                            ),
+                            width: MediaQuery.of(context).size.width -
+                                _kTotalDialogContentPadding,
+                            decoration: BoxDecoration(
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                            ),
+                            child: _mediaService.videoInputs.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      'No video devices available.',
+                                      style: context.theme.textTheme.bodyMedium!
+                                          .copyWith(
+                                        color: context
+                                            .theme.colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                  )
+                                : Stack(
+                                    children: [
+                                      HtmlElementView(viewType: _viewType),
+                                      isLoadingCameraChange
+                                          ?
+                                          // Cover the video element while setting video source
+                                          Container(
+                                              color: context.theme.colorScheme
+                                                  .surfaceContainerHighest,
+                                              alignment: Alignment.center,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  CircularProgressIndicator(
+                                                    color: context
+                                                        .theme
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                  ),
+                                                  const SizedBox(height: 16),
+                                                  Text(
+                                                    'Updating your meeting video...',
+                                                    style: context.theme
+                                                        .textTheme.bodyMedium,
+                                                  ),
+                                                ],
                                               ),
                                             )
-                                          : const SizedBox.shrink(),
-                                ],
-                              ),
-                      ),
+                                          : isLoading
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: context.theme
+                                                        .colorScheme.onPrimary,
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink(),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    ActionButton(
-                      text: 'Save',
-                      onPressed: (_mediaService.selectedVideoInputId ==
-                                  initialVideoDeviceId &&
-                              selectedAudioDeviceId == initialAudioDeviceId)
-                          ? null
-                          : () async {
-                              final savedInitialVideoDeviceId =
-                                  initialVideoDeviceId;
-                              final savedSelectedAudioDeviceId =
-                                  initialAudioDeviceId;
+                  const SizedBox(height: 16),
+                  ActionButton(
+                    text: 'Save',
+                    onPressed: (_mediaService.selectedVideoInputId ==
+                                initialVideoDeviceId &&
+                            selectedAudioDeviceId == initialAudioDeviceId)
+                        ? null
+                        : () async {
+                            final savedInitialVideoDeviceId =
+                                initialVideoDeviceId;
+                            final savedInitialAudioId = initialAudioDeviceId;
 
-                              try {
-                                if (_mediaService.selectedVideoInputId !=
-                                    initialVideoDeviceId) {
-                                  // Stop preview so camera is only being used by
-                                  // one source.
-                                  setState(() {
-                                    isLoadingCameraChange = true;
-                                  });
-                                  _mediaService.stopPreviewMediaStream();
-                                  await widget.conferenceRoom
-                                      .toggleVideoEnabled(
-                                    setEnabled: false,
-                                  );
-                                  if (userVideoEnabled) {
-                                    await widget.conferenceRoom
-                                        .toggleVideoEnabled(
-                                      setEnabled: true,
-                                    );
-                                  } else {
-                                    // Still need to attempt to update the Agora
-                                    // device to catch any errors.
-                                    await widget
-                                        .conferenceRoom.room?.localParticipant
-                                        ?.updateAgoraVideoDevice();
-                                  }
-                                  initialVideoDeviceId =
-                                      _mediaService.selectedVideoInputId;
-                                  // Re-enable the preview.
-                                  await updatePreview();
-                                  if (context.mounted) {
-                                    showRegularToast(
-                                      context,
-                                      'Video device updated.',
-                                      toastType: ToastType.success,
-                                    );
-                                  }
-                                }
-                                if (selectedAudioDeviceId !=
-                                    initialAudioDeviceId) {
-                                  await _mediaService.selectAudioDevice(
-                                    deviceId: selectedAudioDeviceId!,
-                                  );
-                                  await widget.conferenceRoom
-                                      .toggleAudioEnabled(
-                                    setEnabled: false,
-                                  );
-                                  if (userAudioEnabled) {
-                                    await widget.conferenceRoom
-                                        .toggleAudioEnabled(
-                                      setEnabled: true,
-                                    );
-                                  } else {
-                                    // Still need to attempt to update the Agora
-                                    // device to catch any errors.
-                                    await widget
-                                        .conferenceRoom.room?.localParticipant
-                                        ?.updateAgoraAudioDevice();
-                                  }
-                                  initialAudioDeviceId = selectedAudioDeviceId;
-                                  if (context.mounted) {
-                                    showRegularToast(
-                                      context,
-                                      'Audio device updated.',
-                                      toastType: ToastType.success,
-                                    );
-                                  }
-                                }
-                              } catch (e) {
-                                if (!context.mounted) return;
-                                // Reset to initial values if save fails
-                                _mediaService.selectedVideoInputId =
-                                    savedInitialVideoDeviceId;
-                                initialAudioDeviceId =
-                                    savedInitialVideoDeviceId;
-                                initialAudioDeviceId =
-                                    savedSelectedAudioDeviceId;
-                                if (userAudioEnabled) {
-                                  await widget.conferenceRoom
-                                      .toggleAudioEnabled(
-                                    setEnabled: true,
-                                  );
-                                }
+                            print(
+                              'savedInitialVideoDeviceId: $savedInitialVideoDeviceId',
+                            );
+                            print(
+                              'savedSelectedAudioDeviceId: $savedInitialAudioId',
+                            );
+                            print(
+                              'initialVideoDeviceId: $initialVideoDeviceId',
+                            );
+                            print(
+                              'initialAudioDeviceId: $initialAudioDeviceId',
+                            );
+                            print(
+                              'selectedVideoDeviceId: ${_mediaService.selectedVideoInputId}',
+                            );
+                            print(
+                              'selectedAudioDeviceId: $selectedAudioDeviceId',
+                            );
+
+                            try {
+                              if (_mediaService.selectedVideoInputId !=
+                                  initialVideoDeviceId) {
+                                // Stop preview so camera is only being used by
+                                // one source.
+                                setState(() {
+                                  isLoadingCameraChange = true;
+                                });
+                                _mediaService.stopPreviewMediaStream();
+                                await widget.conferenceRoom.toggleVideoEnabled(
+                                  setEnabled: false,
+                                );
                                 if (userVideoEnabled) {
                                   await widget.conferenceRoom
                                       .toggleVideoEnabled(
                                     setEnabled: true,
                                   );
+                                } else {
+                                  // Still need to attempt to update the Agora
+                                  // device to catch any errors.
+                                  await widget
+                                      .conferenceRoom.room?.localParticipant
+                                      ?.updateAgoraVideoDevice();
                                 }
-                                showRegularToast(
-                                  context,
-                                  'Error saving media settings. Please try again or contact support.',
-                                  toastType: ToastType.failed,
-                                );
+                                initialVideoDeviceId =
+                                    _mediaService.selectedVideoInputId;
                                 // Re-enable the preview.
                                 await updatePreview();
+                                if (context.mounted) {
+                                  showRegularToast(
+                                    context,
+                                    'Video device updated.',
+                                    toastType: ToastType.success,
+                                  );
+                                }
                               }
-                              setState(() {
-                                isLoadingCameraChange = false;
-                              });
-                            },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                              if (selectedAudioDeviceId !=
+                                  initialAudioDeviceId) {
+                                await _mediaService.selectAudioDevice(
+                                  deviceId: selectedAudioDeviceId!,
+                                );
+                                await widget.conferenceRoom.toggleAudioEnabled(
+                                  setEnabled: false,
+                                );
+                                if (userAudioEnabled) {
+                                  await widget.conferenceRoom
+                                      .toggleAudioEnabled(
+                                    setEnabled: true,
+                                  );
+                                } else {
+                                  // Still need to attempt to update the Agora
+                                  // device to catch any errors.
+                                  await widget
+                                      .conferenceRoom.room?.localParticipant
+                                      ?.updateAgoraAudioDevice();
+                                }
+                                initialAudioDeviceId = selectedAudioDeviceId;
+                                if (context.mounted) {
+                                  showRegularToast(
+                                    context,
+                                    'Audio device updated.',
+                                    toastType: ToastType.success,
+                                  );
+                                }
+                              }
+                            } catch (e) {
+                              if (!context.mounted) return;
+                              // Reset to initial values if save fails
+                              _mediaService.selectedVideoInputId =
+                                  savedInitialVideoDeviceId;
+                              initialAudioDeviceId = savedInitialVideoDeviceId;
+                              initialAudioDeviceId = savedInitialAudioId;
+                              if (userAudioEnabled) {
+                                await widget.conferenceRoom.toggleAudioEnabled(
+                                  setEnabled: true,
+                                );
+                              }
+                              if (userVideoEnabled) {
+                                await widget.conferenceRoom.toggleVideoEnabled(
+                                  setEnabled: true,
+                                );
+                              }
+                              showRegularToast(
+                                context,
+                                'Error saving media settings. Please try again or contact support.',
+                                toastType: ToastType.failed,
+                              );
+                              // Re-enable the preview.
+                              await updatePreview();
+                            }
+                            setState(() {
+                              isLoadingCameraChange = false;
+                            });
+                          },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );

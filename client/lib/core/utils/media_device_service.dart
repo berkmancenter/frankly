@@ -97,7 +97,7 @@ class MediaDeviceService {
     required String deviceId,
   }) async {
     selectedAudioInputId = deviceId;
-    await getUserMedia();
+    // await getUserMedia();
     await sharedPreferencesService
         .setDefaultMicrophoneId(selectedAudioInputId!);
   }
@@ -106,13 +106,13 @@ class MediaDeviceService {
     required String deviceId,
   }) async {
     selectedVideoInputId = deviceId;
-    await getUserMedia();
+    // await getUserMedia();
     await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
   }
 
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
-    if (kIsWeb) {
+    if (false) {
       final Map<String, dynamic>? audioConstraint;
 
       final micPermissions = await Permission.microphone.request();
