@@ -45,7 +45,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
 
-  late Color _lightColor =  Color(0xffffffff);
+  late Color _lightColor = Color(0xffffffff);
   late Color _darkColor = Color(0xff212121);
 
   @override
@@ -55,7 +55,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         TextEditingController(text: _currentCommunityLightColor);
     _customDarkColorController =
         TextEditingController(text: _currentCommunityDarkColor);
-         _lightColor = _currentLightColor.isNotEmpty
+    _lightColor = _currentLightColor.isNotEmpty
         ? ThemeUtils.parseColor(_currentLightColor)!
         : Color(0xffffffff);
     _darkColor = _currentDarkColor.isNotEmpty
@@ -122,8 +122,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           context.theme.colorScheme.surface,
         )) {
           _selectedColorErrorMessage = context.l10n.colorMustBeDarker;
-        }
-        else {
+        } else {
           _selectedColorErrorMessage = null;
           widget.setLightColor(_currentLightColor);
           widget.setDarkColor(_currentDarkColor);
@@ -174,8 +173,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         SizedBox(height: 30),
         SizedBox(
           height: 300,
-          child:
-           DefaultTabController(
+          child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
             child: Column(
@@ -264,10 +262,14 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         title: const Text('Pick a color!'),
         content: SingleChildScrollView(
           child: ColorPicker(
+            hexInputBar: true,
+            enableAlpha: false,
+            displayThumbColor: true,
             pickerColor: currentColor.isNotEmpty
                 ? (ThemeUtils.parseColor(currentColor) ?? Colors.white)
                 : Colors.white,
             onColorChanged: (Color color) => colorChanged(color),
+            paletteType: PaletteType.hueWheel,
           ),
         ),
         actions: <Widget>[
@@ -284,87 +286,93 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   Widget _buildCustomColorsContent(bool mobile) {
 
+    lightColorPicker() {
+          _buildColorPickerDialog(
+            _currentLightColor,
+            (Color color) {
+              _customLightColorController.text =
+                  color.toHexString().substring(2, 8);
+              _changeLightColorTextField(color);
+            },
+          );
+        }
+
+    darkColorPicker() {
+      _buildColorPickerDialog(
+        _currentDarkColor,
+        (Color color) {
+          _customDarkColorController.text =
+              color.toHexString().substring(2, 8);
+          _changeDarkColorTextField(color);
+        },
+      );
+    }
+
     List<Widget> children = [
-              IconButton(
-            icon: Icon(
-              Icons.water_drop,
-              color: _lightColor,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withAlpha(50),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            onPressed: () {
-              _buildColorPickerDialog(
-                _currentLightColor,
-                (Color color) {
-                  _customLightColorController.text =
-                      color.toHexString().substring(2, 8);
-                  _changeLightColorTextField(color);
-                },
-              );
-            },
-          ),
-          _buildChooseColorTextField(
-            label: context.l10n.lightColorHex,
-            onChanged: _changeLightColorTextField,
-            controller: _customLightColorController,
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.water_drop,
-              color: _darkColor,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withAlpha(50),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            onPressed: () {
-              _buildColorPickerDialog(
-                _currentDarkColor,
-                (Color color) {
-                  _customDarkColorController.text =
-                      color.toHexString().substring(2, 8);
-                  _changeDarkColorTextField(color);
-                },
-              );
-            },
-          ),
-          _buildChooseColorTextField(
-            label: context.l10n.darkColorHex,
-            onChanged: _changeDarkColorTextField,
-            controller: _customDarkColorController,
-          ),
-    ];
-    return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          if(mobile) ...children,
-          if (!mobile) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: children,
+      IconButton(
+        icon: Icon(
+          Icons.water_drop,
+          color: _lightColor,
+          shadows: [
+            Shadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 10,
             ),
           ],
- 
+        ),
+        onPressed: lightColorPicker,
+      ),
+      _buildChooseColorTextField(
+        label: context.l10n.lightColorHex,
+        onChanged: _changeLightColorTextField,
+        onTap: lightColorPicker,
+        controller: _customLightColorController,
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.water_drop,
+          color: _darkColor,
+          shadows: [
+            Shadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        onPressed: darkColorPicker,
+      ),
+      _buildChooseColorTextField(
+        label: context.l10n.darkColorHex,
+        onChanged: _changeDarkColorTextField,
+        onTap: darkColorPicker,
+        controller: _customDarkColorController,
+      ),
+    ];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        if (mobile) ...children,
+        if (!mobile) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: children,
+          ),
+        ],
         _buildErrorMessage(),
       ],
-);
+    );
   }
 
   Widget _buildChooseColorTextField({
     required String label,
     required void Function(Color) onChanged,
+    required void Function() onTap,
     required TextEditingController controller,
   }) =>
       Expanded(
-          child: CustomTextField(
+        child: CustomTextField(
           labelText: label,
           maxLength: 6,
           hideCounter: true,
@@ -379,10 +387,12 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               onChanged(color);
             }
           },
-          validator: (value) =>
-              ThemeUtils.isColorValid(value) ? null : context.l10n.mustBeValidHexColor,
+          onTap: onTap,
+          validator: (value) => ThemeUtils.isColorValid(value)
+              ? null
+              : context.l10n.mustBeValidHexColor,
         ),
-        );
+      );
 
   Widget _buildErrorMessage() => Column(
         mainAxisSize: MainAxisSize.min,

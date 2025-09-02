@@ -319,7 +319,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         finalisedUrl.isEmpty ? 'URL invalid' : finalisedUrl;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(width: 10),
         _buildEnterButtonTextField(urlIndex),
@@ -353,7 +353,14 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
         SizedBox(height: 15),
         if (attributes.isNotEmpty) ..._buildPrePostCardAttributes(urlIndex),
         if (availableAttributeTypes.isNotEmpty)
-          _buildAddURLParameterButton(urlIndex),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: ActionButton(
+              onPressed: () => _presenter.addNewURLParamRow(urlIndex),
+              icon: Icon(Icons.add),
+              text: 'Add URL Parameter',
+            ),
+          ),
       ],
     );
   }
@@ -417,10 +424,18 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ..._buildPrePostCardAttributes(urlIndex),
                   if (availableAttributeTypes.isNotEmpty)
-                    _buildAddURLParameterButton(urlIndex),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: ActionButton(
+                        onPressed: () => _presenter.addNewURLParamRow(urlIndex),
+                        icon: Icon(Icons.add),
+                        text: 'Add URL Parameter',
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -493,7 +508,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             availableAttributeTypes = _presenter
                 .getAvailableAttributeTypes(prePostUrls[urlIndex].attributes);
           }
-
           return AttributeOption(
             key: Key(attribute.type.toString()),
             attribute: attribute,
@@ -528,7 +542,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           );
         },
       ),
-      SizedBox(height: 20),
+      SizedBox(height: 8),
     ];
   }
 
@@ -587,42 +601,6 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     return SizedBox.shrink();
   }
 
-  Widget _buildAddURLParameterButton(int urlIndex) {
-    // Complex UI in order to keep button on most left side and have nice splash while clicking it.
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            customBorder:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            onTap: () => _presenter.addNewURLParamRow(urlIndex),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.add,
-                    size: 20,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Add URL Parameter',
-                    style: context.theme.textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildDeleteActionLink(int urlIndex) {
     return Padding(
       padding: EdgeInsets.only(top: 25),
@@ -662,15 +640,20 @@ class AttributeOption extends StatefulWidget {
 }
 
 class _AttributeOptionState extends State<AttributeOption> {
-  late bool isEditMode;
+  bool isEditMode = false;
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
-    isEditMode = isNullOrEmpty(widget.attribute.queryParam);
-    _textController = TextEditingController(text: widget.attribute.queryParam);
+    if (isNullOrEmpty(widget.attribute.queryParam)) {
+      isEditMode = true;
+      _textController = TextEditingController(text: widget.attribute.type.name);
+    } else {
+      _textController =
+          TextEditingController(text: widget.attribute.queryParam);
+    }
   }
 
   @override
@@ -687,22 +670,19 @@ class _AttributeOptionState extends State<AttributeOption> {
   }
 
   Widget _buildAttributeSelectedView() {
-    return ActionButton(
-      onPressed: () {
-        setState(() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ActionButton(
+        onPressed: () => setState(() {
           isEditMode = true;
-        });
-      },
-      text: widget.attribute.type.text,
-      color: context.theme.colorScheme.onPrimary,
-      icon: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Icon(
+        }),
+        text: widget.attribute.type.text,
+        color: context.theme.colorScheme.surfaceContainer,
+        textColor: context.theme.colorScheme.onSurface,
+        icon: Icon(
           Icons.edit,
         ),
       ),
-      padding: EdgeInsets.all(10),
-      borderRadius: BorderRadius.circular(30),
     );
   }
 

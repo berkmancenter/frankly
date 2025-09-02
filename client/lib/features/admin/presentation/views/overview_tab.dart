@@ -120,6 +120,7 @@ class _OverviewTabState extends State<OverviewTab> {
                           ),
                           child: Column(
                             children: [
+                              SizedBox(height: 15),
                               CreateCommunityImageFields(
                                 profileImageUrl: _community.profileImageUrl,
                                 updateProfileImage: (String imageUrl) =>

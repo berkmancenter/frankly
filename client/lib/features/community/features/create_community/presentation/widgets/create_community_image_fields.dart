@@ -100,6 +100,7 @@ class CreateCommunityImageField extends StatelessWidget {
                   image,
                   width: size,
                   height: size,
+                  borderRadius: BorderRadius.circular(size / 2),
                 ),
         ),
         SizedBox(width: 30, height: 30),
