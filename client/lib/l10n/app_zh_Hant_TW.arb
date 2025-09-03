@@ -136,7 +136,7 @@
   "enterImageTitle": "輸入圖片標題",
   "enterQuestionWithNumber": "輸入問題 {number}",
   "enterRoomNumber": "輸入房間號碼",
-  "enterValidName": "请输入有效的名称", 
+  "enterValidName": "请输入有效的名称",
   "enterVideoTitle": "輸入影片標題",
   "enterWaitingRoomText": "輸入等候室文字（可選）",
   "enterWaitingRoomTextOptional": "輸入等候室文本（可選）",
@@ -278,6 +278,7 @@
   "pleaseEnterPassword": "请输入密码",
   "pleaseEnterValidPassword": "请输入有效的密码",
   "pleaseLogInOrSignUp": "請登錄或註冊",
+  "pickAColor": "選擇顏色",
   "postWasDeleted": "貼文已刪除。",
   "posts": "貼文",
   "prerequisiteRequired": "需要先決條件",
@@ -677,7 +678,6 @@
       }
     }
   },
-
   "@confirmMakeOwner": {
     "placeholders": {
       "userName": {

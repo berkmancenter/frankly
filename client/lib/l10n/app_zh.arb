@@ -252,7 +252,7 @@
     }
   },
   "enterRoomNumber": "例如：2",
-  "enterValidName": "請輸入有效的名稱", 
+  "enterValidName": "請輸入有效的名稱",
   "enterVideoTitle": "输入视频标题",
   "enterWaitingRoomText": "输入等候室文本（可选）",
   "enterWaitingRoomTextOptional": "输入等候室文本（可选）",
@@ -449,6 +449,7 @@
   "permissionsModeratorDescription": "可以创建/编辑模板和事件，删除不需要的内容，移动参与者到不同的房间，并回应帮助请求。",
   "permissionsOwnerDescription": "拥有所有管理功能，可以添加/删除其他管理员。",
   "person": "人",
+  "pickAColor": "选择颜色",
   "pleaseEnterValidEmail": "请输入有效的电子邮件地址。",
   "pleaseEnterPassword": "請輸入密碼",
   "pleaseEnterValidPassword": "請輸入有效的密碼",

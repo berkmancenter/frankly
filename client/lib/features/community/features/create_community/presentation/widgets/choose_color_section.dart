@@ -259,7 +259,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Pick a color!'),
+        title: Text(context.l10n.pickAColor),
         content: SingleChildScrollView(
           child: ColorPicker(
             hexInputBar: true,
