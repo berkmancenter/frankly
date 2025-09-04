@@ -7,6 +7,7 @@ class CustomSwitchTile extends StatefulWidget {
   final String? text;
   final Widget? textWidget;
   final bool val;
+  final bool loading;
   final void Function(bool) onUpdate;
   final TextStyle? style;
 
@@ -16,6 +17,7 @@ class CustomSwitchTile extends StatefulWidget {
     this.textWidget,
     required this.val,
     required this.onUpdate,
+    this.loading = false,
     this.style,
   }) : super(key: key);
 
@@ -38,10 +40,24 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
               child: widget.textWidget ??
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: HeightConstrainedText(
-                      widget.text ?? '',
-                      style: widget.style ?? context.theme.textTheme.bodyLarge,
-                      maxLines: 2,
+                    child: Row(
+                      children: [
+                        HeightConstrainedText(
+                          widget.text ?? '',
+                          style:
+                              widget.style ?? context.theme.textTheme.bodyLarge,
+                          maxLines: 2,
+                        ),
+                        if (widget.loading)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: CircularProgressIndicator(strokeWidth: 1.5,),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
             ),
@@ -49,7 +65,8 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
               width: 52,
               height: 32,
               child: Switch(
-                thumbColor: WidgetStateProperty.all(context.theme.colorScheme.surface),
+                thumbColor:
+                    WidgetStateProperty.all(context.theme.colorScheme.surface),
                 value: widget.val,
                 onChanged: widget.onUpdate,
               ),

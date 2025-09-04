@@ -21,6 +21,7 @@ import 'package:data_models/community/community.dart';
 
 import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/collection.dart';
 import 'package:universal_html/html.dart' as html;
 
 /// Enum to define the position of the toggle switch in settings
@@ -41,9 +42,12 @@ class _SettingsTabState extends State<SettingsTab> {
   final whiteBackground = Colors.white70;
   Community get community => Provider.of<CommunityProvider>(context).community;
 
+  final _updateLoading = List.filled(11, false);
+
   Widget _buildSettingsToggle(
     String title,
     bool value,
+    int loadingIndex,
     void Function(dynamic) onUpdate, {
     TogglePosition position = TogglePosition.none,
     bool hasWarning = false,
@@ -79,6 +83,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               val: value,
               onUpdate: onUpdate,
+              loading: _updateLoading[loadingIndex],
             ),
             SizedBox(height: 8),
             if (position != TogglePosition.bottom)
@@ -149,40 +154,48 @@ class _SettingsTabState extends State<SettingsTab> {
                 _buildSettingsToggle(
                   'Allow members to create events',
                   !settings.dontAllowMembersToCreateMeetings,
+                  0,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       dontAllowMembersToCreateMeetings:
                           !settings.dontAllowMembersToCreateMeetings,
                     ),
+                    0,
                   ),
                   position: TogglePosition.top,
                 ),
                 _buildSettingsToggle(
                   'Allow members to create templates',
                   settings.allowUnofficialTemplates,
+                  1,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       allowUnofficialTemplates:
                           !settings.allowUnofficialTemplates,
                     ),
+                    1,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Require approval for new members',
                   settings.requireApprovalToJoin,
+                  2,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       requireApprovalToJoin: !settings.requireApprovalToJoin,
                     ),
+                    2,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Enable weekly email digests of upcoming events',
                   !settings.disableEmailDigests,
+                  3,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       disableEmailDigests: !settings.disableEmailDigests,
                     ),
+                    3,
                   ),
                   position: !kShowStripeFeatures
                       ? TogglePosition.bottom
@@ -192,10 +205,12 @@ class _SettingsTabState extends State<SettingsTab> {
                   _buildSettingsToggle(
                     'Allow users to donate funds${donationWarning ? ' *' : ''}',
                     settings.allowDonations,
+                    4,
                     (val) => _toggleCommunitySetting(
                       settings.copyWith(
                         allowDonations: !settings.allowDonations,
                       ),
+                      4,
                     ),
                     hasWarning: donationWarning,
                     position: TogglePosition.bottom,
@@ -243,83 +258,128 @@ class _SettingsTabState extends State<SettingsTab> {
                 _buildSettingsToggle(
                   'Chat',
                   eventSettings.chat ?? true,
+                  5,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       chat: !(eventSettings.chat ?? true),
                     ),
+                    5,
                   ),
                   position: TogglePosition.top,
                 ),
                 _buildSettingsToggle(
                   'Floating Chat',
                   eventSettings.showChatMessagesInRealTime ?? true,
+                  6,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       showChatMessagesInRealTime:
                           !(eventSettings.showChatMessagesInRealTime ?? true),
                     ),
+                    6,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Record',
                   eventSettings.alwaysRecord ?? true,
+                  7,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       alwaysRecord: !(eventSettings.alwaysRecord ?? true),
                     ),
+                    7,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Odometer',
                   eventSettings.talkingTimer ?? true,
+                  8,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       talkingTimer: !(eventSettings.talkingTimer ?? true),
                     ),
+                    8,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Agenda preview',
                   eventSettings.agendaPreview ?? true,
+                  9,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       agendaPreview: !(eventSettings.agendaPreview ?? true),
                     ),
+                    9,
                   ),
                   position: TogglePosition.bottom,
                 ),
               ],
             ),
             SizedBox(height: 20),
-            if (Environment.enableDevAdminSettings) _buildDevSettingsSection(isMobile ),
+            if (Environment.enableDevAdminSettings)
+              _buildDevSettingsSection(isMobile),
           ],
         );
       },
     );
   }
 
-  Future<void> _toggleCommunitySetting(CommunitySettings communitySettings) {
-    return cloudFunctionsCommunityService.updateCommunity(
-      UpdateCommunityRequest(
-        community: context
-            .read<CommunityProvider>()
-            .community
-            .copyWith(communitySettings: communitySettings),
-        keys: [Community.kFieldCommunitySettings],
-      ),
-    );
+  Future<void> _toggleCommunitySetting(
+    CommunitySettings communitySettings, {
+    int loadingIndex = -1,
+  }) async {
+    setState(() {
+      _updateLoading[loadingIndex] = true;
+    });
+
+    try {
+      await cloudFunctionsCommunityService
+          .updateCommunity(
+        UpdateCommunityRequest(
+          community: context
+              .read<CommunityProvider>()
+              .community
+              .copyWith(communitySettings: communitySettings),
+          keys: [Community.kFieldCommunitySettings],
+        ),
+      )
+          .then((_) {
+        setState(() {
+          _updateLoading[loadingIndex] = false;
+        });
+        return;
+      });
+    } finally {
+      setState(() {
+        _updateLoading[loadingIndex] = false;
+      });
+    }
   }
 
-  Future<void> _toggleEventSetting(EventSettings eventSettings) {
-    return cloudFunctionsCommunityService.updateCommunity(
-      UpdateCommunityRequest(
-        community: context
-            .read<CommunityProvider>()
-            .community
-            .copyWith(eventSettings: eventSettings),
-        keys: [Community.kFieldEventSettings],
-      ),
-    );
+  Future<void> _toggleEventSetting(
+    EventSettings eventSettings,
+    int loadingIndex,
+  ) async {
+    _updateLoading[loadingIndex] = true;
+
+    try {
+      await cloudFunctionsCommunityService
+          .updateCommunity(
+        UpdateCommunityRequest(
+          community: context
+              .read<CommunityProvider>()
+              .community
+              .copyWith(eventSettings: eventSettings),
+          keys: [Community.kFieldEventSettings],
+        ),
+      )
+          .then((_) {
+        _updateLoading[loadingIndex] = false;
+        return;
+      });
+    } finally {
+      _updateLoading[loadingIndex] = false;
+    }
   }
 
   Widget _buildStripeConnectLink(
@@ -349,41 +409,47 @@ class _SettingsTabState extends State<SettingsTab> {
         .toList();
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Dev Settings',
-            style: context.theme.textTheme.displayMedium?.copyWith(
-              fontWeight: FontWeight.w900,
-              color: Colors.deepPurpleAccent,
-            ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Dev Settings',
+          style: context.theme.textTheme.displayMedium?.copyWith(
+            fontWeight: FontWeight.w900,
+            color: Colors.deepPurpleAccent,
           ),
-          SizedBox(height: 8),
-          Text(
-            'Community Settings',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.purpleAccent,
-            ),
+        ),
+
+        if(_updateLoading[10])
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: LinearProgressIndicator(),
           ),
-          SizedBox(height: 8),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isMobile ? 1 : 3,
-              childAspectRatio: 4,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-            ),
-            itemCount: settings.length,
-            itemBuilder: (context, i) => _devCommunitySettingsToggle(
-              settings[i],
-              settingsMap,
-              whiteBackground,
-            ),
+        SizedBox(height: 8),
+        Text(
+          'Community Settings',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Colors.purpleAccent,
+              ),
+        ),
+        SizedBox(height: 8),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isMobile ? 1 : 3,
+            childAspectRatio: 4,
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0,
           ),
-          SizedBox(height: 20),
-         Text(
+          itemCount: settings.length,
+          itemBuilder: (context, i) => _devCommunitySettingsToggle(
+            settings[i],
+            settingsMap,
+            whiteBackground,
+          ),
+        ),
+        SizedBox(height: 20),
+        Text(
           'Event Settings',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.purpleAccent,
@@ -408,8 +474,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 : context.theme.colorScheme.primary.withOpacity(0.1),
           ),
         ),
-        ],
-
+      ],
     );
   }
 
@@ -429,6 +494,7 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
+      10,
       (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings)),
       position: TogglePosition.bottom,
     );
@@ -447,7 +513,8 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
-      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings)),
+      10,
+      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings), 10),
     );
   }
 
