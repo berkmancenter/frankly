@@ -112,10 +112,7 @@ class AgoraRoom with ChangeNotifier {
         appId: '76cd63ec061d4192ac03ff8cdde51395',
       ),
     );
-    await mediaDeviceService.init(
-      requestMic: enableAudio,
-      requestCamera: enableVideo,
-    );
+    await mediaDeviceService.init();
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,

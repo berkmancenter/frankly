@@ -76,10 +76,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   }
 
   Future<void> initAll() async {
-    await _mediaService.init(
-      requestMic: true,
-      requestCamera: true,
-    );
+    await _mediaService.init();
 
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
     selectedAudioDeviceId = _mediaService.selectedAudioInputId;

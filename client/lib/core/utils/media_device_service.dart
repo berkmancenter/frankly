@@ -22,17 +22,22 @@ class MediaDeviceService {
   String? selectedAudioInputId;
   String? selectedVideoInputId;
 
-  Future<void> init({
-    required bool requestMic,
-    required bool requestCamera,
-  }) async {
+  Future<void> init() async {
     if (kIsWeb) {
       try {
         // Start by requesting permissions so that devices can be listed.
-        if (requestMic) {
+        final micStatus = await Permission.microphone.status;
+
+        if (!(micStatus.isGranted ||
+            micStatus.isLimited ||
+            micStatus.isProvisional)) {
           await Permission.microphone.request();
         }
-        if (requestCamera) {
+
+        final cameraStatus = await Permission.camera.status;
+        if (!(cameraStatus.isGranted ||
+            cameraStatus.isLimited ||
+            cameraStatus.isProvisional)) {
           await Permission.camera.request();
         }
 
@@ -95,27 +100,33 @@ class MediaDeviceService {
 
   Future<void> selectAudioDevice({
     required String deviceId,
+    required bool shouldUpdatePreview,
   }) async {
     selectedAudioInputId = deviceId;
-    // await getUserMedia();
+    if (shouldUpdatePreview) {
+      await getUserMedia();
+    }
     await sharedPreferencesService
         .setDefaultMicrophoneId(selectedAudioInputId!);
   }
 
   Future<void> selectVideoDevice({
     required String deviceId,
+    required bool shouldUpdatePreview,
   }) async {
     selectedVideoInputId = deviceId;
-    // await getUserMedia();
+    if (shouldUpdatePreview) {
+      await getUserMedia();
+    }
     await sharedPreferencesService.setDefaultCameraId(selectedVideoInputId!);
   }
 
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
-    if (false) {
+    if (kIsWeb) {
       final Map<String, dynamic>? audioConstraint;
 
-      final micPermissions = await Permission.microphone.request();
+      final micPermissions = await Permission.microphone.status;
       if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
         audioConstraint = null;
       } else {
@@ -130,7 +141,7 @@ class MediaDeviceService {
 
       final Map<String, dynamic>? videoConstraint;
 
-      final camPermissions = await Permission.camera.request();
+      final camPermissions = await Permission.camera.status;
       if (camPermissions.isDenied || camPermissions.isPermanentlyDenied) {
         videoConstraint = null;
       } else {
