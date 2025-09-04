@@ -61,7 +61,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       ..setAttribute(
         'playsinline',
         'true',
-      ) // Stop iOS Safari from going fullscreen
+      ) // Stop preview from going fullscreen on iOS Safari
       ..setAttribute('webkit-playsinline', 'true')
       ..setAttribute('disablePictureInPicture', 'true')
       ..style.width = '100%'
@@ -111,6 +111,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     // If user doesn't save, we need to reset the video preview device
     await _mediaService.selectVideoDevice(
       deviceId: initialVideoDeviceId ?? '',
+      shouldUpdatePreview: false, // getUserMedia is called in updatePreview.
     );
     await updatePreview();
     _videoElement!.srcObject = null;
@@ -248,6 +249,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       });
                       await _mediaService.selectVideoDevice(
                         deviceId: val,
+                        shouldUpdatePreview: widget.shouldShowVideoPreview,
                       );
                       await updatePreview();
                       setState(() {
@@ -351,34 +353,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 initialVideoDeviceId;
                             final savedInitialAudioId = initialAudioDeviceId;
 
-                            print(
-                              'savedInitialVideoDeviceId: $savedInitialVideoDeviceId',
-                            );
-                            print(
-                              'savedSelectedAudioDeviceId: $savedInitialAudioId',
-                            );
-                            print(
-                              'initialVideoDeviceId: $initialVideoDeviceId',
-                            );
-                            print(
-                              'initialAudioDeviceId: $initialAudioDeviceId',
-                            );
-                            print(
-                              'selectedVideoDeviceId: ${_mediaService.selectedVideoInputId}',
-                            );
-                            print(
-                              'selectedAudioDeviceId: $selectedAudioDeviceId',
-                            );
-
                             try {
                               if (_mediaService.selectedVideoInputId !=
                                   initialVideoDeviceId) {
-                                // Stop preview so camera is only being used by
-                                // one source.
                                 setState(() {
                                   isLoadingCameraChange = true;
                                 });
-                                _mediaService.stopPreviewMediaStream();
+
+                                // Turn the video off and on again to ensure a successful device update.
                                 await widget.conferenceRoom.toggleVideoEnabled(
                                   setEnabled: false,
                                 );
@@ -396,7 +378,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 }
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
-                                // Re-enable the preview.
+
+                                // Re-enable the preview after the update.
                                 await updatePreview();
                                 if (context.mounted) {
                                   showRegularToast(
@@ -410,6 +393,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   initialAudioDeviceId) {
                                 await _mediaService.selectAudioDevice(
                                   deviceId: selectedAudioDeviceId!,
+                                  shouldUpdatePreview:
+                                      widget.shouldShowVideoPreview,
                                 );
                                 await widget.conferenceRoom.toggleAudioEnabled(
                                   setEnabled: false,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
@@ -760,7 +761,11 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                                   // Do not show video preview on mobile due to
                                   // limitations with number of sources
                                   // that can access the camera at once on mobile.
-                                  shouldShowVideoPreview: false,
+                                  shouldShowVideoPreview:
+                                      !(defaultTargetPlatform ==
+                                              TargetPlatform.iOS ||
+                                          defaultTargetPlatform ==
+                                              TargetPlatform.android),
                                 );
                               },
                             ),

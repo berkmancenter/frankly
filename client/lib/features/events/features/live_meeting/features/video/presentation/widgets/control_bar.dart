@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -96,7 +97,9 @@ class _ControlBarState extends State<ControlBar> {
               builder: (context) {
                 return MediaSettingsWidget(
                   conferenceRoom: _conferenceRoomRead,
-                  shouldShowVideoPreview: false,
+                  shouldShowVideoPreview:
+                      !(defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android),
                 );
               },
             ),
