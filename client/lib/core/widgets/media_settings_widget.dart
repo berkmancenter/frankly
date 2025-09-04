@@ -364,23 +364,32 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 await widget.conferenceRoom.toggleVideoEnabled(
                                   setEnabled: false,
                                 );
-                                if (userVideoEnabled) {
-                                  await widget.conferenceRoom
-                                      .toggleVideoEnabled(
-                                    setEnabled: true,
-                                  );
-                                } else {
-                                  // Still need to attempt to update the Agora
+
+                                if (!userVideoEnabled ||
+                                    !widget.shouldShowVideoPreview) {
+                                  // If user's video isn't on or we don't show
+                                  // a video preview, we still need to attempt
+                                  // an Agora device update to catch any errors.
+                                  // Attempt to update the Agora
                                   // device to catch any errors.
                                   await widget
                                       .conferenceRoom.room?.localParticipant
                                       ?.updateAgoraVideoDevice();
                                 }
+
+                                if (userVideoEnabled) {
+                                  await widget.conferenceRoom
+                                      .toggleVideoEnabled(
+                                    setEnabled: true,
+                                  );
+                                }
                                 initialVideoDeviceId =
                                     _mediaService.selectedVideoInputId;
 
-                                // Re-enable the preview after the update.
-                                await updatePreview();
+                                if (widget.shouldShowVideoPreview) {
+                                  // Re-enable the preview after the update.
+                                  await updatePreview();
+                                }
                                 if (context.mounted) {
                                   showRegularToast(
                                     context,
@@ -442,8 +451,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 'Error saving media settings. Please try again or contact support.',
                                 toastType: ToastType.failed,
                               );
-                              // Re-enable the preview.
-                              await updatePreview();
+                              if (widget.shouldShowVideoPreview) {
+                                // Re-enable the preview.
+                                await updatePreview();
+                              }
                             }
                             setState(() {
                               isLoadingCameraChange = false;
