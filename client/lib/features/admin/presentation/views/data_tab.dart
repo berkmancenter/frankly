@@ -148,7 +148,8 @@ class _DataTabState extends State<DataTab> {
                           title: Text(context.l10n.registrantList),
                           checkColor: Colors.white,
                           fillColor: WidgetStatePropertyAll(
-                              context.theme.primaryColor,),
+                            context.theme.primaryColor,
+                          ),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: registrantListSelected,
                           onChanged: (value) {
@@ -161,7 +162,8 @@ class _DataTabState extends State<DataTab> {
                           title: Text(context.l10n.recording),
                           checkColor: Colors.white,
                           fillColor: WidgetStatePropertyAll(
-                              context.theme.primaryColor,),
+                            context.theme.primaryColor,
+                          ),
                           controlAffinity: ListTileControlAffinity.leading,
                           value: recordingSelected,
                           onChanged: (value) {
@@ -316,6 +318,7 @@ class _DataTabState extends State<DataTab> {
           height: 10,
         ),
         InkWell(
+          hoverColor: Colors.transparent,
           onTap: () {
             routerDelegate.beamTo(
               CommunityPageRoutes(
@@ -420,35 +423,33 @@ class _DataTabState extends State<DataTab> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        for (int i = _currentStartIndex;
-                            i < _currentStartIndex + 5 && i < events.length;
-                            i++)
-                          FutureBuilder<Widget>(
-                            future: _buildEventRow(
-                              index: i,
-                              event: events[i],
-                              isMobile: isMobile,
-                            ),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return snapshot.data!;
-                              }
-                              if (snapshot.hasError) {
-                                return Text(
-                                  context.l10n.errorOccurred,
-                                  style: context.theme.textTheme.bodyLarge,
-                                );
-                              }
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: const [
-                                  CircularProgressIndicator(),
-                                ],
+                        FutureBuilder<List<Widget>>(
+                          future: Future.wait([
+                            // Build the event rows
+                            for (int i = _currentStartIndex;
+                                i < _currentStartIndex + 5 && i < events.length;
+                                i++)
+                              _buildEventRow(
+                                index: i,
+                                event: events[i],
+                                isMobile: isMobile,
+                              ),
+                          ]),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Column(children: snapshot.data!);
+                            }
+                            if (snapshot.hasError) {
+                              return Text(
+                                context.l10n.errorOccurred,
+                                style: context.theme.textTheme.bodyLarge,
                               );
-                            },
-                          ),
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

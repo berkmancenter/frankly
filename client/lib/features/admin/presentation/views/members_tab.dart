@@ -6,6 +6,7 @@ import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/admin/utils/member_data.dart';
 import 'package:data_models/user/public_user_info.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -56,6 +57,7 @@ class MembershipDataSource extends DataTableSource {
     Membership membership,
   ) {
     PublicUserInfo? userInfo = UserInfoProvider.forUser(membership.userId).info;
+
     return DataRow(
       color: WidgetStateProperty.all(
         index.isOdd
@@ -74,9 +76,10 @@ class MembershipDataSource extends DataTableSource {
                   ),
                 ),
                 SizedBox(width: 8),
-                Text(
-                  userInfo?.displayName ?? 'Unknown',
-                ),
+                if (userInfo?.displayName != null)
+                  Text(
+                    userInfo?.displayName ?? '',
+                  ),
               ],
             ),
           ),
@@ -206,13 +209,6 @@ class MembersTabState extends State<MembersTab> {
                     _currentSearch = value;
                     _loadUsersFuture ??= Future.wait([
                       _loadAllUserInfoDetails(memberships),
-                      ...memberships.map(
-                        (m) => UserAdminDetailsProvider.forUser(m.userId)
-                            .getInfoFuture(
-                          communityId:
-                              CommunityProvider.read(context).communityId,
-                        ),
-                      ),
                     ]);
                   });
                 },
@@ -266,7 +262,6 @@ class MembersTabState extends State<MembersTab> {
                   ],
                   color: context.theme.colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(12),
-                  
                 ),
                 richMessage: TextSpan(
                   children: <InlineSpan>[
@@ -276,7 +271,7 @@ class MembersTabState extends State<MembersTab> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                           context.l10n.rolesTooltip,
+                            context.l10n.rolesTooltip,
                             style: TextStyle(
                               color: context.theme.colorScheme.onSurfaceVariant,
                               fontSize: 14,
@@ -284,7 +279,8 @@ class MembersTabState extends State<MembersTab> {
                           ),
                           SizedBox(height: 8),
                           TextButton(
-                            onPressed: () => launch(Environment.helpCenterManagingCommunityUrl),
+                            onPressed: () => launch(
+                                Environment.helpCenterManagingCommunityUrl,),
                             child: Text(
                               '${context.l10n.goTo} ${context.l10n.seeManagingYourCommunity}',
                               style: TextStyle(fontWeight: FontWeight.bold),
@@ -315,8 +311,11 @@ class MembersTabState extends State<MembersTab> {
       entryFrom: '_MembersTabState._buildMembersSection',
       errorMessage: context.l10n.errorLoadingMemberships,
       builder: (context, allMembershipDocs) {
+        // Filter out invisible members and those who are attendees but not members
         final membershipList = allMembershipDocs
-            ?.where((element) => !(element.invisible))
+            ?.where((element) =>
+                !element.invisible &&
+                !(element.isAttendee && !element.isMember),)
             .toList();
 
         if (membershipList != null && membershipList.isNotEmpty) {
@@ -333,7 +332,22 @@ class MembersTabState extends State<MembersTab> {
           }
 
           // If there is no current search, return table with all memberships
-          return _buildTable(MembershipDataSource(membershipList, context));
+          _loadUsersFuture = Future.wait([
+            _loadAllUserInfoDetails(membershipList),
+          ]);
+          return FutureBuilder(
+            future: _loadUsersFuture,
+            builder: (_, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CustomLoadingIndicator(),
+                    );
+                  }
+
+              return _buildTable(MembershipDataSource(membershipList, context));
+            },
+          );
+
         } else if (membershipList == null) {
           return Center(
             child: CustomLoadingIndicator(),
@@ -469,15 +483,20 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       builder: (context) {
         return AlertDialog(
           title: Text(context.l10n.areYouSure),
-          content: Text(
-            context.l10n.confirmMakeOwner(
-              UserInfoProvider.forUser(widget.membership.userId)
-                      .info
-                      ?.displayName ??
-                  '{NAME NOT FOUND}',
-              communityName,
+            content: Flexible(
+              child: SizedBox(
+                width: 250,
+                child: Text(
+                  context.l10n.confirmMakeOwner(
+                    UserInfoProvider.forUser(widget.membership.userId)
+                        .info
+                        ?.displayName ??
+                    '{NAME NOT FOUND}',
+                  communityName,
+                ),
+              ),
             ),
-          ),
+            ),
           actions: [
             TextButton(
               onPressed: () {

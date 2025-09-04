@@ -117,6 +117,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           Column(
             children: [
               _buildCreateCommunityTextField(
+                // This is a bit of a hack so that the field does not shrink when the counter shows
+                helperText: '',
                 hint: context.l10n.taglineHint,
                 label: context.l10n.tagline,
                 borderType: widget.borderType,
