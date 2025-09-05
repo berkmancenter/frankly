@@ -29,14 +29,23 @@ class MediaDeviceService {
     if (kIsWeb) {
       try {
         // Start by requesting permissions so that devices can be listed.
-        micPermissionStatus = await Permission.microphone.status;
+        // The ".status" call does not work on all platforms - catch the exception.
+        try {
+          micPermissionStatus = await Permission.microphone.status;
+        } catch (e) {
+          micPermissionStatus = PermissionStatus.denied;
+        }
         if (!micPermissionStatus.isGranted) {
-          await Permission.microphone.request();
+          micPermissionStatus = await Permission.microphone.request();
         }
 
-        cameraPermissionStatus = await Permission.camera.status;
+        try {
+          cameraPermissionStatus = await Permission.camera.status;
+        } catch (e) {
+          cameraPermissionStatus = PermissionStatus.denied;
+        }
         if (!cameraPermissionStatus.isGranted) {
-          await Permission.camera.request();
+          cameraPermissionStatus = await Permission.camera.request();
         }
 
         final devices =
