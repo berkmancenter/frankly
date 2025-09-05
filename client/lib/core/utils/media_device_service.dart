@@ -12,6 +12,9 @@ class MediaDeviceService {
   static final MediaDeviceService _instance = MediaDeviceService._internal();
   factory MediaDeviceService() => _instance;
 
+  late PermissionStatus micPermissionStatus;
+  late PermissionStatus cameraPermissionStatus;
+
   // Media stream for local A/V preview
   html.MediaStream? _previewMediaStream;
   html.MediaStream? get previewMediaStream => _previewMediaStream;
@@ -26,18 +29,13 @@ class MediaDeviceService {
     if (kIsWeb) {
       try {
         // Start by requesting permissions so that devices can be listed.
-        final micStatus = await Permission.microphone.status;
-
-        if (!(micStatus.isGranted ||
-            micStatus.isLimited ||
-            micStatus.isProvisional)) {
+        micPermissionStatus = await Permission.microphone.status;
+        if (!micPermissionStatus.isGranted) {
           await Permission.microphone.request();
         }
 
-        final cameraStatus = await Permission.camera.status;
-        if (!(cameraStatus.isGranted ||
-            cameraStatus.isLimited ||
-            cameraStatus.isProvisional)) {
+        cameraPermissionStatus = await Permission.camera.status;
+        if (!cameraPermissionStatus.isGranted) {
           await Permission.camera.request();
         }
 
@@ -126,8 +124,7 @@ class MediaDeviceService {
     if (kIsWeb) {
       final Map<String, dynamic>? audioConstraint;
 
-      final micPermissions = await Permission.microphone.status;
-      if (micPermissions.isDenied || micPermissions.isPermanentlyDenied) {
+      if (!micPermissionStatus.isGranted) {
         audioConstraint = null;
       } else {
         // If a specific audio input was selected, pass it into 'exact'.
@@ -141,8 +138,7 @@ class MediaDeviceService {
 
       final Map<String, dynamic>? videoConstraint;
 
-      final camPermissions = await Permission.camera.status;
-      if (camPermissions.isDenied || camPermissions.isPermanentlyDenied) {
+      if (!cameraPermissionStatus.isGranted) {
         videoConstraint = null;
       } else {
         videoConstraint =
