@@ -47,10 +47,11 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _buildSettingsToggle(
     String title,
     bool value,
-    int loadingIndex,
     void Function(dynamic) onUpdate, {
     TogglePosition position = TogglePosition.none,
     bool hasWarning = false,
+    int loadingIndex = 0,
+    String supportingText = '',
   }) {
     // If the position is none, we don't need to apply any special border radius
     BorderRadius radius = BorderRadius.zero;
@@ -75,6 +76,7 @@ class _SettingsTabState extends State<SettingsTab> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomSwitchTile(
               text: title,
@@ -86,6 +88,17 @@ class _SettingsTabState extends State<SettingsTab> {
               loading: _updateLoading[loadingIndex],
             ),
             SizedBox(height: 8),
+            if (supportingText.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 28, 16),
+                child: Text(
+                  supportingText,
+                  style: AppTextStyle.body.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                    fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                  ),
+                ),
+              ),
             if (position != TogglePosition.bottom)
               Divider(
                 height: 1,
@@ -154,48 +167,48 @@ class _SettingsTabState extends State<SettingsTab> {
                 _buildSettingsToggle(
                   'Allow members to create events',
                   !settings.dontAllowMembersToCreateMeetings,
-                  0,
+                  loadingIndex: 0,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       dontAllowMembersToCreateMeetings:
                           !settings.dontAllowMembersToCreateMeetings,
                     ),
-                    0,
+                    loadingIndex: 0,
                   ),
                   position: TogglePosition.top,
                 ),
                 _buildSettingsToggle(
                   'Allow members to create templates',
                   settings.allowUnofficialTemplates,
-                  1,
+                  loadingIndex: 1,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       allowUnofficialTemplates:
                           !settings.allowUnofficialTemplates,
                     ),
-                    1,
+                    loadingIndex: 1,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Require approval for new members',
                   settings.requireApprovalToJoin,
-                  2,
+                  loadingIndex: 2,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       requireApprovalToJoin: !settings.requireApprovalToJoin,
                     ),
-                    2,
+                    loadingIndex: 2,
                   ),
                 ),
                 _buildSettingsToggle(
                   'Enable weekly email digests of upcoming events',
                   !settings.disableEmailDigests,
-                  3,
+                  loadingIndex: 3,
                   (val) => _toggleCommunitySetting(
                     settings.copyWith(
                       disableEmailDigests: !settings.disableEmailDigests,
                     ),
-                    3,
+                    loadingIndex: 3,
                   ),
                   position: !kShowStripeFeatures
                       ? TogglePosition.bottom
@@ -205,12 +218,12 @@ class _SettingsTabState extends State<SettingsTab> {
                   _buildSettingsToggle(
                     'Allow users to donate funds${donationWarning ? ' *' : ''}',
                     settings.allowDonations,
-                    4,
+                    loadingIndex: 4,
                     (val) => _toggleCommunitySetting(
                       settings.copyWith(
                         allowDonations: !settings.allowDonations,
                       ),
-                      4,
+                      loadingIndex: 4,
                     ),
                     hasWarning: donationWarning,
                     position: TogglePosition.bottom,
@@ -258,60 +271,65 @@ class _SettingsTabState extends State<SettingsTab> {
                 _buildSettingsToggle(
                   'Chat',
                   eventSettings.chat ?? true,
-                  5,
+                  loadingIndex: 5,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       chat: !(eventSettings.chat ?? true),
                     ),
-                    5,
+                    loadingIndex: 5,
                   ),
                   position: TogglePosition.top,
+                  supportingText: context.l10n.settingHelperChat,
                 ),
                 _buildSettingsToggle(
                   'Floating Chat',
                   eventSettings.showChatMessagesInRealTime ?? true,
-                  6,
+                  loadingIndex: 6,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       showChatMessagesInRealTime:
                           !(eventSettings.showChatMessagesInRealTime ?? true),
                     ),
-                    6,
+                    loadingIndex: 6,
                   ),
+                  supportingText: context.l10n.settingHelperFloatingChat,
                 ),
                 _buildSettingsToggle(
                   'Record',
                   eventSettings.alwaysRecord ?? true,
-                  7,
+                  loadingIndex: 7,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       alwaysRecord: !(eventSettings.alwaysRecord ?? true),
                     ),
-                    7,
+                    loadingIndex: 7,
                   ),
+                  supportingText: context.l10n.settingHelperRecord,
                 ),
                 _buildSettingsToggle(
                   'Odometer',
                   eventSettings.talkingTimer ?? true,
-                  8,
+                  loadingIndex: 8,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       talkingTimer: !(eventSettings.talkingTimer ?? true),
                     ),
-                    8,
+                    loadingIndex: 8,
                   ),
+                  supportingText: context.l10n.settingHelperTalkTimer,
                 ),
                 _buildSettingsToggle(
                   'Agenda preview',
                   eventSettings.agendaPreview ?? true,
-                  9,
+                  loadingIndex: 9,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(
                       agendaPreview: !(eventSettings.agendaPreview ?? true),
                     ),
-                    9,
+                    loadingIndex: 9,
                   ),
                   position: TogglePosition.bottom,
+                  supportingText: context.l10n.settingHelperAgendaPreview,
                 ),
               ],
             ),
@@ -357,9 +375,9 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   Future<void> _toggleEventSetting(
-    EventSettings eventSettings,
-    int loadingIndex,
-  ) async {
+    EventSettings eventSettings, {
+    int loadingIndex = -1,
+  }) async {
     _updateLoading[loadingIndex] = true;
 
     try {
@@ -418,8 +436,7 @@ class _SettingsTabState extends State<SettingsTab> {
             color: Colors.deepPurpleAccent,
           ),
         ),
-
-        if(_updateLoading[10])
+        if (_updateLoading[10])
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: LinearProgressIndicator(),
@@ -494,8 +511,8 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
-      10,
-      (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings)),
+      loadingIndex: 10,
+      (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings), loadingIndex: 10),
       position: TogglePosition.bottom,
     );
   }
@@ -513,8 +530,9 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
-      10,
-      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings), 10),
+      loadingIndex: 10,
+      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings),
+          loadingIndex: 10,),
     );
   }
 

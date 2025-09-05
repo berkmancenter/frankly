@@ -545,6 +545,11 @@
       }
     }
   },
+  "settingHelperChat": "允许参与者在活动页面和活动期间（包括小组讨论室）之间相互发送消息。",
+  "settingHelperFloatingChat": "在活动期间，在屏幕底部显示临时聊天通知气泡。",
+  "settingHelperRecord": "捕获活动视频，管理员可于稍后下载。（目前限于有主持人活动的主要会议室录制；小组讨论室录制即将推出。）",
+  "settingHelperAgendaPreview": "使活动议程在活动介绍页面上可见。当关闭时，议程仅在活动会议中可见。",
+  "settingHelperTalkTimer": "向参与者显示发言时间指示器，并提供细微提醒以鼓励平衡讨论。",
   "showAnnouncementsButton": "显示公告按钮",
   "showOptions": "显示选项",
   "showPassword": "顯示密碼",

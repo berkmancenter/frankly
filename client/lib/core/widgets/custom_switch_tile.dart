@@ -42,11 +42,14 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Row(
                       children: [
-                        HeightConstrainedText(
+                        Flexible(
+                          child: HeightConstrainedText(
                           widget.text ?? '',
                           style:
-                              widget.style ?? context.theme.textTheme.bodyLarge,
+                            widget.style ?? context.theme.textTheme.bodyLarge,
                           maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         if (widget.loading)
                           Padding(
