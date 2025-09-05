@@ -29,7 +29,7 @@ class MediaSettingsWidget extends StatefulWidget {
 
 class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   final MediaDeviceService _mediaService = MediaDeviceService();
-  html.VideoElement? _videoElement;
+  late html.VideoElement _videoElement;
   final String _viewType =
       'video-preview-element-${DateTime.now().millisecondsSinceEpoch}';
 
@@ -51,9 +51,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     initAll();
 
     if (!widget.shouldShowVideoPreview) {
+      _videoElement = html.VideoElement();
       isLoading = false;
       return;
     }
+
     _videoElement = html.VideoElement()
       ..id = _viewType
       ..autoplay = true
@@ -93,20 +95,19 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   }
 
   Future<void> updatePreview() async {
-    if (_videoElement == null) return;
+    if (!widget.shouldShowVideoPreview) return;
     try {
       await _mediaService.getUserMedia();
-      _videoElement!.srcObject = _mediaService.previewMediaStream;
+      _videoElement.srcObject = _mediaService.previewMediaStream;
     } catch (e) {
-      print('Error updating preview: $e');
-      _videoElement!.srcObject = null;
+      _videoElement.srcObject = null;
     }
   }
 
   @override
   void dispose() async {
     super.dispose();
-    if (_videoElement == null) return;
+    if (!widget.shouldShowVideoPreview) return;
     _mediaService.stopPreviewMediaStream();
     // If user doesn't save, we need to reset the video preview device
     await _mediaService.selectVideoDevice(
@@ -114,8 +115,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       shouldUpdatePreview: false, // getUserMedia is called in updatePreview.
     );
     await updatePreview();
-    _videoElement!.srcObject = null;
-    _videoElement!.remove();
+    _videoElement.srcObject = null;
+    _videoElement.remove();
   }
 
   @override
@@ -446,11 +447,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   setEnabled: true,
                                 );
                               }
-                              showRegularToast(
-                                context,
-                                'Error saving media settings. Please try again or contact support.',
-                                toastType: ToastType.failed,
-                              );
+                              if (context.mounted) {
+                                showRegularToast(
+                                  context,
+                                  'Error saving media settings. Please try again or contact support.',
+                                  toastType: ToastType.failed,
+                                );
+                              }
                               if (widget.shouldShowVideoPreview) {
                                 // Re-enable the preview.
                                 await updatePreview();

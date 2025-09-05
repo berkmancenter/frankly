@@ -157,7 +157,6 @@ class MediaDeviceService {
         if (audioConstraint != null) 'audio': audioConstraint,
         if (videoConstraint != null) 'video': videoConstraint,
       };
-      print('getUserMedia constraints: $constraints');
 
       try {
         final newMediaStream =
