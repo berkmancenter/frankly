@@ -1,0 +1,4 @@
+User ID,Name,Email,Member Status,RSVP Time,Join Time,Room Assigned,Question 1,Answer 1,Question 2,Answer 2
+EmBhPE44nnalc6gF5PaZL8ozVyp2,Test Attendee,attendee@example.com,attendee,2025-05-17 04:05:20.144Z,2025-05-17 04:08:21.144Z,Waiting room,[matching question 1 text],[response],[matching question 2 text],[response]
+j4t72gyfuPV3ClSQNJTmmeUBURk1,Test Member,member@example.com,member,2025-05-17 04:01:58.472Z,2025-05-17 04:02:52.465Z,1,[matching question 1 text],[response],[matching question 2 text],[response]
+o4HGvNQB6WaEMFwkYOxbjH4dyJu1,Test Owner,owner@example.com,owner,2025-05-16 07:02:39.927Z,2025-05-17 04:01:45.927Z,1,[matching question 1 text],[response],[matching question 2 text],[response]

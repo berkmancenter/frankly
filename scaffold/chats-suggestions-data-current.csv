@@ -1,0 +1,10 @@
+Type,#,Created,Name,Email,Message,RoomId,Deleted,Upvotes,Downvotes,AgendaItemId
+Chat,1,"May 16 2025, 9:03PM",Test Member,member@example.com,hi,E6QrnUCNhf5hpA99vMag,FALSE,,,
+Chat,2,"May 16 2025, 9:03PM",Test Owner,owner@example.com,welcome,E6QrnUCNhf5hpA99vMag,FALSE,,,
+Chat,3,"May 16 2025, 9:03PM",Test Owner,owner@example.com,breakout chat from admin,JN3DdhA8XZXCLvaIoRUQ,FALSE,,,
+Chat,4,"May 16 2025, 9:04PM",Test Member,member@example.com,breakout chat from participant,JN3DdhA8XZXCLvaIoRUQ,FALSE,,,
+Chat,5,"May 16 2025, 9:11PM",Test Attendee,attendee@example.com,chat alone in breakout room,kJZ7bAQjsydIyt0qrr90,FALSE,,,
+Chat,6,"May 16 2025, 9:06PM",Test Attendee,attendee@example.com,waiting room chat,waiting-room,FALSE,,,
+Suggestion,1,"May 16 2025, 9:10PM",Test Member,member@example.com,suggestion from participant,JN3DdhA8XZXCLvaIoRUQ,FALSE,1,0,1.73397E+12
+Suggestion,2,"May 16 2025, 9:10PM",Test Owner,owner@example.com,suggestion from admin,JN3DdhA8XZXCLvaIoRUQ,FALSE,1,0,1.73397E+12
+Suggestion,3,"May 16 2025, 9:11PM",Test Attendee,attendee@example.com,suggestion from participant alone in a different breakout room,kJZ7bAQjsydIyt0qrr90,FALSE,1,0,1.73397E+12
