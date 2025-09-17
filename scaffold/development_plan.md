@@ -62,12 +62,12 @@
 ### Phase 1: Registration Data Optimization (Simplest)
 **Goal**: Directly modify `generateRegistrationDataCsvFile()` method
 **Changes**:
-- [ ] Change "Frankly ID" to "User ID"
-- [ ] Change "Member status" to "Member Status" 
-- [ ] Add "Join Time" field (need to get first join time from participant data)
-- [ ] Add "Room Assigned" field (need to get from breakout room data)
-- [ ] Change "Answer 1", "Answer 2" to "Question 1", "Answer 1", "Question 2", "Answer 2" format
-- [ ] Change filename to `registration-data-{$EventId}.csv`
+- [x] Change "Frankly ID" to "User ID"
+- [x] Change "Member status" to "Member Status" 
+- [x] Add "Join Time" field (need to get first join time from participant data)
+- [x] Add "Room Assigned" field (need to get from breakout room data)
+- [x] Change "Answer 1", "Answer 2" to "Question 1", "Answer 1", "Question 2", "Answer 2" format
+- [x] Change filename to `registration-data-{$EventId}.csv`
 
 ### Phase 2: Separate Chats & Suggestions Export Functions
 **Goal**: Directly refactor `generateChatAndSugguestionsDataCsv()` into two independent methods
