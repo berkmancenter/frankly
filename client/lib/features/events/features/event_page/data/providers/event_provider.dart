@@ -10,13 +10,13 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
-import 'package:client/config/environment.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/chat/chat_suggestion_data.dart';
 import 'package:data_models/community/member_details.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -367,22 +367,29 @@ class EventProvider with ChangeNotifier {
   Future<void> generateRegistrationDataCsvFile({
     required List<MemberDetails> registrationData,
     required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    firstRow.add('${Environment.appName} ID');
+    // Updated header: Changed "Frankly ID" to "User ID" and "Member status" to "Member Status"
+    firstRow.add('User ID');
     firstRow.add('Name');
     firstRow.add('Email');
-    firstRow.add('Member status');
+    firstRow.add('Member Status');
     firstRow.add('RSVP Time');
+    // Added new columns: Join Time and Room Assigned
+    firstRow.add('Join Time');
+    firstRow.add('Room Assigned');
     rows.add(firstRow);
 
     final numberOfQuestions =
         _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions.length ??
             0;
 
+    // Updated question format: Changed from "Answer 1, Answer 2" to "Question 1, Answer 1, Question 2, Answer 2"
     for (var i = 0; i < numberOfQuestions; i++) {
+      firstRow.add('Question ${i + 1}');
       firstRow.add('Answer ${i + 1}');
     }
 
@@ -397,33 +404,75 @@ class EventProvider with ChangeNotifier {
       row.add(
         registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
       );
+      
+      // Added Join Time field from Participant.mostRecentPresentTime
+      row.add(
+        registrationData[i].memberEvent?.participant?.mostRecentPresentTime?.toUtc(),
+      );
+      
+      // Added Room Assigned field from Participant.currentBreakoutRoomId
+      // Convert room ID to room name for better readability
+      String roomAssigned = '';
+      final currentRoomId = registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
+      if (currentRoomId != null && currentRoomId.isNotEmpty) {
+        if (currentRoomId == 'waiting-room') {
+          // Special case: breakout room waiting room
+          roomAssigned = 'Waiting room';
+        } else if (breakoutRooms != null) {
+          // Find room name from breakout rooms data
+          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == currentRoomId);
+          if (room != null) {
+            roomAssigned = room.roomName;
+          } else {
+            roomAssigned = currentRoomId; // Fallback to room ID if room not found
+          }
+        } else {
+          roomAssigned = currentRoomId; // Fallback to room ID if no room data available
+        }
+      } else {
+        // If currentRoomId is null or empty, user is likely in main waiting room
+        roomAssigned = 'Waiting room';
+      }
+      row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
 
       if (event != null) {
         final questionsData =
             event.participant?.breakoutRoomSurveyQuestions ?? [];
-        if (questionsData.isEmpty && numberOfQuestions != 0) {
-          for (var q = 0; q < numberOfQuestions; q++) {
+        // Get breakout questions from event definition to get question titles
+        final eventQuestions = _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions ?? [];
+        
+        // Process each question defined in the event
+        for (var q = 0; q < numberOfQuestions; q++) {
+          // Add question title from event definition
+          if (q < eventQuestions.length) {
+            row.add(eventQuestions[q].title);
+          } else {
             row.add('');
           }
-        } else {
-          for (var i = 0; i < questionsData.length; i++) {
-            final questionsList = questionsData[i]
+          
+          // Find corresponding answer from participant data
+          String answerText = '';
+          if (q < questionsData.length) {
+            final questionsList = questionsData[q]
                 .answers
                 .map((e) => e.options)
                 .flattened
                 .toList();
 
-            final answerId = questionsData[i].answerOptionId;
+            final answerId = questionsData[q].answerOptionId;
             if (answerId.isNotEmpty) {
-              final answer =
-                  questionsList.firstWhere((element) => element.id == answerId);
-              row.add(answer.title);
-            } else {
-              row.add('');
+              try {
+                final answer = questionsList.firstWhere((element) => element.id == answerId);
+                answerText = answer.title;
+              } catch (e) {
+                // Answer not found, leave empty
+                answerText = '';
+              }
             }
           }
+          row.add(answerText);
         }
       }
       rows.add(row);
@@ -433,6 +482,7 @@ class EventProvider with ChangeNotifier {
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
+    // Keep original filename format with eventId to distinguish different event exports
     final fileName = 'registration-data-$eventId.csv';
 
     AnchorElement(

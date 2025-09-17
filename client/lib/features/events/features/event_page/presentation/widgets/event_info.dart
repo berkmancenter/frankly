@@ -47,6 +47,7 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -252,11 +253,33 @@ class _EventInfoState extends State<EventInfo> {
       final List<String> userIds = participants.map((p) => p.id).toList();
       await participantsWrapper.dispose();
 
+      // Get breakout rooms data for room name mapping
+      List<BreakoutRoom>? breakoutRooms;
+      try {
+        final liveMeeting = await firestoreLiveMeetingService.liveMeetingStream(
+          parentDoc: 'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
+          id: 'live-meeting',
+        ).stream.first;
+        
+        if (liveMeeting.currentBreakoutSession != null) {
+          final breakoutRoomsWrapper = firestoreLiveMeetingService.breakoutRoomsStream(
+            event: widget.event,
+            breakoutRoomSessionId: liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
+          );
+          breakoutRooms = await breakoutRoomsWrapper.stream.first;
+          await breakoutRoomsWrapper.dispose();
+        }
+      } catch (e) {
+        // If breakout rooms data is not available, continue without it
+        print('Could not fetch breakout rooms data: $e');
+      }
+
       final members = await _presenter.getMembersData(userIds);
       if (members.isNotEmpty) {
         await eventProvider.generateRegistrationDataCsvFile(
           registrationData: members,
           eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
         );
       } else {
         showRegularToast(
