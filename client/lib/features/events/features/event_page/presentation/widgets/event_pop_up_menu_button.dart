@@ -12,7 +12,8 @@ enum EventPopUpMenuSelection {
   refreshGuide,
   createGuideFromEvent,
   duplicateEvent,
-  downloadChatsAndSuggestions,
+  downloadChatData,
+  downloadPollsSuggestionsData,
   downloadRegistrationData,
   cancelEvent,
 }
@@ -47,7 +48,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
         EventPopUpMenuSelection.downloadRegistrationData,
-        EventPopUpMenuSelection.downloadChatsAndSuggestions,
+        EventPopUpMenuSelection.downloadChatData,
+        EventPopUpMenuSelection.downloadPollsSuggestionsData,
       ],
       if (permissions.canCancelEvent) EventPopUpMenuSelection.cancelEvent,
     ];
@@ -136,8 +138,10 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         return context.l10n.duplicateEvent;
       case EventPopUpMenuSelection.downloadRegistrationData:
         return context.l10n.downloadMembersRegistrationData;
-      case EventPopUpMenuSelection.downloadChatsAndSuggestions:
-        return context.l10n.downloadChatsAndSuggestions;
+      case EventPopUpMenuSelection.downloadChatData:
+        return context.l10n.downloadChatData;
+      case EventPopUpMenuSelection.downloadPollsSuggestionsData:
+        return context.l10n.downloadPollsSuggestionsData;
       case EventPopUpMenuSelection.cancelEvent:
         return context.l10n.cancelEvent;
     }
@@ -155,7 +159,9 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         return AppAsset.kCopySvg;
       case EventPopUpMenuSelection.downloadRegistrationData:
         return AppAsset.kSurveySvg;
-      case EventPopUpMenuSelection.downloadChatsAndSuggestions:
+      case EventPopUpMenuSelection.downloadChatData:
+        return AppAsset.kThumbSvg;
+      case EventPopUpMenuSelection.downloadPollsSuggestionsData:
         return AppAsset.kThumbSvg;
       case EventPopUpMenuSelection.cancelEvent:
         return AppAsset.kXSvg;

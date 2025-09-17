@@ -492,20 +492,21 @@ class EventProvider with ChangeNotifier {
       ..click();
   }
 
-  Future<void> generateChatAndSugguestionsDataCsv({
+  // Phase 2: Separated chat data export method
+  Future<void> generateChatDataCsv({
     required GetMeetingChatsSuggestionsDataResponse response,
     required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    firstRow.add('Type');
-    firstRow.add('#');
-    firstRow.add('Created');
-    firstRow.add('Name');
-    firstRow.add('Email');
+    // Phase 3: Updated chat data format - removed Type, #, Name, Email, Upvotes, Downvotes, AgendaItemId
+    // Changed "Created" to "Time", added "User ID", changed "RoomId" to "Room"
+    firstRow.add('Time');
+    firstRow.add('User ID');
     firstRow.add('Message');
-    firstRow.add('RoomId');
+    firstRow.add('Room');
     firstRow.add('Deleted');
     rows.add(firstRow);
 
@@ -516,41 +517,42 @@ class EventProvider with ChangeNotifier {
 
     for (int i = 0; i < chatsData.length; i++) {
       List<dynamic> row = [];
-      row.add('Chat');
-      row.add(i + 1);
+      // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: chatsData[i].createdDate!));
-      row.add(chatsData[i].creatorName ?? '');
-      row.add(chatsData[i].creatorEmail ?? '');
+      // Added "User ID" field
+      row.add(chatsData[i].creatorId ?? '');
       row.add(chatsData[i].message ?? chatsData[i].emotionType?.stringEmoji);
-      row.add(chatsData[i].roomId);
+      
+      // Convert room ID to room name for better readability
+      String roomName = '';
+      final roomId = chatsData[i].roomId;
+      if (roomId != null && roomId.isNotEmpty) {
+        if (roomId == 'waiting-room') {
+          roomName = 'Waiting room';
+        } else if (roomId == eventId) {
+          // If roomId matches eventId, user is in main room
+          roomName = 'Main room';
+        } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+          // Try to find room by roomId
+          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+          if (room != null) {
+            roomName = room.roomName; // This will be "1", "2", etc. for breakout rooms
+          } else {
+            // If roomId is not found in breakout rooms, it might be a main room ID
+            // Check if it's the main event room (same as eventId)
+            roomName = 'Main room';
+          }
+        } else {
+          // If no breakout rooms data available, assume it's main room
+          roomName = 'Main room';
+        }
+      } else {
+        // If roomId is null or empty, user is in main room
+        roomName = 'Main room';
+      }
+      row.add(roomName);
+      
       row.add(chatsData[i].deleted);
-      rows.add(row);
-    }
-
-    var suggestionsData = response.chatsSuggestionsList
-            ?.where((e) => e.type == ChatSuggestionType.suggestion)
-            .toList() ??
-        [];
-
-    if (suggestionsData.isNotEmpty) {
-      firstRow.add('Upvotes');
-      firstRow.add('Downvotes');
-      firstRow.add('AgendaItemId');
-    }
-
-    for (int i = 0; i < suggestionsData.length; i++) {
-      List<dynamic> row = [];
-      row.add('Suggestion');
-      row.add(i + 1);
-      row.add(dateTimeFormat(date: suggestionsData[i].createdDate!));
-      row.add(suggestionsData[i].creatorName ?? '');
-      row.add(suggestionsData[i].creatorEmail ?? '');
-      row.add(suggestionsData[i].message ?? '');
-      row.add(suggestionsData[i].roomId);
-      row.add(suggestionsData[i].deleted ?? false);
-      row.add(suggestionsData[i].upvotes ?? '');
-      row.add(suggestionsData[i].downvotes ?? '');
-      row.add(suggestionsData[i].agendaItemId ?? '');
       rows.add(row);
     }
 
@@ -558,7 +560,124 @@ class EventProvider with ChangeNotifier {
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
-    final fileName = 'chats-suggestions-data-$eventId.csv';
+    // Phase 3: Updated filename to chat-data-{eventId}.csv
+    final fileName = 'chat-data-$eventId.csv';
+
+    AnchorElement(
+      href: 'data:application/octet-stream;charset=utf-8;base64,$content',
+    )
+      ..setAttribute('download', fileName)
+      ..click();
+  }
+
+  // Phase 2: Separated polls & suggestions data export method
+  Future<void> generatePollsSuggestionsDataCsv({
+    required GetMeetingChatsSuggestionsDataResponse response,
+    required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
+  }) async {
+    List<List<dynamic>> rows = [];
+
+    List<dynamic> firstRow = [];
+    // Phase 4: Updated polls & suggestions data format
+    // Added "Type" field, removed Name, Email fields, added User ID field
+    // Changed "Created" to "Time", added "Prompt" field
+    // Changed "RoomId" to "Room", kept Upvotes, Downvotes fields
+    firstRow.add('Type');
+    firstRow.add('Time');
+    firstRow.add('User ID');
+    firstRow.add('Prompt');
+    firstRow.add('Message');
+    firstRow.add('Room');
+    firstRow.add('Upvotes');
+    firstRow.add('Downvotes');
+    firstRow.add('Deleted');
+    rows.add(firstRow);
+
+    var suggestionsData = response.chatsSuggestionsList
+            ?.where((e) => e.type == ChatSuggestionType.suggestion)
+            .toList() ??
+        [];
+
+    // Get agenda items from event to map agendaItemId to prompt text
+    final event = _eventStream.value;
+    final agendaItems = event?.agendaItems ?? [];
+    
+    for (int i = 0; i < suggestionsData.length; i++) {
+      List<dynamic> row = [];
+      
+      // Determine Type based on agenda item
+      String typeValue = 'Suggestion'; // Default to Suggestion
+      String promptText = '';
+      final agendaItemId = suggestionsData[i].agendaItemId;
+      if (agendaItemId != null && agendaItemId.isNotEmpty) {
+        final agendaItem = agendaItems.firstWhereOrNull((item) => item.id == agendaItemId);
+        if (agendaItem != null) {
+          // Determine type based on agenda item type
+          if (agendaItem.type == AgendaItemType.poll) {
+            typeValue = 'Poll';
+          } else if (agendaItem.type == AgendaItemType.userSuggestions) {
+            typeValue = 'Suggestion';
+          }
+          // Use title if available, otherwise use content
+          promptText = agendaItem.title ?? agendaItem.content ?? '';
+        }
+      }
+      
+      // Add Type field
+      row.add(typeValue);
+      // Changed "Created" to "Time"
+      row.add(dateTimeFormat(date: suggestionsData[i].createdDate!));
+      // Added "User ID" field instead of Name, Email
+      row.add(suggestionsData[i].creatorId ?? '');
+      // Add Prompt field
+      row.add(promptText);
+      // Add Message field
+      row.add(suggestionsData[i].message ?? '');
+      
+      // Convert room ID to room name for better readability
+      String roomName = '';
+      final roomId = suggestionsData[i].roomId;
+      if (roomId != null && roomId.isNotEmpty) {
+        if (roomId == 'waiting-room') {
+          roomName = 'Waiting room';
+        } else if (roomId == eventId) {
+          // If roomId matches eventId, user is in main room
+          roomName = 'Main room';
+        } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+          // Try to find room by roomId
+          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+          if (room != null) {
+            roomName = room.roomName; // This will be "1", "2", etc. for breakout rooms
+          } else {
+            // If roomId is not found in breakout rooms, it might be a main room ID
+            // Check if it's the main event room (same as eventId)
+            roomName = 'Main room';
+          }
+        } else {
+          // If no breakout rooms data available, assume it's main room
+          roomName = 'Main room';
+        }
+      } else {
+        // If roomId is null or empty, user is in main room
+        roomName = 'Main room';
+      }
+      row.add(roomName);
+      
+      // Kept Upvotes, Downvotes fields
+      row.add(suggestionsData[i].upvotes ?? '');
+      row.add(suggestionsData[i].downvotes ?? '');
+      // Add Deleted field
+      row.add(suggestionsData[i].deleted ?? false);
+      rows.add(row);
+    }
+
+    String csv = const ListToCsvConverter().convert(rows);
+
+    final stringToBase64 = utf8.fuse(base64);
+    final content = stringToBase64.encode(csv);
+    // Phase 4: Updated filename to polls-suggestions-data-{eventId}.csv
+    final fileName = 'polls-suggestions-data-$eventId.csv';
 
     AnchorElement(
       href: 'data:application/octet-stream;charset=utf-8;base64,$content',
