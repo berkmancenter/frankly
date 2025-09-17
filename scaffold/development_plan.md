@@ -67,7 +67,7 @@
 - [ ] Add "Join Time" field (need to get first join time from participant data)
 - [ ] Add "Room Assigned" field (need to get from breakout room data)
 - [ ] Change "Answer 1", "Answer 2" to "Question 1", "Answer 1", "Question 2", "Answer 2" format
-- [ ] Change filename to `registration-data-new.csv`
+- [ ] Change filename to `registration-data-{$EventId}.csv`
 
 ### Phase 2: Separate Chats & Suggestions Export Functions
 **Goal**: Directly refactor `generateChatAndSugguestionsDataCsv()` into two independent methods
@@ -83,7 +83,7 @@
 - [ ] Change "Created" to "Time"
 - [ ] Add "User ID" field
 - [ ] Change "RoomId" to "Room" and display room names
-- [ ] Change filename to `chat-data-new.csv`
+- [ ] Change filename to `chat-data-{$EventId}.csv`
 
 ### Phase 4: Polls & Suggestions Data Format Optimization  
 **Goal**: Implement new poll and suggestion data export format
@@ -93,7 +93,7 @@
 - [ ] Add "Prompt" field (need to get prompt text from agenda items)
 - [ ] Change "RoomId" to "Room" and display room names
 - [ ] Retain Upvotes, Downvotes fields
-- [ ] Change filename to `polls-suggestions-data-new.csv`
+- [ ] Change filename to `polls-suggestions-data-{$EventId}.csv`
 
 ### Phase 5: UI Menu Separation
 **Goal**: Split download menu from one button into two
