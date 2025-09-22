@@ -209,7 +209,7 @@ class _DataTabState extends State<DataTab> {
     }
 
     // If the event is in the past and not set to always record, or in future and there are no registrants, do not show the download button
-    if (eventInPast && !(event.eventSettings?.alwaysRecord ?? false) ||
+    if (
         (!eventInPast && participants.isEmpty)) {
       return Text('');
     }

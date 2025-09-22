@@ -530,9 +530,7 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
-      loadingIndex: 10,
-      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings),
-          loadingIndex: 10,),
+      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings),),
     );
   }
 
