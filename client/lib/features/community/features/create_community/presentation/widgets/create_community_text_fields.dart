@@ -132,7 +132,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onAboutChanged,
                 focus: widget.aboutFocus,
                 isOptional: true,
-                maxLines: 3,
+                maxLines: null,
                 minLines: 3,
                 keyboardType: TextInputType.multiline,
               ),
@@ -152,23 +152,25 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     String? initialValue,
     String? counterText,
     int? maxLength,
-    int maxLines = 1,
+    int? maxLines = 1,
     int minLines = 1,
     double containerHeight = 78,
     FocusNode? focus,
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
   }) =>
-      Container(
-        alignment: Alignment.topCenter,
-        height: containerHeight,
-        child: CustomTextField(
+      // Container(
+      //   alignment: Alignment.topCenter,
+      //   height: containerHeight,
+      //   child: 
+        CustomTextField(
           controller: controller,
           borderType: BorderType.underline,
           counterAlignment: Alignment.topRight,
           focusNode: focus,
           maxLength: maxLength,
-          maxLines: maxLines,
+          // ignore: prefer_if_null_operators
+          maxLines: maxLines == null ? null : maxLines,
           minLines: minLines,
           counterText: counterText,
           padding: EdgeInsets.zero,
@@ -183,6 +185,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
               ? null
               : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
           keyboardType: keyboardType,
-        ),
+        // ),
       );
 }

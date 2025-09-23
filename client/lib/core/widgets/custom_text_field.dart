@@ -17,7 +17,7 @@ class CustomTextField extends StatefulWidget {
   final String? hintText;
   final String? helperText;
   final String? initialValue;
-  final int maxLines;
+  final int? maxLines;
   final int minLines;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
@@ -271,7 +271,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onEditingComplete: widget.onEditingComplete,
                 // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
                 // while not having to specify max lines for every single usage 🙄
-                maxLines: !widget.minLines.compareTo(widget.maxLines).isNegative
+                maxLines: widget.maxLines == null ? null : !widget.minLines.compareTo(widget.maxLines!).isNegative
                     ? widget.minLines
                     : widget.maxLines,
                 minLines: widget.minLines,
@@ -287,16 +287,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   required maxLength,
                   required isFocused,
                 }) =>
-                    maxLength != null && isFocused && !widget.hideCounter
+                    maxLength != null && !widget.hideCounter
                         ? Container(
                             margin: EdgeInsets.only(left: 10),
                             alignment: widget.counterAlignment ??
                                 Alignment.centerRight,
-                            child: Text(
+                            child: isFocused ? Text(
                               '$currentLength/$maxLength',
                               style:
                                   widget.counterStyle ?? AppTextStyle.bodySmall,
-                            ),
+                            ) : SizedBox.square(dimension: 14,),
                           )
                         : null,
                 maxLengthEnforcement: widget.maxLengthEnforcement,
