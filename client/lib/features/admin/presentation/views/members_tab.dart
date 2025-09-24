@@ -269,19 +269,24 @@ class MembersTabState extends State<MembersTab> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            context.l10n.rolesTooltip,
-                            style: TextStyle(
-                              color: context.theme.colorScheme.onSurfaceVariant,
-                              fontSize: 14,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              context.l10n.rolesTooltip,
+                              style: TextStyle(
+                                color:
+                                    context.theme.colorScheme.onSurfaceVariant,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                           SizedBox(height: 8),
                           TextButton(
                             onPressed: () => launch(
-                                Environment.helpCenterManagingCommunityUrl,),
+                              Environment.helpCenterManagingCommunityUrl,
+                            ),
                             child: Text(
-                              '${context.l10n.goTo} ${context.l10n.seeManagingYourCommunity}',
+                              context.l10n.seeManagingYourCommunity,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -312,9 +317,11 @@ class MembersTabState extends State<MembersTab> {
       builder: (context, allMembershipDocs) {
         // Filter out invisible members and those who are attendees but not members
         final membershipList = allMembershipDocs
-            ?.where((element) =>
-                !element.invisible &&
-                !(element.isAttendee && !element.isMember),)
+            ?.where(
+              (element) =>
+                  !element.invisible &&
+                  !(element.isAttendee && !element.isMember),
+            )
             .toList();
 
         if (membershipList != null && membershipList.isNotEmpty) {
@@ -337,16 +344,15 @@ class MembersTabState extends State<MembersTab> {
           return FutureBuilder(
             future: _loadUsersFuture,
             builder: (_, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CustomLoadingIndicator(),
-                    );
-                  }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CustomLoadingIndicator(),
+                );
+              }
 
               return _buildTable(MembershipDataSource(membershipList, context));
             },
           );
-
         } else if (membershipList == null) {
           return Center(
             child: CustomLoadingIndicator(),
@@ -372,22 +378,24 @@ class MembersTabState extends State<MembersTab> {
             stream: _memberships,
             entryFrom: '_MembersTabState._build',
             errorMessage: context.l10n.errorLoadingMemberships,
-            builder: (context, membershipList) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildSearchBar(membershipList ?? []),
-                if (!isMobile)
-                  ActionButton(
-                    text: context.l10n.downloadMembersData,
-                    type: ActionButtonType.text,
-                    icon: Icon(Icons.file_download_outlined),
-                    onPressed: () => MemberDataUtils.downloadMembersData(
-                      context,
-                      membershipList ?? [],
+            builder: (context, membershipList) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildSearchBar(membershipList ?? []),
+                  if (!isMobile)
+                    ActionButton(
+                      text: context.l10n.downloadMembersData,
+                      type: ActionButtonType.text,
+                      icon: Icon(Icons.file_download_outlined),
+                      onPressed: () => MemberDataUtils.downloadMembersData(
+                        context,
+                        membershipList ?? [],
+                      ),
                     ),
-                  ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
           SizedBox(height: 20),
           Row(
@@ -473,7 +481,7 @@ class ChangeMembershipDropdown extends StatefulWidget {
 class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
   bool _isLoading = false;
 
-  bool get _disableOverride =>
+  bool get _isCurrentOwner =>
       widget.membership.status == MembershipStatus.owner;
 
   Future<bool> confirmOwnerDialog(String communityName) async {
@@ -482,20 +490,20 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       builder: (context) {
         return AlertDialog(
           title: Text(context.l10n.areYouSure),
-            content: Flexible(
-              child: SizedBox(
-                width: 250,
-                child: Text(
-                  context.l10n.confirmMakeOwner(
-                    UserInfoProvider.forUser(widget.membership.userId)
-                        .info
-                        ?.displayName ??
-                    '{NAME NOT FOUND}',
+          content: Flexible(
+            child: SizedBox(
+              width: 250,
+              child: Text(
+                context.l10n.confirmMakeOwner(
+                  UserInfoProvider.forUser(widget.membership.userId)
+                          .info
+                          ?.displayName ??
+                      '{NAME NOT FOUND}',
                   communityName,
                 ),
               ),
             ),
-            ),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -539,7 +547,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    final disableDropdown = _isLoading || _disableOverride;
+    final disableDropdown = _isLoading || _isCurrentOwner;
 
     if (_isLoading) {
       return Container(
@@ -556,44 +564,64 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
         value: widget.membership.status,
         onChanged: disableDropdown ? null : _updateMembership,
         itemHeight: null,
-        selectedItemBuilder: (context) => MembershipStatus.values
-            .map(
-              (status) => Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  status.name.capitalize(),
+        selectedItemBuilder: (context) => _isCurrentOwner
+            ? [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Owner',
+                  ),
                 ),
-              ),
-            )
-            .toList(),
+              ]
+            : MembershipStatus.values
+                .map(
+                  (status) => Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      status.name.capitalize(),
+                    ),
+                  ),
+                )
+                .toList(),
         items: MembershipStatus.values
             // Exclude nonmember, attendee, and banned statuses
             .where(
-              (value) =>
+              (value) => 
                   value.name != 'nonmember' &&
                   value.name != 'attendee' &&
                   value.name != 'banned',
             )
             .map(
-              (value) => DropdownMenuItem<MembershipStatus>(
+              (value) =>  DropdownMenuItem<MembershipStatus>(
                 value: value,
+                // Exclude owner from being selectable, for now
+                // We also adjust opacity of owner field below; this is slightly hacky,
+                // but prevents us from having to filter the enum in a few places
+                enabled: !_isCurrentOwner && value.name != 'owner',
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Column(
+                    child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        value.name.capitalize(),
-                        style: context.theme.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      value.name.capitalize(),
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: value.name == 'owner' ? 
+                        context.theme.textTheme.bodyLarge?.color?.withOpacity(0.5) :
+                        context.theme.textTheme.bodyLarge?.color,
+                      ),
                       ),
                       Text(
-                        value.permissions(context),
-                        style: context.theme.textTheme.bodySmall,
-                        softWrap: true,
-                        maxLines: 3,
+                      value.permissions(context),
+                      style: context.theme.textTheme.bodySmall?.copyWith(
+                        color: value.name == 'owner' ?
+                        context.theme.textTheme.bodySmall?.color?.withOpacity(0.5) :
+                        context.theme.textTheme.bodySmall?.color,
+                      ),
+                      softWrap: true,
+                      maxLines: 3,
                       ),
                     ],
                   ),

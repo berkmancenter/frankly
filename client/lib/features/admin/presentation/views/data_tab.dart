@@ -135,12 +135,12 @@ class _DataTabState extends State<DataTab> {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: Text(context.l10n.selectDataToDownload),
-                backgroundColor: context.theme.colorScheme.outlineVariant,
+                title: Text(context.l10n.selectData),
+                backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
                 contentPadding: EdgeInsets.zero,
                 titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
                 content: Material(
-                  color: context.theme.colorScheme.surfaceBright,
+                  color: context.theme.colorScheme.surfaceContainer,
                   child: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
@@ -189,6 +189,7 @@ class _DataTabState extends State<DataTab> {
                             Navigator.of(context).pop();
                           },
                         ),
+                        SizedBox(width: 10),
                         ActionButton(
                           type: ActionButtonType.filled,
                           text: context.l10n.download,
