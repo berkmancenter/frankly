@@ -159,32 +159,27 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
   }) =>
-      // Container(
-      //   alignment: Alignment.topCenter,
-      //   height: containerHeight,
-      //   child: 
-        CustomTextField(
-          controller: controller,
-          borderType: BorderType.underline,
-          counterAlignment: Alignment.topRight,
-          focusNode: focus,
-          maxLength: maxLength,
-          // ignore: prefer_if_null_operators
-          maxLines: maxLines == null ? null : maxLines,
-          minLines: minLines,
-          counterText: counterText,
-          padding: EdgeInsets.zero,
-          labelText: label,
-          hintText: hint,
-          helperText: helperText,
-          initialValue: initialValue,
-          onChanged: onChanged,
-          isOptional: isOptional,
-          optionalPadding: const EdgeInsets.only(top: 12, right: 12),
-          inputFormatters: formatterRegex == null
-              ? null
-              : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
-          keyboardType: keyboardType,
-        // ),
+      CustomTextField(
+        controller: controller,
+        borderType: BorderType.underline,
+        counterAlignment: Alignment.topRight,
+        focusNode: focus,
+        maxLength: maxLength,
+        // ignore: prefer_if_null_operators
+        maxLines: maxLines == null ? null : maxLines,
+        minLines: minLines,
+        counterText: counterText,
+        padding: EdgeInsets.zero,
+        labelText: label,
+        hintText: hint,
+        helperText: helperText,
+        initialValue: initialValue,
+        onChanged: onChanged,
+        isOptional: isOptional,
+        optionalPadding: const EdgeInsets.only(top: 12, right: 12),
+        inputFormatters: formatterRegex == null
+            ? null
+            : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
+        keyboardType: keyboardType,
       );
 }
