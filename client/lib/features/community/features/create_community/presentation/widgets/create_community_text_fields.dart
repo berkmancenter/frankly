@@ -90,17 +90,17 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             },
           },
           focus: widget.nameFocus,
-          helperText: context.l10n.youCanChangeThisLater,
+          helperText: !widget.showAllFields ? context.l10n.youCanChangeThisLater : null,
           // Allow only alphanumeric characters, spaces
           formatterRegex: r'[\s?\w?]',
         ),
         SizedBox(
-          height: widget.compact ? 0 : 10,
+          height: widget.compact ? 0 : 15,
         ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
-          label: context.l10n.uniqueUrlDisplayNameOptional,
+          label: context.l10n.communityUrl,
           borderType: widget.borderType,
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
@@ -111,14 +111,12 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           formatterRegex: '[0-9a-z-+]',
         ),
         SizedBox(
-          height: widget.compact ? 0 : 10,
+          height: widget.compact ? 0 : 15,
         ),
         if (widget.showAllFields)
           Column(
             children: [
               _buildCreateCommunityTextField(
-                // This is a bit of a hack so that the field does not shrink when the counter shows
-                helperText: '',
                 hint: context.l10n.taglineHint,
                 label: context.l10n.tagline,
                 borderType: widget.borderType,
@@ -128,12 +126,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 counterText:
                     '${widget.community.tagLine?.length}/$taglineMaxCharactersLength',
                 focus: widget.taglineFocus,
-                minLines: 3,
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
               ),
               SizedBox(
-                height: widget.compact ? 0 : 10,
+                height: widget.compact ? 0 : 15,
               ),
               _buildCreateCommunityTextField(
                 hint: context.l10n.communityDescriptionHint,

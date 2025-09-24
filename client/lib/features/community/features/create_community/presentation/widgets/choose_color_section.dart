@@ -33,14 +33,14 @@ class ChooseColorSection extends StatefulWidget {
 
 class _ChooseColorSectionState extends State<ChooseColorSection> {
   late bool _isPresetSelected;
-  late final TextEditingController _customLightColorController;
-  late final TextEditingController _customDarkColorController;
+  late final TextEditingController _customBackgroundColorController;
+  late final TextEditingController _customAccentColorController;
 
   int _selectedPresetIndex = 0;
   String? _selectedColorErrorMessage;
 
-  String get _currentLightColor => _customLightColorController.text;
-  String get _currentDarkColor => _customDarkColorController.text;
+  String get _currentLightColor => _customBackgroundColorController.text;
+  String get _currentDarkColor => _customAccentColorController.text;
 
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
@@ -51,9 +51,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   @override
   void initState() {
     super.initState();
-    _customLightColorController =
+    _customBackgroundColorController =
         TextEditingController(text: _currentCommunityLightColor);
-    _customDarkColorController =
+    _customAccentColorController =
         TextEditingController(text: _currentCommunityDarkColor);
     _lightColor = _currentLightColor.isNotEmpty
         ? ThemeUtils.parseColor(_currentLightColor)!
@@ -71,8 +71,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   @override
   void dispose() {
-    _customLightColorController.dispose();
-    _customDarkColorController.dispose();
+    _customBackgroundColorController.dispose();
+    _customAccentColorController.dispose();
     super.dispose();
   }
 
@@ -133,7 +133,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     });
   }
 
-  void _changeDarkColorTextField(Color val) {
+  void _changeAccentColorTextField(Color val) {
     widget.setDarkColor(_currentDarkColor);
     _checkChosenColorConstraints();
     setState(() {
@@ -141,7 +141,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     });
   }
 
-  void _changeLightColorTextField(Color val) {
+  void _changeBackgroundColorTextField(Color val) {
     widget.setLightColor(ThemeUtils.convertToHexString(val));
     _checkChosenColorConstraints();
     setState(() {
@@ -179,6 +179,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             child: Column(
               children: [
                 TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
                   tabs: <Widget>[
                     Tab(
                       child: Text(
@@ -286,24 +287,24 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   Widget _buildCustomColorsContent(bool mobile) {
 
-    lightColorPicker() {
+    backgroundColorPicker() {
           _buildColorPickerDialog(
             _currentLightColor,
             (Color color) {
-              _customLightColorController.text =
+              _customBackgroundColorController.text =
                   color.toHexString().substring(2, 8);
-              _changeLightColorTextField(color);
+              _changeBackgroundColorTextField(color);
             },
           );
         }
 
-    darkColorPicker() {
+    accentColorPicker() {
       _buildColorPickerDialog(
         _currentDarkColor,
         (Color color) {
-          _customDarkColorController.text =
+          _customAccentColorController.text =
               color.toHexString().substring(2, 8);
-          _changeDarkColorTextField(color);
+          _changeAccentColorTextField(color);
         },
       );
     }
@@ -320,13 +321,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             ),
           ],
         ),
-        onPressed: lightColorPicker,
+        onPressed: backgroundColorPicker,
       ),
       _buildChooseColorTextField(
-        label: context.l10n.lightColorHex,
-        onChanged: _changeLightColorTextField,
-        onTap: lightColorPicker,
-        controller: _customLightColorController,
+        label: context.l10n.backgroundColor,
+        onChanged: _changeBackgroundColorTextField,
+        onTap: backgroundColorPicker,
+        controller: _customBackgroundColorController,
       ),
       IconButton(
         icon: Icon(
@@ -339,13 +340,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             ),
           ],
         ),
-        onPressed: darkColorPicker,
+        onPressed: accentColorPicker,
       ),
       _buildChooseColorTextField(
-        label: context.l10n.darkColorHex,
-        onChanged: _changeDarkColorTextField,
-        onTap: darkColorPicker,
-        controller: _customDarkColorController,
+        label: context.l10n.accentColor,
+        onChanged: _changeAccentColorTextField,
+        onTap: accentColorPicker,
+        controller: _customAccentColorController,
       ),
     ];
     return Column(
@@ -353,6 +354,11 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Padding(padding: EdgeInsets.symmetric(vertical: 20), child: 
+        Text(context.l10n.chooseABackgroundAndAccentColor, 
+          style: context.theme.textTheme.bodySmall,),
+        ),
+        SizedBox(height: 10),
         if (mobile) ...children,
         if (!mobile) ...[
           Row(

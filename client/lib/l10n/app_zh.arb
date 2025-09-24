@@ -1,6 +1,5 @@
 {
   "@@locale": "zh",
-  
   "@appNameHome": {
     "placeholders": {
       "appName": {
@@ -299,10 +298,10 @@
       }
     }
   },
-
   "aVIssues": "音视频问题？",
   "about": "关于",
   "aboutUs": "关于我们",
+  "accentColor": "强调色",
   "accountExistsWithSameEmail": "已存在使用相同电子邮件地址但不同登录方式的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。",
   "addACategory": "添加一个类别",
   "addAPrerequisiteTemplate": "添加先决条件模板",
@@ -355,6 +354,7 @@
   "avIssues": "音视频问题？",
   "awaitingResponses": "等待回应中...",
   "background": "背景",
+  "backgroundColor": "背景颜色",
   "banned": "已禁止",
   "basicInformation": "基本信息",
   "billing": "账单",
@@ -381,6 +381,7 @@
   "chat": "聊天",
   "chatMessage": "聊天消息",
   "chatWithParticipants": "与参与者聊天",
+  "chooseABackgroundAndAccentColor": "选择浅色背景和对比鲜明的强调色。我们会检查其可读性。",
   "clearAgenda": "清空议程？",
   "close": "关闭",
   "closeEdit": "关闭编辑",
@@ -388,9 +389,12 @@
   "colorMustBeLighter": "浅色必须更浅",
   "communityDescription": "社区描述",
   "communityDescriptionHint": "添加更多关于此社区目标的详细信息",
+  "communityName": "社区名称",
   "communitySettings": "社区设置",
   "communitySuccessPrefix": "你已成功创建了你的社区。",
   "communitySuccessSuffix": "点击右上角的铅笔图标以编辑您的社区设置。",
+  "communityTagline": "社区标语",
+  "communityUrl": "社区URL",
   "congratulations": "恭喜",
   "confirm": "确认",
   "confirmDelete": "确定要删除吗？",
@@ -415,7 +419,6 @@
   "createTemplateFromEvent": "从活动创建模板",
   "currentParticipants": "当前\n参与者",
   "custom": "自定义",
-  "darkColorHex": "深色十六进制值",
   "data": "数据",
   "dataDownload": "数据下载",
   "defineBreakoutsOptional": "定义分组讨论（可选）",
@@ -509,7 +512,6 @@
   "language": "语言",
   "languageSelector": "语言选择器",
   "lastSession": "上次会话",
-  "lightColorHex": "浅色十六进制值",
   "linkedinUrl": "LinkedIn链接",
   "livestream": "直播",
   "locked": "已锁定",
@@ -739,7 +741,6 @@
   "typeSomething": "输入内容",
   "unfollow": "取消关注",
   "uniqueUrlDisplayName": "唯一URL显示名称（可选）",
-  "uniqueUrlDisplayNameOptional": "唯一URL显示名称（可选）",
   "upcomingEvents": "即将举行的活动",
   "updateToPlan": "更新至{name}？",
   "upload": "上传",

@@ -1,13 +1,10 @@
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/core/utils/validation_utils.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/features/community/features/create_community/data/providers/community_tag_provider.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
@@ -43,7 +40,7 @@ class _OverviewTabState extends State<OverviewTab> {
       children: [
         Padding(
           padding:
-              EdgeInsets.symmetric(horizontal: mobile ? 0 : 46, vertical: 16),
+              EdgeInsets.symmetric(horizontal: mobile ? 0 : 46, vertical: 28),
           child: HeightConstrainedText(
             label,
             style: context.theme.textTheme.titleLarge,
@@ -67,84 +64,86 @@ class _OverviewTabState extends State<OverviewTab> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
-          return Column(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildSection(
-                      context.l10n.basicInformation,
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6.0,
-                            vertical: 8.0,
-                          ),
-                          child: CreateCommunityTextFields(
-                            showAllFields: true,
-                            showChooseCustomDisplayId: true,
-                            borderType: BorderType.outline,
-                            onCustomDisplayIdChanged: (value) =>
-                                _displayId = value,
-                            onNameChanged: (value) => setState(
-                              () =>
-                                  _community = _community.copyWith(name: value),
-                            ),
-                            onTaglineChanged: (value) => setState(
-                              () => _community =
-                                  _community.copyWith(tagLine: value),
-                            ),
-                            onAboutChanged: (value) => setState(
-                              () => _community =
-                                  _community.copyWith(description: value),
-                            ),
-                            community: _community,
-                          ),
-                        ),
-                      ),
-                      mobile,
-                    ),
-                    Divider(
-                      color: context.theme.colorScheme.onPrimaryContainer
-                          .withOpacity(0.5),
-                      height: 1,
-                    ),
-                    _buildSection(
-                      context.l10n.brandingAndTheme,
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6.0,
-                            vertical: 8.0,
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 15),
-                              CreateCommunityImageFields(
-                                profileImageUrl: _community.profileImageUrl,
-                                updateProfileImage: (String imageUrl) =>
-                                    _updateProfileImage(imageUrl: imageUrl),
-                                removeImage: _removeImage,
-                              ),
-                              SizedBox(height: 30),
-                              ChooseColorSection(
-                                community: _community,
-                                setDarkColor: (val) => _community =
-                                    _community.copyWith(themeDarkColor: val),
-                                setLightColor: (val) => _community =
-                                    _community.copyWith(themeLightColor: val),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      mobile,
-                    ),
-                  ],
-                ),
+          return SingleChildScrollView(
+            child: 
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
               ),
-            ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildSection(
+                    context.l10n.basicInformation,
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0,
+                          vertical: 36.0,
+                        ),
+                        child: CreateCommunityTextFields(
+                          showAllFields: true,
+                          showChooseCustomDisplayId: true,
+                          borderType: BorderType.outline,
+                          onCustomDisplayIdChanged: (value) =>
+                              _displayId = value,
+                          onNameChanged: (value) => setState(
+                            () =>
+                                _community = _community.copyWith(name: value),
+                          ),
+                          onTaglineChanged: (value) => setState(
+                            () => _community =
+                                _community.copyWith(tagLine: value),
+                          ),
+                          onAboutChanged: (value) => setState(
+                            () => _community =
+                                _community.copyWith(description: value),
+                          ),
+                          community: _community,
+                        ),
+                      ),
+                    ),
+                    mobile,
+                  ),
+                  Divider(
+                    color: context.theme.colorScheme.onPrimaryContainer
+                        .withOpacity(0.5),
+                    height: 1,
+                  ),
+                  _buildSection(
+                    context.l10n.brandingAndTheme,
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0,
+                          vertical: 18.0,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 15),
+                            CreateCommunityImageFields(
+                              profileImageUrl: _community.profileImageUrl,
+                              updateProfileImage: (String imageUrl) =>
+                                  _updateProfileImage(imageUrl: imageUrl),
+                              removeImage: _removeImage,
+                            ),
+                            SizedBox(height: 30),
+                            ChooseColorSection(
+                              community: _community,
+                              setDarkColor: (val) => _community =
+                                  _community.copyWith(themeDarkColor: val),
+                              setLightColor: (val) => _community =
+                                  _community.copyWith(themeLightColor: val),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    mobile,
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),
