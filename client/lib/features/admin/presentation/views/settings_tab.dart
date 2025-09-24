@@ -21,7 +21,6 @@ import 'package:data_models/community/community.dart';
 
 import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/collection.dart';
 import 'package:universal_html/html.dart' as html;
 
 /// Enum to define the position of the toggle switch in settings

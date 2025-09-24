@@ -102,7 +102,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedColorErrorMessage = context.l10n.colorMustBeLighter;
+          _selectedColorErrorMessage = context.l10n.backgroundColorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
@@ -115,13 +115,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           firstColor,
           context.theme.colorScheme.secondary,
         )) {
-          _selectedColorErrorMessage = context.l10n.colorMustBeLighter;
+          _selectedColorErrorMessage = context.l10n.backgroundColorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
           context.theme.colorScheme.surface,
         )) {
-          _selectedColorErrorMessage = context.l10n.colorMustBeDarker;
+          _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
         } else {
           _selectedColorErrorMessage = null;
           widget.setLightColor(_currentLightColor);

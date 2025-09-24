@@ -6,7 +6,6 @@ import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/admin/utils/member_data.dart';
 import 'package:data_models/user/public_user_info.dart';
-import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
