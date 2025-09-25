@@ -29,7 +29,7 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
-      onTap: () => widget.onUpdate(!widget.val),
+      onTap: () => widget.loading ?  null : widget.onUpdate(!widget.val),
       child: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -71,7 +71,7 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
                 thumbColor:
                     WidgetStateProperty.all(context.theme.colorScheme.surface),
                 value: widget.val,
-                onChanged: widget.onUpdate,
+                onChanged: widget.loading ? null : widget.onUpdate,
               ),
             ),
           ],

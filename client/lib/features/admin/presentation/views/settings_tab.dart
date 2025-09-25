@@ -42,6 +42,7 @@ class _SettingsTabState extends State<SettingsTab> {
   Community get community => Provider.of<CommunityProvider>(context).community;
 
   final _updateLoading = List.filled(11, false);
+  final _updateLoadingDev = List<bool>.empty(growable: true);
 
   Widget _buildSettingsToggle(
     String title,
@@ -50,6 +51,7 @@ class _SettingsTabState extends State<SettingsTab> {
     TogglePosition position = TogglePosition.none,
     bool hasWarning = false,
     int loadingIndex = 0,
+    int devLoadingIndex = -1,
     String supportingText = '',
   }) {
     // If the position is none, we don't need to apply any special border radius
@@ -84,7 +86,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               val: value,
               onUpdate: onUpdate,
-              loading: _updateLoading[loadingIndex],
+              loading: devLoadingIndex > -1? _updateLoadingDev[devLoadingIndex] : _updateLoading[loadingIndex],
             ),
             SizedBox(height: 8),
             if (supportingText.isNotEmpty)
@@ -246,17 +248,24 @@ class _SettingsTabState extends State<SettingsTab> {
                 ],
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
+            Divider(
+              color:
+                  context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+              height: 1,
+            ),
+            SizedBox(height: isMobile ? 5 : 30),
             _buildSettingsSection(
               isMobile: isMobile,
               helperText: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    context.l10n.eventSettings,
-                    style: context.theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: EdgeInsets.only(top: isMobile ? 18.0 : 0.0),
+                    child: Text(
+                      context.l10n.eventSettings,
+                      style: context.theme.textTheme.titleLarge,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -343,10 +352,16 @@ class _SettingsTabState extends State<SettingsTab> {
 
   Future<void> _toggleCommunitySetting(
     CommunitySettings communitySettings, {
-    int loadingIndex = -1,
+    int loadingIndex = 0,
+    int devLoadingIndex = -1,
   }) async {
     setState(() {
-      _updateLoading[loadingIndex] = true;
+      if (devLoadingIndex > -1) {
+        _updateLoadingDev[devLoadingIndex] = true;
+      } else {
+        _updateLoading[loadingIndex] = true;
+      }
+
     });
 
     try {
@@ -362,7 +377,11 @@ class _SettingsTabState extends State<SettingsTab> {
       )
           .then((_) {
         setState(() {
-          _updateLoading[loadingIndex] = false;
+          if (devLoadingIndex > -1) {
+            _updateLoadingDev[devLoadingIndex] = false;
+          } else {
+            _updateLoading[loadingIndex] = false;
+          }
         });
         return;
       });
@@ -428,67 +447,91 @@ class _SettingsTabState extends State<SettingsTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Dev Settings',
-          style: context.theme.textTheme.displayMedium?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: Colors.deepPurpleAccent,
-          ),
+        SizedBox(height: 30),
+        Divider(
+          color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+          height: 1,
         ),
-        if (_updateLoading[10])
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: LinearProgressIndicator(),
-          ),
-        SizedBox(height: 8),
+        SizedBox(height: isMobile ? 5 : 30),
         Text(
-          'Community Settings',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.purpleAccent,
+          context.l10n.devSettings,
+          style: context.theme.textTheme.headlineMedium,
+        ),
+        SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Text(
+                context.l10n.communitySettings,
+                style: context.theme.textTheme.titleLarge,
               ),
-        ),
-        SizedBox(height: 8),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: isMobile ? 1 : 3,
-            childAspectRatio: 4,
-            crossAxisSpacing: 0,
-            mainAxisSpacing: 0,
-          ),
-          itemCount: settings.length,
-          itemBuilder: (context, i) => _devCommunitySettingsToggle(
-            settings[i],
-            settingsMap,
-            whiteBackground,
-          ),
-        ),
-        SizedBox(height: 20),
-        Text(
-          'Event Settings',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.purpleAccent,
+            ),
+            Expanded(
+              flex: 4,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (_updateLoading[10])
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: LinearProgressIndicator(),
+                      ),
+                    SizedBox(height: 8),
+                    ...settings.map(
+                      (setting) {
+                        _updateLoadingDev.add(false);
+                        return _devCommunitySettingsToggle(
+                          setting,
+                          settingsMap,
+                          _updateLoadingDev.length - 1,
+                          position: setting == settings.first
+                              ? TogglePosition.top
+                              : setting == settings.last
+                                  ? TogglePosition.bottom
+                                  : TogglePosition.none,
+                        );
+                      }
+                    ),
+                  ],
+                ),
               ),
+          ],
         ),
-        SizedBox(height: 8),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: isMobile ? 1 : 3,
-            childAspectRatio: 4,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: eventSettings.length,
-          itemBuilder: (context, i) => _devEventSettingsToggle(
-            eventSettings[i],
-            eventSettingsMap,
-            i.isEven
-                ? whiteBackground
-                : context.theme.colorScheme.primary.withOpacity(0.1),
-          ),
+        SizedBox(height: 15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Text(
+                context.l10n.eventSettings,
+                style: context.theme.textTheme.titleLarge,
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...eventSettings.map(
+                    (eventSetting) => _devEventSettingsToggle(
+                      eventSetting,
+                      eventSettingsMap,
+                      position: eventSetting == eventSettings.first
+                          ? TogglePosition.top
+                          : eventSetting == eventSettings.last
+                              ? TogglePosition.bottom
+                              : TogglePosition.none,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -497,7 +540,8 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _devCommunitySettingsToggle(
     String settingKey,
     Map<String, dynamic> settingMap,
-    Color background,
+      loadingIndex,
+    {TogglePosition position = TogglePosition.none,}
   ) {
     final newSettings = Map<String, dynamic>.from(settingMap)
       ..addEntries([
@@ -510,16 +554,22 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
-      loadingIndex: 10,
-      (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings), loadingIndex: 10),
-      position: TogglePosition.bottom,
+      devLoadingIndex: loadingIndex,
+      position: position,
+      (val) => _toggleCommunitySetting(
+        CommunitySettings.fromJson(newSettings),
+        loadingIndex: loadingIndex,
+      ),
     );
   }
 
   Widget _devEventSettingsToggle(
     String settingKey,
     Map<String, dynamic> settingMap,
-    Color background,
+    {
+    TogglePosition position = TogglePosition.none,
+  }
+
   ) {
     final newSettings = {
       ...settingMap,
@@ -529,7 +579,10 @@ class _SettingsTabState extends State<SettingsTab> {
     return _buildSettingsToggle(
       settingKey,
       settingMap[settingKey] ?? true,
-      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings),),
+      position: position,
+      (val) => _toggleEventSetting(
+        EventSettings.fromJson(newSettings),
+      ),
     );
   }
 
