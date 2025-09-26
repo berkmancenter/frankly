@@ -41,8 +41,9 @@ class _SettingsTabState extends State<SettingsTab> {
   final whiteBackground = Colors.white70;
   Community get community => Provider.of<CommunityProvider>(context).community;
 
+  // Store loading states for each toggle to prevent multiple rapid taps
   final _updateLoading = List.filled(11, false);
-  final _updateLoadingDev = List<bool>.empty(growable: true);
+  final _updateLoadingDev = List.filled(24, false);
 
   Widget _buildSettingsToggle(
     String title,
@@ -86,7 +87,9 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               val: value,
               onUpdate: onUpdate,
-              loading: devLoadingIndex > -1? _updateLoadingDev[devLoadingIndex] : _updateLoading[loadingIndex],
+              loading: devLoadingIndex > -1
+                  ? _updateLoadingDev[devLoadingIndex]
+                  : _updateLoading[loadingIndex],
             ),
             SizedBox(height: 8),
             if (supportingText.isNotEmpty)
@@ -361,7 +364,6 @@ class _SettingsTabState extends State<SettingsTab> {
       } else {
         _updateLoading[loadingIndex] = true;
       }
-
     });
 
     try {
@@ -387,14 +389,19 @@ class _SettingsTabState extends State<SettingsTab> {
       });
     } finally {
       setState(() {
-        _updateLoading[loadingIndex] = false;
+        if (devLoadingIndex > -1) {
+          _updateLoadingDev[devLoadingIndex] = false;
+        } else {
+          _updateLoading[loadingIndex] = false;
+        }
       });
     }
   }
 
   Future<void> _toggleEventSetting(
     EventSettings eventSettings, {
-    int loadingIndex = -1,
+    int loadingIndex = 0,
+    int devLoadingIndex = -1,
   }) async {
     _updateLoading[loadingIndex] = true;
 
@@ -410,11 +417,23 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
       )
           .then((_) {
-        _updateLoading[loadingIndex] = false;
+        setState(() {
+          if (devLoadingIndex > -1) {
+            _updateLoadingDev[devLoadingIndex] = false;
+          } else {
+            _updateLoading[loadingIndex] = false;
+          }
+        });
         return;
       });
     } finally {
-      _updateLoading[loadingIndex] = false;
+      setState(() {
+        if (devLoadingIndex > -1) {
+          _updateLoadingDev[devLoadingIndex] = false;
+        } else {
+          _updateLoading[loadingIndex] = false;
+        }
+      });
     }
   }
 
@@ -444,6 +463,9 @@ class _SettingsTabState extends State<SettingsTab> {
         .where((element) => settingsMap[element] is bool?)
         .toList();
 
+    int devLoadingIndexCommunity = -1;
+    int devLoadingIndexEvent = 11;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -472,32 +494,25 @@ class _SettingsTabState extends State<SettingsTab> {
             Expanded(
               flex: 4,
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (_updateLoading[10])
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: LinearProgressIndicator(),
-                      ),
-                    SizedBox(height: 8),
-                    ...settings.map(
-                      (setting) {
-                        _updateLoadingDev.add(false);
-                        return _devCommunitySettingsToggle(
-                          setting,
-                          settingsMap,
-                          _updateLoadingDev.length - 1,
-                          position: setting == settings.first
-                              ? TogglePosition.top
-                              : setting == settings.last
-                                  ? TogglePosition.bottom
-                                  : TogglePosition.none,
-                        );
-                      }
-                    ),
-                  ],
-                ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8),
+                  ...settings.map((setting) {
+                    devLoadingIndexCommunity++;
+                    return _devCommunitySettingsToggle(
+                      setting,
+                      settingsMap,
+                      devLoadingIndexCommunity,
+                      position: setting == settings.first
+                          ? TogglePosition.top
+                          : setting == settings.last
+                              ? TogglePosition.bottom
+                              : TogglePosition.none,
+                    );
+                  }),
+                ],
               ),
+            ),
           ],
         ),
         SizedBox(height: 15),
@@ -518,15 +533,19 @@ class _SettingsTabState extends State<SettingsTab> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ...eventSettings.map(
-                    (eventSetting) => _devEventSettingsToggle(
-                      eventSetting,
-                      eventSettingsMap,
-                      position: eventSetting == eventSettings.first
-                          ? TogglePosition.top
-                          : eventSetting == eventSettings.last
-                              ? TogglePosition.bottom
-                              : TogglePosition.none,
-                    ),
+                    (eventSetting) {
+                      devLoadingIndexEvent++;
+                      return _devCommunitySettingsToggle(
+                        eventSetting,
+                        eventSettingsMap,
+                        devLoadingIndexEvent,
+                        position: eventSetting == eventSettings.first
+                            ? TogglePosition.top
+                            : eventSetting == eventSettings.last
+                                ? TogglePosition.bottom
+                                : TogglePosition.none,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -540,9 +559,9 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget _devCommunitySettingsToggle(
     String settingKey,
     Map<String, dynamic> settingMap,
-      loadingIndex,
-    {TogglePosition position = TogglePosition.none,}
-  ) {
+    loadingIndex, {
+    TogglePosition position = TogglePosition.none,
+  }) {
     final newSettings = Map<String, dynamic>.from(settingMap)
       ..addEntries([
         MapEntry<String, bool>(
@@ -552,36 +571,24 @@ class _SettingsTabState extends State<SettingsTab> {
       ]);
 
     return _buildSettingsToggle(
-      settingKey,
+      settingKey
+          .replaceAllMapped(
+            RegExp(r'([A-Z])'),
+            (match) => ' ${match.group(0)!.toUpperCase()}',
+          )
+          .trim()
+          .replaceFirst(
+            settingKey[0],
+            settingKey[0].toUpperCase(),
+          )
+          // Handle "A/V" special case
+          .replaceAll('A V', 'A/V'),
       settingMap[settingKey] ?? true,
       devLoadingIndex: loadingIndex,
       position: position,
       (val) => _toggleCommunitySetting(
         CommunitySettings.fromJson(newSettings),
-        loadingIndex: loadingIndex,
-      ),
-    );
-  }
-
-  Widget _devEventSettingsToggle(
-    String settingKey,
-    Map<String, dynamic> settingMap,
-    {
-    TogglePosition position = TogglePosition.none,
-  }
-
-  ) {
-    final newSettings = {
-      ...settingMap,
-      settingKey: !(settingMap[settingKey] ?? true),
-    };
-
-    return _buildSettingsToggle(
-      settingKey,
-      settingMap[settingKey] ?? true,
-      position: position,
-      (val) => _toggleEventSetting(
-        EventSettings.fromJson(newSettings),
+        devLoadingIndex: loadingIndex,
       ),
     );
   }
