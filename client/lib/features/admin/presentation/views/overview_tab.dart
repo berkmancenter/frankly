@@ -65,8 +65,7 @@ class _OverviewTabState extends State<OverviewTab> {
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
-            child: 
-            ConstrainedBox(
+            child: ConstrainedBox(
               constraints: BoxConstraints(
                 minHeight: viewportConstraints.maxHeight,
               ),
@@ -87,18 +86,16 @@ class _OverviewTabState extends State<OverviewTab> {
                           borderType: BorderType.outline,
                           onCustomDisplayIdChanged: (value) =>
                               _displayId = value,
-                          onNameChanged: (value) => setState(
-                            () =>
-                                _community = _community.copyWith(name: value),
-                          ),
-                          onTaglineChanged: (value) => setState(
-                            () => _community =
-                                _community.copyWith(tagLine: value),
-                          ),
-                          onAboutChanged: (value) => setState(
-                            () => _community =
+                          onNameChanged: (value) => {
+                            _community = _community.copyWith(name: value),
+                          },
+                          onTaglineChanged: (value) => {
+                            _community = _community.copyWith(tagLine: value),
+                          },
+                          onAboutChanged: (value) => {
+                            _community =
                                 _community.copyWith(description: value),
-                          ),
+                          },
                           community: _community,
                         ),
                       ),
@@ -130,10 +127,10 @@ class _OverviewTabState extends State<OverviewTab> {
                             SizedBox(height: 30),
                             ChooseColorSection(
                               community: _community,
-                              setDarkColor: (val) => _community =
-                                  _community.copyWith(themeDarkColor: val),
-                              setLightColor: (val) => _community =
-                                  _community.copyWith(themeLightColor: val),
+                              setDarkColor: (val) =>{print(val), _community =
+                                  _community.copyWith(themeDarkColor: val),},
+                              setLightColor: (val) =>{print(val),  _community =
+                                  _community.copyWith(themeLightColor: val),},
                             ),
                           ],
                         ),

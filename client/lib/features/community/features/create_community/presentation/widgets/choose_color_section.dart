@@ -124,8 +124,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
         } else {
           _selectedColorErrorMessage = null;
-          widget.setLightColor(_currentLightColor);
-          widget.setDarkColor(_currentDarkColor);
         }
       } else {
         _selectedColorErrorMessage = null;
@@ -154,6 +152,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     widget
         .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
     setState(() => _selectedPresetIndex = index);
+    _checkChosenColorConstraints();
   }
 
   @override
@@ -218,12 +217,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   Widget _buildPresetColorsContent(BuildContext context, bool mobile) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: GridView.count(
-        crossAxisCount: mobile ? 3 : 5,
-        crossAxisSpacing: mobile ? 40 : 30,
-        mainAxisSpacing: 30,
-        shrinkWrap: true,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Column(children: [
+        GridView.count(
+          crossAxisCount: mobile ? 3 : 5,
+          crossAxisSpacing: mobile ? 40 : 30,
+          mainAxisSpacing: 30,
+          shrinkWrap: true,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         children:
             List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
           return FloatingActionButton(
@@ -250,6 +250,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           );
         }),
       ),
+        _buildErrorMessage(),
+      ],),
     );
   }
 
