@@ -29,6 +29,7 @@ class _CustomSwitchTileState extends State<CustomSwitchTile> {
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
+      hoverColor: Colors.transparent,
       onTap: () => widget.loading ?  null : widget.onUpdate(!widget.val),
       child: Container(
         alignment: Alignment.center,

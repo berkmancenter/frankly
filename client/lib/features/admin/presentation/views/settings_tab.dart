@@ -57,6 +57,7 @@ class _SettingsTabState extends State<SettingsTab> {
   }) {
     // If the position is none, we don't need to apply any special border radius
     BorderRadius radius = BorderRadius.zero;
+    EdgeInsetsGeometry padding = EdgeInsets.symmetric(vertical:12, horizontal: 16);
     if (position == TogglePosition.top) {
       radius = BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -75,8 +76,9 @@ class _SettingsTabState extends State<SettingsTab> {
       color: hasWarning
           ? context.theme.colorScheme.error.withOpacity(0.1)
           : whiteBackground,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+
+      child: Column(children: [ Padding(
+        padding: padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -91,7 +93,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   ? _updateLoadingDev[devLoadingIndex]
                   : _updateLoading[loadingIndex],
             ),
-            SizedBox(height: 8),
+            // SizedBox(height: 8),
             if (supportingText.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 28, 16),
@@ -103,14 +105,17 @@ class _SettingsTabState extends State<SettingsTab> {
                   ),
                 ),
               ),
-            if (position != TogglePosition.bottom)
-              Divider(
-                height: 1,
-                color: context.theme.colorScheme.onSurface.withOpacity(0.12),
-              ),
+           
           ],
         ),
       ),
+       if (position != TogglePosition.bottom)
+            Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16), child: Divider(
+                height: 1,
+                color: context.theme.colorScheme.onSurface.withOpacity(0.12),
+              ),
+      ),],
+    ),
     );
   }
 

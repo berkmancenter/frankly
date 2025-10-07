@@ -127,10 +127,10 @@ class _OverviewTabState extends State<OverviewTab> {
                             SizedBox(height: 30),
                             ChooseColorSection(
                               community: _community,
-                              setDarkColor: (val) =>{print(val), _community =
-                                  _community.copyWith(themeDarkColor: val),},
-                              setLightColor: (val) =>{print(val),  _community =
-                                  _community.copyWith(themeLightColor: val),},
+                              setDarkColor: (val) => _community =
+                                  _community.copyWith(themeDarkColor: val),
+                              setLightColor: (val) => _community =
+                                  _community.copyWith(themeLightColor: val),
                             ),
                           ],
                         ),
