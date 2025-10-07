@@ -342,7 +342,6 @@
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "congratulations": "Congratulations!",
   "contactEmail": "Contact email",
-  "contrastRatioMustBeGreaterThan4_5": "Contrast ratio must be greater than 4.5",
   "copiedToClipboard": "Copied to clipboard",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
   "create": "Create",

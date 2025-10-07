@@ -77,7 +77,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         _buildCreateCommunityTextField(
           controller: _nameController,
           maxLength: titleMaxCharactersLength,
-          label: context.l10n.name,
+          label: context.l10n.communityName,
           borderType: widget.borderType,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
@@ -117,8 +117,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           Column(
             children: [
               _buildCreateCommunityTextField(
+                label: context.l10n.communityTagline,
                 hint: context.l10n.taglineHint,
-                label: context.l10n.tagline,
                 borderType: widget.borderType,
                 initialValue: widget.community.tagLine,
                 onChanged: widget.onTaglineChanged,

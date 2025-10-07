@@ -109,7 +109,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           secondColor,
         )) {
           _selectedColorErrorMessage =
-              context.l10n.contrastRatioMustBeGreaterThan4_5;
+              context.l10n.accentColorMustBeDarker;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
