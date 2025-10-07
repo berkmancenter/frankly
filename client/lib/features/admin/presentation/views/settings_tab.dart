@@ -128,7 +128,25 @@ class _SettingsTabState extends State<SettingsTab> {
     required List<Widget> toggles,
     bool isMobile = false,
   }) {
-    if (isMobile) {
+    return Flex(
+      direction: isMobile ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+         Expanded(flex: isMobile ? 0 : 2, child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: isMobile ? 0 : 46, vertical: 28),
+          child: helperText,
+        ),
+        ),
+        if (!isMobile)
+          Expanded(flex: 4, child: Column(children: [SizedBox(height: 28,), ...toggles])),
+        if (isMobile)
+        Column(children: toggles), 
+      ],
+    );
+/*     if (isMobile) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -149,7 +167,7 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
         Expanded(flex: 4, child: Column(children: toggles)),
       ],
-    );
+    ); */
   }
 
   Widget _buildSettings(bool isMobile) {
@@ -269,17 +287,15 @@ class _SettingsTabState extends State<SettingsTab> {
             SizedBox(height: isMobile ? 5 : 30),
             _buildSettingsSection(
               isMobile: isMobile,
-              helperText: Column(
+              helperText: 
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: isMobile ? 18.0 : 0.0),
-                    child: Text(
+                 Text(
                       context.l10n.eventSettings,
                       style: context.theme.textTheme.titleLarge,
                     ),
-                  ),
                   SizedBox(height: 10),
                   Text(
                     context.l10n.eventSettingsDescription,
@@ -354,6 +370,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ],
             ),
             SizedBox(height: 20),
+            
             if (Environment.enableDevAdminSettings)
               _buildDevSettingsSection(isMobile),
           ],
@@ -635,9 +652,8 @@ class _SettingsTabState extends State<SettingsTab> {
     final isMobile = responsiveLayoutService.isMobile(context);
     return ListView(
       children: [
-        if (!isMobile) SizedBox(height: 38),
+        // if (!isMobile) SizedBox(height: 38),
         _buildSettings(isMobile),
-        // if (!isMobile) Spacer(flex: 1),
       ],
     );
   }
