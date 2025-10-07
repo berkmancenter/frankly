@@ -24,6 +24,7 @@ class MemberDataUtils {
     Future<void> downloadMembersData(List<Membership> membershipList) async {
       final membersList =
           membershipList.map((member) => member.userId).toList();
+
       final communityId =
           Provider.of<CommunityProvider>(context, listen: false).communityId;
 
@@ -33,7 +34,17 @@ class MemberDataUtils {
             membersList: membersList,
             communityId: communityId,
           );
-          if (members.isNotEmpty) {
+          // Filter out attendees who are non-members and non-members
+          // (i.e., only include members who are not just attendees)
+          final filteredMembers = members
+              .where(
+                (value) =>
+                    (!value.membership!.isAttendee &&
+                        !value.membership!.isMember) ||
+                    !value.membership!.isMember,
+              )
+              .toList();
+          if (filteredMembers.isNotEmpty) {
             List<List<dynamic>> rows = [];
 
             List<dynamic> firstRow = [];
@@ -43,8 +54,8 @@ class MemberDataUtils {
             firstRow.add('Member status');
             rows.add(firstRow);
 
-            for (var member in members) {
-              final memberIndex = members.indexOf(member);
+            for (var member in filteredMembers) {
+              final memberIndex = filteredMembers.indexOf(member);
               rows.add([
                 memberIndex + 1,
                 member.displayName ?? '',
