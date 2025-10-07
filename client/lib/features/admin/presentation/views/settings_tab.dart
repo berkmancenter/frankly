@@ -57,7 +57,8 @@ class _SettingsTabState extends State<SettingsTab> {
   }) {
     // If the position is none, we don't need to apply any special border radius
     BorderRadius radius = BorderRadius.zero;
-    EdgeInsetsGeometry padding = EdgeInsets.symmetric(vertical:12, horizontal: 16);
+    EdgeInsetsGeometry padding =
+        EdgeInsets.symmetric(vertical: 12, horizontal: 16);
     if (position == TogglePosition.top) {
       radius = BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -76,46 +77,49 @@ class _SettingsTabState extends State<SettingsTab> {
       color: hasWarning
           ? context.theme.colorScheme.error.withOpacity(0.1)
           : whiteBackground,
-
-      child: Column(children: [ Padding(
-        padding: padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomSwitchTile(
-              text: title,
-              style: AppTextStyle.body.copyWith(
-                color: hasWarning ? context.theme.colorScheme.error : null,
-              ),
-              val: value,
-              onUpdate: onUpdate,
-              loading: devLoadingIndex > -1
-                  ? _updateLoadingDev[devLoadingIndex]
-                  : _updateLoading[loadingIndex],
-            ),
-            // SizedBox(height: 8),
-            if (supportingText.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 28, 16),
-                child: Text(
-                  supportingText,
+      child: Column(
+        children: [
+          Padding(
+            padding: padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomSwitchTile(
+                  text: title,
                   style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.onSurfaceVariant,
-                    fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                    color: hasWarning ? context.theme.colorScheme.error : null,
                   ),
+                  val: value,
+                  onUpdate: onUpdate,
+                  loading: devLoadingIndex > -1
+                      ? _updateLoadingDev[devLoadingIndex]
+                      : _updateLoading[loadingIndex],
                 ),
-              ),
-           
-          ],
-        ),
-      ),
-       if (position != TogglePosition.bottom)
-            Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16), child: Divider(
+                // SizedBox(height: 8),
+                if (supportingText.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 28, 16),
+                    child: Text(
+                      supportingText,
+                      style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                        fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (position != TogglePosition.bottom)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+              child: Divider(
                 height: 1,
                 color: context.theme.colorScheme.onSurface.withOpacity(0.12),
               ),
-      ),],
-    ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -499,7 +503,6 @@ class _SettingsTabState extends State<SettingsTab> {
             Expanded(
               flex: 4,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 8),
                   ...settings.map((setting) {
@@ -634,7 +637,7 @@ class _SettingsTabState extends State<SettingsTab> {
       children: [
         if (!isMobile) SizedBox(height: 38),
         _buildSettings(isMobile),
-        if (!isMobile) Spacer(flex: 1),
+        // if (!isMobile) Spacer(flex: 1),
       ],
     );
   }
