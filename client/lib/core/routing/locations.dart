@@ -241,8 +241,10 @@ class CommunityLocation extends BeamLocation<BeamState> {
         _getCommunityBeamPage(
           key: 'community-admin-${state.uri}',
           displayId: displayId,
+          fillViewport: true,
           child: CommunityAdmin(tab: state.queryParameters['tab']),
         )
+
       else if (listEndsWith(state.pathPatternSegments, ['discuss', 'upcoming']))
         _getCommunityBeamPage(
           key: 'community-$displayId-discuss-upcoming',

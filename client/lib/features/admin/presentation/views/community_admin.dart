@@ -27,9 +27,16 @@ class CommunityAdmin extends StatefulWidget {
 
 class CommunityAdminState extends State<CommunityAdmin>
     with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
+
+    _tabController = TabController(
+      length: 4,
+      vsync: this,
+    );
 
     if (!userService.isSignedIn) {
       WidgetsBinding.instance.addPostFrameCallback(
@@ -71,85 +78,85 @@ class CommunityAdminState extends State<CommunityAdmin>
     final Community community =
         Provider.of<CommunityProvider>(context).community;
     final mobile = responsiveLayoutService.isMobile(context);
-    return ConstrainedBody(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ActionButton(
-            text: community.name,
-            type: ActionButtonType.text,
-            icon: Icon(Icons.arrow_back_outlined),
-            onPressed: () {
-              Navigator.of(context).pop();
-              routerDelegate.beamTo(
-                CommunityPageRoutes(
-                  communityDisplayId: community.displayId,
-                ).communityHome,
-              );
-            },
-          ),
-          SizedBox(height: 10),
-          HeightConstrainedText(
-            context.l10n.manageCommunity,
-            style: context.theme.textTheme.headlineMedium,
-            textAlign: TextAlign.left,
-          ),
-          SizedBox(
-            height: mobile ? 1200 : 1000,
-            child: DefaultTabController(
-              length: 4,
-              child: Scaffold(
-                appBar: AppBar(
-                  toolbarHeight: 20,
-                  bottom: TabBar(
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    tabs: [
-                      Tab(
-                        child: _buildTab(
-                          context,
-                          context.l10n.profile,
-                          Icons.edit_square,
-                          mobile,
-                        ),
-                      ),
-                      Tab(
-                        child: _buildTab(
-                          context,
-                          context.l10n.members,
-                          Icons.group_outlined,
-                          mobile,
-                        ),
-                      ),
-                      Tab(
-                        child: _buildTab(
-                          context,
-                          context.l10n.data,
-                          Icons.downloading_outlined,
-                          mobile,
-                        ),
-                      ),
-                      Tab(
-                        child: _buildTab(
-                          context,
-                          context.l10n.settings,
-                          Icons.settings,
-                          mobile,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                body: TabBarView(
-                  children: [
-                    OverviewTab(),
-                    MembersTab(),
-                    DataTab(),
-                    SettingsTab(),
-                  ],
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ActionButton(
+              text: community.name,
+              type: ActionButtonType.text,
+              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                Navigator.of(context).pop();
+                routerDelegate.beamTo(
+                  CommunityPageRoutes(
+                    communityDisplayId: community.displayId,
+                  ).communityHome,
+                );
+              },
+            ),
+            HeightConstrainedText(
+              context.l10n.manageCommunity,
+              style: context.theme.textTheme.titleLarge,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorSize: TabBarIndicatorSize.tab,
+          tabs: [
+            Tab(
+              child: _buildTab(
+                context,
+                context.l10n.profile,
+                Icons.edit_square,
+                mobile,
               ),
+            ),
+            Tab(
+              child: _buildTab(
+                context,
+                context.l10n.members,
+                Icons.group_outlined,
+                mobile,
+              ),
+            ),
+            Tab(
+              child: _buildTab(
+                context,
+                context.l10n.data,
+                Icons.downloading_outlined,
+                mobile,
+              ),
+            ),
+            Tab(
+              child: _buildTab(
+                context,
+                context.l10n.settings,
+                Icons.settings,
+                mobile,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                OverviewTab(),
+                MembersTab(),
+                DataTab(),
+                SettingsTab(),
+              ],
             ),
           ),
         ],

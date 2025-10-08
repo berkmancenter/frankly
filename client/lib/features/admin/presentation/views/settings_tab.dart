@@ -146,28 +146,6 @@ class _SettingsTabState extends State<SettingsTab> {
         Column(children: toggles), 
       ],
     );
-/*     if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 16),
-          helperText,
-          SizedBox(height: 16),
-          ...toggles,
-        ],
-      );
-    }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 2,
-          child: helperText,
-        ),
-        Expanded(flex: 4, child: Column(children: toggles)),
-      ],
-    ); */
   }
 
   Widget _buildSettings(bool isMobile) {
