@@ -470,34 +470,31 @@ class _SettingsTabState extends State<SettingsTab> {
     int devLoadingIndexCommunity = -1;
     int devLoadingIndexEvent = 11;
 
-    return Column(
+    return Flex(
+      direction: isMobile ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 30),
         Divider(
           color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
           height: 1,
         ),
-        SizedBox(height: isMobile ? 5 : 30),
+        SizedBox(height: isMobile ? 15 : 30),
         Text(
           context.l10n.devSettings,
           style: context.theme.textTheme.headlineMedium,
         ),
         SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              flex: 2,
-              child: Text(
+              Text(
                 context.l10n.communitySettings,
                 style: context.theme.textTheme.titleLarge,
               ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Column(
+            Column(
                 children: [
                   SizedBox(height: 8),
                   ...settings.map((setting) {
@@ -515,10 +512,9 @@ class _SettingsTabState extends State<SettingsTab> {
                   }),
                 ],
               ),
-            ),
           ],
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -630,7 +626,6 @@ class _SettingsTabState extends State<SettingsTab> {
     final isMobile = responsiveLayoutService.isMobile(context);
     return ListView(
       children: [
-        // if (!isMobile) SizedBox(height: 38),
         _buildSettings(isMobile),
       ],
     );
