@@ -219,7 +219,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
       padding: const EdgeInsets.all(16),
       child: Column(children: [
         GridView.count(
-          crossAxisCount: mobile ? 3 : 5,
+          crossAxisCount: mobile ? 4 : 5,
           crossAxisSpacing: mobile ? 40 : 30,
           mainAxisSpacing: 30,
           shrinkWrap: true,
@@ -227,15 +227,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         children:
             List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
           return FloatingActionButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
+            shape: CircleBorder(),
             onPressed: () => _selectPreset(context, i),
             backgroundColor:
                 ThemeUtils().presetColorThemes(context)[i].lightColor,
             child: Container(
-              width: 30,
-              height: 30,
+              width: mobile ? 20 : 40,
+              height: mobile ? 20 : 40,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: ThemeUtils().presetColorThemes(context)[i].darkColor,
@@ -244,6 +242,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
                 child: Icon(
                   _selectedPresetIndex == i ? Icons.check : null,
                   color: context.theme.colorScheme.onPrimaryContainer,
+                  size: mobile ? 15 : 30,
                 ),
               ),
             ),

@@ -80,7 +80,7 @@ class CommunityAdminState extends State<CommunityAdmin>
     final mobile = responsiveLayoutService.isMobile(context);
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 100,
         centerTitle: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,11 +98,14 @@ class CommunityAdminState extends State<CommunityAdmin>
                 );
               },
             ),
-            HeightConstrainedText(
-              context.l10n.manageCommunity,
-              style: context.theme.textTheme.titleLarge,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: HeightConstrainedText(
+                context.l10n.manageCommunity,
+                style: context.theme.textTheme.headlineMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
@@ -145,21 +148,24 @@ class CommunityAdminState extends State<CommunityAdmin>
           ],
         ),
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                OverviewTab(),
-                MembersTab(),
-                DataTab(),
-                SettingsTab(),
-              ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: mobile ? 16.0 : 32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  OverviewTab(),
+                  MembersTab(),
+                  DataTab(),
+                  SettingsTab(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
