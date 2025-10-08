@@ -134,16 +134,24 @@ class _SettingsTabState extends State<SettingsTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-         Expanded(flex: isMobile ? 0 : 2, child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: isMobile ? 0 : 46, vertical: 28),
-          child: helperText,
-        ),
+        Expanded(
+          flex: isMobile ? 0 : 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 0 : 46, vertical: 28,),
+            child: helperText,
+          ),
         ),
         if (!isMobile)
-          Expanded(flex: 4, child: Column(children: [SizedBox(height: 28,), ...toggles])),
-        if (isMobile)
-        Column(children: toggles), 
+          Expanded(
+              flex: 4,
+              child: Column(children: [
+                SizedBox(
+                  height: 28,
+                ),
+                ...toggles,
+              ],),),
+        if (isMobile) Column(children: toggles),
       ],
     );
   }
@@ -265,15 +273,14 @@ class _SettingsTabState extends State<SettingsTab> {
             SizedBox(height: isMobile ? 5 : 30),
             _buildSettingsSection(
               isMobile: isMobile,
-              helperText: 
-              Column(
+              helperText: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                 Text(
-                      context.l10n.eventSettings,
-                      style: context.theme.textTheme.titleLarge,
-                    ),
+                  Text(
+                    context.l10n.eventSettings,
+                    style: context.theme.textTheme.titleLarge,
+                  ),
                   SizedBox(height: 10),
                   Text(
                     context.l10n.eventSettingsDescription,
@@ -348,7 +355,6 @@ class _SettingsTabState extends State<SettingsTab> {
               ],
             ),
             SizedBox(height: 20),
-            
             if (Environment.enableDevAdminSettings)
               _buildDevSettingsSection(isMobile),
           ],
@@ -480,77 +486,84 @@ class _SettingsTabState extends State<SettingsTab> {
           color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
           height: 1,
         ),
-        SizedBox(height: isMobile ? 15 : 30),
-        Text(
+        SizedBox(height: isMobile ? 5 : 30),
+       Expanded(
+          flex: isMobile ? 0 : 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 0 : 46, vertical: 28,),
+            child:  Text(
           context.l10n.devSettings,
           style: context.theme.textTheme.headlineMedium,
         ),
-        SizedBox(height: 30),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-              Text(
-                context.l10n.communitySettings,
-                style: context.theme.textTheme.titleLarge,
-              ),
-            Column(
-                children: [
-                  SizedBox(height: 8),
-                  ...settings.map((setting) {
-                    devLoadingIndexCommunity++;
-                    return _devCommunitySettingsToggle(
-                      setting,
-                      settingsMap,
-                      devLoadingIndexCommunity,
-                      position: setting == settings.first
-                          ? TogglePosition.top
-                          : setting == settings.last
-                              ? TogglePosition.bottom
-                              : TogglePosition.none,
-                    );
-                  }),
-                ],
-              ),
-          ],
+          ),
         ),
-        SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Text(
-                context.l10n.eventSettings,
-                style: context.theme.textTheme.titleLarge,
-              ),
-            ),
-            Expanded(
+
+        if (!isMobile)
+          Expanded(
               flex: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...eventSettings.map(
-                    (eventSetting) {
-                      devLoadingIndexEvent++;
-                      return _devCommunitySettingsToggle(
-                        eventSetting,
-                        eventSettingsMap,
-                        devLoadingIndexEvent,
-                        position: eventSetting == eventSettings.first
-                            ? TogglePosition.top
-                            : eventSetting == eventSettings.last
-                                ? TogglePosition.bottom
-                                : TogglePosition.none,
-                      );
-                    },
-                  ),
-                ],
-              ),
+              child:
+        Column(
+          children: [
+        SizedBox(height: 30),
+            Text(
+              context.l10n.communitySettings,
+              style: context.theme.textTheme.titleLarge,
             ),
+            SizedBox(height: 8),
+            ...settings.map((setting) {
+              devLoadingIndexCommunity++;
+              return _devCommunitySettingsToggle(
+                setting,
+                settingsMap,
+                devLoadingIndexCommunity,
+                position: setting == settings.first
+                    ? TogglePosition.top
+                    : setting == settings.last
+                        ? TogglePosition.bottom
+                        : TogglePosition.none,
+              );
+            }),
           ],
         ),
+          ),
+        // SizedBox(height: 15),
+        //   Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Expanded(
+        //         flex: 2,
+        //         child: Text(
+        //           context.l10n.eventSettings,
+        //           style: context.theme.textTheme.titleLarge,
+        //         ),
+        //       ),
+        //       Expanded(
+        //         flex: 4,
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             ...eventSettings.map(
+        //               (eventSetting) {
+        //                 devLoadingIndexEvent++;
+        //                 return _devCommunitySettingsToggle(
+        //                   eventSetting,
+        //                   eventSettingsMap,
+        //                   devLoadingIndexEvent,
+        //                   position: eventSetting == eventSettings.first
+        //                       ? TogglePosition.top
+        //                       : eventSetting == eventSettings.last
+        //                           ? TogglePosition.bottom
+        //                           : TogglePosition.none,
+        //                 );
+        //               },
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   ),
       ],
     );
   }

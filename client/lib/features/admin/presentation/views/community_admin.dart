@@ -149,7 +149,7 @@ class CommunityAdminState extends State<CommunityAdmin>
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: mobile ? 16.0 : 32.0),
+        padding: EdgeInsets.symmetric(horizontal: mobile ? 16.0 : 132.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
