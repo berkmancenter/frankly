@@ -78,93 +78,101 @@ class CommunityAdminState extends State<CommunityAdmin>
     final Community community =
         Provider.of<CommunityProvider>(context).community;
     final mobile = responsiveLayoutService.isMobile(context);
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        centerTitle: false,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ActionButton(
-              text: community.name,
-              type: ActionButtonType.text,
-              icon: Icon(Icons.arrow_back_outlined),
-              onPressed: () {
-                Navigator.of(context).pop();
-                routerDelegate.beamTo(
-                  CommunityPageRoutes(
-                    communityDisplayId: community.displayId,
-                  ).communityHome,
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: HeightConstrainedText(
-                context.l10n.manageCommunity,
-                style: context.theme.textTheme.headlineMedium,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
+    return Container(
+      margin: EdgeInsets.only(
+          top: 20, left: mobile ? 20 : 0, right: mobile ? 20 : 0,),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 1115,
         ),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorSize: TabBarIndicatorSize.tab,
-          tabs: [
-            Tab(
-              child: _buildTab(
-                context,
-                context.l10n.profile,
-                Icons.edit_square,
-                mobile,
-              ),
+        child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 100,
+            centerTitle: false,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ActionButton(
+                  text: community.name,
+                  type: ActionButtonType.text,
+                  icon: Icon(Icons.arrow_back_outlined),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    routerDelegate.beamTo(
+                      CommunityPageRoutes(
+                        communityDisplayId: community.displayId,
+                      ).communityHome,
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: HeightConstrainedText(
+                    context.l10n.manageCommunity,
+                    style: context.theme.textTheme.headlineMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-            Tab(
-              child: _buildTab(
-                context,
-                context.l10n.members,
-                Icons.group_outlined,
-                mobile,
-              ),
+            bottom: TabBar(
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.profile,
+                    Icons.edit_square,
+                    mobile,
+                  ),
+                ),
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.members,
+                    Icons.group_outlined,
+                    mobile,
+                  ),
+                ),
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.data,
+                    Icons.downloading_outlined,
+                    mobile,
+                  ),
+                ),
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.settings,
+                    Icons.settings,
+                    mobile,
+                  ),
+                ),
+              ],
             ),
-            Tab(
-              child: _buildTab(
-                context,
-                context.l10n.data,
-                Icons.downloading_outlined,
-                mobile,
-              ),
+          ),
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      OverviewTab(),
+                      MembersTab(),
+                      DataTab(),
+                      SettingsTab(),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Tab(
-              child: _buildTab(
-                context,
-                context.l10n.settings,
-                Icons.settings,
-                mobile,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: mobile ? 16.0 : 132.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  SettingsTab(),
-                  OverviewTab(),
-                  MembersTab(),
-                  DataTab(),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -370,7 +370,7 @@ class _SettingsTabState extends State<SettingsTab> {
                         .withOpacity(0.5),
                     height: 1,
                   ),
-                  SizedBox(height: isMobile ? 5 : 30),
+                  SizedBox(height: 30),
                   Text(
                     context.l10n.devSettings,
                     style: context.theme.textTheme.headlineMedium,
@@ -434,7 +434,14 @@ class _SettingsTabState extends State<SettingsTab> {
     int loadingIndex = 0,
     int devLoadingIndex = -1,
   }) async {
-    _updateLoading[loadingIndex] = true;
+    setState(() {
+      if (devLoadingIndex > -1) {
+        _updateLoadingDev[devLoadingIndex] = true;
+      } else {
+        _updateLoading[loadingIndex] = true;
+      }
+    });
+
 
     try {
       await cloudFunctionsCommunityService
@@ -491,100 +498,90 @@ class _SettingsTabState extends State<SettingsTab> {
     final eventSettingsMap =
         context.watch<CommunityProvider>().eventSettings.toJson();
     final eventSettings = eventSettingsMap.keys
-        .where((element) => settingsMap[element] is bool?)
+        .where((element) => eventSettingsMap[element] is bool?)
         .toList();
 
     int devLoadingIndexCommunity = -1;
     int devLoadingIndexEvent = 11;
-    final toggles = [
-      ...settings.map(
-        (setting) {
-          devLoadingIndexCommunity++;
-          return _devCommunitySettingsToggle(
-            setting,
-            settingsMap,
-            devLoadingIndexCommunity,
-            position: setting == settings.first
-                ? TogglePosition.top
-                : setting == settings.last
-                    ? TogglePosition.bottom
-                    : TogglePosition.none,
-          );
-        },
-      ),
-    ];
-    return Flex(
-      direction: isMobile ? Axis.vertical : Axis.horizontal,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Divider(
-        //   color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
-        //   height: 1,
-        // ),
-        // SizedBox(height: isMobile ? 5 : 30),
-        Expanded(
-          flex: isMobile ? 0 : 2,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 0 : 46,
-              vertical: 28,
-            ),
-            child: Text(
-              context.l10n.communitySettings,
-              style: context.theme.textTheme.titleLarge,
-            ),
-          ),
-        ),
-        if (!isMobile)
+
+    Widget togglesLayout(label, List<Widget> toggles) {
+      return Flex(
+        direction: isMobile ? Axis.vertical : Axis.horizontal,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Expanded(
-            flex: 4,
-            child: Column(
-              children: [
-                SizedBox(height: 30),
-                ...toggles,
-              ],
+            flex: isMobile ? 0 : 2,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 0 : 46,
+                vertical: 28,
+              ),
+              child: Text(
+                label,
+                style: context.theme.textTheme.titleLarge,
+              ),
             ),
           ),
-        if (isMobile) Column(children: toggles),
-        // SizedBox(height: 15),
-        //   Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       Expanded(
-        //         flex: 2,
-        //         child: Text(
-        //           context.l10n.eventSettings,
-        //           style: context.theme.textTheme.titleLarge,
-        //         ),
-        //       ),
-        //       Expanded(
-        //         flex: 4,
-        //         child: Column(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             ...eventSettings.map(
-        //               (eventSetting) {
-        //                 devLoadingIndexEvent++;
-        //                 return _devCommunitySettingsToggle(
-        //                   eventSetting,
-        //                   eventSettingsMap,
-        //                   devLoadingIndexEvent,
-        //                   position: eventSetting == eventSettings.first
-        //                       ? TogglePosition.top
-        //                       : eventSetting == eventSettings.last
-        //                           ? TogglePosition.bottom
-        //                           : TogglePosition.none,
-        //                 );
-        //               },
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ],
-        //   ),
+          if (!isMobile)
+            Expanded(
+              flex: 4,
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  ...toggles,
+                ],
+              ),
+            ),
+          if (isMobile) Column(children: toggles),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        togglesLayout(
+          context.l10n.communitySettings,
+          settings.map(
+            (setting) {
+              devLoadingIndexCommunity++;
+              return _devCommunitySettingsToggle(
+                setting,
+                settingsMap,
+                devLoadingIndexCommunity,
+                position: setting == settings.first
+                    ? TogglePosition.top
+                    : setting == settings.last
+                        ? TogglePosition.bottom
+                        : TogglePosition.none,
+              );
+            },
+          ).toList(),
+        ),
+        SizedBox(height:  30),
+        Divider(
+          color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+          height: 1,
+        ),
+        SizedBox(height: isMobile ? 5 : 30),
+        togglesLayout(
+          context.l10n.eventSettings,
+          eventSettings.map(
+            (setting) {
+              devLoadingIndexEvent++;
+              return _devCommunitySettingsToggle(
+                setting,
+                eventSettingsMap,
+                devLoadingIndexEvent,
+                position: setting == eventSettings.first
+                    ? TogglePosition.top
+                    : setting == eventSettings.last
+                        ? TogglePosition.bottom
+                        : TogglePosition.none,
+                        isEventSetting: true,
+              );
+            },
+          ).toList(),
+        ),
       ],
     );
   }
@@ -594,6 +591,7 @@ class _SettingsTabState extends State<SettingsTab> {
     Map<String, dynamic> settingMap,
     loadingIndex, {
     TogglePosition position = TogglePosition.none,
+    bool isEventSetting = false,
   }) {
     final newSettings = Map<String, dynamic>.from(settingMap)
       ..addEntries([
@@ -619,8 +617,8 @@ class _SettingsTabState extends State<SettingsTab> {
       settingMap[settingKey] ?? true,
       devLoadingIndex: loadingIndex,
       position: position,
-      (val) => _toggleCommunitySetting(
-        CommunitySettings.fromJson(newSettings),
+      (val) => isEventSetting ? _toggleEventSetting(EventSettings.fromJson(newSettings), devLoadingIndex: loadingIndex) : _toggleCommunitySetting(
+         CommunitySettings.fromJson(newSettings),
         devLoadingIndex: loadingIndex,
       ),
     );
