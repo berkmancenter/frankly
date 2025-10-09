@@ -138,19 +138,24 @@ class _SettingsTabState extends State<SettingsTab> {
           flex: isMobile ? 0 : 2,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: isMobile ? 0 : 46, vertical: 28,),
+              horizontal: isMobile ? 0 : 46,
+              vertical: 28,
+            ),
             child: helperText,
           ),
         ),
         if (!isMobile)
           Expanded(
-              flex: 4,
-              child: Column(children: [
+            flex: 4,
+            child: Column(
+              children: [
                 SizedBox(
                   height: 28,
                 ),
                 ...toggles,
-              ],),),
+              ],
+            ),
+          ),
         if (isMobile) Column(children: toggles),
       ],
     );
@@ -356,7 +361,23 @@ class _SettingsTabState extends State<SettingsTab> {
             ),
             SizedBox(height: 20),
             if (Environment.enableDevAdminSettings)
-              _buildDevSettingsSection(isMobile),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 30),
+                  Divider(
+                    color: context.theme.colorScheme.onPrimaryContainer
+                        .withOpacity(0.5),
+                    height: 1,
+                  ),
+                  SizedBox(height: isMobile ? 5 : 30),
+                  Text(
+                    context.l10n.devSettings,
+                    style: context.theme.textTheme.headlineMedium,
+                  ),
+                  _buildDevSettingsSection(isMobile),
+                ],
+              ),
           ],
         );
       },
@@ -475,58 +496,58 @@ class _SettingsTabState extends State<SettingsTab> {
 
     int devLoadingIndexCommunity = -1;
     int devLoadingIndexEvent = 11;
-
+    final toggles = [
+      ...settings.map(
+        (setting) {
+          devLoadingIndexCommunity++;
+          return _devCommunitySettingsToggle(
+            setting,
+            settingsMap,
+            devLoadingIndexCommunity,
+            position: setting == settings.first
+                ? TogglePosition.top
+                : setting == settings.last
+                    ? TogglePosition.bottom
+                    : TogglePosition.none,
+          );
+        },
+      ),
+    ];
     return Flex(
       direction: isMobile ? Axis.vertical : Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(
-          color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
-          height: 1,
-        ),
-        SizedBox(height: isMobile ? 5 : 30),
-       Expanded(
+        // Divider(
+        //   color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+        //   height: 1,
+        // ),
+        // SizedBox(height: isMobile ? 5 : 30),
+        Expanded(
           flex: isMobile ? 0 : 2,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: isMobile ? 0 : 46, vertical: 28,),
-            child:  Text(
-          context.l10n.devSettings,
-          style: context.theme.textTheme.headlineMedium,
-        ),
-          ),
-        ),
-
-        if (!isMobile)
-          Expanded(
-              flex: 4,
-              child:
-        Column(
-          children: [
-        SizedBox(height: 30),
-            Text(
+              horizontal: isMobile ? 0 : 46,
+              vertical: 28,
+            ),
+            child: Text(
               context.l10n.communitySettings,
               style: context.theme.textTheme.titleLarge,
             ),
-            SizedBox(height: 8),
-            ...settings.map((setting) {
-              devLoadingIndexCommunity++;
-              return _devCommunitySettingsToggle(
-                setting,
-                settingsMap,
-                devLoadingIndexCommunity,
-                position: setting == settings.first
-                    ? TogglePosition.top
-                    : setting == settings.last
-                        ? TogglePosition.bottom
-                        : TogglePosition.none,
-              );
-            }),
-          ],
-        ),
           ),
+        ),
+        if (!isMobile)
+          Expanded(
+            flex: 4,
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+                ...toggles,
+              ],
+            ),
+          ),
+        if (isMobile) Column(children: toggles),
         // SizedBox(height: 15),
         //   Row(
         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,

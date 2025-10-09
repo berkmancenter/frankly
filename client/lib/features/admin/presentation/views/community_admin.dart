@@ -157,10 +157,10 @@ class CommunityAdminState extends State<CommunityAdmin>
               child: TabBarView(
                 controller: _tabController,
                 children: [
+                  SettingsTab(),
                   OverviewTab(),
                   MembersTab(),
                   DataTab(),
-                  SettingsTab(),
                 ],
               ),
             ),
