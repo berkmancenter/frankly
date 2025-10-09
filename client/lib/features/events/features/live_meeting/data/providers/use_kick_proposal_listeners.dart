@@ -148,7 +148,7 @@ Future<String?> _kickProposalConfirmation(
   if (!context.mounted) return null;
   return await showDialog(
     context: context,
-    builder: (context) => ConfirmTextInputDialogue(
+    builder: (context) => ConfirmTextInputDialog(
       title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
       subText: '${initiatingUser.displayName} started a vote to kick'
           ' ${targetUser.displayName} out of the event. Do you want to'

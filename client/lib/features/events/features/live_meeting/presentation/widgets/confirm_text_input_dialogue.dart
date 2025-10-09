@@ -7,7 +7,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
-class ConfirmTextInputDialogue extends StatefulWidget {
+class ConfirmTextInputDialog extends StatefulWidget {
   final String title;
   final String mainText;
   final String subText;
@@ -18,7 +18,7 @@ class ConfirmTextInputDialogue extends StatefulWidget {
   final String textLabel;
   final String textHint;
 
-  const ConfirmTextInputDialogue({
+  const ConfirmTextInputDialog({
     this.title = '',
     this.mainText = '',
     this.subText = '',
@@ -35,11 +35,10 @@ class ConfirmTextInputDialogue extends StatefulWidget {
   }
 
   @override
-  State<ConfirmTextInputDialogue> createState() =>
-      _ConfirmTextInputDialogueState();
+  State<ConfirmTextInputDialog> createState() => _ConfirmTextInputDialogState();
 }
 
-class _ConfirmTextInputDialogueState extends State<ConfirmTextInputDialogue> {
+class _ConfirmTextInputDialogState extends State<ConfirmTextInputDialog> {
   String _textInput = '';
 
   void _cancel() {

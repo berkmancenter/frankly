@@ -929,7 +929,7 @@ class LiveMeetingProvider with ChangeNotifier {
     if (!context.mounted) return;
     final reason = await showDialog(
       context: context,
-      builder: (context) => ConfirmTextInputDialogue(
+      builder: (context) => ConfirmTextInputDialog(
         title: l10n.proposeToRemoveUser,
         subText:
             'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
