@@ -102,20 +102,21 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedColorErrorMessage = context.l10n.backgroundColorMustBeLighter;
+          _selectedColorErrorMessage =
+              context.l10n.backgroundColorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           secondColor,
         )) {
-          _selectedColorErrorMessage =
-              context.l10n.accentColorMustBeDarker;
+          _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           context.theme.colorScheme.secondary,
         )) {
-          _selectedColorErrorMessage = context.l10n.backgroundColorMustBeLighter;
+          _selectedColorErrorMessage =
+              context.l10n.backgroundColorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
@@ -171,7 +172,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 30),
         SizedBox(
-          height: 300,
+          height: 350,
           child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
@@ -210,47 +211,47 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             ),
           ),
         ),
+        // SizedBox(height: 30),
       ],
+
     );
   }
 
   Widget _buildPresetColorsContent(BuildContext context, bool mobile) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(children: [
-        GridView.count(
-          crossAxisCount: mobile ? 4 : 5,
-          crossAxisSpacing: mobile ? 40 : 30,
-          mainAxisSpacing: 30,
-          shrinkWrap: true,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-        children:
-            List.generate(ThemeUtils().presetColorThemes(context).length, (i) {
-          return FloatingActionButton(
-            shape: CircleBorder(),
-            onPressed: () => _selectPreset(context, i),
-            backgroundColor:
-                ThemeUtils().presetColorThemes(context)[i].lightColor,
-            child: Container(
-              width: mobile ? 20 : 40,
-              height: mobile ? 20 : 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: ThemeUtils().presetColorThemes(context)[i].darkColor,
-              ),
-              child: Center(
-                child: Icon(
-                  _selectedPresetIndex == i ? Icons.check : null,
-                  color: context.theme.colorScheme.onPrimaryContainer,
-                  size: mobile ? 15 : 30,
+      padding:
+          EdgeInsets.symmetric(vertical: 10.0, horizontal: mobile ? 20.0 : 0.0),
+      child: Column(
+        children: [
+          Wrap(
+            spacing: 10.0, // gap between adjacent chips
+            runSpacing: 30.0, // gap between lines
+            children: List.generate(
+                ThemeUtils().presetColorThemes(context).length, (i) {
+              return FloatingActionButton(
+                shape: CircleBorder(),
+                onPressed: () => _selectPreset(context, i),
+                backgroundColor:
+                    ThemeUtils().presetColorThemes(context)[i].lightColor,
+                child: Container(
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ThemeUtils().presetColorThemes(context)[i].darkColor,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      _selectedPresetIndex == i ? Icons.check : null,
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        }),
+              );
+            }),
+          ),
+          _buildErrorMessage(),
+        ],
       ),
-        _buildErrorMessage(),
-      ],),
     );
   }
 
@@ -287,17 +288,16 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   }
 
   Widget _buildCustomColorsContent(bool mobile) {
-
     backgroundColorPicker() {
-          _buildColorPickerDialog(
-            _currentLightColor,
-            (Color color) {
-              _customBackgroundColorController.text =
-                  color.toHexString().substring(2, 8);
-              _changeBackgroundColorTextField(color);
-            },
-          );
-        }
+      _buildColorPickerDialog(
+        _currentLightColor,
+        (Color color) {
+          _customBackgroundColorController.text =
+              color.toHexString().substring(2, 8);
+          _changeBackgroundColorTextField(color);
+        },
+      );
+    }
 
     accentColorPicker() {
       _buildColorPickerDialog(
@@ -355,9 +355,12 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Padding(padding: EdgeInsets.symmetric(vertical: 20), child: 
-        Text(context.l10n.chooseABackgroundAndAccentColor, 
-          style: context.theme.textTheme.bodySmall,),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            context.l10n.chooseABackgroundAndAccentColor,
+            style: context.theme.textTheme.bodySmall,
+          ),
         ),
         SizedBox(height: 10),
         if (mobile) ...children,
