@@ -145,14 +145,18 @@ Future<String?> _kickProposalConfirmation(
   );
   final targetUser = await targetUserFuture;
   final initiatingUser = await initiatingUserFuture;
-  return ConfirmTextInputDialogue(
-    title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
-    subText: '${initiatingUser.displayName} started a vote to kick'
-        ' ${targetUser.displayName} out of the event. Do you want to'
-        ' kick them out? They will not be allowed back in.',
-    textLabel: 'Enter reason',
-    textHint: 'e.g. They are trying to sabotage the event',
-    cancelText: 'No, let them stay',
-    confirmText: 'Yes, kick them out',
-  ).show(context: context);
+  if (!context.mounted) return null;
+  return await showDialog(
+    context: context,
+    builder: (context) => ConfirmTextInputDialogue(
+      title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
+      subText: '${initiatingUser.displayName} started a vote to kick'
+          ' ${targetUser.displayName} out of the event. Do you want to'
+          ' kick them out? They will not be allowed back in.',
+      textLabel: 'Enter reason',
+      textHint: 'e.g. They are trying to sabotage the event',
+      cancelText: 'No, let them stay',
+      confirmText: 'Yes, kick them out',
+    ),
+  );
 }

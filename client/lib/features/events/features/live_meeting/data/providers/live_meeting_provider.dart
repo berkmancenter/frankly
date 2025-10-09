@@ -923,19 +923,23 @@ class LiveMeetingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> confirmProposeKick(String userId) async {
+  Future<void> confirmProposeKick(BuildContext context, String userId) async {
     final user = await firestoreUserService.getPublicUser(userId: userId);
     final l10n = appLocalizationService.getLocalization();
-    final reason = await ConfirmTextInputDialogue(
-      title: l10n.proposeToRemoveUser,
-      subText:
-          'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
-          ' only take this action if the participant is behaving inappropriately.',
-      textLabel: 'Enter reason',
-      textHint: 'e.g. They are trying to sabotage the event',
-      cancelText: 'No, cancel',
-      confirmText: 'Yes, poll participants',
-    ).show();
+    if (!context.mounted) return;
+    final reason = await showDialog(
+      context: context,
+      builder: (context) => ConfirmTextInputDialogue(
+        title: l10n.proposeToRemoveUser,
+        subText:
+            'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
+            ' only take this action if the participant is behaving inappropriately.',
+        textLabel: 'Enter reason',
+        textHint: 'e.g. They are trying to sabotage the event',
+        cancelText: 'No, cancel',
+        confirmText: 'Yes, poll participants',
+      ),
+    );
     if (reason != null) {
       await cloudFunctionsLiveMeetingService.voteToKick(
         VoteToKickRequest(
