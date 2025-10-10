@@ -154,7 +154,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     int? maxLength,
     int? maxLines = 1,
     int minLines = 1,
-    double containerHeight = 78,
     FocusNode? focus,
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
