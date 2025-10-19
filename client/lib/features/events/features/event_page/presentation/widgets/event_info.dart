@@ -338,7 +338,6 @@ class _EventInfoState extends State<EventInfo> {
     });
   }
 
-  // Phase 2: Separated polls & suggestions data download method
   Future<void> _downloadPollsSuggestionsData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
