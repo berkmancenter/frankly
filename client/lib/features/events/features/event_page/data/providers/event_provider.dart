@@ -664,7 +664,6 @@ class EventProvider with ChangeNotifier {
       }
       row.add(roomName);
       
-      // Kept Upvotes, Downvotes fields
       row.add(suggestionsData[i].upvotes ?? '');
       row.add(suggestionsData[i].downvotes ?? '');
       row.add(suggestionsData[i].deleted ?? false);
