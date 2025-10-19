@@ -667,7 +667,6 @@ class EventProvider with ChangeNotifier {
       // Kept Upvotes, Downvotes fields
       row.add(suggestionsData[i].upvotes ?? '');
       row.add(suggestionsData[i].downvotes ?? '');
-      // Add Deleted field
       row.add(suggestionsData[i].deleted ?? false);
       rows.add(row);
     }
