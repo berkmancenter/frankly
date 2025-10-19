@@ -577,10 +577,6 @@ class EventProvider with ChangeNotifier {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    // Phase 4: Updated polls & suggestions data format
-    // Added "Type" field, removed Name, Email fields, added User ID field
-    // Changed "Created" to "Time", added "Prompt" field
-    // Changed "RoomId" to "Room", kept Upvotes, Downvotes fields
     firstRow.add('Type');
     firstRow.add('Time');
     firstRow.add('User ID');
