@@ -560,7 +560,6 @@ class EventProvider with ChangeNotifier {
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
-    // Phase 3: Updated filename to chat-data-{eventId}.csv
     final fileName = 'chat-data-$eventId.csv';
 
     AnchorElement(
