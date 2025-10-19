@@ -674,7 +674,6 @@ class EventProvider with ChangeNotifier {
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
-    // Phase 4: Updated filename to polls-suggestions-data-{eventId}.csv
     final fileName = 'polls-suggestions-data-$eventId.csv';
 
     AnchorElement(
