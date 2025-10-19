@@ -160,7 +160,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
       case EventPopUpMenuSelection.downloadRegistrationData:
         return AppAsset.kSurveySvg;
       case EventPopUpMenuSelection.downloadChatData:
-        return AppAsset.kThumbSvg;
+        return AppAsset.kChatBubbleGreyPng;
       case EventPopUpMenuSelection.downloadPollsSuggestionsData:
         return AppAsset.kThumbSvg;
       case EventPopUpMenuSelection.cancelEvent:
