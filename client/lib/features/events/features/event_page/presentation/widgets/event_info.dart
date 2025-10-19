@@ -292,7 +292,6 @@ class _EventInfoState extends State<EventInfo> {
     });
   }
 
-  // Phase 2: Separated chat data download method
   Future<void> _downloadChatData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
