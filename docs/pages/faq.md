@@ -28,6 +28,7 @@
 - **Functions fail to emulate**: If you run `firebase emulators:start --only ...` and you get a message saying that function emulation failed to start, you may need to run `firebase init functions` on first launch. Use the following selections after running:
 
 ```
+? Would you like to initialize a new codebase, or overwrite an existing one? Overwrite
 ? What language would you like to use to write Cloud Functions? JavaScript
 ? Do you want to use ESLint to catch probable bugs and enforce style? Yes
 ? File functions/package.json already exists. Overwrite? No
