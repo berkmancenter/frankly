@@ -353,7 +353,7 @@ The following should be true if your Mux setup works as expected:
 3. Now update the following in `client/.env`:
     
     !!! note "" 
-        Your `CLOUDINARY_CLOUD_NAME` is found [here](https://console.cloudinary.com/settings/account) under "Product environment cloud name".
+        Your `CLOUDINARY_CLOUD_NAME` is found [here](https://console.cloudinary.com/app/settings/product-environments) under "Cloud Name".
 
   ```
   CLOUDINARY_IMAGE_PRESET=frankly-image-default (or name you used)
