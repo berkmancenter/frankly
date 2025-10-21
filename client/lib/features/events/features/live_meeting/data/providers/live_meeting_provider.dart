@@ -13,7 +13,7 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
-import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialogue.dart';
+import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialog.dart';
 import 'package:client/features/community/presentation/widgets/donate_widget.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/config/environment.dart';
