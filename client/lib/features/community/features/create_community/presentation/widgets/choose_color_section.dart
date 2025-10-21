@@ -1,18 +1,13 @@
-import 'package:client/core/utils/extensions.dart';
-import 'package:client/core/utils/navigation_utils.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/styles/styles.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/theme_preview_container.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/core/widgets/stream_utils.dart';
-import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
-import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 /// This is the section of the create / update community dialog where the community's theme is set
 /// either from a preset list of color combinations or by entering custom 6-digit color strings
@@ -38,33 +33,34 @@ class ChooseColorSection extends StatefulWidget {
 
 class _ChooseColorSectionState extends State<ChooseColorSection> {
   late bool _isPresetSelected;
-  late final TextEditingController _customLightColorController;
-  late final TextEditingController _customDarkColorController;
+  late final TextEditingController _customBackgroundColorController;
+  late final TextEditingController _customAccentColorController;
 
   int _selectedPresetIndex = 0;
   String? _selectedColorErrorMessage;
 
-  String get _currentLightColor => _customLightColorController.text;
-
-  String get _currentDarkColor => _customDarkColorController.text;
-
-  bool get _isSelectedColorComboValid => ThemeUtils.isColorComboValid(
-        context,
-        _currentLightColor,
-        _currentDarkColor,
-      );
+  String get _currentLightColor => _customBackgroundColorController.text;
+  String get _currentDarkColor => _customAccentColorController.text;
 
   String? get _currentCommunityLightColor => widget.community.themeLightColor;
-
   String? get _currentCommunityDarkColor => widget.community.themeDarkColor;
+
+  late Color _lightColor = Color(0xffffffff);
+  late Color _darkColor = Color(0xff212121);
 
   @override
   void initState() {
     super.initState();
-    _customLightColorController =
+    _customBackgroundColorController =
         TextEditingController(text: _currentCommunityLightColor);
-    _customDarkColorController =
+    _customAccentColorController =
         TextEditingController(text: _currentCommunityDarkColor);
+    _lightColor = _currentLightColor.isNotEmpty
+        ? ThemeUtils.parseColor(_currentLightColor)!
+        : Color(0xffffffff);
+    _darkColor = _currentDarkColor.isNotEmpty
+        ? ThemeUtils.parseColor(_currentDarkColor)!
+        : Color(0xff212121);
   }
 
   @override
@@ -75,8 +71,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   @override
   void dispose() {
-    _customLightColorController.dispose();
-    _customDarkColorController.dispose();
+    _customBackgroundColorController.dispose();
+    _customAccentColorController.dispose();
     super.dispose();
   }
 
@@ -106,26 +102,29 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.primary;
 
         if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedColorErrorMessage = 'Light color must be lighter';
+          _selectedColorErrorMessage =
+              context.l10n.backgroundColorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           secondColor,
         )) {
-          _selectedColorErrorMessage =
-              'Contrast ratio must be greater than 4.5';
+          _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           context.theme.colorScheme.secondary,
         )) {
-          _selectedColorErrorMessage = 'Light color must be lighter';
+          _selectedColorErrorMessage =
+              context.l10n.backgroundColorMustBeLighter;
         } else if (!ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
           context.theme.colorScheme.surface,
         )) {
-          _selectedColorErrorMessage = 'Dark color must be darker';
+          _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
+        } else {
+          _selectedColorErrorMessage = null;
         }
       } else {
         _selectedColorErrorMessage = null;
@@ -133,22 +132,20 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     });
   }
 
-  void _changeDarkColorTextField(String val) {
-    if (ThemeUtils.isColorValid(_currentDarkColor)) {
-      widget.setDarkColor(_currentDarkColor);
-    } else {
-      widget.setDarkColor('');
-    }
+  void _changeAccentColorTextField(Color val) {
+    widget.setDarkColor(_currentDarkColor);
     _checkChosenColorConstraints();
+    setState(() {
+      _darkColor = val;
+    });
   }
 
-  void _changeLightColorTextField(String val) {
-    if (ThemeUtils.isColorValid(_currentLightColor)) {
-      widget.setLightColor(_currentLightColor);
-    } else {
-      widget.setLightColor('');
-    }
+  void _changeBackgroundColorTextField(Color val) {
+    widget.setLightColor(ThemeUtils.convertToHexString(val));
     _checkChosenColorConstraints();
+    setState(() {
+      _lightColor = val;
+    });
   }
 
   void _selectPreset(BuildContext context, int index) {
@@ -156,255 +153,254 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     widget
         .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
     setState(() => _selectedPresetIndex = index);
+    _checkChosenColorConstraints();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MemoizedStreamBuilder<PlanCapabilityList>(
-      entryFrom: 'CreateCommunityDialog.ChooseColorSection',
-      streamGetter: () => cloudFunctionsCommunityService
-          .getCommunityCapabilities(
-            GetCommunityCapabilitiesRequest(communityId: widget.community.id),
-          )
-          .asStream(),
-      builder: (context, caps) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: _buildChooseColorScheme(caps?.hasAdvancedBranding ?? false),
-        );
-      },
-    );
-  }
-
-  List<Widget> _buildChooseColorScheme(bool enableCustom) {
-    return [
-      if (widget.bigTitle) SizedBox(height: 25),
-      HeightConstrainedText(
-        'Choose your color scheme',
-        style: widget.bigTitle
-            ? AppTextStyle.body.copyWith(fontSize: 24)
-            : AppTextStyle.body,
-      ),
-      SizedBox(height: 20),
-      if (widget.showTabs) ...[
-        _buildPresetCustomTabs(enableCustom),
-        SizedBox(height: 20),
-      ],
-      _buildChooseColorContent(),
-      SizedBox(height: 30),
-    ];
-  }
-
-  Widget _buildPresetCustomTabs(bool enableCustom) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildColorTab(
-            text: 'preset',
-            selected: _isPresetSelected,
-            onTap: () => setState(() => _isPresetSelected = true),
-          ),
-          if (enableCustom) ...[
-            SizedBox(width: 10),
-            _buildColorTab(
-              text: 'custom',
-              selected: !_isPresetSelected,
-              onTap: () => setState(() => _isPresetSelected = false),
-            ),
-          ],
-        ],
-      );
-
-  Widget _buildColorTab({
-    required String text,
-    required bool selected,
-    required void Function() onTap,
-  }) {
-    final color = selected
-        ? context.theme.colorScheme.onSurface
-        : context.theme.colorScheme.onSurfaceVariant;
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 4, color: color),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  HeightConstrainedText(
-                    text.toUpperCase(),
-                    style: AppTextStyle.eyebrow.copyWith(color: color),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildChooseColorContent() {
-    if (_isPresetSelected) {
-      return _buildPresetColorsContent();
-    } else {
-      return _buildCustomColorsContent();
-    }
-  }
-
-  Widget _buildPresetColorsContent() => ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-          },
-        ),
-        child: SizedBox(
-          height: 120,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: <Widget>[
-              for (var i = 0;
-                  i < ThemeUtils().presetColorThemes(context).length;
-                  i++)
-                ThemePreview(
-                  selectedTheme: ThemeUtils().presetColorThemes(context)[i],
-                  isSelected: i == _selectedPresetIndex,
-                  onTap: () => _selectPreset(context, i),
-                  compact: true,
-                ),
-            ].intersperse(SizedBox(width: 13)).toList(),
-          ),
-        ),
-      );
-
-  Widget _buildCustomColorsContent() {
-    const description =
-        'Choose one light color and one dark color. Colors must meet a 4.5:1 contrast ratio. For help selecting compliant colors, go to ';
-    const linkText = 'color.review.';
-    final launchLink = TapGestureRecognizer()
-      ..onTap = () => launch('https://color.review');
-    final textStyle = AppTextStyle.body
-        .copyWith(color: context.theme.colorScheme.onSecondaryContainer);
-    final linkStyle = AppTextStyle.body.copyWith(
-      decoration: TextDecoration.underline,
-      color: context.theme.colorScheme.primary,
-    );
-
-    final constrained = MediaQuery.of(context).size.width < 475;
+    final mobile = responsiveLayoutService.isMobile(context);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(text: description, style: textStyle),
-              TextSpan(
-                text: linkText,
-                recognizer: launchLink,
-                style: linkStyle,
-              ),
-            ],
+        HeightConstrainedText(
+          context.l10n.theme,
+          style: context.theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w900,
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
         SizedBox(
-          height: 141,
-          child: Row(
-            children: [
-              ThemePreview(
-                lightColorString: _currentLightColor,
-                darkColorString: _currentDarkColor,
-              ),
-              SizedBox(width: 20),
-              if (!constrained) ..._buildCustomTextFields(),
-            ],
-          ),
-        ),
-        if (constrained)
-          SizedBox(
-            height: 141,
-            child: Row(
-              children: _buildCustomTextFields(),
+          height: 350,
+          child: DefaultTabController(
+            initialIndex: _isPresetSelected ? 0 : 1,
+            length: 2,
+            child: Column(
+              children: [
+                TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: <Widget>[
+                    Tab(
+                      child: Text(
+                        context.l10n.presets,
+                        style: context.theme.textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        context.l10n.custom,
+                        style: context.theme.textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: <Widget>[
+                      _buildPresetColorsContent(context, mobile),
+                      _buildCustomColorsContent(mobile),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
+        // SizedBox(height: 30),
+      ],
+
+    );
+  }
+
+  Widget _buildPresetColorsContent(BuildContext context, bool mobile) {
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(vertical: 10.0, horizontal: mobile ? 20.0 : 0.0),
+      child: Column(
+        children: [
+          Wrap(
+            spacing: 10.0, // gap between adjacent chips
+            runSpacing: 30.0, // gap between lines
+            children: List.generate(
+                ThemeUtils().presetColorThemes(context).length, (i) {
+              return FloatingActionButton(
+                shape: CircleBorder(),
+                onPressed: () => _selectPreset(context, i),
+                backgroundColor:
+                    ThemeUtils().presetColorThemes(context)[i].lightColor,
+                child: Container(
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ThemeUtils().presetColorThemes(context)[i].darkColor,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      _selectedPresetIndex == i ? Icons.check : null,
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+          _buildErrorMessage(),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _buildColorPickerDialog(
+    String currentColor,
+    Function(Color color) colorChanged,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(context.l10n.pickAColor),
+        content: SingleChildScrollView(
+          child: ColorPicker(
+            hexInputBar: true,
+            enableAlpha: false,
+            displayThumbColor: true,
+            pickerColor: currentColor.isNotEmpty
+                ? (ThemeUtils.parseColor(currentColor) ?? Colors.white)
+                : Colors.white,
+            onColorChanged: (Color color) => colorChanged(color),
+            paletteType: PaletteType.hueWheel,
+          ),
+        ),
+        actions: <Widget>[
+          ActionButton(
+            text: context.l10n.ok,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomColorsContent(bool mobile) {
+    backgroundColorPicker() {
+      _buildColorPickerDialog(
+        _currentLightColor,
+        (Color color) {
+          _customBackgroundColorController.text =
+              color.toHexString().substring(2, 8);
+          _changeBackgroundColorTextField(color);
+        },
+      );
+    }
+
+    accentColorPicker() {
+      _buildColorPickerDialog(
+        _currentDarkColor,
+        (Color color) {
+          _customAccentColorController.text =
+              color.toHexString().substring(2, 8);
+          _changeAccentColorTextField(color);
+        },
+      );
+    }
+
+    List<Widget> children = [
+      IconButton(
+        icon: Icon(
+          Icons.water_drop,
+          color: _lightColor,
+          shadows: [
+            Shadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        onPressed: backgroundColorPicker,
+      ),
+      _buildChooseColorTextField(
+        label: context.l10n.backgroundColor,
+        onChanged: _changeBackgroundColorTextField,
+        onTap: backgroundColorPicker,
+        controller: _customBackgroundColorController,
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.water_drop,
+          color: _darkColor,
+          shadows: [
+            Shadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        onPressed: accentColorPicker,
+      ),
+      _buildChooseColorTextField(
+        label: context.l10n.accentColor,
+        onChanged: _changeAccentColorTextField,
+        onTap: accentColorPicker,
+        controller: _customAccentColorController,
+      ),
+    ];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            context.l10n.chooseABackgroundAndAccentColor,
+            style: context.theme.textTheme.bodySmall,
+          ),
+        ),
+        SizedBox(height: 10),
+        if (mobile) ...children,
+        if (!mobile) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: children,
+          ),
+        ],
         _buildErrorMessage(),
       ],
     );
   }
 
-  List<Widget> _buildCustomTextFields() => [
-        SizedBox(
-          width: 150,
-          child: Column(
-            children: [
-              _buildChooseColorTextField(
-                label: context.l10n.lightColorHex,
-                onChanged: _changeLightColorTextField,
-                controller: _customLightColorController,
-              ),
-              _buildChooseColorTextField(
-                onChanged: _changeDarkColorTextField,
-                label: context.l10n.darkColorHex,
-                controller: _customDarkColorController,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 10),
-        _buildCheckIcon(),
-      ];
-
   Widget _buildChooseColorTextField({
     required String label,
-    required void Function(String) onChanged,
+    required void Function(Color) onChanged,
+    required void Function() onTap,
     required TextEditingController controller,
   }) =>
       Expanded(
         child: CustomTextField(
-          controller: controller,
-          onChanged: onChanged,
           labelText: label,
           maxLength: 6,
           hideCounter: true,
           prefixText: '#',
-        ),
-      );
-
-  Widget _buildCheckIcon() => Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isSelectedColorComboValid
-                ? context.theme.colorScheme.onPrimary.withAlpha(40)
-                : null,
-            border: Border.all(
-              color: _isSelectedColorComboValid
-                  ? context.theme.colorScheme.primary
-                  : context.theme.colorScheme.onPrimaryContainer,
-            ),
-          ),
-          child: Center(
-            child: Icon(
-              Icons.check,
-              color: _isSelectedColorComboValid
-                  ? context.theme.colorScheme.secondary
-                  : context.theme.colorScheme.onPrimaryContainer,
-            ),
-          ),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          borderType: BorderType.underline,
+          controller: controller,
+          padding: EdgeInsets.zero,
+          onChanged: (text) {
+            final color = ThemeUtils.parseColor(text);
+            if (color != null) {
+              onChanged(color);
+            }
+          },
+          onTap: onTap,
+          validator: (value) => ThemeUtils.isColorValid(value)
+              ? null
+              : context.l10n.mustBeValidHexColor,
         ),
       );
 

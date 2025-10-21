@@ -1,5 +1,5 @@
+import 'package:client/core/routing/locations.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 
 import 'package:client/services.dart';
@@ -17,11 +17,6 @@ class EditCommunityButton extends StatefulWidget {
 }
 
 class _EditCommunityButtonState extends State<EditCommunityButton> {
-  void _editTapped({bool canSetDisplayId = false}) =>
-      CreateCommunityDialog.updateCommunity(
-        community: context.read<CommunityProvider>().community,
-        showChooseCustomDisplayId: canSetDisplayId,
-      ).show();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +39,14 @@ class _EditCommunityButtonState extends State<EditCommunityButton> {
           visualDensity: VisualDensity.compact,
           iconSize: 24,
           color: context.theme.colorScheme.secondary,
-          onPressed: () =>
-              _editTapped(canSetDisplayId: caps?.hasCustomUrls ?? false),
+          onPressed: () => {
+            routerDelegate.beamTo(
+              CommunityPageRoutes(
+                communityDisplayId:
+                    Provider.of<CommunityProvider>(context, listen: false).community.displayId,
+              ).communityAdmin(),
+            ),
+          },
         );
       },
     );

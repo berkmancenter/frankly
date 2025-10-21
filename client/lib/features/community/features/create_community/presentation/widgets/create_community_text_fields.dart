@@ -15,11 +15,12 @@ class CreateCommunityTextFields extends StatefulWidget {
   final void Function(String)? onAboutChanged;
   final FocusNode? nameFocus;
   final FocusNode? aboutFocus;
+  final FocusNode? taglineFocus;
   final Community community;
   final bool compact;
   final bool showAllFields;
-
-  final FocusNode? taglineFocus;
+  final bool autoGenerateUrl;
+  final BorderType borderType;
   const CreateCommunityTextFields({
     this.showChooseCustomDisplayId = false,
     Key? key,
@@ -33,6 +34,8 @@ class CreateCommunityTextFields extends StatefulWidget {
     required this.community,
     this.compact = false,
     this.showAllFields = false,
+    this.autoGenerateUrl = true,
+    this.borderType = BorderType.underline,
   }) : super(key: key);
 
   @override
@@ -74,27 +77,31 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         _buildCreateCommunityTextField(
           controller: _nameController,
           maxLength: titleMaxCharactersLength,
-          label: context.l10n.name,
+          label: context.l10n.communityName,
+          borderType: widget.borderType,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
-            widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
-            setState(() {
-              // Update the displayId when the name changes
-              _displayIdController.text = _formatDisplayIdFromName(val);
-            }),
+            if(widget.autoGenerateUrl){
+              widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
+              setState(() {
+                // Update the displayId when the name changes
+                _displayIdController.text = _formatDisplayIdFromName(val);
+              }),
+            },
           },
           focus: widget.nameFocus,
-          helperText: context.l10n.youCanChangeThisLater,
+          helperText: !widget.showAllFields ? context.l10n.youCanChangeThisLater : null,
           // Allow only alphanumeric characters, spaces
           formatterRegex: r'[\s?\w?]',
         ),
         SizedBox(
-          height: widget.compact ? 0 : 10,
+          height: widget.compact ? 0 : 15,
         ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
           maxLength: customIdMaxCharactersLength,
-          label: context.l10n.uniqueUrlDisplayNameOptional,
+          label: context.l10n.communityUrl,
+          borderType: widget.borderType,
           initialValue: _nameController.text,
           onChanged: widget.onCustomDisplayIdChanged,
           helperText: _displayIdController.text.isNotEmpty
@@ -104,30 +111,29 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           formatterRegex: '[0-9a-z-+]',
         ),
         SizedBox(
-          height: widget.compact ? 0 : 10,
+          height: widget.compact ? 0 : 15,
         ),
         if (widget.showAllFields)
           Column(
             children: [
               _buildCreateCommunityTextField(
-                hint: 'Ex: Protecting the earth from all invaders',
-                label: 'Tagline',
+                label: context.l10n.communityTagline,
+                hint: context.l10n.taglineHint,
+                borderType: widget.borderType,
                 initialValue: widget.community.tagLine,
                 onChanged: widget.onTaglineChanged,
                 maxLength: taglineMaxCharactersLength,
                 counterText:
                     '${widget.community.tagLine?.length}/$taglineMaxCharactersLength',
                 focus: widget.taglineFocus,
-                minLines: 3,
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
               ),
               SizedBox(
-                height: widget.compact ? 0 : 10,
+                height: widget.compact ? 0 : 15,
               ),
               _buildCreateCommunityTextField(
-                label: 'About',
-                hint: 'Add more detail as to the goals of this community',
+                hint: context.l10n.communityDescriptionHint,
+                label: context.l10n.communityDescription,
+                borderType: widget.borderType,
                 initialValue: widget.community.description,
                 onChanged: widget.onAboutChanged,
                 focus: widget.aboutFocus,
@@ -158,13 +164,14 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     FocusNode? focus,
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
+    BorderType borderType = BorderType.underline,
   }) =>
       Container(
         alignment: Alignment.topCenter,
         height: containerHeight,
         child: CustomTextField(
           controller: controller,
-          borderType: BorderType.underline,
+          borderType: borderType,
           counterAlignment: Alignment.topRight,
           focusNode: focus,
           maxLength: maxLength,

@@ -64,6 +64,9 @@ class CustomTextField extends StatefulWidget {
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
 
+  /// Allow for custom prefix icon
+  final Widget? prefixIcon;
+
   /// Allow for custom suffix icon
   final Widget? suffixIcon;
 
@@ -117,6 +120,7 @@ class CustomTextField extends StatefulWidget {
     this.isOptional = false,
     this.optionalTextStyle,
     this.optionalPadding,
+    this.prefixIcon,
     this.suffixIcon,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
@@ -322,6 +326,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       .copyWith(color: context.theme.colorScheme.error),
                   prefixText: widget.prefixText,
                   prefixStyle: widget.textStyle,
+                  prefixIcon: widget.prefixIcon,
                   alignLabelWithHint: true,
                   hintText: widget.hintText,
                   hintStyle: context.theme.textTheme.bodyMedium,
