@@ -61,93 +61,79 @@ class _ConfirmTextInputDialogState extends State<ConfirmTextInputDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: GestureDetector(
-        onTap: () {},
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 600),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: context.theme.colorScheme.primary,
-          ),
-          padding: const EdgeInsets.all(40),
-          child: CustomListView(
-            shrinkWrap: true,
-            children: [
-              if (!isNullOrEmpty(widget.title)) ...[
-                HeightConstrainedText(
-                  widget.title,
-                  style: AppTextStyle.headline1
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
-                  textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 20),
-              ],
-              if (!isNullOrEmpty(widget.mainText)) ...[
-                HeightConstrainedText(
-                  widget.mainText,
-                  style: AppTextStyle.body
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 10),
-              ],
-              if (!isNullOrEmpty(widget.subText)) ...[
-                HeightConstrainedText(
-                  widget.subText,
-                  style: AppTextStyle.body
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 10),
-              ],
-              CustomTextField(
-                labelText: widget.textLabel,
-                hintText: widget.textHint,
-                initialValue: '',
-                onChanged: (value) => setState(() => _textInput = value),
-                minLines: 2,
-                maxLines: 2,
+    return AlertDialog(
+      contentPadding: EdgeInsets.all(40),
+      content: Container(
+        constraints: BoxConstraints(maxWidth: 600),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!isNullOrEmpty(widget.title)) ...[
+              HeightConstrainedText(
+                widget.title,
+                style: context.theme.textTheme.headlineMedium,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (!isNullOrEmpty(widget.cancelText))
-                    ActionButton(
-                      type: ActionButtonType.outline,
-                      height: 55,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
-                      ),
-                      minWidth: 100,
-                      color: Colors.transparent,
-                      text: widget.cancelText,
-                      textStyle: AppTextStyle.body
-                          .copyWith(color: context.theme.colorScheme.onPrimary),
-                      onPressed: _cancel,
-                    )
-                  else
-                    SizedBox.shrink(),
+              SizedBox(height: 20),
+            ],
+            if (!isNullOrEmpty(widget.mainText)) ...[
+              HeightConstrainedText(
+                widget.mainText,
+                style: context.theme.textTheme.bodyMedium,
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 10),
+            ],
+            if (!isNullOrEmpty(widget.subText)) ...[
+              HeightConstrainedText(
+                widget.subText,
+                style: context.theme.textTheme.bodyMedium,
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 10),
+            ],
+            CustomTextField(
+              labelText: widget.textLabel,
+              hintText: widget.textHint,
+              initialValue: '',
+              onChanged: (value) => setState(() => _textInput = value),
+              minLines: 2,
+              maxLines: 2,
+            ),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (!isNullOrEmpty(widget.cancelText))
                   ActionButton(
+                    type: ActionButtonType.outline,
                     height: 55,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 18,
                       vertical: 12,
                     ),
-                    color: context.theme.colorScheme.onPrimary,
-                    text: widget.confirmText,
-                    textStyle: AppTextStyle.body
-                        .copyWith(color: context.theme.colorScheme.primary),
-                    onPressed: (_textInput != '') ? _confirm : null,
+                    minWidth: 100,
+                    text: widget.cancelText,
+                    textStyle: context.theme.textTheme.bodyMedium,
+                    onPressed: _cancel,
+                  )
+                else
+                  SizedBox.shrink(),
+                ActionButton(
+                  height: 55,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 12,
                   ),
-                ],
-              ),
-            ],
-          ),
+                  text: widget.confirmText,
+                  textStyle: context.theme.textTheme.bodyMedium,
+                  onPressed: (_textInput != '') ? _confirm : null,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
