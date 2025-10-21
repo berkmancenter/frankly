@@ -91,6 +91,13 @@ jobs:
         id: build_app
         run: flutter build web --release web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
+      # Workaround for an upstream issue in action-hosting-deploy 0.9.0 which
+      # doesn't automatically generate default preview channel IDs as
+      # documented when triggered manually via workflow_dispatch
+      - name: Generate a channel ID for the Firebase preview channel
+        if: steps.changes.outputs.client == 'true'
+        run: echo "PREVIEW_CHANNEL_ID=$(echo ${GITHUB_REF_NAME:0:26} | sed 's/\//-/g')" >> $GITHUB_ENV
+
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0.9.0
@@ -98,4 +105,5 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           expires: 14d
-          projectId: ${{secrets.APP_STAGING_PROJECT_ID}}
+          channelId: ${{ env.PREVIEW_CHANNEL_ID }}
+          projectId: ${{ secrets.APP_STAGING_PROJECT_ID }}
