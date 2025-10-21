@@ -59,9 +59,10 @@ class _ConfirmTextInputDialogState extends State<ConfirmTextInputDialog> {
     }
   }
 
-  Widget _buildDialog(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {},
         child: Container(
@@ -148,16 +149,6 @@ class _ConfirmTextInputDialogState extends State<ConfirmTextInputDialog> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: Builder(
-        builder: (context) => _buildDialog(context),
       ),
     );
   }
