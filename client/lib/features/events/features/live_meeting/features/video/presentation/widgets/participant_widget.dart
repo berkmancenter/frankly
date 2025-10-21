@@ -136,9 +136,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
           rtcEngine: conferenceRoom.room!.engine,
           canvas: const VideoCanvas(uid: 0),
         ),
-        onAgoraVideoViewCreated: (viewId) {
-          //conferenceRoom.room!.engine.startPreview();
-        },
       );
     }
 

@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
@@ -20,7 +22,6 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_settings.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart';
@@ -749,11 +750,25 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     SizedBox(width: 10),
                     PopupMenuButton<FutureOr<void> Function()>(
                       itemBuilder: (context) {
+                        final conferenceRoom = context.read<ConferenceRoom>();
                         return [
                           PopupMenuItem(
-                            value: () => AudioVideoSettingsDialog(
-                              conferenceRoom: context.read<ConferenceRoom>(),
-                            ).show(),
+                            value: () => showDialog(
+                              context: context,
+                              builder: (context) {
+                                return MediaSettingsWidget(
+                                  conferenceRoom: conferenceRoom,
+                                  // Do not show video preview on mobile due to
+                                  // limitations with number of sources
+                                  // that can access the camera at once on mobile.
+                                  shouldShowVideoPreview:
+                                      !(defaultTargetPlatform ==
+                                              TargetPlatform.iOS ||
+                                          defaultTargetPlatform ==
+                                              TargetPlatform.android),
+                                );
+                              },
+                            ),
                             child: HeightConstrainedText(
                               'Audio/Video Settings',
                             ),
