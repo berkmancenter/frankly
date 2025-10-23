@@ -501,8 +501,6 @@ class EventProvider with ChangeNotifier {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    // Phase 3: Updated chat data format - removed Type, #, Name, Email, Upvotes, Downvotes, AgendaItemId
-    // Changed "Created" to "Time", added "User ID", changed "RoomId" to "Room"
     firstRow.add('Time');
     firstRow.add('User ID');
     firstRow.add('Message');
