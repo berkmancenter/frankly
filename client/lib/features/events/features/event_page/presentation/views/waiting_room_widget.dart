@@ -168,25 +168,21 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   context.l10n.bufferTimeDescription(
                     waitingBufferDurationDescription,
                   ),
-                  style: AppTextStyle.body,
+                  style: context.theme.textTheme.bodyMedium,
                 ),
               ),
             ],
           ),
           SizedBox(height: 20),
           if (_presenter.enableIntroVideo) ...[
-            RichText(
-              text: TextSpan(
-                text: 'Intro Image/Video',
-                style: AppTextStyle.subhead
-                    .copyWith(color: context.theme.colorScheme.primary),
-                children: [
-                  TextSpan(
-                    text: context.l10n.playsAt(introStartTime),
-                    style: AppTextStyle.bodyMedium,
-                  ),
-                ],
-              ),
+            Text(
+              'Intro Image/Video',
+              style: AppTextStyle.subhead
+                  .copyWith(color: context.theme.colorScheme.primary),
+            ),
+            Text(
+              context.l10n.playsAt(introStartTime),
+              style: context.theme.textTheme.bodyMedium,
             ),
             SizedBox(height: 20),
             MediaItemSection(
@@ -238,7 +234,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   child: HeightConstrainedText(
                     context.l10n
                         .introBeforeBreakouts(introLengthDurationDescription),
-                    style: AppTextStyle.body,
+                    style: context.theme.textTheme.bodyMedium,
                   ),
                 ),
               ],
@@ -246,13 +242,13 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ],
           SizedBox(height: 18),
           HeightConstrainedText(
-            'Participants will be sent into rooms at $breakoutsInitiationTime ${context.l10n.bufferAndIntroTime(
+            'Participants will be sent into rooms at $breakoutsInitiationTime.\n${context.l10n.bufferAndIntroTime(
               waitingBufferDurationDescription,
               introLengthDurationDescription,
-            )}',
-            style: AppTextStyle.subhead,
+            )}.',
+            style: context.theme.textTheme.titleMedium,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
