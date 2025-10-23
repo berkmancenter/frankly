@@ -81,18 +81,28 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           borderType: widget.borderType,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
-            if(widget.autoGenerateUrl){
-              widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
-              setState(() {
-                // Update the displayId when the name changes
-                _displayIdController.text = _formatDisplayIdFromName(val);
-              }),
-            },
+            if (widget.autoGenerateUrl)
+              {
+                widget.onCustomDisplayIdChanged
+                    .call(_formatDisplayIdFromName(val)),
+                setState(() {
+                  // Update the displayId when the name changes
+                  _displayIdController.text = _formatDisplayIdFromName(val);
+                }),
+              },
           },
           focus: widget.nameFocus,
-          helperText: !widget.showAllFields ? context.l10n.youCanChangeThisLater : null,
+          helperText:
+              !widget.showAllFields ? context.l10n.youCanChangeThisLater : null,
           // Allow only alphanumeric characters, spaces
           formatterRegex: r'[\s?\w?]',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return context.l10n.enterValidName;
+            }
+            return null;
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         SizedBox(
           height: widget.compact ? 0 : 15,
@@ -109,6 +119,13 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
               : null,
           // Allow only numbers, lowercase letters, and dashes
           formatterRegex: '[0-9a-z-+]',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return context.l10n.enterValidCommunityUrl;
+            }
+              return null;
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         SizedBox(
           height: widget.compact ? 0 : 15,
@@ -165,6 +182,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
     BorderType borderType = BorderType.underline,
+    String? Function(String?)? validator,
+    AutovalidateMode? autovalidateMode = AutovalidateMode.disabled,
   }) =>
       Container(
         alignment: Alignment.topCenter,
@@ -190,6 +209,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
               ? null
               : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
           keyboardType: keyboardType,
+          validator: validator,
+          autovalidateMode: autovalidateMode,
         ),
       );
 }

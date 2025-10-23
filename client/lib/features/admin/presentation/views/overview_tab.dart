@@ -34,7 +34,7 @@ class _OverviewTabState extends State<OverviewTab> {
   Widget _buildSection(String label, Widget sectionContent, bool mobile) {
     return Flex(
       direction: mobile ? Axis.vertical : Axis.horizontal,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -112,10 +112,10 @@ class _OverviewTabState extends State<OverviewTab> {
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0,
                           vertical: 18.0,
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 15),
                             CreateCommunityImageFields(
@@ -207,6 +207,11 @@ class _OverviewTabState extends State<OverviewTab> {
         context.l10n.displayIdWarning,
       );
     }
+    if( isNullOrEmpty(_displayId)) {
+      throw VisibleException(
+        context.l10n.errorCommunityUrlEmpty,
+      );
+    } 
 
     bool isNewDisplayId =
         !isNullOrEmpty(_displayId) && _displayId != _community.displayId;

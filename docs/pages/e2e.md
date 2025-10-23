@@ -104,14 +104,11 @@ It is beyond the scope of this README to provide details on how to write tests w
 
 1. It is currently not possible for Playwright to identify any individual web elements in our Flutter app without enabling Flutter semantics, which creates a default Semantics tree in the DOM that allows Playwright [Locators](https://playwright.dev/docs/locators) to find many of the elements they need to interact with. Until we properly address Semantics in the app, the test code needs to press the hidden "Enable accessibility" button on every page of our app. We use a [test fixture](https://playwright.dev/docs/test-fixtures) defined in `custom-test-fixture.ts` to achieve this on every page load. **All tests must use this fixture.** Also note that this fixture contains some code for copying Playwright authentication data into IndexedDB on Chrome, as Playwright does not currently do this (see [here](https://github.com/microsoft/playwright/issues/11164) for more information).
 
-To use the fixture, simply make sure you are importing 'test' from the correct location. Example:
-<img width="638" alt="Screenshot 2024-07-24 at 9 07 31 AM" src="https://github.com/user-attachments/assets/32d6e08e-5ab7-4a85-adbd-ca4a280fdd47">
+To use the fixture, simply make sure you are importing 'test' from the correct location.
 
 Additionally, test creation can be simplified by using the Record capabilities in VSCode. However, accessibility must be enabled on the web pages for this to work as well. The easiest way to make this work is to temporarily modify the code to start with a default Semantics tree. Edit `client/lib/app.dart` as follows:
 
 #### _`app.dart`_
-
-<img width="477" alt="Screenshot 2024-07-25 at 10 25 54 AM" src="https://github.com/user-attachments/assets/a967eaf5-a308-42c6-9902-5c53ab666016">
 
 You can also trigger the hidden Enable Accessibility button by opening console in Chrome DevTools and executing `document.querySelector('flt-semantics-placeholder').click()`
 

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/styles.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 class CreateCommunityImageFields extends StatelessWidget {
@@ -71,6 +69,7 @@ class CreateCommunityImageField extends StatelessWidget {
     return Flex(
       direction: mobile ? Axis.vertical : Axis.horizontal,
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
