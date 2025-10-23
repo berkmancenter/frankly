@@ -6,7 +6,7 @@ import 'package:client/features/community/features/create_community/presentation
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/private_community_checkbox.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/features/community/features/create_community/data/providers/community_tag_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -158,7 +158,20 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       );
     }
 
-    _verifyContrastOfSelectedTheme();
+    final isThemeValid = ThemeUtils.isColorComboValid(
+      context,
+      _community.themeLightColor,
+      _community.themeDarkColor,
+    );
+
+    if (!isThemeValid) {
+      showRegularToast(
+        context,
+        'Please select a valid color combination for your community theme.',
+        toastType: ToastType.failed,
+      );
+      return;
+    }
 
     final contactEmail = _community.contactEmail;
     if (contactEmail != null &&
@@ -197,34 +210,6 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
           ).communityHome,
         );
       }
-    }
-  }
-
-  void _verifyContrastOfSelectedTheme() {
-    final light = _community.themeLightColor ?? '';
-    final dark = _community.themeDarkColor ?? '';
-    if (light.isEmpty && dark.isEmpty) return;
-    if (!ThemeUtils.isColorValid(light)) {
-      _community = _community.copyWith(
-        themeLightColor:
-            ThemeUtils.convertToHexString(context.theme.colorScheme.surface),
-      );
-    }
-    if (!ThemeUtils.isColorValid(dark)) {
-      _community = _community.copyWith(
-        themeDarkColor:
-            ThemeUtils.convertToHexString(context.theme.colorScheme.primary),
-      );
-    }
-
-    final valid = ThemeUtils.isColorComboValid(
-      context,
-      _community.themeLightColor,
-      _community.themeDarkColor,
-    );
-
-    if (!valid) {
-      _community = _community.copyWith(themeDarkColor: '', themeLightColor: '');
     }
   }
 
