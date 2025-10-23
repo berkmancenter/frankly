@@ -491,7 +491,6 @@ class EventProvider with ChangeNotifier {
       ..click();
   }
 
-  // Phase 2: Separated chat data export method
   Future<void> generateChatDataCsv({
     required GetMeetingChatsSuggestionsDataResponse response,
     required String? eventId,
