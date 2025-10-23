@@ -50,6 +50,7 @@ class NextOrSubmitButton extends StatelessWidget {
         onPressed: () => dialogModel.isFinalPage
             ? alertOnError(context, () async {
                 final event = await dialogModel.submit(context);
+                if (!context.mounted) return;
                 Navigator.of(context).pop(event);
               })
             : dialogModel.goNext(),
