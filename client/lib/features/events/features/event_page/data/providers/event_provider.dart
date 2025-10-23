@@ -372,7 +372,6 @@ class EventProvider with ChangeNotifier {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    // Updated header: Changed "Frankly ID" to "User ID" and "Member status" to "Member Status"
     firstRow.add('User ID');
     firstRow.add('Name');
     firstRow.add('Email');
