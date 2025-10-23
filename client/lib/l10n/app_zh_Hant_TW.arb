@@ -417,6 +417,8 @@
   "createTemplateFromEvent": "從活動建立模板",
   "duplicateEvent": "複製活動",
   "downloadMembersRegistrationData": "下載成員註冊資料",
+  "downloadChatData": "下載聊天資料",
+  "downloadPollsSuggestionsData": "下載投票和建議資料",
   "downloadChatsAndSuggestions": "下載聊天和建議",
   "participantCount": "{count}位參與者",
   "pasteOrEnterUrl": "貼上或輸入URL",
