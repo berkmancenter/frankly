@@ -158,11 +158,15 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
       );
     }
 
-    final isThemeValid = ThemeUtils.isColorComboValid(
-      context,
-      _community.themeLightColor,
-      _community.themeDarkColor,
-    );
+    final isDefaultTheme =
+        _community.themeDarkColor == null && _community.themeLightColor == null;
+
+    final isThemeValid = isDefaultTheme ||
+        ThemeUtils.isColorComboValid(
+          context,
+          _community.themeLightColor,
+          _community.themeDarkColor,
+        );
 
     if (!isThemeValid) {
       showRegularToast(
