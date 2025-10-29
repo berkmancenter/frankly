@@ -307,7 +307,7 @@ class ConferenceRoom with ChangeNotifier {
         eventProvider: liveMeetingProvider.eventProvider,
         conferenceRoom: this,
       );
-      await _room!.connect();
+      await _room!.connect(enableVideo: liveMeetingProvider.videoDefaultOn);
       _room!.addListener(notifyListeners);
     } catch (err, stacktrace) {
       loggingService.log('error');
