@@ -66,13 +66,32 @@ class CalendarLinkUtil {
     required Template template,
     required Event event,
   }) {
-    return getLib().outlook(
-      _getEvent(
-        community: community,
-        template: template,
-        event: event,
-      ),
+    // Manually construct the Outlook link since the calendar-link library's
+    // outlook() method does has a bug where it does not translate the
+    // time to the string that Outlook expects when it is converting to a user's local time zone
+    // See: https://github.com/AnandChowdhary/calendar-link/issues/523
+    
+    var eventDetails = _getEvent(
+      community: community,
+      template: template,
+      event: event,
     );
+    final details = <String, String>{
+      'path': '/calendar/action/compose',
+      'rru': 'addevent',
+      'startdt': eventDetails.start,
+      'enddt': eventDetails.end,
+      'subject': eventDetails.title,
+      'body': eventDetails.description,
+      'location': eventDetails.description,
+      'allday': 'false',
+    };
+
+    final queryString = details.entries
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',)
+        .join('&');
+    return 'https://outlook.live.com/calendar/0/action/compose?$queryString';
   }
 
   String getICS({
