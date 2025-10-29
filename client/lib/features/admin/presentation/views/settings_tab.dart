@@ -50,7 +50,8 @@ class _SettingsTabState extends State<SettingsTab> {
       child: CustomSwitchTile(
         text: title,
         style: AppTextStyle.body.copyWith(
-            color: hasWarning ? context.theme.colorScheme.error : null),
+          color: hasWarning ? context.theme.colorScheme.error : null,
+        ),
         val: value,
         onUpdate: onUpdate,
       ),
@@ -246,7 +247,6 @@ class _SettingsTabState extends State<SettingsTab> {
           '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
       onPressed: () =>
           alertOnError(context, () => _stripeButtonPressed(agreement)),
-      sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.right,
     );
   }
 

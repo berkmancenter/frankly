@@ -1,6 +1,6 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
