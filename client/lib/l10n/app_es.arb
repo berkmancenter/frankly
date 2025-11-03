@@ -373,6 +373,7 @@
   "category": "Categoría",
   "changedFromDefault": "Cambiado del valor predeterminado",
   "changeLanguage": "Cambiar idioma",
+  "changesSaved": "Cambios guardados",
   "chat": "Chat",
   "chatMessage": "Mensaje de chat",
   "chooseABackgroundAndAccentColor": "Elige un fondo claro y un color de acento contrastante. Comprobaremos su legibilidad.",

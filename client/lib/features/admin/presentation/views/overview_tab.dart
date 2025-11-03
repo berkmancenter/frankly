@@ -235,6 +235,14 @@ class _OverviewTabState extends State<OverviewTab> {
         ).communityAdmin(),
       );
     }
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+      content: Text(context.l10n.changesSaved),
+      duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   Future<void> _updateProfileImage({

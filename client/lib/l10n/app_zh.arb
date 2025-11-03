@@ -380,6 +380,7 @@
   "category": "类别",
   "changeLanguage": "更改语言",
   "changedFromDefault": "已从默认值更改",
+  "changesSaved": "更改已保存",
   "chat": "聊天",
   "chatMessage": "聊天消息",
   "chatWithParticipants": "与参与者聊天",
