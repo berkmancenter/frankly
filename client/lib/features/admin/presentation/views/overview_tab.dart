@@ -8,7 +8,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
