@@ -1,4 +1,5 @@
 import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/features/community/features/create_community/presentation/widgets/theme_preview_container.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart';
@@ -213,7 +214,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         // SizedBox(height: 30),
       ],
-
     );
   }
 
@@ -364,10 +364,47 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 10),
         if (mobile) ...children,
+        ThemePreview(
+          compact: true,
+          lightColorString: _customBackgroundColorController.text,
+          darkColorString: _customAccentColorController.text,
+        ),
         if (!mobile) ...[
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: children,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        children[0],
+                        children[1],
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        children[2],
+                        children[3],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: ThemePreview(
+                  compact: true,
+                  lightColorString: _customBackgroundColorController.text,
+                  darkColorString: _customAccentColorController.text,
+                ),
+              ),
+            ],
           ),
         ],
         _buildErrorMessage(),
