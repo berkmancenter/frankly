@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/utils/visible_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -28,20 +30,22 @@ class MemberDataUtils {
       final communityId =
           Provider.of<CommunityProvider>(context, listen: false).communityId;
 
+      final noMembersFoundToExportMsg = context.l10n.noMembersFoundToExport;
+
       if (membersList.isNotEmpty) {
         await alertOnError(context, () async {
           final members = await userService.getMemberDetails(
             membersList: membersList,
             communityId: communityId,
           );
-          // Filter out attendees who are non-members and non-members
-          // (i.e., only include members who are not just attendees)
+          // Export should not include Attendees or Non-members.
           final filteredMembers = members
               .where(
                 (value) =>
-                    (!value.membership!.isAttendee &&
-                        !value.membership!.isMember) ||
-                    !value.membership!.isMember,
+                    !value.membership!.isAttendee ||
+                    !value.membership!.isMember ||
+                    (value.membership!.isMember &&
+                        !value.membership!.isAttendee),
               )
               .toList();
           if (filteredMembers.isNotEmpty) {
@@ -76,8 +80,12 @@ class MemberDataUtils {
             )
               ..setAttribute('download', fileName)
               ..click();
+          } else {
+            throw VisibleException(noMembersFoundToExportMsg);
           }
         });
+      } else {
+        throw VisibleException(noMembersFoundToExportMsg);
       }
     }
 

@@ -568,6 +568,7 @@
   "noEventsFound": "未找到活动。",
   "noItems": "没有{name}",
   "noMatchingMembersFound": "未找到结果。请修改您的搜索词。",
+  "noMembersFoundToExport": "未找到可导出的成员。",
   "noOneIsHereYet": "还没有人在这里。",
   "noOneIsHereYet1": "还没有人在这里。",
   "noPendingJoinRequests": "没有待处理的加入请求",

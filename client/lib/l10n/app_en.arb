@@ -506,6 +506,7 @@
   "noEventsFound": "No events found",
   "noItems": "No {name}",
   "noMatchingMembersFound": "No results found. Please modify your search.",
+  "noMembersFoundToExport": "No members found to export.",
   "noOneIsHereYet": "No one is here yet.",
   "noOneIsHereYet1": "No one is here yet",
   "noPendingJoinRequests": "No Pending Join Requests",
