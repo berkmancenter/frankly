@@ -671,6 +671,7 @@
   "selectLanguage": "选择语言",
   "selectMaxParticipantCount": "选择最大参与者数量",
   "selectSpace": "选择空间：",
+  "selectedColorsContrastError": "所选颜色的对比度不足。请选用其他颜色。",
   "sendMessage": "发送消息",
   "setPayeeAccountDetails": "设置您的收款账户详细信息",
   "setYourPayeeAccountDetails": "设置您的收款账户详情",

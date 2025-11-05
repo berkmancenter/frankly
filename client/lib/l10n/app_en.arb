@@ -609,6 +609,7 @@
   "selectLanguage": "Select Language",
   "selectMaxParticipantCount": "Select max. participant count",
   "selectSpace": "Select space:",
+  "selectedColorsContrastError": "The selected colors do not have sufficient contrast. Please choose different colors.",
   "sendMessage": "Send message",
   "setPayeeAccountDetails": "Set your payee account details",
   "settingHelperAgendaPreview": "Makes event agenda visible on the event landing page. When disabled, agenda is only visible within the event session.",

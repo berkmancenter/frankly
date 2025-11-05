@@ -590,6 +590,7 @@
   "selectLanguage": "選擇語言",
   "selectMaxParticipantCount": "選擇最大參與者數量",
   "selectSpace": "選擇空間：",
+  "selectedColorsContrastError": "所選顏色的對比度不足。請選用其他顏色。",
   "sendMessage": "發送訊息",
   "setPayeeAccountDetails": "設定您的收款帳戶詳細資料",
   "settingHelperAgendaPreview": "使活動議程在活動介紹頁面上可見。當關閉時，議程僅在活動會議中可見。",

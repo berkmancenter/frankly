@@ -249,7 +249,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               );
             }),
           ),
-          _buildErrorMessage(),
         ],
       ),
     );
@@ -362,13 +361,27 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             style: context.theme.textTheme.bodySmall,
           ),
         ),
+        _buildErrorMessage(),
         SizedBox(height: 10),
-        if (mobile) ...children,
-        ThemePreview(
-          compact: true,
-          lightColorString: _customBackgroundColorController.text,
-          darkColorString: _customAccentColorController.text,
-        ),
+        if (mobile)
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  children: [
+                    ...children,
+                  ],
+                ),
+                ThemePreview(
+                  lightColorString: _customBackgroundColorController.text,
+                  darkColorString: _customAccentColorController.text,
+                ),
+              ],
+            ),
+          ),
         if (!mobile) ...[
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -399,7 +412,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               SizedBox(width: 20),
               Expanded(
                 child: ThemePreview(
-                  compact: true,
                   lightColorString: _customBackgroundColorController.text,
                   darkColorString: _customAccentColorController.text,
                 ),
@@ -407,7 +419,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             ],
           ),
         ],
-        _buildErrorMessage(),
       ],
     );
   }

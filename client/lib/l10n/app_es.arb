@@ -662,6 +662,7 @@
   "selectLanguage": "Seleccionar idioma",
   "selectMaxParticipantCount": "Seleccionar número máximo de participantes",
   "selectSpace": "Seleccionar espacio:",
+  "selectedColorsContrastError": "Los colores seleccionados no tienen suficiente contraste. Por favor, elige colores diferentes.",
   "sendMessage": "Enviar mensaje",
   "setPayeeAccountDetails": "Establecer los detalles de tu cuenta de beneficiario",
   "settingHelperAgendaPreview": "Hace visible la agenda del evento en la página de presentación del evento. Cuando está desactivada, la agenda solo es visible dentro de la sesión del evento.",
