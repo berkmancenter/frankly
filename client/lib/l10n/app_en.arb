@@ -399,6 +399,7 @@
   "enterWordCloudPrompt": "Enter Word Cloud prompt",
   "enterWordCloudPromptHint": "Enter Word Cloud prompt",
   "error": "Error",
+  "errorCommunityNameEmpty": "Community name cannot be empty",
   "errorCommunityUrlEmpty": "Community URL cannot be empty",
   "errorLoadingCommunities": "Something went wrong loading communities. Please refresh.",
   "errorLoadingEmail": "Error loading email.",

@@ -453,6 +453,7 @@
   "enterWordCloudPrompt": "Introducir aviso de Nube de Palabras",
   "enterWordCloudPromptHint": "Introducir aviso de Nube de Palabras",
   "error": "Error",
+  "errorCommunityNameEmpty": "El nombre de la comunidad no puede estar vacío.",
   "errorCommunityUrlEmpty": "La URL de la comunidad no puede estar vacía.",
   "errorLoadingCommunities": "Algo salió mal al cargar las comunidades. Por favor, actualice.",
   "errorLoadingEmail": "Error al cargar el Email.",

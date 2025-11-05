@@ -379,6 +379,7 @@
   "enterWordCloudPrompt": "輸入詞雲提示",
   "enterWordCloudPromptHint": "輸入詞雲提示",
   "error": "錯誤",
+  "errorCommunityNameEmpty": "社區名稱不能為空。",
   "errorCommunityUrlEmpty": "社區 URL 不能為空。",
   "errorLoadingCommunities": "載入社區時出錯。請重新整理。",
   "errorLoadingEmail": "加載電子郵件時出錯。",

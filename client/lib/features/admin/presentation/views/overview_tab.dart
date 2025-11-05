@@ -207,9 +207,11 @@ class _OverviewTabState extends State<OverviewTab> {
 
   Future<void> _submitFunction() async {
     final regex = RegExp('^[a-zA-Z0-9-]*\$');
-    if (!regex.hasMatch(_displayId)) {
+
+    if(isNullOrEmpty(_community.name))
+    {
       throw VisibleException(
-        context.l10n.displayIdWarning,
+        context.l10n.errorCommunityNameEmpty,
       );
     }
     if( isNullOrEmpty(_displayId)) {
@@ -217,6 +219,11 @@ class _OverviewTabState extends State<OverviewTab> {
         context.l10n.errorCommunityUrlEmpty,
       );
     } 
+    if (!regex.hasMatch(_displayId)) {
+      throw VisibleException(
+        context.l10n.displayIdWarning,
+      );
+    }
 
     bool isNewDisplayId =
         !isNullOrEmpty(_displayId) && _displayId != _community.displayId;

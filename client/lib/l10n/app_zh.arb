@@ -460,6 +460,7 @@
   "enterWordCloudPrompt": "输入词云提示",
   "enterWordCloudPromptHint": "输入词云提示",
   "error": "错误",
+  "errorCommunityNameEmpty": "社区名称不能为空。",
   "errorCommunityUrlEmpty": "社区 URL 不能为空。",
   "errorLoadingCommunities": "加载社区时出错。请刷新。",
   "errorLoadingEmail": "加载电子邮件时出错。",
