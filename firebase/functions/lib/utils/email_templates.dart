@@ -89,7 +89,7 @@ String generateEmailEventInfo({
       </div>
       <hr/>
       <div class="section supplement-text">
-          No-shows ruin the fun for everyone. If you can no longer attend,
+          Deliberations rely on RSVPs to run smoothly. If you can no longer attend,
           <a href="$cancelUrl" class="text-button">click here</a>
           to cancel and let the other participants know.
       </div>
@@ -786,7 +786,7 @@ String makeNewEventMessageBody({
         <hr/>
         <br/>
         <div class="footer-disclaimer">
-          No-shows ruin the fun for everyone. If you can no longer attend, <span style="color: #000000;"><strong><a style="color: #000000;" href="$cancelUrl">click here to cancel</a></strong></span> and let the other participants know.
+          Deliberations rely on RSVPs to run smoothly. If you can no longer attend, <span style="color: #000000;"><strong><a style="color: #000000;" href="$cancelUrl">click here to cancel</a></strong></span> and let the other participants know.
         </div>
         <br/>
         <div class="footer">
