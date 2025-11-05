@@ -301,6 +301,11 @@ String generateEmailEventInfo({
         .footer-copyright a:link{
             color:#8e9192;
         }
+        .footer-copyright a:visited{
+            color:#8e9192;
+        }
+        a:visited {
+            color: inherit;
         }
     </style>
 </head>
@@ -482,6 +487,11 @@ String makeNewAnnouncementBody({
         .footer-copyright a:link{
             color:#8e9192;
         }
+        .footer-copyright a:visited{
+            color:#8e9192;
+        }
+        a:visited {
+            color: inherit;
         }
     </style>
 </head>
@@ -743,6 +753,12 @@ String makeNewEventMessageBody({
         .footer-copyright a:link{
             color:#8e9192;
         }   
+        .footer-copyright a:visited{
+            color:#8e9192;
+        }
+        a:visited {
+            color: inherit;
+        }
         .notification-settings {
             font-size: 9px;
             line-height: 14px;
@@ -1016,6 +1032,12 @@ String makeJoinApprovedBody({required Community community}) {
     .footer-copyright a:link{
             color:#8e9192;
     }   
+    .footer-copyright a:visited{
+            color:#8e9192;
+        }
+    a:visited {
+        color: inherit;
+    }
 
     /*////// MOBILE STYLES //////*/
     @media only screen and (max-width: 480px) {
@@ -1632,6 +1654,11 @@ String generateEventEndedContent({
         .footer-copyright a:link{
             color:#8e9192;
         }
+        .footer-copyright a:visited{
+            color:#8e9192;
+        }
+        a:visited {
+            color: inherit;
         }
     </style>
 </head>
