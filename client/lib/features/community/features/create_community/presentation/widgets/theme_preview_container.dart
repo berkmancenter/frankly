@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/styles/styles.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 
 /// A widget which displays a mock-up of the chosen primary and secondary colors in the
 /// ChooseColorSection of the create / update community dialog
@@ -11,7 +10,6 @@ class ThemePreview extends StatelessWidget {
   final PresetColorTheme? selectedTheme;
   final bool isSelected;
   final void Function()? onTap;
-  final bool compact;
 
   const ThemePreview({
     this.lightColorString,
@@ -19,7 +17,6 @@ class ThemePreview extends StatelessWidget {
     this.selectedTheme,
     this.isSelected = false,
     this.onTap,
-    this.compact = false,
     Key? key,
   }) : super(key: key);
 
@@ -44,26 +41,13 @@ class ThemePreview extends StatelessWidget {
       context.theme.colorScheme.surface;
 
   Widget _buildPreviewContainer(BuildContext context) {
-    // Rounding up is not allowed, e.g. 4.47 != 4.5
-    final contrastString = ((ThemeUtils.calculateContrastRatio(
-                      _selectedLightColor(context),
-                      _selectedDarkColor(context),
-                    ) *
-                    10)
-                .floor() *
-            .1)
-        .toStringAsFixed(1);
-
-    final showContrastRatio = ThemeUtils.isColorValid(lightColorString) ||
-        ThemeUtils.isColorValid(darkColorString);
-
     return Align(
       alignment: Alignment.center,
       child: Container(
         alignment: Alignment.center,
-        width: compact ? 162 : null,
-        height: compact ? 110 : null,
-        decoration: (compact && isSelected)
+        width: 162,
+        height: 110,
+        decoration: isSelected
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
@@ -71,32 +55,24 @@ class ThemePreview extends StatelessWidget {
               )
             : null,
         child: Container(
-          width: compact ? 152 : 215,
-          height: compact ? 100 : 141,
+          width:  152,
+          height:  100,
           decoration: BoxDecoration(
             color: _selectedLightColor(context),
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: compact
-              ? const EdgeInsets.symmetric(vertical: 20, horizontal: 18)
-              : const EdgeInsets.symmetric(vertical: 30, horizontal: 28),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 18),
           child: Row(
             children: [
               Container(
                 alignment: Alignment.center,
-                height: compact ? 58 : 82,
-                width: compact ? 58 : 82,
+                height: 58,
+                width: 58,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: _selectedDarkColor(context),
                 ),
-                child: showContrastRatio
-                    ? HeightConstrainedText(
-                        contrastString,
-                        style: AppTextStyle.eyebrow
-                            .copyWith(color: _selectedLightColor(context)),
-                      )
-                    : null,
+                child: null,
               ),
               SizedBox(width: 7),
               Column(
@@ -108,8 +84,8 @@ class ThemePreview extends StatelessWidget {
                         color: context.theme.colorScheme.surfaceContainerLowest,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      width: compact ? 50 : 70,
-                      height: compact ? 16 : 23,
+                      width: 50,
+                      height: 16,
                     ),
                 ],
               ),
