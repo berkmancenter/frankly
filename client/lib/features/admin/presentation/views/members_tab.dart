@@ -58,11 +58,7 @@ class MembershipDataSource extends DataTableSource {
     PublicUserInfo? userInfo = UserInfoProvider.forUser(membership.userId).info;
 
     return DataRow(
-      color: WidgetStateProperty.all(
-        index.isOdd
-            ? context.theme.colorScheme.surfaceContainerLow
-            : Colors.white70,
-      ),
+      color: WidgetStateProperty.all(Colors.white70),
       cells: <DataCell>[
         DataCell(
           Padding(
@@ -547,13 +543,17 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    final disableDropdown = _isLoading || _isCurrentOwner;
+    final disableDropdown = _isLoading;
 
     if (_isLoading) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         child: CustomLoadingIndicator(),
       );
+    }
+
+    if (_isCurrentOwner) {
+      return Text(context.l10n.owner, style: context.theme.textTheme.bodyLarge);
     }
 
     return Container(
@@ -586,13 +586,13 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
         items: MembershipStatus.values
             // Exclude nonmember, attendee, and banned statuses
             .where(
-              (value) => 
+              (value) =>
                   value.name != 'nonmember' &&
                   value.name != 'attendee' &&
                   value.name != 'banned',
             )
             .map(
-              (value) =>  DropdownMenuItem<MembershipStatus>(
+              (value) => DropdownMenuItem<MembershipStatus>(
                 value: value,
                 // Exclude owner from being selectable, for now
                 // We also adjust opacity of owner field below; this is slightly hacky,
@@ -600,28 +600,30 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
                 enabled: !_isCurrentOwner && value.name != 'owner',
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Column(
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                      value.name.capitalize(),
-                      style: context.theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: value.name == 'owner' ? 
-                        context.theme.textTheme.bodyLarge?.color?.withOpacity(0.5) :
-                        context.theme.textTheme.bodyLarge?.color,
-                      ),
+                        value.name.capitalize(),
+                        style: context.theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: value.name == 'owner'
+                              ? context.theme.textTheme.bodyLarge?.color
+                                  ?.withOpacity(0.5)
+                              : context.theme.textTheme.bodyLarge?.color,
+                        ),
                       ),
                       Text(
-                      value.permissions(context),
-                      style: context.theme.textTheme.bodySmall?.copyWith(
-                        color: value.name == 'owner' ?
-                        context.theme.textTheme.bodySmall?.color?.withOpacity(0.5) :
-                        context.theme.textTheme.bodySmall?.color,
-                      ),
-                      softWrap: true,
-                      maxLines: 3,
+                        value.permissions(context),
+                        style: context.theme.textTheme.bodySmall?.copyWith(
+                          color: value.name == 'owner'
+                              ? context.theme.textTheme.bodySmall?.color
+                                  ?.withOpacity(0.5)
+                              : context.theme.textTheme.bodySmall?.color,
+                        ),
+                        softWrap: true,
+                        maxLines: 3,
                       ),
                     ],
                   ),
