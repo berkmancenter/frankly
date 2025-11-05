@@ -132,6 +132,7 @@ class _OverviewTabState extends State<OverviewTab> {
                               setLightColor: (val) => _community =
                                   _community.copyWith(themeLightColor: val),
                             ),
+                            if(mobile) SizedBox (height: 90),
                           ],
                         ),
                       ),
@@ -172,21 +173,23 @@ class _OverviewTabState extends State<OverviewTab> {
     );
   }
 
-  void _verifyContrastOfSelectedTheme() {
+  bool _verifyContrastOfSelectedTheme() {
     final light = _community.themeLightColor ?? '';
     final dark = _community.themeDarkColor ?? '';
-    if (light.isEmpty && dark.isEmpty) return;
+    if (light.isEmpty && dark.isEmpty) return true;
     if (!ThemeUtils.isColorValid(light)) {
       _community = _community.copyWith(
         themeLightColor:
             ThemeUtils.convertToHexString(context.theme.colorScheme.surface),
       );
+      return false;
     }
     if (!ThemeUtils.isColorValid(dark)) {
       _community = _community.copyWith(
         themeDarkColor:
             ThemeUtils.convertToHexString(context.theme.colorScheme.primary),
       );
+      return false;
     }
 
     final valid = ThemeUtils.isColorComboValid(
@@ -197,7 +200,9 @@ class _OverviewTabState extends State<OverviewTab> {
 
     if (!valid) {
       _community = _community.copyWith(themeDarkColor: '', themeLightColor: '');
+      return false;
     }
+    return true;
   }
 
   Future<void> _submitFunction() async {
@@ -225,7 +230,13 @@ class _OverviewTabState extends State<OverviewTab> {
       );
     }
 
-    _verifyContrastOfSelectedTheme();
+    bool isContrastValid = _verifyContrastOfSelectedTheme();
+
+      if (!isContrastValid) {
+        throw VisibleException(
+          context.l10n.selectedColorsContrastError,
+        );
+      }
 
     await _updateCommunity();
     if (isNewDisplayId) {
