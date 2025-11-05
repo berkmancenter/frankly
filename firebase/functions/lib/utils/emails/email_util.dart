@@ -4,9 +4,9 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:intl/intl.dart';
-import 'calendar_link_util.dart';
-import 'timezone_utils.dart';
-import 'utils.dart';
+import '../calendar_link_util.dart';
+import '../timezone_utils.dart';
+import '../utils.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_message.dart';
