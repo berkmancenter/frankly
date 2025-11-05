@@ -80,11 +80,11 @@ String generateEmailEventInfo({
       <div class="section">
           <div class="center">Add to calendar:</div>
           <div class="center">
-            <a href="$calendarGoogleLink" style="color:#303B5F;"><b>Google</b></a>
+            <a href="$calendarGoogleLink" style="color:#313030;"><b>Google</b></a>
             ·
-            <a href="$calendarOffice365Link" style="color:#303B5F;"><b>Office 365</b></a>
+            <a href="$calendarOffice365Link" style="color:#313030;"><b>Office 365</b></a>
             ·
-            <a href="$calendarOutlookLink" style="color:#303B5F;"><b>Outlook</b></a>
+            <a href="$calendarOutlookLink" style="color:#313030;"><b>Outlook</b></a>
           </div>
       </div>
       <hr/>
@@ -121,8 +121,8 @@ String generateEmailEventInfo({
           : '''
     <a href="$surveyUri">
             <div style="font-family: Helvetica, Arial, sans-serif;       
-            background: #9BFBC2;
-            color: #303B5F;
+            background: #d7d3d3;
+            color: #313030;
             padding-top: 12px;
             padding-bottom: 12px;
             padding-left: 18px;
@@ -147,23 +147,23 @@ String generateEmailEventInfo({
  <div style="max-width: 520px;
             border-radius: 25px;
             margin: auto;
-            background: #303B5F;
+            background: #313030;
             padding: 40px;">
-  <p style="color:#9BFBC2;
-			      font-family: Helvetica, Arial, sans-serif;
+  <p style="color:#d7d3d3;
+                  font-family: Helvetica, Arial, sans-serif;
             font-size: 16px;
             font-weight: lighter;
             line-height: 24px;
             letter-spacing: 0.1em;
             text-transform: uppercase;"> If you haven't already done so... </p>
   <p style="color:#FFFFFF;         
-			      font-family: Helvetica, Arial, sans-serif;
+                  font-family: Helvetica, Arial, sans-serif;
             font-size: 24px;
             font-weight: bold;
             font-size: 24px;
             line-height: 110%;">$headlineSanitized</p>
-  <p style="color:#EBEDF1;
-			      font-family: Helvetica, Arial, sans-serif;
+  <p style="color:#e5e2e1;
+                  font-family: Helvetica, Arial, sans-serif;
             font-style: normal;
             font-size: 16px;
             font-size: 16px;
@@ -194,7 +194,7 @@ String generateEmailEventInfo({
             max-width: 640px;
         }
         .title {
-            color: #3d4868;
+            color: #313030;
             font-size: 24px;
             text-align: center;
             margin: 20px;
@@ -214,7 +214,7 @@ String generateEmailEventInfo({
         .title-separator {
             margin-left: 4px;
             margin-right: 4px;
-            color: #9efac3;
+            color: #d7d3d3;
             font-weight: bolder;
             font-size: 32px;
             vertical-align: -3px;
@@ -228,7 +228,7 @@ String generateEmailEventInfo({
             margin-top: 24px;
             margin-bottom: 12px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .header {
             margin-top: 24px;
@@ -236,7 +236,7 @@ String generateEmailEventInfo({
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .section {
             padding-bottom: 20px;
@@ -249,7 +249,7 @@ String generateEmailEventInfo({
             margin: 5px;
         }
         .event-box {
-            background: #f2f2f2;
+            background: #f1edec;
             padding: 4px;
             margin: 8px 4px;
         }
@@ -270,7 +270,7 @@ String generateEmailEventInfo({
         }
         .more-button {
             display: block;
-            background: #3d4868;
+            background: #313030;
             padding: 8px;
             border-radius: 8px;
             width: 96px;
@@ -284,13 +284,13 @@ String generateEmailEventInfo({
             font-weight: lighter;
         }
         .text-button {
-            color: black;
+            color: #313030;
             font-weight: bold;
             text-decoration: underline;
         }
         .footer {
             padding: 8px;
-            background: #3d4868;
+            background: #313030;
             text-align: center;
         }
         .footer-copyright {
@@ -299,7 +299,8 @@ String generateEmailEventInfo({
 
         }
         .footer-copyright a:link{
-            color:#a1abcf;
+            color:#8e9192;
+        }
         }
     </style>
 </head>
@@ -328,7 +329,7 @@ String generateEmailEventInfo({
                         </td>
                         <td>
                             <div class="event-more">
-                                <a style="color: #9efac3; font-size: 14px;" href="$detailsUrl" class="more-button">
+                                <a style="color: #d7d3d3; font-size: 14px;" href="$detailsUrl" class="more-button">
                                     Go To Event
                                 </a>
                             </div>
@@ -341,8 +342,8 @@ String generateEmailEventInfo({
         <div class="footer">
             <div class="footer-copyright">$legalStatement</div><br/>
             <div style="color:#ffffff; font-size: 12px;">$mailingAddress</div>
-            <a style="color:#a1abcf; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
-            <a style="color:#a1abcf; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
             <div style="color:#ffffff; font-size: 10px;">$copyrightStatement</div>
         </div>
     </div>
@@ -392,7 +393,7 @@ String makeNewAnnouncementBody({
             max-width: 640px;
         }
         .title {
-            color: #3d4868;
+            color: #313030;
             font-size: 24px;
             text-align: center;
             margin: 20px;
@@ -412,7 +413,7 @@ String makeNewAnnouncementBody({
         .title-separator {
             margin-left: 4px;
             margin-right: 4px;
-            color: #9efac3;
+            color: #d7d3d3;
             font-weight: bolder;
             font-size: 32px;
             vertical-align: -3px;
@@ -426,7 +427,7 @@ String makeNewAnnouncementBody({
             margin-top: 24px;
             margin-bottom: 12px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .header {
             margin-top: 24px;
@@ -434,7 +435,7 @@ String makeNewAnnouncementBody({
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .section {
             padding-bottom: 20px;
@@ -443,7 +444,7 @@ String makeNewAnnouncementBody({
             margin-right: auto;
         }
         .announce-box {
-            background: #f2f2f2;
+            background: #f1edec;
             padding: 10px;
             margin: 8px 4px;
         }
@@ -458,7 +459,7 @@ String makeNewAnnouncementBody({
         }
         .view-button {
             display: block;
-            background: #3d4868;
+            background: #313030;
             padding: 8px;
             border-radius: 8px;
             width: 156px;
@@ -471,7 +472,7 @@ String makeNewAnnouncementBody({
         }
         .footer {
             padding: 8px;
-            background: #3d4868;
+            background: #313030;
             text-align: center;
         }
         .footer-copyright {
@@ -479,7 +480,8 @@ String makeNewAnnouncementBody({
             color: #ffffff;
         }
         .footer-copyright a:link{
-            color:#a1abcf;
+            color:#8e9192;
+        }
         }
     </style>
 </head>
@@ -504,15 +506,15 @@ String makeNewAnnouncementBody({
             </div>
         </div>
         <div class="section">
-            <a style="color: #9efac3; font-size: 14px; margin-bottom: 14px;" href="$announcementUrl" class="view-button">
+            <a style="color: #d7d3d3; font-size: 14px; margin-bottom: 14px;" href="$announcementUrl" class="view-button">
                 View Announcement
             </a>
         </div>
         <div class="footer">
             <div class="footer-copyright">$legalStatement</div><br/>
             <div style="color:#ffffff; font-size: 12px;">$mailingAddress</div>
-            <a style="color:#a1abcf; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
-            <a style="color:#a1abcf; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
             <div style="color:#ffffff; font-size: 10px;">$copyrightStatement</div>
         </div>
     </div>
@@ -623,7 +625,7 @@ String makeNewEventMessageBody({
             max-width: 640px;
         }
         .title {
-            color: #3d4868;
+            color: #313030;
             font-size: 24px;
             text-align: center;
             margin: 20px;
@@ -643,7 +645,7 @@ String makeNewEventMessageBody({
         .title-separator {
             margin-left: 4px;
             margin-right: 4px;
-            color: #9efac3;
+            color: #d7d3d3;
             font-weight: bolder;
             font-size: 32px;
             vertical-align: -3px;
@@ -665,7 +667,7 @@ String makeNewEventMessageBody({
           max-width: 520px;
           margin-left: auto;
           margin-right: auto;     
-          background: #F2F2F2;   
+          background: #f1edec;   
         }
         .event-message {
           font-style: normal;
@@ -673,10 +675,10 @@ String makeNewEventMessageBody({
           font-size: 16px;
           line-height: 24px;
           text-align: center;          
-          color: #000000;
+          color: #313030;
         }
         .event-box {
-            background: #f2f2f2;
+            background: #f1edec;
             padding: 4px;
             margin: 8px 4px;
         }
@@ -691,10 +693,10 @@ String makeNewEventMessageBody({
             font-size: 14px;
         }
         .more-button {
-            color: #9efac3;
+            color: #d7d3d3;
             font-size: 14px;
             display: block;
-            background: #3d4868;
+            background: #313030;
             padding: 8px;
             border-radius: 8px;
             width: 76px;
@@ -708,13 +710,13 @@ String makeNewEventMessageBody({
             margin-top: 24px;
             margin-bottom: 12px;
             font-weight: bold;
-            color: #3d4868;        
+            color: #313030;        
         }
         .add-to-calendar {
             font-size: 14px;
             line-height: 21px;
             text-align: center;
-            color: #000000;        
+            color: #313030;        
         } 
         .footer-disclaimer {
             margin-left: 35px;
@@ -723,11 +725,11 @@ String makeNewEventMessageBody({
             font-size: 12px;
             line-height: 18px;
             text-align: left;
-            color: #000000;           
+            color: #313030;           
         }
         .footer {
             padding: 8px;
-            background: #3d4868;
+            background: #313030;
             text-align: center;
             max-width: 520px;
             margin-left: auto;
@@ -739,12 +741,12 @@ String makeNewEventMessageBody({
             color: #ffffff;
         }
         .footer-copyright a:link{
-            color:#a1abcf;
+            color:#8e9192;
         }   
         .notification-settings {
             font-size: 9px;
             line-height: 14px;
-            color: #cccccc;
+            color: #e5e2e1;
         }        
         .section {
             max-width: 520px;
@@ -769,31 +771,31 @@ String makeNewEventMessageBody({
         <div class="new-announcement">New Announcement for your Upcoming Event</div>
         <div class="template-event-info">$templateEventHtml</div>
         <div class="event-message-rect">
-          <div class="event-message">“${eventMessage.message}”</div>
+          <div class="event-message">"${eventMessage.message}"</div>
         </div>
         <br/>
         <div class="section">
           <div class="center">Add to calendar:</div>
           <div class="center">
-            <a href="$calendarGoogleLink" style="color:#303B5F;"><b>Google</b></a>
+            <a href="$calendarGoogleLink" style="color:#313030;"><b>Google</b></a>
             ·
-            <a href="$calendarOffice365Link" style="color:#303B5F;"><b>Office 365</b></a>
+            <a href="$calendarOffice365Link" style="color:#313030;"><b>Office 365</b></a>
             ·
-            <a href="$calendarOutlookLink" style="color:#303B5F;"><b>Outlook</b></a>
+            <a href="$calendarOutlookLink" style="color:#313030;"><b>Outlook</b></a>
         </div>
       </div>
         <br/>
         <hr/>
         <br/>
         <div class="footer-disclaimer">
-          Deliberations rely on RSVPs to run smoothly. If you can no longer attend, <span style="color: #000000;"><strong><a style="color: #000000;" href="$cancelUrl">click here to cancel</a></strong></span> and let the other participants know.
+          Deliberations rely on RSVPs to run smoothly. If you can no longer attend, <span style="color: #313030;"><strong><a style="color: #313030;" href="$cancelUrl">click here to cancel</a></strong></span> and let the other participants know.
         </div>
         <br/>
         <div class="footer">
             <div class="footer-copyright">$legalStatement</div><br/>
             <div style="color:#ffffff; font-size: 12px;">$mailingAddress</div>
-            <a style="color:#a1abcf; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
-            <a style="color:#a1abcf; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
             <div style="color:#ffffff; font-size: 10px;">$copyrightStatement</div>
         </div>
     </div>
@@ -939,7 +941,7 @@ String makeJoinApprovedBody({required Community community}) {
     }
 
     .textContent a, .textContentLast a {
-        color: #303B5F;
+        color: #313030;
         text-decoration: underline;
         font-weight: bold;
     }
@@ -950,13 +952,13 @@ String makeJoinApprovedBody({required Community community}) {
     }
 
     .emailButton {
-        background-color: #303B5F;
+        background-color: #313030;
         border-collapse: separate;
         border-radius: 10px;
     }
 
     .buttonContent {
-        color: #9BFBC2;
+        color: #d7d3d3;
         font-family: Helvetica;
         font-size: 16px;
         font-weight: bold;
@@ -966,7 +968,7 @@ String makeJoinApprovedBody({required Community community}) {
     }
 
     .buttonContent a {
-        color: #9BFBC2;
+        color: #d7d3d3;
         display: block;
         text-decoration: none;
     }
@@ -977,7 +979,7 @@ String makeJoinApprovedBody({required Community community}) {
     }
 
     .emailCalendarMonth {
-        background-color: #2C9AB7;
+        background-color: #f1edec;
         color: #FFFFFF;
         font-family: Helvetica, Arial, sans-serif;
         font-size: 16px;
@@ -988,7 +990,7 @@ String makeJoinApprovedBody({required Community community}) {
     }
 
     .emailCalendarDay {
-        color: #2C9AB7;
+        color: #f1edec;
         font-family: Helvetica, Arial, sans-serif;
         font-size: 60px;
         font-weight: bold;
@@ -1000,7 +1002,7 @@ String makeJoinApprovedBody({required Community community}) {
 
     .footer {
             padding: 8px;
-            background: #3d4868;
+            background: #313030;
             text-align: center;
             max-width: 520px;
             margin-left: auto;
@@ -1012,7 +1014,7 @@ String makeJoinApprovedBody({required Community community}) {
             color: #ffffff;
         }
     .footer-copyright a:link{
-            color:#a1abcf;
+            color:#8e9192;
     }   
 
     /*////// MOBILE STYLES //////*/
@@ -1099,7 +1101,7 @@ String makeJoinApprovedBody({required Community community}) {
                                             <tr>
                                                 <td align="center" valign="top" width="500"
                                                     class="flexibleContainerCell"
-                                                    style="background-color:#F5F5F5;padding:15px;border:2px solid #303B5F;">
+                                                    style="background-color:#F5F5F5;padding:15px;border:2px solid #313030;">
                                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top" class="textContent"
@@ -1157,8 +1159,8 @@ String makeJoinApprovedBody({required Community community}) {
  <div class="footer">
             <div class="footer-copyright">$legalStatement</div><br/>
             <div style="color:#ffffff; font-size: 12px;">$mailingAddress</div>
-            <a style="color:#a1abcf; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
-            <a style="color:#a1abcf; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
+            <a style="color:#d7d3d3; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
+            <a style="color:#d7d3d3; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
             <div style="color:#ffffff; font-size: 10px;">$copyrightStatement</div>
         </div>
 </body>
@@ -1213,7 +1215,7 @@ String makeEventDigestBody({
                   </td>
                   <td>
                       <div class="event-more">
-                          <a style="color: #9efac3; font-size: 14px;" href="$url" class="more-button">See More</a>
+                          <a style="color: #d7d3d3; font-size: 14px;" href="$url" class="more-button">See More</a>
                       </div>
                   </td>
               </tr>
@@ -1251,7 +1253,7 @@ String makeEventDigestBody({
             max-width: 640px;
         }
         .title {
-            color: #3d4868;
+            color: #313030;
             font-size: 24px;
             text-align: center;
             margin: 20px;
@@ -1271,7 +1273,7 @@ String makeEventDigestBody({
         .title-separator {
             margin-left: 4px;
             margin-right: 4px;
-            color: #9efac3;
+            color: #d7d3d3;
             font-weight: bolder;
             font-size: 32px;
             vertical-align: -3px;
@@ -1285,7 +1287,7 @@ String makeEventDigestBody({
             margin-top: 24px;
             margin-bottom: 12px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .events {
             padding-bottom: 20px;
@@ -1294,7 +1296,7 @@ String makeEventDigestBody({
             margin-right: auto;
         }
         .event-box {
-            background: #f2f2f2;
+            background: #f1edec;
             padding: 4px;
             margin: 8px 4px;
         }
@@ -1312,11 +1314,11 @@ String makeEventDigestBody({
             font-size: 14px;
         }
         .event-more {
-            color: #9efac3;
+            color: #d7d3d3;
         }
         .more-button {
             display: block;
-            background: #3d4868;
+            background: #313030;
             padding: 8px;
             border-radius: 8px;
             width: 76px;
@@ -1325,7 +1327,7 @@ String makeEventDigestBody({
         }
         .footer {
             padding: 8px;
-            background: #3d4868;
+            background: #313030;
             text-align: center;
         }
         .footer-copyright {
@@ -1333,7 +1335,13 @@ String makeEventDigestBody({
             color: #ffffff;
         }
         .footer-copyright a:link{
-            color:#a1abcf;
+            color:#8e9192;
+        }
+        .footer-copyright a:visited{
+            color:#8e9192;
+        }
+        a:visited {
+            color: inherit;
         }
     </style>
 </head>
@@ -1353,8 +1361,8 @@ String makeEventDigestBody({
         <div class="footer">
             <div class="footer-copyright">$legalStatement</div><br/>
             <div style="color:#ffffff; font-size: 12px;">$mailingAddress</div>
-            <a style="color:#a1abcf; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
-            <a style="color:#a1abcf; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
             <div style="color:#ffffff; font-size: 10px;">$copyrightStatement</div>
         </div>
     </div>
@@ -1393,7 +1401,7 @@ String generateEventEndedContent({
                   src="${htmlEscape.convert(community.profileImageUrl ?? '')}" width="100"
             /> 
             <div style="display: inline-block; vertical-align: middle; text-align: left;">
-                <div style="color:#303B5F; font-weight: 900; font-size: 20px; padding-bottom: 6px; max-width: 280px;">
+                <div style="color:#313030; font-weight: 900; font-size: 20px; padding-bottom: 6px; max-width: 280px;">
                     Check out more events from $communityNameSanitized
                 </div> 
                 <a class="button-community-inverse" href="$communityUrl">See upcoming events</a>
@@ -1437,9 +1445,9 @@ String generateEventEndedContent({
      <div style="max-width: 520px;
                 border-radius: 25px;
                 margin: auto;
-                background: #303B5F;
+                background: #313030;
                 padding: 40px;">
-      <p style="color:#9BFBC2;
+      <p style="color:#d7d3d3;
                 font-family: Helvetica, Arial, sans-serif;
                 font-size: 16px;
                 font-weight: lighter;
@@ -1452,7 +1460,7 @@ String generateEventEndedContent({
                 font-weight: bold;
                 font-size: 24px;
                 line-height: 110%;">$headlineSanitized</p>
-      <p style="color:#EBEDF1;
+      <p style="color:#e5e2e1;
                 font-family: Helvetica, Arial, sans-serif;
                 font-style: normal;
                 font-size: 16px;
@@ -1483,7 +1491,7 @@ String generateEventEndedContent({
             max-width: 640px;
         }
         .title {
-            color: #3d4868;
+            color: #313030;
             font-size: 24px;
             text-align: center;
             margin: 20px;
@@ -1503,7 +1511,7 @@ String generateEventEndedContent({
         .title-separator {
             margin-left: 4px;
             margin-right: 4px;
-            color: #9efac3;
+            color: #d7d3d3;
             font-weight: bolder;
             font-size: 32px;
             vertical-align: -3px;
@@ -1517,7 +1525,7 @@ String generateEventEndedContent({
             margin-top: 24px;
             margin-bottom: 12px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .header {
             margin-top: 24px;
@@ -1525,7 +1533,7 @@ String generateEventEndedContent({
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            color: #3d4868;
+            color: #313030;
         }
         .section {
             padding-bottom: 20px;
@@ -1538,7 +1546,7 @@ String generateEventEndedContent({
             margin: 5px;
         }
         .event-box {
-            background: #f2f2f2;
+            background: #f1edec;
             padding: 4px;
             margin: 8px 4px;
         }
@@ -1560,16 +1568,16 @@ String generateEventEndedContent({
         .rounded-card {
             color: #ffffff;
             border-radius: 25px;
-            background: #EBEDF1;
+            background: #f1edec;
             max-width: 520px;
             padding: 40px;
             margin: auto;
             text-align: center;
         }
         .button-community {
-            background-color: #9BFBC2;
+            background-color: #d7d3d3;
             border: none;
-            color: #303B5F;
+            color: #313030;
             cursor: pointer;
             padding: 12px 18px;
             text-align: center;
@@ -1580,9 +1588,9 @@ String generateEventEndedContent({
             display: inline-block;
         }
         .button-community-inverse {
-            background-color: #303B5F;
+            background-color: #313030;
             border: none;
-            color: #9BFBC2;
+            color: #d7d3d3;
             cursor: pointer;
             padding: 12px 18px;
             text-align: center;
@@ -1594,7 +1602,7 @@ String generateEventEndedContent({
         }
         .more-button {
             display: block;
-            background: #3d4868;
+            background: #313030;
             padding: 8px;
             border-radius: 8px;
             width: 96px;
@@ -1614,7 +1622,7 @@ String generateEventEndedContent({
         }
         .footer {
             padding: 8px;
-            background: #3d4868;
+            background: #313030;
             text-align: center;
         }
         .footer-copyright {
@@ -1622,7 +1630,8 @@ String generateEventEndedContent({
             color: #ffffff;
         }
         .footer-copyright a:link{
-            color:#a1abcf;
+            color:#8e9192;
+        }
         }
     </style>
 </head>
@@ -1644,8 +1653,8 @@ String generateEventEndedContent({
         <div class="footer">
             <div class="footer-copyright">$legalStatement</div><br/>
             <div style="color:#ffffff; font-size: 12px;">$mailingAddress</div>
-            <a style="color:#a1abcf; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
-            <a style="color:#a1abcf; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$settingsUrl">Notification Settings</a><br/>
+            <a style="color:#8e9192; font-size: 12px;" href="$privacyPolicyUrl">Privacy Statement</a><br/><br/>
             <div style="color:#ffffff; font-size: 10px;">$copyrightStatement</div>
         </div>
     </div>
