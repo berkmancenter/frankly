@@ -639,6 +639,7 @@
   "recentRooms": "最近的房间",
   "record": "录制",
   "recording": "录制中  ",
+  "recordingNotAvailable": "录制不可用",
   "refresh": "刷新",
   "refreshConnection": "刷新连接",
   "refreshGuide": "刷新指南",

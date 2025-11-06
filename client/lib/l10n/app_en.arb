@@ -577,6 +577,7 @@
   "recentRooms": "Recent Rooms",
   "record": "Record",
   "recording": "Recording",
+  "recordingNotAvailable": "Recording is not available.",
   "refresh": "Refresh",
   "refreshConnection": "Refresh Connection",
   "refreshGuide": "Refresh Guide",
