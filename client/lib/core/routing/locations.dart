@@ -183,6 +183,10 @@ class CommunityLocation extends BeamLocation<BeamState> {
       '/challenge',
       '/instant',
       '/admin',
+      '/admin/overview',
+      '/admin/members',
+      '/admin/data',
+      '/admin/settings',
       '/resources',
       '/discuss/upcoming',
       '/discuss/:templateId',
@@ -237,12 +241,14 @@ class CommunityLocation extends BeamLocation<BeamState> {
             record: state.queryParameters['record'] == 'true',
           ),
         )
-      else if (listEndsWith(state.pathPatternSegments, ['admin']))
+      else if (state.pathPatternSegments.contains('admin'))
         _getCommunityBeamPage(
           key: 'community-admin-${state.uri}',
           displayId: displayId,
           fillViewport: true,
-          child: CommunityAdmin(tab: state.queryParameters['tab']),
+          child: CommunityAdmin(tab: state.pathPatternSegments.length > 3
+              ? state.pathPatternSegments[3]
+              : null,),
         )
 
       else if (listEndsWith(state.pathPatternSegments, ['discuss', 'upcoming']))

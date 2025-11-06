@@ -1,7 +1,7 @@
+import 'dart:html' as html;
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/community/community.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +32,25 @@ class CommunityAdminState extends State<CommunityAdmin>
   @override
   void initState() {
     super.initState();
+    int initialIndex = 0;
+    if (widget.tab != null) {
+      switch (widget.tab) {
+        case 'overview':
+          break;
+        case 'members':
+          initialIndex = 1;
+          break;
+        case 'data':
+          initialIndex = 2;
+          break;
+        case 'settings':
+          initialIndex = 3;
+          break;
+      }
+    }
 
     _tabController = TabController(
+      initialIndex: initialIndex,
       length: 4,
       vsync: this,
     );
@@ -80,7 +97,10 @@ class CommunityAdminState extends State<CommunityAdmin>
     final mobile = responsiveLayoutService.isMobile(context);
     return Container(
       margin: EdgeInsets.only(
-          top: 20, left: mobile ? 20 : 0, right: mobile ? 20 : 0,),
+        top: 20,
+        left: mobile ? 20 : 0,
+        right: mobile ? 20 : 0,
+      ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: 1115,
@@ -119,6 +139,16 @@ class CommunityAdminState extends State<CommunityAdmin>
             bottom: TabBar(
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
+              onTap: (value) => html.window.history.pushState(
+                null,
+                '',
+                'space/${community.displayId}/admin/${[
+                  'overview',
+                  'members',
+                  'data',
+                  'settings',
+                ][value]}',
+              ),
               tabs: [
                 Tab(
                   child: _buildTab(
