@@ -86,8 +86,9 @@ dependencies:
   video_player: ^2.7.2
   csv: ^6.0.0
   simple_tooltip: ^1.2.0
-  firebase_ui_firestore: ^1.6.3
-
+  firebase_ui_firestore: ^1.6.3 
+  flutter_colorpicker: ^1.1.0
+  
 dev_dependencies:
   build_runner: ^2.3.3
   flutter_driver:

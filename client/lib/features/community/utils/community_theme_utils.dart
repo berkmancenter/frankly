@@ -38,6 +38,10 @@ class ThemeUtils {
           darkColor: Color(0xFF320243),
         ),
         PresetColorTheme(
+          lightColor: Color(0xFFFF6258),
+          darkColor: Color(0xFF001D58),
+        ),
+        PresetColorTheme(
           lightColor: Color(0xFFEAF3FD),
           darkColor: Color(0xFF900E2D),
         ),
@@ -96,10 +100,7 @@ class ThemeUtils {
       context.theme.colorScheme.surface,
     );
     final lightColorIsLightEnough = isContrastRatioValid(
-      context,
-      lightColor,
-      context.theme.colorScheme.primary,
-    );
+        context, lightColor, context.theme.colorScheme.secondary,);
 
     return validRatio &&
         lightDarkCorrect &&
