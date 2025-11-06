@@ -78,6 +78,7 @@ class _DataTabState extends State<DataTab> {
     Event event,
     Iterable<Participant> participants,
     bool eventInPast,
+    bool hasRecording,
   ) {
     Future<void> openAlert() {
       return showDialog<void>(
@@ -88,8 +89,8 @@ class _DataTabState extends State<DataTab> {
           bool registrantListSelected = true;
 
           void pressedHandler() async {
-            // If the selected data includes 'recording', download the recording
-            if (recordingSelected) {
+            // If event has a recording and the selected data includes 'recording', download the recording
+            if (hasRecording && recordingSelected) {
               await alertOnError(
                 context,
                 () async {
@@ -161,17 +162,28 @@ class _DataTabState extends State<DataTab> {
                         CheckboxListTile(
                           title: Text(context.l10n.recording),
                           checkColor: Colors.white,
-                          fillColor: WidgetStatePropertyAll(
-                            context.theme.primaryColor,
-                          ),
+                          fillColor:  hasRecording ?WidgetStatePropertyAll(
+                              context.theme.primaryColor,
+                          ) : null,
                           controlAffinity: ListTileControlAffinity.leading,
-                          value: recordingSelected,
+                          value: hasRecording ? recordingSelected : false,
                           onChanged: (value) {
                             setState(() {
                               recordingSelected = value!;
                             });
                           },
+                          enabled: hasRecording,
                         ),
+                        if(!hasRecording)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            child: Text(
+                              context.l10n.recordingNotAvailable,
+                              style: context.theme.textTheme.bodySmall!.copyWith(
+                                color: context.theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -248,10 +260,13 @@ class _DataTabState extends State<DataTab> {
     required bool isMobile,
   }) async {
     final timeFormat = DateFormat('MMM d yyyy, h:mma');
+
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
-    final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
     final participants = await _getEventParticipants(event);
+
+    final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
+    final hasRecording = event.eventSettings?.alwaysRecord! ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 
@@ -383,10 +398,10 @@ class _DataTabState extends State<DataTab> {
                   height: 10,
                 ),
                 Center(
-                  child: _buildDowloadButton(event, participants, eventInPast),
+                  child: _buildDowloadButton(event, participants, eventInPast, hasRecording),
                 ),
               ] else ...[
-                _buildDowloadButton(event, participants, eventInPast),
+                _buildDowloadButton(event, participants, eventInPast, hasRecording),
               ],
             ],
           ),
