@@ -185,7 +185,7 @@ class MediaDeviceService {
         _previewMediaStream = null;
         // Clear stored device preferences if getUserMedia fails.
         if (selectedAudioInputId != null) {
-          await sharedPreferencesService.clearDefaultCameraId();
+          await sharedPreferencesService.clearDefaultMicrophoneId();
         }
         if (selectedVideoInputId != null) {
           await sharedPreferencesService.clearDefaultCameraId();
