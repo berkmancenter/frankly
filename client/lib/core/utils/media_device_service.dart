@@ -131,7 +131,17 @@ class MediaDeviceService {
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
     if (kIsWeb) {
-      final Map<String, dynamic>? audioConstraint;
+      Map<String, dynamic>? audioConstraint;
+
+      if (!micPermissionStatus.isGranted) {
+        // Try requesting permission again - fixes issue where one denial
+        // is saved for the rest of the session.
+        try {
+          micPermissionStatus = await Permission.microphone.request();
+        } catch (e) {
+          audioConstraint = null;
+        }
+      }
 
       if (!micPermissionStatus.isGranted) {
         audioConstraint = null;
@@ -145,7 +155,15 @@ class MediaDeviceService {
                 : null;
       }
 
-      final Map<String, dynamic>? videoConstraint;
+      Map<String, dynamic>? videoConstraint;
+
+      if (!cameraPermissionStatus.isGranted) {
+        try {
+          cameraPermissionStatus = await Permission.camera.request();
+        } catch (e) {
+          videoConstraint = null;
+        }
+      }
 
       if (!cameraPermissionStatus.isGranted) {
         videoConstraint = null;
