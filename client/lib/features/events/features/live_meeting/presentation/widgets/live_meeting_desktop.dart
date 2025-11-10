@@ -589,14 +589,21 @@ class BreakoutStatusInformation extends StatelessWidget {
         builder: (context) {
           final breakoutRoomScheduledTime =
               breakoutSession?.scheduledTime ?? clockService.now();
-          final breakoutRoomRemainingTime =
-              breakoutRoomScheduledTime.difference(clockService.now());
+          final now = clockService.now();
+          // Calculate the time remaining, but don't allow it to go negative and reset
+          var breakoutRoomRemainingTime = breakoutRoomScheduledTime.difference(now);
+
+          // If the scheduled time has passed, keep it at zero instead of letting it reset
+          if (breakoutRoomRemainingTime.isNegative) {
+            breakoutRoomRemainingTime = Duration.zero;
+          }
+
           final breakoutRoomRemainingTimeDisplay =
               breakoutRoomRemainingTime.getFormattedTime(showHours: false);
 
           final areBreakoutsPending = breakoutSession?.breakoutRoomStatus ==
                   BreakoutRoomStatus.pending &&
-              !breakoutRoomRemainingTime.isNegative;
+              breakoutRoomRemainingTime > Duration.zero;
           final breakoutsMessage = areBreakoutsPending
               ? 'Breakout room matching starting in $breakoutRoomRemainingTimeDisplay'
               : 'Generating breakout room assignments';
