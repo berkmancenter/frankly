@@ -11,8 +11,6 @@ import 'package:client/core/utils/media_device_service.dart';
 
 const _kTotalDialogContentPadding = 88.0;
 
-/// This widget is only designed for web. When expanding to other platforms,
-/// this widget should be refactored to ensure compatibility.
 class MediaSettingsWidget extends StatefulWidget {
   const MediaSettingsWidget({
     super.key,
