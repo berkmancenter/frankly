@@ -113,12 +113,14 @@ class AgoraRoom with ChangeNotifier {
       ),
     );
     await mediaDeviceService.init();
+    final currentUserId = userService.currentUserId!;
+    final agoraUid = uidToInt(currentUserId);
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
       agoraUid: 0,
       isLocal: true,
-      userId: userService.currentUserId!,
+      userId: currentUserId,
       token: token,
     )
       ..addListener(notifyListeners)
@@ -349,7 +351,7 @@ class AgoraRoom with ChangeNotifier {
     await engine.joinChannel(
       channelId: channelName,
       token: token,
-      uid: uidToInt(userService.currentUserId!),
+      uid: agoraUid,
       options: ChannelMediaOptions(
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
         channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
