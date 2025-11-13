@@ -76,17 +76,14 @@ class MediaDeviceService {
             sharedPreferencesService.getDefaultMicrophoneId();
         selectedVideoInputId = sharedPreferencesService.getDefaultCameraId();
 
-        // If no defaults, use the first available device and save it
+        // If no defaults, use the first available device.
+        // Don't save this as a default preference as it wasn't explicitly chosen.
         if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
           selectedAudioInputId = audioInputs.first.deviceId;
-          await sharedPreferencesService
-              .setDefaultMicrophoneId(selectedAudioInputId!);
         }
 
         if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
           selectedVideoInputId = videoInputs.first.deviceId;
-          await sharedPreferencesService
-              .setDefaultCameraId(selectedVideoInputId!);
         }
       } catch (e) {
         loggingService.log('Error listing available devices: $e');
