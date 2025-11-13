@@ -306,7 +306,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     });
   }
 
-  Widget _buildVideoDisabled({bool switchedOff = false}) {
+  Widget _buildVideoDisabled() {
     final isConnecting =
         _isNewlyConnected || (_startedTimer?.isActive ?? false);
     final isMobile = responsiveLayoutService.isMobile(context);
@@ -345,15 +345,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                     fontSize: isMobile ? 12 : 16,
                   ),
                 )
-              else if (switchedOff && (_startedTimer?.isActive ?? false))
-                Container(
-                  height: 20,
-                  alignment: Alignment.center,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CustomLoadingIndicator(),
-                  ),
-                )
               else
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -366,14 +357,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                         fontSize: isMobile ? 12 : 16,
                       ),
                     ),
-                    if (switchedOff) ...[
-                      SizedBox(width: 6),
-                      Icon(
-                        Icons.wifi_off,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: isMobile ? 12 : 16,
-                      ),
-                    ],
                   ],
                 ),
             ],
