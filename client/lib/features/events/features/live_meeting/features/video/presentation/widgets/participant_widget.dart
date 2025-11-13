@@ -81,6 +81,11 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     return widget.participant.videoTrackEnabled;
   }
 
+  bool get didReceiveFrames {
+    if (!isRemote) return true;
+    return widget.participant.hasReceivedVideoFrame;
+  }
+
   bool get _isNewlyConnected {
     final timer = conferenceRoom
         .participantInitializationTimers[widget.participant.userId];
@@ -345,6 +350,15 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                     fontSize: isMobile ? 12 : 16,
                   ),
                 )
+              else if (!didReceiveFrames)
+                HeightConstrainedText(
+                  'No video received.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: context.theme.colorScheme.secondary,
+                    fontSize: isMobile ? 12 : 16,
+                  ),
+                )
               else
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -406,13 +420,13 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                 builder: (_, __) => Stack(
                   children: [
                     Container(),
+                    if (!videoEnabled || !didReceiveFrames)
+                      Positioned.fill(
+                        child: _buildVideoDisabled(),
+                      ),
                     if (videoEnabled)
                       Positioned.fill(
                         child: _buildVideo(),
-                      ),
-                    if (!videoEnabled)
-                      Positioned.fill(
-                        child: _buildVideoDisabled(),
                       ),
                     _buildOverlay(),
                   ],
