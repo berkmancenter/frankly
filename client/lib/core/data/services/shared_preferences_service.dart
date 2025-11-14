@@ -90,9 +90,12 @@ class SharedPreferencesService {
   String? getDefaultCameraId() => _preferences.getString(_defaultCameraId);
   Future<bool> setDefaultCameraId(String id) =>
       _preferences.setString(_defaultCameraId, id);
+  Future<bool> clearDefaultCameraId() => _preferences.remove(_defaultCameraId);
 
   String? getDefaultMicrophoneId() =>
       _preferences.getString(_defaultMicrophoneId);
   Future<bool> setDefaultMicrophoneId(String id) =>
       _preferences.setString(_defaultMicrophoneId, id);
+  Future<bool> clearDefaultMicrophoneId() =>
+      _preferences.remove(_defaultMicrophoneId);
 }

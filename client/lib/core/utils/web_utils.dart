@@ -1,7 +1,7 @@
 @JS()
 library web_utils;
 
-import 'dart:ui' as ui;
+import 'dart:ui_web' as ui_web;
 
 import 'package:client/core/utils/error_utils.dart';
 import 'package:cloud_functions_platform_interface/cloud_functions_platform_interface.dart';
@@ -74,8 +74,7 @@ class CustomPointerInterceptor extends StatelessWidget {
 }
 
 void registerWebViewFactory(String key, html.Element Function(int) factory) {
-  // ignore: undefined_prefixed_name
-  ui.platformViewRegistry.registerViewFactory(key, factory);
+  ui_web.platformViewRegistry.registerViewFactory(key, factory);
 }
 
 HttpsCallablePlatform? getHttpsCallableWeb(String functionName) {

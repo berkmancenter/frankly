@@ -81,6 +81,11 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     return widget.participant.videoTrackEnabled;
   }
 
+  bool get didReceiveFrames {
+    if (!isRemote) return true;
+    return widget.participant.hasReceivedVideoFrame;
+  }
+
   bool get _isNewlyConnected {
     final timer = conferenceRoom
         .participantInitializationTimers[widget.participant.userId];
@@ -136,9 +141,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
           rtcEngine: conferenceRoom.room!.engine,
           canvas: const VideoCanvas(uid: 0),
         ),
-        onAgoraVideoViewCreated: (viewId) {
-          //conferenceRoom.room!.engine.startPreview();
-        },
       );
     }
 
@@ -309,7 +311,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     });
   }
 
-  Widget _buildVideoDisabled({bool switchedOff = false}) {
+  Widget _buildVideoDisabled() {
     final isConnecting =
         _isNewlyConnected || (_startedTimer?.isActive ?? false);
     final isMobile = responsiveLayoutService.isMobile(context);
@@ -348,13 +350,13 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                     fontSize: isMobile ? 12 : 16,
                   ),
                 )
-              else if (switchedOff && (_startedTimer?.isActive ?? false))
-                Container(
-                  height: 20,
-                  alignment: Alignment.center,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CustomLoadingIndicator(),
+              else if (!didReceiveFrames)
+                HeightConstrainedText(
+                  'No video received.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: context.theme.colorScheme.secondary,
+                    fontSize: isMobile ? 12 : 16,
                   ),
                 )
               else
@@ -369,14 +371,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                         fontSize: isMobile ? 12 : 16,
                       ),
                     ),
-                    if (switchedOff) ...[
-                      SizedBox(width: 6),
-                      Icon(
-                        Icons.wifi_off,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: isMobile ? 12 : 16,
-                      ),
-                    ],
                   ],
                 ),
             ],
@@ -426,13 +420,13 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                 builder: (_, __) => Stack(
                   children: [
                     Container(),
+                    if (!videoEnabled || !didReceiveFrames)
+                      Positioned.fill(
+                        child: _buildVideoDisabled(),
+                      ),
                     if (videoEnabled)
                       Positioned.fill(
                         child: _buildVideo(),
-                      ),
-                    if (!videoEnabled)
-                      Positioned.fill(
-                        child: _buildVideoDisabled(),
                       ),
                     _buildOverlay(),
                   ],
