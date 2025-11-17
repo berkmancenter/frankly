@@ -48,16 +48,44 @@ class CommunityHome extends StatefulWidget {
   _CommunityHomeState createState() => _CommunityHomeState();
 }
 
-class _CommunityHomeState extends State<CommunityHome> {
+class _CommunityHomeState extends State<CommunityHome>
+    with SingleTickerProviderStateMixin {
   int _eventsToShow = 20;
   final int _eventCountIncrement = 5;
+  late TabController _tabController;
 
   Community get community => Provider.of<CommunityProvider>(context).community;
 
   @override
   void initState() {
     context.read<CommunityHomeProvider>().initialize();
+
+    _tabController = TabController(
+      initialIndex: 0,
+      length: 4,
+      vsync: this,
+    );
+
     super.initState();
+  }
+   
+    _buildTab(BuildContext context, String text, IconData icon, bool mobile) {
+    return Flex(
+      direction: mobile ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(icon),
+        SizedBox(width: mobile ? 0 : 8),
+        HeightConstrainedText(
+          text,
+          style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                fontSize: mobile ? 11 : 16,
+              ),
+          maxLines: 1,
+        ),
+      ],
+    );
   }
 
   @override
@@ -69,10 +97,50 @@ class _CommunityHomeState extends State<CommunityHome> {
         keys: [community.id],
         builder: (context, showDonations) => Column(
           children: [
-            if (responsiveLayoutService.isMobile(context))
-              ..._mobileLayout(showDonations!)
-            else
-              ..._desktopLayout(showDonations!),
+            ConstrainedBody(
+              child: Column(
+                children: [
+                  TabBar(
+                    controller: _tabController,
+                   
+                    tabs: [
+                      Tab(child: _buildTab(context, 'Events', Icons.event, false)),
+                      Tab(child: _buildTab(context, 'Announcements', Icons.announcement, false)),
+                      Tab(child: _buildTab(context, 'Posts', Icons.post_add, false)),
+                      Tab(child: _buildTab(context, 'Resources', Icons.book, false)),
+                      Tab(child: _buildTab(context, 'Templates', Icons.abc, false)),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                  SizedBox(
+                    height: 1000, // This should be adjusted based on content
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        _buildRightSideOfDesktop(),
+                        Center(child: Text('Announcements Content')),
+                        Center(child: Text('Posts Content')),
+                        Center(child: Text('Resources Content')),
+                        Center(child: Text('Templates Content')),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 48,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 52),
+                      Expanded(
+                        child: _buildRightSideOfDesktop(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 100),
           ],
         ),
       ),
@@ -125,55 +193,6 @@ class _CommunityHomeState extends State<CommunityHome> {
           ),
         ),
       ];
-
-  List<Widget> _desktopLayout(bool showDonations) => [
-        ConstrainedBody(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 48,
-                child: Provider.of<CommunityPermissionsProvider>(context)
-                        .canEditCommunity
-                    ? Align(
-                        alignment: Alignment.centerRight,
-                        child: EditCommunityButton(),
-                      )
-                    : null,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _buildLeftSideOfDesktop(showDonations),
-                  ),
-                  SizedBox(width: 52),
-                  Expanded(
-                    child: _buildRightSideOfDesktop(),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 100),
-      ];
-
-  Widget _buildLeftSideOfDesktop(bool showDonations) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          clipBehavior: Clip.hardEdge,
-          child: CarouselInitializer(),
-        ),
-        SizedBox(height: 30),
-        CommunityHomeAboutSection(community: community),
-        SizedBox(height: 20),
-        _buildContactUsSection(showDonations),
-        SizedBox(height: 30),
-      ],
-    );
-  }
 
   Widget _buildRightSideOfDesktop() => Column(
         children: [
