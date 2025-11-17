@@ -11,10 +11,10 @@ enum BorderType {
   outline,
 }
 
-/// A customizable text field widget. 
+/// A customizable text field widget.
 /// This widget provides various options to customize its appearance and behavior,
 /// including border type, padding, text styles, and more.
-/// 
+///
 /// {@tool snippet}
 /// ```dart
 /// CustomTextField(
@@ -47,6 +47,7 @@ class CustomTextField extends StatefulWidget {
 
   /// The initial value to display in the text field when it is first built.
   final String? initialValue;
+
   /// If null, this will be ignored and the text field will expand infinitely.
   final int? maxLines;
 
@@ -54,7 +55,7 @@ class CustomTextField extends StatefulWidget {
   /// If [maxLines] is not null, [minLines] will not be allowed to be more than [maxLines].
   /// If [maxLines] is null, [minLines] will be allowed to be any value.
   final int minLines;
-  
+
   /// If null, this will default to the theme's bodyMedium text style.
   final TextStyle? textStyle;
 
@@ -387,9 +388,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onEditingComplete: widget.onEditingComplete,
                 // This is absolutely nuts, but this is needed for now in order to allow a unit test to succeed,
                 // while not having to specify max lines for every single usage 🙄
-                maxLines: widget.maxLines == null ? null : !widget.minLines.compareTo(widget.maxLines!).isNegative
-                    ? widget.minLines
-                    : widget.maxLines,
+                maxLines: widget.maxLines == null
+                    ? null
+                    : !widget.minLines.compareTo(widget.maxLines!).isNegative
+                        ? widget.minLines
+                        : widget.maxLines,
                 minLines: widget.minLines,
                 obscureText: widget.obscureText,
                 cursorColor:
@@ -408,11 +411,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
                             margin: EdgeInsets.only(left: 10),
                             alignment: widget.counterAlignment ??
                                 Alignment.centerRight,
-                            child: isFocused ? Text(
-                              '$currentLength/$maxLength',
-                              style:
-                                  widget.counterStyle ?? AppTextStyle.bodySmall,
-                            ) : SizedBox.square(dimension: 14,),
+                            child: isFocused
+                                ? Text(
+                                    '$currentLength/$maxLength',
+                                    style: widget.counterStyle ??
+                                        AppTextStyle.bodySmall,
+                                  )
+                                : SizedBox.square(
+                                    dimension: widget.counterStyle?.fontSize ??
+                                        AppTextStyle.bodySmall.fontSize,
+                                  ),
                           )
                         : null,
                 maxLengthEnforcement: widget.maxLengthEnforcement,
