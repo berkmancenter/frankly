@@ -163,7 +163,8 @@ You do not need to run `functions:config:set.` as the emulators are configured b
 **Running the emulators**
 
 !!! info "Important"
-    Do this before running the [client](#running-and-building-the-client).
+    - Do this before running the [client](#running-and-building-the-client).
+    - Frankly does not currently operate with a named database; the name must be the default, literally the string `default`.
 
 To run the emulators locally, run the following _while_ in the `firebase/functions` directory:
 
@@ -182,11 +183,15 @@ We recommend using the emulators [import and export](https://firebase.google.com
 
 ### Optional: Setup Firebase Cloud Project
 
-In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Functions, Auth, Realtime Database, etc.) suffice for most development task.
+In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Run Functions, Auth, Realtime Database, etc.) suffice for most development task.
 
 If you plan on using [Mux](#optional-mux) within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send [webhooks :octicons-link-external-24:](https://en.wikipedia.org/wiki/Webhook) to. You will need a Firebase project of your own. 
 
 1. Create a new Firebase project [here :octicons-link-external-24:](https://console.firebase.google.com/).
+
+    !!! warning
+        Your Firestore instance needs to be configured as single region.
+
 2. Make a note of the unique ID that is created for your project. It will be in the format of `my-dev-project-d2f8c`.
 3. You may need to create a default [realtime database](https://firebase.google.com/docs/database/web/start). 
 4. From your command line within the `firebase/functions` directory, run:
@@ -228,20 +233,19 @@ agora.storage_secret_key="<YOUR_VALUE_HERE>"
 #### **🔧 Setting up the integration**
 
 - **Agora**
-  Create a new project in the Agora console. For Authentication Mode, select **Secure Mode: App ID + Token**.
-
-  - `app_id`: Copy the App ID from the Projects list in the console home.
-  - `app_certificate`: Select **Configure** on your project. Copy the value under **Security > Primary Certificate**.
-  - `rest_key`: In the left navigation panel, select **Restful API** under either **Developer Toolkit** or **Developer Resources**, depending on your screen size. Click **Add a Secret**. Download the Customer Secret, and input the value for **Key**.
-  - `rest_secret`: From the Customer Secret file, input the value for **Secret**.
+    - Create a new project in the Agora console. For Authentication Mode, select **Secure Mode: App ID + Token**.
+    - `app_id`: Copy the App ID from the Projects list in the console home.
+    - `app_certificate`: Select **Configure** on your project. Copy the value under **Security > Primary Certificate**.
+    - `rest_key`: In the left navigation panel, select **Restful API** under either **Developer Toolkit** or **Developer Resources**, depending on your screen size. Click **Add a Secret**. Download the Customer Secret, and input the value for **Key**.
+    - `rest_secret`: From the Customer Secret file, input the value for **Secret**.
 
 - **Google Cloud Storage**
-  Create a Google Cloud Storage bucket to store event recordings. Navigate to [Google Cloud Storage](https://console.cloud.google.com/storage/) and select **Create a Bucket**. Provide a bucket name. Then, configure the bucket with your desired settings for the remaining options.
-  - `storage_bucket_name`: Enter the bucket name you selected.
-  - `storage_access_key`: Select **Settings** under the Cloud Storage left-side settings panel. Click on the **Interopability** tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select **Create a Key**. Then, paste the generated **Access key** here.
-  - `storage_secret_key`: From the generated key, paste the **Secret**.
+    - Create a Google Cloud Storage bucket to store event recordings. Navigate to [Google Cloud Storage](https://console.cloud.google.com/storage/) and select **Create a Bucket**. Provide a bucket name. Then, configure the bucket with your desired settings for the remaining options.
+    - `storage_bucket_name`: Enter the bucket name you selected.
+    - `storage_access_key`: Select **Settings** under the Cloud Storage left-side settings panel. Click on the **Interopability** tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select **Create a Key**. Then, paste the generated **Access key** here.
+    - `storage_secret_key`: From the generated key, paste the **Secret**.
 - **In the codebase**
-  In `client/lib/app/community/admin/conversations_tab.dart`, change the URIs in the `_buildRecordingSection` method (replacing the ASML values appearing ahead of `/us-central1/downloadRecording`) to reflect your staging and prod Firebase project IDs.
+    - In `client/.env`, change `FUNCTIONS_URL_PREFIX` to reflect your Google Cloud Run Functions prefix.
 
 #### 👾 Testing the integration
 
@@ -281,7 +285,10 @@ Mux streaming is used when a customer wants to stream video from a third party s
           },
         ```
 
-3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to your Google Cloud Project. Get the URL of the deployed function provided by Google Cloud, which should resemble this format: https://us-central1-myproject.cloudfunctions.net/MuxWebhooks.
+3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
+> https://us-central1-myproject.cloudfunctions.net/MuxWebhooks
+> https://service-name-12851330326.region.run.app/MuxWebhooks
+
 4.  Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
 #### 👾 Testing your setup
@@ -301,7 +308,7 @@ The logs displayed on the Logging page should indicate that the MuxWebhook Fireb
 2. Open Zoom and verify you have livestreaming enabled using [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_4b4ded3d-3f6b-4965-baaa-3692f947e36c) steps. Then follow [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_62b792dc-3cf9-4b62-848d-93ee9e412a7c) steps to setup your livestreaming event on Zoom. Use the following values:
    - For Stream URL, use the Stream URL provided on the Frankly event page.
    - For Stream Key, use the Stream Key provided on the Frankly event page.
-   - For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: https://gen-hls-bkc-7627.web.app/space/<ids>/discuss/<more ids>?status=joined
+   - For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more ids]?status=joined
 3. Visit your Google Cloud Platform Logging page so you can scan for any errors during the live stream test.
 4. When you are ready, start the live stream on Zoom using [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_0cd3b33b-0172-4199-bd19-88ba6b57f173) steps
 
