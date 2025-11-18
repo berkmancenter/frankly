@@ -52,6 +52,7 @@ class _CommunityHomeState extends State<CommunityHome>
     with SingleTickerProviderStateMixin {
   int _eventsToShow = 20;
   final int _eventCountIncrement = 5;
+  int _selectedTabIndex = 0;
   late TabController _tabController;
 
   Community get community => Provider.of<CommunityProvider>(context).community;
@@ -62,25 +63,34 @@ class _CommunityHomeState extends State<CommunityHome>
 
     _tabController = TabController(
       initialIndex: 0,
-      length: 4,
+      length: 5,
       vsync: this,
     );
+    _tabController.addListener(() {
+      setState(() {
+        _selectedTabIndex = _tabController.index;
+      });
+    });
 
     super.initState();
   }
-   
-    _buildTab(BuildContext context, String text, IconData icon, bool mobile) {
+
+  _buildTab(BuildContext context, String text, IconData icon, bool selected,
+      bool mobile,) {
     return Flex(
       direction: mobile ? Axis.vertical : Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(icon),
-        SizedBox(width: mobile ? 0 : 8),
+        SizedBox(width: 8),
         HeightConstrainedText(
           text,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
                 fontSize: mobile ? 11 : 16,
+                color: selected
+                    ? Colors.white
+                    : Theme.of(context).colorScheme.onSurface,
               ),
           maxLines: 1,
         ),
@@ -90,59 +100,92 @@ class _CommunityHomeState extends State<CommunityHome>
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: MemoizedStreamBuilder<bool>(
-        streamGetter: () =>
-            context.read<CommunityProvider>().donationsEnabled().asStream(),
-        keys: [community.id],
-        builder: (context, showDonations) => Column(
-          children: [
-            ConstrainedBody(
-              child: Column(
-                children: [
-                  TabBar(
+    final mobile = responsiveLayoutService.isMobile(context);
+    return MemoizedStreamBuilder<bool>(
+      streamGetter: () =>
+          context.read<CommunityProvider>().donationsEnabled().asStream(),
+      keys: [community.id],
+      builder: (context, showDonations) => Column(
+        children: [
+          ConstrainedBody(
+            child: Column(
+              children: [
+                TabBar(
+                  controller: _tabController,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: context.theme.colorScheme.onSurface,
+                  indicator: BoxDecoration(
+                    color: context.theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  splashBorderRadius: BorderRadius.circular(30),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  isScrollable: mobile,
+                  tabs: [
+                    Tab(
+                        child: _buildTab(
+                            context,
+                            'Events',
+                            Icons.calendar_today,
+                            _selectedTabIndex == 0,
+                            mobile,),),
+                    Tab(
+                        child: _buildTab(
+                            context,
+                            'Announcements',
+                            Icons.campaign_outlined,
+                            _selectedTabIndex == 1,
+                            mobile,),),
+                    Tab(
+                        child: _buildTab(
+                            context,
+                            'Posts',
+                            Icons.post_add_outlined,
+                            _selectedTabIndex == 2,
+                            mobile,),),
+                    Tab(
+                        child: _buildTab(
+                            context,
+                            'Resources',
+                            Icons.stars_outlined,
+                            _selectedTabIndex == 3,
+                            mobile,),),
+                    Tab(
+                        child: _buildTab(context, 'Templates', Icons.abc,
+                            _selectedTabIndex == 4, mobile,),),
+                  ],
+                ),
+                SizedBox(height: 24),
+                SizedBox(
+                  height: 1000, // This should be adjusted based on content
+                  child: TabBarView(
                     controller: _tabController,
-                   
-                    tabs: [
-                      Tab(child: _buildTab(context, 'Events', Icons.event, false)),
-                      Tab(child: _buildTab(context, 'Announcements', Icons.announcement, false)),
-                      Tab(child: _buildTab(context, 'Posts', Icons.post_add, false)),
-                      Tab(child: _buildTab(context, 'Resources', Icons.book, false)),
-                      Tab(child: _buildTab(context, 'Templates', Icons.abc, false)),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-                  SizedBox(
-                    height: 1000, // This should be adjusted based on content
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        _buildRightSideOfDesktop(),
-                        Center(child: Text('Announcements Content')),
-                        Center(child: Text('Posts Content')),
-                        Center(child: Text('Resources Content')),
-                        Center(child: Text('Templates Content')),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 48,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(width: 52),
-                      Expanded(
-                        child: _buildRightSideOfDesktop(),
-                      ),
+                      _buildRightSideOfDesktop(),
+                      Center(child: Text('Announcements Content')),
+                      Center(child: Text('Posts Content')),
+                      Center(child: Text('Resources Content')),
+                      Center(child: Text('Templates Content')),
                     ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 48,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 52),
+                    Expanded(
+                      child: _buildRightSideOfDesktop(),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 100),
-          ],
-        ),
+          ),
+          SizedBox(height: 100),
+        ],
       ),
     );
   }
