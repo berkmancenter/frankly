@@ -410,10 +410,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     suffixIcon: widget.suffixIcon,
                   ),
                   borderColor: _getBorderColor(),
-                  autofocus: widget.autofocus,
-                  readOnly: widget.readOnly,
-                  enabled: !widget.readOnly,
-                  keyboardType: widget.keyboardType,
                 ),
               if (!widget.markdownEditor)
                 TextFormField(
