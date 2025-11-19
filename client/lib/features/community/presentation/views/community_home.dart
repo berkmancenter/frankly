@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/features/community/presentation/widgets/community_icon_or_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
@@ -47,6 +48,7 @@ class CommunityHome extends StatefulWidget {
   @override
   _CommunityHomeState createState() => _CommunityHomeState();
 }
+
 
 class _CommunityHomeState extends State<CommunityHome>
     with SingleTickerProviderStateMixin {
@@ -110,6 +112,20 @@ class _CommunityHomeState extends State<CommunityHome>
           ConstrainedBody(
             child: Column(
               children: [
+                Row(
+                  children: [
+                  CurrentCommunityIconOrLogo(
+                    community: community, darkLogo: true,),
+                  Text(
+                    community.name ?? Environment.appName,
+                  ),
+                  ],
+                ),
+                Text(
+                  community.description ?? '',
+                ),
+                _buildShare(),
+                SizedBox(height: 24),
                 TabBar(
                   controller: _tabController,
                   labelColor: Colors.white,
