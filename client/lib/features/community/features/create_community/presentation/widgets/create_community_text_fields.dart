@@ -1,10 +1,8 @@
 import 'package:client/config/environment.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/styles/styles.dart';
 import 'package:flutter/services.dart';
 
 class CreateCommunityTextFields extends StatefulWidget {
@@ -13,6 +11,12 @@ class CreateCommunityTextFields extends StatefulWidget {
   final void Function(String) onCustomDisplayIdChanged;
   final void Function(String)? onTaglineChanged;
   final void Function(String)? onAboutChanged;
+  final void Function(String)? onWebsiteUrlChanged;
+  final void Function(String)? onEmailChanged;
+  final void Function(String)? onFacebookUrlChanged;
+  final void Function(String)? onLinkedinUrlChanged;
+  final void Function(String)? onTwitterUrlChanged;
+  final void Function(String)? onBlueskyUrlChanged;
   final FocusNode? nameFocus;
   final FocusNode? aboutFocus;
   final FocusNode? taglineFocus;
@@ -31,6 +35,12 @@ class CreateCommunityTextFields extends StatefulWidget {
     this.nameFocus,
     this.aboutFocus,
     this.taglineFocus,
+    this.onWebsiteUrlChanged,
+    this.onEmailChanged,
+    this.onFacebookUrlChanged,
+    this.onLinkedinUrlChanged,
+    this.onTwitterUrlChanged,
+    this.onBlueskyUrlChanged,
     required this.community,
     this.compact = false,
     this.showAllFields = false,
@@ -105,7 +115,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         SizedBox(
-          height: widget.compact ? 0 : 15,
+          height: 15,
         ),
         _buildCreateCommunityTextField(
           controller: _displayIdController,
@@ -128,7 +138,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         SizedBox(
-          height: widget.compact ? 0 : 15,
+          height: 15,
         ),
         if (widget.showAllFields)
           Column(
@@ -145,7 +155,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 focus: widget.taglineFocus,
               ),
               SizedBox(
-                height: widget.compact ? 0 : 15,
+                height: 15,
               ),
               _buildCreateCommunityTextField(
                 hint: context.l10n.communityDescriptionHint,
@@ -158,6 +168,66 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 maxLines: null,
                 minLines: 3,
                 keyboardType: TextInputType.multiline,
+              ),
+              SizedBox(height: 15),
+              _buildCreateCommunityTextField(
+                label: 'Website URL',
+                hint: 'https://yourwebsite.com',
+                borderType: widget.borderType,
+                initialValue: widget.community.websiteUrl,
+                onChanged: widget.onWebsiteUrlChanged,
+                keyboardType: TextInputType.url,
+                isOptional: true,
+              ),
+              SizedBox(height: 15),
+              _buildCreateCommunityTextField(
+                label: 'Email',
+                hint: 'contact@yourdomain.com',
+                borderType: widget.borderType,
+                initialValue: widget.community.contactEmail,
+                onChanged: widget.onEmailChanged,
+                keyboardType: TextInputType.emailAddress,
+                isOptional: true,
+              ),
+              SizedBox(height: 15),
+              _buildCreateCommunityTextField(
+                label: 'Facebook',
+                hint: 'facebook.com/yourpage',
+                borderType: widget.borderType,
+                initialValue: widget.community.facebookUrl,
+                onChanged: widget.onFacebookUrlChanged,
+                keyboardType: TextInputType.url,
+                isOptional: true,
+              ),
+              SizedBox(height: 15),
+              _buildCreateCommunityTextField(
+                label: 'LinkedIn',
+                hint: 'linkedin.com/in/yourprofile',
+                borderType: widget.borderType,
+                initialValue: widget.community.linkedinUrl,
+                onChanged: widget.onLinkedinUrlChanged,
+                keyboardType: TextInputType.url,
+                isOptional: true,
+              ),
+              SizedBox(height: 15),
+              _buildCreateCommunityTextField(
+                label: 'Twitter',
+                hint: 'twitter.com/yourhandle',
+                borderType: widget.borderType,
+                initialValue: widget.community.twitterUrl,
+                onChanged: widget.onTwitterUrlChanged,
+                keyboardType: TextInputType.url,
+                isOptional: true,
+              ),
+              SizedBox(height: 15),
+              _buildCreateCommunityTextField(
+                label: 'Bluesky',
+                hint: 'bsky.app/profile/yourhandle',
+                borderType: widget.borderType,
+                initialValue: widget.community.blueskyUrl,
+                onChanged: widget.onBlueskyUrlChanged,
+                keyboardType: TextInputType.url,
+                isOptional: true,
               ),
             ],
           ),
@@ -186,7 +256,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   }) =>
       Container(
         alignment: Alignment.topCenter,
-        height: containerHeight,
         child: CustomTextField(
           controller: controller,
           borderType: borderType,

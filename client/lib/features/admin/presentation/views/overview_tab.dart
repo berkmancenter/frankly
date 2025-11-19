@@ -96,6 +96,24 @@ class _OverviewTabState extends State<OverviewTab> {
                             _community =
                                 _community.copyWith(description: value),
                           },
+                          onWebsiteUrlChanged: (value) => {
+                            _community = _community.copyWith(websiteUrl: value),
+                          },
+                          onEmailChanged: (value) => {
+                            _community = _community.copyWith(contactEmail: value),
+                          },
+                          onFacebookUrlChanged: (value) => {
+                            _community =  _community.copyWith(facebookUrl: value),
+                          },    
+                          onLinkedinUrlChanged: (value) => {
+                            _community =  _community.copyWith(linkedinUrl: value),
+                          },    
+                          onTwitterUrlChanged: (value) => {
+                            _community =  _community.copyWith(twitterUrl: value),
+                          },
+                          onBlueskyUrlChanged: (value) => {
+                            _community =  _community.copyWith(blueskyUrl: value),
+                          },
                           community: _community,
                         ),
                       ),
@@ -162,6 +180,12 @@ class _OverviewTabState extends State<OverviewTab> {
           Community.kFieldDisplayIds,
           Community.kFieldTagLine,
           Community.kFieldDescription,
+          Community.kFieldContactEmail,
+          Community.kFieldWebsiteUrl,
+          Community.kFieldFacebookUrl,
+          Community.kFieldLinkedinUrl,
+          Community.kFieldTwitterUrl,
+          Community.kFieldBlueskyUrl,
           Community.kFieldThemeLightColor,
           Community.kFieldThemeDarkColor,
         ],
