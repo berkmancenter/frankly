@@ -232,14 +232,14 @@ const _$ParticipantStatusEnumMap = {
 };
 
 const _$MembershipStatusEnumMap = {
+  MembershipStatus.owner: 'owner',
+  MembershipStatus.admin: 'admin',
+  MembershipStatus.mod: 'mod',
+  MembershipStatus.facilitator: 'facilitator',
+  MembershipStatus.member: 'member',
   MembershipStatus.banned: 'banned',
   MembershipStatus.nonmember: 'nonmember',
   MembershipStatus.attendee: 'attendee',
-  MembershipStatus.member: 'member',
-  MembershipStatus.facilitator: 'facilitator',
-  MembershipStatus.mod: 'mod',
-  MembershipStatus.admin: 'admin',
-  MembershipStatus.owner: 'owner',
 };
 
 _$_PrivateLiveStreamInfo _$$_PrivateLiveStreamInfoFromJson(
