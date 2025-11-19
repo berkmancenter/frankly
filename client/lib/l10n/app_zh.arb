@@ -614,6 +614,8 @@
   "pleaseEnterPassword": "請輸入密碼",
   "pleaseEnterValidEmail": "请输入有效的电子邮件地址。",
   "pleaseEnterValidPassword": "請輸入有效的密碼",
+  "pleaseEnterValidUrl": "请输入有效的URL。",
+  "pleaseFixErrorsBeforeSaving": "请在保存前修正表单错误。",
   "pleaseLogInOrSignUp": "请登录或注册",
   "postWasDeleted": "帖子已删除。",
   "posts": "帖子",

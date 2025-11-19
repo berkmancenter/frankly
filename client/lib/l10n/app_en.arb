@@ -552,6 +552,8 @@
   "pleaseEnterPassword": "Please enter a password",
   "pleaseEnterValidEmail": "Please enter a valid email address.",
   "pleaseEnterValidPassword": "Please enter a valid password",
+  "pleaseEnterValidUrl": "Please enter a valid URL.",
+  "pleaseFixErrorsBeforeSaving": "Please fix form errors before saving.",
   "pleaseLogInOrSignUp": "Please log in or sign up",
   "posts": "Posts",
   "postWasDeleted": "Post was deleted.",

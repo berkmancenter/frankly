@@ -9,6 +9,7 @@ class CreateCommunityTextFields extends StatefulWidget {
   final bool showChooseCustomDisplayId;
   final void Function(String) onNameChanged;
   final void Function(String) onCustomDisplayIdChanged;
+  final void Function(bool)? onFieldsHaveErrors;
   final void Function(String)? onTaglineChanged;
   final void Function(String)? onAboutChanged;
   final void Function(String)? onWebsiteUrlChanged;
@@ -30,6 +31,7 @@ class CreateCommunityTextFields extends StatefulWidget {
     Key? key,
     required this.onNameChanged,
     required this.onCustomDisplayIdChanged,
+    this.onFieldsHaveErrors,
     this.onTaglineChanged,
     this.onAboutChanged,
     this.nameFocus,
@@ -68,6 +70,21 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     );
     _displayIdController =
         TextEditingController(text: widget.community.displayId);
+  }
+
+  String? validateUrl(String? value) {
+    if (value != null && value.isNotEmpty) {
+      final uri = Uri.tryParse(value);
+      if (uri == null || !uri.hasAbsolutePath) {
+        widget.onFieldsHaveErrors?.call(true);
+        return context.l10n.pleaseEnterValidUrl;
+      }
+    }
+    else if (value == null || value.isEmpty) {
+      widget.onFieldsHaveErrors?.call(false);
+    }
+    widget.onFieldsHaveErrors?.call(false);
+    return null;
   }
 
   String _formatDisplayIdFromName(String displayId) {
@@ -178,6 +195,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onWebsiteUrlChanged,
                 keyboardType: TextInputType.url,
                 isOptional: true,
+                validator: (value) => validateUrl(value ?? ''),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               SizedBox(height: 15),
               _buildCreateCommunityTextField(
@@ -188,6 +207,16 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onEmailChanged,
                 keyboardType: TextInputType.emailAddress,
                 isOptional: true,
+                validator: (value) {
+                  if (value != null &&
+                      value.isNotEmpty && 
+                      !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
+                    return context.l10n.pleaseEnterValidEmail;
+                  }
+                  return null;
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               SizedBox(height: 15),
               _buildCreateCommunityTextField(
@@ -198,6 +227,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onFacebookUrlChanged,
                 keyboardType: TextInputType.url,
                 isOptional: true,
+                validator: (value) => validateUrl(value ?? ''),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               SizedBox(height: 15),
               _buildCreateCommunityTextField(
@@ -208,6 +239,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onLinkedinUrlChanged,
                 keyboardType: TextInputType.url,
                 isOptional: true,
+                validator: (value) => validateUrl(value ?? ''),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               SizedBox(height: 15),
               _buildCreateCommunityTextField(
@@ -218,6 +251,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onTwitterUrlChanged,
                 keyboardType: TextInputType.url,
                 isOptional: true,
+                validator: (value) => validateUrl(value ?? ''),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               SizedBox(height: 15),
               _buildCreateCommunityTextField(
@@ -227,7 +262,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 initialValue: widget.community.blueskyUrl,
                 onChanged: widget.onBlueskyUrlChanged,
                 keyboardType: TextInputType.url,
-                isOptional: true,
+                isOptional: true, 
+                validator: (value) => validateUrl(value ?? ''),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ],
           ),

@@ -605,6 +605,8 @@
   "pleaseEnterPassword": "Por favor, introduzca una contraseña",
   "pleaseEnterValidEmail": "Por favor, introduzca una dirección de email válida.",
   "pleaseEnterValidPassword": "Por favor, introduzca una contraseña válida",
+  "pleaseEnterValidUrl": "Por favor, introduzca una URL válida.",
+  "pleaseFixErrorsBeforeSaving": "Por favor, corrija los errores del formulario antes de guardar.",
   "pleaseLogInOrSignUp": "Por favor, inicia sesión o regístrate.",
   "posts": "Publicaciones",
   "postWasDeleted": "La publicación fue eliminada.",

@@ -31,6 +31,8 @@ class _OverviewTabState extends State<OverviewTab> {
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
 
+  bool _formHasErrors = false;
+
   Widget _buildSection(String label, Widget sectionContent, bool mobile) {
     return Flex(
       direction: mobile ? Axis.vertical : Axis.horizontal,
@@ -84,6 +86,11 @@ class _OverviewTabState extends State<OverviewTab> {
                           showAllFields: true,
                           showChooseCustomDisplayId: true,
                           borderType: BorderType.outline,
+                          onFieldsHaveErrors: (hasErrors) {
+                            setState(() {
+                              _formHasErrors = hasErrors;
+                            });
+                          },
                           onCustomDisplayIdChanged: (value) =>
                               _displayId = value,
                           onNameChanged: (value) => {
@@ -100,19 +107,22 @@ class _OverviewTabState extends State<OverviewTab> {
                             _community = _community.copyWith(websiteUrl: value),
                           },
                           onEmailChanged: (value) => {
-                            _community = _community.copyWith(contactEmail: value),
+                            _community =
+                                _community.copyWith(contactEmail: value),
                           },
                           onFacebookUrlChanged: (value) => {
-                            _community =  _community.copyWith(facebookUrl: value),
-                          },    
+                            _community =
+                                _community.copyWith(facebookUrl: value),
+                          },
                           onLinkedinUrlChanged: (value) => {
-                            _community =  _community.copyWith(linkedinUrl: value),
-                          },    
+                            _community =
+                                _community.copyWith(linkedinUrl: value),
+                          },
                           onTwitterUrlChanged: (value) => {
-                            _community =  _community.copyWith(twitterUrl: value),
+                            _community = _community.copyWith(twitterUrl: value),
                           },
                           onBlueskyUrlChanged: (value) => {
-                            _community =  _community.copyWith(blueskyUrl: value),
+                            _community = _community.copyWith(blueskyUrl: value),
                           },
                           community: _community,
                         ),
@@ -150,7 +160,7 @@ class _OverviewTabState extends State<OverviewTab> {
                               setLightColor: (val) => _community =
                                   _community.copyWith(themeLightColor: val),
                             ),
-                            if(mobile) SizedBox (height: 90),
+                            if (mobile) SizedBox(height: 90),
                           ],
                         ),
                       ),
@@ -232,17 +242,16 @@ class _OverviewTabState extends State<OverviewTab> {
   Future<void> _submitFunction() async {
     final regex = RegExp('^[a-zA-Z0-9-]*\$');
 
-    if(isNullOrEmpty(_community.name))
-    {
+    if (isNullOrEmpty(_community.name)) {
       throw VisibleException(
         context.l10n.errorCommunityNameEmpty,
       );
     }
-    if( isNullOrEmpty(_displayId)) {
+    if (isNullOrEmpty(_displayId)) {
       throw VisibleException(
         context.l10n.errorCommunityUrlEmpty,
       );
-    } 
+    }
     if (!regex.hasMatch(_displayId)) {
       throw VisibleException(
         context.l10n.displayIdWarning,
@@ -261,13 +270,20 @@ class _OverviewTabState extends State<OverviewTab> {
       );
     }
 
+    // Check for form errors from child widgets
+    if (_formHasErrors) {
+      throw VisibleException(
+        context.l10n.pleaseFixErrorsBeforeSaving,
+      );
+    }
+
     bool isContrastValid = _verifyContrastOfSelectedTheme();
 
-      if (!isContrastValid) {
-        throw VisibleException(
-          context.l10n.selectedColorsContrastError,
-        );
-      }
+    if (!isContrastValid) {
+      throw VisibleException(
+        context.l10n.selectedColorsContrastError,
+      );
+    }
 
     await _updateCommunity();
     if (isNewDisplayId) {
@@ -281,8 +297,8 @@ class _OverviewTabState extends State<OverviewTab> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-      content: Text(context.l10n.changesSaved),
-      duration: Duration(seconds: 2),
+        content: Text(context.l10n.changesSaved),
+        duration: Duration(seconds: 2),
       ),
     );
   }
