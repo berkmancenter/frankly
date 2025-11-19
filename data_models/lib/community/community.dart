@@ -62,7 +62,6 @@ class Community with _$Community implements SerializeableRequest {
   static const String kFieldContactEmail = 'contactEmail';
   static const String kFieldTagLine = 'tagLine';
   static const String kFieldDescription = 'description';
-  static const String kFieldEmail = 'email';
   static const String kFieldWebsiteUrl = 'websiteUrl';
   static const String kFieldFacebookUrl = 'facebookUrl';
   static const String kFieldLinkedinUrl = 'linkedinUrl';
@@ -93,7 +92,6 @@ class Community with _$Community implements SerializeableRequest {
     DateTime? createdDate,
     bool? isPublic,
     String? description,
-    String? email,
     String? websiteUrl,
     String? facebookUrl,
     String? linkedinUrl,

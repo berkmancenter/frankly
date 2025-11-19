@@ -33,7 +33,6 @@ mixin _$Community {
   DateTime? get createdDate => throw _privateConstructorUsedError;
   bool? get isPublic => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  String? get email => throw _privateConstructorUsedError;
   String? get websiteUrl => throw _privateConstructorUsedError;
   String? get facebookUrl => throw _privateConstructorUsedError;
   String? get linkedinUrl => throw _privateConstructorUsedError;
@@ -77,7 +76,6 @@ abstract class $CommunityCopyWith<$Res> {
       DateTime? createdDate,
       bool? isPublic,
       String? description,
-      String? email,
       String? websiteUrl,
       String? facebookUrl,
       String? linkedinUrl,
@@ -122,7 +120,6 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
     Object? createdDate = freezed,
     Object? isPublic = freezed,
     Object? description = freezed,
-    Object? email = freezed,
     Object? websiteUrl = freezed,
     Object? facebookUrl = freezed,
     Object? linkedinUrl = freezed,
@@ -179,10 +176,6 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
               as String?,
       websiteUrl: freezed == websiteUrl
           ? _value.websiteUrl
@@ -291,7 +284,6 @@ abstract class _$$_CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
       DateTime? createdDate,
       bool? isPublic,
       String? description,
-      String? email,
       String? websiteUrl,
       String? facebookUrl,
       String? linkedinUrl,
@@ -336,7 +328,6 @@ class __$$_CommunityCopyWithImpl<$Res>
     Object? createdDate = freezed,
     Object? isPublic = freezed,
     Object? description = freezed,
-    Object? email = freezed,
     Object? websiteUrl = freezed,
     Object? facebookUrl = freezed,
     Object? linkedinUrl = freezed,
@@ -393,10 +384,6 @@ class __$$_CommunityCopyWithImpl<$Res>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
               as String?,
       websiteUrl: freezed == websiteUrl
           ? _value.websiteUrl
@@ -477,7 +464,6 @@ class _$_Community extends _Community {
       this.createdDate,
       this.isPublic,
       this.description,
-      this.email,
       this.websiteUrl,
       this.facebookUrl,
       this.linkedinUrl,
@@ -524,8 +510,6 @@ class _$_Community extends _Community {
   @override
   final String? description;
   @override
-  final String? email;
-  @override
   final String? websiteUrl;
   @override
   final String? facebookUrl;
@@ -561,7 +545,7 @@ class _$_Community extends _Community {
 
   @override
   String toString() {
-    return 'Community(id: $id, displayIds: $displayIds, name: $name, contactEmail: $contactEmail, creatorId: $creatorId, profileImageUrl: $profileImageUrl, bannerImageUrl: $bannerImageUrl, createdDate: $createdDate, isPublic: $isPublic, description: $description, email: $email, websiteUrl: $websiteUrl, facebookUrl: $facebookUrl, linkedinUrl: $linkedinUrl, twitterUrl: $twitterUrl, blueskyUrl: $blueskyUrl, tagLine: $tagLine, enabledFeatureFlags: $enabledFeatureFlags, communitySettings: $communitySettings, eventSettings: $eventSettings, donationDialogText: $donationDialogText, ratingSurveyUrl: $ratingSurveyUrl, themeLightColor: $themeLightColor, themeDarkColor: $themeDarkColor, onboardingSteps: $onboardingSteps, isOnboardingOverviewEnabled: $isOnboardingOverviewEnabled)';
+    return 'Community(id: $id, displayIds: $displayIds, name: $name, contactEmail: $contactEmail, creatorId: $creatorId, profileImageUrl: $profileImageUrl, bannerImageUrl: $bannerImageUrl, createdDate: $createdDate, isPublic: $isPublic, description: $description, websiteUrl: $websiteUrl, facebookUrl: $facebookUrl, linkedinUrl: $linkedinUrl, twitterUrl: $twitterUrl, blueskyUrl: $blueskyUrl, tagLine: $tagLine, enabledFeatureFlags: $enabledFeatureFlags, communitySettings: $communitySettings, eventSettings: $eventSettings, donationDialogText: $donationDialogText, ratingSurveyUrl: $ratingSurveyUrl, themeLightColor: $themeLightColor, themeDarkColor: $themeDarkColor, onboardingSteps: $onboardingSteps, isOnboardingOverviewEnabled: $isOnboardingOverviewEnabled)';
   }
 
   @override
@@ -587,7 +571,6 @@ class _$_Community extends _Community {
                 other.isPublic == isPublic) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.email, email) || other.email == email) &&
             (identical(other.websiteUrl, websiteUrl) ||
                 other.websiteUrl == websiteUrl) &&
             (identical(other.facebookUrl, facebookUrl) ||
@@ -635,7 +618,6 @@ class _$_Community extends _Community {
         createdDate,
         isPublic,
         description,
-        email,
         websiteUrl,
         facebookUrl,
         linkedinUrl,
@@ -680,7 +662,6 @@ abstract class _Community extends Community {
       final DateTime? createdDate,
       final bool? isPublic,
       final String? description,
-      final String? email,
       final String? websiteUrl,
       final String? facebookUrl,
       final String? linkedinUrl,
@@ -725,8 +706,6 @@ abstract class _Community extends Community {
   bool? get isPublic;
   @override
   String? get description;
-  @override
-  String? get email;
   @override
   String? get websiteUrl;
   @override
