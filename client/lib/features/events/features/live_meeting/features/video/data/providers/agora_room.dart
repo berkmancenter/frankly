@@ -288,14 +288,18 @@ class AgoraRoom with ChangeNotifier {
         }
         notifyListeners();
       },
+      onFirstLocalVideoFramePublished: (source, elapsed) {
+        print(
+          '[onFirstLocalVideoFramePublished] source: $source elapsed: $elapsed',
+        );
+        // Set local participant's hasReceivedVideoFrame to true to improve state sync.
+        _localParticipant?.hasReceivedVideoFrame = true;
+        notifyListeners();
+      },
       onUserEnableLocalVideo:
           (RtcConnection connection, int uid, bool enabled) {
         print(
           '[onUserEnableLocalVideo] connection: ${connection.toJson()} uid: $uid enabled: $enabled',
-        );
-        notifyListeners();
-      },
-        print(
         );
         notifyListeners();
       },

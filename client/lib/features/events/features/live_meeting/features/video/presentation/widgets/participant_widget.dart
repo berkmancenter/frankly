@@ -82,7 +82,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   }
 
   bool get didReceiveFrames {
-    if (!isRemote) return true;
     return widget.participant.hasReceivedVideoFrame;
   }
 
@@ -352,7 +351,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                 )
               else if (!didReceiveFrames)
                 HeightConstrainedText(
-                  'No video received.',
+                  'No video ${isRemote ? 'received' : 'sent from your device'}.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: context.theme.colorScheme.secondary,
