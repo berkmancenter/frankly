@@ -162,7 +162,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                   child: _buildTab(
                     context,
                     context.l10n.members,
-                    Icons.group_outlined,
+                    Icons.group,
                     mobile,
                   ),
                 ),
@@ -170,7 +170,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                   child: _buildTab(
                     context,
                     context.l10n.data,
-                    Icons.downloading_outlined,
+                    Icons.cloud_download_rounded,
                     mobile,
                   ),
                 ),
