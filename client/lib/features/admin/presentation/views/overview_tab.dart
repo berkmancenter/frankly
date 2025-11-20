@@ -86,9 +86,13 @@ class _OverviewTabState extends State<OverviewTab> {
                           showAllFields: true,
                           showChooseCustomDisplayId: true,
                           borderType: BorderType.outline,
+                          // Catch form errors from child widget
                           onFieldsHaveErrors: (hasErrors) {
-                            setState(() {
-                              _formHasErrors = hasErrors;
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (!mounted) return;
+                              setState(() {
+                                _formHasErrors = hasErrors;
+                              });
                             });
                           },
                           onCustomDisplayIdChanged: (value) =>
