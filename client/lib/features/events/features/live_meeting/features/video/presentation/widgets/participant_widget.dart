@@ -30,6 +30,8 @@ import 'package:provider/provider.dart';
 
 import '../../data/providers/agora_room.dart';
 
+const kParticipantVideoWidgetDimensions = Size(854.0, 480.0);
+
 class GlobalKeyedSubtree extends StatelessWidget {
   static final Map<String, GlobalKey> _globalKeys = {};
 
@@ -151,31 +153,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
     if (isRemote || widget.isScreenShare) return child;
 
     return child;
-  }
-
-  Widget _buildVideo() {
-    final dimensions = Size(854.0, 480.0);
-
-    var fit = BoxFit.contain;
-    // If the aspect ratio is close to 16:9 or 4:3 or somewhere in between
-    // cover the whole area. Otherwise, fit it within the bounds
-    if (dimensions.aspectRatio <= Size(17, 9).aspectRatio &&
-        dimensions.aspectRatio >= Size(3.5, 3).aspectRatio &&
-        !widget.isScreenShare) {
-      fit = BoxFit.cover;
-    }
-
-    return RepaintBoundary(
-      child: FittedBox(
-        fit: fit,
-        clipBehavior: Clip.hardEdge,
-        child: SizedBox(
-          height: dimensions.height,
-          width: dimensions.width,
-          child: _buildVideoElement(),
-        ),
-      ),
-    );
   }
 
   Widget _buildMutedOverlayEntry() {
@@ -425,7 +402,17 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
                       ),
                     if (videoEnabled)
                       Positioned.fill(
-                        child: _buildVideo(),
+                        child: RepaintBoundary(
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            clipBehavior: Clip.hardEdge,
+                            child: SizedBox(
+                              height: kParticipantVideoWidgetDimensions.height,
+                              width: kParticipantVideoWidgetDimensions.width,
+                              child: _buildVideoElement(),
+                            ),
+                          ),
+                        ),
                       ),
                     _buildOverlay(),
                   ],
