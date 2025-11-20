@@ -34,25 +34,47 @@ class _OverviewTabState extends State<OverviewTab> {
   bool _formHasErrors = false;
 
   Widget _buildSection(String label, Widget sectionContent, bool mobile) {
-    return Flex(
-      direction: mobile ? Axis.vertical : Axis.horizontal,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: mobile ? 0 : 46, vertical: 28),
-          child: HeightConstrainedText(
-            label,
-            style: context.theme.textTheme.titleLarge,
-            maxLines: 1,
+    if (mobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                label,
+                style: context.theme.textTheme.titleLarge,
+              ),
+            ),
           ),
-        ),
-        sectionContent,
-        if (!mobile) Spacer(flex: 1),
-      ],
-    );
+          sectionContent,
+        ],
+      );
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(50, 30, 0, 0),
+                child: Text(
+                  label,
+                  style: context.theme.textTheme.titleLarge,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: sectionContent,
+          ),
+        ],
+      );
+    }
   }
 
   @override
@@ -72,47 +94,42 @@ class _OverviewTabState extends State<OverviewTab> {
                 minHeight: viewportConstraints.maxHeight,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildSection(
                     context.l10n.basicInformation,
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0,
-                          vertical: 36.0,
-                        ),
-                        child: CreateCommunityTextFields(
-                          fieldsView: FieldsView.edit,
-                          showChooseCustomDisplayId: true,
-                          borderType: BorderType.outline,
-                          // Catch form errors from child widget
-                          onFieldsHaveErrors: (hasErrors) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (!mounted) return;
-                              setState(() {
-                                _formHasErrors = hasErrors;
-                              });
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0,
+                        vertical: 36.0,
+                      ),
+                      child: CreateCommunityTextFields(
+                        fieldsView: FieldsView.edit,
+                        showChooseCustomDisplayId: true,
+                        borderType: BorderType.outline,
+                        // Catch form errors from child widget
+                        onFieldsHaveErrors: (hasErrors) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (!mounted) return;
+                            setState(() {
+                              _formHasErrors = hasErrors;
                             });
-                          },
-                          onCustomDisplayIdChanged: (value) =>
-                              _displayId = value,
-                          onNameChanged: (value) => {
-                            _community = _community.copyWith(name: value),
-                          },
-                          onTaglineChanged: (value) => {
-                            _community = _community.copyWith(tagLine: value),
-                          },
-                          onAboutChanged: (value) => {
-                            _community =
-                                _community.copyWith(description: value),
-                          },
-                          onEmailChanged: (value) => {
-                            _community =
-                                _community.copyWith(contactEmail: value),
-                          },
-                          community: _community,
-                        ),
+                          });
+                        },
+                        onCustomDisplayIdChanged: (value) => _displayId = value,
+                        onNameChanged: (value) => {
+                          _community = _community.copyWith(name: value),
+                        },
+                        onTaglineChanged: (value) => {
+                          _community = _community.copyWith(tagLine: value),
+                        },
+                        onAboutChanged: (value) => {
+                          _community = _community.copyWith(description: value),
+                        },
+                        onEmailChanged: (value) => {
+                          _community = _community.copyWith(contactEmail: value),
+                        },
+                        community: _community,
                       ),
                     ),
                     mobile,
@@ -124,44 +141,34 @@ class _OverviewTabState extends State<OverviewTab> {
                   ),
                   _buildSection(
                     context.l10n.links,
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          131.0, 36.0,
-                          6.0,  36.0,
-                        ),
-                        child: CreateCommunityTextFields(
-                          fieldsView: FieldsView.links,
-                          borderType: BorderType.outline,
-                          // Catch form errors from child widget
-                          onFieldsHaveErrors: (hasErrors) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (!mounted) return;
-                              setState(() {
-                                _formHasErrors = hasErrors;
-                              });
-                            });
-                          },
-                          onWebsiteUrlChanged: (value) => {
-                            _community = _community.copyWith(websiteUrl: value),
-                          },
-                          onFacebookUrlChanged: (value) => {
-                            _community =
-                                _community.copyWith(facebookUrl: value),
-                          },
-                          onLinkedinUrlChanged: (value) => {
-                            _community =
-                                _community.copyWith(linkedinUrl: value),
-                          },
-                          onTwitterUrlChanged: (value) => {
-                            _community = _community.copyWith(twitterUrl: value),
-                          },
-                          onBlueskyUrlChanged: (value) => {
-                            _community = _community.copyWith(blueskyUrl: value),
-                          },
-                          community: _community,
-                        ),
-                      ),
+                    CreateCommunityTextFields(
+                      fieldsView: FieldsView.links,
+                      borderType: BorderType.outline,
+                      // Catch form errors from child widget
+                      onFieldsHaveErrors: (hasErrors) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (!mounted) return;
+                          setState(() {
+                            _formHasErrors = hasErrors;
+                          });
+                        });
+                      },
+                      onWebsiteUrlChanged: (value) => {
+                        _community = _community.copyWith(websiteUrl: value),
+                      },
+                      onFacebookUrlChanged: (value) => {
+                        _community = _community.copyWith(facebookUrl: value),
+                      },
+                      onLinkedinUrlChanged: (value) => {
+                        _community = _community.copyWith(linkedinUrl: value),
+                      },
+                      onTwitterUrlChanged: (value) => {
+                        _community = _community.copyWith(twitterUrl: value),
+                      },
+                      onBlueskyUrlChanged: (value) => {
+                        _community = _community.copyWith(blueskyUrl: value),
+                      },
+                      community: _community,
                     ),
                     mobile,
                   ),
@@ -172,32 +179,30 @@ class _OverviewTabState extends State<OverviewTab> {
                   ),
                   _buildSection(
                     context.l10n.brandingAndTheme,
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 18.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 15),
-                            CreateCommunityImageFields(
-                              profileImageUrl: _community.profileImageUrl,
-                              updateProfileImage: (String imageUrl) =>
-                                  _updateProfileImage(imageUrl: imageUrl),
-                              removeImage: _removeImage,
-                            ),
-                            SizedBox(height: 30),
-                            ChooseColorSection(
-                              community: _community,
-                              setDarkColor: (val) => _community =
-                                  _community.copyWith(themeDarkColor: val),
-                              setLightColor: (val) => _community =
-                                  _community.copyWith(themeLightColor: val),
-                            ),
-                            if (mobile) SizedBox(height: 90),
-                          ],
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 18.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 15),
+                          CreateCommunityImageFields(
+                            profileImageUrl: _community.profileImageUrl,
+                            updateProfileImage: (String imageUrl) =>
+                                _updateProfileImage(imageUrl: imageUrl),
+                            removeImage: _removeImage,
+                          ),
+                          SizedBox(height: 30),
+                          ChooseColorSection(
+                            community: _community,
+                            setDarkColor: (val) => _community =
+                                _community.copyWith(themeDarkColor: val),
+                            setLightColor: (val) => _community =
+                                _community.copyWith(themeLightColor: val),
+                          ),
+                          if (mobile) SizedBox(height: 90),
+                        ],
                       ),
                     ),
                     mobile,
