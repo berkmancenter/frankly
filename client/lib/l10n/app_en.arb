@@ -105,6 +105,16 @@
       "number": {}
     }
   },
+  "@enterValidSocialUrl": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
   "@enterWordCloudPrompt": {},
   "@enterCategoryNum": {
     "placeholders": {
@@ -391,12 +401,9 @@
   "enterImageTitle": "Enter Image title",
   "enterQuestionWithNumber": "Enter Question {number}",
   "enterRoomNumber": "Enter room number",
-  "enterValidBlueskyUrl": "Enter a valid Bluesky web address that includes “bsky.app”",
   "enterValidCommunityUrl": "Please enter a valid community URL",
-  "enterValidFBUrl": "Enter a valid Facebook web address that includes “facebook.com”",
-  "enterValidLinkedinUrl": "Enter a valid LinkedIn web address that includes “linkedin.com”",
   "enterValidName": "Please enter a valid name",
-  "enterValidTwitterUrl": "Enter a valid X web address that includes “x.com”",
+  "enterValidSocialUrl": "Enter a valid {platform} web address that includes “{url}”",
   "enterValidWebsiteUrl": "Enter a valid web address (e.g. “websitename.com”)",
   "enterVideoTitle": "Enter Video title",
   "enterWaitingRoomText": "Enter waiting room text (optional)",

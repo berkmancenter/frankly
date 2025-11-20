@@ -94,6 +94,16 @@
       }
     }
   },
+  "@enterValidSocialUrl": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
   "@enterWordCloudPrompt": {},
   "@introBeforeBreakouts": {
     "placeholders": {
@@ -370,13 +380,10 @@
   "enterHeadline": "輸入標題",
   "enterImageTitle": "輸入圖片標題",
   "enterQuestionWithNumber": "輸入問題 {number}",
-  "enterRoomNumber": "輸入房間號碼",  
-  "enterValidBlueskyUrl": "輸入包含“bsky.app”的有效 Bluesky 網址",
+  "enterRoomNumber": "輸入房間號碼",
   "enterValidCommunityUrl": "請輸入有效的社區 URL",
-  "enterValidFBUrl": "輸入包含“facebook.com”的有效 Facebook 網址",
-  "enterValidLinkedinUrl": "輸入包含“linkedin.com”的有效 LinkedIn 網址",
+  "enterValidSocialUrl": "請輸入包含“{url}”的有效{platform}網址",
   "enterValidName": "請輸入有效的名稱",
-  "enterValidTwitterUrl": "輸入包含“x.com”的有效 X 網址",
   "enterValidWebsiteUrl": "輸入有效的網址（例如“websitename.com”）",
   "enterWaitingRoomText": "輸入等候室文字（可選）",
   "enterWaitingRoomTextOptional": "輸入等候室文本（可選）",
