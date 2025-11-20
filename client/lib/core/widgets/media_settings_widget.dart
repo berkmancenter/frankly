@@ -58,16 +58,18 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       ..id = _viewType
       ..autoplay = true
       ..muted = true
+      // Stops preview from going fullscreen on iOS Safari
       ..setAttribute(
         'playsinline',
         'true',
-      ) // Stop preview from going fullscreen on iOS Safari
+      )
       ..setAttribute('webkit-playsinline', 'true')
       ..setAttribute('disablePictureInPicture', 'true')
       ..style.width = '100%'
       ..style.height = '100%'
       ..style.objectFit = 'cover'
-      ..style.transform = 'scaleX(-1)'; // Mirror view
+      // Mirror preview to match Agora local preview.
+      ..style.transform = 'scaleX(-1)';
 
     ui_web.platformViewRegistry.registerViewFactory(
       _viewType,
@@ -107,10 +109,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     super.dispose();
     if (!widget.shouldShowVideoPreview) return;
     _mediaService.stopPreviewMediaStream();
-    // If user doesn't save, we need to reset the video preview device
+    // If user doesn't save, we need to reset the video preview device.
+    // getUserMedia is called in updatePreview.
     await _mediaService.selectVideoDevice(
       deviceId: initialVideoDeviceId ?? '',
-      shouldUpdatePreview: false, // getUserMedia is called in updatePreview.
+      shouldUpdatePreview: false,
     );
     await updatePreview();
     _videoElement.srcObject = null;
@@ -122,8 +125,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     return AlertDialog(
       insetPadding: responsiveLayoutService.isMobile(context)
           ? EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0)
-          : null, // Default
-
+          : null,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

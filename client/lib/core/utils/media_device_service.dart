@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:client/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
 
-/// Currently only implemented for web.
 class MediaDeviceService {
   // Singleton class
   MediaDeviceService._internal();
@@ -26,72 +24,65 @@ class MediaDeviceService {
   String? selectedVideoInputId;
 
   Future<void> init() async {
-    if (kIsWeb) {
+    try {
+      // Start by requesting permissions so that devices can be listed.
+      // The ".status" call does not work on all platforms - catch the exception.
       try {
-        // Start by requesting permissions so that devices can be listed.
-        // The ".status" call does not work on all platforms - catch the exception.
-        try {
-          micPermissionStatus = await Permission.microphone.status;
-        } catch (e) {
-          micPermissionStatus = PermissionStatus.denied;
-        }
-        if (!micPermissionStatus.isGranted) {
-          micPermissionStatus = await Permission.microphone.request();
-        }
-
-        try {
-          cameraPermissionStatus = await Permission.camera.status;
-        } catch (e) {
-          cameraPermissionStatus = PermissionStatus.denied;
-        }
-        if (!cameraPermissionStatus.isGranted) {
-          cameraPermissionStatus = await Permission.camera.request();
-        }
-
-        final devices =
-            await html.window.navigator.mediaDevices?.enumerateDevices();
-        if (devices != null) {
-          audioInputs = devices
-              .whereType<html.MediaDeviceInfo>()
-              .where(
-                (d) =>
-                    d.kind == 'audioinput' &&
-                    d.label != null &&
-                    d.label!.isNotEmpty,
-              )
-              .toList();
-          videoInputs = devices
-              .whereType<html.MediaDeviceInfo>()
-              .where(
-                (d) =>
-                    d.kind == 'videoinput' &&
-                    d.label != null &&
-                    d.label!.isNotEmpty,
-              )
-              .toList();
-        }
-
-        // First, check for defaults from shared preferences.
-        selectedAudioInputId =
-            sharedPreferencesService.getDefaultMicrophoneId();
-        selectedVideoInputId = sharedPreferencesService.getDefaultCameraId();
-
-        // If no defaults, use the first available device.
-        // Don't save this as a default preference as it wasn't explicitly chosen.
-        if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
-          selectedAudioInputId = audioInputs.first.deviceId;
-        }
-
-        if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
-          selectedVideoInputId = videoInputs.first.deviceId;
-        }
+        micPermissionStatus = await Permission.microphone.status;
       } catch (e) {
-        loggingService.log('Error listing available devices: $e');
-        audioInputs = [];
-        videoInputs = [];
+        micPermissionStatus = PermissionStatus.denied;
       }
-    } else {
-      // Only web is supported for now.
+      if (!micPermissionStatus.isGranted) {
+        micPermissionStatus = await Permission.microphone.request();
+      }
+
+      try {
+        cameraPermissionStatus = await Permission.camera.status;
+      } catch (e) {
+        cameraPermissionStatus = PermissionStatus.denied;
+      }
+      if (!cameraPermissionStatus.isGranted) {
+        cameraPermissionStatus = await Permission.camera.request();
+      }
+
+      final devices =
+          await html.window.navigator.mediaDevices?.enumerateDevices();
+      if (devices != null) {
+        audioInputs = devices
+            .whereType<html.MediaDeviceInfo>()
+            .where(
+              (d) =>
+                  d.kind == 'audioinput' &&
+                  d.label != null &&
+                  d.label!.isNotEmpty,
+            )
+            .toList();
+        videoInputs = devices
+            .whereType<html.MediaDeviceInfo>()
+            .where(
+              (d) =>
+                  d.kind == 'videoinput' &&
+                  d.label != null &&
+                  d.label!.isNotEmpty,
+            )
+            .toList();
+      }
+
+      // First, check for defaults from shared preferences.
+      selectedAudioInputId = sharedPreferencesService.getDefaultMicrophoneId();
+      selectedVideoInputId = sharedPreferencesService.getDefaultCameraId();
+
+      // If no defaults, use the first available device.
+      // Don't save this as a default preference as it wasn't explicitly chosen.
+      if (selectedAudioInputId == null && audioInputs.isNotEmpty) {
+        selectedAudioInputId = audioInputs.first.deviceId;
+      }
+
+      if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
+        selectedVideoInputId = videoInputs.first.deviceId;
+      }
+    } catch (e) {
+      loggingService.log('Error listing available devices: $e');
       audioInputs = [];
       videoInputs = [];
     }
@@ -122,88 +113,78 @@ class MediaDeviceService {
 
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
-    if (kIsWeb) {
-      Map<String, dynamic>? audioConstraint;
+    Map<String, dynamic>? audioConstraint;
 
-      if (!micPermissionStatus.isGranted) {
-        // Try requesting permission again - fixes issue where one denial
-        // is saved for the rest of the session.
-        try {
-          micPermissionStatus = await Permission.microphone.request();
-        } catch (e) {
-          audioConstraint = null;
-        }
-      }
-
-      if (!micPermissionStatus.isGranted) {
-        audioConstraint = null;
-      } else {
-        // If a specific audio input was selected, pass it into 'exact'.
-        audioConstraint =
-            selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
-                ? {
-                    'deviceId': {'exact': selectedAudioInputId},
-                  }
-                : null;
-      }
-
-      Map<String, dynamic>? videoConstraint;
-
-      if (!cameraPermissionStatus.isGranted) {
-        try {
-          cameraPermissionStatus = await Permission.camera.request();
-        } catch (e) {
-          videoConstraint = null;
-        }
-      }
-
-      if (!cameraPermissionStatus.isGranted) {
-        videoConstraint = null;
-      } else {
-        videoConstraint =
-            selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
-                ? {
-                    'deviceId': {'exact': selectedVideoInputId},
-                  }
-                : null;
-      }
-
-      final Map<String, dynamic> constraints = {
-        if (audioConstraint != null) 'audio': audioConstraint,
-        if (videoConstraint != null) 'video': videoConstraint,
-      };
-
+    if (!micPermissionStatus.isGranted) {
+      // Try requesting permission again - fixes issue where one denial
+      // is saved for the rest of the session.
       try {
-        final newMediaStream =
-            await html.window.navigator.mediaDevices?.getUserMedia(constraints);
-        _previewMediaStream = newMediaStream;
+        micPermissionStatus = await Permission.microphone.request();
       } catch (e) {
-        loggingService.log('Error getting user media: $e');
-        _previewMediaStream = null;
-        // Clear stored device preferences if getUserMedia fails.
-        if (selectedAudioInputId != null) {
-          await sharedPreferencesService.clearDefaultMicrophoneId();
-        }
-        if (selectedVideoInputId != null) {
-          await sharedPreferencesService.clearDefaultCameraId();
-        }
+        audioConstraint = null;
       }
+    }
+
+    if (!micPermissionStatus.isGranted) {
+      audioConstraint = null;
     } else {
-      throw UnimplementedError(
-        'getUserMedia error: Only web is supported.',
-      );
+      // If a specific audio input was selected, pass it into 'exact'.
+      audioConstraint =
+          selectedAudioInputId != null && selectedAudioInputId!.isNotEmpty
+              ? {
+                  'deviceId': {'exact': selectedAudioInputId},
+                }
+              : null;
+    }
+
+    Map<String, dynamic>? videoConstraint;
+
+    if (!cameraPermissionStatus.isGranted) {
+      try {
+        cameraPermissionStatus = await Permission.camera.request();
+      } catch (e) {
+        videoConstraint = null;
+      }
+    }
+
+    if (!cameraPermissionStatus.isGranted) {
+      videoConstraint = null;
+    } else {
+      videoConstraint =
+          selectedVideoInputId != null && selectedVideoInputId!.isNotEmpty
+              ? {
+                  'deviceId': {'exact': selectedVideoInputId},
+                }
+              : null;
+    }
+
+    final Map<String, dynamic> constraints = {
+      if (audioConstraint != null) 'audio': audioConstraint,
+      if (videoConstraint != null) 'video': videoConstraint,
+    };
+
+    try {
+      final newMediaStream =
+          await html.window.navigator.mediaDevices?.getUserMedia(constraints);
+      _previewMediaStream = newMediaStream;
+    } catch (e) {
+      loggingService.log('Error getting user media: $e');
+      _previewMediaStream = null;
+      // Clear stored device preferences if getUserMedia fails.
+      if (selectedAudioInputId != null) {
+        await sharedPreferencesService.clearDefaultMicrophoneId();
+      }
+      if (selectedVideoInputId != null) {
+        await sharedPreferencesService.clearDefaultCameraId();
+      }
     }
   }
 
   void stopPreviewMediaStream() {
-    if (kIsWeb) {
-      if (_previewMediaStream == null) return;
-      _previewMediaStream?.getTracks().forEach((track) {
-        track.stop();
-      });
-      _previewMediaStream = null;
-    } else {
-      throw UnimplementedError('stopMediaStream error: Only web is supported.');
-    }
+    if (_previewMediaStream == null) return;
+    _previewMediaStream?.getTracks().forEach((track) {
+      track.stop();
+    });
+    _previewMediaStream = null;
   }
 }
