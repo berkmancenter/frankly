@@ -279,7 +279,13 @@ class AgoraRoom with ChangeNotifier {
         print(
           '[onRemoteVideoStateChanged] connection: ${connection.toJson()} uid: $remoteUid state: $state',
         );
-
+        if (state == RemoteVideoState.remoteVideoStateDecoding ||
+            state == RemoteVideoState.remoteVideoStateStarting) {
+          _remoteParticipants
+              .where((p) => p.agoraUid == remoteUid)
+              .firstOrNull
+              ?.hasReceivedVideoFrame = true;
+        }
         notifyListeners();
       },
       onUserEnableLocalVideo:
