@@ -5,10 +5,16 @@ import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/services.dart';
 
+enum FieldsView {
+  create,
+  edit,
+  links,
+}
+
 class CreateCommunityTextFields extends StatefulWidget {
   final bool showChooseCustomDisplayId;
-  final void Function(String) onNameChanged;
-  final void Function(String) onCustomDisplayIdChanged;
+  final void Function(String)? onNameChanged;
+  final void Function(String)? onCustomDisplayIdChanged;
   final void Function(bool)? onFieldsHaveErrors;
   final void Function(String)? onTaglineChanged;
   final void Function(String)? onAboutChanged;
@@ -23,14 +29,14 @@ class CreateCommunityTextFields extends StatefulWidget {
   final FocusNode? taglineFocus;
   final Community community;
   final bool compact;
-  final bool showAllFields;
+  final FieldsView fieldsView;
   final bool autoGenerateUrl;
   final BorderType borderType;
   const CreateCommunityTextFields({
     this.showChooseCustomDisplayId = false,
     Key? key,
-    required this.onNameChanged,
-    required this.onCustomDisplayIdChanged,
+    this.onNameChanged,
+    this.onCustomDisplayIdChanged,
     this.onFieldsHaveErrors,
     this.onTaglineChanged,
     this.onAboutChanged,
@@ -45,7 +51,7 @@ class CreateCommunityTextFields extends StatefulWidget {
     this.onBlueskyUrlChanged,
     required this.community,
     this.compact = false,
-    this.showAllFields = false,
+    this.fieldsView = FieldsView.create,
     this.autoGenerateUrl = true,
     this.borderType = BorderType.underline,
   }) : super(key: key);
@@ -79,8 +85,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         widget.onFieldsHaveErrors?.call(true);
         return context.l10n.pleaseEnterValidUrl;
       }
-    }
-    else if (value == null || value.isEmpty) {
+    } else if (value == null || value.isEmpty) {
       widget.onFieldsHaveErrors?.call(false);
     }
     widget.onFieldsHaveErrors?.call(false);
@@ -107,11 +112,11 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           label: context.l10n.communityName,
           borderType: widget.borderType,
           onChanged: (String val) => {
-            widget.onNameChanged.call(val),
+            widget.onNameChanged?.call(val),
             if (widget.autoGenerateUrl)
               {
                 widget.onCustomDisplayIdChanged
-                    .call(_formatDisplayIdFromName(val)),
+                    ?.call(_formatDisplayIdFromName(val)),
                 setState(() {
                   // Update the displayId when the name changes
                   _displayIdController.text = _formatDisplayIdFromName(val);
@@ -119,8 +124,9 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
               },
           },
           focus: widget.nameFocus,
-          helperText:
-              !widget.showAllFields ? context.l10n.youCanChangeThisLater : null,
+          helperText: widget.fieldsView != FieldsView.create
+              ? context.l10n.youCanChangeThisLater
+              : null,
           // Allow only alphanumeric characters, spaces
           formatterRegex: r'[\s?\w?]',
           validator: (value) {
@@ -150,124 +156,126 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             if (value == null || value.isEmpty) {
               return context.l10n.enterValidCommunityUrl;
             }
-              return null;
+            return null;
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
-        SizedBox(
-          height: 15,
-        ),
-        if (widget.showAllFields)
-          Column(
-            children: [
-              _buildCreateCommunityTextField(
-                label: context.l10n.communityTagline,
-                hint: context.l10n.taglineHint,
-                borderType: widget.borderType,
-                initialValue: widget.community.tagLine,
-                onChanged: widget.onTaglineChanged,
-                maxLength: taglineMaxCharactersLength,
-                counterText:
-                    '${widget.community.tagLine?.length}/$taglineMaxCharactersLength',
-                focus: widget.taglineFocus,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              _buildCreateCommunityTextField(
-                hint: context.l10n.communityDescriptionHint,
-                label: context.l10n.communityDescription,
-                borderType: widget.borderType,
-                initialValue: widget.community.description,
-                onChanged: widget.onAboutChanged,
-                focus: widget.aboutFocus,
-                isOptional: true,
-                maxLines: null,
-                minLines: 3,
-                keyboardType: TextInputType.multiline,
-              ),
-              SizedBox(height: 15),
-              _buildCreateCommunityTextField(
-                label: 'Website URL',
-                hint: 'https://yourwebsite.com',
-                borderType: widget.borderType,
-                initialValue: widget.community.websiteUrl,
-                onChanged: widget.onWebsiteUrlChanged,
-                keyboardType: TextInputType.url,
-                isOptional: true,
-                validator: (value) => validateUrl(value ?? ''),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              SizedBox(height: 15),
-              _buildCreateCommunityTextField(
-                label: 'Email',
-                hint: 'contact@yourdomain.com',
-                borderType: widget.borderType,
-                initialValue: widget.community.contactEmail,
-                onChanged: widget.onEmailChanged,
-                keyboardType: TextInputType.emailAddress,
-                isOptional: true,
-                validator: (value) {
-                  if (value != null &&
-                      value.isNotEmpty && 
-                      !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                          .hasMatch(value)) {
-                    return context.l10n.pleaseEnterValidEmail;
-                  }
-                  return null;
-                },
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              SizedBox(height: 15),
-              _buildCreateCommunityTextField(
-                label: 'Facebook',
-                hint: 'facebook.com/yourpage',
-                borderType: widget.borderType,
-                initialValue: widget.community.facebookUrl,
-                onChanged: widget.onFacebookUrlChanged,
-                keyboardType: TextInputType.url,
-                isOptional: true,
-                validator: (value) => validateUrl(value ?? ''),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              SizedBox(height: 15),
-              _buildCreateCommunityTextField(
-                label: 'LinkedIn',
-                hint: 'linkedin.com/in/yourprofile',
-                borderType: widget.borderType,
-                initialValue: widget.community.linkedinUrl,
-                onChanged: widget.onLinkedinUrlChanged,
-                keyboardType: TextInputType.url,
-                isOptional: true,
-                validator: (value) => validateUrl(value ?? ''),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              SizedBox(height: 15),
-              _buildCreateCommunityTextField(
-                label: 'Twitter',
-                hint: 'twitter.com/yourhandle',
-                borderType: widget.borderType,
-                initialValue: widget.community.twitterUrl,
-                onChanged: widget.onTwitterUrlChanged,
-                keyboardType: TextInputType.url,
-                isOptional: true,
-                validator: (value) => validateUrl(value ?? ''),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-              SizedBox(height: 15),
-              _buildCreateCommunityTextField(
-                label: 'Bluesky',
-                hint: 'bsky.app/profile/yourhandle',
-                borderType: widget.borderType,
-                initialValue: widget.community.blueskyUrl,
-                onChanged: widget.onBlueskyUrlChanged,
-                keyboardType: TextInputType.url,
-                isOptional: true, 
-                validator: (value) => validateUrl(value ?? ''),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-            ],
+        if (widget.fieldsView == FieldsView.create ||
+            widget.fieldsView == FieldsView.edit) ...[
+          SizedBox(
+            height: 15,
           ),
+          _buildCreateCommunityTextField(
+            label: context.l10n.communityTagline,
+            hint: context.l10n.taglineHint,
+            borderType: widget.borderType,
+            initialValue: widget.community.tagLine,
+            onChanged: widget.onTaglineChanged,
+            maxLength: taglineMaxCharactersLength,
+            counterText:
+                '${widget.community.tagLine?.length}/$taglineMaxCharactersLength',
+            focus: widget.taglineFocus,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          _buildCreateCommunityTextField(
+            hint: context.l10n.communityDescriptionHint,
+            label: context.l10n.communityDescription,
+            borderType: widget.borderType,
+            initialValue: widget.community.description,
+            onChanged: widget.onAboutChanged,
+            focus: widget.aboutFocus,
+            isOptional: true,
+            maxLines: null,
+            minLines: 3,
+            keyboardType: TextInputType.multiline,
+          ),
+        ],
+        if (widget.fieldsView == FieldsView.edit) ...[
+          SizedBox(height: 35),
+          _buildCreateCommunityTextField(
+            label: 'Email',
+            hint: 'contact@yourdomain.com',
+            borderType: widget.borderType,
+            initialValue: widget.community.contactEmail,
+            onChanged: widget.onEmailChanged,
+            keyboardType: TextInputType.emailAddress,
+            isOptional: true,
+            validator: (value) {
+              if (value != null &&
+                  value.isNotEmpty &&
+                  !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      .hasMatch(value)) {
+                return context.l10n.pleaseEnterValidEmail;
+              }
+              return null;
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+        ],
+        if (widget.fieldsView == FieldsView.links) ...[
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'Website URL',
+            hint: 'https://yourwebsite.com',
+            borderType: widget.borderType,
+            initialValue: widget.community.websiteUrl,
+            onChanged: widget.onWebsiteUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) => validateUrl(value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'Facebook',
+            hint: 'facebook.com/yourpage',
+            borderType: widget.borderType,
+            initialValue: widget.community.facebookUrl,
+            onChanged: widget.onFacebookUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) => validateUrl(value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'LinkedIn',
+            hint: 'linkedin.com/in/yourprofile',
+            borderType: widget.borderType,
+            initialValue: widget.community.linkedinUrl,
+            onChanged: widget.onLinkedinUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) => validateUrl(value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'Twitter',
+            hint: 'twitter.com/yourhandle',
+            borderType: widget.borderType,
+            initialValue: widget.community.twitterUrl,
+            onChanged: widget.onTwitterUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) => validateUrl(value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'Bluesky',
+            hint: 'bsky.app/profile/yourhandle',
+            borderType: widget.borderType,
+            initialValue: widget.community.blueskyUrl,
+            onChanged: widget.onBlueskyUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) => validateUrl(value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+        ],
       ],
     );
   }
