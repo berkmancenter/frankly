@@ -63,10 +63,10 @@ class ParticipantWidget extends StatefulWidget {
   }) : super(key: globalKey);
 
   @override
-  _ParticipantWidgetState createState() => _ParticipantWidgetState();
+  ParticipantWidgetState createState() => ParticipantWidgetState();
 }
 
-class _ParticipantWidgetState extends State<ParticipantWidget> {
+class ParticipantWidgetState extends State<ParticipantWidget> {
   Timer? _startedTimer;
   Timer? _showParticipantTimer;
 
