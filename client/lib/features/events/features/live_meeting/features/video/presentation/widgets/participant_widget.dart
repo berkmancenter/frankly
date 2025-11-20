@@ -287,71 +287,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
     });
   }
 
-  Widget _buildVideoDisabled() {
-    final isConnecting =
-        _isNewlyConnected || (_startedTimer?.isActive ?? false);
-    final isMobile = responsiveLayoutService.isMobile(context);
-
-    return Container(
-      color: context.theme.colorScheme.surfaceContainerHigh,
-      padding: const EdgeInsets.all(8),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: isMobile ? 16 : 30),
-          Flexible(
-            child: Container(
-              constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-              child: UserProfileChip(
-                userId: widget.participant.identity,
-                showName: false,
-                enableOnTap: false,
-                imageHeight: 200,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
-          if (!isMobile) SizedBox(height: 10),
-          if (isConnecting)
-            HeightConstrainedText(
-              'Connecting...',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
-                fontSize: isMobile ? 12 : 16,
-              ),
-            )
-          else if (!didReceiveFrames)
-            HeightConstrainedText(
-              'No video ${isRemote ? 'received' : 'sent from your device'}.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: context.theme.colorScheme.secondary,
-                fontSize: isMobile ? 12 : 16,
-              ),
-            )
-          else
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                HeightConstrainedText(
-                  'Video Off',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: isMobile ? 12 : 16,
-                  ),
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
@@ -394,7 +329,13 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
                     Container(),
                     if (!videoEnabled || !didReceiveFrames)
                       Positioned.fill(
-                        child: _buildVideoDisabled(),
+                        child: _DisabledVideoWidget(
+                          participant: widget.participant,
+                          isNewlyConnected: _isNewlyConnected,
+                          didReceiveFrames: didReceiveFrames,
+                          isRemote: isRemote,
+                          startedTimer: _startedTimer,
+                        ),
                       ),
                     if (videoEnabled)
                       Positioned.fill(
@@ -417,6 +358,88 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DisabledVideoWidget extends StatelessWidget {
+  const _DisabledVideoWidget({
+    super.key,
+    required this.participant,
+    required this.isNewlyConnected,
+    required this.didReceiveFrames,
+    required this.isRemote,
+    required this.startedTimer,
+  });
+
+  final AgoraParticipant participant;
+  final bool isNewlyConnected;
+  final bool didReceiveFrames;
+  final bool isRemote;
+  final Timer? startedTimer;
+
+  @override
+  Widget build(BuildContext context) {
+    final isConnecting = isNewlyConnected || (startedTimer?.isActive ?? false);
+    final isMobile = responsiveLayoutService.isMobile(context);
+
+    return Container(
+      color: context.theme.colorScheme.surfaceContainerHigh,
+      padding: const EdgeInsets.all(8),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: isMobile ? 16 : 30),
+          Flexible(
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+              child: UserProfileChip(
+                userId: participant.identity,
+                showName: false,
+                enableOnTap: false,
+                imageHeight: 200,
+                alignment: Alignment.center,
+              ),
+            ),
+          ),
+          if (!isMobile) SizedBox(height: 10),
+          if (isConnecting)
+            HeightConstrainedText(
+              'Connecting...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: isMobile ? 12 : 16,
+              ),
+            )
+          else if (!didReceiveFrames)
+            HeightConstrainedText(
+              'No video ${isRemote ? 'received' : 'sent from your device'}.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: context.theme.colorScheme.secondary,
+                fontSize: isMobile ? 12 : 16,
+              ),
+            )
+          else
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HeightConstrainedText(
+                  'Video Off',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: isMobile ? 12 : 16,
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }
