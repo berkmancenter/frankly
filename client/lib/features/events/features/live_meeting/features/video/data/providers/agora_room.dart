@@ -375,10 +375,10 @@ class AgoraRoom with ChangeNotifier {
   @override
   dispose() {
     engine.unregisterEventHandler(_rtcEngineEventHandler);
-    engine.leaveChannel();
     engine.stopPreview();
     engine.enableLocalVideo(false);
     engine.enableLocalAudio(false);
+    engine.leaveChannel();
     engine.release();
 
     super.dispose();
