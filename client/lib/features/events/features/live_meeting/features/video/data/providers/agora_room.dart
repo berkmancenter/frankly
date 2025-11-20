@@ -295,14 +295,8 @@ class AgoraRoom with ChangeNotifier {
         );
         notifyListeners();
       },
-      onFirstRemoteVideoFrame: (connection, remoteUid, width, height, elapsed) {
         print(
-          '[onFirstRemoteVideoFrame] connection: ${connection.toJson()} remoteUid: $remoteUid width: $width height: $height elapsed: $elapsed',
         );
-        _remoteParticipants
-            .where((p) => p.agoraUid == remoteUid)
-            .firstOrNull
-            ?.hasReceivedVideoFrame = true;
         notifyListeners();
       },
       onLocalAudioStateChanged: (
