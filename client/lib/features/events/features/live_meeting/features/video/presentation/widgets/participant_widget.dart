@@ -131,7 +131,7 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
         controller: VideoViewController.remote(
           rtcEngine: conferenceRoom.room!.engine,
           canvas: VideoCanvas(uid: widget.participant.agoraUid),
-          connection: RtcConnection(channelId: 'test-channel'),
+          connection: RtcConnection(channelId: conferenceRoom.roomName),
         ),
       );
     } else {
