@@ -294,64 +294,60 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
 
     return Container(
       color: context.theme.colorScheme.surfaceContainerHigh,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.center,
-        child: IntrinsicHeight(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: isMobile ? 16 : 30),
-              Flexible(
-                child: Container(
-                  constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-                  child: UserProfileChip(
-                    userId: widget.participant.identity,
-                    showName: false,
-                    enableOnTap: false,
-                    imageHeight: 200,
-                    alignment: Alignment.center,
-                  ),
-                ),
+      padding: const EdgeInsets.all(8),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: isMobile ? 16 : 30),
+          Flexible(
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+              child: UserProfileChip(
+                userId: widget.participant.identity,
+                showName: false,
+                enableOnTap: false,
+                imageHeight: 200,
+                alignment: Alignment.center,
               ),
-              if (!isMobile) SizedBox(height: 10),
-              if (isConnecting)
+            ),
+          ),
+          if (!isMobile) SizedBox(height: 10),
+          if (isConnecting)
+            HeightConstrainedText(
+              'Connecting...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: isMobile ? 12 : 16,
+              ),
+            )
+          else if (!didReceiveFrames)
+            HeightConstrainedText(
+              'No video ${isRemote ? 'received' : 'sent from your device'}.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: context.theme.colorScheme.secondary,
+                fontSize: isMobile ? 12 : 16,
+              ),
+            )
+          else
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 HeightConstrainedText(
-                  'Connecting...',
+                  'Video Off',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: isMobile ? 12 : 16,
                   ),
-                )
-              else if (!didReceiveFrames)
-                HeightConstrainedText(
-                  'No video ${isRemote ? 'received' : 'sent from your device'}.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: context.theme.colorScheme.secondary,
-                    fontSize: isMobile ? 12 : 16,
-                  ),
-                )
-              else
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    HeightConstrainedText(
-                      'Video Off',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: isMobile ? 12 : 16,
-                      ),
-                    ),
-                  ],
                 ),
-            ],
-          ),
-        ),
+              ],
+            ),
+        ],
       ),
     );
   }
