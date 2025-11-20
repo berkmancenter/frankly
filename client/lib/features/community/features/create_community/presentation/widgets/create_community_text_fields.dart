@@ -207,8 +207,10 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                   value.isNotEmpty &&
                   !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
+      widget.onFieldsHaveErrors?.call(true);
                 return context.l10n.pleaseEnterValidEmail;
               }
+              widget.onFieldsHaveErrors?.call(false);
               return null;
             },
             autovalidateMode: AutovalidateMode.onUserInteraction,

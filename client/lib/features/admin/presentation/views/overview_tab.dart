@@ -86,6 +86,15 @@ class _OverviewTabState extends State<OverviewTab> {
                           fieldsView: FieldsView.edit,
                           showChooseCustomDisplayId: true,
                           borderType: BorderType.outline,
+                          // Catch form errors from child widget
+                          onFieldsHaveErrors: (hasErrors) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (!mounted) return;
+                              setState(() {
+                                _formHasErrors = hasErrors;
+                              });
+                            });
+                          },
                           onCustomDisplayIdChanged: (value) =>
                               _displayId = value,
                           onNameChanged: (value) => {
@@ -117,9 +126,9 @@ class _OverviewTabState extends State<OverviewTab> {
                     context.l10n.links,
                     Flexible(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0,
-                          vertical: 36.0,
+                        padding: const EdgeInsets.fromLTRB(
+                          131.0, 36.0,
+                          6.0,  36.0,
                         ),
                         child: CreateCommunityTextFields(
                           fieldsView: FieldsView.links,
