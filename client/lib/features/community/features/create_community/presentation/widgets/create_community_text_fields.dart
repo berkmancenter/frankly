@@ -78,11 +78,28 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         TextEditingController(text: widget.community.displayId);
   }
 
-  String? validateUrl(String? value) {
+  String? validateUrl(
+    String platform,
+    String? urlPart,
+    String? value,
+  ) {
     if (value != null && value.isNotEmpty) {
       final uri = Uri.tryParse(value);
+
       if (uri == null || !uri.hasAbsolutePath) {
         widget.onFieldsHaveErrors?.call(true);
+        // Invalid URL
+        if (urlPart == null) {
+          return context.l10n.enterValidWebsiteUrl;
+        }
+        // If urlPart is provided, check if it's contained in the URL
+        if (urlPart.isNotEmpty) {
+          if (!uri!.host.contains(urlPart)) {
+            widget.onFieldsHaveErrors?.call(true);
+            return context.l10n.enterValidSocialUrl(platform, urlPart);
+          }
+        }
+        // Fallback error message
         return context.l10n.pleaseEnterValidUrl;
       }
     } else if (value == null || value.isEmpty) {
@@ -106,60 +123,62 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildCreateCommunityTextField(
-          controller: _nameController,
-          maxLength: titleMaxCharactersLength,
-          label: context.l10n.communityName,
-          borderType: widget.borderType,
-          onChanged: (String val) => {
-            widget.onNameChanged?.call(val),
-            if (widget.autoGenerateUrl)
-              {
-                widget.onCustomDisplayIdChanged
-                    ?.call(_formatDisplayIdFromName(val)),
-                setState(() {
-                  // Update the displayId when the name changes
-                  _displayIdController.text = _formatDisplayIdFromName(val);
-                }),
-              },
-          },
-          focus: widget.nameFocus,
-          helperText: widget.fieldsView != FieldsView.create
-              ? context.l10n.youCanChangeThisLater
-              : null,
-          // Allow only alphanumeric characters, spaces
-          formatterRegex: r'[\s?\w?]',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return context.l10n.enterValidName;
-            }
-            return null;
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        _buildCreateCommunityTextField(
-          controller: _displayIdController,
-          maxLength: customIdMaxCharactersLength,
-          label: context.l10n.communityUrl,
-          borderType: widget.borderType,
-          initialValue: _nameController.text,
-          onChanged: widget.onCustomDisplayIdChanged,
-          helperText: _displayIdController.text.isNotEmpty
-              ? '${Environment.appUrl}/space/${_displayIdController.text}'
-              : null,
-          // Allow only numbers, lowercase letters, and dashes
-          formatterRegex: '[0-9a-z-+]',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return context.l10n.enterValidCommunityUrl;
-            }
-            return null;
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-        ),
+        if (widget.fieldsView != FieldsView.links) ...[
+          _buildCreateCommunityTextField(
+            controller: _nameController,
+            maxLength: titleMaxCharactersLength,
+            label: context.l10n.communityName,
+            borderType: widget.borderType,
+            onChanged: (String val) => {
+              widget.onNameChanged?.call(val),
+              if (widget.autoGenerateUrl)
+                {
+                  widget.onCustomDisplayIdChanged
+                      ?.call(_formatDisplayIdFromName(val)),
+                  setState(() {
+                    // Update the displayId when the name changes
+                    _displayIdController.text = _formatDisplayIdFromName(val);
+                  }),
+                },
+            },
+            focus: widget.nameFocus,
+            helperText: widget.fieldsView != FieldsView.create
+                ? context.l10n.youCanChangeThisLater
+                : null,
+            // Allow only alphanumeric characters, spaces
+            formatterRegex: r'[\s?\w?]',
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.enterValidName;
+              }
+              return null;
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          _buildCreateCommunityTextField(
+            controller: _displayIdController,
+            maxLength: customIdMaxCharactersLength,
+            label: context.l10n.communityUrl,
+            borderType: widget.borderType,
+            initialValue: _nameController.text,
+            onChanged: widget.onCustomDisplayIdChanged,
+            helperText: _displayIdController.text.isNotEmpty
+                ? '${Environment.appUrl}/space/${_displayIdController.text}'
+                : null,
+            // Allow only numbers, lowercase letters, and dashes
+            formatterRegex: '[0-9a-z-+]',
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.enterValidCommunityUrl;
+              }
+              return null;
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+        ],
         if (widget.fieldsView == FieldsView.create ||
             widget.fieldsView == FieldsView.edit) ...[
           SizedBox(
@@ -207,7 +226,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                   value.isNotEmpty &&
                   !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
-      widget.onFieldsHaveErrors?.call(true);
+                widget.onFieldsHaveErrors?.call(true);
                 return context.l10n.pleaseEnterValidEmail;
               }
               widget.onFieldsHaveErrors?.call(false);
@@ -217,7 +236,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
         ],
         if (widget.fieldsView == FieldsView.links) ...[
-          SizedBox(height: 15),
+          SizedBox(height: 35),
           _buildCreateCommunityTextField(
             label: 'Website URL',
             hint: 'https://yourwebsite.com',
@@ -226,43 +245,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             onChanged: widget.onWebsiteUrlChanged,
             keyboardType: TextInputType.url,
             isOptional: true,
-            validator: (value) => validateUrl(value ?? ''),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-          ),
-          SizedBox(height: 15),
-          _buildCreateCommunityTextField(
-            label: 'Facebook',
-            hint: 'facebook.com/yourpage',
-            borderType: widget.borderType,
-            initialValue: widget.community.facebookUrl,
-            onChanged: widget.onFacebookUrlChanged,
-            keyboardType: TextInputType.url,
-            isOptional: true,
-            validator: (value) => validateUrl(value ?? ''),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-          ),
-          SizedBox(height: 15),
-          _buildCreateCommunityTextField(
-            label: 'LinkedIn',
-            hint: 'linkedin.com/in/yourprofile',
-            borderType: widget.borderType,
-            initialValue: widget.community.linkedinUrl,
-            onChanged: widget.onLinkedinUrlChanged,
-            keyboardType: TextInputType.url,
-            isOptional: true,
-            validator: (value) => validateUrl(value ?? ''),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-          ),
-          SizedBox(height: 15),
-          _buildCreateCommunityTextField(
-            label: 'Twitter',
-            hint: 'twitter.com/yourhandle',
-            borderType: widget.borderType,
-            initialValue: widget.community.twitterUrl,
-            onChanged: widget.onTwitterUrlChanged,
-            keyboardType: TextInputType.url,
-            isOptional: true,
-            validator: (value) => validateUrl(value ?? ''),
+            validator: (value) => validateUrl('Website', null, value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           SizedBox(height: 15),
@@ -274,8 +257,50 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             onChanged: widget.onBlueskyUrlChanged,
             keyboardType: TextInputType.url,
             isOptional: true,
-            validator: (value) => validateUrl(value ?? ''),
+            validator: (value) =>
+                validateUrl('Bluesky', 'bsky.app', value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'Facebook',
+            hint: 'facebook.com/yourpage',
+            borderType: widget.borderType,
+            initialValue: widget.community.facebookUrl,
+            onChanged: widget.onFacebookUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) =>
+                validateUrl('Facebook', 'facebook.com', value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'LinkedIn',
+            hint: 'linkedin.com/in/yourprofile',
+            borderType: widget.borderType,
+            initialValue: widget.community.linkedinUrl,
+            onChanged: widget.onLinkedinUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) =>
+                validateUrl('LinkedIn', 'linkedin.com', value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 15),
+          _buildCreateCommunityTextField(
+            label: 'X',
+            hint: 'x.com/yourhandle',
+            borderType: widget.borderType,
+            initialValue: widget.community.twitterUrl,
+            onChanged: widget.onTwitterUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) => validateUrl('X', 'x.com', value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(
+            height: 35,
           ),
         ],
       ],
