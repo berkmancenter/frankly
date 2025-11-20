@@ -83,18 +83,9 @@ class _OverviewTabState extends State<OverviewTab> {
                           vertical: 36.0,
                         ),
                         child: CreateCommunityTextFields(
-                          showAllFields: true,
+                          fieldsView: FieldsView.edit,
                           showChooseCustomDisplayId: true,
                           borderType: BorderType.outline,
-                          // Catch form errors from child widget
-                          onFieldsHaveErrors: (hasErrors) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (!mounted) return;
-                              setState(() {
-                                _formHasErrors = hasErrors;
-                              });
-                            });
-                          },
                           onCustomDisplayIdChanged: (value) =>
                               _displayId = value,
                           onNameChanged: (value) => {
@@ -107,12 +98,43 @@ class _OverviewTabState extends State<OverviewTab> {
                             _community =
                                 _community.copyWith(description: value),
                           },
-                          onWebsiteUrlChanged: (value) => {
-                            _community = _community.copyWith(websiteUrl: value),
-                          },
                           onEmailChanged: (value) => {
                             _community =
                                 _community.copyWith(contactEmail: value),
+                          },
+                          community: _community,
+                        ),
+                      ),
+                    ),
+                    mobile,
+                  ),
+                  Divider(
+                    color: context.theme.colorScheme.onPrimaryContainer
+                        .withOpacity(0.5),
+                    height: 1,
+                  ),
+                  _buildSection(
+                    context.l10n.links,
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6.0,
+                          vertical: 36.0,
+                        ),
+                        child: CreateCommunityTextFields(
+                          fieldsView: FieldsView.links,
+                          borderType: BorderType.outline,
+                          // Catch form errors from child widget
+                          onFieldsHaveErrors: (hasErrors) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (!mounted) return;
+                              setState(() {
+                                _formHasErrors = hasErrors;
+                              });
+                            });
+                          },
+                          onWebsiteUrlChanged: (value) => {
+                            _community = _community.copyWith(websiteUrl: value),
                           },
                           onFacebookUrlChanged: (value) => {
                             _community =
