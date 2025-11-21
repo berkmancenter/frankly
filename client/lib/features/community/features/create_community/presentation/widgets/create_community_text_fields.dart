@@ -139,7 +139,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 },
             },
             focus: widget.nameFocus,
-            helperText: widget.fieldsView != FieldsView.create
+            helperText: widget.fieldsView == FieldsView.create
                 ? context.l10n.youCanChangeThisLater
                 : null,
             // Allow only alphanumeric characters, spaces
@@ -176,8 +176,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
         ],
-        if (widget.fieldsView == FieldsView.create ||
-            widget.fieldsView == FieldsView.edit) ...[
+        if (widget.fieldsView == FieldsView.edit) ...[
           SizedBox(
             height: 15,
           ),
