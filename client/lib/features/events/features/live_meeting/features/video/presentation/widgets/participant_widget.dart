@@ -74,6 +74,9 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
 
   ConferenceRoom get conferenceRoom => ConferenceRoom.watch(context);
 
+  late final VideoViewController? videoViewController;
+  bool isVideoViewInitialized = false;
+
   bool get isDominant =>
       conferenceRoom.dominantSpeakerSid == widget.participant.userId;
 
@@ -109,50 +112,45 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
   bool _showName = false;
 
   @override
-  void dispose() {
-    loggingService.log('disposing ${widget.globalKey.distinctLabel}');
-    _startedTimer?.cancel();
-    _showParticipantTimer?.cancel();
-    super.dispose();
+  void initState() {
+    super.initState();
+    if (widget.participant is FakeParticipant) {
+      videoViewController = null;
+      isVideoViewInitialized = true;
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    if (!isVideoViewInitialized) {
+      if (!widget.participant.isLocal) {
+        videoViewController = VideoViewController.remote(
+          rtcEngine: conferenceRoom.room!.engine,
+          canvas: VideoCanvas(uid: widget.participant.agoraUid),
+          connection: RtcConnection(channelId: conferenceRoom.roomName),
+        );
+      } else {
+        videoViewController = VideoViewController(
+          rtcEngine: conferenceRoom.room!.engine,
+          canvas: const VideoCanvas(uid: 0),
+        );
+      }
+      isVideoViewInitialized = true;
+    }
     if (isStarted) {
       _startedTimer ??= Timer(Duration(seconds: 2), () => setState(() {}));
     }
   }
 
-  Widget _buildVideoElement() {
-    Widget videoWidget;
-    if (widget.participant is FakeParticipant) {
-      videoWidget = Container(color: Colors.orange);
-    } else if (isRemote) {
-      videoWidget = AgoraVideoView(
-        controller: VideoViewController.remote(
-          rtcEngine: conferenceRoom.room!.engine,
-          canvas: VideoCanvas(uid: widget.participant.agoraUid),
-          connection: RtcConnection(channelId: conferenceRoom.roomName),
-        ),
-      );
-    } else {
-      videoWidget = AgoraVideoView(
-        controller: VideoViewController(
-          rtcEngine: conferenceRoom.room!.engine,
-          canvas: const VideoCanvas(uid: 0),
-        ),
-      );
-    }
-
-    final child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-video-element',
-      child: videoWidget,
-    );
-
-    if (isRemote || widget.isScreenShare) return child;
-
-    return child;
+  @override
+  void dispose() {
+    loggingService
+        .log('disposing ${widget.participant.userId} videoViewController');
+    videoViewController?.dispose();
+    _startedTimer?.cancel();
+    _showParticipantTimer?.cancel();
+    super.dispose();
   }
 
   Widget _buildMutedOverlayEntry() {
@@ -346,7 +344,12 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
                             child: SizedBox(
                               height: kParticipantVideoWidgetDimensions.height,
                               width: kParticipantVideoWidgetDimensions.width,
-                              child: _buildVideoElement(),
+                              child: widget.participant is FakeParticipant ||
+                                      videoViewController == null
+                                  ? Container(color: Colors.orange)
+                                  : AgoraVideoView(
+                                      controller: videoViewController!,
+                                    ),
                             ),
                           ),
                         ),
