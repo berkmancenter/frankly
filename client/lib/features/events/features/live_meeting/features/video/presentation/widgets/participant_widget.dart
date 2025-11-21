@@ -52,17 +52,15 @@ class GlobalKeyedSubtree extends StatelessWidget {
 class ParticipantWidget extends StatefulWidget {
   static final aspectRatio = Size(16, 9).aspectRatio;
 
-  final CommunityGlobalKey globalKey;
   final AgoraParticipant participant;
   final bool isScreenShare;
   final BorderRadius borderRadius;
 
-  const ParticipantWidget({
-    required this.globalKey,
+  ParticipantWidget({
     required this.participant,
     this.isScreenShare = false,
     this.borderRadius = BorderRadius.zero,
-  }) : super(key: globalKey);
+  }) : super(key: ValueKey(participant.userId));
 
   @override
   ParticipantWidgetState createState() => ParticipantWidgetState();
@@ -286,12 +284,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
   }
 
   Widget _buildAspectRatioClipped(Widget child) {
-    // ignore: parameter_assignments
-    child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-aspect-ratio-clipped',
-      child: child,
-    );
-
     if (widget.isScreenShare) return child;
 
     if (widget.borderRadius != BorderRadius.zero) {

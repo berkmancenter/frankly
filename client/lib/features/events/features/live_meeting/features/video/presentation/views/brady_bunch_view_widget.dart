@@ -134,9 +134,6 @@ class BradyBunchLayoutWidget extends StatelessWidget {
                           aspectRatio: aspectRatioAtIndex(i, j),
                           child: ParticipantWidget(
                             borderRadius: BorderRadius.zero,
-                            globalKey: CommunityGlobalKey.fromLabel(
-                              participantAtIndex(i, j).userId,
-                            ),
                             participant: participantAtIndex(i, j),
                           ),
                         ),

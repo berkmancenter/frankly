@@ -642,7 +642,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   Widget _buildFeaturedParticipant(AgoraParticipant participant) {
     return ParticipantWidget(
-      globalKey: CommunityGlobalKey.fromLabel(participant.userId),
       participant: participant,
     );
   }
@@ -1071,7 +1070,6 @@ class MobileParticipantsWidget extends StatelessWidget {
         return AspectRatio(
           aspectRatio: 1.0,
           child: ParticipantWidget(
-            globalKey: CommunityGlobalKey.fromLabel(participant.userId),
             participant: participant,
           ),
         );
