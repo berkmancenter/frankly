@@ -92,15 +92,12 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         if (urlPart == null) {
           return context.l10n.enterValidWebsiteUrl;
         }
-        // If urlPart is provided, check if it's contained in the URL
-        if (urlPart.isNotEmpty) {
-          if (!uri!.host.contains(urlPart)) {
-            widget.onFieldsHaveErrors?.call(true);
-            return context.l10n.enterValidSocialUrl(platform, urlPart);
-          }
-        }
         // Fallback error message
         return context.l10n.pleaseEnterValidUrl;
+      } else if (urlPart != null && !value.contains(urlPart)) {
+        widget.onFieldsHaveErrors?.call(true);
+        // URL does not contain required part
+        return context.l10n.enterValidSocialUrl(platform, urlPart);
       }
     } else if (value == null || value.isEmpty) {
       widget.onFieldsHaveErrors?.call(false);
