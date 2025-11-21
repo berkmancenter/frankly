@@ -72,6 +72,10 @@ class _OverviewTabState extends State<OverviewTab> {
             flex: 2,
             child: sectionContent,
           ),
+          Expanded(
+            flex: 1,
+            child: Spacer(),
+          ),
         ],
       );
     }
