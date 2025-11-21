@@ -23,27 +23,26 @@ class MediaDeviceService {
   String? selectedAudioInputId;
   String? selectedVideoInputId;
 
+  Future<PermissionStatus> requestPermissions(Permission permission) async {
+    try {
+      // The ".status" call does not work on all platforms - catch the exception.
+      PermissionStatus status = await permission.status;
+      try {
+        status = await permission.status;
+      } catch (e) {
+        return PermissionStatus.denied;
+      }
+      return status.isGranted ? status : await permission.request();
+    } catch (e) {
+      return PermissionStatus.denied;
+    }
+  }
+
   Future<void> init() async {
     try {
       // Start by requesting permissions so that devices can be listed.
-      // The ".status" call does not work on all platforms - catch the exception.
-      try {
-        micPermissionStatus = await Permission.microphone.status;
-      } catch (e) {
-        micPermissionStatus = PermissionStatus.denied;
-      }
-      if (!micPermissionStatus.isGranted) {
-        micPermissionStatus = await Permission.microphone.request();
-      }
-
-      try {
-        cameraPermissionStatus = await Permission.camera.status;
-      } catch (e) {
-        cameraPermissionStatus = PermissionStatus.denied;
-      }
-      if (!cameraPermissionStatus.isGranted) {
-        cameraPermissionStatus = await Permission.camera.request();
-      }
+      micPermissionStatus = await requestPermissions(Permission.microphone);
+      cameraPermissionStatus = await requestPermissions(Permission.camera);
 
       final devices =
           await html.window.navigator.mediaDevices?.enumerateDevices();
@@ -116,10 +115,9 @@ class MediaDeviceService {
     Map<String, dynamic>? audioConstraint;
 
     if (!micPermissionStatus.isGranted) {
-      // Try requesting permission again - fixes issue where one denial
-      // is saved for the rest of the session.
+      // Try requesting permission again in case it's not granted.
       try {
-        micPermissionStatus = await Permission.microphone.request();
+        micPermissionStatus = await requestPermissions(Permission.microphone);
       } catch (e) {
         audioConstraint = null;
       }
@@ -141,7 +139,7 @@ class MediaDeviceService {
 
     if (!cameraPermissionStatus.isGranted) {
       try {
-        cameraPermissionStatus = await Permission.camera.request();
+        cameraPermissionStatus = await requestPermissions(Permission.camera);
       } catch (e) {
         videoConstraint = null;
       }
