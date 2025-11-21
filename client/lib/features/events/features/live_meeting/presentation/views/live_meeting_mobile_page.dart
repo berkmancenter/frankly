@@ -553,7 +553,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           children: [
             SizedBox(
               height: 100,
-              child: ParticipantsWidget(
+              child: MobileParticipantsWidget(
                 participants: participants,
               ),
             ),
@@ -580,7 +580,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                       if (participants.length > 1)
                         SizedBox(
                           height: 100,
-                          child: ParticipantsWidget(
+                          child: MobileParticipantsWidget(
                             participants: participants.skip(1).toList(),
                           ),
                         ),
@@ -1053,10 +1053,10 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
   }
 }
 
-class ParticipantsWidget extends StatelessWidget {
+class MobileParticipantsWidget extends StatelessWidget {
   final List<AgoraParticipant> participants;
 
-  const ParticipantsWidget({
+  const MobileParticipantsWidget({
     Key? key,
     required this.participants,
   }) : super(key: key);
