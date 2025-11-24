@@ -603,7 +603,7 @@ class BreakoutStatusInformation extends StatelessWidget {
 
           final areBreakoutsPending = breakoutSession?.breakoutRoomStatus ==
                   BreakoutRoomStatus.pending &&
-              breakoutRoomRemainingTime > Duration.zero;
+              breakoutRoomRemainingTime >= Duration.zero;
           final breakoutsMessage = areBreakoutsPending
               ? 'Breakout room matching starting in $breakoutRoomRemainingTimeDisplay'
               : 'Generating breakout room assignments';
