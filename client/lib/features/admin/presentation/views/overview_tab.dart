@@ -4,7 +4,6 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_image_fields.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/create_community_text_fields.dart';
@@ -111,6 +110,7 @@ class _OverviewTabState extends State<OverviewTab> {
                         fieldsView: FieldsView.edit,
                         showChooseCustomDisplayId: true,
                         borderType: BorderType.outline,
+                        autoGenerateUrl: false,
                         // Catch form errors from child widget
                         onFieldsHaveErrors: (hasErrors) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
