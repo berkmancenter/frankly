@@ -585,6 +585,7 @@
   "removeSuggestion": "刪除建議",
   "resources": "資源",
   "restoreSettings": "恢復預設設定",
+  "required": "必填",
   "roleAdmin": "管理員",
   "roleAttendee": "參加者",
   "roleFacilitator": "引導者",

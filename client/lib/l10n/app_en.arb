@@ -605,6 +605,7 @@
   "removeSuggestion": "Remove Suggestion",
   "resources": "Resources",
   "restoreSettings": "Restore Default Settings",
+  "required": "Required",
   "roleAdmin": "Admin",
   "roleAttendee": "Attendee",
   "roleFacilitator": "Facilitator",

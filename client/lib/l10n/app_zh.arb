@@ -666,6 +666,7 @@
   "removedFromEvent": "您已被从此活动中移除，无法重新加入。",
   "resources": "资源",
   "restoreSettings": "恢复默认设置",
+  "required": "必填",
   "roleAdmin": "管理员",
   "roleAttendee": "参与者",
   "roleFacilitator": "引导者",
