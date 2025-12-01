@@ -124,7 +124,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           _buildCreateCommunityTextField(
             controller: _nameController,
             maxLength: titleMaxCharactersLength,
-            label: context.l10n.communityName,
+            label: '${context.l10n.communityName}${widget.fieldsView == FieldsView.edit ? '*' : ''} ',
             borderType: widget.borderType,
             onChanged: (String val) => {
               widget.onNameChanged?.call(val),
@@ -141,7 +141,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             focus: widget.nameFocus,
             helperText: widget.fieldsView == FieldsView.create
                 ? context.l10n.youCanChangeThisLater
-                : null,
+                : '*${context.l10n.required}',
             // Allow only alphanumeric characters, spaces
             formatterRegex: r'[\s?\w?]',
             validator: (value) {
@@ -339,8 +339,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           helperText: helperText,
           initialValue: initialValue,
           onChanged: onChanged,
-          isOptional: isOptional,
-          optionalPadding: const EdgeInsets.only(top: 12, right: 12),
           inputFormatters: formatterRegex == null
               ? null
               : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
