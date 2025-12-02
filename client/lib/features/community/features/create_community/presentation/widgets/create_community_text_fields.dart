@@ -12,7 +12,6 @@ enum FieldsView {
 }
 
 class CreateCommunityTextFields extends StatefulWidget {
-  final bool showChooseCustomDisplayId;
   final void Function(String)? onNameChanged;
   final void Function(String)? onCustomDisplayIdChanged;
   final void Function(bool)? onFieldsHaveErrors;
@@ -33,7 +32,6 @@ class CreateCommunityTextFields extends StatefulWidget {
   final bool autoGenerateUrl;
   final BorderType borderType;
   const CreateCommunityTextFields({
-    this.showChooseCustomDisplayId = false,
     Key? key,
     this.onNameChanged,
     this.onCustomDisplayIdChanged,
@@ -49,11 +47,11 @@ class CreateCommunityTextFields extends StatefulWidget {
     this.onLinkedinUrlChanged,
     this.onTwitterUrlChanged,
     this.onBlueskyUrlChanged,
-    required this.community,
     this.compact = false,
     this.fieldsView = FieldsView.create,
     this.autoGenerateUrl = true,
     this.borderType = BorderType.underline,
+    required this.community,
   }) : super(key: key);
 
   @override
@@ -68,6 +66,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
 
   late final TextEditingController _nameController;
   late final TextEditingController _displayIdController;
+
+  late String _updatedDisplayId;
   @override
   void initState() {
     super.initState();
@@ -76,6 +76,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     );
     _displayIdController =
         TextEditingController(text: widget.community.displayId);
+    _updatedDisplayId = widget.community.displayId;
   }
 
   String? validateUrl(
@@ -115,8 +116,16 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     return formattedDisplayId;
   }
 
+  String _getDisplayId() {
+    String id = _updatedDisplayId;
+    if (_displayIdController.text.isNotEmpty) {
+      id = _displayIdController.text;
+    }
+    return '${Environment.appUrl}/space/$id';
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -124,7 +133,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           _buildCreateCommunityTextField(
             controller: _nameController,
             maxLength: titleMaxCharactersLength,
-            label: '${context.l10n.communityName}${widget.fieldsView == FieldsView.edit ? '*' : ''} ',
+            label:
+                '${context.l10n.communityName}${widget.fieldsView == FieldsView.edit ? '*' : ''} ',
             borderType: widget.borderType,
             onChanged: (String val) => {
               widget.onNameChanged?.call(val),
@@ -161,10 +171,13 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             label: context.l10n.communityUrl,
             borderType: widget.borderType,
             initialValue: _nameController.text,
-            onChanged: widget.onCustomDisplayIdChanged,
-            helperText: _displayIdController.text.isNotEmpty
-                ? '${Environment.appUrl}/space/${_displayIdController.text}'
-                : null,
+            onChanged: (String value) {
+              widget.onCustomDisplayIdChanged?.call(value);
+              setState(() {
+                _updatedDisplayId = value;
+              });
+            },
+            helperText: _getDisplayId(),
             // Allow only numbers, lowercase letters, and dashes
             formatterRegex: '[0-9a-z-+]',
             validator: (value) {

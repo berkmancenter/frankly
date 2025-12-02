@@ -108,7 +108,6 @@ class _OverviewTabState extends State<OverviewTab> {
                       ),
                       child: CreateCommunityTextFields(
                         fieldsView: FieldsView.edit,
-                        showChooseCustomDisplayId: true,
                         borderType: BorderType.outline,
                         autoGenerateUrl: false,
                         // Catch form errors from child widget
