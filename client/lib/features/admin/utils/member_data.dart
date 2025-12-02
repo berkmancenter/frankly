@@ -42,10 +42,8 @@ class MemberDataUtils {
           final filteredMembers = members
               .where(
                 (value) =>
-                    !value.membership!.isAttendee ||
-                    !value.membership!.isMember ||
-                    (value.membership!.isMember &&
-                        !value.membership!.isAttendee),
+                    value.membership?.status != MembershipStatus.attendee &&
+                    value.membership?.status != MembershipStatus.owner,
               )
               .toList();
           if (filteredMembers.isNotEmpty) {
