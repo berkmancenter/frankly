@@ -81,14 +81,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     userAudioEnabled = widget.conferenceRoom.audioEnabled;
     userVideoEnabled = widget.conferenceRoom.videoEnabled;
 
-    await updatePreview();
+    await updatePreviewWidget();
     if (!mounted) return;
     setState(() {
       isLoading = false;
     });
   }
 
-  Future<void> updatePreview() async {
+  Future<void> updatePreviewWidget() async {
     if (!widget.shouldShowVideoPreview) return;
     try {
       await _mediaService.getUserMedia();
@@ -109,7 +109,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       deviceId: initialVideoDeviceId ?? '',
       shouldUpdatePreview: false,
     );
-    await updatePreview();
+    await updatePreviewWidget();
     _videoElement.srcObject = null;
     _videoElement.remove();
   }
@@ -250,7 +250,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                         deviceId: val,
                         shouldUpdatePreview: widget.shouldShowVideoPreview,
                       );
-                      await updatePreview();
+                      await updatePreviewWidget();
                       setState(() {
                         isLoading = false;
                       });
@@ -388,7 +388,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
                                 if (widget.shouldShowVideoPreview) {
                                   // Re-enable the preview after the update.
-                                  await updatePreview();
+                                  await updatePreviewWidget();
                                 }
                                 if (context.mounted) {
                                   showRegularToast(
@@ -456,7 +456,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               }
                               if (widget.shouldShowVideoPreview) {
                                 // Re-enable the preview.
-                                await updatePreview();
+                                await updatePreviewWidget();
                               }
                             }
                             setState(() {
