@@ -143,11 +143,23 @@ class AgoraRoom with ChangeNotifier {
 
         print('Joined with audio: $enableAudio and video: $enableVideo');
 
+        // Enable audio/video directly on the local participant instead of going through conferenceRoom
+        // This avoids potential race conditions with UI state
         if (enableAudio) {
-          await conferenceRoom.toggleAudioEnabled(setEnabled: true);
+          try {
+            await _localParticipant!.enableAudio(setEnabled: true);
+          } catch (e) {
+            print('Failed to enable audio on join: $e');
+          }
         }
         if (enableVideo) {
-          await conferenceRoom.toggleVideoEnabled(setEnabled: true);
+          try {
+            await _localParticipant!.enableVideo(setEnabled: true);
+          } catch (e) {
+            print('Failed to enable video on join: $e');
+            // Set the track as disabled if device setup fails
+            _localParticipant!.videoTrackEnabled = false;
+          }
         }
 
         conferenceRoom.onLocalParticipantChanges();
