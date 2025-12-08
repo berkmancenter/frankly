@@ -32,8 +32,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       'video-preview-element-${DateTime.now().millisecondsSinceEpoch}';
 
   String? initialAudioDeviceId;
-  // Since this doesn't have a preview, just store current selection in a String.
-  String? selectedAudioDeviceId;
   String? initialVideoDeviceId;
   // Used to ensure A/V maintains the same state (e.g. person stays muted even if
   // they change devices).
@@ -78,7 +76,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     await _mediaService.init();
 
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
-    selectedAudioDeviceId = _mediaService.selectedAudioInputId;
     initialVideoDeviceId = _mediaService.selectedVideoInputId;
 
     userAudioEnabled = widget.conferenceRoom.audioEnabled;
@@ -145,9 +142,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   // Prevent dropdown errors by first checking that the selected
                   // device still exists in available inputs.
                   value: _mediaService.audioInputs.any(
-                    (device) => device.deviceId == selectedAudioDeviceId,
+                    (device) =>
+                        device.deviceId == _mediaService.selectedAudioInputId,
                   )
-                      ? selectedAudioDeviceId
+                      ? _mediaService.selectedAudioInputId
                       : null,
                   items: _mediaService.audioInputs.map((device) {
                     return DropdownMenuItem<String>(
@@ -180,9 +178,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   },
                   onChanged: (val) async {
                     if (val != null) {
-                      setState(() {
-                        selectedAudioDeviceId = val;
-                      });
+                      // No need to update preview as audio preview isn't shown.
+                      await _mediaService.selectAudioDevice(
+                        deviceId: val,
+                        shouldUpdatePreview: false,
+                      );
+                      setState(() {});
                     }
                   },
                   hint: const Text('Select audio input'),
@@ -344,7 +345,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     text: 'Save',
                     onPressed: (_mediaService.selectedVideoInputId ==
                                 initialVideoDeviceId &&
-                            selectedAudioDeviceId == initialAudioDeviceId)
+                            _mediaService.selectedAudioInputId ==
+                                initialAudioDeviceId)
                         ? null
                         : () async {
                             final savedInitialVideoDeviceId =
@@ -396,10 +398,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   );
                                 }
                               }
-                              if (selectedAudioDeviceId !=
+                              if (_mediaService.selectedAudioInputId !=
                                   initialAudioDeviceId) {
                                 await _mediaService.selectAudioDevice(
-                                  deviceId: selectedAudioDeviceId!,
+                                  deviceId: _mediaService.selectedAudioInputId!,
                                   shouldUpdatePreview:
                                       widget.shouldShowVideoPreview,
                                 );
@@ -418,7 +420,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                       .conferenceRoom.room?.localParticipant
                                       ?.updateAgoraAudioDevice();
                                 }
-                                initialAudioDeviceId = selectedAudioDeviceId;
+                                initialAudioDeviceId =
+                                    _mediaService.selectedAudioInputId;
                                 if (context.mounted) {
                                   showRegularToast(
                                     context,
