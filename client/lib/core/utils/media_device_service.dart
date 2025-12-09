@@ -10,6 +10,8 @@ class MediaDeviceService {
   static final MediaDeviceService _instance = MediaDeviceService._internal();
   factory MediaDeviceService() => _instance;
 
+  bool isInitialized = false;
+
   late PermissionStatus micPermissionStatus;
   late PermissionStatus cameraPermissionStatus;
 
@@ -39,6 +41,7 @@ class MediaDeviceService {
   }
 
   Future<void> init() async {
+    if (isInitialized) return;
     try {
       // Start by requesting permissions so that devices can be listed.
       micPermissionStatus = await requestPermissions(Permission.microphone);
@@ -85,6 +88,7 @@ class MediaDeviceService {
       audioInputs = [];
       videoInputs = [];
     }
+    isInitialized = true;
   }
 
   Future<void> selectAudioDevice({
