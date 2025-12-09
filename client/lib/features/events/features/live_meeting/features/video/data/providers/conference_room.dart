@@ -368,6 +368,7 @@ class ConferenceRoom with ChangeNotifier {
     final updatedEnabledValue = setEnabled ?? !videoEnabled;
 
     if (updatedEnabledValue) {
+      print('REQUESTING VIDEO PERMISSION');
       final permissionStatus = await Permission.camera.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
         await showAlert(
@@ -379,15 +380,18 @@ class ConferenceRoom with ChangeNotifier {
       }
     }
 
+    print('PRE-VDIEO TOGGLE LOCK L383');
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
+        print('TOGGLING VIDEO IN LOCK: $updatedEnabledValue');
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
         );
         if (updateProvider) {
           liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
         }
+        print('COMPLETE VIDEO TOGGLE');
       },
       timeout: Duration(seconds: 4),
     );
@@ -401,6 +405,7 @@ class ConferenceRoom with ChangeNotifier {
     final updatedEnabledValue = setEnabled ?? !audioEnabled;
 
     if (updatedEnabledValue) {
+      print('REQUESTING AUDIO PERMISSION');
       final permissionStatus = await Permission.microphone.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
         await showAlert(
@@ -412,9 +417,11 @@ class ConferenceRoom with ChangeNotifier {
       }
     }
 
+    print('PRE-AUDIO TOGGLE LOCK L416');
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _audioTogglingLock.synchronized(
       () async {
+        print('TOGGLING AUDIO IN LOCK: $updatedEnabledValue');
         if (updatedEnabledValue &&
             liveMeetingProvider.audioTemporarilyDisabled) {
           return;
@@ -440,6 +447,7 @@ class ConferenceRoom with ChangeNotifier {
         if (updateProvider) {
           liveMeetingProvider.shouldStartLocalAudioOn = updatedEnabledValue;
         }
+        print('COMPLETE AUDIO TOGGLE');
       },
       timeout: Duration(seconds: 4),
     );

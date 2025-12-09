@@ -146,10 +146,14 @@ class AgoraRoom with ChangeNotifier {
         print('Joined with audio: $enableAudio and video: $enableVideo');
 
         if (enableAudio) {
+          print('ATTEMPT ENABLE AUDIO');
           await conferenceRoom.toggleAudioEnabled(setEnabled: true);
+          print('ENABLED AUDIO');
         }
         if (enableVideo) {
+          print('ATTEMPT ENABLE VIDEO');
           await conferenceRoom.toggleVideoEnabled(setEnabled: true);
+          print('ENABLED VIDEO');
         }
 
         conferenceRoom.onLocalParticipantChanges();
