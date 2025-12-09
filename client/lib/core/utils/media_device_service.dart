@@ -43,6 +43,9 @@ class MediaDeviceService {
   Future<void> init() async {
     if (isInitialized) return;
     try {
+      print('INIT CALLED!');
+      await Future.delayed(Duration(seconds: 5));
+      print('CONTINUE INIT');
       // Start by requesting permissions so that devices can be listed.
       micPermissionStatus = await requestPermissions(Permission.microphone);
       cameraPermissionStatus = await requestPermissions(Permission.camera);
@@ -69,6 +72,8 @@ class MediaDeviceService {
             )
             .toList();
       }
+      print('AUDIO INPUTS: ${audioInputs.length}');
+      print('VIDEO INPUTS: ${videoInputs.length}');
 
       // First, check for defaults from shared preferences.
       selectedAudioInputId = sharedPreferencesService.getDefaultMicrophoneId();
@@ -83,6 +88,8 @@ class MediaDeviceService {
       if (selectedVideoInputId == null && videoInputs.isNotEmpty) {
         selectedVideoInputId = videoInputs.first.deviceId;
       }
+      print('SELECTED AUDIO INPUT ID: $selectedAudioInputId');
+      print('SELECTED VIDEO INPUT ID: $selectedVideoInputId');
     } catch (e) {
       loggingService.log('Error listing available devices: $e');
       audioInputs = [];
