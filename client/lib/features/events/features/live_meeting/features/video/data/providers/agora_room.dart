@@ -105,6 +105,8 @@ class AgoraRoom with ChangeNotifier {
     bool enableAudio = true,
     bool enableVideo = true,
   }) async {
+    await mediaDeviceService.init();
+
     engine = createAgoraRtcEngine();
 
     await engine.initialize(
@@ -112,7 +114,7 @@ class AgoraRoom with ChangeNotifier {
         appId: '76cd63ec061d4192ac03ff8cdde51395',
       ),
     );
-    await mediaDeviceService.init();
+
     final currentUserId = userService.currentUserId!;
     final agoraUid = uidToInt(currentUserId);
 
