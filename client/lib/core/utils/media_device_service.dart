@@ -49,8 +49,9 @@ class MediaDeviceService {
 
       final devices =
           await html.window.navigator.mediaDevices?.enumerateDevices();
-      if (devices != null) {
-        audioInputs = devices
+
+      if (devices?.isNotEmpty ?? false) {
+        audioInputs = devices!
             .whereType<html.MediaDeviceInfo>()
             .where(
               (d) =>
