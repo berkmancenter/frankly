@@ -118,6 +118,10 @@ class AgoraRoom with ChangeNotifier {
     final currentUserId = userService.currentUserId!;
     final agoraUid = uidToInt(currentUserId);
 
+    print(
+      'Joining channel $channelName with uid $agoraUid, audio: $enableAudio, video: $enableVideo',
+    );
+
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
       agoraUid: 0,
