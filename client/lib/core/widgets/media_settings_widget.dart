@@ -62,9 +62,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       ..setAttribute('disablePictureInPicture', 'true')
       ..style.width = '100%'
       ..style.height = '100%'
-      ..style.objectFit = 'cover'
-      // Mirror preview to match Agora local preview.
-      ..style.transform = 'scaleX(-1)';
+      ..style.objectFit = 'cover';
 
     ui_web.platformViewRegistry.registerViewFactory(
       _viewType,
