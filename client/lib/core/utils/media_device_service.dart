@@ -27,14 +27,14 @@ class MediaDeviceService {
     try {
       // The ".status" call does not work on all platforms - catch the exception.
       PermissionStatus status = await permission.status;
+      return status.isGranted ? status : await permission.request();
+    } catch (e) {
+      // If permission request fails, just return denied.
       try {
-        status = await permission.status;
+        return await permission.request();
       } catch (e) {
         return PermissionStatus.denied;
       }
-      return status.isGranted ? status : await permission.request();
-    } catch (e) {
-      return PermissionStatus.denied;
     }
   }
 
