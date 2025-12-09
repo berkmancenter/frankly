@@ -105,6 +105,8 @@ class AgoraRoom with ChangeNotifier {
     bool enableAudio = true,
     bool enableVideo = true,
   }) async {
+    print('AgoraRoom.connect: enableVideo=$enableVideo');
+
     await mediaDeviceService.init();
 
     engine = createAgoraRtcEngine();
@@ -154,7 +156,7 @@ class AgoraRoom with ChangeNotifier {
           await conferenceRoom.toggleAudioEnabled(setEnabled: true);
           print('ENABLED AUDIO');
         }
-        if (enableVideo) {
+        if (true) {
           print('ATTEMPT ENABLE VIDEO');
           await conferenceRoom.toggleVideoEnabled(setEnabled: true);
           print('ENABLED VIDEO');
