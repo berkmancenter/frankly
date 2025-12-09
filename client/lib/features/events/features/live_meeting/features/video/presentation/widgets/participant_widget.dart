@@ -411,9 +411,9 @@ class _DisabledVideoWidget extends StatelessWidget {
                 fontSize: isMobile ? 12 : 16,
               ),
             )
-          else if (!didReceiveFrames)
+          else if (!didReceiveFrames && isRemote)
             HeightConstrainedText(
-              'No video ${isRemote ? 'received' : 'sent from your device'}.',
+              'No video received',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: context.theme.colorScheme.secondary,
