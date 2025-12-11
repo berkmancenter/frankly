@@ -79,11 +79,11 @@ class SharedPreferencesService {
   }
 
   bool getCameraOnByDefault() =>
-      _preferences.getBool(_kCameraOnByDefault) ?? false;
+      _preferences.getBool(_kCameraOnByDefault) ?? true;
   Future<void> _setCameraOnByDefault(bool val) =>
       _preferences.setBool(_kCameraOnByDefault, val);
 
-  bool getMicOnByDefault() => _preferences.getBool(_kMicOnByDefault) ?? false;
+  bool getMicOnByDefault() => _preferences.getBool(_kMicOnByDefault) ?? true;
   Future<void> _setMicOnByDefault(bool val) =>
       _preferences.setBool(_kMicOnByDefault, val);
 
