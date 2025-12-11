@@ -1,6 +1,6 @@
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
