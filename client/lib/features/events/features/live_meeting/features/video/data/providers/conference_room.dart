@@ -310,7 +310,10 @@ class ConferenceRoom with ChangeNotifier {
         eventProvider: liveMeetingProvider.eventProvider,
         conferenceRoom: this,
       );
-      await _room!.connect(enableVideo: liveMeetingProvider.videoDefaultOn);
+      await _room!.connect(
+        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
+        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
+      );
       _room!.addListener(notifyListeners);
     } catch (err, stacktrace) {
       loggingService.log('error');
@@ -504,8 +507,10 @@ class ConferenceRoom with ChangeNotifier {
     print('updated live meeting participants');
     notifyListeners();
     _completer.complete(room);
-    if (liveMeetingProvider.shouldStartLocalAudioOn ||
-        liveMeetingProvider.shouldStartLocalVideoOn) {
+    if (liveMeetingProvider.shouldStartLocalAudioOn &&
+            !(room.localParticipant?.audioTrackEnabled ?? true) ||
+        liveMeetingProvider.shouldStartLocalVideoOn &&
+            !(room.localParticipant?.videoTrackEnabled ?? true)) {
       unawaited(_promptToTurnOnVideo());
     }
   }
