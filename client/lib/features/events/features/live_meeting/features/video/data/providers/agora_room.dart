@@ -102,8 +102,8 @@ class AgoraRoom with ChangeNotifier {
   }
 
   Future<void> connect({
-    bool enableAudio = true,
-    bool enableVideo = true,
+    required bool enableAudio,
+    required bool enableVideo,
   }) async {
     await mediaDeviceService.init();
 
