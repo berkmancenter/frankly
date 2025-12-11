@@ -175,14 +175,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     }).toList();
                   },
                   onChanged: (val) async {
-                    if (val != null) {
-                      // No need to update preview as audio preview isn't shown.
-                      await _mediaService.selectAudioDevice(
-                        deviceId: val,
-                        shouldUpdatePreview: false,
-                      );
-                      setState(() {});
-                    }
+                    if (val == null) return;
+                    // No need to update preview as audio preview isn't shown.
+                    await _mediaService.selectAudioDevice(
+                      deviceId: val,
+                      shouldUpdatePreview: false,
+                    );
+                    setState(() {});
                   },
                   hint: const Text('Select audio input'),
                 ),
@@ -240,19 +239,18 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     }).toList();
                   },
                   onChanged: (val) async {
-                    if (val != null) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      await _mediaService.selectVideoDevice(
-                        deviceId: val,
-                        shouldUpdatePreview: widget.shouldShowVideoPreview,
-                      );
-                      await updatePreviewWidget();
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
+                    if (val == null) return;
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await _mediaService.selectVideoDevice(
+                      deviceId: val,
+                      shouldUpdatePreview: widget.shouldShowVideoPreview,
+                    );
+                    await updatePreviewWidget();
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                   hint: const Text('Select video input'),
                 ),
