@@ -507,11 +507,11 @@ class ConferenceRoom with ChangeNotifier {
     print('updated live meeting participants');
     notifyListeners();
     _completer.complete(room);
-    if (liveMeetingProvider.shouldStartLocalAudioOn &&
+    if (liveMeetingProvider.audioDefaultOn &&
             !(room.localParticipant?.audioTrackEnabled ?? true) ||
-        liveMeetingProvider.shouldStartLocalVideoOn &&
+        liveMeetingProvider.videoDefaultOn &&
             !(room.localParticipant?.videoTrackEnabled ?? true)) {
-      unawaited(_promptToTurnOnVideo());
+      await _promptToTurnOnVideo();
     }
   }
 
