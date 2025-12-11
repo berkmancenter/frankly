@@ -84,6 +84,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         err is PlatformException ? err.details : err.toString(),
       );
     });
+    print('Calling .connect() to room from video_flutter_meeting.dart');
     await _conferenceRoomRead.connect();
   }
 
