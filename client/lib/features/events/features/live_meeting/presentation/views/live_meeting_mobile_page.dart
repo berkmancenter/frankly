@@ -169,7 +169,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         err is PlatformException ? err.details : err.toString(),
       );
     });
-    print('Calling .connect() to room from live_meeting_mobile_page.dart');
     await conferenceRoom?.connect();
   }
 

@@ -105,8 +105,6 @@ class AgoraRoom with ChangeNotifier {
     bool enableAudio = true,
     bool enableVideo = true,
   }) async {
-    print('AgoraRoom.connect: enableVideo=$enableVideo');
-
     await mediaDeviceService.init();
 
     engine = createAgoraRtcEngine();
@@ -119,10 +117,6 @@ class AgoraRoom with ChangeNotifier {
 
     final currentUserId = userService.currentUserId!;
     final agoraUid = uidToInt(currentUserId);
-
-    print(
-      'Joining channel $channelName with uid $agoraUid, audio: $enableAudio, video: $enableVideo',
-    );
 
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
@@ -152,14 +146,10 @@ class AgoraRoom with ChangeNotifier {
         print('Joined with audio: $enableAudio and video: $enableVideo');
 
         if (enableAudio) {
-          print('ATTEMPT ENABLE AUDIO');
           await conferenceRoom.toggleAudioEnabled(setEnabled: true);
-          print('ENABLED AUDIO');
         }
-        if (true) {
-          print('ATTEMPT ENABLE VIDEO');
+        if (enableVideo) {
           await conferenceRoom.toggleVideoEnabled(setEnabled: true);
-          print('ENABLED VIDEO');
         }
 
         conferenceRoom.onLocalParticipantChanges();
@@ -198,9 +188,6 @@ class AgoraRoom with ChangeNotifier {
         )
           ..videoTrackEnabled = !(_videoMutedState[rUid] ?? false)
           ..audioTrackEnabled = !(_audioMutedState[rUid] ?? false);
-        print(
-          'adding participant ${participant.userId} ${participant.videoTrackEnabled}',
-        );
         _remoteParticipants.add(participant);
 
         conferenceRoom.onParticipantConnected();
