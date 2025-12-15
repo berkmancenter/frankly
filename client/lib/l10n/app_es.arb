@@ -358,7 +358,7 @@
   "awaitingResponses": "Esperando respuestas…",
   "background": "Fondo",
   "backgroundColor": "Color de fondo",
-  "backgroundColorMustBeLighter": "El color de fondo debe ser más claro",
+  "backgroundColorContrastTooLow": "La relación de contraste es demasiado baja. Aumenta el contraste seleccionando un color de fondo más claro o un color de acento más oscuro.",
   "banned": "Prohibido",
   "basicInformation": "Información básica",
   "basicSettings": "Configuración básica",

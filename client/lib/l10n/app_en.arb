@@ -305,7 +305,7 @@
   "awaitingResponses": "Awaiting responses…",
   "background": "Background",
   "backgroundColor": "Background Color",
-  "backgroundColorMustBeLighter": "Background color must be lighter",
+  "backgroundColorContrastTooLow": "The contrast ratio is too low. Increase contrast by selecting a lighter background color or darker accent color.",
   "banned": "Banned",
   "basicInformation": "Basic Information",
   "billing": "Billing",

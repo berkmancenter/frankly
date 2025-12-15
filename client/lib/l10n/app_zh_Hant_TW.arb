@@ -285,7 +285,7 @@
   "awaitingResponses": "等待回應中...",
   "background": "背景",
   "backgroundColor": "背景顏色",
-  "backgroundColorMustBeLighter": "背景色必須更淺",
+  "backgroundColorContrastTooLow": "對比度比率過低。請選擇較淺的背景顏色或較深的強調色以增加對比度。",
   "banned": "已禁止",
   "basicInformation": "基本信息",
   "billing": "帳單",

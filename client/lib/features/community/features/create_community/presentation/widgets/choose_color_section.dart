@@ -101,32 +101,16 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.surface;
         final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
             context.theme.colorScheme.primary;
+        final isFirstColorLighter = ThemeUtils.isFirstColorLighter(firstColor, secondColor);
+        final contrastChecks = [
+          ThemeUtils.isContrastRatioValid(context, firstColor, secondColor),
+          ThemeUtils.isContrastRatioValid(context, firstColor, context.theme.colorScheme.secondary),
+          ThemeUtils.isContrastRatioValid(context, secondColor, context.theme.colorScheme.surface),
+        ];
 
-        if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedColorErrorMessage =
-              context.l10n.backgroundColorMustBeLighter;
-        } else if (!ThemeUtils.isContrastRatioValid(
-          context,
-          firstColor,
-          secondColor,
-        )) {
-          _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
-        } else if (!ThemeUtils.isContrastRatioValid(
-          context,
-          firstColor,
-          context.theme.colorScheme.secondary,
-        )) {
-          _selectedColorErrorMessage =
-              context.l10n.backgroundColorMustBeLighter;
-        } else if (!ThemeUtils.isContrastRatioValid(
-          context,
-          secondColor,
-          context.theme.colorScheme.surface,
-        )) {
-          _selectedColorErrorMessage = context.l10n.accentColorMustBeDarker;
-        } else {
-          _selectedColorErrorMessage = null;
-        }
+        _selectedColorErrorMessage = (!isFirstColorLighter || contrastChecks.any((check) => !check))
+            ? context.l10n.backgroundColorContrastTooLow
+            : null;
       } else {
         _selectedColorErrorMessage = null;
       }
