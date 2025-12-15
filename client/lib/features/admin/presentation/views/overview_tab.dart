@@ -20,10 +20,10 @@ import 'package:provider/provider.dart';
 
 class OverviewTab extends StatefulWidget {
   @override
-  _OverviewTabState createState() => _OverviewTabState();
+  OverviewTabState createState() => OverviewTabState();
 }
 
-class _OverviewTabState extends State<OverviewTab> {
+class OverviewTabState extends State<OverviewTab> {
   late Community _community;
   late String _displayId;
 
