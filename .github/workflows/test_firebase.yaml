@@ -39,7 +39,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven'
 
       - name: Install Functions NPM Dependencies
         if: steps.changes.outputs.functions == 'true'
