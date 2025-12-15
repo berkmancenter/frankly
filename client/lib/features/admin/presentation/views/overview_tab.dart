@@ -1,7 +1,6 @@
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/choose_color_section.dart';
@@ -31,6 +30,32 @@ class OverviewTabState extends State<OverviewTab> {
   final int customIdMaxCharactersLength = 80;
 
   bool _formHasErrors = false;
+
+  _alertOnSave(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: Container(
+            constraints: BoxConstraints(maxWidth: 300),
+            child: Text(context.l10n.yourChangesToProfileCantBeSaved),
+            ),
+          content: Container(
+            constraints: BoxConstraints(maxWidth: 300),
+            child: Text(message),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(context.l10n.close),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _buildSection(String label, Widget sectionContent, bool mobile) {
     if (mobile) {
@@ -285,20 +310,15 @@ class OverviewTabState extends State<OverviewTab> {
   Future<void> _submitFunction() async {
     final regex = RegExp('^[a-zA-Z0-9-]*\$');
 
-    if (isNullOrEmpty(_community.name)) {
-      throw VisibleException(
-        context.l10n.errorCommunityNameEmpty,
-      );
-    }
-    if (isNullOrEmpty(_displayId)) {
-      throw VisibleException(
-        context.l10n.errorCommunityUrlEmpty,
-      );
-    }
-    if (!regex.hasMatch(_displayId)) {
-      throw VisibleException(
-        context.l10n.displayIdWarning,
-      );
+    final validationErrors = [
+      if (isNullOrEmpty(_community.name)) context.l10n.errorCommunityNameEmpty,
+      if (isNullOrEmpty(_displayId)) context.l10n.errorCommunityUrlEmpty,
+      if (!regex.hasMatch(_displayId)) context.l10n.displayIdWarning,
+    ];
+
+    if (validationErrors.isNotEmpty) {
+      _alertOnSave(validationErrors.first);
+      return;
     }
 
     bool isNewDisplayId =
@@ -315,17 +335,15 @@ class OverviewTabState extends State<OverviewTab> {
 
     // Check for form errors from child widgets
     if (_formHasErrors) {
-      throw VisibleException(
-        context.l10n.pleaseFixErrorsBeforeSaving,
-      );
+      _alertOnSave(context.l10n.errorCommunityProfile);
+      return;
     }
 
     bool isContrastValid = _verifyContrastOfSelectedTheme();
 
     if (!isContrastValid) {
-      throw VisibleException(
-        context.l10n.selectedColorsContrastError,
-      );
+      _alertOnSave(context.l10n.selectedColorsContrastError);
+      return;
     }
 
     await _updateCommunity();
