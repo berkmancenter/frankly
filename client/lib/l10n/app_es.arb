@@ -386,7 +386,7 @@
   "changesSaved": "Cambios guardados",
   "chat": "Chat",
   "chatMessage": "Mensaje de chat",
-  "chooseABackgroundAndAccentColor": "Elige un fondo claro y un color de acento contrastante. Comprobaremos su legibilidad.",
+  "chooseABackgroundAndAccentColor": "Elige un fondo claro y un color de acento oscuro que proporcionen suficiente contraste para que el texto sea legible para una amplia gama de usuarios, incluidos aquellos con visión moderadamente baja. La relación de contraste debe ser al menos 4.5:1, cuanto mayor, mejor para la visibilidad. Comprobaremos su legibilidad.",
   "chatWithParticipants": "Chatear con participantes",
   "clearAgenda": "¿Limpiar agenda?",
   "close": "Cerrar",

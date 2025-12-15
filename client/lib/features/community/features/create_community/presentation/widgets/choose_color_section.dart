@@ -358,7 +358,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Text(
             context.l10n.chooseABackgroundAndAccentColor,
-            style: context.theme.textTheme.bodySmall,
+            style: context.theme.textTheme.titleSmall,
           ),
         ),
         _buildErrorMessage(),

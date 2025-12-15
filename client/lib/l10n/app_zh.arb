@@ -394,7 +394,7 @@
   "chat": "聊天",
   "chatMessage": "聊天消息",
   "chatWithParticipants": "与参与者聊天",
-  "chooseABackgroundAndAccentColor": "选择浅色背景和对比鲜明的强调色。我们会检查其可读性。",
+  "chooseABackgroundAndAccentColor": "选择浅色背景和深色强调色，提供足够的对比度，使包括视力中度低下的用户在内的广泛用户都能阅读文本。对比度比率必须至少为4.5:1，对于可见性越高越好。我们将检查其可读性。",
   "clearAgenda": "清空议程？",
   "close": "关闭",
   "closeEdit": "关闭编辑",
