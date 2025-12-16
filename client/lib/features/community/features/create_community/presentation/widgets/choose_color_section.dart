@@ -101,16 +101,20 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             context.theme.colorScheme.surface;
         final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
             context.theme.colorScheme.primary;
-        final isFirstColorLighter = ThemeUtils.isFirstColorLighter(firstColor, secondColor);
+        final isFirstColorLighter =
+            ThemeUtils.isFirstColorLighter(firstColor, secondColor);
         final contrastChecks = [
           ThemeUtils.isContrastRatioValid(context, firstColor, secondColor),
-          ThemeUtils.isContrastRatioValid(context, firstColor, context.theme.colorScheme.secondary),
-          ThemeUtils.isContrastRatioValid(context, secondColor, context.theme.colorScheme.surface),
+          ThemeUtils.isContrastRatioValid(
+              context, firstColor, context.theme.colorScheme.secondary,),
+          ThemeUtils.isContrastRatioValid(
+              context, secondColor, context.theme.colorScheme.surface,),
         ];
 
-        _selectedColorErrorMessage = (!isFirstColorLighter || contrastChecks.any((check) => !check))
-            ? context.l10n.backgroundColorContrastTooLow
-            : null;
+        _selectedColorErrorMessage =
+            (!isFirstColorLighter || contrastChecks.any((check) => !check))
+                ? context.l10n.backgroundColorContrastTooLow
+                : null;
       } else {
         _selectedColorErrorMessage = null;
       }
@@ -157,7 +161,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 30),
         SizedBox(
-          height: 350,
+          height: _selectedColorErrorMessage != null ? 450 : 400,
           child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
@@ -359,6 +363,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
                     ...children,
                   ],
                 ),
+                SizedBox(height: 10),
                 ThemePreview(
                   lightColorString: _customBackgroundColorController.text,
                   darkColorString: _customAccentColorController.text,
@@ -441,10 +446,14 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         children: [
           if (_selectedColorErrorMessage != null) ...[
             SizedBox(height: 10),
-            HeightConstrainedText(
-              _selectedColorErrorMessage!,
-              style: AppTextStyle.eyebrowSmall
-                  .copyWith(color: context.theme.colorScheme.error),
+            // Live region to announce error message changes to screen readers
+            Semantics(
+              liveRegion: true,
+              child: HeightConstrainedText(
+                _selectedColorErrorMessage!,
+                style: AppTextStyle.eyebrowSmall
+                    .copyWith(color: context.theme.colorScheme.error),
+              ),
             ),
           ],
         ],

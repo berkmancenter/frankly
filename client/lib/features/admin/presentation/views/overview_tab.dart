@@ -96,10 +96,7 @@ class OverviewTabState extends State<OverviewTab> {
             flex: 2,
             child: sectionContent,
           ),
-          Expanded(
-            flex: 1,
-            child: Spacer(),
-          ),
+          Spacer(flex: 1),
         ],
       );
     }
@@ -301,7 +298,7 @@ class OverviewTabState extends State<OverviewTab> {
     );
 
     if (!valid) {
-      _community = _community.copyWith(themeDarkColor: '', themeLightColor: '');
+
       return false;
     }
     return true;
