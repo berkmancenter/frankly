@@ -157,7 +157,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 30),
         SizedBox(
-          height: 350,
+          height: 400,
           child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
@@ -294,6 +294,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     }
 
     List<Widget> children = [
+Row(children: [
+
       IconButton(
         icon: Icon(
           Icons.water_drop,
@@ -313,6 +315,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         onTap: backgroundColorPicker,
         controller: _customBackgroundColorController,
       ),
+],),
+Row(children: [   
       IconButton(
         icon: Icon(
           Icons.water_drop,
@@ -332,7 +336,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         onTap: accentColorPicker,
         controller: _customAccentColorController,
       ),
+    ],),
     ];
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,18 +353,15 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         _buildErrorMessage(),
         SizedBox(height: 10),
-        if (mobile)
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
+
               children: [
-                Row(
-                  children: [
-                    ...children,
-                  ],
-                ),
+                ConstrainedBox(constraints:   BoxConstraints(maxWidth: 300), child: Column(
+                  children:children,
+                ),),
                 ThemePreview(
                   lightColorString: _customBackgroundColorController.text,
                   darkColorString: _customAccentColorController.text,
@@ -366,45 +369,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               ],
             ),
           ),
-        if (!mobile) ...[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        children[0],
-                        children[1],
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        children[2],
-                        children[3],
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 20),
-              Expanded(
-                child: ThemePreview(
-                  lightColorString: _customBackgroundColorController.text,
-                  darkColorString: _customAccentColorController.text,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ],
-    );
+      ],    );
   }
 
   Widget _buildChooseColorTextField({
@@ -430,9 +395,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             }
           },
           onTap: onTap,
-          validator: (value) => ThemeUtils.isColorValid(value)
-              ? null
-              : context.l10n.mustBeValidHexColor,
+          validator: (value) => _selectedColorErrorMessage,
         ),
       );
 
