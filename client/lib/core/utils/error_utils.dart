@@ -45,26 +45,14 @@ Future<void> showAlert(BuildContext context, String alert) =>
     showCustomDialog<void>(
       context: context,
       builder: (innerContext) => AlertDialog(
-        content: SingleChildScrollView(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: HeightConstrainedText(
-                    alert,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
-                onPressed: () => Navigator.of(innerContext).pop(),
-              ),
-            ],
+        title: Text(context.l10n.error),
+        content: HeightConstrainedText(alert),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(innerContext).pop(),
+            child: Text(context.l10n.ok),
           ),
-        ),
+        ],
       ),
     );
 
