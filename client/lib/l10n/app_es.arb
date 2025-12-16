@@ -396,7 +396,7 @@
   "communityName": "Nombre de la comunidad",
   "communitySettings": "Configuración de la comunidad",
   "communitySuccessPrefix": "Has creado tu comunidad con éxito",
-  "communitySuccessSuffix": "Haz clic en el ícono de lápiz en la esquina superior derecha para editar la configuración de tu comunidad.",
+  "communitySuccessSuffix": "Haz clic en el ícono de engranaje en la esquina superior derecha para editar la configuración de tu comunidad.",  
   "communityTagline": "Lema de la comunidad",
   "communityUrl": "URL de la comunidad",
   "confirm": "Confirmar",
