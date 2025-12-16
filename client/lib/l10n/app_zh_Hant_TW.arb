@@ -384,7 +384,7 @@
   "enterValidCommunityUrl": "請輸入有效的社區 URL",
   "enterValidSocialUrl": "請輸入包含“{url}”的有效{platform}網址",
   "enterValidName": "請輸入有效的名稱",
-  "enterValidWebsiteUrl": "輸入有效的網址（例如“websitename.com”）",
+  "enterValidWebsiteUrl": "輸入有效的網址（例如“https://websitename.com”）",
   "enterWaitingRoomText": "輸入等候室文字（可選）",
   "enterWaitingRoomTextOptional": "輸入等候室文本（可選）",
   "enterWordCloudPrompt": "輸入詞雲提示",

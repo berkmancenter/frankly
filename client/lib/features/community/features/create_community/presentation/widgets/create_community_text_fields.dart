@@ -85,17 +85,22 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     String? value,
   ) {
     if (value != null && value.isNotEmpty) {
-      final uri = Uri.tryParse(value);
-
-      if (uri == null || !uri.hasAbsolutePath) {
-        widget.onFieldsHaveErrors?.call(true);
-        // Invalid URL
-        if (urlPart == null) {
+      // Invalid Website URL
+      if (urlPart == null) {
+        // Check if URL has proper format: http/https + host + TLD
+        if (!RegExp(r'^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$').hasMatch(value)) {
+          widget.onFieldsHaveErrors?.call(true);
           return context.l10n.enterValidWebsiteUrl;
         }
+        return null;
+      }
+      final uri = Uri.tryParse(value);
+
+      if (uri == null)  {
+        widget.onFieldsHaveErrors?.call(true);
         // Fallback error message
         return context.l10n.pleaseEnterValidUrl;
-      } else if (urlPart != null && !value.contains(urlPart)) {
+      } else if (!value.contains(urlPart as Pattern)) {
         widget.onFieldsHaveErrors?.call(true);
         // URL does not contain required part
         return context.l10n.enterValidSocialUrl(platform, urlPart);

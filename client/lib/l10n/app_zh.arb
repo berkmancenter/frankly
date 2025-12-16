@@ -463,7 +463,7 @@
   "enterQuestionWithNumber": "输入问题 {number}",
   "enterValidCommunityUrl": "请输入有效的社区URL",
   "enterValidSocialUrl": "请输入包含“{url}”的有效{platform}网址",
-  "enterValidWebsiteUrl": "请输入有效的网址（例如：“websitename.com”）",
+  "enterValidWebsiteUrl": "请输入有效的网址（例如：“https://websitename.com”）",
   "enterValidName": "请输入有效的名称",
   "enterVideoTitle": "输入视频标题",
   "enterWaitingRoomText": "输入等候室文本（可选）",

@@ -404,7 +404,7 @@
   "enterValidCommunityUrl": "Please enter a valid community URL",
   "enterValidName": "Please enter a valid name",
   "enterValidSocialUrl": "Enter a valid {platform} web address that includes “{url}”",
-  "enterValidWebsiteUrl": "Enter a valid web address (e.g. “websitename.com”)",
+  "enterValidWebsiteUrl": "Enter a valid web address (e.g. “https://websitename.com”)",
   "enterVideoTitle": "Enter Video title",
   "enterWaitingRoomText": "Enter waiting room text (optional)",
   "enterWaitingRoomTextOptional": "Enter waiting room text (optional)",

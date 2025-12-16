@@ -458,7 +458,7 @@
   "enterValidCommunityUrl": "Por favor, introduzca una URL de comunidad válida",
   "enterValidName": "Por favor, introduzca un nombre válido",
   "enterValidSocialUrl": "Ingrese una dirección web válida de {platform} que incluya “{url}”",
-  "enterValidWebsiteUrl": "Ingrese una dirección web válida (p. ej., “nombredelsitio.com”)",
+  "enterValidWebsiteUrl": "Ingrese una dirección web válida (p. ej., “https://nombredelsitio.com”)",
   "enterVideoTitle": "Introducir título del vídeo",
   "enterWaitingRoomText": "Introducir texto de sala de espera (opcional)",
   "enterWaitingRoomTextOptional": "Ingrese el texto de la sala de espera (opcional)",

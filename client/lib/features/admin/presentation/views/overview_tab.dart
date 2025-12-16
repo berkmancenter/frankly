@@ -18,28 +18,31 @@ import 'package:data_models/community/community.dart';
 import 'package:provider/provider.dart';
 
 class OverviewTab extends StatefulWidget {
+  const OverviewTab({super.key});
+  
   @override
-  OverviewTabState createState() => OverviewTabState();
+  State<OverviewTab> createState() => _OverviewTabState();
 }
 
-class OverviewTabState extends State<OverviewTab> {
-  late Community _community;
-  late String _displayId;
+class _OverviewTabState extends State<OverviewTab> {
+  late Community _community = Provider.of<CommunityProvider>(context).community;
+  late String _displayId = _community.displayId;
 
   final int titleMaxCharactersLength = 80;
   final int customIdMaxCharactersLength = 80;
 
   bool _formHasErrors = false;
+  final bool _communityInitialized = false;
 
   _alertOnSave(String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Container(
+          title: Container(
             constraints: BoxConstraints(maxWidth: 300),
             child: Text(context.l10n.yourChangesToProfileCantBeSaved),
-            ),
+          ),
           content: Container(
             constraints: BoxConstraints(maxWidth: 300),
             child: Text(message),
@@ -105,9 +108,7 @@ class OverviewTabState extends State<OverviewTab> {
   @override
   Widget build(BuildContext context) {
     final mobile = responsiveLayoutService.isMobile(context);
-    _community = Provider.of<CommunityProvider>(context).community;
-    _displayId = _community.displayId;
-
+    
     context.watch<CommunityProvider>();
 
     return Scaffold(
@@ -298,7 +299,6 @@ class OverviewTabState extends State<OverviewTab> {
     );
 
     if (!valid) {
-
       return false;
     }
     return true;
