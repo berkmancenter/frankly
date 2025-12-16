@@ -192,6 +192,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                 Expanded(
                   child: TabBarView(
                     controller: _tabController,
+                    physics: NeverScrollableScrollPhysics(),
                     children: [
                       OverviewTab(),
                       MembersTab(),
