@@ -130,7 +130,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   }
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
