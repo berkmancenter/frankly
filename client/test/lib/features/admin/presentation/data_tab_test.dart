@@ -11,6 +11,7 @@ import 'package:client/features/admin/presentation/views/data_tab.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import '../../../../mocked_classes.mocks.dart';
 
@@ -21,16 +22,24 @@ import '../../../../mocked_classes.mocks.dart';
   FirestoreDatabase,
   FirestoreEventService,
 ])
-void main() {
+  void main() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  });
+
   final mockClockService = MockClockService();
   final mockCommunityProvider = MockCommunityProvider();
   final mockFirestoreDatabase = MockFirestoreDatabase();
   final mockFirestoreEventService = MockFirestoreEventService();
-   when(mockClockService.now()).thenReturn(DateTime.now());
+  when(mockClockService.now()).thenReturn(DateTime.now());
+  
   GetIt.instance.registerSingleton<ClockService>(mockClockService);
   GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
   GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
   GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
+
+  when(mockCommunityProvider.communityId).thenReturn('fake-community-id');
 
   late List<Event> mockAllEvents;
   
