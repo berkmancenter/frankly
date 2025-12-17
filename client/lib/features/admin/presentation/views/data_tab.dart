@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -494,10 +496,10 @@ class _DataTabState extends State<DataTab> {
                         icon: Icon(Icons.arrow_back_rounded),
                       ),
                       Text(
-                        '${_currentStartIndex + 1} - ${events.length > 5 ? _currentStartIndex + 5 : events.length} of ${events.length}',
+                        '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
                         style: context.theme.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                        ),
+                      ),
                       ),
                       IconButton(
                         onPressed: _currentStartIndex + 5 >= events.length

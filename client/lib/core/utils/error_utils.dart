@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/utils/visible_exception.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,7 +49,7 @@ Future<void> showAlert(BuildContext context, String alert) =>
         title: Text(context.l10n.error),
         content: HeightConstrainedText(alert),
         actions: [
-          TextButton(
+          ActionButton(
             onPressed: () => Navigator.of(innerContext).pop(),
             child: Text(context.l10n.ok),
           ),
