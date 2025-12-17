@@ -9,6 +9,7 @@ import 'package:mockito/annotations.dart';
 import 'package:client/features/admin/presentation/views/data_tab.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:data_models/events/event.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../mocked_classes.mocks.dart';
 
@@ -50,11 +51,13 @@ void main() {
       ),
     );
   });
-
   Widget createWidgetUnderTest() {
     return MaterialApp(
-      home: Scaffold(
-        body: DataTab(),
+      home: Provider<CommunityProvider>(
+        create: (_) => mockCommunityProvider,
+        child: Scaffold(
+          body: DataTab(),
+        ),
       ),
     );
   }
