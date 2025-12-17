@@ -1,6 +1,7 @@
 import 'package:client/core/data/services/clock_service.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/events/data/services/firestore_event_service.dart';
+import 'package:client/core/data/services/firestore_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -12,18 +13,23 @@ import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../mocked_classes.mocks.dart';
-
 @GenerateMocks([
   // BehaviorSubjectWrapper,
   CommunityProvider,
   Event,
+  FirestoreDatabase,
 ])
+
 void main() {
   final mockClockService = MockClockService();
   final mockCommunityProvider = MockCommunityProvider();
+  final mockFirestoreDatabase = MockFirestoreDatabase();
   final mockFirestoreEventService = FirestoreEventService();
    when(mockClockService.now()).thenReturn(DateTime.now());
   GetIt.instance.registerSingleton<ClockService>(mockClockService);
+  GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
+  GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
+  GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
   GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
   GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
 
@@ -50,6 +56,8 @@ void main() {
         eventSettings: EventSettings(),
       ),
     );
+    // Mock the events to be returned by the service
+    when(mockFirestoreEventService.getEventsFromPaths('fake-community-id', <String>['path1', 'path2'])).thenAnswer((_) async => mockAllEvents);
   });
   Widget createWidgetUnderTest() {
     return MaterialApp(
