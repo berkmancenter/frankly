@@ -271,9 +271,6 @@ class _DataTabState extends State<DataTab> {
 
     if (!context.mounted) return SizedBox.shrink();
 
-    // Determine to show participants or those registered based on the event time
-    final participantsLabel =
-        '${participants.length} ${eventInPast ? (participants.length == 1 ? context.l10n.participant : context.l10n.participants) : context.l10n.registered}';
     // This widget builds a row for each event, displaying its details;
     // it is used in differerent parts of the layout depending on the device type.
     // It includes the event's participants, public/private status, and type.
@@ -286,7 +283,7 @@ class _DataTabState extends State<DataTab> {
               Icons.group_outlined,
             ),
             Text(
-              participantsLabel,
+              '${participants.length} ${context.l10n.registered}',
               style: context.theme.textTheme.labelLarge,
             ),
           ],
