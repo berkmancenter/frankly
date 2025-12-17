@@ -870,7 +870,7 @@ Map<String, dynamic> _$$_UpdateMembershipRequestToJson(
 const _$MembershipStatusEnumMap = {
   MembershipStatus.owner: 'owner',
   MembershipStatus.admin: 'admin',
-  MembershipStatus.mod: 'mod',
+  MembershipStatus.moderator: 'moderator',
   MembershipStatus.facilitator: 'facilitator',
   MembershipStatus.member: 'member',
   MembershipStatus.banned: 'banned',
