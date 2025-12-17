@@ -169,7 +169,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                 Tab(
                   child: _buildTab(
                     context,
-                    context.l10n.data,
+                    context.l10n.eventData,
                     Icons.cloud_download_rounded,
                     mobile,
                   ),

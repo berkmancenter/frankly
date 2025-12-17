@@ -187,7 +187,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               toggles: [
                 _buildSettingsToggle(
-                  'Allow members to create events',
+                  context.l10n.settingAllowMembersToCreateEvents,
                   !settings.dontAllowMembersToCreateMeetings,
                   loadingIndex: 0,
                   (val) => _toggleCommunitySetting(
@@ -200,7 +200,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   position: TogglePosition.top,
                 ),
                 _buildSettingsToggle(
-                  'Allow members to create templates',
+                  context.l10n.settingAllowMembersToCreateTemplates,
                   settings.allowUnofficialTemplates,
                   loadingIndex: 1,
                   (val) => _toggleCommunitySetting(
@@ -212,7 +212,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   ),
                 ),
                 _buildSettingsToggle(
-                  'Require approval for new members',
+                  context.l10n.settingRequireApprovalForNewMembers,
                   settings.requireApprovalToJoin,
                   loadingIndex: 2,
                   (val) => _toggleCommunitySetting(
@@ -223,7 +223,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   ),
                 ),
                 _buildSettingsToggle(
-                  'Enable weekly email digests of upcoming events',
+                  context.l10n.settingEnableWeeklyEmailDigestsOfUpcomingEvents,
                   !settings.disableEmailDigests,
                   loadingIndex: 3,
                   (val) => _toggleCommunitySetting(
@@ -238,7 +238,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 ),
                 if (kShowStripeFeatures) ...[
                   _buildSettingsToggle(
-                    'Allow users to donate funds${donationWarning ? ' *' : ''}',
+                    '${context.l10n.settingAllowUsersToDonateFunds}${donationWarning ? ' *' : ''}',
                     settings.allowDonations,
                     loadingIndex: 4,
                     (val) => _toggleCommunitySetting(
@@ -257,9 +257,7 @@ class _SettingsTabState extends State<SettingsTab> {
                         vertical: 8,
                       ),
                       child: HeightConstrainedText(
-                        '* Your payee account has not been fully set up, so donations will not '
-                        'currently be accepted. You may need to link a bank account or accept '
-                        'Stripe\'s terms of service.',
+                        '* ${context.l10n.settingHelperDonationWarning}',
                         style:
                             TextStyle(color: context.theme.colorScheme.error),
                       ),
@@ -295,7 +293,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               toggles: [
                 _buildSettingsToggle(
-                  'Chat',
+                context.l10n.chat,
                   eventSettings.chat ?? true,
                   loadingIndex: 5,
                   (val) => _toggleEventSetting(
@@ -308,7 +306,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   supportingText: context.l10n.settingHelperChat,
                 ),
                 _buildSettingsToggle(
-                  'Floating Chat',
+                  context.l10n.floatingChat,
                   eventSettings.showChatMessagesInRealTime ?? true,
                   loadingIndex: 6,
                   (val) => _toggleEventSetting(
@@ -321,7 +319,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   supportingText: context.l10n.settingHelperFloatingChat,
                 ),
                 _buildSettingsToggle(
-                  'Record',
+                  context.l10n.record,
                   eventSettings.alwaysRecord ?? true,
                   loadingIndex: 7,
                   (val) => _toggleEventSetting(
@@ -333,7 +331,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   supportingText: context.l10n.settingHelperRecord,
                 ),
                 _buildSettingsToggle(
-                  'Odometer',
+                  context.l10n.odometer,
                   eventSettings.talkingTimer ?? true,
                   loadingIndex: 8,
                   (val) => _toggleEventSetting(
@@ -345,7 +343,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   supportingText: context.l10n.settingHelperTalkTimer,
                 ),
                 _buildSettingsToggle(
-                  'Agenda preview',
+                  context.l10n.settingAgendaPreview,
                   eventSettings.agendaPreview ?? true,
                   loadingIndex: 9,
                   (val) => _toggleEventSetting(
