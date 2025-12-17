@@ -74,7 +74,7 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
-  Widget _buildDowloadButton(
+  Widget _buildDownloadButton(
     Event event,
     Iterable<Participant> participants,
     bool eventInPast,
@@ -398,7 +398,7 @@ class _DataTabState extends State<DataTab> {
                   height: 10,
                 ),
                 Center(
-                  child: _buildDowloadButton(event, participants, eventInPast, hasRecording),
+                  child: _buildDownloadButton(event, participants, eventInPast, hasRecording),
                 ),
               ] else ...[
                 _buildDowloadButton(event, participants, eventInPast, hasRecording),

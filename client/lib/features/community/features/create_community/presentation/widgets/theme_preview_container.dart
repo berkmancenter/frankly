@@ -55,8 +55,8 @@ class ThemePreview extends StatelessWidget {
               )
             : null,
         child: Container(
-          width:  152,
-          height:  100,
+          width: 152,
+          height: 100,
           decoration: BoxDecoration(
             color: _selectedLightColor(context),
             borderRadius: BorderRadius.circular(10),
