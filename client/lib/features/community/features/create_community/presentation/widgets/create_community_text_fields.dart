@@ -130,7 +130,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
   }
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -238,6 +238,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             validator: (value) {
               if (value != null &&
                   value.isNotEmpty &&
+                  // Validation for valid email format
                   !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
                 widget.onFieldsHaveErrors?.call(true);
