@@ -13,6 +13,7 @@ import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../mocked_classes.mocks.dart';
+
 @GenerateMocks([
   // BehaviorSubjectWrapper,
   CommunityProvider,
@@ -29,8 +30,6 @@ void main() {
   GetIt.instance.registerSingleton<ClockService>(mockClockService);
   GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
   GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
-  GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
-  GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
   GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
 
   late List<Event> mockAllEvents;
