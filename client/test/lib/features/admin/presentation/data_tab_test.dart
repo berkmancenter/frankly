@@ -19,13 +19,13 @@ import '../../../../mocked_classes.mocks.dart';
   CommunityProvider,
   Event,
   FirestoreDatabase,
+  FirestoreEventService,
 ])
-
 void main() {
   final mockClockService = MockClockService();
   final mockCommunityProvider = MockCommunityProvider();
   final mockFirestoreDatabase = MockFirestoreDatabase();
-  final mockFirestoreEventService = FirestoreEventService();
+  final mockFirestoreEventService = MockFirestoreEventService();
    when(mockClockService.now()).thenReturn(DateTime.now());
   GetIt.instance.registerSingleton<ClockService>(mockClockService);
   GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
