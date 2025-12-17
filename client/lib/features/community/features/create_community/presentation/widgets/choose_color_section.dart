@@ -49,6 +49,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   late Color _lightColor = Color(0xffffffff);
   late Color _darkColor = Color(0xff212121);
 
+final _customColorForm = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -94,34 +96,45 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   }
 
   String? _checkChosenColorConstraints() {
-
-      if (ThemeUtils.isColorValid(_currentLightColor) &&
-          ThemeUtils.isColorValid(_currentDarkColor)) {
-        final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
-            context.theme.colorScheme.surface;
-        final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
-            context.theme.colorScheme.primary;
-        final isFirstColorLighter =
-            ThemeUtils.isFirstColorLighter(firstColor, secondColor);
-        final contrastChecks = [
-          ThemeUtils.isContrastRatioValid(context, firstColor, secondColor),
-          ThemeUtils.isContrastRatioValid(
-              context, firstColor, context.theme.colorScheme.secondary,),
-          ThemeUtils.isContrastRatioValid(
-              context, secondColor, context.theme.colorScheme.surface,),
-        ];
-
-        return (!isFirstColorLighter || contrastChecks.any((check) => !check))
-                ? context.l10n.backgroundColorContrastTooLow
+    if (ThemeUtils.isColorValid(_currentLightColor) &&
+        ThemeUtils.isColorValid(_currentDarkColor)) {
+      final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
+          context.theme.colorScheme.surface;
+      final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
+          context.theme.colorScheme.primary;
+      final isFirstColorLighter =
+          ThemeUtils.isFirstColorLighter(firstColor, secondColor);
+      final contrastChecks = [
+        ThemeUtils.isContrastRatioValid(context, firstColor, secondColor),
+        ThemeUtils.isContrastRatioValid(
+          context,
+          firstColor,
+          context.theme.colorScheme.secondary,
+        ),
+        ThemeUtils.isContrastRatioValid(
+          context,
+          secondColor,
+          context.theme.colorScheme.surface,
+        ),
+      ];
+      // We have cache so accent color field can also trigger error, which shows only on background field
+        _selectedColorErrorMessage =
+            (!isFirstColorLighter || contrastChecks.any((check) => !check))
+                ? context.l10n.useLighterBackgroundOrDarkerAccent
                 : null;
-      } else {
-        return null;
-      }
-
+      return _selectedColorErrorMessage;
+    } else {
+      return null;
+    }
   }
 
   void _changeAccentColorTextField(Color val) {
     widget.setDarkColor(_currentDarkColor);
+    _checkChosenColorConstraints();
+
+    // We have to revalidate the entire form in order to pop a potential error value in the background field validator
+    _customColorForm.currentState!.validate();
+
     setState(() {
       _darkColor = val;
     });
@@ -129,6 +142,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   void _changeBackgroundColorTextField(Color val) {
     widget.setLightColor(ThemeUtils.convertToHexString(val));
+    _checkChosenColorConstraints();
     setState(() {
       _lightColor = val;
     });
@@ -157,7 +171,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 30),
         SizedBox(
-          height: _selectedColorErrorMessage != null ? 450 : 400,
+          height: 450,
           child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
@@ -294,47 +308,70 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     }
 
     List<Widget> children = [
-      IconButton(
-        icon: Icon(
-          Icons.water_drop,
-          color: _lightColor,
-          shadows: [
-            Shadow(
-              color: Colors.black.withAlpha(50),
-              blurRadius: 10,
+      Row(
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.water_drop,
+              color: _lightColor,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 10,
+                ),
+              ],
             ),
-          ],
-        ),
-        onPressed: backgroundColorPicker,
+            onPressed: backgroundColorPicker,
+          ),
+          _buildChooseColorTextField(
+            label: context.l10n.backgroundColor,
+            onChanged: _changeBackgroundColorTextField,
+            onTap: backgroundColorPicker,
+            controller: _customBackgroundColorController,
+            validator: (value) {
+              if (_selectedColorErrorMessage != null) {
+                return _selectedColorErrorMessage;
+              } else if (!ThemeUtils.isColorValid(value)) {
+                return context.l10n.mustBeValidHexColor;
+              } else {
+                return _checkChosenColorConstraints();
+              }
+            },
+          ),
+        ],
       ),
-      _buildChooseColorTextField(
-        label: context.l10n.backgroundColor,
-        onChanged: _changeBackgroundColorTextField,
-        onTap: backgroundColorPicker,
-        controller: _customBackgroundColorController,
-        validator: (value) => _checkChosenColorConstraints(),
-      ),
-      IconButton(
-        icon: Icon(
-          Icons.water_drop,
-          color: _darkColor,
-          shadows: [
-            Shadow(
-              color: Colors.black.withAlpha(50),
-              blurRadius: 10,
+      Row(
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.water_drop,
+              color: _darkColor,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 10,
+                ),
+              ],
             ),
-          ],
-        ),
-        onPressed: accentColorPicker,
-      ),
-      _buildChooseColorTextField(
-        label: context.l10n.accentColor,
-        onChanged: _changeAccentColorTextField,
-        onTap: accentColorPicker,
-        controller: _customAccentColorController,
+            onPressed: accentColorPicker,
+          ),
+          _buildChooseColorTextField(
+            label: context.l10n.accentColor,
+            onChanged: _changeAccentColorTextField,
+            onTap: accentColorPicker,
+            controller: _customAccentColorController,
+            validator: (value) => !ThemeUtils.isColorValid(value)
+                ? context.l10n.mustBeValidHexColor
+                : null,
+          ),
+        ],
       ),
     ];
-    return Column(
+
+    return
+    Form(
+  key: _customColorForm,
+  child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -347,65 +384,27 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           ),
         ),
         SizedBox(height: 10),
-        if (mobile)
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Row(
-                  children: [
-                    ...children,
-                  ],
-                ),
-                SizedBox(height: 10),
-                ThemePreview(
-                  lightColorString: _customBackgroundColorController.text,
-                  darkColorString: _customAccentColorController.text,
-                ),
-              ],
-            ),
-          ),
-        if (!mobile) ...[
-          Row(
+        Expanded(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: _selectedColorErrorMessage != null ? 405 : 200),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        children[0],
-                        children[1],
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        children[2],
-                        children[3],
-                      ],
-                    ),
-                  ],
+                  children: children,
                 ),
               ),
-              SizedBox(width: 20),
-              Expanded(
-                child: ThemePreview(
-                  lightColorString: _customBackgroundColorController.text,
-                  darkColorString: _customAccentColorController.text,
-                ),
+              ThemePreview(
+                lightColorString: _customBackgroundColorController.text,
+                darkColorString: _customAccentColorController.text,
               ),
             ],
           ),
-        ],
+        ),
       ],
-    );
+    ),
+);
   }
 
   Widget _buildChooseColorTextField({
@@ -413,7 +412,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function(Color) onChanged,
     required void Function() onTap,
     required TextEditingController controller,
-     FormFieldValidator<String>? validator,
+    FormFieldValidator<String>? validator,
   }) =>
       Expanded(
         child: CustomTextField(
@@ -434,23 +433,5 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
           onTap: onTap,
           validator: validator,
         ),
-      );
-
-  Widget _buildErrorMessage() => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (_selectedColorErrorMessage != null) ...[
-            SizedBox(height: 10),
-            // Live region to announce error message changes to screen readers
-            Semantics(
-              liveRegion: true,
-              child: HeightConstrainedText(
-                _selectedColorErrorMessage!,
-                style: AppTextStyle.eyebrowSmall
-                    .copyWith(color: context.theme.colorScheme.error),
-              ),
-            ),
-          ],
-        ],
       );
 }
