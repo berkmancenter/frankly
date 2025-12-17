@@ -93,8 +93,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     if (_selectedPresetIndex == -1) _selectedPresetIndex = 0;
   }
 
-  void _checkChosenColorConstraints() {
-    setState(() {
+  String? _checkChosenColorConstraints() {
+
       if (ThemeUtils.isColorValid(_currentLightColor) &&
           ThemeUtils.isColorValid(_currentDarkColor)) {
         final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
@@ -111,19 +111,17 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
               context, secondColor, context.theme.colorScheme.surface,),
         ];
 
-        _selectedColorErrorMessage =
-            (!isFirstColorLighter || contrastChecks.any((check) => !check))
+        return (!isFirstColorLighter || contrastChecks.any((check) => !check))
                 ? context.l10n.backgroundColorContrastTooLow
                 : null;
       } else {
-        _selectedColorErrorMessage = null;
+        return null;
       }
-    });
+
   }
 
   void _changeAccentColorTextField(Color val) {
     widget.setDarkColor(_currentDarkColor);
-    _checkChosenColorConstraints();
     setState(() {
       _darkColor = val;
     });
@@ -131,7 +129,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   void _changeBackgroundColorTextField(Color val) {
     widget.setLightColor(ThemeUtils.convertToHexString(val));
-    _checkChosenColorConstraints();
     setState(() {
       _lightColor = val;
     });
@@ -142,7 +139,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     widget
         .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
     setState(() => _selectedPresetIndex = index);
-    _checkChosenColorConstraints();
   }
 
   @override
@@ -316,6 +312,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         onChanged: _changeBackgroundColorTextField,
         onTap: backgroundColorPicker,
         controller: _customBackgroundColorController,
+        validator: (value) => _checkChosenColorConstraints(),
       ),
       IconButton(
         icon: Icon(
@@ -349,7 +346,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             style: context.theme.textTheme.titleSmall,
           ),
         ),
-        _buildErrorMessage(),
         SizedBox(height: 10),
         if (mobile)
           Expanded(
@@ -417,6 +413,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function(Color) onChanged,
     required void Function() onTap,
     required TextEditingController controller,
+     FormFieldValidator<String>? validator,
   }) =>
       Expanded(
         child: CustomTextField(
@@ -435,9 +432,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             }
           },
           onTap: onTap,
-          validator: (value) => ThemeUtils.isColorValid(value)
-              ? null
-              : context.l10n.mustBeValidHexColor,
+          validator: validator,
         ),
       );
 
