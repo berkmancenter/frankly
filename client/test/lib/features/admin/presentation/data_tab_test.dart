@@ -53,7 +53,7 @@ void main() {
   });
   Widget createWidgetUnderTest() {
     return MaterialApp(
-      home: Provider<CommunityProvider>(
+      home: ChangeNotifierProvider<CommunityProvider>(
         create: (_) => mockCommunityProvider,
         child: Scaffold(
           body: DataTab(),
@@ -74,7 +74,6 @@ void main() {
     });
 
     testWidgets('should display events list when events exist', (WidgetTester tester) async {
-      when(mockAllEvents).thenAnswer((_) => [mockAllEvents[0]]);
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -85,7 +84,7 @@ void main() {
     });
 
     testWidgets('should display pagination controls', (WidgetTester tester) async {
-      when(mockAllEvents).thenAnswer((_) => mockAllEvents);
+      // mockAllEvents is already set up in setUp() with 80 events
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -96,7 +95,7 @@ void main() {
     });
 
     testWidgets('should navigate to next page when forward button pressed', (WidgetTester tester) async {
-      when(mockAllEvents).thenAnswer((_) => mockAllEvents);
+      // mockAllEvents is already set up in setUp() with 80 events
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -107,8 +106,21 @@ void main() {
       expect(find.text('6 - 10 of 80'), findsOneWidget);
     });
     testWidgets('should display correct livestream status icons', (WidgetTester tester) async {
-      when(mockAllEvents.where((event) => event.nullableEventType == EventType.livestream))
-          .thenReturn([mockAllEvents[0]]);
+      // Create a livestream event
+      final livestreamEvent = Event(
+        id: 'livestream-event-1',
+        title: 'Livestream Event 1',
+        scheduledTime: mockClockService.now(),
+        communityId: mockCommunityProvider.communityId,
+        status: EventStatus.active,
+        isPublic: true,
+        nullableEventType: EventType.livestream,
+        collectionPath: '',
+        templateId: 'test-template-id',
+        creatorId: 'test-creator-id',
+        eventSettings: EventSettings(),
+      );
+      mockAllEvents = [livestreamEvent];
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
@@ -118,7 +130,21 @@ void main() {
     });
 
     testWidgets('should show private event correctly', (WidgetTester tester) async {
-      when(mockAllEvents.where((event) => !event.isPublic)).thenReturn([mockAllEvents[0]]);
+      // Create a private event
+      final privateEvent = Event(
+        id: 'private-event-1',
+        title: 'Private Event 1',
+        scheduledTime: mockClockService.now(),
+        communityId: mockCommunityProvider.communityId,
+        status: EventStatus.active,
+        isPublic: false,
+        nullableEventType: EventType.hosted,
+        collectionPath: '',
+        templateId: 'test-template-id',
+        creatorId: 'test-creator-id',
+        eventSettings: EventSettings(),
+      );
+      mockAllEvents = [privateEvent];
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
