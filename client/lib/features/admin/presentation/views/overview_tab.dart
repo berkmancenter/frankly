@@ -32,7 +32,6 @@ class _OverviewTabState extends State<OverviewTab> {
   final int customIdMaxCharactersLength = 80;
 
   bool _formHasErrors = false;
-  final bool _communityInitialized = false;
 
   _alertOnSave(String message) {
     showDialog(
@@ -48,11 +47,11 @@ class _OverviewTabState extends State<OverviewTab> {
             child: Text(message),
           ),
           actions: [
-            TextButton(
+            ActionButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(context.l10n.close),
+              text: context.l10n.close,
             ),
           ],
         );

@@ -139,7 +139,8 @@ class _DataTabState extends State<DataTab> {
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 title: Text(context.l10n.selectData),
-                backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
+                backgroundColor:
+                    context.theme.colorScheme.surfaceContainerHighest,
                 contentPadding: EdgeInsets.zero,
                 titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
                 content: Material(
@@ -164,9 +165,11 @@ class _DataTabState extends State<DataTab> {
                         CheckboxListTile(
                           title: Text(context.l10n.recording),
                           checkColor: Colors.white,
-                          fillColor:  hasRecording ?WidgetStatePropertyAll(
-                              context.theme.primaryColor,
-                          ) : null,
+                          fillColor: hasRecording
+                              ? WidgetStatePropertyAll(
+                                  context.theme.primaryColor,
+                                )
+                              : null,
                           controlAffinity: ListTileControlAffinity.leading,
                           value: hasRecording ? recordingSelected : false,
                           onChanged: (value) {
@@ -176,13 +179,16 @@ class _DataTabState extends State<DataTab> {
                           },
                           enabled: hasRecording,
                         ),
-                        if(!hasRecording)
+                        if (!hasRecording)
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0,),
                             child: Text(
                               context.l10n.recordingNotAvailable,
-                              style: context.theme.textTheme.bodySmall!.copyWith(
-                                color: context.theme.colorScheme.onSurfaceVariant,
+                              style:
+                                  context.theme.textTheme.bodySmall!.copyWith(
+                                color:
+                                    context.theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ),
@@ -224,8 +230,7 @@ class _DataTabState extends State<DataTab> {
     }
 
     // If the event is in the past and has no recording, or in future and there are no registrants, do not show the download button
-    if (
-        (eventInPast && !hasRecording) ||
+    if ((eventInPast && !hasRecording) ||
         (!eventInPast && participants.isEmpty)) {
       return Text('');
     }
@@ -398,10 +403,12 @@ class _DataTabState extends State<DataTab> {
                   height: 10,
                 ),
                 Center(
-                  child: _buildDownloadButton(event, participants, eventInPast, hasRecording),
+                  child: _buildDownloadButton(
+                      event, participants, eventInPast, hasRecording,),
                 ),
               ] else ...[
-                _buildDownloadButton(event, participants, eventInPast, hasRecording),
+                _buildDownloadButton(
+                    event, participants, eventInPast, hasRecording,),
               ],
             ],
           ),
@@ -499,7 +506,7 @@ class _DataTabState extends State<DataTab> {
                         '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
                         style: context.theme.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                      ),
+                        ),
                       ),
                       IconButton(
                         onPressed: _currentStartIndex + 5 >= events.length
