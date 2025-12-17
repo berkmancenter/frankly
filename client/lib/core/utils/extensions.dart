@@ -147,7 +147,7 @@ extension MembershipStatusUIExtension on MembershipStatus {
           null,
           asset: AppAsset('media/role-facilitator.png'),
         );
-      case MembershipStatus.mod:
+      case MembershipStatus.moderator:
         return ProxiedImage(
           null,
           asset: AppAsset('media/role-mod.png'),
@@ -178,7 +178,7 @@ String permissions(BuildContext context) {
         return context.l10n.permissionsAdminDescription;
       case MembershipStatus.facilitator:
         return context.l10n.permissionsFacilitatorDescription;
-      case MembershipStatus.mod:
+      case MembershipStatus.moderator:
         return context.l10n.permissionsModeratorDescription;
       case MembershipStatus.owner:
         return context.l10n.permissionsOwnerDescription;

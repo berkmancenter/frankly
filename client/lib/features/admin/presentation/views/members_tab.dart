@@ -114,7 +114,7 @@ class MembersTabState extends State<MembersTab> {
     const membershipOrder = [
       MembershipStatus.owner,
       MembershipStatus.admin,
-      MembershipStatus.mod,
+      MembershipStatus.moderator,
       MembershipStatus.facilitator,
       MembershipStatus.member,
     ];

@@ -15,7 +15,7 @@ enum MembershipStatus {
 
   /// User that has elevated permissions to run meetings and
   /// create/edit content, cant promote other members.
-  mod,
+  moderator,
 
   /// No elevated permissions. When breakouts are created,
   /// facilitators are distributed between breakout rooms.
@@ -44,7 +44,7 @@ extension MembershipStatusExtension on MembershipStatus {
   bool get isFacilitator =>
       [MembershipStatus.facilitator].contains(this) || isMod;
 
-  bool get isMod => [MembershipStatus.mod].contains(this) || isAdmin;
+  bool get isMod => [MembershipStatus.moderator].contains(this) || isAdmin;
 
   bool get isAdmin => [MembershipStatus.admin].contains(this) || isOwner;
 

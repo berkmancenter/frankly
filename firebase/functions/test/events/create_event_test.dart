@@ -97,7 +97,7 @@ void main() {
     await communityTestUtils.addCommunityMember(
       userId: moderatorId,
       communityId: communityId,
-      status: MembershipStatus.mod,
+      status: MembershipStatus.moderator,
     );
     var event = Event(
       id: '12341f28371',

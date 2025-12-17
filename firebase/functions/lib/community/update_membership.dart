@@ -81,7 +81,7 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
     final adminStatuses = [
       MembershipStatus.admin,
       MembershipStatus.owner,
-      MembershipStatus.mod,
+      MembershipStatus.moderator,
     ];
     final facilitatorStatuses = [MembershipStatus.facilitator];
     final elevatingToAdmin = !adminStatuses.contains(currentStatus) &&
@@ -116,7 +116,7 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
             .where(Membership.kFieldCommunityId, isEqualTo: request.communityId)
             .where(
               Membership.kFieldStatus,
-              isEqualTo: EnumToString.convertToString(MembershipStatus.mod),
+              isEqualTo: EnumToString.convertToString(MembershipStatus.moderator),
             )
             .get();
 
