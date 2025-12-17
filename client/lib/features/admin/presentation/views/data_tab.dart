@@ -497,7 +497,7 @@ class _DataTabState extends State<DataTab> {
                         '${_currentStartIndex + 1} - ${events.length > 5 ? _currentStartIndex + 5 : events.length} of ${events.length}',
                         style: context.theme.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                        ),
+                        '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
                       ),
                       IconButton(
                         onPressed: _currentStartIndex + 5 >= events.length
