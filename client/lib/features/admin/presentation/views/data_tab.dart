@@ -221,8 +221,9 @@ class _DataTabState extends State<DataTab> {
       );
     }
 
-    // If the event is in the past and not set to always record, or in future and there are no registrants, do not show the download button
+    // If the event is in the past and has no recording, or in future and there are no registrants, do not show the download button
     if (
+        (eventInPast && !hasRecording) ||
         (!eventInPast && participants.isEmpty)) {
       return Text('');
     }
@@ -401,7 +402,7 @@ class _DataTabState extends State<DataTab> {
                   child: _buildDownloadButton(event, participants, eventInPast, hasRecording),
                 ),
               ] else ...[
-                _buildDowloadButton(event, participants, eventInPast, hasRecording),
+                _buildDownloadButton(event, participants, eventInPast, hasRecording),
               ],
             ],
           ),

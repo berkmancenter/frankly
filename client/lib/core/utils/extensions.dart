@@ -11,7 +11,6 @@ import 'package:data_models/chat/emotion.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/js.dart';
 
 export 'package:data_models/events/event.dart';
 export 'package:data_models/chat/emotion.dart';
