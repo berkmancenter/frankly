@@ -238,6 +238,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             validator: (value) {
               if (value != null &&
                   value.isNotEmpty &&
+                  // Validation for valid email format
                   !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
                 widget.onFieldsHaveErrors?.call(true);
