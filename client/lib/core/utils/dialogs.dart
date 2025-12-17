@@ -72,6 +72,7 @@ class Dialogs {
                   key: formKey,
                   child: CustomTextField(
                     minLines: 3,
+                    maxLines: 15,
                     autofocus: true,
                     controller: textEditingController,
                     keyboardType: TextInputType.multiline,
