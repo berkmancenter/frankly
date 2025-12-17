@@ -28,55 +28,53 @@ class CustomSwitchTile extends StatefulWidget {
 class _CustomSwitchTileState extends State<CustomSwitchTile> {
   @override
   Widget build(BuildContext context) {
-    return CustomInkWell(
-      hoverColor: Colors.transparent,
-      onTap: () => widget.loading ?  null : widget.onUpdate(!widget.val),
-      child: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        constraints: BoxConstraints(minHeight: 38),
-        child: Row(
-          children: [
-            Expanded(
-              child: widget.textWidget ??
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: HeightConstrainedText(
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      constraints: BoxConstraints(minHeight: 38),
+      child: Row(
+        children: [
+          Expanded(
+            child: widget.textWidget ??
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: HeightConstrainedText(
                           widget.text ?? '',
                           style:
-                            widget.style ?? context.theme.textTheme.bodyLarge,
+                              widget.style ?? context.theme.textTheme.bodyLarge,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          ),
                         ),
-                        if (widget.loading)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: CircularProgressIndicator(strokeWidth: 1.5,),
+                      ),
+                      if (widget.loading)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1.5,
                             ),
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
+                ),
+          ),
+          SizedBox(
+            width: 52,
+            height: 32,
+            child: Switch(
+              thumbColor:
+                  WidgetStateProperty.all(context.theme.colorScheme.surface),
+              value: widget.val,
+              onChanged: widget.loading ? null : widget.onUpdate,
             ),
-            SizedBox(
-              width: 52,
-              height: 32,
-              child: Switch(
-                thumbColor:
-                    WidgetStateProperty.all(context.theme.colorScheme.surface),
-                value: widget.val,
-                onChanged: widget.loading ? null : widget.onUpdate,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

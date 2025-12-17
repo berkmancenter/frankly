@@ -1,5 +1,6 @@
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
+import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -84,16 +85,25 @@ class _SettingsTabState extends State<SettingsTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomSwitchTile(
-                  text: title,
-                  style: AppTextStyle.body.copyWith(
-                    color: hasWarning ? context.theme.colorScheme.error : null,
+                CustomInkWell(
+                  hoverColor: Colors.transparent,
+                  onTap: () => (devLoadingIndex > -1
+                          ? _updateLoadingDev[devLoadingIndex]
+                          : _updateLoading[loadingIndex])
+                      ? null
+                      : onUpdate(!value),
+                  child: CustomSwitchTile(
+                    text: title,
+                    style: AppTextStyle.body.copyWith(
+                      color:
+                          hasWarning ? context.theme.colorScheme.error : null,
+                    ),
+                    val: value,
+                    onUpdate: onUpdate,
+                    loading: devLoadingIndex > -1
+                        ? _updateLoadingDev[devLoadingIndex]
+                        : _updateLoading[loadingIndex],
                   ),
-                  val: value,
-                  onUpdate: onUpdate,
-                  loading: devLoadingIndex > -1
-                      ? _updateLoadingDev[devLoadingIndex]
-                      : _updateLoading[loadingIndex],
                 ),
                 // SizedBox(height: 8),
                 if (supportingText.isNotEmpty)
@@ -293,7 +303,7 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
               toggles: [
                 _buildSettingsToggle(
-                context.l10n.chat,
+                  context.l10n.chat,
                   eventSettings.chat ?? true,
                   loadingIndex: 5,
                   (val) => _toggleEventSetting(
@@ -440,7 +450,6 @@ class _SettingsTabState extends State<SettingsTab> {
       }
     });
 
-
     try {
       await cloudFunctionsCommunityService
           .updateCommunity(
@@ -555,7 +564,7 @@ class _SettingsTabState extends State<SettingsTab> {
             },
           ).toList(),
         ),
-        SizedBox(height:  30),
+        SizedBox(height: 30),
         Divider(
           color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
           height: 1,
@@ -575,7 +584,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     : setting == eventSettings.last
                         ? TogglePosition.bottom
                         : TogglePosition.none,
-                        isEventSetting: true,
+                isEventSetting: true,
               );
             },
           ).toList(),
@@ -615,10 +624,13 @@ class _SettingsTabState extends State<SettingsTab> {
       settingMap[settingKey] ?? true,
       devLoadingIndex: loadingIndex,
       position: position,
-      (val) => isEventSetting ? _toggleEventSetting(EventSettings.fromJson(newSettings), devLoadingIndex: loadingIndex) : _toggleCommunitySetting(
-         CommunitySettings.fromJson(newSettings),
-        devLoadingIndex: loadingIndex,
-      ),
+      (val) => isEventSetting
+          ? _toggleEventSetting(EventSettings.fromJson(newSettings),
+              devLoadingIndex: loadingIndex,)
+          : _toggleCommunitySetting(
+              CommunitySettings.fromJson(newSettings),
+              devLoadingIndex: loadingIndex,
+            ),
     );
   }
 
