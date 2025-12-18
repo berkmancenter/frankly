@@ -38,11 +38,10 @@ class GlobalKeyedSubtree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return child;
-    // return KeyedSubtree(
-    //   key: _globalKeys[label] ??= GlobalKey(debugLabel: label),
-    //   child: child,
-    // );
+    return KeyedSubtree(
+      key: _globalKeys[label] ??= GlobalKey(debugLabel: label),
+      child: child,
+    );
   }
 }
 
