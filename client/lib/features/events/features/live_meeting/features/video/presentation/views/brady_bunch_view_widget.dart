@@ -144,6 +144,9 @@ class BradyBunchLayoutWidget extends StatelessWidget {
                               'brady_${keyPrefix}_${participantAtIndex(i, j).userId}',
                             ),
                             borderRadius: BorderRadius.zero,
+                            globalKey: CommunityGlobalKey.fromLabel(
+                              participantAtIndex(i, j).userId,
+                            ),
                             participant: participantAtIndex(i, j),
                           ),
                         ),

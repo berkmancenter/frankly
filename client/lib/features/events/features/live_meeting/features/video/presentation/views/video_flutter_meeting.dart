@@ -34,6 +34,17 @@ import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
 
+class CommunityGlobalKey extends LabeledGlobalKey {
+  static final Map<String, CommunityGlobalKey> _participantKeys = {};
+
+  final String distinctLabel;
+
+  CommunityGlobalKey._(this.distinctLabel) : super(distinctLabel);
+
+  factory CommunityGlobalKey.fromLabel(String label) =>
+      _participantKeys[label] ??= CommunityGlobalKey._(label);
+}
+
 /// Show the twilio meeting on desktop
 class VideoFlutterMeeting extends StatefulHookWidget {
   const VideoFlutterMeeting({
@@ -95,6 +106,10 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     _onUnloadSubscription.cancel();
 
     super.dispose();
+  }
+
+  CommunityGlobalKey _getGlobalKey(String label) {
+    return CommunityGlobalKey.fromLabel(label);
   }
 
   @override
@@ -189,7 +204,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Padding(
               padding: const EdgeInsets.all(spacerSize),
               child: ParticipantWidget(
-                key: ValueKey('screen_share_${screenSharer.userId}'),
+                globalKey: _getGlobalKey('${screenSharer.userId}-screen-share'),
                 participant: screenSharer,
                 isScreenShare: true,
               ),
@@ -365,7 +380,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                   builder: (_) {
                     final participantWidgets = highlightedParticipants.map((p) {
                       return ParticipantWidget(
-                        key: ValueKey('desktop_${p.userId}'),
+                        globalKey: _getGlobalKey(p.userId),
                         borderRadius: BorderRadius.circular(20),
                         participant: p,
                       );
@@ -600,7 +615,7 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
               children: [
                 for (final p in widget.remainingParticipants)
                   ParticipantWidget(
-                    key: ValueKey('sidepanel_${p.userId}'),
+                    globalKey: CommunityGlobalKey.fromLabel(p.userId),
                     participant: p,
                   ),
               ],
