@@ -224,7 +224,38 @@ class _MeetingDialogState extends State<MeetingDialog> {
     );
   }
 
-  Widget _buildLoading() {
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      // onPopInvoked: (didPop) async {
+      //   await Provider.of<LiveMeetingProvider>(context, listen: false)
+      //       .leaveMeeting();
+      // },
+      child: Material(
+        color: context.theme.colorScheme.primary,
+        child: SizedBox.expand(
+          child: _StreamLoadingWrapper(
+            eventProvider: eventProvider,
+            child: _buildAgendaWrapper(context),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StreamLoadingWrapper extends StatelessWidget {
+  const _StreamLoadingWrapper({
+    super.key,
+    required this.eventProvider,
+    required this.child,
+  });
+
+  final EventProvider eventProvider;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: CustomStreamBuilder(
         entryFrom: '_MeetingDialogState._buildLoading1',
@@ -243,25 +274,9 @@ class _MeetingDialogState extends State<MeetingDialog> {
               stream:
                   Provider.of<LiveMeetingProvider>(context).liveMeetingStream,
               errorMessage: 'There was an error loading event details.',
-              builder: (context, __) => _buildAgendaWrapper(context),
+              builder: (context, __) => child,
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (didPop) async {
-        await Provider.of<LiveMeetingProvider>(context, listen: false)
-            .leaveMeeting();
-      },
-      child: Material(
-        color: context.theme.colorScheme.primary,
-        child: SizedBox.expand(
-          child: _buildLoading(),
         ),
       ),
     );
