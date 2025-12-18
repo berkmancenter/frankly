@@ -13,14 +13,12 @@ class ParticipantGridLayout extends StatefulWidget {
   final String keyPrefix;
 
   @override
-  _ParticipantGridLayoutState createState() => _ParticipantGridLayoutState();
+  ParticipantGridLayoutState createState() => ParticipantGridLayoutState();
 }
 
-class _ParticipantGridLayoutState extends State<ParticipantGridLayout> {
+class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
   final _pageController = PageController();
-
   final _currentPageNotifier = ValueNotifier<int>(0);
-
   static const int _maxParticipantsPerPage = 10;
 
   List<AgoraParticipant> get participants =>
@@ -32,9 +30,9 @@ class _ParticipantGridLayoutState extends State<ParticipantGridLayout> {
 
   @override
   void dispose() {
-    super.dispose();
     _pageController.dispose();
     _currentPageNotifier.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,116 +41,79 @@ class _ParticipantGridLayoutState extends State<ParticipantGridLayout> {
       pageController: _pageController,
       currentPageNotifier: _currentPageNotifier,
       pagecount: _calculateNumberOfPages(),
-      child: _buildPageView(),
-    );
-  }
-
-  Widget _buildPageView() {
-    return LayoutBuilder(
-      builder: (context, constraints) => PageView.builder(
-        physics: NeverScrollableScrollPhysics(),
+      child: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: _calculateNumberOfPages(),
         controller: _pageController,
-        itemBuilder: (BuildContext context, int index) =>
-            _buildParticipantPage(index),
-        onPageChanged: (int index) {
-          _currentPageNotifier.value = index;
-        },
-      ),
-    );
-  }
-
-  Widget _buildParticipantPage(int pageIndex) {
-    return RepaintBoundary(
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final width = constraints.maxWidth;
-          final height = constraints.maxHeight;
-
-          final participantsOnThisPageStartIndex =
-              pageIndex * _maxParticipantsPerPage;
-          final pageParticipants = participants
-              .skip(participantsOnThisPageStartIndex)
+        itemBuilder: (context, index) => _ParticipantGridPage(
+          keyPrefix: widget.keyPrefix,
+          pageIndex: index,
+          participants: participants
+              .skip(index * _maxParticipantsPerPage)
               .take(_maxParticipantsPerPage)
-              .toList();
-
-          return BradyBunchLayoutWidget(
-            key: ValueKey('brady_${widget.keyPrefix}_page_$pageIndex'),
-            height: height,
-            width: width,
-            keyPrefix: widget.keyPrefix,
-            pageParticipants: pageParticipants,
-          );
-        },
+              .toList(),
+        ),
+        onPageChanged: (index) => _currentPageNotifier.value = index,
       ),
     );
   }
 }
 
-class BradyBunchLayoutWidget extends StatelessWidget {
-  final double height;
-  final double width;
-  final String keyPrefix;
-  final List<AgoraParticipant> pageParticipants;
-
-  const BradyBunchLayoutWidget({
-    required this.height,
-    required this.width,
+class _ParticipantGridPage extends StatelessWidget {
+  const _ParticipantGridPage({
     required this.keyPrefix,
-    required this.pageParticipants,
-    Key? key,
-  }) : super(key: key);
+    required this.pageIndex,
+    required this.participants,
+  });
+
+  final String keyPrefix;
+  final int pageIndex;
+  final List<AgoraParticipant> participants;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.shrink();
-    // final BradyBunchLayout layout = BradyBunchLayout.calculateOptimalLayout(
-    //   width: width,
-    //   height: height,
-    //   participantCount: pageParticipants.length,
-    // );
+    if (participants.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
-    // AgoraParticipant participantAtIndex(int row, int column) =>
-    //     pageParticipants[layout.columns * row + column];
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.center,
+          spacing: 8.0, // horizontal spacing between items
+          runSpacing: 8.0, // vertical spacing between rows
+          children: participants.map((participant) {
+            return SizedBox(
+              width: _calculateItemWidth(context, participants.length),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: ParticipantWidget(
+                  borderRadius: BorderRadius.zero,
+                  globalKey: CommunityGlobalKey.fromLabel(participant.userId),
+                  participant: participant,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
 
-    // double aspectRatioAtIndex(int row, int column) {
-    //   final lastRow = row == layout.rows - 1;
-    //   if (lastRow && pageParticipants.length < layout.rows * layout.columns) {
-    //     return layout.getAdjustedAspectRatio;
-    //   } else {
-    //     return layout.layoutParameters.aspectRatio;
-    //   }
-    // }
+  // Calculate appropriate width for each participant based on screen size and participant count
+  double _calculateItemWidth(BuildContext context, int participantCount) {
+    final screenWidth =
+        MediaQuery.of(context).size.width - 32; // Account for padding
 
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     for (int i = 0; i < layout.rows; i++)
-    //       Flexible(
-    //         child: ConstrainedBox(
-    //           constraints: BoxConstraints(maxHeight: layout.imageSize.height),
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               for (int j = 0; j < layout.layoutParameters.columns; j++)
-    //                 if (pageParticipants.length > layout.columns * i + j)
-    //                   Flexible(
-    //                     child: AspectRatio(
-    //                       aspectRatio: aspectRatioAtIndex(i, j),
-    //                       child: ParticipantWidget(
-    //                         borderRadius: BorderRadius.zero,
-    //                         globalKey: CommunityGlobalKey.fromLabel(
-    //                           participantAtIndex(i, j).userId,
-    //                         ),
-    //                         participant: participantAtIndex(i, j),
-    //                       ),
-    //                     ),
-    //                   ),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //   ],
-    // );
+    if (participantCount == 1) return screenWidth * 0.8;
+    if (participantCount == 2) return screenWidth * 0.45;
+    if (participantCount <= 4) return screenWidth * 0.45;
+    if (participantCount <= 6) return screenWidth * 0.3;
+    if (participantCount <= 9) return screenWidth * 0.3;
+
+    // For 10+ participants, make them smaller
+    return screenWidth * 0.22;
   }
 }
