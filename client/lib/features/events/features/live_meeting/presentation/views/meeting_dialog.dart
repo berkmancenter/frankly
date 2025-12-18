@@ -85,18 +85,11 @@ class _MeetingDialogState extends State<MeetingDialog> {
     dialogProvider.isOnIframePage = false;
   }
 
-  Widget _buildVideoLayout() {
-    final liveMeetingKey = ObjectKey(ConferenceRoom.read(context));
-    if (responsiveLayoutService.isMobile(context)) {
-      return LiveMeetingMobilePage(key: liveMeetingKey);
-    }
-    return LiveMeetingDesktopLayout(key: liveMeetingKey);
-  }
-
   @override
   Widget build(BuildContext context) {
     final event = eventProvider.event;
     final permissions = Provider.of<EventPermissionsProvider>(context);
+    final liveMeetingKey = ObjectKey(ConferenceRoom.read(context));
 
     return PopScope(
       // onPopInvoked: (didPop) async {
@@ -150,7 +143,9 @@ class _MeetingDialogState extends State<MeetingDialog> {
                         (permissions.canChat && eventProvider.enableChat),
                     enableAdminPanel: permissions.canAccessAdminTabInEvent,
                     child: _ConferenceRoomWrapper(
-                      child: _buildVideoLayout(),
+                      child: responsiveLayoutService.isMobile(context)
+                          ? LiveMeetingMobilePage(key: liveMeetingKey)
+                          : LiveMeetingDesktopLayout(key: liveMeetingKey),
                     ),
                   ),
                 );
