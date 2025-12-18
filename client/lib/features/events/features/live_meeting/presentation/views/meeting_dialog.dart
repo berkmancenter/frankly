@@ -4,7 +4,6 @@ import 'package:beamer/beamer.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:client/features/events/features/live_meeting/features/av_check/presentation/views/av_check.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_tabs.dart';
@@ -39,32 +38,28 @@ class MeetingDialog extends StatefulWidget {
     Function()? onLeave,
     bool avCheckEnabled = false,
   }) {
-    if (!sharedPreferencesService.getAvCheckComplete() && avCheckEnabled) {
-      return AvCheckPage();
-    } else {
-      return ChangeNotifierProvider(
-        create: (context) => LiveMeetingProvider(
-          communityProvider: CommunityProvider.read(context),
-          eventProvider: EventProvider.read(context),
-          navBarProvider: Provider.of<NavBarProvider>(context, listen: false),
-          isInstant: isInstant,
-          leaveLocation: leaveLocation,
-          onLeave: onLeave,
-          showToast: (String message, {bool? hideOnMobile}) {
-            final hideToast = hideOnMobile == true &&
-                responsiveLayoutService.isMobile(context);
-            if (!hideToast) {
-              return showRegularToast(
-                context,
-                message,
-                toastType: ToastType.success,
-              );
-            }
-          },
-        ),
-        child: MeetingDialog._(),
-      );
-    }
+    return ChangeNotifierProvider(
+      create: (context) => LiveMeetingProvider(
+        communityProvider: CommunityProvider.read(context),
+        eventProvider: EventProvider.read(context),
+        navBarProvider: Provider.of<NavBarProvider>(context, listen: false),
+        isInstant: isInstant,
+        leaveLocation: leaveLocation,
+        onLeave: onLeave,
+        showToast: (String message, {bool? hideOnMobile}) {
+          final hideToast =
+              hideOnMobile == true && responsiveLayoutService.isMobile(context);
+          if (!hideToast) {
+            return showRegularToast(
+              context,
+              message,
+              toastType: ToastType.success,
+            );
+          }
+        },
+      ),
+      child: MeetingDialog._(),
+    );
   }
 
   @override
