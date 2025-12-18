@@ -63,10 +63,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   StreamSubscription? _onConferenceRoomException;
   late StreamSubscription _onUnloadSubscription;
 
-  /// Used to ensure that if the same participants are on stage, they dont constantly reorder
-  /// themselves as they switch dominant speaker.
-  List<String> _currentStageOrdering = [];
-
   ConferenceRoom get _conferenceRoom => Provider.of<ConferenceRoom>(context);
   ConferenceRoom get _conferenceRoomRead =>
       Provider.of<ConferenceRoom>(context, listen: false);
@@ -129,6 +125,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         ],
       );
     }
+
     return CustomStreamBuilder(
       entryFrom: '_VideoFlutterMeetingState.build',
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
@@ -141,11 +138,12 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           Expanded(
             child: Stack(
               children: [
-                if (liveMeetingProvider.liveMeetingViewType ==
-                    LiveMeetingViewType.stage)
-                  _buildHostlessDesktop()
-                else
-                  _buildBradyBunchViewWidget(),
+                _ParticipantWidgetView(
+                  layoutType: liveMeetingProvider.liveMeetingViewType ??
+                      LiveMeetingViewType.bradyBunch,
+                  liveMeetingProvider: liveMeetingProvider,
+                  conferenceRoom: _conferenceRoom,
+                ),
                 if (EventProvider.watch(context)
                         .event
                         .eventSettings
@@ -172,7 +170,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                           Text(
                             'Recording',
                             style: TextStyle(
-                                color: context.theme.colorScheme.onPrimary),
+                              color: context.theme.colorScheme.onPrimary,
+                            ),
                           ),
                           SizedBox(width: 26),
                         ],
@@ -186,122 +185,142 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       ),
     );
   }
+}
 
-  Widget _buildHostlessDesktop() {
-    final participants = _conferenceRoom.participants;
+class _ParticipantWidgetView extends StatefulWidget {
+  const _ParticipantWidgetView({
+    super.key,
+    required this.layoutType,
+    required this.liveMeetingProvider,
+    required this.conferenceRoom,
+  });
 
-    final showGuideCard = liveMeetingProvider.showGuideCard;
+  final LiveMeetingViewType layoutType;
+  final LiveMeetingProvider liveMeetingProvider;
+  final ConferenceRoom conferenceRoom;
 
-    final guideCardTakeover =
-        MeetingGuideCardStore.watch(context)?.guideCardTakeover == true &&
-            !liveMeetingProvider.isMeetingCardMinimized;
+  @override
+  State<_ParticipantWidgetView> createState() => _ParticipantWidgetViewState();
+}
 
-    return LayoutBuilder(
-      builder: (_, constraints) {
-        var maxHighlighted = _conferenceRoom.maxHighlightedParticipants;
+class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
+  /// Used to ensure that if the same participants are on stage, they dont constantly reorder
+  /// themselves as they switch dominant speaker.
+  List<String> _currentStageOrdering = [];
 
-        if (guideCardTakeover) {
-          maxHighlighted = 0;
-        }
+  @override
+  Widget build(BuildContext context) {
+    final participants = widget.conferenceRoom.participants;
+    final showGuideCard = widget.liveMeetingProvider.showGuideCard;
+    final showGuideCardLayout =
+        showGuideCard && !widget.liveMeetingProvider.isMeetingCardMinimized;
 
-        var highlightedParticipants =
-            participants.take(maxHighlighted).toList().reversed.toList();
+    if (widget.layoutType == LiveMeetingViewType.stage) {
+      final guideCardTakeover =
+          MeetingGuideCardStore.watch(context)?.guideCardTakeover == true &&
+              !widget.liveMeetingProvider.isMeetingCardMinimized;
+      return LayoutBuilder(
+        builder: (_, constraints) {
+          var maxHighlighted = widget.conferenceRoom.maxHighlightedParticipants;
 
-        // If the participants are the same as last build, then keep them in the same spot on stage
-        // Note: hacky solution that assumes max two people on stage
-        if (highlightedParticipants.length > 1 &&
-            _currentStageOrdering.length > 1 &&
-            highlightedParticipants[0].userId == _currentStageOrdering[1]) {
-          highlightedParticipants = highlightedParticipants.reversed.toList();
-        }
-        _currentStageOrdering =
-            highlightedParticipants.map((p) => p.userId).toList();
+          if (guideCardTakeover) {
+            maxHighlighted = 0;
+          }
 
-        final remainingParticipants =
-            participants.skip(maxHighlighted).toList();
+          var highlightedParticipants =
+              participants.take(maxHighlighted).toList().reversed.toList();
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _LayoutOptionButtons(
-              liveMeetingProvider: liveMeetingProvider,
-            ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(
-                  left: 12,
-                  top: 12,
-                  right: 12,
-                  bottom: liveMeetingProvider.isInBreakout ? 0 : 12,
-                ),
-                child: Builder(
-                  builder: (_) {
-                    final participantWidgets = highlightedParticipants.map((p) {
-                      return ParticipantWidget(
-                        globalKey: CommunityGlobalKey.fromLabel(p.userId),
-                        borderRadius: BorderRadius.circular(20),
-                        participant: p,
-                      );
-                    });
+          // If the participants are the same as last build, then keep them in the same spot on stage
+          // Note: hacky solution that assumes max two people on stage
+          if (highlightedParticipants.length > 1 &&
+              _currentStageOrdering.length > 1 &&
+              highlightedParticipants[0].userId == _currentStageOrdering[1]) {
+            highlightedParticipants = highlightedParticipants.reversed.toList();
+          }
+          _currentStageOrdering =
+              highlightedParticipants.map((p) => p.userId).toList();
 
-                    var widgets = [
-                      ...participantWidgets,
-                      if (showGuideCard &&
-                          !liveMeetingProvider.isMeetingCardMinimized)
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: math.max(600, constraints.maxWidth / 2),
-                          ),
-                          child: GlobalKeyedSubtree(
-                            label: 'meeting-guide-card',
-                            child: MeetingGuideCard(
-                              onMinimizeCard: () => alertOnError(
-                                context,
-                                () => LiveMeetingProvider.read(context)
-                                    .updateGuideCardIsMinimized(
-                                  isMinimized: true,
+          final remainingParticipants =
+              participants.skip(maxHighlighted).toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _LayoutOptionButtons(
+                liveMeetingProvider: widget.liveMeetingProvider,
+              ),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(
+                    left: 12,
+                    top: 12,
+                    right: 12,
+                    bottom: widget.liveMeetingProvider.isInBreakout ? 0 : 12,
+                  ),
+                  child: Builder(
+                    builder: (_) {
+                      final participantWidgets =
+                          highlightedParticipants.map((p) {
+                        return ParticipantWidget(
+                          globalKey: CommunityGlobalKey.fromLabel(p.userId),
+                          borderRadius: BorderRadius.circular(20),
+                          participant: p,
+                        );
+                      });
+
+                      var widgets = [
+                        ...participantWidgets,
+                        if (showGuideCard &&
+                            !widget.liveMeetingProvider.isMeetingCardMinimized)
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: math.max(600, constraints.maxWidth / 2),
+                            ),
+                            child: GlobalKeyedSubtree(
+                              label: 'meeting-guide-card',
+                              child: MeetingGuideCard(
+                                onMinimizeCard: () => alertOnError(
+                                  context,
+                                  () => LiveMeetingProvider.read(context)
+                                      .updateGuideCardIsMinimized(
+                                    isMinimized: true,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                    ];
+                      ];
 
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (var i = 0; i < widgets.length; i++) ...[
-                          if (i > 0) SizedBox(height: 10, width: 10),
-                          Flexible(child: widgets[i]),
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (var i = 0; i < widgets.length; i++) ...[
+                            if (i > 0) SizedBox(height: 10, width: 10),
+                            Flexible(child: widgets[i]),
+                          ],
                         ],
-                      ],
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: GetHelpButton(),
-            ),
-            if (remainingParticipants.isNotEmpty)
-              SizedBox(
-                height: 160,
-                child: _SidePanelParticipants(
-                  remainingParticipants: remainingParticipants,
-                ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GetHelpButton(),
               ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildBradyBunchViewWidget() {
-    final showGuideCard = liveMeetingProvider.showGuideCard;
-    final showGuideCardLayout =
-        showGuideCard && !liveMeetingProvider.isMeetingCardMinimized;
+              if (remainingParticipants.isNotEmpty)
+                SizedBox(
+                  height: 160,
+                  child: _SidePanelParticipants(
+                    remainingParticipants: remainingParticipants,
+                  ),
+                ),
+            ],
+          );
+        },
+      );
+    }
 
     return Stack(
       children: [
@@ -340,7 +359,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           child: Column(
             children: [
               _LayoutOptionButtons(
-                liveMeetingProvider: liveMeetingProvider,
+                liveMeetingProvider: widget.liveMeetingProvider,
               ),
               Spacer(),
               Align(
