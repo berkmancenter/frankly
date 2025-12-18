@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 import 'data_tab_test.mocks.dart';
 
 @GenerateMocks([
-  AppLocalizationService,
+  // AppLocalizationService,
   BehaviorSubjectWrapper,
   ClockService,
   CommunityProvider,
@@ -33,7 +33,7 @@ import 'data_tab_test.mocks.dart';
   FirestoreEventService,
 ])
 
-class MockAppLocalizationService extends Mock implements AppLocalizationService {}
+// class MockAppLocalizationService extends Mock implements AppLocalizationService {}
 
 
 void main() {
@@ -43,7 +43,7 @@ void main() {
   // but wanted to keep the code for future use
   const disabled =  true;
 
-  late MockAppLocalizationService mockAppLocalizationService;
+  // late MockAppLocalizationService mockAppLocalizationService;
   late MockClockService mockClockService;
   late MockCommunityProvider mockCommunityProvider;
   late MockFirestoreDatabase mockFirestoreDatabase;
@@ -60,7 +60,7 @@ void main() {
     GetIt.instance.reset();
     
     // Create fresh mocks for each test
-    mockAppLocalizationService = MockAppLocalizationService();
+    // mockAppLocalizationService = MockAppLocalizationService();
     mockClockService = MockClockService();
     mockCommunityProvider = MockCommunityProvider();
     mockFirestoreDatabase = MockFirestoreDatabase();
@@ -79,7 +79,7 @@ void main() {
       ),).thenAnswer((_) => BehaviorSubjectWrapper(Stream.value(mockAllEvents)));
     
     // Register services
-    GetIt.instance.registerSingleton<AppLocalizationService>(mockAppLocalizationService);
+    // GetIt.instance.registerSingleton<AppLocalizationService>(mockAppLocalizationService);
     GetIt.instance.registerSingleton<ClockService>(mockClockService);
     GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
     GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
@@ -117,8 +117,8 @@ void main() {
   
   Widget createWidgetUnderTest() {
     return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      // localizationsDelegates: AppLocalizations.localizationsDelegates,
+      // supportedLocales: AppLocalizations.supportedLocales,
       home: ChangeNotifierProvider<CommunityProvider>(
         create: (_) => mockCommunityProvider,
         child: Scaffold(
