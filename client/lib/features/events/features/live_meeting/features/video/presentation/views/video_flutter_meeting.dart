@@ -299,6 +299,21 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     );
   }
 
+  Widget _buildHostlessLayout() {
+    final layoutType =
+        liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
+            ? 'stage'
+            : 'brady';
+
+    return KeyedSubtree(
+      key: ValueKey('layout_$layoutType'),
+      child:
+          liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
+              ? _buildHostlessDesktop()
+              : _buildBradyBunchViewWidget(),
+    );
+  }
+
   Widget _buildHostlessDesktop() {
     final participants = _conferenceRoom.participants;
 
@@ -394,21 +409,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           ],
         );
       },
-    );
-  }
-
-  Widget _buildHostlessLayout() {
-    final layoutType =
-        liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
-            ? 'stage'
-            : 'brady';
-
-    return KeyedSubtree(
-      key: ValueKey('layout_$layoutType'),
-      child:
-          liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
-              ? _buildHostlessDesktop()
-              : _buildBradyBunchViewWidget(),
     );
   }
 
