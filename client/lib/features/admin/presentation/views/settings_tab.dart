@@ -475,6 +475,8 @@ class _SettingsTabState extends State<SettingsTab> {
                     _buildSettingsToggle(
                       context.l10n.settingAllowMembersToCreateEvents,
                       !settings.dontAllowMembersToCreateMeetings,
+                      supportingText: context
+                          .l10n.settingHelperMemberEvents,
                       loadingIndex: 0,
                       (val) => _toggleCommunitySetting(
                         settings.copyWith(
@@ -488,6 +490,8 @@ class _SettingsTabState extends State<SettingsTab> {
                     _buildSettingsToggle(
                       context.l10n.settingAllowMembersToCreateTemplates,
                       settings.allowUnofficialTemplates,
+                      supportingText: context
+                          .l10n.settingHelperMemberTemplates,
                       loadingIndex: 1,
                       (val) => _toggleCommunitySetting(
                         settings.copyWith(
@@ -500,6 +504,8 @@ class _SettingsTabState extends State<SettingsTab> {
                     _buildSettingsToggle(
                       context.l10n.settingRequireApprovalForNewMembers,
                       settings.requireApprovalToJoin,
+                      supportingText: context
+                          .l10n.settingHelperRequireMembershipApproval,
                       loadingIndex: 2,
                       (val) => _toggleCommunitySetting(
                         settings.copyWith(
@@ -512,6 +518,8 @@ class _SettingsTabState extends State<SettingsTab> {
                     _buildSettingsToggle(
                       context
                           .l10n.settingEnableWeeklyEmailDigestsOfUpcomingEvents,
+                      supportingText: context
+                          .l10n.settingHelperEnableWeeklyEmail,
                       !settings.disableEmailDigests,
                       loadingIndex: 3,
                       (val) => _toggleCommunitySetting(
