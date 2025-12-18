@@ -20,7 +20,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -63,10 +62,10 @@ class MeetingDialog extends StatefulWidget {
   }
 
   @override
-  _MeetingDialogState createState() => _MeetingDialogState();
+  MeetingDialogState createState() => MeetingDialogState();
 }
 
-class _MeetingDialogState extends State<MeetingDialog> {
+class MeetingDialogState extends State<MeetingDialog> {
   LiveMeetingProvider get liveMeetingProvider =>
       Provider.of<LiveMeetingProvider>(context);
 
@@ -172,19 +171,19 @@ class _StreamLoadingWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CustomStreamBuilder(
-        entryFrom: '_MeetingDialogState._buildLoading1',
+        entryFrom: 'MeetingDialogState._buildLoading1',
         stream: eventProvider.eventStream,
         errorMessage: 'There was an error loading event details.',
         builder: (_, __) => CustomStreamBuilder(
-          entryFrom: '_MeetingDialogState._buildLoading2',
+          entryFrom: 'MeetingDialogState._buildLoading2',
           stream: eventProvider.selfParticipantStream,
           errorMessage: 'There was an error loading event details.',
           builder: (_, __) => CustomStreamBuilder(
-            entryFrom: '_MeetingDialogState._buildLoading3',
+            entryFrom: 'MeetingDialogState._buildLoading3',
             stream: eventProvider.eventParticipantsStream,
             errorMessage: 'There was an error loading event details.',
             builder: (_, __) => CustomStreamBuilder(
-              entryFrom: '_MeetingDialogState._buildLoading4',
+              entryFrom: 'MeetingDialogState._buildLoading4',
               stream:
                   Provider.of<LiveMeetingProvider>(context).liveMeetingStream,
               errorMessage: 'There was an error loading event details.',
