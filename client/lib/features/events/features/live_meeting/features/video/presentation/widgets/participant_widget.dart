@@ -46,17 +46,18 @@ class GlobalKeyedSubtree extends StatelessWidget {
 }
 
 class ParticipantWidget extends StatefulWidget {
+  const ParticipantWidget({
+    Key? key,
+    required this.participant,
+    this.isScreenShare = false,
+    this.borderRadius = BorderRadius.zero,
+  }) : super(key: key);
+
   static final aspectRatio = Size(16, 9).aspectRatio;
 
   final AgoraParticipant participant;
   final bool isScreenShare;
   final BorderRadius borderRadius;
-
-  ParticipantWidget({
-    required this.participant,
-    this.isScreenShare = false,
-    this.borderRadius = BorderRadius.zero,
-  }) : super(key: ValueKey(participant.userId));
 
   @override
   ParticipantWidgetState createState() => ParticipantWidgetState();
