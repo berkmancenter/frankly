@@ -41,11 +41,11 @@ class LiveMeetingDesktopLayout extends StatefulWidget {
   const LiveMeetingDesktopLayout({Key? key}) : super(key: key);
 
   @override
-  _LiveMeetingDesktopLayoutState createState() =>
-      _LiveMeetingDesktopLayoutState();
+  LiveMeetingDesktopLayoutState createState() =>
+      LiveMeetingDesktopLayoutState();
 }
 
-class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
+class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
   Widget _buildBreakoutRoom(String roomId) {
     return RefreshKeyWidget(
       child: RefreshableBreakoutRoom(
