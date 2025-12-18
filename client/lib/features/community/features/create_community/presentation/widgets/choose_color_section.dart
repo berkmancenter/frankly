@@ -40,8 +40,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   int _selectedPresetIndex = 0;
   // Used to temporarily store updated index before committing on setState
   int _updatedSelectedPresetIndex = -1;
-
-  String? _selectedColorErrorMessage;
+  String? _selectedBackgroundColorErrorMessage;
+  String? _selectedAccentColorErrorMessage;
 
   String get _currentLightColor => _customBackgroundColorController.text;
   String get _currentDarkColor => _customAccentColorController.text;
@@ -51,8 +51,6 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   late Color _lightColor = Color(0xffffffff);
   late Color _darkColor = Color(0xff212121);
-
-  final _customColorForm = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -101,46 +99,52 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     if (_selectedPresetIndex == -1) _selectedPresetIndex = 0;
   }
 
-  String? _checkChosenColorConstraints() {
-    if (ThemeUtils.isColorValid(_currentLightColor) &&
-        ThemeUtils.isColorValid(_currentDarkColor)) {
-      final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
-          context.theme.colorScheme.surface;
-      final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
-          context.theme.colorScheme.primary;
-      final isFirstColorLighter =
-          ThemeUtils.isFirstColorLighter(firstColor, secondColor);
-      final contrastChecks = [
-        ThemeUtils.isContrastRatioValid(context, firstColor, secondColor),
-        ThemeUtils.isContrastRatioValid(
+  void _checkChosenColorConstraints() {
+    setState(() {
+      if (ThemeUtils.isColorValid(_currentLightColor) &&
+          ThemeUtils.isColorValid(_currentDarkColor)) {
+        final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
+            context.theme.colorScheme.surface;
+        final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
+            context.theme.colorScheme.primary;
+
+        // background color must be lighter than accent
+        if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
+          _selectedBackgroundColorErrorMessage =
+              context.l10n.useLighterBackgroundColor;
+        } else if (!ThemeUtils.isContrastRatioValid(
+          context,
+          firstColor,
+          secondColor,
+        )) {
+          _selectedAccentColorErrorMessage = context.l10n.useDarkerAccentColor;
+        } else if (!ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
           context.theme.colorScheme.secondary,
-        ),
-        ThemeUtils.isContrastRatioValid(
+        )) {
+          _selectedBackgroundColorErrorMessage =
+              context.l10n.useLighterBackgroundColor;
+        } else if (!ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
           context.theme.colorScheme.surface,
-        ),
-      ];
-      // We have cache so accent color field can also trigger error, which shows only on background field
-      _selectedColorErrorMessage =
-          (!isFirstColorLighter || contrastChecks.any((check) => !check))
-              ? context.l10n.useLighterBackgroundOrDarkerAccent
-              : null;
-      return _selectedColorErrorMessage;
-    } else {
-      return null;
-    }
+        )) {
+          _selectedAccentColorErrorMessage = context.l10n.useDarkerAccentColor;
+        } else {
+          _selectedBackgroundColorErrorMessage = null;
+          _selectedAccentColorErrorMessage = null;
+        }
+      } else {
+        _selectedBackgroundColorErrorMessage = null;
+        _selectedAccentColorErrorMessage = null;
+      }
+    });
   }
 
   void _changeAccentColorTextField(Color val) {
     widget.setDarkColor(_currentDarkColor);
     _checkChosenColorConstraints();
-
-    // We have to revalidate the entire form in order to pop a potential error value in the background field validator
-    _customColorForm.currentState!.validate();
-
     setState(() {
       _darkColor = val;
     });
@@ -180,7 +184,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         ),
         SizedBox(height: 30),
         SizedBox(
-          height: 450,
+          height: 470,
           child: DefaultTabController(
             initialIndex: _isPresetSelected ? 0 : 1,
             length: 2,
@@ -337,15 +341,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             onChanged: _changeBackgroundColorTextField,
             onTap: backgroundColorPicker,
             controller: _customBackgroundColorController,
-            validator: (value) {
-              if (_selectedColorErrorMessage != null) {
-                return _selectedColorErrorMessage;
-              } else if (!ThemeUtils.isColorValid(value)) {
-                return context.l10n.mustBeValidHexColor;
-              } else {
-                return _checkChosenColorConstraints();
-              }
-            },
+            validator: (value) => ThemeUtils.isColorValid(value)
+                ? _selectedBackgroundColorErrorMessage
+                : context.l10n.mustBeValidHexColor,
           ),
         ],
       ),
@@ -369,51 +367,49 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             onChanged: _changeAccentColorTextField,
             onTap: accentColorPicker,
             controller: _customAccentColorController,
-            validator: (value) => !ThemeUtils.isColorValid(value)
-                ? context.l10n.mustBeValidHexColor
-                : null,
+            validator: (value) => ThemeUtils.isColorValid(value)
+                ? _selectedAccentColorErrorMessage
+                : context.l10n.mustBeValidHexColor,
           ),
         ],
       ),
     ];
 
-    return Form(
-      key: _customColorForm,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              context.l10n.chooseABackgroundAndAccentColor,
-              style: context.theme.textTheme.titleSmall,
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            context.l10n.chooseABackgroundAndAccentColor,
+            style: context.theme.textTheme.titleSmall,
           ),
-          SizedBox(height: 10),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: _selectedColorErrorMessage != null ? 405 : 200,
-                  ),
-                  child: Column(
-                    children: children,
-                  ),
+        ),
+        SizedBox(height: 10),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: 250,),
+
+                child: Column(
+                  children: children,
                 ),
-                ThemePreview(
-                  lightColorString: _customBackgroundColorController.text,
-                  darkColorString: _customAccentColorController.text,
-                ),
-              ],
-            ),
+              ),
+              SizedBox(height: 30),
+              ThemePreview(
+                lightColorString: _customBackgroundColorController.text,
+                darkColorString: _customAccentColorController.text,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -422,7 +418,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     required void Function(Color) onChanged,
     required void Function() onTap,
     required TextEditingController controller,
-    FormFieldValidator<String>? validator,
+    required FormFieldValidator<String> validator,
   }) =>
       Expanded(
         child: CustomTextField(
