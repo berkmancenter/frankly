@@ -101,6 +101,8 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
 
   void _checkChosenColorConstraints() {
     setState(() {
+      // First, ensure both colors are valid;
+      // if they are not that is handled by the text field's individual validator
       if (ThemeUtils.isColorValid(_currentLightColor) &&
           ThemeUtils.isColorValid(_currentDarkColor)) {
         final firstColor = ThemeUtils.parseColor(_currentLightColor) ??
@@ -108,33 +110,23 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
         final secondColor = ThemeUtils.parseColor(_currentDarkColor) ??
             context.theme.colorScheme.primary;
 
-        // background color must be lighter than accent
-        if (!ThemeUtils.isFirstColorLighter(firstColor, secondColor)) {
-          _selectedBackgroundColorErrorMessage =
-              context.l10n.useLighterBackgroundColor;
-        } else if (!ThemeUtils.isContrastRatioValid(
+        // Background color is compared against our primary theme color
+        _selectedBackgroundColorErrorMessage = !ThemeUtils.isContrastRatioValid(
           context,
           firstColor,
-          secondColor,
-        )) {
-          _selectedAccentColorErrorMessage = context.l10n.useDarkerAccentColor;
-        } else if (!ThemeUtils.isContrastRatioValid(
-          context,
-          firstColor,
-          context.theme.colorScheme.secondary,
-        )) {
-          _selectedBackgroundColorErrorMessage =
-              context.l10n.useLighterBackgroundColor;
-        } else if (!ThemeUtils.isContrastRatioValid(
+          context.theme.colorScheme.primary,
+        )
+            ? context.l10n.useLighterBackgroundColor
+            : null;
+
+        // Accent color is compared against our surface theme color
+        _selectedAccentColorErrorMessage = !ThemeUtils.isContrastRatioValid(
           context,
           secondColor,
           context.theme.colorScheme.surface,
-        )) {
-          _selectedAccentColorErrorMessage = context.l10n.useDarkerAccentColor;
-        } else {
-          _selectedBackgroundColorErrorMessage = null;
-          _selectedAccentColorErrorMessage = null;
-        }
+        )
+            ? context.l10n.useDarkerAccentColor
+            : null;
       } else {
         _selectedBackgroundColorErrorMessage = null;
         _selectedAccentColorErrorMessage = null;
@@ -321,56 +313,72 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
     }
 
     List<Widget> children = [
-      Row(
+      Column(
         children: [
-          IconButton(
-            icon: Icon(
-              Icons.water_drop,
-              color: _lightColor,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withAlpha(50),
-                  blurRadius: 10,
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.water_drop,
+                  color: _lightColor,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withAlpha(50),
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
-              ],
+                onPressed: backgroundColorPicker,
+              ),
+              _buildChooseColorTextField(
+                label: context.l10n.backgroundColor,
+                onChanged: _changeBackgroundColorTextField,
+                onTap: backgroundColorPicker,
+                controller: _customBackgroundColorController,
+                validator: (value) => ThemeUtils.isColorValid(value)
+                    ? _selectedBackgroundColorErrorMessage
+                    : context.l10n.mustBeValidHexColor,
+              ),
+            ],
+          ),
+          if (_selectedBackgroundColorErrorMessage == null)
+            SizedBox.square(
+              dimension: AppTextStyle.body.fontSize! * 1.5,
             ),
-            onPressed: backgroundColorPicker,
-          ),
-          _buildChooseColorTextField(
-            label: context.l10n.backgroundColor,
-            onChanged: _changeBackgroundColorTextField,
-            onTap: backgroundColorPicker,
-            controller: _customBackgroundColorController,
-            validator: (value) => ThemeUtils.isColorValid(value)
-                ? _selectedBackgroundColorErrorMessage
-                : context.l10n.mustBeValidHexColor,
-          ),
         ],
       ),
-      Row(
+      Column(
         children: [
-          IconButton(
-            icon: Icon(
-              Icons.water_drop,
-              color: _darkColor,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withAlpha(50),
-                  blurRadius: 10,
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.water_drop,
+                  color: _darkColor,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withAlpha(50),
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
-              ],
+                onPressed: accentColorPicker,
+              ),
+              _buildChooseColorTextField(
+                label: context.l10n.accentColor,
+                onChanged: _changeAccentColorTextField,
+                onTap: accentColorPicker,
+                controller: _customAccentColorController,
+                validator: (value) => ThemeUtils.isColorValid(value)
+                    ? _selectedAccentColorErrorMessage
+                    : context.l10n.mustBeValidHexColor,
+              ),
+            ],
+          ),
+          if (_selectedAccentColorErrorMessage == null)
+            SizedBox.square(
+              dimension: AppTextStyle.body.fontSize! * 1.5,
             ),
-            onPressed: accentColorPicker,
-          ),
-          _buildChooseColorTextField(
-            label: context.l10n.accentColor,
-            onChanged: _changeAccentColorTextField,
-            onTap: accentColorPicker,
-            controller: _customAccentColorController,
-            validator: (value) => ThemeUtils.isColorValid(value)
-                ? _selectedAccentColorErrorMessage
-                : context.l10n.mustBeValidHexColor,
-          ),
         ],
       ),
     ];
@@ -395,13 +403,13 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
             children: [
               ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxWidth: 250,),
-
+                  maxWidth: 250,
+                ),
                 child: Column(
                   children: children,
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 10),
               ThemePreview(
                 lightColorString: _customBackgroundColorController.text,
                 darkColorString: _customAccentColorController.text,
