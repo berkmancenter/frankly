@@ -139,47 +139,48 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       builder: (context, agoraRoom) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Expanded(child: _buildVideoLayout()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVideoLayout() {
-    return Stack(
-      children: [
-        _buildMainVideoContent(context, _conferenceRoom),
-        if (EventProvider.watch(context).event.eventSettings?.alwaysRecord ==
-            true)
-          Container(
-            alignment: Alignment.topRight,
-            child: Container(
-              color: context.theme.colorScheme.scrim.withScrimOpacity,
-              height: 32,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildMainVideoContent(context, _conferenceRoom),
+                if (EventProvider.watch(context)
+                        .event
+                        .eventSettings
+                        ?.alwaysRecord ==
+                    true)
                   Container(
-                    height: _kRecordingPulseSize,
-                    width: _kRecordingPulseSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: context.theme.colorScheme.errorContainer,
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      color: context.theme.colorScheme.scrim.withScrimOpacity,
+                      height: 32,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: _kRecordingPulseSize,
+                            width: _kRecordingPulseSize,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: context.theme.colorScheme.errorContainer,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Recording',
+                            style: TextStyle(
+                                color: context.theme.colorScheme.onPrimary),
+                          ),
+                          SizedBox(width: 26),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Recording',
-                    style:
-                        TextStyle(color: context.theme.colorScheme.onPrimary),
-                  ),
-                  SizedBox(width: 26),
-                ],
-              ),
+              ],
             ),
           ),
-      ],
+        ],
+      ),
     );
   }
 
