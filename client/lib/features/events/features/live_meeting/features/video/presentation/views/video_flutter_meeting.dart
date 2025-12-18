@@ -398,9 +398,18 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   }
 
   Widget _buildHostlessLayout() {
-    return liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
-        ? _buildHostlessDesktop()
-        : _buildBradyBunchViewWidget();
+    final layoutType =
+        liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
+            ? 'stage'
+            : 'brady';
+
+    return KeyedSubtree(
+      key: ValueKey('layout_$layoutType'),
+      child:
+          liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
+              ? _buildHostlessDesktop()
+              : _buildBradyBunchViewWidget(),
+    );
   }
 
   Widget _buildBradyBunchViewWidget() {
