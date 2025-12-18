@@ -78,7 +78,7 @@ class _BradyBunchViewWidgetState extends State<BradyBunchViewWidget> {
               .toList();
 
           return BradyBunchLayoutWidget(
-            key: ValueKey('page_$pageIndex'),
+            key: ValueKey('brady_${widget.keyPrefix}_page_$pageIndex'),
             height: height,
             width: width,
             keyPrefix: widget.keyPrefix,

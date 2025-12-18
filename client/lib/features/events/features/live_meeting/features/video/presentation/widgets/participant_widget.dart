@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/cupertino.dart';
