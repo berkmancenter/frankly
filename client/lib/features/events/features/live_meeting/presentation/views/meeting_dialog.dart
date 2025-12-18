@@ -93,9 +93,122 @@ class _MeetingDialogState extends State<MeetingDialog> {
     return LiveMeetingDesktopLayout(key: liveMeetingKey);
   }
 
-  Widget _buildConferenceRoomWrapper({
-    required Widget child,
-  }) {
+  @override
+  Widget build(BuildContext context) {
+    final event = eventProvider.event;
+    final permissions = Provider.of<EventPermissionsProvider>(context);
+
+    return PopScope(
+      // onPopInvoked: (didPop) async {
+      //   await Provider.of<LiveMeetingProvider>(context, listen: false)
+      //       .leaveMeeting();
+      // },
+      child: SizedBox.expand(
+        child: _StreamLoadingWrapper(
+          eventProvider: eventProvider,
+          child: MeetingAgendaWrapper(
+            communityId: eventProvider.communityId,
+            event: event,
+            labelColor: Colors.white60,
+            child: Builder(
+              builder: (context) {
+                final liveMeetingProvider = LiveMeetingProvider.watch(context);
+
+                final agendaProvider = Provider.of<AgendaProvider>(context);
+                final communityProvider = CommunityProvider.watch(context);
+
+                final bool enableGuide = (eventProvider.agendaPreview ||
+                    context
+                        .watch<EventPermissionsProvider>()
+                        .isAgendaVisibleOverride ||
+                    liveMeetingProvider.isInBreakout);
+
+                return ChangeNotifierProvider(
+                  key: Key(agendaProvider.liveMeetingPath),
+                  create: (context) => MeetingGuideCardStore(
+                    communityProvider: communityProvider,
+                    liveMeetingProvider: liveMeetingProvider,
+                    agendaProvider: agendaProvider,
+                    showToast: (String message) => showRegularToast(
+                      context,
+                      message,
+                      toastType: ToastType.success,
+                    ),
+                  )..initialize(),
+                  child: EventTabsWrapper(
+                    meetingAgendaBuilder: (context) => MeetingAgenda(
+                      canUserEditAgenda: context
+                          .watch<EventPermissionsProvider>()
+                          .canEditEvent,
+                      displayLocation: MeetingAgendaDisplayLocation.meetingPage,
+                    ),
+                    enableGuide: enableGuide,
+                    enableUserSubmittedAgenda:
+                        eventProvider.event.eventType == EventType.livestream &&
+                            !liveMeetingProvider.isInBreakout,
+                    enableChat:
+                        (permissions.canChat && eventProvider.enableChat),
+                    enableAdminPanel: permissions.canAccessAdminTabInEvent,
+                    child: _ConferenceRoomWrapper(
+                      child: _buildVideoLayout(),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StreamLoadingWrapper extends StatelessWidget {
+  const _StreamLoadingWrapper({
+    super.key,
+    required this.eventProvider,
+    required this.child,
+  });
+
+  final EventProvider eventProvider;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CustomStreamBuilder(
+        entryFrom: '_MeetingDialogState._buildLoading1',
+        stream: eventProvider.eventStream,
+        errorMessage: 'There was an error loading event details.',
+        builder: (_, __) => CustomStreamBuilder(
+          entryFrom: '_MeetingDialogState._buildLoading2',
+          stream: eventProvider.selfParticipantStream,
+          errorMessage: 'There was an error loading event details.',
+          builder: (_, __) => CustomStreamBuilder(
+            entryFrom: '_MeetingDialogState._buildLoading3',
+            stream: eventProvider.eventParticipantsStream,
+            errorMessage: 'There was an error loading event details.',
+            builder: (_, __) => CustomStreamBuilder(
+              entryFrom: '_MeetingDialogState._buildLoading4',
+              stream:
+                  Provider.of<LiveMeetingProvider>(context).liveMeetingStream,
+              errorMessage: 'There was an error loading event details.',
+              builder: (context, __) => child,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ConferenceRoomWrapper extends StatelessWidget {
+  const _ConferenceRoomWrapper({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
     return HookBuilder(
       builder: (context) {
         useKickProposalListeners(context);
@@ -165,114 +278,6 @@ class _MeetingDialogState extends State<MeetingDialog> {
           },
         );
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final event = eventProvider.event;
-    final permissions = Provider.of<EventPermissionsProvider>(context);
-
-    return PopScope(
-      // onPopInvoked: (didPop) async {
-      //   await Provider.of<LiveMeetingProvider>(context, listen: false)
-      //       .leaveMeeting();
-      // },
-      child: SizedBox.expand(
-        child: _StreamLoadingWrapper(
-          eventProvider: eventProvider,
-          child: MeetingAgendaWrapper(
-            communityId: eventProvider.communityId,
-            event: event,
-            labelColor: Colors.white60,
-            child: Builder(
-              builder: (context) {
-                final liveMeetingProvider = LiveMeetingProvider.watch(context);
-
-                final agendaProvider = Provider.of<AgendaProvider>(context);
-                final communityProvider = CommunityProvider.watch(context);
-
-                final bool enableGuide = (eventProvider.agendaPreview ||
-                    context
-                        .watch<EventPermissionsProvider>()
-                        .isAgendaVisibleOverride ||
-                    liveMeetingProvider.isInBreakout);
-
-                return ChangeNotifierProvider(
-                  key: Key(agendaProvider.liveMeetingPath),
-                  create: (context) => MeetingGuideCardStore(
-                    communityProvider: communityProvider,
-                    liveMeetingProvider: liveMeetingProvider,
-                    agendaProvider: agendaProvider,
-                    showToast: (String message) => showRegularToast(
-                      context,
-                      message,
-                      toastType: ToastType.success,
-                    ),
-                  )..initialize(),
-                  child: EventTabsWrapper(
-                    meetingAgendaBuilder: (context) => MeetingAgenda(
-                      canUserEditAgenda: context
-                          .watch<EventPermissionsProvider>()
-                          .canEditEvent,
-                      displayLocation: MeetingAgendaDisplayLocation.meetingPage,
-                    ),
-                    enableGuide: enableGuide,
-                    enableUserSubmittedAgenda:
-                        eventProvider.event.eventType == EventType.livestream &&
-                            !liveMeetingProvider.isInBreakout,
-                    enableChat:
-                        (permissions.canChat && eventProvider.enableChat),
-                    enableAdminPanel: permissions.canAccessAdminTabInEvent,
-                    child: _buildConferenceRoomWrapper(
-                      child: _buildVideoLayout(),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StreamLoadingWrapper extends StatelessWidget {
-  const _StreamLoadingWrapper({
-    super.key,
-    required this.eventProvider,
-    required this.child,
-  });
-
-  final EventProvider eventProvider;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CustomStreamBuilder(
-        entryFrom: '_MeetingDialogState._buildLoading1',
-        stream: eventProvider.eventStream,
-        errorMessage: 'There was an error loading event details.',
-        builder: (_, __) => CustomStreamBuilder(
-          entryFrom: '_MeetingDialogState._buildLoading2',
-          stream: eventProvider.selfParticipantStream,
-          errorMessage: 'There was an error loading event details.',
-          builder: (_, __) => CustomStreamBuilder(
-            entryFrom: '_MeetingDialogState._buildLoading3',
-            stream: eventProvider.eventParticipantsStream,
-            errorMessage: 'There was an error loading event details.',
-            builder: (_, __) => CustomStreamBuilder(
-              entryFrom: '_MeetingDialogState._buildLoading4',
-              stream:
-                  Provider.of<LiveMeetingProvider>(context).liveMeetingStream,
-              errorMessage: 'There was an error loading event details.',
-              builder: (context, __) => child,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
