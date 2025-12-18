@@ -108,10 +108,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     super.dispose();
   }
 
-  CommunityGlobalKey _getGlobalKey(String label) {
-    return CommunityGlobalKey.fromLabel(label);
-  }
-
   @override
   Widget build(BuildContext context) {
     final error = _conferenceRoom.connectError;
@@ -204,7 +200,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Padding(
               padding: const EdgeInsets.all(spacerSize),
               child: ParticipantWidget(
-                globalKey: _getGlobalKey('${screenSharer.userId}-screen-share'),
+                globalKey: CommunityGlobalKey.fromLabel(
+                    '${screenSharer.userId}-screen-share'),
                 participant: screenSharer,
                 isScreenShare: true,
               ),
@@ -380,7 +377,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                   builder: (_) {
                     final participantWidgets = highlightedParticipants.map((p) {
                       return ParticipantWidget(
-                        globalKey: _getGlobalKey(p.userId),
+                        globalKey: CommunityGlobalKey.fromLabel(p.userId),
                         borderRadius: BorderRadius.circular(20),
                         participant: p,
                       );
