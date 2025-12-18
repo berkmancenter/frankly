@@ -42,16 +42,17 @@ class ThemePreview extends StatelessWidget {
 
   Widget _buildPreviewContainer(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
+      alignment: Alignment.topLeft,
       child: Container(
-        alignment: Alignment.center,
         width: 162,
         height: 110,
         decoration: isSelected
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: context.theme.colorScheme.primary, width: 1.5,),
+                  color: context.theme.colorScheme.primary,
+                  width: 1.5,
+                ),
               )
             : null,
         child: Container(
@@ -65,7 +66,6 @@ class ThemePreview extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                alignment: Alignment.center,
                 height: 58,
                 width: 58,
                 decoration: BoxDecoration(
