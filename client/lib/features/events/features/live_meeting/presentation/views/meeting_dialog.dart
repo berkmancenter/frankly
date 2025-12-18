@@ -253,10 +253,10 @@ class _MeetingDialogState extends State<MeetingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Provider.of<LiveMeetingProvider>(context, listen: false).leaveMeeting();
-        return Future.value(false);
+    return PopScope(
+      onPopInvoked: (didPop) async {
+        await Provider.of<LiveMeetingProvider>(context, listen: false)
+            .leaveMeeting();
       },
       child: Material(
         color: context.theme.colorScheme.primary,
