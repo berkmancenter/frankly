@@ -22,28 +22,38 @@ import '../../../../mocked_classes.mocks.dart';
   FirestoreDatabase,
   FirestoreEventService,
 ])
-  void main() {
+void main() {
+  late MockClockService mockClockService;
+  late MockCommunityProvider mockCommunityProvider;
+  late MockFirestoreDatabase mockFirestoreDatabase;
+  late MockFirestoreEventService mockFirestoreEventService;
+  late List<Event> mockAllEvents;
+
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
   });
 
-  final mockClockService = MockClockService();
-  final mockCommunityProvider = MockCommunityProvider();
-  final mockFirestoreDatabase = MockFirestoreDatabase();
-  final mockFirestoreEventService = MockFirestoreEventService();
-  when(mockClockService.now()).thenReturn(DateTime.now());
-  
-  GetIt.instance.registerSingleton<ClockService>(mockClockService);
-  GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
-  GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
-  GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
-
-  when(mockCommunityProvider.communityId).thenReturn('fake-community-id');
-
-  late List<Event> mockAllEvents;
-  
   setUp(() {
+    // Reset GetIt before each test
+    GetIt.instance.reset();
+    
+    // Create fresh mocks for each test
+    mockClockService = MockClockService();
+    mockCommunityProvider = MockCommunityProvider();
+    mockFirestoreDatabase = MockFirestoreDatabase();
+    mockFirestoreEventService = MockFirestoreEventService();
+    
+    // Set up mock behaviors
+    when(mockClockService.now()).thenReturn(DateTime.now());
+    when(mockCommunityProvider.communityId).thenReturn('fake-community-id');
+    
+    // Register services
+    GetIt.instance.registerSingleton<ClockService>(mockClockService);
+    GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
+    GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
+    GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
+
     mockAllEvents = List.generate(
       80,
       (i) => Event(
@@ -66,6 +76,11 @@ import '../../../../mocked_classes.mocks.dart';
     );
     // Mock the events to be returned by the service
     when(mockFirestoreEventService.getEventsFromPaths('fake-community-id', <String>['path1', 'path2'])).thenAnswer((_) async => mockAllEvents);
+  });
+
+  tearDown(() {
+    // Clean up GetIt after each test
+    GetIt.instance.reset();
   });
   Widget createWidgetUnderTest() {
     return MaterialApp(
