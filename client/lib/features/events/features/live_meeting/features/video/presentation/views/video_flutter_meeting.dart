@@ -183,18 +183,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     );
   }
 
-  Widget _buildMeetingGuideCard() {
-    return GlobalKeyedSubtree(
-      label: 'meeting-guide-card',
-      child: MeetingGuideCard(
-        onMinimizeCard: () => alertOnError(
-          context,
-          () => LiveMeetingProvider.read(context)
-              .updateGuideCardIsMinimized(isMinimized: true),
-        ),
-      ),
-    );
-  }
 
   Widget _buildHostlessLayout() {
     final layoutType =
@@ -277,7 +265,18 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                           constraints: BoxConstraints(
                             maxWidth: math.max(600, constraints.maxWidth / 2),
                           ),
-                          child: _buildMeetingGuideCard(),
+                          child: GlobalKeyedSubtree(
+                            label: 'meeting-guide-card',
+                            child: MeetingGuideCard(
+                              onMinimizeCard: () => alertOnError(
+                                context,
+                                () => LiveMeetingProvider.read(context)
+                                    .updateGuideCardIsMinimized(
+                                  isMinimized: true,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                     ];
 
@@ -334,7 +333,16 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 45, horizontal: 10),
                   alignment: Alignment.center,
-                  child: _buildMeetingGuideCard(),
+                  child: GlobalKeyedSubtree(
+                    label: 'meeting-guide-card',
+                    child: MeetingGuideCard(
+                      onMinimizeCard: () => alertOnError(
+                        context,
+                        () => LiveMeetingProvider.read(context)
+                            .updateGuideCardIsMinimized(isMinimized: true),
+                      ),
+                    ),
+                  ),
                 ),
               ),
           ],
