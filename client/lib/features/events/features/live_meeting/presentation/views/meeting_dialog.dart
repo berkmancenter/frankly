@@ -101,7 +101,6 @@ class MeetingDialogState extends State<MeetingDialog> {
           child: MeetingAgendaWrapper(
             communityId: eventProvider.communityId,
             event: event,
-            labelColor: Colors.white60,
             child: Builder(
               builder: (context) {
                 final liveMeetingProvider = LiveMeetingProvider.watch(context);
