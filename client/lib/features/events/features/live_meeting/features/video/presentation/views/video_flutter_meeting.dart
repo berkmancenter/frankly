@@ -232,86 +232,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     );
   }
 
-  Widget _buildLayoutViewButtons() {
-    final additionalButtonsOffset =
-        EventProvider.watch(context).event.eventSettings?.alwaysRecord ?? false
-            ? EdgeInsets.only(right: 120)
-            : EdgeInsets.zero;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40) + additionalButtonsOffset,
-      alignment: Alignment.topRight,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          if (liveMeetingProvider.isMeetingCardMinimized &&
-              liveMeetingProvider.showGuideCard)
-            MeetingGuideMinimizedCard(
-              onExpandCard: () => alertOnError(
-                context,
-                () => LiveMeetingProvider.read(context)
-                    .updateGuideCardIsMinimized(isMinimized: false),
-              ),
-            ),
-          SizedBox(width: 10),
-          CustomInkWell(
-            onTap: () {
-              final liveMeetingProvider = LiveMeetingProvider.read(context);
-              final newType = liveMeetingProvider.liveMeetingViewType ==
-                      LiveMeetingViewType.bradyBunch
-                  ? LiveMeetingViewType.stage
-                  : LiveMeetingViewType.bradyBunch;
-
-              liveMeetingProvider.updateLiveMeetingViewType(newType);
-            },
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              padding: EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildViewIconButton(
-                    'Gallery View',
-                    Icons.grid_view_sharp,
-                    LiveMeetingViewType.bradyBunch,
-                  ),
-                  _buildViewIconButton(
-                    'Stage View',
-                    Icons.view_list,
-                    LiveMeetingViewType.stage,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildViewIconButton(
-    String message,
-    IconData iconData,
-    LiveMeetingViewType type,
-  ) {
-    return Tooltip(
-      message: message,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        child: Icon(
-          iconData,
-          size: 25,
-          color: liveMeetingProvider.liveMeetingViewType == type
-              ? context.theme.colorScheme.onSurface
-              : context.theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
-    );
-  }
-
   Widget _buildHostlessLayout() {
     final layoutType =
         liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
@@ -363,7 +283,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildLayoutViewButtons(),
+            _LayoutOptionButtons(
+              liveMeetingProvider: liveMeetingProvider,
+            ),
             Expanded(
               child: Container(
                 alignment: Alignment.center,
@@ -457,7 +379,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           alignment: Alignment.centerRight,
           child: Column(
             children: [
-              _buildLayoutViewButtons(),
+              _LayoutOptionButtons(
+                liveMeetingProvider: liveMeetingProvider,
+              ),
               Spacer(),
               Align(
                 alignment: Alignment.bottomRight,
@@ -681,6 +605,97 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _LayoutOptionButtons extends StatelessWidget {
+  const _LayoutOptionButtons({super.key, required this.liveMeetingProvider});
+
+  final LiveMeetingProvider liveMeetingProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    final additionalButtonsOffset =
+        EventProvider.watch(context).event.eventSettings?.alwaysRecord ?? false
+            ? EdgeInsets.only(right: 120)
+            : EdgeInsets.zero;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 40) + additionalButtonsOffset,
+      alignment: Alignment.topRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (liveMeetingProvider.isMeetingCardMinimized &&
+              liveMeetingProvider.showGuideCard)
+            MeetingGuideMinimizedCard(
+              onExpandCard: () => alertOnError(
+                context,
+                () => LiveMeetingProvider.read(context)
+                    .updateGuideCardIsMinimized(isMinimized: false),
+              ),
+            ),
+          SizedBox(width: 10),
+          CustomInkWell(
+            onTap: () {
+              final liveMeetingProvider = LiveMeetingProvider.read(context);
+              final newType = liveMeetingProvider.liveMeetingViewType ==
+                      LiveMeetingViewType.bradyBunch
+                  ? LiveMeetingViewType.stage
+                  : LiveMeetingViewType.bradyBunch;
+
+              liveMeetingProvider.updateLiveMeetingViewType(newType);
+            },
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Tooltip(
+                    message: 'Gallery View',
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      child: Icon(
+                        Icons.grid_view_sharp,
+                        size: 25,
+                        color: liveMeetingProvider.liveMeetingViewType ==
+                                LiveMeetingViewType.bradyBunch
+                            ? context.theme.colorScheme.onSurface
+                            : context.theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Stage View',
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      child: Icon(
+                        Icons.view_list,
+                        size: 25,
+                        color: liveMeetingProvider.liveMeetingViewType ==
+                                LiveMeetingViewType.stage
+                            ? context.theme.colorScheme.onSurface
+                            : context.theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
