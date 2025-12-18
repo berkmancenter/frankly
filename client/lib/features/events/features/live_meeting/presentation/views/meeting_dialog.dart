@@ -168,64 +168,11 @@ class _MeetingDialogState extends State<MeetingDialog> {
     );
   }
 
-  Widget _buildAgendaWrapper(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+  @override
+  Widget build(BuildContext context) {
     final event = eventProvider.event;
     final permissions = Provider.of<EventPermissionsProvider>(context);
 
-    return MeetingAgendaWrapper(
-      communityId: eventProvider.communityId,
-      event: event,
-      labelColor: Colors.white60,
-      child: Builder(
-        builder: (context) {
-          final liveMeetingProvider = LiveMeetingProvider.watch(context);
-
-          final agendaProvider = Provider.of<AgendaProvider>(context);
-          final communityProvider = CommunityProvider.watch(context);
-
-          final bool enableGuide = (eventProvider.agendaPreview ||
-              context
-                  .watch<EventPermissionsProvider>()
-                  .isAgendaVisibleOverride ||
-              liveMeetingProvider.isInBreakout);
-
-          return ChangeNotifierProvider(
-            key: Key(agendaProvider.liveMeetingPath),
-            create: (context) => MeetingGuideCardStore(
-              communityProvider: communityProvider,
-              liveMeetingProvider: liveMeetingProvider,
-              agendaProvider: agendaProvider,
-              showToast: (String message) => showRegularToast(
-                context,
-                message,
-                toastType: ToastType.success,
-              ),
-            )..initialize(),
-            child: EventTabsWrapper(
-              meetingAgendaBuilder: (context) => MeetingAgenda(
-                canUserEditAgenda:
-                    context.watch<EventPermissionsProvider>().canEditEvent,
-                displayLocation: MeetingAgendaDisplayLocation.meetingPage,
-              ),
-              enableGuide: enableGuide,
-              enableUserSubmittedAgenda:
-                  eventProvider.event.eventType == EventType.livestream &&
-                      !liveMeetingProvider.isInBreakout,
-              enableChat: (permissions.canChat && eventProvider.enableChat),
-              enableAdminPanel: permissions.canAccessAdminTabInEvent,
-              child: _buildConferenceRoomWrapper(
-                child: _buildVideoLayout(),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return PopScope(
       // onPopInvoked: (didPop) async {
       //   await Provider.of<LiveMeetingProvider>(context, listen: false)
@@ -236,7 +183,60 @@ class _MeetingDialogState extends State<MeetingDialog> {
         child: SizedBox.expand(
           child: _StreamLoadingWrapper(
             eventProvider: eventProvider,
-            child: _buildAgendaWrapper(context),
+            child: MeetingAgendaWrapper(
+              communityId: eventProvider.communityId,
+              event: event,
+              labelColor: Colors.white60,
+              child: Builder(
+                builder: (context) {
+                  final liveMeetingProvider =
+                      LiveMeetingProvider.watch(context);
+
+                  final agendaProvider = Provider.of<AgendaProvider>(context);
+                  final communityProvider = CommunityProvider.watch(context);
+
+                  final bool enableGuide = (eventProvider.agendaPreview ||
+                      context
+                          .watch<EventPermissionsProvider>()
+                          .isAgendaVisibleOverride ||
+                      liveMeetingProvider.isInBreakout);
+
+                  return ChangeNotifierProvider(
+                    key: Key(agendaProvider.liveMeetingPath),
+                    create: (context) => MeetingGuideCardStore(
+                      communityProvider: communityProvider,
+                      liveMeetingProvider: liveMeetingProvider,
+                      agendaProvider: agendaProvider,
+                      showToast: (String message) => showRegularToast(
+                        context,
+                        message,
+                        toastType: ToastType.success,
+                      ),
+                    )..initialize(),
+                    child: EventTabsWrapper(
+                      meetingAgendaBuilder: (context) => MeetingAgenda(
+                        canUserEditAgenda: context
+                            .watch<EventPermissionsProvider>()
+                            .canEditEvent,
+                        displayLocation:
+                            MeetingAgendaDisplayLocation.meetingPage,
+                      ),
+                      enableGuide: enableGuide,
+                      enableUserSubmittedAgenda:
+                          eventProvider.event.eventType ==
+                                  EventType.livestream &&
+                              !liveMeetingProvider.isInBreakout,
+                      enableChat:
+                          (permissions.canChat && eventProvider.enableChat),
+                      enableAdminPanel: permissions.canAccessAdminTabInEvent,
+                      child: _buildConferenceRoomWrapper(
+                        child: _buildVideoLayout(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),
