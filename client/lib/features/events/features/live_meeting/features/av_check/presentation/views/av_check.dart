@@ -13,6 +13,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 
@@ -63,7 +64,7 @@ class _AvCheckPageState extends State<_AvCheckPage> {
       return Center(
         child: AudioVideoErrorDisplay(
           error: error,
-          textColor: context.theme.colorScheme.secondary,
+          textColor: context.theme.colorScheme.onSurfaceVariant,
         ),
       );
     }
@@ -347,11 +348,13 @@ class _AvCheckPageState extends State<_AvCheckPage> {
     );
   }
 
-  Widget _buildDropdownItem(device, {Color textColor = Colors.white}) => Center(
+  Widget _buildDropdownItem(html.MediaDeviceInfo device,
+          {Color textColor = Colors.white}) =>
+      Center(
         child: SizedBox(
           width: 240,
           child: HeightConstrainedText(
-            '${device.deviceId == 'default' ? '(Default) ' : ''}${device.label}',
+            '${device.deviceId == 'default' ? '(Default) ' : ''}${(device.label == null || device.label!.isEmpty) ? (device.kind == 'audioinput' ? 'Unnamed Microphone' : 'Unnamed Camera') : device.label!}',
             overflow: TextOverflow.ellipsis,
             style: AppTextStyle.body.copyWith(color: textColor),
           ),

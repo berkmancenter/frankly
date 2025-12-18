@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +11,6 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
-import 'package:client/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/user/presentation/views/profile_tab.dart';
@@ -21,14 +20,14 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
-import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/styles/app_styles.dart';
 import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/providers/agora_room.dart';
+
+const kParticipantVideoWidgetDimensions = Size(854.0, 480.0);
 
 class GlobalKeyedSubtree extends StatelessWidget {
   static final Map<String, GlobalKey> _globalKeys = {};
@@ -48,13 +47,6 @@ class GlobalKeyedSubtree extends StatelessWidget {
 }
 
 class ParticipantWidget extends StatefulWidget {
-  static final aspectRatio = Size(16, 9).aspectRatio;
-
-  final CommunityGlobalKey globalKey;
-  final AgoraParticipant participant;
-  final bool isScreenShare;
-  final BorderRadius borderRadius;
-
   const ParticipantWidget({
     required this.globalKey,
     required this.participant,
@@ -62,15 +54,25 @@ class ParticipantWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
   }) : super(key: globalKey);
 
+  static final aspectRatio = Size(16, 9).aspectRatio;
+
+  final CommunityGlobalKey globalKey;
+  final AgoraParticipant participant;
+  final bool isScreenShare;
+  final BorderRadius borderRadius;
+
   @override
-  _ParticipantWidgetState createState() => _ParticipantWidgetState();
+  ParticipantWidgetState createState() => ParticipantWidgetState();
 }
 
-class _ParticipantWidgetState extends State<ParticipantWidget> {
+class ParticipantWidgetState extends State<ParticipantWidget> {
   Timer? _startedTimer;
   Timer? _showParticipantTimer;
 
   ConferenceRoom get conferenceRoom => ConferenceRoom.watch(context);
+
+  late final VideoViewController? videoViewController;
+  bool isVideoViewInitialized = false;
 
   bool get isDominant =>
       conferenceRoom.dominantSpeakerSid == widget.participant.userId;
@@ -79,6 +81,10 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
 
   bool get videoEnabled {
     return widget.participant.videoTrackEnabled;
+  }
+
+  bool get didReceiveFrames {
+    return widget.participant.hasReceivedVideoFrame;
   }
 
   bool get _isNewlyConnected {
@@ -103,78 +109,46 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
   bool _showName = false;
 
   @override
-  void dispose() {
-    loggingService.log('disposing ${widget.globalKey.distinctLabel}');
-    _startedTimer?.cancel();
-    _showParticipantTimer?.cancel();
-    super.dispose();
+  void initState() {
+    super.initState();
+    if (widget.participant is FakeParticipant) {
+      videoViewController = null;
+      isVideoViewInitialized = true;
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    if (!isVideoViewInitialized) {
+      if (!widget.participant.isLocal) {
+        videoViewController = VideoViewController.remote(
+          rtcEngine: conferenceRoom.room!.engine,
+          canvas: VideoCanvas(uid: widget.participant.agoraUid),
+          connection: RtcConnection(channelId: conferenceRoom.roomName),
+        );
+      } else {
+        videoViewController = VideoViewController(
+          rtcEngine: conferenceRoom.room!.engine,
+          // The local Agora user's UID is set to 0.
+          canvas: VideoCanvas(uid: 0),
+        );
+      }
+      isVideoViewInitialized = true;
+    }
     if (isStarted) {
       _startedTimer ??= Timer(Duration(seconds: 2), () => setState(() {}));
     }
   }
 
-  Widget _buildVideoElement() {
-    Widget videoWidget;
-    if (widget.participant is FakeParticipant) {
-      videoWidget = Container(color: Colors.orange);
-    } else if (isRemote) {
-      videoWidget = AgoraVideoView(
-        controller: VideoViewController.remote(
-          rtcEngine: conferenceRoom.room!.engine,
-          canvas: VideoCanvas(uid: widget.participant.agoraUid),
-          connection: RtcConnection(channelId: 'test-channel'),
-        ),
-      );
-    } else {
-      videoWidget = AgoraVideoView(
-        controller: VideoViewController(
-          rtcEngine: conferenceRoom.room!.engine,
-          canvas: const VideoCanvas(uid: 0),
-        ),
-        onAgoraVideoViewCreated: (viewId) {
-          //conferenceRoom.room!.engine.startPreview();
-        },
-      );
-    }
-
-    final child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-video-element',
-      child: videoWidget,
-    );
-
-    if (isRemote || widget.isScreenShare) return child;
-
-    return child;
-  }
-
-  Widget _buildVideo() {
-    final dimensions = Size(854.0, 480.0);
-
-    var fit = BoxFit.contain;
-    // If the aspect ratio is close to 16:9 or 4:3 or somewhere in between
-    // cover the whole area. Otherwise, fit it within the bounds
-    if (dimensions.aspectRatio <= Size(17, 9).aspectRatio &&
-        dimensions.aspectRatio >= Size(3.5, 3).aspectRatio &&
-        !widget.isScreenShare) {
-      fit = BoxFit.cover;
-    }
-
-    return RepaintBoundary(
-      child: FittedBox(
-        fit: fit,
-        clipBehavior: Clip.hardEdge,
-        child: SizedBox(
-          height: dimensions.height,
-          width: dimensions.width,
-          child: _buildVideoElement(),
-        ),
-      ),
-    );
+  @override
+  void dispose() {
+    loggingService
+        .log('disposing ${widget.participant.userId} videoViewController');
+    videoViewController?.dispose();
+    _startedTimer?.cancel();
+    _showParticipantTimer?.cancel();
+    super.dispose();
   }
 
   Widget _buildMutedOverlayEntry() {
@@ -309,83 +283,6 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
     });
   }
 
-  Widget _buildVideoDisabled({bool switchedOff = false}) {
-    final isConnecting =
-        _isNewlyConnected || (_startedTimer?.isActive ?? false);
-    final isMobile = responsiveLayoutService.isMobile(context);
-
-    return Container(
-      color: context.theme.colorScheme.surfaceContainerHigh,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.center,
-        child: IntrinsicHeight(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: isMobile ? 16 : 30),
-              Flexible(
-                child: Container(
-                  constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-                  child: UserProfileChip(
-                    userId: widget.participant.identity,
-                    showName: false,
-                    enableOnTap: false,
-                    imageHeight: 200,
-                    alignment: Alignment.center,
-                  ),
-                ),
-              ),
-              if (!isMobile) SizedBox(height: 10),
-              if (isConnecting)
-                HeightConstrainedText(
-                  'Connecting...',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: isMobile ? 12 : 16,
-                  ),
-                )
-              else if (switchedOff && (_startedTimer?.isActive ?? false))
-                Container(
-                  height: 20,
-                  alignment: Alignment.center,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CustomLoadingIndicator(),
-                  ),
-                )
-              else
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    HeightConstrainedText(
-                      'Video Off',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: isMobile ? 12 : 16,
-                      ),
-                    ),
-                    if (switchedOff) ...[
-                      SizedBox(width: 6),
-                      Icon(
-                        Icons.wifi_off,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: isMobile ? 12 : 16,
-                      ),
-                    ],
-                  ],
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildAspectRatioClipped(Widget child) {
     // ignore: parameter_assignments
     child = GlobalKeyedSubtree(
@@ -426,13 +323,34 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
                 builder: (_, __) => Stack(
                   children: [
                     Container(),
+                    if (!videoEnabled || !didReceiveFrames)
+                      Positioned.fill(
+                        child: _DisabledVideoWidget(
+                          participant: widget.participant,
+                          isNewlyConnected: _isNewlyConnected,
+                          didReceiveFrames: didReceiveFrames,
+                          isRemote: isRemote,
+                          startedTimer: _startedTimer,
+                        ),
+                      ),
                     if (videoEnabled)
                       Positioned.fill(
-                        child: _buildVideo(),
-                      ),
-                    if (!videoEnabled)
-                      Positioned.fill(
-                        child: _buildVideoDisabled(),
+                        child: RepaintBoundary(
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            clipBehavior: Clip.hardEdge,
+                            child: SizedBox(
+                              height: kParticipantVideoWidgetDimensions.height,
+                              width: kParticipantVideoWidgetDimensions.width,
+                              child: widget.participant is FakeParticipant ||
+                                      videoViewController == null
+                                  ? Container(color: Colors.orange)
+                                  : AgoraVideoView(
+                                      controller: videoViewController!,
+                                    ),
+                            ),
+                          ),
+                        ),
                       ),
                     _buildOverlay(),
                   ],
@@ -441,6 +359,88 @@ class _ParticipantWidgetState extends State<ParticipantWidget> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DisabledVideoWidget extends StatelessWidget {
+  const _DisabledVideoWidget({
+    super.key,
+    required this.participant,
+    required this.isNewlyConnected,
+    required this.didReceiveFrames,
+    required this.isRemote,
+    required this.startedTimer,
+  });
+
+  final AgoraParticipant participant;
+  final bool isNewlyConnected;
+  final bool didReceiveFrames;
+  final bool isRemote;
+  final Timer? startedTimer;
+
+  @override
+  Widget build(BuildContext context) {
+    final isConnecting = isNewlyConnected || (startedTimer?.isActive ?? false);
+    final isMobile = responsiveLayoutService.isMobile(context);
+
+    return Container(
+      color: context.theme.colorScheme.surfaceContainerHigh,
+      padding: const EdgeInsets.all(8),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: isMobile ? 16 : 30),
+          Flexible(
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+              child: UserProfileChip(
+                userId: participant.identity,
+                showName: false,
+                enableOnTap: false,
+                imageHeight: 200,
+                alignment: Alignment.center,
+              ),
+            ),
+          ),
+          if (!isMobile) SizedBox(height: 10),
+          if (isConnecting)
+            HeightConstrainedText(
+              'Connecting...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: isMobile ? 12 : 16,
+              ),
+            )
+          else if (!didReceiveFrames && isRemote)
+            HeightConstrainedText(
+              'No video received',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: context.theme.colorScheme.secondary,
+                fontSize: isMobile ? 12 : 16,
+              ),
+            )
+          else
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HeightConstrainedText(
+                  'Video Off',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: isMobile ? 12 : 16,
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }

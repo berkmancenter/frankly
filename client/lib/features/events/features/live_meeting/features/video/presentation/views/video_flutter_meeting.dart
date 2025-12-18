@@ -315,6 +315,21 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     );
   }
 
+  Widget _buildHostlessLayout() {
+    final layoutType =
+        liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
+            ? 'stage'
+            : 'brady';
+
+    return KeyedSubtree(
+      key: ValueKey('layout_$layoutType'),
+      child:
+          liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
+              ? _buildHostlessDesktop()
+              : _buildBradyBunchViewWidget(),
+    );
+  }
+
   Widget _buildHostlessDesktop() {
     final participants = _conferenceRoom.participants;
 
@@ -363,14 +378,13 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                 ),
                 child: Builder(
                   builder: (_) {
-                    final participantWidgets = [
-                      for (final p in highlightedParticipants)
-                        ParticipantWidget(
-                          borderRadius: BorderRadius.circular(20),
-                          globalKey: _getGlobalKey(p.userId),
-                          participant: p,
-                        ),
-                    ];
+                    final participantWidgets = highlightedParticipants.map((p) {
+                      return ParticipantWidget(
+                        globalKey: _getGlobalKey(p.userId),
+                        borderRadius: BorderRadius.circular(20),
+                        participant: p,
+                      );
+                    });
 
                     var widgets = [
                       ...participantWidgets,
@@ -414,12 +428,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     );
   }
 
-  Widget _buildHostlessLayout() {
-    return liveMeetingProvider.liveMeetingViewType == LiveMeetingViewType.stage
-        ? _buildHostlessDesktop()
-        : _buildBradyBunchViewWidget();
-  }
-
   Widget _buildBradyBunchViewWidget() {
     final showGuideCard = liveMeetingProvider.showGuideCard;
     final showGuideCardLayout =
@@ -433,7 +441,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: BradyBunchViewWidget(),
+                child: BradyBunchViewWidget(
+                  keyPrefix: 'desktop',
+                ),
               ),
             ),
             if (showGuideCardLayout)
