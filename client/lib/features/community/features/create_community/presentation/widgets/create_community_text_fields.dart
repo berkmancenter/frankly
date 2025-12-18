@@ -168,7 +168,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           SizedBox(
-            height: 15,
+            height: widget.compact ? 15 : 24,
           ),
           _buildCreateCommunityTextField(
             controller: _displayIdController,
@@ -196,7 +196,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
         ],
         if (widget.fieldsView == FieldsView.edit) ...[
           SizedBox(
-            height: 15,
+            height: widget.compact ? 15 : 24,
           ),
           _buildCreateCommunityTextField(
             label: context.l10n.communityTagline,
@@ -210,7 +210,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             focus: widget.taglineFocus,
           ),
           SizedBox(
-            height: 15,
+            height: widget.compact ? 15 : 24,
           ),
           _buildCreateCommunityTextField(
             hint: context.l10n.communityDescriptionHint,
@@ -226,7 +226,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
         ],
         if (widget.fieldsView == FieldsView.edit) ...[
-          SizedBox(height: 35),
+          SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
             label: 'Email',
             hint: 'contact@yourdomain.com',
@@ -263,7 +263,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             validator: (value) => validateUrl('Website', null, value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
-          SizedBox(height: 15),
+          SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
             label: 'Bluesky',
             hint: 'bsky.app/profile/yourhandle',
@@ -276,7 +276,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 validateUrl('Bluesky', 'bsky.app', value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
-          SizedBox(height: 15),
+          SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
             label: 'Facebook',
             hint: 'facebook.com/yourpage',
@@ -289,7 +289,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 validateUrl('Facebook', 'facebook.com', value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
-          SizedBox(height: 15),
+          SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
             label: 'LinkedIn',
             hint: 'linkedin.com/in/yourprofile',
@@ -302,7 +302,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 validateUrl('LinkedIn', 'linkedin.com', value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
-          SizedBox(height: 15),
+          SizedBox(height: widget.compact ? 15 : 24),
           _buildCreateCommunityTextField(
             label: 'X',
             hint: 'x.com/yourhandle',
