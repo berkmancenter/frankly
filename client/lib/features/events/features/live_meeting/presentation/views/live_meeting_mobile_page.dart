@@ -619,7 +619,9 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                   Column(
                     children: const [
                       Expanded(
-                        child: BradyBunchViewWidget(),
+                        child: BradyBunchViewWidget(
+                          keyPrefix: 'mobile',
+                        ),
                       ),
                       BreakoutStatusInformation(),
                       SizedBox(height: 10),
@@ -642,6 +644,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   Widget _buildFeaturedParticipant(AgoraParticipant participant) {
     return ParticipantWidget(
+      key: ValueKey('mobile_featured_${participant.userId}'),
       participant: participant,
     );
   }
@@ -1070,6 +1073,7 @@ class MobileParticipantsWidget extends StatelessWidget {
         return AspectRatio(
           aspectRatio: 1.0,
           child: ParticipantWidget(
+            key: ValueKey('mobile_horizontal_${participant.userId}'),
             participant: participant,
           ),
         );

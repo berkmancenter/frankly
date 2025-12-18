@@ -8,7 +8,10 @@ import 'package:client/features/events/features/live_meeting/features/video/pres
 import '../../data/providers/agora_room.dart';
 
 class BradyBunchViewWidget extends StatefulWidget {
-  const BradyBunchViewWidget({Key? key}) : super(key: key);
+  const BradyBunchViewWidget({Key? key, required this.keyPrefix})
+      : super(key: key);
+
+  final String keyPrefix;
 
   @override
   _BradyBunchViewWidgetState createState() => _BradyBunchViewWidgetState();
@@ -75,8 +78,10 @@ class _BradyBunchViewWidgetState extends State<BradyBunchViewWidget> {
               .toList();
 
           return BradyBunchLayoutWidget(
+            key: ValueKey('page_$pageIndex'),
             height: height,
             width: width,
+            keyPrefix: widget.keyPrefix,
             pageParticipants: pageParticipants,
           );
         },
@@ -88,11 +93,13 @@ class _BradyBunchViewWidgetState extends State<BradyBunchViewWidget> {
 class BradyBunchLayoutWidget extends StatelessWidget {
   final double height;
   final double width;
+  final String keyPrefix;
   final List<AgoraParticipant> pageParticipants;
 
   const BradyBunchLayoutWidget({
     required this.height,
     required this.width,
+    required this.keyPrefix,
     required this.pageParticipants,
     Key? key,
   }) : super(key: key);
@@ -133,6 +140,9 @@ class BradyBunchLayoutWidget extends StatelessWidget {
                         child: AspectRatio(
                           aspectRatio: aspectRatioAtIndex(i, j),
                           child: ParticipantWidget(
+                            key: ValueKey(
+                              'brady_${keyPrefix}_${participantAtIndex(i, j).userId}',
+                            ),
                             borderRadius: BorderRadius.zero,
                             participant: participantAtIndex(i, j),
                           ),

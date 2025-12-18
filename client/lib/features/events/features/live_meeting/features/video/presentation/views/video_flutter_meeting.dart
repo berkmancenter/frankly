@@ -189,6 +189,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             child: Padding(
               padding: const EdgeInsets.all(spacerSize),
               child: ParticipantWidget(
+                key: ValueKey('screen_share_${screenSharer.userId}'),
                 participant: screenSharer,
                 isScreenShare: true,
               ),
@@ -362,13 +363,13 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                 ),
                 child: Builder(
                   builder: (_) {
-                    final participantWidgets = [
-                      for (final p in highlightedParticipants)
-                        ParticipantWidget(
-                          borderRadius: BorderRadius.circular(20),
-                          participant: p,
-                        ),
-                    ];
+                    final participantWidgets = highlightedParticipants.map((p) {
+                      return ParticipantWidget(
+                        key: ValueKey('desktop_${p.userId}'),
+                        borderRadius: BorderRadius.circular(20),
+                        participant: p,
+                      );
+                    });
 
                     var widgets = [
                       ...participantWidgets,
@@ -425,7 +426,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: BradyBunchViewWidget(),
+                child: BradyBunchViewWidget(
+                  keyPrefix: 'desktop',
+                ),
               ),
             ),
             if (showGuideCardLayout)
@@ -597,6 +600,7 @@ class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
               children: [
                 for (final p in widget.remainingParticipants)
                   ParticipantWidget(
+                    key: ValueKey('sidepanel_${p.userId}'),
                     participant: p,
                   ),
               ],
