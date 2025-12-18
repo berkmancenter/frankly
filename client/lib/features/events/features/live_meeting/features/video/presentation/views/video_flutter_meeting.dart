@@ -130,6 +130,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       );
     }
 
+    final screenSharer = _conferenceRoom.screenSharer;
+
     return CustomStreamBuilder(
       entryFrom: '_VideoFlutterMeetingState.build',
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
@@ -142,7 +144,31 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           Expanded(
             child: Stack(
               children: [
-                _buildMainVideoContent(context, _conferenceRoom),
+                if (screenSharer != null)
+                  Column(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(spacerSize),
+                          child: ParticipantWidget(
+                            globalKey: CommunityGlobalKey.fromLabel(
+                              '${screenSharer.userId}-screen-share',
+                            ),
+                            participant: screenSharer,
+                            isScreenShare: true,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: _SidePanelParticipants(
+                          remainingParticipants: _conferenceRoom.participants,
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  _buildHostlessLayout(),
                 if (EventProvider.watch(context)
                         .event
                         .eventSettings
@@ -182,38 +208,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         ],
       ),
     );
-  }
-
-  Widget _buildMainVideoContent(
-    BuildContext context,
-    ConferenceRoom conferenceRoom,
-  ) {
-    final screenSharer = conferenceRoom.screenSharer;
-    if (screenSharer != null) {
-      return Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(spacerSize),
-              child: ParticipantWidget(
-                globalKey: CommunityGlobalKey.fromLabel(
-                    '${screenSharer.userId}-screen-share'),
-                participant: screenSharer,
-                isScreenShare: true,
-              ),
-            ),
-          ),
-          Expanded(
-            child: _SidePanelParticipants(
-              remainingParticipants: conferenceRoom.participants,
-            ),
-          ),
-        ],
-      );
-    } else {
-      return _buildHostlessLayout();
-    }
   }
 
   Widget _buildMeetingGuideCard() {
