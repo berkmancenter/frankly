@@ -134,16 +134,12 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       errorMessage: 'Something went wrong loading room. Please refresh!',
       loadingMessage: 'Connecting to room...',
       textStyle: TextStyle(color: context.theme.colorScheme.onSurface),
-      builder: (_, __) => _buildLayout(),
-    );
-  }
-
-  Widget _buildLayout() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Expanded(child: _buildVideoLayout()),
-      ],
+      builder: (context, agoraRoom) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(child: _buildVideoLayout()),
+        ],
+      ),
     );
   }
 
