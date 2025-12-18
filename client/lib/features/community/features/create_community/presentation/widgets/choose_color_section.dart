@@ -38,6 +38,9 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   late final TextEditingController _customAccentColorController;
 
   int _selectedPresetIndex = 0;
+  // Used to temporarily store updated index before committing on setState
+  int _updatedSelectedPresetIndex = -1;
+
   String? _selectedColorErrorMessage;
 
   String get _currentLightColor => _customBackgroundColorController.text;
@@ -49,7 +52,7 @@ class _ChooseColorSectionState extends State<ChooseColorSection> {
   late Color _lightColor = Color(0xffffffff);
   late Color _darkColor = Color(0xff212121);
 
-final _customColorForm = GlobalKey<FormState>();
+  final _customColorForm = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -83,11 +86,14 @@ final _customColorForm = GlobalKey<FormState>();
     final currentDarkColor = ThemeUtils.parseColor(_currentCommunityDarkColor);
     final currentLightColor =
         ThemeUtils.parseColor(_currentCommunityLightColor);
-    _selectedPresetIndex = ThemeUtils().presetColorThemes(context).indexWhere(
-          (theme) =>
-              theme.darkColor == currentDarkColor &&
-              theme.lightColor == currentLightColor,
-        );
+    // Check if current colors match any preset themes
+    _selectedPresetIndex = _updatedSelectedPresetIndex >= 0
+        ? _updatedSelectedPresetIndex
+        : ThemeUtils().presetColorThemes(context).indexWhere(
+              (theme) =>
+                  theme.darkColor == currentDarkColor &&
+                  theme.lightColor == currentLightColor,
+            );
     final customColorsSpecified = _currentCommunityDarkColor != null &&
         _currentCommunityLightColor != null;
     _isPresetSelected =
@@ -118,10 +124,10 @@ final _customColorForm = GlobalKey<FormState>();
         ),
       ];
       // We have cache so accent color field can also trigger error, which shows only on background field
-        _selectedColorErrorMessage =
-            (!isFirstColorLighter || contrastChecks.any((check) => !check))
-                ? context.l10n.useLighterBackgroundOrDarkerAccent
-                : null;
+      _selectedColorErrorMessage =
+          (!isFirstColorLighter || contrastChecks.any((check) => !check))
+              ? context.l10n.useLighterBackgroundOrDarkerAccent
+              : null;
       return _selectedColorErrorMessage;
     } else {
       return null;
@@ -152,7 +158,10 @@ final _customColorForm = GlobalKey<FormState>();
     widget.setDarkColor(ThemeUtils().darkColorStringFromTheme(context, index));
     widget
         .setLightColor(ThemeUtils().lightColorStringFromTheme(context, index));
-    setState(() => _selectedPresetIndex = index);
+    setState(() {
+      _selectedPresetIndex = index;
+      _updatedSelectedPresetIndex = index;
+    });
   }
 
   @override
@@ -368,43 +377,44 @@ final _customColorForm = GlobalKey<FormState>();
       ),
     ];
 
-    return
-    Form(
-  key: _customColorForm,
-  child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            context.l10n.chooseABackgroundAndAccentColor,
-            style: context.theme.textTheme.titleSmall,
+    return Form(
+      key: _customColorForm,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              context.l10n.chooseABackgroundAndAccentColor,
+              style: context.theme.textTheme.titleSmall,
+            ),
           ),
-        ),
-        SizedBox(height: 10),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: _selectedColorErrorMessage != null ? 405 : 200),
-                child: Column(
-                  children: children,
+          SizedBox(height: 10),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: _selectedColorErrorMessage != null ? 405 : 200,
+                  ),
+                  child: Column(
+                    children: children,
+                  ),
                 ),
-              ),
-              ThemePreview(
-                lightColorString: _customBackgroundColorController.text,
-                darkColorString: _customAccentColorController.text,
-              ),
-            ],
+                ThemePreview(
+                  lightColorString: _customBackgroundColorController.text,
+                  darkColorString: _customAccentColorController.text,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-);
+        ],
+      ),
+    );
   }
 
   Widget _buildChooseColorTextField({
