@@ -34,6 +34,8 @@ import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
 
+const _kRecordingPulseSize = 16.0;
+
 class CommunityGlobalKey extends LabeledGlobalKey {
   static final Map<String, CommunityGlobalKey> _participantKeys = {};
 
@@ -144,8 +146,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   }
 
   Widget _buildVideoLayout() {
-    const recordingPulseSize = 16.0;
-
     return Stack(
       children: [
         _buildMainVideoContent(context, _conferenceRoom),
@@ -161,8 +161,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: recordingPulseSize,
-                    width: recordingPulseSize,
+                    height: _kRecordingPulseSize,
+                    width: _kRecordingPulseSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: context.theme.colorScheme.errorContainer,
