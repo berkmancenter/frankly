@@ -3361,6 +3361,57 @@ class MockCloudFunctionsCommunityService extends _i1.Mock
       ) as _i37.Future<void>);
 
   @override
+  _i37.Future<String> updateProfileImage({
+    required String? imageUrl,
+    required _i24.Community? community,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateProfileImage,
+          [],
+          {
+            #imageUrl: imageUrl,
+            #community: community,
+          },
+        ),
+        returnValue: _i37.Future<String>.value(_i52.dummyValue<String>(
+          this,
+          Invocation.method(
+            #updateProfileImage,
+            [],
+            {
+              #imageUrl: imageUrl,
+              #community: community,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i37.Future<String>.value(_i52.dummyValue<String>(
+          this,
+          Invocation.method(
+            #updateProfileImage,
+            [],
+            {
+              #imageUrl: imageUrl,
+              #community: community,
+            },
+          ),
+        )),
+      ) as _i37.Future<String>);
+
+  @override
+  _i37.Future<void> removeImage({required _i24.Community? community}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeImage,
+          [],
+          {#community: community},
+        ),
+        returnValue: _i37.Future<void>.value(),
+        returnValueForMissingStub: _i37.Future<void>.value(),
+      ) as _i37.Future<void>);
+
+  @override
   Map<String, dynamic> getDecodedData(
     dynamic data, {
     bool? isWeb = true,

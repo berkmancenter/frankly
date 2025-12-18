@@ -1,8 +1,17 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:client/core/data/services/clock_service.dart';
+import 'package:client/core/localization/app_localization_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
+import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/features/events/data/services/firestore_event_service.dart';
 import 'package:client/core/data/services/firestore_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -11,18 +20,25 @@ import 'package:client/features/admin/presentation/views/data_tab.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-import '../../../../mocked_classes.mocks.dart';
+import 'data_tab_test.mocks.dart';
 
 @GenerateMocks([
-  // BehaviorSubjectWrapper,
+  AppLocalizationService,
+  BehaviorSubjectWrapper,
+  ClockService,
   CommunityProvider,
   Event,
   FirestoreDatabase,
   FirestoreEventService,
 ])
+
+class MockAppLocalizationService extends Mock implements AppLocalizationService {}
+
+
 void main() {
+
+  late MockAppLocalizationService mockAppLocalizationService;
   late MockClockService mockClockService;
   late MockCommunityProvider mockCommunityProvider;
   late MockFirestoreDatabase mockFirestoreDatabase;
@@ -31,28 +47,39 @@ void main() {
 
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
+    setupFirebaseCoreMocks();
     await Firebase.initializeApp();
   });
-
   setUp(() {
     // Reset GetIt before each test
     GetIt.instance.reset();
     
     // Create fresh mocks for each test
+    mockAppLocalizationService = MockAppLocalizationService();
     mockClockService = MockClockService();
     mockCommunityProvider = MockCommunityProvider();
     mockFirestoreDatabase = MockFirestoreDatabase();
     mockFirestoreEventService = MockFirestoreEventService();
-    
+    mockCommunityProvider = MockCommunityProvider();
+    mockFirestoreDatabase = MockFirestoreDatabase();
+    mockFirestoreEventService = MockFirestoreEventService();
+
     // Set up mock behaviors
     when(mockClockService.now()).thenReturn(DateTime.now());
+    when(mockClockService.now()).thenReturn(DateTime.now());
     when(mockCommunityProvider.communityId).thenReturn('fake-community-id');
+    when(
+      mockFirestoreEventService.communityEvents(
+        communityId: 'fake-community-id',
+      ),).thenAnswer((_) => BehaviorSubjectWrapper(Stream.value(mockAllEvents)));
     
     // Register services
+    GetIt.instance.registerSingleton<AppLocalizationService>(mockAppLocalizationService);
     GetIt.instance.registerSingleton<ClockService>(mockClockService);
-    GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
     GetIt.instance.registerSingleton<FirestoreDatabase>(mockFirestoreDatabase);
     GetIt.instance.registerSingleton<FirestoreEventService>(mockFirestoreEventService);
+    GetIt.instance.registerSingleton<CommunityProvider>(mockCommunityProvider);
+    
 
     mockAllEvents = List.generate(
       80,
@@ -82,8 +109,11 @@ void main() {
     // Clean up GetIt after each test
     GetIt.instance.reset();
   });
+  
   Widget createWidgetUnderTest() {
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: ChangeNotifierProvider<CommunityProvider>(
         create: (_) => mockCommunityProvider,
         child: Scaffold(
@@ -94,27 +124,30 @@ void main() {
   }
 
   group('DataTab', () {
-    testWidgets('should display empty page when no events',
+  testWidgets('should display empty page when no events',
         (WidgetTester tester) async {
       mockAllEvents = [];
 
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(find.byType(EmptyPageContent), findsOneWidget);
     });
 
-    testWidgets('should display events list when events exist', (WidgetTester tester) async {
-
+    testWidgets('should display events list when events exist',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pump();
+
+      await tester.pumpAndSettle();
 
       expect(find.text('Test Event 1'), findsOneWidget);
       expect(find.text('Public'), findsOneWidget);
       expect(find.text('Hosted'), findsOneWidget);
     });
 
-    testWidgets('should display pagination controls', (WidgetTester tester) async {
+    testWidgets('should display pagination controls',
+        (WidgetTester tester) async {
       // mockAllEvents is already set up in setUp() with 80 events
 
       await tester.pumpWidget(createWidgetUnderTest());
@@ -125,7 +158,8 @@ void main() {
       expect(find.text('1 - 5 of 80'), findsOneWidget);
     });
 
-    testWidgets('should navigate to next page when forward button pressed', (WidgetTester tester) async {
+    testWidgets('should navigate to next page when forward button pressed',
+        (WidgetTester tester) async {
       // mockAllEvents is already set up in setUp() with 80 events
 
       await tester.pumpWidget(createWidgetUnderTest());
@@ -136,7 +170,8 @@ void main() {
 
       expect(find.text('6 - 10 of 80'), findsOneWidget);
     });
-    testWidgets('should display correct livestream status icons', (WidgetTester tester) async {
+    testWidgets('should display correct livestream status icons',
+        (WidgetTester tester) async {
       // Create a livestream event
       final livestreamEvent = Event(
         id: 'livestream-event-1',
@@ -160,7 +195,8 @@ void main() {
       expect(find.text('Livestream'), findsOneWidget);
     });
 
-    testWidgets('should show private event correctly', (WidgetTester tester) async {
+    testWidgets('should show private event correctly',
+        (WidgetTester tester) async {
       // Create a private event
       final privateEvent = Event(
         id: 'private-event-1',
@@ -178,7 +214,7 @@ void main() {
       mockAllEvents = [privateEvent];
 
       await tester.pumpWidget(createWidgetUnderTest());
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.lock_outline), findsOneWidget);
       expect(find.text('Private'), findsOneWidget);
