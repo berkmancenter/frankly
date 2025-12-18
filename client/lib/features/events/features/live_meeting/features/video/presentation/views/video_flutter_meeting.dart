@@ -129,9 +129,6 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         ],
       );
     }
-
-    final screenSharer = _conferenceRoom.screenSharer;
-
     return CustomStreamBuilder(
       entryFrom: '_VideoFlutterMeetingState.build',
       stream: Stream.fromFuture(_conferenceRoom.connectionFuture),
@@ -144,31 +141,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           Expanded(
             child: Stack(
               children: [
-                if (screenSharer != null)
-                  Column(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Padding(
-                          padding: const EdgeInsets.all(spacerSize),
-                          child: ParticipantWidget(
-                            globalKey: CommunityGlobalKey.fromLabel(
-                              '${screenSharer.userId}-screen-share',
-                            ),
-                            participant: screenSharer,
-                            isScreenShare: true,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: _SidePanelParticipants(
-                          remainingParticipants: _conferenceRoom.participants,
-                        ),
-                      ),
-                    ],
-                  )
-                else
-                  _buildHostlessLayout(),
+                _buildHostlessLayout(),
                 if (EventProvider.watch(context)
                         .event
                         .eventSettings
