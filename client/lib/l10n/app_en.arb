@@ -332,7 +332,7 @@
   "chat": "Chat",
   "chatMessage": "Chat Message",
   "chatWithParticipants": "Chat with participants",
-  "chooseABackgroundAndAccentColor": "Choose a light colored background and a dark accent color that provide enough contrast so that text is readable by a wide range of users including those with moderately low vision. The contrast ratio must be at least 4.5:1, the higher the better for visibility. We'll check its readability.",
+  "chooseABackgroundAndAccentColor": "Choose a light colored background and a dark accent color that provide enough contrast so that text is readable by a wide range of users including those with moderately low vision. We'll check its readability.",
   "clearAgenda": "Clear agenda?",
   "close": "Close",
   "closeEdit": "Close Edit",

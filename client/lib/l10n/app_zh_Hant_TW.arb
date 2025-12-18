@@ -312,7 +312,7 @@
   "chat": "聊天",
   "chatMessage": "聊天訊息",
   "chatWithParticipants": "和參與者聊天",
-  "chooseABackgroundAndAccentColor": "選擇淺色背景和深色強調色，提供足夠的對比度，使包括視力中度低下的用戶在內的廣泛用戶都能閱讀文本。對比度比率必須至少為4.5:1，對於可見性越高越好。我們將檢查其可讀性。",
+  "chooseABackgroundAndAccentColor": "選擇淺色背景和深色強調色，提供足夠的對比度，讓包括中度視力不佳用戶在內的廣大用戶都能閱讀文字。我們會檢查其可讀性。",
   "clearAgenda": "清除議程？",
   "close": "關閉",
   "closeEdit": "關閉編輯",
