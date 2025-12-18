@@ -591,7 +591,8 @@ class BreakoutStatusInformation extends StatelessWidget {
               breakoutSession?.scheduledTime ?? clockService.now();
           final now = clockService.now();
           // Calculate the time remaining, but don't allow it to go negative and reset
-          var breakoutRoomRemainingTime = breakoutRoomScheduledTime.difference(now);
+          var breakoutRoomRemainingTime =
+              breakoutRoomScheduledTime.difference(now);
 
           // If the scheduled time has passed, keep it at zero instead of letting it reset
           if (breakoutRoomRemainingTime.isNegative) {

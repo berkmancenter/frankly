@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:client/features/events/features/live_meeting/features/video/utils/brady_bunch_layout.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart';
@@ -7,17 +6,17 @@ import 'package:client/features/events/features/live_meeting/features/video/pres
 
 import '../../data/providers/agora_room.dart';
 
-class BradyBunchViewWidget extends StatefulWidget {
-  const BradyBunchViewWidget({Key? key, required this.keyPrefix})
+class ParticipantGridLayout extends StatefulWidget {
+  const ParticipantGridLayout({Key? key, required this.keyPrefix})
       : super(key: key);
 
   final String keyPrefix;
 
   @override
-  _BradyBunchViewWidgetState createState() => _BradyBunchViewWidgetState();
+  _ParticipantGridLayoutState createState() => _ParticipantGridLayoutState();
 }
 
-class _BradyBunchViewWidgetState extends State<BradyBunchViewWidget> {
+class _ParticipantGridLayoutState extends State<ParticipantGridLayout> {
   final _pageController = PageController();
 
   final _currentPageNotifier = ValueNotifier<int>(0);
@@ -106,53 +105,54 @@ class BradyBunchLayoutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BradyBunchLayout layout = BradyBunchLayout.calculateOptimalLayout(
-      width: width,
-      height: height,
-      participantCount: pageParticipants.length,
-    );
+    return SizedBox.shrink();
+    // final BradyBunchLayout layout = BradyBunchLayout.calculateOptimalLayout(
+    //   width: width,
+    //   height: height,
+    //   participantCount: pageParticipants.length,
+    // );
 
-    AgoraParticipant participantAtIndex(int row, int column) =>
-        pageParticipants[layout.columns * row + column];
+    // AgoraParticipant participantAtIndex(int row, int column) =>
+    //     pageParticipants[layout.columns * row + column];
 
-    double aspectRatioAtIndex(int row, int column) {
-      final lastRow = row == layout.rows - 1;
-      if (lastRow && pageParticipants.length < layout.rows * layout.columns) {
-        return layout.getAdjustedAspectRatio;
-      } else {
-        return layout.layoutParameters.aspectRatio;
-      }
-    }
+    // double aspectRatioAtIndex(int row, int column) {
+    //   final lastRow = row == layout.rows - 1;
+    //   if (lastRow && pageParticipants.length < layout.rows * layout.columns) {
+    //     return layout.getAdjustedAspectRatio;
+    //   } else {
+    //     return layout.layoutParameters.aspectRatio;
+    //   }
+    // }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (int i = 0; i < layout.rows; i++)
-          Flexible(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: layout.imageSize.height),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int j = 0; j < layout.layoutParameters.columns; j++)
-                    if (pageParticipants.length > layout.columns * i + j)
-                      Flexible(
-                        child: AspectRatio(
-                          aspectRatio: aspectRatioAtIndex(i, j),
-                          child: ParticipantWidget(
-                            borderRadius: BorderRadius.zero,
-                            globalKey: CommunityGlobalKey.fromLabel(
-                              participantAtIndex(i, j).userId,
-                            ),
-                            participant: participantAtIndex(i, j),
-                          ),
-                        ),
-                      ),
-                ],
-              ),
-            ),
-          ),
-      ],
-    );
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     for (int i = 0; i < layout.rows; i++)
+    //       Flexible(
+    //         child: ConstrainedBox(
+    //           constraints: BoxConstraints(maxHeight: layout.imageSize.height),
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               for (int j = 0; j < layout.layoutParameters.columns; j++)
+    //                 if (pageParticipants.length > layout.columns * i + j)
+    //                   Flexible(
+    //                     child: AspectRatio(
+    //                       aspectRatio: aspectRatioAtIndex(i, j),
+    //                       child: ParticipantWidget(
+    //                         borderRadius: BorderRadius.zero,
+    //                         globalKey: CommunityGlobalKey.fromLabel(
+    //                           participantAtIndex(i, j).userId,
+    //                         ),
+    //                         participant: participantAtIndex(i, j),
+    //                       ),
+    //                     ),
+    //                   ),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //   ],
+    // );
   }
 }

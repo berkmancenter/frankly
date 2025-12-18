@@ -13,7 +13,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_minimized_card.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
-import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/views/participant_grid_layout.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/need_help_dialog.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart';
@@ -351,7 +351,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(5),
-                child: BradyBunchViewWidget(
+                child: ParticipantGridLayout(
                   keyPrefix: 'desktop',
                 ),
               ),
