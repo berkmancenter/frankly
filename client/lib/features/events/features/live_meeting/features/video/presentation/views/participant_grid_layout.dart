@@ -30,17 +30,65 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      itemCount: _calculateNumberOfPages(),
-      controller: _pageController,
-      itemBuilder: (context, index) => _ParticipantGridPage(
-        pageIndex: index,
-        participants: participants
-            .skip(index * _maxParticipantsPerPage)
-            .take(_maxParticipantsPerPage)
-            .toList(),
-      ),
-      onPageChanged: (i) => _pageController.jumpToPage(i),
+    final numberOfPages =
+        (participants.length / _maxParticipantsPerPage).ceil();
+
+    return Column(
+      children: [
+        Expanded(
+          child: PageView.builder(
+            itemCount: numberOfPages,
+            controller: _pageController,
+            itemBuilder: (context, index) => _ParticipantGridPage(
+              pageIndex: index,
+              participants: participants
+                  .skip(index * _maxParticipantsPerPage)
+                  .take(_maxParticipantsPerPage)
+                  .toList(),
+            ),
+            onPageChanged: (i) => _pageController.jumpToPage(i),
+          ),
+        ),
+        // Buttons to navigate between pages
+        if (numberOfPages > 1)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  final previousPage = _pageController.page!.toInt() - 1;
+                  if (previousPage >= 0) {
+                    _pageController.jumpToPage(
+                      previousPage,
+                    );
+                  }
+                },
+              ),
+              ...List.generate(
+                numberOfPages,
+                (pageIndex) => Icon(
+                  Icons.circle,
+                  size: 12,
+                  color: _pageController.page!.toInt() == pageIndex
+                      ? context.theme.colorScheme.primary
+                      : context.theme.colorScheme.surfaceContainerHigh,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward),
+                onPressed: () {
+                  final nextPage = _pageController.page!.toInt() + 1;
+                  if (nextPage < numberOfPages) {
+                    _pageController.jumpToPage(
+                      nextPage,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+      ],
     );
   }
 }
