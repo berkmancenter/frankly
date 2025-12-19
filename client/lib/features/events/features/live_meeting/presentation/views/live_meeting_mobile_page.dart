@@ -586,7 +586,11 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                       if (dominantSpeaker != null)
                         Expanded(
-                          child: _buildFeaturedParticipant(dominantSpeaker),
+                          child: ParticipantWidget(
+                            globalKey: CommunityGlobalKey.fromLabel(
+                                dominantSpeaker.userId),
+                            participant: dominantSpeaker,
+                          ),
                         ),
                       SizedBox(height: 10),
                       BreakoutStatusInformation(),
@@ -638,13 +642,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           ],
         );
     }
-  }
-
-  Widget _buildFeaturedParticipant(AgoraParticipant participant) {
-    return ParticipantWidget(
-      globalKey: CommunityGlobalKey.fromLabel(participant.userId),
-      participant: participant,
-    );
   }
 
   Widget _buildReadyText(
