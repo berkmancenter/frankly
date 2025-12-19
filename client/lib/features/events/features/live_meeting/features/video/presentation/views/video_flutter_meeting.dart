@@ -47,7 +47,6 @@ class CommunityGlobalKey extends LabeledGlobalKey {
       _participantKeys[label] ??= CommunityGlobalKey._(label);
 }
 
-/// Show the twilio meeting on desktop
 class VideoFlutterMeeting extends StatefulHookWidget {
   const VideoFlutterMeeting({
     Key? key,
@@ -58,8 +57,6 @@ class VideoFlutterMeeting extends StatefulHookWidget {
 }
 
 class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
-  static const spacerSize = 5.0;
-
   StreamSubscription? _onConferenceRoomException;
   late StreamSubscription _onUnloadSubscription;
 
