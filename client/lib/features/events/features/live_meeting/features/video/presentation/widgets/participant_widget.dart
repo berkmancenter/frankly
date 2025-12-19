@@ -327,61 +327,55 @@ class _VideoOverlayWidget extends StatelessWidget {
               ),
             ),
           ],
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: isMobile && !showName
-                  ? const SizedBox.shrink()
-                  : Container(
-                      height: 32,
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      decoration: BoxDecoration(
-                        color: context.theme.colorScheme.scrim.withScrimOpacity,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(5),
+          isMobile && !showName
+              ? const SizedBox.shrink()
+              : Container(
+                  height: 32,
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                    color: context.theme.colorScheme.scrim.withScrimOpacity,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: UserInfoBuilder(
+                          userId: participant.identity,
+                          builder: (_, isLoading, snapshot) =>
+                              HeightConstrainedText(
+                            isLoading
+                                ? 'Loading...'
+                                : snapshot.data?.displayName ?? 'Participant',
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyle.body.copyWith(
+                              color: context.theme.colorScheme.onPrimary,
+                            ),
+                          ),
                         ),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: UserInfoBuilder(
-                              userId: participant.identity,
-                              builder: (_, isLoading, snapshot) =>
-                                  HeightConstrainedText(
-                                isLoading
-                                    ? 'Loading...'
-                                    : snapshot.data?.displayName ??
-                                        'Participant',
-                                overflow: TextOverflow.ellipsis,
-                                style: AppTextStyle.body.copyWith(
-                                  color: context.theme.colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (!audioEnabled) ...[
-                            SizedBox(width: 5),
-                            Icon(
-                              Icons.mic_off_outlined,
-                              color: context.theme.colorScheme.error,
-                              size: 17,
-                            ),
-                          ],
-                          SizedBox(width: 2),
-                          _ParticipantOptionsMenu(
-                            userId: participant.identity,
-                            showPin: showPin,
-                            showMute: showMute,
-                            showKick: showKick,
-                            isVisible: showName ||
-                                !responsiveLayoutService.isMobile(context),
-                          ),
-                        ],
+                      if (!audioEnabled) ...[
+                        SizedBox(width: 5),
+                        Icon(
+                          Icons.mic_off_outlined,
+                          color: context.theme.colorScheme.error,
+                          size: 17,
+                        ),
+                      ],
+                      SizedBox(width: 2),
+                      _ParticipantOptionsMenu(
+                        userId: participant.identity,
+                        showPin: showPin,
+                        showMute: showMute,
+                        showKick: showKick,
+                        isVisible: showName ||
+                            !responsiveLayoutService.isMobile(context),
                       ),
-                    ),
-            ),
-          ),
+                    ],
+                  ),
+                ),
           if (isDominant)
             _EndRowIcon(asset: AppAsset.kSpeaking)
           else if (isUpNext)
