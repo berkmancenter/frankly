@@ -147,130 +147,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
     super.dispose();
   }
 
-  Widget _buildMutedOverlayEntry() {
-    return Icon(
-      Icons.mic_off_outlined,
-      color: context.theme.colorScheme.error,
-      size: 17,
-    );
-  }
-
-  Widget _buildOverlay() {
-    final bool isHandRaised = Provider.of<MeetingGuideCardStore>(context)
-        .getHandIsRaised(widget.participant.identity);
-    final conferenceRoom = ConferenceRoom.watch(context);
-    final handRaisedIndex =
-        conferenceRoom.handRaisedParticipants.indexOf(widget.participant);
-    final isUpNext = isHandRaised && handRaisedIndex == 0;
-    final isMobile = responsiveLayoutService.isMobile(context);
-
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (isMobile && !audioEnabled && !_showName) ...[
-            Container(
-              height: 32,
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.scrim.withScrimOpacity,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(5),
-                ),
-              ),
-              child: _buildMutedOverlayEntry(),
-            ),
-          ],
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: isMobile
-                  ? _buildParticipantDetailsMobile()
-                  : _buildParticipantDetails(),
-            ),
-          ),
-          if (isDominant)
-            _buildEndRowIcon(AppAsset.kSpeaking)
-          else if (isUpNext)
-            _buildEndRowIcon(AppAsset.kUpNext)
-          else if (isHandRaised)
-            _buildEndRowIcon(AppAsset.kHandRaise)
-          else
-            SizedBox(width: 3),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEndRowIcon(AppAsset appAsset) {
-    final size = responsiveLayoutService.isMobile(context) ? 28.0 : 52.0;
-    final margin = responsiveLayoutService.isMobile(context) ? 4.0 : 8.0;
-    return Padding(
-      padding: EdgeInsets.only(right: margin, bottom: margin),
-      child: ProxiedImage(null, asset: appAsset, width: size, height: size),
-    );
-  }
-
-  Widget _buildParticipantDetailsMobile() {
-    return _showName ? _buildParticipantDetails() : SizedBox.shrink();
-  }
-
-  Widget _buildParticipantDetails() {
-    final showPin =
-        context.watch<EventPermissionsProvider>().canPinItemInParticipantWidget;
-    final showMute = context
-        .watch<EventPermissionsProvider>()
-        .canMuteParticipantInParticipantWidget(widget.participant.identity);
-    final showKick = context
-        .watch<EventPermissionsProvider>()
-        .canKickParticipantInParticipantWidget(widget.participant.identity);
-
-    return IntrinsicWidth(
-      child: Container(
-        height: 32,
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(5),
-          ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: UserInfoBuilder(
-                userId: widget.participant.identity,
-                builder: (_, isLoading, snapshot) => HeightConstrainedText(
-                  isLoading
-                      ? 'Loading...'
-                      : snapshot.data?.displayName ?? 'Participant',
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.body
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
-                ),
-              ),
-            ),
-            if (!audioEnabled) ...[
-              SizedBox(width: 5),
-              _buildMutedOverlayEntry(),
-            ],
-            SizedBox(width: 2),
-            _ParticipantOptionsMenu(
-              userId: widget.participant.identity,
-              showPin: showPin,
-              showMute: showMute,
-              showKick: showKick,
-              isVisible:
-                  _showName || !responsiveLayoutService.isMobile(context),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<void> _showParticipantName() async {
     if (mounted) setState(() => _showName = true);
     _showParticipantTimer?.cancel();
@@ -300,7 +176,12 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
                 : AgoraVideoView(
                     controller: videoViewController!,
                   ),
-          _buildOverlay(),
+          _VideoOverlayWidget(
+            participant: widget.participant,
+            showName: _showName,
+            audioEnabled: audioEnabled,
+            isDominant: isDominant,
+          ),
         ],
       ),
     );
@@ -384,6 +265,149 @@ class _DisabledVideoWidget extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _VideoOverlayWidget extends StatelessWidget {
+  const _VideoOverlayWidget({
+    super.key,
+    required this.participant,
+    required this.showName,
+    required this.audioEnabled,
+    required this.isDominant,
+  });
+
+  final AgoraParticipant participant;
+  final bool showName;
+  final bool audioEnabled;
+  final bool isDominant;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isHandRaised = Provider.of<MeetingGuideCardStore>(context)
+        .getHandIsRaised(participant.identity);
+    final conferenceRoom = ConferenceRoom.watch(context);
+    final handRaisedIndex =
+        conferenceRoom.handRaisedParticipants.indexOf(participant);
+    final isUpNext = isHandRaised && handRaisedIndex == 0;
+    final isMobile = responsiveLayoutService.isMobile(context);
+
+    final showPin =
+        context.watch<EventPermissionsProvider>().canPinItemInParticipantWidget;
+    final showMute = context
+        .watch<EventPermissionsProvider>()
+        .canMuteParticipantInParticipantWidget(participant.identity);
+    final showKick = context
+        .watch<EventPermissionsProvider>()
+        .canKickParticipantInParticipantWidget(participant.identity);
+
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (isMobile && !audioEnabled && !showName) ...[
+            Container(
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.scrim.withScrimOpacity,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(5),
+                ),
+              ),
+              child: Icon(
+                Icons.mic_off_outlined,
+                color: context.theme.colorScheme.error,
+                size: 17,
+              ),
+            ),
+          ],
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: isMobile && !showName
+                  ? const SizedBox.shrink()
+                  : Container(
+                      height: 32,
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      decoration: BoxDecoration(
+                        color: context.theme.colorScheme.scrim.withScrimOpacity,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(5),
+                        ),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: UserInfoBuilder(
+                              userId: participant.identity,
+                              builder: (_, isLoading, snapshot) =>
+                                  HeightConstrainedText(
+                                isLoading
+                                    ? 'Loading...'
+                                    : snapshot.data?.displayName ??
+                                        'Participant',
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyle.body.copyWith(
+                                  color: context.theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (!audioEnabled) ...[
+                            SizedBox(width: 5),
+                            Icon(
+                              Icons.mic_off_outlined,
+                              color: context.theme.colorScheme.error,
+                              size: 17,
+                            ),
+                          ],
+                          SizedBox(width: 2),
+                          _ParticipantOptionsMenu(
+                            userId: participant.identity,
+                            showPin: showPin,
+                            showMute: showMute,
+                            showKick: showKick,
+                            isVisible: showName ||
+                                !responsiveLayoutService.isMobile(context),
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
+          ),
+          if (isDominant)
+            _EndRowIcon(asset: AppAsset.kSpeaking)
+          else if (isUpNext)
+            _EndRowIcon(asset: AppAsset.kUpNext)
+          else if (isHandRaised)
+            _EndRowIcon(asset: AppAsset.kHandRaise)
+          else
+            SizedBox(width: 3),
+        ],
+      ),
+    );
+  }
+}
+
+class _EndRowIcon extends StatelessWidget {
+  const _EndRowIcon({
+    super.key,
+    required this.asset,
+  });
+
+  final AppAsset asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = responsiveLayoutService.isMobile(context) ? 28.0 : 52.0;
+    final margin = responsiveLayoutService.isMobile(context) ? 4.0 : 8.0;
+    return Padding(
+      padding: EdgeInsets.only(right: margin, bottom: margin),
+      child: ProxiedImage(null, asset: asset, width: size, height: size),
     );
   }
 }
