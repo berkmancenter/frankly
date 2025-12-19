@@ -586,10 +586,14 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                       if (dominantSpeaker != null)
                         Expanded(
-                          child: ParticipantWidget(
-                            globalKey: CommunityGlobalKey.fromLabel(
-                                dominantSpeaker.userId),
-                            participant: dominantSpeaker,
+                          child: AspectRatio(
+                            aspectRatio: ParticipantWidget.aspectRatio,
+                            child: ParticipantWidget(
+                              globalKey: CommunityGlobalKey.fromLabel(
+                                dominantSpeaker.userId,
+                              ),
+                              participant: dominantSpeaker,
+                            ),
                           ),
                         ),
                       SizedBox(height: 10),
@@ -1066,7 +1070,7 @@ class MobileParticipantsWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final participant = participants[index];
         return AspectRatio(
-          aspectRatio: 1.0,
+          aspectRatio: ParticipantWidget.aspectRatio,
           child: ParticipantWidget(
             globalKey: CommunityGlobalKey.fromLabel(participant.userId),
             participant: participant,

@@ -54,6 +54,8 @@ class ParticipantWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
   }) : super(key: globalKey);
 
+  static final aspectRatio = Size(4, 3).aspectRatio;
+
   final CommunityGlobalKey globalKey;
   final AgoraParticipant participant;
   final bool isScreenShare;
