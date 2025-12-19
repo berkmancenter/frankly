@@ -114,21 +114,17 @@ class _ParticipantGridPage extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxVideosPerRow = constraints.maxWidth > 750 ? 3 : 2;
+        // Round up to get an extra row for odd numbers
         final rowCount = (participants.length / maxVideosPerRow).ceil();
 
-        // Calculate the height each row should take to fill the screen.
-        // Constrain the height.
-        final itemHeight = min(
-          constraints.maxHeight / rowCount,
-          kParticipantVideoWidgetDimensions.height,
-        );
-        // Calculate width needed to maintain 4:3 aspect ratio
-        final idealItemWidth = itemHeight * (4 / 3);
-
-        // Check if two videos would fit side by side, if not, constrain the width
+        // Calculate the width of each item
         final maxItemWidth = constraints.maxWidth / maxVideosPerRow;
-        final itemWidth =
-            idealItemWidth <= maxItemWidth ? idealItemWidth : maxItemWidth;
+        // Calculate the height based on a 4:3 aspect ratio, and constrain it
+        final itemHeight = min(
+          maxItemWidth / ParticipantWidget.aspectRatio,
+          constraints.maxHeight / rowCount,
+        );
+        final itemWidth = itemHeight * ParticipantWidget.aspectRatio;
 
         return Center(
           child: Column(
