@@ -619,9 +619,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                   Column(
                     children: const [
                       Expanded(
-                        child: ParticipantGridLayout(
-                          keyPrefix: 'mobile',
-                        ),
+                        child: ParticipantGridLayout(),
                       ),
                       BreakoutStatusInformation(),
                       SizedBox(height: 10),
