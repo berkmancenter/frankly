@@ -17,7 +17,7 @@ class ParticipantGridLayout extends StatefulWidget {
 
 class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
   final _pageController = PageController();
-  static const int _maxParticipantsPerPage = 10;
+  static const int _maxParticipantsPerPage = 8;
   int _currentPage = 0;
 
   List<AgoraParticipant> get participants =>
