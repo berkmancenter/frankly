@@ -6,6 +6,24 @@ part 'membership.freezed.dart';
 part 'membership.g.dart';
 
 enum MembershipStatus {
+
+  /// Person who created this space. Cannot be removed from the space.
+  owner,
+
+  /// Has elevated permissions to create/edit space content, and promote other members.
+  admin,
+
+  /// User that has elevated permissions to run meetings and
+  /// create/edit content, cant promote other members.
+  moderator,
+
+  /// No elevated permissions. When breakouts are created,
+  /// facilitators are distributed between breakout rooms.
+  facilitator,
+
+  /// A user who has opted to join the community
+  member,
+
   banned,
 
   /// A user who has not yet joined a community or attended an event or attended
@@ -13,23 +31,6 @@ enum MembershipStatus {
 
   /// User that joins the event and they are not members of that space
   attendee,
-
-  /// A user who has opted to join the community
-  member,
-
-  /// No elevated permissions. When breakouts are created,
-  /// facilitators are distributed between breakout rooms.
-  facilitator,
-
-  /// User that has elevated permissions to run meetings and
-  /// create/edit content, cant promote other members.
-  mod,
-
-  /// Has elevated permissions to create/edit spaace content, and promote other members.
-  admin,
-
-  /// Person who created this space. Cannot be removed from the space.
-  owner,
 }
 
 extension MembershipStatusExtension on MembershipStatus {
@@ -43,7 +44,7 @@ extension MembershipStatusExtension on MembershipStatus {
   bool get isFacilitator =>
       [MembershipStatus.facilitator].contains(this) || isMod;
 
-  bool get isMod => [MembershipStatus.mod].contains(this) || isAdmin;
+  bool get isMod => [MembershipStatus.moderator].contains(this) || isAdmin;
 
   bool get isAdmin => [MembershipStatus.admin].contains(this) || isOwner;
 
