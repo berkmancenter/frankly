@@ -54,8 +54,6 @@ class ParticipantWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
   }) : super(key: globalKey);
 
-  static final aspectRatio = Size(16, 9).aspectRatio;
-
   final CommunityGlobalKey globalKey;
   final AgoraParticipant participant;
   final bool isScreenShare;
@@ -277,29 +275,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
     _showParticipantTimer = Timer(const Duration(seconds: 3), () {
       if (mounted) setState(() => _showName = false);
     });
-  }
-
-  Widget _buildAspectRatioClipped(Widget child) {
-    // ignore: parameter_assignments
-    child = GlobalKeyedSubtree(
-      label: '${widget.globalKey.distinctLabel}-aspect-ratio-clipped',
-      child: child,
-    );
-
-    if (widget.isScreenShare) return child;
-
-    if (widget.borderRadius != BorderRadius.zero) {
-      // ignore: parameter_assignments
-      child = ClipRRect(
-        borderRadius: widget.borderRadius,
-        child: child,
-      );
-    }
-
-    return AspectRatio(
-      aspectRatio: ParticipantWidget.aspectRatio,
-      child: child,
-    );
   }
 
   @override
