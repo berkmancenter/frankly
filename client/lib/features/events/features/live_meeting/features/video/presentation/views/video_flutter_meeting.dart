@@ -329,10 +329,8 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: ParticipantGridLayout(
-                  keyPrefix: 'desktop',
-                ),
+                padding: const EdgeInsets.all(8),
+                child: ParticipantGridLayout(),
               ),
             ),
             if (showGuideCardLayout)

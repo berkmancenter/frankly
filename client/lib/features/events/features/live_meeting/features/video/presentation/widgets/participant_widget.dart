@@ -83,10 +83,6 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
     return widget.participant.videoTrackEnabled;
   }
 
-  bool get didReceiveFrames {
-    return widget.participant.hasReceivedVideoFrame;
-  }
-
   bool get _isNewlyConnected {
     final timer = conferenceRoom
         .participantInitializationTimers[widget.participant.userId];
@@ -312,53 +308,23 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
 
     return Listener(
       onPointerDown: isMobile ? (_) => _showParticipantName() : null,
-      child: RepaintBoundary(
-        child: _buildAspectRatioClipped(
-          Container(
-            color: Theme.of(context).primaryColor,
-            child: Container(
-              color: context.theme.colorScheme.scrim.withScrimOpacity,
-              child: AnimatedBuilder(
-                animation: widget.participant,
-                builder: (_, __) => Stack(
-                  children: [
-                    Container(),
-                    if (!videoEnabled || !didReceiveFrames)
-                      Positioned.fill(
-                        child: _DisabledVideoWidget(
-                          participant: widget.participant,
-                          isNewlyConnected: _isNewlyConnected,
-                          didReceiveFrames: didReceiveFrames,
-                          isRemote: isRemote,
-                          startedTimer: _startedTimer,
-                        ),
-                      ),
-                    if (videoEnabled)
-                      Positioned.fill(
-                        child: RepaintBoundary(
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            clipBehavior: Clip.hardEdge,
-                            child: SizedBox(
-                              height: kParticipantVideoWidgetDimensions.height,
-                              width: kParticipantVideoWidgetDimensions.width,
-                              child: widget.participant is FakeParticipant ||
-                                      videoViewController == null
-                                  ? Container(color: Colors.orange)
-                                  : AgoraVideoView(
-                                      controller: videoViewController!,
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    _buildOverlay(),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+      child: Stack(
+        children: [
+          if (!videoEnabled)
+            _DisabledVideoWidget(
+              participant: widget.participant,
+              isNewlyConnected: _isNewlyConnected,
+              isRemote: isRemote,
+              startedTimer: _startedTimer,
+            )
+          else
+            widget.participant is FakeParticipant || videoViewController == null
+                ? Container(color: Colors.orange)
+                : AgoraVideoView(
+                    controller: videoViewController!,
+                  ),
+          _buildOverlay(),
+        ],
       ),
     );
   }
