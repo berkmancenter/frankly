@@ -33,10 +33,8 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
   }
 
   Widget _buildBreakoutRoomChooser() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      crossAxisAlignment: WrapCrossAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         HeightConstrainedText(
           context.l10n.fakeParticipantCount,
@@ -51,7 +49,6 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
         ActionButton(
           onPressed: () => Navigator.of(context).pop(_textController.text),
           text: 'Save',
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -91,13 +88,6 @@ class _FakeParticipantsDialogState extends State<FakeParticipantsDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Color(0xFF5568FF),
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(6),
-      ),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 500),
         child: Stack(
