@@ -268,33 +268,6 @@ class AgoraRoom with ChangeNotifier {
 
         notifyListeners();
       },
-      onRemoteVideoStateChanged: (
-        RtcConnection connection,
-        int remoteUid,
-        RemoteVideoState state,
-        RemoteVideoStateReason reason,
-        int elapsed,
-      ) {
-        print(
-          '[onRemoteVideoStateChanged] connection: ${connection.toJson()} uid: $remoteUid state: $state',
-        );
-        if (state == RemoteVideoState.remoteVideoStateDecoding ||
-            state == RemoteVideoState.remoteVideoStateStarting) {
-          _remoteParticipants
-              .where((p) => p.agoraUid == remoteUid)
-              .firstOrNull
-              ?.hasReceivedVideoFrame = true;
-        }
-        notifyListeners();
-      },
-      onFirstLocalVideoFramePublished: (source, elapsed) {
-        print(
-          '[onFirstLocalVideoFramePublished] source: $source elapsed: $elapsed',
-        );
-        // Set local participant's hasReceivedVideoFrame to true to improve state sync.
-        _localParticipant?.hasReceivedVideoFrame = true;
-        notifyListeners();
-      },
       onUserEnableLocalVideo:
           (RtcConnection connection, int uid, bool enabled) {
         print(
@@ -430,8 +403,6 @@ class AgoraParticipant with ChangeNotifier {
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
   bool videoTrackEnabled = true;
-  // Tracks whether any video frames have actually been received.
-  bool hasReceivedVideoFrame = false;
 
   html.MediaStreamTrack? get screenshareTrack => null;
 

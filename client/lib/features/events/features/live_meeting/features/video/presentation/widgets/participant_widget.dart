@@ -196,14 +196,12 @@ class _DisabledVideoWidget extends StatelessWidget {
     super.key,
     required this.participant,
     required this.isNewlyConnected,
-    required this.didReceiveFrames,
     required this.isRemote,
     required this.startedTimer,
   });
 
   final AgoraParticipant participant;
   final bool isNewlyConnected;
-  final bool didReceiveFrames;
   final bool isRemote;
   final Timer? startedTimer;
 
@@ -240,15 +238,6 @@ class _DisabledVideoWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
-                fontSize: isMobile ? 12 : 16,
-              ),
-            )
-          else if (!didReceiveFrames && isRemote)
-            HeightConstrainedText(
-              'No video received',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: context.theme.colorScheme.secondary,
                 fontSize: isMobile ? 12 : 16,
               ),
             )
