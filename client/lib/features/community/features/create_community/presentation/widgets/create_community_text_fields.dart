@@ -200,7 +200,6 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           ),
           _buildCreateCommunityTextField(
             label: context.l10n.communityTagline,
-            helperText: context.l10n.taglineHint,
             borderType: widget.borderType,
             initialValue: widget.community.tagLine,
             onChanged: widget.onTaglineChanged,
