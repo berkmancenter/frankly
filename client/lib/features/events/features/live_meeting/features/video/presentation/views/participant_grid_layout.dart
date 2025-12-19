@@ -110,13 +110,10 @@ class _ParticipantGridPage extends StatelessWidget {
     if (participants.isEmpty) {
       return const SizedBox.shrink();
     }
-    print(
-      'GRID DEBUG: Building page $pageIndex with ${participants.length} participants. ',
-    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        const maxVideosPerRow = 2;
+        final maxVideosPerRow = constraints.maxWidth > 750 ? 3 : 2;
         final rowCount = (participants.length / maxVideosPerRow).ceil();
 
         // Calculate the height each row should take to fill the screen.
@@ -149,7 +146,6 @@ class _ParticipantGridPage extends StatelessWidget {
                             final participantIndex =
                                 row * maxVideosPerRow + col;
                             if (participantIndex >= participants.length) {
-                              // Don't add empty space for missing participants
                               return const SizedBox.shrink();
                             }
 
