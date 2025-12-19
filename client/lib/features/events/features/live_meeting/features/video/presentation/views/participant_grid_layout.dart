@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart';
+import 'package:provider/provider.dart';
 import '../../data/providers/agora_room.dart';
 
 class ParticipantGridLayout extends StatefulWidget {
@@ -16,11 +17,11 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
   static const int _maxParticipantsPerPage = 10;
 
   List<AgoraParticipant> get participants =>
-      ConferenceRoom.watch(context).participants;
 
   int _calculateNumberOfPages() {
     return (participants.length / _maxParticipantsPerPage).ceil();
   }
+      Provider.of<ConferenceRoom>(context, listen: false).participants;
 
   @override
   void dispose() {
