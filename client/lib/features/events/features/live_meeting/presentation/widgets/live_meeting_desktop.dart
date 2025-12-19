@@ -55,12 +55,6 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
     );
   }
 
-  Widget _buildLiveMeeting() {
-    return RefreshKeyWidget(
-      child: VideoFlutterMeeting(),
-    );
-  }
-
   Widget _buildMeetingLoading() {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
 
@@ -73,7 +67,9 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
         if (liveMeetingProvider.activeUiState == MeetingUiState.breakoutRoom) {
           return _buildBreakoutRoom(liveMeetingProvider.currentBreakoutRoomId!);
         }
-        return _buildLiveMeeting();
+        return RefreshKeyWidget(
+          child: VideoFlutterMeeting(),
+        );
       },
     );
   }
