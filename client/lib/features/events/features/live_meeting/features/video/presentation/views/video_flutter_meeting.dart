@@ -328,8 +328,9 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(8),
+                alignment: Alignment.center,
                 child: ParticipantGridLayout(),
               ),
             ),

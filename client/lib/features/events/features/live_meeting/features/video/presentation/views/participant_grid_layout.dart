@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart';
@@ -15,12 +18,9 @@ class ParticipantGridLayout extends StatefulWidget {
 class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
   final _pageController = PageController();
   static const int _maxParticipantsPerPage = 10;
+  int _currentPage = 0;
 
   List<AgoraParticipant> get participants =>
-
-  int _calculateNumberOfPages() {
-    return (participants.length / _maxParticipantsPerPage).ceil();
-  }
       Provider.of<ConferenceRoom>(context, listen: false).participants;
 
   @override
@@ -38,6 +38,7 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
       children: [
         Expanded(
           child: PageView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: numberOfPages,
             controller: _pageController,
             itemBuilder: (context, index) => _ParticipantGridPage(
@@ -47,7 +48,10 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
                   .take(_maxParticipantsPerPage)
                   .toList(),
             ),
-            onPageChanged: (i) => _pageController.jumpToPage(i),
+            onPageChanged: (i) {
+              setState(() => _currentPage = i);
+              _pageController.jumpToPage(i);
+            },
           ),
         ),
         // Buttons to navigate between pages
@@ -58,11 +62,10 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
               IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  final previousPage = _pageController.page!.toInt() - 1;
+                  final previousPage = _currentPage - 1;
                   if (previousPage >= 0) {
-                    _pageController.jumpToPage(
-                      previousPage,
-                    );
+                    setState(() => _currentPage = previousPage);
+                    _pageController.jumpToPage(previousPage);
                   }
                 },
               ),
@@ -71,7 +74,7 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
                 (pageIndex) => Icon(
                   Icons.circle,
                   size: 12,
-                  color: _pageController.page!.toInt() == pageIndex
+                  color: _currentPage == pageIndex
                       ? context.theme.colorScheme.primary
                       : context.theme.colorScheme.surfaceContainerHigh,
                 ),
@@ -79,11 +82,10 @@ class ParticipantGridLayoutState extends State<ParticipantGridLayout> {
               IconButton(
                 icon: const Icon(Icons.arrow_forward),
                 onPressed: () {
-                  final nextPage = _pageController.page!.toInt() + 1;
+                  final nextPage = _currentPage + 1;
                   if (nextPage < numberOfPages) {
-                    _pageController.jumpToPage(
-                      nextPage,
-                    );
+                    setState(() => _currentPage = nextPage);
+                    _pageController.jumpToPage(nextPage);
                   }
                 },
               ),
@@ -112,23 +114,63 @@ class _ParticipantGridPage extends StatelessWidget {
       'GRID DEBUG: Building page $pageIndex with ${participants.length} participants. ',
     );
 
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 4 / 3,
-      ),
-      itemCount: participants.length,
-      itemBuilder: (context, index) {
-        final participant = participants[index];
-        return SizedBox(
-          width: kParticipantVideoWidgetDimensions.width / 2,
-          child: AspectRatio(
-            aspectRatio: 4 / 3,
-            child: ParticipantWidget(
-              borderRadius: BorderRadius.zero,
-              globalKey: CommunityGlobalKey.fromLabel(participant.userId),
-              participant: participant,
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const maxVideosPerRow = 2;
+        final rowCount = (participants.length / maxVideosPerRow).ceil();
+
+        // Calculate the height each row should take to fill the screen.
+        // Constrain the height.
+        final itemHeight = min(
+          constraints.maxHeight / rowCount,
+          kParticipantVideoWidgetDimensions.height,
+        );
+        // Calculate width needed to maintain 4:3 aspect ratio
+        final idealItemWidth = itemHeight * (4 / 3);
+
+        // Check if two videos would fit side by side, if not, constrain the width
+        final maxItemWidth = constraints.maxWidth / maxVideosPerRow;
+        final itemWidth =
+            idealItemWidth <= maxItemWidth ? idealItemWidth : maxItemWidth;
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int row = 0; row < rowCount; row++)
+                SizedBox(
+                  height: itemHeight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int col = 0; col < maxVideosPerRow; col++)
+                        Builder(
+                          builder: (context) {
+                            final participantIndex =
+                                row * maxVideosPerRow + col;
+                            if (participantIndex >= participants.length) {
+                              // Don't add empty space for missing participants
+                              return const SizedBox.shrink();
+                            }
+
+                            final participant = participants[participantIndex];
+                            return SizedBox(
+                              width: itemWidth,
+                              height: itemHeight,
+                              child: ParticipantWidget(
+                                borderRadius: BorderRadius.zero,
+                                globalKey: CommunityGlobalKey.fromLabel(
+                                  participant.userId,
+                                ),
+                                participant: participant,
+                              ),
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+            ],
           ),
         );
       },
