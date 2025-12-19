@@ -46,15 +46,6 @@ class LiveMeetingDesktopLayout extends StatefulWidget {
 }
 
 class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
-  Widget _buildBreakoutRoom(String roomId) {
-    return RefreshKeyWidget(
-      child: RefreshableBreakoutRoom(
-        key: Key('breakout-room-$roomId'),
-        liveMeetingBuilder: (_) => VideoFlutterMeeting(),
-      ),
-    );
-  }
-
   Widget _buildMeetingLoading() {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
 
@@ -65,7 +56,14 @@ class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       loadingMessage: 'Loading room. Please wait...',
       builder: (_, response) {
         if (liveMeetingProvider.activeUiState == MeetingUiState.breakoutRoom) {
-          return _buildBreakoutRoom(liveMeetingProvider.currentBreakoutRoomId!);
+          return RefreshKeyWidget(
+            child: RefreshableBreakoutRoom(
+              key: Key(
+                'breakout-room-${liveMeetingProvider.currentBreakoutRoomId!}',
+              ),
+              liveMeetingBuilder: (_) => VideoFlutterMeeting(),
+            ),
+          );
         }
         return RefreshKeyWidget(
           child: VideoFlutterMeeting(),
