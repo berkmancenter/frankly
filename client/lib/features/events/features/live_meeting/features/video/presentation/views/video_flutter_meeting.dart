@@ -312,7 +312,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
               if (remainingParticipants.isNotEmpty)
                 SizedBox(
                   height: 160,
-                  child: _SidePanelParticipants(
+                  child: _BottomBarParticipants(
                     remainingParticipants: remainingParticipants,
                   ),
                 ),
@@ -470,16 +470,16 @@ class _GetHelpButtonState extends State<GetHelpButton> {
   }
 }
 
-class _SidePanelParticipants extends StatefulWidget {
+class _BottomBarParticipants extends StatefulWidget {
   final List<AgoraParticipant> remainingParticipants;
 
-  const _SidePanelParticipants({required this.remainingParticipants});
+  const _BottomBarParticipants({required this.remainingParticipants});
 
   @override
-  _SidePanelParticipantsState createState() => _SidePanelParticipantsState();
+  _BottomBarParticipantsState createState() => _BottomBarParticipantsState();
 }
 
-class _SidePanelParticipantsState extends State<_SidePanelParticipants> {
+class _BottomBarParticipantsState extends State<_BottomBarParticipants> {
   final _controller = ScrollController();
 
   final _scrollDuration = Duration(milliseconds: 500);
