@@ -352,7 +352,6 @@ class _DisabledVideoWidget extends StatelessWidget {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     return Container(
-      color: context.theme.colorScheme.surfaceContainerHigh,
       padding: const EdgeInsets.all(8),
       alignment: Alignment.center,
       child: Column(
