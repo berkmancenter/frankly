@@ -22,7 +22,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_gu
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/features/events/features/live_meeting/features/video/presentation/views/brady_bunch_view_widget.dart';
+import 'package:client/features/events/features/live_meeting/features/video/presentation/views/participant_grid_layout.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart';
@@ -586,7 +586,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                       if (dominantSpeaker != null)
                         Expanded(
-                          child: _buildFeaturedParticipant(dominantSpeaker),
+                          child: AspectRatio(
+                            aspectRatio: ParticipantWidget.aspectRatio,
+                            child: ParticipantWidget(
+                              globalKey: CommunityGlobalKey.fromLabel(
+                                dominantSpeaker.userId,
+                              ),
+                              participant: dominantSpeaker,
+                            ),
+                          ),
                         ),
                       SizedBox(height: 10),
                       BreakoutStatusInformation(),
@@ -619,9 +627,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                   Column(
                     children: const [
                       Expanded(
-                        child: BradyBunchViewWidget(
-                          keyPrefix: 'mobile',
-                        ),
+                        child: ParticipantGridLayout(),
                       ),
                       BreakoutStatusInformation(),
                       SizedBox(height: 10),
@@ -640,13 +646,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
           ],
         );
     }
-  }
-
-  Widget _buildFeaturedParticipant(AgoraParticipant participant) {
-    return ParticipantWidget(
-    globalKey: CommunityGlobalKey.fromLabel(participant.userId),
-      participant: participant,
-    );
   }
 
   Widget _buildReadyText(
@@ -1071,7 +1070,7 @@ class MobileParticipantsWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final participant = participants[index];
         return AspectRatio(
-          aspectRatio: 1.0,
+          aspectRatio: ParticipantWidget.aspectRatio,
           child: ParticipantWidget(
             globalKey: CommunityGlobalKey.fromLabel(participant.userId),
             participant: participant,
