@@ -586,13 +586,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                       if (dominantSpeaker != null)
                         Expanded(
-                          child: AspectRatio(
-                            aspectRatio: ParticipantWidget.aspectRatio,
-                            child: ParticipantWidget(
-                              globalKey: CommunityGlobalKey.fromLabel(
-                                dominantSpeaker.userId,
+                          child: Center(
+                            child: AspectRatio(
+                              aspectRatio: ParticipantWidget.aspectRatio,
+                              child: ParticipantWidget(
+                                globalKey: CommunityGlobalKey.fromLabel(
+                                  dominantSpeaker.userId,
+                                ),
+                                participant: dominantSpeaker,
                               ),
-                              participant: dominantSpeaker,
                             ),
                           ),
                         ),
