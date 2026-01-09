@@ -113,12 +113,20 @@ class _ParticipantGridPage extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final maxVideosPerRow = constraints.maxWidth > 750 ? 3 : 2;
+        final numColumns = constraints.maxWidth > 750
+            // On a wide screen, use 3 columns for 5 or more participants.
+            ? participants.length <= 4
+                ? 2
+                : 3
+            // For 3 or less participants, put them in 1 column.
+            : participants.length <= 3
+                ? 1
+                : 2;
         // Round up to get an extra row for odd numbers
-        final rowCount = (participants.length / maxVideosPerRow).ceil();
+        final rowCount = (participants.length / numColumns).ceil();
 
         // Calculate the width of each item
-        final maxItemWidth = constraints.maxWidth / maxVideosPerRow;
+        final maxItemWidth = constraints.maxWidth / numColumns;
         // Calculate the height based on a 4:3 aspect ratio, and constrain it
         final itemHeight = min(
           maxItemWidth / ParticipantWidget.aspectRatio,
@@ -136,11 +144,10 @@ class _ParticipantGridPage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      for (int col = 0; col < maxVideosPerRow; col++)
+                      for (int col = 0; col < numColumns; col++)
                         Builder(
                           builder: (context) {
-                            final participantIndex =
-                                row * maxVideosPerRow + col;
+                            final participantIndex = row * numColumns + col;
                             if (participantIndex >= participants.length) {
                               return const SizedBox.shrink();
                             }
