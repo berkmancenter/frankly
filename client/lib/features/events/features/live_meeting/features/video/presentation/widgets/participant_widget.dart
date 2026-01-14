@@ -163,18 +163,19 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
       onPointerDown: isMobile ? (_) => _showParticipantName() : null,
       child: Stack(
         children: [
-          if (!videoEnabled || _isNewlyConnected)
-            _DisabledVideoWidget(
-              participant: widget.participant,
-              isNewlyConnected: _isNewlyConnected,
-              isRemote: isRemote,
-              startedTimer: _startedTimer,
-            ),
+          _DisabledVideoWidget(
+            participant: widget.participant,
+            isNewlyConnected: _isNewlyConnected,
+            isRemote: isRemote,
+            startedTimer: _startedTimer,
+          ),
           widget.participant is FakeParticipant || videoViewController == null
               ? Container(color: Colors.orange)
-              : AgoraVideoView(
-                  controller: videoViewController!,
-                ),
+              : (videoEnabled)
+                  ? AgoraVideoView(
+                      controller: videoViewController!,
+                    )
+                  : SizedBox.shrink(),
           _VideoOverlayWidget(
             participant: widget.participant,
             showName: _showName,
