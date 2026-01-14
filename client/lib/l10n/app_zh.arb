@@ -683,6 +683,8 @@
   "createTemplateFromEvent": "从活动创建模板",
   "duplicateEvent": "复制活动",
   "downloadMembersRegistrationData": "下载成员注册数据",
+  "downloadChatData": "下载聊天数据",
+  "downloadPollsSuggestionsData": "下载投票和建议数据",
   "downloadChatsAndSuggestions": "下载聊天和建议",
   "pasteOrEnterUrl": "粘贴或输入URL",
   "tag": "标签",
