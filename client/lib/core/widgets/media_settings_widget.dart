@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
@@ -123,14 +124,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Audio Input Device',
+            context.l10n.audioInputDevice,
             style: context.theme.textTheme.titleMedium,
           ),
           _mediaService.audioInputs.isEmpty
               ? Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
-                    'No audio devices available. Please check permissions.',
+                    context.l10n.avErrorNotFound,
                     style: context.theme.textTheme.bodyMedium!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -183,18 +184,18 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     );
                     setState(() {});
                   },
-                  hint: const Text('Select audio input'),
+                  hint: Text(context.l10n.selectAudioInputDevice),
                 ),
           const SizedBox(height: 24),
           Text(
-            'Video Input Device',
+            context.l10n.videoInputDevice,
             style: context.theme.textTheme.titleMedium,
           ),
           _mediaService.videoInputs.isEmpty
               ? Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
-                    'No video devices available. Please check permissions.',
+                    context.l10n.avErrorNotFound,
                     style: context.theme.textTheme.bodyMedium!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -264,7 +265,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     Column(
                       children: [
                         Text(
-                          'Video Preview',
+                          context.l10n.videoPreview,
                           style: context.theme.textTheme.titleMedium,
                         ),
                         const SizedBox(height: 8),
@@ -284,7 +285,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             child: _mediaService.videoInputs.isEmpty
                                 ? Center(
                                     child: Text(
-                                      'No video devices available.',
+                                      context.l10n.avErrorNotFound,
                                       style: context.theme.textTheme.bodyMedium!
                                           .copyWith(
                                         color: context
@@ -314,7 +315,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                                   ),
                                                   const SizedBox(height: 16),
                                                   Text(
-                                                    'Updating your meeting video...',
+                                                    context.l10n.videoUpdating,
                                                     style: context.theme
                                                         .textTheme.bodyMedium,
                                                   ),
@@ -338,7 +339,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     ),
                   const SizedBox(height: 16),
                   ActionButton(
-                    text: 'Save',
+                    text: context.l10n.save,
                     onPressed: (_mediaService.selectedVideoInputId ==
                                 initialVideoDeviceId &&
                             _mediaService.selectedAudioInputId ==
@@ -389,7 +390,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 if (context.mounted) {
                                   showRegularToast(
                                     context,
-                                    'Video device updated.',
+                                    context.l10n.videoDeviceUpdated,
                                     toastType: ToastType.success,
                                   );
                                 }
@@ -421,7 +422,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                 if (context.mounted) {
                                   showRegularToast(
                                     context,
-                                    'Audio device updated.',
+                                    context.l10n.audioDeviceUpdated,
                                     toastType: ToastType.success,
                                   );
                                 }
@@ -446,7 +447,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               if (context.mounted) {
                                 showRegularToast(
                                   context,
-                                  'Error saving media settings. Please try again or contact support.',
+                                  context.l10n.avErrorSaveDeviceSettings,
                                   toastType: ToastType.failed,
                                 );
                               }
