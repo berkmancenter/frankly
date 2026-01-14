@@ -539,7 +539,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
         PopupMenuItem<Function()>(
           value: () => alertOnError(
             context,
-            () => liveMeetingProvider.confirmProposeKick(userId),
+            () => liveMeetingProvider.confirmProposeKick(context, userId),
           ),
           child: HeightConstrainedText(
             'Propose to remove user',
