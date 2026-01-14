@@ -127,8 +127,9 @@
   "avErrorDisconnected": "Dispositivos de audio/video desconectados.",
   "avErrorConstraints": "Error de restricciones multimedia.",
   "avErrorNetwork": "Error de red con conexión de audio/video.",
-  "avErrorNotReadable": "El dispositivo de audio/video no se puede leer o está ocupado.",
   "avErrorSaveDeviceSettings": "Error al guardar la configuración de dispositivos de audio/video. Por favor, inténtelo de nuevo o contacte al soporte.",
+  "avErrorNotReadable": "El dispositivo de audio/video no se puede leer o está ocupado.",
+  "avConnecting": "Conectando...",
   "awaitingResponses": "Esperando respuestas…",
   "banned": "Prohibido",
   "brandYourSpace": "Marcar tu espacio",
@@ -508,6 +509,7 @@
       }
     }
   },
+  "videoDisabled": "Vídeo desactivado",
   "videoPreview": "Vista previa de video",
   "videoUpdating": "Actualizando video…",
   "videoDeviceUpdated": "Dispositivo de video actualizado.",

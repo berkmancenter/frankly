@@ -117,6 +117,7 @@
     }
   },
   "videoPreview": "视频预览",
+  "videoDisabled": "视频关闭",
   "videoUpdating": "正在更新您的会议视频...",
   "videoDeviceUpdated": "视频设备已更新。",
   "attendee": "参与者",
@@ -131,8 +132,9 @@
   "avErrorDisconnected": "音频/视频设备已断开连接。",
   "avErrorConstraints": "媒体约束错误。",
   "avErrorNetwork": "音频/视频连接网络错误。",
-  "avErrorNotReadable": "无法读取音频/视频设备或该设备正忙。",
   "avErrorSaveDeviceSettings": "保存音频/视频设备设置时出错。请重试或联系支持。",
+  "avErrorNotReadable": "无法读取音频/视频设备或该设备正忙。",
+  "avConnecting": "连接中...",
   "awaitingResponses": "等待回应中...",
   "banned": "已禁止",
   "brandYourSpace": "打造您的空间品牌",

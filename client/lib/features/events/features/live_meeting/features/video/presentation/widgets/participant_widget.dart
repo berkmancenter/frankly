@@ -232,7 +232,7 @@ class _DisabledVideoWidget extends StatelessWidget {
           if (!isMobile) SizedBox(height: 10),
           if (isConnecting)
             HeightConstrainedText(
-              'Connecting...',
+              context.l10n.avConnecting,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
@@ -244,7 +244,7 @@ class _DisabledVideoWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 HeightConstrainedText(
-                  'Video Off',
+                  context.l10n.videoDisabled,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,

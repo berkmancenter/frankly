@@ -45,6 +45,7 @@
       }
     }
   },
+  "videoDisabled": "影片關閉",
   "videoPreview": "影片預覽",
   "videoUpdating": "正在更新您的會議影片...",
   "videoDeviceUpdated": "影片裝置已更新。",
@@ -60,8 +61,9 @@
   "avErrorDisconnected": "音訊/視訊設備已斷開連接。",
   "avErrorConstraints": "媒體約束錯誤。",
   "avErrorNetwork": "音訊/視訊連接網絡錯誤。",
-  "avErrorNotReadable": "無法讀取音訊/視訊設備或該設備正忙。",
   "avErrorSaveDeviceSettings": "保存音訊/視訊設備設定時出錯。請重試或聯繫支援。",
+  "avErrorNotReadable": "無法讀取音訊/視訊設備或該設備正忙。",
+  "avConnecting": "連接中...",
   "awaitingResponses": "等待回應中...",
   "banned": "已禁止",
   "brandYourSpace": "打造您的空間品牌",
