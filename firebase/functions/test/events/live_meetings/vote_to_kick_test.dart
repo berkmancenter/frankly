@@ -151,7 +151,7 @@ void main() {
       eventId: testEvent.id,
       uid: targetUserId,
       participantStatus: ParticipantStatus.active,
-      participantMembershipStatus: MembershipStatus.mod,
+      participantMembershipStatus: MembershipStatus.moderator,
     );
 
     final req = VoteToKickRequest(

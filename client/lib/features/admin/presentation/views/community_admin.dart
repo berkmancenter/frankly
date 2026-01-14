@@ -1,21 +1,17 @@
-import 'dart:math';
-
-import 'package:client/core/widgets/constrained_body.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:html' as html;
+import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/routing/locations.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/styles/styles.dart';
+import 'package:data_models/community/community.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/admin/presentation/views/billing_tab.dart';
-import 'package:client/features/admin/presentation/views/events_tab.dart';
+import 'package:client/features/admin/presentation/views/data_tab.dart';
 import 'package:client/features/admin/presentation/views/members_tab.dart';
 import 'package:client/features/admin/presentation/views/overview_tab.dart';
 import 'package:client/features/admin/presentation/views/settings_tab.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
-import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
-import 'package:client/core/widgets/tabs/tab_bar.dart';
-import 'package:client/core/widgets/tabs/tab_bar_view.dart';
-import 'package:client/core/widgets/tabs/tab_controller.dart';
-import 'package:client/app.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -26,122 +22,62 @@ class CommunityAdmin extends StatefulWidget {
   const CommunityAdmin({required this.tab});
 
   @override
-  _CommunityAdminState createState() => _CommunityAdminState();
+  CommunityAdminState createState() => CommunityAdminState();
 }
 
-enum CommunityAdminTabs {
-  overview,
-  members,
-  events,
-  settings,
-  billing,
-}
-
-class _CommunityAdminState extends State<CommunityAdmin>
+class CommunityAdminState extends State<CommunityAdmin>
     with SingleTickerProviderStateMixin {
-  late final SelectedTabController _selectedTabController;
-
-  List<CommunityAdminTabs> get tabs {
-    final communityProvider = context.read<CommunityProvider>();
-    return [
-      if (communityProvider.community.isOnboardingOverviewEnabled)
-        CommunityAdminTabs.overview,
-      CommunityAdminTabs.members,
-      CommunityAdminTabs.events,
-      CommunityAdminTabs.settings,
-      if (kShowStripeFeatures) CommunityAdminTabs.billing,
-    ];
-  }
-
-  int getTabIndex(CommunityAdminTabs tab) {
-    return tabs.indexOf(tab);
-  }
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    int initialIndex = 0;
+    if (widget.tab != null) {
+      switch (widget.tab) {
+        case 'overview':
+          break;
+        case 'members':
+          initialIndex = 1;
+          break;
+        case 'data':
+          initialIndex = 2;
+          break;
+        case 'settings':
+          initialIndex = 3;
+          break;
+      }
+    }
+
+    _tabController = TabController(
+      initialIndex: initialIndex,
+      length: 4,
+      vsync: this,
+    );
 
     if (!userService.isSignedIn) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => SignInDialog.show(isDismissable: false),
       );
     }
-
-    final queryParamTabs = tabs.map((e) => describeEnum(e)).toList();
-    final tab = widget.tab;
-    final int initialIndex =
-        tab != null ? max(0, queryParamTabs.indexOf(tab)) : 0;
-    _selectedTabController = SelectedTabController(initialTab: initialIndex);
   }
 
-  Widget _buildHeader() {
-    return Builder(
-      builder: (context) => ConstrainedBody(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            SizedBox(height: 30),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: CustomTabBar(
-                padding: null,
+  _buildTab(BuildContext context, String text, IconData icon, bool mobile) {
+    return Flex(
+      direction: mobile ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(icon),
+        SizedBox(width: mobile ? 0 : 8),
+        HeightConstrainedText(
+          text,
+          style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                fontSize: mobile ? 11 : 16,
               ),
-            ),
-          ],
+          maxLines: 1,
         ),
-      ),
-    );
-  }
-
-  Widget _buildAdminSections() {
-    final communityProvider = context.watch<CommunityProvider>();
-    final enableOverview =
-        communityProvider.community.isOnboardingOverviewEnabled;
-
-    return CustomTabController(
-      selectedTabController: _selectedTabController,
-      tabs: [
-        if (enableOverview)
-          CustomTabAndContent(
-            tab: 'OVERVIEW',
-            content: (_) => OverviewTab(
-              onUpgradeTap: () => _selectedTabController.setTabIndex(
-                getTabIndex(CommunityAdminTabs.billing),
-              ),
-            ),
-          ),
-        CustomTabAndContent(
-          tab: 'MEMBERS',
-          content: (context) => MembersTab(),
-        ),
-        CustomTabAndContent(
-          tab: 'EVENTS',
-          content: (context) => EventsTab(),
-        ),
-        CustomTabAndContent(
-          tab: 'SETTINGS',
-          content: (context) => SettingsTab(
-            onUpgradeTap: () => _selectedTabController.setTabIndex(
-              getTabIndex(CommunityAdminTabs.billing),
-            ),
-          ),
-        ),
-        if (kShowStripeFeatures)
-          CustomTabAndContent(
-            tab: 'BILLING',
-            content: (context) => AdminBillingTab(),
-          ),
       ],
-      child: CustomListView(
-        children: [
-          _buildHeader(),
-          SizedBox(height: 16),
-          ConstrainedBody(
-            child: CustomTabBarView(),
-          ),
-          SizedBox(height: 100),
-        ],
-      ),
     );
   }
 
@@ -156,7 +92,120 @@ class _CommunityAdminState extends State<CommunityAdmin>
         ),
       );
     }
-
-    return _buildAdminSections();
+    final Community community =
+        Provider.of<CommunityProvider>(context).community;
+    final mobile = responsiveLayoutService.isMobile(context);
+    return Container(
+      margin: EdgeInsets.only(
+        top: 20,
+        left: mobile ? 20 : 0,
+        right: mobile ? 20 : 0,
+      ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 1115,
+        ),
+        child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 100,
+            centerTitle: false,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ActionButton(
+                  text: community.name,
+                  type: ActionButtonType.text,
+                  icon: Icon(Icons.arrow_back_outlined),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    routerDelegate.beamTo(
+                      CommunityPageRoutes(
+                        communityDisplayId: community.displayId,
+                      ).communityHome,
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: HeightConstrainedText(
+                    context.l10n.manageCommunity,
+                    style: context.theme.textTheme.headlineMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            bottom: TabBar(
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+              onTap: (value) => html.window.history.pushState(
+                null,
+                '',
+                'space/${community.displayId}/admin/${[
+                  'overview',
+                  'members',
+                  'data',
+                  'settings',
+                ][value]}',
+              ),
+              tabs: [
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.profile,
+                    Icons.edit_square,
+                    mobile,
+                  ),
+                ),
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.members,
+                    Icons.group,
+                    mobile,
+                  ),
+                ),
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.eventData,
+                    Icons.cloud_download_rounded,
+                    mobile,
+                  ),
+                ),
+                Tab(
+                  child: _buildTab(
+                    context,
+                    context.l10n.settings,
+                    Icons.settings,
+                    mobile,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      OverviewTab(),
+                      MembersTab(),
+                      DataTab(),
+                      SettingsTab(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

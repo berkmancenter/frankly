@@ -14,7 +14,7 @@ List<CommunityFeatureFlags> communityFeatureFlagsFromJson(dynamic enumList) {
     return [];
   }
   final List<String> nonNullEnumList =
-      (enumList as List<dynamic>).whereNotNull().whereType<String>().toList();
+      (enumList).whereNotNull().whereType<String>().toList();
   final featureFlags =
       EnumToString.fromList(CommunityFeatureFlags.values, nonNullEnumList);
   return featureFlags.whereNotNull().toList();
@@ -62,6 +62,11 @@ class Community with _$Community implements SerializeableRequest {
   static const String kFieldContactEmail = 'contactEmail';
   static const String kFieldTagLine = 'tagLine';
   static const String kFieldDescription = 'description';
+  static const String kFieldWebsiteUrl = 'websiteUrl';
+  static const String kFieldFacebookUrl = 'facebookUrl';
+  static const String kFieldLinkedinUrl = 'linkedinUrl';
+  static const String kFieldTwitterUrl = 'twitterUrl';
+  static const String kFieldBlueskyUrl = 'blueskyUrl';
   static const String kFieldIsPublic = 'isPublic';
   static const String kFieldBannerImageUrl = 'bannerImageUrl';
   static const String kFieldProfileImageUrl = 'profileImageUrl';
@@ -87,6 +92,11 @@ class Community with _$Community implements SerializeableRequest {
     DateTime? createdDate,
     bool? isPublic,
     String? description,
+    String? websiteUrl,
+    String? facebookUrl,
+    String? linkedinUrl,
+    String? twitterUrl,
+    String? blueskyUrl,
     String? tagLine,
     @Default([])
     @JsonKey(fromJson: communityFeatureFlagsFromJson)

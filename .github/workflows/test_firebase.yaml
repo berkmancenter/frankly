@@ -33,6 +33,13 @@ jobs:
           cache-dependency-path: ./firebase/functions/package-lock.json
           cache: "npm"
 
+      # Firebase Tools require JDK 21+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Install Functions NPM Dependencies
         if: steps.changes.outputs.functions == 'true'
         run: npm ci

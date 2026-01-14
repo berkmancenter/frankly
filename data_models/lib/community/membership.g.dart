@@ -25,12 +25,12 @@ Map<String, dynamic> _$$_MembershipToJson(_$_Membership instance) =>
     };
 
 const _$MembershipStatusEnumMap = {
+  MembershipStatus.owner: 'owner',
+  MembershipStatus.admin: 'admin',
+  MembershipStatus.moderator: 'moderator',
+  MembershipStatus.facilitator: 'facilitator',
+  MembershipStatus.member: 'member',
   MembershipStatus.banned: 'banned',
   MembershipStatus.nonmember: 'nonmember',
   MembershipStatus.attendee: 'attendee',
-  MembershipStatus.member: 'member',
-  MembershipStatus.facilitator: 'facilitator',
-  MembershipStatus.mod: 'mod',
-  MembershipStatus.admin: 'admin',
-  MembershipStatus.owner: 'owner',
 };
