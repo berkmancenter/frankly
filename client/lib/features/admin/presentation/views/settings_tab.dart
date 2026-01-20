@@ -1,14 +1,13 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/constrained_body.dart';
+import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/features/admin/presentation/accept_take_rate_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:client/features/community/features/create_community/presentation/widgets/upgrade_perks.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_switch_tile.dart';
-import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/app.dart';
@@ -25,10 +24,15 @@ import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
-class SettingsTab extends StatefulHookWidget {
-  final void Function() onUpgradeTap;
+/// Enum to define the position of the toggle switch in settings
+enum TogglePosition {
+  none,
+  top,
+  bottom,
+}
 
-  const SettingsTab({required this.onUpgradeTap});
+class SettingsTab extends StatefulHookWidget {
+  const SettingsTab();
 
   @override
   _SettingsTabState createState() => _SettingsTabState();
@@ -38,219 +42,240 @@ class _SettingsTabState extends State<SettingsTab> {
   final whiteBackground = Colors.white70;
   Community get community => Provider.of<CommunityProvider>(context).community;
 
+  // Store loading states for each toggle to prevent multiple rapid taps
+  final _updateLoading = List.filled(11, false);
+  final _updateLoadingDev = List.filled(24, false);
+
   Widget _buildSettingsToggle(
     String title,
     bool value,
-    void Function(dynamic) onUpdate,
-    Color background, {
+    void Function(dynamic) onUpdate, {
+    TogglePosition position = TogglePosition.none,
     bool hasWarning = false,
+    int loadingIndex = 0,
+    int devLoadingIndex = -1,
+    String supportingText = '',
   }) {
+    // If the position is none, we don't need to apply any special border radius
+    BorderRadius radius = BorderRadius.zero;
+    EdgeInsetsGeometry padding =
+        EdgeInsets.symmetric(vertical: 12, horizontal: 16);
+    if (position == TogglePosition.top) {
+      radius = BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
+      );
+    } else if (position == TogglePosition.bottom) {
+      radius = BorderRadius.only(
+        bottomLeft: Radius.circular(16),
+        bottomRight: Radius.circular(16),
+      );
+    }
     return Material(
-      color: background,
-      child: CustomSwitchTile(
-        text: title,
-        style: AppTextStyle.body.copyWith(
-          color: hasWarning ? context.theme.colorScheme.error : null,
-        ),
-        val: value,
-        onUpdate: onUpdate,
+      shape: RoundedRectangleBorder(
+        borderRadius: radius,
       ),
-    );
-  }
-
-  Widget _buildSettingsSection() {
-    final settings = Provider.of<CommunityProvider>(context).settings;
-    final eventSettings = Provider.of<CommunityProvider>(context).eventSettings;
-    return CustomStreamBuilder<PartnerAgreement?>(
-      stream: useMemoized(
-        () => firestoreAgreementsService
-            .getAgreementForCommunityStream(community.id),
-        [community.id],
-      ),
-      entryFrom: '_SettingsTabState._buildSettingsSection',
-      builder: (context, agreement) {
-        final donationWarning =
-            !(agreement?.stripeConnectedAccountActive ?? false) &&
-                community.settingsMigration.allowDonations;
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-            constraints: BoxConstraints(maxWidth: 585),
+      color: hasWarning
+          ? context.theme.colorScheme.error.withOpacity(0.1)
+          : whiteBackground,
+      child: Column(
+        children: [
+          Padding(
+            padding: padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Settings',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(height: 8),
-                _buildSettingsToggle(
-                  'Allow members to create events',
-                  !settings.dontAllowMembersToCreateMeetings,
-                  (val) => _toggleCommunitySetting(
-                    settings.copyWith(
-                      dontAllowMembersToCreateMeetings:
-                          !settings.dontAllowMembersToCreateMeetings,
+                CustomInkWell(
+                  hoverColor: Colors.transparent,
+                  onTap: () => (devLoadingIndex > -1
+                          ? _updateLoadingDev[devLoadingIndex]
+                          : _updateLoading[loadingIndex])
+                      ? null
+                      : onUpdate(!value),
+                  child: CustomSwitchTile(
+                    text: title,
+                    style: AppTextStyle.body.copyWith(
+                      color:
+                          hasWarning ? context.theme.colorScheme.error : null,
                     ),
+                    val: value,
+                    onUpdate: onUpdate,
+                    loading: devLoadingIndex > -1
+                        ? _updateLoadingDev[devLoadingIndex]
+                        : _updateLoading[loadingIndex],
                   ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
-                _buildSettingsToggle(
-                  'Allow members to create templates',
-                  settings.allowUnofficialTemplates,
-                  (val) => _toggleCommunitySetting(
-                    settings.copyWith(
-                      allowUnofficialTemplates:
-                          !settings.allowUnofficialTemplates,
-                    ),
-                  ),
-                  whiteBackground,
-                ),
-                _buildSettingsToggle(
-                  'Require approval for new members',
-                  settings.requireApprovalToJoin,
-                  (val) => _toggleCommunitySetting(
-                    settings.copyWith(
-                      requireApprovalToJoin: !settings.requireApprovalToJoin,
-                    ),
-                  ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
-                ),
-                _buildSettingsToggle(
-                  'Enable weekly email digests of upcoming events',
-                  !settings.disableEmailDigests,
-                  (val) => _toggleCommunitySetting(
-                    settings.copyWith(
-                      disableEmailDigests: !settings.disableEmailDigests,
-                    ),
-                  ),
-                  whiteBackground,
-                ),
-                if (kShowStripeFeatures
-                    ? agreement?.allowPayments ?? false
-                    : false) ...[
-                  _buildSettingsToggle(
-                    'Allow users to donate funds${donationWarning ? ' *' : ''}',
-                    settings.allowDonations,
-                    (val) => _toggleCommunitySetting(
-                      settings.copyWith(
-                        allowDonations: !settings.allowDonations,
+                // SizedBox(height: 8),
+                if (supportingText.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 28, 16),
+                    child: Text(
+                      supportingText,
+                      style: AppTextStyle.body.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                        fontSize: context.theme.textTheme.bodySmall?.fontSize,
                       ),
                     ),
-                    context.theme.colorScheme.primary.withOpacity(0.1),
-                    hasWarning: donationWarning,
                   ),
-                  if (donationWarning)
-                    HeightConstrainedText(
-                      '* Your payee account has not been fully set up, so donations will not '
-                      'currently be accepted. You may need to link a bank account or accept '
-                      'Stripe\'s terms of service.',
-                      style: TextStyle(color: context.theme.colorScheme.error),
-                    ),
-                  SizedBox(height: 8),
-                  _buildStripeConnectLink(context, agreement!),
-                ],
-                SizedBox(height: 30),
-                HeightConstrainedText(
-                  'Default event settings',
-                  style: AppTextStyle.subhead,
-                ),
-                _buildSettingsToggle(
-                  'Chat',
-                  eventSettings.chat ?? true,
-                  (val) => _toggleEventSetting(
-                    eventSettings.copyWith(
-                      chat: !(eventSettings.chat ?? true),
-                    ),
-                  ),
-                  whiteBackground,
-                ),
-                _buildSettingsToggle(
-                  'Floating Chat',
-                  eventSettings.showChatMessagesInRealTime ?? true,
-                  (val) => _toggleEventSetting(
-                    eventSettings.copyWith(
-                      showChatMessagesInRealTime:
-                          !(eventSettings.showChatMessagesInRealTime ?? true),
-                    ),
-                  ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
-                ),
-                _buildSettingsToggle(
-                  'Record',
-                  eventSettings.alwaysRecord ?? true,
-                  (val) => _toggleEventSetting(
-                    eventSettings.copyWith(
-                      alwaysRecord: !(eventSettings.alwaysRecord ?? true),
-                    ),
-                  ),
-                  whiteBackground,
-                ),
-                _buildSettingsToggle(
-                  'Odometer',
-                  eventSettings.talkingTimer ?? true,
-                  (val) => _toggleEventSetting(
-                    eventSettings.copyWith(
-                      talkingTimer: !(eventSettings.talkingTimer ?? true),
-                    ),
-                  ),
-                  context.theme.colorScheme.primary.withOpacity(0.1),
-                ),
-                _buildSettingsToggle(
-                  'Agenda preview',
-                  eventSettings.agendaPreview ?? true,
-                  (val) => _toggleEventSetting(
-                    eventSettings.copyWith(
-                      agendaPreview: !(eventSettings.agendaPreview ?? true),
-                    ),
-                  ),
-                  whiteBackground,
-                ),
               ],
             ),
           ),
-        );
-      },
-    );
-  }
-
-  Future<void> _toggleCommunitySetting(CommunitySettings communitySettings) {
-    return cloudFunctionsCommunityService.updateCommunity(
-      UpdateCommunityRequest(
-        community: context
-            .read<CommunityProvider>()
-            .community
-            .copyWith(communitySettings: communitySettings),
-        keys: [Community.kFieldCommunitySettings],
+          if (position != TogglePosition.bottom)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+              child: Divider(
+                height: 1,
+                color: context.theme.colorScheme.onSurface.withOpacity(0.12),
+              ),
+            ),
+        ],
       ),
     );
   }
 
-  Future<void> _toggleEventSetting(EventSettings eventSettings) {
-    return cloudFunctionsCommunityService.updateCommunity(
-      UpdateCommunityRequest(
-        community: context
-            .read<CommunityProvider>()
-            .community
-            .copyWith(eventSettings: eventSettings),
-        keys: [Community.kFieldEventSettings],
-      ),
+  Widget _buildSettingsSection({
+    required Widget helperText,
+    required List<Widget> toggles,
+    bool isMobile = false,
+  }) {
+    return Flex(
+      direction: isMobile ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          flex: isMobile ? 0 : 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 0 : 46,
+              vertical: 28,
+            ),
+            child: helperText,
+          ),
+        ),
+        if (!isMobile)
+          Expanded(
+            flex: 4,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 28,
+                ),
+                ...toggles,
+              ],
+            ),
+          ),
+        if (isMobile) Column(children: toggles),
+      ],
     );
+  }
+
+  Future<void> _toggleCommunitySetting(
+    CommunitySettings communitySettings, {
+    int loadingIndex = 0,
+    int devLoadingIndex = -1,
+  }) async {
+    setState(() {
+      if (devLoadingIndex > -1) {
+        _updateLoadingDev[devLoadingIndex] = true;
+      } else {
+        _updateLoading[loadingIndex] = true;
+      }
+    });
+
+    try {
+      await cloudFunctionsCommunityService
+          .updateCommunity(
+        UpdateCommunityRequest(
+          community: context
+              .read<CommunityProvider>()
+              .community
+              .copyWith(communitySettings: communitySettings),
+          keys: [Community.kFieldCommunitySettings],
+        ),
+      )
+          .then((_) {
+        setState(() {
+          if (devLoadingIndex > -1) {
+            _updateLoadingDev[devLoadingIndex] = false;
+          } else {
+            _updateLoading[loadingIndex] = false;
+          }
+        });
+        return;
+      });
+    } finally {
+      setState(() {
+        if (devLoadingIndex > -1) {
+          _updateLoadingDev[devLoadingIndex] = false;
+        } else {
+          _updateLoading[loadingIndex] = false;
+        }
+      });
+    }
+  }
+
+  Future<void> _toggleEventSetting(
+    EventSettings eventSettings, {
+    int loadingIndex = 0,
+    int devLoadingIndex = -1,
+  }) async {
+    setState(() {
+      if (devLoadingIndex > -1) {
+        _updateLoadingDev[devLoadingIndex] = true;
+      } else {
+        _updateLoading[loadingIndex] = true;
+      }
+    });
+
+    try {
+      await cloudFunctionsCommunityService
+          .updateCommunity(
+        UpdateCommunityRequest(
+          community: context
+              .read<CommunityProvider>()
+              .community
+              .copyWith(eventSettings: eventSettings),
+          keys: [Community.kFieldEventSettings],
+        ),
+      )
+          .then((_) {
+        setState(() {
+          if (devLoadingIndex > -1) {
+            _updateLoadingDev[devLoadingIndex] = false;
+          } else {
+            _updateLoading[loadingIndex] = false;
+          }
+        });
+        return;
+      });
+    } finally {
+      setState(() {
+        if (devLoadingIndex > -1) {
+          _updateLoadingDev[devLoadingIndex] = false;
+        } else {
+          _updateLoading[loadingIndex] = false;
+        }
+      });
+    }
   }
 
   Widget _buildStripeConnectLink(
     BuildContext context,
     PartnerAgreement agreement,
   ) {
-    return ActionButton(
-      text:
-          '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
-      onPressed: () =>
-          alertOnError(context, () => _stripeButtonPressed(agreement)),
+    return Center(
+      child: ActionButton(
+        text:
+            '${agreement.stripeConnectedAccountId == null ? 'Set' : 'Edit'} Linked Payee Account',
+        onPressed: () =>
+            alertOnError(context, () => _stripeButtonPressed(agreement)),
+      ),
     );
   }
 
-  Widget _buildDevSettingsSection() {
+  Widget _buildDevSettingsSection(bool isMobile) {
     final settingsMap = context.watch<CommunityProvider>().settings.toJson();
     final settings = settingsMap.keys
         .where((element) => settingsMap[element] is bool)
@@ -259,55 +284,101 @@ class _SettingsTabState extends State<SettingsTab> {
     final eventSettingsMap =
         context.watch<CommunityProvider>().eventSettings.toJson();
     final eventSettings = eventSettingsMap.keys
-        .where((element) => settingsMap[element] is bool?)
+        .where((element) => eventSettingsMap[element] is bool?)
         .toList();
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        constraints: BoxConstraints(maxWidth: 600),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Dev Settings - Community Settings',
-              style: Theme.of(context).textTheme.titleMedium,
+    int devLoadingIndexCommunity = -1;
+    int devLoadingIndexEvent = 11;
+
+    Widget togglesLayout(label, List<Widget> toggles) {
+      return Flex(
+        direction: isMobile ? Axis.vertical : Axis.horizontal,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: isMobile ? 0 : 2,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 0 : 46,
+                vertical: 28,
+              ),
+              child: Text(
+                label,
+                style: context.theme.textTheme.titleLarge,
+              ),
             ),
-            SizedBox(height: 8),
-            for (var i = 0; i < settings.length; i++)
-              _devCommunitySettingsToggle(
-                settings[i],
+          ),
+          if (!isMobile)
+            Expanded(
+              flex: 4,
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  ...toggles,
+                ],
+              ),
+            ),
+          if (isMobile) Column(children: toggles),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        togglesLayout(
+          context.l10n.communitySettings,
+          settings.map(
+            (setting) {
+              devLoadingIndexCommunity++;
+              return _devCommunitySettingsToggle(
+                setting,
                 settingsMap,
-                i.isEven
-                    ? whiteBackground
-                    : context.theme.colorScheme.primary.withOpacity(0.1),
-              ),
-            SizedBox(height: 20),
-            Text(
-              'Dev Settings - Default Event Settings',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(height: 8),
-            for (var i = 0; i < eventSettings.length; i++)
-              _devEventSettingsToggle(
-                eventSettings[i],
-                eventSettingsMap,
-                i.isEven
-                    ? whiteBackground
-                    : context.theme.colorScheme.primary.withOpacity(0.1),
-              ),
-            SizedBox(height: 80),
-          ],
+                devLoadingIndexCommunity,
+                position: setting == settings.first
+                    ? TogglePosition.top
+                    : setting == settings.last
+                        ? TogglePosition.bottom
+                        : TogglePosition.none,
+              );
+            },
+          ).toList(),
         ),
-      ),
+        SizedBox(height: 30),
+        Divider(
+          color: context.theme.colorScheme.onPrimaryContainer.withOpacity(0.5),
+          height: 1,
+        ),
+        SizedBox(height: isMobile ? 5 : 30),
+        togglesLayout(
+          context.l10n.eventSettings,
+          eventSettings.map(
+            (setting) {
+              devLoadingIndexEvent++;
+              return _devCommunitySettingsToggle(
+                setting,
+                eventSettingsMap,
+                devLoadingIndexEvent,
+                position: setting == eventSettings.first
+                    ? TogglePosition.top
+                    : setting == eventSettings.last
+                        ? TogglePosition.bottom
+                        : TogglePosition.none,
+                isEventSetting: true,
+              );
+            },
+          ).toList(),
+        ),
+      ],
     );
   }
 
   Widget _devCommunitySettingsToggle(
     String settingKey,
     Map<String, dynamic> settingMap,
-    Color background,
-  ) {
+    loadingIndex, {
+    TogglePosition position = TogglePosition.none,
+    bool isEventSetting = false,
+  }) {
     final newSettings = Map<String, dynamic>.from(settingMap)
       ..addEntries([
         MapEntry<String, bool>(
@@ -317,28 +388,30 @@ class _SettingsTabState extends State<SettingsTab> {
       ]);
 
     return _buildSettingsToggle(
-      settingKey,
+      settingKey
+          .replaceAllMapped(
+            RegExp(r'([A-Z])'),
+            (match) => ' ${match.group(0)!.toUpperCase()}',
+          )
+          .trim()
+          .replaceFirst(
+            settingKey[0],
+            settingKey[0].toUpperCase(),
+          )
+          // Handle "A/V" special case
+          .replaceAll('A V', 'A/V'),
       settingMap[settingKey] ?? true,
-      (val) => _toggleCommunitySetting(CommunitySettings.fromJson(newSettings)),
-      background,
-    );
-  }
-
-  Widget _devEventSettingsToggle(
-    String settingKey,
-    Map<String, dynamic> settingMap,
-    Color background,
-  ) {
-    final newSettings = {
-      ...settingMap,
-      settingKey: !(settingMap[settingKey] ?? true),
-    };
-
-    return _buildSettingsToggle(
-      settingKey,
-      settingMap[settingKey] ?? true,
-      (val) => _toggleEventSetting(EventSettings.fromJson(newSettings)),
-      background,
+      devLoadingIndex: loadingIndex,
+      position: position,
+      (val) => isEventSetting
+          ? _toggleEventSetting(
+              EventSettings.fromJson(newSettings),
+              devLoadingIndex: loadingIndex,
+            )
+          : _toggleCommunitySetting(
+              CommunitySettings.fromJson(newSettings),
+              devLoadingIndex: loadingIndex,
+            ),
     );
   }
 
@@ -374,48 +447,236 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   Widget build(BuildContext context) {
     final isMobile = responsiveLayoutService.isMobile(context);
-
-    if (isMobile) {
-      return _buildMobileLayout();
-    } else {
-      return _buildDesktopLayout();
-    }
-  }
-
-  Widget _buildMobileLayout() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    final settings = Provider.of<CommunityProvider>(context).settings;
+    final eventSettings = Provider.of<CommunityProvider>(context).eventSettings;
+    return ListView(
       children: [
-        _buildSettings(),
-        SizedBox(height: 40),
-        UpgradePerks(onUpgradeTap: () => widget.onUpgradeTap()),
-      ],
-    );
-  }
-
-  Widget _buildDesktopLayout() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(flex: 5, child: _buildSettings()),
-        Spacer(),
-        Expanded(
-          flex: 2,
-          child: UpgradePerks(
-            onUpgradeTap: () => widget.onUpgradeTap(),
+        CustomStreamBuilder<PartnerAgreement?>(
+          stream: useMemoized(
+            () => firestoreAgreementsService
+                .getAgreementForCommunityStream(community.id),
+            [community.id],
           ),
+          entryFrom: '_SettingsTabState._buildSettingsSection',
+          builder: (context, agreement) {
+            final donationWarning =
+                !(agreement?.stripeConnectedAccountActive ?? false) &&
+                    community.settingsMigration.allowDonations;
+            return Column(
+              children: [
+                _buildSettingsSection(
+                  isMobile: isMobile,
+                  helperText: HeightConstrainedText(
+                    context.l10n.communitySettings,
+                    style: context.theme.textTheme.titleLarge,
+                    maxLines: 1,
+                  ),
+                  toggles: [
+                    _buildSettingsToggle(
+                      context.l10n.settingAllowMembersToCreateEvents,
+                      !settings.dontAllowMembersToCreateMeetings,
+                      supportingText: context
+                          .l10n.settingHelperMemberEvents,
+                      loadingIndex: 0,
+                      (val) => _toggleCommunitySetting(
+                        settings.copyWith(
+                          dontAllowMembersToCreateMeetings:
+                              !settings.dontAllowMembersToCreateMeetings,
+                        ),
+                        loadingIndex: 0,
+                      ),
+                      position: TogglePosition.top,
+                    ),
+                    _buildSettingsToggle(
+                      context.l10n.settingAllowMembersToCreateTemplates,
+                      settings.allowUnofficialTemplates,
+                      supportingText: context
+                          .l10n.settingHelperMemberTemplates,
+                      loadingIndex: 1,
+                      (val) => _toggleCommunitySetting(
+                        settings.copyWith(
+                          allowUnofficialTemplates:
+                              !settings.allowUnofficialTemplates,
+                        ),
+                        loadingIndex: 1,
+                      ),
+                    ),
+                    _buildSettingsToggle(
+                      context.l10n.settingRequireApprovalForNewMembers,
+                      settings.requireApprovalToJoin,
+                      supportingText: context
+                          .l10n.settingHelperRequireMembershipApproval,
+                      loadingIndex: 2,
+                      (val) => _toggleCommunitySetting(
+                        settings.copyWith(
+                          requireApprovalToJoin:
+                              !settings.requireApprovalToJoin,
+                        ),
+                        loadingIndex: 2,
+                      ),
+                    ),
+                    _buildSettingsToggle(
+                      context
+                          .l10n.settingEnableWeeklyEmailDigestsOfUpcomingEvents,
+                      supportingText: context
+                          .l10n.settingHelperEnableWeeklyEmail,
+                      !settings.disableEmailDigests,
+                      loadingIndex: 3,
+                      (val) => _toggleCommunitySetting(
+                        settings.copyWith(
+                          disableEmailDigests: !settings.disableEmailDigests,
+                        ),
+                        loadingIndex: 3,
+                      ),
+                      position: !kShowStripeFeatures
+                          ? TogglePosition.bottom
+                          : TogglePosition.none,
+                    ),
+                    if (kShowStripeFeatures) ...[
+                      _buildSettingsToggle(
+                        '${context.l10n.settingAllowUsersToDonateFunds}${donationWarning ? ' *' : ''}',
+                        settings.allowDonations,
+                        loadingIndex: 4,
+                        (val) => _toggleCommunitySetting(
+                          settings.copyWith(
+                            allowDonations: !settings.allowDonations,
+                          ),
+                          loadingIndex: 4,
+                        ),
+                        hasWarning: donationWarning,
+                        position: TogglePosition.bottom,
+                      ),
+                      if (donationWarning)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: HeightConstrainedText(
+                            '* ${context.l10n.settingHelperDonationWarning}',
+                            style: TextStyle(
+                                color: context.theme.colorScheme.error,),
+                          ),
+                        ),
+                      SizedBox(height: 8),
+                      _buildStripeConnectLink(context, agreement!),
+                    ],
+                  ],
+                ),
+                SizedBox(height: 30),
+                Divider(
+                  color: context.theme.colorScheme.onPrimaryContainer
+                      .withOpacity(0.5),
+                  height: 1,
+                ),
+                SizedBox(height: isMobile ? 5 : 30),
+                _buildSettingsSection(
+                  isMobile: isMobile,
+                  helperText: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        context.l10n.eventSettings,
+                        style: context.theme.textTheme.titleLarge,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        context.l10n.eventSettingsDescription,
+                        style: context.theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                  toggles: [
+                    _buildSettingsToggle(
+                      context.l10n.chat,
+                      eventSettings.chat ?? true,
+                      loadingIndex: 5,
+                      (val) => _toggleEventSetting(
+                        eventSettings.copyWith(
+                          chat: !(eventSettings.chat ?? true),
+                        ),
+                        loadingIndex: 5,
+                      ),
+                      position: TogglePosition.top,
+                      supportingText: context.l10n.settingHelperChat,
+                    ),
+                    _buildSettingsToggle(
+                      context.l10n.floatingChat,
+                      eventSettings.showChatMessagesInRealTime ?? true,
+                      loadingIndex: 6,
+                      (val) => _toggleEventSetting(
+                        eventSettings.copyWith(
+                          showChatMessagesInRealTime:
+                              !(eventSettings.showChatMessagesInRealTime ??
+                                  true),
+                        ),
+                        loadingIndex: 6,
+                      ),
+                      supportingText: context.l10n.settingHelperFloatingChat,
+                    ),
+                    _buildSettingsToggle(
+                      context.l10n.record,
+                      eventSettings.alwaysRecord ?? true,
+                      loadingIndex: 7,
+                      (val) => _toggleEventSetting(
+                        eventSettings.copyWith(
+                          alwaysRecord: !(eventSettings.alwaysRecord ?? true),
+                        ),
+                        loadingIndex: 7,
+                      ),
+                      supportingText: context.l10n.settingHelperRecord,
+                    ),
+                    _buildSettingsToggle(
+                      context.l10n.odometer,
+                      eventSettings.talkingTimer ?? true,
+                      loadingIndex: 8,
+                      (val) => _toggleEventSetting(
+                        eventSettings.copyWith(
+                          talkingTimer: !(eventSettings.talkingTimer ?? true),
+                        ),
+                        loadingIndex: 8,
+                      ),
+                      supportingText: context.l10n.settingHelperTalkTimer,
+                    ),
+                    _buildSettingsToggle(
+                      context.l10n.settingAgendaPreview,
+                      eventSettings.agendaPreview ?? true,
+                      loadingIndex: 9,
+                      (val) => _toggleEventSetting(
+                        eventSettings.copyWith(
+                          agendaPreview: !(eventSettings.agendaPreview ?? true),
+                        ),
+                        loadingIndex: 9,
+                      ),
+                      position: TogglePosition.bottom,
+                      supportingText: context.l10n.settingHelperAgendaPreview,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                if (Environment.enableDevAdminSettings)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 30),
+                      Divider(
+                        color: context.theme.colorScheme.onPrimaryContainer
+                            .withOpacity(0.5),
+                        height: 1,
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        context.l10n.devSettings,
+                        style: context.theme.textTheme.headlineMedium,
+                      ),
+                      _buildDevSettingsSection(isMobile),
+                    ],
+                  ),
+              ],
+            );
+          },
         ),
-      ],
-    );
-  }
-
-  Widget _buildSettings() {
-    return CustomListView(
-      children: [
-        _buildSettingsSection(),
-        SizedBox(height: 80),
-        if (Environment.enableDevAdminSettings)
-          ConstrainedBody(child: _buildDevSettingsSection()),
       ],
     );
   }

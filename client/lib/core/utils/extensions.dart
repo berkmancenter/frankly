@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -146,7 +147,7 @@ extension MembershipStatusUIExtension on MembershipStatus {
           null,
           asset: AppAsset('media/role-facilitator.png'),
         );
-      case MembershipStatus.mod:
+      case MembershipStatus.moderator:
         return ProxiedImage(
           null,
           asset: AppAsset('media/role-mod.png'),
@@ -169,34 +170,20 @@ extension MembershipStatusUIExtension on MembershipStatus {
     }
   }
 
-  List<String> get permissions {
+String permissions(BuildContext context) {
     switch (this) {
-      case MembershipStatus.attendee:
-        return ['Has attended an event, but has not become a community member'];
       case MembershipStatus.member:
-        return ['Participates as the community allows'];
+        return context.l10n.permissionsMemberDescription;
       case MembershipStatus.admin:
-        return [
-          'All mod capabilities',
-          'Access all community settings',
-          'Manages data (including billing & memberships)',
-        ];
+        return context.l10n.permissionsAdminDescription;
       case MembershipStatus.facilitator:
-        return [
-          'All member capabilities',
-          'Hosts events',
-          'Evenly spread among breakouts when applicable',
-        ];
-      case MembershipStatus.mod:
-        return [
-          'Moderates community',
-          'Manages content (guides, resources)',
-          'Acts as admin within events',
-        ];
+        return context.l10n.permissionsFacilitatorDescription;
+      case MembershipStatus.moderator:
+        return context.l10n.permissionsModeratorDescription;
       case MembershipStatus.owner:
-        return ['All admin capabilities', 'Can add/remove other admin'];
+        return context.l10n.permissionsOwnerDescription;
       default:
-        return [];
+        return '';
     }
   }
 }
