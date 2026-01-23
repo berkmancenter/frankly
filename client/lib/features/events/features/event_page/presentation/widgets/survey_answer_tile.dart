@@ -7,7 +7,12 @@ class SurveyAnswerTile extends StatelessWidget {
     required this.answer,
     this.answeredParticipants,
     this.totalParticipants,
-  }) : super(key: key);
+  })  : assert(
+          (answeredParticipants == null && totalParticipants == null) ||
+              (answeredParticipants != null && totalParticipants != null),
+          'answeredParticipants and totalParticipants must be provided together OR both be null.',
+        ),
+        super(key: key);
 
   final String answer;
   final int? answeredParticipants;
