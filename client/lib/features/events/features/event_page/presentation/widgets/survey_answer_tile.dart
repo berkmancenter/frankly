@@ -2,16 +2,16 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class SurveyAnswerTile extends StatelessWidget {
-  final String answer;
-  final int answeredParticipants;
-  final int totalParticipants;
-
   const SurveyAnswerTile({
     Key? key,
     required this.answer,
-    this.answeredParticipants = 0,
-    this.totalParticipants = 0,
+    this.answeredParticipants,
+    this.totalParticipants,
   }) : super(key: key);
+
+  final String answer;
+  final int? answeredParticipants;
+  final int? totalParticipants;
 
   @override
   Widget build(BuildContext context) {
