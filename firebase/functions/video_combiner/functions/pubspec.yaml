@@ -1,0 +1,20 @@
+name: combiner_functions
+description: Firebase Cloud Function for combining M3U8/TS files into MP4
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  functions_framework: ^0.4.2
+  shelf: ^1.4.1
+  shelf_router: ^1.1.4
+  gcloud: ^0.8.13
+  googleapis_auth: ^1.6.0
+  http: ^1.2.1
+  path: ^1.9.0
+  mime: ^1.0.5
+
+dev_dependencies:
+  lints: ^4.0.0

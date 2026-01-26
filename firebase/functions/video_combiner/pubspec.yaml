@@ -1,0 +1,5 @@
+name: combiner_workspace
+description: M3U8 to MP4 combiner - Firebase function and CLI workspace
+
+environment:
+  sdk: ^3.4.0
