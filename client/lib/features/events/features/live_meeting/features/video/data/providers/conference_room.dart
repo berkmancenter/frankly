@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:beamer/beamer.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
 import 'package:collection/collection.dart';
@@ -18,6 +19,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart' hide Participant;
 import 'package:pedantic/pedantic.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -182,6 +184,7 @@ class ConferenceRoom with ChangeNotifier {
       participants.firstWhereOrNull((p) => p.identity == screenSharerUserId);
 
   AgoraRoom? get room => _room;
+  MediaDeviceService? get mediaDeviceService => _room?.mediaDeviceService;
 
   String? get dominantSpeakerSid =>
       _debouncedDominantSpeakerStream?.value?.userId;
@@ -307,7 +310,10 @@ class ConferenceRoom with ChangeNotifier {
         eventProvider: liveMeetingProvider.eventProvider,
         conferenceRoom: this,
       );
-      await _room!.connect(enableVideo: liveMeetingProvider.videoDefaultOn);
+      await _room!.connect(
+        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
+        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
+      );
       _room!.addListener(notifyListeners);
     } catch (err, stacktrace) {
       loggingService.log('error');
@@ -358,26 +364,6 @@ class ConferenceRoom with ChangeNotifier {
     }
   }
 
-  Future<bool> _requestUserMediaPermission({bool? audio, bool? video}) async {
-    try {
-      final stream = await html.window.navigator.mediaDevices?.getUserMedia({
-        'audio': audio ?? false,
-        'video': video ?? false,
-      });
-      if (stream == null) {
-        return false;
-      }
-      print('Microphone permission granted.');
-      // Stop using the audio stream right away
-      stream.getTracks().forEach((track) => track.stop());
-      return true;
-    } catch (e) {
-      print('Microphone permission denied.');
-      print(e);
-      return false;
-    }
-  }
-
   Future<void> toggleVideoEnabled({
     bool? setEnabled,
     bool updateProvider = true,
@@ -385,12 +371,13 @@ class ConferenceRoom with ChangeNotifier {
     final updatedEnabledValue = setEnabled ?? !videoEnabled;
 
     if (updatedEnabledValue) {
-      final granted = await _requestUserMediaPermission(video: true);
-      if (!granted) {
+      final permissionStatus = await Permission.camera.request();
+      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
         await showAlert(
           navigatorState.context,
           'Error enabling camera. Please ensure you have granted permission.',
         );
+        _room?.localParticipant?.videoTrackEnabled = false;
         return;
       }
     }
@@ -400,7 +387,6 @@ class ConferenceRoom with ChangeNotifier {
       () async {
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
-          deviceId: sharedPreferencesService.getDefaultCameraId(),
         );
         if (updateProvider) {
           liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
@@ -418,12 +404,13 @@ class ConferenceRoom with ChangeNotifier {
     final updatedEnabledValue = setEnabled ?? !audioEnabled;
 
     if (updatedEnabledValue) {
-      final granted = await _requestUserMediaPermission(audio: true);
-      if (!granted) {
+      final permissionStatus = await Permission.microphone.request();
+      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
         await showAlert(
           navigatorState.context,
           'Error enabling microphone. Please ensure you have granted permission.',
         );
+        _room?.localParticipant?.audioTrackEnabled = false;
         return;
       }
     }
@@ -439,7 +426,6 @@ class ConferenceRoom with ChangeNotifier {
         final audioEnableFutures = [
           _room!.localParticipant!.enableAudio(
             setEnabled: updatedEnabledValue,
-            deviceId: sharedPreferencesService.getDefaultMicrophoneId(),
           ),
           if ((liveMeetingProvider
                       .eventProvider.selfParticipant?.muteOverride ??
@@ -474,7 +460,9 @@ class ConferenceRoom with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> onConnected(AgoraRoom room) async {
+  Future<void> onConnected({
+    required AgoraRoom room,
+  }) async {
     Debug.log('ConferenceRoom._onConnected => state: ${room.state}');
 
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(
@@ -519,26 +507,11 @@ class ConferenceRoom with ChangeNotifier {
     print('updated live meeting participants');
     notifyListeners();
     _completer.complete(room);
-
-    final isTest = (routerDelegate.currentBeamLocation.state as BeamState)
-            .queryParameters['test'] !=
-        null;
-    if (isTest) {
-      if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {
-        await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
-          () => toggleAudioEnabled(setEnabled: true),
-        );
-      }
-      if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
-        await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
-          () => toggleVideoEnabled(setEnabled: true),
-        );
-      }
-    } else if (liveMeetingProvider.shouldStartLocalAudioOn ||
-        liveMeetingProvider.shouldStartLocalVideoOn) {
-      unawaited(_promptToTurnOnVideo());
+    if (liveMeetingProvider.audioDefaultOn &&
+            !(room.localParticipant?.audioTrackEnabled ?? true) ||
+        liveMeetingProvider.videoDefaultOn &&
+            !(room.localParticipant?.videoTrackEnabled ?? true)) {
+      await _promptToTurnOnVideo();
     }
   }
 
