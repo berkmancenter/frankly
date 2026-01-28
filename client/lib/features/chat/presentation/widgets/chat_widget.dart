@@ -1,6 +1,6 @@
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +123,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
         child: EmptyPageContent(
           type: EmptyPageType.chats,
           titleText: 'Welcome!',
-          subtitleText: 'Introduce yourself to help break the ice 😉',
+          subtitleText: 'Please introduce yourself to help break the ice.',
           showContainer: false,
           isBackgroundDark: Theme.of(context).isDark,
         ),

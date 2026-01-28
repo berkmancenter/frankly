@@ -1,7 +1,7 @@
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/utils/community_theme_utils.dart.dart';
+import 'package:client/features/community/utils/community_theme_utils.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';

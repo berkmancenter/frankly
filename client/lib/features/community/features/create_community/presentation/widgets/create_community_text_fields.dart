@@ -18,6 +18,7 @@ class CreateCommunityTextFields extends StatefulWidget {
   final Community community;
   final bool compact;
   final bool showAllFields;
+  final bool autoGenerateUrl;
 
   final FocusNode? taglineFocus;
   const CreateCommunityTextFields({
@@ -33,6 +34,7 @@ class CreateCommunityTextFields extends StatefulWidget {
     required this.community,
     this.compact = false,
     this.showAllFields = false,
+    this.autoGenerateUrl = true,
   }) : super(key: key);
 
   @override
@@ -77,11 +79,13 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           label: context.l10n.name,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
-            widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
-            setState(() {
-              // Update the displayId when the name changes
-              _displayIdController.text = _formatDisplayIdFromName(val);
-            }),
+            if(widget.autoGenerateUrl){
+              widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
+              setState(() {
+                // Update the displayId when the name changes
+                _displayIdController.text = _formatDisplayIdFromName(val);
+              }),
+            },
           },
           focus: widget.nameFocus,
           helperText: context.l10n.youCanChangeThisLater,
@@ -132,7 +136,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 onChanged: widget.onAboutChanged,
                 focus: widget.aboutFocus,
                 isOptional: true,
-                maxLines: 3,
+                maxLines: null,
                 minLines: 3,
                 keyboardType: TextInputType.multiline,
               ),
@@ -152,37 +156,33 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
     String? initialValue,
     String? counterText,
     int? maxLength,
-    int maxLines = 1,
+    int? maxLines = 1,
     int minLines = 1,
-    double containerHeight = 78,
     FocusNode? focus,
     bool isOptional = false,
     TextInputType keyboardType = TextInputType.text,
   }) =>
-      Container(
-        alignment: Alignment.topCenter,
-        height: containerHeight,
-        child: CustomTextField(
-          controller: controller,
-          borderType: BorderType.underline,
-          counterAlignment: Alignment.topRight,
-          focusNode: focus,
-          maxLength: maxLength,
-          maxLines: maxLines,
-          minLines: minLines,
-          counterText: counterText,
-          padding: EdgeInsets.zero,
-          labelText: label,
-          hintText: hint,
-          helperText: helperText,
-          initialValue: initialValue,
-          onChanged: onChanged,
-          isOptional: isOptional,
-          optionalPadding: const EdgeInsets.only(top: 12, right: 12),
-          inputFormatters: formatterRegex == null
-              ? null
-              : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
-          keyboardType: keyboardType,
-        ),
+      CustomTextField(
+        controller: controller,
+        borderType: BorderType.underline,
+        counterAlignment: Alignment.topRight,
+        focusNode: focus,
+        maxLength: maxLength,
+        // ignore: prefer_if_null_operators
+        maxLines: maxLines == null ? null : maxLines,
+        minLines: minLines,
+        counterText: counterText,
+        padding: EdgeInsets.zero,
+        labelText: label,
+        hintText: hint,
+        helperText: helperText,
+        initialValue: initialValue,
+        onChanged: onChanged,
+        isOptional: isOptional,
+        optionalPadding: const EdgeInsets.only(top: 12, right: 12),
+        inputFormatters: formatterRegex == null
+            ? null
+            : FilteringTextInputFormatter.allow(RegExp(formatterRegex)),
+        keyboardType: keyboardType,
       );
 }

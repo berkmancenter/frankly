@@ -18,6 +18,7 @@ We encourage and value all contributions. See the [Table of Contents](#table-of-
 - [Reporting Bugs](#reporting-bugs)
 - [Contributing](#contributing)
   - [Getting Started](#getting-started)
+  - [How to Contribute](#how-to-contribute)
   - [What to Work On](#what-to-work-on)
 - [Styleguides](#styleguides)
   - [Commit Messages](#commit-messages)
@@ -64,6 +65,14 @@ We would love for you to contribute to Frankly! To set up your development envir
 If the feature you want to work on requires third-party services (e.g. Agora for video calling, or Mux for running livestreams), please follow the instructions in the README to set up your own accounts. The free tiers of these services should allow for testing development use cases.
 
 If you have any questions about the instructions, please feel free to [submit an issue](https://github.com/berkmancenter/frankly/issues/new). We welcome any suggestions for improvements to the README from contributors, especially as a Pull Request to the documentation itself.
+
+### How to Contribute
+When you're ready to make your first contribution to Frankly, you can open a pull request for our team to review. Here is a quick overview of the process to follow when making a code contribution:
+1. **Fork the Frankly repository**: Fork the Frankly GitHub repo to start making your own changes to the code. We suggest creating a branch for your code changes within your fork to help organize your contributions. (GitHub docs: [Fork a repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo))
+2. **Create a pull request**: Once your code changes are ready, it's time to create a pull request to Frankly. From the main Frankly repo, click the **Pull Requests** tab and click **New Pull Request**. At the top of the page, you will see a button to **compare across forks**. Select this option. From there, you can proceed with the standard flow to submit a pull request on GitHub. (GitHub docs: [Creating a pull request from a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork))
+3. **Provide a title and description**: When you open a pull request, the description will automatically populate with a template that the Frankly team uses for PRs. Please fill this out to help the team with the review process, and provide a descriptive title. 
+
+You're done! 🎉 Our team will review your pull request from this point. Thank you for contributing to Frankly!
 
 ### What to Work On
 You can see what the Frankly team is working on in the [Frankly Public Workstream](https://github.com/orgs/berkmancenter/projects/3). We would **love** your help, and that's the place to start.
