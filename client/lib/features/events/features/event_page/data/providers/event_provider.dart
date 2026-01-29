@@ -15,7 +15,7 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/chat/chat_suggestion_data.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:data_models/community/member_details.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';

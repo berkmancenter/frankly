@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/announcements/announcement.dart';
-import 'package:data_models/chat/chat_suggestion_data.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_message.dart';
 import 'package:data_models/community/community.dart';

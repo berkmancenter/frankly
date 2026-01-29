@@ -9,7 +9,7 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/extensions.dart';
-import 'package:data_models/chat/chat.dart';
+import 'package:data_models/user_input/chat.dart';
 
 class ChatModel with ChangeNotifier {
   static const _kChatId = 'community_chat';

@@ -7,7 +7,7 @@ import 'package:client/features/discussion_threads/data/models/discussion_thread
 import 'package:client/features/discussion_threads/presentation/discussion_thread_presenter.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../mocked_classes.mocks.dart';
