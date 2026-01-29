@@ -4,7 +4,7 @@ import 'package:client/services.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 
 class CloudFunctionsLiveMeetingService {
   Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo(
@@ -81,11 +81,11 @@ class CloudFunctionsLiveMeetingService {
     );
   }
 
-  Future<void> checkAdvanceMeetingGuide(
-    CheckAdvanceMeetingGuideRequest request,
+  Future<void> checkAdvanceMeetingTemplate(
+    CheckAdvanceMeetingTemplateRequest request,
   ) async {
     await cloudFunctions.callFunction(
-      'CheckAdvanceMeetingGuide',
+      'CheckAdvanceMeetingTemplate',
       request.toJson(),
     );
   }

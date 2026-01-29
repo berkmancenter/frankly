@@ -8811,13 +8811,13 @@ abstract class _UnsubscribeFromCommunityNotificationsRequest
       get copyWith => throw _privateConstructorUsedError;
 }
 
-CheckAdvanceMeetingGuideRequest _$CheckAdvanceMeetingGuideRequestFromJson(
+CheckAdvanceMeetingTemplateRequest _$CheckAdvanceMeetingTemplateRequestFromJson(
     Map<String, dynamic> json) {
-  return _CheckAdvanceMeetingGuideRequest.fromJson(json);
+  return _CheckAdvanceMeetingTemplateRequest.fromJson(json);
 }
 
 /// @nodoc
-mixin _$CheckAdvanceMeetingGuideRequest {
+mixin _$CheckAdvanceMeetingTemplateRequest {
   String get eventPath => throw _privateConstructorUsedError;
   String? get breakoutSessionId => throw _privateConstructorUsedError;
   String? get breakoutRoomId => throw _privateConstructorUsedError;
@@ -8826,17 +8826,18 @@ mixin _$CheckAdvanceMeetingGuideRequest {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $CheckAdvanceMeetingGuideRequestCopyWith<CheckAdvanceMeetingGuideRequest>
+  $CheckAdvanceMeetingTemplateRequestCopyWith<
+          CheckAdvanceMeetingTemplateRequest>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
-  factory $CheckAdvanceMeetingGuideRequestCopyWith(
-          CheckAdvanceMeetingGuideRequest value,
-          $Res Function(CheckAdvanceMeetingGuideRequest) then) =
-      _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
-          CheckAdvanceMeetingGuideRequest>;
+abstract class $CheckAdvanceMeetingTemplateRequestCopyWith<$Res> {
+  factory $CheckAdvanceMeetingTemplateRequestCopyWith(
+          CheckAdvanceMeetingTemplateRequest value,
+          $Res Function(CheckAdvanceMeetingTemplateRequest) then) =
+      _$CheckAdvanceMeetingTemplateRequestCopyWithImpl<$Res,
+          CheckAdvanceMeetingTemplateRequest>;
   @useResult
   $Res call(
       {String eventPath,
@@ -8847,10 +8848,10 @@ abstract class $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
-        $Val extends CheckAdvanceMeetingGuideRequest>
-    implements $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
-  _$CheckAdvanceMeetingGuideRequestCopyWithImpl(this._value, this._then);
+class _$CheckAdvanceMeetingTemplateRequestCopyWithImpl<$Res,
+        $Val extends CheckAdvanceMeetingTemplateRequest>
+    implements $CheckAdvanceMeetingTemplateRequestCopyWith<$Res> {
+  _$CheckAdvanceMeetingTemplateRequestCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -8892,12 +8893,12 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_CheckAdvanceMeetingGuideRequestCopyWith<$Res>
-    implements $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
-  factory _$$_CheckAdvanceMeetingGuideRequestCopyWith(
-          _$_CheckAdvanceMeetingGuideRequest value,
-          $Res Function(_$_CheckAdvanceMeetingGuideRequest) then) =
-      __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>;
+abstract class _$$_CheckAdvanceMeetingTemplateRequestCopyWith<$Res>
+    implements $CheckAdvanceMeetingTemplateRequestCopyWith<$Res> {
+  factory _$$_CheckAdvanceMeetingTemplateRequestCopyWith(
+          _$_CheckAdvanceMeetingTemplateRequest value,
+          $Res Function(_$_CheckAdvanceMeetingTemplateRequest) then) =
+      __$$_CheckAdvanceMeetingTemplateRequestCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -8909,13 +8910,13 @@ abstract class _$$_CheckAdvanceMeetingGuideRequestCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
-    extends _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
-        _$_CheckAdvanceMeetingGuideRequest>
-    implements _$$_CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
-  __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl(
-      _$_CheckAdvanceMeetingGuideRequest _value,
-      $Res Function(_$_CheckAdvanceMeetingGuideRequest) _then)
+class __$$_CheckAdvanceMeetingTemplateRequestCopyWithImpl<$Res>
+    extends _$CheckAdvanceMeetingTemplateRequestCopyWithImpl<$Res,
+        _$_CheckAdvanceMeetingTemplateRequest>
+    implements _$$_CheckAdvanceMeetingTemplateRequestCopyWith<$Res> {
+  __$$_CheckAdvanceMeetingTemplateRequestCopyWithImpl(
+      _$_CheckAdvanceMeetingTemplateRequest _value,
+      $Res Function(_$_CheckAdvanceMeetingTemplateRequest) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -8927,7 +8928,7 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
   }) {
-    return _then(_$_CheckAdvanceMeetingGuideRequest(
+    return _then(_$_CheckAdvanceMeetingTemplateRequest(
       eventPath: null == eventPath
           ? _value.eventPath
           : eventPath // ignore: cast_nullable_to_non_nullable
@@ -8954,18 +8955,18 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CheckAdvanceMeetingGuideRequest
-    implements _CheckAdvanceMeetingGuideRequest {
-  _$_CheckAdvanceMeetingGuideRequest(
+class _$_CheckAdvanceMeetingTemplateRequest
+    implements _CheckAdvanceMeetingTemplateRequest {
+  _$_CheckAdvanceMeetingTemplateRequest(
       {required this.eventPath,
       this.breakoutSessionId,
       this.breakoutRoomId,
       required this.presentIds,
       this.userReadyAgendaId});
 
-  factory _$_CheckAdvanceMeetingGuideRequest.fromJson(
+  factory _$_CheckAdvanceMeetingTemplateRequest.fromJson(
           Map<String, dynamic> json) =>
-      _$$_CheckAdvanceMeetingGuideRequestFromJson(json);
+      _$$_CheckAdvanceMeetingTemplateRequestFromJson(json);
 
   @override
   final String eventPath;
@@ -8980,14 +8981,14 @@ class _$_CheckAdvanceMeetingGuideRequest
 
   @override
   String toString() {
-    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId)';
+    return 'CheckAdvanceMeetingTemplateRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CheckAdvanceMeetingGuideRequest &&
+            other is _$_CheckAdvanceMeetingTemplateRequest &&
             (identical(other.eventPath, eventPath) ||
                 other.eventPath == eventPath) &&
             (identical(other.breakoutSessionId, breakoutSessionId) ||
@@ -9013,30 +9014,31 @@ class _$_CheckAdvanceMeetingGuideRequest
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CheckAdvanceMeetingGuideRequestCopyWith<
-          _$_CheckAdvanceMeetingGuideRequest>
-      get copyWith => __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<
-          _$_CheckAdvanceMeetingGuideRequest>(this, _$identity);
+  _$$_CheckAdvanceMeetingTemplateRequestCopyWith<
+          _$_CheckAdvanceMeetingTemplateRequest>
+      get copyWith => __$$_CheckAdvanceMeetingTemplateRequestCopyWithImpl<
+          _$_CheckAdvanceMeetingTemplateRequest>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CheckAdvanceMeetingGuideRequestToJson(
+    return _$$_CheckAdvanceMeetingTemplateRequestToJson(
       this,
     );
   }
 }
 
-abstract class _CheckAdvanceMeetingGuideRequest
-    implements CheckAdvanceMeetingGuideRequest {
-  factory _CheckAdvanceMeetingGuideRequest(
+abstract class _CheckAdvanceMeetingTemplateRequest
+    implements CheckAdvanceMeetingTemplateRequest {
+  factory _CheckAdvanceMeetingTemplateRequest(
       {required final String eventPath,
       final String? breakoutSessionId,
       final String? breakoutRoomId,
       required final List<String> presentIds,
-      final String? userReadyAgendaId}) = _$_CheckAdvanceMeetingGuideRequest;
+      final String? userReadyAgendaId}) = _$_CheckAdvanceMeetingTemplateRequest;
 
-  factory _CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =
-      _$_CheckAdvanceMeetingGuideRequest.fromJson;
+  factory _CheckAdvanceMeetingTemplateRequest.fromJson(
+          Map<String, dynamic> json) =
+      _$_CheckAdvanceMeetingTemplateRequest.fromJson;
 
   @override
   String get eventPath;
@@ -9050,8 +9052,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
   String? get userReadyAgendaId;
   @override
   @JsonKey(ignore: true)
-  _$$_CheckAdvanceMeetingGuideRequestCopyWith<
-          _$_CheckAdvanceMeetingGuideRequest>
+  _$$_CheckAdvanceMeetingTemplateRequestCopyWith<
+          _$_CheckAdvanceMeetingTemplateRequest>
       get copyWith => throw _privateConstructorUsedError;
 }
 
