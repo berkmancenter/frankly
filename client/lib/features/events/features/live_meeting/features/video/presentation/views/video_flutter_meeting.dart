@@ -275,7 +275,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                               maxWidth: math.max(600, constraints.maxWidth / 2),
                             ),
                             child: GlobalKeyedSubtree(
-                              label: 'meeting-guide-card',
+                              label: 'meeting-template-card',
                               child: MeetingTemplateCard(
                                 onMinimizeCard: () => alertOnError(
                                   context,
@@ -337,7 +337,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                   padding: EdgeInsets.symmetric(vertical: 45, horizontal: 10),
                   alignment: Alignment.center,
                   child: GlobalKeyedSubtree(
-                    label: 'meeting-guide-card',
+                    label: 'meeting-template-card',
                     child: MeetingTemplateCard(
                       onMinimizeCard: () => alertOnError(
                         context,
