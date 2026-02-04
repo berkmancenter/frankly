@@ -39,7 +39,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-
       - name: Install Functions NPM Dependencies
         if: steps.changes.outputs.functions == 'true'
         run: npm ci
