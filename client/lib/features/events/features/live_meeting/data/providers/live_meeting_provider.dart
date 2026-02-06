@@ -84,6 +84,7 @@ class LiveMeetingProvider with ChangeNotifier {
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
   String? _inTransitionToBreakoutRoomId;
+  String? _cachedJoinInfoRoomId;
   String? _breakoutRoomOverride;
 
   /// Holds a reference to the current breakout room join info
@@ -122,6 +123,8 @@ class LiveMeetingProvider with ChangeNotifier {
   Timer? _checkAssignToBreakoutsTimer;
 
   Timer? _presenceUpdater;
+  Timer? _transitionTimer;
+  int _transitionElapsedSeconds = 0;
 
   HostlessActionFallbackController? _hostlessGoToBreakoutsFallbackController;
   HostlessActionFallbackController? _pendingBreakoutsFallbackController;
@@ -471,6 +474,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _assignedBreakoutRoomsStreamSubscription?.cancel();
 
     _presenceUpdater?.cancel();
+    _transitionTimer?.cancel();
 
     _scheduledStartTimer?.cancel();
     _meetingStartTimer?.cancel();
@@ -661,8 +665,36 @@ class LiveMeetingProvider with ChangeNotifier {
     }
   }
 
+  void _startBreakoutRoomTransitionTimer() {
+    _transitionTimer?.cancel();
+    _transitionElapsedSeconds = 0;
+    _transitionTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (_inTransitionToBreakoutRoomId == null) {
+        timer.cancel();
+        return;
+      }
+
+      _transitionElapsedSeconds += 5;
+      loggingService.log(
+        'Heartbeat: user is in breakout UI state but has not yet joined a room '
+        'after $_transitionElapsedSeconds seconds.',
+      );
+    });
+  }
+
+  void _clearBreakoutRoomTransition() {
+    _inTransitionToBreakoutRoomId = null;
+    _transitionTimer?.cancel();
+    _transitionTimer = null;
+    _transitionElapsedSeconds = 0;
+  }
+
+  void clearBreakoutRoomTransition() {
+    _clearBreakoutRoomTransition();
+  }
+
   Future<GetMeetingJoinInfoResponse>? getCurrentMeetingJoinInfo() {
-    if (_inTransitionToBreakoutRoomId == currentBreakoutRoomId &&
+    if (_cachedJoinInfoRoomId == currentBreakoutRoomId &&
         _activeRoomJoinInfoFuture != null) {
       return _activeRoomJoinInfoFuture;
     }
@@ -680,7 +712,8 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo() {
-    _inTransitionToBreakoutRoomId = null;
+    _clearBreakoutRoomTransition();
+    _cachedJoinInfoRoomId = null;
     _activeRoomJoinInfoFuture = null;
     _breakoutLiveMeetingStream?.dispose();
     _breakoutLiveMeetingStream = null;
@@ -808,7 +841,8 @@ class LiveMeetingProvider with ChangeNotifier {
   void leaveBreakoutRoom() {
     _userLeftBreakouts = true;
 
-    _inTransitionToBreakoutRoomId = null;
+    _clearBreakoutRoomTransition();
+    _cachedJoinInfoRoomId = null;
     _breakoutRoomOverride = null;
     _activeRoomJoinInfoFuture = null;
 
@@ -873,7 +907,9 @@ class LiveMeetingProvider with ChangeNotifier {
     required String roomId,
   }) async {
     _inTransitionToBreakoutRoomId = roomId;
+    _cachedJoinInfoRoomId = roomId;
     _activeRoomJoinInfoFuture = null;
+    _startBreakoutRoomTransitionTimer();
 
     _loadBreakoutLiveMeetingStream(roomId);
 

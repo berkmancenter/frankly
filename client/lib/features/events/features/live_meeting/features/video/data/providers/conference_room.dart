@@ -515,6 +515,8 @@ class ConferenceRoom with ChangeNotifier {
       ),
     );
 
+    liveMeetingProvider.clearBreakoutRoomTransition();
+
     notifyListeners();
     _completer.complete(room);
     if (liveMeetingProvider.audioDefaultOn &&
