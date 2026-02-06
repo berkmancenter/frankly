@@ -679,6 +679,18 @@ class LiveMeetingProvider with ChangeNotifier {
         'Heartbeat: user is in breakout UI state but has not yet joined a room '
         'after $_transitionElapsedSeconds seconds.',
       );
+
+      if (_transitionElapsedSeconds >= 10) {
+        timer.cancel();
+        loggingService.log(
+          'Breakout room transition timed out after 10 seconds. '
+          'Canceling transition and returning to main meeting.',
+        );
+        leaveBreakoutRoom();
+        showToast('Could not find that breakout room! This usually means '
+            'there was a network issue or the room was closed. Returning to the '
+            'main meeting.');
+      }
     });
   }
 
