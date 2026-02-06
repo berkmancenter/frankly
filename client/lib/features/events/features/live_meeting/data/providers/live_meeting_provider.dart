@@ -687,9 +687,11 @@ class LiveMeetingProvider with ChangeNotifier {
           'Canceling transition and returning to main meeting.',
         );
         leaveBreakoutRoom();
-        showToast('Could not find that breakout room! This usually means '
-            'there was a network issue or the room was closed. Returning to the '
-            'main meeting.');
+        showToast(
+          appLocalizationService
+              .getLocalization()
+              .breakoutRoomTransitionTimeout,
+        );
       }
     });
   }
