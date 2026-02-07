@@ -572,5 +572,19 @@
   "youHaventJoinedAnyCommunities": "You haven't joined any communities.",
   "logo": "Logo",
   "background": "Background",
-  "makeThisSpacePrivate": "Make this space private"
+  "makeThisSpacePrivate": "Make this space private",
+  "download": "Download",
+  "taglineHint": "Ex: Protecting the earth from all invaders",
+  "aboutHint": "Add more detail as to the goals of this community",
+  "selectVideoInput": "Select video input",
+  "galleryView": "Gallery View",
+  "stageView": "Stage View",
+  "chatWelcome": "Welcome!",
+  "chatIntroduceYourself": "Please introduce yourself to help break the ice.",
+  "howWasTheEvent": "How was the event?",
+  "selectATime": "Select a time",
+  "selectADay": "Select a day",
+  "enterAmount": "Enter Amount",
+  "pleaseEnterValidAmount": "Please enter a valid amount",
+  "questionIsRequired": "Question is required"
 }

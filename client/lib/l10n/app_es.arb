@@ -780,5 +780,19 @@
   "youHaventJoinedAnyCommunities": "No te has unido a ninguna comunidad",
   "logo": "Logotipo",
   "background": "Fondo",
-  "makeThisSpacePrivate": "Hacer este espacio privado"
+  "makeThisSpacePrivate": "Hacer este espacio privado",
+  "download": "Descargar",
+  "taglineHint": "Ej: Proteger la tierra de todos los invasores",
+  "aboutHint": "Añade más detalles sobre los objetivos de esta comunidad",
+  "selectVideoInput": "Seleccionar entrada de video",
+  "galleryView": "Vista de galería",
+  "stageView": "Vista de escenario",
+  "chatWelcome": "¡Bienvenido!",
+  "chatIntroduceYourself": "Preséntate para romper el hielo.",
+  "howWasTheEvent": "¿Cómo fue el evento?",
+  "selectATime": "Seleccionar una hora",
+  "selectADay": "Seleccionar un día",
+  "enterAmount": "Ingrese el monto",
+  "pleaseEnterValidAmount": "Por favor, ingrese un monto válido",
+  "questionIsRequired": "La pregunta es obligatoria"
 }
