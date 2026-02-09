@@ -636,34 +636,11 @@ class EventProvider with ChangeNotifier {
       row.add(suggestionData[i].message ?? '');
 
       // Convert room ID to room name for better readability
-      String roomName = '';
-      final roomId = suggestionData[i].roomId;
-      if (roomId != null && roomId.isNotEmpty) {
-        if (roomId == 'waiting-room') {
-          roomName = 'Waiting room';
-        } else if (roomId == eventId) {
-          // If roomId matches eventId, user is in main room
-          roomName = 'Main room';
-        } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
-          // Try to find room by roomId
-          final room =
-              breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
-          if (room != null) {
-            roomName =
-                room.roomName; // This will be "1", "2", etc. for breakout rooms
-          } else {
-            // If roomId is not found in breakout rooms, it might be a main room ID
-            // Check if it's the main event room (same as eventId)
-            roomName = 'Main room';
-          }
-        } else {
-          // If no breakout rooms data available, assume it's main room
-          roomName = 'Main room';
-        }
-      } else {
-        // If roomId is null or empty, user is in main room
-        roomName = 'Main room';
-      }
+      String roomName = _getRoomName(
+        roomId: suggestionData[i].roomId,
+        eventId: eventId,
+        breakoutRooms: breakoutRooms,
+      );
       row.add(roomName);
 
       row.add(suggestionData[i].upvotes ?? '');
@@ -683,5 +660,33 @@ class EventProvider with ChangeNotifier {
     )
       ..setAttribute('download', fileName)
       ..click();
+  }
+
+  String _getRoomName({
+    required String? roomId,
+    required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
+  }) {
+    if (roomId == null || roomId.isEmpty) {
+      return 'Main room';
+    }
+
+    if (roomId == 'waiting-room') {
+      return 'Waiting room';
+    }
+
+    if (roomId == eventId) {
+      return 'Main room';
+    }
+
+    if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+      final room =
+          breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+      if (room != null) {
+        return room.roomName;
+      }
+    }
+
+    return 'Main room';
   }
 }
