@@ -602,6 +602,7 @@ class EventProvider with ChangeNotifier {
     final event = _eventStream.value;
     final agendaItems = event?.agendaItems ?? [];
 
+    // Process suggestion data
     for (int i = 0; i < suggestionData.length; i++) {
       List<dynamic> row = [];
 
@@ -646,6 +647,36 @@ class EventProvider with ChangeNotifier {
       row.add(suggestionData[i].upvotes ?? '');
       row.add(suggestionData[i].downvotes ?? '');
       row.add(suggestionData[i].deleted ?? false);
+      rows.add(row);
+    }
+
+    // Process poll data
+    for (int i = 0; i < pollData.length; i++) {
+      List<dynamic> row = [];
+
+      // Add Type field
+      row.add('Poll');
+      // Add Time field
+      row.add(dateTimeFormat(date: pollData[i].answeredDate!));
+      // Add User ID field
+      row.add(pollData[i].userId ?? '');
+      // Add Prompt field (poll question)
+      row.add(pollData[i].pollQuestion ?? '');
+      // Add Message field (poll response)
+      row.add(pollData[i].pollResponse ?? '');
+
+      String roomName = _getRoomName(
+        roomId: pollData[i].roomId,
+        eventId: eventId,
+        breakoutRooms: breakoutRooms,
+      );
+      row.add(roomName);
+
+      // Add blank spaces for the upvote/downvote/deleted fields which
+      // don't apply to the poll data rows.
+      row.add('');
+      row.add('');
+      row.add(false);
       rows.add(row);
     }
 
