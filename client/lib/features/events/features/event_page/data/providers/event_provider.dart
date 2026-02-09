@@ -15,6 +15,7 @@ import 'package:client/services.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
+import 'package:data_models/user_input/poll_data.dart';
 import 'package:data_models/community/member_details.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
@@ -566,7 +567,8 @@ class EventProvider with ChangeNotifier {
   }
 
   Future<void> generatePollsSuggestionsDataCsv({
-    required GetMeetingChatsSuggestionsDataResponse response,
+    required List<ChatSuggestionData> suggestionData,
+    required List<PollData> pollData,
     required String? eventId,
     List<BreakoutRoom>? breakoutRooms,
   }) async {
@@ -584,24 +586,20 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Deleted');
     rows.add(firstRow);
 
-    var suggestionsData = response.chatsSuggestionsList
-            ?.where((e) => e.type == ChatSuggestionType.suggestion)
-            .toList() ??
-        [];
-
     // Get agenda items from event to map agendaItemId to prompt text
     final event = _eventStream.value;
     final agendaItems = event?.agendaItems ?? [];
-    
-    for (int i = 0; i < suggestionsData.length; i++) {
+
+    for (int i = 0; i < suggestionData.length; i++) {
       List<dynamic> row = [];
-      
+
       // Determine Type based on agenda item
       String typeValue = 'Suggestion'; // Default to Suggestion
       String promptText = '';
-      final agendaItemId = suggestionsData[i].agendaItemId;
+      final agendaItemId = suggestionData[i].agendaItemId;
       if (agendaItemId != null && agendaItemId.isNotEmpty) {
-        final agendaItem = agendaItems.firstWhereOrNull((item) => item.id == agendaItemId);
+        final agendaItem =
+            agendaItems.firstWhereOrNull((item) => item.id == agendaItemId);
         if (agendaItem != null) {
           // Determine type based on agenda item type
           if (agendaItem.type == AgendaItemType.poll) {
@@ -613,21 +611,21 @@ class EventProvider with ChangeNotifier {
           promptText = agendaItem.title ?? agendaItem.content ?? '';
         }
       }
-      
+
       // Add Type field
       row.add(typeValue);
       // Changed "Created" to "Time"
-      row.add(dateTimeFormat(date: suggestionsData[i].createdDate!));
+      row.add(dateTimeFormat(date: suggestionData[i].createdDate!));
       // Added "User ID" field instead of Name, Email
-      row.add(suggestionsData[i].creatorId ?? '');
+      row.add(suggestionData[i].creatorId ?? '');
       // Add Prompt field
       row.add(promptText);
       // Add Message field
-      row.add(suggestionsData[i].message ?? '');
-      
+      row.add(suggestionData[i].message ?? '');
+
       // Convert room ID to room name for better readability
       String roomName = '';
-      final roomId = suggestionsData[i].roomId;
+      final roomId = suggestionData[i].roomId;
       if (roomId != null && roomId.isNotEmpty) {
         if (roomId == 'waiting-room') {
           roomName = 'Waiting room';
@@ -636,9 +634,11 @@ class EventProvider with ChangeNotifier {
           roomName = 'Main room';
         } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
           // Try to find room by roomId
-          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+          final room =
+              breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
           if (room != null) {
-            roomName = room.roomName; // This will be "1", "2", etc. for breakout rooms
+            roomName =
+                room.roomName; // This will be "1", "2", etc. for breakout rooms
           } else {
             // If roomId is not found in breakout rooms, it might be a main room ID
             // Check if it's the main event room (same as eventId)
@@ -653,10 +653,10 @@ class EventProvider with ChangeNotifier {
         roomName = 'Main room';
       }
       row.add(roomName);
-      
-      row.add(suggestionsData[i].upvotes ?? '');
-      row.add(suggestionsData[i].downvotes ?? '');
-      row.add(suggestionsData[i].deleted ?? false);
+
+      row.add(suggestionData[i].upvotes ?? '');
+      row.add(suggestionData[i].downvotes ?? '');
+      row.add(suggestionData[i].deleted ?? false);
       rows.add(row);
     }
 

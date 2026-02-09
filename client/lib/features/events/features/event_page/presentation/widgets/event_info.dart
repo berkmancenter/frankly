@@ -353,7 +353,7 @@ class _EventInfoState extends State<EventInfo> {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
       final response = await _presenter.getChatsAndSuggestions();
-      final chatSuggestionsData = response.chatsSuggestionsList
+      final suggestionData = response.chatsSuggestionsList
               ?.where((e) => e.type == ChatSuggestionType.suggestion)
               .toList() ??
           [];
@@ -361,7 +361,7 @@ class _EventInfoState extends State<EventInfo> {
       final pollResponse = await _presenter.getPollData();
       final pollData = pollResponse.polls ?? [];
 
-      if (chatSuggestionsData.isNotEmpty || pollData.isNotEmpty) {
+      if (suggestionData.isNotEmpty || pollData.isNotEmpty) {
         // Get breakout rooms data for room name mapping
         List<BreakoutRoom>? breakoutRooms;
         try {
@@ -390,7 +390,7 @@ class _EventInfoState extends State<EventInfo> {
         }
 
         await eventProvider.generatePollsSuggestionsDataCsv(
-          chatSuggestionsResponse: chatSuggestionsData,
+          suggestionData: suggestionData,
           pollData: pollData,
           eventId: eventProvider.eventId,
           breakoutRooms: breakoutRooms,
