@@ -10,13 +10,13 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
-import 'package:client/config/environment.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/extensions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:data_models/community/member_details.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -367,22 +367,28 @@ class EventProvider with ChangeNotifier {
   Future<void> generateRegistrationDataCsvFile({
     required List<MemberDetails> registrationData,
     required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    firstRow.add('${Environment.appName} ID');
+    firstRow.add('User ID');
     firstRow.add('Name');
     firstRow.add('Email');
-    firstRow.add('Member status');
+    firstRow.add('Member Status');
     firstRow.add('RSVP Time');
+    // Added new columns: Join Time and Room Assigned
+    firstRow.add('Join Time');
+    firstRow.add('Room Assigned');
     rows.add(firstRow);
 
     final numberOfQuestions =
         _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions.length ??
             0;
 
+    // Updated question format: Changed from "Answer 1, Answer 2" to "Question 1, Answer 1, Question 2, Answer 2"
     for (var i = 0; i < numberOfQuestions; i++) {
+      firstRow.add('Question ${i + 1}');
       firstRow.add('Answer ${i + 1}');
     }
 
@@ -397,33 +403,75 @@ class EventProvider with ChangeNotifier {
       row.add(
         registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
       );
+      
+      // Added Join Time field from Participant.mostRecentPresentTime
+      row.add(
+        registrationData[i].memberEvent?.participant?.mostRecentPresentTime?.toUtc(),
+      );
+      
+      // Added Room Assigned field from Participant.currentBreakoutRoomId
+      // Convert room ID to room name for better readability
+      String roomAssigned = '';
+      final currentRoomId = registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
+      if (currentRoomId != null && currentRoomId.isNotEmpty) {
+        if (currentRoomId == 'waiting-room') {
+          // Special case: breakout room waiting room
+          roomAssigned = 'Waiting room';
+        } else if (breakoutRooms != null) {
+          // Find room name from breakout rooms data
+          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == currentRoomId);
+          if (room != null) {
+            roomAssigned = room.roomName;
+          } else {
+            roomAssigned = currentRoomId; // Fallback to room ID if room not found
+          }
+        } else {
+          roomAssigned = currentRoomId; // Fallback to room ID if no room data available
+        }
+      } else {
+        // If currentRoomId is null or empty, user is likely in main waiting room
+        roomAssigned = 'Waiting room';
+      }
+      row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
 
       if (event != null) {
         final questionsData =
             event.participant?.breakoutRoomSurveyQuestions ?? [];
-        if (questionsData.isEmpty && numberOfQuestions != 0) {
-          for (var q = 0; q < numberOfQuestions; q++) {
+        // Get breakout questions from event definition to get question titles
+        final eventQuestions = _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions ?? [];
+        
+        // Process each question defined in the event
+        for (var q = 0; q < numberOfQuestions; q++) {
+          // Add question title from event definition
+          if (q < eventQuestions.length) {
+            row.add(eventQuestions[q].title);
+          } else {
             row.add('');
           }
-        } else {
-          for (var i = 0; i < questionsData.length; i++) {
-            final questionsList = questionsData[i]
+          
+          // Find corresponding answer from participant data
+          String answerText = '';
+          if (q < questionsData.length) {
+            final questionsList = questionsData[q]
                 .answers
                 .map((e) => e.options)
                 .flattened
                 .toList();
 
-            final answerId = questionsData[i].answerOptionId;
+            final answerId = questionsData[q].answerOptionId;
             if (answerId.isNotEmpty) {
-              final answer =
-                  questionsList.firstWhere((element) => element.id == answerId);
-              row.add(answer.title);
-            } else {
-              row.add('');
+              try {
+                final answer = questionsList.firstWhere((element) => element.id == answerId);
+                answerText = answer.title;
+              } catch (e) {
+                // Answer not found, leave empty
+                answerText = '';
+              }
             }
           }
+          row.add(answerText);
         }
       }
       rows.add(row);
@@ -433,6 +481,7 @@ class EventProvider with ChangeNotifier {
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
+    // Keep original filename format with eventId to distinguish different event exports
     final fileName = 'registration-data-$eventId.csv';
 
     AnchorElement(
@@ -442,20 +491,18 @@ class EventProvider with ChangeNotifier {
       ..click();
   }
 
-  Future<void> generateChatAndSugguestionsDataCsv({
+  Future<void> generateChatDataCsv({
     required GetMeetingChatsSuggestionsDataResponse response,
     required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
     List<dynamic> firstRow = [];
-    firstRow.add('Type');
-    firstRow.add('#');
-    firstRow.add('Created');
-    firstRow.add('Name');
-    firstRow.add('Email');
+    firstRow.add('Time');
+    firstRow.add('User ID');
     firstRow.add('Message');
-    firstRow.add('RoomId');
+    firstRow.add('Room');
     firstRow.add('Deleted');
     rows.add(firstRow);
 
@@ -466,41 +513,42 @@ class EventProvider with ChangeNotifier {
 
     for (int i = 0; i < chatsData.length; i++) {
       List<dynamic> row = [];
-      row.add('Chat');
-      row.add(i + 1);
+      // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: chatsData[i].createdDate!));
-      row.add(chatsData[i].creatorName ?? '');
-      row.add(chatsData[i].creatorEmail ?? '');
+      // Added "User ID" field
+      row.add(chatsData[i].creatorId ?? '');
       row.add(chatsData[i].message ?? chatsData[i].emotionType?.stringEmoji);
-      row.add(chatsData[i].roomId);
+      
+      // Convert room ID to room name for better readability
+      String roomName = '';
+      final roomId = chatsData[i].roomId;
+      if (roomId != null && roomId.isNotEmpty) {
+        if (roomId == 'waiting-room') {
+          roomName = 'Waiting room';
+        } else if (roomId == eventId) {
+          // If roomId matches eventId, user is in main room
+          roomName = 'Main room';
+        } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+          // Try to find room by roomId
+          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+          if (room != null) {
+            roomName = room.roomName; // This will be "1", "2", etc. for breakout rooms
+          } else {
+            // If roomId is not found in breakout rooms, it might be a main room ID
+            // Check if it's the main event room (same as eventId)
+            roomName = 'Main room';
+          }
+        } else {
+          // If no breakout rooms data available, assume it's main room
+          roomName = 'Main room';
+        }
+      } else {
+        // If roomId is null or empty, user is in main room
+        roomName = 'Main room';
+      }
+      row.add(roomName);
+      
       row.add(chatsData[i].deleted);
-      rows.add(row);
-    }
-
-    var suggestionsData = response.chatsSuggestionsList
-            ?.where((e) => e.type == ChatSuggestionType.suggestion)
-            .toList() ??
-        [];
-
-    if (suggestionsData.isNotEmpty) {
-      firstRow.add('Upvotes');
-      firstRow.add('Downvotes');
-      firstRow.add('AgendaItemId');
-    }
-
-    for (int i = 0; i < suggestionsData.length; i++) {
-      List<dynamic> row = [];
-      row.add('Suggestion');
-      row.add(i + 1);
-      row.add(dateTimeFormat(date: suggestionsData[i].createdDate!));
-      row.add(suggestionsData[i].creatorName ?? '');
-      row.add(suggestionsData[i].creatorEmail ?? '');
-      row.add(suggestionsData[i].message ?? '');
-      row.add(suggestionsData[i].roomId);
-      row.add(suggestionsData[i].deleted ?? false);
-      row.add(suggestionsData[i].upvotes ?? '');
-      row.add(suggestionsData[i].downvotes ?? '');
-      row.add(suggestionsData[i].agendaItemId ?? '');
       rows.add(row);
     }
 
@@ -508,7 +556,115 @@ class EventProvider with ChangeNotifier {
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
-    final fileName = 'chats-suggestions-data-$eventId.csv';
+    final fileName = 'chat-data-$eventId.csv';
+
+    AnchorElement(
+      href: 'data:application/octet-stream;charset=utf-8;base64,$content',
+    )
+      ..setAttribute('download', fileName)
+      ..click();
+  }
+
+  Future<void> generatePollsSuggestionsDataCsv({
+    required GetMeetingChatsSuggestionsDataResponse response,
+    required String? eventId,
+    List<BreakoutRoom>? breakoutRooms,
+  }) async {
+    List<List<dynamic>> rows = [];
+
+    List<dynamic> firstRow = [];
+    firstRow.add('Type');
+    firstRow.add('Time');
+    firstRow.add('User ID');
+    firstRow.add('Prompt');
+    firstRow.add('Message');
+    firstRow.add('Room');
+    firstRow.add('Upvotes');
+    firstRow.add('Downvotes');
+    firstRow.add('Deleted');
+    rows.add(firstRow);
+
+    var suggestionsData = response.chatsSuggestionsList
+            ?.where((e) => e.type == ChatSuggestionType.suggestion)
+            .toList() ??
+        [];
+
+    // Get agenda items from event to map agendaItemId to prompt text
+    final event = _eventStream.value;
+    final agendaItems = event?.agendaItems ?? [];
+    
+    for (int i = 0; i < suggestionsData.length; i++) {
+      List<dynamic> row = [];
+      
+      // Determine Type based on agenda item
+      String typeValue = 'Suggestion'; // Default to Suggestion
+      String promptText = '';
+      final agendaItemId = suggestionsData[i].agendaItemId;
+      if (agendaItemId != null && agendaItemId.isNotEmpty) {
+        final agendaItem = agendaItems.firstWhereOrNull((item) => item.id == agendaItemId);
+        if (agendaItem != null) {
+          // Determine type based on agenda item type
+          if (agendaItem.type == AgendaItemType.poll) {
+            typeValue = 'Poll';
+          } else if (agendaItem.type == AgendaItemType.userSuggestions) {
+            typeValue = 'Suggestion';
+          }
+          // Use title if available, otherwise use content
+          promptText = agendaItem.title ?? agendaItem.content ?? '';
+        }
+      }
+      
+      // Add Type field
+      row.add(typeValue);
+      // Changed "Created" to "Time"
+      row.add(dateTimeFormat(date: suggestionsData[i].createdDate!));
+      // Added "User ID" field instead of Name, Email
+      row.add(suggestionsData[i].creatorId ?? '');
+      // Add Prompt field
+      row.add(promptText);
+      // Add Message field
+      row.add(suggestionsData[i].message ?? '');
+      
+      // Convert room ID to room name for better readability
+      String roomName = '';
+      final roomId = suggestionsData[i].roomId;
+      if (roomId != null && roomId.isNotEmpty) {
+        if (roomId == 'waiting-room') {
+          roomName = 'Waiting room';
+        } else if (roomId == eventId) {
+          // If roomId matches eventId, user is in main room
+          roomName = 'Main room';
+        } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+          // Try to find room by roomId
+          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+          if (room != null) {
+            roomName = room.roomName; // This will be "1", "2", etc. for breakout rooms
+          } else {
+            // If roomId is not found in breakout rooms, it might be a main room ID
+            // Check if it's the main event room (same as eventId)
+            roomName = 'Main room';
+          }
+        } else {
+          // If no breakout rooms data available, assume it's main room
+          roomName = 'Main room';
+        }
+      } else {
+        // If roomId is null or empty, user is in main room
+        roomName = 'Main room';
+      }
+      row.add(roomName);
+      
+      row.add(suggestionsData[i].upvotes ?? '');
+      row.add(suggestionsData[i].downvotes ?? '');
+      row.add(suggestionsData[i].deleted ?? false);
+      rows.add(row);
+    }
+
+    String csv = const ListToCsvConverter().convert(rows);
+
+    final stringToBase64 = utf8.fuse(base64);
+    final content = stringToBase64.encode(csv);
+    final fileName = 'polls-suggestions-data-$eventId.csv';
 
     AnchorElement(
       href: 'data:application/octet-stream;charset=utf-8;base64,$content',
