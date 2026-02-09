@@ -404,30 +404,38 @@ class EventProvider with ChangeNotifier {
       row.add(
         registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
       );
-      
+
       // Added Join Time field from Participant.mostRecentPresentTime
       row.add(
-        registrationData[i].memberEvent?.participant?.mostRecentPresentTime?.toUtc(),
+        registrationData[i]
+            .memberEvent
+            ?.participant
+            ?.mostRecentPresentTime
+            ?.toUtc(),
       );
-      
+
       // Added Room Assigned field from Participant.currentBreakoutRoomId
       // Convert room ID to room name for better readability
       String roomAssigned = '';
-      final currentRoomId = registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
+      final currentRoomId =
+          registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
       if (currentRoomId != null && currentRoomId.isNotEmpty) {
         if (currentRoomId == 'waiting-room') {
           // Special case: breakout room waiting room
           roomAssigned = 'Waiting room';
         } else if (breakoutRooms != null) {
           // Find room name from breakout rooms data
-          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == currentRoomId);
+          final room = breakoutRooms
+              .firstWhereOrNull((room) => room.roomId == currentRoomId);
           if (room != null) {
             roomAssigned = room.roomName;
           } else {
-            roomAssigned = currentRoomId; // Fallback to room ID if room not found
+            roomAssigned =
+                currentRoomId; // Fallback to room ID if room not found
           }
         } else {
-          roomAssigned = currentRoomId; // Fallback to room ID if no room data available
+          roomAssigned =
+              currentRoomId; // Fallback to room ID if no room data available
         }
       } else {
         // If currentRoomId is null or empty, user is likely in main waiting room
@@ -441,8 +449,9 @@ class EventProvider with ChangeNotifier {
         final questionsData =
             event.participant?.breakoutRoomSurveyQuestions ?? [];
         // Get breakout questions from event definition to get question titles
-        final eventQuestions = _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions ?? [];
-        
+        final eventQuestions =
+            _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions ?? [];
+
         // Process each question defined in the event
         for (var q = 0; q < numberOfQuestions; q++) {
           // Add question title from event definition
@@ -451,7 +460,7 @@ class EventProvider with ChangeNotifier {
           } else {
             row.add('');
           }
-          
+
           // Find corresponding answer from participant data
           String answerText = '';
           if (q < questionsData.length) {
@@ -464,7 +473,8 @@ class EventProvider with ChangeNotifier {
             final answerId = questionsData[q].answerOptionId;
             if (answerId.isNotEmpty) {
               try {
-                final answer = questionsList.firstWhere((element) => element.id == answerId);
+                final answer = questionsList
+                    .firstWhere((element) => element.id == answerId);
                 answerText = answer.title;
               } catch (e) {
                 // Answer not found, leave empty
@@ -519,7 +529,7 @@ class EventProvider with ChangeNotifier {
       // Added "User ID" field
       row.add(chatsData[i].creatorId ?? '');
       row.add(chatsData[i].message ?? chatsData[i].emotionType?.stringEmoji);
-      
+
       // Convert room ID to room name for better readability
       String roomName = '';
       final roomId = chatsData[i].roomId;
@@ -531,9 +541,11 @@ class EventProvider with ChangeNotifier {
           roomName = 'Main room';
         } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
           // Try to find room by roomId
-          final room = breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
+          final room =
+              breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
           if (room != null) {
-            roomName = room.roomName; // This will be "1", "2", etc. for breakout rooms
+            roomName =
+                room.roomName; // This will be "1", "2", etc. for breakout rooms
           } else {
             // If roomId is not found in breakout rooms, it might be a main room ID
             // Check if it's the main event room (same as eventId)
@@ -548,7 +560,7 @@ class EventProvider with ChangeNotifier {
         roomName = 'Main room';
       }
       row.add(roomName);
-      
+
       row.add(chatsData[i].deleted);
       rows.add(row);
     }
