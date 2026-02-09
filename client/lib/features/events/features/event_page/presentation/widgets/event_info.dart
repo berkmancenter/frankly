@@ -1,6 +1,7 @@
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -50,8 +51,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:client/core/localization/localization_helper.dart';
-import 'package:data_models/chat/chat_suggestion_data.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
