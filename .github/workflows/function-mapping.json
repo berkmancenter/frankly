@@ -45,6 +45,7 @@
       "firebase/functions/lib/events/live_meetings/agora_api.dart": ["GetBreakoutRoomJoinInfo","GetMeetingJoinInfo","KickParticipant","VoteToKick"],
       "firebase/functions/lib/events/live_meetings/create_live_stream.dart": ["CreateLiveStream"],
       "firebase/functions/lib/events/live_meetings/get_meeting_chat_suggestion_data.dart": ["GetMeetingChatSuggestionData"],
+      "firebase/functions/lib/events/live_meetings/get_meeting_poll_data.dart": ["GetMeetingPollData"],
       "firebase/functions/lib/events/live_meetings/get_meeting_join_info.dart": ["GetMeetingJoinInfo"],
       "firebase/functions/lib/events/live_meetings/get_user_id_from_agora_id.dart": ["GetUserIdFromAgoraId"],
       "firebase/functions/lib/events/live_meetings/kick_participant.dart": ["KickParticipant"],
@@ -91,7 +92,7 @@
       "request" : ["CalendarFeedIcs","CalendarFeedRss","CheckAssignToBreakoutsServer","CheckHostlessGoToBreakoutsServer","EmailEventReminder","ExtendCloudTaskScheduler","MuxWebhooks","ShareLink"],
       "helperdbpubsub": ["downloadRecording", "imageProxy","UpdatePresenceStatus","TriggerEmailDigests","UpdateLiveStreamParticipantCount"], 
       "oncall1": ["CheckAdvanceMeetingGuide","CheckAssignToBreakouts","CheckHostlessGoToBreakouts","sendAnnouncement","createEvent","createCommunity","CreateLiveStream","updateMembership","VoteToKick","eventEnded","getCommunityCalendarLink","InitiateBreakouts"],
-      "oncall2": ["GetBreakoutRoomAssignment","GetBreakoutRoomJoinInfo","getCommunityCapabilities","GetCommunityDonationsEnabled","GetCommunityPrePostEnabled","GetMeetingChatSuggestionData","GetMeetingJoinInfo","GetMembersData","GetServerTimestamp","GetUserAdminDetails","GetUserIdFromAgoraId"],
+      "oncall2": ["GetBreakoutRoomAssignment","GetBreakoutRoomJoinInfo","getCommunityCapabilities","GetCommunityDonationsEnabled","GetCommunityPrePostEnabled","GetMeetingChatSuggestionData","GetMeetingPollData","GetMeetingJoinInfo","GetMembersData","GetServerTimestamp","GetUserAdminDetails","GetUserIdFromAgoraId"],
       "oncall3": ["joinEvent","ReassignBreakoutRoom","ResetParticipantAgendaItems","resolveJoinRequest","sendEventMessage","serverTimestamp","toggleLikeDislikeOnMeetingUserSuggestion","KickParticipant","unsubscribeFromCommunityNotifications","UpdateBreakoutRoomFlagStatus","UpdateCommunity"],
       "stripe" : ["CancelStripeSubscriptionPlan","getStripeBillingPortalLink","getStripeConnectedAccountLink","GetStripeSubscriptionPlanInfo","StripeConnectedAccountWebhooks","StripeWebhooks","UpdateStripeSubscriptionPlan","createStripeConnectedAccount","createDonationCheckoutSession","CreateSubscriptionCheckoutSession"]
    }
