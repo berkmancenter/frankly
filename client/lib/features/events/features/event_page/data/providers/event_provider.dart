@@ -378,7 +378,6 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
-    // Added new columns: Join Time and Room Assigned
     firstRow.add('Join Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
