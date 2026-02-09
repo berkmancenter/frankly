@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data_models/announcements/announcement.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
+import 'package:data_models/user_input/poll_data.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_message.dart';
 import 'package:data_models/community/community.dart';
@@ -334,6 +335,28 @@ class GetMeetingChatsSuggestionsDataResponse
   factory GetMeetingChatsSuggestionsDataResponse.fromJson(
           Map<String, dynamic> json) =>
       _$GetMeetingChatsSuggestionsDataResponseFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class GetMeetingPollDataRequest
+    with _$GetMeetingPollDataRequest
+    implements SerializeableRequest {
+  factory GetMeetingPollDataRequest({
+    required String eventPath,
+  }) = _GetMeetingPollDataRequest;
+
+  factory GetMeetingPollDataRequest.fromJson(Map<String, dynamic> json) =>
+      _$GetMeetingPollDataRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class GetMeetingPollDataResponse with _$GetMeetingPollDataResponse {
+  factory GetMeetingPollDataResponse({
+    List<PollData>? polls,
+  }) = _GetMeetingPollDataResponse;
+
+  factory GetMeetingPollDataResponse.fromJson(Map<String, dynamic> json) =>
+      _$GetMeetingPollDataResponseFromJson(json);
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
