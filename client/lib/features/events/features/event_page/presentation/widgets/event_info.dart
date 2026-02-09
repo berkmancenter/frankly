@@ -256,15 +256,21 @@ class _EventInfoState extends State<EventInfo> {
       // Get breakout rooms data for room name mapping
       List<BreakoutRoom>? breakoutRooms;
       try {
-        final liveMeeting = await firestoreLiveMeetingService.liveMeetingStream(
-          parentDoc: 'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
-          id: 'live-meeting',
-        ).stream.first;
-        
+        final liveMeeting = await firestoreLiveMeetingService
+            .liveMeetingStream(
+              parentDoc:
+                  'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
+              id: 'live-meeting',
+            )
+            .stream
+            .first;
+
         if (liveMeeting.currentBreakoutSession != null) {
-          final breakoutRoomsWrapper = firestoreLiveMeetingService.breakoutRoomsStream(
+          final breakoutRoomsWrapper =
+              firestoreLiveMeetingService.breakoutRoomsStream(
             event: widget.event,
-            breakoutRoomSessionId: liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
+            breakoutRoomSessionId:
+                liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
           );
           breakoutRooms = await breakoutRoomsWrapper.stream.first;
           await breakoutRoomsWrapper.dispose();
@@ -299,20 +305,26 @@ class _EventInfoState extends State<EventInfo> {
               ?.where((e) => e.type == ChatSuggestionType.chat)
               .toList() ??
           [];
-      
+
       if (chatsData.isNotEmpty) {
         // Get breakout rooms data for room name mapping
         List<BreakoutRoom>? breakoutRooms;
         try {
-          final liveMeeting = await firestoreLiveMeetingService.liveMeetingStream(
-            parentDoc: 'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
-            id: 'live-meeting',
-          ).stream.first;
-          
+          final liveMeeting = await firestoreLiveMeetingService
+              .liveMeetingStream(
+                parentDoc:
+                    'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
+                id: 'live-meeting',
+              )
+              .stream
+              .first;
+
           if (liveMeeting.currentBreakoutSession != null) {
-            final breakoutRoomsWrapper = firestoreLiveMeetingService.breakoutRoomsStream(
+            final breakoutRoomsWrapper =
+                firestoreLiveMeetingService.breakoutRoomsStream(
               event: widget.event,
-              breakoutRoomSessionId: liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
+              breakoutRoomSessionId:
+                  liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
             );
             breakoutRooms = await breakoutRoomsWrapper.stream.first;
             await breakoutRoomsWrapper.dispose();
@@ -321,7 +333,7 @@ class _EventInfoState extends State<EventInfo> {
           // If breakout rooms data is not available, continue without it
           print('Could not fetch breakout rooms data: $e');
         }
-        
+
         await eventProvider.generateChatDataCsv(
           response: response,
           eventId: eventProvider.eventId,
@@ -345,20 +357,26 @@ class _EventInfoState extends State<EventInfo> {
               ?.where((e) => e.type == ChatSuggestionType.suggestion)
               .toList() ??
           [];
-      
+
       if (suggestionsData.isNotEmpty) {
         // Get breakout rooms data for room name mapping
         List<BreakoutRoom>? breakoutRooms;
         try {
-          final liveMeeting = await firestoreLiveMeetingService.liveMeetingStream(
-            parentDoc: 'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
-            id: 'live-meeting',
-          ).stream.first;
-          
+          final liveMeeting = await firestoreLiveMeetingService
+              .liveMeetingStream(
+                parentDoc:
+                    'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
+                id: 'live-meeting',
+              )
+              .stream
+              .first;
+
           if (liveMeeting.currentBreakoutSession != null) {
-            final breakoutRoomsWrapper = firestoreLiveMeetingService.breakoutRoomsStream(
+            final breakoutRoomsWrapper =
+                firestoreLiveMeetingService.breakoutRoomsStream(
               event: widget.event,
-              breakoutRoomSessionId: liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
+              breakoutRoomSessionId:
+                  liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
             );
             breakoutRooms = await breakoutRoomsWrapper.stream.first;
             await breakoutRoomsWrapper.dispose();
@@ -367,7 +385,7 @@ class _EventInfoState extends State<EventInfo> {
           // If breakout rooms data is not available, continue without it
           print('Could not fetch breakout rooms data: $e');
         }
-        
+
         await eventProvider.generatePollsSuggestionsDataCsv(
           response: response,
           eventId: eventProvider.eventId,
