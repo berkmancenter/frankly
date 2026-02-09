@@ -387,7 +387,7 @@ class EventProvider with ChangeNotifier {
         _eventStream.value?.breakoutRoomDefinition?.breakoutQuestions.length ??
             0;
 
-    // Updated question format: Changed from "Answer 1, Answer 2" to "Question 1, Answer 1, Question 2, Answer 2"
+    // Question format: "Question 1, Answer 1, Question 2, Answer 2". This allows the question text to be visible within participants' answers.
     for (var i = 0; i < numberOfQuestions; i++) {
       firstRow.add('Question ${i + 1}');
       firstRow.add('Answer ${i + 1}');
