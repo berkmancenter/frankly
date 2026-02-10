@@ -96,7 +96,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         itemBuilder: (context) {
           return menuOptions.map(
             (e) {
-              final iconAsset = _getIconAsset(e);
+              final icon = _getIconData(e);
               final text = _getText(e);
 
               return PopupMenuItem(
@@ -105,12 +105,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SvgPicture.asset(
-                      iconAsset.path,
-                      width: 20,
-                      height: 20,
-                      color: context.theme.colorScheme.primary,
-                    ),
+                    Icon(icon),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -147,24 +142,24 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     }
   }
 
-  AppAsset _getIconAsset(
+  IconData _getIconData(
     EventPopUpMenuSelection eventPopUpMenuSelection,
   ) {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
-        return AppAsset.kRefreshSvg;
+        return Icons.refresh;
       case EventPopUpMenuSelection.createGuideFromEvent:
-        return AppAsset.kPlusGuideSvg;
+        return Icons.bookmark_add_outlined;
       case EventPopUpMenuSelection.duplicateEvent:
-        return AppAsset.kCopySvg;
+        return Icons.copy;
       case EventPopUpMenuSelection.downloadRegistrationData:
-        return AppAsset.kSurveySvg;
+        return Icons.people_outline_outlined;
       case EventPopUpMenuSelection.downloadChatData:
-        return AppAsset.kChatBubbleGreyPng;
+        return Icons.message_outlined;
       case EventPopUpMenuSelection.downloadPollsSuggestionsData:
-        return AppAsset.kThumbSvg;
+        return Icons.thumb_up_outlined;
       case EventPopUpMenuSelection.cancelEvent:
-        return AppAsset.kXSvg;
+        return Icons.close;
     }
   }
 }
