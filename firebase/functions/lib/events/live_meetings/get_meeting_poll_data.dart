@@ -128,7 +128,7 @@ class GetMeetingPollData extends OnCallMethod<GetMeetingPollDataRequest> {
             userName: memberName,
             userEmail: memberInfo.email,
             agendaItemId: agendaItem.id,
-            pollQuestion: agendaItem.title,
+            pollQuestion: agendaItem.content,
             pollResponse: details.pollResponse,
             roomId: roomId,
             answeredDate: document.updateTime?.toDateTime(),
