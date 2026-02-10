@@ -590,7 +590,7 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Time');
     firstRow.add('User ID');
     firstRow.add('Prompt');
-    firstRow.add('Message');
+    firstRow.add('Response');
     firstRow.add('Room');
     firstRow.add('Upvotes');
     firstRow.add('Downvotes');
