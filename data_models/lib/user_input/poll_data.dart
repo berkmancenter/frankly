@@ -14,7 +14,6 @@ class PollData with _$PollData {
     String? pollResponse,
     String? roomId,
     String? agendaItemId,
-    String? agendaItemTitle,
     String? pollQuestion,
   }) = _PollData;
 

@@ -122,19 +122,18 @@ class GetMeetingPollData extends OnCallMethod<GetMeetingPollDataRequest> {
             memberName = memberInfo.displayName;
           }
 
-          pollDataList.add(
-            PollData(
-              userId: details.userId,
-              userName: memberName,
-              userEmail: memberInfo.email,
-              agendaItemId: agendaItem.id,
-              agendaItemTitle: agendaItem.title,
-              pollQuestion: agendaItem.title,
-              pollResponse: details.pollResponse,
-              roomId: roomId,
-              answeredDate: document.updateTime?.toDateTime(),
-            ),
+          final pollData = PollData(
+            userId: details.userId,
+            userName: memberName,
+            userEmail: memberInfo.email,
+            agendaItemId: agendaItem.id,
+            pollQuestion: agendaItem.title,
+            pollResponse: details.pollResponse,
+            roomId: roomId,
+            answeredDate: document.updateTime?.toDateTime(),
           );
+
+          pollDataList.add(pollData);
         }
       }
     }
