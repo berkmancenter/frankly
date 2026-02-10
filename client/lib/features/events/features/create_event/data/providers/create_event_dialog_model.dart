@@ -22,7 +22,6 @@ enum CurrentPage {
   selectParticipants,
   selectTitle,
   selectHostingType,
-  choosePlatform,
 }
 
 /// Holds logic for the CreateEventDialog class.
