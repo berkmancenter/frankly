@@ -604,35 +604,20 @@ class EventProvider with ChangeNotifier {
     // Process suggestion data
     for (int i = 0; i < suggestionData.length; i++) {
       List<dynamic> row = [];
+      final suggestionItem = agendaItems.firstWhereOrNull(
+        (item) => item.id == suggestionData[i].agendaItemId,
+      );
 
-      // Determine Type based on agenda item
-      String typeValue = 'Suggestion'; // Default to Suggestion
-      String promptText = '';
-      final agendaItemId = suggestionData[i].agendaItemId;
-      if (agendaItemId != null && agendaItemId.isNotEmpty) {
-        final agendaItem =
-            agendaItems.firstWhereOrNull((item) => item.id == agendaItemId);
-        if (agendaItem != null) {
-          // Determine type based on agenda item type
-          if (agendaItem.type == AgendaItemType.poll) {
-            typeValue = 'Poll';
-          } else if (agendaItem.type == AgendaItemType.userSuggestions) {
-            typeValue = 'Suggestion';
-          }
-          // Use title if available, otherwise use content
-          promptText = agendaItem.title ?? agendaItem.content ?? '';
-        }
-      }
-
+      final promptText = suggestionItem?.title ?? suggestionItem?.content ?? '';
       // Add Type field
-      row.add(typeValue);
+      row.add('Suggestion');
       // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: suggestionData[i].createdDate!));
       // Added "User ID" field instead of Name, Email
       row.add(suggestionData[i].creatorId ?? '');
       // Add Prompt field
       row.add(promptText);
-      // Add Message field
+      // Add Response field
       row.add(suggestionData[i].message ?? '');
 
       // Convert room ID to room name for better readability
@@ -653,19 +638,21 @@ class EventProvider with ChangeNotifier {
     for (int i = 0; i < pollData.length; i++) {
       List<dynamic> row = [];
 
+      final poll = pollData[i];
+
       // Add Type field
       row.add('Poll');
       // Add Time field
-      row.add(dateTimeFormat(date: pollData[i].answeredDate!));
+      row.add(dateTimeFormat(date: poll.answeredDate!));
       // Add User ID field
-      row.add(pollData[i].userId ?? '');
+      row.add(poll.userId ?? '');
       // Add Prompt field (poll question)
-      row.add(pollData[i].pollQuestion ?? '');
-      // Add Message field (poll response)
-      row.add(pollData[i].pollResponse ?? '');
+      row.add(poll.pollQuestion ?? '');
+      // Add Response field
+      row.add(poll.pollResponse ?? '');
 
       String roomName = _getRoomName(
-        roomId: pollData[i].roomId,
+        roomId: poll.roomId,
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
