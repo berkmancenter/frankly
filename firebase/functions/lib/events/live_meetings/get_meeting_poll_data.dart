@@ -57,21 +57,22 @@ class GetMeetingPollData extends OnCallMethod<GetMeetingPollDataRequest> {
 
     final liveMeetingPath = '${request.eventPath}/live-meetings/$eventId';
     final breakoutRoomSessions = '$liveMeetingPath/breakout-room-sessions';
-    print(breakoutRoomSessions);
+
     final sessionDocs = await firestore.collection(breakoutRoomSessions).get();
     final roomDocQueries = await Future.wait(
       sessionDocs.documents.map((session) {
         final collectionPath = '${session.reference.path}/breakout-rooms';
-        print(collectionPath);
         return firestore.collection(collectionPath).get();
       }),
     );
     final roomDocs =
         roomDocQueries.map((query) => query.documents).expand((a) => a);
-    final breakoutMeetingLinks = roomDocs.map(
-      (roomDoc) =>
-          '${roomDoc.reference.path}/live-meetings/${roomDoc.documentID}',
-    );
+    final breakoutMeetingLinks = roomDocs
+        .map(
+          (roomDoc) =>
+              '${roomDoc.reference.path}/live-meetings/${roomDoc.documentID}',
+        )
+        .toList();
 
     final meetingPaths = [
       liveMeetingPath,
