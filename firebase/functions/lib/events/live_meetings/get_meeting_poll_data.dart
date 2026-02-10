@@ -83,8 +83,10 @@ class GetMeetingPollData extends OnCallMethod<GetMeetingPollDataRequest> {
       for (final path in meetingPaths) _getPollsFromPath(path, event),
     ]);
 
+    final allPolls = pollDataListResults.expand((p) => p).toList();
+
     return GetMeetingPollDataResponse(
-      polls: pollDataListResults.expand((p) => p).toList(),
+      polls: allPolls,
     ).toJson();
   }
 
