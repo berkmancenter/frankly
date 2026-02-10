@@ -74,7 +74,7 @@ class GetMeetingPollData extends OnCallMethod<GetMeetingPollDataRequest> {
     );
 
     final meetingPaths = [
-      request.eventPath,
+      liveMeetingPath,
       ...breakoutMeetingLinks,
     ];
 
