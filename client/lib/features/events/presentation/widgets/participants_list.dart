@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:client/core/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/profile_chip.dart';
@@ -50,14 +52,16 @@ class _ParticipantsListState extends State<ParticipantsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Stack(children: _buildUserIcons()),
-        SizedBox(width: 5),
-        Flexible(child: _buildParticipantCount()),
-      ],
-    );
+    return _participantCount > 0
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(children: _buildUserIcons()),
+              SizedBox(width: 5),
+              Flexible(child: _buildParticipantCount()),
+            ],
+          )
+        : SizedBox.shrink();
   }
 
   List<Widget> _buildUserIcons() {
@@ -83,7 +87,9 @@ class _ParticipantsListState extends State<ParticipantsList> {
         ...prefixParticipants,
         ...widget.participantIds
             .where((p) => !prefixParticipants.contains(p))
-            .take(widget.numberOfIconsToShow - prefixParticipants.length),
+            .take(
+              max(widget.numberOfIconsToShow - prefixParticipants.length, 0),
+            ),
       ];
       chipWidgets = [
         for (final id in participantIds) _buildUserProfileChip(id),

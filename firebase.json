@@ -1,60 +1,58 @@
 {
-  "hosting": 
-    {
-      
-      "public": "client/build/web",
-      "headers": [
-        {
-          "source": "**/*.html",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "max-age=10"
-            }
-          ]
-        }
-      ],
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "redirects": [
-        {
-          "regex": "/home/community/(.*)",
-          "destination": "/space/:1",
-          "type": 301
-        },
-        {
-          "regex": "/home/(.+)",
-          "destination": "/:1",
-          "type": 301
-        },
-        {
-          "regex": "/home/(.*\\..*)",
-          "destination": "/:1",
-          "type": 302
-        }
-      ],
-      "rewrites": [
-        {
-          "source": "/share/**",
-          "function": "ShareLink"
-        },
-        {
-          "source": "/space/*/ics",
-          "function": "CalendarFeedIcs"
-        },
-        {
-          "source": "/space/*/rss",
-          "function": "CalendarFeedRss"
-        },
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
+  "hosting": {
+    "public": "client/build/web",
+    "headers": [
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=10"
+          }
+        ]
+      }
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "regex": "/home/community/(.*)",
+        "destination": "/space/:1",
+        "type": 301
+      },
+      {
+        "regex": "/home/(.+)",
+        "destination": "/:1",
+        "type": 301
+      },
+      {
+        "regex": "/home/(.*\\..*)",
+        "destination": "/:1",
+        "type": 302
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/share/**",
+        "function": "ShareLink"
+      },
+      {
+        "source": "/space/*/ics",
+        "function": "CalendarFeedIcs"
+      },
+      {
+        "source": "/space/*/rss",
+        "function": "CalendarFeedRss"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
   "firestore": {
     "rules": "firebase/firestore/firestore.rules",
     "indexes": "firebase/firestore/firestore.indexes.json"
@@ -76,7 +74,7 @@
       "host": "0.0.0.0"
     },
     "firestore": {
-      "port": 8080,
+      "port": 8081,
       "host": "0.0.0.0"
     },
     "database": {
