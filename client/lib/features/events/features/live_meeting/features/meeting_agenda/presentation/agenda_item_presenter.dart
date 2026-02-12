@@ -485,7 +485,7 @@ class AgendaItemHelper {
         break;
       case AgendaItemType.poll:
         if (model.agendaItemPollData.question.trim().isEmpty) {
-          return 'Question is required';
+          return appLocalizationService.getLocalization().questionIsRequired;
         }
 
         if (model.agendaItemPollData.answers.isEmpty) {
