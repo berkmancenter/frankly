@@ -13,7 +13,7 @@ import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:data_models/chat/chat.dart';
+import 'package:data_models/user_input/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 

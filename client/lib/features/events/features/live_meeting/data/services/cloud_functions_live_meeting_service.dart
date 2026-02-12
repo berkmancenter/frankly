@@ -29,6 +29,17 @@ class CloudFunctionsLiveMeetingService {
     return GetMeetingChatsSuggestionsDataResponse.fromJson(result);
   }
 
+  Future<GetMeetingPollDataResponse> getMeetingPollData({
+    required GetMeetingPollDataRequest request,
+  }) async {
+    final result = await cloudFunctions.callFunction(
+      'GetMeetingPollData',
+      request.toJson(),
+    );
+
+    return GetMeetingPollDataResponse.fromJson(result);
+  }
+
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomJoinInfo(
     GetBreakoutRoomJoinInfoRequest request,
   ) async {

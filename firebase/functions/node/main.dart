@@ -1,6 +1,7 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
+import 'package:functions/events/live_meetings/get_meeting_poll_data.dart';
 import 'package:get_it/get_it.dart';
 import 'package:functions/utils/infra/firestore_event_function.dart';
 import 'package:functions/cloud_function.dart';
@@ -88,6 +89,7 @@ final _onCallFunctions = <CloudFunction>[
   GetCommunityDonationsEnabled(),
   GetCommunityPrePostEnabled(),
   GetMeetingChatSuggestionData(),
+  GetMeetingPollData(),
   GetMeetingJoinInfo(),
   GetMembersData(),
   GetServerTimestamp(),

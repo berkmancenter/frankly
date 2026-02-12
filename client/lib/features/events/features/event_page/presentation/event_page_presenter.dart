@@ -141,6 +141,14 @@ class EventPagePresenter {
     );
   }
 
+  Future<GetMeetingPollDataResponse> getPollData() {
+    return _cloudFunctionsLiveMeetingService.getMeetingPollData(
+      request: GetMeetingPollDataRequest(
+        eventPath: eventPath,
+      ),
+    );
+  }
+
   Future<List<MemberDetails>> getMembersData(List<String> userIds) async {
     return await _userService.getMemberDetails(
       membersList: userIds,

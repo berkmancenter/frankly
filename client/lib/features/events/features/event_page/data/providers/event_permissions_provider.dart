@@ -4,7 +4,7 @@ import 'package:client/features/community/data/providers/community_permissions_p
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/services.dart';
-import 'package:data_models/chat/chat.dart';
+import 'package:data_models/user_input/chat.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';

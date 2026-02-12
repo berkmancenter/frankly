@@ -10,7 +10,7 @@ import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/features/discussion_threads/data/services/models_helper.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 import 'package:provider/provider.dart';
 
 import 'views/discussion_thread_contract.dart';

@@ -156,7 +156,7 @@ import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_inte
 import 'package:cloudinary_public/cloudinary_public.dart' as _i22;
 import 'package:data_models/admin/partner_agreement.dart' as _i44;
 import 'package:data_models/admin/plan_capability_list.dart' as _i19;
-import 'package:data_models/chat/chat.dart' as _i74;
+import 'package:data_models/user_input/chat.dart' as _i74;
 import 'package:data_models/cloud_functions/requests.dart' as _i18;
 import 'package:data_models/community/community.dart' as _i25;
 import 'package:data_models/community/community_tag.dart' as _i75;
