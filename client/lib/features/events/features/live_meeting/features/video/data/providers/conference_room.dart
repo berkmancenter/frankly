@@ -505,6 +505,18 @@ class ConferenceRoom with ChangeNotifier {
 
     _updateLiveMeetingParticipants();
     print('updated live meeting participants');
+
+    // Update room membership now that Agora has confirmed connection
+    unawaited(
+      firestoreLiveMeetingService.updateMeetingPresence(
+        event: liveMeetingProvider.eventProvider.event,
+        isPresent: true,
+        currentBreakoutRoomId: liveMeetingProvider.currentBreakoutRoomId,
+      ),
+    );
+
+    liveMeetingProvider.clearBreakoutRoomTransition();
+
     notifyListeners();
     _completer.complete(room);
     if (liveMeetingProvider.audioDefaultOn &&

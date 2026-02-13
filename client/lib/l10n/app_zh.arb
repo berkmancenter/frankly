@@ -233,6 +233,7 @@
   "emailAddressAlreadyInUse": "您已经创建了一个与此电子邮件地址关联的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。",
   "emailAddressAlreadyInUseLoginError": "此邮箱已被使用。请尝试",
   "endBreakoutRooms": "结束分组讨论",
+  "breakoutRoomTransitionTimeout": "找不到该分组讨论室！返回主会议。",
   "endTime": "结束时间",
   "enterHeadline": "输入标题",
   "enterImageTitle": "输入图片标题",

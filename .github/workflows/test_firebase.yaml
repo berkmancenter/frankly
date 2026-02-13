@@ -62,6 +62,13 @@ jobs:
         if: steps.changes.outputs.functions == 'true'
         run: dart run build_runner build --output=build
 
+      - name: Set up Java
+        if: steps.changes.outputs.functions == 'true' || steps.changes.outputs.firestore == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
       - name: Cache Firebase Emulators
         if: steps.changes.outputs.firestore == 'true'
         uses: actions/cache@v4
@@ -77,8 +84,8 @@ jobs:
 
       - name: Test Rules
         if: steps.changes.outputs.firestore == 'true'
-        run: firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
-        working-directory: "firebase/firestore"
+        run: firebase emulators:exec --config firebase.json --only firestore --project fake-project-id 'cd firebase/firestore && npm run test'
+        working-directory: ${{ github.workspace }}
 
       - name: Test Functions
         if: steps.changes.outputs.functions == 'true'

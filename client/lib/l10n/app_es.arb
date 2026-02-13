@@ -207,6 +207,7 @@
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
   "endBreakoutRooms": "Finalizar salas de grupo",
+  "breakoutRoomTransitionTimeout": "¡No se pudo encontrar esa sala de grupo! Regresando a la reunión principal.",
   "endTime": "Hora de finalización",
   "enterHeadline": "Introducir título",
   "enterImageTitle": "Introducir título de la imagen",

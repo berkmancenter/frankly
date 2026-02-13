@@ -124,6 +124,7 @@
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
   "endBreakoutRooms": "End Breakout Rooms",
+  "breakoutRoomTransitionTimeout": "Could not find that breakout room! This usually means a network error or that the host closed the room. Returning to the main meeting.",
   "enterValidName": "Please enter a valid name",
   "endTime": "End Time",
   "enterHeadline": "Enter Headline",
