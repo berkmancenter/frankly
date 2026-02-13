@@ -2,6 +2,7 @@ import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -54,23 +55,14 @@ import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
+const kMinutesBeforeEventToJoin = 15;
+
 enum _ParticipantStatus {
   needsParticipants,
   full,
 }
 
 class EventInfo extends StatefulHookWidget {
-  static const Key enterEventButtonKey = Key('enter-button');
-  static const Key rsvpButtonKey = Key('rsvp-button');
-
-  final Event event;
-  final void Function() onMessagePressed;
-  final EventPagePresenter eventPagePresenter;
-  final Future<JoinEventResults> Function({
-    bool showConfirm,
-    bool joinCommunity,
-  }) onJoinEvent;
-
   const EventInfo({
     Key? key,
     required this.event,
@@ -78,6 +70,18 @@ class EventInfo extends StatefulHookWidget {
     required this.onJoinEvent,
     required this.eventPagePresenter,
   }) : super(key: key);
+
+  static const Key enterEventButtonKey = Key('enter-button');
+  static const Key rsvpButtonKey = Key('rsvp-button');
+
+  final Event event;
+  final void Function() onMessagePressed;
+  final EventPagePresenter eventPagePresenter;
+  final Future<bool> Function({
+    bool showConfirm,
+    bool enterMeeting,
+    bool joinCommunity,
+  }) onJoinEvent;
 
   @override
   _EventInfoState createState() => _EventInfoState();
@@ -383,15 +387,13 @@ class _EventInfoState extends State<EventInfo> {
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
     String text;
-    final externalPlatform = _event.externalPlatform ??
-        PlatformItem(platformKey: PlatformKey.community);
-    final isPlatformSelectionEnabled =
-        CommunityProvider.watch(context).settings.enablePlatformSelection;
+
     if (daysDifference > 1) {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
       text = 'Starts Tomorrow';
-    } else if (daysDifference == 0 && difference.inMinutes > 9) {
+    } else if (daysDifference == 0 &&
+        difference.inMinutes > kMinutesBeforeEventToJoin) {
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
       text = 'Event Ended';
@@ -406,38 +408,18 @@ class _EventInfoState extends State<EventInfo> {
       type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () => alertOnError(context, () async {
-        final eventPageProvider = context.read<EventPageProvider>();
-        JoinEventResults? joinResults;
-        if (!EventProvider.read(context).isParticipant) {
-          joinResults = await widget.onJoinEvent(showConfirm: false);
-          if (!joinResults.isJoined) return;
+      onPressed: () async {
+        final successfullyJoined =
+            await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
+        if (!isEventOpen && !successfullyJoined) {
+          // If the event is not open yet, we expect user not to be able to join.
+          await showAlert(
+            context,
+            'The event has not started yet. We\'ll see you soon!',
+          );
+          return;
         }
-        await alertOnError(context, () {
-          if (externalPlatform.platformKey == PlatformKey.community ||
-              !isPlatformSelectionEnabled) {
-            return eventPageProvider.enterMeeting(
-              surveyQuestions: joinResults?.surveyQuestions,
-            );
-          } else {
-            return launch(externalPlatform.url ?? '');
-          }
-        });
-
-        final communityId = widget.event.communityId;
-        final eventId = widget.event.id;
-        final templateId = widget.event.templateId;
-        final isHost = (widget.event.eventType != EventType.hostless) &&
-            widget.event.creatorId == userService.currentUserId;
-        analytics.logEvent(
-          AnalyticsEnterEventEvent(
-            communityId: communityId,
-            eventId: eventId,
-            asHost: isHost,
-            templateId: templateId,
-          ),
-        );
-      }),
+      },
       text: text,
     );
   }
@@ -456,9 +438,10 @@ class _EventInfoState extends State<EventInfo> {
 
     final showEnterEventButton = _isParticipant ||
         (showJoinButton &&
-            clockService
-                .now()
-                .isAfter(startTime.subtract(Duration(minutes: 15))));
+            clockService.now().isAfter(
+                  startTime
+                      .subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
+                ));
     if (showPrerequisiteWarning) {
       return WarningInfo(
         icon: CircleAvatar(
@@ -493,6 +476,7 @@ class _EventInfoState extends State<EventInfo> {
         message: context.l10n.eventIsLocked,
       );
     } else if (showEnterEventButton) {
+      // Should only be shown within 15 minutes of the event start time
       return PeriodicBuilder(
         period: Duration(milliseconds: 1000),
         builder: (_) => _buildEnterEvent(startTime),
@@ -513,6 +497,7 @@ class _EventInfoState extends State<EventInfo> {
               await widget.onJoinEvent(
                 joinCommunity:
                     canShowFollowCommunity ? _joinCommunityDuringRsvp : false,
+                enterMeeting: false,
               );
             }),
             expand: true,
