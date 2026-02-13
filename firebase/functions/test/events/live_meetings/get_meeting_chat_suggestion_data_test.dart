@@ -1,5 +1,5 @@
 import 'package:data_models/chat/emotion.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/get_meeting_chat_suggestion_data.dart';

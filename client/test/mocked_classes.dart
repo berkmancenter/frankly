@@ -22,8 +22,8 @@ import 'package:client/features/events/features/event_page/presentation/event_se
 import 'package:client/features/events/features/edit_event/presentation/views/edit_event_contract.dart';
 import 'package:client/features/events/features/edit_event/presentation/edit_event_presenter.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_user_suggestions_contract.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/presentation/views/meeting_template_card_item_user_suggestions_contract.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/networking_status_contract.dart';
@@ -53,7 +53,7 @@ import 'package:client/core/data/services/firestore_database.dart';
 import 'package:client/features/events/data/services/firestore_event_service.dart';
 import 'package:client/features/discussion_threads/data/services/firestore_discussion_thread_comments_service.dart';
 import 'package:client/features/discussion_threads/data/services/firestore_discussion_threads_service.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/services/firestore_meeting_guide_service.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/services/firestore_meeting_template_service.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
@@ -67,7 +67,7 @@ import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
 import 'package:data_models/chat/emotion.dart';
 import 'package:data_models/community/community.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 import 'package:data_models/admin/partner_agreement.dart';
 import 'package:data_models/events/pre_post_card.dart';
 import 'package:data_models/events/pre_post_url_params.dart';
@@ -132,7 +132,7 @@ import 'mock_function.dart';
   MockSpec<FirestoreEventService>(),
   MockSpec<FirestoreDiscussionThreadCommentsService>(),
   MockSpec<FirestoreDiscussionThreadsService>(),
-  MockSpec<FirestoreMeetingGuideService>(),
+  MockSpec<FirestoreMeetingTemplateService>(),
   MockSpec<GlobalKey>(),
   MockSpec<ImagePicker>(),
   MockSpec<CommunityProvider>(),
@@ -141,8 +141,8 @@ import 'mock_function.dart';
   MockSpec<ManipulateDiscussionThreadView>(),
   MockSpec<MediaHelperService>(),
   MockSpec<MediaQueryData>(),
-  MockSpec<MeetingGuideCardItemUserSuggestionsView>(),
-  MockSpec<MeetingGuideCardStore>(),
+  MockSpec<MeetingTemplateCardItemUserSuggestionsView>(),
+  MockSpec<MeetingTemplateCardStore>(),
   MockSpec<MeetingUserSuggestion>(),
   MockSpec<NavBarView>(),
   MockSpec<NetworkingStatusView>(),

@@ -9,9 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_minimized_card.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/presentation/views/meeting_template_card.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/presentation/views/meeting_template_minimized_card.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/participant_grid_layout.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
@@ -214,7 +214,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
 
     if (widget.layoutType == LiveMeetingViewType.stage) {
       final guideCardTakeover =
-          MeetingGuideCardStore.watch(context)?.guideCardTakeover == true &&
+          MeetingTemplateCardStore.watch(context)?.guideCardTakeover == true &&
               !widget.liveMeetingProvider.isMeetingCardMinimized;
       return LayoutBuilder(
         builder: (_, constraints) {
@@ -275,8 +275,8 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                               maxWidth: math.max(600, constraints.maxWidth / 2),
                             ),
                             child: GlobalKeyedSubtree(
-                              label: 'meeting-guide-card',
-                              child: MeetingGuideCard(
+                              label: 'meeting-template-card',
+                              child: MeetingTemplateCard(
                                 onMinimizeCard: () => alertOnError(
                                   context,
                                   () => LiveMeetingProvider.read(context)
@@ -337,8 +337,8 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                   padding: EdgeInsets.symmetric(vertical: 45, horizontal: 10),
                   alignment: Alignment.center,
                   child: GlobalKeyedSubtree(
-                    label: 'meeting-guide-card',
-                    child: MeetingGuideCard(
+                    label: 'meeting-template-card',
+                    child: MeetingTemplateCard(
                       onMinimizeCard: () => alertOnError(
                         context,
                         () => LiveMeetingProvider.read(context)
@@ -604,7 +604,7 @@ class _LayoutOptionButtons extends StatelessWidget {
         children: [
           if (liveMeetingProvider.isMeetingCardMinimized &&
               liveMeetingProvider.showGuideCard)
-            MeetingGuideMinimizedCard(
+            MeetingTemplateMinimizedCard(
               onExpandCard: () => alertOnError(
                 context,
                 () => LiveMeetingProvider.read(context)

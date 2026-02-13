@@ -13,14 +13,14 @@ import 'package:mockito/mockito.dart';
 import '../../../../../../../../../mocked_classes.mocks.dart';
 
 void main() {
-  final MockMeetingGuideCardStore mockMeetingGuideCardStore =
-      MockMeetingGuideCardStore();
+  final MockMeetingTemplateCardStore mockMeetingTemplateCardStore =
+      MockMeetingTemplateCardStore();
   final MockAgendaProvider mockAgendaProvider = MockAgendaProvider();
 
   final AgendaItemHelper helper = AgendaItemHelper();
 
   tearDown(() {
-    reset(mockMeetingGuideCardStore);
+    reset(mockMeetingTemplateCardStore);
     reset(mockAgendaProvider);
   });
 
@@ -147,46 +147,46 @@ void main() {
   });
 
   group('isPlayingVideo', () {
-    test('mockMeetingGuideCardModel is null', () {
+    test('mockMeetingTemplateCardModel is null', () {
       expect(helper.isPlayingVideo(null, mockAgendaProvider), isFalse);
     });
 
     test('playingVideo && inLiveMeeting', () {
-      when(mockMeetingGuideCardStore.isPlayingVideo).thenReturn(true);
+      when(mockMeetingTemplateCardStore.isPlayingVideo).thenReturn(true);
       when(mockAgendaProvider.inLiveMeeting).thenReturn(true);
 
       expect(
-        helper.isPlayingVideo(mockMeetingGuideCardStore, mockAgendaProvider),
+        helper.isPlayingVideo(mockMeetingTemplateCardStore, mockAgendaProvider),
         isTrue,
       );
     });
 
     test('playingVideo && !inLiveMeeting', () {
-      when(mockMeetingGuideCardStore.isPlayingVideo).thenReturn(true);
+      when(mockMeetingTemplateCardStore.isPlayingVideo).thenReturn(true);
       when(mockAgendaProvider.inLiveMeeting).thenReturn(false);
 
       expect(
-        helper.isPlayingVideo(mockMeetingGuideCardStore, mockAgendaProvider),
+        helper.isPlayingVideo(mockMeetingTemplateCardStore, mockAgendaProvider),
         isFalse,
       );
     });
 
     test('!playingVideo && inLiveMeeting', () {
-      when(mockMeetingGuideCardStore.isPlayingVideo).thenReturn(false);
+      when(mockMeetingTemplateCardStore.isPlayingVideo).thenReturn(false);
       when(mockAgendaProvider.inLiveMeeting).thenReturn(true);
 
       expect(
-        helper.isPlayingVideo(mockMeetingGuideCardStore, mockAgendaProvider),
+        helper.isPlayingVideo(mockMeetingTemplateCardStore, mockAgendaProvider),
         isFalse,
       );
     });
 
     test('!playingVideo && !inLiveMeeting', () {
-      when(mockMeetingGuideCardStore.isPlayingVideo).thenReturn(false);
+      when(mockMeetingTemplateCardStore.isPlayingVideo).thenReturn(false);
       when(mockAgendaProvider.inLiveMeeting).thenReturn(false);
 
       expect(
-        helper.isPlayingVideo(mockMeetingGuideCardStore, mockAgendaProvider),
+        helper.isPlayingVideo(mockMeetingTemplateCardStore, mockAgendaProvider),
         isFalse,
       );
     });

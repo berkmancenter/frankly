@@ -3,7 +3,7 @@ import 'package:functions/events/live_meetings/toggle_like_dislike_on_meeting_us
 import 'package:functions/utils/infra/firestore_utils.dart';
 
 import 'package:data_models/events/event.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:test/test.dart';
 import '../../util/community_test_utils.dart';

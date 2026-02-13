@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_data.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_poll_data.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_text_data.dart';
@@ -27,7 +27,7 @@ class AgendaItemPresenter {
   final AgendaItemModel _model;
   final AgendaItemHelper _helper;
   final AgendaProvider _agendaProvider;
-  final MeetingGuideCardStore? _meetingGuideCardModel;
+  final MeetingTemplateCardStore? _meetingTemplateCardModel;
   final EventPermissionsProvider? _eventPermissionsProvider;
   final CommunityPermissionsProvider _communityPermissionsProvider;
   final LiveMeetingProvider? _liveMeetingProvider;
@@ -38,15 +38,15 @@ class AgendaItemPresenter {
     this._model, {
     AgendaItemHelper? agendaItemPresenterHelper,
     AgendaProvider? agendaProvider,
-    MeetingGuideCardStore? meetingGuideCardStore,
+    MeetingTemplateCardStore? meetingTemplateCardStore,
     LiveMeetingProvider? liveMeetingProvider,
     EventPermissionsProvider? eventPermissionsProvider,
     CommunityPermissionsProvider? communityPermissionsProvider,
     TemplatePageProvider? templatePageProvider,
   })  : _helper = agendaItemPresenterHelper ?? AgendaItemHelper(),
         _agendaProvider = agendaProvider ?? context.read<AgendaProvider>(),
-        _meetingGuideCardModel =
-            meetingGuideCardStore ?? MeetingGuideCardStore.read(context),
+        _meetingTemplateCardModel =
+            meetingTemplateCardStore ?? MeetingTemplateCardStore.read(context),
         _eventPermissionsProvider =
             eventPermissionsProvider ?? EventPermissionsProvider.read(context),
         _liveMeetingProvider =
@@ -64,7 +64,7 @@ class AgendaItemPresenter {
   }
 
   bool isPlayingVideo() {
-    return _helper.isPlayingVideo(_meetingGuideCardModel, _agendaProvider);
+    return _helper.isPlayingVideo(_meetingTemplateCardModel, _agendaProvider);
   }
 
   bool isCompleted() {
@@ -442,14 +442,14 @@ class AgendaItemHelper {
   }
 
   bool isPlayingVideo(
-    MeetingGuideCardStore? meetingGuideCardModel,
+    MeetingTemplateCardStore? meetingTemplateCardModel,
     AgendaProvider agendaProvider,
   ) {
-    if (meetingGuideCardModel == null) {
+    if (meetingTemplateCardModel == null) {
       return false;
     }
 
-    return meetingGuideCardModel.isPlayingVideo && agendaProvider.inLiveMeeting;
+    return meetingTemplateCardModel.isPlayingVideo && agendaProvider.inLiveMeeting;
   }
 
   String? areRequiredFieldsInput(AgendaItemModel model) {

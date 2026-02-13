@@ -10,7 +10,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart';
 import 'package:client/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/use_kick_proposal_listeners.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart';
@@ -115,7 +115,7 @@ class MeetingDialogState extends State<MeetingDialog> {
 
               return ChangeNotifierProvider(
                 key: Key(agendaProvider.liveMeetingPath),
-                create: (context) => MeetingGuideCardStore(
+                create: (context) => MeetingTemplateCardStore(
                   communityProvider: communityProvider,
                   liveMeetingProvider: liveMeetingProvider,
                   agendaProvider: agendaProvider,
@@ -258,7 +258,7 @@ class _ConferenceRoomWrapper extends StatelessWidget {
                 liveMeetingProvider: liveMeetingProvider,
                 agendaProvider: AgendaProvider.read(context),
                 communityProvider: CommunityProvider.read(context),
-                meetingGuideCardModel: MeetingGuideCardStore.read(context)!,
+                meetingTemplateCardModel: MeetingTemplateCardStore.read(context)!,
                 roomName: response.meetingId,
                 token: response.meetingToken,
               )..initialize(context),

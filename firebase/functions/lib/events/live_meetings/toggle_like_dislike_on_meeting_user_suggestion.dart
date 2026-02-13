@@ -5,7 +5,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../on_call_function.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 
 class ToggleLikeDislikeOnMeetingUserSuggestion
     extends OnCallMethod<ParticipantAgendaItemDetailsMeta> {
