@@ -68,7 +68,6 @@ class CustomScaffoldState extends State<CustomScaffold> {
     return FocusFixer(
       child: Scaffold(
         backgroundColor: widget.bgColor,
-        resizeToAvoidBottomInset: false,
 
         // Floating action buttons should follow the theme of the scaffold
         // instead of other nav elements.

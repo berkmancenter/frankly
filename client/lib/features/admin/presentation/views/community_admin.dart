@@ -107,11 +107,13 @@ class CommunityAdminState extends State<CommunityAdmin>
         ),
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 100,
+            // disable the extra back button on devices with a height less than 600, since the tab labels will be below the title and look crowded
+            toolbarHeight: MediaQuery.sizeOf(context).height > 600 ? 100 : 0,
             centerTitle: false,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              // disable the title on devices with a height less than 600, since it crowds the view and causes virtual keyboards to cover the content
+              children: MediaQuery.sizeOf(context).height > 600 ? [
                 ActionButton(
                   text: community.name,
                   type: ActionButtonType.text,
@@ -134,7 +136,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ],
+              ] : [],
             ),
             bottom: TabBar(
               controller: _tabController,
