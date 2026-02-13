@@ -1,3 +1,4 @@
+import 'package:client/core/utils/image_utils.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -379,7 +380,7 @@ class _OverviewTabState extends State<OverviewTab> {
 
   Future<void> _removeImage() async {
     setState(() {
-      _community = _community.copyWith(profileImageUrl: null);
+      _community = _community.copyWith(profileImageUrl: generateRandomImageUrl(seed: _community.id.hashCode, resolution: 160));
     });
     await cloudFunctionsCommunityService.removeImage(
       community: _community,
