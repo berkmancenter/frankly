@@ -67,6 +67,8 @@ class Community with _$Community implements SerializeableRequest {
   static const String kFieldLinkedinUrl = 'linkedinUrl';
   static const String kFieldTwitterUrl = 'twitterUrl';
   static const String kFieldBlueskyUrl = 'blueskyUrl';
+  static const String kFieldYoutubeUrl = 'youtubeUrl';
+  static const String kFieldInstagramUrl = 'instagramUrl';
   static const String kFieldIsPublic = 'isPublic';
   static const String kFieldBannerImageUrl = 'bannerImageUrl';
   static const String kFieldProfileImageUrl = 'profileImageUrl';
@@ -97,6 +99,8 @@ class Community with _$Community implements SerializeableRequest {
     String? linkedinUrl,
     String? twitterUrl,
     String? blueskyUrl,
+    String? youtubeUrl,
+    String? instagramUrl,
     String? tagLine,
     @Default([])
     @JsonKey(fromJson: communityFeatureFlagsFromJson)

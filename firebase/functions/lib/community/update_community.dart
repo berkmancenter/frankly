@@ -24,6 +24,8 @@ final baseAllowedUpdateFields = {
   Community.kFieldLinkedinUrl,
   Community.kFieldTwitterUrl,
   Community.kFieldBlueskyUrl,
+  Community.kFieldYoutubeUrl,
+  Community.kFieldInstagramUrl,
   Community.kFieldCommunitySettings,
   Community.kFieldEventSettings,
   Community.kFieldDonationDialogText,

@@ -23,6 +23,8 @@ class CreateCommunityTextFields extends StatefulWidget {
   final void Function(String)? onLinkedinUrlChanged;
   final void Function(String)? onTwitterUrlChanged;
   final void Function(String)? onBlueskyUrlChanged;
+  final void Function(String)? onYoutubeUrlChanged;
+  final void Function(String)? onInstagramUrlChanged;
   final FocusNode? nameFocus;
   final FocusNode? aboutFocus;
   final FocusNode? taglineFocus;
@@ -47,6 +49,8 @@ class CreateCommunityTextFields extends StatefulWidget {
     this.onLinkedinUrlChanged,
     this.onTwitterUrlChanged,
     this.onBlueskyUrlChanged,
+    this.onYoutubeUrlChanged,
+    this.onInstagramUrlChanged,
     this.compact = false,
     this.fieldsView = FieldsView.create,
     this.autoGenerateUrl = true,
@@ -311,6 +315,32 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
             keyboardType: TextInputType.url,
             isOptional: true,
             validator: (value) => validateUrl('X', 'x.com', value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: widget.compact ? 15 : 24),
+          _buildCreateCommunityTextField(
+            label: 'Youtube',
+            hint: 'youtube.com/yourchannel',
+            borderType: widget.borderType,
+            initialValue: widget.community.youtubeUrl,
+            onChanged: widget.onYoutubeUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) =>
+                validateUrl('Youtube', 'youtube.com', value ?? ''),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: widget.compact ? 15 : 24),
+          _buildCreateCommunityTextField(
+            label: 'Instagram',
+            hint: 'instagram.com/yourhandle',
+            borderType: widget.borderType,
+            initialValue: widget.community.youtubeUrl,
+            onChanged: widget.onInstagramUrlChanged,
+            keyboardType: TextInputType.url,
+            isOptional: true,
+            validator: (value) =>
+                validateUrl('Instagram', 'instagram.com', value ?? ''),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           SizedBox(

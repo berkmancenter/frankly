@@ -194,6 +194,12 @@ class _OverviewTabState extends State<OverviewTab> {
                       onBlueskyUrlChanged: (value) => {
                         _community = _community.copyWith(blueskyUrl: value),
                       },
+                      onYoutubeUrlChanged: (value) => {
+                        _community = _community.copyWith(youtubeUrl: value),
+                      },
+                      onInstagramUrlChanged: (value) => {
+                        _community = _community.copyWith(instagramUrl: value),
+                      },
                       community: _community,
                     ),
                     mobile,
@@ -262,6 +268,8 @@ class _OverviewTabState extends State<OverviewTab> {
           Community.kFieldLinkedinUrl,
           Community.kFieldTwitterUrl,
           Community.kFieldBlueskyUrl,
+          Community.kFieldYoutubeUrl,
+          Community.kFieldInstagramUrl,
           Community.kFieldThemeLightColor,
           Community.kFieldThemeDarkColor,
         ],
