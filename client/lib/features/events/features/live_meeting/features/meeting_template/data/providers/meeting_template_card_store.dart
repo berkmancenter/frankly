@@ -28,14 +28,14 @@ class MeetingTemplateCardStore with ChangeNotifier {
     required this.showToast,
   });
 
-  /// A timer that is used to assign the current agenda item for the meeting guide card after a
+  /// A timer that is used to assign the current agenda item for the meeting template card after a
   /// delay.
   ///
-  /// While this timer is active, the meeting guide card shows a countdown.
+  /// While this timer is active, the meeting template card shows a countdown.
   Timer? _pendingMeetingTemplateAgendaItemTimer;
   final pendingMeetingTemplateAgendaItemElapsed = Stopwatch()..start();
 
-  /// The ID of the agenda item that is currently being show in the meeting guide card.
+  /// The ID of the agenda item that is currently being show in the meeting template card.
   ///
   /// This should not be set directly but should be set using [_setCurrentMeetingTemplateAgendaItemId].
   String? _currentMeetingTemplateAgendaItemId;
@@ -131,7 +131,7 @@ class MeetingTemplateCardStore with ChangeNotifier {
   /// Loads the details for all participants for this particular agenda item.
   ///
   /// As the agenda item changes, this stream exposes how users have interacted with the meeting
-  /// guide card.
+  /// template card.
   void _loadParticipantAgendaItemDetails() {
     final localCurrentAgendaModelItemId = currentAgendaModelItemId;
     if (localCurrentAgendaModelItemId != null &&
@@ -248,7 +248,7 @@ class MeetingTemplateCardStore with ChangeNotifier {
     if (currentAgendaItemIndex < 0 && agendaProvider.isMeetingFinished) {
       prevAgendaItem = agendaProvider.agendaItems.last;
     } else if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException('Meeting Template entry not found.');
     } else {
       prevAgendaItem =
           agendaProvider.agendaItems.skip(currentAgendaItemIndex - 1).first;

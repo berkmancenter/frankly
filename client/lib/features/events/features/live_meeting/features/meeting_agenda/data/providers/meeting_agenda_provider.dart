@@ -338,7 +338,7 @@ class AgendaProvider with ChangeNotifier {
     }
 
     if (firstAgendaItem == null) {
-      throw VisibleException('There is no meeting guide for this meeting');
+      throw VisibleException('There is no meeting template for this meeting');
     }
 
     final serverTime = clockService.now();
@@ -356,7 +356,7 @@ class AgendaProvider with ChangeNotifier {
     final currentAgendaItemIndex =
         agendaItems.indexWhere((a) => a.id == agendaItemId);
     if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException('Meeting Template entry not found.');
     }
 
     final nextAgendaItem =
