@@ -649,14 +649,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_markdown:
+  flutter_markdown_plus:
     dependency: "direct main"
     description:
-      name: flutter_markdown
-      sha256: "08fb8315236099ff8e90cb87bb2b935e0a724a3af1623000a9cec930468e0f27"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.7+1"
+      path: "."
+      ref: frankly
+      resolved-ref: bb1af75f6f5547e49297c0aad216955890bfc982
+      url: "https://github.com/dariusk/flutter_markdown_plus.git"
+    source: git
+    version: "1.0.1+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1057,11 +1058,9 @@ packages:
   markdown_editor_plus:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: b6b78c6ebb63f09f1f02d84bfa4e9ae234c3828e
-      url: "https://github.com/dariusk/markdown_editor_plus.git"
-    source: git
+      path: "../../markdown_editor_plus"
+      relative: true
+    source: path
     version: "0.2.15"
   matcher:
     dependency: transitive
