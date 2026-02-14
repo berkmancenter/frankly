@@ -55,15 +55,14 @@ const downloadRecording = functions.runWith({ timeoutSeconds: 300 }).https.onReq
                 zlib: { level: 9 }, // Compression level
             })
 
-            res.setHeader('Content-Type', 'application/zip')
-            res.setHeader('Content-Disposition', 'attachment; filename="files.zip"')
+            res.setHeader('Content-Type', 'application/json')
 
             archive.on('error', (err) => {
                 console.error('Error creating zip file:', err)
             })
 
-            // Pipe the archive's output to the response
-            archive.pipe(res)
+            const blob = bucket.file('complete_recording.zip')
+            archive.pipe(blob.createWriteStream())
 
             const [files] = await bucket.getFiles({ prefix: `${event.id}/` })
             files
@@ -75,6 +74,7 @@ const downloadRecording = functions.runWith({ timeoutSeconds: 300 }).https.onReq
                 })
 
             await archive.finalize()
+            res.body = JSON.stringify({ 'url': blob.publicUrl })
         } catch (err) {
             console.error('Error creating zip file:', err)
             res.status(500).send('Error creating zip file.')

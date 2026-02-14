@@ -187,6 +187,16 @@ class _SettingsTabState extends State<SettingsTab> {
                   whiteBackground,
                 ),
                 _buildSettingsToggle(
+                  'Transcriptions',
+                  eventSettings.alwaysRecord ?? true,
+                  (val) => _toggleEventSetting(
+                    eventSettings.copyWith(
+                      alwaysRecord: !(eventSettings.alwaysRecord ?? true),
+                    ),
+                  ),
+                  whiteBackground,
+                ),
+                _buildSettingsToggle(
                   'Odometer',
                   eventSettings.talkingTimer ?? true,
                   (val) => _toggleEventSetting(
