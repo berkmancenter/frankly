@@ -115,7 +115,9 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
               _$BreakoutRoomFlagStatusEnumMap, json['flagStatus'],
               unknownValue: BreakoutRoomFlagStatus.unflagged) ??
           BreakoutRoomFlagStatus.unflagged,
-      createdDate: dateTimeFromTimestamp(json['createdDate']),
+      createdDate: json['createdDate'] == null
+          ? null
+          : DateTime.parse(json['createdDate'] as String),
       record: json['record'] as bool? ?? false,
     );
 
