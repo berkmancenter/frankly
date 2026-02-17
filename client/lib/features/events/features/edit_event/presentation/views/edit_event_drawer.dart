@@ -73,8 +73,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
   }
 
   Widget _buildBody() {
-    final isPlatformSelectionFeatureEnabled =
-        _presenter.isPlatformSelectionFeatureEnabled();
     final canBuildParticipantCountSection =
         _presenter.canBuildParticipantCountSection();
 
