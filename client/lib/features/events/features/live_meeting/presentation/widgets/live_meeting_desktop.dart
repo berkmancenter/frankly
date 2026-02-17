@@ -596,9 +596,12 @@ class BreakoutStatusInformation extends StatelessWidget {
           final breakoutRoomRemainingTimeDisplay =
               breakoutRoomRemainingTime.getFormattedTime(showHours: false);
 
+          // Only show the countdown while we're still before the scheduled time.
+          // Once we reach/past scheduled time, switch to assignment generation text.
+          final shouldShowCountdown = now.isBefore(breakoutRoomScheduledTime);
           final areBreakoutsPending = breakoutSession?.breakoutRoomStatus ==
                   BreakoutRoomStatus.pending &&
-              breakoutRoomRemainingTime >= Duration.zero;
+              shouldShowCountdown;
           final breakoutsMessage = areBreakoutsPending
               ? 'Breakout room matching starting in $breakoutRoomRemainingTimeDisplay'
               : 'Generating breakout room assignments';
