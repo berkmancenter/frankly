@@ -135,11 +135,11 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
     as _i60;
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video_contract.dart'
     as _i63;
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart'
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart'
     as _i26;
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/services/firestore_meeting_guide_service.dart'
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/services/firestore_meeting_template_service.dart'
     as _i96;
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_user_suggestions_contract.dart'
+import 'package:client/features/events/features/live_meeting/features/meeting_template/presentation/views/meeting_template_card_item_user_suggestions_contract.dart'
     as _i102;
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart'
     as _i27;
@@ -169,7 +169,7 @@ import 'package:data_models/discussion_threads/discussion_thread_comment.dart'
 import 'package:data_models/events/event.dart' as _i2;
 import 'package:data_models/events/event_proposal.dart' as _i99;
 import 'package:data_models/events/live_meetings/live_meeting.dart' as _i20;
-import 'package:data_models/events/live_meetings/meeting_guide.dart' as _i43;
+import 'package:data_models/events/live_meetings/meeting_template.dart' as _i43;
 import 'package:data_models/events/pre_post_card.dart' as _i45;
 import 'package:data_models/events/pre_post_card_attribute.dart' as _i115;
 import 'package:data_models/events/pre_post_url_params.dart' as _i46;
@@ -769,9 +769,9 @@ class _FakeAgendaProvider_49 extends _i1.SmartFake
         );
 }
 
-class _FakeMeetingGuideCardStore_50 extends _i1.SmartFake
-    implements _i26.MeetingGuideCardStore {
-  _FakeMeetingGuideCardStore_50(
+class _FakeMeetingTemplateCardStore_50 extends _i1.SmartFake
+    implements _i26.MeetingTemplateCardStore {
+  _FakeMeetingTemplateCardStore_50(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -1435,14 +1435,14 @@ class MockAgendaItemHelper extends _i1.Mock implements _i53.AgendaItemHelper {
 
   @override
   bool isPlayingVideo(
-    _i26.MeetingGuideCardStore? meetingGuideCardModel,
+    _i26.MeetingTemplateCardStore? meetingTemplateCardModel,
     _i9.AgendaProvider? agendaProvider,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
           #isPlayingVideo,
           [
-            meetingGuideCardModel,
+            meetingTemplateCardModel,
             agendaProvider,
           ],
         ),
@@ -3649,11 +3649,11 @@ class MockCloudFunctionsLiveMeetingService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
-  _i38.Future<void> checkAdvanceMeetingGuide(
-          _i18.CheckAdvanceMeetingGuideRequest? request) =>
+  _i38.Future<void> checkAdvanceMeetingTemplate(
+          _i18.CheckAdvanceMeetingTemplateRequest? request) =>
       (super.noSuchMethod(
         Invocation.method(
-          #checkAdvanceMeetingGuide,
+          #checkAdvanceMeetingTemplate,
           [request],
         ),
         returnValue: _i38.Future<void>.value(),
@@ -5320,17 +5320,17 @@ class MockConferenceRoom extends _i1.Mock implements _i14.ConferenceRoom {
       ) as _i24.CommunityProvider);
 
   @override
-  _i26.MeetingGuideCardStore get meetingGuideCardModel => (super.noSuchMethod(
-        Invocation.getter(#meetingGuideCardModel),
-        returnValue: _FakeMeetingGuideCardStore_50(
+  _i26.MeetingTemplateCardStore get meetingTemplateCardModel => (super.noSuchMethod(
+        Invocation.getter(#meetingTemplateCardModel),
+        returnValue: _FakeMeetingTemplateCardStore_50(
           this,
-          Invocation.getter(#meetingGuideCardModel),
+          Invocation.getter(#meetingTemplateCardModel),
         ),
-        returnValueForMissingStub: _FakeMeetingGuideCardStore_50(
+        returnValueForMissingStub: _FakeMeetingTemplateCardStore_50(
           this,
-          Invocation.getter(#meetingGuideCardModel),
+          Invocation.getter(#meetingTemplateCardModel),
         ),
-      ) as _i26.MeetingGuideCardStore);
+      ) as _i26.MeetingTemplateCardStore);
 
   @override
   String get token => (super.noSuchMethod(
@@ -10445,11 +10445,11 @@ class MockFirestoreDiscussionThreadsService extends _i1.Mock
       ) as _i38.Future<void>);
 }
 
-/// A class which mocks [FirestoreMeetingGuideService].
+/// A class which mocks [FirestoreMeetingTemplateService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFirestoreMeetingGuideService extends _i1.Mock
-    implements _i96.FirestoreMeetingGuideService {
+class MockFirestoreMeetingTemplateService extends _i1.Mock
+    implements _i96.FirestoreMeetingTemplateService {
   @override
   _i38.Stream<List<_i43.ParticipantAgendaItemDetails>>
       participantAgendaItemDetailsStream({
@@ -12288,11 +12288,11 @@ class MockMediaQueryData extends _i1.Mock implements _i16.MediaQueryData {
       ) as _i16.MediaQueryData);
 }
 
-/// A class which mocks [MeetingGuideCardItemUserSuggestionsView].
+/// A class which mocks [MeetingTemplateCardItemUserSuggestionsView].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMeetingGuideCardItemUserSuggestionsView extends _i1.Mock
-    implements _i102.MeetingGuideCardItemUserSuggestionsView {
+class MockMeetingTemplateCardItemUserSuggestionsView extends _i1.Mock
+    implements _i102.MeetingTemplateCardItemUserSuggestionsView {
   @override
   void updateView() => super.noSuchMethod(
         Invocation.method(
@@ -12317,11 +12317,11 @@ class MockMeetingGuideCardItemUserSuggestionsView extends _i1.Mock
       );
 }
 
-/// A class which mocks [MeetingGuideCardStore].
+/// A class which mocks [MeetingTemplateCardStore].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMeetingGuideCardStore extends _i1.Mock
-    implements _i26.MeetingGuideCardStore {
+class MockMeetingTemplateCardStore extends _i1.Mock
+    implements _i26.MeetingTemplateCardStore {
   @override
   _i24.CommunityProvider get communityProvider => (super.noSuchMethod(
         Invocation.getter(#communityProvider),
@@ -12369,21 +12369,21 @@ class MockMeetingGuideCardStore extends _i1.Mock
       ) as dynamic Function(String));
 
   @override
-  Stopwatch get pendingMeetingGuideAgendaItemElapsed => (super.noSuchMethod(
-        Invocation.getter(#pendingMeetingGuideAgendaItemElapsed),
+  Stopwatch get pendingMeetingTemplateAgendaItemElapsed => (super.noSuchMethod(
+        Invocation.getter(#pendingMeetingTemplateAgendaItemElapsed),
         returnValue: _FakeStopwatch_83(
           this,
-          Invocation.getter(#pendingMeetingGuideAgendaItemElapsed),
+          Invocation.getter(#pendingMeetingTemplateAgendaItemElapsed),
         ),
         returnValueForMissingStub: _FakeStopwatch_83(
           this,
-          Invocation.getter(#pendingMeetingGuideAgendaItemElapsed),
+          Invocation.getter(#pendingMeetingTemplateAgendaItemElapsed),
         ),
       ) as Stopwatch);
 
   @override
-  bool get meetingGuideCardIsPending => (super.noSuchMethod(
-        Invocation.getter(#meetingGuideCardIsPending),
+  bool get meetingTemplateCardIsPending => (super.noSuchMethod(
+        Invocation.getter(#meetingTemplateCardIsPending),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);

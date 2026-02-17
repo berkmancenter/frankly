@@ -705,19 +705,19 @@ class UnsubscribeFromCommunityNotificationsRequest
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
-class CheckAdvanceMeetingGuideRequest
-    with _$CheckAdvanceMeetingGuideRequest
+class CheckAdvanceMeetingTemplateRequest
+    with _$CheckAdvanceMeetingTemplateRequest
     implements SerializeableRequest {
-  factory CheckAdvanceMeetingGuideRequest({
+  factory CheckAdvanceMeetingTemplateRequest({
     required String eventPath,
     String? breakoutSessionId,
     String? breakoutRoomId,
     required List<String> presentIds,
     String? userReadyAgendaId,
-  }) = _CheckAdvanceMeetingGuideRequest;
+  }) = _CheckAdvanceMeetingTemplateRequest;
 
-  factory CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =>
-      _$CheckAdvanceMeetingGuideRequestFromJson(json);
+  factory CheckAdvanceMeetingTemplateRequest.fromJson(Map<String, dynamic> json) =>
+      _$CheckAdvanceMeetingTemplateRequestFromJson(json);
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
