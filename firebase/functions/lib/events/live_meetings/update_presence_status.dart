@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
+import 'package:meta/meta.dart';
 import '../../cloud_function.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/events/event.dart';
@@ -42,7 +43,7 @@ class UpdatePresenceStatus implements CloudFunction {
       }
 
       print('updating all participants to disconnected');
-      await _updateEventStatusesToOffline(
+      await updateEventStatusesToOffline(
         userId: context.params['uid']!,
         updateTime: afterPresenceUpdateTime,
       );
@@ -54,7 +55,8 @@ class UpdatePresenceStatus implements CloudFunction {
     }
   }
 
-  Future<void> _updateEventStatusesToOffline({
+  @visibleForTesting
+  Future<void> updateEventStatusesToOffline({
     required String userId,
     required DateTime updateTime,
   }) async {

@@ -219,4 +219,149 @@ void main() {
     expect(proposal.status, equals(EventProposalStatus.rejected));
     expect(proposal.closedAt, isNotNull);
   });
+
+  test('Kick threshold scales with number of participants in the room',
+      () async {
+    const voter1 = 'voter1';
+    const voter2 = 'voter2';
+    const voter3 = 'voter3';
+
+    // Add three voters to the same room as the target
+    for (final uid in [voter1, voter2, voter3]) {
+      await eventUtils.joinEvent(
+        communityId: communityId,
+        templateId: templateId,
+        eventId: testEvent.id,
+        uid: uid,
+        isPresent: true,
+      );
+      await firestore
+          .document('${testEvent.fullPath}/event-participants/$uid')
+          .updateData(UpdateData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+          }));
+    }
+    // Place target in the same room
+    await firestore
+        .document('${testEvent.fullPath}/event-participants/$targetUserId')
+        .updateData(UpdateData.fromMap({
+          Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+        }));
+
+    final req = VoteToKickRequest(
+      eventPath: testEvent.fullPath,
+      liveMeetingPath: '${testEvent.fullPath}/live-meetings/$liveMeetingId',
+      targetUserId: targetUserId,
+      inFavor: true,
+      reason: 'Test',
+    );
+
+    final voteToKick = VoteToKick(agoraUtils: mockAgoraUtils);
+
+    // Two in-favor votes (need all 3 voting participants to reach threshold)
+    await voteToKick.action(
+      req,
+      CallableContext(voter1, null, 'fakeInstanceId'),
+    );
+    await voteToKick.action(
+      req,
+      CallableContext(voter2, null, 'fakeInstanceId'),
+    );
+
+    // Should NOT be kicked yet (2 votes, 3 voting participants in room)
+    var participantSnapshot = await firestore
+        .document('${testEvent.fullPath}/event-participants/$targetUserId')
+        .get();
+    var participant = Participant.fromJson(
+      firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap()),
+    );
+    expect(participant.status, equals(ParticipantStatus.active));
+
+    // Third vote reaches the threshold
+    await voteToKick.action(
+      req,
+      CallableContext(voter3, null, 'fakeInstanceId'),
+    );
+
+    participantSnapshot = await firestore
+        .document('${testEvent.fullPath}/event-participants/$targetUserId')
+        .get();
+    participant = Participant.fromJson(
+      firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap()),
+    );
+    expect(participant.status, equals(ParticipantStatus.banned));
+  });
+
+  test('Participants in other rooms do not affect kick threshold', () async {
+    const inRoomVoter = 'inRoomVoter';
+    const otherRoomUser = 'otherRoomUser';
+
+    // One voter in the target room
+    await eventUtils.joinEvent(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: testEvent.id,
+      uid: inRoomVoter,
+      isPresent: true,
+    );
+    await firestore
+        .document('${testEvent.fullPath}/event-participants/$inRoomVoter')
+        .updateData(UpdateData.fromMap({
+          Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+        }));
+
+    // One participant in a different room (should not count)
+    await eventUtils.joinEvent(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: testEvent.id,
+      uid: otherRoomUser,
+      isPresent: true,
+    );
+    await firestore
+        .document('${testEvent.fullPath}/event-participants/$otherRoomUser')
+        .updateData(UpdateData.fromMap({
+          Participant.kFieldCurrentBreakoutRoomId: 'some-other-room',
+        }));
+
+    // Place target in the room
+    await firestore
+        .document('${testEvent.fullPath}/event-participants/$targetUserId')
+        .updateData(UpdateData.fromMap({
+          Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+        }));
+
+    final req = VoteToKickRequest(
+      eventPath: testEvent.fullPath,
+      liveMeetingPath: '${testEvent.fullPath}/live-meetings/$liveMeetingId',
+      targetUserId: targetUserId,
+      inFavor: true,
+      reason: 'Test',
+    );
+
+    final voteToKick = VoteToKick(agoraUtils: mockAgoraUtils);
+
+    // First vote
+    await voteToKick.action(
+      req,
+      CallableContext(adminUserId, null, 'fakeInstanceId'),
+    );
+
+    // Second vote from the in-room participant (only 1 voting participant
+    // in the room, so 2 votes should meet the threshold)
+    await voteToKick.action(
+      req,
+      CallableContext(inRoomVoter, null, 'fakeInstanceId'),
+    );
+
+    final participantSnapshot = await firestore
+        .document('${testEvent.fullPath}/event-participants/$targetUserId')
+        .get();
+    final participant = Participant.fromJson(
+      firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap()),
+    );
+
+    // Kick succeeds because otherRoomUser doesn't count toward the threshold
+    expect(participant.status, equals(ParticipantStatus.banned));
+  });
 }

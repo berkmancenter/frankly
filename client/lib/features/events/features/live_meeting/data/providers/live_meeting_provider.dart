@@ -33,6 +33,9 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/features/events/features/live_meeting/data/providers/meeting_ui_state.dart';
+
+export 'package:client/features/events/features/live_meeting/data/providers/meeting_ui_state.dart';
 
 abstract class MeetingProviderParticipant {
   String get userId;
@@ -59,15 +62,6 @@ class ConferenceRoomNotifier extends ChangeNotifier {
 enum LiveMeetingViewType {
   bradyBunch,
   stage,
-}
-
-enum MeetingUiState {
-  leftMeeting,
-  enterMeetingPrescreen,
-  breakoutRoom,
-  waitingRoom,
-  liveStream,
-  inMeeting,
 }
 
 /// A presenter for the MeetingDialog class. It controls the things across the meeting such as the
@@ -213,25 +207,18 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   String? get _presenceRoomId {
-    switch (activeUiState) {
-      case MeetingUiState.waitingRoom:
-        return breakoutsWaitingRoomId;
-      case MeetingUiState.breakoutRoom:
-        if (_inTransitionToBreakoutRoomId == null) {
-          loggingService.log(
-            'Heartbeat: user is in the breakout UI state but the breakout '
-            'room is not specified. This may occur if the breakout room is '
-            'removed or closed while someone is transitioning to it.',
-          );
-        }
-        return _inTransitionToBreakoutRoomId;
-
-      case MeetingUiState.liveStream:
-      case MeetingUiState.inMeeting:
-      case MeetingUiState.leftMeeting:
-      case MeetingUiState.enterMeetingPrescreen:
-        return null;
+    final roomId = presenceRoomIdForState(
+      activeUiState,
+      activeBreakoutRoomId: _inTransitionToBreakoutRoomId,
+    );
+    if (activeUiState == MeetingUiState.breakoutRoom && roomId == null) {
+      loggingService.log(
+        'Heartbeat: user is in the breakout UI state but the breakout '
+        'room is not specified. This may occur if the breakout room is '
+        'removed or closed while someone is transitioning to it.',
+      );
     }
+    return roomId;
   }
 
   bool get isHost => eventProvider.event.creatorId == userService.currentUserId;
