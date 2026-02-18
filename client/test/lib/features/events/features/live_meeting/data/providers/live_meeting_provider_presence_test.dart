@@ -3,13 +3,13 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /*
-/// Tests for presence tracking functionality in LiveMeetingProvider (in 
+/// Tests for presence tracking functionality in LiveMeetingProvider (in
 /// live_meeting_provider.dart).
-/// 
+///
 /// The presenceRoomIdForState function (extracted from _presenceRoomId getter)
 /// maps a MeetingUiState to the room ID written to Firestore during heartbeat
 /// updates. The mapping:
-/// 
+///
 /// | MeetingUiState         | presenceRoomId value      |
 /// |------------------------|---------------------------|
 /// | waitingRoom            | 'waiting-room'            |
@@ -18,7 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// | liveStream             | null                      |
 /// | leftMeeting            | null (don't heartbeat)    |
 /// | enterMeetingPrescreen  | null (don't heartbeat)    |
-/// 
+///
 /// Heartbeat timer and updateMeetingPresence call-site tests are skipped for now
 /// because they require either Playwright E2E (timer behavior) or Firestore
 /// contract tests (call-site verification). See the corresponding groups below
