@@ -158,6 +158,34 @@
     },
     {
       "collectionGroup": "event-participants",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "isPresent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "mostRecentPresentTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "event-participants",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "currentBreakoutRoomId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isPresent",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "event-participants",
       "queryScope": "COLLECTION",
       "fields": [
         {

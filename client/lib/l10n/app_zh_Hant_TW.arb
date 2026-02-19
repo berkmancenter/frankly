@@ -124,6 +124,7 @@
   "emailAddressAlreadyInUse": "您已經創建了一個與此電子郵件地址關聯的帳戶。請使用電子郵件登入，如果不知道密碼請點擊忘記密碼。或者，使用其他電子郵件重新註冊。",
   "emailAddressAlreadyInUseLoginError": "此電子郵件已被使用。請嘗試 ",
   "endBreakoutRooms": "結束分組討論",
+  "breakoutRoomTransitionTimeout": "找不到該分組討論室！返回主會議。",
   "endTime": "結束時間",
   "enterHeadline": "輸入標題",
   "enterImageTitle": "輸入圖片標題",
