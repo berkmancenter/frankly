@@ -50,8 +50,7 @@ void main() {
   ) async {
     await _participantRef(userId).updateData(
       UpdateData.fromMap({
-        Participant.kFieldMostRecentPresentTime:
-            Timestamp.fromDateTime(time),
+        Participant.kFieldMostRecentPresentTime: Timestamp.fromDateTime(time),
       }),
     );
   }
@@ -75,7 +74,7 @@ void main() {
       isPresent: true,
     );
 
-    // Set mostRecentPresentTime to 2 minutes ago (well past 60s threshold)
+    // Set mostRecentPresentTime to 2 minutes ago (well past 45s threshold)
     await _setMostRecentPresentTime(
       userId,
       DateTime.now().subtract(const Duration(minutes: 2)),
@@ -98,7 +97,7 @@ void main() {
       isPresent: true,
     );
 
-    // Set mostRecentPresentTime to 10 seconds ago (within 60s threshold)
+    // Set mostRecentPresentTime to 10 seconds ago (within 45s threshold)
     await _setMostRecentPresentTime(
       userId,
       DateTime.now().subtract(const Duration(seconds: 10)),
@@ -149,10 +148,9 @@ void main() {
     await _participantRef(userId).updateData(
       UpdateData.fromMap({
         Participant.kFieldCurrentBreakoutRoomId: breakoutRoomId,
-        Participant.kFieldMostRecentPresentTime:
-            Timestamp.fromDateTime(
-              DateTime.now().subtract(const Duration(minutes: 2)),
-            ),
+        Participant.kFieldMostRecentPresentTime: Timestamp.fromDateTime(
+          DateTime.now().subtract(const Duration(minutes: 2)),
+        ),
       }),
     );
 
@@ -208,10 +206,9 @@ void main() {
     );
     await event2ParticipantRef.updateData(
       UpdateData.fromMap({
-        Participant.kFieldMostRecentPresentTime:
-            Timestamp.fromDateTime(
-              DateTime.now().subtract(const Duration(minutes: 3)),
-            ),
+        Participant.kFieldMostRecentPresentTime: Timestamp.fromDateTime(
+          DateTime.now().subtract(const Duration(minutes: 3)),
+        ),
       }),
     );
 
@@ -287,11 +284,10 @@ void main() {
     expect(participant.isPresent, isTrue);
   });
 
-  test('Participant at exactly 60 seconds is not cleaned up', () async {
-    // The query uses isLessThan, so exactly at the boundary should be safe.
-    // In practice there will be a small delta from DateTime.now() calls,
-    // so we test at 59 seconds to verify the boundary behavior.
-    const userId = 'boundaryUser';
+  test('Participant at 44s (just inside 45s threshold) is not cleaned up',
+      () async {
+    // staleThreshold = 45s; 44s ago is still within the safe window.
+    const userId = 'boundaryFreshUser';
 
     await eventUtils.joinEvent(
       communityId: communityId,
@@ -302,12 +298,34 @@ void main() {
     );
     await _setMostRecentPresentTime(
       userId,
-      DateTime.now().subtract(const Duration(seconds: 59)),
+      DateTime.now().subtract(const Duration(seconds: 44)),
     );
 
     await CleanupStaleParticipants().action(MockEventContext());
 
     final participant = await _getParticipant(userId);
     expect(participant.isPresent, isTrue);
+  });
+
+  test('Participant at 46s (just past 45s threshold) is cleaned up', () async {
+    // staleThreshold = 45s; 46s ago is outside the safe window.
+    const userId = 'boundaryStaleUser';
+
+    await eventUtils.joinEvent(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: testEvent.id,
+      uid: userId,
+      isPresent: true,
+    );
+    await _setMostRecentPresentTime(
+      userId,
+      DateTime.now().subtract(const Duration(seconds: 46)),
+    );
+
+    await CleanupStaleParticipants().action(MockEventContext());
+
+    final participant = await _getParticipant(userId);
+    expect(participant.isPresent, isFalse);
   });
 }
