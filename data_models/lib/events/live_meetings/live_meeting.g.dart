@@ -115,9 +115,7 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
               _$BreakoutRoomFlagStatusEnumMap, json['flagStatus'],
               unknownValue: BreakoutRoomFlagStatus.unflagged) ??
           BreakoutRoomFlagStatus.unflagged,
-      createdDate: json['createdDate'] == null
-          ? null
-          : DateTime.parse(json['createdDate'] as String),
+      createdDate: dateTimeFromTimestamp(json['createdDate']),
       record: json['record'] as bool? ?? false,
     );
 
@@ -131,7 +129,7 @@ Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
       'originalParticipantIdsAssignment':
           instance.originalParticipantIdsAssignment,
       'flagStatus': _$BreakoutRoomFlagStatusEnumMap[instance.flagStatus]!,
-      'createdDate': instance.createdDate?.toIso8601String(),
+      'createdDate': serverTimestamp(instance.createdDate),
       'record': instance.record,
     };
 
@@ -146,20 +144,14 @@ _$_BreakoutRoomSession _$$_BreakoutRoomSessionFromJson(
       breakoutRoomSessionId: json['breakoutRoomSessionId'] as String,
       breakoutRoomStatus: $enumDecodeNullable(
           _$BreakoutRoomStatusEnumMap, json['breakoutRoomStatus']),
-      statusUpdatedTime: json['statusUpdatedTime'] == null
-          ? null
-          : DateTime.parse(json['statusUpdatedTime'] as String),
+      statusUpdatedTime: dateTimeFromTimestamp(json['statusUpdatedTime']),
       assignmentMethod: $enumDecode(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       targetParticipantsPerRoom: json['targetParticipantsPerRoom'] as int,
       hasWaitingRoom: json['hasWaitingRoom'] as bool,
       maxRoomNumber: json['maxRoomNumber'] as int?,
-      createdDate: json['createdDate'] == null
-          ? null
-          : DateTime.parse(json['createdDate'] as String),
-      scheduledTime: json['scheduledTime'] == null
-          ? null
-          : DateTime.parse(json['scheduledTime'] as String),
+      createdDate: dateTimeFromTimestamp(json['createdDate']),
+      scheduledTime: dateTimeFromTimestamp(json['scheduledTime']),
       processingId: json['processingId'] as String?,
     );
 
@@ -169,14 +161,14 @@ Map<String, dynamic> _$$_BreakoutRoomSessionToJson(
       'breakoutRoomSessionId': instance.breakoutRoomSessionId,
       'breakoutRoomStatus':
           _$BreakoutRoomStatusEnumMap[instance.breakoutRoomStatus],
-      'statusUpdatedTime': instance.statusUpdatedTime?.toIso8601String(),
+      'statusUpdatedTime': serverTimestamp(instance.statusUpdatedTime),
       'assignmentMethod':
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod]!,
       'targetParticipantsPerRoom': instance.targetParticipantsPerRoom,
       'hasWaitingRoom': instance.hasWaitingRoom,
       'maxRoomNumber': instance.maxRoomNumber,
-      'createdDate': instance.createdDate?.toIso8601String(),
-      'scheduledTime': instance.scheduledTime?.toIso8601String(),
+      'createdDate': serverTimestamp(instance.createdDate),
+      'scheduledTime': timestampFromDateTime(instance.scheduledTime),
       'processingId': instance.processingId,
     };
 
