@@ -1,16 +1,19 @@
 const functions = require('firebase-functions')
-const admin = require('firebase-admin')
 const { Storage } = require('@google-cloud/storage')
-const archiver = require('archiver')
 const cors = require('cors')({ origin: true })
-
-const firestore = admin.firestore()
+const authorizeEvent = require('./utils/authorize-event')
+const { HttpsError } = require('firebase-functions/lib/providers/auth')
 
 const storage = new Storage()
-const bucketName = functions.config().agora.storage_bucket_name
+const bucket = storage.bucket(functions.config().agora.storage_bucket_name)
+const urlForDownloadExpiration = 24 * 60 * 60 * 1000 // 24 Hours
+const urlForTranscriptionExpiration = 60 * 60 * 1000 // 1 Hour
+const signedDownloadURLsEnabled = functions.config().app.signedDownloadURLs
 
-const downloadRecording = functions.runWith({ timeoutSeconds: 300 }).https.onRequest((req, res) => {
+
+const GenerateRecordingURL = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
+<<<<<<< Updated upstream
         // Determine if the user has access to this
         const authToken = req.headers.authorization?.split('Bearer ')[1]
         if (!authToken) {
@@ -79,7 +82,45 @@ const downloadRecording = functions.runWith({ timeoutSeconds: 300 }).https.onReq
             console.error('Error creating zip file:', err)
             res.status(500).send('Error creating zip file.')
         }
+=======
+        const event = await authorizeEvent(req, res)
+        const url = await _generateRecordingURL(event.id, urlForDownloadExpiration)
+        res.status(200).json({ 'url': url })
+>>>>>>> Stashed changes
     })
 })
 
-module.exports = downloadRecording
+const generateRecordingURLForTranscription = async (eventId) => {
+    return await _generateRecordingURL(eventId, urlForTranscriptionExpiration)
+}
+
+const _generateRecordingURL = async (eventId, expiration) => {
+    const recordingPath = `${eventId}/${eventId}_complete_recording.mp4`
+
+    console.log(`Ensure the complete event recording exists at ${bucket.name}/${recordingPath}.`)
+    const recordingFile = bucket.file(recordingPath)
+    const [recordingFileExists] = await recordingFile.exists()
+    if (!recordingFileExists) {
+        throw new HttpsError('failed-precondition', 'Recording not found')
+    }
+
+    // Firebase emulators don't implement the getSignedUrl() endpoint unfortunately, so for local
+    // development purposes this allows you to disable signed URLs and use a public URL for the
+    // requested file instead
+    console.log(`Generating a download URL for ${bucket.name}/${recordingPath}.`)
+    let url
+    if (signedDownloadURLsEnabled) {
+        [url] = await recordingFile.getSignedUrl({
+            action: 'read',
+            expires: Date.now() + expiration
+        })
+    } else {
+        url = recordingFile.publicUrl()
+    }
+
+    console.log(`Download URL for the event recording: ${url}`)
+    return url
+}
+
+// See caveat in main._register_js_functions()
+module.exports = [GenerateRecordingURL, generateRecordingURLForTranscription]
