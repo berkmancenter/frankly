@@ -111,10 +111,12 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
 
   Future<void> _updateAllLivestreamCounts() async {
     // Get all events that have a event participant that has been
-    // updated in the last duration + buffer seconds (limit 1)
+    // updated in the last heartbeat interval + buffer seconds.
+    // The heartbeat interval is 20s; we add a generous buffer to account
+    // for network latency and clock skew.
     final updateWindow = DateTime.now()
         .subtract(_updateInterval)
-        .subtract(const Duration(seconds: 4));
+        .subtract(const Duration(seconds: 25));
     print('Checking last update time greater than: $updateWindow');
     final eventParticipants = await firestore
         .collectionGroup('event-participants')

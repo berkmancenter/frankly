@@ -117,6 +117,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   StreamSubscription? _breakoutLiveMeetingSubscription;
   late StreamSubscription _onUnloadSubscription;
+  StreamSubscription? _onReconnectSubscription;
 
   Timer? _scheduledStartTimer;
   Timer? _meetingStartTimer;
@@ -397,12 +398,28 @@ class LiveMeetingProvider with ChangeNotifier {
     _updateTimersBeforeStart();
     canAutoplayLookupFuture = _checkIfCanAutoplay();
 
-    _presenceUpdater = Timer.periodic(Duration(seconds: 5), (_) {
+    _presenceUpdater = Timer.periodic(Duration(seconds: 20), (_) {
       if (activeUiState == MeetingUiState.leftMeeting ||
           activeUiState == MeetingUiState.enterMeetingPrescreen) {
         return;
       }
 
+      firestoreLiveMeetingService.updateMeetingPresence(
+        event: eventProvider.event,
+        currentBreakoutRoomId: _presenceRoomId,
+        isPresent: true,
+      );
+    });
+
+    // Write a heartbeat immediately when the browser regains network
+    // connectivity. Without this, a brief network blip could leave
+    // mostRecentPresentTime stale for up to 20s (the heartbeat interval),
+    // risking a false-positive from CleanupStaleParticipants.
+    _onReconnectSubscription = html.window.onOnline.listen((_) {
+      if (activeUiState == MeetingUiState.leftMeeting ||
+          activeUiState == MeetingUiState.enterMeetingPrescreen) {
+        return;
+      }
       firestoreLiveMeetingService.updateMeetingPresence(
         event: eventProvider.event,
         currentBreakoutRoomId: _presenceRoomId,
@@ -476,6 +493,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _selfParticipantSubscription?.cancel();
     _breakoutLiveMeetingSubscription?.cancel();
     _onUnloadSubscription.cancel();
+    _onReconnectSubscription?.cancel();
     _assignedBreakoutRoomsStreamSubscription?.cancel();
 
     _presenceUpdater?.cancel();
