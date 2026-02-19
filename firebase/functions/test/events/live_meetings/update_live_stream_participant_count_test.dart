@@ -142,9 +142,9 @@ void main() {
   test(
       'Counts participants for a currently-running event (scheduledTime in the past)',
       () async {
-    // This is the scenario that was broken before the pre-check window fix:
-    // an event whose scheduledTime has passed is actively running, but the
-    // old pre-check (scheduledTime >= now) excluded it entirely.
+    // In this case, an event whose scheduledTime has passed is actively
+    // running, but the old pre-check (scheduledTime >= now) so it's included
+    // in counts.
     var runningEvent = Event(
       id: '7777',
       status: EventStatus.active,

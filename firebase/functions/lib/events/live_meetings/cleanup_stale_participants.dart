@@ -48,7 +48,7 @@ class CleanupStaleParticipants implements CloudFunction {
         for (int i = 0; i < _runsPerMinute; i++)
           Future.delayed(
             _checkInterval * i,
-            () => _runCleanupPass(i),
+            () => runCleanupPass(i),
           ),
       ]);
     } catch (e, stacktrace) {
@@ -59,7 +59,13 @@ class CleanupStaleParticipants implements CloudFunction {
     }
   }
 
-  Future<void> _runCleanupPass(int pass) async {
+  /// Executes a single cleanup pass: queries for stale participants and marks
+  /// them offline in a transaction with a freshness guard.
+  ///
+  /// Called by [action] multiple times per minute with real-time delays.
+  /// Exposed as public so unit tests can invoke a single pass without
+  /// waiting through the scheduling delays.
+  Future<void> runCleanupPass(int pass) async {
     print('$functionName: Starting cleanup pass $pass');
     final cutoff = DateTime.now().subtract(staleThreshold);
 
