@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +100,13 @@ class _EventsTabState extends State<EventsTab> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
+        _buildRowEntry(
+          width: 170,
+          child: Text(
+            'Transcriptions',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
       ],
     );
   }
@@ -119,9 +127,9 @@ class _EventsTabState extends State<EventsTab> {
                 await userService.firebaseAuth.currentUser?.getIdToken();
 
             var downloadTriggerUrl =
-                '${Environment.functionsUrlPrefix}/downloadRecording';
+                '${Environment.functionsUrlPrefix}/GenerateRecordingURL';
 
-            final response = await http.post(
+            final signedDownloadUrlResponse = await http.post(
               Uri.parse(downloadTriggerUrl),
               headers: {'Authorization': 'Bearer $idToken'},
               body: {
@@ -129,17 +137,63 @@ class _EventsTabState extends State<EventsTab> {
               },
             );
 
-            final content = response.bodyBytes;
+            final signedDownloadUrl =
+                jsonDecode(signedDownloadUrlResponse.body)['url'];
 
-            final blob = html.Blob([content]);
+            // Use an anchor instead of window.open() to respect browser download settings
+            final downloadAnchor = html.AnchorElement(href: signedDownloadUrl)
+              ..setAttribute('download', '')
+              ..setAttribute('target', '_blank')
+              ..style.display = 'none';
 
-            final blobUrl = html.Url.createObjectUrlFromBlob(blob);
+            html.document.body?.append(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+          },
+        ),
+        text: 'Download',
+      );
+    }
+  }
 
-            final anchor = html.AnchorElement(href: blobUrl)
-              ..setAttribute('download', 'recording.zip');
-            anchor.click();
+  Widget _buildTranscriptionSection(Event event) {
+    if (!(event.eventSettings?.alwaysRecord ?? false)) {
+      return Text('');
+    } else {
+      return ActionButton(
+        type: ActionButtonType.outline,
+        loadingHeight: 16,
+        borderSide: BorderSide(color: Theme.of(context).primaryColor),
+        textColor: Theme.of(context).primaryColor,
+        onPressed: () => alertOnError(
+          context,
+          () async {
+            final idToken =
+                await userService.firebaseAuth.currentUser?.getIdToken();
 
-            html.Url.revokeObjectUrl(blobUrl);
+            var downloadTriggerUrl =
+                '${Environment.functionsUrlPrefix}/GenerateTranscriptionURL';
+
+            final signedDownloadUrlResponse = await http.post(
+              Uri.parse(downloadTriggerUrl),
+              headers: {'Authorization': 'Bearer $idToken'},
+              body: {
+                'eventPath': event.fullPath,
+              },
+            );
+
+            final signedDownloadUrl =
+                jsonDecode(signedDownloadUrlResponse.body)['url'];
+
+            // Use an anchor instead of window.open() to respect browser download settings
+            final downloadAnchor = html.AnchorElement(href: signedDownloadUrl)
+              ..setAttribute('download', '')
+              ..setAttribute('target', '_blank')
+              ..style.display = 'none';
+
+            html.document.body?.append(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
           },
         ),
         text: 'Download',
@@ -196,6 +250,10 @@ class _EventsTabState extends State<EventsTab> {
           _buildRowEntry(
             width: 170,
             child: _buildRecordingSection(event),
+          ),
+          _buildRowEntry(
+            width: 170,
+            child: _buildTranscriptionSection(event),
           ),
         ],
       ),

@@ -20,7 +20,8 @@
     "name": "Frankly",
     "functions_url_prefix": "http://127.0.0.1:5001/dev/us-central1",
     "full_url": "http://localhost:5000",
-    "copyright": "2024 President and Fellows of Harvard College"
+    "copyright": "2024 President and Fellows of Harvard College",
+    "signedDownloadURLs": true
   },
   "mux": {
     "secret": "<value>",
@@ -34,6 +35,10 @@
     "storage_secret_key": "<value>",
     "storage_access_key": "<value>",
     "storage_bucket_name": "<value>"
+  },
+  "runpod": {
+    "api_key": "<value>",
+    "endpoint_id": "<value>"
   },
   "ics": {
     "prod_id": "Frankly"

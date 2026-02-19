@@ -177,7 +177,11 @@ class _SettingsTabState extends State<SettingsTab> {
                   context.theme.colorScheme.primary.withOpacity(0.1),
                 ),
                 _buildSettingsToggle(
+<<<<<<< Updated upstream
                   'Record',
+=======
+                  'Record / Transcribe',
+>>>>>>> Stashed changes
                   eventSettings.alwaysRecord ?? true,
                   (val) => _toggleEventSetting(
                     eventSettings.copyWith(

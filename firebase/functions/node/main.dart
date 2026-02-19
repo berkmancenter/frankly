@@ -159,8 +159,25 @@ void _registerServices() {
 }
 
 void _registerJsFunctions() {
-  functions['downloadRecording'] = require('../js/download-recordings.js');
+  // Accessing these functions via array position when multiple function returns
+  // are needed from calling require() on a Node module is a temporary fix to
+  // help work around a dart <> node_interop quirk
+  // (will revisit/refactor this for clarity and safety with a follow-up PR)
+
   functions['imageProxy'] = require('../js/image-proxy.js');
+
+  functions['GenerateRecordingURL'] =
+      require('../js/download-recordings.js')[0];
+  functions['GenerateTranscriptionURL'] =
+      require('../js/download-transcriptions.js');
+
+  final produceRecordingsModule = require('../js/produce-recordings.js');
+  functions['ProduceRecording'] = produceRecordingsModule[0];
+  functions['OnRecordingComplete'] = produceRecordingsModule[1];
+
+  final transcribeRecordingsModule = require('../js/transcribe-recordings.js');
+  functions['TranscribeRecording'] = transcribeRecordingsModule[0];
+  functions['OnRecordingProduced'] = transcribeRecordingsModule[1];
 }
 
 void main() {
