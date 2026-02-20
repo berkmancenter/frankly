@@ -33,6 +33,9 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/features/events/features/live_meeting/data/providers/meeting_ui_state.dart';
+
+export 'package:client/features/events/features/live_meeting/data/providers/meeting_ui_state.dart';
 
 abstract class MeetingProviderParticipant {
   String get userId;
@@ -61,15 +64,6 @@ enum LiveMeetingViewType {
   stage,
 }
 
-enum MeetingUiState {
-  leftMeeting,
-  enterMeetingPrescreen,
-  breakoutRoom,
-  waitingRoom,
-  liveStream,
-  inMeeting,
-}
-
 /// A presenter for the MeetingDialog class. It controls the things across the meeting such as the
 /// agenda, control bar, and looking up the live meeting firestore streams.
 class LiveMeetingProvider with ChangeNotifier {
@@ -83,7 +77,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
-  String? _activeBreakoutRoomId;
+  String? _inTransitionToBreakoutRoomId;
+  String? _cachedJoinInfoRoomId;
   String? _breakoutRoomOverride;
 
   /// Holds a reference to the current breakout room join info
@@ -116,12 +111,15 @@ class LiveMeetingProvider with ChangeNotifier {
 
   StreamSubscription? _breakoutLiveMeetingSubscription;
   late StreamSubscription _onUnloadSubscription;
+  StreamSubscription? _onReconnectSubscription;
 
   Timer? _scheduledStartTimer;
   Timer? _meetingStartTimer;
   Timer? _checkAssignToBreakoutsTimer;
 
   Timer? _presenceUpdater;
+  Timer? _transitionTimer;
+  int _transitionElapsedSeconds = 0;
 
   HostlessActionFallbackController? _hostlessGoToBreakoutsFallbackController;
   HostlessActionFallbackController? _pendingBreakoutsFallbackController;
@@ -207,6 +205,21 @@ class LiveMeetingProvider with ChangeNotifier {
   String? get currentBreakoutRoomId {
     if (_userLeftBreakouts) return null;
     return breakoutRoomOverride ?? assignedBreakoutRoomId;
+  }
+
+  String? get _presenceRoomId {
+    final roomId = presenceRoomIdForState(
+      activeUiState,
+      activeBreakoutRoomId: _inTransitionToBreakoutRoomId,
+    );
+    if (activeUiState == MeetingUiState.breakoutRoom && roomId == null) {
+      loggingService.log(
+        'Heartbeat: user is in the breakout UI state but the breakout '
+        'room is not specified. This may occur if the breakout room is '
+        'removed or closed while someone is transitioning to it.',
+      );
+    }
+    return roomId;
   }
 
   bool get isHost => eventProvider.event.creatorId == userService.currentUserId;
@@ -367,16 +380,33 @@ class LiveMeetingProvider with ChangeNotifier {
     _updateTimersBeforeStart();
     canAutoplayLookupFuture = _checkIfCanAutoplay();
 
-    _presenceUpdater = Timer.periodic(Duration(seconds: 5), (_) {
-      if (_activeBreakoutRoomId != null &&
-          eventProvider.selfParticipant?.currentBreakoutRoomId !=
-              _activeBreakoutRoomId) {
-        firestoreLiveMeetingService.updateMeetingPresence(
-          event: eventProvider.event,
-          currentBreakoutRoomId: _activeBreakoutRoomId,
-          isPresent: true,
-        );
+    _presenceUpdater = Timer.periodic(Duration(seconds: 20), (_) {
+      if (activeUiState == MeetingUiState.leftMeeting ||
+          activeUiState == MeetingUiState.enterMeetingPrescreen) {
+        return;
       }
+
+      firestoreLiveMeetingService.updateMeetingPresence(
+        event: eventProvider.event,
+        currentBreakoutRoomId: _presenceRoomId,
+        isPresent: true,
+      );
+    });
+
+    // Write a heartbeat immediately when the browser regains network
+    // connectivity. Without this, a brief network blip could leave
+    // mostRecentPresentTime stale for up to 20s (the heartbeat interval),
+    // risking a false-positive from CleanupStaleParticipants.
+    _onReconnectSubscription = html.window.onOnline.listen((_) {
+      if (activeUiState == MeetingUiState.leftMeeting ||
+          activeUiState == MeetingUiState.enterMeetingPrescreen) {
+        return;
+      }
+      firestoreLiveMeetingService.updateMeetingPresence(
+        event: eventProvider.event,
+        currentBreakoutRoomId: _presenceRoomId,
+        isPresent: true,
+      );
     });
   }
 
@@ -445,9 +475,11 @@ class LiveMeetingProvider with ChangeNotifier {
     _selfParticipantSubscription?.cancel();
     _breakoutLiveMeetingSubscription?.cancel();
     _onUnloadSubscription.cancel();
+    _onReconnectSubscription?.cancel();
     _assignedBreakoutRoomsStreamSubscription?.cancel();
 
     _presenceUpdater?.cancel();
+    _transitionTimer?.cancel();
 
     _scheduledStartTimer?.cancel();
     _meetingStartTimer?.cancel();
@@ -474,7 +506,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _checkLoadBreakoutsStream(liveMeeting);
 
-    if (!breakoutsActive && !isNullOrEmpty(_activeBreakoutRoomId)) {
+    if (!breakoutsActive && _inTransitionToBreakoutRoomId != null) {
       leaveBreakoutRoom();
       _userLeftBreakouts = false;
     }
@@ -638,8 +670,50 @@ class LiveMeetingProvider with ChangeNotifier {
     }
   }
 
+  void _startBreakoutRoomTransitionTimer() {
+    _transitionTimer?.cancel();
+    _transitionElapsedSeconds = 0;
+    _transitionTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (_inTransitionToBreakoutRoomId == null) {
+        timer.cancel();
+        return;
+      }
+
+      _transitionElapsedSeconds += 5;
+      loggingService.log(
+        'Heartbeat: user is in breakout UI state but has not yet joined a room '
+        'after $_transitionElapsedSeconds seconds.',
+      );
+
+      if (_transitionElapsedSeconds >= 10) {
+        timer.cancel();
+        loggingService.log(
+          'Breakout room transition timed out after 10 seconds. '
+          'Canceling transition and returning to main meeting.',
+        );
+        leaveBreakoutRoom();
+        showToast(
+          appLocalizationService
+              .getLocalization()
+              .breakoutRoomTransitionTimeout,
+        );
+      }
+    });
+  }
+
+  void _clearBreakoutRoomTransition() {
+    _inTransitionToBreakoutRoomId = null;
+    _transitionTimer?.cancel();
+    _transitionTimer = null;
+    _transitionElapsedSeconds = 0;
+  }
+
+  void clearBreakoutRoomTransition() {
+    _clearBreakoutRoomTransition();
+  }
+
   Future<GetMeetingJoinInfoResponse>? getCurrentMeetingJoinInfo() {
-    if (_activeBreakoutRoomId == currentBreakoutRoomId &&
+    if (_cachedJoinInfoRoomId == currentBreakoutRoomId &&
         _activeRoomJoinInfoFuture != null) {
       return _activeRoomJoinInfoFuture;
     }
@@ -657,7 +731,8 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo() {
-    _activeBreakoutRoomId = null;
+    _clearBreakoutRoomTransition();
+    _cachedJoinInfoRoomId = null;
     _activeRoomJoinInfoFuture = null;
     _breakoutLiveMeetingStream?.dispose();
     _breakoutLiveMeetingStream = null;
@@ -785,7 +860,8 @@ class LiveMeetingProvider with ChangeNotifier {
   void leaveBreakoutRoom() {
     _userLeftBreakouts = true;
 
-    _activeBreakoutRoomId = null;
+    _clearBreakoutRoomTransition();
+    _cachedJoinInfoRoomId = null;
     _breakoutRoomOverride = null;
     _activeRoomJoinInfoFuture = null;
 
@@ -849,8 +925,10 @@ class LiveMeetingProvider with ChangeNotifier {
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomFuture({
     required String roomId,
   }) async {
-    _activeBreakoutRoomId = roomId;
+    _inTransitionToBreakoutRoomId = roomId;
+    _cachedJoinInfoRoomId = roomId;
     _activeRoomJoinInfoFuture = null;
+    _startBreakoutRoomTransitionTimer();
 
     _loadBreakoutLiveMeetingStream(roomId);
 
@@ -866,11 +944,9 @@ class LiveMeetingProvider with ChangeNotifier {
       ),
     );
 
-    await firestoreLiveMeetingService.updateMeetingPresence(
-      event: eventProvider.event,
-      isPresent: true,
-      currentBreakoutRoomId: _activeBreakoutRoomId,
-    );
+    // Room membership is updated in ConferenceRoom.onConnected once Agora
+    // confirms the connection. The heartbeat timer continues updating
+    // mostRecentPresentTime in the meantime.
 
     return breakoutRoomJoinInfo;
   }
