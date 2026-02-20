@@ -321,16 +321,20 @@ void main() {
       );
       await firestore
           .document('${testEvent.fullPath}/event-participants/$uid')
-          .updateData(UpdateData.fromMap({
-            Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
-          }),);
+          .updateData(
+            UpdateData.fromMap({
+              Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+            }),
+          );
     }
     // Place target in the same room
     await firestore
         .document('${testEvent.fullPath}/event-participants/$targetUserId')
-        .updateData(UpdateData.fromMap({
-          Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
-        }),);
+        .updateData(
+          UpdateData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+          }),
+        );
 
     final req = VoteToKickRequest(
       eventPath: testEvent.fullPath,
@@ -390,9 +394,11 @@ void main() {
     );
     await firestore
         .document('${testEvent.fullPath}/event-participants/$inRoomVoter')
-        .updateData(UpdateData.fromMap({
-          Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
-        }),);
+        .updateData(
+          UpdateData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+          }),
+        );
 
     // One participant in a different room (should not count)
     await eventUtils.joinEvent(
@@ -404,16 +410,20 @@ void main() {
     );
     await firestore
         .document('${testEvent.fullPath}/event-participants/$otherRoomUser')
-        .updateData(UpdateData.fromMap({
-          Participant.kFieldCurrentBreakoutRoomId: 'some-other-room',
-        }),);
+        .updateData(
+          UpdateData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: 'some-other-room',
+          }),
+        );
 
     // Place target in the room
     await firestore
         .document('${testEvent.fullPath}/event-participants/$targetUserId')
-        .updateData(UpdateData.fromMap({
-          Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
-        }),);
+        .updateData(
+          UpdateData.fromMap({
+            Participant.kFieldCurrentBreakoutRoomId: liveMeetingId,
+          }),
+        );
 
     final req = VoteToKickRequest(
       eventPath: testEvent.fullPath,

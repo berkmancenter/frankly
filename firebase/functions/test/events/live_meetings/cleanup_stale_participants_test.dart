@@ -50,8 +50,7 @@ void main() {
   ) async {
     await participantRef(userId).updateData(
       UpdateData.fromMap({
-        Participant.kFieldMostRecentPresentTime:
-            Timestamp.fromDateTime(time),
+        Participant.kFieldMostRecentPresentTime: Timestamp.fromDateTime(time),
       }),
     );
   }
@@ -149,10 +148,9 @@ void main() {
     await participantRef(userId).updateData(
       UpdateData.fromMap({
         Participant.kFieldCurrentBreakoutRoomId: breakoutRoomId,
-        Participant.kFieldMostRecentPresentTime:
-            Timestamp.fromDateTime(
-              DateTime.now().subtract(const Duration(minutes: 2)),
-            ),
+        Participant.kFieldMostRecentPresentTime: Timestamp.fromDateTime(
+          DateTime.now().subtract(const Duration(minutes: 2)),
+        ),
       }),
     );
 
@@ -208,10 +206,9 @@ void main() {
     );
     await event2ParticipantRef.updateData(
       UpdateData.fromMap({
-        Participant.kFieldMostRecentPresentTime:
-            Timestamp.fromDateTime(
-              DateTime.now().subtract(const Duration(minutes: 3)),
-            ),
+        Participant.kFieldMostRecentPresentTime: Timestamp.fromDateTime(
+          DateTime.now().subtract(const Duration(minutes: 3)),
+        ),
       }),
     );
 
