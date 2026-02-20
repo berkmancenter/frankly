@@ -42,14 +42,14 @@ void main() {
     );
   });
 
-  DocumentReference _participantRef(String userId) {
+  DocumentReference participantRef(String userId) {
     return firestore.document(
       '${testEvent.fullPath}/event-participants/$userId',
     );
   }
 
-  Future<Participant> _getParticipant(String userId) async {
-    final snapshot = await _participantRef(userId).get();
+  Future<Participant> getParticipant(String userId) async {
+    final snapshot = await participantRef(userId).get();
     return Participant.fromJson(
       firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
     );
@@ -57,12 +57,12 @@ void main() {
 
   /// Simulates what updateMeetingPresence writes: a merge-set of presence
   /// fields on the participant document.
-  Future<void> _writePresence(
+  Future<void> writePresence(
     String userId, {
     required bool isPresent,
     String? currentBreakoutRoomId,
   }) async {
-    final ref = _participantRef(userId);
+    final ref = participantRef(userId);
 
     final data = <String, dynamic>{
       Participant.kFieldId: userId,
@@ -99,9 +99,9 @@ void main() {
       );
 
       // Simulate the initialize() call: isPresent: true, no breakout room
-      await _writePresence(userId, isPresent: true);
+      await writePresence(userId, isPresent: true);
 
-      final p = await _getParticipant(userId);
+      final p = await getParticipant(userId);
       expect(p.isPresent, isTrue);
       expect(p.mostRecentPresentTime, isNotNull);
       expect(p.currentBreakoutRoomId, isNull);
@@ -124,13 +124,13 @@ void main() {
       // Simulate heartbeat write after getBreakoutRoomFuture() sets
       // _inTransitionToBreakoutRoomId. The heartbeat timer picks up the
       // room ID via _presenceRoomId on the next tick.
-      await _writePresence(
+      await writePresence(
         userId,
         isPresent: true,
         currentBreakoutRoomId: roomId,
       );
 
-      final p = await _getParticipant(userId);
+      final p = await getParticipant(userId);
       expect(p.isPresent, isTrue);
       expect(p.currentBreakoutRoomId, equals(roomId));
     });
@@ -148,13 +148,13 @@ void main() {
       );
 
       // Simulate heartbeat with presenceRoomIdForState(waitingRoom)
-      await _writePresence(
+      await writePresence(
         userId,
         isPresent: true,
         currentBreakoutRoomId: waitingRoomId,
       );
 
-      final p = await _getParticipant(userId);
+      final p = await getParticipant(userId);
       expect(p.isPresent, isTrue);
       expect(p.currentBreakoutRoomId, equals('waiting-room'));
     });
@@ -174,16 +174,16 @@ void main() {
       );
 
       // First set user into a breakout room
-      await _writePresence(
+      await writePresence(
         userId,
         isPresent: true,
         currentBreakoutRoomId: roomId,
       );
 
       // Simulate leaveBreakoutRoom() call: isPresent stays true, room cleared
-      await _writePresence(userId, isPresent: true);
+      await writePresence(userId, isPresent: true);
 
-      final p = await _getParticipant(userId);
+      final p = await getParticipant(userId);
       expect(p.isPresent, isTrue);
       expect(p.currentBreakoutRoomId, isNull);
     });
@@ -202,9 +202,9 @@ void main() {
       );
 
       // Simulate dispose() call: isPresent: false
-      await _writePresence(userId, isPresent: false);
+      await writePresence(userId, isPresent: false);
 
-      final p = await _getParticipant(userId);
+      final p = await getParticipant(userId);
       expect(p.isPresent, isFalse);
     });
 
@@ -221,16 +221,16 @@ void main() {
       );
 
       // User is in a breakout room
-      await _writePresence(
+      await writePresence(
         userId,
         isPresent: true,
         currentBreakoutRoomId: roomId,
       );
 
       // Tab close sends isPresent: false (client does NOT clear room ID here)
-      await _writePresence(userId, isPresent: false);
+      await writePresence(userId, isPresent: false);
 
-      final p = await _getParticipant(userId);
+      final p = await getParticipant(userId);
       expect(p.isPresent, isFalse);
       // lastUpdatedTime should be set (server timestamp)
       expect(p.lastUpdatedTime, isNotNull);
@@ -287,7 +287,7 @@ void main() {
         uid: userId,
         isPresent: true,
       );
-      await _writePresence(
+      await writePresence(
         userId,
         isPresent: true,
         currentBreakoutRoomId: roomId,

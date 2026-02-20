@@ -100,7 +100,7 @@ void main() {
   });
 
   group('heartbeat timer specification', () {
-    // These tests document the expected behavior of the 5-second heartbeat
+    // These tests document the expected behavior of the 20-second heartbeat
     // timer added in the presence-count branch. They require either Playwright
     // E2E tests or a web test harness to verify timer + service interactions.
 
@@ -163,9 +163,9 @@ void main() {
     );
 
     test(
-      'should fire every 5 seconds when in active meeting state',
+      'should fire every 20 seconds when in active meeting state',
       () {
-        // Timer.periodic(Duration(seconds: 5), ...)
+        // Timer.periodic(Duration(seconds: 20), ...)
       },
       skip: 'Requires Playwright E2E test with timer verification',
     );

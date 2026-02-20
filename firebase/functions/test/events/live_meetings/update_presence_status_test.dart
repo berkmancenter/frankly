@@ -37,15 +37,15 @@ void main() {
   });
 
   /// Helper: get the participant reference for a given user in the test event.
-  DocumentReference _participantRef(String userId) {
+  DocumentReference participantRef(String userId) {
     return firestore.document(
       '${testEvent.fullPath}/event-participants/$userId',
     );
   }
 
   /// Helper: read a participant document back from Firestore.
-  Future<Participant> _getParticipant(String userId) async {
-    final snapshot = await _participantRef(userId).get();
+  Future<Participant> getParticipant(String userId) async {
+    final snapshot = await participantRef(userId).get();
     return Participant.fromJson(
       firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
     );
@@ -69,7 +69,7 @@ void main() {
       updateTime: updateTime,
     );
 
-    final participant = await _getParticipant(userId);
+    final participant = await getParticipant(userId);
     expect(participant.isPresent, isFalse);
   });
 
@@ -84,7 +84,7 @@ void main() {
       uid: userId,
       isPresent: true,
     );
-    await _participantRef(userId).updateData(
+    await participantRef(userId).updateData(
       UpdateData.fromMap({
         Participant.kFieldCurrentBreakoutRoomId: roomId,
       }),
@@ -97,7 +97,7 @@ void main() {
       updateTime: updateTime,
     );
 
-    final participant = await _getParticipant(userId);
+    final participant = await getParticipant(userId);
     expect(participant.isPresent, isFalse);
     // The function clears the room ID (sets to empty string on staging,
     // null on the #281 branch).
@@ -125,7 +125,7 @@ void main() {
       updateTime: updateTime,
     );
 
-    final participant = await _getParticipant(userId);
+    final participant = await getParticipant(userId);
     expect(participant.lastUpdatedTime, isNotNull);
     // lastUpdatedTime should be set to the updateTime
     expect(
@@ -153,7 +153,7 @@ void main() {
       updateTime: updateTime,
     );
 
-    final participant = await _getParticipant(userId);
+    final participant = await getParticipant(userId);
     expect(participant.isPresent, isFalse);
   });
 
@@ -172,7 +172,7 @@ void main() {
     // Set lastUpdatedTime to a time well after the trigger
     final updateTime = DateTime.now().subtract(const Duration(seconds: 30));
     final newerFirestoreTime = DateTime.now();
-    await _participantRef(userId).updateData(
+    await participantRef(userId).updateData(
       UpdateData.fromMap({
         Participant.kFieldLastUpdatedTime:
             Timestamp.fromDateTime(newerFirestoreTime),
@@ -185,7 +185,7 @@ void main() {
     );
 
     // Participant should remain online because Firestore data is newer
-    final participant = await _getParticipant(userId);
+    final participant = await getParticipant(userId);
     expect(participant.isPresent, isTrue);
   });
 
@@ -231,7 +231,7 @@ void main() {
     );
 
     // Both events should have the participant marked offline
-    final p1 = await _getParticipant(userId);
+    final p1 = await getParticipant(userId);
     expect(p1.isPresent, isFalse);
 
     final p2Snapshot = await firestore
@@ -269,10 +269,10 @@ void main() {
       updateTime: updateTime,
     );
 
-    final target = await _getParticipant(targetUser);
+    final target = await getParticipant(targetUser);
     expect(target.isPresent, isFalse);
 
-    final other = await _getParticipant(otherUser);
+    final other = await getParticipant(otherUser);
     expect(other.isPresent, isTrue);
   });
 
@@ -288,7 +288,7 @@ void main() {
     );
 
     // No assertions needed beyond no-throw; verify existing data is untouched
-    final admin = await _getParticipant(adminUserId);
+    final admin = await getParticipant(adminUserId);
     expect(admin.status, equals(ParticipantStatus.active));
   });
 }
