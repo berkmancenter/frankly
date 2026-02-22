@@ -1,4 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/discussion_threads/data/services/discussion_threads_helper.dart';
@@ -53,10 +54,11 @@ class ManipulateDiscussionThreadPresenter {
   }
 
   String getPositiveButtonText() {
+    final l10n = appLocalizationService.getLocalization();
     if (_model.existingDiscussionThread != null) {
-      return 'Update';
+      return l10n.updateAction;
     } else {
-      return 'Post';
+      return l10n.postAction;
     }
   }
 
@@ -83,7 +85,7 @@ class ManipulateDiscussionThreadPresenter {
       discussionThread,
     );
 
-    _view.showMessage('Post has been created', toastType: ToastType.success);
+    _view.showMessage(appLocalizationService.getLocalization().postHasBeenCreated, toastType: ToastType.success);
     return true;
   }
 
@@ -108,7 +110,7 @@ class ManipulateDiscussionThreadPresenter {
       communityId,
       discussionThread,
     );
-    _view.showMessage('Post has been updated', toastType: ToastType.success);
+    _view.showMessage(appLocalizationService.getLocalization().postHasBeenUpdated, toastType: ToastType.success);
 
     return true;
   }
