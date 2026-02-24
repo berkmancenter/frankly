@@ -551,9 +551,15 @@ class EnterMeetingScreen extends StatelessWidget {
 class BreakoutStatusInformation extends StatelessWidget {
   const BreakoutStatusInformation({Key? key}) : super(key: key);
 
+  /// Buffer time to account for network latency and processing time
+  static const _baseBreakoutRoomBuffer = Duration(seconds: 5);
+
   @override
   Widget build(BuildContext context) {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
+    final eventProvider = Provider.of<EventProvider>(context);
+    final event = eventProvider.event;
+    final isHostless = event.eventType == EventType.hostless;
 
     final breakoutsAreActiveWithoutUser = liveMeetingProvider.breakoutsActive &&
         !liveMeetingProvider.assignedBreakoutRoomIsLoading &&
@@ -578,15 +584,24 @@ class BreakoutStatusInformation extends StatelessWidget {
     if (breakoutsAreActiveWithoutUser) {
       return _buildUsersAreInBreakoutsMessage(context);
     } else if (breakoutsPending) {
+      // Calculate buffer time: base buffer + waiting media buffer + intro duration for hostless meetings
+      final waitingRoomInfo = event.waitingRoomInfo;
+      final hostlessBuffer = Duration(
+        seconds: (waitingRoomInfo?.waitingMediaBufferSeconds ?? 0) +
+            (waitingRoomInfo?.durationSeconds ?? 0),
+      );
+      final breakoutRoomBuffer = isHostless
+          ? _baseBreakoutRoomBuffer + hostlessBuffer
+          : _baseBreakoutRoomBuffer;
       return PeriodicBuilder(
         period: Duration(seconds: 1),
         builder: (context) {
           final breakoutRoomScheduledTime =
               breakoutSession?.scheduledTime ?? clockService.now();
           final now = clockService.now();
-          // Calculate the time remaining, but don't allow it to go negative and reset
+          // Calculate the time remaining with buffer, but don't allow it to go negative and reset
           var breakoutRoomRemainingTime =
-              breakoutRoomScheduledTime.difference(now);
+              breakoutRoomScheduledTime.difference(now) + breakoutRoomBuffer;
 
           // If the scheduled time has passed, keep it at zero instead of letting it reset
           if (breakoutRoomRemainingTime.isNegative) {
