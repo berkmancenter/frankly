@@ -122,8 +122,8 @@ class _ChatWidgetState extends State<_ChatWidget> {
   Widget _buildDefaultMessage() => Center(
         child: EmptyPageContent(
           type: EmptyPageType.chats,
-          titleText: 'Welcome!',
-          subtitleText: 'Please introduce yourself to help break the ice.',
+          titleText: context.l10n.chatWelcome,
+          subtitleText: context.l10n.chatIntroduceYourself,
           showContainer: false,
           isBackgroundDark: Theme.of(context).isDark,
         ),
