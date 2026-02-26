@@ -633,7 +633,7 @@ class _LayoutOptionButtons extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Tooltip(
-                    message: 'Gallery View',
+                    message: context.l10n.galleryView,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -650,7 +650,7 @@ class _LayoutOptionButtons extends StatelessWidget {
                     ),
                   ),
                   Tooltip(
-                    message: 'Stage View',
+                    message: context.l10n.stageView,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,

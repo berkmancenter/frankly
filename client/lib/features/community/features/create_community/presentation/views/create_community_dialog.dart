@@ -183,7 +183,7 @@ class _CreateCommunityDialogState extends State<_CreateCommunityDialog> {
         !isEmailValid(contactEmail)) {
       showRegularToast(
         context,
-        'Please enter a valid email',
+        context.l10n.pleaseEnterValidEmail,
         toastType: ToastType.failed,
       );
       return;
