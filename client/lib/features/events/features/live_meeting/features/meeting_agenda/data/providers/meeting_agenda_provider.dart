@@ -56,6 +56,14 @@ class AgendaProviderParams {
 }
 
 class AgendaProvider with ChangeNotifier {
+  // Minimum time a participant must have spent on an agenda item before they
+  // can advance without a confirmation prompt. A shorter threshold is used for
+  // the start card since it has no real content.
+  static const Duration _startItemAdvanceConfirmationThreshold =
+      Duration(seconds: 15);
+  static const Duration _agendaItemAdvanceConfirmationThreshold =
+      Duration(seconds: 30);
+
   final LiveMeetingProvider? liveMeetingProvider;
   AgendaProviderParams _params;
 
@@ -589,8 +597,8 @@ class AgendaProvider with ChangeNotifier {
     final timeInState = timeInSection(currentAgendaItemId);
     final doubleCheckDuration =
         currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
-            ? Duration(seconds: 15)
-            : Duration(seconds: 30);
+            ? _startItemAdvanceConfirmationThreshold
+            : _agendaItemAdvanceConfirmationThreshold;
     final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
         currentAgendaItem?.type == AgendaItemType.video;
 
