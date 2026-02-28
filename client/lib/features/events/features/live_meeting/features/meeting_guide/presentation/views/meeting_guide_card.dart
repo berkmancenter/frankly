@@ -50,7 +50,7 @@ class MeetingGuideCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MeetingGuideCardState createState() => _MeetingGuideCardState();
+  State<MeetingGuideCard> createState() => _MeetingGuideCardState();
 }
 
 class _MeetingGuideCardState extends State<MeetingGuideCard> {
@@ -103,7 +103,7 @@ class MeetingGuideCardContent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MeetingGuideCardContentState createState() =>
+  State<MeetingGuideCardContent> createState() =>
       _MeetingGuideCardContentState();
 }
 

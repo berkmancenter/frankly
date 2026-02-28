@@ -29,7 +29,7 @@ class BreakoutRoomsDialog extends StatefulWidget {
   }
 
   @override
-  __BreakoutRoomsDialogState createState() => __BreakoutRoomsDialogState();
+  State<BreakoutRoomsDialog> createState() => __BreakoutRoomsDialogState();
 }
 
 class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
@@ -53,7 +53,6 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
             ?.targetParticipants ??
         5;
   }
-
 
   Future<void> _startBreakouts(
     BreakoutAssignmentMethod assignmentMethod,
@@ -261,15 +260,15 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
               ],
             ),
             Positioned.fill(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                    padding: EdgeInsets.zero,
-                  ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).pop(),
+                  padding: EdgeInsets.zero,
                 ),
               ),
+            ),
           ],
         ),
       ),
