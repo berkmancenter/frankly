@@ -42,9 +42,6 @@ import 'package:provider/provider.dart';
 
 import '../event_page_presenter.dart';
 
-// How many hours to keep showing the join-event graphic (and invite joining) after the event start time.
-const int _kHoursAfterEventToShow = 2;
-
 class EventPage extends StatefulWidget {
   final String templateId;
   final String eventId;
