@@ -42,6 +42,9 @@ import 'package:provider/provider.dart';
 
 import '../event_page_presenter.dart';
 
+// How many hours to keep showing the join-event graphic (and invite joining) after the event start time.
+const int _kHoursAfterEventToShow = 2;
+
 class EventPage extends StatefulWidget {
   final String templateId;
   final String eventId;
@@ -94,6 +97,10 @@ class EventPage extends StatefulWidget {
 }
 
 class EventPageState extends State<EventPage> implements EventPageView {
+  // How long after the scheduled start time the join-event graphic remains
+  // visible, giving participants a window to join a meeting already in progress.
+  static const int _kHoursAfterEventToShow = 2;
+
   EventProvider get _eventProvider => EventProvider.watch(context);
 
   Event get event => _eventProvider.event;
@@ -261,7 +268,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
     final now = clockService.now();
     final beforeMeetingCutoff =
         scheduled.subtract(Duration(minutes: kMinutesBeforeEventToJoin));
-    final afterMeetingCutoff = scheduled.add(Duration(hours: 2));
+    final afterMeetingCutoff =
+        scheduled.add(Duration(hours: _kHoursAfterEventToShow));
 
     return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
   }
