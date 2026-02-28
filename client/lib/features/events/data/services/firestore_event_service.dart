@@ -16,6 +16,17 @@ import 'package:rxdart/rxdart.dart';
 class FirestoreEventService {
   static const events = 'events';
 
+  // How far before an event's scheduled time it starts appearing in upcoming
+  // event queries — keeps recently-started events visible in listings.
+  static const Duration _upcomingEventsLookback = Duration(minutes: 15);
+  // Wider lookback used when querying across all communities, to surface
+  // events that started up to an hour ago.
+  static const Duration _allCommunitiesEventsLookback = Duration(hours: 1);
+  // Throttle on the event-participants Firestore stream to avoid processing
+  // a snapshot on every keystroke / write during busy periods.
+  static const Duration _participantStreamSampleTime =
+      Duration(milliseconds: 500);
+
   // final time = await NTP.now();
   // Future to mimic NTP.now()
   Future<DateTime> get currentTimeAsync => Future(() => clockService.now());
@@ -79,8 +90,8 @@ class FirestoreEventService {
           .where('isPublic', isEqualTo: true)
           .where(
             'scheduledTime',
-            isGreaterThan:
-                Timestamp.fromDate(currentTime.subtract(Duration(minutes: 15))),
+            isGreaterThan: Timestamp.fromDate(
+                currentTime.subtract(_upcomingEventsLookback)),
           )
           .orderBy('scheduledTime');
 
@@ -107,7 +118,7 @@ class FirestoreEventService {
         .where(
           'scheduledTime',
           isGreaterThan:
-              Timestamp.fromDate(currentTime.subtract(Duration(minutes: 15))),
+              Timestamp.fromDate(currentTime.subtract(_upcomingEventsLookback)),
         )
         .orderBy('scheduledTime');
 
@@ -142,8 +153,8 @@ class FirestoreEventService {
           .where('communityId', isEqualTo: communityId)
           .where(
             'scheduledTime',
-            isGreaterThan:
-                Timestamp.fromDate(currentTime.subtract(Duration(hours: 1))),
+            isGreaterThan: Timestamp.fromDate(
+                currentTime.subtract(_allCommunitiesEventsLookback)),
           )
           .where('isPublic', isEqualTo: true)
           .orderBy('scheduledTime')
@@ -230,7 +241,7 @@ class FirestoreEventService {
                 !snapshot.metadata.hasPendingWrites &&
                 !snapshot.metadata.isFromCache,
           )
-          .sampleTime(Duration(milliseconds: 500))
+          .sampleTime(_participantStreamSampleTime)
           .asyncMap((snapshot) => convertParticipantListAsync(snapshot)),
     );
   }
