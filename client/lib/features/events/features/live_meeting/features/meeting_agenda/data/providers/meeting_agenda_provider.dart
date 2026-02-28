@@ -17,7 +17,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 List<AgendaItem> defaultAgendaItems(String communityId) {
   final l10n = appLocalizationService.getLocalization();
