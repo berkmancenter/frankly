@@ -518,7 +518,8 @@ class ConferenceRoom with ChangeNotifier {
 
     _updateLiveMeetingParticipants();
     Debug.log(
-        'ConferenceRoom._onConnected => updated live meeting participants');
+      'ConferenceRoom._onConnected => updated live meeting participants',
+    );
 
     // Update room membership now that Agora has confirmed connection
     unawaited(

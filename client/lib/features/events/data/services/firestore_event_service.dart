@@ -91,7 +91,8 @@ class FirestoreEventService {
           .where(
             'scheduledTime',
             isGreaterThan: Timestamp.fromDate(
-                currentTime.subtract(_upcomingEventsLookback)),
+              currentTime.subtract(_upcomingEventsLookback),
+            ),
           )
           .orderBy('scheduledTime');
 
@@ -154,7 +155,8 @@ class FirestoreEventService {
           .where(
             'scheduledTime',
             isGreaterThan: Timestamp.fromDate(
-                currentTime.subtract(_allCommunitiesEventsLookback)),
+              currentTime.subtract(_allCommunitiesEventsLookback),
+            ),
           )
           .where('isPublic', isEqualTo: true)
           .orderBy('scheduledTime')
