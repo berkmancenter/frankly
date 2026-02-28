@@ -160,6 +160,13 @@ class LiveMeetingProvider with ChangeNotifier {
   });
 
   static const int _postEventEmailThresholdInMinutes = 5;
+  static const int _presenceHeartbeatIntervalSeconds = 5;
+  static const int _meetingStartTimerBufferMs = 100;
+  static const int _fallbackControllerBaseDelayMs = 5000;
+  static const int _hostlessFallbackJitterMs = 20000;
+  static const int _pendingBreakoutsFallbackJitterMs = 30000;
+  static const int _breakoutRoomTransitionHeartbeatSeconds = 5;
+  static const int _breakoutRoomTransitionTimeoutSeconds = 10;
 
   MeetingUiState get activeUiState {
     final showEnterMeeting = isInstant && !clickedEnterMeeting;
@@ -399,7 +406,8 @@ class LiveMeetingProvider with ChangeNotifier {
     _updateTimersBeforeStart();
     canAutoplayLookupFuture = _checkIfCanAutoplay();
 
-    _presenceUpdater = Timer.periodic(Duration(seconds: 5), (_) {
+    _presenceUpdater = Timer.periodic(
+        Duration(seconds: _presenceHeartbeatIntervalSeconds), (_) {
       if (activeUiState == MeetingUiState.leftMeeting ||
           activeUiState == MeetingUiState.enterMeetingPrescreen) {
         return;
@@ -431,8 +439,9 @@ class LiveMeetingProvider with ChangeNotifier {
     final timeUntilScheduledStart =
         eventProvider.event.timeUntilScheduledStart(clockService.now());
     if (!timeUntilScheduledStart.isNegative) {
-      _scheduledStartTimer =
-          Timer(timeUntilScheduledStart + Duration(milliseconds: 100), () {
+      _scheduledStartTimer = Timer(
+          timeUntilScheduledStart +
+              Duration(milliseconds: _meetingStartTimerBufferMs), () {
         notifyListeners();
       });
     }
@@ -440,8 +449,9 @@ class LiveMeetingProvider with ChangeNotifier {
         eventProvider.event.timeUntilWaitingRoomFinished(clockService.now());
     if (timeUntilWaitingRoomFinished != timeUntilScheduledStart &&
         !timeUntilWaitingRoomFinished.isNegative) {
-      _meetingStartTimer =
-          Timer(timeUntilWaitingRoomFinished + Duration(milliseconds: 100), () {
+      _meetingStartTimer = Timer(
+          timeUntilWaitingRoomFinished +
+              Duration(milliseconds: _meetingStartTimerBufferMs), () {
         notifyListeners();
       });
     }
@@ -463,7 +473,10 @@ class LiveMeetingProvider with ChangeNotifier {
           );
         },
         delay: timeUntilWaitingRoomFinished +
-            Duration(milliseconds: 5000 + random.nextInt(20000)),
+            Duration(
+              milliseconds: _fallbackControllerBaseDelayMs +
+                  random.nextInt(_hostlessFallbackJitterMs),
+            ),
         checkIsActionCompleted: () async =>
             liveMeeting?.currentBreakoutSession?.breakoutRoomStatus != null &&
             liveMeeting?.currentBreakoutSession?.breakoutRoomStatus !=
@@ -614,7 +627,10 @@ class LiveMeetingProvider with ChangeNotifier {
             );
           },
           delay: timeUntilBreakouts +
-              Duration(milliseconds: 5000 + random.nextInt(30000)),
+              Duration(
+                milliseconds: _fallbackControllerBaseDelayMs +
+                    random.nextInt(_pendingBreakoutsFallbackJitterMs),
+              ),
           checkIsActionCompleted: () async =>
               liveMeeting?.currentBreakoutSession?.breakoutRoomStatus !=
               BreakoutRoomStatus.pending,
@@ -678,22 +694,24 @@ class LiveMeetingProvider with ChangeNotifier {
     _transitionTimer?.cancel();
     _transitionElapsedSeconds = 0;
     _transitionStartTime = DateTime.now();
-    _transitionTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _transitionTimer = Timer.periodic(
+        Duration(seconds: _breakoutRoomTransitionHeartbeatSeconds), (timer) {
       if (_inTransitionToBreakoutRoomId == null) {
         timer.cancel();
         return;
       }
 
-      _transitionElapsedSeconds += 5;
+      _transitionElapsedSeconds += _breakoutRoomTransitionHeartbeatSeconds;
       loggingService.log(
         'Heartbeat: user is in breakout UI state but has not yet joined a room '
         'after $_transitionElapsedSeconds seconds.',
       );
 
-      if (_transitionElapsedSeconds >= 10) {
+      if (_transitionElapsedSeconds >= _breakoutRoomTransitionTimeoutSeconds) {
         timer.cancel();
         loggingService.log(
-          'Breakout room transition timed out after 10 seconds. '
+          'Breakout room transition timed out after '
+          '$_breakoutRoomTransitionTimeoutSeconds seconds. '
           'Canceling transition and returning to main meeting.',
         );
         leaveBreakoutRoom();
