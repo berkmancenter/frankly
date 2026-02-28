@@ -57,6 +57,11 @@ class UrlVideoWidget extends StatefulHookWidget {
 }
 
 class _UrlVideoWidgetState extends State<UrlVideoWidget> {
+  // How often playhead position updates are forwarded to the callback.
+  static const Duration _playheadSampleInterval = Duration(seconds: 1);
+  // Minimum time between error-triggered refreshes, to avoid a rapid retry loop.
+  static const Duration _videoErrorRefreshCooldown = Duration(seconds: 5);
+
   String _keyValue = uuid.v1();
   Timer? _errorTimer;
 
@@ -112,7 +117,7 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
 
     // Listen to stream; forward maximum of one playhead update per second to callback
     useStreamListener<UrlVideoPlayheadInfo>(
-      stream: controller.stream.sampleTime(Duration(seconds: 1)),
+      stream: controller.stream.sampleTime(_playheadSampleInterval),
       function: (status) {
         final onPlayheadUpdate = widget.onPlayheadUpdate;
         if (onPlayheadUpdate != null) {
@@ -150,7 +155,7 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
                 if (widget.refreshOnError && !(_errorTimer?.isActive ?? false)) {
                   // Don't constantly restart due to an error. If another error occurs
                   // during this window, then it will not refresh.
-                  _errorTimer = Timer(Duration(seconds: 5), () {});
+                  _errorTimer = Timer(_videoErrorRefreshCooldown, () {});
                   setState(() => _keyValue = uuid.v1());
                 }
 
