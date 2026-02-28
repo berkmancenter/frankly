@@ -340,6 +340,7 @@ class EventPageProvider with ChangeNotifier {
         cancelText: appLocalizationService.getLocalization().no,
       ).show();
       if (cancelParticipation) {
+        if (!navigatorState.mounted) return;
         await alertOnError(
           navigatorState.context,
           () => firestoreEventService.removeParticipant(

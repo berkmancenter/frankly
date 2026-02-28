@@ -385,6 +385,7 @@ class ConferenceRoom with ChangeNotifier {
     if (updatedEnabledValue) {
       final permissionStatus = await Permission.camera.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+        if (!navigatorState.mounted) return;
         await showAlert(
           navigatorState.context,
           'Error enabling camera. Please ensure you have granted permission.',
@@ -418,6 +419,7 @@ class ConferenceRoom with ChangeNotifier {
     if (updatedEnabledValue) {
       final permissionStatus = await Permission.microphone.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+        if (!navigatorState.mounted) return;
         await showAlert(
           navigatorState.context,
           'Error enabling microphone. Please ensure you have granted permission.',
@@ -545,12 +547,14 @@ class ConferenceRoom with ChangeNotifier {
       cancelText: appLocalizationService.getLocalization().cancel,
     ).show();
     if (enableAudioVideo) {
+      if (!navigatorState.mounted) return;
       if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
           navigatorState.context,
           () => toggleAudioEnabled(setEnabled: true),
         );
       }
+      if (!navigatorState.mounted) return;
       if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
           navigatorState.context,

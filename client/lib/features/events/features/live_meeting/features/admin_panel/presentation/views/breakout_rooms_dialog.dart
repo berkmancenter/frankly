@@ -61,6 +61,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
       numPerRoom: _numPerRoom,
       assignmentMethod: assignmentMethod,
     );
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
 

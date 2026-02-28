@@ -682,7 +682,7 @@ class LiveMeetingProvider with ChangeNotifier {
                       .currentBreakoutSession?.breakoutRoomSessionId ??
                   '',
             );
-            Navigator.of(context).pop(true);
+            if (context.mounted) Navigator.of(context).pop(true);
           }),
         ).show();
       }
