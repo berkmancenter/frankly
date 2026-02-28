@@ -25,6 +25,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/hostless_action_fallback_controller.dart';
 import 'package:client/core/utils/platform_utils.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_proposal.dart';
@@ -130,6 +131,7 @@ class LiveMeetingProvider with ChangeNotifier {
   Timer? _presenceUpdater;
   Timer? _transitionTimer;
   int _transitionElapsedSeconds = 0;
+  DateTime? _transitionStartTime;
 
   HostlessActionFallbackController? _hostlessGoToBreakoutsFallbackController;
   HostlessActionFallbackController? _pendingBreakoutsFallbackController;
@@ -675,6 +677,7 @@ class LiveMeetingProvider with ChangeNotifier {
   void _startBreakoutRoomTransitionTimer() {
     _transitionTimer?.cancel();
     _transitionElapsedSeconds = 0;
+    _transitionStartTime = DateTime.now();
     _transitionTimer = Timer.periodic(Duration(seconds: 5), (timer) {
       if (_inTransitionToBreakoutRoomId == null) {
         timer.cancel();
@@ -708,9 +711,25 @@ class LiveMeetingProvider with ChangeNotifier {
     _transitionTimer?.cancel();
     _transitionTimer = null;
     _transitionElapsedSeconds = 0;
+    _transitionStartTime = null;
   }
 
   void clearBreakoutRoomTransition() {
+    final startTime = _transitionStartTime;
+    if (startTime != null) {
+      final elapsedMs = DateTime.now().difference(startTime).inMilliseconds;
+      loggingService.log(
+        'Breakout room transition completed in ${elapsedMs}ms.',
+      );
+      analytics.logEvent(
+        AnalyticsBreakoutRoomTransitionEvent(
+          communityId: eventProvider.communityId,
+          eventId: eventProvider.eventId,
+          durationMs: elapsedMs,
+          templateId: eventProvider.templateId,
+        ),
+      );
+    }
     _clearBreakoutRoomTransition();
   }
 
