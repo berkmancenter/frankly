@@ -286,7 +286,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                   Positioned.fill(
                     child: ProxiedImage(
                       null,
-                      asset: AppAsset('media/background.gif'),
+                      asset: AppAsset.backgroundGif(),
                       fit: BoxFit.cover,
                       loadingColor: Colors.transparent,
                     ),

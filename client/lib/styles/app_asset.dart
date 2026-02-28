@@ -171,4 +171,7 @@ class AppAsset {
       : path = isSvg ? 'media/maximize.svg' : 'media/maximize-blue.png';
   const AppAsset.needHelpWhite([this.isSvg = false])
       : path = isSvg ? 'media/needHelp.svg' : 'media/need_help.png';
+  const AppAsset.backgroundGif()
+      : path = 'media/background.gif',
+        isSvg = false;
 }
