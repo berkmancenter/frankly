@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:beamer/beamer.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
@@ -22,12 +21,8 @@ import 'package:pedantic/pedantic.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_html/js_util.dart' as js_util;
-import 'package:universal_html/html.dart' as html;
-
-import '../../../../../../../../core/routing/locations.dart';
 import 'agora_room.dart';
 
 class FakeParticipant extends AgoraParticipant {
