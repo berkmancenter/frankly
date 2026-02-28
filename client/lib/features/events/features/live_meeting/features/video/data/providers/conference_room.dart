@@ -42,7 +42,6 @@ class FakeParticipant extends AgoraParticipant {
   @override
   void removeListener(VoidCallback listener) {}
 
-  @override
   List<dynamic> get audioTracks => [];
 
   @override
@@ -54,10 +53,8 @@ class FakeParticipant extends AgoraParticipant {
   @override
   String get userId => id.toString();
 
-  @override
   String get state => 'connected';
 
-  @override
   List<dynamic> get videoTracks => [];
 }
 
