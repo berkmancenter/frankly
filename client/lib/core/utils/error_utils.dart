@@ -90,7 +90,7 @@ Future<T?> alertOnError<T>(
 Future<void> authMessageOnError<T>(
   Future<T> Function() action, {
   required Function(String errorMessage, String code) errorCallback,
-Function()? callback ,
+  Function()? callback,
 }) async {
   try {
     await action();
@@ -100,13 +100,12 @@ Function()? callback ,
     loggingService.log(s, logType: LogType.error);
 
     final sanitizedError = sanitizeError(e.toString());
-    
+
     if (e is FirebaseAuthException) {
       errorCallback(sanitizedError, e.code);
     } else if (e is VisibleException) {
       errorCallback(sanitizedError, e.msg);
     }
-
   }
 }
 

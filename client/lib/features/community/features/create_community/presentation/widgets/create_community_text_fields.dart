@@ -79,13 +79,15 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           label: context.l10n.name,
           onChanged: (String val) => {
             widget.onNameChanged.call(val),
-            if(widget.autoGenerateUrl){
-              widget.onCustomDisplayIdChanged.call(_formatDisplayIdFromName(val)),
-              setState(() {
-                // Update the displayId when the name changes
-                _displayIdController.text = _formatDisplayIdFromName(val);
-              }),
-            },
+            if (widget.autoGenerateUrl)
+              {
+                widget.onCustomDisplayIdChanged
+                    .call(_formatDisplayIdFromName(val)),
+                setState(() {
+                  // Update the displayId when the name changes
+                  _displayIdController.text = _formatDisplayIdFromName(val);
+                }),
+              },
           },
           focus: widget.nameFocus,
           helperText: context.l10n.youCanChangeThisLater,

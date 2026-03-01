@@ -10,7 +10,7 @@ DateTime? dateTimeFromTimestamp(dynamic timestamp) {
 }
 
 // This no longer does anything, as functions and client handle this conversion on their own
-dynamic? timestampFromDateTime(DateTime? dateTime) => dateTime;
+dynamic timestampFromDateTime(DateTime? dateTime) => dateTime;
 
 const String serverTimestampValue = 'SERVER_TIMESTAMP';
 
