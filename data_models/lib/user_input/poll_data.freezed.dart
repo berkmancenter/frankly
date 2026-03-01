@@ -28,7 +28,6 @@ mixin _$PollData {
   String? get pollResponse => throw _privateConstructorUsedError;
   String? get roomId => throw _privateConstructorUsedError;
   String? get agendaItemId => throw _privateConstructorUsedError;
-  String? get agendaItemTitle => throw _privateConstructorUsedError;
   String? get pollQuestion => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +50,6 @@ abstract class $PollDataCopyWith<$Res> {
       String? pollResponse,
       String? roomId,
       String? agendaItemId,
-      String? agendaItemTitle,
       String? pollQuestion});
 }
 
@@ -76,7 +74,6 @@ class _$PollDataCopyWithImpl<$Res, $Val extends PollData>
     Object? pollResponse = freezed,
     Object? roomId = freezed,
     Object? agendaItemId = freezed,
-    Object? agendaItemTitle = freezed,
     Object? pollQuestion = freezed,
   }) {
     return _then(_value.copyWith(
@@ -112,10 +109,6 @@ class _$PollDataCopyWithImpl<$Res, $Val extends PollData>
           ? _value.agendaItemId
           : agendaItemId // ignore: cast_nullable_to_non_nullable
               as String?,
-      agendaItemTitle: freezed == agendaItemTitle
-          ? _value.agendaItemTitle
-          : agendaItemTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
       pollQuestion: freezed == pollQuestion
           ? _value.pollQuestion
           : pollQuestion // ignore: cast_nullable_to_non_nullable
@@ -140,7 +133,6 @@ abstract class _$$_PollDataCopyWith<$Res> implements $PollDataCopyWith<$Res> {
       String? pollResponse,
       String? roomId,
       String? agendaItemId,
-      String? agendaItemTitle,
       String? pollQuestion});
 }
 
@@ -163,7 +155,6 @@ class __$$_PollDataCopyWithImpl<$Res>
     Object? pollResponse = freezed,
     Object? roomId = freezed,
     Object? agendaItemId = freezed,
-    Object? agendaItemTitle = freezed,
     Object? pollQuestion = freezed,
   }) {
     return _then(_$_PollData(
@@ -199,10 +190,6 @@ class __$$_PollDataCopyWithImpl<$Res>
           ? _value.agendaItemId
           : agendaItemId // ignore: cast_nullable_to_non_nullable
               as String?,
-      agendaItemTitle: freezed == agendaItemTitle
-          ? _value.agendaItemTitle
-          : agendaItemTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
       pollQuestion: freezed == pollQuestion
           ? _value.pollQuestion
           : pollQuestion // ignore: cast_nullable_to_non_nullable
@@ -223,7 +210,6 @@ class _$_PollData implements _PollData {
       this.pollResponse,
       this.roomId,
       this.agendaItemId,
-      this.agendaItemTitle,
       this.pollQuestion});
 
   factory _$_PollData.fromJson(Map<String, dynamic> json) =>
@@ -246,13 +232,11 @@ class _$_PollData implements _PollData {
   @override
   final String? agendaItemId;
   @override
-  final String? agendaItemTitle;
-  @override
   final String? pollQuestion;
 
   @override
   String toString() {
-    return 'PollData(id: $id, userId: $userId, userEmail: $userEmail, userName: $userName, answeredDate: $answeredDate, pollResponse: $pollResponse, roomId: $roomId, agendaItemId: $agendaItemId, agendaItemTitle: $agendaItemTitle, pollQuestion: $pollQuestion)';
+    return 'PollData(id: $id, userId: $userId, userEmail: $userEmail, userName: $userName, answeredDate: $answeredDate, pollResponse: $pollResponse, roomId: $roomId, agendaItemId: $agendaItemId, pollQuestion: $pollQuestion)';
   }
 
   @override
@@ -273,26 +257,14 @@ class _$_PollData implements _PollData {
             (identical(other.roomId, roomId) || other.roomId == roomId) &&
             (identical(other.agendaItemId, agendaItemId) ||
                 other.agendaItemId == agendaItemId) &&
-            (identical(other.agendaItemTitle, agendaItemTitle) ||
-                other.agendaItemTitle == agendaItemTitle) &&
             (identical(other.pollQuestion, pollQuestion) ||
                 other.pollQuestion == pollQuestion));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      userId,
-      userEmail,
-      userName,
-      answeredDate,
-      pollResponse,
-      roomId,
-      agendaItemId,
-      agendaItemTitle,
-      pollQuestion);
+  int get hashCode => Object.hash(runtimeType, id, userId, userEmail, userName,
+      answeredDate, pollResponse, roomId, agendaItemId, pollQuestion);
 
   @JsonKey(ignore: true)
   @override
@@ -318,7 +290,6 @@ abstract class _PollData implements PollData {
       final String? pollResponse,
       final String? roomId,
       final String? agendaItemId,
-      final String? agendaItemTitle,
       final String? pollQuestion}) = _$_PollData;
 
   factory _PollData.fromJson(Map<String, dynamic> json) = _$_PollData.fromJson;
@@ -339,8 +310,6 @@ abstract class _PollData implements PollData {
   String? get roomId;
   @override
   String? get agendaItemId;
-  @override
-  String? get agendaItemTitle;
   @override
   String? get pollQuestion;
   @override

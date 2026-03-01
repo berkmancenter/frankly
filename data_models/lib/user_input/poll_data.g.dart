@@ -17,7 +17,6 @@ _$_PollData _$$_PollDataFromJson(Map<String, dynamic> json) => _$_PollData(
       pollResponse: json['pollResponse'] as String?,
       roomId: json['roomId'] as String?,
       agendaItemId: json['agendaItemId'] as String?,
-      agendaItemTitle: json['agendaItemTitle'] as String?,
       pollQuestion: json['pollQuestion'] as String?,
     );
 
@@ -31,6 +30,5 @@ Map<String, dynamic> _$$_PollDataToJson(_$_PollData instance) =>
       'pollResponse': instance.pollResponse,
       'roomId': instance.roomId,
       'agendaItemId': instance.agendaItemId,
-      'agendaItemTitle': instance.agendaItemTitle,
       'pollQuestion': instance.pollQuestion,
     };
