@@ -1,10 +1,8 @@
 import 'package:client/config/environment.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:data_models/community/community.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/styles/styles.dart';
 import 'package:flutter/services.dart';
 
 class CreateCommunityTextFields extends StatefulWidget {

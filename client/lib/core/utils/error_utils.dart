@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 
 import 'dart:async';

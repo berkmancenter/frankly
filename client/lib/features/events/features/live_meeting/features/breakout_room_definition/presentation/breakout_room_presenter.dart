@@ -6,7 +6,6 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/app.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/events/event.dart';
 
 enum BreakoutCardViewType {

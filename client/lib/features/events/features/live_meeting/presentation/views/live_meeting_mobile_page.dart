@@ -177,7 +177,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     context.watch<MeetingGuideCardStore>();
 
     final isBottomSheetPresent = _presenter.isBottomSheetPresent();
-    final isRaisedHandVisible = _presenter.isRaisedHandVisible;
 
     final showAppBar = ![
       MeetingUiState.leftMeeting,

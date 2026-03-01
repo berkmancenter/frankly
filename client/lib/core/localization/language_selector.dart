@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/locale_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LanguageSelector extends StatelessWidget {
   const LanguageSelector({Key? key}) : super(key: key);
@@ -9,7 +8,6 @@ class LanguageSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
-    final l10n = AppLocalizations.of(context)!;
 
     Locale currentLocale = localeProvider.locale ?? const Locale('en');
 
