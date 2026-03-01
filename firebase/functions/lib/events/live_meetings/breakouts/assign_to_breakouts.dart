@@ -148,7 +148,7 @@ class AssignToBreakouts {
           .reduce(math.max);
     }
 
-    final int nonNullNumberOfQuestions = math.min(9, numberOfQuestions ?? 9);
+    final int nonNullNumberOfQuestions = math.min(9, numberOfQuestions);
 
     // Update all values to be numberOfQuestions in length.
     participantSurveyResponsesLookup.updateAll((key, value) {
