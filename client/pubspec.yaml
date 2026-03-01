@@ -3,7 +3,7 @@ description: A platform for deliberations
 publish_to: none
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   json_annotation: ^4.9.0
