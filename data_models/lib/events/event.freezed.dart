@@ -57,7 +57,6 @@ mixin _$Event {
   LiveStreamInfo? get liveStreamInfo => throw _privateConstructorUsedError;
   PrePostCard? get preEventCardData => throw _privateConstructorUsedError;
   PrePostCard? get postEventCardData => throw _privateConstructorUsedError;
-  PlatformItem? get externalPlatform => throw _privateConstructorUsedError;
   EventSettings? get eventSettings => throw _privateConstructorUsedError;
   int get durationInMinutes => throw _privateConstructorUsedError;
 
@@ -124,7 +123,6 @@ abstract class $EventCopyWith<$Res> {
       LiveStreamInfo? liveStreamInfo,
       PrePostCard? preEventCardData,
       PrePostCard? postEventCardData,
-      PlatformItem? externalPlatform,
       EventSettings? eventSettings,
       int durationInMinutes,
       String? externalCommunityId,
@@ -138,7 +136,6 @@ abstract class $EventCopyWith<$Res> {
   $LiveStreamInfoCopyWith<$Res>? get liveStreamInfo;
   $PrePostCardCopyWith<$Res>? get preEventCardData;
   $PrePostCardCopyWith<$Res>? get postEventCardData;
-  $PlatformItemCopyWith<$Res>? get externalPlatform;
   $EventSettingsCopyWith<$Res>? get eventSettings;
 }
 
@@ -180,7 +177,6 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? liveStreamInfo = freezed,
     Object? preEventCardData = freezed,
     Object? postEventCardData = freezed,
-    Object? externalPlatform = freezed,
     Object? eventSettings = freezed,
     Object? durationInMinutes = null,
     Object? externalCommunityId = freezed,
@@ -290,10 +286,6 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
           ? _value.postEventCardData
           : postEventCardData // ignore: cast_nullable_to_non_nullable
               as PrePostCard?,
-      externalPlatform: freezed == externalPlatform
-          ? _value.externalPlatform
-          : externalPlatform // ignore: cast_nullable_to_non_nullable
-              as PlatformItem?,
       eventSettings: freezed == eventSettings
           ? _value.eventSettings
           : eventSettings // ignore: cast_nullable_to_non_nullable
@@ -389,18 +381,6 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
 
   @override
   @pragma('vm:prefer-inline')
-  $PlatformItemCopyWith<$Res>? get externalPlatform {
-    if (_value.externalPlatform == null) {
-      return null;
-    }
-
-    return $PlatformItemCopyWith<$Res>(_value.externalPlatform!, (value) {
-      return _then(_value.copyWith(externalPlatform: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
   $EventSettingsCopyWith<$Res>? get eventSettings {
     if (_value.eventSettings == null) {
       return null;
@@ -451,7 +431,6 @@ abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
       LiveStreamInfo? liveStreamInfo,
       PrePostCard? preEventCardData,
       PrePostCard? postEventCardData,
-      PlatformItem? externalPlatform,
       EventSettings? eventSettings,
       int durationInMinutes,
       String? externalCommunityId,
@@ -470,8 +449,6 @@ abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
   $PrePostCardCopyWith<$Res>? get preEventCardData;
   @override
   $PrePostCardCopyWith<$Res>? get postEventCardData;
-  @override
-  $PlatformItemCopyWith<$Res>? get externalPlatform;
   @override
   $EventSettingsCopyWith<$Res>? get eventSettings;
 }
@@ -510,7 +487,6 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
     Object? liveStreamInfo = freezed,
     Object? preEventCardData = freezed,
     Object? postEventCardData = freezed,
-    Object? externalPlatform = freezed,
     Object? eventSettings = freezed,
     Object? durationInMinutes = null,
     Object? externalCommunityId = freezed,
@@ -620,10 +596,6 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
           ? _value.postEventCardData
           : postEventCardData // ignore: cast_nullable_to_non_nullable
               as PrePostCard?,
-      externalPlatform: freezed == externalPlatform
-          ? _value.externalPlatform
-          : externalPlatform // ignore: cast_nullable_to_non_nullable
-              as PlatformItem?,
       eventSettings: freezed == eventSettings
           ? _value.eventSettings
           : eventSettings // ignore: cast_nullable_to_non_nullable
@@ -692,7 +664,6 @@ class _$_Event extends _Event {
       this.liveStreamInfo,
       this.preEventCardData,
       this.postEventCardData,
-      this.externalPlatform,
       this.eventSettings,
       this.durationInMinutes = 60,
       this.externalCommunityId,
@@ -770,8 +741,6 @@ class _$_Event extends _Event {
   @override
   final PrePostCard? postEventCardData;
   @override
-  final PlatformItem? externalPlatform;
-  @override
   final EventSettings? eventSettings;
   @override
   @JsonKey()
@@ -804,7 +773,7 @@ class _$_Event extends _Event {
 
   @override
   String toString() {
-    return 'Event(id: $id, status: $status, nullableEventType: $nullableEventType, collectionPath: $collectionPath, communityId: $communityId, templateId: $templateId, creatorId: $creatorId, prerequisiteTemplateId: $prerequisiteTemplateId, creatorDisplayName: $creatorDisplayName, createdDate: $createdDate, scheduledTime: $scheduledTime, scheduledTimeZone: $scheduledTimeZone, title: $title, description: $description, image: $image, isPublic: $isPublic, minParticipants: $minParticipants, maxParticipants: $maxParticipants, agendaItems: $agendaItems, waitingRoomInfo: $waitingRoomInfo, breakoutRoomDefinition: $breakoutRoomDefinition, isLocked: $isLocked, liveStreamInfo: $liveStreamInfo, preEventCardData: $preEventCardData, postEventCardData: $postEventCardData, externalPlatform: $externalPlatform, eventSettings: $eventSettings, durationInMinutes: $durationInMinutes, externalCommunityId: $externalCommunityId, externalCommunityStatus: $externalCommunityStatus, participantCountEstimate: $participantCountEstimate, presentParticipantCountEstimate: $presentParticipantCountEstimate, breakoutMatchIdsToRecord: $breakoutMatchIdsToRecord)';
+    return 'Event(id: $id, status: $status, nullableEventType: $nullableEventType, collectionPath: $collectionPath, communityId: $communityId, templateId: $templateId, creatorId: $creatorId, prerequisiteTemplateId: $prerequisiteTemplateId, creatorDisplayName: $creatorDisplayName, createdDate: $createdDate, scheduledTime: $scheduledTime, scheduledTimeZone: $scheduledTimeZone, title: $title, description: $description, image: $image, isPublic: $isPublic, minParticipants: $minParticipants, maxParticipants: $maxParticipants, agendaItems: $agendaItems, waitingRoomInfo: $waitingRoomInfo, breakoutRoomDefinition: $breakoutRoomDefinition, isLocked: $isLocked, liveStreamInfo: $liveStreamInfo, preEventCardData: $preEventCardData, postEventCardData: $postEventCardData, eventSettings: $eventSettings, durationInMinutes: $durationInMinutes, externalCommunityId: $externalCommunityId, externalCommunityStatus: $externalCommunityStatus, participantCountEstimate: $participantCountEstimate, presentParticipantCountEstimate: $presentParticipantCountEstimate, breakoutMatchIdsToRecord: $breakoutMatchIdsToRecord)';
   }
 
   @override
@@ -858,8 +827,6 @@ class _$_Event extends _Event {
                 other.preEventCardData == preEventCardData) &&
             (identical(other.postEventCardData, postEventCardData) ||
                 other.postEventCardData == postEventCardData) &&
-            (identical(other.externalPlatform, externalPlatform) ||
-                other.externalPlatform == externalPlatform) &&
             (identical(other.eventSettings, eventSettings) ||
                 other.eventSettings == eventSettings) &&
             (identical(other.durationInMinutes, durationInMinutes) ||
@@ -909,7 +876,6 @@ class _$_Event extends _Event {
         liveStreamInfo,
         preEventCardData,
         postEventCardData,
-        externalPlatform,
         eventSettings,
         durationInMinutes,
         externalCommunityId,
@@ -967,7 +933,6 @@ abstract class _Event extends Event {
       final LiveStreamInfo? liveStreamInfo,
       final PrePostCard? preEventCardData,
       final PrePostCard? postEventCardData,
-      final PlatformItem? externalPlatform,
       final EventSettings? eventSettings,
       final int durationInMinutes,
       final String? externalCommunityId,
@@ -1040,8 +1005,6 @@ abstract class _Event extends Event {
   PrePostCard? get preEventCardData;
   @override
   PrePostCard? get postEventCardData;
-  @override
-  PlatformItem? get externalPlatform;
   @override
   EventSettings? get eventSettings;
   @override
@@ -4483,174 +4446,6 @@ abstract class _BreakoutCategory implements BreakoutCategory {
   @override
   @JsonKey(ignore: true)
   _$$_BreakoutCategoryCopyWith<_$_BreakoutCategory> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-PlatformItem _$PlatformItemFromJson(Map<String, dynamic> json) {
-  return _PlatformItem.fromJson(json);
-}
-
-/// @nodoc
-mixin _$PlatformItem {
-  String? get url => throw _privateConstructorUsedError;
-  @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-  PlatformKey get platformKey => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PlatformItemCopyWith<PlatformItem> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PlatformItemCopyWith<$Res> {
-  factory $PlatformItemCopyWith(
-          PlatformItem value, $Res Function(PlatformItem) then) =
-      _$PlatformItemCopyWithImpl<$Res, PlatformItem>;
-  @useResult
-  $Res call(
-      {String? url,
-      @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-      PlatformKey platformKey});
-}
-
-/// @nodoc
-class _$PlatformItemCopyWithImpl<$Res, $Val extends PlatformItem>
-    implements $PlatformItemCopyWith<$Res> {
-  _$PlatformItemCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? url = freezed,
-    Object? platformKey = null,
-  }) {
-    return _then(_value.copyWith(
-      url: freezed == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String?,
-      platformKey: null == platformKey
-          ? _value.platformKey
-          : platformKey // ignore: cast_nullable_to_non_nullable
-              as PlatformKey,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$_PlatformItemCopyWith<$Res>
-    implements $PlatformItemCopyWith<$Res> {
-  factory _$$_PlatformItemCopyWith(
-          _$_PlatformItem value, $Res Function(_$_PlatformItem) then) =
-      __$$_PlatformItemCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String? url,
-      @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-      PlatformKey platformKey});
-}
-
-/// @nodoc
-class __$$_PlatformItemCopyWithImpl<$Res>
-    extends _$PlatformItemCopyWithImpl<$Res, _$_PlatformItem>
-    implements _$$_PlatformItemCopyWith<$Res> {
-  __$$_PlatformItemCopyWithImpl(
-      _$_PlatformItem _value, $Res Function(_$_PlatformItem) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? url = freezed,
-    Object? platformKey = null,
-  }) {
-    return _then(_$_PlatformItem(
-      url: freezed == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String?,
-      platformKey: null == platformKey
-          ? _value.platformKey
-          : platformKey // ignore: cast_nullable_to_non_nullable
-              as PlatformKey,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_PlatformItem implements _PlatformItem {
-  _$_PlatformItem(
-      {this.url,
-      @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-      this.platformKey = PlatformKey.community});
-
-  factory _$_PlatformItem.fromJson(Map<String, dynamic> json) =>
-      _$$_PlatformItemFromJson(json);
-
-  @override
-  final String? url;
-  @override
-  @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-  final PlatformKey platformKey;
-
-  @override
-  String toString() {
-    return 'PlatformItem(url: $url, platformKey: $platformKey)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_PlatformItem &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.platformKey, platformKey) ||
-                other.platformKey == platformKey));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, url, platformKey);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_PlatformItemCopyWith<_$_PlatformItem> get copyWith =>
-      __$$_PlatformItemCopyWithImpl<_$_PlatformItem>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_PlatformItemToJson(
-      this,
-    );
-  }
-}
-
-abstract class _PlatformItem implements PlatformItem {
-  factory _PlatformItem(
-      {final String? url,
-      @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-      final PlatformKey platformKey}) = _$_PlatformItem;
-
-  factory _PlatformItem.fromJson(Map<String, dynamic> json) =
-      _$_PlatformItem.fromJson;
-
-  @override
-  String? get url;
-  @override
-  @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-  PlatformKey get platformKey;
-  @override
-  @JsonKey(ignore: true)
-  _$$_PlatformItemCopyWith<_$_PlatformItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

@@ -37,7 +37,6 @@ class Event with _$Event implements SerializeableRequest {
   static const String kFieldPostEventCardData = 'postEventCardData';
   static const String kFieldWaitingRoomInfo = 'waitingRoomInfo';
   static const String fieldPrerequisiteTemplate = 'prerequisiteTemplateId';
-  static const String kFieldExternalPlatform = 'externalPlatform';
   static const String kFieldEventType = 'eventType';
   static const String kFieldPresentParticipantCountEstimate =
       'presentParticipantCountEstimate';
@@ -101,7 +100,6 @@ class Event with _$Event implements SerializeableRequest {
     LiveStreamInfo? liveStreamInfo,
     PrePostCard? preEventCardData,
     PrePostCard? postEventCardData,
-    PlatformItem? externalPlatform,
     EventSettings? eventSettings,
     @Default(60) int durationInMinutes,
 
@@ -581,21 +579,6 @@ class BreakoutCategory with _$BreakoutCategory {
 
   factory BreakoutCategory.fromJson(Map<String, dynamic> json) =>
       _$BreakoutCategoryFromJson(json);
-}
-
-enum PlatformKey { community, googleMeet, maps, microsoftTeam, zoom }
-
-@Freezed(makeCollectionsUnmodifiable: false)
-class PlatformItem with _$PlatformItem {
-  factory PlatformItem({
-    String? url,
-    @Default(PlatformKey.community)
-    @JsonKey(defaultValue: PlatformKey.community, unknownEnumValue: null)
-    PlatformKey platformKey,
-  }) = _PlatformItem;
-
-  factory PlatformItem.fromJson(Map<String, dynamic> json) =>
-      _$PlatformItemFromJson(json);
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)

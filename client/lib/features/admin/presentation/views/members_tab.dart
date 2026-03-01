@@ -140,7 +140,7 @@ class _MembersTabState extends State<MembersTab> {
   Widget _buildSearchBarField(List<Membership> memberships) {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Search',
+        hintText: context.l10n.search,
         border: InputBorder.none,
       ),
       onChanged: (value) {
@@ -516,7 +516,7 @@ class _MembersTabState extends State<MembersTab> {
                       ),
                       SizedBox(width: 8),
                       Tooltip(
-                        message: 'Download members data',
+                        message: context.l10n.downloadMembersData,
                         child: ActionButton(
                           type: ActionButtonType.outline,
                           height: 40,
@@ -556,7 +556,7 @@ class _MembersTabState extends State<MembersTab> {
                             !isNullOrEmpty(_currentSearch)) {
                           return Padding(
                             padding: const EdgeInsets.all(8),
-                            child: Text('No matching members found.'),
+                            child: Text(context.l10n.noMatchingMembersFound),
                           );
                         }
 

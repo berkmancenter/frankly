@@ -51,10 +51,6 @@ _$_Event _$$_EventFromJson(Map<String, dynamic> json) => _$_Event(
           ? null
           : PrePostCard.fromJson(
               json['postEventCardData'] as Map<String, dynamic>),
-      externalPlatform: json['externalPlatform'] == null
-          ? null
-          : PlatformItem.fromJson(
-              json['externalPlatform'] as Map<String, dynamic>),
       eventSettings: json['eventSettings'] == null
           ? null
           : EventSettings.fromJson(
@@ -94,7 +90,6 @@ Map<String, dynamic> _$$_EventToJson(_$_Event instance) => <String, dynamic>{
       'liveStreamInfo': instance.liveStreamInfo?.toJson(),
       'preEventCardData': instance.preEventCardData?.toJson(),
       'postEventCardData': instance.postEventCardData?.toJson(),
-      'externalPlatform': instance.externalPlatform?.toJson(),
       'eventSettings': instance.eventSettings?.toJson(),
       'durationInMinutes': instance.durationInMinutes,
       'externalCommunityId': instance.externalCommunityId,
@@ -479,28 +474,6 @@ Map<String, dynamic> _$$_BreakoutCategoryToJson(_$_BreakoutCategory instance) =>
       'id': instance.id,
       'category': instance.category,
     };
-
-_$_PlatformItem _$$_PlatformItemFromJson(Map<String, dynamic> json) =>
-    _$_PlatformItem(
-      url: json['url'] as String?,
-      platformKey:
-          $enumDecodeNullable(_$PlatformKeyEnumMap, json['platformKey']) ??
-              PlatformKey.community,
-    );
-
-Map<String, dynamic> _$$_PlatformItemToJson(_$_PlatformItem instance) =>
-    <String, dynamic>{
-      'url': instance.url,
-      'platformKey': _$PlatformKeyEnumMap[instance.platformKey]!,
-    };
-
-const _$PlatformKeyEnumMap = {
-  PlatformKey.community: 'community',
-  PlatformKey.googleMeet: 'googleMeet',
-  PlatformKey.maps: 'maps',
-  PlatformKey.microsoftTeam: 'microsoftTeam',
-  PlatformKey.zoom: 'zoom',
-};
 
 _$_WaitingRoomInfo _$$_WaitingRoomInfoFromJson(Map<String, dynamic> json) =>
     _$_WaitingRoomInfo(

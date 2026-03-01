@@ -64,24 +64,7 @@ class EditEventPresenter {
     _model.event = _eventPageProvider.eventProvider.event;
     _model.initialEvent = _eventPageProvider.eventProvider.event;
 
-    _eventPageProvider.eventProvider.addListener(_listenForByovChanges);
-
     _view.updateView();
-  }
-
-  void dispose() {
-    _eventPageProvider.eventProvider.removeListener(_listenForByovChanges);
-  }
-
-  void _listenForByovChanges() {
-    if (_model.event.externalPlatform !=
-        _eventPageProvider.eventProvider.event.externalPlatform) {
-      _model.event = _model.event.copyWith(
-        externalPlatform:
-            _eventPageProvider.eventProvider.event.externalPlatform,
-      );
-      _view.updateView();
-    }
   }
 
   void updateEventType(EventType value) {
@@ -183,10 +166,6 @@ class EditEventPresenter {
 
   bool isMobile(BuildContext context) {
     return _responsiveLayoutService.isMobile(context);
-  }
-
-  bool isPlatformSelectionFeatureEnabled() {
-    return _communityProvider.settings.enablePlatformSelection;
   }
 
   Future<void> saveChanges() async {
