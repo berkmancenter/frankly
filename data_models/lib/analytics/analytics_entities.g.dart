@@ -322,6 +322,24 @@ Map<String, dynamic> _$AnalyticsRsvpEventEventToJson(
       'templateId': instance.templateId,
     };
 
+AnalyticsBreakoutRoomTransitionEvent
+    _$AnalyticsBreakoutRoomTransitionEventFromJson(Map<String, dynamic> json) =>
+        AnalyticsBreakoutRoomTransitionEvent(
+          communityId: json['communityId'] as String,
+          eventId: json['eventId'] as String,
+          durationMs: json['durationMs'] as int,
+          templateId: json['templateId'] as String?,
+        );
+
+Map<String, dynamic> _$AnalyticsBreakoutRoomTransitionEventToJson(
+        AnalyticsBreakoutRoomTransitionEvent instance) =>
+    <String, dynamic>{
+      'communityId': instance.communityId,
+      'eventId': instance.eventId,
+      'durationMs': instance.durationMs,
+      'templateId': instance.templateId,
+    };
+
 AnalyticsDonateEvent _$AnalyticsDonateEventFromJson(
         Map<String, dynamic> json) =>
     AnalyticsDonateEvent(
@@ -353,23 +371,4 @@ Map<String, dynamic> _$AnalyticsUpdateCommunitySubscriptionEventToJson(
       'planType': instance.planType,
       'subscriptionId': instance.subscriptionId,
       'isCanceled': instance.isCanceled,
-    };
-
-AnalyticsBreakoutRoomTransitionEvent
-    _$AnalyticsBreakoutRoomTransitionEventFromJson(
-            Map<String, dynamic> json) =>
-        AnalyticsBreakoutRoomTransitionEvent(
-          communityId: json['communityId'] as String,
-          eventId: json['eventId'] as String,
-          durationMs: json['durationMs'] as int,
-          templateId: json['templateId'] as String?,
-        );
-
-Map<String, dynamic> _$AnalyticsBreakoutRoomTransitionEventToJson(
-        AnalyticsBreakoutRoomTransitionEvent instance) =>
-    <String, dynamic>{
-      'communityId': instance.communityId,
-      'eventId': instance.eventId,
-      'durationMs': instance.durationMs,
-      'templateId': instance.templateId,
     };

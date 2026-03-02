@@ -84,10 +84,12 @@ class LiveMeetingProvider with ChangeNotifier {
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
 
-  /// This is the room that the user is currently transitioning into. We need to track this
-  /// separately because there may be a delay between when the user is sent to the breakout room
-  /// and when they actually join the breakout room stream. During this time we want to show the
-  /// breakout room UI but we won't have a breakout room stream to listen to yet.
+  /// The ID of the breakout room the user is currently transitioning into, or null if no
+  /// transition is in progress. We need to track this separately because there may be a delay
+  /// between when the user is sent to the breakout room and when they actually join the breakout
+  /// room stream. During this time we want to show the breakout room UI but we won't have a
+  /// breakout room stream to listen to yet.
+  /// Use [isInBreakoutTransition] to check whether a transition is in progress.
   String? _inTransitionToBreakoutRoomId;
   String? _cachedJoinInfoRoomId;
   String? _breakoutRoomOverride;
@@ -220,6 +222,10 @@ class LiveMeetingProvider with ChangeNotifier {
 
   String? get breakoutRoomOverride => _breakoutRoomOverride;
 
+  /// Whether the user is currently transitioning into a breakout room. True from the moment the
+  /// user is assigned to a room until they have successfully joined the room stream.
+  bool get isInBreakoutTransition => _inTransitionToBreakoutRoomId != null;
+
   String? get currentBreakoutRoomId {
     if (_userLeftBreakouts) return null;
     return breakoutRoomOverride ?? assignedBreakoutRoomId;
@@ -230,7 +236,7 @@ class LiveMeetingProvider with ChangeNotifier {
       case MeetingUiState.waitingRoom:
         return breakoutsWaitingRoomId;
       case MeetingUiState.breakoutRoom:
-        if (_inTransitionToBreakoutRoomId == null) {
+        if (!isInBreakoutTransition) {
           loggingService.log(
             'Heartbeat: user is in the breakout UI state but the breakout '
             'room is not specified. This may occur if the breakout room is '
@@ -520,7 +526,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _checkLoadBreakoutsStream(liveMeeting);
 
-    if (!breakoutsActive && _inTransitionToBreakoutRoomId != null) {
+    if (!breakoutsActive && isInBreakoutTransition) {
       leaveBreakoutRoom();
       // True immediately after calling leaveBreakoutRoom, so reset it here since
       // the user is moving to another room rather than leaving breakouts entirely.
@@ -695,7 +701,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _transitionStartTime = DateTime.now();
     _transitionTimer = Timer.periodic(
         Duration(seconds: _breakoutRoomTransitionHeartbeatSeconds), (timer) {
-      if (_inTransitionToBreakoutRoomId == null) {
+      if (!isInBreakoutTransition) {
         timer.cancel();
         return;
       }
