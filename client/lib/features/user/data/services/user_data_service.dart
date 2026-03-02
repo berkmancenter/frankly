@@ -12,9 +12,7 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 class UserDataService with ChangeNotifier {
   String? _currentUserId;

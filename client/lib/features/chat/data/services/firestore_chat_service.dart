@@ -69,7 +69,7 @@ class FirestoreChatService {
   ) async {
     // This is a lengthy operation so its important to ensure it doesnt happen
     // for each doc access
-    final docs = showTime(() => snapshot.docs, 'get docs time');
+    final docs = snapshot.docs;
 
     // compute does nothing on web: https://github.com/flutter/flutter/issues/33577
     final chatMessages = await compute(
@@ -91,17 +91,5 @@ class FirestoreChatService {
     List<Map<String, dynamic>> data,
   ) {
     return data.map((d) => ChatMessage.fromJson(fromFirestoreJson(d))).toList();
-  }
-}
-
-T showTime<T>(T Function() action, String description) {
-  const enable = false;
-  if (enable) {
-    final timer = Stopwatch()..start();
-    final temp = action();
-    loggingService.log('$description: ${timer.elapsedMilliseconds}');
-    return temp;
-  } else {
-    return action();
   }
 }

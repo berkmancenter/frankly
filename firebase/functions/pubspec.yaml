@@ -3,7 +3,7 @@ description: Cloud functions
 publish_to: none
 
 environment:
-    sdk: '>=2.17.0 <3.0.0'
+    sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
     enum_to_string: ^2.0.1
@@ -42,6 +42,7 @@ dependencies:
     freezed: ^2.4.7
     xml: ^6.5.0
     collection: ^1.19.0
+    meta: ^1.12.0
     http_parser: ^4.1.0
 
 dev_dependencies:

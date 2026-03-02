@@ -18,11 +18,6 @@ class WaitingRoomWidgetPresenter {
         _model.event.waitingRoomInfo?.copyWith() ?? WaitingRoomInfo();
   }
 
-  void enableChat(value) {
-    _model.waitingRoomInfo = _model.waitingRoomInfo.copyWith(enableChat: value);
-    _view.updateView();
-  }
-
   void updateWaitingText(String text) {
     _model.waitingRoomInfo = _model.waitingRoomInfo.copyWith(content: text);
     _view.updateView();

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
@@ -156,8 +155,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
     await alertOnError(context, () async {
       final eventPageProvider = context.read<EventPageProvider>();
       final event = eventPageProvider.eventProvider.event;
-      final communityProvider =
-          Provider.of<CommunityProvider>(context, listen: false);
       JoinEventResults joinResults = await alertOnError<JoinEventResults>(
             context,
             () => eventPageProvider.joinEvent(

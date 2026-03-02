@@ -591,7 +591,6 @@ class WaitingRoomInfo with _$WaitingRoomInfo {
     String? content,
     MediaItem? waitingMediaItem,
     MediaItem? introMediaItem,
-    @Default(false) bool enableChat,
     @Default(false) bool loopWaitingVideo,
   }) = _WaitingRoomInfo;
 

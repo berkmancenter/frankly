@@ -16,7 +16,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/core/widgets/buttons/thick_outline_button.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/core/utils/visible_exception.dart';
@@ -80,7 +79,6 @@ class _AdminPanelState extends State<AdminPanel> {
     MeetingProviderParticipant participant,
   ) {
     final id = participant.userId;
-    final sessionId = participant.sessionId;
     final local = participant.local;
 
     return Padding(
