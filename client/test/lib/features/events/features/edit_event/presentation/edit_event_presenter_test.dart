@@ -246,20 +246,6 @@ void main() {
     expect(result, isTrue);
   });
 
-  group('isPlatformSelectionFeatureEnabled', () {
-    test('true', () {
-      final settings = CommunitySettings(enablePlatformSelection: true);
-      when(mockCommunityProvider.settings).thenReturn(settings);
-      expect(presenter.isPlatformSelectionFeatureEnabled(), isTrue);
-    });
-
-    test('false', () {
-      final settings = CommunitySettings(enablePlatformSelection: false);
-      when(mockCommunityProvider.settings).thenReturn(settings);
-      expect(presenter.isPlatformSelectionFeatureEnabled(), isFalse);
-    });
-  });
-
   group('saveChanges', () {
     test('validation error', () async {
       final community = Community(id: 'communityId');

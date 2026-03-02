@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_model.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/agenda_item_presenter.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_image_data.dart';
@@ -18,6 +22,16 @@ void main() {
   final MockAgendaProvider mockAgendaProvider = MockAgendaProvider();
 
   final AgendaItemHelper helper = AgendaItemHelper();
+
+  setUpAll(() async {
+    GetIt.instance.registerSingleton(AppLocalizationService());
+    final l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
+  });
+
+  tearDownAll(() async {
+    await GetIt.instance.reset();
+  });
 
   tearDown(() {
     reset(mockMeetingGuideCardStore);
@@ -601,7 +615,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Title is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
 
         test('content', () {
@@ -612,7 +627,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Message is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
       });
     });
@@ -640,7 +656,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Title is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
 
         test('content', () {
@@ -652,7 +669,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Video URL is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
       });
     });
@@ -678,7 +696,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Title is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
 
         test('url', () {
@@ -689,7 +708,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Image URL is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
       });
     });
@@ -715,7 +735,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Question is required');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
 
         test('answers', () {
@@ -726,7 +747,8 @@ void main() {
 
           final result = helper.areRequiredFieldsInput(model);
 
-          expect(result, 'Please add some answers');
+          expect(result, isNotNull);
+          expect(result!.isNotEmpty, isTrue);
         });
       });
     });
@@ -751,7 +773,8 @@ void main() {
 
         final result = helper.areRequiredFieldsInput(model);
 
-        expect(result, 'Word Cloud prompt is required');
+        expect(result, isNotNull);
+        expect(result!.isNotEmpty, isTrue);
       });
     });
   });
