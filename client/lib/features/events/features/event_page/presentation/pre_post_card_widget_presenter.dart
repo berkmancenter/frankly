@@ -254,7 +254,8 @@ class PrePostCardWidgetPresenter {
             .attributes[attributeIndex]
             .copyWith(type: selectedType);
         prePostUrls[urlIndex].attributes[attributeIndex] = prePostCardAttribute;
-        _model.prePostCard.copyWith(prePostUrls: prePostUrls);
+        _model.prePostCard =
+            _model.prePostCard.copyWith(prePostUrls: prePostUrls);
         _view.updateView();
       }
     }
@@ -271,7 +272,8 @@ class PrePostCardWidgetPresenter {
     if (urlIndex < prePostUrls.length) {
       prePostUrls[urlIndex].attributes[attributeIndex] =
           attribute.copyWith(queryParam: text);
-      _model.prePostCard.copyWith(prePostUrls: prePostUrls);
+      _model.prePostCard =
+          _model.prePostCard.copyWith(prePostUrls: prePostUrls);
       _view.updateView();
     }
   }
