@@ -588,12 +588,6 @@ class BreakoutStatusInformation extends StatelessWidget {
           var breakoutRoomRemainingTime =
               breakoutRoomScheduledTime.difference(now);
 
-          // Debug output
-          loggingService.log('[BreakoutStatus] scheduledTime: $breakoutRoomScheduledTime, '
-              'now: $now, '
-              'remaining: ${breakoutRoomRemainingTime.inSeconds}s, '
-              'status: ${breakoutSession?.breakoutRoomStatus}');
-
           // The normal countdown is 30 seconds. If we see a much larger value
           // (e.g., 60 minutes), it means the scheduledTime was reset incorrectly
           // or there's a timezone issue - show "Generating" instead of restarting countdown
