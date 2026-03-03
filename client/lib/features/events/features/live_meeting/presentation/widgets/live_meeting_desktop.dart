@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
@@ -582,24 +583,40 @@ class BreakoutStatusInformation extends StatelessWidget {
         period: Duration(seconds: 1),
         builder: (context) {
           final breakoutRoomScheduledTime =
-              breakoutSession?.scheduledTime ?? clockService.now();
-          final now = clockService.now();
-          // Calculate the time remaining, but don't allow it to go negative and reset
+              (breakoutSession?.scheduledTime ?? clockService.now()).toUtc();
+          final now = clockService.now().toUtc();
+          // Calculate the time remaining
           var breakoutRoomRemainingTime =
               breakoutRoomScheduledTime.difference(now);
 
-          // If the scheduled time has passed, keep it at zero instead of letting it reset
-          if (breakoutRoomRemainingTime.isNegative) {
+          // Debug output
+          loggingService.log('[BreakoutStatus] scheduledTime: $breakoutRoomScheduledTime, '
+              'now: $now, '
+              'remaining: ${breakoutRoomRemainingTime.inSeconds}s, '
+              'status: ${breakoutSession?.breakoutRoomStatus}');
+
+          // The normal countdown is 30 seconds. If we see a much larger value
+          // (e.g., 60 minutes), it means the scheduledTime was reset incorrectly
+          // or there's a timezone issue - show "Generating" instead of restarting countdown
+          const maxReasonableCountdown = Duration(minutes: 2);
+
+          // If the scheduled time has passed, status is not pending, or countdown is unreasonably long, show "Generating" instead of a countdown
+          if (breakoutRoomRemainingTime.isNegative ||
+              breakoutSession?.breakoutRoomStatus != BreakoutRoomStatus.pending ||
+              breakoutRoomRemainingTime > maxReasonableCountdown) {
             breakoutRoomRemainingTime = Duration.zero;
           }
 
           final breakoutRoomRemainingTimeDisplay =
               breakoutRoomRemainingTime.getFormattedTime(showHours: false);
 
-          final areBreakoutsPending = breakoutSession?.breakoutRoomStatus ==
+          // Show countdown only if status is pending AND there's time remaining
+          // Once status changes to processingAssignments or time runs out, show "Generating" message
+          final showCountdown = breakoutSession?.breakoutRoomStatus ==
                   BreakoutRoomStatus.pending &&
-              breakoutRoomRemainingTime >= Duration.zero;
-          final breakoutsMessage = areBreakoutsPending
+              breakoutRoomRemainingTime > Duration.zero;
+
+          final breakoutsMessage = showCountdown
               ? 'Breakout room matching starting in $breakoutRoomRemainingTimeDisplay'
               : 'Generating breakout room assignments';
           return Container(
@@ -612,7 +629,7 @@ class BreakoutStatusInformation extends StatelessWidget {
                   child: HeightConstrainedText(breakoutsMessage),
                 ),
                 SizedBox(width: 8),
-                if (!areBreakoutsPending)
+                if (!showCountdown)
                   SizedBox(
                     height: 20,
                     width: 20,
