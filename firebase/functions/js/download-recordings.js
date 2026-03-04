@@ -8,8 +8,11 @@ const firestore = admin.firestore()
 const storage = new Storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
-// Signed URLs expire after 24 hours ... in milliseconds
-const signedUrlExpiration = 24 * 60 * 60 * 1000
+// Signed URLs expire after 15 minutes (milliseconds)
+const signedUrlExpiration = 15 * 60 * 1000
+
+// Expected path shape: community/{id}/templates/{id}/events/{id}
+const eventPathRegex = /^community\/[^\/]+\/templates\/[^\/]+\/events\/[^\/]+$/
 
 const downloadRecording = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
@@ -26,6 +29,10 @@ const downloadRecording = functions.https.onRequest((req, res) => {
             const { eventPath } = req.body
             if (!eventPath) {
                 res.status(400).json({ error: 'eventPath not found' })
+                return
+            }
+            if (!eventPathRegex.test(eventPath)) {
+                res.status(400).json({ error: 'Invalid eventPath format' })
                 return
             }
 
@@ -51,7 +58,9 @@ const downloadRecording = functions.https.onRequest((req, res) => {
 
             const bucket = storage.bucket(bucketName)
             const [files] = await bucket.getFiles({ prefix: `${event.id}/` })
-            const mp4Files = files.filter((file) => file.name.endsWith('.mp4'))
+            const mp4Files = files
+                .filter((file) => file.name.endsWith('.mp4'))
+                .sort((a, b) => a.name.localeCompare(b.name))
 
             if (mp4Files.length === 0) {
                 res.status(404).json({ error: 'No recordings found' })
