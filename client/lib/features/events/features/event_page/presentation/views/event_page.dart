@@ -281,6 +281,13 @@ class EventPageState extends State<EventPage> implements EventPageView {
                         text: 'Enter Event',
                         onPressed: () async {
                           final joined = await _joinEvent(enterMeeting: true);
+                          if (!joined && mounted) {
+                            showRegularToast(
+                              context,
+                              'Could not enter event.',
+                              toastType: ToastType.failed,
+                            );
+                          }
                         },
                         height: 65,
                       ),

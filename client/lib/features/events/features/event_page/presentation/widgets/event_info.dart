@@ -411,6 +411,7 @@ class _EventInfoState extends State<EventInfo> {
       onPressed: () async {
         final successfullyJoined =
             await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
+        if (!mounted) return;
         if (!isEventOpen && !successfullyJoined) {
           // If the event is not open yet, we expect user not to be able to join.
           await showAlert(
@@ -418,6 +419,12 @@ class _EventInfoState extends State<EventInfo> {
             'The event has not started yet. We\'ll see you soon!',
           );
           return;
+        } else if (!successfullyJoined) {
+          showRegularToast(
+            context,
+            'Could not enter event.',
+            toastType: ToastType.failed,
+          );
         }
       },
       text: text,
