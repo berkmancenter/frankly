@@ -251,44 +251,43 @@ class EventPageState extends State<EventPage> implements EventPageView {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
-          CustomInkWell(
-            onTap: () => _joinEvent(enterMeeting: true),
-            child: SizedBox(
-              height: 380,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: ProxiedImage(
-                      null,
-                      asset: AppAsset('media/background.gif'),
-                      fit: BoxFit.cover,
-                      loadingColor: Colors.transparent,
-                    ),
+          SizedBox(
+            height: 380,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ProxiedImage(
+                    null,
+                    asset: AppAsset('media/background.gif'),
+                    fit: BoxFit.cover,
+                    loadingColor: Colors.transparent,
                   ),
-                  Container(
-                    color: context.theme.colorScheme.scrim.withScrimOpacity,
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        HeightConstrainedText(
-                          'The event is starting',
-                          style: TextStyle(
-                            color: context.theme.colorScheme.onPrimary,
-                          ),
+                ),
+                Container(
+                  color: context.theme.colorScheme.scrim.withScrimOpacity,
+                ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      HeightConstrainedText(
+                        'The event is starting',
+                        style: TextStyle(
+                          color: context.theme.colorScheme.onPrimary,
                         ),
-                        SizedBox(height: 10),
-                        ActionButton(
-                          text: 'Enter Event',
-                          onPressed: () => _joinEvent(enterMeeting: true),
-                          height: 65,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+                      ActionButton(
+                        text: 'Enter Event',
+                        onPressed: () async {
+                          final joined = await _joinEvent(enterMeeting: true);
+                        },
+                        height: 65,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 4),
