@@ -30,6 +30,9 @@ class _EventsTabState extends State<EventsTab> {
 
   var _numToShow = 10;
 
+  /// Signed GCS URLs returned for each event, keyed by event ID.
+  final Map<String, List<Map<String, String>>> _recordingLinks = {};
+
   @override
   void initState() {
     super.initState();
@@ -108,46 +111,86 @@ class _EventsTabState extends State<EventsTab> {
   Widget _buildRecordingSection(Event event) {
     if (!(event.eventSettings?.alwaysRecord ?? false)) {
       return Text('');
-    } else {
-      return ActionButton(
-        type: ActionButtonType.outline,
-        loadingHeight: 16,
-        borderSide: BorderSide(color: Theme.of(context).primaryColor),
-        textColor: Theme.of(context).primaryColor,
-        onPressed: () => alertOnError(
-          context,
-          () async {
-            final idToken =
-                await userService.firebaseAuth.currentUser?.getIdToken();
-
-            final response = await http.post(
-              Uri.parse(
-                '${Environment.functionsUrlPrefix}/downloadRecording',
-              ),
-              headers: {'Authorization': 'Bearer $idToken'},
-              body: {'eventPath': event.fullPath},
-            );
-
-            if (response.statusCode != 200) {
-              throw Exception('Failed to get recording URLs');
-            }
-
-            final body = jsonDecode(response.body) as Map<String, dynamic>;
-            final recordings = body['recordings'] as List<dynamic>;
-
-            if (recordings.isEmpty) {
-              throw Exception('No recordings found for this event');
-            }
-
-            // Open each signed GCS URL directly - one per tab if multiple.
-            for (final recording in recordings) {
-              html.window.open(recording['url'] as String, '_blank');
-            }
-          },
-        ),
-        text: context.l10n.download,
-      );
     }
+
+    final links = _recordingLinks[event.id];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ActionButton(
+          type: ActionButtonType.outline,
+          loadingHeight: 16,
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          textColor: Theme.of(context).primaryColor,
+          onPressed: () => alertOnError(
+            context,
+            () async {
+              final idToken =
+                  await userService.firebaseAuth.currentUser?.getIdToken();
+
+              final response = await http.post(
+                Uri.parse(
+                  '${Environment.functionsUrlPrefix}/downloadRecording',
+                ),
+                headers: {'Authorization': 'Bearer $idToken'},
+                body: {'eventPath': event.fullPath},
+              );
+
+              if (response.statusCode != 200) {
+                throw Exception('Failed to get recording URLs');
+              }
+
+              final Map<String, dynamic> body;
+              try {
+                body = jsonDecode(response.body) as Map<String, dynamic>;
+              } catch (_) {
+                throw Exception('Unexpected response from server');
+              }
+
+              final rawList = body['recordings'];
+              if (rawList is! List) {
+                throw Exception('Unexpected response format from server');
+              }
+
+              final recordings = rawList
+                  .whereType<Map<String, dynamic>>()
+                  .map(
+                    (r) => {
+                      'name': r['name'] as String? ?? '',
+                      'url': r['url'] as String? ?? '',
+                    },
+                  )
+                  .where((r) => r['url']!.isNotEmpty)
+                  .toList();
+
+              if (recordings.isEmpty) {
+                throw Exception('No recordings found for this event');
+              }
+
+              setState(() => _recordingLinks[event.id] = recordings);
+            },
+          ),
+          text: context.l10n.download,
+        ),
+        if (links != null && links.isNotEmpty)
+          ...links.asMap().entries.map(
+                (entry) => GestureDetector(
+                  onTap: () => html.window.open(entry.value['url']!, '_blank'),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: HeightConstrainedText(
+                      'Recording ${entry.key + 1}',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+      ],
+    );
   }
 
   Widget _buildEventRow({
