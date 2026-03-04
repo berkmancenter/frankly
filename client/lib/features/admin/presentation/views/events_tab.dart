@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/styles/styles.dart';
@@ -119,28 +120,29 @@ class _EventsTabState extends State<EventsTab> {
             final idToken =
                 await userService.firebaseAuth.currentUser?.getIdToken();
 
-            var downloadTriggerUrl =
-                '${Environment.functionsUrlPrefix}/downloadRecording';
-
             final response = await http.post(
-              Uri.parse(downloadTriggerUrl),
+              Uri.parse(
+                '${Environment.functionsUrlPrefix}/downloadRecording',
+              ),
               headers: {'Authorization': 'Bearer $idToken'},
-              body: {
-                'eventPath': event.fullPath,
-              },
+              body: {'eventPath': event.fullPath},
             );
 
-            final content = response.bodyBytes;
+            if (response.statusCode != 200) {
+              throw Exception('Failed to get recording URLs');
+            }
 
-            final blob = html.Blob([content]);
+            final body = jsonDecode(response.body) as Map<String, dynamic>;
+            final recordings = body['recordings'] as List<dynamic>;
 
-            final blobUrl = html.Url.createObjectUrlFromBlob(blob);
+            if (recordings.isEmpty) {
+              throw Exception('No recordings found for this event');
+            }
 
-            final anchor = html.AnchorElement(href: blobUrl)
-              ..setAttribute('download', 'recording.zip');
-            anchor.click();
-
-            html.Url.revokeObjectUrl(blobUrl);
+            // Open each signed GCS URL directly - one per tab if multiple.
+            for (final recording in recordings) {
+              html.window.open(recording['url'] as String, '_blank');
+            }
           },
         ),
         text: context.l10n.download,
