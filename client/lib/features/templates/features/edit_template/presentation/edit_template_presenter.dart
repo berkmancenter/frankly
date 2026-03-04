@@ -174,11 +174,12 @@ class EditTemplatePresenter {
   }
 
   String getTemplateButtonToggleText() {
+    final l10n = appLocalizationService.getLocalization();
     switch (_model.template.status) {
       case TemplateStatus.active:
-        return 'Remove template';
+        return l10n.removeTemplate;
       case TemplateStatus.removed:
-        return 'Reactivate';
+        return l10n.reactivate;
     }
   }
 
@@ -196,7 +197,7 @@ class EditTemplatePresenterHelper {
   String? areChangesValid(Template template) {
     final title = template.title;
     if (title == null || title.isEmpty) {
-      return 'Title cannot be empty';
+      return appLocalizationService.getLocalization().titleCannotBeEmpty;
     }
 
     return null;
