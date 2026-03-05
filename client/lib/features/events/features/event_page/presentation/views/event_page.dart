@@ -177,7 +177,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
       }
 
       if (!mounted) return false;
-      // Not using an external platform. Enter the meeting normally.
       await alertOnError(
         context,
         () => eventPageProvider.enterMeeting(
