@@ -205,7 +205,7 @@ class AgendaItemPresenter {
         debugPrint(e.toString());
         rethrow;
       }
-      _view.showMessage('Agenda item was saved', toastType: ToastType.success);
+      _view.showMessage(appLocalizationService.getLocalization().agendaItemWasSaved, toastType: ToastType.success);
     }
 
     _model.isEditMode = false;
@@ -271,7 +271,7 @@ class AgendaItemPresenter {
 
   Future<void> deleteAgendaItem() async {
     await _agendaProvider.deleteAgendaItem(_model.agendaItem.id);
-    _view.showMessage('Agenda item was deleted', toastType: ToastType.success);
+    _view.showMessage(appLocalizationService.getLocalization().agendaItemWasDeleted, toastType: ToastType.success);
   }
 
   bool canExpand(bool inLiveMeeting, bool isCompleted, bool isCardActive) {
@@ -455,52 +455,54 @@ class AgendaItemHelper {
   String? areRequiredFieldsInput(AgendaItemModel model) {
     final agendaItemType = model.agendaItem.type;
 
+    final l10n = appLocalizationService.getLocalization();
+
     switch (agendaItemType) {
       case AgendaItemType.text:
         if (model.agendaItemTextData.title.trim().isEmpty) {
-          return 'Title is required';
+          return l10n.titleIsRequired;
         }
 
         if (model.agendaItemTextData.content.trim().isEmpty) {
-          return 'Message is required';
+          return l10n.messageIsRequired;
         }
         break;
       case AgendaItemType.video:
         if (model.agendaItemVideoData.title.trim().isEmpty) {
-          return 'Title is required';
+          return l10n.titleIsRequired;
         }
 
         if (model.agendaItemVideoData.url.trim().isEmpty) {
-          return 'Video URL is required';
+          return l10n.videoUrlIsRequired;
         }
         break;
       case AgendaItemType.image:
         if (model.agendaItemImageData.title.trim().isEmpty) {
-          return 'Title is required';
+          return l10n.titleIsRequired;
         }
 
         if (model.agendaItemImageData.url.trim().isEmpty) {
-          return 'Image URL is required';
+          return l10n.imageUrlIsRequired;
         }
         break;
       case AgendaItemType.poll:
         if (model.agendaItemPollData.question.trim().isEmpty) {
-          return 'Question is required';
+          return l10n.questionIsRequired;
         }
 
         if (model.agendaItemPollData.answers.isEmpty) {
-          return 'Please add some answers';
+          return l10n.pleaseAddSomeAnswers;
         }
 
         break;
       case AgendaItemType.wordCloud:
         if (model.agendaItemWordCloudData.prompt.trim().isEmpty) {
-          return 'Word Cloud prompt is required';
+          return l10n.wordCloudPromptRequired;
         }
         break;
       case AgendaItemType.userSuggestions:
         if (model.agendaItemUserSuggestionsData.headline.trim().isEmpty) {
-          return 'Headline is required';
+          return l10n.headlineIsRequired;
         }
         break;
     }

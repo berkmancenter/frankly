@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -142,7 +143,7 @@ class _EventsTabState extends State<EventsTab> {
             html.Url.revokeObjectUrl(blobUrl);
           },
         ),
-        text: 'Download',
+        text: context.l10n.download,
       );
     }
   }
