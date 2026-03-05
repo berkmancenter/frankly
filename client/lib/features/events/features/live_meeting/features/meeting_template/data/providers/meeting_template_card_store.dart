@@ -88,7 +88,7 @@ class MeetingTemplateCardStore with ChangeNotifier {
   bool get meetingTemplateCardIsPending =>
       _pendingMeetingTemplateAgendaItemTimer?.isActive ?? false;
 
-  bool get guideCardTakeover =>
+  bool get templateCardTakeover =>
       liveMeetingProvider.liveMeetingViewType ==
           LiveMeetingViewType.bradyBunch ||
       [AgendaItemType.video, AgendaItemType.wordCloud]
@@ -207,7 +207,7 @@ class MeetingTemplateCardStore with ChangeNotifier {
     _loadParticipantAgendaItemDetails();
 
     Future.microtask(
-      () => liveMeetingProvider.updateGuideCardIsMinimized(
+      () => liveMeetingProvider.updateTemplateCardIsMinimized(
         isMinimized: agendaProvider.isMeetingFinished,
       ),
     );

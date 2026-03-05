@@ -81,8 +81,8 @@ class MeetingTemplateCardPresenter {
     return _meetingTemplateCardStore.getHandIsRaised(_userService.currentUserId!);
   }
 
-  bool getGuideCardTakeOver() {
-    return _meetingTemplateCardStore.guideCardTakeover;
+  bool getTemplateCardTakeOver() {
+    return _meetingTemplateCardStore.templateCardTakeover;
   }
 
   String? getCurrentAgendaItemId() {

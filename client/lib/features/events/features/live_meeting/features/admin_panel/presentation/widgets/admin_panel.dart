@@ -574,7 +574,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             await agendaProvider.resetMeeting();
           }),
           child: HeightConstrainedText(
-            'Reset Guide',
+            'Reset Template',
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).primaryColor,

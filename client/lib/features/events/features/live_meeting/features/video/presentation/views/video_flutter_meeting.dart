@@ -208,19 +208,19 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
   @override
   Widget build(BuildContext context) {
     final participants = widget.conferenceRoom.participants;
-    final showGuideCard = widget.liveMeetingProvider.showGuideCard;
-    final showGuideCardLayout =
-        showGuideCard && !widget.liveMeetingProvider.isMeetingCardMinimized;
+    final showTemplateCard = widget.liveMeetingProvider.showTemplateCard;
+    final showTemplateCardLayout =
+        showTemplateCard && !widget.liveMeetingProvider.isMeetingCardMinimized;
 
     if (widget.layoutType == LiveMeetingViewType.stage) {
-      final guideCardTakeover =
-          MeetingTemplateCardStore.watch(context)?.guideCardTakeover == true &&
+      final templateCardTakeover =
+          MeetingTemplateCardStore.watch(context)?.templateCardTakeover == true &&
               !widget.liveMeetingProvider.isMeetingCardMinimized;
       return LayoutBuilder(
         builder: (_, constraints) {
           var maxHighlighted = widget.conferenceRoom.maxHighlightedParticipants;
 
-          if (guideCardTakeover) {
+          if (templateCardTakeover) {
             maxHighlighted = 0;
           }
 
@@ -268,7 +268,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
 
                       var widgets = [
                         ...participantWidgets,
-                        if (showGuideCard &&
+                        if (showTemplateCard &&
                             !widget.liveMeetingProvider.isMeetingCardMinimized)
                           ConstrainedBox(
                             constraints: BoxConstraints(
@@ -280,7 +280,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                                 onMinimizeCard: () => alertOnError(
                                   context,
                                   () => LiveMeetingProvider.read(context)
-                                      .updateGuideCardIsMinimized(
+                                      .updateTemplateCardIsMinimized(
                                     isMinimized: true,
                                   ),
                                 ),
@@ -331,7 +331,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                 child: ParticipantGridLayout(),
               ),
             ),
-            if (showGuideCardLayout)
+            if (showTemplateCardLayout)
               Expanded(
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 45, horizontal: 10),
@@ -342,7 +342,7 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
                       onMinimizeCard: () => alertOnError(
                         context,
                         () => LiveMeetingProvider.read(context)
-                            .updateGuideCardIsMinimized(isMinimized: true),
+                            .updateTemplateCardIsMinimized(isMinimized: true),
                       ),
                     ),
                   ),
@@ -603,12 +603,12 @@ class _LayoutOptionButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (liveMeetingProvider.isMeetingCardMinimized &&
-              liveMeetingProvider.showGuideCard)
+              liveMeetingProvider.showTemplateCard)
             MeetingTemplateMinimizedCard(
               onExpandCard: () => alertOnError(
                 context,
                 () => LiveMeetingProvider.read(context)
-                    .updateGuideCardIsMinimized(isMinimized: false),
+                    .updateTemplateCardIsMinimized(isMinimized: false),
               ),
             ),
           SizedBox(width: 10),

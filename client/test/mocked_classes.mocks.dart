@@ -6131,8 +6131,8 @@ class MockEventPermissionsProvider extends _i1.Mock
       ) as bool);
 
   @override
-  bool get canRefreshGuide => (super.noSuchMethod(
-        Invocation.getter(#canRefreshGuide),
+  bool get canRefreshTemplate => (super.noSuchMethod(
+        Invocation.getter(#canRefreshTemplate),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -11240,8 +11240,8 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as _i13.MeetingUiState);
 
   @override
-  bool get showGuideCard => (super.noSuchMethod(
-        Invocation.getter(#showGuideCard),
+  bool get showTemplateCard => (super.noSuchMethod(
+        Invocation.getter(#showTemplateCard),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -11412,10 +11412,10 @@ class MockLiveMeetingProvider extends _i1.Mock
       );
 
   @override
-  _i38.Future<void> updateGuideCardIsMinimized({required bool? isMinimized}) =>
+  _i38.Future<void> updateTemplateCardIsMinimized({required bool? isMinimized}) =>
       (super.noSuchMethod(
         Invocation.method(
-          #updateGuideCardIsMinimized,
+          #updateTemplateCardIsMinimized,
           [],
           {#isMinimized: isMinimized},
         ),
@@ -12389,8 +12389,8 @@ class MockMeetingTemplateCardStore extends _i1.Mock
       ) as bool);
 
   @override
-  bool get guideCardTakeover => (super.noSuchMethod(
-        Invocation.getter(#guideCardTakeover),
+  bool get templateCardTakeover => (super.noSuchMethod(
+        Invocation.getter(#templateCardTakeover),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);

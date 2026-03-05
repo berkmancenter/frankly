@@ -45,7 +45,7 @@ enum CommunityFeatureFlags {
 
 enum OnboardingStep {
   brandSpace,
-  createGuide,
+  createTemplate,
   hostEvent,
   inviteSomeone,
   createStripeAccount,

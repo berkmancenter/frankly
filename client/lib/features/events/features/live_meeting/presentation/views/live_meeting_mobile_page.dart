@@ -81,10 +81,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
     final LiveMeetingMobileBottomSheetState initialSheetState;
 
-    final suppressGuide = ConferenceRoom.read(context) == null ||
+    final suppressTemplate = ConferenceRoom.read(context) == null ||
         context.read<AgendaProvider>().agendaItems.isEmpty;
 
-    if (suppressGuide) {
+    if (suppressTemplate) {
       initialSheetState = LiveMeetingMobileBottomSheetState.hidden;
     } else {
       initialSheetState = LiveMeetingMobileBottomSheetState.partiallyVisible;
@@ -126,7 +126,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         eventTabsController.selectedTabController.selectedIndex;
     final selectedTab = eventTabsController.tabs[selectedTabIndex];
 
-    final isLargeAgendaItem = selectedTab == TabType.guide &&
+    final isLargeAgendaItem = selectedTab == TabType.template &&
         [AgendaItemType.wordCloud, AgendaItemType.userSuggestions].contains(
           context
               .read<MeetingTemplateCardStore>()
@@ -199,7 +199,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
     const showShareButton = false;
 
-    final suppressGuide = ConferenceRoom.read(context) == null ||
+    final suppressTemplate = ConferenceRoom.read(context) == null ||
         agendaProvider.agendaItems.isEmpty;
 
     return PreferredSize(
@@ -215,8 +215,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (eventTabsController.widget.enableGuide &&
-                        !suppressGuide)
+                    if (eventTabsController.widget.enableTemplate &&
+                        !suppressTemplate)
                       AppClickableWidget(
                         child: Icon(
                           Icons.book_outlined,
@@ -228,7 +228,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             context,
                             listen: false,
                           );
-                          eventTabsController.openTab(TabType.guide);
+                          eventTabsController.openTab(TabType.template);
                           _presenter.toggleBottomSheetState(
                             LiveMeetingMobileBottomSheetState.fullyVisible,
                           );
@@ -563,7 +563,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 bottomSheetState: _model.bottomSheetState,
                 onChange: (state) => _presenter.toggleBottomSheetState(state),
                 onClose: _presenter.isDismissableTabOpen
-                    ? () => _presenter.openGuide()
+                    ? () => _presenter.openTemplate()
                     : null,
               ),
             ),
@@ -921,7 +921,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
         final selectedTabIndex =
             eventTabsController.selectedTabController.selectedIndex;
         final selectedTab = eventTabsController.tabs[selectedTabIndex];
-        final isWordCloud = selectedTab == TabType.guide &&
+        final isWordCloud = selectedTab == TabType.template &&
             context
                     .read<MeetingTemplateCardStore>()
                     .meetingTemplateCardAgendaItem

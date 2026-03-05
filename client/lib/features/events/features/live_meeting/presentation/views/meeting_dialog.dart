@@ -107,7 +107,7 @@ class MeetingDialogState extends State<MeetingDialog> {
               final agendaProvider = Provider.of<AgendaProvider>(context);
               final communityProvider = CommunityProvider.watch(context);
 
-              final bool enableGuide = (eventProvider.agendaPreview ||
+              final bool enableTemplate = (eventProvider.agendaPreview ||
                   context
                       .watch<EventPermissionsProvider>()
                       .isAgendaVisibleOverride ||
@@ -131,7 +131,7 @@ class MeetingDialogState extends State<MeetingDialog> {
                         context.watch<EventPermissionsProvider>().canEditEvent,
                     displayLocation: MeetingAgendaDisplayLocation.meetingPage,
                   ),
-                  enableGuide: enableGuide,
+                  enableTemplate: enableTemplate,
                   enableUserSubmittedAgenda:
                       eventProvider.event.eventType == EventType.livestream &&
                           !liveMeetingProvider.isInBreakout,

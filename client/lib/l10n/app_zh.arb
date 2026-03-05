@@ -105,7 +105,7 @@
     }
   },
   "areYouSureYouWantToDeleteMedia": "您确定要删除媒体吗？",
-  "areYouSureYouWantToRefreshTheGuide": "您确定要刷新指南吗？",
+  "areYouSureYouWantToRefreshTheTemplate": "您确定要刷新指南吗？",
   "aspectRatioClipped": "纵横比裁剪",
   "videoElement": "{label}-视频元素",
   "@videoElement": {
@@ -171,7 +171,7 @@
   "confirm": "确认",
   "confirmDelete": "确定要删除吗？",
   "confirmDeleteMedia": "您确定要删除媒体吗？",
-  "confirmRefreshGuide": "您确定要刷新指南吗？",
+  "confirmRefreshTemplate": "您确定要刷新指南吗？",
   "contactEmail": "联系邮箱",
   "createAPost": "创建一篇文章",
   "createAResource": "创建一个资源",
@@ -687,7 +687,7 @@
   "outlookCalendar": "Outlook 日历",
   "office365Calendar": "Office 365 日历",
   "iCalCalendar": "iCal 日历",
-  "refreshGuide": "刷新指南",
+  "refreshTemplate": "刷新指南",
   "createTemplateFromEvent": "从活动创建模板",
   "duplicateEvent": "复制活动",
   "downloadMembersRegistrationData": "下载成员注册数据",

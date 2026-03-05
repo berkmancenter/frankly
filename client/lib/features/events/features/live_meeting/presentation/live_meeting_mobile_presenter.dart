@@ -223,13 +223,13 @@ class LiveMeetingMobilePresenter {
     _view.updateView();
   }
 
-  void openGuide() {
+  void openTemplate() {
     if (_agendaProvider.agendaItems.isEmpty) {
       _model.bottomSheetState = LiveMeetingMobileBottomSheetState.hidden;
     } else {
       _model.bottomSheetState =
           LiveMeetingMobileBottomSheetState.partiallyVisible;
-      _eventTabsControllerState.openTab(TabType.guide);
+      _eventTabsControllerState.openTab(TabType.template);
     }
     _view.updateView();
   }

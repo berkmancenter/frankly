@@ -385,7 +385,7 @@ class _OverviewTabState extends State<OverviewTab> implements OverviewView {
             CreateCommunityDialog(community: community).show();
           },
         );
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return ActionButton(
           text: 'New template',
           icon: Icon(Icons.add, size: 20),

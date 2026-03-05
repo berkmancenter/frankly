@@ -86,7 +86,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
             tab: context.l10n.about,
             content: (context) => _buildAboutSection(context),
           ),
-        if (eventTabsModel.enableGuide)
+        if (eventTabsModel.enableTemplate)
           CustomTabAndContent(
             tab: 'Agenda',
             content: (context) => _buildAgendaSection(context),
@@ -127,7 +127,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
 
   Widget _buildAnnouncements(BuildContext context, {bool compact = false}) {
     return CustomStreamBuilder<List<EventMessage>>(
-      entryFrom: '_EventPageState._buildGuide',
+      entryFrom: '_EventPageState._buildTemplate',
       stream: context.watch<EventTabsControllerState>().eventMessagesStream,
       errorBuilder: (_) => HeightConstrainedText(
         'There was an error while loading Announcements',

@@ -80,7 +80,7 @@ void main() {
       roomName: '1',
     );
 
-    final guideAdvancer = CheckAdvanceMeetingTemplate();
+    final templateAdvancer = CheckAdvanceMeetingTemplate();
     final req = CheckAdvanceMeetingTemplateRequest(
       eventPath: event.fullPath,
       presentIds: ['333', '555', '777', '999'],
@@ -89,7 +89,7 @@ void main() {
       breakoutSessionId: breakoutSessionId,
     );
 
-    await guideAdvancer.action(
+    await templateAdvancer.action(
       req,
       CallableContext('333', null, 'fakeInstanceId'),
     );
@@ -109,7 +109,7 @@ void main() {
     expect(createdDetails, equals(expectedDetails));
 
     // call again with another participant, which should be enough to advance (half of total participants)
-    await guideAdvancer.action(
+    await templateAdvancer.action(
       req,
       CallableContext('555', null, 'fakeInstanceId'),
     );
@@ -186,7 +186,7 @@ void main() {
       roomName: '1',
     );
 
-    final guideAdvancer = CheckAdvanceMeetingTemplate();
+    final templateAdvancer = CheckAdvanceMeetingTemplate();
     final req = CheckAdvanceMeetingTemplateRequest(
       eventPath: event.fullPath,
       presentIds: ['333', '555', '777', '999'],
@@ -195,7 +195,7 @@ void main() {
       breakoutSessionId: breakoutSessionId,
     );
 
-    await guideAdvancer.action(
+    await templateAdvancer.action(
       req,
       CallableContext('333', null, 'fakeInstanceId'),
     );

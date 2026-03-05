@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 class EventTabsController extends StatefulWidget {
   final WidgetBuilder meetingAgendaBuilder;
   final bool enableAbout;
-  final bool enableGuide;
+  final bool enableTemplate;
   final bool enableUserSubmittedAgenda;
   final bool enableChat;
   final bool enablePrePostEvent;
@@ -30,7 +30,7 @@ class EventTabsController extends StatefulWidget {
 
   const EventTabsController({
     this.enableAbout = true,
-    this.enableGuide = true,
+    this.enableTemplate = true,
     this.enableChat = false,
     this.enablePrePostEvent = false,
     this.enableMessages = false,
@@ -80,11 +80,11 @@ class EventTabsControllerState extends State<EventTabsController> {
     super.initState();
 
     final liveMeetingProvider = LiveMeetingProvider.readOrNull(context);
-    final guideTabIndex = _getTabIndex(
-      liveMeetingProvider != null ? TabType.guide : TabType.about,
+    final templateTabIndex = _getTabIndex(
+      liveMeetingProvider != null ? TabType.template : TabType.about,
     );
     _selectedTabController = SelectedTabController(
-      initialTab: guideTabIndex >= 0 ? guideTabIndex : 0,
+      initialTab: templateTabIndex >= 0 ? templateTabIndex : 0,
     );
 
     _selectedTabController.addListener(_onTabChanges);
@@ -180,7 +180,7 @@ class EventTabsControllerState extends State<EventTabsController> {
 
   List<TabType> get tabs => [
         if (widget.enableAbout) TabType.about,
-        if (widget.enableGuide) TabType.guide,
+        if (widget.enableTemplate) TabType.template,
         if (widget.enableUserSubmittedAgenda) TabType.suggestions,
         if (widget.enableChat) TabType.chat,
         if (widget.enableMessages) TabType.messages,

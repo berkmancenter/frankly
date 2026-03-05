@@ -74,7 +74,7 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) =>
 
 const _$OnboardingStepEnumMap = {
   OnboardingStep.brandSpace: 'brandSpace',
-  OnboardingStep.createGuide: 'createGuide',
+  OnboardingStep.createTemplate: 'createTemplate',
   OnboardingStep.hostEvent: 'hostEvent',
   OnboardingStep.inviteSomeone: 'inviteSomeone',
   OnboardingStep.createStripeAccount: 'createStripeAccount',

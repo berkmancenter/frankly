@@ -152,7 +152,7 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   int get maxHighlightedParticipants {
-    return liveMeetingProvider.showGuideCard &&
+    return liveMeetingProvider.showTemplateCard &&
             !liveMeetingProvider.isMeetingCardMinimized
         ? 1
         : 2;
