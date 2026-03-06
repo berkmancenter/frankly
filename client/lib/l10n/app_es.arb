@@ -579,7 +579,6 @@
   "downloadMembersRegistrationData": "Descargar Datos de Registro de Miembros",
   "downloadChatData": "Descargar Datos de Chat",
   "downloadPollsSuggestionsData": "Descargar Datos de Encuestas y Sugerencias",
-  "downloadChatsAndSuggestions": "Descargar Chats y Sugerencias",
   "participantCount": "{count} participantes",
   "pasteOrEnterUrl": "Pegar o ingresar URL",
   "tag": "Etiqueta",
