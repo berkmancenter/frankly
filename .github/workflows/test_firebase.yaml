@@ -84,8 +84,8 @@ jobs:
 
       - name: Test Rules
         if: steps.changes.outputs.firestore == 'true'
-        run: firebase emulators:exec --only firestore --project fake-project-id 'npm run test'
-        working-directory: "firebase/firestore"
+        run: firebase emulators:exec --config firebase.json --only firestore --project fake-project-id 'cd firebase/firestore && npm run test'
+        working-directory: ${{ github.workspace }}
 
       - name: Test Functions
         if: steps.changes.outputs.functions == 'true'

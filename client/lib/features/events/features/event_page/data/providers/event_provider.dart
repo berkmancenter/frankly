@@ -133,6 +133,17 @@ class EventProvider with ChangeNotifier {
           .toList() ??
       [];
 
+  /// Participants who are currently present in the live meeting.
+  /// Returns only active participants with isPresent == true.
+  List<Participant> get presentParticipants =>
+      eventParticipants.where((p) => p.isPresent).toList();
+
+  /// Whether the meeting is currently live (any participant is present).
+  /// For estimate-based events (hostless/livestream), checks the estimate field.
+  bool get hasPresentParticipants => useParticipantCountEstimate
+      ? (event.presentParticipantCountEstimate ?? 0) > 0
+      : eventParticipants.any((p) => p.isPresent);
+
   bool get isParticipant =>
       _selfParticipantStream?.stream.valueOrNull?.status ==
       ParticipantStatus.active;
