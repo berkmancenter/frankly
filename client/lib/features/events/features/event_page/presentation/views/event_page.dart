@@ -153,55 +153,54 @@ class EventPageState extends State<EventPage> implements EventPageView {
     bool enterMeeting = false,
     bool joinCommunity = false,
   }) async {
-    await alertOnError(context, () async {
-      final eventPageProvider = context.read<EventPageProvider>();
-      final event = eventPageProvider.eventProvider.event;
-      final communityProvider =
-          Provider.of<CommunityProvider>(context, listen: false);
-      JoinEventResults joinResults = await alertOnError<JoinEventResults>(
+    return await alertOnError<bool>(context, () async {
+          final eventPageProvider = context.read<EventPageProvider>();
+          final event = eventPageProvider.eventProvider.event;
+          final communityProvider =
+              Provider.of<CommunityProvider>(context, listen: false);
+          JoinEventResults joinResults = await alertOnError<JoinEventResults>(
+                context,
+                () => eventPageProvider.joinEvent(
+                  showConfirm: showConfirm,
+                  joinCommunity: joinCommunity,
+                ),
+              ) ??
+              JoinEventResults(isJoined: false);
+
+          if (!joinResults.isJoined) {
+            // Don't join the meeting if joinEvent returns false.
+            return false;
+          }
+
+          if (!enterMeeting) {
+            return false;
+          }
+
+          if (!mounted) return false;
+          await alertOnError(
             context,
-            () => eventPageProvider.joinEvent(
-              showConfirm: showConfirm,
-              joinCommunity: joinCommunity,
+            () => eventPageProvider.enterMeeting(
+              surveyQuestions: joinResults.surveyQuestions,
             ),
-          ) ??
-          JoinEventResults(isJoined: false);
+          );
 
-      if (!joinResults.isJoined) {
-        // Don't join the meeting if joinEvent returns false.
-        return false;
-      }
-
-      if (!enterMeeting) {
-        return false;
-      }
-
-      if (!mounted) return false;
-      await alertOnError(
-        context,
-        () => eventPageProvider.enterMeeting(
-          surveyQuestions: joinResults.surveyQuestions,
-        ),
-      );
-
-      // Log enter event in analytics.
-      final communityId = event.communityId;
-      final eventId = event.id;
-      final templateId = event.templateId;
-      final isHost = (event.eventType != EventType.hostless) &&
-          event.creatorId == userService.currentUserId;
-      analytics.logEvent(
-        AnalyticsEnterEventEvent(
-          communityId: communityId,
-          eventId: eventId,
-          asHost: isHost,
-          templateId: templateId,
-        ),
-      );
-      return true;
-    });
-    // If user joined, should not reach this point.
-    return false;
+          // Log enter event in analytics.
+          final communityId = event.communityId;
+          final eventId = event.id;
+          final templateId = event.templateId;
+          final isHost = (event.eventType != EventType.hostless) &&
+              event.creatorId == userService.currentUserId;
+          analytics.logEvent(
+            AnalyticsEnterEventEvent(
+              communityId: communityId,
+              eventId: eventId,
+              asHost: isHost,
+              templateId: templateId,
+            ),
+          );
+          return true;
+        }) ??
+        false;
   }
 
   Future<void> _showSendMessageDialog() async {
