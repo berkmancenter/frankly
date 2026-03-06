@@ -118,7 +118,12 @@ class _ParticipantsList extends HookWidget {
         .where((p) => p.status == ParticipantStatus.active)
         .toList();
 
-    return activeParticipants;
+    // When the meeting is live (any participant is present), show only
+    // present participants to match the in-meeting counts.
+    final hasPresent = activeParticipants.any((p) => p.isPresent);
+    return hasPresent
+        ? activeParticipants.where((p) => p.isPresent).toList()
+        : activeParticipants;
   }
 
   @override

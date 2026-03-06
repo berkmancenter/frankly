@@ -66,6 +66,7 @@ class VoteToKick extends OnCallMethod<VoteToKickRequest> {
     final participantsSnapshot = await firestore
         .collection('${request.eventPath}/event-participants')
         .where("currentBreakoutRoomId", isEqualTo: liveMeetingId)
+        .where(Participant.kFieldIsPresent, isEqualTo: true)
         .get();
     final participants = participantsSnapshot.documents
         .map(

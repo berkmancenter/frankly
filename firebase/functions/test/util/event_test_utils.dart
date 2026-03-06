@@ -10,8 +10,6 @@ class EventTestUtils {
   Future<Event> createEvent({
     required Event event,
     required String userId,
-    PrivateLiveStreamInfo? privateLiveStreamInfo,
-    bool record = false,
   }) async {
     final eventRef = eventsCollection(
       communityId: event.communityId,
@@ -52,26 +50,6 @@ class EventTestUtils {
 
       transaction.set(participantRef, DocumentData.fromMap(participantMap));
 
-// TODO needed?
-      //await userDataService.changeCommunityMembership(
-      //userId: userId,
-      //communityId: event.communityId,
-      //newStatus: MembershipStatus.attendee,
-      //allowMemberDowngrade: false,
-      //);
-
-      //if (record) {
-      //  transaction.set(
-      //    firestore.doc(firestoreLiveMeetingService.getLiveMeetingPath(newEvent)),
-      //    jsonSubset([LiveMeeting.kFieldRecord], LiveMeeting(record: record).toJson()),
-      // );
-      //}
-
-      //if (privateLiveStreamInfo != null) {
-      //  transaction.set(eventRef.collection('private-live-stream-info').doc(eventRef.id),
-      //      toFirestoreJson(privateLiveStreamInfo.toJson()));
-      //}
-
       return newEvent;
     });
   }
@@ -100,8 +78,8 @@ class EventTestUtils {
     required String eventId,
     required String uid,
     String? breakoutSessionId,
+    String? currentBreakoutRoomId,
     bool isPresent = true,
-    bool setAttendeeStatus = true,
     ParticipantStatus? participantStatus = ParticipantStatus.active,
     MembershipStatus? participantMembershipStatus = MembershipStatus.attendee,
   }) async {
@@ -123,24 +101,13 @@ class EventTestUtils {
       status: participantStatus,
       scheduledTime: event.scheduledTime,
       availableForBreakoutSessionId: breakoutSessionId,
+      currentBreakoutRoomId: currentBreakoutRoomId,
       isPresent: isPresent,
       membershipStatus: participantMembershipStatus,
-      /**joinParameters: queryParametersService.mostRecentQueryParameters,
-      breakoutRoomSurveyQuestions: breakoutRoomSurveyResults?.questions ?? [],
-      zipCode: breakoutRoomSurveyResults?.zipCode,**/
     );
 
     final participantRef =
         reference.collection('event-participants').document(uid);
-
-    /*if (setAttendeeStatus) {
-      await userDataService.changeCommunityMembership(
-        userId: uid,
-        communityId: communityId,
-        newStatus: MembershipStatus.attendee,
-        allowMemberDowngrade: false,
-      );
-    }*/
 
     final myMap = {
       ...firestoreUtils.toFirestoreJson(participant.toJson()),

@@ -139,6 +139,62 @@ void main() {
     expect(updatedEvent2.presentParticipantCountEstimate, equals(1));
   });
 
+  test(
+      'Counts participants for a currently-running event (scheduledTime in the past)',
+      () async {
+    // In this case, an event whose scheduledTime has passed is actively
+    // running. The old pre-check used scheduledTime >= now, which excluded
+    // already-started events. The fix uses a time-bounded window derived from
+    // durationInMinutes so running events are still included.
+    var runningEvent = Event(
+      id: '7777',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.livestream,
+      collectionPath: '',
+      // Started 30 minutes ago; durationInMinutes defaults to 60, so
+      // the per-event window end = now - 30min + 60min*1.5 = now + 60min.
+      scheduledTime: DateTime.now().subtract(const Duration(minutes: 30)),
+      participantCountEstimate: 0,
+      presentParticipantCountEstimate: 0,
+    );
+
+    runningEvent = await eventUtils.createEvent(
+      event: runningEvent,
+      userId: adminUserId,
+    );
+
+    final participants = [
+      {'userId': 'liveUser1', 'isPresent': true},
+      {'userId': 'liveUser2', 'isPresent': true},
+      {'userId': 'liveUser3', 'isPresent': false},
+    ];
+
+    for (final p in participants) {
+      await eventUtils.joinEvent(
+        communityId: communityId,
+        templateId: templateId,
+        eventId: runningEvent.id,
+        uid: p['userId']! as String,
+        participantStatus: ParticipantStatus.active,
+        isPresent: p['isPresent']! as bool,
+      );
+    }
+
+    await UpdateLiveStreamParticipantCount().action(MockEventContext());
+
+    final updatedDoc = await firestore.document(runningEvent.fullPath).get();
+    final updatedEvent = Event.fromJson(
+      firestoreUtils.fromFirestoreJson(updatedDoc.data.toMap()),
+    );
+
+    // creator (adminUserId) + 3 joined participants = 4 active; 2 are present
+    expect(updatedEvent.participantCountEstimate, equals(4));
+    expect(updatedEvent.presentParticipantCountEstimate, equals(2));
+  });
+
   test('Skips hosted events and events outside time window', () async {
     // Create hosted event (should be skipped)
     var hostedEvent = Event(

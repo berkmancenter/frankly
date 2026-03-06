@@ -140,10 +140,13 @@ class ParticipantsDialog extends StatelessWidget {
 
   Widget _buildDialogTitle(BuildContext context) {
     final l10n = appLocalizationService.getLocalization();
+    final count = eventProvider.hasPresentParticipants
+        ? eventProvider.presentParticipantCount
+        : eventProvider.participantCount;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
-        l10n.participantCount(eventProvider.participantCount),
+        l10n.participantCount(count),
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
@@ -176,7 +179,14 @@ class ParticipantsDialog extends StatelessWidget {
   }
 
   List<Widget> _buildEventParticipants(BuildContext context) {
-    final participantsList = eventProvider.eventParticipants.toList();
+    // When the meeting is live, show only present participants to match
+    // the in-meeting counts. Otherwise show all registered participants.
+    final allParticipants = eventProvider.eventParticipants;
+    final isLive = allParticipants.any((p) => p.isPresent);
+    final participantsList = isLive
+        ? allParticipants.where((p) => p.isPresent).toList()
+        : allParticipants.toList();
+
     final creator =
         participantsList.firstWhereOrNull((p) => p.id == event.creatorId);
     final self = participantsList.firstWhereOrNull(
