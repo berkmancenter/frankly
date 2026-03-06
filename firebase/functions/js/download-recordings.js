@@ -38,7 +38,7 @@ const downloadRecording = functions.https.onRequest((req, res) => {
 
             const eventDoc = await firestore.doc(eventPath).get()
             if (!eventDoc.exists) {
-                res.status(404).json({ error: 'event not found' })
+                res.status(404).json({ error: 'event not found', debug: { eventPath } })
                 return
             }
             const event = { id: eventDoc.id, ...eventDoc.data() }
@@ -63,7 +63,10 @@ const downloadRecording = functions.https.onRequest((req, res) => {
                 .sort((a, b) => a.name.localeCompare(b.name))
 
             if (mp4Files.length === 0) {
-                res.status(404).json({ error: 'No recordings found' })
+                res.status(404).json({
+                    error: 'No recordings found',
+                    debug: { eventId: event.id, bucket: bucketName },
+                })
                 return
             }
 
