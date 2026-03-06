@@ -147,7 +147,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
   }
 
   /// Shows RSVP dialog and any CTAs.
-  /// Returns whether the user successfully joined.
+  /// Returns whether the user successfully entered the meeting.
+  /// Returns false for cancellations, non-meeting joins (enterMeeting: false), or failures.
   Future<bool> _joinEvent({
     bool showConfirm = true,
     bool enterMeeting = false,
@@ -156,8 +157,6 @@ class EventPageState extends State<EventPage> implements EventPageView {
     return await alertOnError<bool>(context, () async {
           final eventPageProvider = context.read<EventPageProvider>();
           final event = eventPageProvider.eventProvider.event;
-          final communityProvider =
-              Provider.of<CommunityProvider>(context, listen: false);
           JoinEventResults joinResults = await alertOnError<JoinEventResults>(
                 context,
                 () => eventPageProvider.joinEvent(
@@ -183,6 +182,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
               surveyQuestions: joinResults.surveyQuestions,
             ),
           );
+
+          if (!eventPageProvider.isEnteredMeeting) return false;
 
           // Log enter event in analytics.
           final communityId = event.communityId;
