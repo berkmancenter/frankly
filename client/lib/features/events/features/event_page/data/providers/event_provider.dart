@@ -531,9 +531,9 @@ class EventProvider with ChangeNotifier {
 
       // Convert room ID to room name for better readability using shared helper
       final roomName = _getRoomName(
-        chatsData[i].roomId,
-        eventId,
-        breakoutRooms,
+        roomId: chatsData[i].roomId,
+        eventId: eventId,
+        breakoutRooms: breakoutRooms,
       );
       row.add(roomName);
 
