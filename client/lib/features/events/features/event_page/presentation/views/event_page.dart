@@ -293,7 +293,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                             showRegularToast(
                               context,
                               'Event was not entered.',
-                              toastType: ToastType.failed,
+                              toastType: ToastType.neutral,
                             );
                           }
                         },

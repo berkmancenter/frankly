@@ -426,7 +426,7 @@ class _EventInfoState extends State<EventInfo> {
           showRegularToast(
             context,
             'Event was not entered.',
-            toastType: ToastType.failed,
+            toastType: ToastType.neutral,
           );
         }
       },
