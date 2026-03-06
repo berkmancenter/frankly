@@ -268,7 +268,7 @@ class _EventInfoState extends State<EventInfo> {
       }
     } catch (e) {
       // If breakout rooms data is not available, continue without it
-      print('Could not fetch breakout rooms data: $e');
+      loggingService.log('Could not fetch breakout rooms data: $e');
     }
     return null;
   }
