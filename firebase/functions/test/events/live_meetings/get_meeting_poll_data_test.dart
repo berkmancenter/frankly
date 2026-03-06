@@ -331,4 +331,55 @@ void main() {
     expect(polls.length, equals(1));
     expect(polls.first.userName, equals('Public Name'));
   });
+
+  test('Throws unauthorized error for non-admin, non-creator user', () async {
+    const unauthorizedUserId = '888';
+
+    // Add unauthorized user as regular member
+    await communityUtils.addCommunityMember(
+      userId: unauthorizedUserId,
+      communityId: communityId,
+    );
+
+    var event = Event(
+      id: '5682',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: adminUserId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '666',
+          title: "Restricted Poll",
+          content: "Unauthorized access test?",
+          nullableType: AgendaItemType.poll,
+        ),
+      ],
+    );
+
+    event = await eventUtils.createEvent(
+      event: event,
+      userId: adminUserId,
+    );
+
+    final req = GetMeetingPollDataRequest(
+      eventPath: event.fullPath,
+    );
+
+    final pollDataFunction = GetMeetingPollData();
+
+    expect(
+      () => pollDataFunction.action(
+        req,
+        CallableContext(unauthorizedUserId, null, 'fakeInstanceId'),
+      ),
+      throwsA(
+        isA<HttpsError>()
+            .having((e) => e.code, 'code', 'failed-precondition')
+            .having((e) => e.message, 'message', 'unauthorized'),
+      ),
+    );
+  });
 }
