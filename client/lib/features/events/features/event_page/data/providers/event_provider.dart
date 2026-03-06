@@ -529,35 +529,12 @@ class EventProvider with ChangeNotifier {
       row.add(chatsData[i].creatorId ?? '');
       row.add(chatsData[i].message ?? chatsData[i].emotionType?.stringEmoji);
 
-      // Convert room ID to room name for better readability
-      String roomName = '';
-      final roomId = chatsData[i].roomId;
-      if (roomId != null && roomId.isNotEmpty) {
-        if (roomId == 'waiting-room') {
-          roomName = 'Waiting room';
-        } else if (roomId == eventId) {
-          // If roomId matches eventId, user is in main room
-          roomName = 'Main room';
-        } else if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
-          // Try to find room by roomId
-          final room =
-              breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
-          if (room != null) {
-            roomName =
-                room.roomName; // This will be "1", "2", etc. for breakout rooms
-          } else {
-            // If roomId is not found in breakout rooms, it might be a main room ID
-            // Check if it's the main event room (same as eventId)
-            roomName = 'Main room';
-          }
-        } else {
-          // If no breakout rooms data available, assume it's main room
-          roomName = 'Main room';
-        }
-      } else {
-        // If roomId is null or empty, user is in main room
-        roomName = 'Main room';
-      }
+      // Convert room ID to room name for better readability using shared helper
+      final roomName = _getRoomName(
+        chatsData[i].roomId,
+        eventId,
+        breakoutRooms,
+      );
       row.add(roomName);
 
       row.add(chatsData[i].deleted);
