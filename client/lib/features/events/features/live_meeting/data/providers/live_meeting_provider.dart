@@ -169,7 +169,7 @@ class LiveMeetingProvider with ChangeNotifier {
     }
   }
 
-  bool get showGuideCard => eventProvider.event.agendaItems.isNotEmpty;
+  bool get showTemplateCard => eventProvider.event.agendaItems.isNotEmpty;
 
   List<MeetingProviderParticipant>? get meetingProviderParticipants =>
       _meetingProviderParticipants;
@@ -291,10 +291,10 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool get isMeetingCardMinimized => _isMeetingCardMinimized;
 
-  Future<void> updateGuideCardIsMinimized({required bool isMinimized}) async {
+  Future<void> updateTemplateCardIsMinimized({required bool isMinimized}) async {
     final userCanMinimizeMeeting = eventProvider.event.isHosted && isHost;
     if (userCanMinimizeMeeting) {
-      await firestoreLiveMeetingService.updateGuideCardIsMinimized(
+      await firestoreLiveMeetingService.updateTemplateCardIsMinimized(
         event: eventProvider.event,
         isCardMinimized: isMinimized,
       );
@@ -487,12 +487,12 @@ class LiveMeetingProvider with ChangeNotifier {
       if (_previousLiveMeeting?.isMeetingCardMinimized != null) {
         if (_isMeetingCardMinimized) {
           showToast(
-            'Guide agenda item minimized by host for all participants.',
+            'Template agenda item minimized by host for all participants.',
             hideOnMobile: true,
           );
         } else {
           showToast(
-            'Guide agenda item expanded by host for all participants.',
+            'Template agenda item expanded by host for all participants.',
             hideOnMobile: true,
           );
         }

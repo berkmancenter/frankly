@@ -17,8 +17,8 @@ import 'package:client/features/events/features/live_meeting/presentation/widget
 import 'package:client/features/events/features/live_meeting/presentation/views/live_meeting_mobile_contract.dart';
 import 'package:client/features/events/features/live_meeting/data/models/live_meeting_mobile_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/presentation/views/meeting_template_card.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -44,7 +44,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
@@ -81,10 +81,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
     final LiveMeetingMobileBottomSheetState initialSheetState;
 
-    final suppressGuide = ConferenceRoom.read(context) == null ||
+    final suppressTemplate = ConferenceRoom.read(context) == null ||
         context.read<AgendaProvider>().agendaItems.isEmpty;
 
-    if (suppressGuide) {
+    if (suppressTemplate) {
       initialSheetState = LiveMeetingMobileBottomSheetState.hidden;
     } else {
       initialSheetState = LiveMeetingMobileBottomSheetState.partiallyVisible;
@@ -126,11 +126,11 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         eventTabsController.selectedTabController.selectedIndex;
     final selectedTab = eventTabsController.tabs[selectedTabIndex];
 
-    final isLargeAgendaItem = selectedTab == TabType.guide &&
+    final isLargeAgendaItem = selectedTab == TabType.template &&
         [AgendaItemType.wordCloud, AgendaItemType.userSuggestions].contains(
           context
-              .read<MeetingGuideCardStore>()
-              .meetingGuideCardAgendaItem
+              .read<MeetingTemplateCardStore>()
+              .meetingTemplateCardAgendaItem
               ?.type,
         );
 
@@ -174,7 +174,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<MeetingGuideCardStore>();
+    context.watch<MeetingTemplateCardStore>();
 
     final isBottomSheetPresent = _presenter.isBottomSheetPresent();
     final isRaisedHandVisible = _presenter.isRaisedHandVisible;
@@ -199,7 +199,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
 
     const showShareButton = false;
 
-    final suppressGuide = ConferenceRoom.read(context) == null ||
+    final suppressTemplate = ConferenceRoom.read(context) == null ||
         agendaProvider.agendaItems.isEmpty;
 
     return PreferredSize(
@@ -215,8 +215,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (eventTabsController.widget.enableGuide &&
-                        !suppressGuide)
+                    if (eventTabsController.widget.enableTemplate &&
+                        !suppressTemplate)
                       AppClickableWidget(
                         child: Icon(
                           Icons.book_outlined,
@@ -228,7 +228,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             context,
                             listen: false,
                           );
-                          eventTabsController.openTab(TabType.guide);
+                          eventTabsController.openTab(TabType.template);
                           _presenter.toggleBottomSheetState(
                             LiveMeetingMobileBottomSheetState.fullyVisible,
                           );
@@ -563,7 +563,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 bottomSheetState: _model.bottomSheetState,
                 onChange: (state) => _presenter.toggleBottomSheetState(state),
                 onClose: _presenter.isDismissableTabOpen
-                    ? () => _presenter.openGuide()
+                    ? () => _presenter.openTemplate()
                     : null,
               ),
             ),
@@ -671,7 +671,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
   Widget _buildBottomNavBar(bool isBottomSheetPresent) {
     context.watch<LiveMeetingProvider>();
 
-    final meetingGuideCardStore = context.watch<MeetingGuideCardStore>();
+    final meetingTemplateCardStore = context.watch<MeetingTemplateCardStore>();
     final agendaProvider = context.watch<AgendaProvider>();
 
     const kIconSize = 24.0;
@@ -684,7 +684,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
         _presenter.getParticipantAgendaItemDetailsStream();
 
     return CustomStreamBuilder<List<ParticipantAgendaItemDetails>>(
-      entryFrom: '_MeetingGuideCard._buildBottomSection',
+      entryFrom: '_MeetingTemplateCard._buildBottomSection',
       stream: participantAgendaItemDetailsStream,
       height: 100,
       builder: (context, participantAgendaItemDetailsList) {
@@ -820,7 +820,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             ),
                             onTap: () => alertOnError(
                               context,
-                              () => meetingGuideCardStore
+                              () => meetingTemplateCardStore
                                   .goToPreviousAgendaItem(),
                             ),
                           ),
@@ -921,10 +921,10 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
         final selectedTabIndex =
             eventTabsController.selectedTabController.selectedIndex;
         final selectedTab = eventTabsController.tabs[selectedTabIndex];
-        final isWordCloud = selectedTab == TabType.guide &&
+        final isWordCloud = selectedTab == TabType.template &&
             context
-                    .read<MeetingGuideCardStore>()
-                    .meetingGuideCardAgendaItem
+                    .read<MeetingTemplateCardStore>()
+                    .meetingTemplateCardAgendaItem
                     ?.type ==
                 AgendaItemType.wordCloud;
 
@@ -1048,7 +1048,7 @@ class _LiveMeetingBottomSheetState extends State<LiveMeetingBottomSheet> {
         padding: EdgeInsets.symmetric(horizontal: 6),
       );
     } else {
-      return MeetingGuideCardContent(
+      return MeetingTemplateCardContent(
         // Not implemented on mobile
         onMinimizeCard: () {},
       );

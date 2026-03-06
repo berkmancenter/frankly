@@ -245,7 +245,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
     return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
   }
 
-  Widget _buildGuide() {
+  Widget _buildTemplate() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,7 +303,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
     );
   }
 
-  Widget _buildEventTabsWrappedGuide() {
+  Widget _buildEventTabsWrappedTemplate() {
     final eventProvider = EventProvider.watch(context);
     final isInBreakouts =
         LiveMeetingProvider.watchOrNull(context)?.isInBreakout ?? false;
@@ -317,7 +317,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
         (eventProvider.event.preEventCardData?.hasData ?? false) ||
             (eventProvider.event.postEventCardData?.hasData ?? false);
 
-    final bool enableGuide = isInBreakouts ||
+    final bool enableTemplate = isInBreakouts ||
         eventProvider.agendaPreview ||
         context.watch<EventPermissionsProvider>().isAgendaVisibleOverride;
 
@@ -329,8 +329,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
       enableChat: (eventPermissions.canChat && eventProvider.enableChat),
       enablePrePostEvent: canEdit || (isParticipant && hasPrePostContent),
       enableMessages: isParticipant || isMod,
-      enableGuide: enableGuide,
-      child: _buildGuide(),
+      enableTemplate: enableTemplate,
+      child: _buildTemplate(),
     );
   }
 
@@ -358,7 +358,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: _buildEventTabsWrappedGuide(),
+              child: _buildEventTabsWrappedTemplate(),
             ),
           ] else ...[
             SizedBox(height: 40),
@@ -378,7 +378,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                   ),
                   SizedBox(width: 40),
                   Expanded(
-                    child: _buildEventTabsWrappedGuide(),
+                    child: _buildEventTabsWrappedTemplate(),
                   ),
                 ],
               ),

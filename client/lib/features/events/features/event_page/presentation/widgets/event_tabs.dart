@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 enum TabType {
   about,
-  guide,
+  template,
   messages,
   chat,
   suggestions,
@@ -23,7 +23,7 @@ enum TabType {
 
 /// Class to define what event tabs are visible.
 class EventTabsWrapper extends StatelessWidget {
-  final bool enableGuide;
+  final bool enableTemplate;
   final bool enableUserSubmittedAgenda;
   final bool enableMessages;
   final bool enableChat;
@@ -35,7 +35,7 @@ class EventTabsWrapper extends StatelessWidget {
 
   const EventTabsWrapper({
     this.onRemoveMessage,
-    this.enableGuide = true,
+    this.enableTemplate = true,
     this.enableMessages = false,
     this.enableUserSubmittedAgenda = false,
     this.enablePrePostEvent = false,
@@ -48,7 +48,7 @@ class EventTabsWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EventTabsController(
-      enableGuide: enableGuide,
+      enableTemplate: enableTemplate,
       enableUserSubmittedAgenda: enableUserSubmittedAgenda,
       enableMessages: enableMessages,
       enablePrePostEvent: enablePrePostEvent,

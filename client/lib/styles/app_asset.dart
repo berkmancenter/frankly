@@ -4,7 +4,7 @@ class AppAsset {
   static const AppAsset kCheckCircleSvg = AppAsset('media/checkCircle.svg');
   static const AppAsset kXSvg = AppAsset('media/x.svg');
   static const AppAsset kCopySvg = AppAsset('media/copy.svg');
-  static const AppAsset kPlusGuideSvg = AppAsset('media/plus-guide.svg');
+  static const AppAsset kPlusTemplateSvg = AppAsset('media/plus-template.svg');
   static const AppAsset kRefreshSvg = AppAsset('media/refresh.svg');
   static const AppAsset kSurveySvg = AppAsset('media/survey.svg');
   static const AppAsset kSurveyPng = AppAsset('media/survey.png');
@@ -157,8 +157,8 @@ class AppAsset {
       : path = isSvg ? 'media/video-on.svg' : 'media/video-on.png';
   const AppAsset.videoOffDarkBlue([this.isSvg = false])
       : path = isSvg ? 'media/video-off.svg' : 'media/video-off.png';
-  const AppAsset.guideDarkBlue([this.isSvg = false])
-      : path = isSvg ? 'media/guide.svg' : 'media/guide.png';
+  const AppAsset.templateDarkBlue([this.isSvg = false])
+      : path = isSvg ? 'media/template.svg' : 'media/template.png';
   const AppAsset.chatBubble3White([this.isSvg = false])
       : path = isSvg ? 'media/chatBubble3.svg' : 'media/chatBubble3.png';
   const AppAsset.gearWhite([this.isSvg = false])

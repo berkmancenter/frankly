@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 enum EventPopUpMenuSelection {
-  refreshGuide,
-  createGuideFromEvent,
+  refreshTemplate,
+  createTemplateFromEvent,
   duplicateEvent,
   downloadChatsAndSuggestions,
   downloadRegistrationData,
@@ -41,9 +41,9 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     final permissions = context.watch<EventPermissionsProvider>();
 
     return <EventPopUpMenuSelection>[
-      if (eventHasTemplate && permissions.canRefreshGuide)
-        EventPopUpMenuSelection.refreshGuide,
-      if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
+      if (eventHasTemplate && permissions.canRefreshTemplate)
+        EventPopUpMenuSelection.refreshTemplate,
+      if (!eventHasTemplate) EventPopUpMenuSelection.createTemplateFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
         EventPopUpMenuSelection.downloadRegistrationData,
@@ -128,9 +128,9 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
 
   String _getText(EventPopUpMenuSelection eventPopUpMenuSelection) {
     switch (eventPopUpMenuSelection) {
-      case EventPopUpMenuSelection.refreshGuide:
-        return context.l10n.refreshGuide;
-      case EventPopUpMenuSelection.createGuideFromEvent:
+      case EventPopUpMenuSelection.refreshTemplate:
+        return context.l10n.refreshTemplate;
+      case EventPopUpMenuSelection.createTemplateFromEvent:
         return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
         return context.l10n.duplicateEvent;
@@ -147,10 +147,10 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     EventPopUpMenuSelection eventPopUpMenuSelection,
   ) {
     switch (eventPopUpMenuSelection) {
-      case EventPopUpMenuSelection.refreshGuide:
+      case EventPopUpMenuSelection.refreshTemplate:
         return AppAsset.kRefreshSvg;
-      case EventPopUpMenuSelection.createGuideFromEvent:
-        return AppAsset.kPlusGuideSvg;
+      case EventPopUpMenuSelection.createTemplateFromEvent:
+        return AppAsset.kPlusTemplateSvg;
       case EventPopUpMenuSelection.duplicateEvent:
         return AppAsset.kCopySvg;
       case EventPopUpMenuSelection.downloadRegistrationData:

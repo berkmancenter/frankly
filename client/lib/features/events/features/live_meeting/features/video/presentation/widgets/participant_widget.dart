@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -275,7 +275,7 @@ class _VideoOverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isHandRaised = Provider.of<MeetingGuideCardStore>(context)
+    final bool isHandRaised = Provider.of<MeetingTemplateCardStore>(context)
         .getHandIsRaised(participant.identity);
     final conferenceRoom = ConferenceRoom.watch(context);
     final handRaisedIndex =

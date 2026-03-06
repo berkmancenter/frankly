@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_tabs.dart';
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/visible_exception.dart';
@@ -338,7 +338,7 @@ class AgendaProvider with ChangeNotifier {
     }
 
     if (firstAgendaItem == null) {
-      throw VisibleException('There is no meeting guide for this meeting');
+      throw VisibleException('There is no meeting template for this meeting');
     }
 
     final serverTime = clockService.now();
@@ -356,7 +356,7 @@ class AgendaProvider with ChangeNotifier {
     final currentAgendaItemIndex =
         agendaItems.indexWhere((a) => a.id == agendaItemId);
     if (currentAgendaItemIndex < 0) {
-      throw VisibleException('Meeting Guide entry not found.');
+      throw VisibleException('Meeting Template entry not found.');
     }
 
     final nextAgendaItem =
@@ -528,8 +528,8 @@ class AgendaProvider with ChangeNotifier {
       return;
     }
 
-    await cloudFunctionsLiveMeetingService.checkAdvanceMeetingGuide(
-      CheckAdvanceMeetingGuideRequest(
+    await cloudFunctionsLiveMeetingService.checkAdvanceMeetingTemplate(
+      CheckAdvanceMeetingTemplateRequest(
         eventPath: eventPath,
         breakoutSessionId: (liveMeetingProvider?.isInBreakout ?? false)
             ? liveMeetingProvider
@@ -588,7 +588,7 @@ class AgendaProvider with ChangeNotifier {
   Future<void> moveForward({required String currentAgendaItemId}) async {
     final timeInState = timeInSection(currentAgendaItemId);
     final doubleCheckDuration =
-        currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
+        currentAgendaItemId == MeetingTemplateCardStore.startAgendaItemId
             ? Duration(seconds: 15)
             : Duration(seconds: 30);
     final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
@@ -605,7 +605,7 @@ class AgendaProvider with ChangeNotifier {
       if (!confirmed) return;
     }
     if (canUserControlMeeting) {
-      if (currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId) {
+      if (currentAgendaItemId == MeetingTemplateCardStore.startAgendaItemId) {
         await startMeeting();
       } else {
         await finishAgendaItem(currentAgendaItemId);

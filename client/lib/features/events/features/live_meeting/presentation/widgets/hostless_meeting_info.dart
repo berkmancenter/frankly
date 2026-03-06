@@ -146,9 +146,9 @@ class _HostlessMeetingInfoState extends State<HostlessMeetingInfo> {
     final isMobile = responsiveLayoutService.isMobile(context);
 
     final tabs = <Widget>[
-      if (provider.enableGuide)
+      if (provider.enableTemplate)
         _buildTab(
-          tabType: TabType.guide,
+          tabType: TabType.template,
           icon: Icons.book_outlined,
           text: 'Agenda',
         ),

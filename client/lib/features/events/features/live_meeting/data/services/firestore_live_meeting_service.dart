@@ -451,7 +451,7 @@ class FirestoreLiveMeetingService {
     return ratingPathRef.set(toFirestoreJson(ratingModel.toJson()));
   }
 
-  Future<void> updateGuideCardIsMinimized({
+  Future<void> updateTemplateCardIsMinimized({
     required Event event,
     required bool isCardMinimized,
   }) async {

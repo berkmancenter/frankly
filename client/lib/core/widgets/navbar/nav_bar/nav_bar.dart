@@ -558,7 +558,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
 
         await CreateCommunityDialog(community: community).show();
         break;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         await CreateTemplateDialog.show(
           communityProvider: context.read<CommunityProvider>(),
           communityPermissionsProvider:

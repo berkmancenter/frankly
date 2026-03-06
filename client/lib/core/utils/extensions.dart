@@ -190,7 +190,7 @@ extension MembershipStatusUIExtension on MembershipStatus {
       case MembershipStatus.mod:
         return [
           'Moderates community',
-          'Manages content (guides, resources)',
+          'Manages content (templates, resources)',
           'Acts as admin within events',
         ];
       case MembershipStatus.owner:
@@ -208,7 +208,7 @@ extension OnboardingStepExtension on OnboardingStep {
     switch (this) {
       case OnboardingStep.brandSpace:
         return 1;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return 2;
       case OnboardingStep.hostEvent:
         return 3;
@@ -223,7 +223,7 @@ extension OnboardingStepExtension on OnboardingStep {
     switch (this) {
       case OnboardingStep.brandSpace:
         return AppAsset.kEmojiSparklePng;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return AppAsset.kEmojiNotepadPng;
       case OnboardingStep.hostEvent:
         return AppAsset.kEmojiMegaphonePng;
@@ -238,7 +238,7 @@ extension OnboardingStepExtension on OnboardingStep {
     switch (this) {
       case OnboardingStep.brandSpace:
         return 'Looking good';
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return 'Looking good';
       case OnboardingStep.hostEvent:
         return 'Get people talking';
@@ -253,7 +253,7 @@ extension OnboardingStepExtension on OnboardingStep {
     switch (this) {
       case OnboardingStep.brandSpace:
         return 'Brand your space';
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return 'Create a template';
       case OnboardingStep.hostEvent:
         return 'Schedule an event';

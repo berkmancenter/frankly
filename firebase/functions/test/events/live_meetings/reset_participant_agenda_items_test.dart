@@ -4,7 +4,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/reset_participant_agenda_items.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import '../../util/community_test_utils.dart';
