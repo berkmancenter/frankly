@@ -414,10 +414,13 @@ class _EventInfoState extends State<EventInfo> {
         if (!mounted) return;
         if (!isEventOpen && !successfullyJoined) {
           // If the event is not open yet, we expect user not to be able to join.
-          await showAlert(
-            context,
-            'The event has not started yet. We\'ll see you soon!',
-          );
+          // Show the "not started" message for events that are not open and not joined, unless they're past concluded events.
+          if (daysDifference >= 0) {
+            await showAlert(
+              context,
+              'The event has not started yet. We\'ll see you soon!',
+            );
+          }
           return;
         } else if (!successfullyJoined) {
           showRegularToast(
