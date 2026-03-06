@@ -3,11 +3,11 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart' as admin;
 import '../on_call_function.dart';
 import '../utils/infra/firebase_auth_utils.dart';
 import '../utils/infra/firestore_utils.dart';
-import '../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/member_details.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:quiver/iterables.dart';
 
 class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
@@ -97,13 +97,11 @@ class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
       print('Error getting user info for $memberId: $e');
     }
 
-    final String memberName;
-    if (isNullOrEmpty(memberInfo?.displayName)) {
-      final memberDoc = await firestore.document('publicUser/$memberId').get();
-      memberName = memberDoc.data.toMap()['displayName'] ?? '';
-    } else {
-      memberName = memberInfo!.displayName;
-    }
+    final memberDoc = await firestore.document('publicUser/$memberId').get();
+    final publicUserInfo = PublicUserInfo.fromJson(
+      firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+    );
+    final memberName = publicUserInfo.displayName ?? '';
 
     // Get memberId user chats and suggestions per event within current community
     MemberEventData? memberEventsData;

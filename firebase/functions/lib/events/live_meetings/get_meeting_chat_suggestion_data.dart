@@ -118,17 +118,12 @@ class GetMeetingChatSuggestionData
       );
       final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
-      String memberName;
-      if (isNullOrEmpty(memberInfo.displayName)) {
-        final memberDoc =
-            await firestore.document('publicUser/${memberInfo.uid}').get();
-        var info = PublicUserInfo.fromJson(
-          firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-        );
-        memberName = info.displayName ?? '';
-      } else {
-        memberName = memberInfo.displayName;
-      }
+      final memberDoc =
+          await firestore.document('publicUser/${doc.creatorId}').get();
+      final publicUserInfo = PublicUserInfo.fromJson(
+        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+      );
+      final memberName = publicUserInfo.displayName ?? '';
 
       chatSuggestions.add(
         ChatSuggestionData(
@@ -163,17 +158,12 @@ class GetMeetingChatSuggestionData
       );
       final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
-      String memberName;
-      if (isNullOrEmpty(memberInfo.displayName)) {
-        final memberDoc =
-            await firestore.document('publicUser/${memberInfo.uid}').get();
-        final publicUserInfo = PublicUserInfo.fromJson(
-          firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-        );
-        memberName = publicUserInfo.displayName ?? '';
-      } else {
-        memberName = memberInfo.displayName;
-      }
+      final memberDoc =
+          await firestore.document('publicUser/${doc.creatorId}').get();
+      final publicUserInfo = PublicUserInfo.fromJson(
+        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+      );
+      final memberName = publicUserInfo.displayName ?? '';
 
       chatSuggestionDataList.add(
         ChatSuggestionData(
@@ -248,17 +238,12 @@ class GetMeetingChatSuggestionData
   ) async {
     final memberInfo = await firebaseAuthUtils.getUser(details.userId!);
 
-    String memberName;
-    if (isNullOrEmpty(memberInfo.displayName)) {
-      final memberDoc =
-          await firestore.document('publicUser/${memberInfo.uid}').get();
-      final publicUserInfo = PublicUserInfo.fromJson(
-        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-      );
-      memberName = publicUserInfo.displayName ?? '';
-    } else {
-      memberName = memberInfo.displayName;
-    }
+    final memberDoc =
+        await firestore.document('publicUser/${details.userId}').get();
+    final publicUserInfo = PublicUserInfo.fromJson(
+      firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+    );
+    final memberName = publicUserInfo.displayName ?? '';
 
     return details.suggestions
         .map(
