@@ -51,7 +51,7 @@ class PrePostCardWidgetPresenter {
 
   String? validateHeadline(String? text) {
     if (text == null || text.trim().isEmpty) {
-      return appLocalizationService.getLocalization().headlineCannotBeEmpty;
+      return 'Headline cannot be empty';
     } else {
       return null;
     }
@@ -59,7 +59,7 @@ class PrePostCardWidgetPresenter {
 
   String? validateMessage(String? text) {
     if (text == null || text.trim().isEmpty) {
-      return appLocalizationService.getLocalization().messageCannotBeEmpty;
+      return 'Message cannot be empty';
     } else {
       return null;
     }
@@ -102,13 +102,13 @@ class PrePostCardWidgetPresenter {
       // Only do validation for the URL if button text exists
       if (prePostUrls[urlIndex].buttonText != null) {
         if (text == null || text.trim().isEmpty) {
-          return appLocalizationService.getLocalization().urlIsNotValid;
+          return 'URL is not valid';
         }
 
         final isUrlValid = Uri.tryParse(text) != null;
 
         if (!isUrlValid) {
-          return appLocalizationService.getLocalization().urlIsNotValid;
+          return 'URL is not valid';
         } else {
           return null;
         }
@@ -408,12 +408,11 @@ class PrePostCardWidgetPresenter {
   }
 
   String getTitle() {
-    final l10n = appLocalizationService.getLocalization();
     switch (_model.prePostCardType) {
       case PrePostCardType.preEvent:
-        return l10n.preEvent;
+        return 'Pre-event';
       case PrePostCardType.postEvent:
-        return l10n.postEvent;
+        return 'Post-event';
     }
   }
 }

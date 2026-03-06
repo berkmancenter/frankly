@@ -1,12 +1,8 @@
 import 'dart:math';
 
-import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_model.dart';
 import 'package:client/features/discussion_threads/presentation/discussion_thread_presenter.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
@@ -18,16 +14,6 @@ import '../../../../mocked_classes.mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUpAll(() async {
-    GetIt.instance.registerSingleton(AppLocalizationService());
-    final l10n = await AppLocalizations.delegate.load(const Locale('en'));
-    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
-  });
-
-  tearDownAll(() async {
-    await GetIt.instance.reset();
-  });
 
   final mockBuildContext = MockBuildContext();
   final mockView = MockDiscussionThreadView();
@@ -380,7 +366,7 @@ void main() {
     ).called(1);
     verify(
       mockView.showMessage(
-        argThat(isNotEmpty),
+        'Post was deleted',
         toastType: ToastType.success,
       ),
     ).called(1);
@@ -515,7 +501,7 @@ void main() {
     ).called(1);
     verify(
       mockView.showMessage(
-        argThat(isNotEmpty),
+        'Comment was deleted',
         toastType: ToastType.success,
       ),
     );

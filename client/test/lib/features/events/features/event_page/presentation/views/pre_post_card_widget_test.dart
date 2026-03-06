@@ -28,11 +28,9 @@ void main() {
 
   late MockUserServiceNullable mockUserService;
 
-  setUpAll(() async {
+  setUpAll(() {
     GetIt.instance.registerSingleton(CloudFunctionsCommunityService());
     GetIt.instance.registerSingleton(AppLocalizationService());
-    final l10n = await AppLocalizations.delegate.load(const Locale('en'));
-    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
   });
 
   tearDownAll(() async {

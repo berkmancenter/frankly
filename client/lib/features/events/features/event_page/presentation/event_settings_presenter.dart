@@ -165,12 +165,11 @@ class EventSettingsPresenter {
   }
 
   String getTitle() {
-    final l10n = appLocalizationService.getLocalization();
     switch (_model.eventSettingsDrawerType) {
       case EventSettingsDrawerType.template:
-        return l10n.templateSettings;
+        return 'Template Settings';
       case EventSettingsDrawerType.event:
-        return l10n.eventSettings;
+        return 'Event Settings';
     }
   }
 

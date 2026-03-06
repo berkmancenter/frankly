@@ -1,6 +1,5 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/discussion_threads/data/models/discussion_thread_comment_ui.dart';
-import 'package:client/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -166,7 +165,7 @@ class DiscussionThreadPresenter {
       communityId: _communityProvider.communityId,
       discussionThreadId: _model.discussionThreadId,
     );
-    _view.showMessage(appLocalizationService.getLocalization().postWasDeleted, toastType: ToastType.success);
+    _view.showMessage('Post was deleted', toastType: ToastType.success);
   }
 
   String? getUserId() {
@@ -235,7 +234,7 @@ class DiscussionThreadPresenter {
       discussionThreadComment: discussionThreadComment,
     );
 
-    _view.showMessage(appLocalizationService.getLocalization().commentWasDeleted, toastType: ToastType.success);
+    _view.showMessage('Comment was deleted', toastType: ToastType.success);
   }
 
   int getCommentCount(List<DiscussionThreadComment> discussionThreadComments) {

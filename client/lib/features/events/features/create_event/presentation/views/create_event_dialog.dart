@@ -1,6 +1,7 @@
 import 'package:client/core/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/features/events/features/create_event/presentation/views/choose_platform_page.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/views/select_date_page.dart';
 import 'package:client/features/events/features/create_event/presentation/views/select_hosting_option_page.dart';
@@ -111,6 +112,8 @@ class CreateEventDialog extends StatelessWidget {
         return SelectDatePage();
       case CurrentPage.selectTime:
         return SelectTimePage();
+      case CurrentPage.choosePlatform:
+        return ChoosePlatformPage();
       case CurrentPage.selectParticipants:
         return SelectParticipantsNumber();
       case CurrentPage.selectHostingType:

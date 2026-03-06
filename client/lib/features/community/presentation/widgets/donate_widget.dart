@@ -1,4 +1,3 @@
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -184,9 +183,9 @@ class _DonateWidgetState extends State<DonateWidget> {
       controller: _otherAmountController,
       style: style,
       decoration: InputDecoration(
-        labelText: context.l10n.enterAmount,
+        labelText: 'Enter Amount',
         prefixText: '\$',
-        errorText: hasError ? context.l10n.pleaseEnterValidAmount : null,
+        errorText: hasError ? 'Please enter a valid amount' : null,
         hintStyle: style,
         helperStyle: style,
         labelStyle: style,

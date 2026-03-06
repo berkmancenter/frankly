@@ -1,4 +1,3 @@
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
@@ -21,7 +20,7 @@ class SelectDatePage extends StatelessWidget {
       children: [
         Center(
           child: HeightConstrainedText(
-            context.l10n.selectADay,
+            'Select a day',
             style: AppTextStyle.headline1,
           ),
         ),

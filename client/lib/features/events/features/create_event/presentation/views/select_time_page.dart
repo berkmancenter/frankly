@@ -1,4 +1,3 @@
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
@@ -31,7 +30,7 @@ class _SelectTimePageState extends State<SelectTimePage> {
       children: [
         Center(
           child: HeightConstrainedText(
-            context.l10n.selectATime,
+            'Select a time',
             style: AppTextStyle.headline1,
           ),
         ),

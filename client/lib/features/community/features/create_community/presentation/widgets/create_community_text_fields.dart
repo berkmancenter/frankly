@@ -114,8 +114,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
           Column(
             children: [
               _buildCreateCommunityTextField(
-                hint: context.l10n.taglineHint,
-                label: context.l10n.tagline,
+                hint: 'Ex: Protecting the earth from all invaders',
+                label: 'Tagline',
                 initialValue: widget.community.tagLine,
                 onChanged: widget.onTaglineChanged,
                 maxLength: taglineMaxCharactersLength,
@@ -130,8 +130,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
                 height: widget.compact ? 0 : 10,
               ),
               _buildCreateCommunityTextField(
-                label: context.l10n.about,
-                hint: context.l10n.aboutHint,
+                label: 'About',
+                hint: 'Add more detail as to the goals of this community',
                 initialValue: widget.community.description,
                 onChanged: widget.onAboutChanged,
                 focus: widget.aboutFocus,

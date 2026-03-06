@@ -1,11 +1,7 @@
 import 'dart:math';
 
-import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:client/features/discussion_threads/data/models/manipulate_discussion_thread_model.dart';
 import 'package:client/features/discussion_threads/presentation/manipulate_discussion_thread_presenter.dart';
 import 'package:client/core/utils/extensions.dart';
@@ -16,16 +12,6 @@ import '../../../../mocked_classes.mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUpAll(() async {
-    GetIt.instance.registerSingleton(AppLocalizationService());
-    final l10n = await AppLocalizations.delegate.load(const Locale('en'));
-    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
-  });
-
-  tearDownAll(() async {
-    await GetIt.instance.reset();
-  });
 
   final mockBuildContext = MockBuildContext();
   final mockView = MockManipulateDiscussionThreadView();
@@ -118,7 +104,7 @@ void main() {
 
       final result = presenter.getPositiveButtonText();
 
-      expect(result.isNotEmpty, isTrue);
+      expect(result, 'Post');
     });
 
     test('existingDiscussionThread is not null', () {
@@ -131,7 +117,7 @@ void main() {
 
       final result = presenter.getPositiveButtonText();
 
-      expect(result.isNotEmpty, isTrue);
+      expect(result, 'Update');
     });
   });
 
@@ -203,7 +189,7 @@ void main() {
       expect(result, isTrue);
       verify(
         mockView.showMessage(
-          argThat(isNotEmpty),
+          'Post has been created',
           toastType: ToastType.success,
         ),
       ).called(1);
@@ -276,7 +262,7 @@ void main() {
       expect(result, isTrue);
       verify(
         mockView.showMessage(
-          argThat(isNotEmpty),
+          'Post has been updated',
           toastType: ToastType.success,
         ),
       ).called(1);

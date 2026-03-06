@@ -253,7 +253,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       isLoading = false;
                     });
                   },
-                  hint: Text(context.l10n.selectVideoInput),
+                  hint: const Text('Select video input'),
                 ),
           const SizedBox(height: 24),
           Row(
