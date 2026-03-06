@@ -94,6 +94,10 @@ class EventPage extends StatefulWidget {
 }
 
 class EventPageState extends State<EventPage> implements EventPageView {
+  // How long after the scheduled start time the join-event graphic remains
+  // visible, giving participants a window to join a meeting already in progress.
+  static const int _kHoursAfterEventToShow = 2;
+
   EventProvider get _eventProvider => EventProvider.watch(context);
 
   Event get event => _eventProvider.event;
@@ -240,7 +244,8 @@ class EventPageState extends State<EventPage> implements EventPageView {
     final now = clockService.now();
     final beforeMeetingCutoff =
         scheduled.subtract(Duration(minutes: kMinutesBeforeEventToJoin));
-    final afterMeetingCutoff = scheduled.add(Duration(hours: 2));
+    final afterMeetingCutoff =
+        scheduled.add(Duration(hours: _kHoursAfterEventToShow));
 
     return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
   }
@@ -260,7 +265,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                   Positioned.fill(
                     child: ProxiedImage(
                       null,
-                      asset: AppAsset('media/background.gif'),
+                      asset: AppAsset.backgroundGif(),
                       fit: BoxFit.cover,
                       loadingColor: Colors.transparent,
                     ),

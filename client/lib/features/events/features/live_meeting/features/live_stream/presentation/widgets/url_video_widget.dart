@@ -53,10 +53,15 @@ class UrlVideoWidget extends StatefulHookWidget {
   }) : super(key: key ?? Key(playbackUrl));
 
   @override
-  _UrlVideoWidgetState createState() => _UrlVideoWidgetState();
+  State<UrlVideoWidget> createState() => _UrlVideoWidgetState();
 }
 
 class _UrlVideoWidgetState extends State<UrlVideoWidget> {
+  // How often playhead position updates are forwarded to the callback.
+  static const Duration _playheadSampleInterval = Duration(seconds: 1);
+  // Minimum time between error-triggered refreshes, to avoid a rapid retry loop.
+  static const Duration _videoErrorRefreshCooldown = Duration(seconds: 5);
+
   String _keyValue = uuid.v1();
   Timer? _errorTimer;
 
@@ -69,9 +74,9 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
 
       // Replace '/upload' in the URL with '/upload/q_auto:good' for Cloudinary optimization, if not present
       if (!playbackUrl.contains('/upload/q_auto:good')) {
-        playbackUrl = playbackUrl.replaceFirst('/upload', '/upload/q_auto:good');
+        playbackUrl =
+            playbackUrl.replaceFirst('/upload', '/upload/q_auto:good');
       }
-
     }
     final encodedLink = Uri.encodeQueryComponent(playbackUrl);
     String url = './stream/playback.html?url=$encodedLink'
@@ -112,7 +117,7 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
 
     // Listen to stream; forward maximum of one playhead update per second to callback
     useStreamListener<UrlVideoPlayheadInfo>(
-      stream: controller.stream.sampleTime(Duration(seconds: 1)),
+      stream: controller.stream.sampleTime(_playheadSampleInterval),
       function: (status) {
         final onPlayheadUpdate = widget.onPlayheadUpdate;
         if (onPlayheadUpdate != null) {
@@ -125,12 +130,11 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
     useEffect(
       () {
         final subscription = html.window.onMessage.listen((event) {
-          
           final messageObj = event.data;
 
           // Check if the messageObj is a Map and contains the 'source' key;
           // we have to do this because the messageObj is a native JS object and can be anything coming from the onMessage Stream
-          if(messageObj is Map && messageObj.containsKey('source')) {
+          if (messageObj is Map && messageObj.containsKey('source')) {
             if (messageObj['source'] == 'videojs') {
               final String messageType = messageObj['type'];
               final double currentTime = messageObj['currentTime'];
@@ -146,11 +150,13 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
                 onEnded();
               }
               if (messageType == 'video-error') {
-                loggingService.log('message error event received: ${event.data}');
-                if (widget.refreshOnError && !(_errorTimer?.isActive ?? false)) {
+                loggingService
+                    .log('message error event received: ${event.data}');
+                if (widget.refreshOnError &&
+                    !(_errorTimer?.isActive ?? false)) {
                   // Don't constantly restart due to an error. If another error occurs
                   // during this window, then it will not refresh.
-                  _errorTimer = Timer(Duration(seconds: 5), () {});
+                  _errorTimer = Timer(_videoErrorRefreshCooldown, () {});
                   setState(() => _keyValue = uuid.v1());
                 }
 
@@ -162,7 +168,8 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
               if (messageType == 'video-update') {
                 loggingService
                     .log('message update event received: ${event.data}');
-                controller.add(UrlVideoPlayheadInfo(currentTime, videoDuration));
+                controller
+                    .add(UrlVideoPlayheadInfo(currentTime, videoDuration));
               }
             }
           }
@@ -191,7 +198,7 @@ class _UrlVideoInternal extends StatefulWidget {
       : super(key: key);
 
   @override
-  _UrlVideoInternalState createState() => _UrlVideoInternalState();
+  State<_UrlVideoInternal> createState() => _UrlVideoInternalState();
 }
 
 class _UrlVideoInternalState extends State<_UrlVideoInternal> {
