@@ -292,7 +292,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                           if (!joined && mounted) {
                             showRegularToast(
                               context,
-                              'Could not enter event.',
+                              'Event was not entered.',
                               toastType: ToastType.failed,
                             );
                           }

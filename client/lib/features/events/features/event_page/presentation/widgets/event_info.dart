@@ -425,7 +425,7 @@ class _EventInfoState extends State<EventInfo> {
         } else if (!successfullyJoined) {
           showRegularToast(
             context,
-            'Could not enter event.',
+            'Event was not entered.',
             toastType: ToastType.failed,
           );
         }
