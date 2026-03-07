@@ -205,10 +205,17 @@ void main() {
   });
 
   test('Should handle non-existent users gracefully', () async {
+    const nonExistentUserId = 'non-existent-user';
+
+    // Mock firebaseAuthUtils to throw error for non-existent user
+    when(
+      () => mockFirebaseAuthUtils.getUser(nonExistentUserId),
+    ).thenThrow(Exception('User not found'));
+
     final membersDataGetter = GetMembersData();
     final req = GetMembersDataRequest(
       communityId: communityId,
-      userIds: ['non-existent-user'],
+      userIds: [nonExistentUserId],
     );
 
     final result = await membersDataGetter.action(
@@ -219,6 +226,7 @@ void main() {
     final memberDetails = result['membersDetailsList'].first;
 
     expect(memberDetails['email'], equals('Unknown'));
+    expect(memberDetails['displayName'], equals(''));
     expect(
       memberDetails['membership']['status'],
       equals('nonmember'),
