@@ -97,11 +97,14 @@ class GetMembersData extends OnCallMethod<GetMembersDataRequest> {
       print('Error getting user info for $memberId: $e');
     }
 
+    String memberName = '';
     final memberDoc = await firestore.document('publicUser/$memberId').get();
-    final publicUserInfo = PublicUserInfo.fromJson(
-      firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-    );
-    final memberName = publicUserInfo.displayName ?? '';
+    if (memberDoc.exists) {
+      final publicUserInfo = PublicUserInfo.fromJson(
+        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+      );
+      memberName = publicUserInfo.displayName ?? '';
+    }
 
     // Get memberId user chats and suggestions per event within current community
     MemberEventData? memberEventsData;

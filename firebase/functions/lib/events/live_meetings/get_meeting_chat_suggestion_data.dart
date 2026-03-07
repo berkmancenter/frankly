@@ -118,12 +118,15 @@ class GetMeetingChatSuggestionData
       );
       final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
+      String memberName = '';
       final memberDoc =
           await firestore.document('publicUser/${doc.creatorId}').get();
-      final publicUserInfo = PublicUserInfo.fromJson(
-        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-      );
-      final memberName = publicUserInfo.displayName ?? '';
+      if (memberDoc.exists) {
+        final publicUserInfo = PublicUserInfo.fromJson(
+          firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+        );
+        memberName = publicUserInfo.displayName ?? '';
+      }
 
       chatSuggestions.add(
         ChatSuggestionData(

@@ -113,12 +113,15 @@ class GetMeetingPollData extends OnCallMethod<GetMeetingPollDataRequest> {
         if (details.pollResponse != null) {
           final memberInfo = await firebaseAuthUtils.getUser(details.userId!);
 
+          String memberName = '';
           final memberDoc =
               await firestore.document('publicUser/${details.userId}').get();
-          final publicUserInfo = PublicUserInfo.fromJson(
-            firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-          );
-          final memberName = publicUserInfo.displayName ?? '';
+          if (memberDoc.exists) {
+            final publicUserInfo = PublicUserInfo.fromJson(
+              firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+            );
+            memberName = publicUserInfo.displayName ?? '';
+          }
 
           final pollData = PollData(
             userId: details.userId,
