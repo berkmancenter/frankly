@@ -12,7 +12,7 @@ import 'package:client/core/utils/dialogs.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 class DiscussionThreadPreviewCard extends StatelessWidget {

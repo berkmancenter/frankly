@@ -14,7 +14,7 @@ import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:data_models/chat/chat.dart';
+import 'package:data_models/user_input/chat.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
