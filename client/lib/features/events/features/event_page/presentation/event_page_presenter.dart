@@ -171,7 +171,7 @@ class EventPagePresenter {
     );
     _view.updateView();
     _view.showMessage(
-      'Agenda items were removed',
+      appLocalizationService.getLocalization().agendaItemsWereRemoved,
       toastType: ToastType.success,
     );
   }
