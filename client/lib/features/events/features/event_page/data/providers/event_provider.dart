@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:client/core/utils/csv_utils.dart';
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:collection/collection.dart';
@@ -487,7 +488,8 @@ class EventProvider with ChangeNotifier {
       rows.add(row);
     }
 
-    String csv = const ListToCsvConverter().convert(rows);
+    final sanitizedRows = rows.map((row) => sanitizeCsvRow(row)).toList();
+    String csv = const ListToCsvConverter().convert(sanitizedRows);
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
@@ -541,7 +543,8 @@ class EventProvider with ChangeNotifier {
       rows.add(row);
     }
 
-    String csv = const ListToCsvConverter().convert(rows);
+    final sanitizedRows = rows.map((row) => sanitizeCsvRow(row)).toList();
+    String csv = const ListToCsvConverter().convert(sanitizedRows);
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
@@ -643,7 +646,8 @@ class EventProvider with ChangeNotifier {
       rows.add(row);
     }
 
-    String csv = const ListToCsvConverter().convert(rows);
+    final sanitizedRows = rows.map((row) => sanitizeCsvRow(row)).toList();
+    String csv = const ListToCsvConverter().convert(sanitizedRows);
 
     final stringToBase64 = utf8.fuse(base64);
     final content = stringToBase64.encode(csv);
