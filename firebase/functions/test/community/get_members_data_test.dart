@@ -5,10 +5,12 @@ import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:functions/community/get_members_data.dart';
 import '../util/community_test_utils.dart';
 import '../util/event_test_utils.dart';
 import '../util/function_test_fixture.dart';
+import '../util/live_meeting_test_utils.dart';
 
 void main() {
   const regularUserId = 'regularUser';
@@ -17,6 +19,7 @@ void main() {
   firebaseAuthUtils = mockFirebaseAuthUtils;
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  final liveMeetingTestUtils = LiveMeetingTestUtils();
   setupTestFixture();
 
   setUp(() async {
@@ -28,6 +31,22 @@ void main() {
       communityId: communityId,
       userId: regularUserId,
       status: MembershipStatus.member,
+    );
+
+    // Add PublicUserInfo documents
+    await liveMeetingTestUtils.addPublicUser(
+      publicUser: PublicUserInfo(
+        id: adminUserId,
+        displayName: 'Admin',
+        agoraId: 100,
+      ),
+    );
+    await liveMeetingTestUtils.addPublicUser(
+      publicUser: PublicUserInfo(
+        id: regularUserId,
+        displayName: 'Joe User',
+        agoraId: 101,
+      ),
     );
   });
 
