@@ -12,21 +12,21 @@ This section covers setting up a new computer for Flutter development.
 ### Part 1: Platform-specific
 
 === "macOS" 1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web. 2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app. 3. Optional, but recommended: Install Homebrew [here](https://brew.sh/). 4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
-` brew install git
-      ` 5. Clone the Frankly repo in a directory where you prefer your projects to live:
-` git clone https://github.com/berkmancenter/frankly && cd frankly
-      ` 6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors. - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar). 7. Install VSCode [here](https://code.visualstudio.com/download). - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter). 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
-` export PATH=$HOME/dev/flutter/bin:$PATH
-        `
+`brew install git
+     ` 5. Clone the Frankly repo in a directory where you prefer your projects to live:
+`git clone https://github.com/berkmancenter/frankly && cd frankly
+     ` 6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors. - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar). 7. Install VSCode [here](https://code.visualstudio.com/download). - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter). 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
+`export PATH=$HOME/dev/flutter/bin:$PATH
+       `
 Restart terminal sessions to see the changes.
 === "Linux" 1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
-` sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
-      `
+`sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
+     `
 a. Set the path to chromium so flutter can find it:
-` export CHROME_EXECUTABLE=$(which chromium)
-      ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
-` git clone https://github.com/berkmancenter/frankly && cd frankly
-      ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
+`export CHROME_EXECUTABLE=$(which chromium)
+     ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
+`git clone https://github.com/berkmancenter/frankly && cd frankly
+     ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
 
         !!! info ""
             You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
@@ -143,34 +143,154 @@ You don't need to run `npm install` again unless you've added new dependencies o
 
 #### Emulators
 
-Firebase has a full suite of emulators called Firebase Local Emulator Suite. You can find the full description of the Firebase Local Emulator Suite and its capabilities [here](https://firebase.google.com/docs/emulator-suite).
+Frankly uses the **Firebase Local Emulator Suite** for local development. The emulator suite provides local versions of Firebase services: Firestore, Auth, Realtime Database, Pub/Sub, and Cloud Functions.
 
-You should emulate services locally for development purposes, and set up the client to use these emulators instead of connecting to a live Firebase project. By default, the emulators will run against the default project "dev," specified in the `.firebaserc` file.
+Documentation for the emulator suite is available here:  
+<https://firebase.google.com/docs/emulator-suite>
 
-**Using config in emulators**
+By default the emulators run against the Firebase project named **`dev`**, which is specified in `.firebaserc`.
 
-You do not need to run `functions:config:set.` as the emulators are configured by a file.
+---
 
-- To configure the emulators, create the file `firebase/functions/.runtimeconfig.json`.
-  - A sample file containing the config properties described above can be found in `firebase/functions/.runtimeconfig.json.local.example`.
+### Emulator Initial Setup & Configuration
 
-**Running the emulators**
+The emulators use a local configuration file instead of `functions:config:set`.
 
-!!! info "Important" - Do this before running the [client](#running-and-building-the-client). - Frankly does not currently operate with a named database; the name must be the default, literally the string `default`.
-
-To run the emulators locally, run the following _while_ in the `firebase/functions` directory:
+To setup, create the following file if it does not already exist:
 
 ```
-dart run build_runner build --output=build
-firebase emulators:start --only firestore,functions,auth,pubsub,database
+firebase/functions/.runtimeconfig.json
 ```
 
-You can also just run `npm run emulators`.
+A sample configuration file can be found at:
 
-We recommend using the emulators [import and export](https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data) functionality to make development easier.
+```
+firebase/functions/.runtimeconfig.json.local.example
+```
 
-!!! question ""
-Please refer to the Cloud Functions Emulator [section](faq.md#cloud-functions-emulator) at [**❓Troubleshooting / FAQ**](faq.md) for common issues and resolutions!
+Copy the example and fill in any required values.
+
+---
+
+### Running the Emulators
+
+The easiest way to run the full emulator suite is with the project script.
+
+From the `firebase/functions` directory run:
+
+```
+npm run emulators
+```
+
+This script will:
+
+1. Build the Dart functions using `build_runner`
+2. Start the Firebase emulator suite for:
+   - Firestore
+   - Functions
+   - Auth
+   - Pub/Sub
+   - Realtime Database
+
+Alternatively you can run the underlying script directly:
+
+```
+# from within the firebase/functions directory:
+./emulators-start.sh
+```
+
+---
+
+### Restarting or Stopping the Emulators
+
+Firebase emulators spawn multiple background processes (including Java processes). If a previous run terminates unexpectedly, emulator ports may remain occupied and prevent startup.
+
+To safely stop all emulator processes run:
+
+```
+./emulators-stop.sh
+```
+
+Then restart them with:
+
+```
+./emulators-start.sh
+```
+
+Or with npm:
+
+```
+npm run emulators
+```
+
+---
+
+### Why the Stop Script Exists
+
+You may encounter errors like:
+
+```
+Port 8080 is already in use
+```
+
+This typically happens if emulator processes did not shut down cleanly.
+
+Do **not** attempt to fix this by killing Java processes manually, for example:
+
+```
+pkill -f java
+```
+
+That approach can terminate unrelated tools such as:
+
+- VS Code language servers
+- Gradle daemons
+- other development processes
+
+Instead, the project provides `emulators-stop.sh`, which performs a **deterministic shutdown**:
+
+1. Requests a graceful shutdown from the Firebase Emulator Hub (`localhost:4400`)
+2. Waits for emulator ports to actually close
+3. If necessary, terminates only processes listening on known emulator ports
+
+This ensures that unrelated processes are never affected.
+
+---
+
+### Inspecting Emulator Ports Manually
+
+If the emulators still fail to start, you can inspect which processes are using the emulator ports with:
+
+```
+lsof -nP -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:5001 -sTCP:LISTEN
+```
+
+If anything appears in the output, run:
+
+```
+./emulators-stop.sh
+```
+
+to cleanly terminate those processes.
+
+---
+
+### Emulator Data Import / Export
+
+We recommend using the Firebase emulator import/export functionality to preserve development data between runs.
+
+Documentation:  
+<https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data>
+
+This allows you to seed Firestore or other services with test data and reuse it across sessions.
+
+---
+
+### Important Notes
+
+- Run the emulators **before starting the Flutter client**.
+- Frankly currently expects the **default Firestore database name** (`default`).
+- Always run emulator commands from the `firebase/functions` directory.
 
 ### Optional: Setup Firebase Cloud Project
 
@@ -265,22 +385,20 @@ Mux streaming is used when a customer wants to stream video from a third party s
 
 2. Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
 
-    === "Command Line"
-    As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
-    ` firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"
-    `
-    === "Copy/Paste"
-    Or, paste your token and secret into the `.runtimeconfig.json` file where the `mux` field is.
-    ` "mux": {
-        "secret": "...",
-        "token_id": "..."
-      },
-    `
+   === "Command Line"
+   As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+   `firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"`
+   === "Copy/Paste"
+   Or, paste your token and secret into the `.runtimeconfig.json` file where the `mux` field is.
+   `"mux": {
+  "secret": "...",
+  "token_id": "..."
+},`
 
 3. To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
 
-    > <https://us-central1-myproject.cloudfunctions.net/MuxWebhooks>
-    > <https://service-name-12851330326.region.run.app/MuxWebhooks>
+   > <https://us-central1-myproject.cloudfunctions.net/MuxWebhooks>
+   > <https://service-name-12851330326.region.run.app/MuxWebhooks>
 
 4. Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
