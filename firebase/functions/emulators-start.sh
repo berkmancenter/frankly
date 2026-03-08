@@ -9,6 +9,7 @@ ports_in_use() {
     -iTCP:8085 \
     -iTCP:9000 \
     -iTCP:9099 \
+    -iTCP:9150 \
     -iTCP:5001 \
     -sTCP:LISTEN >/dev/null 2>&1
 }
