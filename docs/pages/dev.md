@@ -262,7 +262,7 @@ This ensures that unrelated processes are never affected.
 If the emulators still fail to start, you can inspect which processes are using the emulator ports with:
 
 ```
-lsof -nP -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:5001 -sTCP:LISTEN
+lsof -nP -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN
 ```
 
 If anything appears in the output, run:
