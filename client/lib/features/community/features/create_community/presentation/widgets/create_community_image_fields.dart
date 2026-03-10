@@ -1,37 +1,24 @@
+import 'package:client/core/widgets/buttons/action_button.dart';
+import 'package:client/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/styles.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 class CreateCommunityImageFields extends StatelessWidget {
-  final String? bannerImageUrl;
   final String? profileImageUrl;
-  final Future<void> Function(String) updateBannerImage;
   final Future<void> Function(String) updateProfileImage;
-  final Future<void> Function({required bool isBannerImage}) removeImage;
+  final Future<void> Function() removeImage;
 
   const CreateCommunityImageFields({
     Key? key,
-    this.bannerImageUrl,
     this.profileImageUrl,
-    required this.updateBannerImage,
     required this.updateProfileImage,
     required this.removeImage,
   }) : super(key: key);
-
-  Future<void> _editBannerPressed() async {
-    String? url =
-        await GetIt.instance<MediaHelperService>().pickImageViaCloudinary();
-    url = url?.trim();
-    if (url != null) {
-      await updateBannerImage(url);
-    }
-  }
 
   Future<void> _editLogoPressed() async {
     String? url =
@@ -44,37 +31,16 @@ class CreateCommunityImageFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildLogoField(context),
-        SizedBox(height: 16),
-        _buildBackgroundField(context),
-      ],
-    );
+    return _buildLogoField(context);
   }
 
   Widget _buildLogoField(BuildContext context) => CreateCommunityImageField(
         text: context.l10n.logo,
         onTap: () => alertOnError(context, () => _editLogoPressed()),
         onTapRemove: () =>
-            alertOnError(context, () => removeImage(isBannerImage: false)),
-        isCircle: true,
+            alertOnError(context, () => removeImage()),
         onImageSelect: updateProfileImage,
         image: profileImageUrl,
-        isOptional: true,
-      );
-
-  Widget _buildBackgroundField(BuildContext context) =>
-      CreateCommunityImageField(
-        text: context.l10n.background,
-        onTap: () => alertOnError(context, () => _editBannerPressed()),
-        onTapRemove: () =>
-            alertOnError(context, () => removeImage(isBannerImage: true)),
-        onImageSelect: updateBannerImage,
-        image: bannerImageUrl,
-        isOptional: true,
       );
 }
 
@@ -82,128 +48,100 @@ class CreateCommunityImageField extends StatelessWidget {
   final String text;
   final void Function() onTap;
   final void Function() onTapRemove;
-  final bool isCircle;
   final String? image;
   final void Function(String)? onImageSelect;
-  final bool isOptional;
 
   const CreateCommunityImageField({
     required this.text,
     required this.onTap,
     required this.onTapRemove,
-    this.isCircle = false,
     this.image,
     this.onImageSelect,
-    this.isOptional = false,
     Key? key,
   }) : super(key: key);
 
   bool get showImage => !isNullOrEmpty(image);
 
-  double get size => 30.0;
+  double get size => 80.0;
 
-  Widget _buildRemoveImageIcon(BuildContext context) {
-    return CustomInkWell(
-      onTap: onTapRemove,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        alignment: Alignment.center,
-        width: 30,
-        height: 30,
-        child: Icon(
-          Icons.close,
-          color: context.theme.colorScheme.onSurfaceVariant,
-          size: 20,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInkWellWidget(BuildContext context) {
-    if (!showImage) {
-      return CustomInkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
-        child: Container(
-          alignment: Alignment.center,
-          width: 30,
-          height: 30,
+  Widget _buildImageWidget(BuildContext context) {
+    final mobile = responsiveLayoutService.isMobile(context);
+    return Flex(
+      direction: mobile ? Axis.vertical : Axis.horizontal,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: size + 10,
+          height: size + 10,
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color: context.theme.colorScheme.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(isCircle ? 15 : 5),
-            border: Border.all(
-              color: context.theme.colorScheme.onPrimaryContainer,
+            shape: BoxShape.circle,
+            color: !showImage
+                ? context.theme.colorScheme.surfaceDim
+                : Colors.transparent,
+            border: !showImage
+                ? null
+                : Border.all(
+                    color: context.theme.colorScheme.primary,
+                    width: 1,
+                  ),
+          ),
+          alignment: Alignment.center,
+          child: !showImage
+              ? Icon(
+                  Icons.image_outlined,
+                  color: context.theme.colorScheme.primary,
+                  size: size,
+                )
+              : ProxiedImage(
+                  image,
+                  width: size,
+                  height: size,
+                  borderRadius: BorderRadius.circular(size / 2),
+                ),
+        ),
+        SizedBox(width: 30, height: 30),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ActionButton(
+              text: !showImage ? context.l10n.upload : context.l10n.edit,
+              onPressed: onTap,
+              type: ActionButtonType.outline,
+              icon: Icon(!showImage ? Icons.add : Icons.edit),
             ),
-          ),
-          child: Icon(
-            Icons.add,
-            color: context.theme.colorScheme.onSurfaceVariant,
-            size: 20,
-          ),
+            if (showImage) ...[
+              SizedBox(width: 10),
+              ActionButton(
+                text: context.l10n.remove,
+                onPressed: onTapRemove,
+                type: ActionButtonType.outline,
+                icon: Icon(Icons.delete),
+              ),
+            ],
+          ],
         ),
-      );
-    } else {
-      return CustomInkWell(
-        boxShape: isCircle ? BoxShape.circle : null,
-        borderRadius: !isCircle ? BorderRadius.circular(5) : null,
-        onTap: onTap,
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-            border:
-                Border.all(color: context.theme.colorScheme.onPrimaryContainer),
-            borderRadius:
-                (!isCircle && !showImage) ? BorderRadius.circular(5) : null,
-          ),
-          alignment: Alignment.center,
-          child: ProxiedImage(
-            image,
-            width: size,
-            height: size,
-          ),
-        ),
-      );
-    }
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Semantics(
-          button: true,
-          label: text,
-          child: _buildInkWellWidget(context),
+        Text(
+          context.l10n.logo,
+          style: context.theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
         ),
-        SizedBox(width: 10),
-        if (showImage) ...[
-          Expanded(
-            child: HeightConstrainedText(
-              text,
-              style: AppTextStyle.eyebrowSmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          _buildRemoveImageIcon(context),
-        ] else ...[
-          Expanded(
-            child: HeightConstrainedText(
-              text,
-              style: AppTextStyle.eyebrowSmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (isOptional)
-            HeightConstrainedText(
-              context.l10n.optional,
-              style: AppTextStyle.bodySmall.copyWith(
-                color: context.theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-        ],
+        SizedBox(height: 30),
+        _buildImageWidget(context),
       ],
     );
   }
