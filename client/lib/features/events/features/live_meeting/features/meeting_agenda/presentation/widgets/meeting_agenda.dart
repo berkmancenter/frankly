@@ -27,7 +27,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    this.labelColor,
     this.isLivestream = false,
     this.child,
     Key? key,
@@ -39,7 +38,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
   final bool allowButtonForUserSubmittedAgenda;
   final SubmitNotifier? saveNotifier;
 
-  final Color? labelColor;
   final bool isLivestream;
   final bool agendaStartsCollapsed;
   final Widget? child;
@@ -55,7 +53,6 @@ class MeetingAgendaWrapper extends StatelessWidget {
       agendaStartsCollapsed: agendaStartsCollapsed,
       saveNotifier: saveNotifier,
       isLivestream: isLivestream,
-      labelColor: labelColor,
     );
     return ChangeNotifierProxyProvider0<AgendaProvider>(
       create: (context) => AgendaProvider(

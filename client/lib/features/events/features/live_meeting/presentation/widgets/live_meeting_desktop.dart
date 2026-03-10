@@ -41,26 +41,11 @@ class LiveMeetingDesktopLayout extends StatefulWidget {
   const LiveMeetingDesktopLayout({Key? key}) : super(key: key);
 
   @override
-  _LiveMeetingDesktopLayoutState createState() =>
-      _LiveMeetingDesktopLayoutState();
+  LiveMeetingDesktopLayoutState createState() =>
+      LiveMeetingDesktopLayoutState();
 }
 
-class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
-  Widget _buildBreakoutRoom(String roomId) {
-    return RefreshKeyWidget(
-      child: RefreshableBreakoutRoom(
-        key: Key('breakout-room-$roomId'),
-        liveMeetingBuilder: (_) => VideoFlutterMeeting(),
-      ),
-    );
-  }
-
-  Widget _buildLiveMeeting() {
-    return RefreshKeyWidget(
-      child: VideoFlutterMeeting(),
-    );
-  }
-
+class LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
   Widget _buildMeetingLoading() {
     final liveMeetingProvider = LiveMeetingProvider.watch(context);
 
@@ -71,9 +56,18 @@ class _LiveMeetingDesktopLayoutState extends State<LiveMeetingDesktopLayout> {
       loadingMessage: 'Loading room. Please wait...',
       builder: (_, response) {
         if (liveMeetingProvider.activeUiState == MeetingUiState.breakoutRoom) {
-          return _buildBreakoutRoom(liveMeetingProvider.currentBreakoutRoomId!);
+          return RefreshKeyWidget(
+            child: RefreshableBreakoutRoom(
+              key: Key(
+                'breakout-room-${liveMeetingProvider.currentBreakoutRoomId!}',
+              ),
+              liveMeetingBuilder: (_) => VideoFlutterMeeting(),
+            ),
+          );
         }
-        return _buildLiveMeeting();
+        return RefreshKeyWidget(
+          child: VideoFlutterMeeting(),
+        );
       },
     );
   }
@@ -589,14 +583,22 @@ class BreakoutStatusInformation extends StatelessWidget {
         builder: (context) {
           final breakoutRoomScheduledTime =
               breakoutSession?.scheduledTime ?? clockService.now();
-          final breakoutRoomRemainingTime =
-              breakoutRoomScheduledTime.difference(clockService.now());
+          final now = clockService.now();
+          // Calculate the time remaining, but don't allow it to go negative and reset
+          var breakoutRoomRemainingTime =
+              breakoutRoomScheduledTime.difference(now);
+
+          // If the scheduled time has passed, keep it at zero instead of letting it reset
+          if (breakoutRoomRemainingTime.isNegative) {
+            breakoutRoomRemainingTime = Duration.zero;
+          }
+
           final breakoutRoomRemainingTimeDisplay =
               breakoutRoomRemainingTime.getFormattedTime(showHours: false);
 
           final areBreakoutsPending = breakoutSession?.breakoutRoomStatus ==
                   BreakoutRoomStatus.pending &&
-              !breakoutRoomRemainingTime.isNegative;
+              breakoutRoomRemainingTime >= Duration.zero;
           final breakoutsMessage = areBreakoutsPending
               ? 'Breakout room matching starting in $breakoutRoomRemainingTimeDisplay'
               : 'Generating breakout room assignments';

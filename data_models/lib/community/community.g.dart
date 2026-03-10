@@ -110,7 +110,6 @@ const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.enableDiscussionThreads: 'enableDiscussionThreads',
   CommunityFeatureFlags.enablePrerequisites: 'enablePrerequisites',
   CommunityFeatureFlags.enableHostless: 'enableHostless',
-  CommunityFeatureFlags.enablePlatformSelection: 'enablePlatformSelection',
   CommunityFeatureFlags.liveMeetingMobile: 'liveMeetingMobile',
   CommunityFeatureFlags.multiplePeopleOnStage: 'multiplePeopleOnStage',
   CommunityFeatureFlags.multipleVideoTypes: 'multipleVideoTypes',
@@ -151,7 +150,6 @@ _$_CommunitySettings _$$_CommunitySettingsFromJson(Map<String, dynamic> json) =>
       multiplePeopleOnStage: json['multiplePeopleOnStage'] as bool? ?? false,
       multipleVideoTypes: json['multipleVideoTypes'] as bool? ?? false,
       requireApprovalToJoin: json['requireApprovalToJoin'] as bool? ?? false,
-      enablePlatformSelection: json['enablePlatformSelection'] as bool? ?? true,
       enableUpdatedLiveMeetingMobile:
           json['enableUpdatedLiveMeetingMobile'] as bool? ?? false,
       enableAVCheck: json['enableAVCheck'] as bool? ?? true,
@@ -171,7 +169,6 @@ Map<String, dynamic> _$$_CommunitySettingsToJson(
       'multiplePeopleOnStage': instance.multiplePeopleOnStage,
       'multipleVideoTypes': instance.multipleVideoTypes,
       'requireApprovalToJoin': instance.requireApprovalToJoin,
-      'enablePlatformSelection': instance.enablePlatformSelection,
       'enableUpdatedLiveMeetingMobile': instance.enableUpdatedLiveMeetingMobile,
       'enableAVCheck': instance.enableAVCheck,
     };

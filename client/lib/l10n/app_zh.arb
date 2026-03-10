@@ -3,70 +3,78 @@
   "@appNameHome": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appNameTermsOfService": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appNameTitle": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appNameUnsubscribe": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appNameUserSettings": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appNameWelcome": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appTitleHome": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appTitleUnsubscribe": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appTitleUserSettings": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@appTitleWelcome": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
+      }
+    }
+  },
+  "@aspectRatioClipped": {
+    "description": "纵横比裁剪的语义标签，带有label参数。",
+    "placeholders": {
+      "label": {
+        "type": "Object"
       }
     }
   },
@@ -90,16 +98,16 @@
   "@bySigningInRegisteringOrUsing": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@confirmMakeOwner": {
     "placeholders": {
-      "userName": {
+      "communityName": {
         "type": "String"
       },
-      "communityName": {
+      "userName": {
         "type": "String"
       }
     }
@@ -114,7 +122,7 @@
   "@deleteAgendaItem": {
     "placeholders": {
       "title": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
@@ -128,15 +136,14 @@
   "@enterCategoryNum": {
     "placeholders": {
       "number": {
-        "type": "String"
+        "example": "1",
+        "type": "num"
       }
     }
   },
   "@enterQuestionWithNumber": {
     "placeholders": {
-      "number": {
-        "type": "String"
-      }
+      "number": {}
     }
   },
   "@enterValidSocialUrl": {
@@ -149,7 +156,13 @@
       }
     }
   },
-  "@enterWordCloudPrompt": {},
+  "@enterWordCloudPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "Object"
+      }
+    }
+  },
   "@introBeforeBreakouts": {
     "placeholders": {
       "duration": {
@@ -160,22 +173,22 @@
   "@joinCommunity": {
     "placeholders": {
       "communityName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@kickOutUser": {
     "placeholders": {
       "displayName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
-        "type": "int",
-        "example": "5"
+        "example": "5",
+        "type": "int"
       }
     }
   },
@@ -189,22 +202,22 @@
   "@newToApp": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@noItems": {
     "placeholders": {
       "name": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@ofTotal": {
     "placeholders": {
       "count": {
-        "type": "int",
-        "example": "3"
+        "example": "3",
+        "type": "int"
       }
     }
   },
@@ -212,21 +225,22 @@
     "description": "参与者操作的语义标签，带有userId参数。",
     "placeholders": {
       "userId": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@participantCount": {
     "placeholders": {
       "count": {
-        "type": "String"
+        "example": "5",
+        "type": "int"
       }
     }
   },
   "@passwordResetLinkSent": {
     "placeholders": {
       "email": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
@@ -240,7 +254,7 @@
   "@questionWithNumber": {
     "placeholders": {
       "number": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
@@ -254,28 +268,28 @@
   "@signInToApp": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@termsAgreementPrefix": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@termsOfService": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@updateToPlan": {
     "placeholders": {
       "name": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
@@ -283,7 +297,7 @@
     "description": "视频元素的语义标签，带有label参数。",
     "placeholders": {
       "label": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
@@ -297,19 +311,20 @@
   "@welcomeToApp": {
     "placeholders": {
       "appName": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "@whenNewItemsAdded": {
     "placeholders": {
       "name": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
   "aVIssues": "音视频问题？",
   "about": "关于",
+  "aboutHint": "添加更多关于此社区目标的详细信息",
   "aboutUs": "关于我们",
   "accentColor": "强调色",
   "accentColorMustBeDarker": "强调色必须更深",
@@ -331,6 +346,8 @@
   "addSomethingHere": "在此处添加内容",
   "addToCalendar": "添加到日历",
   "admin": "管理员",
+  "agendaItemWasDeleted": "议程项已删除",
+  "agendaItemWasSaved": "议程项已保存",
   "agendaPromptReady": "您的活动已准备好开始！",
   "agendaPromptWaiting": "等待主持人开始活动...",
   "agreeAndContinue": "同意并继续",
@@ -353,15 +370,18 @@
   "areYouSureYouWantToRefreshTheGuide": "您确定要刷新指南吗？",
   "aspectRatioClipped": "纵横比裁剪",
   "attendee": "参与者",
+  "audioDeviceUpdated": "音频设备已更新。",
   "audioInputDevice": "音频输入设备：",
+  "avConnecting": "连接中...",
   "avErrorConstraints": "媒体约束错误。",
   "avErrorDisconnected": "音频/视频设备已断开连接。",
   "avErrorDuplicateIdentity": "您已经从另一个设备或浏览器连接。",
   "avErrorMediaAccess": "无法访问媒体设备。",
   "avErrorNetwork": "音频/视频连接网络错误。",
-  "avErrorNotFound": "未找到音频/视频设备。",
+  "avErrorNotFound": "未找到音频/视频设备。请检查权限。",
   "avErrorNotReadable": "无法读取音频/视频设备或该设备正忙。",
   "avErrorPermissionRequired": "需要权限使用音频/视频设备。",
+  "avErrorSaveDeviceSettings": "保存音频/视频设备设置时出错。请重试或联系支持。",
   "avIssues": "音视频问题？",
   "awaitingResponses": "等待回应中...",
   "background": "背景",
@@ -391,27 +411,30 @@
   "changedFromDefault": "已从默认值更改",
   "changesSaved": "更改已保存",
   "chat": "聊天",
+  "chatIntroduceYourself": "请自我介绍以打破僵局。",
   "chatMessage": "聊天消息",
+  "chatWelcome": "欢迎！",
   "chatWithParticipants": "与参与者聊天",
   "chooseABackgroundAndAccentColor": "选择浅色背景和深色强调色，提供足够的对比度，使包括视力中度低下的用户在内的广泛用户都能阅读文本。我们将检查其可读性。",
   "clearAgenda": "清空议程？",
   "close": "关闭",
   "closeEdit": "关闭编辑",
+  "commentWasDeleted": "评论已删除",
   "communityDescription": "社区描述",
   "communityDescriptionHint": "添加更多关于此社区目标的详细信息",
   "communityName": "社区名称",
   "communitySettings": "社区设置",
   "communitySuccessPrefix": "你已成功创建了你的社区。",
-  "communitySuccessSuffix": "点击右上角的齿轮图标以编辑您的社区设置。",
+  "communitySuccessSuffix": "点击右上角的铅笔图标以编辑您的社区设置。",
   "communityTagline": "社区标语",
   "communityUrl": "社区URL",
-  "congratulations": "恭喜",
   "confirm": "确认",
   "confirmDelete": "确定要删除吗？",
   "confirmDeleteMedia": "您确定要删除媒体吗？",
   "confirmMakeOwner": "您确定要将 {userName} 变更为 {communityName} 的拥有者吗？这将赋予他们在此社区中的所有可能权限，包括删除社区的能力。",
   "confirmRefreshGuide": "您确定要刷新指南吗？",
   "confirmRemoveParticipant": "您确定要从此活动中移除{name}吗？",
+  "congratulations": "恭喜",
   "contactEmail": "联系邮箱",
   "copiedToClipboard": "已复制到剪贴板",
   "couldntFindAccount": "我們找不到此電子郵件對應的帳戶。嘗試 ",
@@ -428,6 +451,7 @@
   "createTemplateFromEvent": "从活动创建模板",
   "currentParticipants": "当前\n参与者",
   "custom": "自定义",
+  "darkColorHex": "深色十六进制值",
   "data": "数据",
   "dataDownload": "数据下载",
   "defineBreakoutsOptional": "定义分组讨论（可选）",
@@ -456,22 +480,24 @@
   "emailAddressAlreadyInUseLoginError": "此邮箱已被使用。请尝试",
   "endBreakoutRooms": "结束分组讨论",
   "endTime": "结束时间",
+  "enterAmount": "输入金额",
   "enterCategoryNum": "输入类别 {number}",
   "enterHeadline": "输入标题",
   "enterImageTitle": "输入图片标题",
   "enterQuestionWithNumber": "输入问题 {number}",
+  "enterRoomNumber": "例如：2",
   "enterValidCommunityUrl": "请输入有效的社区URL",
+  "enterValidName": "請輸入有效的名稱",
   "enterValidSocialUrl": "请输入包含“{url}”的有效{platform}网址",
   "enterValidWebsiteUrl": "请输入有效的网址（例如：“https://websitename.com”）",
-  "enterValidName": "请输入有效的名称",
   "enterVideoTitle": "输入视频标题",
   "enterWaitingRoomText": "输入等候室文本（可选）",
   "enterWaitingRoomTextOptional": "输入等候室文本（可选）",
   "enterWordCloudPrompt": "输入词云提示",
   "enterWordCloudPromptHint": "输入词云提示",
   "error": "错误",
-  "errorCommunityProfile": "一个或多个个人资料设置的条目需要更改。请更正任何错误并重试。",
   "errorCommunityNameEmpty": "社区名称不能为空。",
+  "errorCommunityProfile": "一个或多个个人资料设置的条目需要更改。请更正任何错误并重试。",
   "errorCommunityUrlEmpty": "社区 URL 不能为空。",
   "errorLoadingCommunities": "加载社区时出错。请刷新。",
   "errorLoadingEmail": "加载电子邮件时出错。",
@@ -501,18 +527,23 @@
   "followCommunityButton": "关注社区按钮",
   "forgotPassword": "忘记密码？",
   "franklyLogo": "Frankly 标志",
+  "galleryView": "画廊视图",
   "getCustomColors": "获取自定义颜色",
+  "goTo": "前往",
   "googleCalendar": "Google 日历",
   "googleMeet": "Google Meet",
-  "goTo": "前往",
+  "headlineCannotBeEmpty": "大标题不能为空",
+  "headlineIsRequired": "大标题为必填项",
   "helpCenter": "帮助中心",
   "hideAgendaItem": "隐藏议程项",
   "hidePassword": "隱藏密碼",
   "hosted": "有主持人",
   "hostless": "无主持人",
+  "howWasTheEvent": "活动感觉如何？",
   "iAgreeToThe": "我同意",
   "iCalCalendar": "iCal 日历",
   "imageUrlIsNotSet": "（图片URL未设置。）",
+  "imageUrlIsRequired": "图片网址为必填项",
   "imageUrlNotSet": "(图片URL未设置。)",
   "instagramUrl": "Instagram链接",
   "instantMeeting": "即时会议",
@@ -527,12 +558,13 @@
   "language": "语言",
   "languageSelector": "语言选择器",
   "lastSession": "上次会话",
+  "lightColorHex": "浅色十六进制值",
   "linkedinUrl": "LinkedIn链接",
   "links": "链接",
   "livestream": "直播",
   "locked": "已锁定",
-  "login": "登录",
   "loggingIn": "登入",
+  "login": "登录",
   "logo": "标志",
   "logout": "退出登录",
   "loopVideo": "循环播放视频",
@@ -552,7 +584,9 @@
   "members": "成员",
   "memberships": "会员资格",
   "message": "消息",
+  "messageCannotBeEmpty": "消息不能为空",
   "messageFrom": "发信人",
+  "messageIsRequired": "消息为必填项",
   "messageParticipants": "发送消息给参与者",
   "messageTime": "消息时间",
   "microsoftTeams": "Microsoft Teams",
@@ -578,10 +612,10 @@
   "noAccountFound": "未找到帐户。请尝试使用其他电子邮件地址登录。或者，使用此电子邮件注册。",
   "noAnnouncementsYet": "暂无公告。",
   "noCancel": "取消",
-  "noDevicesFound": "未找到设备。",
+  "noDevicesFound": "未找到设备",
   "noEventsFound": "未找到活动。",
   "noItems": "没有{name}",
-  "noMatchingMembersFound": "未找到结果。请修改您的搜索词。",
+  "noMatchingMembersFound": "未找到匹配的成员。",
   "noMembersFoundToExport": "未找到可导出的成员。",
   "noOneIsHereYet": "还没有人在这里。",
   "noOneIsHereYet1": "还没有人在这里。",
@@ -624,14 +658,21 @@
   "person": "人",
   "pickAColor": "选择颜色",
   "playsAt": "在{time}播放",
+  "pleaseAddSomeAnswers": "请添加一些答案",
   "pleaseEnterPassword": "請輸入密碼",
-  "pleaseEnterValidEmail": "请输入有效的电子邮件地址（例如：“name@email.com”）",
+  "pleaseEnterValidAmount": "请输入有效金额",
+  "pleaseEnterValidEmail": "请输入有效的电子邮件地址。",
   "pleaseEnterValidPassword": "請輸入有效的密碼",
   "pleaseEnterValidUrl": "请输入有效的URL。",
   "pleaseFixErrorsBeforeSaving": "请在保存前修正表单错误。",
   "pleaseLogInOrSignUp": "请登录或注册",
+  "postAction": "发布",
+  "postEvent": "活动后",
+  "postHasBeenCreated": "帖子已创建",
+  "postHasBeenUpdated": "帖子已更新",
   "postWasDeleted": "帖子已删除。",
   "posts": "帖子",
+  "preEvent": "活动前",
   "prereqRequired": "需要先决条件",
   "prerequisiteRequired": "需要先决条件",
   "presets": "预设",
@@ -644,6 +685,7 @@
   "profileButton": "个人资料按钮",
   "proposeToRemoveUser": "提议移除用户？",
   "questionGoesHere": "问题写在这里",
+  "questionIsRequired": "问题为必填项",
   "questionWithNumber": "问题 {number}",
   "raiseHandJoinSpeakerQueue": "举手加入发言队列",
   "raiseHandToJoin": "举手加入发言队列",
@@ -665,9 +707,9 @@
   "removeParticipant": "移除参与者",
   "removeSuggestion": "删除建议",
   "removedFromEvent": "您已被从此活动中移除，无法重新加入。",
+  "required": "必填",
   "resources": "资源",
   "restoreSettings": "恢复默认设置",
-  "required": "必填",
   "roleAdmin": "管理员",
   "roleAttendee": "参与者",
   "roleFacilitator": "引导者",
@@ -685,21 +727,23 @@
   "searchTemplates": "搜索模板",
   "sectionNotFilledYet": "该部分尚未填写。",
   "seeManagingYourCommunity": "查看管理您的社区以获取详细信息。",
+  "selectADay": "选择日期",
+  "selectATime": "选择时间",
+  "selectAudioInputDevice": "选择音频输入设备",
   "selectData": "选择数据",
   "selectLanguage": "选择语言",
   "selectMaxParticipantCount": "选择最大参与者数量",
   "selectSpace": "选择空间：",
+  "selectVideoInput": "选择视频输入",
   "selectedColorsContrastError": "所选颜色的对比度不足。请选用其他颜色。",
   "sendMessage": "发送消息",
   "setPayeeAccountDetails": "设置您的收款账户详细信息",
+  "setYourPayeeAccountDetails": "设置您的收款账户详情",
   "settingAgendaPreview": "议程预览",
   "settingAllowMembersToCreateEvents": "允许成员创建活动",
   "settingAllowMembersToCreateTemplates": "允许成员创建模板",
   "settingAllowUsersToDonateFunds": "允许用户捐款",
   "settingEnableWeeklyEmailDigestsOfUpcomingEvents": "启用即将举行活动的每周邮件摘要",
-  "settingRequireApprovalForNewMembers": "新成员需要审批",
-  "setYourPayeeAccountDetails": "设置您的收款账户详情",
-  "settings": "设置",
   "settingHelperAgendaPreview": "使活动议程在活动介绍页面上可见。当关闭时，议程仅在活动会议中可见。",
   "settingHelperChat": "允许参与者在活动页面和活动期间（包括小组讨论室）之间相互发送消息。",
   "settingHelperDonationWarning": "您的收款账户尚未完全设置，因此目前无法接受捐款。您可能需要链接银行账户或接受 Stripe 的服务条款。",
@@ -707,9 +751,11 @@
   "settingHelperFloatingChat": "在活动期间于屏幕底部以气泡形式显示临时聊天通知。",
   "settingHelperMemberEvents": "允许社区成员使用您社区的模板创建和组织活动。",
   "settingHelperMemberTemplates": "允许成员在您的社区内创建和保存可重复使用的活动模板。",
-  "settingHelperRequireMembershipApproval": "所有会员申请都必须经过社区管理员审核和批准才能获得访问权限。活动参与将仅限于会员。",
   "settingHelperRecord": "捕获活动视频，管理员可于稍后下载。（目前限于有主持人活动的主要会议室录制；小组讨论室录制即将推出。）",
+  "settingHelperRequireMembershipApproval": "所有会员申请都必须经过社区管理员审核和批准才能获得访问权限。活动参与将仅限于会员。",
   "settingHelperTalkTimer": "向参与者显示发言时间指示器，并提供细微提醒以鼓励平衡讨论。",
+  "settingRequireApprovalForNewMembers": "新成员需要审批",
+  "settings": "设置",
   "settingsFor": "{communityName} 的设置",
   "showAnnouncementsButton": "显示公告按钮",
   "showOptions": "显示选项",
@@ -738,25 +784,27 @@
   "somethingWentWrong": "出了点问题",
   "somethingWentWrongTryAgain": "出现错误，请重试。",
   "sorryVimeoVideoLookupFailed": "抱歉，Vimeo 视频查找失败。",
-  "sorryYouTubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
   "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
   "spreadTheWord": "传播信息",
+  "stageView": "舞台视图",
   "start": "开始",
   "startCommunity": "创建社区",
   "startEvent": "开始活动",
   "startTime": "开始时间",
   "submitChatButton": "提交聊天按钮",
   "submitMessageButton": "提交消息按钮",
-  "submitTagButton": "提交标签按钮",
+  "submitTagButton": "提交",
   "suggest": "建议",
   "suggestAgendaItemHint": "您可以提出议程项目，每个人都可以投票",
   "suggestions": "建议",
   "suggestionsWillShowUpHere": "建议将显示在这里",
   "tag": "标签",
   "tagline": "标语",
+  "taglineHint": "例：保护地球免受所有入侵者的侵害",
   "targetParticipantsPerRoom": "每个分组的\n目标参与者",
   "targetSize": "目标大小",
   "targetSizeQuestion": "目标大小？",
+  "templateSettings": "模板设置",
   "templates": "模板",
   "termsAgreementPrefix": "通过登录、注册或使用 {appName}，我同意遵守 ",
   "termsOfService": "{appName} 的服务条款",
@@ -766,6 +814,7 @@
   "thisEventIsLocked": "此活动已锁定",
   "thisUrlWasNotFound": "未找到此URL。",
   "thisUser": "该用户",
+  "titleIsRequired": "标题为必填项",
   "troubleshoot": "故障排除",
   "tryAgain": "请再试一次",
   "turnOnAudioVideo": "开启音频/视频？",
@@ -773,18 +822,26 @@
   "typeSomething": "输入内容",
   "unfollow": "取消关注",
   "uniqueUrlDisplayName": "唯一URL显示名称（可选）",
+  "uniqueUrlDisplayNameOptional": "唯一URL显示名称（可选）",
   "upcomingEvents": "即将举行的活动",
-  "updateToPlan": "更新至{name}？",
+  "updateAction": "更新",
+  "updateToPlan": "更新到{name}计划",
   "upload": "上传",
   "upvoteDownvoteSuggestions": "您可以对建议的议程项目进行投票和反对投票",
+  "urlIsNotValid": "网址无效",
   "urlParameter": "URL参数",
-  "useLighterAccentColor": "使用更浅的强调色。",
-  "useLighterBackgroundColor": "使用更浅的背景颜色。",
   "useDarkerAccentColor": "使用更深的强调色。",
   "useDarkerBackgroundColor": "使用更深的背景颜色。",
+  "useLighterAccentColor": "使用更浅的强调色。",
+  "useLighterBackgroundColor": "使用更浅的背景颜色。",
   "usersAreInBreakoutRooms": "用户在分组讨论室中。",
+  "videoDeviceUpdated": "视频设备已更新。",
+  "videoDisabled": "视频关闭",
   "videoElement": "{label}-视频元素",
   "videoInputDevice": "视频输入设备：",
+  "videoPreview": "视频预览",
+  "videoUpdating": "正在更新您的会议视频...",
+  "videoUrlIsRequired": "视频网址为必填项",
   "view": "查看",
   "vimeoVideoLookupFailed": "抱歉，Vimeo 视频查找失败。",
   "waitingRoom": "等候室",
@@ -805,8 +862,8 @@
   "youCanChangeThisLater": "你以后可以更改这个",
   "youHaventJoinedAnyCommunities": "您尚未加入任何社区",
   "youNeedToBeLoggedInToDoThis": "您需要登录才能执行此操作。",
-  "yourChangesToProfileCantBeSaved": "无法保存您对个人资料所做的更改。",
   "youWereRemovedFromThisEventAndCannotRejoin": "您已被从此活动中移除，无法重新加入。",
+  "yourChangesToProfileCantBeSaved": "无法保存您对个人资料所做的更改。",
   "yourName": "您的名字",
   "youtubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
   "zoom": "放大"

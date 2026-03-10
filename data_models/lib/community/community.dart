@@ -34,7 +34,6 @@ enum CommunityFeatureFlags {
   enableDiscussionThreads,
   enablePrerequisites,
   enableHostless,
-  enablePlatformSelection,
   liveMeetingMobile,
   multiplePeopleOnStage,
   multipleVideoTypes,
@@ -141,8 +140,6 @@ class Community with _$Community implements SerializeableRequest {
             .contains(CommunityFeatureFlags.dontAllowMembersToCreateMeetings),
         enableDiscussionThreads:
             flags.contains(CommunityFeatureFlags.enableDiscussionThreads),
-        enablePlatformSelection:
-            flags.contains(CommunityFeatureFlags.enablePlatformSelection),
         multiplePeopleOnStage:
             flags.contains(CommunityFeatureFlags.multiplePeopleOnStage),
         multipleVideoTypes:
@@ -216,7 +213,6 @@ class CommunitySettings with _$CommunitySettings {
   static const kFieldEnableDiscussionThreads = 'enableDiscussionThreads';
   static const kFieldEnableHostless = 'enableHostless';
   static const kFieldFeaturedOrder = 'featuredOrder';
-  static const kFieldEnablePlatformSelection = 'enablePlatformSelection';
   static const kFieldMultiplePeopleOnStage = 'multiplePeopleOnStage';
   static const kFieldRequireApprovalToJoin = 'requireApprovalToJoin';
 
@@ -231,7 +227,6 @@ class CommunitySettings with _$CommunitySettings {
     @Default(false) bool multiplePeopleOnStage,
     @Default(false) bool multipleVideoTypes,
     @Default(false) bool requireApprovalToJoin,
-    @Default(true) bool enablePlatformSelection,
     @Default(false) bool enableUpdatedLiveMeetingMobile,
     @Default(true) bool enableAVCheck,
   }) = _CommunitySettings;

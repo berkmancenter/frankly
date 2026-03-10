@@ -966,7 +966,6 @@ mixin _$CommunitySettings {
   bool get multiplePeopleOnStage => throw _privateConstructorUsedError;
   bool get multipleVideoTypes => throw _privateConstructorUsedError;
   bool get requireApprovalToJoin => throw _privateConstructorUsedError;
-  bool get enablePlatformSelection => throw _privateConstructorUsedError;
   bool get enableUpdatedLiveMeetingMobile => throw _privateConstructorUsedError;
   bool get enableAVCheck => throw _privateConstructorUsedError;
 
@@ -993,7 +992,6 @@ abstract class $CommunitySettingsCopyWith<$Res> {
       bool multiplePeopleOnStage,
       bool multipleVideoTypes,
       bool requireApprovalToJoin,
-      bool enablePlatformSelection,
       bool enableUpdatedLiveMeetingMobile,
       bool enableAVCheck});
 }
@@ -1021,7 +1019,6 @@ class _$CommunitySettingsCopyWithImpl<$Res, $Val extends CommunitySettings>
     Object? multiplePeopleOnStage = null,
     Object? multipleVideoTypes = null,
     Object? requireApprovalToJoin = null,
-    Object? enablePlatformSelection = null,
     Object? enableUpdatedLiveMeetingMobile = null,
     Object? enableAVCheck = null,
   }) {
@@ -1066,10 +1063,6 @@ class _$CommunitySettingsCopyWithImpl<$Res, $Val extends CommunitySettings>
           ? _value.requireApprovalToJoin
           : requireApprovalToJoin // ignore: cast_nullable_to_non_nullable
               as bool,
-      enablePlatformSelection: null == enablePlatformSelection
-          ? _value.enablePlatformSelection
-          : enablePlatformSelection // ignore: cast_nullable_to_non_nullable
-              as bool,
       enableUpdatedLiveMeetingMobile: null == enableUpdatedLiveMeetingMobile
           ? _value.enableUpdatedLiveMeetingMobile
           : enableUpdatedLiveMeetingMobile // ignore: cast_nullable_to_non_nullable
@@ -1101,7 +1094,6 @@ abstract class _$$_CommunitySettingsCopyWith<$Res>
       bool multiplePeopleOnStage,
       bool multipleVideoTypes,
       bool requireApprovalToJoin,
-      bool enablePlatformSelection,
       bool enableUpdatedLiveMeetingMobile,
       bool enableAVCheck});
 }
@@ -1127,7 +1119,6 @@ class __$$_CommunitySettingsCopyWithImpl<$Res>
     Object? multiplePeopleOnStage = null,
     Object? multipleVideoTypes = null,
     Object? requireApprovalToJoin = null,
-    Object? enablePlatformSelection = null,
     Object? enableUpdatedLiveMeetingMobile = null,
     Object? enableAVCheck = null,
   }) {
@@ -1172,10 +1163,6 @@ class __$$_CommunitySettingsCopyWithImpl<$Res>
           ? _value.requireApprovalToJoin
           : requireApprovalToJoin // ignore: cast_nullable_to_non_nullable
               as bool,
-      enablePlatformSelection: null == enablePlatformSelection
-          ? _value.enablePlatformSelection
-          : enablePlatformSelection // ignore: cast_nullable_to_non_nullable
-              as bool,
       enableUpdatedLiveMeetingMobile: null == enableUpdatedLiveMeetingMobile
           ? _value.enableUpdatedLiveMeetingMobile
           : enableUpdatedLiveMeetingMobile // ignore: cast_nullable_to_non_nullable
@@ -1202,7 +1189,6 @@ class _$_CommunitySettings implements _CommunitySettings {
       this.multiplePeopleOnStage = false,
       this.multipleVideoTypes = false,
       this.requireApprovalToJoin = false,
-      this.enablePlatformSelection = true,
       this.enableUpdatedLiveMeetingMobile = false,
       this.enableAVCheck = true});
 
@@ -1240,9 +1226,6 @@ class _$_CommunitySettings implements _CommunitySettings {
   final bool requireApprovalToJoin;
   @override
   @JsonKey()
-  final bool enablePlatformSelection;
-  @override
-  @JsonKey()
   final bool enableUpdatedLiveMeetingMobile;
   @override
   @JsonKey()
@@ -1250,7 +1233,7 @@ class _$_CommunitySettings implements _CommunitySettings {
 
   @override
   String toString() {
-    return 'CommunitySettings(allowDonations: $allowDonations, allowUnofficialTemplates: $allowUnofficialTemplates, disableEmailDigests: $disableEmailDigests, dontAllowMembersToCreateMeetings: $dontAllowMembersToCreateMeetings, enableDiscussionThreads: $enableDiscussionThreads, enableHostless: $enableHostless, featuredOrder: $featuredOrder, multiplePeopleOnStage: $multiplePeopleOnStage, multipleVideoTypes: $multipleVideoTypes, requireApprovalToJoin: $requireApprovalToJoin, enablePlatformSelection: $enablePlatformSelection, enableUpdatedLiveMeetingMobile: $enableUpdatedLiveMeetingMobile, enableAVCheck: $enableAVCheck)';
+    return 'CommunitySettings(allowDonations: $allowDonations, allowUnofficialTemplates: $allowUnofficialTemplates, disableEmailDigests: $disableEmailDigests, dontAllowMembersToCreateMeetings: $dontAllowMembersToCreateMeetings, enableDiscussionThreads: $enableDiscussionThreads, enableHostless: $enableHostless, featuredOrder: $featuredOrder, multiplePeopleOnStage: $multiplePeopleOnStage, multipleVideoTypes: $multipleVideoTypes, requireApprovalToJoin: $requireApprovalToJoin, enableUpdatedLiveMeetingMobile: $enableUpdatedLiveMeetingMobile, enableAVCheck: $enableAVCheck)';
   }
 
   @override
@@ -1269,7 +1252,8 @@ class _$_CommunitySettings implements _CommunitySettings {
                     dontAllowMembersToCreateMeetings) ||
                 other.dontAllowMembersToCreateMeetings ==
                     dontAllowMembersToCreateMeetings) &&
-            (identical(other.enableDiscussionThreads, enableDiscussionThreads) ||
+            (identical(
+                    other.enableDiscussionThreads, enableDiscussionThreads) ||
                 other.enableDiscussionThreads == enableDiscussionThreads) &&
             (identical(other.enableHostless, enableHostless) ||
                 other.enableHostless == enableHostless) &&
@@ -1281,9 +1265,6 @@ class _$_CommunitySettings implements _CommunitySettings {
                 other.multipleVideoTypes == multipleVideoTypes) &&
             (identical(other.requireApprovalToJoin, requireApprovalToJoin) ||
                 other.requireApprovalToJoin == requireApprovalToJoin) &&
-            (identical(
-                    other.enablePlatformSelection, enablePlatformSelection) ||
-                other.enablePlatformSelection == enablePlatformSelection) &&
             (identical(other.enableUpdatedLiveMeetingMobile,
                     enableUpdatedLiveMeetingMobile) ||
                 other.enableUpdatedLiveMeetingMobile ==
@@ -1306,7 +1287,6 @@ class _$_CommunitySettings implements _CommunitySettings {
       multiplePeopleOnStage,
       multipleVideoTypes,
       requireApprovalToJoin,
-      enablePlatformSelection,
       enableUpdatedLiveMeetingMobile,
       enableAVCheck);
 
@@ -1337,7 +1317,6 @@ abstract class _CommunitySettings implements CommunitySettings {
       final bool multiplePeopleOnStage,
       final bool multipleVideoTypes,
       final bool requireApprovalToJoin,
-      final bool enablePlatformSelection,
       final bool enableUpdatedLiveMeetingMobile,
       final bool enableAVCheck}) = _$_CommunitySettings;
 
@@ -1364,8 +1343,6 @@ abstract class _CommunitySettings implements CommunitySettings {
   bool get multipleVideoTypes;
   @override
   bool get requireApprovalToJoin;
-  @override
-  bool get enablePlatformSelection;
   @override
   bool get enableUpdatedLiveMeetingMobile;
   @override

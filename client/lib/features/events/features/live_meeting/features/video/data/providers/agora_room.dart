@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:universal_html/html.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '../../../../../../../../services.dart';
 import '../../../../../event_page/data/providers/event_provider.dart';
@@ -39,9 +40,6 @@ class AgoraRoom with ChangeNotifier {
     required this.conferenceRoom,
   });
 
-  bool connectedWithAudioEnabled = false;
-  bool connectedWithVideoEnabled = false;
-
   AgoraRoomState _state = AgoraRoomState.CONNECTING;
   AgoraRoomState get state => _state;
 
@@ -56,6 +54,8 @@ class AgoraRoom with ChangeNotifier {
 
   final Map<int, bool> _audioMutedState = {};
   final Map<int, bool> _videoMutedState = {};
+
+  final MediaDeviceService mediaDeviceService = MediaDeviceService();
 
   final _dominantSpeakerStream = BehaviorSubject<AgoraParticipant?>();
   BehaviorSubject<AgoraParticipant?> get dominantSpeakerStream =>
@@ -102,9 +102,11 @@ class AgoraRoom with ChangeNotifier {
   }
 
   Future<void> connect({
-    bool enableAudio = true,
-    bool enableVideo = true,
+    required bool enableAudio,
+    required bool enableVideo,
   }) async {
+    await mediaDeviceService.init();
+
     engine = createAgoraRtcEngine();
 
     await engine.initialize(
@@ -113,11 +115,14 @@ class AgoraRoom with ChangeNotifier {
       ),
     );
 
+    final currentUserId = userService.currentUserId!;
+    final agoraUid = uidToInt(currentUserId);
+
     _localParticipant = AgoraParticipant(
       rtcEngine: engine,
       agoraUid: 0,
       isLocal: true,
-      userId: userService.currentUserId!,
+      userId: currentUserId,
       token: token,
     )
       ..addListener(notifyListeners)
@@ -136,7 +141,17 @@ class AgoraRoom with ChangeNotifier {
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
         _state = AgoraRoomState.CONNECTED;
 
-        unawaited(conferenceRoom.onConnected(this));
+        unawaited(conferenceRoom.onConnected(room: this));
+
+        print('Joined with audio: $enableAudio and video: $enableVideo');
+
+        if (enableAudio) {
+          await conferenceRoom.toggleAudioEnabled(setEnabled: true);
+        }
+        if (enableVideo) {
+          await conferenceRoom.toggleVideoEnabled(setEnabled: true);
+        }
+
         conferenceRoom.onLocalParticipantChanges();
 
         notifyListeners();
@@ -149,14 +164,6 @@ class AgoraRoom with ChangeNotifier {
           smooth: 3,
           reportVad: true,
         );
-
-        print('Joined with audio: $enableAudio and video: $enableVideo');
-        if (enableVideo) {
-          await conferenceRoom.toggleVideoEnabled(setEnabled: true);
-        }
-        if (enableAudio) {
-          await conferenceRoom.toggleAudioEnabled(setEnabled: true);
-        }
       },
       onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
         print(
@@ -181,7 +188,6 @@ class AgoraRoom with ChangeNotifier {
         )
           ..videoTrackEnabled = !(_videoMutedState[rUid] ?? false)
           ..audioTrackEnabled = !(_audioMutedState[rUid] ?? false);
-
         _remoteParticipants.add(participant);
 
         conferenceRoom.onParticipantConnected();
@@ -262,19 +268,6 @@ class AgoraRoom with ChangeNotifier {
 
         notifyListeners();
       },
-      onRemoteVideoStateChanged: (
-        RtcConnection connection,
-        int remoteUid,
-        RemoteVideoState state,
-        RemoteVideoStateReason reason,
-        int elapsed,
-      ) {
-        print(
-          '[onRemoteVideoStateChanged] connection: ${connection.toJson()} uid: $remoteUid state: $state',
-        );
-
-        notifyListeners();
-      },
       onUserEnableLocalVideo:
           (RtcConnection connection, int uid, bool enabled) {
         print(
@@ -333,17 +326,18 @@ class AgoraRoom with ChangeNotifier {
 
     engine.registerEventHandler(_rtcEngineEventHandler);
 
-    await engine.enableVideo();
+    // Enable audio and video modules so receiving works.
     await engine.enableAudio();
-    await engine.muteAllRemoteAudioStreams(false);
-
+    await engine.enableVideo();
+    // Start with local video and audio capture disabled. This prevents
+    // the video/audio being enabled with the wrong device.
     await engine.enableLocalVideo(false);
     await engine.enableLocalAudio(false);
 
     await engine.joinChannel(
       channelId: channelName,
       token: token,
-      uid: uidToInt(userService.currentUserId!),
+      uid: agoraUid,
       options: ChannelMediaOptions(
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
         channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
@@ -357,10 +351,10 @@ class AgoraRoom with ChangeNotifier {
   @override
   dispose() {
     engine.unregisterEventHandler(_rtcEngineEventHandler);
-    engine.leaveChannel();
     engine.stopPreview();
     engine.enableLocalVideo(false);
     engine.enableLocalAudio(false);
+    engine.leaveChannel();
     engine.release();
 
     super.dispose();
@@ -403,23 +397,45 @@ class AgoraParticipant with ChangeNotifier {
 
   int? volume = 0;
 
-  bool audioTrackEnabled = true;
+  MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
+  bool audioTrackEnabled = true;
+  // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
   bool videoTrackEnabled = true;
 
-  MediaStreamTrack? get screenshareTrack => null;
+  html.MediaStreamTrack? get screenshareTrack => null;
 
-  Future<void> enableAudio({required bool setEnabled, String? deviceId}) async {
-    if (setEnabled) {
-      if (deviceId != null) {
-        try {
-          await _rtcEngine.getAudioDeviceManager().setRecordingDevice(deviceId);
-        } catch (e) {
-          print('Error setting device ID $deviceId');
-        }
+  Future<void> updateAgoraAudioDevice() async {
+    final deviceId = mediaDeviceService.selectedAudioInputId;
+    try {
+      if (deviceId == null) {
+        throw Exception('No audio devices found.');
       }
 
+      await _rtcEngine.getAudioDeviceManager().setRecordingDevice(
+            deviceId,
+          );
+    } catch (e) {
+      print('Error setting device ID $deviceId. $e');
+    }
+  }
+
+  Future<void> updateAgoraVideoDevice() async {
+    final deviceId = mediaDeviceService.selectedVideoInputId;
+    try {
+      if (deviceId == null) {
+        throw Exception('No video devices found.');
+      }
+      await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
+    } catch (e) {
+      print('Error setting device ID $deviceId. $e');
+    }
+  }
+
+  Future<void> enableAudio({required bool setEnabled}) async {
+    if (setEnabled) {
+      await updateAgoraAudioDevice();
       await _rtcEngine.enableLocalAudio(true);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
@@ -427,44 +443,36 @@ class AgoraParticipant with ChangeNotifier {
         ),
       );
     } else {
+      await _rtcEngine.enableLocalAudio(false);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
           publishMicrophoneTrack: false,
         ),
       );
-      await _rtcEngine.enableLocalAudio(false);
     }
     audioTrackEnabled = setEnabled;
   }
 
-  Future<void> enableVideo({required bool setEnabled, String? deviceId}) async {
+  Future<void> enableVideo({required bool setEnabled}) async {
     if (setEnabled) {
-      if (!videoLocalPreviewStarted) {
-        videoLocalPreviewStarted = true;
-        await _rtcEngine.startPreview();
-      }
-
-      if (deviceId != null) {
-        try {
-          await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
-        } catch (e) {
-          print('Error setting device ID $deviceId');
-        }
-      }
-
+      await updateAgoraVideoDevice();
       await _rtcEngine.enableLocalVideo(true);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
           publishCameraTrack: true,
         ),
       );
+      if (!videoLocalPreviewStarted) {
+        videoLocalPreviewStarted = true;
+        await _rtcEngine.startPreview();
+      }
     } else {
+      await _rtcEngine.enableLocalVideo(false);
       await _rtcEngine.updateChannelMediaOptions(
         ChannelMediaOptions(
           publishCameraTrack: false,
         ),
       );
-      await _rtcEngine.enableLocalVideo(false);
     }
 
     videoTrackEnabled = setEnabled;
