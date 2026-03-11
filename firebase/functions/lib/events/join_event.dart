@@ -16,10 +16,16 @@ class JoinEvent extends OnCallMethod<Event> {
 
   @override
   Future<void> action(Event request, CallableContext context) async {
-    final participant = await firestoreUtils.getFirestoreObject(
-      path:
-          '${request.collectionPath}/${request.id}/event-participants/${context.authUid}',
-      constructor: (map) => Participant.fromJson(map),
+    final participantRef = firestore.document(
+      '${request.collectionPath}/${request.id}/event-participants/${context.authUid}',
+    );
+    final participantSnapshot = await participantRef.get();
+    if (!participantSnapshot.exists) {
+      // User has not yet joined this event -- nothing to do.
+      return;
+    }
+    final participant = Participant.fromJson(
+      firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap()),
     );
 
     final community = await firestoreUtils.getFirestoreObject(
