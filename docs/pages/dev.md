@@ -148,7 +148,7 @@ Frankly uses the **Firebase Local Emulator Suite** for local development. The em
 Documentation for the emulator suite is available here:  
 <https://firebase.google.com/docs/emulator-suite>
 
-By default the emulators run against the Firebase project named **`dev`**, which is specified in `.firebaserc`.
+The emulators run against the Firebase project ID specified by `FIREBASE_PROJECT_ID` in `client/.env`. This must match your actual Firebase project. If you see CORS errors when trying to load pages in your local version, double check that this has been set correctly.
 
 ---
 
@@ -156,7 +156,9 @@ By default the emulators run against the Firebase project named **`dev`**, which
 
 The emulators use a local configuration file instead of `functions:config:set`.
 
-To setup, create the following file if it does not already exist:
+1. Copy `client/.env.local.example` to `client/.env` and set `FIREBASE_PROJECT_ID` to your actual Firebase project ID.
+
+2. Create the following file if it does not already exist:
 
 ```
 firebase/functions/.runtimeconfig.json
@@ -511,7 +513,7 @@ The default debug platform is Web (Chrome), so please ensure it is selected as t
 
 ### .env File
 
-You will need to create a **.env** file for client configuration. Copy `client/.env.example.local` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
+You will need to create a **.env** file for client configuration. Copy `client/.env.local.example` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
 
 You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `firestore, auth, functions, database`. Set the value to any desired combination of emulators.
 
