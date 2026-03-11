@@ -50,8 +50,6 @@ need_data_models_build() {
   [ ! -f "$DATA_MODELS_STAMP" ] || \
   find \
     "$DATA_MODELS_DIR/lib" \
-    "$DATA_MODELS_DIR/bin" \
-    "$DATA_MODELS_DIR/test" \
     "$DATA_MODELS_DIR/build.yaml" \
     "$DATA_MODELS_DIR/pubspec.yaml" \
     "$DATA_MODELS_DIR/pubspec.lock" \
@@ -62,7 +60,7 @@ need_functions_build() {
   [ ! -f "$FUNCTIONS_STAMP" ] || \
   find \
     "$FUNCTIONS_DIR/lib" \
-    "$FUNCTIONS_DIR/bin" \
+    "$FUNCTIONS_DIR/node" \
     "$FUNCTIONS_DIR/test" \
     "$FUNCTIONS_DIR/build.yaml" \
     "$FUNCTIONS_DIR/pubspec.yaml" \
@@ -78,15 +76,14 @@ need_functions_build() {
 wait_for_port() {
   local port="$1"
   local timeout="${2:-30}"
-  local start
-  start="$(date +%s)"
+  local deadline=$(( SECONDS + timeout ))
 
   while true; do
     if lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
       return 0
     fi
 
-    if [ $(( "$(date +%s)" - start )) -ge "$timeout" ]; then
+    if (( SECONDS >= deadline )); then
       echo "Timed out waiting for port $port" >&2
       return 1
     fi
@@ -173,7 +170,7 @@ log "Resetting and starting emulators..."
 cd "$FUNCTIONS_DIR"
 chmod +x ./emulators.sh ./emulators-start.sh ./emulators-stop.sh
 (./emulators-stop.sh || true) >/dev/null 2>&1
-./emulators-start.sh &
+SKIP_DART_BUILD=1 ./emulators-start.sh &
 EMULATOR_PID=$!
 
 log "Waiting for emulators to become ready..."
@@ -184,7 +181,6 @@ log "Launching Flutter client..."
 cd "$CLIENT_DIR"
 exec flutter run \
   -d chrome \
-  --release \
   --web-renderer html \
   -t lib/dev_emulators_main.dart \
   --dart-define-from-file=.env
