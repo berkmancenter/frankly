@@ -190,6 +190,9 @@ class EventPageState extends State<EventPage> implements EventPageView {
           templateId: templateId,
         ),
       );
+      await eventPageProvider.enterMeeting(
+        surveyQuestions: joinResults.surveyQuestions,
+      );
       return true;
     });
     // If user joined, should not reach this point.
