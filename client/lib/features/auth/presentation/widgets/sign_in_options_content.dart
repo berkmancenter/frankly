@@ -293,60 +293,71 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                   SizedBox(height: 10),
                 ],
               ),
-            CustomTextField(
-              key: SignInOptionsContent.emailTextFieldKey,
-              borderType: BorderType.underline,
-              controller: _emailController,
-              labelText: context.l10n.email,
-              onEditingComplete: () => _submitForm(),
-              validator: (value) {
-                if (value == null || value.isEmpty || !isEmailValid(value)) {
-                  return context.l10n.pleaseEnterValidEmail;
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 10),
-            CustomTextField(
-              key: SignInOptionsContent.passwordTextFieldKey,
-              borderType: BorderType.underline,
-              controller: _passwordController,
-              onEditingComplete: () => _submitForm(),
-              labelText: context.l10n.password,
-              obscureText: !_showPassword,
-              suffixIcon: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
-                child: Semantics(
-                  label: _showPassword
-                      ? context.l10n.hidePassword
-                      : context.l10n.showPassword,
-                  button: true,
-                  child: IconButton(
-                    onPressed: () =>
-                        setState(() => _showPassword = !_showPassword),
-                    icon: Icon(
-                      _showPassword ? Icons.visibility_off : Icons.visibility,
-                      size: 24,
-                    ),
+            AutofillGroup(
+              child: Column(
+                children: [
+                  CustomTextField(
+                    key: SignInOptionsContent.emailTextFieldKey,
+                    borderType: BorderType.underline,
+                    controller: _emailController,
+                    labelText: context.l10n.email,
+                    autofillHints: const [AutofillHints.email, AutofillHints.username],
+                    keyboardType: TextInputType.emailAddress,
+                    onEditingComplete: () => _submitForm(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || !isEmailValid(value)) {
+                        return context.l10n.pleaseEnterValidEmail;
+                      }
+                      return null;
+                    },
                   ),
-                ),
+                  SizedBox(height: 10),
+                  CustomTextField(
+                    key: SignInOptionsContent.passwordTextFieldKey,
+                    borderType: BorderType.underline,
+                    controller: _passwordController,
+                    onEditingComplete: () => _submitForm(),
+                    labelText: context.l10n.password,
+                    obscureText: !_showPassword,
+                    autofillHints: _showSignup
+                        ? const [AutofillHints.newPassword]
+                        : const [AutofillHints.password],
+                    suffixIcon: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                      child: Semantics(
+                        label: _showPassword
+                            ? context.l10n.hidePassword
+                            : context.l10n.showPassword,
+                        button: true,
+                        child: IconButton(
+                          onPressed: () =>
+                              setState(() => _showPassword = !_showPassword),
+                          icon: Icon(
+                            _showPassword ? Icons.visibility_off : Icons.visibility,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (_ignorePassword) {
+                        return null;
+                      }
+                      // If the user is not signing up, just validate if any value is entered, not format;
+                      // Because they may have a legacy account before we started enforcing complexity
+                      if (!_showSignup && (value == null || value.isEmpty)) {
+                        return context.l10n.pleaseEnterValidPassword;
+                      } else if (_showSignup &&
+                          (value == null ||
+                              value.isEmpty ||
+                              !isPasswordValid(value))) {
+                        return context.l10n.pleaseEnterPassword;
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
-              validator: (value) {
-                if (_ignorePassword) {
-                  return null;
-                }
-                // If the user is not signing up, just validate if any value is entered, not format;
-                // Because they may have a legacy account before we started enforcing complexity
-                if (!_showSignup && (value == null || value.isEmpty)) {
-                  return context.l10n.pleaseEnterValidPassword;
-                } else if (_showSignup &&
-                    (value == null ||
-                        value.isEmpty ||
-                        !isPasswordValid(value))) {
-                  return context.l10n.pleaseEnterPassword;
-                }
-                return null;
-              },
             ),
             SizedBox(height: 5),
             if (_showSignup)
