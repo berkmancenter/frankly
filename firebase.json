@@ -95,27 +95,7 @@
     {
       "source": "firebase/functions",
       "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        ".dart_tool/**",
-        "lib/**",
-        "test/**",
-        "js/**",
-        "node/**",
-        "build/packages/**",
-        "build/js/**",
-        "*.dart",
-        "*.sh",
-        "*.yaml",
-        "*.json",
-        "*.lock",
-        "*.log",
-        "*.local",
-        "*.md",
-        "*.example",
-        "Makefile"
-      ]
+      "ignore": ["**", "node_modules", ".git"]
     }
   ],
   "database": {
