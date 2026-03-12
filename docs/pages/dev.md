@@ -174,11 +174,44 @@ Copy the example and fill in any required values.
 
 ---
 
-### Running the Emulators
+### Running Everything with One Command
 
-The easiest way to run the full emulator suite is with the project script.
+The recommended way to run the full local development environment is:
 
-From the `firebase/functions` directory run:
+```
+npm run dev
+```
+
+This can be run from either the repo root or the `firebase/functions` directory. It runs `run-dev.sh`, which orchestrates the entire startup:
+
+1. Runs `flutter pub get` in `client/`, `data_models/`, and `firebase/functions/` (skipped if dependencies haven't changed)
+2. Runs `npm install` in `firebase/functions/` (skipped if `package.json` hasn't changed)
+3. Rebuilds `data_models` with `build_runner` (skipped if source files haven't changed)
+4. Rebuilds functions with `build_runner` (skipped if source files haven't changed)
+5. Stops any leftover emulator processes, then starts the emulators
+6. Waits for emulators to become ready on their ports
+7. Launches the Flutter client pointing at the local emulators
+
+Steps 1–4 use stamp files in `.local/dev-stamps/` to skip unnecessary work.
+
+**Optional environment variables:**
+
+| Variable | Effect |
+|---|---|
+| `SKIP_DART_BUILD=1` | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
+| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging |
+
+These are set inline before the command, for example:
+
+```
+FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
+```
+
+---
+
+### Running Emulators Only (Without the Client)
+
+If you want to start only the emulators without the Flutter client, run from the `firebase/functions` directory:
 
 ```
 npm run emulators
