@@ -2,6 +2,7 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
@@ -81,6 +82,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           );
     }
     if (mounted) {
+      TextInput.finishAutofillContext(shouldSave: true);
       Navigator.of(context).pop();
     }
     widget.onComplete?.call();
@@ -301,7 +303,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     borderType: BorderType.underline,
                     controller: _emailController,
                     labelText: context.l10n.email,
-                    autofillHints: const [AutofillHints.email, AutofillHints.username],
+                    autofillHints: const [
+                      AutofillHints.email,
+                      AutofillHints.username],
                     keyboardType: TextInputType.emailAddress,
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
