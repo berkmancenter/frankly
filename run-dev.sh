@@ -179,7 +179,7 @@ wait_for_port 5001 30
 
 log "Launching Flutter client..."
 cd "$CLIENT_DIR"
-exec flutter run \
+flutter run \
   -d chrome \
   --web-renderer html \
   -t lib/dev_emulators_main.dart \
