@@ -17,7 +17,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 List<AgendaItem> defaultAgendaItems(String communityId) {
   final l10n = appLocalizationService.getLocalization();
@@ -56,6 +55,14 @@ class AgendaProviderParams {
 }
 
 class AgendaProvider with ChangeNotifier {
+  // Minimum time a participant must have spent on an agenda item before they
+  // can advance without a confirmation prompt. A shorter threshold is used for
+  // the start card since it has no real content.
+  static const Duration _startItemAdvanceConfirmationThreshold =
+      Duration(seconds: 15);
+  static const Duration _agendaItemAdvanceConfirmationThreshold =
+      Duration(seconds: 30);
+
   final LiveMeetingProvider? liveMeetingProvider;
   AgendaProviderParams _params;
 
@@ -589,8 +596,8 @@ class AgendaProvider with ChangeNotifier {
     final timeInState = timeInSection(currentAgendaItemId);
     final doubleCheckDuration =
         currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
-            ? Duration(seconds: 15)
-            : Duration(seconds: 30);
+            ? _startItemAdvanceConfirmationThreshold
+            : _agendaItemAdvanceConfirmationThreshold;
     final suppressWarning = currentAgendaItem?.type == AgendaItemType.poll ||
         currentAgendaItem?.type == AgendaItemType.video;
 

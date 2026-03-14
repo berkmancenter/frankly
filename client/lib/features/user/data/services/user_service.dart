@@ -24,6 +24,10 @@ enum SignInState {
 
 class UserService with ChangeNotifier {
   static bool usingEmulator = false;
+  // How long to wait for Firebase to automatically re-authenticate a returning
+  // user before falling back to anonymous sign-in.
+  static const Duration _returningUserSignInTimeout = Duration(seconds: 8);
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // ignore: close_sinks
@@ -76,7 +80,7 @@ class UserService with ChangeNotifier {
   ///
   /// We wait for a period and if we don't see them get signed in, we sign in anonymously.
   void _handleReturningUser() {
-    _returningUserTimer = Timer(Duration(seconds: 8), () {
+    _returningUserTimer = Timer(_returningUserSignInTimeout, () {
       final user = _firebaseAuth.currentUser;
       if (user != null) {
         // This path happens during hot reload mostly.

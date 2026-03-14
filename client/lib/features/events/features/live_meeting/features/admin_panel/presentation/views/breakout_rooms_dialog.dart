@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
@@ -13,18 +9,11 @@ import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
-import 'package:client/features/events/presentation/widgets/periodic_builder.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
-
-enum _BreakoutRoomsDialogState {
-  start,
-  searchingForAvailable,
-  processingAssignment,
-}
 
 class BreakoutRoomsDialog extends StatefulWidget {
   final BuildContext outerContext;
@@ -40,7 +29,7 @@ class BreakoutRoomsDialog extends StatefulWidget {
   }
 
   @override
-  __BreakoutRoomsDialogState createState() => __BreakoutRoomsDialogState();
+  State<BreakoutRoomsDialog> createState() => __BreakoutRoomsDialogState();
 }
 
 class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
@@ -53,11 +42,6 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
       Provider.of<CommunityProvider>(widget.outerContext);
 
   late int _numPerRoom;
-  Timer? _presenceCheck;
-  final _presenceCheckStopwatch = Stopwatch();
-  final _presenceCheckDuration = Duration(seconds: 45);
-
-  final _BreakoutRoomsDialogState _state = _BreakoutRoomsDialogState.start;
 
   @override
   void initState() {
@@ -70,13 +54,6 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
         5;
   }
 
-  @override
-  void dispose() {
-    _presenceCheck?.cancel();
-
-    super.dispose();
-  }
-
   Future<void> _startBreakouts(
     BreakoutAssignmentMethod assignmentMethod,
   ) async {
@@ -84,6 +61,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
       numPerRoom: _numPerRoom,
       assignmentMethod: assignmentMethod,
     );
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
 
@@ -210,60 +188,32 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
     final showSmartMatchOption = eventProvider.showSmartMatchingForBreakouts;
 
     return [
-      if (_state == _BreakoutRoomsDialogState.start) ...[
-        AnimatedBuilder(
-          animation: EventProvider.watch(widget.outerContext),
-          builder: (_, __) => _buildBreakoutChooser(),
-        ),
-        CustomStreamBuilder<PlanCapabilityList?>(
-          entryFrom: '__BreakoutRoomsDialogState._buildContent',
-          stream: widget.canFetchCapabilities
-              ? cloudFunctionsCommunityService
-                  .getCommunityCapabilities(
-                    GetCommunityCapabilitiesRequest(
-                      communityId: _communityProvider.communityId,
-                    ),
-                  )
-                  .asStream()
-              : Future.value(null).asStream(),
-          builder: (context, caps) {
-            final hasSmartMatchingCapability = caps?.hasSmartMatching ?? false;
-            return Column(
-              children: [
-                if (hasSmartMatchingCapability && showSmartMatchOption)
-                  ..._buildSmartMatchingItems(context),
-                ..._buildRegularMatchingItems(context, eventProvider),
-              ],
-            );
-          },
-        ),
-      ] else ...[
-        PeriodicBuilder(
-          period: Duration(seconds: 1),
-          builder: (_) {
-            final timeRemaining = max(
-              (_presenceCheckDuration - _presenceCheckStopwatch.elapsed)
-                  .inSeconds,
-              0,
-            );
-            return Text(
-              'Asking participants to join breakout rooms.\nBreakout rooms will start in...$timeRemaining',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: context.theme.colorScheme.primary,
-                fontSize: 16,
-              ),
-            );
-          },
-        ),
-        if (_state == _BreakoutRoomsDialogState.processingAssignment) ...[
-          SizedBox(height: 24),
-          Container(
-            alignment: Alignment.center,
-            child: CustomLoadingIndicator(),
-          ),
-        ],
-      ],
+      AnimatedBuilder(
+        animation: EventProvider.watch(widget.outerContext),
+        builder: (_, __) => _buildBreakoutChooser(),
+      ),
+      CustomStreamBuilder<PlanCapabilityList?>(
+        entryFrom: '__BreakoutRoomsDialogState._buildContent',
+        stream: widget.canFetchCapabilities
+            ? cloudFunctionsCommunityService
+                .getCommunityCapabilities(
+                  GetCommunityCapabilitiesRequest(
+                    communityId: _communityProvider.communityId,
+                  ),
+                )
+                .asStream()
+            : Future.value(null).asStream(),
+        builder: (context, caps) {
+          final hasSmartMatchingCapability = caps?.hasSmartMatching ?? false;
+          return Column(
+            children: [
+              if (hasSmartMatchingCapability && showSmartMatchOption)
+                ..._buildSmartMatchingItems(context),
+              ..._buildRegularMatchingItems(context, eventProvider),
+            ],
+          );
+        },
+      ),
     ];
   }
 
@@ -310,17 +260,16 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
                 SizedBox(height: 16),
               ],
             ),
-            if (_state != _BreakoutRoomsDialogState.searchingForAvailable)
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                    padding: EdgeInsets.zero,
-                  ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).pop(),
+                  padding: EdgeInsets.zero,
                 ),
               ),
+            ),
           ],
         ),
       ),

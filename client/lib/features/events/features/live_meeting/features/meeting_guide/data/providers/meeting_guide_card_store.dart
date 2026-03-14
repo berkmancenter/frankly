@@ -15,6 +15,9 @@ import 'package:provider/provider.dart';
 
 class MeetingGuideCardStore with ChangeNotifier {
   static const String startAgendaItemId = 'start';
+  // Delay before the guide card reflects a new agenda item, giving participants
+  // a brief countdown before the card transitions.
+  static const Duration _agendaItemTransitionDelay = Duration(seconds: 3);
 
   final CommunityProvider communityProvider;
   final LiveMeetingProvider liveMeetingProvider;
@@ -179,7 +182,7 @@ class MeetingGuideCardStore with ChangeNotifier {
       // [_currentMeetingGuideAgendaItemId] to match. During this time a timer is shown counting
       // down to the new agenda item.
       _pendingMeetingGuideAgendaItemTimer?.cancel();
-      _pendingMeetingGuideAgendaItemTimer = Timer(Duration(seconds: 3), () {
+      _pendingMeetingGuideAgendaItemTimer = Timer(_agendaItemTransitionDelay, () {
         _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
 
         liveMeetingProvider.setAudioTemporarilyDisabled(

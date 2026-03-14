@@ -81,6 +81,8 @@ dependencies:
   logger: ^2.1.0
   synchronized: ^3.1.0
   clock: ^1.1.1
+  collection: ^1.19.0
+  enum_to_string: ^2.0.1
   metadata_fetch: ^0.4.1
   file_picker: ^5.3.1
   rainbow_color: ^2.0.1
