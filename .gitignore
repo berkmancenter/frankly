@@ -3,3 +3,4 @@ logs/
 .idea/
 docs/output
 *.log
+.local/
