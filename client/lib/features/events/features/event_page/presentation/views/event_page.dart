@@ -151,53 +151,61 @@ class EventPageState extends State<EventPage> implements EventPageView {
   }
 
   /// Shows RSVP dialog and any CTAs.
-  /// Returns whether the user successfully joined.
+  /// Returns whether the user successfully entered the meeting.
+  /// Returns false for cancellations, non-meeting joins (enterMeeting: false), or failures.
   Future<bool> _joinEvent({
     bool showConfirm = true,
     bool enterMeeting = false,
     bool joinCommunity = false,
   }) async {
-    await alertOnError(context, () async {
-      final eventPageProvider = context.read<EventPageProvider>();
-      final event = eventPageProvider.eventProvider.event;
-      final communityProvider =
-          Provider.of<CommunityProvider>(context, listen: false);
-      JoinEventResults joinResults = await alertOnError<JoinEventResults>(
+    return await alertOnError<bool>(context, () async {
+          final eventPageProvider = context.read<EventPageProvider>();
+          final event = eventPageProvider.eventProvider.event;
+          JoinEventResults joinResults = await alertOnError<JoinEventResults>(
+                context,
+                () => eventPageProvider.joinEvent(
+                  showConfirm: showConfirm,
+                  joinCommunity: joinCommunity,
+                ),
+              ) ??
+              JoinEventResults(isJoined: false);
+
+          if (!joinResults.isJoined) {
+            // Don't join the meeting if joinEvent returns false.
+            return false;
+          }
+
+          if (!enterMeeting) {
+            return false;
+          }
+
+          if (!mounted) return false;
+          await alertOnError(
             context,
-            () => eventPageProvider.joinEvent(
-              showConfirm: showConfirm,
-              joinCommunity: joinCommunity,
+            () => eventPageProvider.enterMeeting(
+              surveyQuestions: joinResults.surveyQuestions,
             ),
-          ) ??
-          JoinEventResults(isJoined: false);
+          );
 
-      if (!joinResults.isJoined) {
-        // Don't join the meeting if joinEvent returns false.
-        return false;
-      }
+          if (!eventPageProvider.isEnteredMeeting) return false;
 
-      if (!enterMeeting) {
-        return false;
-      }
-
-      // Log enter event in analytics.
-      final communityId = event.communityId;
-      final eventId = event.id;
-      final templateId = event.templateId;
-      final isHost = (event.eventType != EventType.hostless) &&
-          event.creatorId == userService.currentUserId;
-      analytics.logEvent(
-        AnalyticsEnterEventEvent(
-          communityId: communityId,
-          eventId: eventId,
-          asHost: isHost,
-          templateId: templateId,
-        ),
-      );
-      return true;
-    });
-    // If user joined, should not reach this point.
-    return false;
+          // Log enter event in analytics.
+          final communityId = event.communityId;
+          final eventId = event.id;
+          final templateId = event.templateId;
+          final isHost = (event.eventType != EventType.hostless) &&
+              event.creatorId == userService.currentUserId;
+          analytics.logEvent(
+            AnalyticsEnterEventEvent(
+              communityId: communityId,
+              eventId: eventId,
+              asHost: isHost,
+              templateId: templateId,
+            ),
+          );
+          return true;
+        }) ??
+        false;
   }
 
   Future<void> _showSendMessageDialog() async {
@@ -256,44 +264,50 @@ class EventPageState extends State<EventPage> implements EventPageView {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
-          CustomInkWell(
-            onTap: () => _joinEvent(enterMeeting: true),
-            child: SizedBox(
-              height: 380,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: ProxiedImage(
-                      null,
-                      asset: AppAsset.backgroundGif(),
-                      fit: BoxFit.cover,
-                      loadingColor: Colors.transparent,
-                    ),
+          SizedBox(
+            height: 380,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ProxiedImage(
+                    null,
+                    asset: AppAsset('media/background.gif'),
+                    fit: BoxFit.cover,
+                    loadingColor: Colors.transparent,
                   ),
-                  Container(
-                    color: context.theme.colorScheme.scrim.withScrimOpacity,
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        HeightConstrainedText(
-                          'The event is starting',
-                          style: TextStyle(
-                            color: context.theme.colorScheme.onPrimary,
-                          ),
+                ),
+                Container(
+                  color: context.theme.colorScheme.scrim.withScrimOpacity,
+                ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      HeightConstrainedText(
+                        'The event is starting',
+                        style: TextStyle(
+                          color: context.theme.colorScheme.onPrimary,
                         ),
-                        SizedBox(height: 10),
-                        ActionButton(
-                          text: 'Enter Event',
-                          onPressed: () => _joinEvent(enterMeeting: true),
-                          height: 65,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+                      ActionButton(
+                        text: 'Enter Event',
+                        onPressed: () async {
+                          final joined = await _joinEvent(enterMeeting: true);
+                          if (!joined && mounted) {
+                            showRegularToast(
+                              context,
+                              'Event was not entered.',
+                              toastType: ToastType.neutral,
+                            );
+                          }
+                        },
+                        height: 65,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 4),
