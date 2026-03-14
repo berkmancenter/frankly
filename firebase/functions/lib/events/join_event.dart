@@ -24,9 +24,10 @@ class JoinEvent extends OnCallMethod<Event> {
       // User has not yet joined this event -- nothing to do.
       return;
     }
-    final participant = Participant.fromJson(
-      firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap()),
-    );
+    final participantMap =
+        firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap());
+    participantMap['id'] ??= participantRef.path.split('/').last;
+    final participant = Participant.fromJson(participantMap);
 
     final community = await firestoreUtils.getFirestoreObject(
       path: 'community/${request.communityId}',
