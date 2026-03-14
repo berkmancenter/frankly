@@ -180,13 +180,15 @@ class UserService with ChangeNotifier {
         firstAndLastInitial(currentUser.displayName) ??
         firstAndLastInitial(currentUser.email) ??
         'User-${currentUser.uid.substring(0, 4)}';
-    loggingService.log(
-      'getDefaultPublicUserInfo: name source = '
-      'passed=\"$displayName\" '
-      'auth=\"${currentUser.displayName}\" '
-      'email=\"${currentUser.email}\" '
-      '-> resolved=\"$resolvedName\"',
-    );
+    if (kDebugMode) {
+      loggingService.log(
+        'getDefaultPublicUserInfo: name source = '
+        'passed="$displayName" '
+        'auth="${currentUser.displayName}" '
+        'email="${currentUser.email}" '
+        '-> resolved="$resolvedName"',
+      );
+    }
     return PublicUserInfo(
       id: currentUser.uid,
       agoraId: uidToInt(currentUser.uid),
