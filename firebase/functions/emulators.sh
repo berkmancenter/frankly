@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Read FIREBASE_PROJECT_ID from client/.env (not committed) so the emulator project
-# matches what the client uses. Falls back to 'dev' if not found.
+# matches what the client uses. Fails fast with an error if the file or variable is missing.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLIENT_ENV="$SCRIPT_DIR/../../client/.env"
 if [[ ! -f "$CLIENT_ENV" ]]; then
