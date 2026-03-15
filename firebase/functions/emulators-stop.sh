@@ -4,6 +4,8 @@ set -euo pipefail
 HUB_URL="http://127.0.0.1:4400/emulators"
 
 ports_in_use() {
+  # lsof exits 1 on macOS when some (but not all) requested ports have no
+  # listeners, even when others do -- so check for output instead.
   lsof -nP \
     -iTCP:4400 \
     -iTCP:4000 \
@@ -13,7 +15,7 @@ ports_in_use() {
     -iTCP:9099 \
     -iTCP:9150 \
     -iTCP:5001 \
-    -sTCP:LISTEN >/dev/null 2>&1
+    -sTCP:LISTEN 2>/dev/null | grep -q .
 }
 
 wait_for_ports_to_close() {
