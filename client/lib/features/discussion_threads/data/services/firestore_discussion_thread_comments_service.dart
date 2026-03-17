@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:client/services.dart';
 import 'package:client/features/discussion_threads/data/services/models_helper.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 

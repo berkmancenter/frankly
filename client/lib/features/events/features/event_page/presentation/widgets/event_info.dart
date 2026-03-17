@@ -1,6 +1,7 @@
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +49,9 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
@@ -241,6 +242,37 @@ class _EventInfoState extends State<EventInfo> {
     ).show();
   }
 
+  /// Gets breakout room data for the current event's active breakout session.
+  /// Returns null if no breakout session is active or if data cannot be fetched.
+  Future<List<BreakoutRoom>?> _getBreakoutRoomData() async {
+    try {
+      final liveMeeting = await firestoreLiveMeetingService
+          .liveMeetingStream(
+            parentDoc:
+                'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
+            id: 'live-meeting',
+          )
+          .stream
+          .first;
+
+      if (liveMeeting.currentBreakoutSession != null) {
+        final breakoutRoomsWrapper =
+            firestoreLiveMeetingService.breakoutRoomsStream(
+          event: widget.event,
+          breakoutRoomSessionId:
+              liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
+        );
+        final breakoutRooms = await breakoutRoomsWrapper.stream.first;
+        await breakoutRoomsWrapper.dispose();
+        return breakoutRooms;
+      }
+    } catch (e) {
+      // If breakout rooms data is not available, continue without it
+      loggingService.log('Could not fetch breakout rooms data: $e');
+    }
+    return null;
+  }
+
   Future<void> _downloadRegistrationData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
@@ -256,11 +288,15 @@ class _EventInfoState extends State<EventInfo> {
       final List<String> userIds = participants.map((p) => p.id).toList();
       await participantsWrapper.dispose();
 
+      // Get breakout rooms data for room name mapping
+      List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+
       final members = await _presenter.getMembersData(userIds);
       if (members.isNotEmpty) {
         await eventProvider.generateRegistrationDataCsvFile(
           registrationData: members,
           eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
         );
       } else {
         showRegularToast(
@@ -272,20 +308,60 @@ class _EventInfoState extends State<EventInfo> {
     });
   }
 
-  Future<void> _downloadChatsAndSuggestions() async {
+  Future<void> _downloadChatData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
       final response = await _presenter.getChatsAndSuggestions();
-      final chatsSuggesions = response.chatsSuggestionsList ?? [];
-      if (chatsSuggesions.isNotEmpty) {
-        await eventProvider.generateChatAndSugguestionsDataCsv(
+      final chatsData = response.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.chat)
+              .toList() ??
+          [];
+
+      if (chatsData.isNotEmpty) {
+        // Get breakout rooms data for room name mapping
+        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+
+        await eventProvider.generateChatDataCsv(
           response: response,
           eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
         );
       } else {
         showRegularToast(
           context,
-          'No chats or suggestions data',
+          'No chat data',
+          toastType: ToastType.neutral,
+        );
+      }
+    });
+  }
+
+  Future<void> _downloadPollsSuggestionsData() async {
+    final eventProvider = EventProvider.read(context);
+    await alertOnError(context, () async {
+      final response = await _presenter.getChatsAndSuggestions();
+      final suggestionData = response.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.suggestion)
+              .toList() ??
+          [];
+
+      final pollResponse = await _presenter.getPollData();
+      final pollData = pollResponse.polls ?? [];
+
+      if (suggestionData.isNotEmpty || pollData.isNotEmpty) {
+        // Get breakout rooms data for room name mapping
+        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+
+        await eventProvider.generatePollsSuggestionsDataCsv(
+          suggestionData: suggestionData,
+          pollData: pollData,
+          eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
+        );
+      } else {
+        showRegularToast(
+          context,
+          'No polls or suggestions data',
           toastType: ToastType.neutral,
         );
       }
@@ -316,8 +392,11 @@ class _EventInfoState extends State<EventInfo> {
           case EventPopUpMenuSelection.downloadRegistrationData:
             _downloadRegistrationData();
             break;
-          case EventPopUpMenuSelection.downloadChatsAndSuggestions:
-            _downloadChatsAndSuggestions();
+          case EventPopUpMenuSelection.downloadChatData:
+            _downloadChatData();
+            break;
+          case EventPopUpMenuSelection.downloadPollsSuggestionsData:
+            _downloadPollsSuggestionsData();
             break;
         }
       },
