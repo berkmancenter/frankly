@@ -623,7 +623,7 @@ class EventProvider with ChangeNotifier {
       // Add Type field
       row.add('Poll');
       // Add Time field
-      row.add(dateTimeFormat(date: poll.answeredDate!));
+      row.add(poll.answeredDate != null ? dateTimeFormat(date: poll.answeredDate!) : '');
       // Add User ID field
       row.add(poll.userId ?? '');
       // Add Prompt field (poll question)
