@@ -94,23 +94,25 @@ class CreateTemplatePresenter extends ChangeNotifier {
   }
 
   String getPageTitle() {
+    final l10n = appLocalizationService.getLocalization();
     switch (templateActionType) {
       case TemplateActionType.create:
       case TemplateActionType.duplicate:
-        return 'Create a template';
+        return l10n.createATemplate;
       case TemplateActionType.edit:
-        return 'Update template';
+        return l10n.updateTemplate;
     }
   }
 
   String getButtonTitle() {
+    final l10n = appLocalizationService.getLocalization();
     switch (templateActionType) {
       case TemplateActionType.create:
-        return 'Create';
+        return l10n.createAction;
       case TemplateActionType.edit:
-        return 'Update';
+        return l10n.updateAction;
       case TemplateActionType.duplicate:
-        return 'Duplicate';
+        return l10n.duplicateAction;
     }
   }
 }
