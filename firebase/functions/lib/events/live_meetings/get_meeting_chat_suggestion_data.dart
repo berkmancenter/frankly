@@ -163,10 +163,13 @@ class GetMeetingChatSuggestionData
 
       final memberDoc =
           await firestore.document('publicUser/${doc.creatorId}').get();
-      final publicUserInfo = PublicUserInfo.fromJson(
-        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-      );
-      final memberName = publicUserInfo.displayName ?? '';
+      String memberName = '';
+      if (memberDoc.exists) {
+        final publicUserInfo = PublicUserInfo.fromJson(
+          firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+        );
+        memberName = publicUserInfo.displayName ?? '';
+      }
 
       chatSuggestionDataList.add(
         ChatSuggestionData(
@@ -243,10 +246,13 @@ class GetMeetingChatSuggestionData
 
     final memberDoc =
         await firestore.document('publicUser/${details.userId}').get();
-    final publicUserInfo = PublicUserInfo.fromJson(
-      firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-    );
-    final memberName = publicUserInfo.displayName ?? '';
+    String memberName = '';
+    if (memberDoc.exists) {
+      final publicUserInfo = PublicUserInfo.fromJson(
+        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+      );
+      memberName = publicUserInfo.displayName ?? '';
+    }
 
     return details.suggestions
         .map(
