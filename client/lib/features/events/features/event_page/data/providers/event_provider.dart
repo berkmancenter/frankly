@@ -405,7 +405,7 @@ class EventProvider with ChangeNotifier {
         registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
       );
 
-      // Added Join Time field from Participant.mostRecentPresentTime
+      // Derive Join Time field from Participant.mostRecentPresentTime
       row.add(
         registrationData[i]
             .memberEvent
@@ -414,8 +414,8 @@ class EventProvider with ChangeNotifier {
             ?.toUtc(),
       );
 
-      // Added Room Assigned field from Participant.currentBreakoutRoomId
-      // Convert room ID to room name for better readability
+      // Derive Room Assigned field from Participant.currentBreakoutRoomId
+      // Convert room ID to room name for readability
       String roomAssigned = '';
       final currentRoomId =
           registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
@@ -525,9 +525,7 @@ class EventProvider with ChangeNotifier {
 
     for (int i = 0; i < chatsData.length; i++) {
       List<dynamic> row = [];
-      // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: chatsData[i].createdDate!));
-      // Added "User ID" field
       row.add(chatsData[i].creatorId ?? '');
       row.add(chatsData[i].message ?? chatsData[i].emotionType?.stringEmoji);
 
@@ -589,18 +587,12 @@ class EventProvider with ChangeNotifier {
       );
 
       final promptText = suggestionItem?.title ?? suggestionItem?.content ?? '';
-      // Add Type field
       row.add('Suggestion');
-      // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: suggestionData[i].createdDate!));
-      // Added "User ID" field instead of Name, Email
       row.add(suggestionData[i].creatorId ?? '');
-      // Add Prompt field
       row.add(promptText);
-      // Add Response field
       row.add(suggestionData[i].message ?? '');
 
-      // Convert room ID to room name for better readability
       String roomName = _getRoomName(
         roomId: suggestionData[i].roomId,
         eventId: eventId,
@@ -620,15 +612,12 @@ class EventProvider with ChangeNotifier {
 
       final poll = pollData[i];
 
-      // Add Type field
       row.add('Poll');
-      // Add Time field
-      row.add(poll.answeredDate != null ? dateTimeFormat(date: poll.answeredDate!) : '');
-      // Add User ID field
+      row.add(poll.answeredDate != null
+          ? dateTimeFormat(date: poll.answeredDate!)
+          : '');
       row.add(poll.userId ?? '');
-      // Add Prompt field (poll question)
       row.add(poll.pollQuestion ?? '');
-      // Add Response field
       row.add(poll.pollResponse ?? '');
 
       String roomName = _getRoomName(
