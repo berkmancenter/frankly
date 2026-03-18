@@ -5,8 +5,11 @@ HUB_URL="http://127.0.0.1:4400/emulators"
 
 ports_in_use() {
   # lsof exits 1 on macOS when some (but not all) requested ports have no
-  # listeners, even when others do -- so check for output instead.
-  lsof -nP \
+  # listeners, even when others do. We check for non-empty output instead of
+  # relying on the exit code, but we must capture into a variable first so
+  # that pipefail cannot override grep's exit code with lsof's exit code 1.
+  local out
+  out="$(lsof -nP \
     -iTCP:4400 \
     -iTCP:4000 \
     -iTCP:8080 \
@@ -15,7 +18,8 @@ ports_in_use() {
     -iTCP:9099 \
     -iTCP:9150 \
     -iTCP:5001 \
-    -sTCP:LISTEN 2>/dev/null | grep -q .
+    -sTCP:LISTEN 2>/dev/null || true)"
+  [[ -n "$out" ]]
 }
 
 wait_for_ports_to_close() {

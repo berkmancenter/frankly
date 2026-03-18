@@ -166,7 +166,7 @@ else
   log "firebase/functions unchanged; skipping build_runner."
 fi
 
-log "Stopping any running emulators..."
+log "Stopping any running emulators and waiting for ports to clear..."
 cd "$FUNCTIONS_DIR"
 chmod +x ./emulators.sh ./emulators-start.sh ./emulators-stop.sh
 ./emulators-stop.sh || true
