@@ -17,7 +17,6 @@ class EditCommunityButton extends StatefulWidget {
 }
 
 class _EditCommunityButtonState extends State<EditCommunityButton> {
-
   @override
   Widget build(BuildContext context) {
     return MemoizedStreamBuilder<PlanCapabilityList>(
@@ -39,13 +38,15 @@ class _EditCommunityButtonState extends State<EditCommunityButton> {
           visualDensity: VisualDensity.compact,
           iconSize: 24,
           color: context.theme.colorScheme.secondary,
-          onPressed: () => {
+          onPressed: () {
             routerDelegate.beamTo(
               CommunityPageRoutes(
                 communityDisplayId:
-                    Provider.of<CommunityProvider>(context, listen: false).community.displayId,
+                    Provider.of<CommunityProvider>(context, listen: false)
+                        .community
+                        .displayId,
               ).communityAdmin(),
-            ),
+            );
           },
         );
       },
