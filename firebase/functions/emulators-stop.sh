@@ -49,7 +49,7 @@ fi
 
 echo "Graceful shutdown timed out. Killing only listeners on emulator ports..."
 
-pids="$(lsof -tiTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN | sort -u || true)"
+pids="$(lsof -nP -t -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN 2>/dev/null | sort -u || true)"
 
 if [ -n "${pids:-}" ]; then
   echo "$pids" | xargs kill >/dev/null 2>&1 || true
@@ -62,7 +62,7 @@ fi
 
 echo "Targeted SIGTERM timed out. Sending SIGKILL to remaining emulator listeners..."
 
-pids="$(lsof -tiTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN | sort -u || true)"
+pids="$(lsof -nP -t -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN 2>/dev/null | sort -u || true)"
 
 if [ -n "${pids:-}" ]; then
   echo "$pids" | xargs kill -9 >/dev/null 2>&1 || true
