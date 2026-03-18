@@ -72,10 +72,11 @@ class CommunityAdminState extends State<CommunityAdmin>
         SizedBox(width: mobile ? 0 : 8),
         HeightConstrainedText(
           text,
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                fontSize: mobile ? 11 : 16,
+                fontSize: mobile ? 9 : 16,
               ),
-          maxLines: 1,
+          maxLines: 2,
         ),
       ],
     );
