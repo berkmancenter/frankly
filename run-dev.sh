@@ -166,10 +166,12 @@ else
   log "firebase/functions unchanged; skipping build_runner."
 fi
 
-log "Resetting and starting emulators..."
+log "Stopping any running emulators..."
 cd "$FUNCTIONS_DIR"
 chmod +x ./emulators.sh ./emulators-start.sh ./emulators-stop.sh
-(./emulators-stop.sh || true) >/dev/null 2>&1
+./emulators-stop.sh || true
+
+log "Starting emulators..."
 SKIP_DART_BUILD=1 ./emulators-start.sh &
 EMULATOR_PID=$!
 
