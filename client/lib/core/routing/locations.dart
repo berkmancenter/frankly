@@ -183,7 +183,7 @@ class CommunityLocation extends BeamLocation<BeamState> {
       '/challenge',
       '/instant',
       '/admin',
-      '/admin/overview',
+      '/admin/profile',
       '/admin/members',
       '/admin/data',
       '/admin/settings',
@@ -342,7 +342,7 @@ class CommunityPageRoutes {
       _getLocation(path: '$prefix/discuss');
 
   CommunityLocation communityAdmin({String? tab}) => _getLocation(
-        path: '$prefix/admin',
+        path: '$prefix/admin/${tab ?? 'profile'}',
         queryParameters: tab != null ? {'tab': tab} : null,
       );
 

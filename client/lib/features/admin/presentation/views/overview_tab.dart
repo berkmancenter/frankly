@@ -68,7 +68,7 @@ class _OverviewTabState extends State<OverviewTab> {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 20, left: 8),
               child: Text(
                 label,
                 style: context.theme.textTheme.titleLarge,
