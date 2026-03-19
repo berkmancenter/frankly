@@ -148,7 +148,7 @@ Frankly uses the **Firebase Local Emulator Suite** for local development. The em
 Documentation for the emulator suite is available here:  
 <https://firebase.google.com/docs/emulator-suite>
 
-The emulators run against the Firebase project ID specified by `FIREBASE_PROJECT_ID` in `client/.env`. This must match your actual Firebase project. If you see CORS errors when trying to load pages in your local version, double check that this has been set correctly.
+The emulators run against the Firebase project ID specified by `FIREBASE_PROJECT_ID` in `client/.env`. This must match your actual Firebase project. If you see CORS errors when trying to call Firebase functions locally, double check that this has been set correctly — the emulator URL includes the project ID (e.g. `http://127.0.0.1:5001/{FIREBASE_PROJECT_ID}/us-central1/{functionName}`).
 
 ---
 
@@ -196,10 +196,10 @@ Steps 1–4 use stamp files in `.local/dev-stamps/` to skip unnecessary work.
 
 **Optional environment variables:**
 
-| Variable | Effect |
-|---|---|
-| `SKIP_DART_BUILD=1` | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
-| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging |
+| Variable                    | Effect                                                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `SKIP_DART_BUILD=1`         | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
+| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging       |
 
 These are set inline before the command, for example:
 
@@ -393,8 +393,22 @@ agora.storage_secret_key="<YOUR_VALUE_HERE>"
   - `storage_bucket_name`: Enter the bucket name you selected.
   - `storage_access_key`: Select **Settings** under the Cloud Storage left-side settings panel. Click on the **Interopability** tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select **Create a Key**. Then, paste the generated **Access key** here.
   - `storage_secret_key`: From the generated key, paste the **Secret**.
-- **In the codebase**
-  - In `client/.env`, change `FUNCTIONS_URL_PREFIX` to reflect your Google Cloud Run Functions prefix.
+
+    !!! note
+    These HMAC keys are used by Agora to _write_ recordings into the bucket. Downloading recordings requires a separate credential — see the next section.
+
+- **Service account key for signed URLs**
+
+  The `downloadRecording` function generates signed GCS URLs so that clients can download recordings directly from Cloud Storage. In production, Cloud Functions have a built-in signing identity. Locally, the emulator does not, so you must provide a service account JSON key file.
+  1. In the GCP Console, go to **IAM & Admin > Service Accounts**.
+  2. Create or select a service account with the **Storage Object Viewer** role on your recordings bucket.
+  3. Go to the **Keys** tab, click **Add Key > Create new key > JSON**, and download the file.
+  4. Save it as `firebase/functions/service-account-key.json` (this path is gitignored).
+
+  The `emulators.sh` script will automatically detect the key and set `GOOGLE_APPLICATION_CREDENTIALS` when starting the emulators. You can also set this environment variable manually if you prefer a different file location.
+
+- **In the codebase (hosted deployments only)**
+  - For hosted deployments, set `FUNCTIONS_URL_PREFIX` in the build environment to the URL prefix of your deployed Cloud Functions (e.g. `https://us-central1-your-project.cloudfunctions.net`). For local development, this is not needed — the client dynamically constructs the emulator URL from `FIREBASE_PROJECT_ID`.
 
 #### 👾 Testing the integration
 
