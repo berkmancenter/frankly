@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/styles/styles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -138,7 +139,10 @@ class _EventsTabState extends State<EventsTab> {
               );
 
               if (response.statusCode != 200) {
-                throw Exception('Failed to get recording URLs');
+                final detail = kDebugMode
+                    ? ' — status ${response.statusCode}: ${response.body}'
+                    : '';
+                throw Exception('Failed to get recording URLs$detail');
               }
 
               final Map<String, dynamic> body;
