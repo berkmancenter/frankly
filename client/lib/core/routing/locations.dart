@@ -342,7 +342,7 @@ class CommunityPageRoutes {
       _getLocation(path: '$prefix/discuss');
 
   CommunityLocation communityAdmin({String? tab}) => _getLocation(
-        path: '$prefix/admin',
+        path: '$prefix/admin/${tab ?? 'overview'}',
         queryParameters: tab != null ? {'tab': tab} : null,
       );
 
