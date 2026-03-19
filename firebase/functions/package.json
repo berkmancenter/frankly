@@ -2,7 +2,10 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
-    "emulators": "chmod +x ./emulators.sh && ./emulators.sh",
+    "dev": "../../run-dev.sh",
+    "emulators": "chmod +x ./emulators-start.sh && ./emulators-start.sh",
+    "emulators:stop": "chmod +x ./emulators-stop.sh && ./emulators-stop.sh",
+    "emulators:reset": "chmod +x ./emulators-stop.sh ./emulators-start.sh && (./emulators-stop.sh || true) && ./emulators-start.sh",
     "test": "dart test --concurrency=1",
     "postinstall": "patch-package",
     "lint": "npx eslint@8"
@@ -17,7 +20,6 @@
     "@types/node": "^20.14.12",
     "agora-token": "^2.0.3",
     "algoliasearch": "^4.10.5",
-    "archiver": "^7.0.1",
     "calendar-link": "^2.0.16",
     "cors": "^2.8.5",
     "firebase-admin": "^9.11.1",
@@ -34,7 +36,6 @@
   "devDependencies": {
     "@types/mocha": "^8.2.3",
     "firebase-functions-test": "^0.2.0",
-    "firebase-tools": "^9.18.0",
     "mocha": "^8.4.0",
     "prettier": "2.3.2",
     "typescript": "^5.5.4"

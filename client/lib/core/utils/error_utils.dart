@@ -79,23 +79,26 @@ Future<T?> alertOnError<T>(
 Future<void> authMessageOnError<T>(
   Future<T> Function() action, {
   required Function(String errorMessage, String code) errorCallback,
-Function()? callback ,
+  Function()? callback,
 }) async {
   try {
     await action();
-    callback!();
+    callback?.call();
   } catch (e, s) {
     loggingService.log(e, logType: LogType.error);
     loggingService.log(s, logType: LogType.error);
 
     final sanitizedError = sanitizeError(e.toString());
-    
+
     if (e is FirebaseAuthException) {
       errorCallback(sanitizedError, e.code);
     } else if (e is VisibleException) {
       errorCallback(sanitizedError, e.msg);
+    } else {
+      // Non-Firebase, non-Visible exception: pass the sanitized message with a
+      // generic code so the caller can still render something useful.
+      errorCallback(sanitizedError, 'unknown');
     }
-
   }
 }
 
