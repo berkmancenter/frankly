@@ -20,6 +20,13 @@ if [[ "${SKIP_DART_BUILD:-}" != "1" ]]; then
   dart run build_runner build --output=build
 fi
 
+# If a service account key exists, use it so functions like getSignedUrl() can
+# sign data locally (the emulator doesn't provide a signing identity by default).
+SA_KEY="$SCRIPT_DIR/service-account-key.json"
+if [[ -f "$SA_KEY" && -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; then
+  export GOOGLE_APPLICATION_CREDENTIALS="$SA_KEY"
+fi
+
 inspect_flag=()
 if [[ "${FRANKLY_DEBUG_FUNCTIONS:-0}" == "1" ]]; then
   inspect_flag=(--inspect-functions)
