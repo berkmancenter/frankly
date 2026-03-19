@@ -383,6 +383,32 @@ Map<String, dynamic> _$$_GetMeetingChatsSuggestionsDataResponseToJson(
           instance.chatsSuggestionsList?.map((e) => e.toJson()).toList(),
     };
 
+_$_GetMeetingPollDataRequest _$$_GetMeetingPollDataRequestFromJson(
+        Map<String, dynamic> json) =>
+    _$_GetMeetingPollDataRequest(
+      eventPath: json['eventPath'] as String,
+    );
+
+Map<String, dynamic> _$$_GetMeetingPollDataRequestToJson(
+        _$_GetMeetingPollDataRequest instance) =>
+    <String, dynamic>{
+      'eventPath': instance.eventPath,
+    };
+
+_$_GetMeetingPollDataResponse _$$_GetMeetingPollDataResponseFromJson(
+        Map<String, dynamic> json) =>
+    _$_GetMeetingPollDataResponse(
+      polls: (json['polls'] as List<dynamic>?)
+          ?.map((e) => PollData.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_GetMeetingPollDataResponseToJson(
+        _$_GetMeetingPollDataResponse instance) =>
+    <String, dynamic>{
+      'polls': instance.polls?.map((e) => e.toJson()).toList(),
+    };
+
 _$_GetMembersDataRequest _$$_GetMembersDataRequestFromJson(
         Map<String, dynamic> json) =>
     _$_GetMembersDataRequest(
@@ -868,14 +894,14 @@ Map<String, dynamic> _$$_UpdateMembershipRequestToJson(
     };
 
 const _$MembershipStatusEnumMap = {
+  MembershipStatus.owner: 'owner',
+  MembershipStatus.admin: 'admin',
+  MembershipStatus.moderator: 'moderator',
+  MembershipStatus.facilitator: 'facilitator',
+  MembershipStatus.member: 'member',
   MembershipStatus.banned: 'banned',
   MembershipStatus.nonmember: 'nonmember',
   MembershipStatus.attendee: 'attendee',
-  MembershipStatus.member: 'member',
-  MembershipStatus.facilitator: 'facilitator',
-  MembershipStatus.mod: 'mod',
-  MembershipStatus.admin: 'admin',
-  MembershipStatus.owner: 'owner',
 };
 
 _$_VoteToKickRequest _$$_VoteToKickRequestFromJson(Map<String, dynamic> json) =>

@@ -64,7 +64,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
     const membershipOrder = [
       MembershipStatus.owner,
       MembershipStatus.admin,
-      MembershipStatus.mod,
+      MembershipStatus.moderator,
       MembershipStatus.facilitator,
       MembershipStatus.member,
     ];

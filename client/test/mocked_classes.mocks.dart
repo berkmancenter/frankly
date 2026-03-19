@@ -157,7 +157,7 @@ import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_inte
 import 'package:cloudinary_public/cloudinary_public.dart' as _i22;
 import 'package:data_models/admin/partner_agreement.dart' as _i45;
 import 'package:data_models/admin/plan_capability_list.dart' as _i19;
-import 'package:data_models/chat/chat.dart' as _i75;
+import 'package:data_models/user_input/chat.dart' as _i75;
 import 'package:data_models/cloud_functions/requests.dart' as _i18;
 import 'package:data_models/community/community.dart' as _i25;
 import 'package:data_models/community/community_tag.dart' as _i76;
@@ -3373,6 +3373,57 @@ class MockCloudFunctionsCommunityService extends _i1.Mock
       ) as _i38.Future<void>);
 
   @override
+  _i38.Future<String> updateProfileImage({
+    required String? imageUrl,
+    required _i25.Community? community,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateProfileImage,
+          [],
+          {
+            #imageUrl: imageUrl,
+            #community: community,
+          },
+        ),
+        returnValue: _i38.Future<String>.value(_i53.dummyValue<String>(
+          this,
+          Invocation.method(
+            #updateProfileImage,
+            [],
+            {
+              #imageUrl: imageUrl,
+              #community: community,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i38.Future<String>.value(_i53.dummyValue<String>(
+          this,
+          Invocation.method(
+            #updateProfileImage,
+            [],
+            {
+              #imageUrl: imageUrl,
+              #community: community,
+            },
+          ),
+        )),
+      ) as _i38.Future<String>);
+
+  @override
+  _i38.Future<void> removeImage({required _i25.Community? community}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeImage,
+          [],
+          {#community: community},
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
   Map<String, dynamic> getDecodedData(
     dynamic data, {
     bool? isWeb = true,
@@ -4966,8 +5017,8 @@ class MockCommunityPermissionsProvider extends _i1.Mock
   @override
   _i74.MembershipStatus get membershipStatus => (super.noSuchMethod(
         Invocation.getter(#membershipStatus),
-        returnValue: _i74.MembershipStatus.banned,
-        returnValueForMissingStub: _i74.MembershipStatus.banned,
+        returnValue: _i74.MembershipStatus.owner,
+        returnValueForMissingStub: _i74.MembershipStatus.owner,
       ) as _i74.MembershipStatus);
 
   @override
@@ -5214,13 +5265,6 @@ class MockCommunitySettings extends _i1.Mock implements _i25.CommunitySettings {
   @override
   bool get requireApprovalToJoin => (super.noSuchMethod(
         Invocation.getter(#requireApprovalToJoin),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  bool get enablePlatformSelection => (super.noSuchMethod(
-        Invocation.getter(#enablePlatformSelection),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);

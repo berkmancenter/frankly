@@ -53,6 +53,8 @@ class Environment {
   static const aboutUrl = String.fromEnvironment('ABOUT_URL');
   static const privacyPolicyUrl = String.fromEnvironment('PRIVACY_POLICY_URL');
   static const helpCenterUrl = String.fromEnvironment('HELP_CENTER_URL');
+  static const helpCenterManagingCommunityUrl =
+      String.fromEnvironment('HELP_CENTER_MANAGING_COMMUNITY_URL');
   static const createEventHelpUrl =
       String.fromEnvironment('CREATE_EVENT_HELP_URL');
   static const createTemplateHelpUrl =

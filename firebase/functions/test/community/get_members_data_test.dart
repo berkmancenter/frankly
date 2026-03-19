@@ -5,10 +5,12 @@ import 'package:test/test.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/user/public_user_info.dart';
 import 'package:functions/community/get_members_data.dart';
 import '../util/community_test_utils.dart';
 import '../util/event_test_utils.dart';
 import '../util/function_test_fixture.dart';
+import '../util/live_meeting_test_utils.dart';
 
 void main() {
   const regularUserId = 'regularUser';
@@ -17,6 +19,7 @@ void main() {
   firebaseAuthUtils = mockFirebaseAuthUtils;
   final communityTestUtils = CommunityTestUtils();
   final eventTestUtils = EventTestUtils();
+  final liveMeetingTestUtils = LiveMeetingTestUtils();
   setupTestFixture();
 
   setUp(() async {
@@ -28,6 +31,22 @@ void main() {
       communityId: communityId,
       userId: regularUserId,
       status: MembershipStatus.member,
+    );
+
+    // Add PublicUserInfo documents
+    await liveMeetingTestUtils.addPublicUser(
+      publicUser: PublicUserInfo(
+        id: adminUserId,
+        displayName: 'Admin',
+        agoraId: 100,
+      ),
+    );
+    await liveMeetingTestUtils.addPublicUser(
+      publicUser: PublicUserInfo(
+        id: regularUserId,
+        displayName: 'Joe User',
+        agoraId: 101,
+      ),
     );
   });
 
@@ -186,10 +205,17 @@ void main() {
   });
 
   test('Should handle non-existent users gracefully', () async {
+    const nonExistentUserId = 'non-existent-user';
+
+    // Mock firebaseAuthUtils to throw error for non-existent user
+    when(
+      () => mockFirebaseAuthUtils.getUser(nonExistentUserId),
+    ).thenThrow(Exception('User not found'));
+
     final membersDataGetter = GetMembersData();
     final req = GetMembersDataRequest(
       communityId: communityId,
-      userIds: ['non-existent-user'],
+      userIds: [nonExistentUserId],
     );
 
     final result = await membersDataGetter.action(
@@ -200,6 +226,7 @@ void main() {
     final memberDetails = result['membersDetailsList'].first;
 
     expect(memberDetails['email'], equals('Unknown'));
+    expect(memberDetails['displayName'], equals(''));
     expect(
       memberDetails['membership']['status'],
       equals('nonmember'),

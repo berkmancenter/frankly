@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/services.dart';
-import 'package:data_models/chat/chat.dart';
+import 'package:data_models/user_input/chat.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';

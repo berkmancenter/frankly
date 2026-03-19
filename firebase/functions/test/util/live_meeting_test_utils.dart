@@ -1,4 +1,4 @@
-import 'package:data_models/chat/chat.dart';
+import 'package:data_models/user_input/chat.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
