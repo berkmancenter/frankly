@@ -35,7 +35,7 @@ class CommunityAdminState extends State<CommunityAdmin>
     int initialIndex = 0;
     if (widget.tab != null) {
       switch (widget.tab) {
-        case 'overview':
+        case 'profile':
           break;
         case 'members':
           initialIndex = 1;
@@ -146,7 +146,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                 null,
                 '',
                 'space/${community.displayId}/admin/${[
-                  'overview',
+                  'profile',
                   'members',
                   'data',
                   'settings',
