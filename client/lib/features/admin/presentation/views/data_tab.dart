@@ -123,8 +123,11 @@ class _DataTabState extends State<DataTab> {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
       final response = await http.post(
         Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
-        headers: {'Authorization': 'Bearer $idToken'},
-        body: {'eventPath': event.fullPath},
+        headers: {
+          'Authorization': 'Bearer $idToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'eventPath': event.fullPath}),
       );
       if (!mounted) return;
       if (response.statusCode == 200) {
@@ -133,11 +136,12 @@ class _DataTabState extends State<DataTab> {
         setState(() => _recordingParts[event.id] = count);
         if (count == 0) _scheduleRetry(event);
       } else {
-        setState(() => _recordingParts[event.id] = 0);
-        _scheduleRetry(event);
+        // Non-200 means a function error, not "recordings not ready".
+        // Stop polling and show an error state (-1) to avoid infinite retry.
+        setState(() => _recordingParts[event.id] = -1);
       }
     } catch (_) {
-      if (mounted) setState(() => _recordingParts[event.id] = 0);
+      if (mounted) setState(() => _recordingParts[event.id] = -1);
     }
   }
 
@@ -155,8 +159,11 @@ class _DataTabState extends State<DataTab> {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
       final response = await http.post(
         Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
-        headers: {'Authorization': 'Bearer $idToken'},
-        body: {'eventPath': event.fullPath},
+        headers: {
+          'Authorization': 'Bearer $idToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'eventPath': event.fullPath}),
       );
       if (response.statusCode != 200) {
         throw Exception(context.l10n.errorOccurred);
@@ -192,6 +199,15 @@ class _DataTabState extends State<DataTab> {
         height: 20,
         width: 20,
         child: CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+
+    if (parts == -1) {
+      return Text(
+        context.l10n.errorOccurred,
+        style: context.theme.textTheme.bodySmall?.copyWith(
+          color: context.theme.colorScheme.error,
+        ),
       );
     }
 
