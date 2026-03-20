@@ -35,9 +35,14 @@ class _DataTabState extends State<DataTab> {
   late UserService _userService;
   int _currentStartIndex = 0;
 
-  // Recording status per event: null=loading, 0=preparing, N=N parts ready.
+  // Recording status per event: null=loading, 0=preparing, N=N parts ready, -1=error.
   final Map<String, int?> _recordingParts = {};
   final Map<String, Timer> _pollingTimers = {};
+  final Map<String, int> _retryCount = {};
+
+  // After this many auto-retries (~3 minutes at 5s intervals), stop polling
+  // and show the error/manual-retry state instead.
+  static const int _maxAutoRetries = 36;
   late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
@@ -130,7 +135,10 @@ class _DataTabState extends State<DataTab> {
   }
 
   void _retryRecordingCheck(Event event) {
-    setState(() => _recordingParts.remove(event.id));
+    setState(() {
+      _recordingParts.remove(event.id);
+      _retryCount.remove(event.id);
+    });
     _maybeStartRecordingCheck(event);
   }
 
@@ -166,6 +174,12 @@ class _DataTabState extends State<DataTab> {
   }
 
   void _scheduleRetry(Event event) {
+    final retries = (_retryCount[event.id] ?? 0) + 1;
+    if (retries >= _maxAutoRetries) {
+      setState(() => _recordingParts[event.id] = -1);
+      return;
+    }
+    _retryCount[event.id] = retries;
     _pollingTimers[event.id]?.cancel();
     _pollingTimers[event.id] = Timer(const Duration(seconds: 5), () {
       if (!mounted) return;
