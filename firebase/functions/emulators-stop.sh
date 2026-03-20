@@ -3,23 +3,31 @@ set -euo pipefail
 
 HUB_URL="http://127.0.0.1:4400/emulators"
 
+# Emulator ports as defined in firebase.json
+EMULATOR_PORTS=(4400 4000 8080 8085 9000 9099 9150 5001)
+
+# Convert port array to lsof format (e.g., -iTCP:4400 -iTCP:4000 ...)
+format_ports_for_lsof() {
+  printf '%s' "${EMULATOR_PORTS[@]/#/-iTCP:}"
+}
+
 ports_in_use() {
   # lsof exits 1 on macOS when some (but not all) requested ports have no
   # listeners, even when others do. We check for non-empty output instead of
-  # relying on the exit code, but we must capture into a variable first so
-  # that pipefail cannot override grep's exit code with lsof's exit code 1.
+  # relying on the exit code.
   local out
-  out="$(lsof -nP \
-    -iTCP:4400 \
-    -iTCP:4000 \
-    -iTCP:8080 \
-    -iTCP:8085 \
-    -iTCP:9000 \
-    -iTCP:9099 \
-    -iTCP:9150 \
-    -iTCP:5001 \
-    -sTCP:LISTEN 2>/dev/null || true)"
+  out="$(lsof -nP $(format_ports_for_lsof) -sTCP:LISTEN 2>/dev/null || true)"
   [[ -n "$out" ]]
+}
+
+kill_listeners() {
+  local signal="${1:--}"  # Default to SIGTERM
+  local pids
+  pids="$(lsof -nP -t $(format_ports_for_lsof) -sTCP:LISTEN 2>/dev/null | sort -u || true)"
+
+  if [ -n "${pids:-}" ]; then
+    echo "$pids" | xargs kill $signal >/dev/null 2>&1 || true
+  fi
 }
 
 wait_for_ports_to_close() {
@@ -52,12 +60,7 @@ if wait_for_ports_to_close 20; then
 fi
 
 echo "Graceful shutdown timed out. Killing only listeners on emulator ports..."
-
-pids="$(lsof -nP -t -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN 2>/dev/null | sort -u || true)"
-
-if [ -n "${pids:-}" ]; then
-  echo "$pids" | xargs kill >/dev/null 2>&1 || true
-fi
+kill_listeners "-"
 
 if wait_for_ports_to_close 5; then
   echo "Firebase emulators stopped after targeted kill."
@@ -65,12 +68,7 @@ if wait_for_ports_to_close 5; then
 fi
 
 echo "Targeted SIGTERM timed out. Sending SIGKILL to remaining emulator listeners..."
-
-pids="$(lsof -nP -t -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN 2>/dev/null | sort -u || true)"
-
-if [ -n "${pids:-}" ]; then
-  echo "$pids" | xargs kill -9 >/dev/null 2>&1 || true
-fi
+kill_listeners "-9"
 
 if wait_for_ports_to_close 3; then
   echo "Firebase emulators stopped after targeted SIGKILL."
@@ -79,5 +77,5 @@ fi
 
 echo "Failed to stop all Firebase emulator listeners." >&2
 echo "Inspect remaining listeners with:" >&2
-echo "  lsof -nP -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN" >&2
+echo "  lsof -nP $(format_ports_for_lsof) -sTCP:LISTEN" >&2
 exit 1
