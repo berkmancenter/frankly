@@ -196,9 +196,11 @@ class _DataTabState extends State<DataTab> {
     }
 
     if (parts == 0) {
-      return Text(
-        context.l10n.recordingPreparing,
-        style: context.theme.textTheme.bodySmall,
+      return ActionButton(
+        type: ActionButtonType.outline,
+        loadingHeight: 16,
+        onPressed: null,
+        text: context.l10n.recordingPreparing,
       );
     }
 
