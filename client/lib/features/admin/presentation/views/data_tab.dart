@@ -38,6 +38,7 @@ class _DataTabState extends State<DataTab> {
   // Recording status per event: null=loading, 0=preparing, N=N parts ready.
   final Map<String, int?> _recordingParts = {};
   final Map<String, Timer> _pollingTimers = {};
+  late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
   void initState() {
@@ -46,6 +47,15 @@ class _DataTabState extends State<DataTab> {
     _allEvents = firestoreEventService.communityEvents(
       communityId: CommunityProvider.read(context).communityId,
     );
+    _eventsSubscription = _allEvents.stream.listen((events) {
+      if (!mounted) return;
+      for (final event in events) {
+        final isPast = event.scheduledTime?.isBefore(DateTime.now()) ?? false;
+        if (isPast && (event.eventSettings?.alwaysRecord ?? false)) {
+          _maybeStartRecordingCheck(event);
+        }
+      }
+    });
     _userService = UserService();
 
     _currentStartIndex = 0;
@@ -56,6 +66,7 @@ class _DataTabState extends State<DataTab> {
     for (final timer in _pollingTimers.values) {
       timer.cancel();
     }
+    _eventsSubscription.cancel();
     _allEvents.dispose();
     super.dispose();
   }
@@ -445,17 +456,6 @@ class _DataTabState extends State<DataTab> {
             showContainer: false,
           );
         }
-
-        // Kick off recording status checks for past events that record.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          for (final event in events) {
-            final isPast =
-                event.scheduledTime?.isBefore(DateTime.now()) ?? false;
-            if (isPast && (event.eventSettings?.alwaysRecord ?? false)) {
-              _maybeStartRecordingCheck(event);
-            }
-          }
-        });
 
         return Column(
           children: [
