@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:client/core/widgets/constrained_body.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/user/presentation/views/events_tab.dart';
 import 'package:client/features/user/presentation/views/notifications_tab.dart';
@@ -43,6 +44,14 @@ class _UserSettingsPageState extends State<UserSettingsPage>
 
     if (!userService.isSignedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) => SignInDialog.show());
+    }
+
+    if (kDebugMode) {
+      final uid = userService.currentUserId;
+      if (uid != null) {
+        print('[dev] user id: $uid');
+        print('[dev] manage user in emulator UI: http://localhost:4000/firestore/data/publicUser/$uid');
+      }
     }
   }
 

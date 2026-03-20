@@ -12,11 +12,7 @@
         ]
       }
     ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "redirects": [
       {
         "regex": "/home/community/(.*)",
@@ -74,7 +70,7 @@
       "host": "0.0.0.0"
     },
     "firestore": {
-      "port": 8081,
+      "port": 8080,
       "host": "0.0.0.0"
     },
     "database": {
@@ -99,13 +95,7 @@
     {
       "source": "firebase/functions",
       "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ]
+      "ignore": ["**", "node_modules", ".git"]
     }
   ],
   "database": {

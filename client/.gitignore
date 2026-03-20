@@ -71,3 +71,6 @@ shared/build
 
 # Localization
 missing.json
+
+# FlutterFire CLI sidecar -- contains personal project ID, not needed at runtime
+firebase.json
