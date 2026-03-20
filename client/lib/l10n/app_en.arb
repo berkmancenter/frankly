@@ -624,6 +624,13 @@
   "recordingNotAvailable": "Recording is not available.",
   "recordingPreparing": "Preparing recording...",
   "downloadRecordingParts": "Download recording ({count} parts)",
+  "@downloadRecordingParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "refresh": "Refresh",
   "refreshConnection": "Refresh Connection",
   "refreshGuide": "Refresh Guide",

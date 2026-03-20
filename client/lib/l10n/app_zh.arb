@@ -700,6 +700,13 @@
   "recordingNotAvailable": "录制不可用",
   "recordingPreparing": "正在准备录制...",
   "downloadRecordingParts": "下载录制（{count} 部分）",
+  "@downloadRecordingParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "refresh": "刷新",
   "refreshConnection": "刷新连接",
   "refreshGuide": "刷新指南",
