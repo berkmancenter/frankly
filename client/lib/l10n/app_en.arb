@@ -622,6 +622,8 @@
   "record": "Record",
   "recording": "Recording",
   "recordingNotAvailable": "Recording is not available.",
+  "recordingPreparing": "Preparing recording...",
+  "downloadRecordingParts": "Download recording ({count} parts)",
   "refresh": "Refresh",
   "refreshConnection": "Refresh Connection",
   "refreshGuide": "Refresh Guide",
