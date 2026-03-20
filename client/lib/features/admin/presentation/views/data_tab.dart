@@ -121,6 +121,10 @@ class _DataTabState extends State<DataTab> {
   Future<void> _fetchRecordingCount(Event event) async {
     try {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+      if (idToken == null) {
+        if (mounted) _scheduleRetry(event);
+        return;
+      }
       final response = await http.post(
         Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
         headers: {
@@ -159,6 +163,7 @@ class _DataTabState extends State<DataTab> {
     final preparingMsg = context.l10n.recordingPreparing;
     await alertOnError(context, () async {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+      if (idToken == null) throw Exception(errorMsg);
       final response = await http.post(
         Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
         headers: {
