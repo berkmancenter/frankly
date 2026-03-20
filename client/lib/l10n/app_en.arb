@@ -631,6 +631,7 @@
       }
     }
   },
+  "retryRecording": "Recording download failed - retry",
   "refresh": "Refresh",
   "refreshConnection": "Refresh Connection",
   "refreshGuide": "Refresh Guide",

@@ -704,6 +704,7 @@
       }
     }
   },
+  "retryRecording": "Error al descargar grabación - reintentar",
   "refresh": "Actualizar",
   "refreshConnection": "Actualizar conexión",
   "refreshGuide": "Actualizar Guía",

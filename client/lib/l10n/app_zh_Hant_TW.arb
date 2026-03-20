@@ -707,6 +707,7 @@
       }
     }
   },
+  "retryRecording": "錄製下載失敗 - 重試",
   "refresh": "刷新",
   "refreshConnection": "重新整理連線",
   "refreshGuide": "刷新指南",
