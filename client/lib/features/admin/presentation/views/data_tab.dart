@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:client/core/localization/localization_helper.dart';
@@ -33,6 +35,10 @@ class _DataTabState extends State<DataTab> {
   late UserService _userService;
   int _currentStartIndex = 0;
 
+  // Recording status per event: null=loading, 0=preparing, N=N parts ready.
+  final Map<String, int?> _recordingParts = {};
+  final Map<String, Timer> _pollingTimers = {};
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +53,9 @@ class _DataTabState extends State<DataTab> {
 
   @override
   void dispose() {
+    for (final timer in _pollingTimers.values) {
+      timer.cancel();
+    }
     _allEvents.dispose();
     super.dispose();
   }
@@ -82,172 +91,126 @@ class _DataTabState extends State<DataTab> {
     bool eventInPast,
     bool hasRecording,
   ) {
-    Future<void> openAlert() {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          bool recordingSelected = true;
-          bool registrantListSelected = true;
-
-          void pressedHandler() async {
-            // If event has a recording and the selected data includes 'recording', download the recording
-            if (hasRecording && recordingSelected) {
-              await alertOnError(
-                context,
-                () async {
-                  final idToken =
-                      await userService.firebaseAuth.currentUser?.getIdToken();
-
-                  var downloadTriggerUrl =
-                      '${Environment.functionsUrlPrefix}/downloadRecording';
-
-                  final response = await http.post(
-                    Uri.parse(downloadTriggerUrl),
-                    headers: {'Authorization': 'Bearer $idToken'},
-                    body: {
-                      'eventPath': event.fullPath,
-                    },
-                  );
-
-                  final content = response.bodyBytes;
-                  final blob = html.Blob([content]);
-                  final blobUrl = html.Url.createObjectUrlFromBlob(blob);
-
-                  final anchor = html.AnchorElement(href: blobUrl)
-                    ..setAttribute('download', 'recording.zip');
-                  anchor.click();
-
-                  html.Url.revokeObjectUrl(blobUrl);
-                },
-              );
-            }
-
-            // If registrant data selected, download it
-            if (registrantListSelected) {
-              await alertOnError(
-                context,
-                () async {
-                  await downloadRegistrantList(event, participants);
-                },
-              );
-            }
-            Navigator.of(context).pop();
-          }
-
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return AlertDialog(
-                title: Text(context.l10n.selectData),
-                backgroundColor:
-                    context.theme.colorScheme.surfaceContainerHighest,
-                contentPadding: EdgeInsets.zero,
-                titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
-                content: Material(
-                  color: context.theme.colorScheme.surfaceContainer,
-                  child: SingleChildScrollView(
-                    child: ListBody(
-                      children: <Widget>[
-                        CheckboxListTile(
-                          title: Text(context.l10n.registrantList),
-                          checkColor: Colors.white,
-                          fillColor: WidgetStatePropertyAll(
-                            context.theme.primaryColor,
-                          ),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: registrantListSelected,
-                          onChanged: (value) {
-                            setState(() {
-                              registrantListSelected = !registrantListSelected;
-                            });
-                          },
-                        ),
-                        CheckboxListTile(
-                          title: Text(context.l10n.recording),
-                          checkColor: Colors.white,
-                          fillColor: hasRecording
-                              ? WidgetStatePropertyAll(
-                                  context.theme.primaryColor,
-                                )
-                              : null,
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: hasRecording ? recordingSelected : false,
-                          onChanged: (value) {
-                            setState(() {
-                              recordingSelected = value!;
-                            });
-                          },
-                          enabled: hasRecording,
-                        ),
-                        if (!hasRecording)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 8.0,),
-                            child: Text(
-                              context.l10n.recordingNotAvailable,
-                              style:
-                                  context.theme.textTheme.bodySmall!.copyWith(
-                                color:
-                                    context.theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ActionButton(
-                          type: ActionButtonType.text,
-                          text: context.l10n.cancel,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        ActionButton(
-                          type: ActionButtonType.filled,
-                          text: context.l10n.download,
-                          onPressed:
-                              (!recordingSelected && !registrantListSelected)
-                                  ? null
-                                  : () => pressedHandler(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      );
-    }
-
-    // If the event is in the past and has no recording, or in future and there are no registrants, do not show the download button
+    // Past event without a recording, or upcoming event with no registrants: hide.
     if ((eventInPast && !hasRecording) ||
         (!eventInPast && participants.isEmpty)) {
-      return Text('');
+      return const SizedBox.shrink();
     }
 
+    // Download registrant list directly. Recordings are handled by the
+    // inline _buildRecordingWidget shown alongside this button.
     return ActionButton(
       type: ActionButtonType.text,
-      icon: Icon(Icons.file_download_outlined),
+      icon: const Icon(Icons.file_download_outlined),
       loadingHeight: 16,
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
-      // If event is upcoming, download registrant list, otherwise open alert dialog
-      onPressed: () => !eventInPast
-          ? downloadRegistrantList(event, participants)
-          : openAlert(),
+      onPressed: () => downloadRegistrantList(event, participants),
       text: context.l10n.dataDownload,
     );
   }
+
+  // --- Recording status and download ---
+
+  void _maybeStartRecordingCheck(Event event) {
+    if (_recordingParts.containsKey(event.id)) return;
+    _recordingParts[event.id] = null; // null = loading
+    _fetchRecordingCount(event);
+  }
+
+  Future<void> _fetchRecordingCount(Event event) async {
+    try {
+      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+      final response = await http.post(
+        Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
+        headers: {'Authorization': 'Bearer $idToken'},
+        body: {'eventPath': event.fullPath},
+      );
+      if (!mounted) return;
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        final count = (body['recordings'] as List?)?.length ?? 0;
+        setState(() => _recordingParts[event.id] = count);
+        if (count == 0) _scheduleRetry(event);
+      } else {
+        setState(() => _recordingParts[event.id] = 0);
+        _scheduleRetry(event);
+      }
+    } catch (_) {
+      if (mounted) setState(() => _recordingParts[event.id] = 0);
+    }
+  }
+
+  void _scheduleRetry(Event event) {
+    _pollingTimers[event.id]?.cancel();
+    _pollingTimers[event.id] = Timer(const Duration(seconds: 5), () {
+      if (!mounted) return;
+      setState(() => _recordingParts[event.id] = null);
+      _fetchRecordingCount(event);
+    });
+  }
+
+  Future<void> _downloadAllRecordings(Event event) async {
+    await alertOnError(context, () async {
+      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+      final response = await http.post(
+        Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
+        headers: {'Authorization': 'Bearer $idToken'},
+        body: {'eventPath': event.fullPath},
+      );
+      if (response.statusCode != 200) {
+        throw Exception(context.l10n.errorOccurred);
+      }
+      final body = jsonDecode(response.body) as Map<String, dynamic>;
+      final rawList = body['recordings'];
+      if (rawList is! List || rawList.isEmpty) {
+        throw Exception(context.l10n.recordingPreparing);
+      }
+      final urls = rawList
+          .whereType<Map<String, dynamic>>()
+          .map((r) => r['url'] as String? ?? '')
+          .where((url) => url.isNotEmpty)
+          .toList();
+      for (int i = 0; i < urls.length; i++) {
+        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
+        html.document.body!.append(anchor);
+        anchor.click();
+        anchor.remove();
+        if (i < urls.length - 1) {
+          await Future.delayed(const Duration(milliseconds: 300));
+        }
+      }
+      setState(() => _recordingParts[event.id] = urls.length);
+    });
+  }
+
+  Widget _buildRecordingWidget(Event event) {
+    final parts = _recordingParts[event.id];
+
+    if (!_recordingParts.containsKey(event.id) || parts == null) {
+      return const SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+
+    if (parts == 0) {
+      return Text(
+        context.l10n.recordingPreparing,
+        style: context.theme.textTheme.bodySmall,
+      );
+    }
+
+    return ActionButton(
+      type: ActionButtonType.outline,
+      loadingHeight: 16,
+      onPressed: () => _downloadAllRecordings(event),
+      text: context.l10n.downloadRecordingParts(parts),
+    );
+  }
+
+  // --- Event list building ---
 
   Future<Iterable<Participant>> _getEventParticipants(Event event) async {
     final participantsWrapper = firestoreEventService.eventParticipantsStream(
@@ -403,12 +366,40 @@ class _DataTabState extends State<DataTab> {
                   height: 10,
                 ),
                 Center(
-                  child: _buildDownloadButton(
-                      event, participants, eventInPast, hasRecording,),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildDownloadButton(
+                        event,
+                        participants,
+                        eventInPast,
+                        hasRecording,
+                      ),
+                      if (eventInPast && hasRecording) ...[
+                        const SizedBox(height: 8),
+                        _buildRecordingWidget(event),
+                      ],
+                    ],
+                  ),
                 ),
               ] else ...[
-                _buildDownloadButton(
-                    event, participants, eventInPast, hasRecording,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildDownloadButton(
+                      event,
+                      participants,
+                      eventInPast,
+                      hasRecording,
+                    ),
+                    if (eventInPast && hasRecording) ...[
+                      const SizedBox(height: 8),
+                      _buildRecordingWidget(event),
+                    ],
+                  ],
+                ),
               ],
             ],
           ),
@@ -431,6 +422,17 @@ class _DataTabState extends State<DataTab> {
             showContainer: false,
           );
         }
+
+        // Kick off recording status checks for past events that record.
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          for (final event in events) {
+            final isPast =
+                event.scheduledTime?.isBefore(DateTime.now()) ?? false;
+            if (isPast && (event.eventSettings?.alwaysRecord ?? false)) {
+              _maybeStartRecordingCheck(event);
+            }
+          }
+        });
 
         return Column(
           children: [
