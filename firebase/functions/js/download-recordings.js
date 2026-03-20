@@ -71,11 +71,15 @@ const downloadRecording = functions.https.onRequest((req, res) => {
 
             // Generate a signed URL for each MP4. The client downloads directly
             // from GCS without the function acting as an intermediary.
+            // responseDisposition embeds Content-Disposition: attachment in the
+            // signed URL itself, so browsers download rather than play inline.
             const urls = await Promise.all(
                 mp4Files.map(async (file) => {
+                    const filename = file.name.split('/').pop()
                     const [url] = await file.getSignedUrl({
                         action: 'read',
                         expires: Date.now() + signedUrlExpiration,
+                        responseDisposition: `attachment; filename="${filename}"`,
                     })
                     return { name: file.name, url }
                 })
