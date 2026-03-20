@@ -26,7 +26,14 @@ class FirestoreUtils {
     final ref = firestore.document(path);
     final snapshot =
         transaction == null ? await ref.get() : await transaction.get(ref);
-    return constructor(fromFirestoreJson(snapshot.data.toMap()));
+    final map = fromFirestoreJson(snapshot.data.toMap());
+    // Ensure `id` is populated from the document path. Models with
+    // `required String id` need this because Firestore doesn't store the
+    // document ID as a field — and `_$$_XFromJson` serializes `id: null`
+    // when writing, so putIfAbsent would be a no-op on read. Use ??= to
+    // overwrite null regardless of whether the key is present.
+    map['id'] ??= path.split('/').last;
+    return constructor(map);
   }
 
   Map<String, dynamic> fromFirestoreJson(Map<String, dynamic> json) {
