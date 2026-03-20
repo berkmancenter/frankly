@@ -196,11 +196,12 @@ class _DataTabState extends State<DataTab> {
   Widget _buildRecordingWidget(Event event) {
     final parts = _recordingParts[event.id];
 
-    if (!_recordingParts.containsKey(event.id) || parts == null) {
-      return const SizedBox(
-        height: 20,
-        width: 20,
-        child: CircularProgressIndicator(strokeWidth: 2),
+    if (!_recordingParts.containsKey(event.id) || parts == null || parts == 0) {
+      return ActionButton(
+        type: ActionButtonType.outline,
+        loadingHeight: 16,
+        onPressed: null,
+        text: context.l10n.recordingPreparing,
       );
     }
 
@@ -210,15 +211,6 @@ class _DataTabState extends State<DataTab> {
         style: context.theme.textTheme.bodySmall?.copyWith(
           color: context.theme.colorScheme.error,
         ),
-      );
-    }
-
-    if (parts == 0) {
-      return ActionButton(
-        type: ActionButtonType.outline,
-        loadingHeight: 16,
-        onPressed: null,
-        text: context.l10n.recordingPreparing,
       );
     }
 
