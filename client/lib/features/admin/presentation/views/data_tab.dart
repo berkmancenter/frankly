@@ -129,6 +129,11 @@ class _DataTabState extends State<DataTab> {
     _fetchRecordingCount(event);
   }
 
+  void _retryRecordingCheck(Event event) {
+    setState(() => _recordingParts.remove(event.id));
+    _maybeStartRecordingCheck(event);
+  }
+
   Future<void> _fetchRecordingCount(Event event) async {
     try {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
@@ -222,11 +227,11 @@ class _DataTabState extends State<DataTab> {
     }
 
     if (parts == -1) {
-      return Text(
-        context.l10n.errorOccurred,
-        style: context.theme.textTheme.bodySmall?.copyWith(
-          color: context.theme.colorScheme.error,
-        ),
+      return ActionButton(
+        type: ActionButtonType.outline,
+        loadingHeight: 16,
+        onPressed: () => _retryRecordingCheck(event),
+        text: context.l10n.retryRecording,
       );
     }
 
