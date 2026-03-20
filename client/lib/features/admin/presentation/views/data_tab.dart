@@ -155,6 +155,8 @@ class _DataTabState extends State<DataTab> {
   }
 
   Future<void> _downloadAllRecordings(Event event) async {
+    final errorMsg = context.l10n.errorOccurred;
+    final preparingMsg = context.l10n.recordingPreparing;
     await alertOnError(context, () async {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
       final response = await http.post(
@@ -166,12 +168,12 @@ class _DataTabState extends State<DataTab> {
         body: jsonEncode({'eventPath': event.fullPath}),
       );
       if (response.statusCode != 200) {
-        throw Exception(context.l10n.errorOccurred);
+        throw Exception(errorMsg);
       }
       final body = jsonDecode(response.body) as Map<String, dynamic>;
       final rawList = body['recordings'];
       if (rawList is! List || rawList.isEmpty) {
-        throw Exception(context.l10n.recordingPreparing);
+        throw Exception(preparingMsg);
       }
       final urls = rawList
           .whereType<Map<String, dynamic>>()
@@ -252,6 +254,12 @@ class _DataTabState extends State<DataTab> {
 
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
     final time = timeFormat.format(event.scheduledTime ?? clockService.now());
+
+    final l10n = context.l10n;
+    final labelLargeStyle = context.theme.textTheme.labelLarge;
+    final titleLargeStyle = context.theme.textTheme.titleLarge;
+    final bodyMediumStyle = context.theme.textTheme.bodyMedium;
+
     final participants = await _getEventParticipants(event);
 
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
@@ -271,8 +279,8 @@ class _DataTabState extends State<DataTab> {
               Icons.group_outlined,
             ),
             Text(
-              '${participants.length} ${context.l10n.registered}',
-              style: context.theme.textTheme.labelLarge,
+              '${participants.length} ${l10n.registered}',
+              style: labelLargeStyle,
             ),
           ],
         ),
@@ -286,7 +294,7 @@ class _DataTabState extends State<DataTab> {
             ),
             Text(
               event.isPublic == true ? 'Public' : 'Private',
-              style: context.theme.textTheme.labelLarge,
+              style: labelLargeStyle,
             ),
           ],
         ),
@@ -307,7 +315,7 @@ class _DataTabState extends State<DataTab> {
                   : event.isHosted
                       ? 'Hosted'
                       : 'Hostless',
-              style: context.theme.textTheme.labelLarge,
+              style: labelLargeStyle,
             ),
           ],
         ),
@@ -352,14 +360,14 @@ class _DataTabState extends State<DataTab> {
                     children: [
                       Text(
                         event.title ?? 'NO TITLE',
-                        style: context.theme.textTheme.titleLarge,
+                        style: titleLargeStyle,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
                         '$time $timezone',
-                        style: context.theme.textTheme.bodyMedium,
+                        style: bodyMediumStyle,
                       ),
                       SizedBox(
                         height: 10,
