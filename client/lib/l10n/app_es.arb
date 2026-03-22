@@ -695,6 +695,16 @@
   "record": "Grabar",
   "recording": "Grabando",
   "recordingNotAvailable": "Grabación no disponible",
+  "recordingPreparing": "Preparando grabación...",
+  "downloadRecordingParts": "Descargar grabación ({count} partes)",
+  "@downloadRecordingParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "retryRecording": "Error al descargar grabación - reintentar",
   "refresh": "Actualizar",
   "refreshConnection": "Actualizar conexión",
   "refreshGuide": "Actualizar Guía",

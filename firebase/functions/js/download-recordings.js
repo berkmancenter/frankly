@@ -1,7 +1,6 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const { Storage } = require('@google-cloud/storage')
-const archiver = require('archiver')
 const cors = require('cors')({ origin: true })
 
 const firestore = admin.firestore()
@@ -9,75 +8,87 @@ const firestore = admin.firestore()
 const storage = new Storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
-const downloadRecording = functions.runWith({ timeoutSeconds: 300 }).https.onRequest((req, res) => {
+// Signed URLs expire after 15 minutes (milliseconds)
+const signedUrlExpiration = 15 * 60 * 1000
+
+// Expected path shape: community/{id}/templates/{id}/events/{id}
+const eventPathRegex = /^community\/[^\/]+\/templates\/[^\/]+\/events\/[^\/]+$/
+
+const downloadRecording = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
-        // Determine if the user has access to this
-        const authToken = req.headers.authorization?.split('Bearer ')[1]
-        if (!authToken) {
-            throw new functions.https.HttpsError('failed-precondition', 'Unauthorized')
-        }
-
-        // Verify the Firebase Auth token and get the UID
-        const decodedToken = await admin.auth().verifyIdToken(authToken)
-        const uid = decodedToken.uid
-
-        // Extract the eventPath from the request body
-        const { eventPath } = req.body
-        if (!eventPath) {
-            throw new functions.https.HttpsError('failed-precondition', 'eventPath not found')
-            return
-        }
-
-        // Fetch the event object
-        const eventDoc = await firestore.doc(eventPath).get()
-        if (!eventDoc.exists) {
-            throw new functions.https.HttpsError('failed-precondition', 'event not found')
-        }
-        const event = { id: eventDoc.id, ...eventDoc.data() }
-
-        // Fetch the membership document
-        const membershipPath = `memberships/${uid}/community-membership/${event.communityId}`
-        const membershipDoc = await firestore.doc(membershipPath).get()
-        if (!membershipDoc.exists) {
-            throw new functions.https.HttpsError('failed-precondition', 'membership not found')
-        }
-        const membership = membershipDoc.data()
-
-        // Check if the user is an admin
-        if (!['owner', 'admin'].includes(membership.status)) {
-            throw new functions.https.HttpsError('failed-precondition', 'Unauthorized')
-        }
-
-        // List all files in the bucket
         try {
+            const authToken = req.headers.authorization?.split('Bearer ')[1]
+            if (!authToken) {
+                res.status(401).json({ error: 'Unauthorized' })
+                return
+            }
+
+            const decodedToken = await admin.auth().verifyIdToken(authToken)
+            const uid = decodedToken.uid
+
+            const { eventPath } = req.body
+            if (!eventPath) {
+                res.status(400).json({ error: 'eventPath not found' })
+                return
+            }
+            if (!eventPathRegex.test(eventPath)) {
+                res.status(400).json({ error: 'Invalid eventPath format' })
+                return
+            }
+
+            const eventDoc = await firestore.doc(eventPath).get()
+            if (!eventDoc.exists) {
+                res.status(404).json({ error: 'event not found', debug: { eventPath } })
+                return
+            }
+            const event = { id: eventDoc.id, ...eventDoc.data() }
+
+            const membershipPath = `memberships/${uid}/community-membership/${event.communityId}`
+            const membershipDoc = await firestore.doc(membershipPath).get()
+            if (!membershipDoc.exists) {
+                res.status(403).json({ error: 'membership not found' })
+                return
+            }
+            const membership = membershipDoc.data()
+
+            if (!['owner', 'admin'].includes(membership.status)) {
+                res.status(403).json({ error: 'Unauthorized' })
+                return
+            }
+
             const bucket = storage.bucket(bucketName)
-            const archive = archiver('zip', {
-                zlib: { level: 9 }, // Compression level
-            })
-
-            res.setHeader('Content-Type', 'application/zip')
-            res.setHeader('Content-Disposition', 'attachment; filename="files.zip"')
-
-            archive.on('error', (err) => {
-                console.error('Error creating zip file:', err)
-            })
-
-            // Pipe the archive's output to the response
-            archive.pipe(res)
-
             const [files] = await bucket.getFiles({ prefix: `${event.id}/` })
-            files
+            const mp4Files = files
                 .filter((file) => file.name.endsWith('.mp4'))
-                .forEach((file) => {
-                    console.log(`Processing file ${file.name}`)
-                    const fileStream = file.createReadStream()
-                    archive.append(fileStream, { name: file.name })
-                })
+                .sort((a, b) => a.name.localeCompare(b.name))
 
-            await archive.finalize()
+            // Return an empty list when no recordings are ready yet rather than
+            // a 404 - the client shows a "preparing" state instead of an error.
+            if (mp4Files.length === 0) {
+                res.status(200).json({ recordings: [] })
+                return
+            }
+
+            // Generate a signed URL for each MP4. The client downloads directly
+            // from GCS without the function acting as an intermediary.
+            // responseDisposition embeds Content-Disposition: attachment in the
+            // signed URL itself, so browsers download rather than play inline.
+            const urls = await Promise.all(
+                mp4Files.map(async (file) => {
+                    const filename = file.name.split('/').pop()
+                    const [url] = await file.getSignedUrl({
+                        action: 'read',
+                        expires: Date.now() + signedUrlExpiration,
+                        responseDisposition: `attachment; filename="${filename}"`,
+                    })
+                    return { name: file.name, url }
+                })
+            )
+
+            res.status(200).json({ recordings: urls })
         } catch (err) {
-            console.error('Error creating zip file:', err)
-            res.status(500).send('Error creating zip file.')
+            console.error('Error generating recording URLs:', err)
+            res.status(500).json({ error: 'Failed to generate recording URLs' })
         }
     })
 })
