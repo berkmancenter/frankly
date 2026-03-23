@@ -19,7 +19,7 @@ import 'package:client/features/discussion_threads/data/services/firestore_discu
 import 'package:client/features/community/data/services/firestore_community_join_requests_service.dart';
 import 'package:client/features/resources/data/services/firestore_community_resource_service.dart';
 import 'package:client/features/events/features/live_meeting/data/services/firestore_live_meeting_service.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/services/firestore_meeting_guide_service.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/services/firestore_meeting_template_service.dart';
 import 'package:client/features/community/data/services/firestore_membership_service.dart';
 import 'package:client/features/user/data/services/firestore_private_user_data_service.dart';
 import 'package:client/core/data/services/firestore_tag_service.dart';
@@ -98,8 +98,8 @@ FirestoreLiveMeetingService get firestoreLiveMeetingService =>
     services.get<FirestoreLiveMeetingService>();
 FirestoreMembershipService get firestoreMembershipService =>
     services.get<FirestoreMembershipService>();
-FirestoreMeetingGuideService get firestoreMeetingGuideService =>
-    services.get<FirestoreMeetingGuideService>();
+FirestoreMeetingTemplateService get firestoreMeetingTemplateService =>
+    services.get<FirestoreMeetingTemplateService>();
 FirestorePrivateUserDataService get firestorePrivateUserDataService =>
     services.get<FirestorePrivateUserDataService>();
 FirestoreUserAgendaService get firestoreUserAgendaService =>
@@ -137,7 +137,7 @@ void createServices() {
   services.registerSingleton(FirestoreCommunityJoinRequestsService());
   services.registerSingleton(FirestoreLiveMeetingService());
   services.registerSingleton(FirestoreMembershipService());
-  services.registerSingleton(FirestoreMeetingGuideService());
+  services.registerSingleton(FirestoreMeetingTemplateService());
   services.registerSingleton(FirestorePrivateUserDataService());
   services.registerSingleton(FirestoreUserAgendaService());
   services.registerSingleton(FirestoreUserService());

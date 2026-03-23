@@ -815,9 +815,9 @@ Map<String, dynamic> _$$_UnsubscribeFromCommunityNotificationsRequestToJson(
       'data': instance.data,
     };
 
-_$_CheckAdvanceMeetingGuideRequest _$$_CheckAdvanceMeetingGuideRequestFromJson(
+_$_CheckAdvanceMeetingTemplateRequest _$$_CheckAdvanceMeetingTemplateRequestFromJson(
         Map<String, dynamic> json) =>
-    _$_CheckAdvanceMeetingGuideRequest(
+    _$_CheckAdvanceMeetingTemplateRequest(
       eventPath: json['eventPath'] as String,
       breakoutSessionId: json['breakoutSessionId'] as String?,
       breakoutRoomId: json['breakoutRoomId'] as String?,
@@ -827,8 +827,8 @@ _$_CheckAdvanceMeetingGuideRequest _$$_CheckAdvanceMeetingGuideRequestFromJson(
       userReadyAgendaId: json['userReadyAgendaId'] as String?,
     );
 
-Map<String, dynamic> _$$_CheckAdvanceMeetingGuideRequestToJson(
-        _$_CheckAdvanceMeetingGuideRequest instance) =>
+Map<String, dynamic> _$$_CheckAdvanceMeetingTemplateRequestToJson(
+        _$_CheckAdvanceMeetingTemplateRequest instance) =>
     <String, dynamic>{
       'eventPath': instance.eventPath,
       'breakoutSessionId': instance.breakoutSessionId,

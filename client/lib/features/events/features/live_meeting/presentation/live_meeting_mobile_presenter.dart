@@ -7,14 +7,14 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/agora_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/events/live_meetings/meeting_guide.dart';
+import 'package:data_models/events/live_meetings/meeting_template.dart';
 import 'package:provider/provider.dart';
 
 import 'views/live_meeting_mobile_contract.dart';
@@ -30,7 +30,7 @@ class LiveMeetingMobilePresenter {
   final AgendaProvider _agendaProvider;
   final LiveMeetingProvider _liveMeetingProvider;
   final ChatModel? _chatModel;
-  final MeetingGuideCardStore _meetingGuideCardStore;
+  final MeetingTemplateCardStore _meetingTemplateCardStore;
 
   LiveMeetingMobilePresenter(
     BuildContext context,
@@ -43,7 +43,7 @@ class LiveMeetingMobilePresenter {
     ChatModel? chatModel,
     LiveMeetingProvider? liveMeetingProvider,
     AgendaProvider? agendaProvider,
-    MeetingGuideCardStore? meetingGuideCardStore,
+    MeetingTemplateCardStore? meetingTemplateCardStore,
   })  : _responsiveLayoutService = responsiveLayoutService ??
             GetIt.instance<ResponsiveLayoutService>(),
         _eventProvider = eventProvider ?? context.read<EventProvider>(),
@@ -55,8 +55,8 @@ class LiveMeetingMobilePresenter {
         _chatModel =
             chatModel ?? providerOrNull(() => context.read<ChatModel>()),
         _agendaProvider = agendaProvider ?? context.read<AgendaProvider>(),
-        _meetingGuideCardStore =
-            meetingGuideCardStore ?? context.read<MeetingGuideCardStore>();
+        _meetingTemplateCardStore =
+            meetingTemplateCardStore ?? context.read<MeetingTemplateCardStore>();
 
   bool get canUserControlMeeting => _agendaProvider.canUserControlMeeting;
 
@@ -75,16 +75,16 @@ class LiveMeetingMobilePresenter {
 
   Stream<List<ParticipantAgendaItemDetails>>?
       getParticipantAgendaItemDetailsStream() {
-    return _meetingGuideCardStore.participantAgendaItemDetailsStream;
+    return _meetingTemplateCardStore.participantAgendaItemDetailsStream;
   }
 
   bool isHandRaised() {
-    return _meetingGuideCardStore.getHandIsRaised(userService.currentUserId!);
+    return _meetingTemplateCardStore.getHandIsRaised(userService.currentUserId!);
   }
 
   Future<void> toggleHandRaise() async {
-    await firestoreMeetingGuideService.toggleHandRaise(
-      agendaItemId: _meetingGuideCardStore.meetingGuideCardAgendaItem?.id ?? '',
+    await firestoreMeetingTemplateService.toggleHandRaise(
+      agendaItemId: _meetingTemplateCardStore.meetingTemplateCardAgendaItem?.id ?? '',
       userId: userService.currentUserId!,
       liveMeetingPath: _agendaProvider.liveMeetingPath,
       isHandRaised: !isHandRaised(),
@@ -161,7 +161,7 @@ class LiveMeetingMobilePresenter {
   bool isReadyToAdvance(
     List<ParticipantAgendaItemDetails>? participantAgendaItemDetailsList,
   ) {
-    return _meetingGuideCardStore.isReadyToAdvance(
+    return _meetingTemplateCardStore.isReadyToAdvance(
       participantAgendaItemDetailsList,
       userService.currentUserId,
     );
@@ -172,7 +172,7 @@ class LiveMeetingMobilePresenter {
   }
 
   AgendaItem? getCurrentAgendaItem() {
-    return _meetingGuideCardStore.meetingGuideCardAgendaItem;
+    return _meetingTemplateCardStore.meetingTemplateCardAgendaItem;
   }
 
   List<AgendaItem> getAgendaItems() {
@@ -188,7 +188,7 @@ class LiveMeetingMobilePresenter {
   }
 
   String? getCurrentAgendaItemId() {
-    return _meetingGuideCardStore.currentAgendaModelItemId;
+    return _meetingTemplateCardStore.currentAgendaModelItemId;
   }
 
   bool isMeetingStarted() {
@@ -239,6 +239,6 @@ class LiveMeetingMobilePresenter {
   }
 
   bool isCardPending() {
-    return _meetingGuideCardStore.meetingGuideCardIsPending;
+    return _meetingTemplateCardStore.meetingTemplateCardIsPending;
   }
 }

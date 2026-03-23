@@ -8,7 +8,7 @@ import 'package:client/core/utils/random_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/providers/meeting_guide_card_store.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_template/data/providers/meeting_template_card_store.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
 import 'package:client/features/events/features/live_meeting/features/video/utils/debug.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
@@ -100,7 +100,7 @@ class ConferenceRoom with ChangeNotifier {
   final LiveMeetingProvider liveMeetingProvider;
   final AgendaProvider agendaProvider;
   final CommunityProvider communityProvider;
-  final MeetingGuideCardStore meetingGuideCardModel;
+  final MeetingTemplateCardStore meetingTemplateCardModel;
   final String token;
   final String roomName;
 
@@ -108,7 +108,7 @@ class ConferenceRoom with ChangeNotifier {
     required this.liveMeetingProvider,
     required this.agendaProvider,
     required this.communityProvider,
-    required this.meetingGuideCardModel,
+    required this.meetingTemplateCardModel,
     required this.token,
     required this.roomName,
   }) {
@@ -170,7 +170,7 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   List<AgoraParticipant> get handRaisedParticipants => _orderedParticipants
-      .where((p) => meetingGuideCardModel.getHandRaisedTime(p.identity) != null)
+      .where((p) => meetingTemplateCardModel.getHandRaisedTime(p.identity) != null)
       .toList();
 
   bool get isLocalSharingScreenActive =>
@@ -223,9 +223,9 @@ class ConferenceRoom with ChangeNotifier {
     final localHandRaisedParticipants = handRaisedParticipants.toList();
     localHandRaisedParticipants.sort((a, b) {
       final aHandRaisedTime =
-          meetingGuideCardModel.getHandRaisedTime(a.identity);
+          meetingTemplateCardModel.getHandRaisedTime(a.identity);
       final bHandRaisedTime =
-          meetingGuideCardModel.getHandRaisedTime(b.identity);
+          meetingTemplateCardModel.getHandRaisedTime(b.identity);
 
       if (aHandRaisedTime == bHandRaisedTime) return 0;
       if (aHandRaisedTime == null) return 1;
@@ -488,13 +488,13 @@ class ConferenceRoom with ChangeNotifier {
       final dismissRaisedHand =
           room.localParticipant?.agoraUid == dominantSpeaker?.agoraUid;
       final isHandRaised =
-          meetingGuideCardModel.getHandIsRaised(userService.currentUserId!);
+          meetingTemplateCardModel.getHandIsRaised(userService.currentUserId!);
       final currentAgendaModelItemId =
-          meetingGuideCardModel.meetingGuideCardAgendaItem?.id;
+          meetingTemplateCardModel.meetingTemplateCardAgendaItem?.id;
       if (dismissRaisedHand &&
           isHandRaised &&
           currentAgendaModelItemId != null) {
-        firestoreMeetingGuideService.toggleHandRaise(
+        firestoreMeetingTemplateService.toggleHandRaise(
           agendaItemId: currentAgendaModelItemId,
           userId: userService.currentUserId!,
           liveMeetingPath: agendaProvider.liveMeetingPath,

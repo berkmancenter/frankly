@@ -39,7 +39,7 @@ void main() {
   final mockAgendaItem = MockAgendaItem();
   final mockEvent = MockEvent();
   final mockTemplate = MockTemplate();
-  final mockMeetingGuideCardStore = MockMeetingGuideCardStore();
+  final mockMeetingTemplateCardStore = MockMeetingTemplateCardStore();
   final mockLiveMeetingProvider = MockLiveMeetingProvider();
   final mockCommunityPermissionsProvider = MockCommunityPermissionsProvider();
   final mockAgendaProviderParams = MockAgendaProviderParams();
@@ -55,7 +55,7 @@ void main() {
       model,
       agendaItemPresenterHelper: mockAgendaItemHelper,
       agendaProvider: mockAgendaProvider,
-      meetingGuideCardStore: mockMeetingGuideCardStore,
+      meetingTemplateCardStore: mockMeetingTemplateCardStore,
       eventPermissionsProvider: mockEventPermissionsProvider,
       liveMeetingProvider: mockLiveMeetingProvider,
       communityPermissionsProvider: mockCommunityPermissionsProvider,
@@ -69,7 +69,7 @@ void main() {
     reset(mockAgendaProviderParams);
     reset(mockTemplate);
     reset(mockAgendaProvider);
-    reset(mockMeetingGuideCardStore);
+    reset(mockMeetingTemplateCardStore);
     reset(mockEventPermissionsProvider);
     reset(mockEvent);
     reset(mockLiveMeetingProvider);
