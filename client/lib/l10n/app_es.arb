@@ -94,33 +94,6 @@
       }
     }
   },
-  "maps": "Mapas",
-  "matchingOptions": "Opciones de emparejamiento",
-  "matchingQuestions": "Preguntas de emparejamiento",
-  "maximum": "Máximo",
-  "meetingTemplateCard": "tarjeta-guía-reunión",
-  "member": "Miembro",
-  "memberships": "membresías",
-  "message": "Mensaje",
-  "messageFrom": "Mensaje de",
-  "messageParticipants": "Enviar mensaje a participantes",
-  "messageTime": "Hora del mensaje",
-  "microsoftTeams": "Microsoft Teams",
-  "mins": "mins",
-  "miscellaneous": "Misceláneo",
-  "moderator": "Moderador",
-  "mustBeLoggedInToAccessThisSection": "Debe estar conectado para acceder a esta sección",
-  "myCustomEvent": "Mi evento personalizado",
-  "myEvents": "Mis eventos",
-  "myProfile": "Mi Perfil",
-  "myResponses": "Mis respuestas",
-  "myUpcomingEvents": "Mis próximos eventos",
-  "name": "Nombre",
-  "newAnnouncement": "Nuevo anuncio",
-  "newRoomNumber": "Número de sala nueva:",
-  "newSubscription": "Nueva Suscripción",
-  "newToApp": "¿Nuevo en {appName}?",
-  "@newToApp": {
   "@bySigningInRegisteringOrUsing": {
     "placeholders": {
       "appName": {
@@ -891,5 +864,5 @@
   "yourChangesToProfileCantBeSaved": "Tus cambios al perfil no se pueden guardar ahora mismo",
   "yourName": "Tu nombre",
   "youtubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
-  "zoom": "Zoom"}
-  }
+  "zoom": "Zoom"
+}

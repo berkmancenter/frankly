@@ -503,7 +503,7 @@
   "maximum": "Maximum",
   "meetingEndMessage": "This meeting has ended. You may close this window.",
   "meetingEndWithFollowMessage": "This meeting has ended. You may close this window or visit {name} to continue the conversation.",
-  "meetingTemplateCard": "meeting-template-card",
+  "meetingGuideCard": "meeting-guide-card",
   "member": "Member",
   "memberRolesHelpMessage": "Check the Help Center for permission details by role.",
   "members": "Members",

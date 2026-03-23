@@ -192,33 +192,6 @@
       }
     }
   },
-  "maps": "地图",
-  "matchingOptions": "配对选项",
-  "matchingQuestions": "配对问题",
-  "maximum": "最大值",
-  "meetingTemplateCard": "会议指南卡",
-  "member": "成员",
-  "memberships": "会员资格",
-  "message": "消息",
-  "messageFrom": "发信人",
-  "messageParticipants": "发送消息给参与者",
-  "messageTime": "消息时间",
-  "microsoftTeams": "Microsoft Teams",
-  "mins": "分钟",
-  "miscellaneous": "其他",
-  "moderator": "版主",
-  "mustBeLoggedInToAccessThisSection": "必须登录才能访问此部分。",
-  "myCustomEvent": "我的自定义活动",
-  "myEvents": "我的活动",
-  "myProfile": "我的个人资料",
-  "myResponses": "我的回应",
-  "myUpcomingEvents": "我的即将举行的活动",
-  "name": "名称",
-  "newAnnouncement": "新公告",
-  "newRoomNumber": "新房间号码：",
-  "newSubscription": "新订阅",
-  "newToApp": "新来到 {appName}？",
-  "@newToApp": {
   "@meetingEndWithFollowMessage": {
     "placeholders": {
       "name": {
@@ -894,5 +867,5 @@
   "yourChangesToProfileCantBeSaved": "无法保存您对个人资料所做的更改。",
   "yourName": "您的名字",
   "youtubeVideoLookupFailed": "抱歉，YouTube 视频查找失败。",
-  "zoom": "放大"}
+  "zoom": "放大"
 }
