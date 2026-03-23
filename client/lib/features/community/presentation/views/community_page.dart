@@ -66,8 +66,11 @@ class CommunityPageState extends State<CommunityPage> {
   bool get _showBottomNav {
     final isNavHiddenInNavProvider = context.watch<NavBarProvider>().hideNav;
     final isLocationWithoutNavBar = CheckCurrentLocation.isInstantPage;
+    final isCommunityAdminPage = CheckCurrentLocation.isCommunityAdminPage;
     return !isNavHiddenInNavProvider &&
         !isLocationWithoutNavBar &&
+        // don't show the bottom nav on an admin page, we need the space for text editing
+        !isCommunityAdminPage &&
         responsiveLayoutService.showBottomNavBar(context);
   }
 
