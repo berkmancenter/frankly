@@ -206,6 +206,8 @@ These are set inline before the command, for example:
 ```
 FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
 ```
+**Troubleshooting:**
+* If you encounter the error "Could not find `bin/build_runner.dart` in package `build_runner`", navigate to the directory where the build command failed and run `flutter pub get` manually.
 
 ---
 
