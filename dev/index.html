@@ -424,6 +424,94 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#emulator-initial-setup-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulator Initial Setup &amp; Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-everything-with-one-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Everything with One Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-emulators-only-without-the-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Emulators Only (Without the Client)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting-or-stopping-the-emulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restarting or Stopping the Emulators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-the-stop-script-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the Stop Script Exists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-emulator-ports-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting Emulator Ports Manually
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emulator-data-import-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulator Data Import / Export
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optional-setup-firebase-cloud-project" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -813,6 +901,94 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#emulator-initial-setup-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulator Initial Setup &amp; Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-everything-with-one-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Everything with One Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-emulators-only-without-the-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Emulators Only (Without the Client)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting-or-stopping-the-emulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restarting or Stopping the Emulators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-the-stop-script-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the Stop Script Exists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-emulator-ports-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting Emulator Ports Manually
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emulator-data-import-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulator Data Import / Export
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optional-setup-firebase-cloud-project" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1037,110 +1213,72 @@
 <h2 id="tools-and-flutter-setup">Tools and Flutter Setup</h2>
 <div class="admonition warning">
 <p class="admonition-title">Important</p>
-<p>Frankly runs on Flutter <code>3.22.2.</code> <strong>Please use this version of Flutter in order to avoid any unexpected errors.</strong></p>
 </div>
+<p>Frankly runs on Flutter <code>3.22.2.</code> <strong>Please use this version of Flutter in order to avoid any unexpected errors.</strong></p>
 <p>This section covers setting up a new computer for Flutter development.</p>
 <h3 id="part-1-platform-specific">Part 1: Platform-specific</h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS</label><label for="__tabbed_1_2">Linux</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<ol>
-<li>Download and install Google Chrome <a href="https://www.google.com/chrome/">here</a> if it’s not already pre-installed. This is used for live debugging on web.</li>
-<li>Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app.</li>
-<li>Optional, but recommended: Install Homebrew <a href="https://brew.sh/">here</a>.</li>
-<li>Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
-  <div class="highlight"><pre><span></span><code>brew install git
-</code></pre></div></li>
-<li>Clone the Frankly repo in a directory where you prefer your projects to live:
-  <div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
-</code></pre></div></li>
-<li>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform.<ul>
-<li>This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors.</li>
-<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
-</ul>
-</li>
-<li>Install VSCode <a href="https://code.visualstudio.com/download">here</a>.<ul>
-<li><strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>.</li>
-</ul>
-</li>
-<li>Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open ~/.zshenv and add this line:
-    <div class="highlight"><pre><span></span><code>export PATH=$HOME/dev/flutter/bin:$PATH
-</code></pre></div>
-    Restart terminal sessions to see the changes.</li>
-</ol>
-</div>
-<div class="tabbed-block">
-<ol>
-<li>Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
-  <div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade &amp;&amp; sudo apt-get install -y chromium git
-</code></pre></div>
-  a. Set the path to chromium so flutter can find it:
-  <div class="highlight"><pre><span></span><code>export CHROME_EXECUTABLE=$(which chromium)
-</code></pre></div></li>
-<li>Clone the Frankly repo in a directory where you prefer your projects to live:
-  <div class="highlight"><pre><span></span><code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly
-</code></pre></div></li>
-<li>Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter dependencies on your machine. You can choose web as your target platform.</li>
-<li>
-<p>Install VSCode <a href="https://code.visualstudio.com/docs/setup/linux">here</a>.</p>
-<div class="admonition info">
-<p>You may need to download the binary for your specific architecture <a href="https://code.visualstudio.com/Download">here</a></p>
-</div>
-<ul>
-<li><strong>Recommended</strong>: Install the <a href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk">install Flutter via VSCode</a>.</li>
-<li><strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar).</li>
-</ul>
-</li>
-<li>
-<p>You will probably need to add both flutter and dart to your PATH. Run:
-    <div class="highlight"><pre><span></span><code>export PATH=&quot;$PATH:$HOME/[path to flutter]/flutter/bin&quot;
-</code></pre></div></p>
-</li>
-</ol>
-</div>
-</div>
-</div>
+<p>=== "macOS" 1. Download and install Google Chrome <a href="https://www.google.com/chrome/">here</a> if it’s not already pre-installed. This is used for live debugging on web. 2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app. 3. Optional, but recommended: Install Homebrew <a href="https://brew.sh/">here</a>. 4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
+<code>brew install git</code> 5. Clone the Frankly repo in a directory where you prefer your projects to live:
+<code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly</code> 6. Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running <code>brew install cocoapods</code>, which should alleviate those errors. - <strong>Recommended</strong>: Install the Flutter SDK in your home folder under a directory called <code>dev</code> (or something similar). 7. Install VSCode <a href="https://code.visualstudio.com/download">here</a>. - <strong>Recommended</strong>: Install the <a href="https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension">Flutter VSCode extension</a> and use the extension to <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter">install Flutter via VSCode</a>. 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path">here</a>), create or open ~/.zshenv and add this line:
+<code>export PATH=$HOME/dev/flutter/bin:$PATH</code>
+Restart terminal sessions to see the changes.
+=== "Linux" 1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
+<code>sudo apt-get update &amp;&amp; sudo apt-get upgrade &amp;&amp; sudo apt-get install -y chromium git</code>
+a. Set the path to chromium so flutter can find it:
+<code>export CHROME_EXECUTABLE=$(which chromium)</code> 2. Clone the Frankly repo in a directory where you prefer your projects to live:
+<code>git clone https://github.com/berkmancenter/frankly &amp;&amp; cd frankly</code> 3. Follow the instructions <a href="https://docs.flutter.dev/get-started/install">here</a> to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode <a href="https://code.visualstudio.com/docs/setup/linux">here</a>.</p>
+<pre><code>    !!! info ""
+        You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
+
+    - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
+    - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
+5. You will probably need to add both flutter and dart to your PATH. Run:
+    ```
+    export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
+    ```
+</code></pre>
 <h3 id="part-2">Part 2</h3>
 <ol>
 <li>Install Node.js and npm. We strongly recommend that you do this via <code>nvm</code> (steps <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating">here</a>) since it is the easiest end cleanest way to do so.</li>
-<li>Once nvm is installed and sourced to your CLI profile, run:
-  <div class="highlight"><pre><span></span><code>nvm install --lts
-</code></pre></div></li>
+<li>Once nvm is installed and sourced to your CLI profile, run:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>nvm install --lts
+</code></pre></div>
+<ol>
+<li>Install the <a href="https://www.npmjs.com/package/firebase-tools">Firebase CLI Tools</a>: Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>npm install -g firebase-tools
+</code></pre></div>
+<pre><code>- You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running `npm install` :
+   ```
+    sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
+   ```
+
+    !!! info ""
+        For more information, you can read this Stack Overflow [post](https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules).
+</code></pre>
+<ol>
 <li>
-<p>Install the <a href="https://www.npmjs.com/package/firebase-tools">Firebase CLI Tools</a>: Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI <a href="https://firebaseopensource.com/projects/firebase/firebase-tools/">here</a>.
-  <div class="highlight"><pre><span></span><code>npm install -g firebase-tools
-</code></pre></div></p>
-<ul>
-<li>
-<p>You may run into permissions issues when installing this due to being a non-root user. To remedy this, reassign ownership of the relevant folders to yourself by running the following 2 commands before running <code>npm install</code> :
-   <div class="highlight"><pre><span></span><code> sudo chown -R $USER /usr/local/bin/ &amp;&amp; sudo chown -R $USER /usr/local/lib/node_modules
-</code></pre></div></p>
-<div class="admonition info">
-<p>For more information, you can read this Stack Overflow <a href="https://stackoverflow.com/questions/48910876/error-eacces-permission-denied-access-usr-local-lib-node-modules">post</a>.</p>
-</div>
-</li>
-</ul>
-</li>
-<li>
-<p>Activate the Firebase CLI for Flutter by following these steps. </p>
+<p>Activate the Firebase CLI for Flutter by following these steps.</p>
 <p>a. <a href="https://console.firebase.google.com/">Sign into Firebase</a> using your Google account and create a new project. Use a name like "frankly-dev".</p>
-<p>b. Log into Firebase. Run:
-  <div class="highlight"><pre><span></span><code>firebase login
+<p>b. Log into Firebase. Run:</p>
+<div class="highlight"><pre><span></span><code>firebase login
 </code></pre></div>
-c. Install the FlutterFire CLI by running:
-  <div class="highlight"><pre><span></span><code>dart pub global activate flutterfire_cli
+<p>c. Install the FlutterFire CLI by running:</p>
+<div class="highlight"><pre><span></span><code>dart pub global activate flutterfire_cli
 </code></pre></div>
-d. From your Flutter project directory (<code>client</code>), run the to start the app configuration workflow:
-  <div class="highlight"><pre><span></span><code>flutterfire configure
+<p>d. From your Flutter project directory (<code>client</code>), run the to start the app configuration workflow:</p>
+<div class="highlight"><pre><span></span><code>flutterfire configure
 </code></pre></div>
-  - You can choose <em>web</em> as the platform for now.</p>
+<ul>
+<li>You can choose <em>web</em> as the platform for now.</li>
+</ul>
 </li>
 </ol>
 <!-- Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports. -->
 
-<div class="admonition question">
+<div class="admonition question"></div>
 <p>Please check <a href="../faq/"><strong>❓Troubleshooting / FAQ</strong></a> for suggested resolutions to common Flutter installation errors.</p>
-</div>
 <h2 id="environment-setup">Environment Setup</h2>
 <p>These are the steps for getting started with developing Frankly:</p>
 <ol>
@@ -1153,84 +1291,191 @@ d. From your Flutter project directory (<code>client</code>), run the to start t
 <h3 id="data-models">📦 Data Models</h3>
 <p>The first step in running the app is to build the data_models package. Some code in this package is auto-generated by <a href="https://pub.dev/packages/freezed">Freezed</a>. Run the following steps in the <code>data_models</code> directory to generate code and make the package available to the client and Firebase functions:</p>
 <ol>
-<li>To install all Dart dependencies run:
-  <div class="highlight"><pre><span></span><code>flutter pub get
-</code></pre></div></li>
-<li>Run: 
-  <div class="highlight"><pre><span></span><code>dart run build_runner build --delete-conflicting-outputs
-</code></pre></div></li>
+<li>To install all Dart dependencies run:</li>
 </ol>
+<div class="highlight"><pre><span></span><code>flutter pub get
+</code></pre></div>
+<ol>
+<li>Run:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>dart run build_runner build --delete-conflicting-outputs
+</code></pre></div>
 <p>You can also just run <code>./build.sh</code>.</p>
 <h3 id="firebase">🔥 Firebase</h3>
 <h4 id="firebase-functions-installation">Firebase Functions Installation</h4>
 <p>Firebase Functions are built on top of Cloud Functions (GCP's serverless functions product), which is why there are references to Cloud Functions tooling below. Functions are written in <code>dart</code> and are compiled to <code>javascript</code> with <code>dart2js</code>.</p>
 <p>For the following sub-section, switch to the <code>firebase/functions</code> directory to run all commands.</p>
 <ul>
-<li>To install all Javascript dependencies, run:
-  <div class="highlight"><pre><span></span><code>npm install
-</code></pre></div></li>
-<li>To install all Dart dependencies, run:
-  <div class="highlight"><pre><span></span><code>flutter pub get
-</code></pre></div></li>
+<li>To install all Javascript dependencies, run:</li>
 </ul>
+<div class="highlight"><pre><span></span><code>npm install
+</code></pre></div>
+<ul>
+<li>To install all Dart dependencies, run:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>flutter pub get
+</code></pre></div>
 <p>You don't need to run <code>npm install</code> again unless you've added new dependencies or made updates to existing ones. Same applies to <code>flutter pub get</code>, but for changes to any function dependencies.</p>
 <h4 id="emulators">Emulators</h4>
-<p>Firebase has a full suite of emulators called Firebase Local Emulator Suite. You can find the full description of the Firebase Local Emulator Suite and its capabilities <a href="https://firebase.google.com/docs/emulator-suite">here</a>.</p>
-<p>You should emulate services locally for development purposes, and set up the client to use these emulators instead of connecting to a live Firebase project. By default, the emulators will run against the default project "dev," specified in the <code>.firebaserc</code> file.</p>
-<p><strong>Using config in emulators</strong></p>
-<p>You do not need to run <code>functions:config:set.</code> as the emulators are configured by a file.</p>
-<ul>
-<li>To configure the emulators, create the file <code>firebase/functions/.runtimeconfig.json</code>.</li>
-<li>A sample file containing the config properties described above can be found in <code>firebase/functions/.runtimeconfig.json.local.example</code>.</li>
-</ul>
-<p><strong>Running the emulators</strong></p>
-<div class="admonition info">
-<p class="admonition-title">Important</p>
-<ul>
-<li>Do this before running the <a href="#running-and-building-the-client">client</a>.</li>
-<li>Frankly does not currently operate with a named database; the name must be the default, literally the string <code>default</code>.</li>
-</ul>
-</div>
-<p>To run the emulators locally, run the following <em>while</em> in the <code>firebase/functions</code> directory:</p>
-<div class="highlight"><pre><span></span><code>dart run build_runner build --output=build
-firebase emulators:start --only firestore,functions,auth,pubsub,database
-</code></pre></div>
-<p>You can also just run <code>npm run emulators</code>.</p>
-<p>We recommend using the emulators <a href="https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data">import and export</a> functionality to make development easier.</p>
-<div class="admonition question">
-<p>Please refer to the Cloud Functions Emulator <a href="../faq/#cloud-functions-emulator">section</a> at <a href="../faq/"><strong>❓Troubleshooting / FAQ</strong></a> for common issues and resolutions!</p>
-</div>
-<h3 id="optional-setup-firebase-cloud-project">Optional: Setup Firebase Cloud Project</h3>
-<p>In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Run Functions, Auth, Realtime Database, etc.) suffice for most development task.</p>
-<p>If you plan on using <a href="#optional-mux">Mux</a> within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send <a href="https://en.wikipedia.org/wiki/Webhook">webhooks <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a> to. You will need a Firebase project of your own. </p>
+<p>Frankly uses the <strong>Firebase Local Emulator Suite</strong> for local development. The emulator suite provides local versions of Firebase services: Firestore, Auth, Realtime Database, Pub/Sub, and Cloud Functions.</p>
+<p>Documentation for the emulator suite is available here:<br />
+<a href="https://firebase.google.com/docs/emulator-suite">https://firebase.google.com/docs/emulator-suite</a></p>
+<p>The emulators run against the Firebase project ID specified by <code>FIREBASE_PROJECT_ID</code> in <code>client/.env</code>. This must match your actual Firebase project. If you see CORS errors when trying to load pages in your local version, double check that this has been set correctly.</p>
+<hr />
+<h3 id="emulator-initial-setup-configuration">Emulator Initial Setup &amp; Configuration</h3>
+<p>The emulators use a local configuration file instead of <code>functions:config:set</code>.</p>
 <ol>
 <li>
-<p>Create a new Firebase project <a href="https://console.firebase.google.com/">here <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Your Firestore instance needs to be configured as single region.</p>
-</div>
+<p>Copy <code>client/.env.local.example</code> to <code>client/.env</code> and set <code>FIREBASE_PROJECT_ID</code> to your actual Firebase project ID.</p>
 </li>
 <li>
-<p>Make a note of the unique ID that is created for your project. It will be in the format of <code>my-dev-project-d2f8c</code>.</p>
-</li>
-<li>You may need to create a default <a href="https://firebase.google.com/docs/database/web/start">realtime database</a>. </li>
-<li>
-<p>From your command line within the <code>firebase/functions</code> directory, run:
-    <div class="highlight"><pre><span></span><code>firebase login
-</code></pre></div></p>
-<div class="admonition warning">
-<p class="admonition-title">Logging In</p>
-<p>When the login window appears, ensure you are logging in as the same user that created your project.</p>
-</div>
-</li>
-<li>
-<p>Now run:
-  <div class="highlight"><pre><span></span><code>firebase use &lt;project_id&gt;
-</code></pre></div>
-  You should see a message like <code>Now using project my-dev-project-d2f8c</code></p>
+<p>Create the following file if it does not already exist:</p>
 </li>
 </ol>
+<div class="highlight"><pre><span></span><code>firebase/functions/.runtimeconfig.json
+</code></pre></div>
+<p>A sample configuration file can be found at:</p>
+<div class="highlight"><pre><span></span><code>firebase/functions/.runtimeconfig.json.local.example
+</code></pre></div>
+<p>Copy the example and fill in any required values.</p>
+<hr />
+<h3 id="running-everything-with-one-command">Running Everything with One Command</h3>
+<p>The recommended way to run the full local development environment is:</p>
+<div class="highlight"><pre><span></span><code>npm run dev
+</code></pre></div>
+<p>This can be run from either the repo root or the <code>firebase/functions</code> directory. It runs <code>run-dev.sh</code>, which orchestrates the entire startup:</p>
+<ol>
+<li>Runs <code>flutter pub get</code> in <code>client/</code>, <code>data_models/</code>, and <code>firebase/functions/</code> (skipped if dependencies haven't changed)</li>
+<li>Runs <code>npm install</code> in <code>firebase/functions/</code> (skipped if <code>package.json</code> hasn't changed)</li>
+<li>Rebuilds <code>data_models</code> with <code>build_runner</code> (skipped if source files haven't changed)</li>
+<li>Rebuilds functions with <code>build_runner</code> (skipped if source files haven't changed)</li>
+<li>Stops any leftover emulator processes, then starts the emulators</li>
+<li>Waits for emulators to become ready on their ports</li>
+<li>Launches the Flutter client pointing at the local emulators</li>
+</ol>
+<p>Steps 1–4 use stamp files in <code>.local/dev-stamps/</code> to skip unnecessary work.</p>
+<p><strong>Optional environment variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SKIP_DART_BUILD=1</code></td>
+<td>Skip the <code>build_runner</code> step in <code>emulators.sh</code> (set automatically by <code>run-dev.sh</code> since it handles the build itself)</td>
+</tr>
+<tr>
+<td><code>FRANKLY_DEBUG_FUNCTIONS=1</code></td>
+<td>Start functions with <code>--inspect-functions</code>, allowing you to attach a Node.js debugger for breakpoint debugging</td>
+</tr>
+</tbody>
+</table>
+<p>These are set inline before the command, for example:</p>
+<p><div class="highlight"><pre><span></span><code>FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
+</code></pre></div>
+<strong>Troubleshooting:</strong>
+* If you encounter the error "Could not find <code>bin/build_runner.dart</code> in package <code>build_runner</code>", navigate to the directory where the build command failed and run <code>flutter pub get</code> manually.</p>
+<hr />
+<h3 id="running-emulators-only-without-the-client">Running Emulators Only (Without the Client)</h3>
+<p>If you want to start only the emulators without the Flutter client, run from the <code>firebase/functions</code> directory:</p>
+<div class="highlight"><pre><span></span><code>npm run emulators
+</code></pre></div>
+<p>This script will:</p>
+<ol>
+<li>Build the Dart functions using <code>build_runner</code></li>
+<li>Start the Firebase emulator suite for:</li>
+<li>Firestore</li>
+<li>Functions</li>
+<li>Auth</li>
+<li>Pub/Sub</li>
+<li>Realtime Database</li>
+</ol>
+<p>Alternatively you can run the underlying script directly:</p>
+<div class="highlight"><pre><span></span><code># from within the firebase/functions directory:
+./emulators-start.sh
+</code></pre></div>
+<hr />
+<h3 id="restarting-or-stopping-the-emulators">Restarting or Stopping the Emulators</h3>
+<p>Firebase emulators spawn multiple background processes (including Java processes). If a previous run terminates unexpectedly, emulator ports may remain occupied and prevent startup.</p>
+<p>To safely stop all emulator processes run:</p>
+<div class="highlight"><pre><span></span><code>./emulators-stop.sh
+</code></pre></div>
+<p>Then restart them with:</p>
+<div class="highlight"><pre><span></span><code>./emulators-start.sh
+</code></pre></div>
+<p>Or with npm:</p>
+<div class="highlight"><pre><span></span><code>npm run emulators
+</code></pre></div>
+<hr />
+<h3 id="why-the-stop-script-exists">Why the Stop Script Exists</h3>
+<p>You may encounter errors like:</p>
+<div class="highlight"><pre><span></span><code>Port 8080 is already in use
+</code></pre></div>
+<p>This typically happens if emulator processes did not shut down cleanly.</p>
+<p>Do <strong>not</strong> attempt to fix this by killing Java processes manually, for example:</p>
+<div class="highlight"><pre><span></span><code>pkill -f java
+</code></pre></div>
+<p>That approach can terminate unrelated tools such as:</p>
+<ul>
+<li>VS Code language servers</li>
+<li>Gradle daemons</li>
+<li>other development processes</li>
+</ul>
+<p>Instead, the project provides <code>emulators-stop.sh</code>, which performs a <strong>deterministic shutdown</strong>:</p>
+<ol>
+<li>Requests a graceful shutdown from the Firebase Emulator Hub (<code>localhost:4400</code>)</li>
+<li>Waits for emulator ports to actually close</li>
+<li>If necessary, terminates only processes listening on known emulator ports</li>
+</ol>
+<p>This ensures that unrelated processes are never affected.</p>
+<hr />
+<h3 id="inspecting-emulator-ports-manually">Inspecting Emulator Ports Manually</h3>
+<p>If the emulators still fail to start, you can inspect which processes are using the emulator ports with:</p>
+<div class="highlight"><pre><span></span><code>lsof -nP -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN
+</code></pre></div>
+<p>If anything appears in the output, run:</p>
+<div class="highlight"><pre><span></span><code>./emulators-stop.sh
+</code></pre></div>
+<p>to cleanly terminate those processes.</p>
+<hr />
+<h3 id="emulator-data-import-export">Emulator Data Import / Export</h3>
+<p>We recommend using the Firebase emulator import/export functionality to preserve development data between runs.</p>
+<p>Documentation:<br />
+<a href="https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data">https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data</a></p>
+<p>This allows you to seed Firestore or other services with test data and reuse it across sessions.</p>
+<hr />
+<h3 id="important-notes">Important Notes</h3>
+<ul>
+<li>Run the emulators <strong>before starting the Flutter client</strong>.</li>
+<li>Frankly currently expects the <strong>default Firestore database name</strong> (<code>default</code>).</li>
+<li>Always run emulator commands from the <code>firebase/functions</code> directory.</li>
+</ul>
+<h3 id="optional-setup-firebase-cloud-project">Optional: Setup Firebase Cloud Project</h3>
+<p>In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Run Functions, Auth, Realtime Database, etc.) suffice for most development task.</p>
+<p>If you plan on using <a href="#optional-mux">Mux</a> within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send <a href="https://en.wikipedia.org/wiki/Webhook">webhooks <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a> to. You will need a Firebase project of your own.</p>
+<ol>
+<li>Create a new Firebase project <a href="https://console.firebase.google.com/">here <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a>.</li>
+</ol>
+<p>!!! warning
+   Your Firestore instance needs to be configured as single region.</p>
+<ol>
+<li>Make a note of the unique ID that is created for your project. It will be in the format of <code>my-dev-project-d2f8c</code>.</li>
+<li>You may need to create a default <a href="https://firebase.google.com/docs/database/web/start">realtime database</a>.</li>
+<li>From your command line within the <code>firebase/functions</code> directory, run:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>firebase login
+</code></pre></div>
+<p>!!! warning "Logging In"
+   When the login window appears, ensure you are logging in as the same user that created your project.</p>
+<ol>
+<li>Now run:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>firebase use &lt;project_id&gt;
+</code></pre></div>
+<p>You should see a message like <code>Now using project my-dev-project-d2f8c</code></p>
 <p>You can follow the official <a href="https://firebase.google.com/docs/functions/get-started?gen=1st#initialize-your-project_1">documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a> to find out how to deploy, but you might use a command like this: <code>firebase deploy --only functions</code>.</p>
 <h2 id="third-party-services">🔌 Third Party Services</h2>
 <p>The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.</p>
@@ -1247,29 +1492,23 @@ agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 </code></pre></div>
 <h4 id="setting-up-the-integration"><strong>🔧 Setting up the integration</strong></h4>
 <ul>
-<li>
-<p><strong>Agora</strong></p>
-<ul>
+<li><strong>Agora</strong></li>
 <li>Create a new project in the Agora console. For Authentication Mode, select <strong>Secure Mode: App ID + Token</strong>.</li>
 <li><code>app_id</code>: Copy the App ID from the Projects list in the console home.</li>
 <li><code>app_certificate</code>: Select <strong>Configure</strong> on your project. Copy the value under <strong>Security &gt; Primary Certificate</strong>.</li>
 <li><code>rest_key</code>: In the left navigation panel, select <strong>Restful API</strong> under either <strong>Developer Toolkit</strong> or <strong>Developer Resources</strong>, depending on your screen size. Click <strong>Add a Secret</strong>. Download the Customer Secret, and input the value for <strong>Key</strong>.</li>
-<li><code>rest_secret</code>: From the Customer Secret file, input the value for <strong>Secret</strong>.</li>
-</ul>
+<li>
+<p><code>rest_secret</code>: From the Customer Secret file, input the value for <strong>Secret</strong>.</p>
 </li>
 <li>
 <p><strong>Google Cloud Storage</strong></p>
-<ul>
+</li>
 <li>Create a Google Cloud Storage bucket to store event recordings. Navigate to <a href="https://console.cloud.google.com/storage/">Google Cloud Storage</a> and select <strong>Create a Bucket</strong>. Provide a bucket name. Then, configure the bucket with your desired settings for the remaining options.</li>
 <li><code>storage_bucket_name</code>: Enter the bucket name you selected.</li>
 <li><code>storage_access_key</code>: Select <strong>Settings</strong> under the Cloud Storage left-side settings panel. Click on the <strong>Interopability</strong> tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select <strong>Create a Key</strong>. Then, paste the generated <strong>Access key</strong> here.</li>
 <li><code>storage_secret_key</code>: From the generated key, paste the <strong>Secret</strong>.</li>
-</ul>
-</li>
-<li><strong>In the codebase</strong><ul>
+<li><strong>In the codebase</strong></li>
 <li>In <code>client/.env</code>, change <code>FUNCTIONS_URL_PREFIX</code> to reflect your Google Cloud Run Functions prefix.</li>
-</ul>
-</li>
 </ul>
 <h4 id="testing-the-integration">👾 Testing the integration</h4>
 <p>Once you have the keys set up, you can follow the below checklist to test that key behaviors that depend on Agora are working successfully.</p>
@@ -1293,34 +1532,26 @@ agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 </li>
 <li>
 <p>Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Command Line</label><label for="__tabbed_2_2">Copy/Paste</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
-<div class="highlight"><pre><span></span><code>firebase functions:config:set mux.secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot; mux.token_id=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-</code></pre></div></p>
-</div>
-<div class="tabbed-block">
-<p>Or, paste your token and secret into the <code>.runtimeconfig.json</code> file where the <code>mux</code> field is.
-<div class="highlight"><pre><span></span><code>  &quot;mux&quot;: {
-    &quot;secret&quot;: &quot;...&quot;,
-    &quot;token_id&quot;: &quot;...&quot;
-  },
-</code></pre></div></p>
-</div>
-</div>
-</div>
 </li>
-<li>
-<p>To connect Mux to the <a href="https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart">MuxWebhooks cloud function</a>, the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:</p>
+</ol>
+<p>=== "Command Line"
+   As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+   <code>firebase functions:config:set mux.secret="&lt;YOUR_VALUE_HERE&gt;" mux.token_id="&lt;YOUR_VALUE_HERE&gt;"</code>
+   === "Copy/Paste"
+   Or, paste your token and secret into the <code>.runtimeconfig.json</code> file where the <code>mux</code> field is.
+   <code>"mux": {
+  "secret": "...",
+  "token_id": "..."
+},</code></p>
+<ol>
+<li>To connect Mux to the <a href="https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart">MuxWebhooks cloud function</a>, the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:</li>
+</ol>
 <blockquote>
-<p>https://us-central1-myproject.cloudfunctions.net/MuxWebhooks
-https://service-name-12851330326.region.run.app/MuxWebhooks</p>
+<p><a href="https://us-central1-myproject.cloudfunctions.net/MuxWebhooks">https://us-central1-myproject.cloudfunctions.net/MuxWebhooks</a>
+<a href="https://service-name-12851330326.region.run.app/MuxWebhooks">https://service-name-12851330326.region.run.app/MuxWebhooks</a></p>
 </blockquote>
-</li>
-<li>
-<p>Login to Mux and go to Settings &gt; Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the <em>URL to Notify</em> field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."</p>
-</li>
+<ol>
+<li>Login to Mux and go to Settings &gt; Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the <em>URL to Notify</em> field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."</li>
 </ol>
 <h4 id="testing-your-setup">👾 Testing your setup</h4>
 <p>You can verify the integration is working by manually triggering a new call directly from Mux.</p>
@@ -1337,7 +1568,7 @@ The logs displayed on the Logging page should indicate that the MuxWebhook Fireb
 <li>Open Zoom and verify you have livestreaming enabled using <a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0064210#h_4b4ded3d-3f6b-4965-baaa-3692f947e36c">these</a> steps. Then follow <a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0064210#h_62b792dc-3cf9-4b62-848d-93ee9e412a7c">these</a> steps to setup your livestreaming event on Zoom. Use the following values:</li>
 <li>For Stream URL, use the Stream URL provided on the Frankly event page.</li>
 <li>For Stream Key, use the Stream Key provided on the Frankly event page.</li>
-<li>For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more ids]?status=joined</li>
+<li>For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: <a href="https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more">https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more</a> ids]?status=joined</li>
 <li>Visit your Google Cloud Platform Logging page so you can scan for any errors during the live stream test.</li>
 <li>When you are ready, start the live stream on Zoom using <a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0064210#h_0cd3b33b-0172-4199-bd19-88ba6b57f173">these</a> steps</li>
 </ol>
@@ -1349,50 +1580,45 @@ The logs displayed on the Logging page should indicate that the MuxWebhook Fireb
 <h3 id="cloudinary">Cloudinary</h3>
 <ol>
 <li><a href="https://cloudinary.com/users/register_free">Sign up</a> for Cloudinary.</li>
-<li>
-<p>Create two upload presets <a href="https://console.cloudinary.com/settings/upload/presets">here</a>, one for images and one for videos.</p>
-<div class="admonition info">
-<p>You can learn about upload presets <a href="https://cloudinary.com/documentation/upload_presets#use_cases">here</a>.</p>
-</div>
-<ol>
-<li>
-<p>On the <em>General</em> panel, use this configuration for images:
-    <div class="highlight"><pre><span></span><code>- Name: &quot;frankly-image-default&quot; (or whatever you&#39;d like)
-- Signing mode: Unsigned
-- Disallow public ID: ✔️
-- Asset folder: empty
-- Generated public ID: Auto-generate
-- Generated display name: Use the last segment of the public ID
-</code></pre></div></p>
-<ol>
-<li>Now, on the <em>Transform</em> panel, under "Incoming transformation", enter <code>c_crop,g_custom</code> and click Save. </li>
+<li>Create two upload presets <a href="https://console.cloudinary.com/settings/upload/presets">here</a>, one for images and one for videos.</li>
 </ol>
-<div class="admonition note">
-<p>These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).</p>
-</div>
-</li>
+<p>!!! info ""
+   You can learn about upload presets <a href="https://cloudinary.com/documentation/upload_presets#use_cases">here</a>.
+   1. On the <em>General</em> panel, use this configuration for images:</p>
+<pre><code>  ```
+  - Name: "frankly-image-default" (or whatever you'd like)
+  - Signing mode: Unsigned
+  - Disallow public ID: ✔️
+  - Asset folder: empty
+  - Generated public ID: Auto-generate
+  - Generated display name: Use the last segment of the public ID
+  ```
+
+  1. Now, on the _Transform_ panel, under "Incoming transformation", enter `c_crop,g_custom` and click Save.
+
+  !!! note ""
+  These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).
+</code></pre>
+<ol>
 <li>
-<p>On the <em>General</em> panel, use this configuration for videos:
-    <div class="highlight"><pre><span></span><code>- Name: &quot;frankly-video-default&quot; (or whatever you&#39;d like)
+<p>On the <em>General</em> panel, use this configuration for videos:</p>
+<div class="highlight"><pre><span></span><code>- Name: &quot;frankly-video-default&quot; (or whatever you&#39;d like)
 - Signing mode: Unsigned
 - Disallow public ID: ✔️
 - Asset folder: &quot;videos/uploads&quot; (this value doesn&#39;t matter, just somewhere unique to store your videos)
 - Generated public ID: Auto-generate
 - Generated display name: Use the last segment of the public ID
-</code></pre></div></p>
+</code></pre></div>
 <ol>
 <li>Click Save.</li>
 </ol>
 </li>
-</ol>
-</li>
 <li>
 <p>Now update the following in <code>client/.env</code>:</p>
-<div class="admonition note">
-<p>Your <code>CLOUDINARY_CLOUD_NAME</code> is found <a href="https://console.cloudinary.com/settings/account">here</a> under "Product environment cloud name".</p>
-</div>
 </li>
 </ol>
+<p>!!! note ""
+   Your <code>CLOUDINARY_CLOUD_NAME</code> is found <a href="https://console.cloudinary.com/settings/account">here</a> under "Product environment cloud name".</p>
 <div class="highlight"><pre><span></span><code>CLOUDINARY_IMAGE_PRESET=frankly-image-default (or name you used)
 CLOUDINARY_VIDEO_PRESET=frankly-video-default
 CLOUDINARY_DEFAULT_PRESET=frankly-video-default
@@ -1419,23 +1645,23 @@ CLOUDINARY_CLOUD_NAME=&lt;value&gt;
 <p>In general, you can use the configs defined in <code>.vscode/launch.json</code> to run <strong>debug mode</strong>. We have defined 2 environments for you:</p>
 <ol>
 <li>Client</li>
-<li>🌟 Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators </li>
+<li>🌟 Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.</p>
 </div>
+<p>The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.</p>
 <h3 id="env-file">.env File</h3>
-<p>You will need to create a <strong>.env</strong> file for client configuration. Copy <code>client/.env.example.local</code> to <code>client/.env</code> and update the missing secrets marked with <code>&lt;value&gt;</code> accordingly. The VSCode profiles assume the .env file lives in the <code>client</code> directory.</p>
+<p>You will need to create a <strong>.env</strong> file for client configuration. Copy <code>client/.env.local.example</code> to <code>client/.env</code> and update the missing secrets marked with <code>&lt;value&gt;</code> accordingly. The VSCode profiles assume the .env file lives in the <code>client</code> directory.</p>
 <p>You can also add an <code>EMULATORS</code> environment variable to override the default Emulators profile behavior of running <code>firestore, auth, functions, database</code>. Set the value to any desired combination of emulators.</p>
 <h4 id="manual-instructions">Manual instructions</h4>
 <p>If you want to use emulators, ensure you start the emulators first. Then run the following commands in the <code>/client</code> directory.</p>
-<p>To run the app with backend pointing at staging.
+<p>To run the app with backend pointing at staging.</p>
 <div class="highlight"><pre><span></span><code>flutter run -d chrome --release --web-renderer html -t lib/main.dart --dart-define-from-file=.env
-</code></pre></div></p>
-<p>To run the app with locally running functions, firestore, and auth emulators
+</code></pre></div>
+<p>To run the app with locally running functions, firestore, and auth emulators</p>
 <div class="highlight"><pre><span></span><code>flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env
-</code></pre></div></p>
+</code></pre></div>
 <h3 id="supported-browsers">Supported browsers</h3>
 <p>The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production <a href="https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter">Web FAQ | Flutter</a>; Chrome, Firefox, Safari, Edge.</p>
 <h1 id="testing">Testing</h1>
@@ -1448,12 +1674,12 @@ CLOUDINARY_CLOUD_NAME=&lt;value&gt;
 cd ../
 flutter test --platform chrome
 </code></pre></div>
-<p>To run newly added tests:
+<p>To run newly added tests:</p>
 <div class="highlight"><pre><span></span><code>flutter test &lt;optional path to test files&gt;
-</code></pre></div></p>
-<p>To run unit tests with locally generated HTML coverage report:
+</code></pre></div>
+<p>To run unit tests with locally generated HTML coverage report:</p>
 <div class="highlight"><pre><span></span><code>flutter test --coverage &amp;&amp; format_coverage --in=coverage &amp;&amp; genhtml coverage/lcov.info -o coverage/html
-</code></pre></div></p>
+</code></pre></div>
 
 
 
