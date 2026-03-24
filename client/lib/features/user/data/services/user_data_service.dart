@@ -30,9 +30,8 @@ class UserDataService with ChangeNotifier {
   static bool usingEmulator = false;
 
   Future<void> initialize() async {
-    if (usingEmulator) {
-      FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
-    }
+    // RTDB emulator wiring is done once in dev_emulators_main.dart before
+    // Firebase is first used. Do not call useDatabaseEmulator() here.
     userService.addListener(() {
       if (_currentUserId != userService.currentUserId) {
         _currentUserId = userService.currentUserId;
