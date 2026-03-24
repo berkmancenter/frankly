@@ -44,12 +44,9 @@ class AgoraUtils {
     final resourceId = await _acquireResourceId(roomId: roomId);
     print('Acquired resource ID: $resourceId');
 
-    try {
-      await _startRecording(roomId: roomId, resourceId: resourceId);
-    } catch (e) {
-      print("Error in starting recording for room $roomId");
-      print(e);
-    }
+    // TODO(diagnostic): remove propagation before merging - restore try/catch so
+    // recording failure does not prevent users from joining the meeting.
+    await _startRecording(roomId: roomId, resourceId: resourceId);
   }
 
   Map<String, String> _getAuthHeaders() {
@@ -82,6 +79,13 @@ class AgoraUtils {
       body: body,
     );
 
+    // TODO(diagnostic): remove print statement and propagation before merging -
+    // restore try/catch so recording failure does not prevent users from joining the meeting.
+    print('Acquire response (${result.statusCode}): ${result.body}');
+    if (result.statusCode < 200 || result.statusCode > 299) {
+      throw HttpsError(
+          HttpsError.internal, 'Acquire failed: ${result.body}', null);
+    }
     return convert.jsonDecode(result.body)["resourceId"];
   }
 
