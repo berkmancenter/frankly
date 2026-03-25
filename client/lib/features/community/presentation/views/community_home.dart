@@ -132,13 +132,6 @@ class _CommunityHomeState extends State<CommunityHome> {
             children: [
               SizedBox(
                 height: 48,
-                child: Provider.of<CommunityPermissionsProvider>(context)
-                        .canEditCommunity
-                    ? Align(
-                        alignment: Alignment.centerRight,
-                        child: EditCommunityButton(),
-                      )
-                    : null,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

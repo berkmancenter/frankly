@@ -4139,6 +4139,296 @@ abstract class _GetMeetingChatsSuggestionsDataResponse
       get copyWith => throw _privateConstructorUsedError;
 }
 
+GetMeetingPollDataRequest _$GetMeetingPollDataRequestFromJson(
+    Map<String, dynamic> json) {
+  return _GetMeetingPollDataRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$GetMeetingPollDataRequest {
+  String get eventPath => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $GetMeetingPollDataRequestCopyWith<GetMeetingPollDataRequest> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GetMeetingPollDataRequestCopyWith<$Res> {
+  factory $GetMeetingPollDataRequestCopyWith(GetMeetingPollDataRequest value,
+          $Res Function(GetMeetingPollDataRequest) then) =
+      _$GetMeetingPollDataRequestCopyWithImpl<$Res, GetMeetingPollDataRequest>;
+  @useResult
+  $Res call({String eventPath});
+}
+
+/// @nodoc
+class _$GetMeetingPollDataRequestCopyWithImpl<$Res,
+        $Val extends GetMeetingPollDataRequest>
+    implements $GetMeetingPollDataRequestCopyWith<$Res> {
+  _$GetMeetingPollDataRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+  }) {
+    return _then(_value.copyWith(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_GetMeetingPollDataRequestCopyWith<$Res>
+    implements $GetMeetingPollDataRequestCopyWith<$Res> {
+  factory _$$_GetMeetingPollDataRequestCopyWith(
+          _$_GetMeetingPollDataRequest value,
+          $Res Function(_$_GetMeetingPollDataRequest) then) =
+      __$$_GetMeetingPollDataRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String eventPath});
+}
+
+/// @nodoc
+class __$$_GetMeetingPollDataRequestCopyWithImpl<$Res>
+    extends _$GetMeetingPollDataRequestCopyWithImpl<$Res,
+        _$_GetMeetingPollDataRequest>
+    implements _$$_GetMeetingPollDataRequestCopyWith<$Res> {
+  __$$_GetMeetingPollDataRequestCopyWithImpl(
+      _$_GetMeetingPollDataRequest _value,
+      $Res Function(_$_GetMeetingPollDataRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+  }) {
+    return _then(_$_GetMeetingPollDataRequest(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_GetMeetingPollDataRequest implements _GetMeetingPollDataRequest {
+  _$_GetMeetingPollDataRequest({required this.eventPath});
+
+  factory _$_GetMeetingPollDataRequest.fromJson(Map<String, dynamic> json) =>
+      _$$_GetMeetingPollDataRequestFromJson(json);
+
+  @override
+  final String eventPath;
+
+  @override
+  String toString() {
+    return 'GetMeetingPollDataRequest(eventPath: $eventPath)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_GetMeetingPollDataRequest &&
+            (identical(other.eventPath, eventPath) ||
+                other.eventPath == eventPath));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, eventPath);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_GetMeetingPollDataRequestCopyWith<_$_GetMeetingPollDataRequest>
+      get copyWith => __$$_GetMeetingPollDataRequestCopyWithImpl<
+          _$_GetMeetingPollDataRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_GetMeetingPollDataRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _GetMeetingPollDataRequest implements GetMeetingPollDataRequest {
+  factory _GetMeetingPollDataRequest({required final String eventPath}) =
+      _$_GetMeetingPollDataRequest;
+
+  factory _GetMeetingPollDataRequest.fromJson(Map<String, dynamic> json) =
+      _$_GetMeetingPollDataRequest.fromJson;
+
+  @override
+  String get eventPath;
+  @override
+  @JsonKey(ignore: true)
+  _$$_GetMeetingPollDataRequestCopyWith<_$_GetMeetingPollDataRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+GetMeetingPollDataResponse _$GetMeetingPollDataResponseFromJson(
+    Map<String, dynamic> json) {
+  return _GetMeetingPollDataResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$GetMeetingPollDataResponse {
+  List<PollData>? get polls => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $GetMeetingPollDataResponseCopyWith<GetMeetingPollDataResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GetMeetingPollDataResponseCopyWith<$Res> {
+  factory $GetMeetingPollDataResponseCopyWith(GetMeetingPollDataResponse value,
+          $Res Function(GetMeetingPollDataResponse) then) =
+      _$GetMeetingPollDataResponseCopyWithImpl<$Res,
+          GetMeetingPollDataResponse>;
+  @useResult
+  $Res call({List<PollData>? polls});
+}
+
+/// @nodoc
+class _$GetMeetingPollDataResponseCopyWithImpl<$Res,
+        $Val extends GetMeetingPollDataResponse>
+    implements $GetMeetingPollDataResponseCopyWith<$Res> {
+  _$GetMeetingPollDataResponseCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? polls = freezed,
+  }) {
+    return _then(_value.copyWith(
+      polls: freezed == polls
+          ? _value.polls
+          : polls // ignore: cast_nullable_to_non_nullable
+              as List<PollData>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_GetMeetingPollDataResponseCopyWith<$Res>
+    implements $GetMeetingPollDataResponseCopyWith<$Res> {
+  factory _$$_GetMeetingPollDataResponseCopyWith(
+          _$_GetMeetingPollDataResponse value,
+          $Res Function(_$_GetMeetingPollDataResponse) then) =
+      __$$_GetMeetingPollDataResponseCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<PollData>? polls});
+}
+
+/// @nodoc
+class __$$_GetMeetingPollDataResponseCopyWithImpl<$Res>
+    extends _$GetMeetingPollDataResponseCopyWithImpl<$Res,
+        _$_GetMeetingPollDataResponse>
+    implements _$$_GetMeetingPollDataResponseCopyWith<$Res> {
+  __$$_GetMeetingPollDataResponseCopyWithImpl(
+      _$_GetMeetingPollDataResponse _value,
+      $Res Function(_$_GetMeetingPollDataResponse) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? polls = freezed,
+  }) {
+    return _then(_$_GetMeetingPollDataResponse(
+      polls: freezed == polls
+          ? _value.polls
+          : polls // ignore: cast_nullable_to_non_nullable
+              as List<PollData>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_GetMeetingPollDataResponse implements _GetMeetingPollDataResponse {
+  _$_GetMeetingPollDataResponse({this.polls});
+
+  factory _$_GetMeetingPollDataResponse.fromJson(Map<String, dynamic> json) =>
+      _$$_GetMeetingPollDataResponseFromJson(json);
+
+  @override
+  final List<PollData>? polls;
+
+  @override
+  String toString() {
+    return 'GetMeetingPollDataResponse(polls: $polls)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_GetMeetingPollDataResponse &&
+            const DeepCollectionEquality().equals(other.polls, polls));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(polls));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_GetMeetingPollDataResponseCopyWith<_$_GetMeetingPollDataResponse>
+      get copyWith => __$$_GetMeetingPollDataResponseCopyWithImpl<
+          _$_GetMeetingPollDataResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_GetMeetingPollDataResponseToJson(
+      this,
+    );
+  }
+}
+
+abstract class _GetMeetingPollDataResponse
+    implements GetMeetingPollDataResponse {
+  factory _GetMeetingPollDataResponse({final List<PollData>? polls}) =
+      _$_GetMeetingPollDataResponse;
+
+  factory _GetMeetingPollDataResponse.fromJson(Map<String, dynamic> json) =
+      _$_GetMeetingPollDataResponse.fromJson;
+
+  @override
+  List<PollData>? get polls;
+  @override
+  @JsonKey(ignore: true)
+  _$$_GetMeetingPollDataResponseCopyWith<_$_GetMeetingPollDataResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 GetMembersDataRequest _$GetMembersDataRequestFromJson(
     Map<String, dynamic> json) {
   return _GetMembersDataRequest.fromJson(json);

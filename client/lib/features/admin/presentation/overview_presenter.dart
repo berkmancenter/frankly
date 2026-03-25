@@ -79,7 +79,6 @@ class OverviewPresenter {
       case OnboardingStep.createStripeAccount:
         return null;
     }
-    return null;
   }
 
   void toggleExpansion(OnboardingStep? onboardingStep) {

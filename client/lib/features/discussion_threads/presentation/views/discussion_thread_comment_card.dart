@@ -11,7 +11,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 
 class DiscussionThreadCommentCard extends StatelessWidget {
   final DiscussionThreadCommentUI discussionThreadCommentUI;
