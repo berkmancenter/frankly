@@ -103,10 +103,15 @@ class InitiateBreakouts extends OnCallMethod<InitiateBreakoutsRequest> {
 
     const smartMatchingWaitTime = Duration(seconds: 30);
 
-    final now = DateTime.now();
-    final nowWithoutMilliseconds =
-        now.subtract(Duration(milliseconds: now.millisecond));
-    final scheduledTime = nowWithoutMilliseconds.add(smartMatchingWaitTime);
+    // Get current time and add the wait time
+    // Use millisecondsSinceEpoch to ensure timezone-independent calculation
+    final nowMillis = DateTime.now().millisecondsSinceEpoch;
+    final scheduledMillis = nowMillis + smartMatchingWaitTime.inMilliseconds;
+    // Remove milliseconds for cleaner display
+    final scheduledTime = DateTime.fromMillisecondsSinceEpoch(
+      (scheduledMillis ~/ 1000) * 1000,
+      isUtc: true,
+    );
 
     final newlyInitiated = await firestore.runTransaction((transaction) async {
       final liveMeetingDocRef = firestore.document(liveMeetingPath);

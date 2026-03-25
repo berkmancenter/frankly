@@ -6,6 +6,7 @@ Most components of Frankly can be run on your local machine. This section descri
 
 !!! warning "Important"
 Frankly runs on Flutter `3.22.2.` **Please use this version of Flutter in order to avoid any unexpected errors.**
+Frankly runs on Flutter `3.22.2.` **Please use this version of Flutter in order to avoid any unexpected errors.**
 
 This section covers setting up a new computer for Flutter development.
 
@@ -27,9 +28,26 @@ a. Set the path to chromium so flutter can find it:
      ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
 `git clone https://github.com/berkmancenter/frankly && cd frankly
      ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
+=== "macOS" 1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web. 2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app. 3. Optional, but recommended: Install Homebrew [here](https://brew.sh/). 4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
+`brew install git
+     ` 5. Clone the Frankly repo in a directory where you prefer your projects to live:
+`git clone https://github.com/berkmancenter/frankly && cd frankly
+     ` 6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors. - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar). 7. Install VSCode [here](https://code.visualstudio.com/download). - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter). 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
+`export PATH=$HOME/dev/flutter/bin:$PATH
+       `
+Restart terminal sessions to see the changes.
+=== "Linux" 1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
+`sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
+     `
+a. Set the path to chromium so flutter can find it:
+`export CHROME_EXECUTABLE=$(which chromium)
+     ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
+`git clone https://github.com/berkmancenter/frankly && cd frankly
+     ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
 
         !!! info ""
             You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
+
 
         - **Recommended**: Install the [Flutter VSCode extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/linux/web#install-the-flutter-sdk).
         - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar).
@@ -41,7 +59,18 @@ a. Set the path to chromium so flutter can find it:
 ### Part 2
 
 1. Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest end cleanest way to do so.
-2. Once nvm is installed and sourced to your CLI profile, run:
+1. Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest end cleanest way to do so.
+1. Once nvm is installed and sourced to your CLI profile, run:
+
+```
+nvm install --lts
+```
+
+1. Install the [Firebase CLI Tools](https://www.npmjs.com/package/firebase-tools): Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI [here](https://firebaseopensource.com/projects/firebase/firebase-tools/).
+
+```
+npm install -g firebase-tools
+```
 
 ```
 nvm install --lts
@@ -63,6 +92,8 @@ npm install -g firebase-tools
 
 4.  Activate the Firebase CLI for Flutter by following these steps.
 
+1. Activate the Firebase CLI for Flutter by following these steps.
+
     a. [Sign into Firebase](https://console.firebase.google.com/) using your Google account and create a new project. Use a name like "frankly-dev".
 
     b. Log into Firebase. Run:
@@ -71,7 +102,15 @@ npm install -g firebase-tools
     firebase login
     ```
 
+    ```
+    firebase login
+    ```
+
     c. Install the FlutterFire CLI by running:
+
+    ```
+    dart pub global activate flutterfire_cli
+    ```
 
     ```
     dart pub global activate flutterfire_cli
@@ -85,9 +124,16 @@ npm install -g firebase-tools
 
     - You can choose _web_ as the platform for now.
 
+    ```
+    flutterfire configure
+    ```
+
+    - You can choose _web_ as the platform for now.
+
 <!-- Skip steps 3 and 4 in the “Initialize Firebase in your app” section. This project uses a separate file (app.dart) for the imports. -->
 
 !!! question ""
+Please check [**❓Troubleshooting / FAQ**](faq.md) for suggested resolutions to common Flutter installation errors.
 Please check [**❓Troubleshooting / FAQ**](faq.md) for suggested resolutions to common Flutter installation errors.
 
 ## Environment Setup
@@ -117,6 +163,16 @@ flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```
 
+```
+flutter pub get
+```
+
+1. Run:
+
+```
+dart run build_runner build --delete-conflicting-outputs
+```
+
 You can also just run `./build.sh`.
 
 ### 🔥 Firebase
@@ -126,6 +182,18 @@ You can also just run `./build.sh`.
 Firebase Functions are built on top of Cloud Functions (GCP's serverless functions product), which is why there are references to Cloud Functions tooling below. Functions are written in `dart` and are compiled to `javascript` with `dart2js`.
 
 For the following sub-section, switch to the `firebase/functions` directory to run all commands.
+
+- To install all Javascript dependencies, run:
+
+```
+npm install
+```
+
+- To install all Dart dependencies, run:
+
+```
+flutter pub get
+```
 
 - To install all Javascript dependencies, run:
 
@@ -321,26 +389,28 @@ This allows you to seed Firestore or other services with test data and reuse it 
 
 ---
 
-### Important Notes
-
-- Run the emulators **before starting the Flutter client**.
-- Frankly currently expects the **default Firestore database name** (`default`).
-- Always run emulator commands from the `firebase/functions` directory.
-
 ### Optional: Setup Firebase Cloud Project
 
 In order to allow the capability to run the app locally without needing to create/modify a live Firebase project, emulators for all Google Cloud services that are needed (Run Functions, Auth, Realtime Database, etc.) suffice for most development task.
 
+If you plan on using [Mux](#optional-mux) within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send [webhooks :octicons-link-external-24:](https://en.wikipedia.org/wiki/Webhook) to. You will need a Firebase project of your own.
 If you plan on using [Mux](#optional-mux) within your local app, however, the emulator version of the functions host is inadequate, since that service needs an actual deployed URL to send [webhooks :octicons-link-external-24:](https://en.wikipedia.org/wiki/Webhook) to. You will need a Firebase project of your own.
 
 1. Create a new Firebase project [here :octicons-link-external-24:](https://console.firebase.google.com/).
 
    !!! warning
    Your Firestore instance needs to be configured as single region.
+   !!! warning
+   Your Firestore instance needs to be configured as single region.
 
 2. Make a note of the unique ID that is created for your project. It will be in the format of `my-dev-project-d2f8c`.
 3. You may need to create a default [realtime database](https://firebase.google.com/docs/database/web/start).
-4. From your command line within the `firebase/functions` directory, run:
+4. You may need to create a default [realtime database](https://firebase.google.com/docs/database/web/start).
+5. From your command line within the `firebase/functions` directory, run:
+
+   ```
+   firebase login
+   ```
 
    ```
    firebase login
@@ -348,8 +418,16 @@ If you plan on using [Mux](#optional-mux) within your local app, however, the em
 
    !!! warning "Logging In"
    When the login window appears, ensure you are logging in as the same user that created your project.
+   !!! warning "Logging In"
+   When the login window appears, ensure you are logging in as the same user that created your project.
 
-5. Now run:
+6. Now run:
+
+```
+firebase use <project_id>
+```
+
+You should see a message like `Now using project my-dev-project-d2f8c` 5. Now run:
 
 ```
 firebase use <project_id>
@@ -382,6 +460,11 @@ agora.storage_secret_key="<YOUR_VALUE_HERE>"
 #### **🔧 Setting up the integration**
 
 - **Agora**
+  - Create a new project in the Agora console. For Authentication Mode, select **Secure Mode: App ID + Token**.
+  - `app_id`: Copy the App ID from the Projects list in the console home.
+  - `app_certificate`: Select **Configure** on your project. Copy the value under **Security > Primary Certificate**.
+  - `rest_key`: In the left navigation panel, select **Restful API** under either **Developer Toolkit** or **Developer Resources**, depending on your screen size. Click **Add a Secret**. Download the Customer Secret, and input the value for **Key**.
+  - `rest_secret`: From the Customer Secret file, input the value for **Secret**.
   - Create a new project in the Agora console. For Authentication Mode, select **Secure Mode: App ID + Token**.
   - `app_id`: Copy the App ID from the Projects list in the console home.
   - `app_certificate`: Select **Configure** on your project. Copy the value under **Security > Primary Certificate**.
@@ -431,8 +514,10 @@ Once you have the keys set up, you can follow the below checklist to test that k
 Mux streaming is used when a customer wants to stream video from a third party streaming service, such as Zoom, to Frankly. Essentially the customer will record video from the third party platform, the data is sent to Mux, which will then notify Frankly's MuxWebhook Firebase function that a stream has started. Once the stream has started, the Frankly event page will display the streaming video.
 
 1. Using [Mux's instructions](https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token), get a new access token. Use the environment of your choice and set the permission level to "Mux Video".
+1. Using [Mux's instructions](https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token), get a new access token. Use the environment of your choice and set the permission level to "Mux Video".
 
-2. Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
+1. Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
+1. Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
 
    === "Command Line"
    As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
@@ -444,12 +529,26 @@ Mux streaming is used when a customer wants to stream video from a third party s
   "token_id": "..."
 },`
 
-3. To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
+1. To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
+   === "Command Line"
+   As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+   `firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"`
+   === "Copy/Paste"
+   Or, paste your token and secret into the `.runtimeconfig.json` file where the `mux` field is.
+   `"mux": {
+  "secret": "...",
+  "token_id": "..."
+},`
+
+1. To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
 
    > <https://us-central1-myproject.cloudfunctions.net/MuxWebhooks>
    > <https://service-name-12851330326.region.run.app/MuxWebhooks>
+   > <https://us-central1-myproject.cloudfunctions.net/MuxWebhooks>
+   > <https://service-name-12851330326.region.run.app/MuxWebhooks>
 
-4. Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
+1. Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
+1. Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
 #### 👾 Testing your setup
 
@@ -468,6 +567,7 @@ The logs displayed on the Logging page should indicate that the MuxWebhook Fireb
 2. Open Zoom and verify you have livestreaming enabled using [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_4b4ded3d-3f6b-4965-baaa-3692f947e36c) steps. Then follow [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_62b792dc-3cf9-4b62-848d-93ee9e412a7c) steps to setup your livestreaming event on Zoom. Use the following values:
    - For Stream URL, use the Stream URL provided on the Frankly event page.
    - For Stream Key, use the Stream Key provided on the Frankly event page.
+   - For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: <https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more> ids]?status=joined
    - For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: <https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more> ids]?status=joined
 3. Visit your Google Cloud Platform Logging page so you can scan for any errors during the live stream test.
 4. When you are ready, start the live stream on Zoom using [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_0cd3b33b-0172-4199-bd19-88ba6b57f173) steps
@@ -499,8 +599,39 @@ The following should be true if your Mux setup works as expected:
 
       !!! note ""
       These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).
+      !!! info ""
+      You can learn about upload presets [here](https://cloudinary.com/documentation/upload_presets#use_cases).
 
-   2. On the _General_ panel, use this configuration for videos:
+   1. On the _General_ panel, use this configuration for images:
+
+      ```
+      - Name: "frankly-image-default" (or whatever you'd like)
+      - Signing mode: Unsigned
+      - Disallow public ID: ✔️
+      - Asset folder: empty
+      - Generated public ID: Auto-generate
+      - Generated display name: Use the last segment of the public ID
+      ```
+
+      1. Now, on the _Transform_ panel, under "Incoming transformation", enter `c_crop,g_custom` and click Save.
+
+      !!! note ""
+      These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).
+
+   1. On the _General_ panel, use this configuration for videos:
+
+      ```
+      - Name: "frankly-video-default" (or whatever you'd like)
+      - Signing mode: Unsigned
+      - Disallow public ID: ✔️
+      - Asset folder: "videos/uploads" (this value doesn't matter, just somewhere unique to store your videos)
+      - Generated public ID: Auto-generate
+      - Generated display name: Use the last segment of the public ID
+      ```
+
+      1. Click Save.
+
+   1. On the _General_ panel, use this configuration for videos:
 
       ```
       - Name: "frankly-video-default" (or whatever you'd like)
@@ -517,6 +648,16 @@ The following should be true if your Mux setup works as expected:
 
    !!! note ""
    Your `CLOUDINARY_CLOUD_NAME` is found [here](https://console.cloudinary.com/settings/account) under "Product environment cloud name".
+
+   !!! note ""
+   Your `CLOUDINARY_CLOUD_NAME` is found [here](https://console.cloudinary.com/settings/account) under "Product environment cloud name".
+
+```
+CLOUDINARY_IMAGE_PRESET=frankly-image-default (or name you used)
+CLOUDINARY_VIDEO_PRESET=frankly-video-default
+CLOUDINARY_DEFAULT_PRESET=frankly-video-default
+CLOUDINARY_CLOUD_NAME=<value>
+```
 
 ```
 CLOUDINARY_IMAGE_PRESET=frankly-image-default (or name you used)
@@ -554,12 +695,15 @@ In general, you can use the configs defined in `.vscode/launch.json` to run **de
 
 1. Client
 2. 🌟 Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators
+3. 🌟 Client Dev (Emulators) - this connects to functions, firestore, database, and auth emulators
 
 !!! note
+The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.
 The default debug platform is Web (Chrome), so please ensure it is selected as the target platform when running. We do not currently officially support any other platform.
 
 ### .env File
 
+You will need to create a **.env** file for client configuration. Copy `client/.env.local.example` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
 You will need to create a **.env** file for client configuration. Copy `client/.env.local.example` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
 
 You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `firestore, auth, functions, database`. Set the value to any desired combination of emulators.
