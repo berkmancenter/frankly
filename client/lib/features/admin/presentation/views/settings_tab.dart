@@ -148,7 +148,7 @@ class _SettingsTabState extends State<SettingsTab> {
           flex: isMobile ? 0 : 2,
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 0 : 46,
+              horizontal: isMobile ? 8 : 46,
               vertical: 28,
             ),
             child: helperText,
