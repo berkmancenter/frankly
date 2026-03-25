@@ -244,11 +244,11 @@ class _DataTabState extends State<DataTab> {
     });
   }
 
-  String _recordingAnnotation(int? parts) {
-    if (parts == null) return ' (checking...)';
-    if (parts == 0) return ' (preparing...)';
-    if (parts == -1) return ' (failed)';
-    return ' ($parts part${parts == 1 ? '' : 's'})';
+  String _recordingAnnotation(BuildContext context, int? parts) {
+    if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
+    if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
+    if (parts == -1) return ' ${context.l10n.recordingStatusFailed}';
+    return ' ${context.l10n.recordingStatusParts(parts)}';
   }
 
   void _showDownloadDialog(
@@ -300,7 +300,7 @@ class _DataTabState extends State<DataTab> {
                             () => recordingSelected = value ?? false,
                           ),
                         title: Text(
-                          '${context.l10n.recording}${_recordingAnnotation(parts)}',
+                          '${context.l10n.recording}${_recordingAnnotation(context, parts)}',
                         ),
                       ),
                     if (showRegistrant)
