@@ -90,6 +90,28 @@ npm install -g firebase-tools
 !!! question ""
 Please check [**❓Troubleshooting / FAQ**](faq.md) for suggested resolutions to common Flutter installation errors.
 
+## Git Configuration
+
+### Global gitignore
+
+macOS generates `.DS_Store` files in directories you browse. These are OS-level metadata files
+with no relevance to the project, and they will show up as untracked files in `git status` if not
+excluded.
+
+They are **not** listed in the project's `.gitignore` because that file describes artifacts of
+the project, not artifacts of your operating system. Adding OS-specific files there would clutter
+it for contributors on other platforms (Linux, Windows).
+
+Instead, exclude them once globally on your machine so they're silently ignored in every repo:
+
+```bash
+git config --global core.excludesfile ~/.gitignore_global
+echo '.DS_Store' >> ~/.gitignore_global
+```
+
+This only needs to be done once per machine. If your `~/.gitignore_global` already exists, the
+second command safely appends to it.
+
 ## Environment Setup
 
 These are the steps for getting started with developing Frankly:

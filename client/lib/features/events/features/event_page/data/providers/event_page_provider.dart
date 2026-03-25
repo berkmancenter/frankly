@@ -18,7 +18,6 @@ import 'package:client/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community_tag.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 import '../../../../../../core/routing/locations.dart';
 
