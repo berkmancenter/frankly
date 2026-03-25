@@ -37,6 +37,7 @@ class _DataTabState extends State<DataTab> {
 
   // Recording status per event: null=loading, 0=preparing, N=N parts ready, -1=error.
   final Map<String, int?> _recordingParts = {};
+  final Map<String, ValueNotifier<int?>> _recordingNotifiers = {};
   final Map<String, Timer> _pollingTimers = {};
   final Map<String, int> _retryCount = {};
 
@@ -70,6 +71,9 @@ class _DataTabState extends State<DataTab> {
   void dispose() {
     for (final timer in _pollingTimers.values) {
       timer.cancel();
+    }
+    for (final notifier in _recordingNotifiers.values) {
+      notifier.dispose();
     }
     _eventsSubscription.cancel();
     _allEvents.dispose();
@@ -133,6 +137,7 @@ class _DataTabState extends State<DataTab> {
   void _maybeStartRecordingCheck(Event event) {
     if (_recordingParts.containsKey(event.id)) return;
     _recordingParts[event.id] = null; // null = loading
+    (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
     _fetchRecordingCount(event);
   }
 
@@ -141,6 +146,7 @@ class _DataTabState extends State<DataTab> {
       _recordingParts.remove(event.id);
       _retryCount.remove(event.id);
     });
+    _recordingNotifiers[event.id]?.value = null;
     _maybeStartRecordingCheck(event);
   }
 
@@ -164,14 +170,19 @@ class _DataTabState extends State<DataTab> {
         final body = jsonDecode(response.body) as Map<String, dynamic>;
         final count = (body['recordings'] as List?)?.length ?? 0;
         setState(() => _recordingParts[event.id] = count);
+        _recordingNotifiers[event.id]?.value = count;
         if (count == 0) _scheduleRetry(event);
       } else {
         // Non-200 means a function error, not "recordings not ready".
         // Stop polling and show an error state (-1) to avoid infinite retry.
         setState(() => _recordingParts[event.id] = -1);
+        _recordingNotifiers[event.id]?.value = -1;
       }
     } catch (_) {
-      if (mounted) setState(() => _recordingParts[event.id] = -1);
+      if (mounted) {
+        setState(() => _recordingParts[event.id] = -1);
+        _recordingNotifiers[event.id]?.value = -1;
+      }
     }
   }
 
@@ -179,6 +190,7 @@ class _DataTabState extends State<DataTab> {
     final retries = (_retryCount[event.id] ?? 0) + 1;
     if (retries >= _maxAutoRetries) {
       setState(() => _recordingParts[event.id] = -1);
+      _recordingNotifiers[event.id]?.value = -1;
       return;
     }
     _retryCount[event.id] = retries;
@@ -186,6 +198,7 @@ class _DataTabState extends State<DataTab> {
     _pollingTimers[event.id] = Timer(const Duration(seconds: 5), () {
       if (!mounted) return;
       setState(() => _recordingParts[event.id] = null);
+      _recordingNotifiers[event.id]?.value = null;
       _fetchRecordingCount(event);
     });
   }
@@ -227,7 +240,15 @@ class _DataTabState extends State<DataTab> {
         }
       }
       setState(() => _recordingParts[event.id] = urls.length);
+      _recordingNotifiers[event.id]?.value = urls.length;
     });
+  }
+
+  String _recordingAnnotation(int? parts) {
+    if (parts == null) return ' (checking...)';
+    if (parts == 0) return ' (preparing...)';
+    if (parts == -1) return ' (failed)';
+    return ' ($parts part${parts == 1 ? '' : 's'})';
   }
 
   void _showDownloadDialog(
@@ -242,62 +263,83 @@ class _DataTabState extends State<DataTab> {
     showDialog<void>(
       context: context,
       builder: (dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            void pressedHandler() async {
-              if (showRecording && recordingSelected) {
-                await _downloadAllRecordings(event);
-              }
-              if (showRegistrant && registrantListSelected) {
-                await alertOnError(context, () async {
-                  await downloadRegistrantList(event, participants);
-                });
-              }
-              if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+        AlertDialog buildAlertDialog(StateSetter setDialogState, int? parts) {
+          void pressedHandler() async {
+            if (showRecording && recordingSelected) {
+              await _downloadAllRecordings(event);
             }
+            if (showRegistrant && registrantListSelected) {
+              await alertOnError(context, () async {
+                await downloadRegistrantList(event, participants);
+              });
+            }
+            if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+          }
 
-            final downloadEnabled = recordingSelected || registrantListSelected;
+          final recordingReady = showRecording && (parts ?? 0) > 0;
+          final downloadEnabled =
+              (showRecording && recordingSelected && recordingReady) ||
+                  (showRegistrant && registrantListSelected);
 
-            return AlertDialog(
-              title: Text(context.l10n.selectData),
-              backgroundColor:
-                  context.theme.colorScheme.surfaceContainerHighest,
-              contentPadding: EdgeInsets.zero,
-              titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
-              content: Material(
-                color: context.theme.colorScheme.surfaceContainer,
-                child: SingleChildScrollView(
-                  child: ListBody(
-                    children: [
-                      if (showRecording)
-                        CheckboxListTile(
-                          value: recordingSelected,
-                          onChanged: (value) => setDialogState(
-                              () => recordingSelected = value ?? false),
-                          title: Text(context.l10n.recording),
+          return AlertDialog(
+            title: Text(context.l10n.selectData),
+            backgroundColor:
+                context.theme.colorScheme.surfaceContainerHighest,
+            contentPadding: EdgeInsets.zero,
+            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
+            content: Material(
+              color: context.theme.colorScheme.surfaceContainer,
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    if (showRecording)
+                      CheckboxListTile(
+                        value: recordingSelected,
+                        enabled: parts != null && parts != 0,
+                        onChanged: (value) => setDialogState(
+                            () => recordingSelected = value ?? false,
+                          ),
+                        title: Text(
+                          '${context.l10n.recording}${_recordingAnnotation(parts)}',
                         ),
-                      if (showRegistrant)
-                        CheckboxListTile(
-                          value: registrantListSelected,
-                          onChanged: (value) => setDialogState(
-                              () => registrantListSelected = value ?? false),
-                          title: Text(context.l10n.registrationDataDownload),
-                        ),
-                    ],
-                  ),
+                      ),
+                    if (showRegistrant)
+                      CheckboxListTile(
+                        value: registrantListSelected,
+                        onChanged: (value) => setDialogState(
+                            () => registrantListSelected = value ?? false,
+                          ),
+                        title: Text(context.l10n.registrationDataDownload),
+                      ),
+                  ],
                 ),
               ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: Text(context.l10n.cancel),
-                ),
-                TextButton(
-                  onPressed: downloadEnabled ? pressedHandler : null,
-                  child: Text(context.l10n.download),
-                ),
-              ],
-            );
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(context.l10n.cancel),
+              ),
+              TextButton(
+                onPressed: downloadEnabled ? pressedHandler : null,
+                child: Text(context.l10n.download),
+              ),
+            ],
+          );
+        }
+
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) {
+            if (showRecording) {
+              final notifier = _recordingNotifiers[event.id] ??=
+                  ValueNotifier(_recordingParts[event.id]);
+              return ValueListenableBuilder<int?>(
+                valueListenable: notifier,
+                builder: (ctx2, parts, _) =>
+                    buildAlertDialog(setDialogState, parts),
+              );
+            }
+            return buildAlertDialog(setDialogState, null);
           },
         );
       },
