@@ -67,7 +67,7 @@ void main() {
     final req = UpdateMembershipRequest(
       communityId: communityId,
       userId: memberId,
-      status: MembershipStatus.mod,
+      status: MembershipStatus.moderator,
     );
 
     await membershipUpdater.action(
@@ -82,7 +82,7 @@ void main() {
       firestoreUtils.fromFirestoreJson(membershipSnapshot.data.toMap()),
     );
 
-    expect(updatedMembership.status, equals(MembershipStatus.mod));
+    expect(updatedMembership.status, equals(MembershipStatus.moderator));
   });
 
   test('Admin should not be able to modify owner status', () async {

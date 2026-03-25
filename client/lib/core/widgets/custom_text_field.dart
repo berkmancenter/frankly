@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/styles/styles.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:universal_html/js.dart' as universal_js;
 
 enum BorderType {
@@ -163,22 +162,12 @@ class CustomTextField extends StatefulWidget {
   /// If true, hides the input (e.g., for passwords).
   final bool obscureText;
 
-  /// Defines if `Optional` is present at the end of the line.
-  final bool isOptional;
-
-  /// Style for the `Optional` text.
-  /// If null, defaults to `AppTextStyle.bodySmall.copyWith(color: context.theme.colorScheme.onSurfaceVariant)`.
-  /// Note that the color will not automatically adjust based on focus state.
-  /// If you want it to change color based on focus, provide a custom [optionalTextStyle].
-  final TextStyle? optionalTextStyle;
-
-  /// Padding for the `Optional` text.
-  /// If null, defaults to `EdgeInsets.only(top: 16, right: 12.0)`.
-  final EdgeInsets? optionalPadding;
-
   /// Variable which is used to define maximum entered value.
   /// If [numberThreshold] is not null, [NumberThresholdFormatter] will be used.
   final num? numberThreshold;
+
+  /// Allow for custom prefix icon
+  final Widget? prefixIcon;
 
   /// Allow for custom suffix icon
   final Widget? suffixIcon;
@@ -189,6 +178,9 @@ class CustomTextField extends StatefulWidget {
 
   /// Allow for custom input formatters
   final TextInputFormatter? inputFormatters;
+
+  /// Autofill hints for password managers
+  final Iterable<String>? autofillHints;
 
   const CustomTextField({
     Key? key,
@@ -231,12 +223,11 @@ class CustomTextField extends StatefulWidget {
     this.hideCounter = false,
     this.onTap,
     this.obscureText = false,
-    this.isOptional = false,
-    this.optionalTextStyle,
-    this.optionalPadding,
+    this.prefixIcon,
     this.suffixIcon,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
+    this.autofillHints,
   }) : super(key: key);
 
   @override
@@ -343,12 +334,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
         );
   }
 
-  TextStyle _buildOptionalTextStyle() {
-    return widget.optionalTextStyle ??
-        AppTextStyle.bodySmall
-            .copyWith(color: context.theme.colorScheme.onSurfaceVariant);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -406,7 +391,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   required maxLength,
                   required isFocused,
                 }) =>
-                    maxLength != null && !widget.hideCounter
+                    maxLength != null && !widget.hideCounter && _hasFocus
                         ? Container(
                             margin: EdgeInsets.only(left: 10),
                             alignment: widget.counterAlignment ??
@@ -446,6 +431,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       .copyWith(color: context.theme.colorScheme.error),
                   prefixText: widget.prefixText,
                   prefixStyle: widget.textStyle,
+                  prefixIcon: widget.prefixIcon,
                   alignLabelWithHint: true,
                   hintText: widget.hintText,
                   hintStyle: context.theme.textTheme.bodyMedium,
@@ -458,30 +444,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 readOnly: widget.readOnly,
                 enabled: !widget.readOnly,
                 keyboardType: widget.keyboardType,
+                autofillHints: widget.autofillHints,
               ),
-              if (widget.isOptional &&
-                  !_focusNode.hasFocus &&
-                  _controller.text.isEmpty)
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: _buildOptionalPadding(),
-                    child: Text(
-                      context.l10n.optional,
-                      style: _buildOptionalTextStyle(),
-                    ),
-                  ),
-                ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  EdgeInsetsGeometry _buildOptionalPadding() {
-    return widget.optionalPadding ??
-        const EdgeInsets.only(top: 16, right: 12.0);
   }
 }
 

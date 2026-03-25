@@ -12,21 +12,21 @@ This section covers setting up a new computer for Flutter development.
 ### Part 1: Platform-specific
 
 === "macOS" 1. Download and install Google Chrome [here](https://www.google.com/chrome/) if it’s not already pre-installed. This is used for live debugging on web. 2. Download and install XCode from the Mac App Store. This is used for developing iOS apps and running on macOS as a desktop app. 3. Optional, but recommended: Install Homebrew [here](https://brew.sh/). 4. Xcode should've installed git automatically, but if not for some reason, you can install it via Homebrew:
-`       brew install git
-      ` 5. Clone the Frankly repo in a directory where you prefer your projects to live:
-`       git clone https://github.com/berkmancenter/frankly && cd frankly
-      ` 6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors. - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar). 7. Install VSCode [here](https://code.visualstudio.com/download). - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter). 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
-`         export PATH=$HOME/dev/flutter/bin:$PATH
-        `
+`brew install git
+     ` 5. Clone the Frankly repo in a directory where you prefer your projects to live:
+`git clone https://github.com/berkmancenter/frankly && cd frankly
+     ` 6. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter on your machine. You can choose iOS as your target platform. - This includes a link to install CocoaPods. However, you may run into issues with installing CocoaPods due to a Ruby version issue (the pre-installed Ruby on MacOS is too old). You can install ruby via Homebrew instead by running `brew install cocoapods`, which should alleviate those errors. - **Recommended**: Install the Flutter SDK in your home folder under a directory called `dev` (or something similar). 7. Install VSCode [here](https://code.visualstudio.com/download). - **Recommended**: Install the [Flutter VSCode extension](https://docs.flutter.dev/get-started/editor#install-the-vs-code-flutter-extension) and use the extension to [install Flutter via VSCode](https://docs.flutter.dev/get-started/install/macos/mobile-ios#use-vs-code-to-install-flutter). 8. Add Flutter to your PATH. For Mac with Zsh (you can also copy this command from [here](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=download#add-flutter-to-your-path)), create or open ~/.zshenv and add this line:
+`export PATH=$HOME/dev/flutter/bin:$PATH
+       `
 Restart terminal sessions to see the changes.
 === "Linux" 1. Download and install chromium and git if they're not already installed. Chromium is used for live debugging on web.
-`       sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
-      `
+`sudo apt-get update && sudo apt-get upgrade && sudo apt-get install -y chromium git
+     `
 a. Set the path to chromium so flutter can find it:
-`       export CHROME_EXECUTABLE=$(which chromium)
-      ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
-`       git clone https://github.com/berkmancenter/frankly && cd frankly
-      ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
+`export CHROME_EXECUTABLE=$(which chromium)
+     ` 2. Clone the Frankly repo in a directory where you prefer your projects to live:
+`git clone https://github.com/berkmancenter/frankly && cd frankly
+     ` 3. Follow the instructions [here](https://docs.flutter.dev/get-started/install) to install Flutter dependencies on your machine. You can choose web as your target platform. 4. Install VSCode [here](https://code.visualstudio.com/docs/setup/linux).
 
         !!! info ""
             You may need to download the binary for your specific architecture [here](https://code.visualstudio.com/Download)
@@ -38,17 +38,16 @@ a. Set the path to chromium so flutter can find it:
         export PATH="$PATH:$HOME/[path to flutter]/flutter/bin"
         ```
 
-
 ### Part 2
 
-1.  Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest end cleanest way to do so.
-2.  Once nvm is installed and sourced to your CLI profile, run:
+1. Install Node.js and npm. We strongly recommend that you do this via `nvm` (steps [here](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)) since it is the easiest end cleanest way to do so.
+2. Once nvm is installed and sourced to your CLI profile, run:
 
 ```
 nvm install --lts
 ```
 
-3. Install the [Firebase CLI Tools](https://www.npmjs.com/package/firebase-tools): Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI [here](https://firebaseopensource.com/projects/firebase/firebase-tools/).
+1. Install the [Firebase CLI Tools](https://www.npmjs.com/package/firebase-tools): Most of the operations for development and deployment take place via the Firebase CLI. You can find documentation for the Firebase CLI [here](https://firebaseopensource.com/projects/firebase/firebase-tools/).
 
 ```
 npm install -g firebase-tools
@@ -134,7 +133,7 @@ The first step in running the app is to build the data_models package. Some code
 flutter pub get
 ```
 
-2. Run:
+1. Run:
 
 ```
 dart run build_runner build --delete-conflicting-outputs
@@ -166,34 +165,191 @@ You don't need to run `npm install` again unless you've added new dependencies o
 
 #### Emulators
 
-Firebase has a full suite of emulators called Firebase Local Emulator Suite. You can find the full description of the Firebase Local Emulator Suite and its capabilities [here](https://firebase.google.com/docs/emulator-suite).
+Frankly uses the **Firebase Local Emulator Suite** for local development. The emulator suite provides local versions of Firebase services: Firestore, Auth, Realtime Database, Pub/Sub, and Cloud Functions.
 
-You should emulate services locally for development purposes, and set up the client to use these emulators instead of connecting to a live Firebase project. By default, the emulators will run against the default project "dev," specified in the `.firebaserc` file.
+Documentation for the emulator suite is available here:  
+<https://firebase.google.com/docs/emulator-suite>
 
-**Using config in emulators**
+The emulators run against the Firebase project ID specified by `FIREBASE_PROJECT_ID` in `client/.env`. This must match your actual Firebase project. If you see CORS errors when trying to load pages in your local version, double check that this has been set correctly.
 
-You do not need to run `functions:config:set.` as the emulators are configured by a file.
+---
 
-- To configure the emulators, create the file `firebase/functions/.runtimeconfig.json`.
-  - A sample file containing the config properties described above can be found in `firebase/functions/.runtimeconfig.json.local.example`.
+### Emulator Initial Setup & Configuration
 
-**Running the emulators**
+The emulators use a local configuration file instead of `functions:config:set`.
 
-!!! info "Important" - Do this before running the [client](#running-and-building-the-client). - Frankly does not currently operate with a named database; the name must be the default, literally the string `default`.
+1. Copy `client/.env.local.example` to `client/.env` and set `FIREBASE_PROJECT_ID` to your actual Firebase project ID.
 
-To run the emulators locally, run the following _while_ in the `firebase/functions` directory:
+2. Create the following file if it does not already exist:
 
 ```
-dart run build_runner build --output=build
-firebase emulators:start --only firestore,functions,auth,pubsub,database
+firebase/functions/.runtimeconfig.json
 ```
 
-You can also just run `npm run emulators`.
+A sample configuration file can be found at:
 
-We recommend using the emulators [import and export](https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data) functionality to make development easier.
+```
+firebase/functions/.runtimeconfig.json.local.example
+```
 
-!!! question ""
-Please refer to the Cloud Functions Emulator [section](faq.md#cloud-functions-emulator) at [**❓Troubleshooting / FAQ**](faq.md) for common issues and resolutions!
+Copy the example and fill in any required values.
+
+---
+
+### Running Everything with One Command
+
+The recommended way to run the full local development environment is:
+
+```
+npm run dev
+```
+
+This can be run from either the repo root or the `firebase/functions` directory. It runs `run-dev.sh`, which orchestrates the entire startup:
+
+1. Runs `flutter pub get` in `client/`, `data_models/`, and `firebase/functions/` (skipped if dependencies haven't changed)
+2. Runs `npm install` in `firebase/functions/` (skipped if `package.json` hasn't changed)
+3. Rebuilds `data_models` with `build_runner` (skipped if source files haven't changed)
+4. Rebuilds functions with `build_runner` (skipped if source files haven't changed)
+5. Stops any leftover emulator processes, then starts the emulators
+6. Waits for emulators to become ready on their ports
+7. Launches the Flutter client pointing at the local emulators
+
+Steps 1–4 use stamp files in `.local/dev-stamps/` to skip unnecessary work.
+
+**Optional environment variables:**
+
+| Variable | Effect |
+|---|---|
+| `SKIP_DART_BUILD=1` | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
+| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging |
+
+These are set inline before the command, for example:
+
+```
+FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
+```
+**Troubleshooting:**
+* If you encounter the error "Could not find `bin/build_runner.dart` in package `build_runner`", navigate to the directory where the build command failed and run `flutter pub get` manually.
+
+---
+
+### Running Emulators Only (Without the Client)
+
+If you want to start only the emulators without the Flutter client, run from the `firebase/functions` directory:
+
+```
+npm run emulators
+```
+
+This script will:
+
+1. Build the Dart functions using `build_runner`
+2. Start the Firebase emulator suite for:
+   - Firestore
+   - Functions
+   - Auth
+   - Pub/Sub
+   - Realtime Database
+
+Alternatively you can run the underlying script directly:
+
+```
+# from within the firebase/functions directory:
+./emulators-start.sh
+```
+
+---
+
+### Restarting or Stopping the Emulators
+
+Firebase emulators spawn multiple background processes (including Java processes). If a previous run terminates unexpectedly, emulator ports may remain occupied and prevent startup.
+
+To safely stop all emulator processes run:
+
+```
+./emulators-stop.sh
+```
+
+Then restart them with:
+
+```
+./emulators-start.sh
+```
+
+Or with npm:
+
+```
+npm run emulators
+```
+
+---
+
+### Why the Stop Script Exists
+
+You may encounter errors like:
+
+```
+Port 8080 is already in use
+```
+
+This typically happens if emulator processes did not shut down cleanly.
+
+Do **not** attempt to fix this by killing Java processes manually, for example:
+
+```
+pkill -f java
+```
+
+That approach can terminate unrelated tools such as:
+
+- VS Code language servers
+- Gradle daemons
+- other development processes
+
+Instead, the project provides `emulators-stop.sh`, which performs a **deterministic shutdown**:
+
+1. Requests a graceful shutdown from the Firebase Emulator Hub (`localhost:4400`)
+2. Waits for emulator ports to actually close
+3. If necessary, terminates only processes listening on known emulator ports
+
+This ensures that unrelated processes are never affected.
+
+---
+
+### Inspecting Emulator Ports Manually
+
+If the emulators still fail to start, you can inspect which processes are using the emulator ports with:
+
+```
+lsof -nP -iTCP:4400 -iTCP:4000 -iTCP:8080 -iTCP:8085 -iTCP:9000 -iTCP:9099 -iTCP:9150 -iTCP:5001 -sTCP:LISTEN
+```
+
+If anything appears in the output, run:
+
+```
+./emulators-stop.sh
+```
+
+to cleanly terminate those processes.
+
+---
+
+### Emulator Data Import / Export
+
+We recommend using the Firebase emulator import/export functionality to preserve development data between runs.
+
+Documentation:  
+<https://firebase.google.com/docs/emulator-suite/connect_firestore#import_and_export_data>
+
+This allows you to seed Firestore or other services with test data and reuse it across sessions.
+
+---
+
+### Important Notes
+
+- Run the emulators **before starting the Flutter client**.
+- Frankly currently expects the **default Firestore database name** (`default`).
+- Always run emulator commands from the `firebase/functions` directory.
 
 ### Optional: Setup Firebase Cloud Project
 
@@ -284,28 +440,26 @@ Once you have the keys set up, you can follow the below checklist to test that k
 
 Mux streaming is used when a customer wants to stream video from a third party streaming service, such as Zoom, to Frankly. Essentially the customer will record video from the third party platform, the data is sent to Mux, which will then notify Frankly's MuxWebhook Firebase function that a stream has started. Once the stream has started, the Frankly event page will display the streaming video.
 
-1.  Using [Mux's instructions](https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token), get a new access token. Use the environment of your choice and set the permission level to "Mux Video".
+1. Using [Mux's instructions](https://docs.mux.com/guides/start-live-streaming#1-get-an-api-access-token), get a new access token. Use the environment of your choice and set the permission level to "Mux Video".
 
-2.  Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
+2. Set up Mux secrets for your local development environment, either by running the firebase command line or copying and pasting the information.
 
-    === "Command Line"
-    As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
-    `     firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"
-    `
-    === "Copy/Paste"
-    Or, paste your token and secret into the `.runtimeconfig.json` file where the `mux` field is.
-    `       "mux": {
-        "secret": "...",
-        "token_id": "..."
-      },
-    `
+   === "Command Line"
+   As the names suggest, the mux.token_id corresponds to your Mux token ID and mux.secret corresponds to your Mux token secret.
+   `firebase functions:config:set mux.secret="<YOUR_VALUE_HERE>" mux.token_id="<YOUR_VALUE_HERE>"`
+   === "Copy/Paste"
+   Or, paste your token and secret into the `.runtimeconfig.json` file where the `mux` field is.
+   `"mux": {
+  "secret": "...",
+  "token_id": "..."
+},`
 
-3.  To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
+3. To connect Mux to the [MuxWebhooks cloud function](https://github.com/berkmancenter/frankly/blob/staging/firebase/functions/lib/events/live_meetings/mux_webhooks.dart), the function first needs to be deployed to Google Cloud Run Functions. Get the URL of the deployed function provided by Google Cloud. The format of this URL will differ depending on which version of Cloud Run you are running, but should look like one of the following:
 
-    > https://us-central1-myproject.cloudfunctions.net/MuxWebhooks
-    > https://service-name-12851330326.region.run.app/MuxWebhooks
+   > <https://us-central1-myproject.cloudfunctions.net/MuxWebhooks>
+   > <https://service-name-12851330326.region.run.app/MuxWebhooks>
 
-4.  Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
+4. Login to Mux and go to Settings > Webhooks. Select the environment for which you want to use the webhook, then click “Create new webhook.” For the _URL to Notify_ field, provide the URL for your deployed MuxWebhooks function. Then click "Create webhook."
 
 #### 👾 Testing your setup
 
@@ -324,7 +478,7 @@ The logs displayed on the Logging page should indicate that the MuxWebhook Fireb
 2. Open Zoom and verify you have livestreaming enabled using [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_4b4ded3d-3f6b-4965-baaa-3692f947e36c) steps. Then follow [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_62b792dc-3cf9-4b62-848d-93ee9e412a7c) steps to setup your livestreaming event on Zoom. Use the following values:
    - For Stream URL, use the Stream URL provided on the Frankly event page.
    - For Stream Key, use the Stream Key provided on the Frankly event page.
-   - For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more ids]?status=joined
+   - For “Live streaming page URL,” use the page URL of the event setup page where you got the Streaming values above. The URL should look like this: <https://gen-hls-bkc-7627.web.app/space/[ids]/discuss/[more> ids]?status=joined
 3. Visit your Google Cloud Platform Logging page so you can scan for any errors during the live stream test.
 4. When you are ready, start the live stream on Zoom using [these](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0064210#h_0cd3b33b-0172-4199-bd19-88ba6b57f173) steps
 
@@ -357,6 +511,7 @@ The following should be true if your Mux setup works as expected:
       These settings are required so that users are able to crop images. They also ensure that all images, cropped or not, are compressed before storage).
 
    2. On the _General_ panel, use this configuration for videos:
+
       ```
       - Name: "frankly-video-default" (or whatever you'd like)
       - Signing mode: Unsigned
@@ -415,7 +570,7 @@ The default debug platform is Web (Chrome), so please ensure it is selected as t
 
 ### .env File
 
-You will need to create a **.env** file for client configuration. Copy `client/.env.example.local` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
+You will need to create a **.env** file for client configuration. Copy `client/.env.local.example` to `client/.env` and update the missing secrets marked with `<value>` accordingly. The VSCode profiles assume the .env file lives in the `client` directory.
 
 You can also add an `EMULATORS` environment variable to override the default Emulators profile behavior of running `firestore, auth, functions, database`. Set the value to any desired combination of emulators.
 

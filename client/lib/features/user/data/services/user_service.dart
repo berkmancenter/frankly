@@ -171,12 +171,28 @@ class UserService with ChangeNotifier {
 
   PublicUserInfo getDefaultPublicUserInfo({String? displayName}) {
     final currentUser = _currentUser!;
+    // Auth emulator users rarely have displayName set. Prefer the explicitly
+    // passed displayName (from registration), fall back to the auth displayName,
+    // and finally derive initials from the email address before giving up and
+    // using the uid prefix. This ensures existing-user login and page refresh
+    // produce the same non-null value as new account creation.
+    final resolvedName = firstAndLastInitial(displayName) ??
+        firstAndLastInitial(currentUser.displayName) ??
+        firstAndLastInitial(currentUser.email) ??
+        'User-${currentUser.uid.substring(0, 4)}';
+    if (kDebugMode) {
+      loggingService.log(
+        'getDefaultPublicUserInfo: name source = '
+        'passed="$displayName" '
+        'auth="${currentUser.displayName}" '
+        'email="${currentUser.email}" '
+        '-> resolved="$resolvedName"',
+      );
+    }
     return PublicUserInfo(
       id: currentUser.uid,
       agoraId: uidToInt(currentUser.uid),
-      displayName:
-          firstAndLastInitial(displayName ?? currentUser.displayName) ??
-              'User-${currentUser.uid.substring(0, 4)}',
+      displayName: resolvedName,
       imageUrl: isNullOrEmpty(currentUser.photoURL)
           ? 'https://picsum.photos/seed/${currentUser.uid}/80'
           : currentUser.photoURL,
@@ -213,7 +229,7 @@ class UserService with ChangeNotifier {
     // Update the agora ID for anyone who logs in
     unawaited(updateCurrentUserInfo(userInfo, [PublicUserInfo.kFieldAgoraId]));
 
-    UserInfoProvider.reloadUser(currentUserId!);
+    UserInfoProvider.reloadUser(userInfo.id);
   }
 
   Future<void> updateCurrentUserInfo(
@@ -224,7 +240,7 @@ class UserService with ChangeNotifier {
       userInfo: newUserInfo,
       keys: keys,
     );
-    UserInfoProvider.reloadUser(currentUserId!);
+    UserInfoProvider.reloadUser(newUserInfo.id);
   }
 
   Future<UserCredential> signInAnonymously() async {
@@ -246,14 +262,11 @@ class UserService with ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+    await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    final user = userCredential.user;
-    if (user != null) {
-      await _handleUserSignedIn(user);
-    }
+    // authStateChanges listener handles _handleUserSignedIn, same as registerWithEmail
   }
 
   Future<void> signInWithGoogle() async {
