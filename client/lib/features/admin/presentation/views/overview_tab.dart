@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 
 class OverviewTab extends StatefulWidget {
   const OverviewTab({super.key});
-  
+
   @override
   State<OverviewTab> createState() => _OverviewTabState();
 }
@@ -68,7 +68,7 @@ class _OverviewTabState extends State<OverviewTab> {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(top: 20, left: 8),
+              padding: const EdgeInsets.only(top: 20, left: 8),
               child: Text(
                 label,
                 style: context.theme.textTheme.titleLarge,
@@ -87,7 +87,7 @@ class _OverviewTabState extends State<OverviewTab> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(50, 30, 0, 0),
+                padding: const EdgeInsets.fromLTRB(50, 30, 0, 0),
                 child: Text(
                   label,
                   style: context.theme.textTheme.titleLarge,
@@ -394,7 +394,12 @@ class _OverviewTabState extends State<OverviewTab> {
 
   Future<void> _removeImage() async {
     setState(() {
-      _community = _community.copyWith(profileImageUrl: generateRandomImageUrl(seed: _community.id.hashCode, resolution: 160));
+      _community = _community.copyWith(
+        profileImageUrl: generateRandomImageUrl(
+          seed: _community.id.hashCode,
+          resolution: 160,
+        ),
+      );
     });
     await cloudFunctionsCommunityService.removeImage(
       community: _community,
