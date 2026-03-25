@@ -257,7 +257,9 @@ class _DataTabState extends State<DataTab> {
     bool showRecording,
     bool showRegistrant,
   ) {
-    bool recordingSelected = showRecording;
+    bool recordingSelected =
+        showRecording && (_recordingParts[event.id] ?? 0) > 0;
+    bool recordingAutoChecked = recordingSelected;
     bool registrantListSelected = showRegistrant;
 
     showDialog<void>(
@@ -335,8 +337,15 @@ class _DataTabState extends State<DataTab> {
                   ValueNotifier(_recordingParts[event.id]);
               return ValueListenableBuilder<int?>(
                 valueListenable: notifier,
-                builder: (ctx2, parts, _) =>
-                    buildAlertDialog(setDialogState, parts),
+                builder: (ctx2, parts, _) {
+                  if ((parts ?? 0) > 0 && !recordingAutoChecked) {
+                    recordingAutoChecked = true;
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setDialogState(() => recordingSelected = true);
+                    });
+                  }
+                  return buildAlertDialog(setDialogState, parts);
+                },
               );
             }
             return buildAlertDialog(setDialogState, null);
