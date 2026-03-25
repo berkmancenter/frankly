@@ -694,17 +694,18 @@
   "recentRooms": "Salas Recientes",
   "record": "Grabar",
   "recording": "Grabando",
-  "recordingNotAvailable": "Grabación no disponible",
   "recordingPreparing": "Preparando grabación...",
-  "downloadRecordingParts": "Descargar grabación ({count} partes)",
-  "@downloadRecordingParts": {
+  "recordingStatusChecking": "(checking...)",
+  "recordingStatusPreparing": "(preparing...)",
+  "recordingStatusFailed": "(failed)",
+  "recordingStatusParts": "({count} parts)",
+  "@recordingStatusParts": {
     "placeholders": {
       "count": {
         "type": "int"
       }
     }
   },
-  "retryRecording": "Error al descargar grabación - reintentar",
   "refresh": "Actualizar",
   "refreshConnection": "Actualizar conexión",
   "refreshGuide": "Actualizar Guía",
