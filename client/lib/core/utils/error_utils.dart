@@ -6,6 +6,7 @@ import 'package:client/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'dart:async';
 
