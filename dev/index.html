@@ -362,6 +362,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#git-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global gitignore
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -839,6 +867,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#git-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global gitignore
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1279,6 +1335,20 @@ a. Set the path to chromium so flutter can find it:
 
 <div class="admonition question"></div>
 <p>Please check <a href="../faq/"><strong>❓Troubleshooting / FAQ</strong></a> for suggested resolutions to common Flutter installation errors.</p>
+<h2 id="git-configuration">Git Configuration</h2>
+<h3 id="global-gitignore">Global gitignore</h3>
+<p>macOS generates <code>.DS_Store</code> files in directories you browse. These are OS-level metadata files
+with no relevance to the project, and they will show up as untracked files in <code>git status</code> if not
+excluded.</p>
+<p>They are <strong>not</strong> listed in the project's <code>.gitignore</code> because that file describes artifacts of
+the project, not artifacts of your operating system. Adding OS-specific files there would clutter
+it for contributors on other platforms (Linux, Windows).</p>
+<p>Instead, exclude them once globally on your machine so they're silently ignored in every repo:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.excludesfile<span class="w"> </span>~/.gitignore_global
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;.DS_Store&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.gitignore_global
+</code></pre></div>
+<p>This only needs to be done once per machine. If your <code>~/.gitignore_global</code> already exists, the
+second command safely appends to it.</p>
 <h2 id="environment-setup">Environment Setup</h2>
 <p>These are the steps for getting started with developing Frankly:</p>
 <ol>
