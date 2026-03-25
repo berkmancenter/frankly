@@ -151,21 +151,17 @@ class MessageDisplayState extends State<MessageDisplay> {
                           // Note: There are highlighting issues due to the below
                           // https://github.com/Cretezy/flutter_linkify/issues/59
                           // https://github.com/Cretezy/flutter_linkify/issues/54
-                          Semantics(
-                            label: context.l10n.chatMessage,
-                            child: SelectableLinkify(
-                              text: widget.message.message ?? '',
-                              style:
-                                  context.theme.textTheme.bodyLarge!.copyWith(
-                                color: Theme.of(context).isDark
-                                    ? context.theme.colorScheme.onPrimary
-                                    : context.theme.colorScheme.primary,
-                              ),
-                              options: LinkifyOptions(looseUrl: true),
-                              onOpen: (link) async {
-                                await launch(link.url);
-                              },
+                          SelectableLinkify(
+                            text: widget.message.message ?? '',
+                            style: context.theme.textTheme.bodyLarge!.copyWith(
+                              color: Theme.of(context).isDark
+                                  ? context.theme.colorScheme.onPrimary
+                                  : context.theme.colorScheme.primary,
                             ),
+                            options: LinkifyOptions(looseUrl: true),
+                            onOpen: (link) async {
+                              await launch(link.url);
+                            },
                           ),
                       ],
                     ),
