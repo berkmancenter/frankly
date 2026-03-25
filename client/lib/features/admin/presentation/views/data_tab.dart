@@ -113,15 +113,17 @@ class _DataTabState extends State<DataTab> {
       return const SizedBox.shrink();
     }
 
-    // Download registrant list directly. Recordings are handled by the
-    // inline _buildRecordingWidget shown alongside this button.
+    final showRecording = eventInPast && hasRecording;
+    final showRegistrant = participants.isNotEmpty;
+
     return ActionButton(
       type: ActionButtonType.text,
       icon: const Icon(Icons.file_download_outlined),
       loadingHeight: 16,
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
-      onPressed: () => downloadRegistrantList(event, participants),
+      onPressed: () =>
+          _showDownloadDialog(event, participants, showRecording, showRegistrant),
       text: context.l10n.dataDownload,
     );
   }
@@ -228,32 +230,77 @@ class _DataTabState extends State<DataTab> {
     });
   }
 
-  Widget _buildRecordingWidget(Event event) {
-    final parts = _recordingParts[event.id];
+  void _showDownloadDialog(
+    Event event,
+    Iterable<Participant> participants,
+    bool showRecording,
+    bool showRegistrant,
+  ) {
+    bool recordingSelected = showRecording;
+    bool registrantListSelected = showRegistrant;
 
-    if (!_recordingParts.containsKey(event.id) || parts == null || parts == 0) {
-      return ActionButton(
-        type: ActionButtonType.outline,
-        loadingHeight: 16,
-        onPressed: null,
-        text: context.l10n.recordingPreparing,
-      );
-    }
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            void pressedHandler() async {
+              if (showRecording && recordingSelected) {
+                await _downloadAllRecordings(event);
+              }
+              if (showRegistrant && registrantListSelected) {
+                await alertOnError(context, () async {
+                  await downloadRegistrantList(event, participants);
+                });
+              }
+              if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+            }
 
-    if (parts == -1) {
-      return ActionButton(
-        type: ActionButtonType.outline,
-        loadingHeight: 16,
-        onPressed: () => _retryRecordingCheck(event),
-        text: context.l10n.retryRecording,
-      );
-    }
+            final downloadEnabled = recordingSelected || registrantListSelected;
 
-    return ActionButton(
-      type: ActionButtonType.outline,
-      loadingHeight: 16,
-      onPressed: () => _downloadAllRecordings(event),
-      text: context.l10n.downloadRecordingParts(parts),
+            return AlertDialog(
+              title: Text(context.l10n.selectData),
+              backgroundColor:
+                  context.theme.colorScheme.surfaceContainerHighest,
+              contentPadding: EdgeInsets.zero,
+              titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
+              content: Material(
+                color: context.theme.colorScheme.surfaceContainer,
+                child: SingleChildScrollView(
+                  child: ListBody(
+                    children: [
+                      if (showRecording)
+                        CheckboxListTile(
+                          value: recordingSelected,
+                          onChanged: (value) => setDialogState(
+                              () => recordingSelected = value ?? false),
+                          title: Text(context.l10n.recording),
+                        ),
+                      if (showRegistrant)
+                        CheckboxListTile(
+                          value: registrantListSelected,
+                          onChanged: (value) => setDialogState(
+                              () => registrantListSelected = value ?? false),
+                          title: Text(context.l10n.registrationDataDownload),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(context.l10n.cancel),
+                ),
+                TextButton(
+                  onPressed: downloadEnabled ? pressedHandler : null,
+                  child: Text(context.l10n.download),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -429,10 +476,6 @@ class _DataTabState extends State<DataTab> {
                         eventInPast,
                         hasRecording,
                       ),
-                      if (eventInPast && hasRecording) ...[
-                        const SizedBox(height: 8),
-                        _buildRecordingWidget(event),
-                      ],
                     ],
                   ),
                 ),
@@ -447,10 +490,6 @@ class _DataTabState extends State<DataTab> {
                       eventInPast,
                       hasRecording,
                     ),
-                    if (eventInPast && hasRecording) ...[
-                      const SizedBox(height: 8),
-                      _buildRecordingWidget(event),
-                    ],
                   ],
                 ),
               ],
