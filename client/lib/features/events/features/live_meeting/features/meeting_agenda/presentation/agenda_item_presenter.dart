@@ -126,7 +126,7 @@ class AgendaItemPresenter {
   void duplicateCard() {
     _agendaProvider.addNewUnsavedItem(agendaItem: _model.agendaItem);
     _view.showMessage(
-      'Agenda item was duplicated!',
+      appLocalizationService.getLocalization().agendaItemWasDuplicated,
       toastType: ToastType.success,
     );
   }
@@ -146,7 +146,7 @@ class AgendaItemPresenter {
       if (_model.agendaItem.type == AgendaItemType.poll &&
           _model.agendaItemPollData.answers.length !=
               _model.agendaItemPollData.answers.toSet().length) {
-        throw VisibleException('Please remove duplicate answers.');
+        throw VisibleException(appLocalizationService.getLocalization().pleaseRemoveDuplicateAnswers);
       }
 
       String title = '';
@@ -320,25 +320,26 @@ class AgendaItemPresenter {
   String getTitle() {
     final agendaItemType = _model.agendaItem.type;
 
+    final l10n = appLocalizationService.getLocalization();
     switch (agendaItemType) {
       case AgendaItemType.text:
         final title = _model.agendaItemTextData.title;
-        return title.isEmpty ? 'Text Title' : title;
+        return title.isEmpty ? l10n.textTitle : title;
       case AgendaItemType.video:
         final title = _model.agendaItemVideoData.title;
-        return title.isEmpty ? 'Video' : title;
+        return title.isEmpty ? l10n.video : title;
       case AgendaItemType.image:
         final title = _model.agendaItemImageData.title;
-        return title.isEmpty ? 'Image' : title;
+        return title.isEmpty ? l10n.image : title;
       case AgendaItemType.poll:
         final question = _model.agendaItemPollData.question;
-        return question.isEmpty ? 'Question' : question;
+        return question.isEmpty ? l10n.question : question;
       case AgendaItemType.wordCloud:
         final prompt = _model.agendaItemWordCloudData.prompt;
-        return prompt.isEmpty ? 'Word Cloud' : prompt;
+        return prompt.isEmpty ? l10n.wordCloud : prompt;
       case AgendaItemType.userSuggestions:
         final title = _model.agendaItemUserSuggestionsData.headline;
-        return title.isEmpty ? 'Suggestions' : title;
+        return title.isEmpty ? l10n.suggestions : title;
     }
   }
 
