@@ -707,7 +707,18 @@
   "recentRooms": "Salas Recientes",
   "record": "Grabar",
   "recording": "Grabando",
-  "recordingNotAvailable": "Grabación no disponible",
+  "recordingPreparing": "Preparando grabación...",
+  "recordingStatusChecking": "(checking...)",
+  "recordingStatusPreparing": "(preparing...)",
+  "recordingStatusFailed": "(failed)",
+  "recordingStatusParts": "({count} parts)",
+  "@recordingStatusParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "refresh": "Actualizar",
   "refreshConnection": "Actualizar conexión",
   "refreshGuide": "Actualizar Guía",

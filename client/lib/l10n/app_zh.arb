@@ -710,7 +710,18 @@
   "recentRooms": "最近的房间",
   "record": "录制",
   "recording": "录制中  ",
-  "recordingNotAvailable": "录制不可用",
+  "recordingPreparing": "正在准备录制...",
+  "recordingStatusChecking": "(checking...)",
+  "recordingStatusPreparing": "(preparing...)",
+  "recordingStatusFailed": "(failed)",
+  "recordingStatusParts": "({count} parts)",
+  "@recordingStatusParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "refresh": "刷新",
   "refreshConnection": "刷新连接",
   "refreshGuide": "刷新指南",

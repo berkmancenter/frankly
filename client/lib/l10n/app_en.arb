@@ -633,14 +633,25 @@
   "reassign": "Reassign",
   "recentRooms": "Recent Rooms",
   "record": "Record",
-  "recording": "Recording",
-  "recordingNotAvailable": "Recording is not available.",
+  "recording": "Recordings",
+  "recordingPreparing": "Preparing recording...",
+  "recordingStatusChecking": "(checking...)",
+  "recordingStatusPreparing": "(preparing...)",
+  "recordingStatusFailed": "(failed)",
+  "recordingStatusParts": "({count} parts)",
+  "@recordingStatusParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "refresh": "Refresh",
   "refreshConnection": "Refresh Connection",
   "refreshGuide": "Refresh Guide",
   "registered": "Registered",
   "registrantList": "Registrant List",
-  "registrationDataDownload": "Registration Data Download",
+  "registrationDataDownload": "Registrations",
   "remove": "Remove",
   "removeParticipant": "Remove Participant",
   "removeSuggestion": "Remove Suggestion",
