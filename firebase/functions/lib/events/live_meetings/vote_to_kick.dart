@@ -42,7 +42,7 @@ class VoteToKick extends OnCallMethod<VoteToKickRequest> {
       logMessage: 'User does not have active status: ${participant.status}',
     );
     final modStatuses = [
-      MembershipStatus.mod,
+      MembershipStatus.moderator,
       MembershipStatus.owner,
       MembershipStatus.admin,
     ];

@@ -1,13 +1,12 @@
-import 'dart:math';
-
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/core/utils/visible_exception.dart';
+import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 import 'dart:async';
 
@@ -45,26 +44,14 @@ Future<void> showAlert(BuildContext context, String alert) =>
     showCustomDialog<void>(
       context: context,
       builder: (innerContext) => AlertDialog(
-        content: SingleChildScrollView(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: HeightConstrainedText(
-                    alert,
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
-                onPressed: () => Navigator.of(innerContext).pop(),
-              ),
-            ],
+        title: Text(context.l10n.error),
+        content: HeightConstrainedText(alert),
+        actions: [
+          ActionButton(
+            onPressed: () => Navigator.of(innerContext).pop(),
+            child: Text(context.l10n.ok),
           ),
-        ),
+        ],
       ),
     );
 
@@ -90,23 +77,26 @@ Future<T?> alertOnError<T>(
 Future<void> authMessageOnError<T>(
   Future<T> Function() action, {
   required Function(String errorMessage, String code) errorCallback,
-Function()? callback ,
+  Function()? callback,
 }) async {
   try {
     await action();
-    callback!();
+    callback?.call();
   } catch (e, s) {
     loggingService.log(e, logType: LogType.error);
     loggingService.log(s, logType: LogType.error);
 
     final sanitizedError = sanitizeError(e.toString());
-    
+
     if (e is FirebaseAuthException) {
       errorCallback(sanitizedError, e.code);
     } else if (e is VisibleException) {
       errorCallback(sanitizedError, e.msg);
+    } else {
+      // Non-Firebase, non-Visible exception: pass the sanitized message with a
+      // generic code so the caller can still render something useful.
+      errorCallback(sanitizedError, 'unknown');
     }
-
   }
 }
 
