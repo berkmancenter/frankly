@@ -16,6 +16,7 @@ import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/data/providers/attended_prerequisite_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
+import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_presenter.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_tag_presenter.dart';
 import 'package:client/features/templates/features/edit_template/presentation/views/edit_template_drawer.dart';
@@ -719,6 +720,117 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
     );
   }
 
+  Widget _buildOptionsButton() {
+    final communityProvider = context.read<CommunityProvider>();
+    final permissions = context.read<CommunityPermissionsProvider>();
+    final canDeleteTemplate = permissions.canDeleteTemplate(widget.template);
+    final isRemoved = widget.template.status == TemplateStatus.removed;
+
+    return PopupMenuButton<String>(
+      padding: EdgeInsets.zero,
+      offset: Offset(0, 50),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      tooltip: context.l10n.showOptions,
+      icon: Container(
+        decoration: BoxDecoration(
+          color: context.theme.colorScheme.primary,
+          shape: BoxShape.circle,
+        ),
+        padding: EdgeInsets.all(10),
+        child: Icon(
+          Icons.more_horiz,
+          size: 20,
+          color: context.theme.colorScheme.onPrimary,
+        ),
+      ),
+      onSelected: (value) async {
+        if (value == 'duplicateTemplate') {
+          final newId = firestoreDatabase.generateNewDocId(
+            collectionPath: firestoreDatabase
+                .templatesCollection(communityProvider.community.id)
+                .path,
+          );
+
+          // Get existing templates to check for duplicate titles
+          final templates = await context.read<TemplatePageProvider>().templatesFuture;
+          final existingTitles = templates.map((t) => t.title).toSet();
+
+          // Create a unique title using a counter if multiple duplicates exist
+          final baseTitle = 'Copy of ${widget.template.title}';
+          String newTitle = baseTitle;
+          int counter = 2;
+          while (existingTitles.contains(newTitle)) {
+            newTitle = '$baseTitle ($counter)';
+            counter++;
+          }
+
+          await CreateTemplateDialog.show(
+            communityPermissionsProvider: permissions,
+            communityProvider: communityProvider,
+            template: widget.template.copyWith(
+              id: newId,
+              title: newTitle,
+            ),
+            templateActionType: TemplateActionType.duplicate,
+          );
+        } else if (value == 'removeTemplate') {
+          await alertOnError(context, () async {
+            final newStatus = isRemoved
+                ? TemplateStatus.active
+                : TemplateStatus.removed;
+            await firestoreDatabase.updateTemplate(
+              communityId: communityProvider.communityId,
+              template: widget.template.copyWith(status: newStatus),
+              keys: [Template.kFieldTemplateStatus],
+            );
+          });
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 'duplicateTemplate',
+          padding: EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.copy),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  context.l10n.duplicateTemplate,
+                  style: context.theme.textTheme.bodyLarge,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (canDeleteTemplate)
+          PopupMenuItem(
+            value: 'removeTemplate',
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  isRemoved ? Icons.restore : Icons.delete_outline,
+                  color: isRemoved ? null : context.theme.colorScheme.error,
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    isRemoved ? 'Reactivate' : 'Remove template',
+                    style: context.theme.textTheme.bodyLarge?.copyWith(
+                      color: isRemoved ? null : context.theme.colorScheme.error,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
   Widget _buildEditButton() {
     final communityProvider = context.read<CommunityProvider>();
 
@@ -798,6 +910,8 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        _buildOptionsButton(),
+                        SizedBox(width: 10),
                         _buildSettingsButton(),
                         SizedBox(width: 10),
                         _buildEditButton(),
@@ -896,6 +1010,8 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                _buildOptionsButton(),
+                                SizedBox(width: 10),
                                 _buildSettingsButton(),
                                 SizedBox(width: 10),
                                 _buildEditButton(),

@@ -8,6 +8,7 @@ import 'package:client/core/localization/localization_helper.dart';
 
 enum EventPopUpMenuSelection {
   refreshGuide,
+  duplicateTemplate,
   createGuideFromEvent,
   duplicateEvent,
   downloadChatData,
@@ -42,6 +43,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     return <EventPopUpMenuSelection>[
       if (eventHasTemplate && permissions.canRefreshGuide)
         EventPopUpMenuSelection.refreshGuide,
+        EventPopUpMenuSelection.duplicateTemplate,
       if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
@@ -125,6 +127,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
         return context.l10n.refreshGuide;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return context.l10n.duplicateTemplate;
       case EventPopUpMenuSelection.createGuideFromEvent:
         return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
@@ -146,6 +150,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
         return Icons.refresh;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return Icons.copy;
       case EventPopUpMenuSelection.createGuideFromEvent:
         return Icons.bookmark_add_outlined;
       case EventPopUpMenuSelection.duplicateEvent:
