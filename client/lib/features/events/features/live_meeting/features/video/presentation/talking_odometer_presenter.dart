@@ -242,9 +242,6 @@ class TalkingOdometerPresenterHelper {
   static Duration _idleThreshold(int participants) =>
       Duration(minutes: 2 * participants);
 
-  static const Duration _deliberationsTalkingThreshold = Duration(minutes: 3);
-  static const Duration _deliberationsIdleThreshold = Duration(minutes: 7);
-
   void updateTalkingState({
     required TalkingState talkingState,
     required TalkingOdometerModel model,

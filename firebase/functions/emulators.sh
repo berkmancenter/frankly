@@ -25,6 +25,13 @@ if [[ "${FRANKLY_DEBUG_FUNCTIONS:-0}" == "1" ]]; then
   inspect_flag=(--inspect-functions)
 fi
 
+# Export GOOGLE_APPLICATION_CREDENTIALS if a local service account key exists
+# and the variable is not already set. Enables file.getSignedUrl() in the emulator.
+SERVICE_ACCOUNT_KEY="$SCRIPT_DIR/service-account-key.json"
+if [[ -f "$SERVICE_ACCOUNT_KEY" && -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; then
+  export GOOGLE_APPLICATION_CREDENTIALS="$SERVICE_ACCOUNT_KEY"
+fi
+
 exec firebase emulators:start \
   --only firestore,functions,auth,pubsub,database \
   --project "$PROJECT_ID" \

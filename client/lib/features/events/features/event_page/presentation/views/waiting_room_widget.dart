@@ -57,9 +57,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
     final waitingBufferSecondsInString =
         (waitingBufferDuration.inSeconds % 60).toString().padLeft(2, '0');
 
-    // Hide the ability to toggle chat on and off for now
-    const showChatOption = false;
-
     final waitingBufferDurationDescription =
         prettyDuration(waitingBufferDuration)
             .replaceAll('minute', 'min')
@@ -250,27 +247,8 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           ),
           SizedBox(height: 24),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (showChatOption) ...[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Switch(
-                      value: _model.waitingRoomInfo.enableChat,
-                      activeColor: Theme.of(context).colorScheme.secondary,
-                      activeTrackColor: Theme.of(context).primaryColor,
-                      onChanged: _presenter.enableChat,
-                    ),
-                    SizedBox(width: 10),
-                    HeightConstrainedText(
-                      'Enable Chat',
-                      style: AppTextStyle.bodyMedium,
-                    ),
-                  ],
-                ),
-              ] else
-                SizedBox.shrink(),
               ActionButton(
                 loadingHeight: 10.0,
                 color: context.theme.colorScheme.primary,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/services.dart';
 
 /// list of allowed social media platforms
 List<SocialMediaItem> allowedSocialPlatforms = [
