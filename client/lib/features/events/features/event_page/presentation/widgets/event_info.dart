@@ -1,4 +1,5 @@
 import 'package:client/core/utils/date_utils.dart';
+import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
@@ -230,15 +231,10 @@ class _EventInfoState extends State<EventInfo> {
         .communityTemplatesStream(communityProvider.community.id)
         .first;
     final existingTitles = templates.map((t) => t.title).toSet();
-    
-    // Find a unique title
-    final baseTitle = 'Copy of ${template.title}';
-    String newTitle = baseTitle;
-    int counter = 2;
-    while (existingTitles.contains(newTitle)) {
-      newTitle = '$baseTitle ($counter)';
-      counter++;
-    }
+    final newTitle = generateUniqueCopyTitle(
+      template.title ?? '',
+      existingTitles,
+    );
 
     await CreateTemplateDialog.show(
       communityPermissionsProvider:

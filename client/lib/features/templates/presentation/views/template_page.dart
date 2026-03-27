@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
@@ -755,15 +756,10 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           // Get existing templates to check for duplicate titles
           final templates = await context.read<TemplatePageProvider>().templatesFuture;
           final existingTitles = templates.map((t) => t.title).toSet();
-
-          // Create a unique title using a counter if multiple duplicates exist
-          final baseTitle = 'Copy of ${widget.template.title}';
-          String newTitle = baseTitle;
-          int counter = 2;
-          while (existingTitles.contains(newTitle)) {
-            newTitle = '$baseTitle ($counter)';
-            counter++;
-          }
+          final newTitle = generateUniqueCopyTitle(
+            widget.template.title ?? '',
+            existingTitles,
+          );
 
           await CreateTemplateDialog.show(
             communityPermissionsProvider: permissions,
