@@ -126,8 +126,7 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
           ...modMemberships.documents,
         ]
             .where(
-              (element) =>
-                  !(element.data.getBool(Membership.kFieldInvisible) ?? false),
+              (element) => !(element.data.getBool(Membership.kFieldInvisible)),
             )
             .toList();
 
@@ -155,8 +154,7 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
 
         final currentNumFacilitators = facilitatorMemberships.documents
             .where(
-              (element) =>
-                  !(element.data.getBool(Membership.kFieldInvisible) ?? false),
+              (element) => !(element.data.getBool(Membership.kFieldInvisible)),
             )
             .length;
 

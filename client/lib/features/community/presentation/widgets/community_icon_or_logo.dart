@@ -1,10 +1,8 @@
 import 'package:client/core/utils/image_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';

@@ -82,6 +82,11 @@ class AgoraUtils {
       body: body,
     );
 
+    print('Acquire response (${result.statusCode}): ${result.body}');
+    if (result.statusCode < 200 || result.statusCode > 299) {
+      throw HttpsError(
+          HttpsError.internal, 'Acquire failed: ${result.body}', null);
+    }
     return convert.jsonDecode(result.body)["resourceId"];
   }
 

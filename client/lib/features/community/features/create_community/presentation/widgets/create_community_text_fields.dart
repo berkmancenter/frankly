@@ -92,7 +92,8 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
       // Invalid Website URL
       if (urlPart == null) {
         // Check if URL has proper format: http/https + host + TLD
-        if (!RegExp(r'^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$').hasMatch(value)) {
+        if (!RegExp(r'^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$')
+            .hasMatch(value)) {
           widget.onFieldsHaveErrors?.call(true);
           return context.l10n.enterValidWebsiteUrl;
         }
@@ -100,7 +101,7 @@ class _CreateCommunityTextFieldsState extends State<CreateCommunityTextFields> {
       }
       final uri = Uri.tryParse(value);
 
-      if (uri == null)  {
+      if (uri == null) {
         widget.onFieldsHaveErrors?.call(true);
         // Fallback error message
         return context.l10n.pleaseEnterValidUrl;
