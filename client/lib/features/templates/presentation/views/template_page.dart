@@ -818,7 +818,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    isRemoved ? 'Reactivate' : 'Remove template',
+                    isRemoved ? 'Reactivate' : 'Remove Template',
                     style: context.theme.textTheme.bodyLarge?.copyWith(
                       color: isRemoved ? null : context.theme.colorScheme.error,
                     ),
