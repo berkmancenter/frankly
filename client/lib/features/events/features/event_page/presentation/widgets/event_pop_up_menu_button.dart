@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/styles/styles.dart';
@@ -39,10 +40,12 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
   List<EventPopUpMenuSelection> _getMenuOptions(BuildContext context) {
     final eventHasTemplate = widget.event.templateId != defaultTemplateId;
     final permissions = context.watch<EventPermissionsProvider>();
+    final communityPermissions = context.watch<CommunityPermissionsProvider>();
 
     return <EventPopUpMenuSelection>[
       if (eventHasTemplate && permissions.canRefreshGuide)
         EventPopUpMenuSelection.refreshGuide,
+      if (communityPermissions.canCreateTemplate)
         EventPopUpMenuSelection.duplicateTemplate,
       if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,

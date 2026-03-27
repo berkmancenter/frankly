@@ -723,6 +723,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
   Widget _buildOptionsButton() {
     final communityProvider = context.read<CommunityProvider>();
     final permissions = context.read<CommunityPermissionsProvider>();
+    final canCreateTemplate = permissions.canCreateTemplate;
     final canDeleteTemplate = permissions.canDeleteTemplate(widget.template);
     final isRemoved = widget.template.status == TemplateStatus.removed;
 
@@ -787,23 +788,24 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
         }
       },
       itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 'duplicateTemplate',
-          padding: EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.copy),
-              SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  context.l10n.duplicateTemplate,
-                  style: context.theme.textTheme.bodyLarge,
+        if (canCreateTemplate)
+          PopupMenuItem(
+            value: 'duplicateTemplate',
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.copy),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    context.l10n.duplicateTemplate,
+                    style: context.theme.textTheme.bodyLarge,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         if (canDeleteTemplate)
           PopupMenuItem(
             value: 'removeTemplate',
@@ -818,7 +820,7 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    isRemoved ? 'Reactivate' : 'Remove Template',
+                    isRemoved ? context.l10n.reactivate : context.l10n.removeTemplate,
                     style: context.theme.textTheme.bodyLarge?.copyWith(
                       color: isRemoved ? null : context.theme.colorScheme.error,
                     ),
