@@ -164,7 +164,7 @@
     "firebase/functions/lib/events/live_meetings/toggle_like_dislike_on_meeting_user_suggestion.dart": [
       "toggleLikeDislikeOnMeetingUserSuggestion"
     ],
-    "firebase/functions/lib/event/live_meetings/vote_to_kick.dart": [
+    "firebase/functions/lib/events/live_meetings/vote_to_kick.dart": [
       "VoteToKick"
     ],
     "firebase/functions/lib/events/live_meetings/update_presence_status.dart": [
