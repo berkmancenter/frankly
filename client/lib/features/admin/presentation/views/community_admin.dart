@@ -35,7 +35,7 @@ class CommunityAdminState extends State<CommunityAdmin>
     int initialIndex = 0;
     if (widget.tab != null) {
       switch (widget.tab) {
-        case 'overview':
+        case 'profile':
           break;
         case 'members':
           initialIndex = 1;
@@ -72,10 +72,11 @@ class CommunityAdminState extends State<CommunityAdmin>
         SizedBox(width: mobile ? 0 : 8),
         HeightConstrainedText(
           text,
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                fontSize: mobile ? 11 : 16,
+                fontSize: mobile ? 9 : 16,
               ),
-          maxLines: 1,
+          maxLines: 2,
         ),
       ],
     );
@@ -145,7 +146,7 @@ class CommunityAdminState extends State<CommunityAdmin>
                 null,
                 '',
                 'space/${community.displayId}/admin/${[
-                  'overview',
+                  'profile',
                   'members',
                   'data',
                   'settings',
