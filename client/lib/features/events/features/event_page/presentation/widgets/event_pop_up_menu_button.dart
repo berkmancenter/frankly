@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/styles/styles.dart';
@@ -8,6 +9,7 @@ import 'package:client/core/localization/localization_helper.dart';
 
 enum EventPopUpMenuSelection {
   refreshGuide,
+  duplicateTemplate,
   createGuideFromEvent,
   duplicateEvent,
   downloadChatData,
@@ -38,10 +40,13 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
   List<EventPopUpMenuSelection> _getMenuOptions(BuildContext context) {
     final eventHasTemplate = widget.event.templateId != defaultTemplateId;
     final permissions = context.watch<EventPermissionsProvider>();
+    final communityPermissions = context.watch<CommunityPermissionsProvider>();
 
     return <EventPopUpMenuSelection>[
       if (eventHasTemplate && permissions.canRefreshGuide)
         EventPopUpMenuSelection.refreshGuide,
+      if (communityPermissions.canCreateTemplate)
+        EventPopUpMenuSelection.duplicateTemplate,
       if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
@@ -125,6 +130,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
         return context.l10n.refreshGuide;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return context.l10n.duplicateTemplate;
       case EventPopUpMenuSelection.createGuideFromEvent:
         return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
@@ -146,6 +153,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
         return Icons.refresh;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return Icons.copy;
       case EventPopUpMenuSelection.createGuideFromEvent:
         return Icons.bookmark_add_outlined;
       case EventPopUpMenuSelection.duplicateEvent:

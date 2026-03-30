@@ -477,6 +477,7 @@
   "duplicateAction": "复制",
   "duplicateEvent": "复制活动",
   "duplicateItem": "复制项目",
+  "duplicateTemplate": "复制模板",
   "edit": "编辑",
   "editImage": "编辑图片",
   "editItem": "编辑项目",
