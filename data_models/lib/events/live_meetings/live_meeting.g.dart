@@ -28,6 +28,7 @@ _$_LiveMeeting _$$_LiveMeetingFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      recordingSessionId: json['recordingSessionId'] as String?,
     );
 
 Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$_LiveMeetingToJson(_$_LiveMeeting instance) =>
       'record': instance.record,
       'isMeetingCardMinimized': instance.isMeetingCardMinimized,
       'pinnedUserIds': instance.pinnedUserIds,
+      'recordingSessionId': instance.recordingSessionId,
     };
 
 _$_LiveMeetingParticipant _$$_LiveMeetingParticipantFromJson(
@@ -117,6 +119,7 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
           BreakoutRoomFlagStatus.unflagged,
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       record: json['record'] as bool? ?? false,
+      recordingSessionId: json['recordingSessionId'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
@@ -131,6 +134,7 @@ Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
       'flagStatus': _$BreakoutRoomFlagStatusEnumMap[instance.flagStatus]!,
       'createdDate': serverTimestamp(instance.createdDate),
       'record': instance.record,
+      'recordingSessionId': instance.recordingSessionId,
     };
 
 const _$BreakoutRoomFlagStatusEnumMap = {
