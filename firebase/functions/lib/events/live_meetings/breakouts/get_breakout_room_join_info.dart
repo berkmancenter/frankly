@@ -73,11 +73,20 @@ class GetBreakoutRoomJoinInfo
       throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
     }
 
+    final breakoutRoomPath =
+        '$liveMeetingPath/breakout-room-sessions/${liveMeeting.currentBreakoutSession?.breakoutRoomSessionId}/breakout-rooms/${request.breakoutRoomId}';
+
     final joinInfo = await liveMeetingUtils.getBreakoutRoomJoinInfo(
       communityId: event.communityId,
+      eventId: request.eventId,
+      breakoutSessionId:
+          liveMeeting.currentBreakoutSession?.breakoutRoomSessionId ?? '',
+      breakoutRoomPath: breakoutRoomPath,
       meetingId: breakoutRoom.roomId,
       userId: context.authUid!,
       record: breakoutRoom.record,
+      existingRecordingSessionId: breakoutRoom.recordingSessionId,
+      participantIds: breakoutRoom.participantIds,
     );
 
     return joinInfo.toJson();
