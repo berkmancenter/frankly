@@ -990,7 +990,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
           ),
           SizedBox(width: 6),
           ActionButton(
-            color: Colors.transparent,
+            color: context.theme.colorScheme.surfaceContainer,
             textColor: context.theme.colorScheme.onSurface,
             onPressed: () => alertOnError(context, () async {
               final ReassignResult? newRoomAssignment =
