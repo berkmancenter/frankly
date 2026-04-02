@@ -140,7 +140,7 @@ class _AdminPanelState extends State<AdminPanel> {
     return FirestoreListView(
       itemBuilder: (context, documentSnapshot) {
         final participant = Participant.fromJson(
-          fromFirestoreJson(documentSnapshot.data() as Map<String, dynamic>),
+          fromFirestoreJson(documentSnapshot.data()),
         );
         return _buildParticipantEntry(participant);
       },
@@ -355,7 +355,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
 
             final room = BreakoutRoom.fromJson(
               fromFirestoreJson(
-                snapshot.docs[index].data() as Map<String, dynamic>,
+                snapshot.docs[index].data(),
               ),
             );
             return BreakoutRoomButton(
