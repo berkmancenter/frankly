@@ -416,31 +416,14 @@ class EventProvider with ChangeNotifier {
 
       // Added Room Assigned field from Participant.currentBreakoutRoomId
       // Convert room ID to room name for better readability
-      String roomAssigned = '';
       final currentRoomId =
           registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
-      if (currentRoomId != null && currentRoomId.isNotEmpty) {
-        if (currentRoomId == 'waiting-room') {
-          // Special case: breakout room waiting room
-          roomAssigned = 'Waiting room';
-        } else if (breakoutRooms != null) {
-          // Find room name from breakout rooms data
-          final room = breakoutRooms
-              .firstWhereOrNull((room) => room.roomId == currentRoomId);
-          if (room != null) {
-            roomAssigned = room.roomName;
-          } else {
-            roomAssigned =
-                currentRoomId; // Fallback to room ID if room not found
-          }
-        } else {
-          roomAssigned =
-              currentRoomId; // Fallback to room ID if no room data available
-        }
-      } else {
-        // If currentRoomId is null or empty, user is likely in main waiting room
-        roomAssigned = 'Waiting room';
-      }
+
+      final roomAssigned = _getRoomName(
+        roomId: currentRoomId ?? '',
+        eventId: eventId,
+        breakoutRooms: breakoutRooms,
+      );
       row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
