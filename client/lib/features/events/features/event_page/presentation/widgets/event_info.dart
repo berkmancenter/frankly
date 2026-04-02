@@ -1031,7 +1031,7 @@ class _EventInfoState extends State<EventInfo> {
 }
 
 /// Gets breakout room data for the current event's active breakout session.
-/// Returns null if no breakout session is active or if data cannot be fetched.
+/// Returns empty if no breakout session is active or if data cannot be fetched.
 Future<List<BreakoutRoom>> getBreakoutRoomData({required Event event}) async {
   BehaviorSubjectWrapper<LiveMeeting>? liveMeetingWrapper;
   BehaviorSubjectWrapper<List<BreakoutRoom>>? breakoutRoomsWrapper;

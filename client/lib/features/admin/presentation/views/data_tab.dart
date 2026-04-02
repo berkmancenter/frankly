@@ -101,7 +101,7 @@ class _DataTabState extends State<DataTab> {
     );
 
     provider.initialize();
-    List<BreakoutRoom>? breakoutRooms = await getBreakoutRoomData(event: event);
+    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
 
     await provider.generateRegistrationDataCsvFile(
       eventId: event.id,
