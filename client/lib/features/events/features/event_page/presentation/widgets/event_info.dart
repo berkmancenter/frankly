@@ -225,7 +225,7 @@ class _EventInfoState extends State<EventInfo> {
           .templatesCollection(communityProvider.community.id)
           .path,
     );
-    
+
     // Get existing templates to check for duplicate titles
     final templates = await firestoreDatabase
         .communityTemplatesStream(communityProvider.community.id)
@@ -275,37 +275,6 @@ class _EventInfoState extends State<EventInfo> {
     ).show();
   }
 
-  /// Gets breakout room data for the current event's active breakout session.
-  /// Returns null if no breakout session is active or if data cannot be fetched.
-  Future<List<BreakoutRoom>?> _getBreakoutRoomData() async {
-    try {
-      final liveMeeting = await firestoreLiveMeetingService
-          .liveMeetingStream(
-            parentDoc:
-                'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
-            id: 'live-meeting',
-          )
-          .stream
-          .first;
-
-      if (liveMeeting.currentBreakoutSession != null) {
-        final breakoutRoomsWrapper =
-            firestoreLiveMeetingService.breakoutRoomsStream(
-          event: widget.event,
-          breakoutRoomSessionId:
-              liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
-        );
-        final breakoutRooms = await breakoutRoomsWrapper.stream.first;
-        await breakoutRoomsWrapper.dispose();
-        return breakoutRooms;
-      }
-    } catch (e) {
-      // If breakout rooms data is not available, continue without it
-      loggingService.log('Could not fetch breakout rooms data: $e');
-    }
-    return null;
-  }
-
   Future<void> _downloadRegistrationData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
@@ -322,7 +291,8 @@ class _EventInfoState extends State<EventInfo> {
       await participantsWrapper.dispose();
 
       // Get breakout rooms data for room name mapping
-      List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+      List<BreakoutRoom>? breakoutRooms =
+          await getBreakoutRoomData(event: widget.event);
 
       final members = await _presenter.getMembersData(userIds);
       if (members.isNotEmpty) {
@@ -352,7 +322,8 @@ class _EventInfoState extends State<EventInfo> {
 
       if (chatsData.isNotEmpty) {
         // Get breakout rooms data for room name mapping
-        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+        List<BreakoutRoom>? breakoutRooms =
+            await getBreakoutRoomData(event: widget.event);
 
         await eventProvider.generateChatDataCsv(
           response: response,
@@ -383,7 +354,8 @@ class _EventInfoState extends State<EventInfo> {
 
       if (suggestionData.isNotEmpty || pollData.isNotEmpty) {
         // Get breakout rooms data for room name mapping
-        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+        List<BreakoutRoom>? breakoutRooms =
+            await getBreakoutRoomData(event: widget.event);
 
         await eventProvider.generatePollsSuggestionsDataCsv(
           suggestionData: suggestionData,
@@ -1055,5 +1027,39 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ],
     );
+  }
+}
+
+/// Gets breakout room data for the current event's active breakout session.
+/// Returns null if no breakout session is active or if data cannot be fetched.
+Future<List<BreakoutRoom>> getBreakoutRoomData({required Event event}) async {
+  BehaviorSubjectWrapper<LiveMeeting>? liveMeetingWrapper;
+  BehaviorSubjectWrapper<List<BreakoutRoom>>? breakoutRoomsWrapper;
+
+  try {
+    liveMeetingWrapper = firestoreLiveMeetingService.liveMeetingStream(
+      parentDoc: event.fullPath,
+      id: event.id,
+    );
+
+    final liveMeeting =
+        await liveMeetingWrapper.stream.first.timeout(Duration(seconds: 10));
+
+    final sessionId = liveMeeting.currentBreakoutSession?.breakoutRoomSessionId;
+    if (sessionId == null) return [];
+
+    breakoutRoomsWrapper = firestoreLiveMeetingService.breakoutRoomsStream(
+      event: event,
+      breakoutRoomSessionId: sessionId,
+    );
+
+    return await breakoutRoomsWrapper.stream.first
+        .timeout(Duration(seconds: 10));
+  } catch (e) {
+    loggingService.log('Failed to fetch breakout rooms: $e');
+    return [];
+  } finally {
+    await liveMeetingWrapper?.dispose();
+    await breakoutRoomsWrapper?.dispose();
   }
 }
