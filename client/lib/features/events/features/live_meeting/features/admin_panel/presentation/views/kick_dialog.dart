@@ -35,10 +35,6 @@ class _KickDialogState extends State<KickDialog> {
     return AlertDialog(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Color(0xFF5568FF),
-          width: 5,
-        ),
         borderRadius: BorderRadius.circular(6),
       ),
       actionsPadding: const EdgeInsets.symmetric(horizontal: 12),
