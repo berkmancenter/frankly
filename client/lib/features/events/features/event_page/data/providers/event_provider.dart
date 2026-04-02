@@ -368,8 +368,8 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateRegistrationDataCsvFile({
     required List<MemberDetails> registrationData,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -505,8 +505,8 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateChatDataCsv({
     required GetMeetingChatsSuggestionsDataResponse response,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -533,7 +533,7 @@ class EventProvider with ChangeNotifier {
 
       // Convert room ID to room name for better readability using shared helper
       final roomName = _getRoomName(
-        roomId: chatsData[i].roomId,
+        roomId: chatsData[i].roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -560,8 +560,8 @@ class EventProvider with ChangeNotifier {
   Future<void> generatePollsSuggestionsDataCsv({
     required List<ChatSuggestionData> suggestionData,
     required List<PollData> pollData,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -602,7 +602,7 @@ class EventProvider with ChangeNotifier {
 
       // Convert room ID to room name for better readability
       String roomName = _getRoomName(
-        roomId: suggestionData[i].roomId,
+        roomId: suggestionData[i].roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -632,7 +632,7 @@ class EventProvider with ChangeNotifier {
       row.add(poll.pollResponse ?? '');
 
       String roomName = _getRoomName(
-        roomId: poll.roomId,
+        roomId: poll.roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -661,9 +661,9 @@ class EventProvider with ChangeNotifier {
   }
 
   String _getRoomName({
-    required String? roomId,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String roomId,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) {
     if (roomId == null || roomId.isEmpty) {
       return 'Main room';
