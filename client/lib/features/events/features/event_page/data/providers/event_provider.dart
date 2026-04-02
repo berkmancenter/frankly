@@ -665,7 +665,7 @@ class EventProvider with ChangeNotifier {
     required String eventId,
     required List<BreakoutRoom> breakoutRooms,
   }) {
-    if (roomId == null || roomId.isEmpty) {
+    if (roomId.isEmpty || roomId == eventId) {
       return 'Main room';
     }
 
@@ -673,18 +673,14 @@ class EventProvider with ChangeNotifier {
       return 'Waiting room';
     }
 
-    if (roomId == eventId) {
-      return 'Main room';
-    }
-
-    if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+    if (breakoutRooms.isNotEmpty) {
       final room =
           breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
       if (room != null) {
         return room.roomName;
       }
     }
-
+    // Fallback for empty breakout rooms.
     return 'Main room';
   }
 }
