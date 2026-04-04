@@ -487,5 +487,10 @@ service cloud.firestore {
             allow write: if false;
             allow read: if false;
         }
+
+        match /recording-sessions/{sessionId} {
+            allow read: if hasAuth();
+            allow write: if false;
+        }
     }
 }
