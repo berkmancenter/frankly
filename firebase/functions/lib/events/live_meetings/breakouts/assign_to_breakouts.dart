@@ -36,6 +36,7 @@ class AssignToBreakouts {
     required List<Participant> presentParticipants,
     required String creatorId,
     required CollectionReference breakoutRoomsCollection,
+    required bool alwaysRecord,
   }) async {
     print('starting breakout assignment');
     final presentParticipantIds = presentParticipants.map((p) => p.id).toList();
@@ -93,6 +94,7 @@ class AssignToBreakouts {
           orderingPriority: i,
           participantIds: roomParticipants[i],
           originalParticipantIdsAssignment: roomParticipants[i],
+          record: alwaysRecord,
         ),
       );
     }
@@ -278,6 +280,7 @@ class AssignToBreakouts {
     profile('total matches: ${prematches.length + matches.length}');
 
     final breakoutMatchIdsToRecord = event.breakoutMatchIdsToRecord.toSet();
+    final alwaysRecordSmart = event.eventSettings?.alwaysRecord ?? false;
     final prematchEntries = prematches.entries.toList();
 
     int i = 0;
@@ -291,7 +294,8 @@ class AssignToBreakouts {
           participantIds: prematchEntries[i].value.map((p) => p.id).toList(),
           originalParticipantIdsAssignment:
               prematchEntries[i].value.map((p) => p.id).toList(),
-          record: breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
+          record: alwaysRecordSmart ||
+              breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
         ),
       for (var j = 0; j < matches.length; j++)
         BreakoutRoom(
@@ -301,6 +305,7 @@ class AssignToBreakouts {
           orderingPriority: j + i,
           participantIds: matches[j],
           originalParticipantIdsAssignment: matches[j],
+          record: alwaysRecordSmart,
         ),
     ];
   }
@@ -571,12 +576,15 @@ class AssignToBreakouts {
         breakoutRoomsSessionDoc.collection('breakout-rooms');
 
     List<BreakoutRoom> breakoutRooms;
+    final alwaysRecord = event.eventSettings?.alwaysRecord ?? false;
+
     if (assignmentMethod == BreakoutAssignmentMethod.targetPerRoom) {
       breakoutRooms = await _assignBreakoutsBasedOnTargetSize(
         targetParticipantsPerRoom: targetParticipantsPerRoom,
         presentParticipants: presentParticipants,
         creatorId: creatorId,
         breakoutRoomsCollection: breakoutRoomsCollection,
+        alwaysRecord: alwaysRecord,
       );
     } else if (assignmentMethod == BreakoutAssignmentMethod.smartMatch) {
       breakoutRooms = await _assignBreakoutsForSmartMatch(
@@ -605,6 +613,7 @@ class AssignToBreakouts {
           orderingPriority: -1,
           creatorId: creatorId,
           participantIds: [],
+          record: alwaysRecord,
         ),
       );
     }
@@ -618,6 +627,7 @@ class AssignToBreakouts {
           orderingPriority: 0,
           creatorId: creatorId,
           participantIds: [],
+          record: alwaysRecord,
         ),
       );
     }
