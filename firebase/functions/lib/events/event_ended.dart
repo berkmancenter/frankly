@@ -52,7 +52,7 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
     try {
       final liveMeeting = await firestoreUtils.getFirestoreObject(
-        path: '$liveMeetingPath/${event.id}',
+        path: liveMeetingPath,
         constructor: (map) => LiveMeeting.fromJson(map),
       );
       if (liveMeeting.recordingSessionId != null) {
@@ -61,6 +61,35 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
     } catch (e) {
       // Do not block event-ended flow on recording stop failure.
       print('Error stopping main room recording on event end: $e');
+    }
+
+    // Stop all breakout room recordings.
+    // Structure: {liveMeetingPath}/breakout-room-sessions/{sessionId}/breakout-rooms/{roomId}
+    try {
+      final breakoutSessionDocs = await firestore
+          .collection('$liveMeetingPath/breakout-room-sessions')
+          .get();
+      for (final sessionDoc in breakoutSessionDocs.documents) {
+        final breakoutRoomDocs = await firestore
+            .collection('${sessionDoc.reference.path}/breakout-rooms')
+            .get();
+        for (final roomDoc in breakoutRoomDocs.documents) {
+          final breakoutRoom = BreakoutRoom.fromJson(
+            firestoreUtils.fromFirestoreJson(roomDoc.data.toMap()),
+          );
+          if (breakoutRoom.recordingSessionId != null) {
+            try {
+              await agoraUtils.stopRoom(
+                  sessionId: breakoutRoom.recordingSessionId!);
+            } catch (e) {
+              print(
+                  'Error stopping breakout recording ${breakoutRoom.recordingSessionId}: $e');
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print('Error stopping breakout room recordings on event end: $e');
     }
 
     final capabilities =
