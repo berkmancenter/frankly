@@ -706,16 +706,22 @@ class LiveMeetingProvider with ChangeNotifier {
       final timeNow = clockService.now();
       final event = eventProvider.event;
 
-      if (prePostEnabled && postEventCardData != null) {
-        if (timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
-            _postEventEmailThresholdInMinutes) {
-          unawaited(
-            cloudFunctionsEventService.eventEnded(
-              EventEndedRequest(eventPath: eventPath),
-            ),
-          );
-        }
+      // Call eventEnded whenever the event is past its scheduled time by the
+      // email threshold, OR whenever the event had recording enabled (to ensure
+      // the recording is always stopped regardless of email threshold).
+      final pastThreshold =
+          timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
+              _postEventEmailThresholdInMinutes;
+      final hadRecording = event.eventSettings?.alwaysRecord ?? false;
+      if (pastThreshold || hadRecording) {
+        unawaited(
+          cloudFunctionsEventService.eventEnded(
+            EventEndedRequest(eventPath: eventPath),
+          ),
+        );
+      }
 
+      if (prePostEnabled && postEventCardData != null) {
         if (postEventCardData.hasData) {
           await PrePostEventDialogPage.show(
             prePostCardData: postEventCardData,
