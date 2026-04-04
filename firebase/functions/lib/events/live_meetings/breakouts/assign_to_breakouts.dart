@@ -7,7 +7,9 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
 import 'package:get_it/get_it.dart';
 import 'package:frankly_matching/matching.dart' as matching;
 import '../../../utils/infra/firestore_utils.dart';
+import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
@@ -676,6 +678,36 @@ class AssignToBreakouts {
       rooms: breakoutRooms,
       firstAgendaItemId: firstAgendaItemId,
     );
+
+    // Start recordings immediately after room assignment so there is exactly
+    // one writer and no risk of concurrent joins racing on the same room.
+    if (alwaysRecord) {
+      final agoraUtils = AgoraUtils();
+      for (final room in breakoutRooms) {
+        if (room.roomId == breakoutsWaitingRoomId) continue;
+        final newSessionId = const Uuid().v4();
+        final roomPath = '${breakoutRoomsCollection.path}/${room.roomId}';
+        await firestore.document(roomPath).updateData(
+              UpdateData.fromMap(
+                  {BreakoutRoom.kFieldRecordingSessionId: newSessionId}),
+            );
+        try {
+          await agoraUtils.recordRoom(
+            roomId: room.roomId,
+            sessionId: newSessionId,
+            eventId: event.id,
+            communityId: event.communityId,
+            roomType: RecordingRoomType.breakout,
+            breakoutSessionId: breakoutSessionId,
+            chatPath: '$roomPath/chats/community_chat/messages',
+            participantIds: room.participantIds,
+          );
+        } catch (e) {
+          print(
+              'Error starting recording for breakout room ${room.roomId}: $e');
+        }
+      }
+    }
 
     profile('writing session doc');
 
