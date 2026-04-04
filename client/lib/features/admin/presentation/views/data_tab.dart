@@ -248,10 +248,12 @@ class _DataTabState extends State<DataTab> {
 
   String _recordingAnnotation(BuildContext context, int? parts) {
     if (parts == null) return context.l10n.recordingStatusChecking;
-    if (parts == -2) return 'Recording in progress';
-    if (parts == 0) return 'Processing recordings';
+    if (parts == -2) return context.l10n.recordingStatusInProgress;
+    if (parts == 0) return context.l10n.recordingStatusProcessing;
     if (parts == -1) return context.l10n.recordingStatusFailed;
-    final label = parts == 1 ? 'file' : 'files';
+    final label = parts == 1
+        ? context.l10n.recordingStatusFile
+        : context.l10n.recordingStatusFiles;
     return '$parts $label';
   }
 

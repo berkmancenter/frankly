@@ -639,6 +639,10 @@
   "recordingStatusChecking": "(checking...)",
   "recordingStatusPreparing": "(preparing...)",
   "recordingStatusFailed": "(failed)",
+  "recordingStatusInProgress": "Recording in progress",
+  "recordingStatusProcessing": "Processing recordings",
+  "recordingStatusFile": "file",
+  "recordingStatusFiles": "files",
   "recordingStatusParts": "({count} parts)",
   "@recordingStatusParts": {
     "placeholders": {
