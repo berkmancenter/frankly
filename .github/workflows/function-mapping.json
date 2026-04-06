@@ -214,7 +214,7 @@
       "CheckHostlessGoToBreakoutsServer"
     ],
     "firebase/functions/lib/templates/on_template.dart": ["TemplateOnCreate"],
-    "firebase/functions/lib/utils/infra/firestore_event_function": [
+    "firebase/functions/lib/utils/infra/firestore_event_function.dart": [
       "EventOnUpdate",
       "EventOnCreate",
       "DiscussionThreadOnDelete",
@@ -343,7 +343,7 @@
       "TriggerEmailDigests",
       "CalendarFeedRss"
     ],
-    "firebase/functions/lib/utils/template_utils": [
+    "firebase/functions/lib/utils/template_utils.dart": [
       "getCommunityCalendarLink",
       "sendEventMessage",
       "TemplateOnCreate",
