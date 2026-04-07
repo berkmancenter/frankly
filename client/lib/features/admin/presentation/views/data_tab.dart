@@ -400,7 +400,7 @@ class _DataTabState extends State<DataTab> {
     final participants = await _getEventParticipants(event);
 
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
-    final hasRecording = event.eventSettings?.alwaysRecord! ?? false;
+    final hasRecording = event.eventSettings?.alwaysRecord ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 
