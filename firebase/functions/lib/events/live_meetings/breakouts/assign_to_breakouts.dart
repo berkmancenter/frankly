@@ -681,7 +681,9 @@ class AssignToBreakouts {
 
     // Start recordings immediately after room assignment so there is exactly
     // one writer and no risk of concurrent joins racing on the same room.
-    if (alwaysRecord) {
+    // Check both eventSettings.alwaysRecord and liveMeeting.record -- the
+    // latter is set when the event is created via the ?record=true URL param.
+    if (alwaysRecord || currentLiveMeeting.record) {
       final agoraUtils = AgoraUtils();
       for (final room in breakoutRooms) {
         if (room.roomId == breakoutsWaitingRoomId) continue;
