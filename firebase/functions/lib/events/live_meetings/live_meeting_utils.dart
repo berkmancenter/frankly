@@ -111,31 +111,73 @@ class LiveMeetingUtils {
         agoraUtils.createToken(uid: uidToInt(userId), roomId: meetingId);
 
     if (record && existingRecordingSessionId == null) {
-      final newSessionId = _uuid.v4();
-
-      // Write recordingSessionId to the BreakoutRoom document before starting Agora.
-      await firestore.document(breakoutRoomPath).updateData(
-            UpdateData.fromMap(
-                {BreakoutRoom.kFieldRecordingSessionId: newSessionId}),
-          );
-
-      final chatPath = '$breakoutRoomPath/chats/community_chat/messages';
-      await agoraUtils.recordRoom(
-        roomId: meetingId,
-        sessionId: newSessionId,
-        eventId: eventId,
+      await _startBreakoutRecording(
         communityId: communityId,
-        roomType: RecordingRoomType.breakout,
+        eventId: eventId,
         breakoutSessionId: breakoutSessionId,
-        chatPath: chatPath,
+        breakoutRoomPath: breakoutRoomPath,
+        meetingId: meetingId,
         participantIds: participantIds,
       );
+    } else if (record && existingRecordingSessionId != null) {
+      // If the session exists but has reached a terminal state (Agora idled out
+      // while the room was empty), clear recordingSessionId and start fresh so
+      // re-entry gets its own recording.
+      final sessionSnap = await firestore
+          .collection(RecordingSession.kCollection)
+          .document(existingRecordingSessionId)
+          .get();
+      if (sessionSnap.exists) {
+        final session = RecordingSession.fromJson(
+          firestoreUtils.fromFirestoreJson(sessionSnap.data.toMap()),
+        );
+        final isTerminal = session.status == RecordingSessionStatus.stopped ||
+            session.status == RecordingSessionStatus.failed;
+        if (isTerminal) {
+          await _startBreakoutRecording(
+            communityId: communityId,
+            eventId: eventId,
+            breakoutSessionId: breakoutSessionId,
+            breakoutRoomPath: breakoutRoomPath,
+            meetingId: meetingId,
+            participantIds: participantIds,
+          );
+        }
+      }
     }
 
     return GetMeetingJoinInfoResponse(
       identity: userId,
       meetingToken: token,
       meetingId: meetingId,
+    );
+  }
+
+  Future<void> _startBreakoutRecording({
+    required String communityId,
+    required String eventId,
+    required String breakoutSessionId,
+    required String breakoutRoomPath,
+    required String meetingId,
+    required List<String> participantIds,
+  }) async {
+    final newSessionId = _uuid.v4();
+
+    await firestore.document(breakoutRoomPath).updateData(
+          UpdateData.fromMap(
+              {BreakoutRoom.kFieldRecordingSessionId: newSessionId}),
+        );
+
+    final chatPath = '$breakoutRoomPath/chats/community_chat/messages';
+    await agoraUtils.recordRoom(
+      roomId: meetingId,
+      sessionId: newSessionId,
+      eventId: eventId,
+      communityId: communityId,
+      roomType: RecordingRoomType.breakout,
+      breakoutSessionId: breakoutSessionId,
+      chatPath: chatPath,
+      participantIds: participantIds,
     );
   }
 }
