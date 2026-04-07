@@ -76,9 +76,14 @@ class AgoraUtils {
       ),
     ));
 
+    print(
+        'recording_start: sessionId=$sessionId roomId=$roomId eventId=$eventId roomType=${roomType.name} breakoutSessionId=$breakoutSessionId');
+
     String resourceId;
     try {
       resourceId = await _acquireResourceId(roomId: roomId);
+      print(
+          'recording_acquired: sessionId=$sessionId roomId=$roomId resourceId=$resourceId');
     } catch (e) {
       print('Agora acquire failed for room $roomId: $e');
       await sessionRef.updateData(UpdateData.fromMap(
@@ -105,6 +110,8 @@ class AgoraUtils {
         resourceId: resourceId,
         fileNamePrefixSegments: prefixSegments,
       );
+      print(
+          'recording_started: sessionId=$sessionId roomId=$roomId resourceId=$resourceId sid=$sid gcsPrefix=$gcsPrefix');
       await sessionRef.updateData(UpdateData.fromMap({
         'agoraSid': sid,
         RecordingSession.kFieldStatus: RecordingSessionStatus.recording.name,

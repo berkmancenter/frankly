@@ -685,6 +685,12 @@ class AssignToBreakouts {
     // latter is set when the event is created via the ?record=true URL param.
     if (alwaysRecord || currentLiveMeeting.record) {
       final agoraUtils = AgoraUtils();
+      final recordingRoomIds = breakoutRooms
+          .where((r) => r.roomId != breakoutsWaitingRoomId)
+          .map((r) => r.roomId)
+          .toList();
+      print(
+          'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds');
       for (final room in breakoutRooms) {
         if (room.roomId == breakoutsWaitingRoomId) continue;
         final newSessionId = const Uuid().v4();
