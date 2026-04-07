@@ -36,11 +36,13 @@ const produceSessions = functions.firestore
             if (mp4Files.length === 0) {
                 console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
             } else {
-                const mp4Path = mp4Files[0].name
-                await change.after.ref.update({
-                    'artifactPaths.complete_mp4': mp4Path,
+                console.log(`Found ${mp4Files.length} MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files.map((f) => f.name).join(', ')}`)
+                const updates = {}
+                mp4Files.forEach((f, i) => {
+                    updates[`artifactPaths.complete_mp4_${i}`] = f.name
                 })
-                console.log(`Registered MP4 ${mp4Path} for session ${sessionId}`)
+                await change.after.ref.update(updates)
+                console.log(`Registered ${mp4Files.length} MP4(s) for session ${sessionId}`)
             }
         } catch (err) {
             console.error(`Error registering MP4 for session ${sessionId}:`, err)
