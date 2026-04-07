@@ -831,6 +831,24 @@
                     "queryScope": "COLLECTION_GROUP"
                 }
             ]
+        },
+        {
+            "collectionGroup": "recording-sessions",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "roomId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "status",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "startedAt",
+                    "order": "DESCENDING"
+                }
+            ]
         }
     ]
 }

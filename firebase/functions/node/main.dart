@@ -165,6 +165,8 @@ void _registerJsFunctions() {
   functions['getSessionDownloadUrl'] =
       require('../js/get-session-download-url.js');
   functions['produceSessions'] = require('../js/produce-sessions.js');
+  functions['agoraRecordingWebhook'] =
+      require('../js/agora-recording-webhook.js');
   functions['imageProxy'] = require('../js/image-proxy.js');
 }
 
