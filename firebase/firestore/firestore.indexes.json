@@ -533,6 +533,20 @@
                     "order": "DESCENDING"
                 }
             ]
+        },
+        {
+            "collectionGroup": "recording-sessions",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "eventId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "startedAt",
+                    "order": "ASCENDING"
+                }
+            ]
         }
     ],
     "fieldOverrides": [
@@ -815,20 +829,6 @@
                 {
                     "order": "DESCENDING",
                     "queryScope": "COLLECTION_GROUP"
-                }
-            ]
-        },
-        {
-            "collectionGroup": "recording-sessions",
-            "queryScope": "COLLECTION",
-            "fields": [
-                {
-                    "fieldPath": "eventId",
-                    "order": "ASCENDING"
-                },
-                {
-                    "fieldPath": "startedAt",
-                    "order": "ASCENDING"
                 }
             ]
         }
