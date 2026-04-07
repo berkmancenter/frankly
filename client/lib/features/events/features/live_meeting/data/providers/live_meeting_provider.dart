@@ -28,6 +28,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_proposal.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
@@ -476,6 +477,7 @@ class LiveMeetingProvider with ChangeNotifier {
     if (!breakoutsActive && !isNullOrEmpty(_activeBreakoutRoomId)) {
       leaveBreakoutRoom();
       _userLeftBreakouts = false;
+      _restartMainRoomRecordingIfNeeded();
     }
 
     if (_isMeetingCardMinimized != liveMeeting.isMeetingCardMinimized &&
@@ -785,6 +787,31 @@ class LiveMeetingProvider with ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<void> _restartMainRoomRecordingIfNeeded() async {
+    final event = eventProvider.event;
+    final shouldRecord = (event.eventSettings?.alwaysRecord ?? false) ||
+        (liveMeeting?.record ?? false);
+    if (!shouldRecord) return;
+
+    final sessionId = liveMeeting?.recordingSessionId;
+    if (sessionId == null) return;
+
+    final session = await firestoreLiveMeetingService
+        .recordingSessionStream(sessionId)
+        .first;
+
+    final isTerminal = session == null ||
+        session.status == RecordingSessionStatus.stopped ||
+        session.status == RecordingSessionStatus.failed;
+    if (!isTerminal) return;
+
+    await firestoreLiveMeetingService.update(
+      liveMeetingPath: firestoreLiveMeetingService.getLiveMeetingPath(event),
+      liveMeeting: LiveMeeting(recordingSessionId: null),
+      keys: [LiveMeeting.kFieldRecordingSessionId],
+    );
   }
 
   void leaveBreakoutRoom() {
