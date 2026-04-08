@@ -709,14 +709,14 @@
   "record": "Grabar",
   "recording": "Grabando",
   "recordingPreparing": "Preparando grabación...",
-  "recordingStatusChecking": "(checking...)",
-  "recordingStatusPreparing": "(preparing...)",
-  "recordingStatusFailed": "(failed)",
-  "recordingStatusInProgress": "Recording in progress",
-  "recordingStatusProcessing": "Processing recordings",
-  "recordingStatusFile": "file",
-  "recordingStatusFiles": "files",
-  "recordingStatusParts": "({count} parts)",
+  "recordingStatusChecking": "(verificando...)",
+  "recordingStatusPreparing": "(preparando...)",
+  "recordingStatusFailed": "(error)",
+  "recordingStatusInProgress": "Grabación en curso",
+  "recordingStatusProcessing": "Procesando grabaciones",
+  "recordingStatusFile": "archivo",
+  "recordingStatusFiles": "archivos",
+  "recordingStatusParts": "({count} partes)",
   "@recordingStatusParts": {
     "placeholders": {
       "count": {
