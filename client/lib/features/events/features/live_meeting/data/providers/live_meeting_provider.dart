@@ -714,7 +714,8 @@ class LiveMeetingProvider with ChangeNotifier {
       final pastThreshold =
           timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
               _postEventEmailThresholdInMinutes;
-      final hadRecording = event.eventSettings?.alwaysRecord ?? false;
+      final hadRecording = (event.eventSettings?.alwaysRecord ?? false) ||
+          liveMeeting?.record == true;
       if (pastThreshold || hadRecording) {
         unawaited(
           cloudFunctionsEventService.eventEnded(
