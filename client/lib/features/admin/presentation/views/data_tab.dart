@@ -288,6 +288,7 @@ class _DataTabState extends State<DataTab> {
             backgroundColor:
                 context.theme.colorScheme.surfaceContainerHighest,
             contentPadding: EdgeInsets.zero,
+            actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
             content: Material(
               color: context.theme.colorScheme.surfaceContainer,
@@ -313,6 +314,39 @@ class _DataTabState extends State<DataTab> {
                           ),
                         title: Text(context.l10n.registrationDataDownload),
                       ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: SizedBox(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                              Text(
+                                context.l10n.otherDataDownload,
+                                style: context.theme.textTheme.bodySmall,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  routerDelegate.beamTo(
+                                    CommunityPageRoutes(
+                                      communityDisplayId:
+                                          CommunityProvider.readOrNull(context)?.displayId ??
+                                              event.communityId,
+                                    ).eventPage(
+                                      templateId: event.templateId,
+                                      eventId: event.id,
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  context.l10n.otherDataDownloadAction,
+                                  style: context.theme.textTheme.bodySmall,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
