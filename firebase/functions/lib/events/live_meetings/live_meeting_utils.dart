@@ -11,6 +11,33 @@ import 'package:data_models/utils/utils.dart';
 
 const _uuid = Uuid();
 
+class PendingRecording {
+  final String roomId;
+  final String sessionId;
+  final String eventId;
+  final String communityId;
+  final RecordingRoomType roomType;
+  final String chatPath;
+  final List<String> participantIds;
+
+  PendingRecording({
+    required this.roomId,
+    required this.sessionId,
+    required this.eventId,
+    required this.communityId,
+    required this.roomType,
+    required this.chatPath,
+    required this.participantIds,
+  });
+}
+
+class MeetingJoinResult {
+  final GetMeetingJoinInfoResponse response;
+  final PendingRecording? pendingRecording;
+
+  MeetingJoinResult({required this.response, this.pendingRecording});
+}
+
 class LiveMeetingUtils {
   bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;
   AgoraUtils agoraUtils;
@@ -18,7 +45,7 @@ class LiveMeetingUtils {
   LiveMeetingUtils({AgoraUtils? agoraUtils})
       : agoraUtils = agoraUtils ?? AgoraUtils();
 
-  Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo({
+  Future<MeetingJoinResult> getMeetingJoinInfo({
     required Transaction transaction,
     required String communityId,
     required String liveMeetingCollectionPath,
@@ -68,6 +95,7 @@ class LiveMeetingUtils {
       );
     }
 
+    PendingRecording? pendingRecording;
     if (newSessionId != null) {
       final chatPath =
           '$liveMeetingCollectionPath/$meetingId/chats/community_chat/messages';
@@ -75,7 +103,7 @@ class LiveMeetingUtils {
           .map((p) => p.communityId)
           .whereType<String>()
           .toList();
-      await agoraUtils.recordRoom(
+      pendingRecording = PendingRecording(
         roomId: meetingId,
         sessionId: newSessionId,
         eventId: event.id,
@@ -89,10 +117,13 @@ class LiveMeetingUtils {
     final token =
         agoraUtils.createToken(uid: uidToInt(userId), roomId: meetingId);
 
-    return GetMeetingJoinInfoResponse(
-      identity: userId,
-      meetingToken: token,
-      meetingId: meetingId,
+    return MeetingJoinResult(
+      response: GetMeetingJoinInfoResponse(
+        identity: userId,
+        meetingToken: token,
+        meetingId: meetingId,
+      ),
+      pendingRecording: pendingRecording,
     );
   }
 
