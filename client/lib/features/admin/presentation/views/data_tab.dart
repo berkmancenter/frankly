@@ -171,7 +171,7 @@ class _DataTabState extends State<DataTab> {
         final sessions = snapshot.docs
             .map(
               (d) => RecordingSession.fromJson(
-                {...d.data(), 'sessionId': d.id},
+                {...fromFirestoreJson(d.data()), 'sessionId': d.id},
               ),
             )
             .toList();
