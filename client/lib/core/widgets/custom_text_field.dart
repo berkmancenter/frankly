@@ -179,6 +179,9 @@ class CustomTextField extends StatefulWidget {
   /// Allow for custom input formatters
   final TextInputFormatter? inputFormatters;
 
+  /// Autofill hints for password managers
+  final Iterable<String>? autofillHints;
+
   const CustomTextField({
     Key? key,
     this.padding = const EdgeInsets.only(top: 15),
@@ -224,6 +227,7 @@ class CustomTextField extends StatefulWidget {
     this.suffixIcon,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
+    this.autofillHints,
   }) : super(key: key);
 
   @override
@@ -440,6 +444,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 readOnly: widget.readOnly,
                 enabled: !widget.readOnly,
                 keyboardType: widget.keyboardType,
+                autofillHints: widget.autofillHints,
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:client/core/utils/date_utils.dart';
+import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
@@ -215,6 +216,38 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
+  Future<void> _showDuplicateTemplateDialog(
+    CommunityProvider communityProvider,
+  ) async {
+    final template = context.read<TemplateProvider>().template;
+    final newId = firestoreDatabase.generateNewDocId(
+      collectionPath: firestoreDatabase
+          .templatesCollection(communityProvider.community.id)
+          .path,
+    );
+    
+    // Get existing templates to check for duplicate titles
+    final templates = await firestoreDatabase
+        .communityTemplatesStream(communityProvider.community.id)
+        .first;
+    final existingTitles = templates.map((t) => t.title).toSet();
+    final newTitle = generateUniqueCopyTitle(
+      template.title ?? '',
+      existingTitles,
+    );
+
+    await CreateTemplateDialog.show(
+      communityPermissionsProvider:
+          Provider.of<CommunityPermissionsProvider>(context, listen: false),
+      communityProvider: communityProvider,
+      template: template.copyWith(
+        id: newId,
+        title: newTitle,
+      ),
+      templateActionType: TemplateActionType.duplicate,
+    );
+  }
+
   Future<void> _showDuplicateEventDialog() async {
     final template = context.read<TemplateProvider>().template;
     final event = EventProvider.read(context).event;
@@ -377,6 +410,11 @@ class _EventInfoState extends State<EventInfo> {
         switch (value) {
           case EventPopUpMenuSelection.refreshGuide:
             _showRefreshGuideDialog();
+            break;
+          case EventPopUpMenuSelection.duplicateTemplate:
+            _showDuplicateTemplateDialog(
+              Provider.of<CommunityProvider>(context, listen: false),
+            );
             break;
           case EventPopUpMenuSelection.createGuideFromEvent:
             _showCreateGuideFromEventDialog(
