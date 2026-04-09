@@ -278,7 +278,7 @@ class TemplateSelectionCard extends StatelessWidget {
                   .updateSelectedTemplate(template);
               onSelected(template!);
             },
-            hoverColor: Color(0xFF5568FF).withOpacity(0.2),
+            hoverColor: context.theme.colorScheme.primary.withOpacity(0.2),
             child: Stack(
               children: [
                 Positioned.fill(
@@ -290,7 +290,7 @@ class TemplateSelectionCard extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF303B5F).withOpacity(0.8),
+                    color: context.theme.colorScheme.primary.withOpacity(0.8),
                     backgroundBlendMode: BlendMode.multiply,
                   ),
                 ),
