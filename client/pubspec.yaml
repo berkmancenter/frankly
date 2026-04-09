@@ -103,7 +103,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.4.4
   random_string: ^2.3.1
-  sentry_dart_plugin: ^2.0.0
+  sentry_dart_plugin: ^3.2.1
   youtube_player_iframe: ^4.0.4
 
 dependency_overrides:
@@ -136,3 +136,4 @@ sentry:
   upload_debug_symbols: true
   upload_sources: true
   ignore_missing: true
+  legacy_web_symbolication: true
