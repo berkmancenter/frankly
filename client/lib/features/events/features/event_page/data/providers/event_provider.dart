@@ -368,8 +368,8 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateRegistrationDataCsvFile({
     required List<MemberDetails> registrationData,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -416,31 +416,14 @@ class EventProvider with ChangeNotifier {
 
       // Added Room Assigned field from Participant.currentBreakoutRoomId
       // Convert room ID to room name for better readability
-      String roomAssigned = '';
       final currentRoomId =
           registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
-      if (currentRoomId != null && currentRoomId.isNotEmpty) {
-        if (currentRoomId == 'waiting-room') {
-          // Special case: breakout room waiting room
-          roomAssigned = 'Waiting room';
-        } else if (breakoutRooms != null) {
-          // Find room name from breakout rooms data
-          final room = breakoutRooms
-              .firstWhereOrNull((room) => room.roomId == currentRoomId);
-          if (room != null) {
-            roomAssigned = room.roomName;
-          } else {
-            roomAssigned =
-                currentRoomId; // Fallback to room ID if room not found
-          }
-        } else {
-          roomAssigned =
-              currentRoomId; // Fallback to room ID if no room data available
-        }
-      } else {
-        // If currentRoomId is null or empty, user is likely in main waiting room
-        roomAssigned = 'Waiting room';
-      }
+
+      final roomAssigned = _getRoomName(
+        roomId: currentRoomId ?? '',
+        eventId: eventId,
+        breakoutRooms: breakoutRooms,
+      );
       row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
@@ -505,8 +488,8 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateChatDataCsv({
     required GetMeetingChatsSuggestionsDataResponse response,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -533,7 +516,7 @@ class EventProvider with ChangeNotifier {
 
       // Convert room ID to room name for better readability using shared helper
       final roomName = _getRoomName(
-        roomId: chatsData[i].roomId,
+        roomId: chatsData[i].roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -560,8 +543,8 @@ class EventProvider with ChangeNotifier {
   Future<void> generatePollsSuggestionsDataCsv({
     required List<ChatSuggestionData> suggestionData,
     required List<PollData> pollData,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -602,7 +585,7 @@ class EventProvider with ChangeNotifier {
 
       // Convert room ID to room name for better readability
       String roomName = _getRoomName(
-        roomId: suggestionData[i].roomId,
+        roomId: suggestionData[i].roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -632,7 +615,7 @@ class EventProvider with ChangeNotifier {
       row.add(poll.pollResponse ?? '');
 
       String roomName = _getRoomName(
-        roomId: poll.roomId,
+        roomId: poll.roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -661,11 +644,11 @@ class EventProvider with ChangeNotifier {
   }
 
   String _getRoomName({
-    required String? roomId,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String roomId,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) {
-    if (roomId == null || roomId.isEmpty) {
+    if (roomId.isEmpty || roomId == eventId) {
       return 'Main room';
     }
 
@@ -673,18 +656,14 @@ class EventProvider with ChangeNotifier {
       return 'Waiting room';
     }
 
-    if (roomId == eventId) {
-      return 'Main room';
-    }
-
-    if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+    if (breakoutRooms.isNotEmpty) {
       final room =
           breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
       if (room != null) {
         return room.roomName;
       }
     }
-
+    // Fallback for empty breakout rooms.
     return 'Main room';
   }
 }

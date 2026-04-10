@@ -7,8 +7,10 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
+import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -99,9 +101,12 @@ class _DataTabState extends State<DataTab> {
     );
 
     provider.initialize();
+    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
+
     await provider.generateRegistrationDataCsvFile(
       eventId: event.id,
       registrationData: members,
+      breakoutRooms: breakoutRooms,
     );
   }
 
@@ -126,8 +131,12 @@ class _DataTabState extends State<DataTab> {
       loadingHeight: 16,
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
-      onPressed: () =>
-          _showDownloadDialog(event, participants, showRecording, showRegistrant),
+      onPressed: () => _showDownloadDialog(
+        event,
+        participants,
+        showRecording,
+        showRegistrant,
+      ),
       text: context.l10n.dataDownload,
     );
   }
@@ -285,8 +294,7 @@ class _DataTabState extends State<DataTab> {
 
           return AlertDialog(
             title: Text(context.l10n.selectData),
-            backgroundColor:
-                context.theme.colorScheme.surfaceContainerHighest,
+            backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
             contentPadding: EdgeInsets.zero,
             actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
@@ -300,8 +308,8 @@ class _DataTabState extends State<DataTab> {
                         value: recordingSelected,
                         enabled: parts != null && parts != 0,
                         onChanged: (value) => setDialogState(
-                            () => recordingSelected = value ?? false,
-                          ),
+                          () => recordingSelected = value ?? false,
+                        ),
                         title: Text(
                           '${context.l10n.recording}${_recordingAnnotation(context, parts)}',
                         ),
@@ -310,8 +318,8 @@ class _DataTabState extends State<DataTab> {
                       CheckboxListTile(
                         value: registrantListSelected,
                         onChanged: (value) => setDialogState(
-                            () => registrantListSelected = value ?? false,
-                          ),
+                          () => registrantListSelected = value ?? false,
+                        ),
                         title: Text(context.l10n.registrationDataDownload),
                       ),
                     Container(
