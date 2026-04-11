@@ -95,7 +95,17 @@
     {
       "source": "firebase/functions",
       "codebase": "default",
-      "ignore": ["**", "node_modules", ".git"]
+      "ignore": [
+        "node_modules",
+        ".git",
+        "lib/**",
+        "test/**",
+        "tool/**",
+        "*.dart",
+        "pubspec*",
+        "emulators*",
+        "*.yaml"
+      ]
     }
   ],
   "database": {

@@ -487,5 +487,11 @@ service cloud.firestore {
             allow write: if false;
             allow read: if false;
         }
+
+        match /recording-sessions/{sessionId} {
+            // TODO: scope to community members or event participants
+            allow read: if hasAuth();
+            allow write: if false;
+        }
     }
 }

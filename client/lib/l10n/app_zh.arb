@@ -712,10 +712,14 @@
   "record": "录制",
   "recording": "录制中  ",
   "recordingPreparing": "正在准备录制...",
-  "recordingStatusChecking": "(checking...)",
-  "recordingStatusPreparing": "(preparing...)",
-  "recordingStatusFailed": "(failed)",
-  "recordingStatusParts": "({count} parts)",
+  "recordingStatusChecking": "(检查中...)",
+  "recordingStatusPreparing": "(准备中...)",
+  "recordingStatusFailed": "(失败)",
+  "recordingStatusInProgress": "正在录制",
+  "recordingStatusProcessing": "正在处理录制",
+  "recordingStatusFile": "个文件",
+  "recordingStatusFiles": "个文件",
+  "recordingStatusParts": "({count} 部分)",
   "@recordingStatusParts": {
     "placeholders": {
       "count": {

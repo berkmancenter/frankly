@@ -28,6 +28,7 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart' as event;
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:client/core/localization/localization_helper.dart';
@@ -146,40 +147,67 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                         .eventSettings
                         ?.alwaysRecord ==
                     true)
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      color: context.theme.colorScheme.scrim.withScrimOpacity,
-                      height: 32,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            height: _kRecordingPulseSize,
-                            width: _kRecordingPulseSize,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.theme.colorScheme.errorContainer,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            'Recording',
-                            style: TextStyle(
-                              color: context.theme.colorScheme.onPrimary,
-                            ),
-                          ),
-                          SizedBox(width: 26),
-                        ],
-                      ),
-                    ),
-                  ),
+                  _buildRecordingBadge(context),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRecordingBadge(BuildContext context) {
+    final meeting = liveMeetingProvider.isInBreakout
+        ? liveMeetingProvider.breakoutRoomLiveMeeting
+        : liveMeetingProvider.liveMeeting;
+    final sessionId = meeting?.recordingSessionId;
+
+    Widget badge() {
+      return Container(
+        alignment: Alignment.topRight,
+        child: Container(
+          color: context.theme.colorScheme.scrim.withScrimOpacity,
+          height: 32,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: _kRecordingPulseSize,
+                width: _kRecordingPulseSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.theme.colorScheme.errorContainer,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Recording',
+                style: TextStyle(
+                  color: context.theme.colorScheme.onPrimary,
+                ),
+              ),
+              SizedBox(width: 26),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // No session ID yet — show the badge unconditionally
+    // (matches the original alwaysRecord-gated behavior).
+    if (sessionId == null) return badge();
+
+    return StreamBuilder<RecordingSession?>(
+      stream: firestoreLiveMeetingService.recordingSessionStream(sessionId),
+      builder: (context, snapshot) {
+        final status = snapshot.data?.status;
+        // Hide the badge only if the session has definitively failed.
+        if (status == RecordingSessionStatus.failed) {
+          return const SizedBox.shrink();
+        }
+        return badge();
+      },
     );
   }
 }
