@@ -5313,6 +5313,13 @@ class MockCommunitySettings extends _i1.Mock implements _i25.CommunitySettings {
       ) as bool);
 
   @override
+  bool get enablePlatformSelection => (super.noSuchMethod(
+        Invocation.getter(#enablePlatformSelection),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get enableUpdatedLiveMeetingMobile => (super.noSuchMethod(
         Invocation.getter(#enableUpdatedLiveMeetingMobile),
         returnValue: false,
