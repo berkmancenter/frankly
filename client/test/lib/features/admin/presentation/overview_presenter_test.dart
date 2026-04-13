@@ -88,7 +88,7 @@ void main() {
             expectedResult =
                 'Make it yours with custom colors, images, and logos';
             break;
-          case OnboardingStep.createGuide:
+          case OnboardingStep.createTemplate:
             expectedResult =
                 'What do you want to talk about? Choose a template and structure the event. ';
             break;

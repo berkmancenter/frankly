@@ -6166,8 +6166,8 @@ class MockEventPermissionsProvider extends _i1.Mock
       ) as bool);
 
   @override
-  bool get canRefreshGuide => (super.noSuchMethod(
-        Invocation.getter(#canRefreshGuide),
+  bool get canRefreshTemplate => (super.noSuchMethod(
+        Invocation.getter(#canRefreshTemplate),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);

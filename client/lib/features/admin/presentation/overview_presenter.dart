@@ -54,7 +54,7 @@ class OverviewPresenter {
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
         return 'Make it yours with custom colors, images, and logos';
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return 'What do you want to talk about? Choose a template and structure the event. ';
       case OnboardingStep.hostEvent:
         return 'You can host or let members talk directly to each other. ';
@@ -69,7 +69,7 @@ class OverviewPresenter {
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
         return null;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return Environment.createTemplateHelpUrl;
       case OnboardingStep.hostEvent:
         return Environment.createEventHelpUrl;
