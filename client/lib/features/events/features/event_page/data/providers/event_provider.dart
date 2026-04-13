@@ -379,7 +379,6 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
-    firstRow.add('Join Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
 
@@ -403,15 +402,6 @@ class EventProvider with ChangeNotifier {
       );
       row.add(
         registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
-      );
-
-      // Added Join Time field from Participant.mostRecentPresentTime
-      row.add(
-        registrationData[i]
-            .memberEvent
-            ?.participant
-            ?.mostRecentPresentTime
-            ?.toUtc(),
       );
 
       // Added Room Assigned field from Participant.currentBreakoutRoomId
