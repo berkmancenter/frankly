@@ -6,10 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
-import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
-import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
-import 'package:client/features/events/data/models/platform_data.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/buttons/app_clickable_widget.dart';
@@ -20,7 +16,6 @@ import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/config/environment.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/core/utils/dialogs.dart';
@@ -75,8 +70,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
   }
 
   Widget _buildBody() {
-    final isPlatformSelectionFeatureEnabled =
-        _presenter.isPlatformSelectionFeatureEnabled();
     final canBuildParticipantCountSection =
         _presenter.canBuildParticipantCountSection();
 
@@ -139,10 +132,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
               SizedBox(height: 30),
               _buildDurationSection(),
               SizedBox(height: 20),
-              if (isPlatformSelectionFeatureEnabled) ...[
-                _buildPlatformSelectionSection(),
-                SizedBox(height: 20),
-              ],
               if (canBuildParticipantCountSection) ...[
                 _buildParticipantCountSection(),
                 SizedBox(height: 20),
@@ -414,47 +403,6 @@ class EditEventDrawerState extends State<EditEventDrawer>
               alertOnError(context, () => _presenter.cancelEvent()),
         ),
       ],
-    );
-  }
-
-  Widget _buildPlatformSelectionSection() {
-    final PlatformItem externalPlatform = _model.event.externalPlatform ??
-        PlatformItem(platformKey: PlatformKey.community);
-
-    return CustomInkWell(
-      onTap: () => CreateEventDialog.show(
-        context,
-        pages: [CurrentPage.choosePlatform],
-        eventProvider: context.read<EventProvider>(),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 40,
-            width: 40,
-            child: ProxiedImage(
-              null,
-              asset: AppAsset(externalPlatform.platformKey.info.logoUrl),
-            ),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: HeightConstrainedText(
-              externalPlatform.platformKey != PlatformKey.community
-                  ? externalPlatform.platformKey.info.title
-                  : '${Environment.appName} Video',
-              overflow: TextOverflow.ellipsis,
-              style: context.theme.textTheme.bodyLarge,
-            ),
-          ),
-          SizedBox(width: 10),
-          if (externalPlatform.platformKey != PlatformKey.community)
-            _buildCopyable(
-              context: context,
-              text: externalPlatform.url ?? '',
-            ),
-        ],
-      ),
     );
   }
 

@@ -20,6 +20,13 @@ _$_Community _$$_CommunityFromJson(Map<String, dynamic> json) => _$_Community(
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       isPublic: json['isPublic'] as bool?,
       description: json['description'] as String?,
+      websiteUrl: json['websiteUrl'] as String?,
+      facebookUrl: json['facebookUrl'] as String?,
+      linkedinUrl: json['linkedinUrl'] as String?,
+      twitterUrl: json['twitterUrl'] as String?,
+      blueskyUrl: json['blueskyUrl'] as String?,
+      youtubeUrl: json['youtubeUrl'] as String?,
+      instagramUrl: json['instagramUrl'] as String?,
       tagLine: json['tagLine'] as String?,
       enabledFeatureFlags: json['enabledFeatureFlags'] == null
           ? const []
@@ -56,6 +63,13 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) =>
       'createdDate': serverTimestamp(instance.createdDate),
       'isPublic': instance.isPublic,
       'description': instance.description,
+      'websiteUrl': instance.websiteUrl,
+      'facebookUrl': instance.facebookUrl,
+      'linkedinUrl': instance.linkedinUrl,
+      'twitterUrl': instance.twitterUrl,
+      'blueskyUrl': instance.blueskyUrl,
+      'youtubeUrl': instance.youtubeUrl,
+      'instagramUrl': instance.instagramUrl,
       'tagLine': instance.tagLine,
       'enabledFeatureFlags': instance.enabledFeatureFlags
           .map((e) => _$CommunityFeatureFlagsEnumMap[e]!)

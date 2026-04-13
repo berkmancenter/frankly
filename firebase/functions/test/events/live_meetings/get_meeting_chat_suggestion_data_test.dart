@@ -1,11 +1,11 @@
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/get_meeting_chat_suggestion_data.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/chat/chat.dart';
-import 'package:data_models/chat/chat_suggestion_data.dart';
+import 'package:data_models/user_input/chat.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:functions/utils/infra/firebase_auth_utils.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';

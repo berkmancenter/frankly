@@ -4665,7 +4665,6 @@ mixin _$WaitingRoomInfo {
   String? get content => throw _privateConstructorUsedError;
   MediaItem? get waitingMediaItem => throw _privateConstructorUsedError;
   MediaItem? get introMediaItem => throw _privateConstructorUsedError;
-  bool get enableChat => throw _privateConstructorUsedError;
   bool get loopWaitingVideo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -4686,7 +4685,6 @@ abstract class $WaitingRoomInfoCopyWith<$Res> {
       String? content,
       MediaItem? waitingMediaItem,
       MediaItem? introMediaItem,
-      bool enableChat,
       bool loopWaitingVideo});
 
   $MediaItemCopyWith<$Res>? get waitingMediaItem;
@@ -4711,7 +4709,6 @@ class _$WaitingRoomInfoCopyWithImpl<$Res, $Val extends WaitingRoomInfo>
     Object? content = freezed,
     Object? waitingMediaItem = freezed,
     Object? introMediaItem = freezed,
-    Object? enableChat = null,
     Object? loopWaitingVideo = null,
   }) {
     return _then(_value.copyWith(
@@ -4735,10 +4732,6 @@ class _$WaitingRoomInfoCopyWithImpl<$Res, $Val extends WaitingRoomInfo>
           ? _value.introMediaItem
           : introMediaItem // ignore: cast_nullable_to_non_nullable
               as MediaItem?,
-      enableChat: null == enableChat
-          ? _value.enableChat
-          : enableChat // ignore: cast_nullable_to_non_nullable
-              as bool,
       loopWaitingVideo: null == loopWaitingVideo
           ? _value.loopWaitingVideo
           : loopWaitingVideo // ignore: cast_nullable_to_non_nullable
@@ -4785,7 +4778,6 @@ abstract class _$$_WaitingRoomInfoCopyWith<$Res>
       String? content,
       MediaItem? waitingMediaItem,
       MediaItem? introMediaItem,
-      bool enableChat,
       bool loopWaitingVideo});
 
   @override
@@ -4810,7 +4802,6 @@ class __$$_WaitingRoomInfoCopyWithImpl<$Res>
     Object? content = freezed,
     Object? waitingMediaItem = freezed,
     Object? introMediaItem = freezed,
-    Object? enableChat = null,
     Object? loopWaitingVideo = null,
   }) {
     return _then(_$_WaitingRoomInfo(
@@ -4834,10 +4825,6 @@ class __$$_WaitingRoomInfoCopyWithImpl<$Res>
           ? _value.introMediaItem
           : introMediaItem // ignore: cast_nullable_to_non_nullable
               as MediaItem?,
-      enableChat: null == enableChat
-          ? _value.enableChat
-          : enableChat // ignore: cast_nullable_to_non_nullable
-              as bool,
       loopWaitingVideo: null == loopWaitingVideo
           ? _value.loopWaitingVideo
           : loopWaitingVideo // ignore: cast_nullable_to_non_nullable
@@ -4855,7 +4842,6 @@ class _$_WaitingRoomInfo extends _WaitingRoomInfo {
       this.content,
       this.waitingMediaItem,
       this.introMediaItem,
-      this.enableChat = false,
       this.loopWaitingVideo = false})
       : super._();
 
@@ -4876,14 +4862,11 @@ class _$_WaitingRoomInfo extends _WaitingRoomInfo {
   final MediaItem? introMediaItem;
   @override
   @JsonKey()
-  final bool enableChat;
-  @override
-  @JsonKey()
   final bool loopWaitingVideo;
 
   @override
   String toString() {
-    return 'WaitingRoomInfo(durationSeconds: $durationSeconds, waitingMediaBufferSeconds: $waitingMediaBufferSeconds, content: $content, waitingMediaItem: $waitingMediaItem, introMediaItem: $introMediaItem, enableChat: $enableChat, loopWaitingVideo: $loopWaitingVideo)';
+    return 'WaitingRoomInfo(durationSeconds: $durationSeconds, waitingMediaBufferSeconds: $waitingMediaBufferSeconds, content: $content, waitingMediaItem: $waitingMediaItem, introMediaItem: $introMediaItem, loopWaitingVideo: $loopWaitingVideo)';
   }
 
   @override
@@ -4901,8 +4884,6 @@ class _$_WaitingRoomInfo extends _WaitingRoomInfo {
                 other.waitingMediaItem == waitingMediaItem) &&
             (identical(other.introMediaItem, introMediaItem) ||
                 other.introMediaItem == introMediaItem) &&
-            (identical(other.enableChat, enableChat) ||
-                other.enableChat == enableChat) &&
             (identical(other.loopWaitingVideo, loopWaitingVideo) ||
                 other.loopWaitingVideo == loopWaitingVideo));
   }
@@ -4916,7 +4897,6 @@ class _$_WaitingRoomInfo extends _WaitingRoomInfo {
       content,
       waitingMediaItem,
       introMediaItem,
-      enableChat,
       loopWaitingVideo);
 
   @JsonKey(ignore: true)
@@ -4940,7 +4920,6 @@ abstract class _WaitingRoomInfo extends WaitingRoomInfo {
       final String? content,
       final MediaItem? waitingMediaItem,
       final MediaItem? introMediaItem,
-      final bool enableChat,
       final bool loopWaitingVideo}) = _$_WaitingRoomInfo;
   const _WaitingRoomInfo._() : super._();
 
@@ -4957,8 +4936,6 @@ abstract class _WaitingRoomInfo extends WaitingRoomInfo {
   MediaItem? get waitingMediaItem;
   @override
   MediaItem? get introMediaItem;
-  @override
-  bool get enableChat;
   @override
   bool get loopWaitingVideo;
   @override

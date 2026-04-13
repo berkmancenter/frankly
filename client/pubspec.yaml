@@ -3,7 +3,7 @@ description: A platform for deliberations
 publish_to: none
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   json_annotation: ^4.9.0
@@ -81,14 +81,16 @@ dependencies:
   logger: ^2.1.0
   synchronized: ^3.1.0
   clock: ^1.1.1
+  collection: ^1.19.0
   metadata_fetch: ^0.4.1
   file_picker: ^5.3.1
   rainbow_color: ^2.0.1
   video_player: ^2.7.2
   csv: ^6.0.0
   simple_tooltip: ^1.2.0
-  firebase_ui_firestore: ^1.6.3
-
+  firebase_ui_firestore: ^1.6.3 
+  flutter_colorpicker: ^1.1.0
+  
 dev_dependencies:
   build_runner: ^2.3.3
   flutter_driver:

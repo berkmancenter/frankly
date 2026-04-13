@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/networking_status.dart';
-import 'package:client/styles/styles.dart';
 
 void main() {
   group('NetworkStatusAlert', () {

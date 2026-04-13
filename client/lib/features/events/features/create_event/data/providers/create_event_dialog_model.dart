@@ -12,8 +12,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:pedantic/pedantic.dart';
 
-import '../../../event_page/data/providers/event_page_provider.dart';
-
 enum CurrentPage {
   selectTemplate,
   selectVisibility,
