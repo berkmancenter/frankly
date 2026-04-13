@@ -270,19 +270,35 @@ class _DataTabState extends State<DataTab> {
         showRecording && (_recordingParts[event.id] ?? 0) > 0;
     bool recordingAutoChecked = recordingSelected;
     bool registrantListSelected = showRegistrant;
+    bool chatDataSelected = false;
+    bool pollsSuggestionsDataSelected = false;
 
     showDialog<void>(
       context: context,
       builder: (dialogContext) {
         AlertDialog buildAlertDialog(StateSetter setDialogState, int? parts) {
           void pressedHandler() async {
-            if (showRecording && recordingSelected) {
-              await _downloadAllRecordings(event);
-            }
-            if (showRegistrant && registrantListSelected) {
-              await alertOnError(context, () async {
-                await downloadRegistrantList(event, participants);
-              });
+            try {
+              if (showRecording && recordingSelected) {
+                await _downloadAllRecordings(event);
+              }
+              if (showRegistrant && registrantListSelected) {
+                print('TODO: Download registration data');
+              }
+              if (chatDataSelected) {
+                print('TODO: Download chat data');
+              }
+              if (pollsSuggestionsDataSelected) {
+                print('TODO: Download poll/suggest data');
+              }
+            } catch (e) {
+              if (dialogContext.mounted) {
+                showRegularToast(
+                  dialogContext,
+                  'Error: ${e.toString()}',
+                  toastType: ToastType.failed,
+                );
+              }
             }
             if (dialogContext.mounted) Navigator.of(dialogContext).pop();
           }
@@ -290,7 +306,9 @@ class _DataTabState extends State<DataTab> {
           final recordingReady = showRecording && (parts ?? 0) > 0;
           final downloadEnabled =
               (showRecording && recordingSelected && recordingReady) ||
-                  (showRegistrant && registrantListSelected);
+                  (showRegistrant && registrantListSelected) ||
+                  chatDataSelected ||
+                  pollsSuggestionsDataSelected;
 
           return AlertDialog(
             title: Text(context.l10n.selectData),
@@ -322,38 +340,21 @@ class _DataTabState extends State<DataTab> {
                         ),
                         title: Text(context.l10n.registrationDataDownload),
                       ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: SizedBox(
-                        width: 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                              Text(
-                                context.l10n.otherDataDownload,
-                                style: context.theme.textTheme.bodySmall,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  routerDelegate.beamTo(
-                                    CommunityPageRoutes(
-                                      communityDisplayId:
-                                          CommunityProvider.readOrNull(context)?.displayId ??
-                                              event.communityId,
-                                    ).eventPage(
-                                      templateId: event.templateId,
-                                      eventId: event.id,
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  context.l10n.otherDataDownloadAction,
-                                  style: context.theme.textTheme.bodySmall,
-                                ),
-                              ),
-                          ],
-                        ),
+                    CheckboxListTile(
+                      value: chatDataSelected,
+                      onChanged: (value) => setDialogState(
+                        () => chatDataSelected = value ?? false,
                       ),
+                      // TODO: L10n
+                      title: const Text('Chat Data'),
+                    ),
+                    CheckboxListTile(
+                      value: pollsSuggestionsDataSelected,
+                      onChanged: (value) => setDialogState(
+                        () => pollsSuggestionsDataSelected = value ?? false,
+                      ),
+                      // TODO: L10n
+                      title: const Text('Polls & Suggestions Data'),
                     ),
                   ],
                 ),
