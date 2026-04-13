@@ -116,14 +116,13 @@ class _DataTabState extends State<DataTab> {
     bool eventInPast,
     bool hasRecording,
   ) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
-      return const SizedBox.shrink();
-    }
-
     final showRecording = eventInPast && hasRecording;
     final showRegistrant = participants.isNotEmpty;
+
+    // Nothing to download: hide the button entirely.
+    if (!showRecording && !showRegistrant) {
+      return const SizedBox.shrink();
+    }
 
     return ActionButton(
       type: ActionButtonType.text,
@@ -323,34 +322,36 @@ class _DataTabState extends State<DataTab> {
                         title: Text(context.l10n.registrationDataDownload),
                       ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       child: SizedBox(
                         width: 200,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                              Text(
-                                context.l10n.otherDataDownload,
+                            Text(
+                              context.l10n.otherDataDownload,
+                              style: context.theme.textTheme.bodySmall,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                routerDelegate.beamTo(
+                                  CommunityPageRoutes(
+                                    communityDisplayId:
+                                        CommunityProvider.readOrNull(context)
+                                                ?.displayId ??
+                                            event.communityId,
+                                  ).eventPage(
+                                    templateId: event.templateId,
+                                    eventId: event.id,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                context.l10n.otherDataDownloadAction,
                                 style: context.theme.textTheme.bodySmall,
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  routerDelegate.beamTo(
-                                    CommunityPageRoutes(
-                                      communityDisplayId:
-                                          CommunityProvider.readOrNull(context)?.displayId ??
-                                              event.communityId,
-                                    ).eventPage(
-                                      templateId: event.templateId,
-                                      eventId: event.id,
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  context.l10n.otherDataDownloadAction,
-                                  style: context.theme.textTheme.bodySmall,
-                                ),
-                              ),
+                            ),
                           ],
                         ),
                       ),
