@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
 import 'package:client/styles/styles.dart';
@@ -9,6 +10,7 @@ import 'package:client/core/localization/localization_helper.dart';
 enum EventPopUpMenuSelection {
   refreshTemplate,
   createTemplateFromEvent,
+  duplicateTemplate,
   duplicateEvent,
   downloadChatData,
   downloadPollsSuggestionsData,
@@ -38,11 +40,14 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
   List<EventPopUpMenuSelection> _getMenuOptions(BuildContext context) {
     final eventHasTemplate = widget.event.templateId != defaultTemplateId;
     final permissions = context.watch<EventPermissionsProvider>();
+    final communityPermissions = context.watch<CommunityPermissionsProvider>();
 
     return <EventPopUpMenuSelection>[
       if (eventHasTemplate && permissions.canRefreshTemplate)
         EventPopUpMenuSelection.refreshTemplate,
       if (!eventHasTemplate) EventPopUpMenuSelection.createTemplateFromEvent,
+      if (communityPermissions.canCreateTemplate)
+        EventPopUpMenuSelection.duplicateTemplate,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
         EventPopUpMenuSelection.downloadRegistrationData,
@@ -127,6 +132,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         return context.l10n.refreshTemplate;
       case EventPopUpMenuSelection.createTemplateFromEvent:
         return context.l10n.createTemplateFromEvent;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return context.l10n.duplicateTemplate;
       case EventPopUpMenuSelection.duplicateEvent:
         return context.l10n.duplicateEvent;
       case EventPopUpMenuSelection.downloadRegistrationData:
@@ -148,6 +155,8 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         return Icons.refresh;
       case EventPopUpMenuSelection.createTemplateFromEvent:
         return Icons.bookmark_add_outlined;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return Icons.copy;
       case EventPopUpMenuSelection.duplicateEvent:
         return Icons.copy;
       case EventPopUpMenuSelection.downloadRegistrationData:

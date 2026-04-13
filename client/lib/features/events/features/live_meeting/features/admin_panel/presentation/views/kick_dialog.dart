@@ -35,10 +35,6 @@ class _KickDialogState extends State<KickDialog> {
     return AlertDialog(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Color(0xFF5568FF),
-          width: 5,
-        ),
         borderRadius: BorderRadius.circular(6),
       ),
       actionsPadding: const EdgeInsets.symmetric(horizontal: 12),
@@ -46,8 +42,11 @@ class _KickDialogState extends State<KickDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          HeightConstrainedText(context.l10n.confirmRemoveParticipant(
-              widget.userName ?? context.l10n.thisUser)),
+          HeightConstrainedText(
+            context.l10n.confirmRemoveParticipant(
+              widget.userName ?? context.l10n.thisUser,
+            ),
+          ),
           FormBuilderCheckbox(
             name: 'lock',
             onChanged: (value) => _lockRoom = value ?? false,

@@ -487,7 +487,6 @@ _$_WaitingRoomInfo _$$_WaitingRoomInfoFromJson(Map<String, dynamic> json) =>
       introMediaItem: json['introMediaItem'] == null
           ? null
           : MediaItem.fromJson(json['introMediaItem'] as Map<String, dynamic>),
-      enableChat: json['enableChat'] as bool? ?? false,
       loopWaitingVideo: json['loopWaitingVideo'] as bool? ?? false,
     );
 
@@ -498,6 +497,5 @@ Map<String, dynamic> _$$_WaitingRoomInfoToJson(_$_WaitingRoomInfo instance) =>
       'content': instance.content,
       'waitingMediaItem': instance.waitingMediaItem?.toJson(),
       'introMediaItem': instance.introMediaItem?.toJson(),
-      'enableChat': instance.enableChat,
       'loopWaitingVideo': instance.loopWaitingVideo,
     };

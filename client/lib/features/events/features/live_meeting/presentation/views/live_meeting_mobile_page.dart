@@ -177,7 +177,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     context.watch<MeetingGuideCardStore>();
 
     final isBottomSheetPresent = _presenter.isBottomSheetPresent();
-    final isRaisedHandVisible = _presenter.isRaisedHandVisible;
 
     final showAppBar = ![
       MeetingUiState.leftMeeting,
@@ -196,8 +195,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
   PreferredSize _buildAppBar() {
     final eventTabsController = Provider.of<EventTabsControllerState>(context);
     final agendaProvider = Provider.of<AgendaProvider>(context);
-
-    const showShareButton = false;
 
     final suppressGuide = ConferenceRoom.read(context) == null ||
         agendaProvider.agendaItems.isEmpty;
@@ -271,16 +268,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         },
                       ),
                     Spacer(),
-                    if (showShareButton)
-                      AppClickableWidget(
-                        child: ProxiedImage(
-                          null,
-                          asset: AppAsset.shareWhite(),
-                          width: 30,
-                          height: 30,
-                        ),
-                        onTap: () {},
-                      ),
                     if (eventTabsController.widget.enableAdminPanel)
                       AppClickableWidget(
                         child: Icon(
