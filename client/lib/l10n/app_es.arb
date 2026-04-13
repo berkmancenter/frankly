@@ -644,6 +644,8 @@
   "optional": "Opcional",
   "or": "O",
   "outlookCalendar": "Outlook Calendar",
+  "otherDataDownload": "Las encuestas, sugerencias y chat se pueden descargar desde la página del evento.",
+  "otherDataDownloadAction": "Ir a la página del evento",
   "owner": "Propietario",
   "participant": "Participante",
   "participantActions": "Acciones del participante",
