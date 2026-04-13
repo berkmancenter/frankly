@@ -5,6 +5,8 @@
   <base href="/" />
 
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+
   <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
   <meta name="description" content="Enabling constructive dialogue." />
   <meta name="robots" content="noindex, nofollow" />
@@ -42,10 +44,25 @@
     .firebase-emulator-warning {
       display: none;
     }
+
+    body {
+      margin: 0;
+      padding: 0;
+      /* Prevent body scroll, allow Fltter to handle it internally.*/
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    #flutter-container {
+      width: 100%;
+      /* fallback */
+      height: 100vh;
+      height: 100dvh;
+      touch-action: none;
+    }
   </style>
 
   <meta name="facebook-domain-verification" content="wlltlfmqgz7euk64ehie5303ucz03m" />
-
 </head>
 
 <body>
@@ -91,19 +108,15 @@
   -->
   <script src="./agora/iris-web-rtc.js"></script>
 
-
-  <script type="application/javascript">
-    // Keep this in sync with the main.dart.js version below
-    window.platformVersion = '__VERSION__';
-  </script>
-  <script src="main.dart.js?version=__VERSION__" type="application/javascript"></script>
-
   <script>
     if (window.location.hostname == 'localhost') {
       // needed to make the auth emulator work correctly
       window.indexedDB.deleteDatabase('firebaseLocalStorageDb');
     }
   </script>
+  
+  <div id="flutter-container" role="main"></div>
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 
 </html>
