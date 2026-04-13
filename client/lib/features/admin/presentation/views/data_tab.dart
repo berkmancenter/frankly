@@ -149,15 +149,6 @@ class _DataTabState extends State<DataTab> {
     _fetchRecordingCount(event);
   }
 
-  void _retryRecordingCheck(Event event) {
-    setState(() {
-      _recordingParts.remove(event.id);
-      _retryCount.remove(event.id);
-    });
-    _recordingNotifiers[event.id]?.value = null;
-    _maybeStartRecordingCheck(event);
-  }
-
   Future<void> _fetchRecordingCount(Event event) async {
     try {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
@@ -278,7 +269,7 @@ class _DataTabState extends State<DataTab> {
             if (showRecording && recordingSelected) {
               await _downloadAllRecordings(event);
             }
-            if (showRegistrant && registrantListSelected) {
+            if (showRegistrant && registrantListSelected && mounted) {
               await alertOnError(context, () async {
                 await downloadRegistrantList(event, participants);
               });
@@ -323,7 +314,9 @@ class _DataTabState extends State<DataTab> {
                       ),
                     Container(
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       child: SizedBox(
                         width: 200,
                         child: Column(
