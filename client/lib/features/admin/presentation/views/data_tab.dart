@@ -323,34 +323,40 @@ class _DataTabState extends State<DataTab> {
                         title: Text(context.l10n.registrationDataDownload),
                       ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       child: SizedBox(
                         width: 200,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                              Text(
-                                context.l10n.otherDataDownload,
-                                style: context.theme.textTheme.bodySmall,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  routerDelegate.beamTo(
-                                    CommunityPageRoutes(
-                                      communityDisplayId:
-                                          CommunityProvider.readOrNull(context)?.displayId ??
-                                              event.communityId,
-                                    ).eventPage(
-                                      templateId: event.templateId,
-                                      eventId: event.id,
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  context.l10n.otherDataDownloadAction,
-                                  style: context.theme.textTheme.bodySmall,
-                                ),
-                              ),
+                            Text(
+                              context.l10n.otherDataDownload,
+                              style: context.theme.textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            ActionButton(
+                              onPressed: () {
+                                routerDelegate.beamTo(
+                                  CommunityPageRoutes(
+                                    communityDisplayId:
+                                        CommunityProvider.readOrNull(context)
+                                                ?.displayId ??
+                                            event.communityId,
+                                  ).eventPage(
+                                    templateId: event.templateId,
+                                    eventId: event.id,
+                                  ),
+                                );
+                              },
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                              textColor: context.theme.colorScheme.onSurface,
+                              text: context.l10n.otherDataDownloadAction,
+                            ),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
