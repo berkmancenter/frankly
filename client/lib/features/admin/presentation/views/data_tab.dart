@@ -327,11 +327,11 @@ class _DataTabState extends State<DataTab> {
                       child: SizedBox(
                         width: 200,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               context.l10n.otherDataDownload,
                               style: context.theme.textTheme.bodySmall,
+                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 8),
                             ActionButton(
