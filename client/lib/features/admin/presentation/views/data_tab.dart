@@ -145,7 +145,55 @@ class _DataTabState extends State<DataTab> {
       breakoutRooms: breakoutRooms,
     );
   }
+
+  Future<void> downloadPollsSuggestionsData(Event event) async {
+    final communityProvider = CommunityProvider.read(context);
+    final suggestionRequest =
+        GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
+    final chatSuggestionResponse = await cloudFunctions.callFunction(
+      'GetMeetingChatSuggestionData',
+      suggestionRequest.toJson(),
+    );
+    final chatSuggestionResult =
+        GetMeetingChatsSuggestionsDataResponse.fromJson(chatSuggestionResponse);
+    final suggestionData = chatSuggestionResult.chatsSuggestionsList
+            ?.where((e) => e.type == ChatSuggestionType.suggestion)
+            .toList() ??
+        [];
+
+    final pollRequest = GetMeetingPollDataRequest(eventPath: event.fullPath);
+    final pollResponse = await cloudFunctions.callFunction(
+      'GetMeetingPollData',
+      pollRequest.toJson(),
+    );
+    final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
+    final pollData = pollResult.polls ?? [];
+
+    if (suggestionData.isEmpty && pollData.isEmpty) {
+      if (mounted) {
+        showRegularToast(
+          context,
+          'No polls or suggestions data',
+          toastType: ToastType.neutral,
+        );
+      }
+      return;
+    }
+
+    final breakoutRooms = await getBreakoutRoomData(event: event);
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+    provider.initialize();
+    await provider.generatePollsSuggestionsDataCsv(
+      suggestionData: suggestionData,
+      pollData: pollData,
+      eventId: event.id,
+      breakoutRooms: breakoutRooms,
+    );
   }
+
   Widget _buildDownloadButton(
     Event event,
     Iterable<Participant> participants,
@@ -325,7 +373,7 @@ class _DataTabState extends State<DataTab> {
                 await downloadChatData(event);
               }
               if (pollsSuggestionsDataSelected) {
-                print('TODO: Download poll/suggest data');
+                await downloadPollsSuggestionsData(event);
               }
             } catch (e) {
               if (dialogContext.mounted) {
