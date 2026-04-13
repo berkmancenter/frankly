@@ -116,14 +116,13 @@ class _DataTabState extends State<DataTab> {
     bool eventInPast,
     bool hasRecording,
   ) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
-      return const SizedBox.shrink();
-    }
-
     final showRecording = eventInPast && hasRecording;
     final showRegistrant = participants.isNotEmpty;
+
+    // Nothing to download: hide the button entirely.
+    if (!showRecording && !showRegistrant) {
+      return const SizedBox.shrink();
+    }
 
     return ActionButton(
       type: ActionButtonType.text,
@@ -148,15 +147,6 @@ class _DataTabState extends State<DataTab> {
     _recordingParts[event.id] = null; // null = loading
     (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
     _fetchRecordingCount(event);
-  }
-
-  void _retryRecordingCheck(Event event) {
-    setState(() {
-      _recordingParts.remove(event.id);
-      _retryCount.remove(event.id);
-    });
-    _recordingNotifiers[event.id]?.value = null;
-    _maybeStartRecordingCheck(event);
   }
 
   Future<void> _fetchRecordingCount(Event event) async {
@@ -279,7 +269,7 @@ class _DataTabState extends State<DataTab> {
             if (showRecording && recordingSelected) {
               await _downloadAllRecordings(event);
             }
-            if (showRegistrant && registrantListSelected) {
+            if (showRegistrant && registrantListSelected && mounted) {
               await alertOnError(context, () async {
                 await downloadRegistrantList(event, participants);
               });
