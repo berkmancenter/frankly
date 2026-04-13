@@ -110,6 +110,30 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
+  Future<void> downloadChatData(Event event) async {
+    final request =
+        GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
+    final cloudFunctionResponse = await cloudFunctions.callFunction(
+      'GetMeetingChatSuggestionData',
+      request.toJson(),
+    );
+    final result =
+        GetMeetingChatsSuggestionsDataResponse.fromJson(cloudFunctionResponse);
+    final chatsData = result.chatsSuggestionsList
+            ?.where((e) => e.type == ChatSuggestionType.chat)
+            .toList() ??
+        [];
+
+    if (chatsData.isEmpty) {
+      if (mounted) {
+        showRegularToast(context, 'No chat data', toastType: ToastType.neutral);
+      }
+      return;
+    }
+
+    print(chatsData);
+    return;
+  }
   Widget _buildDownloadButton(
     Event event,
     Iterable<Participant> participants,
@@ -286,7 +310,7 @@ class _DataTabState extends State<DataTab> {
                 print('TODO: Download registration data');
               }
               if (chatDataSelected) {
-                print('TODO: Download chat data');
+                await downloadChatData(event);
               }
               if (pollsSuggestionsDataSelected) {
                 print('TODO: Download poll/suggest data');
