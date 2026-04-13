@@ -110,7 +110,9 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
-  Future<void> downloadChatData(Event event) async {
+  Future<void> _downloadChatData(Event event) async {
+    // Get CommunityProvider from cotext before async operations.
+    final communityProvider = CommunityProvider.read(context);
     final request =
         GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
     final cloudFunctionResponse = await cloudFunctions.callFunction(
@@ -131,8 +133,18 @@ class _DataTabState extends State<DataTab> {
       return;
     }
 
-    print(chatsData);
-    return;
+    final breakoutRooms = await getBreakoutRoomData(event: event);
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+    provider.initialize();
+    await provider.generateChatDataCsv(
+      response: result,
+      eventId: event.id,
+      breakoutRooms: breakoutRooms,
+    );
+  }
   }
   Widget _buildDownloadButton(
     Event event,
