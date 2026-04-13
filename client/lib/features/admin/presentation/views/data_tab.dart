@@ -329,28 +329,30 @@ class _DataTabState extends State<DataTab> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                              Text(
-                                context.l10n.otherDataDownload,
-                                style: context.theme.textTheme.bodySmall,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  routerDelegate.beamTo(
-                                    CommunityPageRoutes(
-                                      communityDisplayId:
-                                          CommunityProvider.readOrNull(context)?.displayId ??
-                                              event.communityId,
-                                    ).eventPage(
-                                      templateId: event.templateId,
-                                      eventId: event.id,
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  context.l10n.otherDataDownloadAction,
-                                  style: context.theme.textTheme.bodySmall,
-                                ),
-                              ),
+                            Text(
+                              context.l10n.otherDataDownload,
+                              style: context.theme.textTheme.bodySmall,
+                            ),
+                            const SizedBox(height: 8),
+                            ActionButton(
+                              onPressed: () {
+                                routerDelegate.beamTo(
+                                  CommunityPageRoutes(
+                                    communityDisplayId:
+                                        CommunityProvider.readOrNull(context)
+                                                ?.displayId ??
+                                            event.communityId,
+                                  ).eventPage(
+                                    templateId: event.templateId,
+                                    eventId: event.id,
+                                  ),
+                                );
+                              },
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                              textColor: context.theme.colorScheme.onSurface,
+                              text: context.l10n.otherDataDownloadAction,
+                            ),
                           ],
                         ),
                       ),
