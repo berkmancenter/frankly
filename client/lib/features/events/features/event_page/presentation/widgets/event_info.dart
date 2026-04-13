@@ -259,7 +259,7 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
-  Future<void> _showRefreshGuideDialog() async {
+  Future<void> _showRefreshTemplateDialog() async {
     await ConfirmDialog(
       title: context.l10n.confirmRefreshTemplate,
       subText: 'Your event will be reset to the original template. '
@@ -381,7 +381,7 @@ class _EventInfoState extends State<EventInfo> {
       onSelected: (value) {
         switch (value) {
           case EventPopUpMenuSelection.refreshTemplate:
-            _showRefreshGuideDialog();
+            _showRefreshTemplateDialog();
             break;
           case EventPopUpMenuSelection.duplicateTemplate:
             _showDuplicateTemplateDialog(
