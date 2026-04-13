@@ -323,7 +323,10 @@ class _DataTabState extends State<DataTab> {
                         title: Text(context.l10n.registrationDataDownload),
                       ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       child: SizedBox(
                         width: 200,
                         child: Column(
@@ -353,6 +356,7 @@ class _DataTabState extends State<DataTab> {
                               textColor: context.theme.colorScheme.onSurface,
                               text: context.l10n.otherDataDownloadAction,
                             ),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
