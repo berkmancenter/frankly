@@ -110,7 +110,7 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
-  Future<void> _downloadChatData(Event event) async {
+  Future<void> downloadChatData(Event event) async {
     // Get CommunityProvider from cotext before async operations.
     final communityProvider = CommunityProvider.read(context);
     final request =
@@ -296,7 +296,7 @@ class _DataTabState extends State<DataTab> {
     });
   }
 
-  Future<void> _downloadAllRecordings(Event event) async {
+  Future<void> downloadAllRecordings(Event event) async {
     final errorMsg = context.l10n.errorOccurred;
     final preparingMsg = context.l10n.recordingPreparing;
     await alertOnError(context, () async {
@@ -364,7 +364,7 @@ class _DataTabState extends State<DataTab> {
           void pressedHandler() async {
             try {
               if (showRecording && recordingSelected) {
-                await _downloadAllRecordings(event);
+                await downloadAllRecordings(event);
               }
               if (showRegistrant && registrantListSelected) {
                 await downloadRegistrantList(event, participants);
