@@ -307,7 +307,7 @@ class _DataTabState extends State<DataTab> {
                 await _downloadAllRecordings(event);
               }
               if (showRegistrant && registrantListSelected) {
-                print('TODO: Download registration data');
+                await downloadRegistrantList(event, participants);
               }
               if (chatDataSelected) {
                 await downloadChatData(event);
