@@ -198,7 +198,7 @@ class _EventInfoState extends State<EventInfo> {
     return shareLink;
   }
 
-  Future<void> _showCreateGuideFromEventDialog(
+  Future<void> _showCreateTemplateFromEventDialog(
     CommunityProvider communityProvider,
   ) async {
     final template = _presenter.getCombinedTemplateFromEvent();
@@ -261,7 +261,7 @@ class _EventInfoState extends State<EventInfo> {
 
   Future<void> _showRefreshGuideDialog() async {
     await ConfirmDialog(
-      title: context.l10n.confirmRefreshGuide,
+      title: context.l10n.confirmRefreshTemplate,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
       confirmText: 'Yes, refresh',
@@ -380,7 +380,7 @@ class _EventInfoState extends State<EventInfo> {
       event: _eventProvider.event,
       onSelected: (value) {
         switch (value) {
-          case EventPopUpMenuSelection.refreshGuide:
+          case EventPopUpMenuSelection.refreshTemplate:
             _showRefreshGuideDialog();
             break;
           case EventPopUpMenuSelection.duplicateTemplate:
@@ -388,8 +388,8 @@ class _EventInfoState extends State<EventInfo> {
               Provider.of<CommunityProvider>(context, listen: false),
             );
             break;
-          case EventPopUpMenuSelection.createGuideFromEvent:
-            _showCreateGuideFromEventDialog(
+          case EventPopUpMenuSelection.createTemplateFromEvent:
+            _showCreateTemplateFromEventDialog(
               Provider.of<CommunityProvider>(context, listen: false),
             );
             break;

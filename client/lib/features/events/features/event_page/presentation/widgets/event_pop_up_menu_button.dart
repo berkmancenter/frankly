@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 enum EventPopUpMenuSelection {
-  refreshGuide,
+  refreshTemplate,
   duplicateTemplate,
-  createGuideFromEvent,
+  createTemplateFromEvent,
   duplicateEvent,
   downloadChatData,
   downloadPollsSuggestionsData,
@@ -43,11 +43,11 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     final communityPermissions = context.watch<CommunityPermissionsProvider>();
 
     return <EventPopUpMenuSelection>[
-      if (eventHasTemplate && permissions.canRefreshGuide)
-        EventPopUpMenuSelection.refreshGuide,
+      if (eventHasTemplate && permissions.canRefreshTemplate)
+        EventPopUpMenuSelection.refreshTemplate,
       if (communityPermissions.canCreateTemplate)
         EventPopUpMenuSelection.duplicateTemplate,
-      if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
+      if (!eventHasTemplate) EventPopUpMenuSelection.createTemplateFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
         EventPopUpMenuSelection.downloadRegistrationData,
@@ -128,11 +128,11 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
 
   String _getText(EventPopUpMenuSelection eventPopUpMenuSelection) {
     switch (eventPopUpMenuSelection) {
-      case EventPopUpMenuSelection.refreshGuide:
-        return context.l10n.refreshGuide;
+      case EventPopUpMenuSelection.refreshTemplate:
+        return context.l10n.refreshTemplate;
       case EventPopUpMenuSelection.duplicateTemplate:
         return context.l10n.duplicateTemplate;
-      case EventPopUpMenuSelection.createGuideFromEvent:
+      case EventPopUpMenuSelection.createTemplateFromEvent:
         return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
         return context.l10n.duplicateEvent;
@@ -151,11 +151,11 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     EventPopUpMenuSelection eventPopUpMenuSelection,
   ) {
     switch (eventPopUpMenuSelection) {
-      case EventPopUpMenuSelection.refreshGuide:
+      case EventPopUpMenuSelection.refreshTemplate:
         return Icons.refresh;
       case EventPopUpMenuSelection.duplicateTemplate:
         return Icons.copy;
-      case EventPopUpMenuSelection.createGuideFromEvent:
+      case EventPopUpMenuSelection.createTemplateFromEvent:
         return Icons.bookmark_add_outlined;
       case EventPopUpMenuSelection.duplicateEvent:
         return Icons.copy;
