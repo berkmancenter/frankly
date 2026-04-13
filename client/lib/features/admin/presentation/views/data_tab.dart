@@ -320,13 +320,14 @@ class _DataTabState extends State<DataTab> {
                       child: SizedBox(
                         width: 200,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               context.l10n.otherDataDownload,
                               style: context.theme.textTheme.bodySmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TextButton(
+                            const SizedBox(height: 8),
+                            ActionButton(
                               onPressed: () {
                                 routerDelegate.beamTo(
                                   CommunityPageRoutes(
@@ -340,11 +341,12 @@ class _DataTabState extends State<DataTab> {
                                   ),
                                 );
                               },
-                              child: Text(
-                                context.l10n.otherDataDownloadAction,
-                                style: context.theme.textTheme.bodySmall,
-                              ),
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                              textColor: context.theme.colorScheme.onSurface,
+                              text: context.l10n.otherDataDownloadAction,
                             ),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
