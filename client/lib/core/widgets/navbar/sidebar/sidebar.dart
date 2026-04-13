@@ -159,7 +159,7 @@ class _SideBarState extends State<SideBar> {
         !isInitializedOnHome) {
       final currentCommunity = communities.firstWhere(
         (element) =>
-            context.watch<CommunityProvider>().communityId == element.id,
+            context.watch<CommunityProvider?>()?.communityId == element.id,
       );
 
       communities = [
