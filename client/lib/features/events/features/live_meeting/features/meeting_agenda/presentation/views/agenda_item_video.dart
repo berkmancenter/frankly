@@ -36,12 +36,14 @@ class AgendaItemVideo extends StatefulWidget {
   final bool isEditMode;
   final AgendaItemVideoData agendaItemVideoData;
   final void Function(AgendaItemVideoData) onChanged;
+  final Function(int durationSeconds)? onVideoDurationDetected;
 
   const AgendaItemVideo({
     Key? key,
     required this.isEditMode,
     required this.agendaItemVideoData,
     required this.onChanged,
+    this.onVideoDurationDetected,
   }) : super(key: key);
 
   @override
@@ -66,7 +68,12 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
       widget.agendaItemVideoData,
       widget.onChanged,
     );
-    _presenter = AgendaItemVideoPresenter(context, this, _model);
+    _presenter = AgendaItemVideoPresenter(
+      context,
+      this,
+      _model,
+      onVideoDurationDetected: widget.onVideoDurationDetected,
+    );
     _presenter.init();
 
     // Only temporarily made solution. Once we get rid of the flag, we should only read from

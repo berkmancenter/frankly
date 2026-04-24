@@ -3,11 +3,13 @@ import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
+import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
 import 'views/agenda_item_video_contract.dart';
 import '../data/models/agenda_item_video_model.dart';
+import '../services/video_metadata_service.dart';
 
 class AgendaItemVideoPresenter {
   final AgendaItemVideoView _view;
@@ -15,6 +17,8 @@ class AgendaItemVideoPresenter {
   final AgendaItemVideoHelper _helper;
   final MediaHelperService _mediaHelperService;
   final CommunityProvider _communityProvider;
+  final VideoMetadataService _videoMetadataService;
+  final Function(int durationSeconds)? _onVideoDurationDetected;
 
   AgendaItemVideoPresenter(
     BuildContext context,
@@ -23,11 +27,16 @@ class AgendaItemVideoPresenter {
     AgendaItemVideoHelper? agendaItemVideoHelper,
     MediaHelperService? mediaHelperService,
     CommunityProvider? communityProvider,
+    VideoMetadataService? videoMetadataService,
+    Function(int durationSeconds)? onVideoDurationDetected,
   })  : _helper = agendaItemVideoHelper ?? AgendaItemVideoHelper(),
         _mediaHelperService =
             mediaHelperService ?? GetIt.instance<MediaHelperService>(),
         _communityProvider =
-            communityProvider ?? context.read<CommunityProvider>();
+            communityProvider ?? context.read<CommunityProvider>(),
+        _videoMetadataService =
+            videoMetadataService ?? VideoMetadataService(),
+        _onVideoDurationDetected = onVideoDurationDetected;
 
   void init() {
     if (_model.agendaItemVideoData.url.isEmpty) {
@@ -65,6 +74,39 @@ class AgendaItemVideoPresenter {
     _view.updateView();
 
     _helper.updateParent(_model);
+
+    // Automatically detect and set video duration
+    // This helps ensure the agenda item time matches the actual video length,
+    // preventing issues like breakouts starting before the video finishes.
+    _detectAndSetVideoDuration(url.trim());
+  }
+
+  /// Detects video duration and calls the callback if duration is found
+  Future<void> _detectAndSetVideoDuration(String videoUrl) async {
+    if (videoUrl.isEmpty) {
+      return;
+    }
+
+    try {
+      loggingService.log(
+        'AgendaItemVideoPresenter._detectAndSetVideoDuration: Fetching duration for $videoUrl',
+      );
+
+      final durationSeconds =
+          await _videoMetadataService.getVideoDurationInSeconds(videoUrl);
+
+      if (durationSeconds != null && durationSeconds > 0) {
+        loggingService.log(
+          'AgendaItemVideoPresenter._detectAndSetVideoDuration: Found duration = $durationSeconds seconds',
+        );
+        _onVideoDurationDetected?.call(durationSeconds);
+      }
+    } catch (e) {
+      loggingService.log(
+        'AgendaItemVideoPresenter._detectAndSetVideoDuration: Error fetching duration: $e',
+      );
+      // Silently fail - user can manually set the time if needed
+    }
   }
 
   String getVideoUrl() {

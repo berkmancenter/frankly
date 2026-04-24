@@ -308,6 +308,8 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           isEditMode: isEditMode,
           agendaItemVideoData: _model.agendaItemVideoData,
           onChanged: (data) => _presenter.updateAgendaItemVideoData(data),
+          onVideoDurationDetected: (durationSeconds) =>
+              _presenter.updateTime(Duration(seconds: durationSeconds)),
         );
       case AgendaItemType.image:
         return AgendaItemImage(
