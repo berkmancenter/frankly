@@ -117,16 +117,13 @@ class _DataTabState extends State<DataTab> {
     bool eventInPast,
     bool hasRecording,
   ) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
-      return const SizedBox.shrink();
-    }
-
     final showRecording = eventInPast && hasRecording;
     final showRegistrant = participants.isNotEmpty;
 
-    if (!showRecording && !showRegistrant) return const SizedBox.shrink();
+    // Nothing to download: hide the button entirely.
+    if (!showRecording && !showRegistrant) {
+      return const SizedBox.shrink();
+    }
 
     return ActionButton(
       type: ActionButtonType.text,
@@ -280,7 +277,7 @@ class _DataTabState extends State<DataTab> {
             if (showRecording && recordingSelected) {
               await _downloadAllRecordings(event);
             }
-            if (showRegistrant && registrantListSelected) {
+            if (showRegistrant && registrantListSelected && mounted) {
               await alertOnError(context, () async {
                 await downloadRegistrantList(event, participants);
               });
@@ -332,17 +329,20 @@ class _DataTabState extends State<DataTab> {
                       ),
                     Container(
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       child: SizedBox(
                         width: 200,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               context.l10n.otherDataDownload,
                               style: context.theme.textTheme.bodySmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TextButton(
+                            const SizedBox(height: 8),
+                            ActionButton(
                               onPressed: () {
                                 routerDelegate.beamTo(
                                   CommunityPageRoutes(
@@ -356,11 +356,12 @@ class _DataTabState extends State<DataTab> {
                                   ),
                                 );
                               },
-                              child: Text(
-                                context.l10n.otherDataDownloadAction,
-                                style: context.theme.textTheme.bodySmall,
-                              ),
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                              textColor: context.theme.colorScheme.onSurface,
+                              text: context.l10n.otherDataDownloadAction,
                             ),
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
