@@ -495,20 +495,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   keyboardType: widget.keyboardType,
                   autofillHints: widget.autofillHints,
                 ),
-              if (!widget.markdownEditor &&
-                  widget.isOptional &&
-                  !_focusNode.hasFocus &&
-                  _controller.text.isEmpty)
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: _buildOptionalPadding(),
-                    child: Text(
-                      context.l10n.optional,
-                      style: _buildOptionalTextStyle(),
-                    ),
-                  ),
-                ),
             ],
           ),
         ),
