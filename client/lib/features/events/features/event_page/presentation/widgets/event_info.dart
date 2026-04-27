@@ -498,6 +498,27 @@ class _EventInfoState extends State<EventInfo> {
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () async {
+        if (context.read<EventProvider>().event.eventSettings?.alwaysRecord == true) {
+          final proceed = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Event is being recorded'),
+              content: const Text(
+                  'This event is being recorded. Do you want to proceed?',),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text(context.l10n.cancel),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Proceed'),
+                ),
+              ],
+            ),
+          );
+          if (proceed != true) return;
+        }
         final successfullyJoined =
             await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
         if (!mounted) return;
