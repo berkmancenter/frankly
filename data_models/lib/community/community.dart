@@ -14,7 +14,7 @@ List<CommunityFeatureFlags> communityFeatureFlagsFromJson(dynamic enumList) {
     return [];
   }
   final List<String> nonNullEnumList =
-      (enumList as List<dynamic>).whereNotNull().whereType<String>().toList();
+      (enumList).whereNotNull().whereType<String>().toList();
   final featureFlags =
       EnumToString.fromList(CommunityFeatureFlags.values, nonNullEnumList);
   return featureFlags.whereNotNull().toList();
@@ -34,7 +34,6 @@ enum CommunityFeatureFlags {
   enableDiscussionThreads,
   enablePrerequisites,
   enableHostless,
-  enablePlatformSelection,
   liveMeetingMobile,
   multiplePeopleOnStage,
   multipleVideoTypes,
@@ -62,6 +61,13 @@ class Community with _$Community implements SerializeableRequest {
   static const String kFieldContactEmail = 'contactEmail';
   static const String kFieldTagLine = 'tagLine';
   static const String kFieldDescription = 'description';
+  static const String kFieldWebsiteUrl = 'websiteUrl';
+  static const String kFieldFacebookUrl = 'facebookUrl';
+  static const String kFieldLinkedinUrl = 'linkedinUrl';
+  static const String kFieldTwitterUrl = 'twitterUrl';
+  static const String kFieldBlueskyUrl = 'blueskyUrl';
+  static const String kFieldYoutubeUrl = 'youtubeUrl';
+  static const String kFieldInstagramUrl = 'instagramUrl';
   static const String kFieldIsPublic = 'isPublic';
   static const String kFieldBannerImageUrl = 'bannerImageUrl';
   static const String kFieldProfileImageUrl = 'profileImageUrl';
@@ -87,6 +93,13 @@ class Community with _$Community implements SerializeableRequest {
     DateTime? createdDate,
     bool? isPublic,
     String? description,
+    String? websiteUrl,
+    String? facebookUrl,
+    String? linkedinUrl,
+    String? twitterUrl,
+    String? blueskyUrl,
+    String? youtubeUrl,
+    String? instagramUrl,
     String? tagLine,
     @Default([])
     @JsonKey(fromJson: communityFeatureFlagsFromJson)
@@ -127,8 +140,6 @@ class Community with _$Community implements SerializeableRequest {
             .contains(CommunityFeatureFlags.dontAllowMembersToCreateMeetings),
         enableDiscussionThreads:
             flags.contains(CommunityFeatureFlags.enableDiscussionThreads),
-        enablePlatformSelection:
-            flags.contains(CommunityFeatureFlags.enablePlatformSelection),
         multiplePeopleOnStage:
             flags.contains(CommunityFeatureFlags.multiplePeopleOnStage),
         multipleVideoTypes:
@@ -202,7 +213,6 @@ class CommunitySettings with _$CommunitySettings {
   static const kFieldEnableDiscussionThreads = 'enableDiscussionThreads';
   static const kFieldEnableHostless = 'enableHostless';
   static const kFieldFeaturedOrder = 'featuredOrder';
-  static const kFieldEnablePlatformSelection = 'enablePlatformSelection';
   static const kFieldMultiplePeopleOnStage = 'multiplePeopleOnStage';
   static const kFieldRequireApprovalToJoin = 'requireApprovalToJoin';
 
@@ -217,7 +227,6 @@ class CommunitySettings with _$CommunitySettings {
     @Default(false) bool multiplePeopleOnStage,
     @Default(false) bool multipleVideoTypes,
     @Default(false) bool requireApprovalToJoin,
-    @Default(true) bool enablePlatformSelection,
     @Default(false) bool enableUpdatedLiveMeetingMobile,
     @Default(true) bool enableAVCheck,
   }) = _CommunitySettings;

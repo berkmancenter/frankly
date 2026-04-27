@@ -65,7 +65,7 @@ import 'package:client/features/admin/utils/payment_utils.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/discussion_threads/discussion_thread_comment.dart';
-import 'package:data_models/chat/emotion.dart';
+import 'package:data_models/user_input/emotion.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/admin/partner_agreement.dart';

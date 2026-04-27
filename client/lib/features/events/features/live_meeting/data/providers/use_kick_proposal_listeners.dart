@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
-import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialogue.dart';
+import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialog.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
 import 'package:client/core/widgets/stream_utils.dart';
@@ -145,14 +145,18 @@ Future<String?> _kickProposalConfirmation(
   );
   final targetUser = await targetUserFuture;
   final initiatingUser = await initiatingUserFuture;
-  return ConfirmTextInputDialogue(
-    title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
-    subText: '${initiatingUser.displayName} started a vote to kick'
-        ' ${targetUser.displayName} out of the event. Do you want to'
-        ' kick them out? They will not be allowed back in.',
-    textLabel: 'Enter reason',
-    textHint: 'e.g. They are trying to sabotage the event',
-    cancelText: 'No, let them stay',
-    confirmText: 'Yes, kick them out',
-  ).show(context: context);
+  if (!context.mounted) return null;
+  return await showDialog(
+    context: context,
+    builder: (context) => ConfirmTextInputDialog(
+      title: context.l10n.kickOutUser(targetUser.displayName ?? 'this user'),
+      subText: '${initiatingUser.displayName} started a vote to kick'
+          ' ${targetUser.displayName} out of the event. Do you want to'
+          ' kick them out? They will not be allowed back in.',
+      textLabel: 'Enter reason',
+      textHint: 'e.g. They are trying to sabotage the event',
+      cancelText: 'No, let them stay',
+      confirmText: 'Yes, kick them out',
+    ),
+  );
 }

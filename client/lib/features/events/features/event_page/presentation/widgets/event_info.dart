@@ -1,7 +1,10 @@
 import 'package:client/core/utils/date_utils.dart';
+import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
@@ -47,12 +50,14 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/utils/share_type.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+
+const kMinutesBeforeEventToJoin = 15;
 
 enum _ParticipantStatus {
   needsParticipants,
@@ -60,17 +65,6 @@ enum _ParticipantStatus {
 }
 
 class EventInfo extends StatefulHookWidget {
-  static const Key enterEventButtonKey = Key('enter-button');
-  static const Key rsvpButtonKey = Key('rsvp-button');
-
-  final Event event;
-  final void Function() onMessagePressed;
-  final EventPagePresenter eventPagePresenter;
-  final Future<JoinEventResults> Function({
-    bool showConfirm,
-    bool joinCommunity,
-  }) onJoinEvent;
-
   const EventInfo({
     Key? key,
     required this.event,
@@ -78,6 +72,18 @@ class EventInfo extends StatefulHookWidget {
     required this.onJoinEvent,
     required this.eventPagePresenter,
   }) : super(key: key);
+
+  static const Key enterEventButtonKey = Key('enter-button');
+  static const Key rsvpButtonKey = Key('rsvp-button');
+
+  final Event event;
+  final void Function() onMessagePressed;
+  final EventPagePresenter eventPagePresenter;
+  final Future<bool> Function({
+    bool showConfirm,
+    bool enterMeeting,
+    bool joinCommunity,
+  }) onJoinEvent;
 
   @override
   _EventInfoState createState() => _EventInfoState();
@@ -210,6 +216,38 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
+  Future<void> _showDuplicateTemplateDialog(
+    CommunityProvider communityProvider,
+  ) async {
+    final template = context.read<TemplateProvider>().template;
+    final newId = firestoreDatabase.generateNewDocId(
+      collectionPath: firestoreDatabase
+          .templatesCollection(communityProvider.community.id)
+          .path,
+    );
+    
+    // Get existing templates to check for duplicate titles
+    final templates = await firestoreDatabase
+        .communityTemplatesStream(communityProvider.community.id)
+        .first;
+    final existingTitles = templates.map((t) => t.title).toSet();
+    final newTitle = generateUniqueCopyTitle(
+      template.title ?? '',
+      existingTitles,
+    );
+
+    await CreateTemplateDialog.show(
+      communityPermissionsProvider:
+          Provider.of<CommunityPermissionsProvider>(context, listen: false),
+      communityProvider: communityProvider,
+      template: template.copyWith(
+        id: newId,
+        title: newTitle,
+      ),
+      templateActionType: TemplateActionType.duplicate,
+    );
+  }
+
   Future<void> _showDuplicateEventDialog() async {
     final template = context.read<TemplateProvider>().template;
     final event = EventProvider.read(context).event;
@@ -237,6 +275,37 @@ class _EventInfoState extends State<EventInfo> {
     ).show();
   }
 
+  /// Gets breakout room data for the current event's active breakout session.
+  /// Returns null if no breakout session is active or if data cannot be fetched.
+  Future<List<BreakoutRoom>?> _getBreakoutRoomData() async {
+    try {
+      final liveMeeting = await firestoreLiveMeetingService
+          .liveMeetingStream(
+            parentDoc:
+                'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
+            id: 'live-meeting',
+          )
+          .stream
+          .first;
+
+      if (liveMeeting.currentBreakoutSession != null) {
+        final breakoutRoomsWrapper =
+            firestoreLiveMeetingService.breakoutRoomsStream(
+          event: widget.event,
+          breakoutRoomSessionId:
+              liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
+        );
+        final breakoutRooms = await breakoutRoomsWrapper.stream.first;
+        await breakoutRoomsWrapper.dispose();
+        return breakoutRooms;
+      }
+    } catch (e) {
+      // If breakout rooms data is not available, continue without it
+      loggingService.log('Could not fetch breakout rooms data: $e');
+    }
+    return null;
+  }
+
   Future<void> _downloadRegistrationData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
@@ -252,11 +321,15 @@ class _EventInfoState extends State<EventInfo> {
       final List<String> userIds = participants.map((p) => p.id).toList();
       await participantsWrapper.dispose();
 
+      // Get breakout rooms data for room name mapping
+      List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+
       final members = await _presenter.getMembersData(userIds);
       if (members.isNotEmpty) {
         await eventProvider.generateRegistrationDataCsvFile(
           registrationData: members,
           eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
         );
       } else {
         showRegularToast(
@@ -268,20 +341,60 @@ class _EventInfoState extends State<EventInfo> {
     });
   }
 
-  Future<void> _downloadChatsAndSuggestions() async {
+  Future<void> _downloadChatData() async {
     final eventProvider = EventProvider.read(context);
     await alertOnError(context, () async {
       final response = await _presenter.getChatsAndSuggestions();
-      final chatsSuggesions = response.chatsSuggestionsList ?? [];
-      if (chatsSuggesions.isNotEmpty) {
-        await eventProvider.generateChatAndSugguestionsDataCsv(
+      final chatsData = response.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.chat)
+              .toList() ??
+          [];
+
+      if (chatsData.isNotEmpty) {
+        // Get breakout rooms data for room name mapping
+        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+
+        await eventProvider.generateChatDataCsv(
           response: response,
           eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
         );
       } else {
         showRegularToast(
           context,
-          'No chats or suggestions data',
+          'No chat data',
+          toastType: ToastType.neutral,
+        );
+      }
+    });
+  }
+
+  Future<void> _downloadPollsSuggestionsData() async {
+    final eventProvider = EventProvider.read(context);
+    await alertOnError(context, () async {
+      final response = await _presenter.getChatsAndSuggestions();
+      final suggestionData = response.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.suggestion)
+              .toList() ??
+          [];
+
+      final pollResponse = await _presenter.getPollData();
+      final pollData = pollResponse.polls ?? [];
+
+      if (suggestionData.isNotEmpty || pollData.isNotEmpty) {
+        // Get breakout rooms data for room name mapping
+        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
+
+        await eventProvider.generatePollsSuggestionsDataCsv(
+          suggestionData: suggestionData,
+          pollData: pollData,
+          eventId: eventProvider.eventId,
+          breakoutRooms: breakoutRooms,
+        );
+      } else {
+        showRegularToast(
+          context,
+          'No polls or suggestions data',
           toastType: ToastType.neutral,
         );
       }
@@ -298,6 +411,11 @@ class _EventInfoState extends State<EventInfo> {
           case EventPopUpMenuSelection.refreshGuide:
             _showRefreshGuideDialog();
             break;
+          case EventPopUpMenuSelection.duplicateTemplate:
+            _showDuplicateTemplateDialog(
+              Provider.of<CommunityProvider>(context, listen: false),
+            );
+            break;
           case EventPopUpMenuSelection.createGuideFromEvent:
             _showCreateGuideFromEventDialog(
               Provider.of<CommunityProvider>(context, listen: false),
@@ -312,8 +430,11 @@ class _EventInfoState extends State<EventInfo> {
           case EventPopUpMenuSelection.downloadRegistrationData:
             _downloadRegistrationData();
             break;
-          case EventPopUpMenuSelection.downloadChatsAndSuggestions:
-            _downloadChatsAndSuggestions();
+          case EventPopUpMenuSelection.downloadChatData:
+            _downloadChatData();
+            break;
+          case EventPopUpMenuSelection.downloadPollsSuggestionsData:
+            _downloadPollsSuggestionsData();
             break;
         }
       },
@@ -383,15 +504,13 @@ class _EventInfoState extends State<EventInfo> {
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
     String text;
-    final externalPlatform = _event.externalPlatform ??
-        PlatformItem(platformKey: PlatformKey.community);
-    final isPlatformSelectionEnabled =
-        CommunityProvider.watch(context).settings.enablePlatformSelection;
+
     if (daysDifference > 1) {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
       text = 'Starts Tomorrow';
-    } else if (daysDifference == 0 && difference.inMinutes > 9) {
+    } else if (daysDifference == 0 &&
+        difference.inMinutes > kMinutesBeforeEventToJoin) {
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
       text = 'Event Ended';
@@ -406,38 +525,28 @@ class _EventInfoState extends State<EventInfo> {
       type: isEventOpen ? ActionButtonType.filled : ActionButtonType.outline,
       key: EventInfo.enterEventButtonKey,
       expand: true,
-      onPressed: () => alertOnError(context, () async {
-        final eventPageProvider = context.read<EventPageProvider>();
-        JoinEventResults? joinResults;
-        if (!EventProvider.read(context).isParticipant) {
-          joinResults = await widget.onJoinEvent(showConfirm: false);
-          if (!joinResults.isJoined) return;
-        }
-        await alertOnError(context, () {
-          if (externalPlatform.platformKey == PlatformKey.community ||
-              !isPlatformSelectionEnabled) {
-            return eventPageProvider.enterMeeting(
-              surveyQuestions: joinResults?.surveyQuestions,
+      onPressed: () async {
+        final successfullyJoined =
+            await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
+        if (!mounted) return;
+        if (!isEventOpen && !successfullyJoined) {
+          // If the event is not open yet, we expect user not to be able to join.
+          // Show the "not started" message for events that are not open and not joined, unless they're past concluded events.
+          if (daysDifference >= 0) {
+            await showAlert(
+              context,
+              'The event has not started yet. We\'ll see you soon!',
             );
-          } else {
-            return launch(externalPlatform.url ?? '');
           }
-        });
-
-        final communityId = widget.event.communityId;
-        final eventId = widget.event.id;
-        final templateId = widget.event.templateId;
-        final isHost = (widget.event.eventType != EventType.hostless) &&
-            widget.event.creatorId == userService.currentUserId;
-        analytics.logEvent(
-          AnalyticsEnterEventEvent(
-            communityId: communityId,
-            eventId: eventId,
-            asHost: isHost,
-            templateId: templateId,
-          ),
-        );
-      }),
+          return;
+        } else if (!successfullyJoined) {
+          showRegularToast(
+            context,
+            'Event was not entered.',
+            toastType: ToastType.neutral,
+          );
+        }
+      },
       text: text,
     );
   }
@@ -456,9 +565,10 @@ class _EventInfoState extends State<EventInfo> {
 
     final showEnterEventButton = _isParticipant ||
         (showJoinButton &&
-            clockService
-                .now()
-                .isAfter(startTime.subtract(Duration(minutes: 15))));
+            clockService.now().isAfter(
+                  startTime
+                      .subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
+                ));
     if (showPrerequisiteWarning) {
       return WarningInfo(
         icon: CircleAvatar(
@@ -493,6 +603,7 @@ class _EventInfoState extends State<EventInfo> {
         message: context.l10n.eventIsLocked,
       );
     } else if (showEnterEventButton) {
+      // Should only be shown within 15 minutes of the event start time
       return PeriodicBuilder(
         period: Duration(milliseconds: 1000),
         builder: (_) => _buildEnterEvent(startTime),
@@ -513,6 +624,7 @@ class _EventInfoState extends State<EventInfo> {
               await widget.onJoinEvent(
                 joinCommunity:
                     canShowFollowCommunity ? _joinCommunityDuringRsvp : false,
+                enterMeeting: false,
               );
             }),
             expand: true,

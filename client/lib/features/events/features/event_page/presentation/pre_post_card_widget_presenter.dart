@@ -51,7 +51,7 @@ class PrePostCardWidgetPresenter {
 
   String? validateHeadline(String? text) {
     if (text == null || text.trim().isEmpty) {
-      return 'Headline cannot be empty';
+      return appLocalizationService.getLocalization().headlineCannotBeEmpty;
     } else {
       return null;
     }
@@ -59,7 +59,7 @@ class PrePostCardWidgetPresenter {
 
   String? validateMessage(String? text) {
     if (text == null || text.trim().isEmpty) {
-      return 'Message cannot be empty';
+      return appLocalizationService.getLocalization().messageCannotBeEmpty;
     } else {
       return null;
     }
@@ -102,13 +102,13 @@ class PrePostCardWidgetPresenter {
       // Only do validation for the URL if button text exists
       if (prePostUrls[urlIndex].buttonText != null) {
         if (text == null || text.trim().isEmpty) {
-          return 'URL is not valid';
+          return appLocalizationService.getLocalization().urlIsNotValid;
         }
 
         final isUrlValid = Uri.tryParse(text) != null;
 
         if (!isUrlValid) {
-          return 'URL is not valid';
+          return appLocalizationService.getLocalization().urlIsNotValid;
         } else {
           return null;
         }
@@ -254,7 +254,8 @@ class PrePostCardWidgetPresenter {
             .attributes[attributeIndex]
             .copyWith(type: selectedType);
         prePostUrls[urlIndex].attributes[attributeIndex] = prePostCardAttribute;
-        _model.prePostCard.copyWith(prePostUrls: prePostUrls);
+        _model.prePostCard =
+            _model.prePostCard.copyWith(prePostUrls: prePostUrls);
         _view.updateView();
       }
     }
@@ -271,7 +272,8 @@ class PrePostCardWidgetPresenter {
     if (urlIndex < prePostUrls.length) {
       prePostUrls[urlIndex].attributes[attributeIndex] =
           attribute.copyWith(queryParam: text);
-      _model.prePostCard.copyWith(prePostUrls: prePostUrls);
+      _model.prePostCard =
+          _model.prePostCard.copyWith(prePostUrls: prePostUrls);
       _view.updateView();
     }
   }
@@ -408,11 +410,12 @@ class PrePostCardWidgetPresenter {
   }
 
   String getTitle() {
+    final l10n = appLocalizationService.getLocalization();
     switch (_model.prePostCardType) {
       case PrePostCardType.preEvent:
-        return 'Pre-event';
+        return l10n.preEvent;
       case PrePostCardType.postEvent:
-        return 'Post-event';
+        return l10n.postEvent;
     }
   }
 }

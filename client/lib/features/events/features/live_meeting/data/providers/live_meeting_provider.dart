@@ -13,7 +13,7 @@ import 'package:client/features/community/data/providers/community_provider.dart
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/community/presentation/views/app_share.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
-import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialogue.dart';
+import 'package:client/features/events/features/live_meeting/presentation/widgets/confirm_text_input_dialog.dart';
 import 'package:client/features/community/presentation/widgets/donate_widget.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/config/environment.dart';
@@ -21,7 +21,6 @@ import 'package:client/app.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/styles.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/hostless_action_fallback_controller.dart';
 import 'package:client/core/utils/platform_utils.dart';
@@ -923,19 +922,23 @@ class LiveMeetingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> confirmProposeKick(String userId) async {
+  Future<void> confirmProposeKick(BuildContext context, String userId) async {
     final user = await firestoreUserService.getPublicUser(userId: userId);
     final l10n = appLocalizationService.getLocalization();
-    final reason = await ConfirmTextInputDialogue(
-      title: l10n.proposeToRemoveUser,
-      subText:
-          'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
-          ' only take this action if the participant is behaving inappropriately.',
-      textLabel: 'Enter reason',
-      textHint: 'e.g. They are trying to sabotage the event',
-      cancelText: 'No, cancel',
-      confirmText: 'Yes, poll participants',
-    ).show();
+    if (!context.mounted) return;
+    final reason = await showDialog(
+      context: context,
+      builder: (context) => ConfirmTextInputDialog(
+        title: l10n.proposeToRemoveUser,
+        subText:
+            'Are you sure you want to start a vote to kick out ${user.displayName}? Please'
+            ' only take this action if the participant is behaving inappropriately.',
+        textLabel: 'Enter reason',
+        textHint: 'e.g. They are trying to sabotage the event',
+        cancelText: 'No, cancel',
+        confirmText: 'Yes, poll participants',
+      ),
+    );
     if (reason != null) {
       await cloudFunctionsLiveMeetingService.voteToKick(
         VoteToKickRequest(

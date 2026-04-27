@@ -18,7 +18,6 @@ import 'package:client/services.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/community/community_tag.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 import '../../../../../../core/routing/locations.dart';
 
@@ -40,6 +39,16 @@ Future<bool> verifyAvailableForEvent(Event event) async {
     confirmText: 'I\'ll be there!',
     cancelText: 'No, cancel',
   ).show();
+
+  // Log RSVP event.
+  analytics.logEvent(
+    AnalyticsRsvpEventEvent(
+      communityId: event.communityId,
+      eventId: event.id,
+      templateId: event.templateId,
+    ),
+  );
+
   return cancel;
 }
 
@@ -75,17 +84,28 @@ class EventPageProvider with ChangeNotifier {
   }) async {
     final prePostEnabledFuture =
         eventProvider.communityProvider.prePostEnabled();
+    // Determines whether this is the user's first time joining the event.
+    // If is the user's first time, show the pre-event CTA.
+    bool hasJoinedBefore = false;
 
     final joinResults = await guardSignedIn<JoinEventResults>(() async {
           // Wait for self participant stream to load
           await eventProvider.selfParticipantStream?.first;
+
+          // The user is already a participant, so has previously joined.
+          // The "join event" code below will cause isParticipant to be true on
+          // future runs as it creates a new Participant for the event.
           if (eventProvider.isParticipant) {
+            hasJoinedBefore = true;
             return JoinEventResults(isJoined: true);
           }
           if (eventProvider.isBanned) {
+            hasJoinedBefore = true;
             return JoinEventResults(isJoined: false);
           }
 
+          // This is a new user.
+          // Show RSVP dialog on hosted events.
           if (eventProvider.event.eventType == EventType.hosted &&
               showConfirm) {
             final confirmed = await verifyAvailableForEvent(
@@ -121,14 +141,6 @@ class EventPageProvider with ChangeNotifier {
             breakoutRoomSurveyResults: surveyDialogResult,
           );
 
-          analytics.logEvent(
-            AnalyticsRsvpEventEvent(
-              communityId: eventProvider.communityId,
-              eventId: eventProvider.eventId,
-              templateId: eventProvider.templateId,
-            ),
-          );
-
           if (joinCommunity) {
             await userDataService.requestChangeCommunityMembership(
               community: eventProvider.communityProvider.community,
@@ -150,7 +162,10 @@ class EventPageProvider with ChangeNotifier {
 
     final prePostEnabled = await prePostEnabledFuture;
     final preEventCardData = eventProvider.event.preEventCardData;
-    if (prePostEnabled && joinResults.isJoined && preEventCardData != null) {
+    if (prePostEnabled &&
+        joinResults.isJoined &&
+        !hasJoinedBefore &&
+        preEventCardData != null) {
       if (preEventCardData.hasData) {
         await PrePostEventDialogPage.show(
           prePostCardData: preEventCardData,

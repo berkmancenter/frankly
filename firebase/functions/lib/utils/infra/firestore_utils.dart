@@ -26,7 +26,16 @@ class FirestoreUtils {
     final ref = firestore.document(path);
     final snapshot =
         transaction == null ? await ref.get() : await transaction.get(ref);
-    return constructor(fromFirestoreJson(snapshot.data.toMap()));
+    final map = fromFirestoreJson(snapshot.data.toMap());
+    // Ensure `id` is populated from the document reference. Models with
+    // `required String id` need this because Firestore doesn't store the
+    // document ID as a field. Overwrite any non-String or empty `id`
+    // values (including JSNull from JS interop) with the document ID.
+    final currentId = map['id'];
+    if (currentId is! String || currentId.isEmpty) {
+      map['id'] = ref.documentID;
+    }
+    return constructor(map);
   }
 
   Map<String, dynamic> fromFirestoreJson(Map<String, dynamic> json) {

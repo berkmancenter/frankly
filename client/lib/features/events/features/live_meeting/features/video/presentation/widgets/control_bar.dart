@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_error.dart';
-import 'package:client/features/events/features/live_meeting/features/video/presentation/views/audio_video_settings.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/talking_odometer.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -17,7 +18,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
@@ -26,8 +26,6 @@ import 'package:client/core/utils/extensions.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as html;
-import 'package:universal_html/js_util.dart' as js_util;
 
 class ControlBar extends StatefulWidget {
   @override
@@ -42,27 +40,6 @@ class _ControlBarState extends State<ControlBar> {
 
   ConferenceRoom get _conferenceRoomRead =>
       LiveMeetingProvider.read(context).conferenceRoom!;
-
-  Widget _buildScreenShareButton() {
-    if (!_conferenceRoomRead.isLocalSharingScreenActive &&
-        _conferenceRoomRead.screenSharer != null) {
-      return UserInfoBuilder(
-        userId: _conferenceRoomRead.screenSharerUserId,
-        builder: (_, isLoading, snapshot) => ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 200),
-          child: HeightConstrainedText(
-            '${isLoading ? 'A participant' : snapshot.data?.displayName ?? 'A participant'} is screen sharing',
-          ),
-        ),
-      );
-    } else {
-      return HeightConstrainedText(
-        _conferenceRoomRead.isLocalSharingScreenActive
-            ? 'Stop Sharing'
-            : 'Share Screen',
-      );
-    }
-  }
 
   Widget _buildVideoToggle() {
     return _IconButton(
@@ -81,38 +58,25 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   Widget _buildMoreOptionsButton() {
-    final enabled = !_liveMeetingProvider.audioTemporarilyDisabled;
-
-    // To implement screensharing, uncomment this flag and add in Agora functionality
-    const enableScreenshare = false;
-
-    final mediaDevices = html.window.navigator.mediaDevices;
     return CustomInkWell(
       child: PopupMenuButton<FutureOr<void> Function()>(
         itemBuilder: (context) => [
           PopupMenuItem(
-            value: () =>
-                AudioVideoSettingsDialog(conferenceRoom: _conferenceRoomRead)
-                    .show(),
+            value: () => showDialog(
+              context: context,
+              builder: (context) {
+                return MediaSettingsWidget(
+                  conferenceRoom: _conferenceRoomRead,
+                  shouldShowVideoPreview:
+                      !(defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android),
+                );
+              },
+            ),
             child: HeightConstrainedText(
               'Audio/Video Settings',
             ),
           ),
-          if (enableScreenshare &&
-              !responsiveLayoutService.isMobile(context) &&
-              mediaDevices != null &&
-              js_util.hasProperty(mediaDevices, 'getDisplayMedia') &&
-              context.read<EventProvider>().enableScreenshare)
-            PopupMenuItem(
-              enabled: enabled,
-              value: enabled
-                  ? () => alertOnError(
-                        context,
-                        () => _conferenceRoomRead.toggleScreenShare(),
-                      )
-                  : null,
-              child: _buildScreenShareButton(),
-            ),
         ],
         onSelected: (itemAction) => itemAction(),
         child: Container(

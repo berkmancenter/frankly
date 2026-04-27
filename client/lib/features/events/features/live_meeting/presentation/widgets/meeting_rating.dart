@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
@@ -179,7 +180,7 @@ class _MeetingRatingState extends State<MeetingRating> {
                 Container(
                   color: Colors.transparent,
                   child: HeightConstrainedText(
-                    'How was the event?',
+                    context.l10n.howWasTheEvent,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

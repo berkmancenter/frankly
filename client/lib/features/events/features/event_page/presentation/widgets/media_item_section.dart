@@ -42,7 +42,6 @@ class MediaItemSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const kDashBorderColor = Color(0xff757584);
     const kDashPattern = <double>[10, 10];
     const kMediaSectionSize = Size(150, 100);
 
@@ -50,7 +49,7 @@ class MediaItemSection extends StatelessWidget {
 
     if (localMediaItem == null) {
       return dotted_border.DottedBorder(
-        color: kDashBorderColor,
+        color: context.theme.colorScheme.primary,
         dashPattern: kDashPattern,
         child: CustomInkWell(
           onTap: () => _showMediaPickerDialog(context),
@@ -88,7 +87,7 @@ class MediaItemSection extends StatelessWidget {
       );
     } else {
       return dotted_border.DottedBorder(
-        color: kDashBorderColor,
+        color: context.theme.colorScheme.primary,
         dashPattern: kDashPattern,
         child: Row(
           children: [

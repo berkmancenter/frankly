@@ -12,8 +12,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:pedantic/pedantic.dart';
 
-import '../../../event_page/data/providers/event_page_provider.dart';
-
 enum CurrentPage {
   selectTemplate,
   selectVisibility,
@@ -22,7 +20,6 @@ enum CurrentPage {
   selectParticipants,
   selectTitle,
   selectHostingType,
-  choosePlatform,
 }
 
 /// Holds logic for the CreateEventDialog class.
@@ -192,11 +189,6 @@ class CreateEventDialogModel with ChangeNotifier {
     final agendaItems =
         agendaItemsCandidates.firstWhere((items) => items.isNotEmpty).toList();
 
-    if (_event.isPublic == true && eventType == EventType.hosted) {
-      final confirmed = await verifyAvailableForEvent(event);
-      if (!confirmed) return null;
-    }
-
     List<AgendaItem> templateAgendaItems = _event.agendaItems;
     if (templateAgendaItems.isEmpty) {
       templateAgendaItems = _selectedTemplate?.agendaItems ?? [];
@@ -288,10 +280,7 @@ class CreateEventDialogModel with ChangeNotifier {
             : Event.defaultMaxParticipantsInHostlessEvent,
       );
 
-      if (_event.isPublic == true && _event.eventType == EventType.hosted) {
-        final confirmed = await verifyAvailableForEvent(event);
-        if (!confirmed) return;
-      } else if (_event.eventType == EventType.livestream &&
+      if (_event.eventType == EventType.livestream &&
           _event.liveStreamInfo == null) {
         PrivateLiveStreamInfo privateLiveStreamInfo =
             await _processLiveStreamInfoForEvent();

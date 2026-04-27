@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/template_provider.dart';
-import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
@@ -10,9 +9,11 @@ import 'package:client/core/localization/localization_helper.dart';
 
 enum EventPopUpMenuSelection {
   refreshGuide,
+  duplicateTemplate,
   createGuideFromEvent,
   duplicateEvent,
-  downloadChatsAndSuggestions,
+  downloadChatData,
+  downloadPollsSuggestionsData,
   downloadRegistrationData,
   cancelEvent,
 }
@@ -39,15 +40,19 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
   List<EventPopUpMenuSelection> _getMenuOptions(BuildContext context) {
     final eventHasTemplate = widget.event.templateId != defaultTemplateId;
     final permissions = context.watch<EventPermissionsProvider>();
+    final communityPermissions = context.watch<CommunityPermissionsProvider>();
 
     return <EventPopUpMenuSelection>[
       if (eventHasTemplate && permissions.canRefreshGuide)
         EventPopUpMenuSelection.refreshGuide,
+      if (communityPermissions.canCreateTemplate)
+        EventPopUpMenuSelection.duplicateTemplate,
       if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
       if (permissions.canDownloadRegistrationData) ...[
         EventPopUpMenuSelection.downloadRegistrationData,
-        EventPopUpMenuSelection.downloadChatsAndSuggestions,
+        EventPopUpMenuSelection.downloadChatData,
+        EventPopUpMenuSelection.downloadPollsSuggestionsData,
       ],
       if (permissions.canCancelEvent) EventPopUpMenuSelection.cancelEvent,
     ];
@@ -94,7 +99,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         itemBuilder: (context) {
           return menuOptions.map(
             (e) {
-              final iconAsset = _getIconAsset(e);
+              final icon = _getIconData(e);
               final text = _getText(e);
 
               return PopupMenuItem(
@@ -103,12 +108,7 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SvgPicture.asset(
-                      iconAsset.path,
-                      width: 20,
-                      height: 20,
-                      color: context.theme.colorScheme.primary,
-                    ),
+                    Icon(icon),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -130,35 +130,43 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
         return context.l10n.refreshGuide;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return context.l10n.duplicateTemplate;
       case EventPopUpMenuSelection.createGuideFromEvent:
         return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
         return context.l10n.duplicateEvent;
       case EventPopUpMenuSelection.downloadRegistrationData:
         return context.l10n.downloadMembersRegistrationData;
-      case EventPopUpMenuSelection.downloadChatsAndSuggestions:
-        return context.l10n.downloadChatsAndSuggestions;
+      case EventPopUpMenuSelection.downloadChatData:
+        return context.l10n.downloadChatData;
+      case EventPopUpMenuSelection.downloadPollsSuggestionsData:
+        return context.l10n.downloadPollsSuggestionsData;
       case EventPopUpMenuSelection.cancelEvent:
         return context.l10n.cancelEvent;
     }
   }
 
-  AppAsset _getIconAsset(
+  IconData _getIconData(
     EventPopUpMenuSelection eventPopUpMenuSelection,
   ) {
     switch (eventPopUpMenuSelection) {
       case EventPopUpMenuSelection.refreshGuide:
-        return AppAsset.kRefreshSvg;
+        return Icons.refresh;
+      case EventPopUpMenuSelection.duplicateTemplate:
+        return Icons.copy;
       case EventPopUpMenuSelection.createGuideFromEvent:
-        return AppAsset.kPlusGuideSvg;
+        return Icons.bookmark_add_outlined;
       case EventPopUpMenuSelection.duplicateEvent:
-        return AppAsset.kCopySvg;
+        return Icons.copy;
       case EventPopUpMenuSelection.downloadRegistrationData:
-        return AppAsset.kSurveySvg;
-      case EventPopUpMenuSelection.downloadChatsAndSuggestions:
-        return AppAsset.kThumbSvg;
+        return Icons.people_outline_outlined;
+      case EventPopUpMenuSelection.downloadChatData:
+        return Icons.message_outlined;
+      case EventPopUpMenuSelection.downloadPollsSuggestionsData:
+        return Icons.thumb_up_outlined;
       case EventPopUpMenuSelection.cancelEvent:
-        return AppAsset.kXSvg;
+        return Icons.close;
     }
   }
 }

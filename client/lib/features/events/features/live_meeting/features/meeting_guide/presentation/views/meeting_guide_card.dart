@@ -335,8 +335,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         SizedBox(height: 20),
                         ActionButton(
                           type: ActionButtonType.filled,
-                          color: context.theme.colorScheme.surfaceContainer,
-                          textColor: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.primary,
+                          textColor: context.theme.colorScheme.onPrimary,
                           onPressed: () => alertOnError(context, () async {
                             final currentAgendaItemId =
                                 _presenter.getCurrentAgendaItemId();

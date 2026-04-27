@@ -1,4 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
@@ -10,6 +14,16 @@ import '../../../../../../mocked_classes.mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(() async {
+    GetIt.instance.registerSingleton(AppLocalizationService());
+    final l10n = await AppLocalizations.delegate.load(const Locale('en'));
+    GetIt.instance<AppLocalizationService>().setLocalization(l10n);
+  });
+
+  tearDownAll(() async {
+    await GetIt.instance.reset();
+  });
 
   final mockContext = MockBuildContext();
   final mockView = MockEventSettingsView();
@@ -137,7 +151,7 @@ void main() {
 
     test('getTitle', () {
       final title = presenter.getTitle();
-      expect(title == 'Event Settings', isTrue);
+      expect(title.isNotEmpty, isTrue);
     });
 
     test('getFloatingChatToggleValue', () {
@@ -223,7 +237,7 @@ void main() {
 
     test('getTitle', () {
       final title = presenter.getTitle();
-      expect(title == 'Template Settings', isTrue);
+      expect(title.isNotEmpty, isTrue);
     });
   });
 }

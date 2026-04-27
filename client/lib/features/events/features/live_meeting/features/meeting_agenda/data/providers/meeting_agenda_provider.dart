@@ -17,7 +17,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 List<AgendaItem> defaultAgendaItems(String communityId) {
   final l10n = appLocalizationService.getLocalization();
@@ -39,7 +38,6 @@ class AgendaProviderParams {
   final bool agendaStartsCollapsed;
   final SubmitNotifier? saveNotifier;
 
-  final Color? labelColor;
   final bool isLivestream;
   final Color? highlightColor;
 
@@ -51,7 +49,6 @@ class AgendaProviderParams {
     this.allowButtonForUserSubmittedAgenda = true,
     this.agendaStartsCollapsed = false,
     this.saveNotifier,
-    required this.labelColor,
     required this.isLivestream,
     this.highlightColor,
   });

@@ -33,6 +33,13 @@ mixin _$Community {
   DateTime? get createdDate => throw _privateConstructorUsedError;
   bool? get isPublic => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  String? get websiteUrl => throw _privateConstructorUsedError;
+  String? get facebookUrl => throw _privateConstructorUsedError;
+  String? get linkedinUrl => throw _privateConstructorUsedError;
+  String? get twitterUrl => throw _privateConstructorUsedError;
+  String? get blueskyUrl => throw _privateConstructorUsedError;
+  String? get youtubeUrl => throw _privateConstructorUsedError;
+  String? get instagramUrl => throw _privateConstructorUsedError;
   String? get tagLine => throw _privateConstructorUsedError;
   @JsonKey(fromJson: communityFeatureFlagsFromJson)
   List<CommunityFeatureFlags> get enabledFeatureFlags =>
@@ -71,6 +78,13 @@ abstract class $CommunityCopyWith<$Res> {
       DateTime? createdDate,
       bool? isPublic,
       String? description,
+      String? websiteUrl,
+      String? facebookUrl,
+      String? linkedinUrl,
+      String? twitterUrl,
+      String? blueskyUrl,
+      String? youtubeUrl,
+      String? instagramUrl,
       String? tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       List<CommunityFeatureFlags> enabledFeatureFlags,
@@ -110,6 +124,13 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
     Object? createdDate = freezed,
     Object? isPublic = freezed,
     Object? description = freezed,
+    Object? websiteUrl = freezed,
+    Object? facebookUrl = freezed,
+    Object? linkedinUrl = freezed,
+    Object? twitterUrl = freezed,
+    Object? blueskyUrl = freezed,
+    Object? youtubeUrl = freezed,
+    Object? instagramUrl = freezed,
     Object? tagLine = freezed,
     Object? enabledFeatureFlags = null,
     Object? communitySettings = freezed,
@@ -161,6 +182,34 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      websiteUrl: freezed == websiteUrl
+          ? _value.websiteUrl
+          : websiteUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      facebookUrl: freezed == facebookUrl
+          ? _value.facebookUrl
+          : facebookUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      linkedinUrl: freezed == linkedinUrl
+          ? _value.linkedinUrl
+          : linkedinUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      twitterUrl: freezed == twitterUrl
+          ? _value.twitterUrl
+          : twitterUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      blueskyUrl: freezed == blueskyUrl
+          ? _value.blueskyUrl
+          : blueskyUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeUrl: freezed == youtubeUrl
+          ? _value.youtubeUrl
+          : youtubeUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      instagramUrl: freezed == instagramUrl
+          ? _value.instagramUrl
+          : instagramUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       tagLine: freezed == tagLine
           ? _value.tagLine
@@ -249,6 +298,13 @@ abstract class _$$_CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
       DateTime? createdDate,
       bool? isPublic,
       String? description,
+      String? websiteUrl,
+      String? facebookUrl,
+      String? linkedinUrl,
+      String? twitterUrl,
+      String? blueskyUrl,
+      String? youtubeUrl,
+      String? instagramUrl,
       String? tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       List<CommunityFeatureFlags> enabledFeatureFlags,
@@ -288,6 +344,13 @@ class __$$_CommunityCopyWithImpl<$Res>
     Object? createdDate = freezed,
     Object? isPublic = freezed,
     Object? description = freezed,
+    Object? websiteUrl = freezed,
+    Object? facebookUrl = freezed,
+    Object? linkedinUrl = freezed,
+    Object? twitterUrl = freezed,
+    Object? blueskyUrl = freezed,
+    Object? youtubeUrl = freezed,
+    Object? instagramUrl = freezed,
     Object? tagLine = freezed,
     Object? enabledFeatureFlags = null,
     Object? communitySettings = freezed,
@@ -339,6 +402,34 @@ class __$$_CommunityCopyWithImpl<$Res>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      websiteUrl: freezed == websiteUrl
+          ? _value.websiteUrl
+          : websiteUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      facebookUrl: freezed == facebookUrl
+          ? _value.facebookUrl
+          : facebookUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      linkedinUrl: freezed == linkedinUrl
+          ? _value.linkedinUrl
+          : linkedinUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      twitterUrl: freezed == twitterUrl
+          ? _value.twitterUrl
+          : twitterUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      blueskyUrl: freezed == blueskyUrl
+          ? _value.blueskyUrl
+          : blueskyUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeUrl: freezed == youtubeUrl
+          ? _value.youtubeUrl
+          : youtubeUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      instagramUrl: freezed == instagramUrl
+          ? _value.instagramUrl
+          : instagramUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       tagLine: freezed == tagLine
           ? _value.tagLine
@@ -399,6 +490,13 @@ class _$_Community extends _Community {
       this.createdDate,
       this.isPublic,
       this.description,
+      this.websiteUrl,
+      this.facebookUrl,
+      this.linkedinUrl,
+      this.twitterUrl,
+      this.blueskyUrl,
+      this.youtubeUrl,
+      this.instagramUrl,
       this.tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       this.enabledFeatureFlags = const [],
@@ -440,6 +538,20 @@ class _$_Community extends _Community {
   @override
   final String? description;
   @override
+  final String? websiteUrl;
+  @override
+  final String? facebookUrl;
+  @override
+  final String? linkedinUrl;
+  @override
+  final String? twitterUrl;
+  @override
+  final String? blueskyUrl;
+  @override
+  final String? youtubeUrl;
+  @override
+  final String? instagramUrl;
+  @override
   final String? tagLine;
   @override
   @JsonKey(fromJson: communityFeatureFlagsFromJson)
@@ -465,7 +577,7 @@ class _$_Community extends _Community {
 
   @override
   String toString() {
-    return 'Community(id: $id, displayIds: $displayIds, name: $name, contactEmail: $contactEmail, creatorId: $creatorId, profileImageUrl: $profileImageUrl, bannerImageUrl: $bannerImageUrl, createdDate: $createdDate, isPublic: $isPublic, description: $description, tagLine: $tagLine, enabledFeatureFlags: $enabledFeatureFlags, communitySettings: $communitySettings, eventSettings: $eventSettings, donationDialogText: $donationDialogText, ratingSurveyUrl: $ratingSurveyUrl, themeLightColor: $themeLightColor, themeDarkColor: $themeDarkColor, onboardingSteps: $onboardingSteps, isOnboardingOverviewEnabled: $isOnboardingOverviewEnabled)';
+    return 'Community(id: $id, displayIds: $displayIds, name: $name, contactEmail: $contactEmail, creatorId: $creatorId, profileImageUrl: $profileImageUrl, bannerImageUrl: $bannerImageUrl, createdDate: $createdDate, isPublic: $isPublic, description: $description, websiteUrl: $websiteUrl, facebookUrl: $facebookUrl, linkedinUrl: $linkedinUrl, twitterUrl: $twitterUrl, blueskyUrl: $blueskyUrl, youtubeUrl: $youtubeUrl, instagramUrl: $instagramUrl, tagLine: $tagLine, enabledFeatureFlags: $enabledFeatureFlags, communitySettings: $communitySettings, eventSettings: $eventSettings, donationDialogText: $donationDialogText, ratingSurveyUrl: $ratingSurveyUrl, themeLightColor: $themeLightColor, themeDarkColor: $themeDarkColor, onboardingSteps: $onboardingSteps, isOnboardingOverviewEnabled: $isOnboardingOverviewEnabled)';
   }
 
   @override
@@ -491,6 +603,20 @@ class _$_Community extends _Community {
                 other.isPublic == isPublic) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.websiteUrl, websiteUrl) ||
+                other.websiteUrl == websiteUrl) &&
+            (identical(other.facebookUrl, facebookUrl) ||
+                other.facebookUrl == facebookUrl) &&
+            (identical(other.linkedinUrl, linkedinUrl) ||
+                other.linkedinUrl == linkedinUrl) &&
+            (identical(other.twitterUrl, twitterUrl) ||
+                other.twitterUrl == twitterUrl) &&
+            (identical(other.blueskyUrl, blueskyUrl) ||
+                other.blueskyUrl == blueskyUrl) &&
+            (identical(other.youtubeUrl, youtubeUrl) ||
+                other.youtubeUrl == youtubeUrl) &&
+            (identical(other.instagramUrl, instagramUrl) ||
+                other.instagramUrl == instagramUrl) &&
             (identical(other.tagLine, tagLine) || other.tagLine == tagLine) &&
             const DeepCollectionEquality()
                 .equals(other.enabledFeatureFlags, enabledFeatureFlags) &&
@@ -528,6 +654,13 @@ class _$_Community extends _Community {
         createdDate,
         isPublic,
         description,
+        websiteUrl,
+        facebookUrl,
+        linkedinUrl,
+        twitterUrl,
+        blueskyUrl,
+        youtubeUrl,
+        instagramUrl,
         tagLine,
         const DeepCollectionEquality().hash(enabledFeatureFlags),
         communitySettings,
@@ -567,6 +700,13 @@ abstract class _Community extends Community {
       final DateTime? createdDate,
       final bool? isPublic,
       final String? description,
+      final String? websiteUrl,
+      final String? facebookUrl,
+      final String? linkedinUrl,
+      final String? twitterUrl,
+      final String? blueskyUrl,
+      final String? youtubeUrl,
+      final String? instagramUrl,
       final String? tagLine,
       @JsonKey(fromJson: communityFeatureFlagsFromJson)
       final List<CommunityFeatureFlags> enabledFeatureFlags,
@@ -606,6 +746,20 @@ abstract class _Community extends Community {
   bool? get isPublic;
   @override
   String? get description;
+  @override
+  String? get websiteUrl;
+  @override
+  String? get facebookUrl;
+  @override
+  String? get linkedinUrl;
+  @override
+  String? get twitterUrl;
+  @override
+  String? get blueskyUrl;
+  @override
+  String? get youtubeUrl;
+  @override
+  String? get instagramUrl;
   @override
   String? get tagLine;
   @override
@@ -812,7 +966,6 @@ mixin _$CommunitySettings {
   bool get multiplePeopleOnStage => throw _privateConstructorUsedError;
   bool get multipleVideoTypes => throw _privateConstructorUsedError;
   bool get requireApprovalToJoin => throw _privateConstructorUsedError;
-  bool get enablePlatformSelection => throw _privateConstructorUsedError;
   bool get enableUpdatedLiveMeetingMobile => throw _privateConstructorUsedError;
   bool get enableAVCheck => throw _privateConstructorUsedError;
 
@@ -839,7 +992,6 @@ abstract class $CommunitySettingsCopyWith<$Res> {
       bool multiplePeopleOnStage,
       bool multipleVideoTypes,
       bool requireApprovalToJoin,
-      bool enablePlatformSelection,
       bool enableUpdatedLiveMeetingMobile,
       bool enableAVCheck});
 }
@@ -867,7 +1019,6 @@ class _$CommunitySettingsCopyWithImpl<$Res, $Val extends CommunitySettings>
     Object? multiplePeopleOnStage = null,
     Object? multipleVideoTypes = null,
     Object? requireApprovalToJoin = null,
-    Object? enablePlatformSelection = null,
     Object? enableUpdatedLiveMeetingMobile = null,
     Object? enableAVCheck = null,
   }) {
@@ -912,10 +1063,6 @@ class _$CommunitySettingsCopyWithImpl<$Res, $Val extends CommunitySettings>
           ? _value.requireApprovalToJoin
           : requireApprovalToJoin // ignore: cast_nullable_to_non_nullable
               as bool,
-      enablePlatformSelection: null == enablePlatformSelection
-          ? _value.enablePlatformSelection
-          : enablePlatformSelection // ignore: cast_nullable_to_non_nullable
-              as bool,
       enableUpdatedLiveMeetingMobile: null == enableUpdatedLiveMeetingMobile
           ? _value.enableUpdatedLiveMeetingMobile
           : enableUpdatedLiveMeetingMobile // ignore: cast_nullable_to_non_nullable
@@ -947,7 +1094,6 @@ abstract class _$$_CommunitySettingsCopyWith<$Res>
       bool multiplePeopleOnStage,
       bool multipleVideoTypes,
       bool requireApprovalToJoin,
-      bool enablePlatformSelection,
       bool enableUpdatedLiveMeetingMobile,
       bool enableAVCheck});
 }
@@ -973,7 +1119,6 @@ class __$$_CommunitySettingsCopyWithImpl<$Res>
     Object? multiplePeopleOnStage = null,
     Object? multipleVideoTypes = null,
     Object? requireApprovalToJoin = null,
-    Object? enablePlatformSelection = null,
     Object? enableUpdatedLiveMeetingMobile = null,
     Object? enableAVCheck = null,
   }) {
@@ -1018,10 +1163,6 @@ class __$$_CommunitySettingsCopyWithImpl<$Res>
           ? _value.requireApprovalToJoin
           : requireApprovalToJoin // ignore: cast_nullable_to_non_nullable
               as bool,
-      enablePlatformSelection: null == enablePlatformSelection
-          ? _value.enablePlatformSelection
-          : enablePlatformSelection // ignore: cast_nullable_to_non_nullable
-              as bool,
       enableUpdatedLiveMeetingMobile: null == enableUpdatedLiveMeetingMobile
           ? _value.enableUpdatedLiveMeetingMobile
           : enableUpdatedLiveMeetingMobile // ignore: cast_nullable_to_non_nullable
@@ -1048,7 +1189,6 @@ class _$_CommunitySettings implements _CommunitySettings {
       this.multiplePeopleOnStage = false,
       this.multipleVideoTypes = false,
       this.requireApprovalToJoin = false,
-      this.enablePlatformSelection = true,
       this.enableUpdatedLiveMeetingMobile = false,
       this.enableAVCheck = true});
 
@@ -1086,9 +1226,6 @@ class _$_CommunitySettings implements _CommunitySettings {
   final bool requireApprovalToJoin;
   @override
   @JsonKey()
-  final bool enablePlatformSelection;
-  @override
-  @JsonKey()
   final bool enableUpdatedLiveMeetingMobile;
   @override
   @JsonKey()
@@ -1096,7 +1233,7 @@ class _$_CommunitySettings implements _CommunitySettings {
 
   @override
   String toString() {
-    return 'CommunitySettings(allowDonations: $allowDonations, allowUnofficialTemplates: $allowUnofficialTemplates, disableEmailDigests: $disableEmailDigests, dontAllowMembersToCreateMeetings: $dontAllowMembersToCreateMeetings, enableDiscussionThreads: $enableDiscussionThreads, enableHostless: $enableHostless, featuredOrder: $featuredOrder, multiplePeopleOnStage: $multiplePeopleOnStage, multipleVideoTypes: $multipleVideoTypes, requireApprovalToJoin: $requireApprovalToJoin, enablePlatformSelection: $enablePlatformSelection, enableUpdatedLiveMeetingMobile: $enableUpdatedLiveMeetingMobile, enableAVCheck: $enableAVCheck)';
+    return 'CommunitySettings(allowDonations: $allowDonations, allowUnofficialTemplates: $allowUnofficialTemplates, disableEmailDigests: $disableEmailDigests, dontAllowMembersToCreateMeetings: $dontAllowMembersToCreateMeetings, enableDiscussionThreads: $enableDiscussionThreads, enableHostless: $enableHostless, featuredOrder: $featuredOrder, multiplePeopleOnStage: $multiplePeopleOnStage, multipleVideoTypes: $multipleVideoTypes, requireApprovalToJoin: $requireApprovalToJoin, enableUpdatedLiveMeetingMobile: $enableUpdatedLiveMeetingMobile, enableAVCheck: $enableAVCheck)';
   }
 
   @override
@@ -1115,7 +1252,8 @@ class _$_CommunitySettings implements _CommunitySettings {
                     dontAllowMembersToCreateMeetings) ||
                 other.dontAllowMembersToCreateMeetings ==
                     dontAllowMembersToCreateMeetings) &&
-            (identical(other.enableDiscussionThreads, enableDiscussionThreads) ||
+            (identical(
+                    other.enableDiscussionThreads, enableDiscussionThreads) ||
                 other.enableDiscussionThreads == enableDiscussionThreads) &&
             (identical(other.enableHostless, enableHostless) ||
                 other.enableHostless == enableHostless) &&
@@ -1127,9 +1265,6 @@ class _$_CommunitySettings implements _CommunitySettings {
                 other.multipleVideoTypes == multipleVideoTypes) &&
             (identical(other.requireApprovalToJoin, requireApprovalToJoin) ||
                 other.requireApprovalToJoin == requireApprovalToJoin) &&
-            (identical(
-                    other.enablePlatformSelection, enablePlatformSelection) ||
-                other.enablePlatformSelection == enablePlatformSelection) &&
             (identical(other.enableUpdatedLiveMeetingMobile,
                     enableUpdatedLiveMeetingMobile) ||
                 other.enableUpdatedLiveMeetingMobile ==
@@ -1152,7 +1287,6 @@ class _$_CommunitySettings implements _CommunitySettings {
       multiplePeopleOnStage,
       multipleVideoTypes,
       requireApprovalToJoin,
-      enablePlatformSelection,
       enableUpdatedLiveMeetingMobile,
       enableAVCheck);
 
@@ -1183,7 +1317,6 @@ abstract class _CommunitySettings implements CommunitySettings {
       final bool multiplePeopleOnStage,
       final bool multipleVideoTypes,
       final bool requireApprovalToJoin,
-      final bool enablePlatformSelection,
       final bool enableUpdatedLiveMeetingMobile,
       final bool enableAVCheck}) = _$_CommunitySettings;
 
@@ -1210,8 +1343,6 @@ abstract class _CommunitySettings implements CommunitySettings {
   bool get multipleVideoTypes;
   @override
   bool get requireApprovalToJoin;
-  @override
-  bool get enablePlatformSelection;
   @override
   bool get enableUpdatedLiveMeetingMobile;
   @override
