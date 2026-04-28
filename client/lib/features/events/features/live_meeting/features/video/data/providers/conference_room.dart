@@ -361,12 +361,14 @@ class ConferenceRoom with ChangeNotifier {
     bool updateProvider = true,
   }) async {
     final updatedEnabledValue = setEnabled ?? !videoEnabled;
+    final context = navigatorState.context;
 
     if (updatedEnabledValue) {
       final permissionStatus = await Permission.camera.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+        if (!context.mounted) return;
         await showAlert(
-          navigatorState.context,
+          context,
           'Error enabling camera. Please ensure you have granted permission.',
         );
         _room?.localParticipant?.videoTrackEnabled = false;
@@ -394,12 +396,14 @@ class ConferenceRoom with ChangeNotifier {
     bool updateProvider = true,
   }) async {
     final updatedEnabledValue = setEnabled ?? !audioEnabled;
+    final context = navigatorState.context;
 
     if (updatedEnabledValue) {
       final permissionStatus = await Permission.microphone.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+        if (!context.mounted) return;
         await showAlert(
-          navigatorState.context,
+          context,
           'Error enabling microphone. Please ensure you have granted permission.',
         );
         _room?.localParticipant?.audioTrackEnabled = false;
@@ -496,7 +500,7 @@ class ConferenceRoom with ChangeNotifier {
     });
 
     _updateLiveMeetingParticipants();
-    print('updated live meeting participants');
+
     notifyListeners();
     _completer.complete(room);
     if (liveMeetingProvider.audioDefaultOn &&
@@ -508,21 +512,24 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   Future<void> _promptToTurnOnVideo() async {
+    final context = navigatorState.context;
     final enableAudioVideo = await ConfirmDialog(
       title: appLocalizationService.getLocalization().turnOnAudioVideo,
       mainText: 'Would you like to turn on audio and video?',
       cancelText: appLocalizationService.getLocalization().cancel,
     ).show();
+    if (!context.mounted) return;
     if (enableAudioVideo) {
       if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
+          context,
           () => toggleAudioEnabled(setEnabled: true),
         );
       }
+    if (!context.mounted) return;
       if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
+          context,
           () => toggleVideoEnabled(setEnabled: true),
         );
       }

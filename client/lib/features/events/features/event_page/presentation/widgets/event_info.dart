@@ -236,6 +236,8 @@ class _EventInfoState extends State<EventInfo> {
       existingTitles,
     );
 
+    if (!mounted) return;
+
     await CreateTemplateDialog.show(
       communityPermissionsProvider:
           Provider.of<CommunityPermissionsProvider>(context, listen: false),
@@ -268,6 +270,7 @@ class _EventInfoState extends State<EventInfo> {
       onConfirm: (context) async {
         await alertOnError(context, () async {
           await _presenter.refreshEvent();
+          if (!context.mounted) return;
           Navigator.pop(context);
         });
       },
@@ -302,6 +305,7 @@ class _EventInfoState extends State<EventInfo> {
           breakoutRooms: breakoutRooms,
         );
       } else {
+        if (!mounted) return;
         showRegularToast(
           context,
           'No members data',
@@ -331,6 +335,7 @@ class _EventInfoState extends State<EventInfo> {
           breakoutRooms: breakoutRooms,
         );
       } else {
+        if (!mounted) return;
         showRegularToast(
           context,
           'No chat data',
@@ -364,6 +369,7 @@ class _EventInfoState extends State<EventInfo> {
           breakoutRooms: breakoutRooms,
         );
       } else {
+        if (!mounted) return;
         showRegularToast(
           context,
           'No polls or suggestions data',
@@ -498,13 +504,16 @@ class _EventInfoState extends State<EventInfo> {
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () async {
-        if (context.read<EventProvider>().event.eventSettings?.alwaysRecord == true) {
+        // If the event is always recorded, show a consent dialog before joining
+        if (context.read<EventProvider>().event.eventSettings?.alwaysRecord ==
+            true) {
           final proceed = await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('Event is being recorded'),
               content: const Text(
-                  'This event is being recorded. Do you want to proceed?',),
+                'This event is being recorded. Do you want to proceed?',
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
@@ -517,6 +526,7 @@ class _EventInfoState extends State<EventInfo> {
               ],
             ),
           );
+          // If the user does not consent to being recorded, do not join the event
           if (proceed != true) return;
         }
         final successfullyJoined =
