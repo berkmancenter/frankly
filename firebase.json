@@ -98,13 +98,21 @@
       "ignore": [
         "node_modules",
         ".git",
-        "lib/**",
-        "test/**",
-        "tool/**",
+        ".dart_tool",
+        "packages",
+        "lib",
+        "test",
+        ".build.manifest",
+        ".packages",
         "*.dart",
-        "pubspec*",
-        "emulators*",
-        "*.yaml"
+        "*.yaml",
+        "*.lock",
+        "*.sh",
+        "*.md",
+        "*.example",
+        "*.local",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
       ]
     }
   ],

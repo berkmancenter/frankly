@@ -7,9 +7,11 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
+import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/recording/recording_session.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -101,9 +103,12 @@ class _DataTabState extends State<DataTab> {
     );
 
     provider.initialize();
+    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
+
     await provider.generateRegistrationDataCsvFile(
       eventId: event.id,
       registrationData: members,
+      breakoutRooms: breakoutRooms,
     );
   }
 
@@ -113,16 +118,13 @@ class _DataTabState extends State<DataTab> {
     bool eventInPast,
     bool hasRecording,
   ) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
-      return const SizedBox.shrink();
-    }
-
     final showRecording = eventInPast && hasRecording;
     final showRegistrant = participants.isNotEmpty;
 
-    if (!showRecording && !showRegistrant) return const SizedBox.shrink();
+    // Nothing to download: hide the button entirely.
+    if (!showRecording && !showRegistrant) {
+      return const SizedBox.shrink();
+    }
 
     return ActionButton(
       type: ActionButtonType.text,
@@ -276,7 +278,7 @@ class _DataTabState extends State<DataTab> {
             if (showRecording && recordingSelected) {
               await _downloadAllRecordings(event);
             }
-            if (showRegistrant && registrantListSelected) {
+            if (showRegistrant && registrantListSelected && mounted) {
               await alertOnError(context, () async {
                 await downloadRegistrantList(event, participants);
               });
@@ -293,6 +295,7 @@ class _DataTabState extends State<DataTab> {
             title: Text(context.l10n.selectData),
             backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
             contentPadding: EdgeInsets.zero,
+            actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
             content: Material(
               color: context.theme.colorScheme.surfaceContainer,
@@ -325,6 +328,45 @@ class _DataTabState extends State<DataTab> {
                         ),
                         title: Text(context.l10n.registrationDataDownload),
                       ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: SizedBox(
+                        width: 200,
+                        child: Column(
+                          children: [
+                            Text(
+                              context.l10n.otherDataDownload,
+                              style: context.theme.textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            ActionButton(
+                              onPressed: () {
+                                routerDelegate.beamTo(
+                                  CommunityPageRoutes(
+                                    communityDisplayId:
+                                        CommunityProvider.readOrNull(context)
+                                                ?.displayId ??
+                                            event.communityId,
+                                  ).eventPage(
+                                    templateId: event.templateId,
+                                    eventId: event.id,
+                                  ),
+                                );
+                              },
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                              textColor: context.theme.colorScheme.onSurface,
+                              text: context.l10n.otherDataDownloadAction,
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
