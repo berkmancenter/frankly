@@ -201,6 +201,8 @@ class NavBarState extends State<NavBar> implements NavBarView {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ProfileOrLogin(
             showMenuAboveIcon: false,
+            showLoginSignUp:
+                routerDelegate.currentConfiguration?.uri.path != '/',
           ),
         )
       else ...[
