@@ -13,7 +13,6 @@ import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/sidebar_navigation_list_item.dart';
-import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
@@ -72,7 +71,7 @@ class _SideBarState extends State<SideBar> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: _buildNavigationOrSignIn(),
+                child: _buildNavigation(),
               ),
               _buildBottomSidebarButtons(),
             ],
@@ -90,7 +89,7 @@ class _SideBarState extends State<SideBar> {
           child: CustomListView(
             padding: const EdgeInsets.all(20),
             children: [
-              _buildNavigationOrSignIn(),
+              _buildNavigation(),
             ],
           ),
         ),
@@ -116,15 +115,13 @@ class _SideBarState extends State<SideBar> {
     );
   }
 
-  Widget _buildNavigationOrSignIn() {
+  Widget _buildNavigation() {
     final isSignedIn = Provider.of<UserService>(context).isSignedIn;
 
     if (isSignedIn) {
       return _buildSignedInSidebarContent();
     } else {
-      return SignInOptionsContent(
-        onComplete: () => Navigator.of(context).pop(),
-      );
+      return SizedBox.shrink();
     }
   }
 
