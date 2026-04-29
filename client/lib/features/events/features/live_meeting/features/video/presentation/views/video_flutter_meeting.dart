@@ -147,7 +147,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                         .eventSettings
                         ?.alwaysRecord ==
                     true)
-                  _buildRecordingBadge(context),
+                  _RecordingBadge(
+                    liveMeetingProvider: liveMeetingProvider,
+                  ),
               ],
             ),
           ),
@@ -155,48 +157,27 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       ),
     );
   }
+}
 
-  Widget _buildRecordingBadge(BuildContext context) {
+class _RecordingBadge extends StatelessWidget {
+  const _RecordingBadge({
+    required this.liveMeetingProvider,
+  });
+
+  final LiveMeetingProvider liveMeetingProvider;
+
+  @override
+  Widget build(BuildContext context) {
     final meeting = liveMeetingProvider.isInBreakout
         ? liveMeetingProvider.breakoutRoomLiveMeeting
         : liveMeetingProvider.liveMeeting;
     final sessionId = meeting?.recordingSessionId;
 
-    Widget badge() {
-      return Container(
-        alignment: Alignment.topRight,
-        child: Container(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: _kRecordingPulseSize,
-                width: _kRecordingPulseSize,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.theme.colorScheme.errorContainer,
-                ),
-              ),
-              SizedBox(width: 8),
-              Text(
-                'Recording',
-                style: TextStyle(
-                  color: context.theme.colorScheme.onPrimary,
-                ),
-              ),
-              SizedBox(width: 26),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // No session ID yet — show the badge unconditionally
+    // No session ID yet - show the badge unconditionally
     // (matches the original alwaysRecord-gated behavior).
-    if (sessionId == null) return badge();
+    if (sessionId == null) {
+      return const _RecordingBadgePill();
+    }
 
     return StreamBuilder<RecordingSession?>(
       stream: firestoreLiveMeetingService.recordingSessionStream(sessionId),
@@ -206,8 +187,45 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         if (status == RecordingSessionStatus.failed) {
           return const SizedBox.shrink();
         }
-        return badge();
+        return const _RecordingBadgePill();
       },
+    );
+  }
+}
+
+class _RecordingBadgePill extends StatelessWidget {
+  const _RecordingBadgePill();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: Container(
+        color: context.theme.colorScheme.scrim.withScrimOpacity,
+        height: 32,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: _kRecordingPulseSize,
+              width: _kRecordingPulseSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.theme.colorScheme.errorContainer,
+              ),
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Recording',
+              style: TextStyle(
+                color: context.theme.colorScheme.onPrimary,
+              ),
+            ),
+            SizedBox(width: 26),
+          ],
+        ),
+      ),
     );
   }
 }
