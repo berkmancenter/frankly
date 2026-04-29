@@ -54,7 +54,7 @@ class VideoFlutterMeeting extends StatefulHookWidget {
   }) : super(key: key);
 
   @override
-  _VideoFlutterMeetingState createState() => _VideoFlutterMeetingState();
+  State<VideoFlutterMeeting> createState() => _VideoFlutterMeetingState();
 }
 
 class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
@@ -86,6 +86,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     _onConferenceRoomException =
         _conferenceRoomRead.onException.listen((err) async {
       loggingService.log('showing alert in listener');
+      if (!mounted) return;
       await showAlert(
         context,
         err is PlatformException ? err.details : err.toString(),
@@ -440,7 +441,7 @@ class GetHelpButton extends StatefulWidget {
     final needHelp =
         await NeedHelpDialog(showContactAdmin: showContactAdmin).show();
 
-    if (!needHelp) return;
+    if (!needHelp || !context.mounted) return;
 
     await alertOnError(
       context,
@@ -456,6 +457,8 @@ class GetHelpButton extends StatefulWidget {
       ),
     );
 
+    if (!context.mounted) return;
+
     showRegularToast(
       context,
       'We’ve notified an administrator - please be patient, help is on the way!',
@@ -464,7 +467,7 @@ class GetHelpButton extends StatefulWidget {
   }
 
   @override
-  _GetHelpButtonState createState() => _GetHelpButtonState();
+  State<GetHelpButton> createState() => _GetHelpButtonState();
 }
 
 class _GetHelpButtonState extends State<GetHelpButton> {
