@@ -7,10 +7,10 @@ environment:
 
 dependencies:
   markdown_editor_plus:
-    path: ../../markdown_editor_plus
-    # git:
-    #   url: https://github.com/dariusk/markdown_editor_plus.git
-    #   ref: main
+    # path: ../../markdown_editor_plus
+    git:
+      url: https://github.com/dariusk/markdown_editor_plus.git
+      ref: main
   json_annotation: ^4.9.0
   crypto: ^3.0.2
   duration: ^3.0.13
