@@ -8,7 +8,6 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
@@ -33,7 +32,7 @@ class SideBar extends StatefulWidget {
   SideBar() : super(key: Key('sideBar'));
 
   @override
-  _SideBarState createState() => _SideBarState();
+  State<SideBar> createState() => _SideBarState();
 }
 
 class _SideBarState extends State<SideBar> {
