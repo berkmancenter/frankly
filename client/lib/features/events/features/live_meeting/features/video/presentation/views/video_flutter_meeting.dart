@@ -67,6 +67,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   LiveMeetingProvider get liveMeetingProvider =>
       Provider.of<LiveMeetingProvider>(context);
   AgendaProvider get agendaProvider => context.watch<AgendaProvider>();
+  bool eventRecordedOnStart = false;
+  bool previousAlwaysRecord = false;
 
   @override
   void initState() {
@@ -79,6 +81,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
       _conferenceRoomRead.room?.dispose();
     });
+
+    eventRecordedOnStart =
+        EventProvider.read(context).event.eventSettings?.alwaysRecord ?? false;
   }
 
   Future<void> _connectToRoom() async {
@@ -93,6 +98,24 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     await _conferenceRoomRead.connect();
   }
 
+  void _showRecordingAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Recording Started'),
+          content: Text('This event is now being recorded.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     loggingService.log('disposing twilio flutter meeting');
@@ -104,8 +127,23 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final current =
+        EventProvider.watch(context).event.eventSettings?.alwaysRecord;
+    // Pop an alert if event begins recording, but only if it wasn't already recording at the start
+    if (current == true && !eventRecordedOnStart && !previousAlwaysRecord) {
+      // Trigger modal only on transition from non-true to true
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => _showRecordingAlert(context));
+    }
+    previousAlwaysRecord = current ?? false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final error = _conferenceRoom.connectError;
+
     if (error != null && error.trim().isNotEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -396,6 +434,7 @@ class GetHelpButton extends StatefulWidget {
 
     if (!needHelp) return;
 
+    if (!context.mounted) return;
     await alertOnError(
       context,
       () => cloudFunctionsLiveMeetingService.updateBreakoutRoomFlagStatus(
@@ -410,6 +449,7 @@ class GetHelpButton extends StatefulWidget {
       ),
     );
 
+    if (!context.mounted) return;
     showRegularToast(
       context,
       'We’ve notified an administrator - please be patient, help is on the way!',
@@ -418,7 +458,7 @@ class GetHelpButton extends StatefulWidget {
   }
 
   @override
-  _GetHelpButtonState createState() => _GetHelpButtonState();
+  State<GetHelpButton> createState() => _GetHelpButtonState();
 }
 
 class _GetHelpButtonState extends State<GetHelpButton> {
