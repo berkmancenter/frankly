@@ -75,6 +75,7 @@ class _DialogFlowState extends State<DialogFlow> {
           () => _community = _community.copyWith(id: createdCommunityId),
         );
       } else {
+        if (!mounted) return false;
         Navigator.of(context).pop();
         await showAlert(context, context.l10n.somethingWentWrongTryAgain);
         return false;

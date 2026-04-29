@@ -19,7 +19,7 @@ class CreateAnnouncementDialog extends StatefulWidget {
   }
 
   @override
-  _CreateAnnouncementDialogState createState() =>
+  State<CreateAnnouncementDialog> createState() =>
       _CreateAnnouncementDialogState();
 }
 
@@ -38,7 +38,7 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
           message: _message,
           emailToMembers: _emailToMembers,
         );
-
+        if (!mounted) return;
         Navigator.of(context).pop();
       },
     );
