@@ -7,9 +7,8 @@ const storage = new Storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
 // Triggered when a recording session transitions to 'stopped'.
-// Locates the MP4 Agora deposited under gcsPrefix, registers its path on the
-// session document, then assembles any available transcript segments into a
-// JSON file and registers that path too.
+// Locates the MP4 Agora deposited under gcsPrefix and registers its path on
+// the session document.
 const produceSessions = functions.firestore
     .document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
@@ -36,7 +35,13 @@ const produceSessions = functions.firestore
             if (mp4Files.length === 0) {
                 console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
             } else {
-                console.log(`Found ${mp4Files.length} MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files.map((f) => f.name).join(', ')}`)
+                console.log(
+                    `Found ${
+                        mp4Files.length
+                    } MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files
+                        .map((f) => f.name)
+                        .join(', ')}`
+                )
                 const updates = {}
                 mp4Files.forEach((f, i) => {
                     updates[`artifactPaths.complete_mp4_${i}`] = f.name
@@ -46,42 +51,6 @@ const produceSessions = functions.firestore
             }
         } catch (err) {
             console.error(`Error registering MP4 for session ${sessionId}:`, err)
-        }
-
-        // --- Export transcript ---
-        try {
-            const segmentsSnap = await change.after.ref
-                .collection('transcript-segments')
-                .orderBy('startMs')
-                .get()
-
-            if (segmentsSnap.empty) {
-                console.log(`No transcript segments for session ${sessionId}, skipping export`)
-                return null
-            }
-
-            const segments = segmentsSnap.docs.map((doc) => {
-                const d = doc.data()
-                return {
-                    text: d.text,
-                    startMs: d.startMs,
-                    durationMs: d.durationMs,
-                    speakerUid: d.speakerUid,
-                    language: d.language,
-                }
-            })
-
-            const transcriptPath = `${gcsPrefix}/transcript.json`
-            await bucket.file(transcriptPath).save(JSON.stringify(segments), {
-                contentType: 'application/json',
-            })
-
-            await change.after.ref.update({
-                'artifactPaths.transcript_json': transcriptPath,
-            })
-            console.log(`Exported transcript to ${transcriptPath} for session ${sessionId}`)
-        } catch (err) {
-            console.error(`Error exporting transcript for session ${sessionId}:`, err)
         }
 
         return null
