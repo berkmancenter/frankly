@@ -29,11 +29,9 @@ import 'package:client/core/widgets/tabs/tab_bar.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_asset.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_message.dart';
 import 'package:provider/provider.dart';
@@ -242,69 +240,11 @@ class EventPageState extends State<EventPage> implements EventPageView {
     );
   }
 
-  bool _isEnterEventGraphicShown(DateTime scheduled) {
-    final now = clockService.now();
-    final beforeMeetingCutoff =
-        scheduled.subtract(Duration(minutes: kMinutesBeforeEventToJoin));
-    final afterMeetingCutoff = scheduled.add(Duration(hours: 2));
-
-    return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
-  }
-
   Widget _buildGuide() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
-          SizedBox(
-            height: 380,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: ProxiedImage(
-                    null,
-                    asset: AppAsset('media/background.gif'),
-                    fit: BoxFit.cover,
-                    loadingColor: Colors.transparent,
-                  ),
-                ),
-                Container(
-                  color: context.theme.colorScheme.scrim.withScrimOpacity,
-                ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      HeightConstrainedText(
-                        'The event is starting',
-                        style: TextStyle(
-                          color: context.theme.colorScheme.onPrimary,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      ActionButton(
-                        text: 'Enter Event',
-                        onPressed: () async {
-                          final joined = await _joinEvent(enterMeeting: true);
-                          if (!joined && mounted) {
-                            showRegularToast(
-                              context,
-                              'Event was not entered.',
-                              toastType: ToastType.neutral,
-                            );
-                          }
-                        },
-                        height: 65,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 4),
-        ],
         CustomTabBar(
           padding: EdgeInsets.zero,
         ),
