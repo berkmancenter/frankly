@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../utils/infra/firebase_auth_utils.dart';
 import 'live_meeting_utils.dart';
+import 'scheduled_end_meeting.dart';
 import '../../on_call_function.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -80,6 +81,27 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         chatPath: pending.chatPath,
         participantIds: pending.participantIds,
       );
+    }
+
+    // On first join, schedule automatic meeting end if the event has a
+    // scheduled time and duration.
+    if (result.isFirstJoin) {
+      final event = await firestoreUtils.getFirestoreObject(
+        path: request.eventPath,
+        constructor: (map) => Event.fromJson(map),
+      );
+      final scheduledTime = event.scheduledTime;
+      if (scheduledTime != null) {
+        final endTime = scheduledTime.add(
+          Duration(minutes: event.durationInMinutes),
+        );
+        if (endTime.isAfter(DateTime.now())) {
+          await ScheduledEndMeeting().schedule(
+            EndMeetingForAllRequest(eventPath: request.eventPath),
+            endTime,
+          );
+        }
+      }
     }
 
     return result.response.toJson();
