@@ -257,6 +257,16 @@
       }
     }
   },
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@questionWithNumber": {
     "placeholders": {
       "number": {
@@ -409,6 +419,7 @@
   "cancel": "Cancelar",
   "cancelCurrentPlan": "¿Cancelar plan actual?",
   "cancelEvent": "Cancelar evento",
+  "cancelEventConfirmation": "¿Estás seguro de que quieres cancelar el evento? Esto no se puede deshacer y notificará a todos los participantes.",
   "cancelParticipation": "Cancelar participación",
   "cannotPlayVimeoVideo": "No se puede reproducir el video de Vimeo.",
   "cannotPlayYouTubeVideo": "No se puede reproducir el video de YouTube",
@@ -554,6 +565,7 @@
   "howWasTheEvent": "¿Cómo fue el evento?",
   "iAgreeToThe": "Acepto los ",
   "iCalCalendar": "iCal Calendar",
+  "illBeThere": "¡Estaré allí!",
   "image": "Imagen",
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
@@ -681,6 +693,7 @@
   "pickAColor": "Elige un color",
   "playsAt": "Comienza a las {time}",
   "pleaseAddSomeAnswers": "Por favor, agregue algunas respuestas",
+  "pleaseConfirmAvailability": "Por favor, confirme que está disponible a las {eventTime} del {eventDate} para participar en este evento.",
   "pleaseEnterPassword": "Por favor, introduzca una contraseña",
   "pleaseEnterValidAmount": "Por favor, ingrese un monto válido",
   "pleaseEnterValidEmail": "Por favor, introduzca una dirección de email válida.",

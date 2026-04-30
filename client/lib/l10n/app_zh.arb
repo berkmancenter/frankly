@@ -258,6 +258,16 @@
       }
     }
   },
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@questionWithNumber": {
     "placeholders": {
       "number": {
@@ -411,6 +421,7 @@
   "cancel": "取消",
   "cancelCurrentPlan": "取消当前计划？",
   "cancelEvent": "取消活动",
+  "cancelEventConfirmation": "您确定要取消活动吗？此操作无法撤销，并将通知所有参与者。",
   "cancelParticipation": "取消参与",
   "cannotPlayVimeoVideo": "无法播放 Vimeo 视频",
   "cannotPlayYouTubeVideo": "无法播放 YouTube 视频",
@@ -556,6 +567,7 @@
   "howWasTheEvent": "活动感觉如何？",
   "iAgreeToThe": "我同意",
   "iCalCalendar": "iCal 日历",
+  "illBeThere": "我会去！",
   "image": "图片",
   "imageUrlIsNotSet": "（图片URL未设置。）",
   "imageUrlIsRequired": "图片网址为必填项",
@@ -684,6 +696,7 @@
   "pickAColor": "选择颜色",
   "playsAt": "在{time}播放",
   "pleaseAddSomeAnswers": "请添加一些答案",
+  "pleaseConfirmAvailability": "请确认您在 {eventTime} 的 {eventDate} 可参加此活动。",
   "pleaseEnterPassword": "請輸入密碼",
   "pleaseEnterValidAmount": "请输入有效金额",
   "pleaseEnterValidEmail": "请输入有效的电子邮件地址。",

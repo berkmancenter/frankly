@@ -117,6 +117,16 @@
     }
   },
   "@enterWordCloudPrompt": {},
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@introBeforeBreakouts": {
     "placeholders": {
       "duration": {
@@ -481,6 +491,7 @@
   "howWasTheEvent": "How was the event?",
   "iAgreeToThe": "I agree to the ",
   "iCalCalendar": "iCal Calendar",
+  "illBeThere": "I'll be there!",
   "image": "Image",
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
@@ -608,6 +619,7 @@
   "pickAColor": "Pick a color",
   "playsAt": "Plays at {time}",
   "pleaseAddSomeAnswers": "Please add some answers",
+  "pleaseConfirmAvailability": "Please confirm that you are available at {eventTime} on {eventDate} to participate in this event.",
   "pleaseEnterPassword": "Please enter a password",
   "pleaseEnterValidAmount": "Please enter a valid amount",
   "pleaseEnterValidEmail": "Please enter a valid email address.",
