@@ -1444,10 +1444,12 @@ second command safely appends to it.</p>
 </tbody>
 </table>
 <p>These are set inline before the command, for example:</p>
-<p><div class="highlight"><pre><span></span><code>FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
+<div class="highlight"><pre><span></span><code>FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
 </code></pre></div>
-<strong>Troubleshooting:</strong>
-* If you encounter the error "Could not find <code>bin/build_runner.dart</code> in package <code>build_runner</code>", navigate to the directory where the build command failed and run <code>flutter pub get</code> manually.</p>
+<p><strong>Troubleshooting:</strong></p>
+<ul>
+<li>If you encounter the error "Could not find <code>bin/build_runner.dart</code> in package <code>build_runner</code>", navigate to the directory where the build command failed and run <code>flutter pub get</code> manually.</li>
+</ul>
 <hr />
 <h3 id="running-emulators-only-without-the-client">Running Emulators Only (Without the Client)</h3>
 <p>If you want to start only the emulators without the Flutter client, run from the <code>firebase/functions</code> directory:</p>
@@ -1559,6 +1561,7 @@ agora.rest_secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 agora.storage_bucket_name=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 agora.storage_access_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+agora.webhook_secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 </code></pre></div>
 <h4 id="setting-up-the-integration"><strong>🔧 Setting up the integration</strong></h4>
 <ul>
@@ -1579,6 +1582,10 @@ agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
 <li><code>storage_secret_key</code>: From the generated key, paste the <strong>Secret</strong>.</li>
 <li><strong>In the codebase</strong></li>
 <li>In <code>client/.env</code>, change <code>FUNCTIONS_URL_PREFIX</code> to reflect your Google Cloud Run Functions prefix.</li>
+<li><strong>Agora recording webhook</strong></li>
+<li>Deploy the <code>AgoraRecordingWebhook</code> Cloud Function and note its URL.</li>
+<li>In the Agora console, go to <strong>Notifications</strong> (under Developer Toolkit / Developer Resources). Add a new rule targeting <strong>Cloud Recording</strong> events, set the callback URL to the deployed function URL, and choose a secret string.</li>
+<li><code>webhook_secret</code>: Set this to the secret string you chose above so the function can verify Agora's HMAC-SHA1 signature on each notification. If omitted, signature verification is skipped (acceptable for local development, not for production).</li>
 </ul>
 <h4 id="testing-the-integration">👾 Testing the integration</h4>
 <p>Once you have the keys set up, you can follow the below checklist to test that key behaviors that depend on Agora are working successfully.</p>
