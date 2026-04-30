@@ -14,9 +14,9 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/iterables.dart';
-import 'package:uuid/uuid.dart';
 
 /// A utility class for handling assignments to breakouts.
 class AssignToBreakouts {
@@ -692,7 +692,10 @@ class AssignToBreakouts {
           'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',);
       for (final room in breakoutRooms) {
         if (room.roomId == breakoutsWaitingRoomId) continue;
-        final newSessionId = const Uuid().v4();
+        final newSessionId = firestore
+            .collection(RecordingSession.kCollection)
+            .document()
+            .documentID;
         final roomPath = '${breakoutRoomsCollection.path}/${room.roomId}';
         await firestore.document(roomPath).updateData(
               UpdateData.fromMap(
