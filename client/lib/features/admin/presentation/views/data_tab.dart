@@ -10,6 +10,7 @@ import 'package:client/features/events/features/event_page/data/providers/event_
 import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -37,15 +38,16 @@ class _DataTabState extends State<DataTab> {
   late UserService _userService;
   int _currentStartIndex = 0;
 
-  // Recording status per event: null=loading, 0=preparing, N=N parts ready, -1=error.
+  // Recording status per event:
+  //   null  = loading
+  //   -2    = recording in progress
+  //   0     = processing recordings (stopped, no artifacts yet)
+  //   N > 0 = N recording files ready
+  //   -1    = error / failed
   final Map<String, int?> _recordingParts = {};
   final Map<String, ValueNotifier<int?>> _recordingNotifiers = {};
-  final Map<String, Timer> _pollingTimers = {};
-  final Map<String, int> _retryCount = {};
+  final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
-  // After this many auto-retries (~30 seconds at 5s intervals), stop polling
-  // and show the error/manual-retry state instead.
-  static const int _maxAutoRetries = 6;
   late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
@@ -71,8 +73,8 @@ class _DataTabState extends State<DataTab> {
 
   @override
   void dispose() {
-    for (final timer in _pollingTimers.values) {
-      timer.cancel();
+    for (final sub in _sessionSubscriptions.values) {
+      sub?.cancel();
     }
     for (final notifier in _recordingNotifiers.values) {
       notifier.dispose();
@@ -146,60 +148,63 @@ class _DataTabState extends State<DataTab> {
     if (_recordingParts.containsKey(event.id)) return;
     _recordingParts[event.id] = null; // null = loading
     (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
-    _fetchRecordingCount(event);
+    _subscribeToSessions(event);
   }
 
-  Future<void> _fetchRecordingCount(Event event) async {
-    try {
-      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
-      if (idToken == null) {
-        if (mounted) _scheduleRetry(event);
-        return;
-      }
-      final response = await http.post(
-        Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
-        headers: {
-          'Authorization': 'Bearer $idToken',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'eventPath': event.fullPath}),
-      );
-      if (!mounted) return;
-      if (response.statusCode == 200) {
-        final body = jsonDecode(response.body) as Map<String, dynamic>;
-        final count = (body['recordings'] as List?)?.length ?? 0;
-        setState(() => _recordingParts[event.id] = count);
-        _recordingNotifiers[event.id]?.value = count;
-        if (count == 0) _scheduleRetry(event);
-      } else {
-        // Non-200 means a function error, not "recordings not ready".
-        // Stop polling and show an error state (-1) to avoid infinite retry.
-        setState(() => _recordingParts[event.id] = -1);
-        _recordingNotifiers[event.id]?.value = -1;
-      }
-    } catch (_) {
-      if (mounted) {
-        setState(() => _recordingParts[event.id] = -1);
-        _recordingNotifiers[event.id]?.value = -1;
-      }
-    }
-  }
-
-  void _scheduleRetry(Event event) {
-    final retries = (_retryCount[event.id] ?? 0) + 1;
-    if (retries >= _maxAutoRetries) {
-      setState(() => _recordingParts[event.id] = -1);
-      _recordingNotifiers[event.id]?.value = -1;
-      return;
-    }
-    _retryCount[event.id] = retries;
-    _pollingTimers[event.id]?.cancel();
-    _pollingTimers[event.id] = Timer(const Duration(seconds: 5), () {
-      if (!mounted) return;
-      setState(() => _recordingParts[event.id] = null);
-      _recordingNotifiers[event.id]?.value = null;
-      _fetchRecordingCount(event);
+  void _retryRecordingCheck(Event event) {
+    _sessionSubscriptions[event.id]?.cancel();
+    _sessionSubscriptions.remove(event.id);
+    setState(() {
+      _recordingParts.remove(event.id);
     });
+    _recordingNotifiers[event.id]?.value = null;
+    _maybeStartRecordingCheck(event);
+  }
+
+  void _subscribeToSessions(Event event) {
+    _sessionSubscriptions[event.id]?.cancel();
+    _sessionSubscriptions[event.id] = firestoreDatabase.firestore
+        .collection(RecordingSession.kCollection)
+        .where(RecordingSession.kFieldEventId, isEqualTo: event.id)
+        .snapshots()
+        .listen(
+      (snapshot) {
+        if (!mounted) return;
+        final sessions = snapshot.docs
+            .map(
+              (d) => RecordingSession.fromJson(
+                {...fromFirestoreJson(d.data()), 'sessionId': d.id},
+              ),
+            )
+            .toList();
+
+        int status;
+        if (sessions.isEmpty) {
+          status = 0; // no sessions yet, treat as processing
+        } else if (sessions.any(
+          (s) =>
+              s.status == RecordingSessionStatus.recording ||
+              s.status == RecordingSessionStatus.starting,
+        )) {
+          status = -2; // recording in progress
+        } else {
+          // Count total artifact files across all sessions.
+          final fileCount = sessions.fold<int>(
+            0,
+            (sum, s) => sum + s.artifactPaths.length,
+          );
+          status = fileCount > 0 ? fileCount : 0;
+        }
+
+        setState(() => _recordingParts[event.id] = status);
+        _recordingNotifiers[event.id]?.value = status;
+      },
+      onError: (_) {
+        if (!mounted) return;
+        setState(() => _recordingParts[event.id] = -1);
+        _recordingNotifiers[event.id]?.value = -1;
+      },
+    );
   }
 
   Future<void> _downloadAllRecordings(Event event) async {
@@ -244,10 +249,14 @@ class _DataTabState extends State<DataTab> {
   }
 
   String _recordingAnnotation(BuildContext context, int? parts) {
-    if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
-    if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
-    if (parts == -1) return ' ${context.l10n.recordingStatusFailed}';
-    return ' ${context.l10n.recordingStatusParts(parts)}';
+    if (parts == null) return context.l10n.recordingStatusChecking;
+    if (parts == -2) return context.l10n.recordingStatusInProgress;
+    if (parts == 0) return context.l10n.recordingStatusProcessing;
+    if (parts == -1) return context.l10n.recordingStatusFailed;
+    final label = parts == 1
+        ? context.l10n.recordingStatusFile
+        : context.l10n.recordingStatusFiles;
+    return '$parts $label';
   }
 
   void _showDownloadDialog(
@@ -296,12 +305,19 @@ class _DataTabState extends State<DataTab> {
                     if (showRecording)
                       CheckboxListTile(
                         value: recordingSelected,
-                        enabled: parts != null && parts != 0,
+                        enabled: (parts ?? 0) > 0,
                         onChanged: (value) => setDialogState(
                           () => recordingSelected = value ?? false,
                         ),
-                        title: Text(
-                          '${context.l10n.recording}${_recordingAnnotation(context, parts)}',
+                        title: Text(context.l10n.recording),
+                        subtitle: Text(
+                          _recordingAnnotation(context, parts),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: (parts ?? 0) > 0
+                                ? null
+                                : Theme.of(context).textTheme.bodySmall?.color,
+                          ),
                         ),
                       ),
                     if (showRegistrant)
@@ -426,7 +442,7 @@ class _DataTabState extends State<DataTab> {
     final participants = await _getEventParticipants(event);
 
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
-    final hasRecording = event.eventSettings?.alwaysRecord! ?? false;
+    final hasRecording = event.eventSettings?.alwaysRecord ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 

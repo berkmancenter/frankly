@@ -53,6 +53,8 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
   }
 }
 
+var _databaseEmulatorConfigured = false;
+
 Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   setURLPathStrategy();
 
@@ -63,8 +65,9 @@ Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   // Wire emulators immediately after Firebase.initializeApp, before any
   // service can touch Firebase instances. useDatabaseEmulator() throws a
   // fatal error if called after the RTDB instance is already in use.
-  if (UserDataService.usingEmulator) {
+  if (UserDataService.usingEmulator && !_databaseEmulatorConfigured) {
     FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
+    _databaseEmulatorConfigured = true;
   }
 
   if (enableSentry) {
