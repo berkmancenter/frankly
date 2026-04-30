@@ -518,9 +518,7 @@ class _EventInfoState extends State<EventInfo> {
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
                   style: TextButton.styleFrom(
-                    textStyle: context.theme.textTheme.labelSmall?.copyWith(
-                      color: context.theme.colorScheme.error,
-                    ),
+                    foregroundColor: context.theme.colorScheme.error,
                   ),
                   child: Text(context.l10n.close),
                 ),

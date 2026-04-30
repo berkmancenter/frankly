@@ -100,29 +100,32 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   }
 
   void _showRecordingAlert(BuildContext context) {
+    final liveMeetingProvider = LiveMeetingProvider.read(context);
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
-          title: Text(context.l10n.thisEventIsNowBeingRecorded),
+          title: Text(
+            dialogContext.l10n.thisEventIsNowBeingRecorded,
+            softWrap: true,
+          ),
           content: Text(
-            context.l10n.organizerBeganRecordingAt(
+            dialogContext.l10n.organizerBeganRecordingAt(
               intl.DateFormat.jm().format(DateTime.now()),
             ),
+            softWrap: true,
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => liveMeetingProvider.leaveMeeting(),
               style: TextButton.styleFrom(
-                textStyle: context.theme.textTheme.labelSmall?.copyWith(
-                  color: context.theme.colorScheme.error,
-                ),
+                foregroundColor: dialogContext.theme.colorScheme.error,
               ),
-              child: Text(context.l10n.leave),
+              child: Text(dialogContext.l10n.leave),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(context.l10n.continueButton),
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(dialogContext.l10n.continueButton),
             ),
           ],
         );
