@@ -713,13 +713,18 @@ class _EventRow extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _DownloadDataButton(
-                        event: event,
-                        participants: participants,
-                        eventInPast: eventInPast,
-                        hasRecording: hasRecording,
-                        onShowDownloadDialog: showDownloadDialog,
-                      ),
+                      ActionButton(
+      type: ActionButtonType.text,
+      icon: const Icon(Icons.file_download_outlined),
+      loadingHeight: 16,
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () => showDownloadDialog(
+        event,
+        participants,
+      ),
+      text: context.l10n.dataDownload,
+    ),
                     ],
                   ),
                 ),
@@ -728,13 +733,18 @@ class _EventRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _DownloadDataButton(
-                      event: event,
-                      participants: participants,
-                      eventInPast: eventInPast,
-                      hasRecording: hasRecording,
-                      onShowDownloadDialog: showDownloadDialog,
-                    ),
+                    ActionButton(
+      type: ActionButtonType.text,
+      icon: const Icon(Icons.file_download_outlined),
+      loadingHeight: 16,
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () => showDownloadDialog(
+        event,
+        participants,
+      ),
+      text: context.l10n.dataDownload,
+    ),
                   ],
                 ),
               ],
@@ -743,49 +753,6 @@ class _EventRow extends StatelessWidget {
         ),
         Divider(),
       ],
-    );
-  }
-}
-class _DownloadDataButton extends StatelessWidget {
-  const _DownloadDataButton({
-    super.key,
-    required this.event,
-    required this.hasRecording,
-    required this.onShowDownloadDialog,
-    required this.participants,
-    required this.eventInPast,
-  });
-
-  final Event event;
-  final Iterable<Participant> participants;
-  final Function onShowDownloadDialog;
-  final bool eventInPast;
-  final bool hasRecording;
-
-  @override
-  Widget build(BuildContext context) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
-      return const SizedBox.shrink();
-    }
-
-    final showRecording = eventInPast && hasRecording;
-    final showRegistrant = participants.isNotEmpty;
-
-    return ActionButton(
-      type: ActionButtonType.text,
-      icon: const Icon(Icons.file_download_outlined),
-      loadingHeight: 16,
-      borderSide: BorderSide(color: Theme.of(context).primaryColor),
-      textColor: Theme.of(context).primaryColor,
-      onPressed: () => onShowDownloadDialog(
-        event,
-        participants,
-        showRecording,
-        showRegistrant,
-      ),
-      text: context.l10n.dataDownload,
     );
   }
 }
