@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video.dart';
@@ -12,13 +14,18 @@ import '../data/models/agenda_item_video_model.dart';
 import '../services/video_metadata_service.dart';
 
 class AgendaItemVideoPresenter {
+  static const _durationDetectionDebounce = Duration(milliseconds: 500);
+
   final AgendaItemVideoView _view;
   final AgendaItemVideoModel _model;
   final AgendaItemVideoHelper _helper;
   final MediaHelperService _mediaHelperService;
   final CommunityProvider _communityProvider;
   final VideoMetadataService _videoMetadataService;
-  final Function(int durationSeconds)? _onVideoDurationDetected;
+  final void Function(int durationSeconds)? _onVideoDurationDetected;
+
+  Timer? _durationDetectionDebounceTimer;
+  int _durationDetectionRequestId = 0;
 
   AgendaItemVideoPresenter(
     BuildContext context,
@@ -28,7 +35,7 @@ class AgendaItemVideoPresenter {
     MediaHelperService? mediaHelperService,
     CommunityProvider? communityProvider,
     VideoMetadataService? videoMetadataService,
-    Function(int durationSeconds)? onVideoDurationDetected,
+    void Function(int durationSeconds)? onVideoDurationDetected,
   })  : _helper = agendaItemVideoHelper ?? AgendaItemVideoHelper(),
         _mediaHelperService =
             mediaHelperService ?? GetIt.instance<MediaHelperService>(),
@@ -70,20 +77,53 @@ class AgendaItemVideoPresenter {
   }
 
   void updateVideoUrl(String url) {
-    _model.agendaItemVideoData.url = url.trim();
+    final trimmedUrl = url.trim();
+    _model.agendaItemVideoData.url = trimmedUrl;
     _view.updateView();
 
     _helper.updateParent(_model);
 
-    // Automatically detect and set video duration
-    // This helps ensure the agenda item time matches the actual video length,
-    // preventing issues like breakouts starting before the video finishes.
-    _detectAndSetVideoDuration(url.trim());
+    _scheduleDurationDetection(trimmedUrl);
+  }
+
+  void _scheduleDurationDetection(String videoUrl) {
+    _durationDetectionDebounceTimer?.cancel();
+
+    if (!_shouldDetectDurationForUrl(videoUrl)) {
+      return;
+    }
+
+    final requestId = ++_durationDetectionRequestId;
+    _durationDetectionDebounceTimer = Timer(_durationDetectionDebounce, () {
+      unawaited(_detectAndSetVideoDuration(videoUrl, requestId));
+    });
+  }
+
+  bool _shouldDetectDurationForUrl(String videoUrl) {
+    if (videoUrl.isEmpty ||
+        _model.agendaItemVideoData.type != AgendaItemVideoType.url) {
+      return false;
+    }
+
+    // Never run metadata detection for provider pages that are not direct media files.
+    if (_mediaHelperService.getYoutubeVideoId(videoUrl) != null ||
+        _mediaHelperService.getVimeoVideoId(videoUrl) != null) {
+      return false;
+    }
+
+    final path = Uri.tryParse(videoUrl)?.path.toLowerCase() ??
+        videoUrl.toLowerCase();
+    return MediaHelperService.allowedVideoFormats
+        .any((format) => path.endsWith('.$format'));
   }
 
   /// Detects video duration and calls the callback if duration is found
-  Future<void> _detectAndSetVideoDuration(String videoUrl) async {
-    if (videoUrl.isEmpty) {
+  Future<void> _detectAndSetVideoDuration(String videoUrl, int requestId) async {
+    if (!_shouldDetectDurationForUrl(videoUrl)) {
+      return;
+    }
+
+    if (_model.agendaItemVideoData.url != videoUrl || requestId != _durationDetectionRequestId) {
       return;
     }
 
@@ -94,6 +134,11 @@ class AgendaItemVideoPresenter {
 
       final durationSeconds =
           await _videoMetadataService.getVideoDurationInSeconds(videoUrl);
+
+      // Ignore stale async completions from old requests/URLs.
+      if (_model.agendaItemVideoData.url != videoUrl || requestId != _durationDetectionRequestId) {
+        return;
+      }
 
       if (durationSeconds != null && durationSeconds > 0) {
         loggingService.log(
@@ -107,6 +152,11 @@ class AgendaItemVideoPresenter {
       );
       // Silently fail - user can manually set the time if needed
     }
+  }
+
+  void dispose() {
+    _durationDetectionDebounceTimer?.cancel();
+    _durationDetectionRequestId++;
   }
 
   String getVideoUrl() {

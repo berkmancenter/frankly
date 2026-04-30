@@ -30,8 +30,13 @@ class MediaItemSection extends StatelessWidget {
     );
 
     if (mediaUrl != null) {
-      final isVideo = MediaHelperService.allowedVideoFormats
-          .any((ext) => mediaUrl.endsWith(ext));
+      final normalizedPath =
+          (Uri.tryParse(mediaUrl)?.path ?? mediaUrl).toLowerCase();
+      final isVideo =
+          MediaHelperService.allowedVideoFormats.any(
+                (ext) => normalizedPath.endsWith('.$ext'),
+              ) ||
+          normalizedPath.contains('/video/upload/');
       final mediaItem = MediaItem(
         url: mediaUrl,
         type: isVideo ? MediaType.video : MediaType.image,

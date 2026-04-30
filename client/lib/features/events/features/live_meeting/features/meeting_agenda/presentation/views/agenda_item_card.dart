@@ -140,8 +140,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     final agendaItemType = _model.agendaItem.type;
     final title = _presenter.getTitle();
     final formattedTime =
-        Duration(seconds: _model.agendaItem.timeInSeconds ?? 0)
-            .getFormattedTime(showHours: false);
+      Duration(seconds: _model.timeInSeconds).getFormattedTime(showHours: false);
     final isMobile = responsiveLayoutService.isMobile(context);
 
     return Padding(
@@ -212,8 +211,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
                 _buildDropDownButton(),
                 TimeInputForm(
                   duration: Duration(
-                    seconds: _model.agendaItem.timeInSeconds ??
-                        AgendaItem.kDefaultTimeInSeconds,
+                    seconds: _model.timeInSeconds,
                   ),
                   onUpdate: (duration) => _presenter.updateTime(duration),
                   isClockShowing: true,

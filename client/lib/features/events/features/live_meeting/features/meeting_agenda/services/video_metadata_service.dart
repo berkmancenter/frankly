@@ -9,11 +9,11 @@ class VideoMetadataService {
       return null;
     }
 
+    VideoPlayerController? controller;
     try {
-      final controller = VideoPlayerController.network(videoUrl);
+      controller = VideoPlayerController.network(videoUrl);
       await controller.initialize();
       final duration = controller.value.duration;
-      await controller.dispose();
 
       if (duration.inSeconds > 0) {
         return duration.inSeconds;
@@ -22,6 +22,10 @@ class VideoMetadataService {
       // If we can't fetch duration (e.g., video not accessible, cors issues),
       // just return null and let the user set it manually
       return null;
+    } finally {
+      if (controller != null) {
+        await controller.dispose();
+      }
     }
 
     return null;
