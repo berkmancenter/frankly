@@ -149,6 +149,9 @@ class LiveMeetingProvider with ChangeNotifier {
     required this.showToast,
   });
 
+  /// Suppress the post-event email for meetings shorter than this many minutes
+  /// past scheduled start. Prevents spam from test joins or accidental entries.
+  /// Recording stop still fires regardless of this threshold.
   static const int _postEventEmailThresholdInMinutes = 5;
 
   MeetingUiState get activeUiState {
