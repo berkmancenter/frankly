@@ -1,12 +1,16 @@
 @JS()
 library agora_api;
 
+import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:js/js.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/utils/utils.dart';
+import 'package:data_models/utils/utils_web.dart';
 import 'package:node_interop/node.dart';
 import 'package:node_http/node_http.dart' as http;
 import 'dart:convert' as convert;
+import '../../utils/infra/firestore_utils.dart';
 
 AgoraTokenModule get agoraModule =>
     _agoraModule ??= require('agora-token') as AgoraTokenModule;
@@ -39,25 +43,146 @@ class AgoraUtils {
     );
   }
 
-  Future<void> recordRoom({required String roomId}) async {
-    // Get a resource ID
-    final resourceId = await _acquireResourceId(roomId: roomId);
-    print('Acquired resource ID: $resourceId');
+  Future<void> recordRoom({
+    required String roomId,
+    required String sessionId,
+    required String eventId,
+    required String communityId,
+    required RecordingRoomType roomType,
+    String? breakoutSessionId,
+    String? chatPath,
+    List<String> participantIds = const [],
+  }) async {
+    final sessionRef =
+        firestore.collection(RecordingSession.kCollection).document(sessionId);
+    final gcsPrefix =
+        '$eventId/${breakoutSessionId ?? 'main'}/$roomId/$sessionId';
+
+    // Write session document before any Agora calls so callers can recover on failure.
+    await sessionRef.setData(DocumentData.fromMap(
+      firestoreUtils.toFirestoreJson(
+        RecordingSession(
+          sessionId: sessionId,
+          communityId: communityId,
+          eventId: eventId,
+          roomId: roomId,
+          roomType: roomType,
+          status: RecordingSessionStatus.starting,
+          gcsPrefix: gcsPrefix,
+          chatPath: chatPath,
+          participantIds: participantIds,
+          breakoutSessionId: breakoutSessionId,
+        ).toJson(),
+      ),
+    ));
+
+    print(
+        'recording_start: sessionId=$sessionId roomId=$roomId eventId=$eventId roomType=${roomType.name} breakoutSessionId=$breakoutSessionId');
+
+    String resourceId;
+    try {
+      resourceId = await _acquireResourceId(roomId: roomId);
+      print(
+          'recording_acquired: sessionId=$sessionId roomId=$roomId resourceId=$resourceId');
+    } catch (e) {
+      print('Agora acquire failed for room $roomId: $e');
+      await sessionRef.updateData(UpdateData.fromMap(
+        firestoreUtils.toFirestoreJson({
+          RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
+          'errorMessage': e.toString(),
+        }),
+      ));
+      return;
+    }
+
+    await sessionRef
+        .updateData(UpdateData.fromMap({'agoraResourceId': resourceId}));
 
     try {
-      await _startRecording(roomId: roomId, resourceId: resourceId);
+      final prefixSegments = [
+        eventId,
+        breakoutSessionId ?? 'main',
+        roomId,
+        sessionId,
+      ];
+      final sid = await _startRecording(
+        roomId: roomId,
+        resourceId: resourceId,
+        fileNamePrefixSegments: prefixSegments,
+      );
+      print(
+          'recording_started: sessionId=$sessionId roomId=$roomId resourceId=$resourceId sid=$sid gcsPrefix=$gcsPrefix');
+      await sessionRef.updateData(UpdateData.fromMap({
+        'agoraSid': sid,
+        RecordingSession.kFieldStatus: RecordingSessionStatus.recording.name,
+      }));
     } catch (e) {
-      print("Error in starting recording for room $roomId");
-      print(e);
+      print('Agora start failed for room $roomId: $e');
+      await sessionRef.updateData(UpdateData.fromMap(
+        firestoreUtils.toFirestoreJson({
+          RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
+          'errorMessage': e.toString(),
+        }),
+      ));
     }
+  }
+
+  Future<void> stopRoom({required String sessionId}) async {
+    final sessionRef =
+        firestore.collection(RecordingSession.kCollection).document(sessionId);
+
+    final snapshot = await sessionRef.get();
+    if (!snapshot.exists) {
+      print('Session $sessionId not found, skipping stop');
+      return;
+    }
+
+    final session = RecordingSession.fromJson(
+      firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
+    );
+
+    if (session.status == RecordingSessionStatus.stopped ||
+        session.status == RecordingSessionStatus.failed) {
+      print('Session $sessionId already in terminal state, skipping stop');
+      return;
+    }
+
+    if (session.agoraResourceId != null && session.agoraSid != null) {
+      try {
+        final result = await http.post(
+          Uri.parse(
+            'https://api.agora.io/v1/apps/$_agoraAppId/cloud_recording'
+            '/resourceid/${session.agoraResourceId}'
+            '/sid/${session.agoraSid}/mode/mix/stop',
+          ),
+          headers: _getAuthHeaders(),
+          body: convert.json.encode({
+            'cname': session.roomId,
+            'uid': _recordingUid.toString(),
+            'clientRequest': {},
+          }),
+        );
+        print('Stop response (${result.statusCode}): ${result.body}');
+        if (result.statusCode < 200 || result.statusCode > 299) {
+          print('Agora stop returned non-2xx for session $sessionId');
+        }
+      } catch (e) {
+        print('Error calling Agora stop for session $sessionId: $e');
+      }
+    }
+
+    await sessionRef.updateData(UpdateData.fromMap(
+      firestoreUtils.toFirestoreJson({
+        RecordingSession.kFieldStatus: RecordingSessionStatus.stopped.name,
+        'stoppedAt': serverTimestampValue,
+      }),
+    ));
   }
 
   Map<String, String> _getAuthHeaders() {
     final plainCredential = '$_agoraRestKey:$_agoraRestSecret';
     final authorizationField =
         'Basic ${convert.base64.encode(convert.utf8.encode(plainCredential))}';
-
-    print('Authorization field: $authorizationField');
 
     return {
       'Authorization': authorizationField,
@@ -67,12 +192,10 @@ class AgoraUtils {
 
   Future<String> _acquireResourceId({required String roomId}) async {
     final body = convert.json.encode({
-      "cname": roomId,
-      "uid": _recordingUid.toString(),
-      "clientRequest": {},
+      'cname': roomId,
+      'uid': _recordingUid.toString(),
+      'clientRequest': {},
     });
-
-    print("Sending with body: $body");
 
     final result = await http.post(
       Uri.parse(
@@ -87,46 +210,46 @@ class AgoraUtils {
       throw HttpsError(
           HttpsError.internal, 'Acquire failed: ${result.body}', null);
     }
-    return convert.jsonDecode(result.body)["resourceId"];
+    return convert.jsonDecode(result.body)['resourceId'] as String;
   }
 
   Future<String> _startRecording({
     required String roomId,
     required String resourceId,
+    required List<String> fileNamePrefixSegments,
   }) async {
     final token = createToken(uid: _recordingUid, roomId: roomId);
     final request = {
-      "cname": roomId,
-      "uid": _recordingUid.toString(),
-      "clientRequest": {
-        "token": token,
-        "recordingConfig": {
-          "transcodingConfig": {
-            "height": 360,
-            "width": 640,
-            "bitrate": 500,
-            "fps": 15,
-            "mixedVideoLayout": 1,
-            "backgroundColor": "#000000",
+      'cname': roomId,
+      'uid': _recordingUid.toString(),
+      'clientRequest': {
+        'token': token,
+        'recordingConfig': {
+          'transcodingConfig': {
+            'height': 360,
+            'width': 640,
+            'bitrate': 500,
+            'fps': 15,
+            'mixedVideoLayout': 1,
+            'backgroundColor': '#000000',
           },
         },
-        "recordingFileConfig": {
-          "avFileType": ["hls", "mp4"],
+        'recordingFileConfig': {
+          'avFileType': ['hls', 'mp4'],
         },
-        "storageConfig": {
+        'storageConfig': {
           // Google Cloud
-          "vendor": 6,
-          // Has no effect in Google cloud but it is required
-          "region": 0,
-          "bucket": _agoraStorageBucketName,
-          "accessKey": _agoraStorageAccessKey,
-          "secretKey": _agoraStorageSecretKey,
-          "fileNamePrefix": [roomId],
+          'vendor': 6,
+          // Has no effect in Google cloud but is required
+          'region': 0,
+          'bucket': _agoraStorageBucketName,
+          'accessKey': _agoraStorageAccessKey,
+          'secretKey': _agoraStorageSecretKey,
+          'fileNamePrefix': fileNamePrefixSegments,
         },
       },
     };
 
-    print('Sending with request: $request');
     final result = await http.post(
       Uri.parse(
         'https://api.agora.io/v1/apps/$_agoraAppId/cloud_recording/resourceid/$resourceId/mode/mix/start',
@@ -135,33 +258,14 @@ class AgoraUtils {
       body: convert.json.encode(request),
     );
 
-    print('Result body: ${result.body}');
+    print('Start response (${result.statusCode}): ${result.body}');
 
     if (result.statusCode < 200 || result.statusCode > 299) {
-      print('Error result: ${result.statusCode}');
-      throw HttpsError(HttpsError.internal, 'Error starting recording', null);
+      throw HttpsError(
+          HttpsError.internal, 'Start failed: ${result.body}', null);
     }
 
-    await _queryRecordingState(
-      resourceId: resourceId,
-      sid: convert.jsonDecode(result.body)['sid'],
-    );
-
-    return result.body;
-  }
-
-  Future<void> _queryRecordingState({
-    required String sid,
-    required String resourceId,
-  }) async {
-    final result = await http.get(
-      Uri.parse(
-        'https://api.agora.io/v1/apps/$_agoraAppId/cloud_recording/resourceid/$resourceId/sid/$sid/mode/mix/query',
-      ),
-      headers: _getAuthHeaders(),
-    );
-
-    print('Recording state: ${result.body}');
+    return convert.jsonDecode(result.body)['sid'] as String;
   }
 
   Future<void> kickParticipant({
@@ -173,11 +277,11 @@ class AgoraUtils {
       headers: _getAuthHeaders(),
       body: convert.json.encode(
         {
-          "appid": _agoraAppId,
-          "cname": roomId,
-          "uid": uidToInt(userId),
-          "time": 1440,
-          "privileges": ["join_channel"],
+          'appid': _agoraAppId,
+          'cname': roomId,
+          'uid': uidToInt(userId),
+          'time': 1440,
+          'privileges': ['join_channel'],
         },
       ),
     );
