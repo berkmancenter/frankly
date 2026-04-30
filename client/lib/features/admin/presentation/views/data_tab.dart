@@ -545,13 +545,23 @@ class _DataTabState extends State<DataTab> {
   }
 }
 
-class _EventRow extends StatelessWidget {
-  const _EventRow({super.key, required this.event, required this.index, required this.isMobile,});
+class _EventRow extends StatefulWidget {
+  const _EventRow({
+    super.key,
+    required this.event,
+    required this.index,
+    required this.isMobile,
+  });
 
   final Event event;
   final int index;
   final bool isMobile;
 
+  @override
+  State<_EventRow> createState() => _EventRowState();
+}
+
+class _EventRowState extends State<_EventRow> {
   Future<Iterable<Participant>> _getEventParticipants(Event event) async {
     final participantsWrapper = firestoreEventService.eventParticipantsStream(
       communityId: event.communityId,
@@ -569,18 +579,18 @@ class _EventRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeFormat = DateFormat('MMM d yyyy, h:mma');
 
-    final timezone = getTimezoneAbbreviation(event.scheduledTime!);
-    final time = timeFormat.format(event.scheduledTime ?? clockService.now());
+    final timezone = getTimezoneAbbreviation(widget.event.scheduledTime!);
+    final time = timeFormat.format(widget.event.scheduledTime ?? clockService.now());
 
     final l10n = context.l10n;
     final labelLargeStyle = context.theme.textTheme.labelLarge;
     final titleLargeStyle = context.theme.textTheme.titleLarge;
     final bodyMediumStyle = context.theme.textTheme.bodyMedium;
 
-    final participants = await _getEventParticipants(event);
+    final participants = await _getEventParticipants(widget.event);
 
-    final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
-    final hasRecording = event.eventSettings?.alwaysRecord! ?? false;
+    final eventInPast = widget.event.scheduledTime!.isBefore(DateTime.now());
+    final hasRecording = widget.event.eventSettings?.alwaysRecord! ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 
@@ -605,12 +615,12 @@ class _EventRow extends StatelessWidget {
         Row(
           children: [
             Icon(
-              event.isPublic == true
+              widget.event.isPublic == true
                   ? Icons.language_outlined
                   : Icons.lock_outline,
             ),
             Text(
-              event.isPublic == true ? 'Public' : 'Private',
+              widget.event.isPublic == true ? 'Public' : 'Private',
               style: labelLargeStyle,
             ),
           ],
@@ -619,17 +629,17 @@ class _EventRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(
-              event.isLiveStream
+              widget.event.isLiveStream
                   ? Icons.live_tv_outlined
-                  : event.isHosted
+                  : widget.event.isHosted
                       ? Icons.chair_outlined
                       : Icons.deck_outlined,
             ),
             SizedBox(width: 4),
             Text(
-              event.isLiveStream
+              widget.event.isLiveStream
                   ? 'Livestream'
-                  : event.isHosted
+                  : widget.event.isHosted
                       ? 'Hosted'
                       : 'Hostless',
               style: labelLargeStyle,
@@ -651,22 +661,22 @@ class _EventRow extends StatelessWidget {
               CommunityPageRoutes(
                 communityDisplayId:
                     CommunityProvider.readOrNull(context)?.displayId ??
-                        event.communityId,
+                        widget.event.communityId,
               ).eventPage(
-                templateId: event.templateId,
-                eventId: event.id,
+                templateId: widget.event.templateId,
+                eventId: widget.event.id,
               ),
             );
           },
           child: Flex(
-            direction: isMobile ? Axis.vertical : Axis.horizontal,
+            direction: widget.isMobile ? Axis.vertical : Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   ProxiedImage(
-                    event.image,
+                    widget.event.image,
                     width: 80,
                     height: 80,
                   ),
@@ -676,7 +686,7 @@ class _EventRow extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        event.title ?? 'NO TITLE',
+                        widget.event.title ?? 'NO TITLE',
                         style: titleLargeStyle,
                       ),
                       SizedBox(
@@ -689,7 +699,7 @@ class _EventRow extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      if (!isMobile) ...[
+                      if (!widget.isMobile) ...[
                         ConstrainedBox(
                           constraints:
                               BoxConstraints(maxHeight: 100, maxWidth: 400),
@@ -700,7 +710,7 @@ class _EventRow extends StatelessWidget {
                   ),
                 ],
               ),
-              if (isMobile) ...[
+              if (widget.isMobile) ...[
                 SizedBox(
                   height: 10,
                 ),
