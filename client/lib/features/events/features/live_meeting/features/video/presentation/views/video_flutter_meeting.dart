@@ -54,7 +54,7 @@ class VideoFlutterMeeting extends StatefulHookWidget {
   }) : super(key: key);
 
   @override
-  _VideoFlutterMeetingState createState() => _VideoFlutterMeetingState();
+  State<VideoFlutterMeeting> createState() => _VideoFlutterMeetingState();
 }
 
 class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
@@ -86,6 +86,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     _onConferenceRoomException =
         _conferenceRoomRead.onException.listen((err) async {
       loggingService.log('showing alert in listener');
+      if (!mounted) return;
       await showAlert(
         context,
         err is PlatformException ? err.details : err.toString(),
@@ -147,7 +148,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                         .eventSettings
                         ?.alwaysRecord ==
                     true)
-                  _buildRecordingBadge(context),
+                  _RecordingBadge(
+                    liveMeetingProvider: liveMeetingProvider,
+                  ),
               ],
             ),
           ),
@@ -155,48 +158,27 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
       ),
     );
   }
+}
 
-  Widget _buildRecordingBadge(BuildContext context) {
+class _RecordingBadge extends StatelessWidget {
+  const _RecordingBadge({
+    required this.liveMeetingProvider,
+  });
+
+  final LiveMeetingProvider liveMeetingProvider;
+
+  @override
+  Widget build(BuildContext context) {
     final meeting = liveMeetingProvider.isInBreakout
         ? liveMeetingProvider.breakoutRoomLiveMeeting
         : liveMeetingProvider.liveMeeting;
     final sessionId = meeting?.recordingSessionId;
 
-    Widget badge() {
-      return Container(
-        alignment: Alignment.topRight,
-        child: Container(
-          color: context.theme.colorScheme.scrim.withScrimOpacity,
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: _kRecordingPulseSize,
-                width: _kRecordingPulseSize,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.theme.colorScheme.errorContainer,
-                ),
-              ),
-              SizedBox(width: 8),
-              Text(
-                'Recording',
-                style: TextStyle(
-                  color: context.theme.colorScheme.onPrimary,
-                ),
-              ),
-              SizedBox(width: 26),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // No session ID yet — show the badge unconditionally
+    // No session ID yet - show the badge unconditionally
     // (matches the original alwaysRecord-gated behavior).
-    if (sessionId == null) return badge();
+    if (sessionId == null) {
+      return const _RecordingBadgePill();
+    }
 
     return StreamBuilder<RecordingSession?>(
       stream: firestoreLiveMeetingService.recordingSessionStream(sessionId),
@@ -206,8 +188,45 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
         if (status == RecordingSessionStatus.failed) {
           return const SizedBox.shrink();
         }
-        return badge();
+        return const _RecordingBadgePill();
       },
+    );
+  }
+}
+
+class _RecordingBadgePill extends StatelessWidget {
+  const _RecordingBadgePill();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: Container(
+        color: context.theme.colorScheme.scrim.withScrimOpacity,
+        height: 32,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: _kRecordingPulseSize,
+              width: _kRecordingPulseSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.theme.colorScheme.errorContainer,
+              ),
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Recording',
+              style: TextStyle(
+                color: context.theme.colorScheme.onPrimary,
+              ),
+            ),
+            SizedBox(width: 26),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -422,7 +441,7 @@ class GetHelpButton extends StatefulWidget {
     final needHelp =
         await NeedHelpDialog(showContactAdmin: showContactAdmin).show();
 
-    if (!needHelp) return;
+    if (!needHelp || !context.mounted) return;
 
     await alertOnError(
       context,
@@ -438,6 +457,8 @@ class GetHelpButton extends StatefulWidget {
       ),
     );
 
+    if (!context.mounted) return;
+
     showRegularToast(
       context,
       'We’ve notified an administrator - please be patient, help is on the way!',
@@ -446,7 +467,7 @@ class GetHelpButton extends StatefulWidget {
   }
 
   @override
-  _GetHelpButtonState createState() => _GetHelpButtonState();
+  State<GetHelpButton> createState() => _GetHelpButtonState();
 }
 
 class _GetHelpButtonState extends State<GetHelpButton> {

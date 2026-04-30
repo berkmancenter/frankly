@@ -14,9 +14,9 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/iterables.dart';
-import 'package:uuid/uuid.dart';
 
 /// A utility class for handling assignments to breakouts.
 class AssignToBreakouts {
@@ -282,7 +282,6 @@ class AssignToBreakouts {
     profile('total matches: ${prematches.length + matches.length}');
 
     final breakoutMatchIdsToRecord = event.breakoutMatchIdsToRecord.toSet();
-    final alwaysRecordSmart = event.eventSettings?.alwaysRecord ?? false;
     final prematchEntries = prematches.entries.toList();
 
     int i = 0;
@@ -296,7 +295,7 @@ class AssignToBreakouts {
           participantIds: prematchEntries[i].value.map((p) => p.id).toList(),
           originalParticipantIdsAssignment:
               prematchEntries[i].value.map((p) => p.id).toList(),
-          record: alwaysRecordSmart ||
+          record: (event.eventSettings?.alwaysRecord ?? false) ||
               breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
         ),
       for (var j = 0; j < matches.length; j++)
@@ -307,7 +306,7 @@ class AssignToBreakouts {
           orderingPriority: j + i,
           participantIds: matches[j],
           originalParticipantIdsAssignment: matches[j],
-          record: alwaysRecordSmart,
+          record: event.eventSettings?.alwaysRecord ?? false,
         ),
     ];
   }
@@ -690,14 +689,17 @@ class AssignToBreakouts {
           .map((r) => r.roomId)
           .toList();
       print(
-          'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds');
+          'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',);
       for (final room in breakoutRooms) {
         if (room.roomId == breakoutsWaitingRoomId) continue;
-        final newSessionId = const Uuid().v4();
+        final newSessionId = firestore
+            .collection(RecordingSession.kCollection)
+            .document()
+            .documentID;
         final roomPath = '${breakoutRoomsCollection.path}/${room.roomId}';
         await firestore.document(roomPath).updateData(
               UpdateData.fromMap(
-                  {BreakoutRoom.kFieldRecordingSessionId: newSessionId}),
+                  {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
             );
         try {
           await agoraUtils.recordRoom(
@@ -712,7 +714,7 @@ class AssignToBreakouts {
           );
         } catch (e) {
           print(
-              'Error starting recording for breakout room ${room.roomId}: $e');
+              'Error starting recording for breakout room ${room.roomId}: $e',);
         }
       }
     }

@@ -11,6 +11,7 @@ import 'package:client/features/events/features/event_page/presentation/widgets/
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/recording/recording_session.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

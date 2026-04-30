@@ -1,5 +1,4 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
-import 'package:uuid/uuid.dart';
 import 'agora_api.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
@@ -8,8 +7,6 @@ import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/utils/utils.dart';
-
-const _uuid = Uuid();
 
 class PendingRecording {
   final String roomId;
@@ -71,7 +68,10 @@ class LiveMeetingUtils {
     final shouldRecord = _shouldRecord(event) || liveMeeting.record;
     String? newSessionId;
     if (shouldRecord && liveMeeting.recordingSessionId == null) {
-      newSessionId = _uuid.v4();
+      newSessionId = firestore
+          .collection(RecordingSession.kCollection)
+          .document()
+          .documentID;
       fieldsToUpdate.add(LiveMeeting.kFieldRecordingSessionId);
       liveMeeting = liveMeeting.copyWith(recordingSessionId: newSessionId);
     }
@@ -192,11 +192,14 @@ class LiveMeetingUtils {
     required String meetingId,
     required List<String> participantIds,
   }) async {
-    final newSessionId = _uuid.v4();
+    final newSessionId = firestore
+        .collection(RecordingSession.kCollection)
+        .document()
+        .documentID;
 
     await firestore.document(breakoutRoomPath).updateData(
           UpdateData.fromMap(
-              {BreakoutRoom.kFieldRecordingSessionId: newSessionId}),
+              {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
         );
 
     final chatPath = '$breakoutRoomPath/chats/community_chat/messages';
