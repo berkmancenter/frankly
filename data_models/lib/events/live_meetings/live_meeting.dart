@@ -27,6 +27,7 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
   static const String kFieldMeetingId = 'meetingId';
   static const String kFieldIsMeetingCardMinimized = 'isMeetingCardMinimized';
   static const String kFieldRecordingSessionId = 'recordingSessionId';
+  static const String kFieldMeetingEndedAt = 'meetingEndedAt';
 
   factory LiveMeeting({
     // TODO(null-safety): There are places that we set various fields on the live meeting possibly
@@ -45,6 +46,8 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
     @Default(false) bool isMeetingCardMinimized,
     @Default([]) List<String> pinnedUserIds,
     String? recordingSessionId,
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+    DateTime? meetingEndedAt,
   }) = _LiveMeeting;
 
   factory LiveMeeting.fromJson(Map<String, dynamic> json) =>

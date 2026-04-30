@@ -934,6 +934,18 @@ Map<String, dynamic> _$$_EventEndedRequestToJson(
       'eventPath': instance.eventPath,
     };
 
+_$_EndMeetingForAllRequest _$$_EndMeetingForAllRequestFromJson(
+        Map<String, dynamic> json) =>
+    _$_EndMeetingForAllRequest(
+      eventPath: json['eventPath'] as String,
+    );
+
+Map<String, dynamic> _$$_EndMeetingForAllRequestToJson(
+        _$_EndMeetingForAllRequest instance) =>
+    <String, dynamic>{
+      'eventPath': instance.eventPath,
+    };
+
 _$_GetCommunityDonationsEnabledRequest
     _$$_GetCommunityDonationsEnabledRequestFromJson(
             Map<String, dynamic> json) =>

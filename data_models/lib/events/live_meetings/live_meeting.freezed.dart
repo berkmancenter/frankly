@@ -38,6 +38,8 @@ mixin _$LiveMeeting {
   bool get isMeetingCardMinimized => throw _privateConstructorUsedError;
   List<String> get pinnedUserIds => throw _privateConstructorUsedError;
   String? get recordingSessionId => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  DateTime? get meetingEndedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,7 +61,9 @@ abstract class $LiveMeetingCopyWith<$Res> {
       bool record,
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      DateTime? meetingEndedAt});
 
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
 }
@@ -85,6 +89,7 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? meetingEndedAt = freezed,
   }) {
     return _then(_value.copyWith(
       meetingId: freezed == meetingId
@@ -119,6 +124,10 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      meetingEndedAt: freezed == meetingEndedAt
+          ? _value.meetingEndedAt
+          : meetingEndedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -152,7 +161,9 @@ abstract class _$$_LiveMeetingCopyWith<$Res>
       bool record,
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      DateTime? meetingEndedAt});
 
   @override
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
@@ -177,6 +188,7 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? meetingEndedAt = freezed,
   }) {
     return _then(_$_LiveMeeting(
       meetingId: freezed == meetingId
@@ -211,6 +223,10 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      meetingEndedAt: freezed == meetingEndedAt
+          ? _value.meetingEndedAt
+          : meetingEndedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -226,7 +242,9 @@ class _$_LiveMeeting implements _LiveMeeting {
       this.record = false,
       this.isMeetingCardMinimized = false,
       this.pinnedUserIds = const [],
-      this.recordingSessionId});
+      this.recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      this.meetingEndedAt});
 
   factory _$_LiveMeeting.fromJson(Map<String, dynamic> json) =>
       _$$_LiveMeetingFromJson(json);
@@ -260,10 +278,13 @@ class _$_LiveMeeting implements _LiveMeeting {
   final List<String> pinnedUserIds;
   @override
   final String? recordingSessionId;
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  final DateTime? meetingEndedAt;
 
   @override
   String toString() {
-    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId)';
+    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId, meetingEndedAt: $meetingEndedAt)';
   }
 
   @override
@@ -284,7 +305,9 @@ class _$_LiveMeeting implements _LiveMeeting {
             const DeepCollectionEquality()
                 .equals(other.pinnedUserIds, pinnedUserIds) &&
             (identical(other.recordingSessionId, recordingSessionId) ||
-                other.recordingSessionId == recordingSessionId));
+                other.recordingSessionId == recordingSessionId) &&
+            (identical(other.meetingEndedAt, meetingEndedAt) ||
+                other.meetingEndedAt == meetingEndedAt));
   }
 
   @JsonKey(ignore: true)
@@ -298,7 +321,8 @@ class _$_LiveMeeting implements _LiveMeeting {
       record,
       isMeetingCardMinimized,
       const DeepCollectionEquality().hash(pinnedUserIds),
-      recordingSessionId);
+      recordingSessionId,
+      meetingEndedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -323,7 +347,9 @@ abstract class _LiveMeeting implements LiveMeeting {
       final bool record,
       final bool isMeetingCardMinimized,
       final List<String> pinnedUserIds,
-      final String? recordingSessionId}) = _$_LiveMeeting;
+      final String? recordingSessionId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      final DateTime? meetingEndedAt}) = _$_LiveMeeting;
 
   factory _LiveMeeting.fromJson(Map<String, dynamic> json) =
       _$_LiveMeeting.fromJson;
@@ -351,6 +377,9 @@ abstract class _LiveMeeting implements LiveMeeting {
   List<String> get pinnedUserIds;
   @override
   String? get recordingSessionId;
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  DateTime? get meetingEndedAt;
   @override
   @JsonKey(ignore: true)
   _$$_LiveMeetingCopyWith<_$_LiveMeeting> get copyWith =>

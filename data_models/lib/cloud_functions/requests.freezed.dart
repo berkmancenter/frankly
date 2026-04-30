@@ -10401,6 +10401,149 @@ abstract class _EventEndedRequest implements EventEndedRequest {
       throw _privateConstructorUsedError;
 }
 
+EndMeetingForAllRequest _$EndMeetingForAllRequestFromJson(
+    Map<String, dynamic> json) {
+  return _EndMeetingForAllRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$EndMeetingForAllRequest {
+  String get eventPath => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EndMeetingForAllRequestCopyWith<EndMeetingForAllRequest> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EndMeetingForAllRequestCopyWith<$Res> {
+  factory $EndMeetingForAllRequestCopyWith(EndMeetingForAllRequest value,
+          $Res Function(EndMeetingForAllRequest) then) =
+      _$EndMeetingForAllRequestCopyWithImpl<$Res, EndMeetingForAllRequest>;
+  @useResult
+  $Res call({String eventPath});
+}
+
+/// @nodoc
+class _$EndMeetingForAllRequestCopyWithImpl<$Res,
+        $Val extends EndMeetingForAllRequest>
+    implements $EndMeetingForAllRequestCopyWith<$Res> {
+  _$EndMeetingForAllRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+  }) {
+    return _then(_value.copyWith(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_EndMeetingForAllRequestCopyWith<$Res>
+    implements $EndMeetingForAllRequestCopyWith<$Res> {
+  factory _$$_EndMeetingForAllRequestCopyWith(_$_EndMeetingForAllRequest value,
+          $Res Function(_$_EndMeetingForAllRequest) then) =
+      __$$_EndMeetingForAllRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String eventPath});
+}
+
+/// @nodoc
+class __$$_EndMeetingForAllRequestCopyWithImpl<$Res>
+    extends _$EndMeetingForAllRequestCopyWithImpl<$Res,
+        _$_EndMeetingForAllRequest>
+    implements _$$_EndMeetingForAllRequestCopyWith<$Res> {
+  __$$_EndMeetingForAllRequestCopyWithImpl(_$_EndMeetingForAllRequest _value,
+      $Res Function(_$_EndMeetingForAllRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+  }) {
+    return _then(_$_EndMeetingForAllRequest(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_EndMeetingForAllRequest implements _EndMeetingForAllRequest {
+  _$_EndMeetingForAllRequest({required this.eventPath});
+
+  factory _$_EndMeetingForAllRequest.fromJson(Map<String, dynamic> json) =>
+      _$$_EndMeetingForAllRequestFromJson(json);
+
+  @override
+  final String eventPath;
+
+  @override
+  String toString() {
+    return 'EndMeetingForAllRequest(eventPath: $eventPath)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_EndMeetingForAllRequest &&
+            (identical(other.eventPath, eventPath) ||
+                other.eventPath == eventPath));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, eventPath);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_EndMeetingForAllRequestCopyWith<_$_EndMeetingForAllRequest>
+      get copyWith =>
+          __$$_EndMeetingForAllRequestCopyWithImpl<_$_EndMeetingForAllRequest>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_EndMeetingForAllRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _EndMeetingForAllRequest implements EndMeetingForAllRequest {
+  factory _EndMeetingForAllRequest({required final String eventPath}) =
+      _$_EndMeetingForAllRequest;
+
+  factory _EndMeetingForAllRequest.fromJson(Map<String, dynamic> json) =
+      _$_EndMeetingForAllRequest.fromJson;
+
+  @override
+  String get eventPath;
+  @override
+  @JsonKey(ignore: true)
+  _$$_EndMeetingForAllRequestCopyWith<_$_EndMeetingForAllRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 GetCommunityDonationsEnabledRequest
     _$GetCommunityDonationsEnabledRequestFromJson(Map<String, dynamic> json) {
   return _GetCommunityDonationsEnabledRequest.fromJson(json);
