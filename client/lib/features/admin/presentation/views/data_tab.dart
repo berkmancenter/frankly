@@ -114,7 +114,7 @@ class _DataTabState extends State<DataTab> {
   }
 
   Future<void> downloadChatData(Event event) async {
-    // Get CommunityProvider from cotext before async operations.
+    // Get CommunityProvider from context before async operations.
     final communityProvider = CommunityProvider.read(context);
     final request =
         GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
@@ -547,7 +547,6 @@ class _DataTabState extends State<DataTab> {
 
 class _EventRow extends StatefulWidget {
   const _EventRow({
-    super.key,
     required this.event,
     required this.index,
     required this.isMobile,
@@ -562,6 +561,14 @@ class _EventRow extends StatefulWidget {
 }
 
 class _EventRowState extends State<_EventRow> {
+  late Future<Iterable<Participant>> _participantsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _participantsFuture = _getEventParticipants(widget.event);
+  }
+
   Future<Iterable<Participant>> _getEventParticipants(Event event) async {
     final participantsWrapper = firestoreEventService.eventParticipantsStream(
       communityId: event.communityId,
@@ -577,22 +584,76 @@ class _EventRowState extends State<_EventRow> {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat('MMM d yyyy, h:mma');
+    return FutureBuilder<Iterable<Participant>>(
+      future: _participantsFuture,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return EventRowLoading(
+            event: widget.event,
+            isMobile: widget.isMobile,
+          );
+        }
 
-    final timezone = getTimezoneAbbreviation(widget.event.scheduledTime!);
-    final time = timeFormat.format(widget.event.scheduledTime ?? clockService.now());
+        return EventRowContent(
+          event: widget.event,
+          participants: snapshot.data!,
+          isMobile: widget.isMobile,
+          onDownload: (_, __) => print('hi'),
+        );
+      },
+    );
+  }
+}
 
+// Loading state widget for event row
+class EventRowLoading extends StatelessWidget {
+  const EventRowLoading({
+    super.key,
+    required this.event,
+    required this.isMobile,
+  });
+
+  final Event event;
+  final bool isMobile;
+
+  @override
+  Widget build(BuildContext context) {
+    return _EventRowWrapper(
+      event: event,
+      isMobile: isMobile,
+      detailsWidget: SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
+      downloadButton: SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
+    );
+  }
+}
+
+class EventRowContent extends StatelessWidget {
+  const EventRowContent({
+    super.key,
+    required this.event,
+    required this.participants,
+    required this.isMobile,
+    required this.onDownload,
+  });
+
+  final Event event;
+  final Iterable<Participant> participants;
+  final bool isMobile;
+  final void Function(Event event, Iterable<Participant> participants)
+      onDownload;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
     final labelLargeStyle = context.theme.textTheme.labelLarge;
-    final titleLargeStyle = context.theme.textTheme.titleLarge;
-    final bodyMediumStyle = context.theme.textTheme.bodyMedium;
-
-    final participants = await _getEventParticipants(widget.event);
-
-    final eventInPast = widget.event.scheduledTime!.isBefore(DateTime.now());
-    final hasRecording = widget.event.eventSettings?.alwaysRecord! ?? false;
-
-    if (!context.mounted) return SizedBox.shrink();
 
     // This widget builds a row for each event, displaying its details;
     // it is used in differerent parts of the layout depending on the device type.
@@ -615,12 +676,12 @@ class _EventRowState extends State<_EventRow> {
         Row(
           children: [
             Icon(
-              widget.event.isPublic == true
+              event.isPublic == true
                   ? Icons.language_outlined
                   : Icons.lock_outline,
             ),
             Text(
-              widget.event.isPublic == true ? 'Public' : 'Private',
+              event.isPublic == true ? 'Public' : 'Private',
               style: labelLargeStyle,
             ),
           ],
@@ -629,17 +690,17 @@ class _EventRowState extends State<_EventRow> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(
-              widget.event.isLiveStream
+              event.isLiveStream
                   ? Icons.live_tv_outlined
-                  : widget.event.isHosted
+                  : event.isHosted
                       ? Icons.chair_outlined
                       : Icons.deck_outlined,
             ),
             SizedBox(width: 4),
             Text(
-              widget.event.isLiveStream
+              event.isLiveStream
                   ? 'Livestream'
-                  : widget.event.isHosted
+                  : event.isHosted
                       ? 'Hosted'
                       : 'Hostless',
               style: labelLargeStyle,
@@ -648,6 +709,45 @@ class _EventRowState extends State<_EventRow> {
         ),
       ],
     );
+
+    return _EventRowWrapper(
+      event: event,
+      isMobile: isMobile,
+      detailsWidget: detailsWidget,
+      downloadButton: ActionButton(
+        type: ActionButtonType.text,
+        icon: const Icon(Icons.file_download_outlined),
+        loadingHeight: 16,
+        borderSide: BorderSide(color: Theme.of(context).primaryColor),
+        textColor: Theme.of(context).primaryColor,
+        onPressed: () => onDownload(event, participants),
+        text: context.l10n.dataDownload,
+      ),
+    );
+  }
+}
+
+// Wrapper widget that handles common event row layout (header with image, title, time)
+class _EventRowWrapper extends StatelessWidget {
+  const _EventRowWrapper({
+    required this.event,
+    required this.isMobile,
+    required this.detailsWidget,
+    required this.downloadButton,
+  });
+
+  final Event event;
+  final bool isMobile;
+  final Widget detailsWidget;
+  final Widget downloadButton;
+
+  @override
+  Widget build(BuildContext context) {
+    final timeFormat = DateFormat('MMM d yyyy, h:mma');
+    final timezone = getTimezoneAbbreviation(event.scheduledTime!);
+    final time = timeFormat.format(event.scheduledTime ?? clockService.now());
+    final titleLargeStyle = context.theme.textTheme.titleLarge;
+    final bodyMediumStyle = context.theme.textTheme.bodyMedium;
 
     return Column(
       children: [
@@ -661,22 +761,22 @@ class _EventRowState extends State<_EventRow> {
               CommunityPageRoutes(
                 communityDisplayId:
                     CommunityProvider.readOrNull(context)?.displayId ??
-                        widget.event.communityId,
+                        event.communityId,
               ).eventPage(
-                templateId: widget.event.templateId,
-                eventId: widget.event.id,
+                templateId: event.templateId,
+                eventId: event.id,
               ),
             );
           },
           child: Flex(
-            direction: widget.isMobile ? Axis.vertical : Axis.horizontal,
+            direction: isMobile ? Axis.vertical : Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   ProxiedImage(
-                    widget.event.image,
+                    event.image,
                     width: 80,
                     height: 80,
                   ),
@@ -686,7 +786,7 @@ class _EventRowState extends State<_EventRow> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        widget.event.title ?? 'NO TITLE',
+                        event.title ?? 'NO TITLE',
                         style: titleLargeStyle,
                       ),
                       SizedBox(
@@ -699,7 +799,7 @@ class _EventRowState extends State<_EventRow> {
                       SizedBox(
                         height: 10,
                       ),
-                      if (!widget.isMobile) ...[
+                      if (!isMobile) ...[
                         ConstrainedBox(
                           constraints:
                               BoxConstraints(maxHeight: 100, maxWidth: 400),
@@ -710,7 +810,7 @@ class _EventRowState extends State<_EventRow> {
                   ),
                 ],
               ),
-              if (widget.isMobile) ...[
+              if (isMobile) ...[
                 SizedBox(
                   height: 10,
                 ),
@@ -723,18 +823,7 @@ class _EventRowState extends State<_EventRow> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      ActionButton(
-      type: ActionButtonType.text,
-      icon: const Icon(Icons.file_download_outlined),
-      loadingHeight: 16,
-      borderSide: BorderSide(color: Theme.of(context).primaryColor),
-      textColor: Theme.of(context).primaryColor,
-      onPressed: () => showDownloadDialog(
-        event,
-        participants,
-      ),
-      text: context.l10n.dataDownload,
-    ),
+                      downloadButton,
                     ],
                   ),
                 ),
@@ -743,18 +832,7 @@ class _EventRowState extends State<_EventRow> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ActionButton(
-      type: ActionButtonType.text,
-      icon: const Icon(Icons.file_download_outlined),
-      loadingHeight: 16,
-      borderSide: BorderSide(color: Theme.of(context).primaryColor),
-      textColor: Theme.of(context).primaryColor,
-      onPressed: () => showDownloadDialog(
-        event,
-        participants,
-      ),
-      text: context.l10n.dataDownload,
-    ),
+                    downloadButton,
                   ],
                 ),
               ],
