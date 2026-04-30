@@ -8,6 +8,7 @@ import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_proposal.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
 
@@ -492,5 +493,16 @@ class FirestoreLiveMeetingService {
           ),
           SetOptions(merge: true),
         );
+  }
+
+  Stream<RecordingSession?> recordingSessionStream(String sessionId) {
+    return firestoreDatabase.firestore
+        .collection(RecordingSession.kCollection)
+        .doc(sessionId)
+        .snapshots()
+        .map((snap) {
+      if (!snap.exists || snap.data() == null) return null;
+      return RecordingSession.fromJson(fromFirestoreJson(snap.data()!));
+    });
   }
 }
