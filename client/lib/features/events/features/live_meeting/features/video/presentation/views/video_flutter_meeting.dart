@@ -117,7 +117,10 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
           ),
           actions: [
             TextButton(
-              onPressed: () => liveMeetingProvider.leaveMeeting(),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                liveMeetingProvider.leaveMeeting();
+              },
               style: TextButton.styleFrom(
                 foregroundColor: dialogContext.theme.colorScheme.error,
               ),
@@ -151,8 +154,10 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     // Pop an alert if event begins recording, but only if it wasn't already recording at the start
     if (current == true && !eventRecordedOnStart && !previousAlwaysRecord) {
       // Trigger modal only on transition from non-true to true
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _showRecordingAlert(context));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _showRecordingAlert(context);
+      });
     }
     previousAlwaysRecord = current ?? false;
   }

@@ -840,6 +840,7 @@
   "wordCloudPromptRequired": "Word Cloud prompt is required",
   "wordList": "Word List",
   "yes": "Yes",
+  "yesCancel": "Yes, cancel",
   "yesDelete": "Yes, Delete",
   "you": "You",
   "youCanChangeThisLater": "You can change this later",

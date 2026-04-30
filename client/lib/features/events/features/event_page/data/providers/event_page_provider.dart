@@ -303,8 +303,7 @@ class EventPageProvider with ChangeNotifier {
       title: appLocalizationService.getLocalization().cancelEvent,
       mainText:
           appLocalizationService.getLocalization().cancelEventConfirmation,
-      confirmText:
-          '${appLocalizationService.getLocalization().yes}, ${appLocalizationService.getLocalization().cancel.toLowerCase()}',
+      confirmText: appLocalizationService.getLocalization().yesCancel,
       cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (!cancel) return false;
