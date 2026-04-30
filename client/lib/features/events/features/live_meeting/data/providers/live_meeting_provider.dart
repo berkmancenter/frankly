@@ -474,6 +474,12 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _checkLoadBreakoutsStream(liveMeeting);
 
+    // Auto-leave when the host (or server) ends the meeting for everyone.
+    if (liveMeeting.meetingEndedAt != null && !_leftMeeting) {
+      leaveMeeting();
+      return;
+    }
+
     if (!breakoutsActive && !isNullOrEmpty(_activeBreakoutRoomId)) {
       leaveBreakoutRoom();
       _userLeftBreakouts = false;

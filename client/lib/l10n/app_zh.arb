@@ -485,6 +485,8 @@
   "emailAddressAlreadyInUse": "您已经创建了一个与此电子邮件地址关联的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。",
   "emailAddressAlreadyInUseLoginError": "此邮箱已被使用。请尝试",
   "endBreakoutRooms": "结束分组讨论",
+  "endMeeting": "结束会议",
+  "endMeetingConfirmation": "为所有参与者结束此活动？所有人将被断开连接。",
   "endTime": "结束时间",
   "enterAmount": "输入金额",
   "enterCategoryNum": "输入类别 {number}",

@@ -410,6 +410,8 @@
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
   "endBreakoutRooms": "End Breakout Rooms",
+  "endMeeting": "End Meeting",
+  "endMeetingConfirmation": "End this event for all participants? Everyone will be disconnected.",
   "endTime": "End Time",
   "enterAmount": "Enter Amount",
   "enterCategoryNum": "Enter Category {number}",

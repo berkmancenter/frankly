@@ -483,6 +483,8 @@
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
   "endBreakoutRooms": "Finalizar salas de grupo",
+  "endMeeting": "Finalizar reunión",
+  "endMeetingConfirmation": "¿Finalizar este evento para todos los participantes? Todos serán desconectados.",
   "endTime": "Hora de finalización",
   "enterAmount": "Ingrese el monto",
   "enterCategoryNum": "Ingrese Categoría {number}",
