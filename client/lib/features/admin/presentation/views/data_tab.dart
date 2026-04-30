@@ -237,15 +237,6 @@ class _DataTabState extends State<DataTab> {
     _fetchRecordingCount(event);
   }
 
-  void _retryRecordingCheck(Event event) {
-    setState(() {
-      _recordingParts.remove(event.id);
-      _retryCount.remove(event.id);
-    });
-    _recordingNotifiers[event.id]?.value = null;
-    _maybeStartRecordingCheck(event);
-  }
-
   Future<void> _fetchRecordingCount(Event event) async {
     try {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
