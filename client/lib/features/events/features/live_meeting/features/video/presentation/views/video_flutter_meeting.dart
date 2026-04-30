@@ -30,6 +30,7 @@ import 'package:data_models/events/event.dart' as event;
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:intl/intl.dart' as intl;
 import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
@@ -101,14 +102,27 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   void _showRecordingAlert(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: Text('Recording Started'),
-          content: Text('This event is now being recorded.'),
+          title: Text(context.l10n.thisEventIsNowBeingRecorded),
+          content: Text(
+            context.l10n.organizerBeganRecordingAt(
+              intl.DateFormat.jm().format(DateTime.now()),
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
+              style: TextButton.styleFrom(
+                textStyle: context.theme.textTheme.labelSmall?.copyWith(
+                  color: context.theme.colorScheme.error,
+                ),
+              ),
+              child: Text(context.l10n.leave),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(context.l10n.continueButton),
             ),
           ],
         );

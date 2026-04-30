@@ -510,18 +510,23 @@ class _EventInfoState extends State<EventInfo> {
           final proceed = await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Event is being recorded'),
-              content: const Text(
-                'This event is being recorded. Do you want to proceed?',
+              title: Text(context.l10n.thisEventIsBeingRecorded),
+              content: Text(
+                context.l10n.organizerWillReceiveDownloadableCopy,
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text(context.l10n.cancel),
+                  style: TextButton.styleFrom(
+                    textStyle: context.theme.textTheme.labelSmall?.copyWith(
+                      color: context.theme.colorScheme.error,
+                    ),
+                  ),
+                  child: Text(context.l10n.close),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Proceed'),
+                  child: Text(context.l10n.continueButton),
                 ),
               ],
             ),
