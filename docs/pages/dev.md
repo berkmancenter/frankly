@@ -218,18 +218,20 @@ Steps 1–4 use stamp files in `.local/dev-stamps/` to skip unnecessary work.
 
 **Optional environment variables:**
 
-| Variable | Effect |
-|---|---|
-| `SKIP_DART_BUILD=1` | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
-| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging |
+| Variable                    | Effect                                                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `SKIP_DART_BUILD=1`         | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
+| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging       |
 
 These are set inline before the command, for example:
 
 ```
 FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
 ```
+
 **Troubleshooting:**
-* If you encounter the error "Could not find `bin/build_runner.dart` in package `build_runner`", navigate to the directory where the build command failed and run `flutter pub get` manually.
+
+- If you encounter the error "Could not find `bin/build_runner.dart` in package `build_runner`", navigate to the directory where the build command failed and run `flutter pub get` manually.
 
 ---
 
@@ -401,6 +403,7 @@ agora.rest_secret="<YOUR_VALUE_HERE>"
 agora.storage_bucket_name="<YOUR_VALUE_HERE>"
 agora.storage_access_key="<YOUR_VALUE_HERE>"
 agora.storage_secret_key="<YOUR_VALUE_HERE>"
+agora.webhook_secret="<YOUR_VALUE_HERE>"
 ```
 
 #### **🔧 Setting up the integration**
@@ -419,6 +422,10 @@ agora.storage_secret_key="<YOUR_VALUE_HERE>"
   - `storage_secret_key`: From the generated key, paste the **Secret**.
 - **In the codebase**
   - In `client/.env`, change `FUNCTIONS_URL_PREFIX` to reflect your Google Cloud Run Functions prefix.
+- **Agora recording webhook**
+  - Deploy the `AgoraRecordingWebhook` Cloud Function and note its URL.
+  - In the Agora console, go to **Notifications** (under Developer Toolkit / Developer Resources). Add a new rule targeting **Cloud Recording** events, set the callback URL to the deployed function URL, and choose a secret string.
+  - `webhook_secret`: Set this to the secret string you chose above so the function can verify Agora's HMAC-SHA1 signature on each notification. If omitted, signature verification is skipped (acceptable for local development, not for production).
 
 #### 👾 Testing the integration
 

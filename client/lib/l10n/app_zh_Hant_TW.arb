@@ -738,10 +738,14 @@
   "record": "錄製",
   "recording": "錄製中",
   "recordingPreparing": "正在準備錄製...",
-  "recordingStatusChecking": "(checking...)",
-  "recordingStatusPreparing": "(preparing...)",
-  "recordingStatusFailed": "(failed)",
-  "recordingStatusParts": "({count} parts)",
+  "recordingStatusChecking": "(檢查中...)",
+  "recordingStatusPreparing": "(準備中...)",
+  "recordingStatusFailed": "(失敗)",
+  "recordingStatusInProgress": "正在錄製",
+  "recordingStatusProcessing": "正在處理錄製",
+  "recordingStatusFile": "個檔案",
+  "recordingStatusFiles": "個檔案",
+  "recordingStatusParts": "({count} 部分)",
   "@recordingStatusParts": {
     "placeholders": {
       "count": {
