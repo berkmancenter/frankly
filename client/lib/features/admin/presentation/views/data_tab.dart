@@ -197,37 +197,6 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
-  Widget _buildDownloadButton(
-    Event event,
-    Iterable<Participant> participants,
-    bool eventInPast,
-    bool hasRecording,
-  ) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
-      return const SizedBox.shrink();
-    }
-
-    final showRecording = eventInPast && hasRecording;
-    final showRegistrant = participants.isNotEmpty;
-
-    return ActionButton(
-      type: ActionButtonType.text,
-      icon: const Icon(Icons.file_download_outlined),
-      loadingHeight: 16,
-      borderSide: BorderSide(color: Theme.of(context).primaryColor),
-      textColor: Theme.of(context).primaryColor,
-      onPressed: () => _showDownloadDialog(
-        event,
-        participants,
-        showRecording,
-        showRegistrant,
-      ),
-      text: context.l10n.dataDownload,
-    );
-  }
-
   // --- Recording status and download ---
 
   void _maybeStartRecordingCheck(Event event) {
@@ -642,11 +611,12 @@ class _DataTabState extends State<DataTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildDownloadButton(
-                        event,
-                        participants,
-                        eventInPast,
-                        hasRecording,
+                      _DownloadDataButton(
+                        event: event,
+                        participants: participants,
+                        eventInPast: eventInPast,
+                        hasRecording: hasRecording,
+                        onShowDownloadDialog: _showDownloadDialog,
                       ),
                     ],
                   ),
@@ -656,11 +626,12 @@ class _DataTabState extends State<DataTab> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildDownloadButton(
-                      event,
-                      participants,
-                      eventInPast,
-                      hasRecording,
+                    _DownloadDataButton(
+                      event: event,
+                      participants: participants,
+                      eventInPast: eventInPast,
+                      hasRecording: hasRecording,
+                      onShowDownloadDialog: _showDownloadDialog,
                     ),
                   ],
                 ),
@@ -788,6 +759,50 @@ class _DataTabState extends State<DataTab> {
           style: context.theme.textTheme.bodyLarge,
         ),
       ),
+    );
+  }
+}
+
+class _DownloadDataButton extends StatelessWidget {
+  const _DownloadDataButton({
+    super.key,
+    required this.event,
+    required this.hasRecording,
+    required this.onShowDownloadDialog,
+    required this.participants,
+    required this.eventInPast,
+  });
+
+  final Event event;
+  final Iterable<Participant> participants;
+  final Function onShowDownloadDialog;
+  final bool eventInPast;
+  final bool hasRecording;
+
+  @override
+  Widget build(BuildContext context) {
+    // Past event without a recording, or upcoming event with no registrants: hide.
+    if ((eventInPast && !hasRecording) ||
+        (!eventInPast && participants.isEmpty)) {
+      return const SizedBox.shrink();
+    }
+
+    final showRecording = eventInPast && hasRecording;
+    final showRegistrant = participants.isNotEmpty;
+
+    return ActionButton(
+      type: ActionButtonType.text,
+      icon: const Icon(Icons.file_download_outlined),
+      loadingHeight: 16,
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () => onShowDownloadDialog(
+        event,
+        participants,
+        showRecording,
+        showRegistrant,
+      ),
+      text: context.l10n.dataDownload,
     );
   }
 }
