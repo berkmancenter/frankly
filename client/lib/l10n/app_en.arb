@@ -346,6 +346,7 @@
   "cancel": "Cancel",
   "cancelCurrentPlan": "Cancel current plan?",
   "cancelEvent": "Cancel Event",
+  "cancelEventConfirmation": "Are you sure you want to cancel event? This cannot be undone and will notify all participants.",
   "cancelParticipation": "Cancel Participation",
   "cannotPlayVimeoVideo": "Cannot play Vimeo video",
   "cannotPlayYouTubeVideo": "Cannot play YouTube video",
