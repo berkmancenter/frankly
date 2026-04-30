@@ -307,7 +307,7 @@ class _DataTabState extends State<DataTab> {
     return ' ${context.l10n.recordingStatusParts(parts)}';
   }
 
-  void _showDownloadDialog(
+  void showDownloadDialog(
     Event event,
     Iterable<Participant> participants,
     bool showRecording,
@@ -445,7 +445,112 @@ class _DataTabState extends State<DataTab> {
     );
   }
 
-  // --- Event list building ---
+  @override
+  Widget build(BuildContext context) {
+    bool isMobile = responsiveLayoutService.isMobile(context);
+    return CustomStreamBuilder<List<Event>>(
+      stream: _allEvents.stream,
+      entryFrom: '_EventsTabState.build',
+      builder: (_, events) {
+        if (events == null || events.isEmpty) {
+          return EmptyPageContent(
+            type: EmptyPageType.events,
+            showContainer: false,
+          );
+        }
+
+        return Column(
+          children: [
+            SizedBox(
+              height: 32,
+            ),
+            Expanded(
+              child: Material(
+                color: context.theme.colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        for (int i = _currentStartIndex;
+                            i < _currentStartIndex + 5 && i < events.length;
+                            i++)
+                          _EventRow(
+                            index: i,
+                            event: events[i],
+                            isMobile: isMobile,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${events.length} ${context.l10n.events}',
+                    style: context.theme.textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: _currentStartIndex == 0
+                            ? null
+                            : () {
+                                setState(() {
+                                  _currentStartIndex -= 5;
+                                });
+                              },
+                        icon: Icon(Icons.arrow_back_rounded),
+                      ),
+                      Text(
+                        '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
+                        style: context.theme.textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: _currentStartIndex + 5 >= events.length
+                            ? null
+                            : () {
+                                setState(() {
+                                  _currentStartIndex += 5;
+                                });
+                              },
+                        icon: Icon(Icons.arrow_forward_rounded),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+      errorBuilder: (context) => SizedBox(
+        height: 100,
+        child: Text(
+          context.l10n.errorLoadingEvents,
+          style: context.theme.textTheme.bodyLarge,
+        ),
+      ),
+    );
+  }
+}
+
+class _EventRow extends StatelessWidget {
+  const _EventRow({super.key, required this.event, required this.index, required this.isMobile,});
+
+  final Event event;
+  final int index;
+  final bool isMobile;
 
   Future<Iterable<Participant>> _getEventParticipants(Event event) async {
     final participantsWrapper = firestoreEventService.eventParticipantsStream(
@@ -460,11 +565,8 @@ class _DataTabState extends State<DataTab> {
     return participants;
   }
 
-  Future<Widget> _buildEventRow({
-    required int index,
-    required Event event,
-    required bool isMobile,
-  }) async {
+  @override
+  Widget build(BuildContext context) {
     final timeFormat = DateFormat('MMM d yyyy, h:mma');
 
     final timezone = getTimezoneAbbreviation(event.scheduledTime!);
@@ -616,7 +718,7 @@ class _DataTabState extends State<DataTab> {
                         participants: participants,
                         eventInPast: eventInPast,
                         hasRecording: hasRecording,
-                        onShowDownloadDialog: _showDownloadDialog,
+                        onShowDownloadDialog: showDownloadDialog,
                       ),
                     ],
                   ),
@@ -631,7 +733,7 @@ class _DataTabState extends State<DataTab> {
                       participants: participants,
                       eventInPast: eventInPast,
                       hasRecording: hasRecording,
-                      onShowDownloadDialog: _showDownloadDialog,
+                      onShowDownloadDialog: showDownloadDialog,
                     ),
                   ],
                 ),
@@ -643,126 +745,7 @@ class _DataTabState extends State<DataTab> {
       ],
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    bool isMobile = responsiveLayoutService.isMobile(context);
-    return CustomStreamBuilder<List<Event>>(
-      stream: _allEvents.stream,
-      entryFrom: '_EventsTabState.build',
-      builder: (_, events) {
-        if (events == null || events.isEmpty) {
-          return EmptyPageContent(
-            type: EmptyPageType.events,
-            showContainer: false,
-          );
-        }
-
-        return Column(
-          children: [
-            SizedBox(
-              height: 32,
-            ),
-            Expanded(
-              child: Material(
-                color: context.theme.colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        FutureBuilder<List<Widget>>(
-                          future: Future.wait([
-                            // Build the event rows
-                            for (int i = _currentStartIndex;
-                                i < _currentStartIndex + 5 && i < events.length;
-                                i++)
-                              _buildEventRow(
-                                index: i,
-                                event: events[i],
-                                isMobile: isMobile,
-                              ),
-                          ]),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Column(children: snapshot.data!);
-                            }
-                            if (snapshot.hasError) {
-                              return Text(
-                                context.l10n.errorOccurred,
-                                style: context.theme.textTheme.bodyLarge,
-                              );
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${events.length} ${context.l10n.events}',
-                    style: context.theme.textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: _currentStartIndex == 0
-                            ? null
-                            : () {
-                                setState(() {
-                                  _currentStartIndex -= 5;
-                                });
-                              },
-                        icon: Icon(Icons.arrow_back_rounded),
-                      ),
-                      Text(
-                        '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
-                        style: context.theme.textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: _currentStartIndex + 5 >= events.length
-                            ? null
-                            : () {
-                                setState(() {
-                                  _currentStartIndex += 5;
-                                });
-                              },
-                        icon: Icon(Icons.arrow_forward_rounded),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-      errorBuilder: (context) => SizedBox(
-        height: 100,
-        child: Text(
-          context.l10n.errorLoadingEvents,
-          style: context.theme.textTheme.bodyLarge,
-        ),
-      ),
-    );
-  }
 }
-
 class _DownloadDataButton extends StatelessWidget {
   const _DownloadDataButton({
     super.key,
