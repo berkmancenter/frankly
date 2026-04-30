@@ -167,6 +167,13 @@
       }
     }
   },
+  "@organizerBeganRecordingAt": {
+    "placeholders": {
+      "timestamp": {
+        "type": "String"
+      }
+    }
+  },
   "@participantActionsForUserWithId": {
     "description": "Semantic label for participant actions, with userId as parameter.",
     "placeholders": {
@@ -363,6 +370,7 @@
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "congratulations": "Congratulations!",
   "contactEmail": "Contact email",
+  "continueButton": "Continue",
   "copiedToClipboard": "Copied to clipboard",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
   "create": "Create",
@@ -493,6 +501,7 @@
   "linkedinUrl": "LinkedIn URL",
   "links": "Links",
   "livestream": "Livestream",
+  "leave": "Leave",
   "locked": "Locked",
   "loggingIn": "logging in",
   "login": "Login",
@@ -570,6 +579,8 @@
   "onboardingInviteSomeoneSubtitle": "Follow along for upcoming events, resources, and more.",
   "optional": "Optional",
   "or": "Or",
+  "organizerWillReceiveDownloadableCopy": "The organizer will receive a downloadable copy of audio and video.",
+  "organizerBeganRecordingAt": "The organizer began recording this event at {timestamp}. They will receive a downloadable copy of audio and video after this time.",
   "otherDataDownload": "Polls, Suggestions and Chat can be downloaded from the event page.",
   "otherDataDownloadAction": "Go to Event Page",
   "outlookCalendar": "Outlook Calendar",
@@ -765,6 +776,8 @@
   "textTitle": "Text Title",
   "theme": "Theme",
   "thereWasAnErrorLoadingEventTemplates": "There was an error loading event templates.",
+  "thisEventIsBeingRecorded": "This event is being recorded.",
+  "thisEventIsNowBeingRecorded": "This event is now being recorded.",
   "thisEventIsLocked": "This event is locked",
   "thisUrlWasNotFound": "This URL was not found.",
   "thisUser": "this user",

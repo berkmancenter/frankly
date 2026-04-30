@@ -221,6 +221,13 @@
       }
     }
   },
+  "@organizerBeganRecordingAt": {
+    "placeholders": {
+      "timestamp": {
+        "type": "String"
+      }
+    }
+  },
   "@participantActionsForUserWithId": {
     "description": "参与者操作的语义标签，带有userId参数。",
     "placeholders": {
@@ -438,6 +445,7 @@
   "confirmRemoveParticipant": "您確定要將 {name} 從此活動中移除嗎？",
   "congratulations": "恭喜！",
   "contactEmail": "聯絡電郵",
+  "continueButton": "繼續",
   "copiedToClipboard": "已複製到剪貼簿",
   "couldntFindAccount": "我们找不到使用此邮箱的账户。请尝试 ",
   "create": "創建",
@@ -565,6 +573,7 @@
   "language": "語言",
   "languageSelector": "語言選擇器",
   "lastSession": "上次會議",
+  "leave": "離開",
   "lightColorHex": "淡色十六進制值",
   "linkedinUrl": "LinkedIn連結",
   "links": "連結",
@@ -646,6 +655,8 @@
   "onboardingInviteSomeoneSubtitle": "追蹤即將到來的活動、資源等更多內容。",
   "optional": "可選",
   "or": "或者",
+  "organizerBeganRecordingAt": "主辦方於 {timestamp} 開始錄製此活動。他們將在此時間後收到可下載的音頻和視頻副本。",
+  "organizerWillReceiveDownloadableCopy": "主辦方將收到可下載的音頻和視頻副本。",
   "outlookCalendar": "Outlook 日曆",
   "otherDataDownload": "投票、建議和聊天可以從活動頁面下載。",
   "otherDataDownloadAction": "前往活動頁面",
@@ -841,6 +852,8 @@
   "textTitle": "文字標題",
   "theme": "主題",
   "thereWasAnErrorLoadingEventTemplates": "載入活動模板時出錯。",
+  "thisEventIsBeingRecorded": "此活動正在錄製中",
+  "thisEventIsNowBeingRecorded": "此活動現在正在錄製中",
   "thisEventIsLocked": "此活動已鎖定",
   "thisUrlWasNotFound": "未找到此URL。",
   "thisUser": "此用戶",

@@ -220,6 +220,13 @@
       }
     }
   },
+  "@organizerBeganRecordingAt": {
+    "placeholders": {
+      "timestamp": {
+        "type": "String"
+      }
+    }
+  },
   "@participantActionsForUserWithId": {
     "description": "Etiqueta semántica para acciones del participante, con userId como parámetro.",
     "placeholders": {
@@ -436,6 +443,7 @@
   "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
   "congratulations": "¡Felicidades!",
   "contactEmail": "Correo de contacto",
+  "continueButton": "Continuar",
   "copiedToClipboard": "Copiado al portapapeles",
   "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
   "create": "Crear",
@@ -562,6 +570,7 @@
   "language": "Idioma",
   "languageSelector": "Selector de idioma",
   "lastSession": "Última sesión",
+  "leave": "Salir",
   "lightColorHex": "Color claro HEX#",
   "linkedinUrl": "URL de LinkedIn",
   "links": "Enlaces",
@@ -643,6 +652,8 @@
   "onboardingInviteSomeoneSubtitle": "Sigue los próximos eventos, recursos y más.",
   "optional": "Opcional",
   "or": "O",
+  "organizerBeganRecordingAt": "El organizador comenzó a grabar este evento a las {timestamp}. Recibirán una copia descargable de audio y video después de este momento.",
+  "organizerWillReceiveDownloadableCopy": "El organizador recibirá una copia descargable de audio y video.",
   "outlookCalendar": "Outlook Calendar",
   "otherDataDownload": "Las encuestas, sugerencias y chat se pueden descargar desde la página del evento.",
   "otherDataDownloadAction": "Ir a la página del evento",
@@ -838,6 +849,8 @@
   "textTitle": "Título de texto",
   "theme": "Tema",
   "thereWasAnErrorLoadingEventTemplates": "Hubo un error al cargar las plantillas de eventos.",
+  "thisEventIsBeingRecorded": "Este evento está siendo grabado.",
+  "thisEventIsNowBeingRecorded": "Este evento ahora está siendo grabado.",
   "thisEventIsLocked": "Este evento está bloqueado",
   "thisUrlWasNotFound": "Esta URL no se encontró.",
   "thisUser": "este usuario",
