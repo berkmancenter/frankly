@@ -843,6 +843,11 @@ class _EventInfoState extends State<EventInfo> {
                                 .event.scheduledTime?.millisecondsSinceEpoch ??
                             0),
                       ),
+                      endTime: eventProvider.event.scheduledTime?.add(
+                        Duration(
+                          minutes: eventProvider.event.durationInMinutes,
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: isMobile ? 90 : 100,
