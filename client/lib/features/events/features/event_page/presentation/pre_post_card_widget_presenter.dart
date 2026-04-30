@@ -434,7 +434,7 @@ class PrePostCardWidgetPresenterHelper {
     if (userId == null) {
       loggingService.log(
         'PrePostCardWidgetPresenterHelper.getEmail: userId is null',
-        logType: LogType.error,
+        logType: LogType.warning,
       );
       return null;
     }
@@ -459,7 +459,7 @@ class PrePostCardWidgetPresenterHelper {
     if (userAdminDetails == null) {
       loggingService.log(
         'PrePostCardWidgetPresenterHelper.getEmail: userAdminDetails is null. UserId: $userId',
-        logType: LogType.error,
+        logType: LogType.warning,
       );
       return null;
     }
@@ -467,7 +467,7 @@ class PrePostCardWidgetPresenterHelper {
     if (userAdminDetails.isEmpty) {
       loggingService.log(
         'PrePostCardWidgetPresenterHelper.getEmail: userAdminDetails is empty. UserId: $userId',
-        logType: LogType.error,
+        logType: LogType.warning,
       );
       return null;
     }
