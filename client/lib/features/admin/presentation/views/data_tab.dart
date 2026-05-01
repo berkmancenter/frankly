@@ -36,7 +36,6 @@ class DataTab extends StatefulWidget {
 
 class _DataTabState extends State<DataTab> {
   late BehaviorSubjectWrapper<List<Event>> _allEvents;
-  late UserService _userService;
   int _currentStartIndex = 0;
 
   // Recording status per event: null=loading, 0=preparing, N=N parts ready, -1=error.
@@ -66,7 +65,6 @@ class _DataTabState extends State<DataTab> {
         }
       }
     });
-    _userService = UserService();
 
     _currentStartIndex = 0;
   }

@@ -6,6 +6,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -51,6 +52,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   bool pollsSuggestionsDataSelected = false;
 
   bool recordingAutoChecked = false;
+
+  late UserService _userService;
 
   Future<void> downloadAllRecordings(Event event) async {
     final errorMsg = context.l10n.errorOccurred;
@@ -255,6 +258,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     recordingSelected = showRecording && recordingParts > 0;
     recordingAutoChecked = recordingSelected;
     registrantListSelected = showRegistrant;
+
+    _userService = UserService();
   }
 
   Widget _buildDialogContent(int? recordingParts) {
