@@ -35,10 +35,14 @@ class EventDataDownloadDialog extends StatefulWidget {
 }
 
 class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
+  late bool showRecording;
+  late bool showRegistrant;
+
   late bool recordingSelected;
   late bool registrantListSelected;
   bool chatDataSelected = false;
   bool pollsSuggestionsDataSelected = false;
+
   bool recordingAutoChecked = false;
 
   Future<void> downloadAllRecordings(Event event) async {
@@ -85,10 +89,12 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   @override
   void initState() {
     super.initState();
-    final recordingParts = widget.recordingNotifier.value ?? 0;
-    recordingSelected = widget.showRecording && recordingParts > 0;
+    final recordingParts = widget.recordingNotifier?.value ?? 0;
+    showRecording = widget.eventInPast && widget.hasRecording;
+    showRegistrant = widget.participants.isNotEmpty;
+    recordingSelected = showRecording && recordingParts > 0;
     recordingAutoChecked = recordingSelected;
-    registrantListSelected = widget.showRegistrant;
+    registrantListSelected = showRegistrant;
   }
 
   String _recordingAnnotation(BuildContext context, int? parts) {
@@ -100,11 +106,11 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   Future<void> _handleDownload() async {
     try {
-      if (widget.showRecording && recordingSelected) {
         await widget.onDownloadRecordings(widget.event);
+      if (showRecording && recordingSelected) {
       }
-      if (widget.showRegistrant && registrantListSelected) {
         await widget.onDownloadRegistrants(widget.event, widget.participants);
+      if (showRegistrant && registrantListSelected) {
       }
       if (chatDataSelected) {
         await widget.onDownloadChatData(widget.event);
@@ -125,9 +131,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   bool _isDownloadEnabled(int? recordingParts) {
-    final recordingReady = widget.showRecording && (recordingParts ?? 0) > 0;
-    return (widget.showRecording && recordingSelected && recordingReady) ||
-        (widget.showRegistrant && registrantListSelected) ||
+    final recordingReady = showRecording && (recordingParts ?? 0) > 0;
+    return (showRecording && recordingSelected && recordingReady) ||
+        (showRegistrant && registrantListSelected) ||
         chatDataSelected ||
         pollsSuggestionsDataSelected;
   }
@@ -144,7 +150,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
         child: SingleChildScrollView(
           child: ListBody(
             children: [
-              if (widget.showRecording)
+              if (showRecording)
                 CheckboxListTile(
                   value: recordingSelected,
                   enabled: recordingParts != null && recordingParts != 0,
@@ -155,7 +161,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                     '${context.l10n.recording}${_recordingAnnotation(context, recordingParts)}',
                   ),
                 ),
-              if (widget.showRegistrant)
+              if (showRegistrant)
                 CheckboxListTile(
                   value: registrantListSelected,
                   onChanged: (value) => setState(
@@ -199,7 +205,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.showRecording) {
+    if (showRecording) {
       final notifier = widget.recordingNotifier ??
           ValueNotifier(widget.recordingParts[widget.event.id]);
       return ValueListenableBuilder<int?>(
