@@ -83,16 +83,6 @@ class _DataTabState extends State<DataTab> {
     _subscribeToSessions(event);
   }
 
-  void _retryRecordingCheck(Event event) {
-    _sessionSubscriptions[event.id]?.cancel();
-    _sessionSubscriptions.remove(event.id);
-    setState(() {
-      _recordingParts.remove(event.id);
-    });
-    _recordingNotifiers[event.id]?.value = null;
-    _maybeStartRecordingCheck(event);
-  }
-
   void _subscribeToSessions(Event event) {
     _sessionSubscriptions[event.id]?.cancel();
     _sessionSubscriptions[event.id] = firestoreDatabase.firestore
