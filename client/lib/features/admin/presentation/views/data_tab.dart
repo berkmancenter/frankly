@@ -4,16 +4,9 @@ import 'dart:math';
 
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/admin/presentation/widgets/event_data_download_dialog.dart';
-import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
-import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
-import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/events/live_meetings/live_meeting.dart';
-import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
