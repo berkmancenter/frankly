@@ -9,6 +9,7 @@ import '../../on_call_function.dart';
 import '../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:data_models/utils/utils.dart';
 
@@ -41,6 +42,24 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
 
       if (participant.status != ParticipantStatus.active) {
         throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
+      }
+
+      // Reject join if the meeting has already ended.
+      final liveMeetingPath =
+          '${request.eventPath}/live-meetings/${event.id}';
+      final liveMeetingSnap =
+          await transaction.get(firestore.document(liveMeetingPath));
+      if (liveMeetingSnap.exists) {
+        final liveMeeting = LiveMeeting.fromJson(
+          firestoreUtils.fromFirestoreJson(liveMeetingSnap.data.toMap()),
+        );
+        if (liveMeeting.meetingEndedAt != null) {
+          throw HttpsError(
+            HttpsError.failedPrecondition,
+            'meeting-ended',
+            null,
+          );
+        }
       }
 
       // Decide on users identifier
