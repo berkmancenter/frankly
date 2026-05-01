@@ -262,30 +262,25 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   Future<void> _handleDownload() async {
     setState(() => isDownloading = true);
-    try {
-      if (showRecording && recordingSelected) {
-        await downloadAllRecordings(widget.event);
-      }
-      if (showRegistrant && registrantListSelected) {
-        await downloadRegistrantList(widget.event, widget.participants);
-      }
-      if (chatDataSelected) {
-        await downloadChatData(widget.event);
-      }
-      if (pollsSuggestionsDataSelected) {
-        await downloadPollsSuggestionsData(widget.event);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => isDownloading = false);
-        showRegularToast(
-          context,
-          'Error: ${e.toString()}',
-          toastType: ToastType.failed,
-        );
-      }
-      return;
-    }
+    await alertOnError(
+      context,
+      () async {
+        if (showRecording && recordingSelected) {
+          await downloadAllRecordings(widget.event);
+        }
+        if (showRegistrant && registrantListSelected) {
+          await downloadRegistrantList(widget.event, widget.participants);
+        }
+        if (chatDataSelected) {
+          await downloadChatData(widget.event);
+        }
+        if (pollsSuggestionsDataSelected) {
+          await downloadPollsSuggestionsData(widget.event);
+        }
+      },
+      errorMessage: context.l10n.errorOccurred,
+    );
+
     if (mounted) {
       setState(() => isDownloading = false);
       Navigator.of(context).pop();
