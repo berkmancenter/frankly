@@ -698,6 +698,33 @@ class LiveMeetingProvider with ChangeNotifier {
   Future<void> leaveMeeting() async {
     if (_leftMeeting) return;
 
+    // If the meeting is still running and the user is the host or an admin,
+    // prompt whether to end the meeting for all participants.
+    final meetingAlreadyEnded = liveMeeting?.meetingEndedAt != null;
+    if (!meetingAlreadyEnded && eventProvider.event.isHosted) {
+      final isAdmin = userDataService
+          .getMembership(communityProvider.communityId)
+          .isAdmin;
+      if (isHost || isAdmin) {
+        final endForAll = await ConfirmDialog(
+          mainText: appLocalizationService
+              .getLocalization()
+              .endMeetingConfirmation,
+          confirmText: appLocalizationService
+              .getLocalization()
+              .endMeeting,
+          cancelText: 'Leave without ending',
+        ).show();
+        if (endForAll) {
+          await cloudFunctionsEventService.endMeetingForAll(
+            EndMeetingForAllRequest(eventPath: eventPath),
+          );
+        }
+      }
+    }
+
+    if (_leftMeeting) return;
+
     _leftMeeting = true;
     notifyListeners();
 
