@@ -781,9 +781,8 @@ class _DownloadDataButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Past event without a recording, or upcoming event with no registrants: hide.
-    if ((eventInPast && !hasRecording) ||
-        (!eventInPast && participants.isEmpty)) {
+    // Hide button for future events with no registrants.
+    if (!eventInPast && participants.isEmpty) {
       return const SizedBox.shrink();
     }
 
