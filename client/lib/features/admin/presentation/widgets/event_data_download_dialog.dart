@@ -161,6 +161,17 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       }
     }
 
+    if (chatData.isEmpty) {
+      if (mounted) {
+        showRegularToast(
+          context,
+          'No chat data for this event.',
+          toastType: ToastType.neutral,
+        );
+      }
+      return;
+    }
+
     final breakoutRooms = await getBreakoutRoomData(event: event);
     EventProvider provider = EventProvider.fromEvent(
       event,
@@ -223,7 +234,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       if (mounted) {
         showRegularToast(
           context,
-          'No polls or suggestions data',
+          'No polls or suggestions data for this event.',
           toastType: ToastType.neutral,
         );
       }
