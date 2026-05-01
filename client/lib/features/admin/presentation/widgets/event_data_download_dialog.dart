@@ -1,15 +1,22 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:client/config/environment.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
+import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
+import 'package:client/styles/styles.dart';
+import 'package:data_models/cloud_functions/requests.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
+import 'package:client/features/community/data/providers/community_provider.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
-import 'package:flutter/material.dart';
 
 class EventDataDownloadDialog extends StatefulWidget {
   const EventDataDownloadDialog({
@@ -86,15 +93,116 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    final recordingParts = widget.recordingNotifier?.value ?? 0;
-    showRecording = widget.eventInPast && widget.hasRecording;
-    showRegistrant = widget.participants.isNotEmpty;
-    recordingSelected = showRecording && recordingParts > 0;
-    recordingAutoChecked = recordingSelected;
-    registrantListSelected = showRegistrant;
+  Future<void> downloadRegistrantList(
+    Event event,
+    Iterable<Participant> participants,
+  ) async {
+    final communityProvider = CommunityProvider.read(context);
+
+    final List<String> userIds = participants.map((p) => p.id).toList();
+    final members = await _userService.getMemberDetails(
+      membersList: userIds,
+      communityId: communityProvider.communityId,
+      eventPath: event.fullPath,
+    );
+
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+
+    provider.initialize();
+    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
+
+    await provider.generateRegistrationDataCsvFile(
+      eventId: event.id,
+      registrationData: members,
+      breakoutRooms: breakoutRooms,
+    );
+  }
+
+  Future<void> downloadChatData(Event event) async {
+    // Get CommunityProvider from cotext before async operations.
+    final communityProvider = CommunityProvider.read(context);
+    final request =
+        GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
+    final cloudFunctionResponse = await cloudFunctions.callFunction(
+      'GetMeetingChatSuggestionData',
+      request.toJson(),
+    );
+    final result =
+        GetMeetingChatsSuggestionsDataResponse.fromJson(cloudFunctionResponse);
+    final chatsData = result.chatsSuggestionsList
+            ?.where((e) => e.type == ChatSuggestionType.chat)
+            .toList() ??
+        [];
+
+    if (chatsData.isEmpty) {
+      if (mounted) {
+        showRegularToast(context, 'No chat data', toastType: ToastType.neutral);
+      }
+      return;
+    }
+
+    final breakoutRooms = await getBreakoutRoomData(event: event);
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+    provider.initialize();
+    await provider.generateChatDataCsv(
+      response: result,
+      eventId: event.id,
+      breakoutRooms: breakoutRooms,
+    );
+  }
+
+  Future<void> downloadPollsSuggestionsData(Event event) async {
+    final communityProvider = CommunityProvider.read(context);
+    final suggestionRequest =
+        GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
+    final chatSuggestionResponse = await cloudFunctions.callFunction(
+      'GetMeetingChatSuggestionData',
+      suggestionRequest.toJson(),
+    );
+    final chatSuggestionResult =
+        GetMeetingChatsSuggestionsDataResponse.fromJson(chatSuggestionResponse);
+    final suggestionData = chatSuggestionResult.chatsSuggestionsList
+            ?.where((e) => e.type == ChatSuggestionType.suggestion)
+            .toList() ??
+        [];
+
+    final pollRequest = GetMeetingPollDataRequest(eventPath: event.fullPath);
+    final pollResponse = await cloudFunctions.callFunction(
+      'GetMeetingPollData',
+      pollRequest.toJson(),
+    );
+    final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
+    final pollData = pollResult.polls ?? [];
+
+    if (suggestionData.isEmpty && pollData.isEmpty) {
+      if (mounted) {
+        showRegularToast(
+          context,
+          'No polls or suggestions data',
+          toastType: ToastType.neutral,
+        );
+      }
+      return;
+    }
+
+    final breakoutRooms = await getBreakoutRoomData(event: event);
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+    provider.initialize();
+    await provider.generatePollsSuggestionsDataCsv(
+      suggestionData: suggestionData,
+      pollData: pollData,
+      eventId: event.id,
+      breakoutRooms: breakoutRooms,
+    );
   }
 
   String _recordingAnnotation(BuildContext context, int? parts) {
@@ -106,17 +214,17 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   Future<void> _handleDownload() async {
     try {
-        await widget.onDownloadRecordings(widget.event);
       if (showRecording && recordingSelected) {
+        await downloadAllRecordings(widget.event);
       }
-        await widget.onDownloadRegistrants(widget.event, widget.participants);
       if (showRegistrant && registrantListSelected) {
+        await downloadRegistrantList(widget.event, widget.participants);
       }
       if (chatDataSelected) {
-        await widget.onDownloadChatData(widget.event);
+        await downloadChatData(widget.event);
       }
       if (pollsSuggestionsDataSelected) {
-        await widget.onDownloadPollsSuggestions(widget.event);
+        await downloadPollsSuggestionsData(widget.event);
       }
     } catch (e) {
       if (mounted) {
@@ -136,6 +244,17 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
         (showRegistrant && registrantListSelected) ||
         chatDataSelected ||
         pollsSuggestionsDataSelected;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final recordingParts = widget.recordingNotifier?.value ?? 0;
+    showRecording = widget.eventInPast && widget.hasRecording;
+    showRegistrant = widget.participants.isNotEmpty;
+    recordingSelected = showRecording && recordingParts > 0;
+    recordingAutoChecked = recordingSelected;
+    registrantListSelected = showRegistrant;
   }
 
   Widget _buildDialogContent(int? recordingParts) {
