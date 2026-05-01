@@ -395,6 +395,7 @@
   "displayIdWarning": "URL display name can only contain letters, numbers, and dashes.",
   "donate": "Donate",
   "download": "Download",
+  "downloadComplete": "Download complete!",
   "downloadMembersData": "Download members data",
   "downloadMembersRegistrationData": "Download Members Registration Data",
   "downloadChatData": "Download Chat Data",

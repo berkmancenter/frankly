@@ -468,6 +468,7 @@
   "displayIdWarning": "El nombre de visualización de URL solo puede contener letras, números y guiones.",
   "donate": "Donar",
   "download": "Descargar",
+  "downloadComplete": "¡Descarga completa!",
   "downloadMembersData": "Descargar datos de miembros",
   "downloadMembersRegistrationData": "Descargar Datos de Registro de Miembros",
   "downloadChatData": "Descargar Datos de Chat",
