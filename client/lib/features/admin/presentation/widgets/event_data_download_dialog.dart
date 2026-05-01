@@ -165,7 +165,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       if (mounted) {
         showRegularToast(
           context,
-          'No chat data for this event.',
+          context.l10n.noChatDataForEvent,
           toastType: ToastType.neutral,
         );
       }
@@ -234,7 +234,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       if (mounted) {
         showRegularToast(
           context,
-          'No polls or suggestions data for this event.',
+          context.l10n.noPollsOrSuggestionsDataForEvent,
           toastType: ToastType.neutral,
         );
       }
