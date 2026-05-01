@@ -404,9 +404,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                 onChanged: (value) => setState(
                   () => chatDataSelected = value ?? false,
                 ),
-                // TODO: L10n
                 title: Text(
-                  'Chat Data ${isLoadingChats ? '(Loading...)' : '(${chatsLength > 0 ? '$chatsLength items' : 'none'})'}',
+                  'Chat Data ${isLoadingChats ? '(${context.l10n.loading}...)' : '(${chatsLength > 0 ? '$chatsLength ${context.l10n.items}' : context.l10n.none})'}',
                 ),
               ),
               CheckboxListTile(
@@ -414,9 +413,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                 onChanged: (value) => setState(
                   () => pollsSuggestionsDataSelected = value ?? false,
                 ),
-                // TODO: L10n
                 title: Text(
-                  'Polls & Suggestions Data ${isLoadingPollsSuggestions ? '(Loading...)' : '(${pollsSuggestionsLength > 0 ? '$pollsSuggestionsLength items' : 'none'})'}',
+                  'Polls & Suggestions Data ${isLoadingPollsSuggestions ? '(${context.l10n.loading}...)' : '(${pollsSuggestionsLength > 0 ? '$pollsSuggestionsLength ${context.l10n.items}' : context.l10n.none})'}',
                 ),
               ),
             ],
