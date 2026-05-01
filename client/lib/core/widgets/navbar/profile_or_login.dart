@@ -8,17 +8,20 @@ import 'package:provider/provider.dart';
 /// links to the profile or a 'Sign in' button.
 class ProfileOrLogin extends StatelessWidget {
   final bool showMenuAboveIcon;
+  final bool showLoginSignUp;
 
   const ProfileOrLogin({
     Key? key,
     this.showMenuAboveIcon = true,
+    this.showLoginSignUp = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     if (Provider.of<UserService>(context).isSignedIn) {
       return UserProfileNavigation(showMenuAboveIcon: showMenuAboveIcon);
-    } else {
+    } else if (showLoginSignUp) {
       return SignInWidget();
     }
+    return SizedBox.shrink();
   }
 }

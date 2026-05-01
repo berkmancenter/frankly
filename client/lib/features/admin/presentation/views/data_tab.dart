@@ -7,6 +7,11 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/admin/presentation/widgets/event_data_download_dialog.dart';
 import 'package:client/styles/styles.dart';
+<<<<<<< HEAD
+=======
+import 'package:data_models/recording/recording_session.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
+>>>>>>> staging
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -31,15 +36,16 @@ class _DataTabState extends State<DataTab> {
   late BehaviorSubjectWrapper<List<Event>> _allEvents;
   int _currentStartIndex = 0;
 
-  // Recording status per event: null=loading, 0=preparing, N=N parts ready, -1=error.
+  // Recording status per event:
+  //   null  = loading
+  //   -2    = recording in progress
+  //   0     = processing recordings (stopped, no artifacts yet)
+  //   N > 0 = N recording files ready
+  //   -1    = error / failed
   final Map<String, int?> _recordingParts = {};
   final Map<String, ValueNotifier<int?>> _recordingNotifiers = {};
-  final Map<String, Timer> _pollingTimers = {};
-  final Map<String, int> _retryCount = {};
+  final Map<String, StreamSubscription?> _sessionSubscriptions = {};
 
-  // After this many auto-retries (~30 seconds at 5s intervals), stop polling
-  // and show the error/manual-retry state instead.
-  static const int _maxAutoRetries = 6;
   late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
@@ -64,8 +70,8 @@ class _DataTabState extends State<DataTab> {
 
   @override
   void dispose() {
-    for (final timer in _pollingTimers.values) {
-      timer.cancel();
+    for (final sub in _sessionSubscriptions.values) {
+      sub?.cancel();
     }
     for (final notifier in _recordingNotifiers.values) {
       notifier.dispose();
@@ -75,15 +81,77 @@ class _DataTabState extends State<DataTab> {
     super.dispose();
   }
 
+<<<<<<< HEAD
+=======
+  Future<void> downloadRegistrantList(
+    Event event,
+    Iterable<Participant> participants,
+  ) async {
+    final communityProvider = CommunityProvider.read(context);
+
+    final List<String> userIds = participants.map((p) => p.id).toList();
+    final members = await _userService.getMemberDetails(
+      membersList: userIds,
+      communityId: communityProvider.communityId,
+      eventPath: event.fullPath,
+    );
+
+    EventProvider provider = EventProvider.fromEvent(
+      event,
+      communityProvider: communityProvider,
+    );
+
+    provider.initialize();
+    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
+
+    await provider.generateRegistrationDataCsvFile(
+      eventId: event.id,
+      registrationData: members,
+      breakoutRooms: breakoutRooms,
+    );
+  }
+
+  Widget _buildDownloadButton(
+    Event event,
+    Iterable<Participant> participants,
+    bool eventInPast,
+    bool hasRecording,
+  ) {
+    final showRecording = eventInPast && hasRecording;
+    final showRegistrant = participants.isNotEmpty;
+
+    // Nothing to download: hide the button entirely.
+    if (!showRecording && !showRegistrant) {
+      return const SizedBox.shrink();
+    }
+
+    return ActionButton(
+      type: ActionButtonType.text,
+      icon: const Icon(Icons.file_download_outlined),
+      loadingHeight: 16,
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () => _showDownloadDialog(
+        event,
+        participants,
+        showRecording,
+        showRegistrant,
+      ),
+      text: context.l10n.dataDownload,
+    );
+  }
+
+>>>>>>> staging
   // --- Recording status and download ---
 
   void _maybeStartRecordingCheck(Event event) {
     if (_recordingParts.containsKey(event.id)) return;
     _recordingParts[event.id] = null; // null = loading
     (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
-    _fetchRecordingCount(event);
+    _subscribeToSessions(event);
   }
 
+<<<<<<< HEAD
   Future<void> _fetchRecordingCount(Event event) async {
     try {
       final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
@@ -119,24 +187,269 @@ class _DataTabState extends State<DataTab> {
       }
     }
   }
+=======
+  void _retryRecordingCheck(Event event) {
+    _sessionSubscriptions[event.id]?.cancel();
+    _sessionSubscriptions.remove(event.id);
+    setState(() {
+      _recordingParts.remove(event.id);
+    });
+    _recordingNotifiers[event.id]?.value = null;
+    _maybeStartRecordingCheck(event);
+  }
 
-  void _scheduleRetry(Event event) {
-    final retries = (_retryCount[event.id] ?? 0) + 1;
-    if (retries >= _maxAutoRetries) {
-      setState(() => _recordingParts[event.id] = -1);
-      _recordingNotifiers[event.id]?.value = -1;
-      return;
-    }
-    _retryCount[event.id] = retries;
-    _pollingTimers[event.id]?.cancel();
-    _pollingTimers[event.id] = Timer(const Duration(seconds: 5), () {
-      if (!mounted) return;
-      setState(() => _recordingParts[event.id] = null);
-      _recordingNotifiers[event.id]?.value = null;
-      _fetchRecordingCount(event);
+  void _subscribeToSessions(Event event) {
+    _sessionSubscriptions[event.id]?.cancel();
+    _sessionSubscriptions[event.id] = firestoreDatabase.firestore
+        .collection(RecordingSession.kCollection)
+        .where(RecordingSession.kFieldEventId, isEqualTo: event.id)
+        .snapshots()
+        .listen(
+      (snapshot) {
+        if (!mounted) return;
+        final sessions = snapshot.docs
+            .map(
+              (d) => RecordingSession.fromJson(
+                {...fromFirestoreJson(d.data()), 'sessionId': d.id},
+              ),
+            )
+            .toList();
+>>>>>>> staging
+
+        int status;
+        if (sessions.isEmpty) {
+          status = 0; // no sessions yet, treat as processing
+        } else if (sessions.any(
+          (s) =>
+              s.status == RecordingSessionStatus.recording ||
+              s.status == RecordingSessionStatus.starting,
+        )) {
+          status = -2; // recording in progress
+        } else {
+          // Count total artifact files across all sessions.
+          final fileCount = sessions.fold<int>(
+            0,
+            (sum, s) => sum + s.artifactPaths.length,
+          );
+          status = fileCount > 0 ? fileCount : 0;
+        }
+
+        setState(() => _recordingParts[event.id] = status);
+        _recordingNotifiers[event.id]?.value = status;
+      },
+      onError: (_) {
+        if (!mounted) return;
+        setState(() => _recordingParts[event.id] = -1);
+        _recordingNotifiers[event.id]?.value = -1;
+      },
+    );
+  }
+
+<<<<<<< HEAD
+=======
+  Future<void> _downloadAllRecordings(Event event) async {
+    final errorMsg = context.l10n.errorOccurred;
+    final preparingMsg = context.l10n.recordingPreparing;
+    await alertOnError(context, () async {
+      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+      if (idToken == null) throw Exception(errorMsg);
+      final response = await http.post(
+        Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
+        headers: {
+          'Authorization': 'Bearer $idToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'eventPath': event.fullPath}),
+      );
+      if (response.statusCode != 200) {
+        throw Exception(errorMsg);
+      }
+      final body = jsonDecode(response.body) as Map<String, dynamic>;
+      final rawList = body['recordings'];
+      if (rawList is! List || rawList.isEmpty) {
+        throw Exception(preparingMsg);
+      }
+      final urls = rawList
+          .whereType<Map<String, dynamic>>()
+          .map((r) => r['url'] as String? ?? '')
+          .where((url) => url.isNotEmpty)
+          .toList();
+      for (int i = 0; i < urls.length; i++) {
+        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
+        html.document.body!.append(anchor);
+        anchor.click();
+        anchor.remove();
+        if (i < urls.length - 1) {
+          await Future.delayed(const Duration(milliseconds: 300));
+        }
+      }
+      setState(() => _recordingParts[event.id] = urls.length);
+      _recordingNotifiers[event.id]?.value = urls.length;
     });
   }
 
+  String _recordingAnnotation(BuildContext context, int? parts) {
+    if (parts == null) return context.l10n.recordingStatusChecking;
+    if (parts == -2) return context.l10n.recordingStatusInProgress;
+    if (parts == 0) return context.l10n.recordingStatusProcessing;
+    if (parts == -1) return context.l10n.recordingStatusFailed;
+    final label = parts == 1
+        ? context.l10n.recordingStatusFile
+        : context.l10n.recordingStatusFiles;
+    return '$parts $label';
+  }
+
+  void _showDownloadDialog(
+    Event event,
+    Iterable<Participant> participants,
+    bool showRecording,
+    bool showRegistrant,
+  ) {
+    bool recordingSelected =
+        showRecording && (_recordingParts[event.id] ?? 0) > 0;
+    bool recordingAutoChecked = recordingSelected;
+    bool registrantListSelected = showRegistrant;
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        AlertDialog buildAlertDialog(StateSetter setDialogState, int? parts) {
+          void pressedHandler() async {
+            if (showRecording && recordingSelected) {
+              await _downloadAllRecordings(event);
+            }
+            if (showRegistrant && registrantListSelected && mounted) {
+              await alertOnError(context, () async {
+                await downloadRegistrantList(event, participants);
+              });
+            }
+            if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+          }
+
+          final recordingReady = showRecording && (parts ?? 0) > 0;
+          final downloadEnabled =
+              (showRecording && recordingSelected && recordingReady) ||
+                  (showRegistrant && registrantListSelected);
+
+          return AlertDialog(
+            title: Text(context.l10n.selectData),
+            backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
+            contentPadding: EdgeInsets.zero,
+            actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
+            content: Material(
+              color: context.theme.colorScheme.surfaceContainer,
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    if (showRecording)
+                      CheckboxListTile(
+                        value: recordingSelected,
+                        enabled: (parts ?? 0) > 0,
+                        onChanged: (value) => setDialogState(
+                          () => recordingSelected = value ?? false,
+                        ),
+                        title: Text(context.l10n.recording),
+                        subtitle: Text(
+                          _recordingAnnotation(context, parts),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: (parts ?? 0) > 0
+                                ? null
+                                : Theme.of(context).textTheme.bodySmall?.color,
+                          ),
+                        ),
+                      ),
+                    if (showRegistrant)
+                      CheckboxListTile(
+                        value: registrantListSelected,
+                        onChanged: (value) => setDialogState(
+                          () => registrantListSelected = value ?? false,
+                        ),
+                        title: Text(context.l10n.registrationDataDownload),
+                      ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: SizedBox(
+                        width: 200,
+                        child: Column(
+                          children: [
+                            Text(
+                              context.l10n.otherDataDownload,
+                              style: context.theme.textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            ActionButton(
+                              onPressed: () {
+                                routerDelegate.beamTo(
+                                  CommunityPageRoutes(
+                                    communityDisplayId:
+                                        CommunityProvider.readOrNull(context)
+                                                ?.displayId ??
+                                            event.communityId,
+                                  ).eventPage(
+                                    templateId: event.templateId,
+                                    eventId: event.id,
+                                  ),
+                                );
+                              },
+                              color: context
+                                  .theme.colorScheme.surfaceContainerHighest,
+                              textColor: context.theme.colorScheme.onSurface,
+                              text: context.l10n.otherDataDownloadAction,
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(context.l10n.cancel),
+              ),
+              TextButton(
+                onPressed: downloadEnabled ? pressedHandler : null,
+                child: Text(context.l10n.download),
+              ),
+            ],
+          );
+        }
+
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) {
+            if (showRecording) {
+              final notifier = _recordingNotifiers[event.id] ??=
+                  ValueNotifier(_recordingParts[event.id]);
+              return ValueListenableBuilder<int?>(
+                valueListenable: notifier,
+                builder: (ctx2, parts, _) {
+                  if ((parts ?? 0) > 0 && !recordingAutoChecked) {
+                    recordingAutoChecked = true;
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setDialogState(() => recordingSelected = true);
+                    });
+                  }
+                  return buildAlertDialog(setDialogState, parts);
+                },
+              );
+            }
+            return buildAlertDialog(setDialogState, null);
+          },
+        );
+      },
+    );
+  }
+
+>>>>>>> staging
   // --- Event list building ---
 
   Future<Iterable<Participant>> _getEventParticipants(Event event) async {
@@ -170,7 +483,7 @@ class _DataTabState extends State<DataTab> {
     final participants = await _getEventParticipants(event);
 
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
-    final hasRecording = event.eventSettings?.alwaysRecord! ?? false;
+    final hasRecording = event.eventSettings?.alwaysRecord ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 
