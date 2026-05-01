@@ -55,6 +55,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   bool pollsSuggestionsDataSelected = false;
 
   bool recordingAutoChecked = false;
+  bool isDownloading = false;
 
   late UserService _userService;
   late String _communityId;
@@ -263,6 +264,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Future<void> _handleDownload() async {
+    setState(() => isDownloading = true);
     try {
       if (showRecording && recordingSelected) {
         await downloadAllRecordings(widget.event);
@@ -278,14 +280,24 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       }
     } catch (e) {
       if (mounted) {
+        setState(() => isDownloading = false);
         showRegularToast(
           context,
           'Error: ${e.toString()}',
           toastType: ToastType.failed,
         );
       }
+      return;
     }
-    if (mounted) Navigator.of(context).pop();
+    if (mounted) {
+      setState(() => isDownloading = false);
+      Navigator.of(context).pop();
+      showRegularToast(
+        context,
+        context.l10n.downloadComplete,
+        toastType: ToastType.success,
+      );
+    }
   }
 
   bool _isDownloadEnabled(int? recordingParts) {
@@ -434,13 +446,29 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: isDownloading ? null : () => Navigator.of(context).pop(),
           child: Text(context.l10n.cancel),
         ),
         TextButton(
-          onPressed:
-              _isDownloadEnabled(recordingParts) ? _handleDownload : null,
-          child: Text(context.l10n.download),
+          onPressed: (_isDownloadEnabled(recordingParts) && !isDownloading)
+              ? _handleDownload
+              : null,
+          child: isDownloading
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(context.l10n.download),
+                  ],
+                )
+              : Text(context.l10n.download),
         ),
       ],
     );
