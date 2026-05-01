@@ -409,7 +409,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                 ),
                 // TODO: L10n
                 title: Text(
-                  'Chat Data ${isLoadingChats ? '(Loading...)' : '(${chatsLength < 0 ? '$chatsLength items)' : 'none'})'}',
+                  'Chat Data ${isLoadingChats ? '(Loading...)' : '(${chatsLength > 0 ? '$chatsLength items' : 'none'})'}',
                 ),
               ),
               CheckboxListTile(
@@ -419,7 +419,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                 ),
                 // TODO: L10n
                 title: Text(
-                  'Polls & Suggestions Data ${isLoadingPollsSuggestions ? '(Loading...)' : '(${pollsSuggestionsLength < 0 ? '$pollsSuggestionsLength items)' : 'none'})'}',
+                  'Polls & Suggestions Data ${isLoadingPollsSuggestions ? '(Loading...)' : '(${pollsSuggestionsLength > 0 ? '$pollsSuggestionsLength items' : 'none'})'}',
                 ),
               ),
             ],
