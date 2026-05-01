@@ -350,7 +350,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       if (mounted) {
         setState(() {
           isLoadingChats = false;
-          chatDataSelected = chatData.isNotEmpty;
         });
       }
 
@@ -367,8 +366,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       if (mounted) {
         setState(() {
           isLoadingPollsSuggestions = false;
-          pollsSuggestionsDataSelected =
-              suggestionData.isNotEmpty || pollData.isNotEmpty;
         });
       }
     } catch (e) {
