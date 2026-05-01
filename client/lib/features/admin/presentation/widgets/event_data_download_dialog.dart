@@ -332,7 +332,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
       if (mounted) {
         setState(() {
-          isLoadingPollsSuggestions = false;
+          isLoadingChats = false;
         });
       }
 
@@ -366,6 +366,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Widget _buildDialogContent(int? recordingParts) {
+    final chatsLength = chatData.length;
+    final pollsSuggestionsLength = suggestionData.length + pollData.length;
+
     return AlertDialog(
       title: Text(context.l10n.selectData),
       backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
@@ -402,7 +405,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                   () => chatDataSelected = value ?? false,
                 ),
                 // TODO: L10n
-                title: const Text('Chat Data'),
+                title: Text(
+                  'Chat Data ${isLoadingChats ? '(Loading...)' : '(${chatsLength < 0 ? '$chatsLength items)' : 'none'})'}',
+                ),
               ),
               CheckboxListTile(
                 value: pollsSuggestionsDataSelected,
@@ -410,7 +415,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                   () => pollsSuggestionsDataSelected = value ?? false,
                 ),
                 // TODO: L10n
-                title: const Text('Polls & Suggestions Data'),
+                title: Text(
+                  'Polls & Suggestions Data ${isLoadingPollsSuggestions ? '(Loading...)' : '(${pollsSuggestionsLength < 0 ? '$pollsSuggestionsLength items)' : 'none'})'}',
+                ),
               ),
             ],
           ),
