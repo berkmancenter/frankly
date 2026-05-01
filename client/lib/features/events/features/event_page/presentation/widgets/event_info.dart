@@ -236,6 +236,8 @@ class _EventInfoState extends State<EventInfo> {
       existingTitles,
     );
 
+    if (!mounted) return;
+
     await CreateTemplateDialog.show(
       communityPermissionsProvider:
           Provider.of<CommunityPermissionsProvider>(context, listen: false),
@@ -268,6 +270,7 @@ class _EventInfoState extends State<EventInfo> {
       onConfirm: (context) async {
         await alertOnError(context, () async {
           await _presenter.refreshEvent();
+          if (!context.mounted) return;
           Navigator.pop(context);
         });
       },
