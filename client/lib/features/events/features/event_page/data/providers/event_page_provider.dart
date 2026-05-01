@@ -35,12 +35,6 @@ Future<bool> verifyAvailableForEvent(Event event) async {
       .getLocalization()
       .pleaseConfirmAvailability(time, date);
 
-  // If event is being recorded, append recording consent text
-  if (event.eventSettings?.alwaysRecord == true) {
-    subText =
-        '$subText\n\n${appLocalizationService.getLocalization().thisEventIsBeingRecorded} ${appLocalizationService.getLocalization().organizerWillReceiveDownloadableCopy}';
-  }
-
   final cancel = await ConfirmDialog(
     title: appLocalizationService.getLocalization().confirm,
     subText: subText,

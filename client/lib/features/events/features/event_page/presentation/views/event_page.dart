@@ -179,7 +179,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
               builder: (context) => AlertDialog(
                 title: Text(context.l10n.thisEventIsBeingRecorded),
                 content: Text(
-                  context.l10n.organizerWillReceiveDownloadableCopy,
+                  context.l10n.hostWillReceiveDownloadableCopy,
                 ),
                 actions: [
                   TextButton(
