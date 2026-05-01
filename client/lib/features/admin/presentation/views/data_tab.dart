@@ -592,7 +592,6 @@ class _DataTabState extends State<DataTab> {
 
 class _DownloadDataButton extends StatelessWidget {
   const _DownloadDataButton({
-    super.key,
     required this.event,
     required this.hasRecording,
     required this.onShowDownloadDialog,
