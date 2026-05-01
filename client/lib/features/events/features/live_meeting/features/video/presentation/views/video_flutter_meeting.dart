@@ -112,10 +112,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
             softWrap: true,
           ),
           content: Text(
-            dialogContext.l10n.organizerBeganRecordingAt(
-              intl.DateFormat.jm().format(DateTime.now()),
-            ),
-            softWrap: true,
+            dialogContext.l10n.hostBeganRecording,
           ),
           actions: [
             TextButton(
@@ -149,24 +146,22 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final current =
+  Widget build(BuildContext context) {
+    final error = _conferenceRoom.connectError;
+    final alwaysRecord =
         EventProvider.watch(context).event.eventSettings?.alwaysRecord;
+
     // Pop an alert if event begins recording, but only if it wasn't already recording at the start
-    if (current == true && !eventRecordedOnStart && !previousAlwaysRecord) {
+    if (alwaysRecord == true &&
+        !eventRecordedOnStart &&
+        !previousAlwaysRecord) {
       // Trigger modal only on transition from non-true to true
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         _showRecordingAlert(context);
       });
     }
-    previousAlwaysRecord = current ?? false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final error = _conferenceRoom.connectError;
+    previousAlwaysRecord = alwaysRecord ?? false;
 
     if (error != null && error.trim().isNotEmpty) {
       return Column(
@@ -203,11 +198,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                   liveMeetingProvider: liveMeetingProvider,
                   conferenceRoom: _conferenceRoom,
                 ),
-                if (EventProvider.watch(context)
-                        .event
-                        .eventSettings
-                        ?.alwaysRecord ==
-                    true)
+                if (alwaysRecord == true)
                   _RecordingBadge(
                     liveMeetingProvider: liveMeetingProvider,
                   ),
