@@ -16,14 +16,18 @@ class EventDataDownloadDialog extends StatefulWidget {
     Key? key,
     required this.event,
     required this.participants,
+    required this.hasRecording,
     required this.recordingParts,
     required this.recordingNotifier,
+    required this.eventInPast,
   }) : super(key: key);
 
   final Event event;
   final Iterable<Participant> participants;
+  final bool hasRecording;
   final Map<String, int?> recordingParts;
   final ValueNotifier<int?>? recordingNotifier;
+  final bool eventInPast;
 
   @override
   State<EventDataDownloadDialog> createState() =>

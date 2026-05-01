@@ -258,20 +258,6 @@ class _DataTabState extends State<DataTab> {
     });
   }
 
-  void _showDownloadDialog(
-    Event event,
-    Iterable<Participant> participants,
-  ) {
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => EventDataDownloadDialog(
-        event: event,
-        participants: participants,
-        recordingNotifier: _recordingNotifiers[event.id],
-      ),
-    );
-  }
-
   // --- Event list building ---
 
   Future<Iterable<Participant>> _getEventParticipants(Event event) async {
@@ -443,7 +429,8 @@ class _DataTabState extends State<DataTab> {
                         participants: participants,
                         eventInPast: eventInPast,
                         hasRecording: hasRecording,
-                        onShowDownloadDialog: _showDownloadDialog,
+                        recordingParts: _recordingParts,
+                        recordingNotifiers: _recordingNotifiers,
                       ),
                     ],
                   ),
@@ -458,7 +445,8 @@ class _DataTabState extends State<DataTab> {
                       participants: participants,
                       eventInPast: eventInPast,
                       hasRecording: hasRecording,
-                      onShowDownloadDialog: _showDownloadDialog,
+                      recordingParts: _recordingParts,
+                      recordingNotifiers: _recordingNotifiers,
                     ),
                   ],
                 ),
@@ -593,17 +581,19 @@ class _DataTabState extends State<DataTab> {
 class _DownloadDataButton extends StatelessWidget {
   const _DownloadDataButton({
     required this.event,
-    required this.hasRecording,
-    required this.onShowDownloadDialog,
     required this.participants,
+    required this.hasRecording,
+    required this.recordingParts,
+    required this.recordingNotifiers,
     required this.eventInPast,
   });
 
   final Event event;
   final Iterable<Participant> participants;
-  final Function onShowDownloadDialog;
-  final bool eventInPast;
   final bool hasRecording;
+  final Map<String, int?> recordingParts;
+  final Map<String, ValueNotifier<int?>> recordingNotifiers;
+  final bool eventInPast;
 
   @override
   Widget build(BuildContext context) {
@@ -612,21 +602,25 @@ class _DownloadDataButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final showRecording = eventInPast && hasRecording;
-    final showRegistrant = participants.isNotEmpty;
-
     return ActionButton(
       type: ActionButtonType.text,
       icon: const Icon(Icons.file_download_outlined),
       loadingHeight: 16,
       borderSide: BorderSide(color: Theme.of(context).primaryColor),
       textColor: Theme.of(context).primaryColor,
-      onPressed: () => onShowDownloadDialog(
-        event,
-        participants,
-        showRecording,
-        showRegistrant,
-      ),
+      onPressed: () async {
+        await showDialog<void>(
+          context: context,
+          builder: (dialogContext) => EventDataDownloadDialog(
+            event: event,
+            participants: participants,
+            hasRecording: hasRecording,
+            recordingParts: recordingParts,
+            recordingNotifier: recordingNotifiers[event.id],
+            eventInPast: eventInPast,
+          ),
+        );
+      },
       text: context.l10n.dataDownload,
     );
   }
