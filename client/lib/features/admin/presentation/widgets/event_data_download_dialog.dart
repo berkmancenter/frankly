@@ -11,6 +11,7 @@ import 'package:client/styles/styles.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
+import 'package:data_models/user_input/poll_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
@@ -54,6 +55,15 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   bool recordingAutoChecked = false;
 
   late UserService _userService;
+
+  // We already load participants and recordings for all events at the top level.
+  // For performance reasons, we only check for other event data once the dialog is opened.
+  bool isLoadingChats = true;
+  List<ChatSuggestionData> chatData = [];
+
+  bool isLoadingPollsSuggestions = true;
+  List<ChatSuggestionData> suggestionData = [];
+  List<PollData> pollData = [];
 
   Future<void> downloadAllRecordings(Event event) async {
     final errorMsg = context.l10n.errorOccurred;
@@ -125,26 +135,32 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Future<void> downloadChatData(Event event) async {
-    // Get CommunityProvider from cotext before async operations.
+    // Get CommunityProvider from context before async operations.
     final communityProvider = CommunityProvider.read(context);
-    final request =
-        GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
-    final cloudFunctionResponse = await cloudFunctions.callFunction(
-      'GetMeetingChatSuggestionData',
-      request.toJson(),
-    );
-    final result =
-        GetMeetingChatsSuggestionsDataResponse.fromJson(cloudFunctionResponse);
-    final chatsData = result.chatsSuggestionsList
-            ?.where((e) => e.type == ChatSuggestionType.chat)
-            .toList() ??
-        [];
 
-    if (chatsData.isEmpty) {
-      if (mounted) {
-        showRegularToast(context, 'No chat data', toastType: ToastType.neutral);
+    // If empty, fall back to retrying the cloud fetch.
+    if (chatData.isEmpty) {
+      try {
+        final chatSuggestionRequest = GetMeetingChatsSuggestionsDataRequest(
+          eventPath: widget.event.fullPath,
+        );
+        final chatSuggestionResponse = await cloudFunctions.callFunction(
+          'GetMeetingChatSuggestionData',
+          chatSuggestionRequest.toJson(),
+        );
+        final chatSuggestionResult =
+            GetMeetingChatsSuggestionsDataResponse.fromJson(
+          chatSuggestionResponse,
+        );
+
+        chatData = chatSuggestionResult.chatsSuggestionsList
+                ?.where((e) => e.type == ChatSuggestionType.chat)
+                .toList() ??
+            [];
+      } catch (e) {
+        // If there's an error loading data, assume no data available
+        chatData = [];
       }
-      return;
     }
 
     final breakoutRooms = await getBreakoutRoomData(event: event);
@@ -153,8 +169,14 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       communityProvider: communityProvider,
     );
     provider.initialize();
+
+    // Reconstruct the response format for the CSV generator
+    final response = GetMeetingChatsSuggestionsDataResponse(
+      chatsSuggestionsList: chatData,
+    );
+
     await provider.generateChatDataCsv(
-      response: result,
+      response: response,
       eventId: event.id,
       breakoutRooms: breakoutRooms,
     );
@@ -162,26 +184,44 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   Future<void> downloadPollsSuggestionsData(Event event) async {
     final communityProvider = CommunityProvider.read(context);
-    final suggestionRequest =
-        GetMeetingChatsSuggestionsDataRequest(eventPath: event.fullPath);
-    final chatSuggestionResponse = await cloudFunctions.callFunction(
-      'GetMeetingChatSuggestionData',
-      suggestionRequest.toJson(),
-    );
-    final chatSuggestionResult =
-        GetMeetingChatsSuggestionsDataResponse.fromJson(chatSuggestionResponse);
-    final suggestionData = chatSuggestionResult.chatsSuggestionsList
-            ?.where((e) => e.type == ChatSuggestionType.suggestion)
-            .toList() ??
-        [];
 
-    final pollRequest = GetMeetingPollDataRequest(eventPath: event.fullPath);
-    final pollResponse = await cloudFunctions.callFunction(
-      'GetMeetingPollData',
-      pollRequest.toJson(),
-    );
-    final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
-    final pollData = pollResult.polls ?? [];
+    suggestionData = suggestionData;
+    pollData = pollData;
+
+    // If empty, fall back to retrying the cloud fetch.
+    if (suggestionData.isEmpty || pollData.isEmpty) {
+      try {
+        final chatSuggestionRequest = GetMeetingChatsSuggestionsDataRequest(
+          eventPath: widget.event.fullPath,
+        );
+        final chatSuggestionResponse = await cloudFunctions.callFunction(
+          'GetMeetingChatSuggestionData',
+          chatSuggestionRequest.toJson(),
+        );
+        final chatSuggestionResult =
+            GetMeetingChatsSuggestionsDataResponse.fromJson(
+          chatSuggestionResponse,
+        );
+
+        suggestionData = chatSuggestionResult.chatsSuggestionsList
+                ?.where((e) => e.type == ChatSuggestionType.suggestion)
+                .toList() ??
+            [];
+
+        final pollRequest =
+            GetMeetingPollDataRequest(eventPath: widget.event.fullPath);
+        final pollResponse = await cloudFunctions.callFunction(
+          'GetMeetingPollData',
+          pollRequest.toJson(),
+        );
+        final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
+        pollData = pollResult.polls ?? [];
+      } catch (e) {
+        // If there's an error loading data, assume no data available
+        suggestionData = [];
+        pollData = [];
+      }
+    }
 
     if (suggestionData.isEmpty && pollData.isEmpty) {
       if (mounted) {
@@ -260,6 +300,69 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     registrantListSelected = showRegistrant;
 
     _userService = UserService();
+
+    // Load chat and polls/suggestions data to check availability
+    _loadEventData();
+  }
+
+  Future<void> _loadEventData() async {
+    try {
+      // Load chat and suggestions data
+      final chatSuggestionRequest = GetMeetingChatsSuggestionsDataRequest(
+        eventPath: widget.event.fullPath,
+      );
+      final chatSuggestionResponse = await cloudFunctions.callFunction(
+        'GetMeetingChatSuggestionData',
+        chatSuggestionRequest.toJson(),
+      );
+      final chatSuggestionResult =
+          GetMeetingChatsSuggestionsDataResponse.fromJson(
+        chatSuggestionResponse,
+      );
+
+      chatData = chatSuggestionResult.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.chat)
+              .toList() ??
+          [];
+
+      suggestionData = chatSuggestionResult.chatsSuggestionsList
+              ?.where((e) => e.type == ChatSuggestionType.suggestion)
+              .toList() ??
+          [];
+
+      if (mounted) {
+        setState(() {
+          isLoadingPollsSuggestions = false;
+        });
+      }
+
+      // Load polls data
+      final pollRequest =
+          GetMeetingPollDataRequest(eventPath: widget.event.fullPath);
+      final pollResponse = await cloudFunctions.callFunction(
+        'GetMeetingPollData',
+        pollRequest.toJson(),
+      );
+      final pollResult = GetMeetingPollDataResponse.fromJson(pollResponse);
+      pollData = pollResult.polls ?? [];
+
+      if (mounted) {
+        setState(() {
+          isLoadingPollsSuggestions = false;
+        });
+      }
+    } catch (e) {
+      // If there's an error loading data, assume no data available
+      if (mounted) {
+        setState(() {
+          isLoadingChats = false;
+          isLoadingPollsSuggestions = false;
+          chatData = [];
+          suggestionData = [];
+          pollData = [];
+        });
+      }
+    }
   }
 
   Widget _buildDialogContent(int? recordingParts) {
