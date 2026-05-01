@@ -117,6 +117,16 @@
     }
   },
   "@enterWordCloudPrompt": {},
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@introBeforeBreakouts": {
     "placeholders": {
       "duration": {
@@ -329,6 +339,7 @@
   "cancel": "Cancel",
   "cancelCurrentPlan": "Cancel current plan?",
   "cancelEvent": "Cancel Event",
+  "cancelEventConfirmation": "Are you sure you want to cancel event? This cannot be undone and will notify all participants.",
   "cancelParticipation": "Cancel Participation",
   "cannotPlayVimeoVideo": "Cannot play Vimeo video",
   "cannotPlayYouTubeVideo": "Cannot play YouTube video",
@@ -363,6 +374,7 @@
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "congratulations": "Congratulations!",
   "contactEmail": "Contact email",
+  "continueButton": "Continue",
   "copiedToClipboard": "Copied to clipboard",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
   "create": "Create",
@@ -468,11 +480,14 @@
   "helpCenter": "Help Center",
   "hideAgendaItem": "Hide agenda item",
   "hidePassword": "Hide password",
+  "hostBeganRecording": "The host is now recording this event. They will\nreceive a downloadable copy of audio\nand video after this time.",
+  "hostWillReceiveDownloadableCopy": "The host will receive a downloadable copy of audio and video.",
   "hosted": "Hosted",
   "hostless": "Hostless",
   "howWasTheEvent": "How was the event?",
   "iAgreeToThe": "I agree to the ",
   "iCalCalendar": "iCal Calendar",
+  "illBeThere": "I'll be there!",
   "image": "Image",
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
@@ -493,6 +508,7 @@
   "linkedinUrl": "LinkedIn URL",
   "links": "Links",
   "livestream": "Livestream",
+  "leave": "Leave",
   "locked": "Locked",
   "loggingIn": "logging in",
   "login": "Login",
@@ -597,6 +613,7 @@
   "pickAColor": "Pick a color",
   "playsAt": "Plays at {time}",
   "pleaseAddSomeAnswers": "Please add some answers",
+  "pleaseConfirmAvailability": "Please confirm that you are available at {eventTime} on {eventDate} to participate in this event.",
   "pleaseEnterPassword": "Please enter a password",
   "pleaseEnterValidAmount": "Please enter a valid amount",
   "pleaseEnterValidEmail": "Please enter a valid email address.",
@@ -769,6 +786,8 @@
   "textTitle": "Text Title",
   "theme": "Theme",
   "thereWasAnErrorLoadingEventTemplates": "There was an error loading event templates.",
+  "thisEventIsBeingRecorded": "This event is being recorded.",
+  "thisEventIsNowBeingRecorded": "This event is now\nbeing recorded.",
   "thisEventIsLocked": "This event is locked",
   "thisUrlWasNotFound": "This URL was not found.",
   "thisUser": "this user",
@@ -818,6 +837,7 @@
   "wordCloudPromptRequired": "Word Cloud prompt is required",
   "wordList": "Word List",
   "yes": "Yes",
+  "yesCancel": "Yes, cancel",
   "yesDelete": "Yes, Delete",
   "you": "You",
   "youCanChangeThisLater": "You can change this later",

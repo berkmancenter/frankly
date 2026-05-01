@@ -250,6 +250,16 @@
       }
     }
   },
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@questionWithNumber": {
     "placeholders": {
       "number": {
@@ -402,6 +412,7 @@
   "cancel": "Cancelar",
   "cancelCurrentPlan": "¿Cancelar plan actual?",
   "cancelEvent": "Cancelar evento",
+  "cancelEventConfirmation": "¿Estás seguro de que quieres cancelar el evento? Esto no se puede deshacer y notificará a todos los participantes.",
   "cancelParticipation": "Cancelar participación",
   "cannotPlayVimeoVideo": "No se puede reproducir el video de Vimeo.",
   "cannotPlayYouTubeVideo": "No se puede reproducir el video de YouTube",
@@ -436,6 +447,7 @@
   "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
   "congratulations": "¡Felicidades!",
   "contactEmail": "Correo de contacto",
+  "continueButton": "Continuar",
   "copiedToClipboard": "Copiado al portapapeles",
   "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
   "create": "Crear",
@@ -541,11 +553,14 @@
   "helpCenter": "Centro de Ayuda",
   "hideAgendaItem": "Ocultar elemento de agenda",
   "hidePassword": "Ocultar contraseña",
+  "hostBeganRecording": "El anfitrión está grabando este evento. Recibirán una copia descargable de audio y video después de este momento.",
+  "hostWillReceiveDownloadableCopy": "El anfitrión recibirá una copia descargable de audio y video.",
   "hosted": "Con anfitrión",
   "hostless": "Sin anfitrión",
   "howWasTheEvent": "¿Cómo fue el evento?",
   "iAgreeToThe": "Acepto los ",
   "iCalCalendar": "iCal Calendar",
+  "illBeThere": "¡Estaré allí!",
   "image": "Imagen",
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
@@ -562,6 +577,7 @@
   "language": "Idioma",
   "languageSelector": "Selector de idioma",
   "lastSession": "Última sesión",
+  "leave": "Salir",
   "lightColorHex": "Color claro HEX#",
   "linkedinUrl": "URL de LinkedIn",
   "links": "Enlaces",
@@ -670,6 +686,7 @@
   "pickAColor": "Elige un color",
   "playsAt": "Comienza a las {time}",
   "pleaseAddSomeAnswers": "Por favor, agregue algunas respuestas",
+  "pleaseConfirmAvailability": "Por favor, confirme que está disponible a las {eventTime} del {eventDate} para participar en este evento.",
   "pleaseEnterPassword": "Por favor, introduzca una contraseña",
   "pleaseEnterValidAmount": "Por favor, ingrese un monto válido",
   "pleaseEnterValidEmail": "Por favor, introduzca una dirección de email válida.",
@@ -842,6 +859,8 @@
   "textTitle": "Título de texto",
   "theme": "Tema",
   "thereWasAnErrorLoadingEventTemplates": "Hubo un error al cargar las plantillas de eventos.",
+  "thisEventIsBeingRecorded": "Este evento está siendo grabado.",
+  "thisEventIsNowBeingRecorded": "Este evento ahora está\nsiendo grabado.",
   "thisEventIsLocked": "Este evento está bloqueado",
   "thisUrlWasNotFound": "Esta URL no se encontró.",
   "thisUser": "este usuario",
@@ -891,6 +910,7 @@
   "wordCloudPromptRequired": "Por favor, introduzca una palabra para la nube de palabras",
   "wordList": "Lista de palabras",
   "yes": "Sí",
+  "yesCancel": "Sí, cancelar",
   "yesDelete": "Sí, eliminar",
   "you": "Tú",
   "youCanChangeThisLater": "Puedes cambiar esto más tarde",

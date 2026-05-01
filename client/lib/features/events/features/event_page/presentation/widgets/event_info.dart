@@ -236,6 +236,8 @@ class _EventInfoState extends State<EventInfo> {
       existingTitles,
     );
 
+    if (!mounted) return;
+
     await CreateTemplateDialog.show(
       communityPermissionsProvider:
           Provider.of<CommunityPermissionsProvider>(context, listen: false),
@@ -268,6 +270,7 @@ class _EventInfoState extends State<EventInfo> {
       onConfirm: (context) async {
         await alertOnError(context, () async {
           await _presenter.refreshEvent();
+          if (!context.mounted) return;
           Navigator.pop(context);
         });
       },
@@ -302,6 +305,7 @@ class _EventInfoState extends State<EventInfo> {
           breakoutRooms: breakoutRooms,
         );
       } else {
+        if (!mounted) return;
         showRegularToast(
           context,
           'No members data',
@@ -331,6 +335,7 @@ class _EventInfoState extends State<EventInfo> {
           breakoutRooms: breakoutRooms,
         );
       } else {
+        if (!mounted) return;
         showRegularToast(
           context,
           'No chat data',
@@ -364,6 +369,7 @@ class _EventInfoState extends State<EventInfo> {
           breakoutRooms: breakoutRooms,
         );
       } else {
+        if (!mounted) return;
         showRegularToast(
           context,
           'No polls or suggestions data',
