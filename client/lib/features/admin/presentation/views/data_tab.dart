@@ -7,6 +7,7 @@ import 'package:client/core/routing/locations.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
+import 'package:client/features/admin/presentation/widgets/event_data_download_dialog.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/features/user/data/services/user_service.dart';
@@ -48,7 +49,6 @@ class _DataTabState extends State<DataTab> {
 
   // After this many auto-retries (~30 seconds at 5s intervals), stop polling
   // and show the error/manual-retry state instead.
-  static const int _maxAutoRetries = 6;
   late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
@@ -299,149 +299,16 @@ class _DataTabState extends State<DataTab> {
       _recordingNotifiers[event.id]?.value = urls.length;
     });
   }
-
-  String _recordingAnnotation(BuildContext context, int? parts) {
-    if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
-    if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
-    if (parts == -1) return ' ${context.l10n.recordingStatusFailed}';
-    return ' ${context.l10n.recordingStatusParts(parts)}';
-  }
-
   void _showDownloadDialog(
     Event event,
     Iterable<Participant> participants,
-    bool showRecording,
-    bool showRegistrant,
   ) {
-    bool recordingSelected =
-        showRecording && (_recordingParts[event.id] ?? 0) > 0;
-    bool recordingAutoChecked = recordingSelected;
-    bool registrantListSelected = showRegistrant;
-    bool chatDataSelected = false;
-    bool pollsSuggestionsDataSelected = false;
-
     showDialog<void>(
       context: context,
-      builder: (dialogContext) {
-        AlertDialog buildAlertDialog(StateSetter setDialogState, int? parts) {
-          void pressedHandler() async {
-            try {
-              if (showRecording && recordingSelected) {
-                await downloadAllRecordings(event);
-              }
-              if (showRegistrant && registrantListSelected) {
-                await downloadRegistrantList(event, participants);
-              }
-              if (chatDataSelected) {
-                await downloadChatData(event);
-              }
-              if (pollsSuggestionsDataSelected) {
-                await downloadPollsSuggestionsData(event);
-              }
-            } catch (e) {
-              if (dialogContext.mounted) {
-                showRegularToast(
-                  dialogContext,
-                  'Error: ${e.toString()}',
-                  toastType: ToastType.failed,
-                );
-              }
-            }
-            if (dialogContext.mounted) Navigator.of(dialogContext).pop();
-          }
-
-          final recordingReady = showRecording && (parts ?? 0) > 0;
-          final downloadEnabled =
-              (showRecording && recordingSelected && recordingReady) ||
-                  (showRegistrant && registrantListSelected) ||
-                  chatDataSelected ||
-                  pollsSuggestionsDataSelected;
-
-          return AlertDialog(
-            title: Text(context.l10n.selectData),
-            backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
-            contentPadding: EdgeInsets.zero,
-            actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
-            content: Material(
-              color: context.theme.colorScheme.surfaceContainer,
-              child: SingleChildScrollView(
-                child: ListBody(
-                  children: [
-                    if (showRecording)
-                      CheckboxListTile(
-                        value: recordingSelected,
-                        enabled: parts != null && parts != 0,
-                        onChanged: (value) => setDialogState(
-                          () => recordingSelected = value ?? false,
-                        ),
-                        title: Text(
-                          '${context.l10n.recording}${_recordingAnnotation(context, parts)}',
-                        ),
-                      ),
-                    if (showRegistrant)
-                      CheckboxListTile(
-                        value: registrantListSelected,
-                        onChanged: (value) => setDialogState(
-                          () => registrantListSelected = value ?? false,
-                        ),
-                        title: Text(context.l10n.registrationDataDownload),
-                      ),
-                    CheckboxListTile(
-                      value: chatDataSelected,
-                      onChanged: (value) => setDialogState(
-                        () => chatDataSelected = value ?? false,
-                      ),
-                      // TODO: L10n
-                      title: const Text('Chat Data'),
-                    ),
-                    CheckboxListTile(
-                      value: pollsSuggestionsDataSelected,
-                      onChanged: (value) => setDialogState(
-                        () => pollsSuggestionsDataSelected = value ?? false,
-                      ),
-                      // TODO: L10n
-                      title: const Text('Polls & Suggestions Data'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: Text(context.l10n.cancel),
-              ),
-              TextButton(
-                onPressed: downloadEnabled ? pressedHandler : null,
-                child: Text(context.l10n.download),
-              ),
-            ],
-          );
-        }
-
-        return StatefulBuilder(
-          builder: (ctx, setDialogState) {
-            if (showRecording) {
-              final notifier = _recordingNotifiers[event.id] ??=
-                  ValueNotifier(_recordingParts[event.id]);
-              return ValueListenableBuilder<int?>(
-                valueListenable: notifier,
-                builder: (ctx2, parts, _) {
-                  if ((parts ?? 0) > 0 && !recordingAutoChecked) {
-                    recordingAutoChecked = true;
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setDialogState(() => recordingSelected = true);
-                    });
-                  }
-                  return buildAlertDialog(setDialogState, parts);
-                },
-              );
-            }
-            return buildAlertDialog(setDialogState, null);
-          },
-        );
-      },
+      builder: (dialogContext) => EventDataDownloadDialog(
+        event: event,
+        participants: participants,
+      ),
     );
   }
 
