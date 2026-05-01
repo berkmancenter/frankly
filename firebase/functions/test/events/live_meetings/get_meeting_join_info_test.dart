@@ -1,6 +1,9 @@
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:firebase_admin_interop/firebase_admin_interop.dart'
+    as admin_interop;
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:functions/events/live_meetings/live_meeting_utils.dart';
+import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:get_it/get_it.dart';
 import 'package:functions/events/live_meetings/get_meeting_join_info.dart';
 import 'package:data_models/events/event.dart';
@@ -137,6 +140,66 @@ void main() {
               e is HttpsError &&
               e.code == HttpsError.failedPrecondition &&
               e.message == 'unauthorized',
+        ),
+      ),
+    );
+  });
+
+  test('Rejects join when meeting has already ended', () async {
+    var event = Event(
+      id: '5678',
+      status: EventStatus.active,
+      communityId: communityId,
+      templateId: templateId,
+      creatorId: userId,
+      nullableEventType: EventType.hosted,
+      collectionPath: '',
+      agendaItems: [
+        AgendaItem(
+          id: '555',
+          title: 'Test Agenda',
+          content: 'Test Content',
+        ),
+      ],
+    );
+    event = await eventUtils.createEvent(
+      event: event,
+      userId: userId,
+    );
+
+    // Create LiveMeeting doc with a meeting event.
+    await liveMeetingTestUtils.addMeetingEvent(
+      liveMeetingPath: liveMeetingTestUtils.getLiveMeetingPath(event),
+      liveMeetingId: event.id,
+      meetingEvent: LiveMeetingEvent(
+        agendaItem: event.agendaItems.first.id,
+        event: LiveMeetingEventType.agendaItemStarted,
+      ),
+    );
+
+    // Set meetingEndedAt on the LiveMeeting doc to simulate an ended meeting.
+    final liveMeetingPath = liveMeetingTestUtils.getLiveMeetingPath(event);
+    await firestore.document(liveMeetingPath).updateData(
+          admin_interop.UpdateData.fromMap({
+            LiveMeeting.kFieldMeetingEndedAt:
+                admin_interop.Firestore.fieldValues.serverTimestamp(),
+          }),
+        );
+
+    final req = GetMeetingJoinInfoRequest(eventPath: event.fullPath);
+    final getMeetingJoinInfo = GetMeetingJoinInfo();
+
+    expect(
+      () => getMeetingJoinInfo.action(
+        req,
+        CallableContext(userId, null, 'fakeInstanceId'),
+      ),
+      throwsA(
+        predicate(
+          (e) =>
+              e is HttpsError &&
+              e.code == HttpsError.failedPrecondition &&
+              e.message == 'meeting-ended',
         ),
       ),
     );
