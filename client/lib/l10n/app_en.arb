@@ -177,13 +177,6 @@
       }
     }
   },
-  "@organizerBeganRecordingAt": {
-    "placeholders": {
-      "timestamp": {
-        "type": "String"
-      }
-    }
-  },
   "@participantActionsForUserWithId": {
     "description": "Semantic label for participant actions, with userId as parameter.",
     "placeholders": {
@@ -487,6 +480,8 @@
   "helpCenter": "Help Center",
   "hideAgendaItem": "Hide agenda item",
   "hidePassword": "Hide password",
+  "hostBeganRecording": "The host is now recording this event. They will\nreceive a downloadable copy of audio\nand video after this time.",
+  "hostWillReceiveDownloadableCopy": "The host will receive a downloadable copy of audio and video.",
   "hosted": "Hosted",
   "hostless": "Hostless",
   "howWasTheEvent": "How was the event?",
@@ -591,8 +586,6 @@
   "onboardingInviteSomeoneSubtitle": "Follow along for upcoming events, resources, and more.",
   "optional": "Optional",
   "or": "Or",
-  "organizerWillReceiveDownloadableCopy": "The organizer will receive a downloadable copy of audio and video.",
-  "organizerBeganRecordingAt": "The organizer began recording this\nevent at {timestamp}. They will\nreceive a downloadable copy of audio\nand video after this time.",
   "otherDataDownload": "Polls, Suggestions and Chat can be downloaded from the event page.",
   "otherDataDownloadAction": "Go to Event Page",
   "outlookCalendar": "Outlook Calendar",

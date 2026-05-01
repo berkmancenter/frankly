@@ -220,13 +220,6 @@
       }
     }
   },
-  "@organizerBeganRecordingAt": {
-    "placeholders": {
-      "timestamp": {
-        "type": "String"
-      }
-    }
-  },
   "@participantActionsForUserWithId": {
     "description": "Etiqueta semántica para acciones del participante, con userId como parámetro.",
     "placeholders": {
@@ -560,6 +553,8 @@
   "helpCenter": "Centro de Ayuda",
   "hideAgendaItem": "Ocultar elemento de agenda",
   "hidePassword": "Ocultar contraseña",
+  "hostBeganRecording": "El anfitrión está grabando este evento. Recibirán una copia descargable de audio y video después de este momento.",
+  "hostWillReceiveDownloadableCopy": "El anfitrión recibirá una copia descargable de audio y video.",
   "hosted": "Con anfitrión",
   "hostless": "Sin anfitrión",
   "howWasTheEvent": "¿Cómo fue el evento?",
@@ -664,8 +659,6 @@
   "onboardingInviteSomeoneSubtitle": "Sigue los próximos eventos, recursos y más.",
   "optional": "Opcional",
   "or": "O",
-  "organizerBeganRecordingAt": "El organizador comenzó a grabar este\nevento a las {timestamp}. Recibirán una\ncopia descargable de audio\ny video después de este momento.",
-  "organizerWillReceiveDownloadableCopy": "El organizador recibirá una copia descargable de audio y video.",
   "outlookCalendar": "Outlook Calendar",
   "otherDataDownload": "Las encuestas, sugerencias y chat se pueden descargar desde la página del evento.",
   "otherDataDownloadAction": "Ir a la página del evento",

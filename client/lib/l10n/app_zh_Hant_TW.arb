@@ -221,13 +221,6 @@
       }
     }
   },
-  "@organizerBeganRecordingAt": {
-    "placeholders": {
-      "timestamp": {
-        "type": "String"
-      }
-    }
-  },
   "@participantActionsForUserWithId": {
     "description": "参与者操作的语义标签，带有userId参数。",
     "placeholders": {
@@ -562,6 +555,8 @@
   "helpCenter": "幫助中心",
   "hideAgendaItem": "隱藏議程項目",
   "hidePassword": "隐藏密码",
+  "hostBeganRecording": "主持人已開始錄製此活動。他們將在此時間後收到可下載的音頻和視頻副本。",
+  "hostWillReceiveDownloadableCopy": "主持人將收到可下載的音頻和視頻副本。",
   "hosted": "有主持人",
   "hostless": "無主持人",
   "howWasTheEvent": "活動感覺如何？",
@@ -667,8 +662,6 @@
   "onboardingInviteSomeoneSubtitle": "追蹤即將到來的活動、資源等更多內容。",
   "optional": "可選",
   "or": "或者",
-  "organizerBeganRecordingAt": "主辦方於 {timestamp} 開始錄製此活動。他們將在此時間後收到可下載的音頻和視頻副本。",
-  "organizerWillReceiveDownloadableCopy": "主辦方將收到可下載的音頻和視頻副本。",
   "outlookCalendar": "Outlook 日曆",
   "otherDataDownload": "投票、建議和聊天可以從活動頁面下載。",
   "otherDataDownloadAction": "前往活動頁面",
