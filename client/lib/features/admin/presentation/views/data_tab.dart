@@ -260,46 +260,6 @@ class _DataTabState extends State<DataTab> {
     });
   }
 
-  Future<void> downloadAllRecordings(Event event) async {
-    final errorMsg = context.l10n.errorOccurred;
-    final preparingMsg = context.l10n.recordingPreparing;
-    await alertOnError(context, () async {
-      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
-      if (idToken == null) throw Exception(errorMsg);
-      final response = await http.post(
-        Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
-        headers: {
-          'Authorization': 'Bearer $idToken',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'eventPath': event.fullPath}),
-      );
-      if (response.statusCode != 200) {
-        throw Exception(errorMsg);
-      }
-      final body = jsonDecode(response.body) as Map<String, dynamic>;
-      final rawList = body['recordings'];
-      if (rawList is! List || rawList.isEmpty) {
-        throw Exception(preparingMsg);
-      }
-      final urls = rawList
-          .whereType<Map<String, dynamic>>()
-          .map((r) => r['url'] as String? ?? '')
-          .where((url) => url.isNotEmpty)
-          .toList();
-      for (int i = 0; i < urls.length; i++) {
-        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
-        html.document.body!.append(anchor);
-        anchor.click();
-        anchor.remove();
-        if (i < urls.length - 1) {
-          await Future.delayed(const Duration(milliseconds: 300));
-        }
-      }
-      setState(() => _recordingParts[event.id] = urls.length);
-      _recordingNotifiers[event.id]?.value = urls.length;
-    });
-  }
   void _showDownloadDialog(
     Event event,
     Iterable<Participant> participants,
@@ -309,6 +269,7 @@ class _DataTabState extends State<DataTab> {
       builder: (dialogContext) => EventDataDownloadDialog(
         event: event,
         participants: participants,
+        recordingNotifier: _recordingNotifiers[event.id],
       ),
     );
   }

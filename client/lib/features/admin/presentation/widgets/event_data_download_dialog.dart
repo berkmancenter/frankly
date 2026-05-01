@@ -1,18 +1,29 @@
+import 'dart:convert';
+
+import 'package:client/config/environment.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart' as html;
+import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:data_models/events/event.dart';
 import 'package:flutter/material.dart';
 
 class EventDataDownloadDialog extends StatefulWidget {
-  final Event event;
-  final Iterable<Participant> participants;
-
   const EventDataDownloadDialog({
     Key? key,
     required this.event,
     required this.participants,
+    required this.recordingParts,
+    required this.recordingNotifier,
   }) : super(key: key);
+
+  final Event event;
+  final Iterable<Participant> participants;
+  final Map<String, int?> recordingParts;
+  final ValueNotifier<int?>? recordingNotifier;
 
   @override
   State<EventDataDownloadDialog> createState() =>
@@ -62,15 +73,15 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           await Future.delayed(const Duration(milliseconds: 300));
         }
       }
-      setState(() => _recordingParts[event.id] = urls.length);
-      _recordingNotifiers[event.id]?.value = urls.length;
+      setState(() => widget.recordingParts[event.id] = urls.length);
+      widget.recordingNotifier?.value = urls.length;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    final recordingParts = widget.recordingNotifier?.value ?? 0;
+    final recordingParts = widget.recordingNotifier.value ?? 0;
     recordingSelected = widget.showRecording && recordingParts > 0;
     recordingAutoChecked = recordingSelected;
     registrantListSelected = widget.showRegistrant;
@@ -184,9 +195,11 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.showRecording && widget.recordingNotifier != null) {
+    if (widget.showRecording) {
+      final notifier = widget.recordingNotifier ??
+          ValueNotifier(widget.recordingParts[widget.event.id]);
       return ValueListenableBuilder<int?>(
-        valueListenable: widget.recordingNotifier!,
+        valueListenable: notifier,
         builder: (context, recordingParts, _) {
           // Auto-check recording when it becomes ready
           if ((recordingParts ?? 0) > 0 && !recordingAutoChecked) {
