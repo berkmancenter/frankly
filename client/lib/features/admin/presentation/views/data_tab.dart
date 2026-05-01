@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/admin/presentation/widgets/event_data_download_dialog.dart';
@@ -27,7 +26,6 @@ import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:data_models/events/event.dart';
-import 'package:universal_html/html.dart' as html;
 
 class DataTab extends StatefulWidget {
   const DataTab({Key? key}) : super(key: key);
