@@ -49,6 +49,7 @@ class _DataTabState extends State<DataTab> {
 
   // After this many auto-retries (~30 seconds at 5s intervals), stop polling
   // and show the error/manual-retry state instead.
+  static const int _maxAutoRetries = 6;
   late StreamSubscription<List<Event>> _eventsSubscription;
 
   @override
