@@ -29,6 +29,7 @@ class EventDataDownloadDialog extends StatefulWidget {
     required this.recordingParts,
     required this.recordingNotifier,
     required this.eventInPast,
+    required this.communityProvider,
   }) : super(key: key);
 
   final Event event;
@@ -37,6 +38,7 @@ class EventDataDownloadDialog extends StatefulWidget {
   final Map<String, int?> recordingParts;
   final ValueNotifier<int?>? recordingNotifier;
   final bool eventInPast;
+  final CommunityProvider communityProvider;
 
   @override
   State<EventDataDownloadDialog> createState() =>
@@ -55,6 +57,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   bool recordingAutoChecked = false;
 
   late UserService _userService;
+  late String _communityId;
 
   // We already load participants and recordings for all events at the top level.
   // For performance reasons, we only check for other event data once the dialog is opened.
@@ -110,18 +113,16 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     Event event,
     Iterable<Participant> participants,
   ) async {
-    final communityProvider = CommunityProvider.read(context);
-
     final List<String> userIds = participants.map((p) => p.id).toList();
     final members = await _userService.getMemberDetails(
       membersList: userIds,
-      communityId: communityProvider.communityId,
+      communityId: _communityId,
       eventPath: event.fullPath,
     );
 
     EventProvider provider = EventProvider.fromEvent(
       event,
-      communityProvider: communityProvider,
+      communityProvider: widget.communityProvider,
     );
 
     provider.initialize();
@@ -135,9 +136,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Future<void> downloadChatData(Event event) async {
-    // Get CommunityProvider from context before async operations.
-    final communityProvider = CommunityProvider.read(context);
-
     // If empty, fall back to retrying the cloud fetch.
     if (chatData.isEmpty) {
       try {
@@ -166,7 +164,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     final breakoutRooms = await getBreakoutRoomData(event: event);
     EventProvider provider = EventProvider.fromEvent(
       event,
-      communityProvider: communityProvider,
+      communityProvider: widget.communityProvider,
     );
     provider.initialize();
 
@@ -183,8 +181,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Future<void> downloadPollsSuggestionsData(Event event) async {
-    final communityProvider = CommunityProvider.read(context);
-
     suggestionData = suggestionData;
     pollData = pollData;
 
@@ -237,7 +233,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     final breakoutRooms = await getBreakoutRoomData(event: event);
     EventProvider provider = EventProvider.fromEvent(
       event,
-      communityProvider: communityProvider,
+      communityProvider: widget.communityProvider,
     );
     provider.initialize();
     await provider.generatePollsSuggestionsDataCsv(
@@ -300,6 +296,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     registrantListSelected = showRegistrant;
 
     _userService = UserService();
+    _communityId = widget.event.communityId;
 
     // Load chat and polls/suggestions data to check availability
     _loadEventData();

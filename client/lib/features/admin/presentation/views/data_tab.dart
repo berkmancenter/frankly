@@ -481,6 +481,8 @@ class _DownloadDataButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    final communityProvider = CommunityProvider.read(context);
+
     return ActionButton(
       type: ActionButtonType.text,
       icon: const Icon(Icons.file_download_outlined),
@@ -497,6 +499,7 @@ class _DownloadDataButton extends StatelessWidget {
             recordingParts: recordingParts,
             recordingNotifier: recordingNotifiers[event.id],
             eventInPast: eventInPast,
+            communityProvider: communityProvider,
           ),
         );
       },
