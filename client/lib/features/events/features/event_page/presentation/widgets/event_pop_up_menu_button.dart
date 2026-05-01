@@ -12,9 +12,6 @@ enum EventPopUpMenuSelection {
   duplicateTemplate,
   createGuideFromEvent,
   duplicateEvent,
-  downloadChatData,
-  downloadPollsSuggestionsData,
-  downloadRegistrationData,
   cancelEvent,
 }
 
@@ -49,11 +46,6 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         EventPopUpMenuSelection.duplicateTemplate,
       if (!eventHasTemplate) EventPopUpMenuSelection.createGuideFromEvent,
       if (permissions.canDuplicateEvent) EventPopUpMenuSelection.duplicateEvent,
-      if (permissions.canDownloadRegistrationData) ...[
-        EventPopUpMenuSelection.downloadRegistrationData,
-        EventPopUpMenuSelection.downloadChatData,
-        EventPopUpMenuSelection.downloadPollsSuggestionsData,
-      ],
       if (permissions.canCancelEvent) EventPopUpMenuSelection.cancelEvent,
     ];
   }
@@ -136,12 +128,6 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         return context.l10n.createTemplateFromEvent;
       case EventPopUpMenuSelection.duplicateEvent:
         return context.l10n.duplicateEvent;
-      case EventPopUpMenuSelection.downloadRegistrationData:
-        return context.l10n.downloadMembersRegistrationData;
-      case EventPopUpMenuSelection.downloadChatData:
-        return context.l10n.downloadChatData;
-      case EventPopUpMenuSelection.downloadPollsSuggestionsData:
-        return context.l10n.downloadPollsSuggestionsData;
       case EventPopUpMenuSelection.cancelEvent:
         return context.l10n.cancelEvent;
     }
@@ -159,12 +145,6 @@ class _EventPopUpMenuButtonState extends State<EventPopUpMenuButton> {
         return Icons.bookmark_add_outlined;
       case EventPopUpMenuSelection.duplicateEvent:
         return Icons.copy;
-      case EventPopUpMenuSelection.downloadRegistrationData:
-        return Icons.people_outline_outlined;
-      case EventPopUpMenuSelection.downloadChatData:
-        return Icons.message_outlined;
-      case EventPopUpMenuSelection.downloadPollsSuggestionsData:
-        return Icons.thumb_up_outlined;
       case EventPopUpMenuSelection.cancelEvent:
         return Icons.close;
     }

@@ -402,15 +402,6 @@ class _EventInfoState extends State<EventInfo> {
           case EventPopUpMenuSelection.cancelEvent:
             _cancelEvent();
             break;
-          case EventPopUpMenuSelection.downloadRegistrationData:
-            _downloadRegistrationData();
-            break;
-          case EventPopUpMenuSelection.downloadChatData:
-            _downloadChatData();
-            break;
-          case EventPopUpMenuSelection.downloadPollsSuggestionsData:
-            _downloadPollsSuggestionsData();
-            break;
         }
       },
       isMobile: isMobile,
