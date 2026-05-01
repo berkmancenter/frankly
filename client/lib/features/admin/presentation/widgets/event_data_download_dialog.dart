@@ -193,9 +193,6 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Future<void> downloadPollsSuggestionsData(Event event) async {
-    suggestionData = suggestionData;
-    pollData = pollData;
-
     // If empty, fall back to retrying the cloud fetch.
     if (suggestionData.isEmpty || pollData.isEmpty) {
       try {
