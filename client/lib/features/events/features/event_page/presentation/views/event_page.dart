@@ -170,7 +170,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
             return false;
           }
 
-          // If the event is always recorded, show a consent dialog befo re joining
+          // If the event is always recorded, show a consent dialog before joining
           if(!mounted) return false;
           if (context.read<EventProvider>().event.eventSettings?.alwaysRecord ==
               true) {
