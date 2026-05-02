@@ -237,12 +237,17 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               style: context.theme.textTheme.headlineSmall!,
             ),
             SizedBox(height: 40),
-            for (final feature in _model.eventSettings.toJson().keys.toList())
+            for (final entry
+                in _model.eventSettings.toJson().entries.where(
+                      (e) =>
+                          e.key !=
+                          EventSettings.kFieldAutoEndGracePeriodMinutes,
+                    ))
               CustomSwitchTile(
                 onUpdate: (isSelected) =>
-                    _presenter.updateSetting(feature, isSelected),
-                text: feature,
-                val: _model.eventSettings.toJson()[feature] ?? false,
+                    _presenter.updateSetting(entry.key, isSelected),
+                text: entry.key,
+                val: (entry.value as bool?) ?? false,
                 style: context.theme.textTheme.bodyMedium,
               ),
           ],
