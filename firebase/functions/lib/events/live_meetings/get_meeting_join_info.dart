@@ -102,23 +102,28 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       );
     }
 
-    // On first join, schedule automatic meeting end if the event has a
-    // scheduled time and duration.
+    // On first join, schedule automatic meeting end if the event has
+    // autoEndMeeting enabled, a scheduled time, and a duration.
     if (result.isFirstJoin) {
       final event = await firestoreUtils.getFirestoreObject(
         path: request.eventPath,
         constructor: (map) => Event.fromJson(map),
       );
-      final scheduledTime = event.scheduledTime;
-      if (scheduledTime != null) {
-        final endTime = scheduledTime.add(
-          Duration(minutes: event.durationInMinutes),
-        );
-        if (endTime.isAfter(DateTime.now())) {
-          await ScheduledEndMeeting().schedule(
-            EndMeetingForAllRequest(eventPath: request.eventPath),
-            endTime,
+      final autoEnd = event.eventSettings?.autoEndMeeting ?? false;
+      if (autoEnd) {
+        final scheduledTime = event.scheduledTime;
+        if (scheduledTime != null) {
+          final gracePeriod =
+              event.eventSettings?.autoEndGracePeriodMinutes ?? 0;
+          final endTime = scheduledTime.add(
+            Duration(minutes: event.durationInMinutes + gracePeriod),
           );
+          if (endTime.isAfter(DateTime.now())) {
+            await ScheduledEndMeeting().schedule(
+              EndMeetingForAllRequest(eventPath: request.eventPath),
+              endTime,
+            );
+          }
         }
       }
     }

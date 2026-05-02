@@ -133,6 +133,65 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           SizedBox(height: 16),
           _SwitchAndTooltip(
             onUpdate: (isSelected) => _presenter.updateSetting(
+              EventSettings.kFieldAutoEndMeeting,
+              isSelected,
+            ),
+            text: 'Auto-end meeting',
+            val: _model.eventSettings.autoEndMeeting ?? false,
+            isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
+              (settings) => settings.autoEndMeeting,
+            ),
+          ),
+          if (_model.eventSettings.autoEndMeeting == true) ...[
+            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: HeightConstrainedText(
+                      'Grace period (minutes):',
+                      style: context.theme.textTheme.bodyMedium,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 64,
+                    child: TextField(
+                      controller: TextEditingController(
+                        text: (_model.eventSettings
+                                    .autoEndGracePeriodMinutes ??
+                                0)
+                            .toString(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      style: context.theme.textTheme.bodyMedium,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        final parsed = int.tryParse(value);
+                        if (parsed != null && parsed >= 0) {
+                          _presenter.updateSettingValue(
+                            EventSettings.kFieldAutoEndGracePeriodMinutes,
+                            parsed,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          SizedBox(height: 16),
+          _SwitchAndTooltip(
+            onUpdate: (isSelected) => _presenter.updateSetting(
               EventSettings.kFieldTalkingTimer,
               isSelected,
             ),
