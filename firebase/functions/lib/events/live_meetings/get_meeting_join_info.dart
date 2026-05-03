@@ -93,10 +93,14 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
             Duration(minutes: event.durationInMinutes + gracePeriod),
           );
           if (endTime.isAfter(DateTime.now())) {
-            await ScheduledEndMeeting().schedule(
-              EndMeetingForAllRequest(eventPath: request.eventPath),
-              endTime,
-            );
+            try {
+              await ScheduledEndMeeting().schedule(
+                EndMeetingForAllRequest(eventPath: request.eventPath),
+                endTime,
+              );
+            } catch (e) {
+              print('Failed to schedule auto-end task: $e');
+            }
           }
         }
       }
