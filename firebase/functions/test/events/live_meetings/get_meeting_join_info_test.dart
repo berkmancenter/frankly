@@ -138,7 +138,7 @@ void main() {
         predicate(
           (e) =>
               e is HttpsError &&
-              e.code == HttpsError.failedPrecondition &&
+              e.code == HttpsError.permissionDenied &&
               e.message == 'unauthorized',
         ),
       ),

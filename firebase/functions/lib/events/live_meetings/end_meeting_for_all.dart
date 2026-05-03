@@ -48,7 +48,7 @@ class EndMeetingForAll extends OnCallMethod<EndMeetingForAllRequest> {
       MembershipStatus.owner,
     ];
     if (!allowedStatuses.contains(membership.status)) {
-      throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
+      throw HttpsError(HttpsError.permissionDenied, 'unauthorized', null);
     }
 
     // Atomically set meetingEndedAt. If already set, return (idempotent).

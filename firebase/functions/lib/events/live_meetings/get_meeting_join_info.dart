@@ -35,7 +35,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       );
 
       if (participant.status != ParticipantStatus.active) {
-        throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
+        throw HttpsError(HttpsError.permissionDenied, 'unauthorized', null);
       }
 
       // Reject join if the meeting has already ended.
