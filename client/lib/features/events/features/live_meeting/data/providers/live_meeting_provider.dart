@@ -706,17 +706,21 @@ class LiveMeetingProvider with ChangeNotifier {
           .getMembership(communityProvider.communityId)
           .isAdmin;
       if (isHost || isAdmin) {
-        final endForAll = await ConfirmDialog(
-          mainText: appLocalizationService
-              .getLocalization()
-              .endMeetingConfirmation,
-          confirmText: appLocalizationService
-              .getLocalization()
-              .endMeeting,
-          cancelText: appLocalizationService
-              .getLocalization()
-              .leaveWithoutEnding,
-        ).show();
+        final endForAll = await showCustomDialog<bool>(
+          isDismissible: false,
+          builder: (_) => ConfirmDialog(
+            mainText: appLocalizationService
+                .getLocalization()
+                .endMeetingConfirmation,
+            confirmText: appLocalizationService
+                .getLocalization()
+                .endMeeting,
+            cancelText: appLocalizationService
+                .getLocalization()
+                .leaveWithoutEnding,
+          ),
+        );
+        if (endForAll == null) return;
         if (endForAll) {
           await cloudFunctionsEventService.endMeetingForAll(
             EndMeetingForAllRequest(eventPath: eventPath),
