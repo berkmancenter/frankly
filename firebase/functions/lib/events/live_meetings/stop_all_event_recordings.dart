@@ -20,11 +20,12 @@ Future<void> stopAllEventRecordings({
     print('Error stopping main room recording on event end: $e');
   }
 
-  // Stop all breakout room recordings.
+  // Stop all breakout room recordings in parallel.
   try {
     final breakoutSessionDocs = await firestore
         .collection('$liveMeetingPath/breakout-room-sessions')
         .get();
+    final stopFutures = <Future<void>>[];
     for (final sessionDoc in breakoutSessionDocs.documents) {
       final breakoutRoomDocs = await firestore
           .collection('${sessionDoc.reference.path}/breakout-rooms')
@@ -34,16 +35,18 @@ Future<void> stopAllEventRecordings({
           firestoreUtils.fromFirestoreJson(roomDoc.data.toMap()),
         );
         if (breakoutRoom.recordingSessionId != null) {
-          try {
-            await agoraUtils.stopRoom(
-                sessionId: breakoutRoom.recordingSessionId!,);
-          } catch (e) {
-            print(
-                'Error stopping breakout recording ${breakoutRoom.recordingSessionId}: $e',);
-          }
+          stopFutures.add(
+            agoraUtils
+                .stopRoom(sessionId: breakoutRoom.recordingSessionId!)
+                .catchError((e) {
+              print(
+                  'Error stopping breakout recording ${breakoutRoom.recordingSessionId}: $e',);
+            }),
+          );
         }
       }
     }
+    await Future.wait(stopFutures);
   } catch (e) {
     print('Error stopping breakout room recordings on event end: $e');
   }
