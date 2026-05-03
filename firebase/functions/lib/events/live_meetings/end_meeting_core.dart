@@ -19,11 +19,26 @@ Future<void> endMeetingCore({
   required AgoraUtils agoraUtils,
   required NotificationsUtils notificationsUtils,
 }) async {
-  await stopAllEventRecordings(
+  // Run recording stops in parallel with participant query + email send.
+  final recordingsFuture = stopAllEventRecordings(
     liveMeetingPath: liveMeetingPath,
     agoraUtils: agoraUtils,
   );
 
+  final emailFuture = _sendEndedEmail(
+    eventPath: eventPath,
+    event: event,
+    notificationsUtils: notificationsUtils,
+  );
+
+  await Future.wait([recordingsFuture, emailFuture]);
+}
+
+Future<void> _sendEndedEmail({
+  required String eventPath,
+  required Event event,
+  required NotificationsUtils notificationsUtils,
+}) async {
   final participantDocs = await firestore
       .collection('$eventPath/event-participants')
       .get();
