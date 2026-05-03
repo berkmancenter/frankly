@@ -56,23 +56,28 @@ class EndMeetingForAll extends OnCallMethod<EndMeetingForAllRequest> {
       throw HttpsError(HttpsError.failedPrecondition, 'unauthorized', null);
     }
 
-    // Read the LiveMeeting doc. If meetingEndedAt is already set, return (idempotent).
+    // Atomically set meetingEndedAt. If already set, return (idempotent).
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
-    final liveMeeting = await firestoreUtils.getFirestoreObject(
-      path: liveMeetingPath,
-      constructor: (map) => LiveMeeting.fromJson(map),
-    );
-    if (liveMeeting.meetingEndedAt != null) {
-      return;
-    }
+    final liveMeetingRef = firestore.document(liveMeetingPath);
+    final didEnd = await firestore.runTransaction<bool>((transaction) async {
+      final snap = await transaction.get(liveMeetingRef);
+      final liveMeeting = LiveMeeting.fromJson(
+        firestoreUtils.fromFirestoreJson(snap.data.toMap()),
+      );
+      if (liveMeeting.meetingEndedAt != null) {
+        return false;
+      }
+      transaction.update(
+        liveMeetingRef,
+        UpdateData.fromMap({
+          LiveMeeting.kFieldMeetingEndedAt:
+              Firestore.fieldValues.serverTimestamp(),
+        }),
+      );
+      return true;
+    });
 
-    // Write meetingEndedAt to the LiveMeeting doc.
-    await firestore.document(liveMeetingPath).updateData(
-          UpdateData.fromMap({
-            LiveMeeting.kFieldMeetingEndedAt:
-                Firestore.fieldValues.serverTimestamp(),
-          }),
-        );
+    if (!didEnd) return;
 
     // Stop all recordings (main + breakout).
     await stopAllEventRecordings(
