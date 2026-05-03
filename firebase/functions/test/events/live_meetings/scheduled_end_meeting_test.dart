@@ -86,6 +86,17 @@ void main() {
         constructor: (map) => LiveMeeting.fromJson(map),
       );
       expect(liveMeeting.meetingEndedAt, isNotNull);
+
+      // Verify email was sent.
+      verify(
+        () => notificationsUtils.sendEventEndedEmail(
+          event: any(named: 'event'),
+          communityId: any(named: 'communityId'),
+          userIds: any(named: 'userIds'),
+          emailType: any(named: 'emailType'),
+          generateMessage: any(named: 'generateMessage'),
+        ),
+      ).called(1);
     });
 
     test('is idempotent -- no-op if meetingEndedAt already set', () async {
