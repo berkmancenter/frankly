@@ -36,19 +36,21 @@ class EndMeetingForAll extends OnCallMethod<EndMeetingForAllRequest> {
       constructor: (map) => Event.fromJson(map),
     );
 
-    // Verify caller is mod/admin/owner.
-    final membership = await firestoreUtils.getFirestoreObject(
-      path:
-          'memberships/${context.authUid}/community-membership/${event.communityId}',
-      constructor: (map) => Membership.fromJson(map),
-    );
-    const allowedStatuses = [
-      MembershipStatus.moderator,
-      MembershipStatus.admin,
-      MembershipStatus.owner,
-    ];
-    if (!allowedStatuses.contains(membership.status)) {
-      throw HttpsError(HttpsError.permissionDenied, 'unauthorized', null);
+    // Verify caller is the event creator or a mod/admin/owner.
+    if (context.authUid != event.creatorId) {
+      final membership = await firestoreUtils.getFirestoreObject(
+        path:
+            'memberships/${context.authUid}/community-membership/${event.communityId}',
+        constructor: (map) => Membership.fromJson(map),
+      );
+      const allowedStatuses = [
+        MembershipStatus.moderator,
+        MembershipStatus.admin,
+        MembershipStatus.owner,
+      ];
+      if (!allowedStatuses.contains(membership.status)) {
+        throw HttpsError(HttpsError.permissionDenied, 'unauthorized', null);
+      }
     }
 
     // Atomically set meetingEndedAt. If already set, return (idempotent).
