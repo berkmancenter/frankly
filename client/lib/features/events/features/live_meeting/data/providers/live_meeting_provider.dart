@@ -713,7 +713,9 @@ class LiveMeetingProvider with ChangeNotifier {
           confirmText: appLocalizationService
               .getLocalization()
               .endMeeting,
-          cancelText: 'Leave without ending',
+          cancelText: appLocalizationService
+              .getLocalization()
+              .leaveWithoutEnding,
         ).show();
         if (endForAll) {
           await cloudFunctionsEventService.endMeetingForAll(

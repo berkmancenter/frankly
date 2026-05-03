@@ -136,7 +136,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               EventSettings.kFieldAutoEndMeeting,
               isSelected,
             ),
-            text: 'Auto-end meeting',
+            text: context.l10n.autoEndMeeting,
             val: _model.eventSettings.autoEndMeeting ?? false,
             isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
               (settings) => settings.autoEndMeeting,
@@ -150,7 +150,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                 children: [
                   Expanded(
                     child: HeightConstrainedText(
-                      'Grace period (minutes):',
+                        context.l10n.gracePeriodMinutes,
                       style: context.theme.textTheme.bodyMedium,
                     ),
                   ),
