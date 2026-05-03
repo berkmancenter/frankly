@@ -82,6 +82,7 @@ class LiveMeetingProvider with ChangeNotifier {
   final Function(String, {bool? hideOnMobile}) showToast;
 
   bool _leftMeeting = false;
+  bool _leavingInProgress = false;
   bool _userLeftBreakouts = false;
   String? _activeBreakoutRoomId;
   String? _breakoutRoomOverride;
@@ -696,8 +697,10 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> leaveMeeting() async {
-    if (_leftMeeting) return;
+    if (_leftMeeting || _leavingInProgress) return;
+    _leavingInProgress = true;
 
+    try {
     // If the meeting is still running and the user is the host or an admin,
     // prompt whether to end the meeting for all participants.
     final meetingAlreadyEnded = liveMeeting?.meetingEndedAt != null;
@@ -818,6 +821,9 @@ class LiveMeetingProvider with ChangeNotifier {
       // ignore: unnecessary_non_null_assertion
       html.window.location.href = html.window.location.origin! +
           (location.state as BeamState).uri.toString();
+    }
+    } finally {
+      _leavingInProgress = false;
     }
   }
 
