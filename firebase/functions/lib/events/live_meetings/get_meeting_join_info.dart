@@ -82,10 +82,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
     // On first join, schedule automatic meeting end if the event has
     // autoEndMeeting enabled, a scheduled time, and a duration.
     if (result.isFirstJoin) {
-      final event = await firestoreUtils.getFirestoreObject(
-        path: request.eventPath,
-        constructor: (map) => Event.fromJson(map),
-      );
+      final event = result.event;
       final autoEnd = event.eventSettings?.autoEndMeeting ?? false;
       if (autoEnd) {
         final scheduledTime = event.scheduledTime;

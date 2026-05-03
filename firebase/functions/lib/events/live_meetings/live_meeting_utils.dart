@@ -32,9 +32,11 @@ class MeetingJoinResult {
   final GetMeetingJoinInfoResponse response;
   final PendingRecording? pendingRecording;
   final bool isFirstJoin;
+  final Event event;
 
   MeetingJoinResult({
     required this.response,
+    required this.event,
     this.pendingRecording,
     this.isFirstJoin = false,
   });
@@ -130,6 +132,7 @@ class LiveMeetingUtils {
         meetingToken: token,
         meetingId: meetingId,
       ),
+      event: event,
       pendingRecording: pendingRecording,
       isFirstJoin: isFirstJoin,
     );
