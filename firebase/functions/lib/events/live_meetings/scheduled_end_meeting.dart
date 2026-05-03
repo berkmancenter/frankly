@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     as admin_interop;
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
+import 'package:firebase_functions_interop/firebase_functions_interop.dart'
+    hide CloudFunction;
 import '../../on_request_method.dart';
 import '../../utils/email_templates.dart';
 import '../../utils/infra/firestore_utils.dart';
@@ -28,6 +30,20 @@ class ScheduledEndMeeting
           'ScheduledEndMeeting',
           (jsonMap) => EndMeetingForAllRequest.fromJson(jsonMap),
         );
+
+  @override
+  Future<void> handleRequest(ExpressHttpRequest expressRequest) async {
+    // Only Cloud Tasks sets X-CloudTasks-TaskName. Cloud Functions strips
+    // this header from external requests, so its presence confirms the
+    // call originated from a Cloud Tasks queue.
+    final taskName = expressRequest.headers.value('X-CloudTasks-TaskName');
+    if (taskName == null || taskName.isEmpty) {
+      expressRequest.response.statusCode = 403;
+      expressRequest.response.write('Forbidden');
+      return;
+    }
+    await super.handleRequest(expressRequest);
+  }
 
   @override
   Future<String> action(EndMeetingForAllRequest request) async {
