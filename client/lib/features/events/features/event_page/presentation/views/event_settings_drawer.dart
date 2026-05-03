@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,11 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     implements EventSettingsView {
   late final EventSettingsModel _model;
   late final EventSettingsPresenter _presenter;
+  final _gracePeriodController = TextEditingController();
+  final _gracePeriodFocusNode = FocusNode();
+  Timer? _gracePeriodDebounce;
+  bool _gracePeriodInvalid = false;
+  bool _gracePeriodEditing = false;
 
   @override
   void initState() {
@@ -48,6 +55,77 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     _model = EventSettingsModel(widget.eventSettingsDrawerType);
     _presenter = EventSettingsPresenter(context, this, _model);
     _presenter.init();
+    _syncGracePeriodController();
+    _gracePeriodFocusNode.addListener(_onGracePeriodFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _gracePeriodDebounce?.cancel();
+    _gracePeriodController.dispose();
+    _gracePeriodFocusNode.removeListener(_onGracePeriodFocusChange);
+    _gracePeriodFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _syncGracePeriodController() {
+    if (_gracePeriodEditing) return;
+    final value =
+        (_model.eventSettings.autoEndGracePeriodMinutes ?? 0).toString();
+    if (_gracePeriodController.text != value) {
+      _gracePeriodController.text = value;
+    }
+  }
+
+  void _onGracePeriodFocusChange() {
+    if (_gracePeriodFocusNode.hasFocus) {
+      _gracePeriodEditing = true;
+    } else {
+      _correctGracePeriodInput();
+      _gracePeriodEditing = false;
+    }
+  }
+
+  void _onGracePeriodChanged(String value) {
+    _gracePeriodDebounce?.cancel();
+    _gracePeriodEditing = true;
+    final parsed = int.tryParse(value);
+    final isValid = parsed != null && parsed >= 0 && parsed <= 120;
+    if (isValid) {
+      _presenter.updateSettingValue(
+        EventSettings.kFieldAutoEndGracePeriodMinutes,
+        parsed,
+      );
+    }
+    setState(() {
+      _gracePeriodInvalid = !isValid && value.isNotEmpty;
+    });
+    _gracePeriodDebounce = Timer(const Duration(seconds: 1), () {
+      _correctGracePeriodInput();
+    });
+  }
+
+  void _correctGracePeriodInput() {
+    _gracePeriodDebounce?.cancel();
+    final text = _gracePeriodController.text;
+    final parsed = num.tryParse(text);
+    int corrected;
+    if (parsed == null || parsed < 0) {
+      corrected = 0;
+    } else if (parsed > 120) {
+      corrected = 120;
+    } else {
+      corrected = parsed.floor();
+    }
+    _gracePeriodController.text = corrected.toString();
+    _gracePeriodEditing = false;
+    _presenter.updateSettingValue(
+      EventSettings.kFieldAutoEndGracePeriodMinutes,
+      corrected,
+    );
+    setState(() {
+      _gracePeriodInvalid = false;
+    });
   }
 
   @override
@@ -156,16 +234,16 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                   ),
                   SizedBox(
                     width: 64,
-                    child: TextField(
-                      controller: TextEditingController(
-                        text: (_model.eventSettings
-                                    .autoEndGracePeriodMinutes ??
-                                0)
-                            .toString(),
-                      ),
+                    child: TextFormField(
+                      controller: _gracePeriodController,
+                      focusNode: _gracePeriodFocusNode,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
-                      style: context.theme.textTheme.bodyMedium,
+                      style: context.theme.textTheme.bodyMedium?.copyWith(
+                        color: _gracePeriodInvalid
+                            ? context.theme.colorScheme.error
+                            : null,
+                      ),
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(
@@ -173,16 +251,23 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
                           vertical: 8,
                         ),
                         border: OutlineInputBorder(),
+                        enabledBorder: _gracePeriodInvalid
+                            ? OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: context.theme.colorScheme.error,
+                                ),
+                              )
+                            : null,
+                        focusedBorder: _gracePeriodInvalid
+                            ? OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: context.theme.colorScheme.error,
+                                  width: 2,
+                                ),
+                              )
+                            : null,
                       ),
-                      onChanged: (value) {
-                        final parsed = int.tryParse(value);
-                        if (parsed != null && parsed >= 0) {
-                          _presenter.updateSettingValue(
-                            EventSettings.kFieldAutoEndGracePeriodMinutes,
-                            parsed,
-                          );
-                        }
-                      },
+                      onChanged: _onGracePeriodChanged,
                     ),
                   ),
                 ],
@@ -215,7 +300,10 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           ActionButton(
             expand: true,
             text: context.l10n.saveSettings,
-            onPressed: () => _presenter.saveSettings(),
+            onPressed: () {
+              _correctGracePeriodInput();
+              _presenter.saveSettings();
+            },
             color: context.theme.colorScheme.primary,
             textColor: context.theme.colorScheme.onPrimary,
           ),
@@ -268,6 +356,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
 
   @override
   void updateView() {
+    _syncGracePeriodController();
     setState(() {});
   }
 }
