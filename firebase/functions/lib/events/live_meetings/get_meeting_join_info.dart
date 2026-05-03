@@ -88,7 +88,8 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         final scheduledTime = event.scheduledTime;
         if (scheduledTime != null) {
           final gracePeriod =
-              event.eventSettings?.autoEndGracePeriodMinutes ?? 0;
+              (event.eventSettings?.autoEndGracePeriodMinutes ?? 0)
+                  .clamp(0, 120);
           final endTime = scheduledTime.add(
             Duration(minutes: event.durationInMinutes + gracePeriod),
           );
