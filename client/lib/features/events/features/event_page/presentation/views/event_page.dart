@@ -151,6 +151,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
     return await alertOnError<bool>(context, () async {
           final eventPageProvider = context.read<EventPageProvider>();
           final event = eventPageProvider.eventProvider.event;
+
           JoinEventResults joinResults = await alertOnError<JoinEventResults>(
                 context,
                 () => eventPageProvider.joinEvent(
@@ -167,6 +168,37 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
           if (!enterMeeting) {
             return false;
+          }
+
+          // If the event is always recorded, show a consent dialog before joining
+          if(!mounted) return false;
+          if (context.read<EventProvider>().event.eventSettings?.alwaysRecord ==
+              true) {
+            final proceed = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(context.l10n.thisEventIsBeingRecorded),
+                content: Text(
+                  context.l10n.hostWillReceiveDownloadableCopy,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    style: TextButton.styleFrom(
+                      foregroundColor: context.theme.colorScheme.error,
+                    ),
+                    child: Text(context.l10n.close),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text(context.l10n.continueButton),
+                  ),
+                ],
+              ),
+            );
+
+            // If the user does not consent to being recorded, do not join the event
+            if (proceed != true) return false;
           }
 
           if (!mounted) return false;
