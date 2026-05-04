@@ -19,10 +19,10 @@ else
   DART_CMD="dart"
 fi
 
-flutter_version="$($FLUTTER_CMD --version 2>/dev/null || true)"
+flutter_version="$("$FLUTTER_CMD" --version 2>/dev/null || true)"
 flutter_version="${flutter_version%%$'\n'*}"
 printf '\n[build-all] Using Flutter: %s\n' "$flutter_version"
-printf '[build-all] Using Dart: %s\n\n' "$($DART_CMD --version 2>&1)"
+printf '[build-all] Using Dart: %s\n\n' "$("$DART_CMD" --version 2>&1)"
 
 cd "$CLIENT_DIR"
 "$FLUTTER_CMD" pub get
