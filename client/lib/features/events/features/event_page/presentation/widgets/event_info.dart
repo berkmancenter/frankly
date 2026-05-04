@@ -21,8 +21,8 @@ import 'package:client/core/widgets/buttons/circle_icon_button.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_pop_up_menu_button.dart';
 import 'package:client/features/events/features/event_page/presentation/views/participants_dialog.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/warning_info.dart';
-import 'package:client/features/community/presentation/widgets/carousel/time_indicator.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:intl/intl.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_custom_template_page.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
@@ -672,6 +672,23 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
+  Widget _buildMessageParticipantsButton() {
+    return ActionButton(
+      onPressed: widget.onMessagePressed,
+      type: ActionButtonType.outline,
+      color: context.theme.colorScheme.surfaceContainerLowest,
+      icon: Icon(
+        CupertinoIcons.paperplane,
+        size: 24,
+        color: context.theme.colorScheme.onSurfaceVariant,
+      ),
+      text: 'Message participants',
+      textStyle: context.theme.textTheme.titleMedium!.copyWith(
+        color: context.theme.colorScheme.onSurfaceVariant,
+      ),
+    );
+  }
+
   Widget _buildCancelParticipationButton() {
     return ActionButton(
       onPressed: _cancelParticipation,
@@ -841,23 +858,9 @@ class _EventInfoState extends State<EventInfo> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    VerticalTimeAndDateIndicator(
-                      shadow: false,
-                      padding: EdgeInsets.only(right: 24),
-                      time: DateTime.fromMillisecondsSinceEpoch(
-                        (eventProvider
-                                .event.scheduledTime?.millisecondsSinceEpoch ??
-                            0),
-                      ),
-                      endTime: eventProvider.event.scheduledTime?.add(
-                        Duration(
-                          minutes: eventProvider.event.durationInMinutes,
-                        ),
-                      ),
-                    ),
                     SizedBox(
-                      height: isMobile ? 90 : 100,
-                      width: isMobile ? 90 : 100,
+                      height: isMobile ? 100 : 120,
+                      width: isMobile ? 100 : 120,
                       child: CustomStreamBuilder<Template>(
                         entryFrom: '_EventInfoState.build',
                         stream: Provider.of<TemplateProvider>(context)
@@ -883,15 +886,7 @@ class _EventInfoState extends State<EventInfo> {
                       ),
                   ],
                 ),
-                SizedBox(height: 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildEventVisibility(),
-                    _buildEventTypeName(),
-                  ],
-                ),
-                SizedBox(height: 10),
+                SizedBox(height: 16),
                 Row(
                   children: [
                     Flexible(
@@ -906,6 +901,36 @@ class _EventInfoState extends State<EventInfo> {
                         ),
                       ),
                     ),
+                  ],
+                ),
+                SizedBox(height: 6),
+                Builder(
+                  builder: (context) {
+                    final scheduledTime = eventProvider.event.scheduledTime;
+                    if (scheduledTime == null) return SizedBox.shrink();
+                    final date = DateFormat('EEE, MMM d').format(scheduledTime);
+                    final startFmt = DateFormat('h:mma').format(scheduledTime);
+                    final start = startFmt.substring(0, startFmt.length - 1).toLowerCase();
+                    final endDateTime = scheduledTime.add(
+                      Duration(minutes: eventProvider.event.durationInMinutes),
+                    );
+                    final endFmt = DateFormat('h:mma').format(endDateTime);
+                    final end = endFmt.substring(0, endFmt.length - 1).toLowerCase();
+                    return HeightConstrainedText(
+                      '$date, $start - $end',
+                      style: context.theme.textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildEventVisibility(),
+                    _buildEventTypeName(),
                   ],
                 ),
                 SizedBox(height: 10),
@@ -955,39 +980,25 @@ class _EventInfoState extends State<EventInfo> {
                           ),
                         ),
                       ),
-                      if (_canEditEvent)
-                        CircleIconButton(
-                          onPressed: widget.onMessagePressed,
-                          toolTipText: 'Message',
-                          icon: CupertinoIcons.paperplane,
-                          color: context.theme.colorScheme.surfaceContainer,
-                          iconColor: context.theme.colorScheme.onSurface,
-                        ),
                     ],
                   ),
                 ),
                 SizedBox(height: 10),
                 _buildJoinEventButton(),
                 SizedBox(height: 10),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (canCancelParticipation || _canEditEvent)
-                      Expanded(child: _buildAddToCalendar()),
-                    if (canCancelParticipation) ...[
-                      Expanded(child: _buildCancelParticipationButton()),
-                    ] else if (context
-                            .watch<EventPermissionsProvider>()
-                            .canCancelEvent &&
-                        _event.status != EventStatus.canceled) ...[
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: _buildCancelEventButton(),
-                      ),
-                    ],
-                  ],
-                ),
+                if (canCancelParticipation || _canEditEvent) ...[                  SizedBox(height: 4),
+                  Center(child: _buildAddToCalendar()),
+                ],
+                if (canCancelParticipation) ...[                  SizedBox(height: 4),
+                  Center(child: _buildCancelParticipationButton()),
+                ] else if (context
+                        .watch<EventPermissionsProvider>()
+                        .canCancelEvent &&
+                    _event.status != EventStatus.canceled) ...[                  SizedBox(height: 4),
+                  Center(child: _buildCancelEventButton()),
+                ],
+                if (_canEditEvent)
+                  Center(child: _buildMessageParticipantsButton()),
                 if (showPrerequisiteWarning) ...[
                   SizedBox(height: 10),
                   PrerequisiteTemplateWidget(

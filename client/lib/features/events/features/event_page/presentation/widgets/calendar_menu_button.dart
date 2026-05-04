@@ -57,6 +57,7 @@ class _CalendarMenuButtonState extends State<CalendarMenuButton> {
             ),
             onSelected: (value) => widget.onSelected(value),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   CupertinoIcons.calendar_badge_plus,
