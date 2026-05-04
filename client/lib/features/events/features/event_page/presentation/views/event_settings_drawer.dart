@@ -42,6 +42,18 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     implements EventSettingsView {
   late final EventSettingsModel _model;
   late final EventSettingsPresenter _presenter;
+  // Grace period input uses a managed TextEditingController + FocusNode
+  // rather than TextFormField's initialValue/ValueKey pattern. This avoids
+  // losing focus on every keystroke (ValueKey rebuilds destroy the widget).
+  //
+  // Validation: valid range is 0-120 (integer). While typing, invalid input
+  // shows a red border and red text immediately. Auto-correction fires after
+  // a 1-second debounce, on focus loss, or on save -- whichever comes first
+  // -- clamping to 0-120 and flooring any decimals.
+  //
+  // The _gracePeriodEditing flag prevents _syncGracePeriodController (called
+  // from updateView) from overwriting the controller text while the user is
+  // actively typing.
   final _gracePeriodController = TextEditingController();
   final _gracePeriodFocusNode = FocusNode();
   Timer? _gracePeriodDebounce;
@@ -68,6 +80,8 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     super.dispose();
   }
 
+  /// Syncs the controller text to the model value. Skipped while the user
+  /// is actively editing to avoid overwriting mid-keystroke.
   void _syncGracePeriodController() {
     if (_gracePeriodEditing) return;
     final value =
@@ -105,6 +119,8 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     });
   }
 
+  /// Clamps the current input to 0-120, floors decimals, and pushes the
+  /// corrected value to the controller and presenter.
   void _correctGracePeriodInput() {
     _gracePeriodDebounce?.cancel();
     final text = _gracePeriodController.text;
