@@ -216,6 +216,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
     );
 
     if (message != null) {
+      if (!mounted) return;
       await alertOnError(context, () => tabsController.sendMessage(message));
     }
   }
