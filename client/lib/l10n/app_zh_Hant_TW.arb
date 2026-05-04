@@ -251,6 +251,16 @@
       }
     }
   },
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@questionWithNumber": {
     "placeholders": {
       "number": {
@@ -404,6 +414,7 @@
   "cancel": "取消",
   "cancelCurrentPlan": "取消目前計劃？",
   "cancelEvent": "取消活動",
+  "cancelEventConfirmation": "您確定要取消活動嗎？此操作無法撤銷，並將通知所有參與者。",
   "cancelParticipation": "取消參與",
   "cannotPlayVimeoVideo": "無法播放 Vimeo 影片",
   "cannotPlayYouTubeVideo": "無法播放 YouTube 影片",
@@ -438,6 +449,7 @@
   "confirmRemoveParticipant": "您確定要將 {name} 從此活動中移除嗎？",
   "congratulations": "恭喜！",
   "contactEmail": "聯絡電郵",
+  "continueButton": "繼續",
   "copiedToClipboard": "已複製到剪貼簿",
   "couldntFindAccount": "我们找不到使用此邮箱的账户。请尝试 ",
   "create": "創建",
@@ -543,11 +555,14 @@
   "helpCenter": "幫助中心",
   "hideAgendaItem": "隱藏議程項目",
   "hidePassword": "隐藏密码",
+  "hostBeganRecording": "主持人已開始錄製此活動。他們將在此時間後收到可下載的音頻和視頻副本。",
+  "hostWillReceiveDownloadableCopy": "主持人將收到可下載的音頻和視頻副本。",
   "hosted": "有主持人",
   "hostless": "無主持人",
   "howWasTheEvent": "活動感覺如何？",
   "iAgreeToThe": "我同意",
   "iCalCalendar": "iCal 日曆",
+  "illBeThere": "我會去！",
   "image": "圖片",
   "imageUrlIsNotSet": "（圖片URL未設置。）",
   "imageUrlIsRequired": "圖片網址為必填項",
@@ -565,6 +580,7 @@
   "language": "語言",
   "languageSelector": "語言選擇器",
   "lastSession": "上次會議",
+  "leave": "離開",
   "lightColorHex": "淡色十六進制值",
   "linkedinUrl": "LinkedIn連結",
   "links": "連結",
@@ -673,6 +689,7 @@
   "pickAColor": "選擇顏色",
   "playsAt": "在{time}播放",
   "pleaseAddSomeAnswers": "請新增一些答案",
+  "pleaseConfirmAvailability": "請確認您在 {eventTime} 的 {eventDate} 可參加此活動。",
   "pleaseEnterPassword": "请输入密码",
   "pleaseEnterValidAmount": "請輸入有效金額",
   "pleaseEnterValidEmail": "請輸入有效的電子郵件地址。",
@@ -845,6 +862,8 @@
   "textTitle": "文字標題",
   "theme": "主題",
   "thereWasAnErrorLoadingEventTemplates": "載入活動模板時出錯。",
+  "thisEventIsBeingRecorded": "此活動正在錄製中",
+  "thisEventIsNowBeingRecorded": "此活動現在正在錄製中",
   "thisEventIsLocked": "此活動已鎖定",
   "thisUrlWasNotFound": "未找到此URL。",
   "thisUser": "此用戶",
@@ -894,6 +913,7 @@
   "wordCloudPromptRequired": "詞雲提示是必填項",
   "wordList": "詞彙列表",
   "yes": "是",
+  "yesCancel": "是的，取消",
   "yesDelete": "是的，刪除",
   "you": "你",
   "youCanChangeThisLater": "你之後可以更改這個",

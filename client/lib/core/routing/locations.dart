@@ -83,12 +83,16 @@ class HomeLocation extends BeamLocation<BeamState> {
   @override
   List<String> get pathPatterns => ['/home'];
 
+  final bool showLoginByDefault;
+
+  HomeLocation({this.showLoginByDefault = false});
+
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('home'),
           title: context.l10n.appNameHome(Environment.appName),
-          child: HomePage(),
+          child: HomePage(showLoginByDefault: showLoginByDefault),
         ),
       ];
 }

@@ -2,10 +2,12 @@ import 'package:client/features/auth/presentation/widgets/sign_in_options_conten
 import 'package:flutter/material.dart';
 
 class HomePageSignInSection extends StatefulWidget {
-  const HomePageSignInSection({Key? key}) : super(key: key);
+  const HomePageSignInSection({Key? key, this.showLoginByDefault = false}) : super(key: key);
 
   @override
   _HomePageSignInSectionState createState() => _HomePageSignInSectionState();
+
+  final bool showLoginByDefault;
 }
 
 class _HomePageSignInSectionState extends State<HomePageSignInSection> {
@@ -14,7 +16,7 @@ class _HomePageSignInSectionState extends State<HomePageSignInSection> {
     return SingleChildScrollView(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +25,7 @@ class _HomePageSignInSectionState extends State<HomePageSignInSection> {
               SizedBox(
                 width: 300,
                 child: SignInOptionsContent(
-                  showSignUp: true,
+                  showSignUp: !widget.showLoginByDefault,
                 ),
               ),
             ],
