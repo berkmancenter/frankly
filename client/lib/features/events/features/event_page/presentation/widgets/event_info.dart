@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
@@ -634,25 +636,94 @@ class _EventInfoState extends State<EventInfo> {
           .asStream(),
       builder: (context, snapshot) {
         if (snapshot == null) return SizedBox.shrink();
-        return CalendarMenuButton(
-          onSelected: (selection) {
-            switch (selection) {
-              case CalendarMenuSelection.google:
-                launch(snapshot.googleCalendarLink);
-                break;
-              case CalendarMenuSelection.office365:
-                launch(snapshot.office365CalendarLink);
-                break;
-              case CalendarMenuSelection.outlook:
-                launch(snapshot.outlookCalendarLink);
-                break;
-              case CalendarMenuSelection.ical:
-                _downloadICSfile(snapshot.icsLink);
-            }
+        return Builder(
+          builder: (context) {
+            return ActionButton(
+              onPressed: () async {
+                final button = context.findRenderObject() as RenderBox;
+                final overlay = Navigator.of(context)
+                    .overlay!
+                    .context
+                    .findRenderObject() as RenderBox;
+                final position = RelativeRect.fromRect(
+                  Rect.fromPoints(
+                    button.localToGlobal(
+                      Offset(0, button.size.height),
+                      ancestor: overlay,
+                    ),
+                    button.localToGlobal(
+                      button.size.bottomRight(Offset.zero),
+                      ancestor: overlay,
+                    ),
+                  ),
+                  Offset.zero & overlay.size,
+                );
+                final selection =
+                    await showMenu<CalendarMenuSelection>(
+                  context: context,
+                  position: position,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  items: CalendarMenuSelection.values.map((e) {
+                    final text = _getCalendarMenuText(e);
+                    return PopupMenuItem(
+                      value: e,
+                      padding: EdgeInsets.all(10.0),
+                      child: SizedBox(
+                        width: 100,
+                        child: HeightConstrainedText(
+                          text,
+                          style: context.theme.textTheme.bodyLarge,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+                if (selection == null) return;
+                switch (selection) {
+                  case CalendarMenuSelection.google:
+                    unawaited(launch(snapshot.googleCalendarLink));
+                    break;
+                  case CalendarMenuSelection.office365:
+                    unawaited(launch(snapshot.office365CalendarLink));
+                    break;
+                  case CalendarMenuSelection.outlook:
+                    unawaited(launch(snapshot.outlookCalendarLink));
+                    break;
+                  case CalendarMenuSelection.ical:
+                    _downloadICSfile(snapshot.icsLink);
+                }
+              },
+              type: ActionButtonType.outline,
+              color: context.theme.colorScheme.surfaceContainerLowest,
+              icon: Icon(
+                CupertinoIcons.calendar_badge_plus,
+                size: 20,
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
+              text: context.l10n.addToCalendar,
+              textStyle: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
+            );
           },
         );
       },
     );
+  }
+
+  String _getCalendarMenuText(CalendarMenuSelection selection) {
+    switch (selection) {
+      case CalendarMenuSelection.google:
+        return context.l10n.googleCalendar;
+      case CalendarMenuSelection.outlook:
+        return context.l10n.outlookCalendar;
+      case CalendarMenuSelection.office365:
+        return context.l10n.office365Calendar;
+      case CalendarMenuSelection.ical:
+        return context.l10n.iCalCalendar;
+    }
   }
 
   Widget _buildCancelEventButton() {
