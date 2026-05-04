@@ -251,6 +251,16 @@
       }
     }
   },
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@questionWithNumber": {
     "placeholders": {
       "number": {
@@ -405,6 +415,7 @@
   "cancel": "取消",
   "cancelCurrentPlan": "取消当前计划？",
   "cancelEvent": "取消活动",
+  "cancelEventConfirmation": "您确定要取消活动吗？此操作无法撤销，并将通知所有参与者。",
   "cancelParticipation": "取消参与",
   "cannotPlayVimeoVideo": "无法播放 Vimeo 视频",
   "cannotPlayYouTubeVideo": "无法播放 YouTube 视频",
@@ -439,6 +450,7 @@
   "confirmRemoveParticipant": "您确定要从此活动中移除{name}吗？",
   "congratulations": "恭喜",
   "contactEmail": "联系邮箱",
+  "continueButton": "继续",
   "copiedToClipboard": "已复制到剪贴板",
   "couldntFindAccount": "我們找不到此電子郵件對應的帳戶。嘗試 ",
   "create": "创建",
@@ -547,11 +559,14 @@
   "helpCenter": "帮助中心",
   "hideAgendaItem": "隐藏议程项",
   "hidePassword": "隱藏密碼",
+  "hostBeganRecording": "主持人已开始录制此活动。他们将在此时间后收到可下载的音频和视频副本。",
+  "hostWillReceiveDownloadableCopy": "主持人将收到可下载的音频和视频副本。",
   "hosted": "有主持人",
   "hostless": "无主持人",
   "howWasTheEvent": "活动感觉如何？",
   "iAgreeToThe": "我同意",
   "iCalCalendar": "iCal 日历",
+  "illBeThere": "我会去！",
   "image": "图片",
   "imageUrlIsNotSet": "（图片URL未设置。）",
   "imageUrlIsRequired": "图片网址为必填项",
@@ -570,6 +585,7 @@
   "languageSelector": "语言选择器",
   "lastSession": "上次会话",
   "leaveWithoutEnding": "离开但不结束",
+  "leave": "离开",
   "lightColorHex": "浅色十六进制值",
   "linkedinUrl": "LinkedIn链接",
   "links": "链接",
@@ -678,6 +694,7 @@
   "pickAColor": "选择颜色",
   "playsAt": "在{time}播放",
   "pleaseAddSomeAnswers": "请添加一些答案",
+  "pleaseConfirmAvailability": "请确认您在 {eventTime} 的 {eventDate} 可参加此活动。",
   "pleaseEnterPassword": "請輸入密碼",
   "pleaseEnterValidAmount": "请输入有效金额",
   "pleaseEnterValidEmail": "请输入有效的电子邮件地址。",
@@ -850,6 +867,8 @@
   "textTitle": "文字标题",
   "theme": "主题",
   "thereWasAnErrorLoadingEventTemplates": "加载活动模板时出错。",
+  "thisEventIsBeingRecorded": "此活动正在录制中",
+  "thisEventIsNowBeingRecorded": "此活动现在正在录制中",
   "thisEventIsLocked": "此活动已锁定",
   "thisUrlWasNotFound": "未找到此URL。",
   "thisUser": "该用户",
@@ -899,6 +918,7 @@
   "wordCloudPromptRequired": "词云提示是必填项",
   "wordList": "词语列表",
   "yes": "是",
+  "yesCancel": "是的，取消",
   "yesDelete": "是的，删除",
   "you": "你",
   "youCanChangeThisLater": "你以后可以更改这个",
