@@ -31,6 +31,7 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:intl/intl.dart' as intl;
 import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
@@ -68,6 +69,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   LiveMeetingProvider get liveMeetingProvider =>
       Provider.of<LiveMeetingProvider>(context);
   AgendaProvider get agendaProvider => context.watch<AgendaProvider>();
+  bool eventRecordedOnStart = false;
+  bool previousAlwaysRecord = false;
 
   @override
   void initState() {
@@ -80,6 +83,9 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
       _conferenceRoomRead.room?.dispose();
     });
+
+    eventRecordedOnStart =
+        EventProvider.read(context).event.eventSettings?.alwaysRecord ?? false;
   }
 
   Future<void> _connectToRoom() async {
@@ -95,6 +101,40 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     await _conferenceRoomRead.connect();
   }
 
+  void _showRecordingAlert(BuildContext context) {
+    final liveMeetingProvider = LiveMeetingProvider.read(context);
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(
+            dialogContext.l10n.thisEventIsNowBeingRecorded,
+            softWrap: true,
+          ),
+          content: Text(
+            dialogContext.l10n.hostBeganRecording,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                liveMeetingProvider.leaveMeeting();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: dialogContext.theme.colorScheme.error,
+              ),
+              child: Text(dialogContext.l10n.leave),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(dialogContext.l10n.continueButton),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     loggingService.log('disposing twilio flutter meeting');
@@ -108,6 +148,21 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   @override
   Widget build(BuildContext context) {
     final error = _conferenceRoom.connectError;
+    final alwaysRecord =
+        EventProvider.watch(context).event.eventSettings?.alwaysRecord;
+
+    // Pop an alert if event begins recording, but only if it wasn't already recording at the start
+    if (alwaysRecord == true &&
+        !eventRecordedOnStart &&
+        !previousAlwaysRecord) {
+      // Trigger modal only on transition from non-true to true
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _showRecordingAlert(context);
+      });
+    }
+    previousAlwaysRecord = alwaysRecord ?? false;
+
     if (error != null && error.trim().isNotEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -143,11 +198,7 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                   liveMeetingProvider: liveMeetingProvider,
                   conferenceRoom: _conferenceRoom,
                 ),
-                if (EventProvider.watch(context)
-                        .event
-                        .eventSettings
-                        ?.alwaysRecord ==
-                    true)
+                if (alwaysRecord == true)
                   _RecordingBadge(
                     liveMeetingProvider: liveMeetingProvider,
                   ),
@@ -443,6 +494,7 @@ class GetHelpButton extends StatefulWidget {
 
     if (!needHelp || !context.mounted) return;
 
+    if (!context.mounted) return;
     await alertOnError(
       context,
       () => cloudFunctionsLiveMeetingService.updateBreakoutRoomFlagStatus(

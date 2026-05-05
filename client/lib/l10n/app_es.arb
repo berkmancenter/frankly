@@ -250,6 +250,16 @@
       }
     }
   },
+  "@pleaseConfirmAvailability": {
+    "placeholders": {
+      "eventTime": {
+        "type": "String"
+      },
+      "eventDate": {
+        "type": "String"
+      }
+    }
+  },
   "@questionWithNumber": {
     "placeholders": {
       "number": {
@@ -367,7 +377,7 @@
   "appTitleWelcome": "{appName} - Bienvenido",
   "areYouSure": "¿Estás seguro?",
   "areYouSureYouWantToDeleteMedia": "¿Estás seguro de que quieres eliminar este medio?",
-  "areYouSureYouWantToRefreshTheGuide": "¿Estás seguro de que quieres actualizar la guía?",
+  "areYouSureYouWantToRefreshTheTemplate": "¿Estás seguro de que quieres actualizar la plantilla?",
   "aspectRatioClipped": "Relación de aspecto recortada",
   "attendee": "Asistente",
   "audioDeviceUpdated": "Dispositivo de audio actualizado.",
@@ -402,6 +412,7 @@
   "cancel": "Cancelar",
   "cancelCurrentPlan": "¿Cancelar plan actual?",
   "cancelEvent": "Cancelar evento",
+  "cancelEventConfirmation": "¿Estás seguro de que quieres cancelar el evento? Esto no se puede deshacer y notificará a todos los participantes.",
   "cancelParticipation": "Cancelar participación",
   "cannotPlayVimeoVideo": "No se puede reproducir el video de Vimeo.",
   "cannotPlayYouTubeVideo": "No se puede reproducir el video de YouTube",
@@ -433,10 +444,11 @@
   "confirmDelete": "¿Está seguro de que desea eliminar?",
   "confirmDeleteMedia": "¿Estás seguro de que quieres eliminar el medio?",
   "confirmMakeOwner": "¿Está seguro de que desea convertir a {userName} en propietario de {communityName}? Esto le dará todos los permisos posibles en esta comunidad, incluida la capacidad de eliminarla.",
-  "confirmRefreshGuide": "¿Estás seguro de que quieres actualizar la guía?",
+  "confirmRefreshTemplate": "¿Estás seguro de que quieres actualizar la plantilla?",
   "confirmRemoveParticipant": "¿Está seguro de que desea eliminar a {name} de este evento?",
   "congratulations": "¡Felicidades!",
   "contactEmail": "Correo de contacto",
+  "continueButton": "Continuar",
   "copiedToClipboard": "Copiado al portapapeles",
   "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
   "create": "Crear",
@@ -541,11 +553,14 @@
   "helpCenter": "Centro de Ayuda",
   "hideAgendaItem": "Ocultar elemento de agenda",
   "hidePassword": "Ocultar contraseña",
+  "hostBeganRecording": "El anfitrión está grabando este evento. Recibirán una copia descargable de audio y video después de este momento.",
+  "hostWillReceiveDownloadableCopy": "El anfitrión recibirá una copia descargable de audio y video.",
   "hosted": "Con anfitrión",
   "hostless": "Sin anfitrión",
   "howWasTheEvent": "¿Cómo fue el evento?",
   "iAgreeToThe": "Acepto los ",
   "iCalCalendar": "iCal Calendar",
+  "illBeThere": "¡Estaré allí!",
   "image": "Imagen",
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
@@ -563,6 +578,7 @@
   "language": "Idioma",
   "languageSelector": "Selector de idioma",
   "lastSession": "Última sesión",
+  "leave": "Salir",
   "lightColorHex": "Color claro HEX#",
   "linkedinUrl": "URL de LinkedIn",
   "links": "Enlaces",
@@ -642,7 +658,7 @@
   "office365Calendar": "Office 365 Calendar",
   "ok": "Hecho",
   "onboardingBrandSpaceSubtitle": "Personalízalo con colores, imágenes y logotipos personalizados",
-  "onboardingCreateGuideSubtitle": "¿De qué quieres hablar? Elige una plantilla y estructura el evento. ",
+  "onboardingCreateTemplateSubtitle": "¿De qué quieres hablar? Elige una plantilla y estructura el evento. ",
   "onboardingCreateStripeAccountSubtitle": "Habilita donaciones para tu comunidad.",
   "onboardingHostEventSubtitle": "Puedes ser el anfitrión o dejar que los miembros hablen directamente entre sí. ",
   "onboardingInviteSomeoneSubtitle": "Sigue los próximos eventos, recursos y más.",
@@ -675,6 +691,7 @@
   "pickAColor": "Elige un color",
   "playsAt": "Comienza a las {time}",
   "pleaseAddSomeAnswers": "Por favor, agregue algunas respuestas",
+  "pleaseConfirmAvailability": "Por favor, confirme que está disponible a las {eventTime} del {eventDate} para participar en este evento.",
   "pleaseEnterPassword": "Por favor, introduzca una contraseña",
   "pleaseEnterValidAmount": "Por favor, ingrese un monto válido",
   "pleaseEnterValidEmail": "Por favor, introduzca una dirección de email válida.",
@@ -734,7 +751,7 @@
   },
   "refresh": "Actualizar",
   "refreshConnection": "Actualizar conexión",
-  "refreshGuide": "Actualizar Guía",
+  "refreshTemplate": "Actualizar Plantilla",
   "registered": "Registrado",
   "registrantList": "Lista de Registrantes",
   "registrationDataDownload": "Descarga de datos de registro",
@@ -848,6 +865,8 @@
   "textTitle": "Título de texto",
   "theme": "Tema",
   "thereWasAnErrorLoadingEventTemplates": "Hubo un error al cargar las plantillas de eventos.",
+  "thisEventIsBeingRecorded": "Este evento está siendo grabado.",
+  "thisEventIsNowBeingRecorded": "Este evento ahora está\nsiendo grabado.",
   "thisEventIsLocked": "Este evento está bloqueado",
   "thisUrlWasNotFound": "Esta URL no se encontró.",
   "thisUser": "este usuario",
@@ -897,6 +916,7 @@
   "wordCloudPromptRequired": "Por favor, introduzca una palabra para la nube de palabras",
   "wordList": "Lista de palabras",
   "yes": "Sí",
+  "yesCancel": "Sí, cancelar",
   "yesDelete": "Sí, eliminar",
   "you": "Tú",
   "youCanChangeThisLater": "Puedes cambiar esto más tarde",
