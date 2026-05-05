@@ -5,10 +5,17 @@ import 'infra/firestore_utils.dart';
 import 'package:data_models/community/community.dart';
 
 class OnboardingStepsHelper {
+  /// Legacy step names that should be treated as equivalent to their renamed counterparts.
+  /// This prevents duplicate steps from being added after renames.
+  static const _legacyStepAliases = {
+    'createTemplate': ['createGuide'],
+  };
+
   /// Updates [Community.onboardingSteps].
   ///
   /// If [onboardingStep] already exists - does nothing;
   /// If [onboardingStep] doesn't exist - adds that step.
+  /// Also checks for legacy step names to avoid duplicates after renames.
   Future<void> updateOnboardingSteps(
     String communityId,
     DocumentSnapshot documentSnapshot,
@@ -29,8 +36,12 @@ class OnboardingStepsHelper {
     }
 
     final stringOnboardingStep = EnumToString.convertToString(onboardingStep);
-    final hasOnboardingStep =
-        onboardingSteps.any((element) => element == stringOnboardingStep);
+
+    // Check for the current step name and any legacy aliases
+    final legacyAliases = _legacyStepAliases[stringOnboardingStep] ?? [];
+    final hasOnboardingStep = onboardingSteps.any(
+      (element) => element == stringOnboardingStep || legacyAliases.contains(element),
+    );
 
     if (!hasOnboardingStep) {
       print(

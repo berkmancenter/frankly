@@ -34,7 +34,7 @@ class EventPermissionsProvider with ChangeNotifier {
 
   bool get canDuplicateEvent => communityPermissions.canCreateEvent;
 
-  bool get canRefreshGuide => communityPermissions.membershipStatus.isMod;
+  bool get canRefreshTemplate => communityPermissions.membershipStatus.isMod;
 
   bool get canChat => eventProvider.isParticipant || canEditEvent;
 
