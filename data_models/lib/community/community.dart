@@ -50,16 +50,6 @@ enum OnboardingStep {
   createStripeAccount,
 }
 
-List<OnboardingStep> onboardingStepsFromJson(List<dynamic> stepEnumList) {
-  // Migrate legacy stored onboarding step name enum values to new names.
-  return stepEnumList
-      .whereType<String>()
-      .map((e) => e == 'createGuide' ? 'createTemplate' : e)
-      .map((e) => EnumToString.fromString(OnboardingStep.values, e))
-      .whereType<OnboardingStep>()
-      .toList();
-}
-
 @Freezed(makeCollectionsUnmodifiable: false)
 class Community with _$Community implements SerializeableRequest {
   Community._();
@@ -120,9 +110,7 @@ class Community with _$Community implements SerializeableRequest {
     String? ratingSurveyUrl,
     String? themeLightColor,
     String? themeDarkColor,
-    @Default([])
-    @JsonKey(fromJson: onboardingStepsFromJson)
-    List<OnboardingStep> onboardingSteps,
+    @Default([]) List<OnboardingStep> onboardingSteps,
     @Default(false) bool isOnboardingOverviewEnabled,
   }) = _Community;
 

@@ -51,7 +51,6 @@ mixin _$Community {
   String? get ratingSurveyUrl => throw _privateConstructorUsedError;
   String? get themeLightColor => throw _privateConstructorUsedError;
   String? get themeDarkColor => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: onboardingStepsFromJson)
   List<OnboardingStep> get onboardingSteps =>
       throw _privateConstructorUsedError;
   bool get isOnboardingOverviewEnabled => throw _privateConstructorUsedError;
@@ -95,7 +94,6 @@ abstract class $CommunityCopyWith<$Res> {
       String? ratingSurveyUrl,
       String? themeLightColor,
       String? themeDarkColor,
-      @JsonKey(fromJson: onboardingStepsFromJson)
       List<OnboardingStep> onboardingSteps,
       bool isOnboardingOverviewEnabled});
 
@@ -316,7 +314,6 @@ abstract class _$$_CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
       String? ratingSurveyUrl,
       String? themeLightColor,
       String? themeDarkColor,
-      @JsonKey(fromJson: onboardingStepsFromJson)
       List<OnboardingStep> onboardingSteps,
       bool isOnboardingOverviewEnabled});
 
@@ -509,7 +506,6 @@ class _$_Community extends _Community {
       this.ratingSurveyUrl,
       this.themeLightColor,
       this.themeDarkColor,
-      @JsonKey(fromJson: onboardingStepsFromJson)
       this.onboardingSteps = const [],
       this.isOnboardingOverviewEnabled = false})
       : super._();
@@ -573,7 +569,7 @@ class _$_Community extends _Community {
   @override
   final String? themeDarkColor;
   @override
-  @JsonKey(fromJson: onboardingStepsFromJson)
+  @JsonKey()
   final List<OnboardingStep> onboardingSteps;
   @override
   @JsonKey()
@@ -720,7 +716,6 @@ abstract class _Community extends Community {
       final String? ratingSurveyUrl,
       final String? themeLightColor,
       final String? themeDarkColor,
-      @JsonKey(fromJson: onboardingStepsFromJson)
       final List<OnboardingStep> onboardingSteps,
       final bool isOnboardingOverviewEnabled}) = _$_Community;
   _Community._() : super._();
@@ -783,7 +778,6 @@ abstract class _Community extends Community {
   @override
   String? get themeDarkColor;
   @override
-  @JsonKey(fromJson: onboardingStepsFromJson)
   List<OnboardingStep> get onboardingSteps;
   @override
   bool get isOnboardingOverviewEnabled;
