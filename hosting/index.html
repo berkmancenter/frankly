@@ -1,0 +1,2055 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../faq/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Deploying Your Own Instance of Frankly - Frankly</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M11%209h2V7h-2m1%2013c-4.41%200-8-3.59-8-8s3.59-8%208-8%208%203.59%208%208-3.59%208-8%208m0-18A10%2010%200%200%200%202%2012a10%2010%200%200%200%2010%2010%2010%2010%200%200%200%2010-10A10%2010%200%200%200%2012%202m-1%2015h2v-6h-2z%22/%3E%3C/svg%3E');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deploying-your-own-instance-of-frankly" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Frankly" class="md-header__button md-logo" aria-label="Frankly" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.58 2 11a7.22 7.22 0 0 0 2.75 5.5c0 .6-.42 2.17-2.75 4.5 2.37-.11 4.64-1 6.47-2.5 1.14.33 2.34.5 3.53.5 5.5 0 10-3.58 10-8s-4.5-8-10-8m0 14c-4.42 0-8-2.69-8-6s3.58-6 8-6 8 2.69 8 6-3.58 6-8 6m5-5v-2h-2v2zm-4 0v-2h-2v2zm-4 0v-2H7v2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Frankly
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deploying Your Own Instance of Frankly
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/berkmancenter/frankly" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Frankly" class="md-nav__button md-logo" aria-label="Frankly" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.58 2 11a7.22 7.22 0 0 0 2.75 5.5c0 .6-.42 2.17-2.75 4.5 2.37-.11 4.64-1 6.47-2.5 1.14.33 2.34.5 3.53.5 5.5 0 10-3.58 10-8s-4.5-8-10-8m0 14c-4.42 0-8-2.69-8-6s3.58-6 8-6 8 2.69 8 6-3.58 6-8 6m5-5v-2h-2v2zm-4 0v-2h-2v2zm-4 0v-2H7v2z"/></svg>
+
+    </a>
+    Frankly
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/berkmancenter/frankly" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🐣 Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⚙️ Running Local Development Version
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🧰 End-to-End Testing with Playwright
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ❓ Troubleshooting and FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploying Your Own Instance of Frankly
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploying Your Own Instance of Frankly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-create-firebase-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Create Firebase Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-update-firebaserc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Update .firebaserc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-initialize-core-firebase-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Initialize Core Firebase Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Initialize Core Firebase Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firestore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#realtime-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Realtime Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firebase-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firebase Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-configure-firebase-hosting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Configure Firebase Hosting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-configure-firebase-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Configure Firebase Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Configure Firebase Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-dependencies-and-build-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install dependencies and build functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect-current-runtime-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspect current runtime config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-create-required-cloud-tasks-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Create Required Cloud Tasks Queue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-deploy-rules-and-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Deploy Rules and Indexes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-set-functions-runtime-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Set Functions Runtime Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Set Functions Runtime Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-these-values-are-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What these values are for
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-configure-the-flutter-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Configure the Flutter Client
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Configure the Flutter Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-values-in-clientenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required values in client/.env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-sign-in-client-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Sign-In Client ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-optional-third-party-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Optional Third-Party Integrations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Optional Third-Party Integrations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agora
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloudinary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stripe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stripe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sendgrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SendGrid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-build-and-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Build and Deploy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Build and Deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-select-the-target-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Select the target project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-deploy-rules-and-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Deploy rules and indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-and-deploy-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Build and deploy functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-build-the-flutter-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Build the Flutter client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-deploy-hosting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy hosting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-post-deployment-verification-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Post-Deployment Verification Checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Post-Deployment Verification Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core platform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Video / events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#livestreaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Livestreaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#media-and-messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media and messaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-recommended-environment-rollout-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Recommended Environment Rollout Process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-common-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Common Pitfalls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Common Pitfalls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functions-deploy-but-fail-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions deploy but fail at runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-firebase-project-deployed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong Firebase project deployed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hosting-works-but-client-points-at-wrong-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hosting works but client points at wrong backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-sign-in-does-not-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google sign-in does not work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video-or-integrations-do-not-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Video or integrations do not work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduled-functions-do-not-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled functions do not run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-minimal-deployment-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Minimal Deployment Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-useful-commands-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Useful Commands Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-create-firebase-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Create Firebase Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-update-firebaserc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Update .firebaserc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-initialize-core-firebase-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Initialize Core Firebase Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Initialize Core Firebase Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firestore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#realtime-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Realtime Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firebase-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firebase Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-configure-firebase-hosting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Configure Firebase Hosting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-configure-firebase-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Configure Firebase Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Configure Firebase Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-dependencies-and-build-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install dependencies and build functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect-current-runtime-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspect current runtime config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-create-required-cloud-tasks-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Create Required Cloud Tasks Queue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-deploy-rules-and-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Deploy Rules and Indexes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-set-functions-runtime-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Set Functions Runtime Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Set Functions Runtime Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-these-values-are-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What these values are for
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-configure-the-flutter-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Configure the Flutter Client
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Configure the Flutter Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-values-in-clientenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required values in client/.env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-sign-in-client-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Sign-In Client ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-optional-third-party-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Optional Third-Party Integrations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Optional Third-Party Integrations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agora
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloudinary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stripe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stripe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sendgrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SendGrid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-build-and-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Build and Deploy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Build and Deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-select-the-target-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Select the target project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-deploy-rules-and-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Deploy rules and indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-and-deploy-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Build and deploy functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-build-the-flutter-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Build the Flutter client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-deploy-hosting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy hosting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-post-deployment-verification-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Post-Deployment Verification Checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Post-Deployment Verification Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core platform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Video / events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#livestreaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Livestreaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#media-and-messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media and messaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-recommended-environment-rollout-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Recommended Environment Rollout Process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-common-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Common Pitfalls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Common Pitfalls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functions-deploy-but-fail-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions deploy but fail at runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-firebase-project-deployed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong Firebase project deployed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hosting-works-but-client-points-at-wrong-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hosting works but client points at wrong backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-sign-in-does-not-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google sign-in does not work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video-or-integrations-do-not-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Video or integrations do not work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduled-functions-do-not-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled functions do not run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-minimal-deployment-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Minimal Deployment Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-useful-commands-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Useful Commands Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="deploying-your-own-instance-of-frankly">Deploying Your Own Instance of Frankly</h1>
+<p>This guide explains how to host your own production-ready instance of <strong>Frankly</strong>, a Flutter web app backed by Firebase and Google Cloud.</p>
+<p>Frankly uses:</p>
+<ul>
+<li>A <strong>Flutter</strong> client application (web)</li>
+<li><strong>Firebase Hosting</strong></li>
+<li><strong>Firebase Authentication</strong></li>
+<li><strong>Cloud Firestore</strong></li>
+<li><strong>Realtime Database</strong></li>
+<li><strong>Firebase Functions</strong></li>
+<li>Third-party integrations (some optional), including <strong>Agora</strong>, <strong>Mux</strong>, <strong>Cloudinary</strong>, and <strong>SendGrid</strong></li>
+</ul>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before you begin, make sure you have:</p>
+<ul>
+<li>A Google account with access to create Firebase and Google Cloud projects</li>
+<li>Firebase CLI installed (<code>npm install -g firebase-tools</code>)</li>
+<li>Node.js and npm installed (recommend via <code>nvm</code>)</li>
+<li>Flutter <code>3.22.2</code> installed</li>
+<li>Access to any third-party services you plan to enable</li>
+</ul>
+<p>Recommended tools:</p>
+<ul>
+<li>Google Cloud SDK (<code>gcloud</code>)</li>
+<li>Chrome</li>
+<li>VS Code</li>
+</ul>
+<hr />
+<h2 id="1-create-firebase-projects">1. Create Firebase Projects</h2>
+<p>Create separate Firebase projects for each environment you want to support, for example:</p>
+<ul>
+<li><strong>staging</strong></li>
+<li><strong>production</strong></li>
+</ul>
+<p>For each project:</p>
+<ol>
+<li>Go to the <a href="https://console.firebase.google.com/">Firebase Console</a></li>
+<li>Create a new project</li>
+<li>Add a <strong>Web App</strong> (under Project Settings → Your Apps)</li>
+<li>Note the Firebase web configuration values — you will use them in <code>client/.env</code> later</li>
+</ol>
+<hr />
+<h2 id="2-update-firebaserc">2. Update <code>.firebaserc</code></h2>
+<p>Update <code>.firebaserc</code> at the repo root to point at your Firebase project IDs.</p>
+<p>Example structure:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-staging-project-id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;staging&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-staging-project-id&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;prod&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-production-project-id&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="3-initialize-core-firebase-services">3. Initialize Core Firebase Services</h2>
+<p>For each Firebase project/environment, set up the following in the Firebase Console.</p>
+<h3 id="firestore">Firestore</h3>
+<ol>
+<li>Create a Firestore database (single-region configuration required)</li>
+<li>Deploy Firestore rules:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:rules
+</code></pre></div>
+<h3 id="realtime-database">Realtime Database</h3>
+<ol>
+<li>Create a Realtime Database</li>
+<li>Deploy Realtime Database rules:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>database
+</code></pre></div>
+<h3 id="firebase-authentication">Firebase Authentication</h3>
+<p>Enable the required auth providers in the Firebase Console under <strong>Authentication → Sign-in method</strong>:</p>
+<ul>
+<li><strong>Anonymous</strong> — Required. New visitors are signed in anonymously.</li>
+<li><strong>Email/Password</strong></li>
+<li><strong>Google</strong></li>
+</ul>
+<p>For <strong>Google sign-in</strong>, you will also need to set the Google OAuth Client ID in <code>client/web/index.html</code>. The file contains the placeholder <code>__GOOGLE_ID__</code> which must be replaced with your OAuth client ID before building.</p>
+<hr />
+<h2 id="4-configure-firebase-hosting">4. Configure Firebase Hosting</h2>
+<p>Frankly is hosted via Firebase Hosting. The built Flutter web app is served from <code>client/build/web</code>.</p>
+<p>If you are using multiple hosting targets (e.g. staging and production sites), configure them with:</p>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>target:apply<span class="w"> </span>hosting<span class="w"> </span>staging<span class="w"> </span>your-staging-site-name
+firebase<span class="w"> </span>target:apply<span class="w"> </span>hosting<span class="w"> </span>prod<span class="w"> </span>your-production-site-name
+</code></pre></div>
+<p>Also configure your custom domains in Firebase Hosting for each target as needed.</p>
+<p>For more information, see <a href="https://firebase.google.com/docs/cli/targets#set-up-deploy-target-hosting">Firebase Hosting deploy targets</a>.</p>
+<hr />
+<h2 id="5-configure-firebase-functions">5. Configure Firebase Functions</h2>
+<p>Frankly uses Firebase Functions. Before deploying, verify that the default service account for the Firebase project is enabled:</p>
+<ul>
+<li>Firebase Console → Project Settings → Service Accounts</li>
+<li>Click <strong>Manage service accounts</strong> in Google Cloud Console</li>
+<li>Confirm the required service account is enabled</li>
+</ul>
+<h3 id="install-dependencies-and-build-functions">Install dependencies and build functions</h3>
+<p>From <code>firebase/functions</code>:</p>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install
+dart<span class="w"> </span>pub<span class="w"> </span>get
+dart<span class="w"> </span>run<span class="w"> </span>build_runner<span class="w"> </span>build<span class="w"> </span>--output<span class="o">=</span>build
+</code></pre></div>
+<h3 id="deploy-functions">Deploy functions</h3>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>functions
+</code></pre></div>
+<h3 id="inspect-current-runtime-config">Inspect current runtime config</h3>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>functions:config:get
+</code></pre></div>
+<hr />
+<h2 id="6-create-required-cloud-tasks-queue">6. Create Required Cloud Tasks Queue</h2>
+<p>Frankly uses Google Cloud Tasks for scheduled function work.</p>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>YOUR-FIREBASE-PROJECT-ID
+gcloud<span class="w"> </span>tasks<span class="w"> </span>queues<span class="w"> </span>create<span class="w"> </span>scheduled-functions
+</code></pre></div>
+<p>Repeat for each environment as needed.</p>
+<hr />
+<h2 id="7-deploy-rules-and-indexes">7. Deploy Rules and Indexes</h2>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:rules
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>database
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:indexes
+</code></pre></div>
+<hr />
+<h2 id="8-set-functions-runtime-configuration">8. Set Functions Runtime Configuration</h2>
+<p>Frankly uses <code>firebase functions:config</code> for server-side configuration. These values are read by Firebase Functions at runtime — they are <strong>not</strong> the same as the client <code>.env</code> variables covered in the next section.</p>
+<p>A sample configuration file is at <code>firebase/functions/.runtimeconfig.json.example</code>. Copy it to <code>firebase/functions/.runtimeconfig.json</code> for local development.</p>
+<p>For production, set values using the Firebase CLI:</p>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>functions:config:set<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.domain<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.legal_entity_name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.alt_email_domain<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.no_reply_email<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.unsubscribe_encryption_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.full_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.privacy_policy_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.mailing_address<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.banner_image_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.functions_url_prefix<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.project_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.copyright<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ics.prod_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>xmlns.url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>xmlns.media_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>functions.on_firestore.min_instances<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>functions.update_live_stream_participant_count.min_instances<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+</code></pre></div>
+<h3 id="what-these-values-are-for">What these values are for</h3>
+<p><strong>Application settings</strong></p>
+<ul>
+<li><code>app.domain</code> — App domain without protocol, e.g. <code>www.example.com</code></li>
+<li><code>app.legal_entity_name</code> — Legal owner/operator of the app (may contain HTML)</li>
+<li><code>app.alt_email_domain</code> — Domain used for SendGrid mail sending</li>
+<li><code>app.no_reply_email</code> — No-reply sender email address</li>
+<li><code>app.name</code> — Public-facing application name</li>
+<li><code>app.full_url</code> — Full app URL including protocol, e.g. <code>https://www.example.com</code></li>
+<li><code>app.privacy_policy_url</code> — Full privacy policy URL</li>
+<li><code>app.mailing_address</code> — Physical mailing address for outgoing email content</li>
+<li><code>app.banner_image_url</code> — Home page banner image URL</li>
+<li><code>app.functions_url_prefix</code> — Base URL for deployed Firebase Functions</li>
+<li><code>app.project_id</code> — Firebase project ID</li>
+<li><code>app.copyright</code> — Copyright statement for outgoing emails</li>
+<li><code>app.unsubscribe_encryption_key</code> — Random string used for unsubscribe link signing</li>
+</ul>
+<p><strong>Calendar / XML namespace values</strong></p>
+<ul>
+<li><code>ics.prod_id</code> — Product identifier string for ICS calendar generation</li>
+<li><code>xmlns.url</code> — App URL plus <code>/xmlns</code></li>
+<li><code>xmlns.media_url</code> — Media RSS namespace URL (typically <code>http://search.yahoo.com/mrss/</code>)</li>
+</ul>
+<p><strong>Function scaling controls</strong></p>
+<ul>
+<li><code>functions.on_firestore.min_instances</code> — Minimum warm instances for the main Firestore function</li>
+<li><code>functions.update_live_stream_participant_count.min_instances</code> — Minimum warm instances for the participant count function</li>
+</ul>
+<p>These values may differ between staging and production.</p>
+<hr />
+<h2 id="9-configure-the-flutter-client">9. Configure the Flutter Client</h2>
+<p>All client configuration is done via a <code>.env</code> file. The Flutter build reads this file using <code>--dart-define-from-file</code>. No source files need to be edited for configuration except the Google Sign-In client ID placeholder in <code>client/web/index.html</code> (see below).</p>
+<p>Copy <code>client/.env.hosted.example</code> to <code>client/.env</code> and fill in all required values:</p>
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>client/.env.hosted.example<span class="w"> </span>client/.env
+</code></pre></div>
+<h3 id="required-values-in-clientenv">Required values in <code>client/.env</code></h3>
+<p><strong>Firebase connection</strong> — obtain from Firebase Console → Project Settings → Your Apps → Web App:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">FIREBASE_API_KEY</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_APP_ID</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_MESSAGING_SENDER_ID</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_PROJECT_ID</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_AUTH_DOMAIN</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_DATABASE_URL</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_STORAGE_BUCKET</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">FIREBASE_MEASUREMENT_ID</span><span class="o">=</span>&lt;value&gt;
+</code></pre></div>
+<p><strong>App connections:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nv">FUNCTIONS_URL_PREFIX</span><span class="o">=</span>&lt;value&gt;<span class="w">   </span><span class="c1"># Base URL for your Google Cloud Run Functions</span>
+<span class="nv">SHARE_LINK_URL</span><span class="o">=</span>&lt;value&gt;<span class="w">         </span><span class="c1"># URL prefix for share links, e.g. https://&lt;app-url&gt;/share</span>
+</code></pre></div>
+<p><strong>Cloudinary</strong> (for media uploads):</p>
+<div class="highlight"><pre><span></span><code><span class="nv">CLOUDINARY_IMAGE_PRESET</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">CLOUDINARY_VIDEO_PRESET</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">CLOUDINARY_DEFAULT_PRESET</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">CLOUDINARY_CLOUD_NAME</span><span class="o">=</span>&lt;value&gt;
+</code></pre></div>
+<p><strong>Optional / branding</strong> — defaults are set in the example file and can be overridden:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">APP_NAME</span><span class="o">=</span>
+<span class="nv">APP_URL</span><span class="o">=</span>
+<span class="nv">LOGO_URL</span><span class="o">=</span>
+<span class="nv">SIDEBAR_FOOTER</span><span class="o">=</span>
+<span class="nv">COPYRIGHT_STATEMENT</span><span class="o">=</span>
+<span class="nv">TERMS_URL</span><span class="o">=</span>
+<span class="nv">PRIVACY_POLICY_URL</span><span class="o">=</span>
+<span class="c1"># ... (see .env.hosted.example for full list)</span>
+</code></pre></div>
+<p><strong>Optional monitoring:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nv">SENTRY_DSN</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">SENTRY_ENVIRONMENT</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">SENTRY_RELEASE</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">MATOMO_URL</span><span class="o">=</span>&lt;value&gt;
+<span class="nv">MATOMO_SITE_ID</span><span class="o">=</span>&lt;value&gt;
+</code></pre></div>
+<h3 id="google-sign-in-client-id">Google Sign-In Client ID</h3>
+<p>The file <code>client/web/index.html</code> contains the placeholder <code>__GOOGLE_ID__</code> in a <code>&lt;meta name="google-signin-client_id"&gt;</code> tag. Replace this with your Google OAuth client ID before building.</p>
+<hr />
+<h2 id="10-optional-third-party-integrations">10. Optional Third-Party Integrations</h2>
+<p>You only need to configure the services your instance will use.</p>
+<h3 id="agora">Agora</h3>
+<p>Agora powers video functionality. Set these values via <code>firebase functions:config:set</code>:</p>
+<div class="highlight"><pre><span></span><code>agora.app_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.app_certificate<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.rest_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.rest_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.storage_bucket_name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.storage_access_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.storage_secret_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+agora.webhook_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+</code></pre></div>
+<p>Setup summary:</p>
+<ul>
+<li>Create a project in the <a href="https://console.agora.io/v2/">Agora console</a> using <strong>Secure Mode: App ID + Token</strong></li>
+<li><code>app_id</code> / <code>app_certificate</code>: from the project page in the Agora console</li>
+<li><code>rest_key</code> / <code>rest_secret</code>: from <strong>Developer Toolkit → Restful API → Add a Secret</strong></li>
+<li><code>storage_bucket_name</code> / <code>storage_access_key</code> / <code>storage_secret_key</code>: create a Google Cloud Storage bucket for recordings and generate interoperability access keys under <strong>Storage → Settings → Interoperability</strong></li>
+<li><code>webhook_secret</code>: a secret string you choose when configuring Agora <strong>Notifications</strong> to point at your deployed <code>AgoraRecordingWebhook</code> function URL</li>
+</ul>
+<h3 id="mux">Mux</h3>
+<p>Mux supports livestream workflows. Set via <code>firebase functions:config:set</code>:</p>
+<div class="highlight"><pre><span></span><code>mux.token_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+mux.secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+</code></pre></div>
+<p>Also configure Mux webhooks in the Mux dashboard to POST to your deployed <code>MuxWebhooks</code> function URL.</p>
+<h3 id="cloudinary">Cloudinary</h3>
+<p>Cloudinary is used for media uploads. Configuration is done entirely via <code>client/.env</code> (see step 9). No source files need to be edited.</p>
+<h3 id="stripe">Stripe</h3>
+<p>Stripe is currently disabled by default. If you enable it, set via <code>firebase functions:config:set</code>:</p>
+<div class="highlight"><pre><span></span><code>stripe.connected_account_webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+stripe.pub_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+stripe.secret_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+stripe.webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+</code></pre></div>
+<p>Also create products and pricing with a <code>plan_type</code> metadata field (<code>individual</code>, <code>club</code>, or <code>pro</code>) and configure prices for each.</p>
+<h3 id="sendgrid">SendGrid</h3>
+<p>SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension <code>firebase/firestore-send-email@0.1.9</code> with your SendGrid credentials. Email definitions are written to the <code>sendgridemail</code> Firestore collection.</p>
+<hr />
+<h2 id="11-build-and-deploy">11. Build and Deploy</h2>
+<h3 id="step-1-select-the-target-project">Step 1: Select the target project</h3>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>use<span class="w"> </span>staging
+<span class="c1"># or</span>
+firebase<span class="w"> </span>use<span class="w"> </span>prod
+</code></pre></div>
+<h3 id="step-2-deploy-rules-and-indexes">Step 2: Deploy rules and indexes</h3>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:rules
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>database
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:indexes
+</code></pre></div>
+<h3 id="step-3-build-and-deploy-functions">Step 3: Build and deploy functions</h3>
+<p>From <code>firebase/functions</code>:</p>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install
+dart<span class="w"> </span>run<span class="w"> </span>build_runner<span class="w"> </span>build<span class="w"> </span>--output<span class="o">=</span>build
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>functions
+</code></pre></div>
+<h3 id="step-4-build-the-flutter-client">Step 4: Build the Flutter client</h3>
+<p>From <code>client/</code>:</p>
+<div class="highlight"><pre><span></span><code>flutter<span class="w"> </span>pub<span class="w"> </span>get
+flutter<span class="w"> </span>build<span class="w"> </span>web<span class="w"> </span>--release<span class="w"> </span>--source-maps<span class="w"> </span>--web-renderer<span class="w"> </span>html<span class="w"> </span>-t<span class="w"> </span>lib/main.dart<span class="w"> </span>--dart-define-from-file<span class="o">=</span>.env
+</code></pre></div>
+<p>The built output goes to <code>client/build/web</code>, which is what Firebase Hosting serves (as configured in <code>firebase.json</code>).</p>
+<h3 id="step-5-deploy-hosting">Step 5: Deploy hosting</h3>
+<p>From the repo root:</p>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>hosting
+</code></pre></div>
+<hr />
+<h2 id="12-post-deployment-verification-checklist">12. Post-Deployment Verification Checklist</h2>
+<h3 id="core-platform">Core platform</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Firebase Hosting site loads successfully</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Anonymous auth works for new visitors</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Email/password auth works</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Google auth works</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Firestore reads/writes succeed</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Realtime Database connectivity works</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Firebase Functions deploy with no runtime config errors</li>
+</ul>
+<h3 id="video-events">Video / events</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Users can create or join events</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Breakout room assignment works</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Audio/video works in browser</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Recording works if Agora recording is configured</li>
+</ul>
+<h3 id="livestreaming">Livestreaming</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Mux webhook is reachable</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Live stream playback appears correctly</li>
+</ul>
+<h3 id="media-and-messaging">Media and messaging</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Cloudinary uploads succeed</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> SendGrid emails are delivered</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Banner images and public assets load</li>
+</ul>
+<h3 id="infrastructure">Infrastructure</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Cloud Tasks queue exists</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Firestore indexes are built</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Rules are deployed to the correct environment</li>
+</ul>
+<hr />
+<h2 id="13-recommended-environment-rollout-process">13. Recommended Environment Rollout Process</h2>
+<ol>
+<li>Set up <strong>staging</strong> first</li>
+<li>Configure all secrets and Firebase services</li>
+<li>Deploy rules, indexes, functions, and hosting</li>
+<li>Verify authentication, event flow, and integrations</li>
+<li>Repeat for <strong>production</strong></li>
+<li>Keep a separate config checklist for each environment</li>
+</ol>
+<hr />
+<h2 id="14-common-pitfalls">14. Common Pitfalls</h2>
+<h3 id="functions-deploy-but-fail-at-runtime">Functions deploy but fail at runtime</h3>
+<p>Usually caused by missing <code>firebase functions:config</code> values. Check with:</p>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>functions:config:get
+</code></pre></div>
+<h3 id="wrong-firebase-project-deployed">Wrong Firebase project deployed</h3>
+<p>Confirm your active project before running deploy commands:</p>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>use
+</code></pre></div>
+<h3 id="hosting-works-but-client-points-at-wrong-backend">Hosting works but client points at wrong backend</h3>
+<p>Double-check your <code>client/.env</code> values — specifically <code>FIREBASE_PROJECT_ID</code>, <code>FIREBASE_AUTH_DOMAIN</code>, <code>FIREBASE_DATABASE_URL</code>, and <code>FUNCTIONS_URL_PREFIX</code>.</p>
+<h3 id="google-sign-in-does-not-work">Google sign-in does not work</h3>
+<p>Ensure <code>__GOOGLE_ID__</code> in <code>client/web/index.html</code> was replaced with your actual Google OAuth client ID before building.</p>
+<h3 id="video-or-integrations-do-not-work">Video or integrations do not work</h3>
+<p>Usually caused by:</p>
+<ul>
+<li>Missing third-party credentials in <code>firebase functions:config</code></li>
+<li>Wrong webhook URLs</li>
+<li>Missing storage bucket setup</li>
+<li>Missing Cloudinary presets in <code>client/.env</code></li>
+<li>Missing SendGrid extension configuration</li>
+</ul>
+<h3 id="scheduled-functions-do-not-run">Scheduled functions do not run</h3>
+<p>Check whether the Cloud Tasks queue exists:</p>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>tasks<span class="w"> </span>queues<span class="w"> </span>list
+</code></pre></div>
+<hr />
+<h2 id="15-minimal-deployment-checklist">15. Minimal Deployment Checklist</h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Create Firebase projects (staging and/or production)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Add a Web App in each Firebase project and note the config values</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Update <code>.firebaserc</code> with your project IDs</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Enable Anonymous, Email/Password, and Google auth providers</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Create Firestore and Realtime Database</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Deploy Firestore rules, Realtime Database rules, and Firestore indexes</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Set required <code>firebase functions:config</code> values</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Build and deploy Firebase Functions</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Create <code>scheduled-functions</code> Cloud Tasks queue</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Copy <code>client/.env.hosted.example</code> to <code>client/.env</code> and fill in all values</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Replace <code>__GOOGLE_ID__</code> in <code>client/web/index.html</code> with your Google OAuth client ID</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Build Flutter client with <code>--dart-define-from-file=.env</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Deploy Firebase Hosting</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> Verify sign-in, events, and integrations</li>
+</ul>
+<hr />
+<h2 id="16-useful-commands-reference">16. Useful Commands Reference</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Select active Firebase project</span>
+firebase<span class="w"> </span>use<span class="w"> </span>staging
+firebase<span class="w"> </span>use<span class="w"> </span>prod
+
+<span class="c1"># Deploy rules and indexes</span>
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:rules
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>database
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>firestore:indexes
+
+<span class="c1"># Build and deploy functions (from firebase/functions)</span>
+npm<span class="w"> </span>install
+dart<span class="w"> </span>pub<span class="w"> </span>get
+dart<span class="w"> </span>run<span class="w"> </span>build_runner<span class="w"> </span>build<span class="w"> </span>--output<span class="o">=</span>build
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>functions
+
+<span class="c1"># Inspect / set runtime config</span>
+firebase<span class="w"> </span>functions:config:get
+firebase<span class="w"> </span>functions:config:set<span class="w"> </span>app.name<span class="o">=</span><span class="s2">&quot;Your App Name&quot;</span>
+
+<span class="c1"># Create Cloud Tasks queue</span>
+gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>YOUR-FIREBASE-PROJECT-ID
+gcloud<span class="w"> </span>tasks<span class="w"> </span>queues<span class="w"> </span>create<span class="w"> </span>scheduled-functions
+
+<span class="c1"># Build the Flutter client (from client/)</span>
+flutter<span class="w"> </span>build<span class="w"> </span>web<span class="w"> </span>--release<span class="w"> </span>--source-maps<span class="w"> </span>--web-renderer<span class="w"> </span>html<span class="w"> </span>-t<span class="w"> </span>lib/main.dart<span class="w"> </span>--dart-define-from-file<span class="o">=</span>.env
+
+<span class="c1"># Deploy hosting</span>
+firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>hosting
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "navigation.sections", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
