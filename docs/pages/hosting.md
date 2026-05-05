@@ -131,6 +131,7 @@ From `firebase/functions`:
 
 ```bash
 npm install
+dart pub get
 dart run build_runner build --output=build
 ```
 
@@ -175,7 +176,7 @@ firebase deploy --only firestore:indexes
 
 Frankly uses `firebase functions:config` for server-side configuration. These values are read by Firebase Functions at runtime — they are **not** the same as the client `.env` variables covered in the next section.
 
-A sample configuration file is at `firebase/functions/.runtimeconfig.json.example`. Copy it to `.runtimeconfig.json` for local development.
+A sample configuration file is at `firebase/functions/.runtimeconfig.json.example`. Copy it to `firebase/functions/.runtimeconfig.json` for local development.
 
 For production, set values using the Firebase CLI:
 
@@ -236,7 +237,7 @@ These values may differ between staging and production.
 
 ## 9. Configure the Flutter Client
 
-All client configuration is done via a `.env` file. The Flutter build reads this file using `--dart-define-from-file`. No source files need to be edited for configuration.
+All client configuration is done via a `.env` file. The Flutter build reads this file using `--dart-define-from-file`. No source files need to be edited for configuration except the Google Sign-In client ID placeholder in `client/web/index.html` (see below).
 
 Copy `client/.env.hosted.example` to `client/.env` and fill in all required values:
 
@@ -300,11 +301,7 @@ MATOMO_SITE_ID=<value>
 
 ### Google Sign-In Client ID
 
-The file `client/web/index.html` contains the placeholder `__GOOGLE_ID__` in a `<meta name="google-signin-client_id">` tag. Replace this with your Google OAuth client ID before building:
-
-```bash
-sed -i 's/__GOOGLE_ID__/YOUR_GOOGLE_CLIENT_ID/g' client/web/index.html
-```
+The file `client/web/index.html` contains the placeholder `__GOOGLE_ID__` in a `<meta name="google-signin-client_id">` tag. Replace this with your Google OAuth client ID before building.
 
 ---
 
@@ -421,6 +418,7 @@ firebase deploy --only hosting
 ## 12. Post-Deployment Verification Checklist
 
 ### Core platform
+
 - [ ] Firebase Hosting site loads successfully
 - [ ] Anonymous auth works for new visitors
 - [ ] Email/password auth works
@@ -430,21 +428,25 @@ firebase deploy --only hosting
 - [ ] Firebase Functions deploy with no runtime config errors
 
 ### Video / events
+
 - [ ] Users can create or join events
 - [ ] Breakout room assignment works
 - [ ] Audio/video works in browser
 - [ ] Recording works if Agora recording is configured
 
 ### Livestreaming
+
 - [ ] Mux webhook is reachable
 - [ ] Live stream playback appears correctly
 
 ### Media and messaging
+
 - [ ] Cloudinary uploads succeed
 - [ ] SendGrid emails are delivered
 - [ ] Banner images and public assets load
 
 ### Infrastructure
+
 - [ ] Cloud Tasks queue exists
 - [ ] Firestore indexes are built
 - [ ] Rules are deployed to the correct environment
@@ -541,6 +543,7 @@ firebase deploy --only firestore:indexes
 
 # Build and deploy functions (from firebase/functions)
 npm install
+dart pub get
 dart run build_runner build --output=build
 firebase deploy --only functions
 
