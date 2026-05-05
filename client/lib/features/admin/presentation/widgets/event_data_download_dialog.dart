@@ -121,19 +121,24 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       eventPath: event.fullPath,
     );
 
-    EventProvider provider = EventProvider.fromEvent(
+    final EventProvider provider = EventProvider.fromEvent(
       event,
       communityProvider: widget.communityProvider,
     );
 
     provider.initialize();
-    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
+    try {
+      List<BreakoutRoom> breakoutRooms =
+          await getBreakoutRoomData(event: event);
 
-    await provider.generateRegistrationDataCsvFile(
-      eventId: event.id,
-      registrationData: members,
-      breakoutRooms: breakoutRooms,
-    );
+      await provider.generateRegistrationDataCsvFile(
+        eventId: event.id,
+        registrationData: members,
+        breakoutRooms: breakoutRooms,
+      );
+    } finally {
+      provider.dispose();
+    }
   }
 
   Future<void> downloadChatData(Event event) async {
@@ -174,22 +179,25 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     }
 
     final breakoutRooms = await getBreakoutRoomData(event: event);
-    EventProvider provider = EventProvider.fromEvent(
+    final EventProvider provider = EventProvider.fromEvent(
       event,
       communityProvider: widget.communityProvider,
     );
     provider.initialize();
+    try {
+      // Reconstruct the response format for the CSV generator
+      final response = GetMeetingChatsSuggestionsDataResponse(
+        chatsSuggestionsList: chatData,
+      );
 
-    // Reconstruct the response format for the CSV generator
-    final response = GetMeetingChatsSuggestionsDataResponse(
-      chatsSuggestionsList: chatData,
-    );
-
-    await provider.generateChatDataCsv(
-      response: response,
-      eventId: event.id,
-      breakoutRooms: breakoutRooms,
-    );
+      await provider.generateChatDataCsv(
+        response: response,
+        eventId: event.id,
+        breakoutRooms: breakoutRooms,
+      );
+    } finally {
+      provider.dispose();
+    }
   }
 
   Future<void> downloadPollsSuggestionsData(Event event) async {
@@ -245,12 +253,16 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       communityProvider: widget.communityProvider,
     );
     provider.initialize();
-    await provider.generatePollsSuggestionsDataCsv(
-      suggestionData: suggestionData,
-      pollData: pollData,
-      eventId: event.id,
-      breakoutRooms: breakoutRooms,
-    );
+    try {
+      await provider.generatePollsSuggestionsDataCsv(
+        suggestionData: suggestionData,
+        pollData: pollData,
+        eventId: event.id,
+        breakoutRooms: breakoutRooms,
+      );
+    } finally {
+      provider.dispose();
+    }
   }
 
   String _recordingAnnotation(BuildContext context, int? parts) {
