@@ -43,10 +43,9 @@ _$_Community _$$_CommunityFromJson(Map<String, dynamic> json) => _$_Community(
       ratingSurveyUrl: json['ratingSurveyUrl'] as String?,
       themeLightColor: json['themeLightColor'] as String?,
       themeDarkColor: json['themeDarkColor'] as String?,
-      onboardingSteps: (json['onboardingSteps'] as List<dynamic>?)
-              ?.map((e) => $enumDecode(_$OnboardingStepEnumMap, e))
-              .toList() ??
-          const [],
+      onboardingSteps: json['onboardingSteps'] == null
+          ? const []
+          : onboardingStepsFromJson(json['onboardingSteps']),
       isOnboardingOverviewEnabled:
           json['isOnboardingOverviewEnabled'] as bool? ?? false,
     );
@@ -86,14 +85,6 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) =>
       'isOnboardingOverviewEnabled': instance.isOnboardingOverviewEnabled,
     };
 
-const _$OnboardingStepEnumMap = {
-  OnboardingStep.brandSpace: 'brandSpace',
-  OnboardingStep.createTemplate: 'createTemplate',
-  OnboardingStep.hostEvent: 'hostEvent',
-  OnboardingStep.inviteSomeone: 'inviteSomeone',
-  OnboardingStep.createStripeAccount: 'createStripeAccount',
-};
-
 const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.allowDonations: 'allowDonations',
   CommunityFeatureFlags.alwaysRecord: 'alwaysRecord',
@@ -117,6 +108,14 @@ const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.showSmartMatchingForBreakouts:
       'showSmartMatchingForBreakouts',
   CommunityFeatureFlags.suppressJoinEventEmails: 'suppressJoinEventEmails',
+};
+
+const _$OnboardingStepEnumMap = {
+  OnboardingStep.brandSpace: 'brandSpace',
+  OnboardingStep.createTemplate: 'createTemplate',
+  OnboardingStep.hostEvent: 'hostEvent',
+  OnboardingStep.inviteSomeone: 'inviteSomeone',
+  OnboardingStep.createStripeAccount: 'createStripeAccount',
 };
 
 _$_Featured _$$_FeaturedFromJson(Map<String, dynamic> json) => _$_Featured(
