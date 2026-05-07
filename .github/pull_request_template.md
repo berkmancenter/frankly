@@ -3,11 +3,8 @@ FRANKLY PULL REQUEST TEMPLATE
 Thank you for contributing to this open-source project - we appreciate you! 🙌
 
 AI Policy: 
-
 - When using AI assistance for contributions, please disclose your usage in the Additional Information section below. 
-
 - To help our human reviewers, please thoroughly review AI-assisted and AI-generated code yourself before submitting.
-
 - Please ensure you fully understand code contributions you submit. 
 -->
 
