@@ -509,11 +509,8 @@
   "language": "Language",
   "languageSelector": "Language Selector",
   "lastSession": "Last session",
-<<<<<<< mw/feat/event-end
   "leaveWithoutEnding": "Leave without ending",
-=======
   "leave": "Leave",
->>>>>>> staging
   "lightColorHex": "Light Color HEX#",
   "linkedinUrl": "LinkedIn URL",
   "links": "Links",
