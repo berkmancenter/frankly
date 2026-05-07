@@ -87,6 +87,7 @@ class _DataTabState extends State<DataTab> {
     _sessionSubscriptions[event.id]?.cancel();
     _sessionSubscriptions[event.id] = firestoreDatabase.firestore
         .collection(RecordingSession.kCollection)
+        .where(RecordingSession.kFieldCommunityId, isEqualTo: event.communityId)
         .where(RecordingSession.kFieldEventId, isEqualTo: event.id)
         .snapshots()
         .listen(
