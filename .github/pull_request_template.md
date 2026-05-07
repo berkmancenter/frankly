@@ -28,6 +28,8 @@ AI Policy:
 ## Testing this PR
 <!-- Give your reviewer some context or recommendations on how to test your work. -->
 
+## PR Checklist
+- [ ] Where applicable, I have added localization (l10n) entries to my feature for user-facing text.
 
 ## Additional information
 <!-- Provide any additional information that might be useful to the reviewer in evaluating this pull request. This could include performance considerations,design choices, etc. -->
