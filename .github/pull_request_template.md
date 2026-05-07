@@ -1,3 +1,16 @@
+<!-- 
+FRANKLY PULL REQUEST TEMPLATE
+Thank you for contributing to this open-source project - we appreciate you! 🙌
+
+AI Policy: 
+
+- When using AI assistance for contributions, please disclose your usage in the Additional Information section below. 
+
+- To help our human reviewers, please thoroughly review AI-assisted and AI-generated code yourself before submitting.
+
+- Please ensure you fully understand code contributions you submit. 
+-->
+
 ## What is in this PR?
 <!-- What is the goal of this PR? What steps are involved in achieving that goal? -->
 
@@ -15,7 +28,10 @@
 ## Testing this PR
 <!-- Give your reviewer some context or recommendations on how to test your work. -->
 
+## PR Checklist
+- [ ] Where applicable, I have added localization (l10n) entries to my feature for user-facing text.
 
 ## Additional information
 <!-- Provide any additional information that might be useful to the reviewer in evaluating this pull request. This could include performance considerations,design choices, etc. -->
 
+**AI tools used (if applicable)**: 
