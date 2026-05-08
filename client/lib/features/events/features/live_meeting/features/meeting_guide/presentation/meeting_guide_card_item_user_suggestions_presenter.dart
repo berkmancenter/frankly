@@ -8,6 +8,7 @@ import 'package:client/features/events/features/live_meeting/features/meeting_ag
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/data/services/firestore_meeting_guide_service.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/features/user/data/services/user_service.dart';
+import 'package:client/services.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:data_models/discussion_threads/discussion_thread.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
@@ -67,7 +68,7 @@ class MeetingGuideCardItemUserSuggestionsPresenter {
   Future<void> addSuggestion(String suggestion) async {
     if (suggestion.isEmpty) {
       _view.showMessage(
-        'Suggestion cannot be empty',
+        appLocalizationService.getLocalization().suggestionCannotBeEmpty,
         toastType: ToastType.failed,
       );
       return;
