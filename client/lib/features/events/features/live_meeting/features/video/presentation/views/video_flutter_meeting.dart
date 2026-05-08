@@ -28,8 +28,10 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart' as event;
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:intl/intl.dart' as intl;
 import 'package:client/core/localization/localization_helper.dart';
 
 import '../../data/providers/agora_room.dart';
@@ -53,7 +55,7 @@ class VideoFlutterMeeting extends StatefulHookWidget {
   }) : super(key: key);
 
   @override
-  _VideoFlutterMeetingState createState() => _VideoFlutterMeetingState();
+  State<VideoFlutterMeeting> createState() => _VideoFlutterMeetingState();
 }
 
 class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
@@ -67,6 +69,8 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   LiveMeetingProvider get liveMeetingProvider =>
       Provider.of<LiveMeetingProvider>(context);
   AgendaProvider get agendaProvider => context.watch<AgendaProvider>();
+  bool eventRecordedOnStart = false;
+  bool previousAlwaysRecord = false;
 
   @override
   void initState() {
@@ -79,18 +83,56 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
     _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
       _conferenceRoomRead.room?.dispose();
     });
+
+    eventRecordedOnStart =
+        EventProvider.read(context).event.eventSettings?.alwaysRecord ?? false;
   }
 
   Future<void> _connectToRoom() async {
     _onConferenceRoomException =
         _conferenceRoomRead.onException.listen((err) async {
       loggingService.log('showing alert in listener');
+      if (!mounted) return;
       await showAlert(
         context,
         err is PlatformException ? err.details : err.toString(),
       );
     });
     await _conferenceRoomRead.connect();
+  }
+
+  void _showRecordingAlert(BuildContext context) {
+    final liveMeetingProvider = LiveMeetingProvider.read(context);
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(
+            dialogContext.l10n.thisEventIsNowBeingRecorded,
+            softWrap: true,
+          ),
+          content: Text(
+            dialogContext.l10n.hostBeganRecording,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                liveMeetingProvider.leaveMeeting();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: dialogContext.theme.colorScheme.error,
+              ),
+              child: Text(dialogContext.l10n.leave),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(dialogContext.l10n.continueButton),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -106,6 +148,21 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
   @override
   Widget build(BuildContext context) {
     final error = _conferenceRoom.connectError;
+    final alwaysRecord =
+        EventProvider.watch(context).event.eventSettings?.alwaysRecord;
+
+    // Pop an alert if event begins recording, but only if it wasn't already recording at the start
+    if (alwaysRecord == true &&
+        !eventRecordedOnStart &&
+        !previousAlwaysRecord) {
+      // Trigger modal only on transition from non-true to true
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _showRecordingAlert(context);
+      });
+    }
+    previousAlwaysRecord = alwaysRecord ?? false;
+
     if (error != null && error.trim().isNotEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -141,44 +198,85 @@ class _VideoFlutterMeetingState extends State<VideoFlutterMeeting> {
                   liveMeetingProvider: liveMeetingProvider,
                   conferenceRoom: _conferenceRoom,
                 ),
-                if (EventProvider.watch(context)
-                        .event
-                        .eventSettings
-                        ?.alwaysRecord ==
-                    true)
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      color: context.theme.colorScheme.scrim.withScrimOpacity,
-                      height: 32,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            height: _kRecordingPulseSize,
-                            width: _kRecordingPulseSize,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: context.theme.colorScheme.errorContainer,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            'Recording',
-                            style: TextStyle(
-                              color: context.theme.colorScheme.onPrimary,
-                            ),
-                          ),
-                          SizedBox(width: 26),
-                        ],
-                      ),
-                    ),
+                if (alwaysRecord == true)
+                  _RecordingBadge(
+                    liveMeetingProvider: liveMeetingProvider,
                   ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _RecordingBadge extends StatelessWidget {
+  const _RecordingBadge({
+    required this.liveMeetingProvider,
+  });
+
+  final LiveMeetingProvider liveMeetingProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    final meeting = liveMeetingProvider.isInBreakout
+        ? liveMeetingProvider.breakoutRoomLiveMeeting
+        : liveMeetingProvider.liveMeeting;
+    final sessionId = meeting?.recordingSessionId;
+
+    // No session ID yet - show the badge unconditionally
+    // (matches the original alwaysRecord-gated behavior).
+    if (sessionId == null) {
+      return const _RecordingBadgePill();
+    }
+
+    return StreamBuilder<RecordingSession?>(
+      stream: firestoreLiveMeetingService.recordingSessionStream(sessionId),
+      builder: (context, snapshot) {
+        final status = snapshot.data?.status;
+        // Hide the badge only if the session has definitively failed.
+        if (status == RecordingSessionStatus.failed) {
+          return const SizedBox.shrink();
+        }
+        return const _RecordingBadgePill();
+      },
+    );
+  }
+}
+
+class _RecordingBadgePill extends StatelessWidget {
+  const _RecordingBadgePill();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: Container(
+        color: context.theme.colorScheme.scrim.withScrimOpacity,
+        height: 32,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: _kRecordingPulseSize,
+              width: _kRecordingPulseSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.theme.colorScheme.errorContainer,
+              ),
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Recording',
+              style: TextStyle(
+                color: context.theme.colorScheme.onPrimary,
+              ),
+            ),
+            SizedBox(width: 26),
+          ],
+        ),
       ),
     );
   }
@@ -394,8 +492,9 @@ class GetHelpButton extends StatefulWidget {
     final needHelp =
         await NeedHelpDialog(showContactAdmin: showContactAdmin).show();
 
-    if (!needHelp) return;
+    if (!needHelp || !context.mounted) return;
 
+    if (!context.mounted) return;
     await alertOnError(
       context,
       () => cloudFunctionsLiveMeetingService.updateBreakoutRoomFlagStatus(
@@ -410,6 +509,8 @@ class GetHelpButton extends StatefulWidget {
       ),
     );
 
+    if (!context.mounted) return;
+
     showRegularToast(
       context,
       'We’ve notified an administrator - please be patient, help is on the way!',
@@ -418,7 +519,7 @@ class GetHelpButton extends StatefulWidget {
   }
 
   @override
-  _GetHelpButtonState createState() => _GetHelpButtonState();
+  State<GetHelpButton> createState() => _GetHelpButtonState();
 }
 
 class _GetHelpButtonState extends State<GetHelpButton> {
