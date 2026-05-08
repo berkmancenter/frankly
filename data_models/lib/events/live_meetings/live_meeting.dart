@@ -26,6 +26,7 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
   static const String kFieldRecord = 'record';
   static const String kFieldMeetingId = 'meetingId';
   static const String kFieldIsMeetingCardMinimized = 'isMeetingCardMinimized';
+  static const String kFieldRecordingSessionId = 'recordingSessionId';
 
   factory LiveMeeting({
     // TODO(null-safety): There are places that we set various fields on the live meeting possibly
@@ -43,6 +44,7 @@ class LiveMeeting with _$LiveMeeting implements SerializeableRequest {
     @Default(false) bool record,
     @Default(false) bool isMeetingCardMinimized,
     @Default([]) List<String> pinnedUserIds,
+    String? recordingSessionId,
   }) = _LiveMeeting;
 
   factory LiveMeeting.fromJson(Map<String, dynamic> json) =>
@@ -115,6 +117,7 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
   static const String kFieldFlagStatus = 'flagStatus';
   static const String kFieldRoomName = 'roomName';
   static const String kFieldRoomId = 'roomId';
+  static const String kFieldRecordingSessionId = 'recordingSessionId';
 
   factory BreakoutRoom({
     required String roomId,
@@ -134,6 +137,7 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
     DateTime? createdDate,
     @Default(false) bool record,
+    String? recordingSessionId,
   }) = _BreakoutRoom;
 
   factory BreakoutRoom.fromJson(Map<String, dynamic> json) =>
