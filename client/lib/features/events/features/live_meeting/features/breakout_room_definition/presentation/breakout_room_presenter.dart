@@ -297,7 +297,7 @@ class BreakoutRoomPresenter extends ChangeNotifier {
         .removeWhere((q) => isNullOrEmpty(q.category));
     if (_breakoutRoomDefinition.categories.length < 2) {
       return showRegularToast(
-        'You must add atleast two (2) categories.',
+        appLocalizationService.getLocalization().mustAddAtLeastTwoCategories,
         ToastType.failed,
       );
     }
