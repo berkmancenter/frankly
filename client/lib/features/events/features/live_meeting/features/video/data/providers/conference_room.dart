@@ -17,12 +17,12 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart' hide Participant;
-import 'package:pedantic/pedantic.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_html/js_util.dart' as js_util;
+
 import 'agora_room.dart';
 
 class FakeParticipant extends AgoraParticipant {
@@ -381,13 +381,14 @@ class ConferenceRoom with ChangeNotifier {
     bool updateProvider = true,
   }) async {
     final updatedEnabledValue = setEnabled ?? !videoEnabled;
+    final context = navigatorState.context;
 
     if (updatedEnabledValue) {
       final permissionStatus = await Permission.camera.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
-        if (!navigatorState.mounted) return;
+        if (!context.mounted) return;
         await showAlert(
-          navigatorState.context,
+          context,
           'Error enabling camera. Please ensure you have granted permission.',
         );
         _room?.localParticipant?.videoTrackEnabled = false;
@@ -415,13 +416,14 @@ class ConferenceRoom with ChangeNotifier {
     bool updateProvider = true,
   }) async {
     final updatedEnabledValue = setEnabled ?? !audioEnabled;
+    final context = navigatorState.context;
 
     if (updatedEnabledValue) {
       final permissionStatus = await Permission.microphone.request();
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
-        if (!navigatorState.mounted) return;
+        if (!context.mounted) return;
         await showAlert(
-          navigatorState.context,
+          context,
           'Error enabling microphone. Please ensure you have granted permission.',
         );
         _room?.localParticipant?.audioTrackEnabled = false;
@@ -543,23 +545,25 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   Future<void> _promptToTurnOnVideo() async {
+    final context = navigatorState.context;
     final enableAudioVideo = await ConfirmDialog(
       title: appLocalizationService.getLocalization().turnOnAudioVideo,
       mainText: 'Would you like to turn on audio and video?',
       cancelText: appLocalizationService.getLocalization().cancel,
     ).show();
+    if (!context.mounted) return;
     if (enableAudioVideo) {
       if (!navigatorState.mounted) return;
       if (!(_room?.localParticipant?.audioTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
+          context,
           () => toggleAudioEnabled(setEnabled: true),
         );
       }
-      if (!navigatorState.mounted) return;
+      if (!context.mounted) return;
       if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
-          navigatorState.context,
+          context,
           () => toggleVideoEnabled(setEnabled: true),
         );
       }

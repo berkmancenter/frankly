@@ -3,7 +3,6 @@ import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:client/features/community/features/create_community/presentation/views/create_community_dialog.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/templates/features/create_template/presentation/views/create_template_dialog.dart';
@@ -202,6 +201,8 @@ class NavBarState extends State<NavBar> implements NavBarView {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ProfileOrLogin(
             showMenuAboveIcon: false,
+            showLoginSignUp:
+                routerDelegate.currentConfiguration?.uri.path != '/',
           ),
         )
       else ...[
@@ -556,9 +557,13 @@ class NavBarState extends State<NavBar> implements NavBarView {
       case OnboardingStep.brandSpace:
         final community = _presenter.getCommunity();
 
-        await CreateCommunityDialog(community: community).show();
+        routerDelegate.beamTo(
+          CommunityPageRoutes(
+            communityDisplayId: community!.displayId,
+          ).communityAdmin(),
+        );
         break;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         await CreateTemplateDialog.show(
           communityProvider: context.read<CommunityProvider>(),
           communityPermissionsProvider:

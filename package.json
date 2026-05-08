@@ -1,0 +1,8 @@
+{
+  "name": "frankly-dev-tools",
+  "private": true,
+  "scripts": {
+    "dev": "./run-dev.sh",
+    "build": "./build-all.sh"
+  }
+}

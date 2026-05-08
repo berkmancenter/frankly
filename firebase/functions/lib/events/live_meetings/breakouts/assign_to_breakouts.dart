@@ -7,14 +7,16 @@ import 'package:firebase_admin_interop/firebase_admin_interop.dart'
 import 'package:get_it/get_it.dart';
 import 'package:frankly_matching/matching.dart' as matching;
 import '../../../utils/infra/firestore_utils.dart';
+import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/utils/utils.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/iterables.dart';
-import 'package:uuid/uuid.dart';
 
 /// A utility class for handling assignments to breakouts.
 class AssignToBreakouts {
@@ -36,6 +38,7 @@ class AssignToBreakouts {
     required List<Participant> presentParticipants,
     required String creatorId,
     required CollectionReference breakoutRoomsCollection,
+    required bool alwaysRecord,
   }) async {
     print('starting breakout assignment');
     final presentParticipantIds = presentParticipants.map((p) => p.id).toList();
@@ -93,6 +96,7 @@ class AssignToBreakouts {
           orderingPriority: i,
           participantIds: roomParticipants[i],
           originalParticipantIdsAssignment: roomParticipants[i],
+          record: alwaysRecord,
         ),
       );
     }
@@ -148,7 +152,7 @@ class AssignToBreakouts {
           .reduce(math.max);
     }
 
-    final int nonNullNumberOfQuestions = math.min(9, numberOfQuestions ?? 9);
+    final int nonNullNumberOfQuestions = math.min(9, numberOfQuestions);
 
     // Update all values to be numberOfQuestions in length.
     participantSurveyResponsesLookup.updateAll((key, value) {
@@ -291,7 +295,8 @@ class AssignToBreakouts {
           participantIds: prematchEntries[i].value.map((p) => p.id).toList(),
           originalParticipantIdsAssignment:
               prematchEntries[i].value.map((p) => p.id).toList(),
-          record: breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
+          record: (event.eventSettings?.alwaysRecord ?? false) ||
+              breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
         ),
       for (var j = 0; j < matches.length; j++)
         BreakoutRoom(
@@ -301,6 +306,7 @@ class AssignToBreakouts {
           orderingPriority: j + i,
           participantIds: matches[j],
           originalParticipantIdsAssignment: matches[j],
+          record: event.eventSettings?.alwaysRecord ?? false,
         ),
     ];
   }
@@ -571,12 +577,15 @@ class AssignToBreakouts {
         breakoutRoomsSessionDoc.collection('breakout-rooms');
 
     List<BreakoutRoom> breakoutRooms;
+    final alwaysRecord = event.eventSettings?.alwaysRecord ?? false;
+
     if (assignmentMethod == BreakoutAssignmentMethod.targetPerRoom) {
       breakoutRooms = await _assignBreakoutsBasedOnTargetSize(
         targetParticipantsPerRoom: targetParticipantsPerRoom,
         presentParticipants: presentParticipants,
         creatorId: creatorId,
         breakoutRoomsCollection: breakoutRoomsCollection,
+        alwaysRecord: alwaysRecord,
       );
     } else if (assignmentMethod == BreakoutAssignmentMethod.smartMatch) {
       breakoutRooms = await _assignBreakoutsForSmartMatch(
@@ -605,6 +614,7 @@ class AssignToBreakouts {
           orderingPriority: -1,
           creatorId: creatorId,
           participantIds: [],
+          record: alwaysRecord,
         ),
       );
     }
@@ -618,6 +628,7 @@ class AssignToBreakouts {
           orderingPriority: 0,
           creatorId: creatorId,
           participantIds: [],
+          record: alwaysRecord,
         ),
       );
     }
@@ -666,6 +677,47 @@ class AssignToBreakouts {
       rooms: breakoutRooms,
       firstAgendaItemId: firstAgendaItemId,
     );
+
+    // Start recordings immediately after room assignment so there is exactly
+    // one writer and no risk of concurrent joins racing on the same room.
+    // Check both eventSettings.alwaysRecord and liveMeeting.record -- the
+    // latter is set when the event is created via the ?record=true URL param.
+    if (alwaysRecord || currentLiveMeeting.record) {
+      final agoraUtils = AgoraUtils();
+      final recordingRoomIds = breakoutRooms
+          .where((r) => r.roomId != breakoutsWaitingRoomId)
+          .map((r) => r.roomId)
+          .toList();
+      print(
+          'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',);
+      for (final room in breakoutRooms) {
+        if (room.roomId == breakoutsWaitingRoomId) continue;
+        final newSessionId = firestore
+            .collection(RecordingSession.kCollection)
+            .document()
+            .documentID;
+        final roomPath = '${breakoutRoomsCollection.path}/${room.roomId}';
+        await firestore.document(roomPath).updateData(
+              UpdateData.fromMap(
+                  {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
+            );
+        try {
+          await agoraUtils.recordRoom(
+            roomId: room.roomId,
+            sessionId: newSessionId,
+            eventId: event.id,
+            communityId: event.communityId,
+            roomType: RecordingRoomType.breakout,
+            breakoutSessionId: breakoutSessionId,
+            chatPath: '$roomPath/chats/community_chat/messages',
+            participantIds: room.participantIds,
+          );
+        } catch (e) {
+          print(
+              'Error starting recording for breakout room ${room.roomId}: $e',);
+        }
+      }
+    }
 
     profile('writing session doc');
 

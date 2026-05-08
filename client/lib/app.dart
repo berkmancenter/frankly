@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:beamer/beamer.dart';
 import 'package:client/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:client/features/user/data/services/user_data_service.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -51,12 +53,22 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
   }
 }
 
+var _databaseEmulatorConfigured = false;
+
 Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   setURLPathStrategy();
 
   await Firebase.initializeApp(
     options: firebaseOptions ?? DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Wire emulators immediately after Firebase.initializeApp, before any
+  // service can touch Firebase instances. useDatabaseEmulator() throws a
+  // fatal error if called after the RTDB instance is already in use.
+  if (UserDataService.usingEmulator && !_databaseEmulatorConfigured) {
+    FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
+    _databaseEmulatorConfigured = true;
+  }
 
   if (enableSentry) {
     await Sentry.init(

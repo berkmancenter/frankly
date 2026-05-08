@@ -6,6 +6,7 @@ import 'package:client/config/environment.dart';
 import 'package:client/features/admin/data/services/firestore_agreements_service.dart';
 import 'package:client/core/data/services/responsive_layout_service.dart';
 import 'package:client/features/admin/utils/payment_utils.dart';
+import 'package:client/services.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/admin/partner_agreement.dart';
 import 'package:provider/provider.dart';
@@ -51,17 +52,18 @@ class OverviewPresenter {
   }
 
   String getSubtitle(OnboardingStep onboardingStep) {
+    final l10n = appLocalizationService.getLocalization();
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
-        return 'Make it yours with custom colors, images, and logos';
-      case OnboardingStep.createGuide:
-        return 'What do you want to talk about? Choose a template and structure the event. ';
+        return l10n.onboardingBrandSpaceSubtitle;
+      case OnboardingStep.createTemplate:
+        return l10n.onboardingCreateTemplateSubtitle;
       case OnboardingStep.hostEvent:
-        return 'You can host or let members talk directly to each other. ';
+        return l10n.onboardingHostEventSubtitle;
       case OnboardingStep.inviteSomeone:
-        return 'Follow along for upcoming events, resources, and more.';
+        return l10n.onboardingInviteSomeoneSubtitle;
       case OnboardingStep.createStripeAccount:
-        return 'Enable donations for your community.';
+        return l10n.onboardingCreateStripeAccountSubtitle;
     }
   }
 
@@ -69,7 +71,7 @@ class OverviewPresenter {
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
         return null;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return Environment.createTemplateHelpUrl;
       case OnboardingStep.hostEvent:
         return Environment.createEventHelpUrl;
@@ -77,7 +79,6 @@ class OverviewPresenter {
       case OnboardingStep.createStripeAccount:
         return null;
     }
-    return null;
   }
 
   void toggleExpansion(OnboardingStep? onboardingStep) {

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/widgets/constrained_body.dart';
@@ -21,9 +20,6 @@ import 'package:client/features/events/features/event_page/data/providers/templa
 import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/utils/error_utils.dart';
-import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/features/auth/presentation/views/sign_in_dialog.dart';
@@ -31,11 +27,9 @@ import 'package:client/core/widgets/tabs/tab_bar.dart';
 import 'package:client/core/widgets/tabs/tab_bar_view.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/services.dart';
-import 'package:client/styles/app_asset.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/core/utils/dialogs.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_message.dart';
 import 'package:provider/provider.dart';
@@ -94,10 +88,6 @@ class EventPage extends StatefulWidget {
 }
 
 class EventPageState extends State<EventPage> implements EventPageView {
-  // How long after the scheduled start time the join-event graphic remains
-  // visible, giving participants a window to join a meeting already in progress.
-  static const int _kHoursAfterEventToShow = 2;
-
   EventProvider get _eventProvider => EventProvider.watch(context);
 
   Event get event => _eventProvider.event;
@@ -161,6 +151,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
     return await alertOnError<bool>(context, () async {
           final eventPageProvider = context.read<EventPageProvider>();
           final event = eventPageProvider.eventProvider.event;
+
           JoinEventResults joinResults = await alertOnError<JoinEventResults>(
                 context,
                 () => eventPageProvider.joinEvent(
@@ -177,6 +168,37 @@ class EventPageState extends State<EventPage> implements EventPageView {
 
           if (!enterMeeting) {
             return false;
+          }
+
+          // If the event is always recorded, show a consent dialog before joining
+          if(!mounted) return false;
+          if (context.read<EventProvider>().event.eventSettings?.alwaysRecord ==
+              true) {
+            final proceed = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(context.l10n.thisEventIsBeingRecorded),
+                content: Text(
+                  context.l10n.hostWillReceiveDownloadableCopy,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    style: TextButton.styleFrom(
+                      foregroundColor: context.theme.colorScheme.error,
+                    ),
+                    child: Text(context.l10n.close),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text(context.l10n.continueButton),
+                  ),
+                ],
+              ),
+            );
+
+            // If the user does not consent to being recorded, do not join the event
+            if (proceed != true) return false;
           }
 
           if (!mounted) return false;
@@ -248,70 +270,12 @@ class EventPageState extends State<EventPage> implements EventPageView {
     );
   }
 
-  bool _isEnterEventGraphicShown(DateTime scheduled) {
-    final now = clockService.now();
-    final beforeMeetingCutoff =
-        scheduled.subtract(Duration(minutes: kMinutesBeforeEventToJoin));
-    final afterMeetingCutoff =
-        scheduled.add(Duration(hours: _kHoursAfterEventToShow));
-
-    return now.isAfter(beforeMeetingCutoff) && now.isBefore(afterMeetingCutoff);
-  }
 
   Widget _buildGuide() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (_isEnterEventGraphicShown(event.scheduledTime!)) ...[
-          SizedBox(
-            height: 380,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: ProxiedImage(
-                    null,
-                    asset: AppAsset('media/background.gif'),
-                    fit: BoxFit.cover,
-                    loadingColor: Colors.transparent,
-                  ),
-                ),
-                Container(
-                  color: context.theme.colorScheme.scrim.withScrimOpacity,
-                ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      HeightConstrainedText(
-                        'The event is starting',
-                        style: TextStyle(
-                          color: context.theme.colorScheme.onPrimary,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      ActionButton(
-                        text: 'Enter Event',
-                        onPressed: () async {
-                          final joined = await _joinEvent(enterMeeting: true);
-                          if (!joined && mounted) {
-                            showRegularToast(
-                              context,
-                              'Event was not entered.',
-                              toastType: ToastType.neutral,
-                            );
-                          }
-                        },
-                        height: 65,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 4),
-        ],
         CustomTabBar(
           padding: EdgeInsets.zero,
         ),

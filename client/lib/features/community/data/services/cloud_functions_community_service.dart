@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/admin/plan_capability_list.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
+import 'package:data_models/community/community.dart';
 
 class CloudFunctionsCommunityService {
   Future<CreateCommunityResponse> createCommunity(
@@ -63,7 +66,7 @@ class CloudFunctionsCommunityService {
     GetCommunityDonationsEnabledRequest request,
   ) async {
     final result = await cloudFunctions.callFunction(
-        'GetCommunityDonationsEnabled', request.toJson());
+        'GetCommunityDonationsEnabled', request.toJson(),);
 
     return GetCommunityDonationsEnabledResponse.fromJson(result);
   }
@@ -72,7 +75,7 @@ class CloudFunctionsCommunityService {
     GetCommunityPrePostEnabledRequest request,
   ) async {
     final result = await cloudFunctions.callFunction(
-        'GetCommunityPrePostEnabled', request.toJson());
+        'GetCommunityPrePostEnabled', request.toJson(),);
 
     return GetCommunityPrePostEnabledResponse.fromJson(result);
   }
@@ -85,6 +88,46 @@ class CloudFunctionsCommunityService {
       request.toJson(),
     );
   }
+
+
+  Future<String> updateProfileImage({
+    required String imageUrl,
+    required Community community,
+  }) async {
+    if (!isNullOrEmpty(community.id)) {
+      await cloudFunctionsCommunityService.updateCommunity(
+        UpdateCommunityRequest(
+          community: community,
+          keys: [Community.kFieldProfileImageUrl],
+        ),
+      );
+      analytics.logEvent(
+        AnalyticsUpdateCommunityImageEvent(communityId: community.id),
+      );
+      return 'success';
+    }
+    return 'no_community_id';
+  }
+
+  Future<void> removeImage({
+    required Community community,
+  }) async {
+    if (!isNullOrEmpty(community.id)) {
+      await cloudFunctionsCommunityService.updateCommunity(
+        UpdateCommunityRequest(
+          community: community,
+          keys: [
+            Community.kFieldProfileImageUrl,
+          ],
+        ),
+      );
+
+      analytics.logEvent(
+        AnalyticsUpdateCommunityImageEvent(communityId: community.id),
+      );
+    }
+  }
+
 
   /// Regular `result` doesn't work on macos.
   /// type '_InternalLinkedHashMap<Object?, Object?>' is not a subtype of type 'Map<String, dynamic>' in type cast

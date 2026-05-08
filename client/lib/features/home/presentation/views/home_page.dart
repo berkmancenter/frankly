@@ -12,13 +12,15 @@ import 'package:client/styles/styles.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, this.showLoginByDefault = false});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
+
+  final bool showLoginByDefault;
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<NavBarProvider>().checkIfShouldResetNav();
@@ -33,7 +35,9 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: responsiveLayoutService.showBottomNavBar(context)
           ? HomeBottomNavBar()
           : null,
-      child: isUserSignedIn ? _buildHomePageContent() : HomePageSignInSection(),
+      child: isUserSignedIn ? _buildHomePageContent() : HomePageSignInSection(
+        showLoginByDefault: widget.showLoginByDefault,
+      ),
     );
   }
 

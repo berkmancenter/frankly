@@ -222,10 +222,6 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
     return Dialog(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Color(0xFF5568FF),
-          width: 2,
-        ),
         borderRadius: BorderRadius.circular(6),
       ),
       child: ConstrainedBox(

@@ -31,13 +31,15 @@ class JoinEventResults {
 Future<bool> verifyAvailableForEvent(Event event) async {
   final date = DateFormat('E, MMM d').format(event.scheduledTime!);
   final time = DateFormat('h:mm a').format(event.scheduledTime!);
+  String subText = appLocalizationService
+      .getLocalization()
+      .pleaseConfirmAvailability(time, date);
 
   final cancel = await ConfirmDialog(
     title: appLocalizationService.getLocalization().confirm,
-    subText:
-        'Please confirm that you are available at $time on $date to participate in this event.',
-    confirmText: 'I\'ll be there!',
-    cancelText: 'No, cancel',
+    subText: subText,
+    confirmText: appLocalizationService.getLocalization().illBeThere,
+    cancelText: appLocalizationService.getLocalization().noCancel,
   ).show();
 
   // Log RSVP event.
@@ -297,9 +299,9 @@ class EventPageProvider with ChangeNotifier {
   Future<bool> cancelEvent() async {
     final cancel = await ConfirmDialog(
       title: appLocalizationService.getLocalization().cancelEvent,
-      mainText: 'Are you sure you want to cancel event? This '
-          'cannot be undone and will notify all participants.',
-      confirmText: 'Yes, cancel',
+      mainText:
+          appLocalizationService.getLocalization().cancelEventConfirmation,
+      confirmText: appLocalizationService.getLocalization().yesCancel,
       cancelText: appLocalizationService.getLocalization().no,
     ).show();
     if (!cancel) return false;
@@ -333,16 +335,16 @@ class EventPageProvider with ChangeNotifier {
     if (event.creatorId == userService.currentUserId) {
       await cancelEvent();
     } else if (eventProvider.isParticipant) {
+      final context = navigatorState.context;
       final cancelParticipation = await ConfirmDialog(
         title: appLocalizationService.getLocalization().cancelParticipation,
         mainText: 'Are you sure you want to cancel?',
         confirmText: appLocalizationService.getLocalization().yes,
         cancelText: appLocalizationService.getLocalization().no,
       ).show();
-      if (cancelParticipation) {
-        if (!navigatorState.mounted) return;
+      if (cancelParticipation && context.mounted) {
         await alertOnError(
-          navigatorState.context,
+          context,
           () => firestoreEventService.removeParticipant(
             communityId: event.communityId,
             templateId: event.templateId,

@@ -15,11 +15,20 @@ analyzer:
     - lib/**.g.dart
     - test/**.mocks.dart
   errors:
-    unnecessary_null_comparison: error
-    dead_null_aware_expression: warning
-    missing_required_param: error
+    # Bugs
+    use_build_context_synchronously: error
     unawaited_futures: error
+    unnecessary_null_comparison: error
+    missing_required_param: error
+
+    # Should be visible / fixed promptly
     unused_import: warning
+    unused_element: warning
+    dead_null_aware_expression: warning
+    avoid_print: warning
+    implementation_imports: warning
+    depend_on_referenced_packages: warning
+    require_trailing_commas: warning
 
     # invalid_annotation_target is recommended in the Freezed package documentation.
     invalid_annotation_target: ignore
