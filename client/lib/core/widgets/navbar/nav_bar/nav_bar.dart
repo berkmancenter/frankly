@@ -563,7 +563,7 @@ class NavBarState extends State<NavBar> implements NavBarView {
           ).communityAdmin(),
         );
         break;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         await CreateTemplateDialog.show(
           communityProvider: context.read<CommunityProvider>(),
           communityPermissionsProvider:

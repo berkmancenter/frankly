@@ -1,30 +1,22 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/routing/locations.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
-import 'package:client/features/events/features/event_page/presentation/widgets/event_info.dart';
-import 'package:client/features/user/data/services/user_service.dart';
+import 'package:client/features/admin/presentation/widgets/event_data_download_dialog.dart';
 import 'package:client/styles/styles.dart';
-import 'package:data_models/recording/recording_session.dart';
-import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/empty_page_content.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
-import 'package:client/config/environment.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:client/core/utils/platform_utils.dart';
 import 'package:data_models/events/event.dart';
-import 'package:universal_html/html.dart' as html;
 
 class DataTab extends StatefulWidget {
   const DataTab({Key? key}) : super(key: key);
@@ -35,7 +27,6 @@ class DataTab extends StatefulWidget {
 
 class _DataTabState extends State<DataTab> {
   late BehaviorSubjectWrapper<List<Event>> _allEvents;
-  late UserService _userService;
   int _currentStartIndex = 0;
 
   // Recording status per event:
@@ -66,7 +57,6 @@ class _DataTabState extends State<DataTab> {
         }
       }
     });
-    _userService = UserService();
 
     _currentStartIndex = 0;
   }
@@ -84,64 +74,6 @@ class _DataTabState extends State<DataTab> {
     super.dispose();
   }
 
-  Future<void> downloadRegistrantList(
-    Event event,
-    Iterable<Participant> participants,
-  ) async {
-    final communityProvider = CommunityProvider.read(context);
-
-    final List<String> userIds = participants.map((p) => p.id).toList();
-    final members = await _userService.getMemberDetails(
-      membersList: userIds,
-      communityId: communityProvider.communityId,
-      eventPath: event.fullPath,
-    );
-
-    EventProvider provider = EventProvider.fromEvent(
-      event,
-      communityProvider: communityProvider,
-    );
-
-    provider.initialize();
-    List<BreakoutRoom> breakoutRooms = await getBreakoutRoomData(event: event);
-
-    await provider.generateRegistrationDataCsvFile(
-      eventId: event.id,
-      registrationData: members,
-      breakoutRooms: breakoutRooms,
-    );
-  }
-
-  Widget _buildDownloadButton(
-    Event event,
-    Iterable<Participant> participants,
-    bool eventInPast,
-    bool hasRecording,
-  ) {
-    final showRecording = eventInPast && hasRecording;
-    final showRegistrant = participants.isNotEmpty;
-
-    // Nothing to download: hide the button entirely.
-    if (!showRecording && !showRegistrant) {
-      return const SizedBox.shrink();
-    }
-
-    return ActionButton(
-      type: ActionButtonType.text,
-      icon: const Icon(Icons.file_download_outlined),
-      loadingHeight: 16,
-      borderSide: BorderSide(color: Theme.of(context).primaryColor),
-      textColor: Theme.of(context).primaryColor,
-      onPressed: () => _showDownloadDialog(
-        event,
-        participants,
-        showRecording,
-        showRegistrant,
-      ),
-      text: context.l10n.dataDownload,
-    );
-  }
-
   // --- Recording status and download ---
 
   void _maybeStartRecordingCheck(Event event) {
@@ -149,16 +81,6 @@ class _DataTabState extends State<DataTab> {
     _recordingParts[event.id] = null; // null = loading
     (_recordingNotifiers[event.id] ??= ValueNotifier(null)).value = null;
     _subscribeToSessions(event);
-  }
-
-  void _retryRecordingCheck(Event event) {
-    _sessionSubscriptions[event.id]?.cancel();
-    _sessionSubscriptions.remove(event.id);
-    setState(() {
-      _recordingParts.remove(event.id);
-    });
-    _recordingNotifiers[event.id]?.value = null;
-    _maybeStartRecordingCheck(event);
   }
 
   void _subscribeToSessions(Event event) {
@@ -203,208 +125,6 @@ class _DataTabState extends State<DataTab> {
         if (!mounted) return;
         setState(() => _recordingParts[event.id] = -1);
         _recordingNotifiers[event.id]?.value = -1;
-      },
-    );
-  }
-
-  Future<void> _downloadAllRecordings(Event event) async {
-    final errorMsg = context.l10n.errorOccurred;
-    final preparingMsg = context.l10n.recordingPreparing;
-    await alertOnError(context, () async {
-      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
-      if (idToken == null) throw Exception(errorMsg);
-      final response = await http.post(
-        Uri.parse('${Environment.functionsUrlPrefix}/downloadRecording'),
-        headers: {
-          'Authorization': 'Bearer $idToken',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'eventPath': event.fullPath}),
-      );
-      if (response.statusCode != 200) {
-        throw Exception(errorMsg);
-      }
-      final body = jsonDecode(response.body) as Map<String, dynamic>;
-      final rawList = body['recordings'];
-      if (rawList is! List || rawList.isEmpty) {
-        throw Exception(preparingMsg);
-      }
-      final urls = rawList
-          .whereType<Map<String, dynamic>>()
-          .map((r) => r['url'] as String? ?? '')
-          .where((url) => url.isNotEmpty)
-          .toList();
-      for (int i = 0; i < urls.length; i++) {
-        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
-        html.document.body!.append(anchor);
-        anchor.click();
-        anchor.remove();
-        if (i < urls.length - 1) {
-          await Future.delayed(const Duration(milliseconds: 300));
-        }
-      }
-      setState(() => _recordingParts[event.id] = urls.length);
-      _recordingNotifiers[event.id]?.value = urls.length;
-    });
-  }
-
-  String _recordingAnnotation(BuildContext context, int? parts) {
-    if (parts == null) return context.l10n.recordingStatusChecking;
-    if (parts == -2) return context.l10n.recordingStatusInProgress;
-    if (parts == 0) return context.l10n.recordingStatusProcessing;
-    if (parts == -1) return context.l10n.recordingStatusFailed;
-    final label = parts == 1
-        ? context.l10n.recordingStatusFile
-        : context.l10n.recordingStatusFiles;
-    return '$parts $label';
-  }
-
-  void _showDownloadDialog(
-    Event event,
-    Iterable<Participant> participants,
-    bool showRecording,
-    bool showRegistrant,
-  ) {
-    bool recordingSelected =
-        showRecording && (_recordingParts[event.id] ?? 0) > 0;
-    bool recordingAutoChecked = recordingSelected;
-    bool registrantListSelected = showRegistrant;
-
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        AlertDialog buildAlertDialog(StateSetter setDialogState, int? parts) {
-          void pressedHandler() async {
-            if (showRecording && recordingSelected) {
-              await _downloadAllRecordings(event);
-            }
-            if (showRegistrant && registrantListSelected && mounted) {
-              await alertOnError(context, () async {
-                await downloadRegistrantList(event, participants);
-              });
-            }
-            if (dialogContext.mounted) Navigator.of(dialogContext).pop();
-          }
-
-          final recordingReady = showRecording && (parts ?? 0) > 0;
-          final downloadEnabled =
-              (showRecording && recordingSelected && recordingReady) ||
-                  (showRegistrant && registrantListSelected);
-
-          return AlertDialog(
-            title: Text(context.l10n.selectData),
-            backgroundColor: context.theme.colorScheme.surfaceContainerHighest,
-            contentPadding: EdgeInsets.zero,
-            actionsPadding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-            titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 48),
-            content: Material(
-              color: context.theme.colorScheme.surfaceContainer,
-              child: SingleChildScrollView(
-                child: ListBody(
-                  children: [
-                    if (showRecording)
-                      CheckboxListTile(
-                        value: recordingSelected,
-                        enabled: (parts ?? 0) > 0,
-                        onChanged: (value) => setDialogState(
-                          () => recordingSelected = value ?? false,
-                        ),
-                        title: Text(context.l10n.recording),
-                        subtitle: Text(
-                          _recordingAnnotation(context, parts),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: (parts ?? 0) > 0
-                                ? null
-                                : Theme.of(context).textTheme.bodySmall?.color,
-                          ),
-                        ),
-                      ),
-                    if (showRegistrant)
-                      CheckboxListTile(
-                        value: registrantListSelected,
-                        onChanged: (value) => setDialogState(
-                          () => registrantListSelected = value ?? false,
-                        ),
-                        title: Text(context.l10n.registrationDataDownload),
-                      ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: SizedBox(
-                        width: 200,
-                        child: Column(
-                          children: [
-                            Text(
-                              context.l10n.otherDataDownload,
-                              style: context.theme.textTheme.bodySmall,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 8),
-                            ActionButton(
-                              onPressed: () {
-                                routerDelegate.beamTo(
-                                  CommunityPageRoutes(
-                                    communityDisplayId:
-                                        CommunityProvider.readOrNull(context)
-                                                ?.displayId ??
-                                            event.communityId,
-                                  ).eventPage(
-                                    templateId: event.templateId,
-                                    eventId: event.id,
-                                  ),
-                                );
-                              },
-                              color: context
-                                  .theme.colorScheme.surfaceContainerHighest,
-                              textColor: context.theme.colorScheme.onSurface,
-                              text: context.l10n.otherDataDownloadAction,
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: Text(context.l10n.cancel),
-              ),
-              TextButton(
-                onPressed: downloadEnabled ? pressedHandler : null,
-                child: Text(context.l10n.download),
-              ),
-            ],
-          );
-        }
-
-        return StatefulBuilder(
-          builder: (ctx, setDialogState) {
-            if (showRecording) {
-              final notifier = _recordingNotifiers[event.id] ??=
-                  ValueNotifier(_recordingParts[event.id]);
-              return ValueListenableBuilder<int?>(
-                valueListenable: notifier,
-                builder: (ctx2, parts, _) {
-                  if ((parts ?? 0) > 0 && !recordingAutoChecked) {
-                    recordingAutoChecked = true;
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setDialogState(() => recordingSelected = true);
-                    });
-                  }
-                  return buildAlertDialog(setDialogState, parts);
-                },
-              );
-            }
-            return buildAlertDialog(setDialogState, null);
-          },
-        );
       },
     );
   }
@@ -575,11 +295,13 @@ class _DataTabState extends State<DataTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildDownloadButton(
-                        event,
-                        participants,
-                        eventInPast,
-                        hasRecording,
+                      _DownloadDataButton(
+                        event: event,
+                        participants: participants,
+                        eventInPast: eventInPast,
+                        hasRecording: hasRecording,
+                        recordingParts: _recordingParts,
+                        recordingNotifiers: _recordingNotifiers,
                       ),
                     ],
                   ),
@@ -589,11 +311,13 @@ class _DataTabState extends State<DataTab> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildDownloadButton(
-                      event,
-                      participants,
-                      eventInPast,
-                      hasRecording,
+                    _DownloadDataButton(
+                      event: event,
+                      participants: participants,
+                      eventInPast: eventInPast,
+                      hasRecording: hasRecording,
+                      recordingParts: _recordingParts,
+                      recordingNotifiers: _recordingNotifiers,
                     ),
                   ],
                 ),
@@ -721,6 +445,57 @@ class _DataTabState extends State<DataTab> {
           style: context.theme.textTheme.bodyLarge,
         ),
       ),
+    );
+  }
+}
+
+class _DownloadDataButton extends StatelessWidget {
+  const _DownloadDataButton({
+    required this.event,
+    required this.participants,
+    required this.hasRecording,
+    required this.recordingParts,
+    required this.recordingNotifiers,
+    required this.eventInPast,
+  });
+
+  final Event event;
+  final Iterable<Participant> participants;
+  final bool hasRecording;
+  final Map<String, int?> recordingParts;
+  final Map<String, ValueNotifier<int?>> recordingNotifiers;
+  final bool eventInPast;
+
+  @override
+  Widget build(BuildContext context) {
+    // Hide button for future events with no registrants.
+    if (!eventInPast && participants.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final communityProvider = CommunityProvider.read(context);
+
+    return ActionButton(
+      type: ActionButtonType.text,
+      icon: const Icon(Icons.file_download_outlined),
+      loadingHeight: 16,
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () async {
+        await showDialog<void>(
+          context: context,
+          builder: (dialogContext) => EventDataDownloadDialog(
+            event: event,
+            participants: participants,
+            hasRecording: hasRecording,
+            recordingParts: recordingParts,
+            recordingNotifier: recordingNotifiers[event.id],
+            eventInPast: eventInPast,
+            communityProvider: communityProvider,
+          ),
+        );
+      },
+      text: context.l10n.dataDownload,
     );
   }
 }

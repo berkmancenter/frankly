@@ -198,7 +198,7 @@ class _EventInfoState extends State<EventInfo> {
     return shareLink;
   }
 
-  Future<void> _showCreateGuideFromEventDialog(
+  Future<void> _showCreateTemplateFromEventDialog(
     CommunityProvider communityProvider,
   ) async {
     final template = _presenter.getCombinedTemplateFromEvent();
@@ -261,9 +261,9 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
-  Future<void> _showRefreshGuideDialog() async {
+  Future<void> _showRefreshTemplateDialog() async {
     await ConfirmDialog(
-      title: context.l10n.confirmRefreshGuide,
+      title: context.l10n.confirmRefreshTemplate,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
       confirmText: 'Yes, refresh',
@@ -278,107 +278,6 @@ class _EventInfoState extends State<EventInfo> {
     ).show();
   }
 
-  Future<void> _downloadRegistrationData() async {
-    final eventProvider = EventProvider.read(context);
-    await alertOnError(context, () async {
-      // Open new stream to ensure we always get data (even in the case of 'livestream' event type)
-      final participantsWrapper = firestoreEventService.eventParticipantsStream(
-        communityId: widget.event.communityId,
-        templateId: widget.event.templateId,
-        eventId: widget.event.id,
-      );
-      final participants = await participantsWrapper.stream
-          .map((s) => s.where((p) => p.status == ParticipantStatus.active))
-          .first;
-      final List<String> userIds = participants.map((p) => p.id).toList();
-      await participantsWrapper.dispose();
-
-      // Get breakout rooms data for room name mapping
-      List<BreakoutRoom>? breakoutRooms =
-          await getBreakoutRoomData(event: widget.event);
-
-      final members = await _presenter.getMembersData(userIds);
-      if (members.isNotEmpty) {
-        await eventProvider.generateRegistrationDataCsvFile(
-          registrationData: members,
-          eventId: eventProvider.eventId,
-          breakoutRooms: breakoutRooms,
-        );
-      } else {
-        if (!mounted) return;
-        showRegularToast(
-          context,
-          'No members data',
-          toastType: ToastType.neutral,
-        );
-      }
-    });
-  }
-
-  Future<void> _downloadChatData() async {
-    final eventProvider = EventProvider.read(context);
-    await alertOnError(context, () async {
-      final response = await _presenter.getChatsAndSuggestions();
-      final chatsData = response.chatsSuggestionsList
-              ?.where((e) => e.type == ChatSuggestionType.chat)
-              .toList() ??
-          [];
-
-      if (chatsData.isNotEmpty) {
-        // Get breakout rooms data for room name mapping
-        List<BreakoutRoom>? breakoutRooms =
-            await getBreakoutRoomData(event: widget.event);
-
-        await eventProvider.generateChatDataCsv(
-          response: response,
-          eventId: eventProvider.eventId,
-          breakoutRooms: breakoutRooms,
-        );
-      } else {
-        if (!mounted) return;
-        showRegularToast(
-          context,
-          'No chat data',
-          toastType: ToastType.neutral,
-        );
-      }
-    });
-  }
-
-  Future<void> _downloadPollsSuggestionsData() async {
-    final eventProvider = EventProvider.read(context);
-    await alertOnError(context, () async {
-      final response = await _presenter.getChatsAndSuggestions();
-      final suggestionData = response.chatsSuggestionsList
-              ?.where((e) => e.type == ChatSuggestionType.suggestion)
-              .toList() ??
-          [];
-
-      final pollResponse = await _presenter.getPollData();
-      final pollData = pollResponse.polls ?? [];
-
-      if (suggestionData.isNotEmpty || pollData.isNotEmpty) {
-        // Get breakout rooms data for room name mapping
-        List<BreakoutRoom>? breakoutRooms =
-            await getBreakoutRoomData(event: widget.event);
-
-        await eventProvider.generatePollsSuggestionsDataCsv(
-          suggestionData: suggestionData,
-          pollData: pollData,
-          eventId: eventProvider.eventId,
-          breakoutRooms: breakoutRooms,
-        );
-      } else {
-        if (!mounted) return;
-        showRegularToast(
-          context,
-          'No polls or suggestions data',
-          toastType: ToastType.neutral,
-        );
-      }
-    });
-  }
-
   Widget _buildOptionsIcon() {
     final isMobile = responsiveLayoutService.isMobile(context);
 
@@ -386,16 +285,16 @@ class _EventInfoState extends State<EventInfo> {
       event: _eventProvider.event,
       onSelected: (value) {
         switch (value) {
-          case EventPopUpMenuSelection.refreshGuide:
-            _showRefreshGuideDialog();
+          case EventPopUpMenuSelection.refreshTemplate:
+            _showRefreshTemplateDialog();
             break;
           case EventPopUpMenuSelection.duplicateTemplate:
             _showDuplicateTemplateDialog(
               Provider.of<CommunityProvider>(context, listen: false),
             );
             break;
-          case EventPopUpMenuSelection.createGuideFromEvent:
-            _showCreateGuideFromEventDialog(
+          case EventPopUpMenuSelection.createTemplateFromEvent:
+            _showCreateTemplateFromEventDialog(
               Provider.of<CommunityProvider>(context, listen: false),
             );
             break;
@@ -404,15 +303,6 @@ class _EventInfoState extends State<EventInfo> {
             break;
           case EventPopUpMenuSelection.cancelEvent:
             _cancelEvent();
-            break;
-          case EventPopUpMenuSelection.downloadRegistrationData:
-            _downloadRegistrationData();
-            break;
-          case EventPopUpMenuSelection.downloadChatData:
-            _downloadChatData();
-            break;
-          case EventPopUpMenuSelection.downloadPollsSuggestionsData:
-            _downloadPollsSuggestionsData();
             break;
         }
       },
