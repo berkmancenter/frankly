@@ -596,7 +596,7 @@ The client app runs only on the Flutter web platform. Flutter uses Chrome for de
 
 ### Running Client in an Android Virtual Device
 
-This is useful for testing on Android mobile devices using your local instance of the client.
+This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web. 
 
 Install [Android Studio](https://developer.android.com/studio) and [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools).
 
