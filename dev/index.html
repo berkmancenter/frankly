@@ -734,6 +734,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#running-client-in-an-android-virtual-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Client in an Android Virtual Device
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1266,6 +1277,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#running-client-in-an-android-virtual-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Client in an Android Virtual Device
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1768,6 +1790,16 @@ CLOUDINARY_CLOUD_NAME=&lt;value&gt;
 </code></pre></div>
 <h3 id="supported-browsers">Supported browsers</h3>
 <p>The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production <a href="https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter">Web FAQ | Flutter</a>; Chrome, Firefox, Safari, Edge.</p>
+<h3 id="running-client-in-an-android-virtual-device">Running Client in an Android Virtual Device</h3>
+<p>This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web. </p>
+<p>Install <a href="https://developer.android.com/studio">Android Studio</a> and <a href="https://developer.android.com/tools/releases/platform-tools">Android SDK Platform-Tools</a>.</p>
+<p>Set up reverse port forwarding for client and emulator open ports using Android Debug Bridge:</p>
+<p><code>adb reverse tcp:5000 tcp:5000 &amp;&amp; adb reverse tcp:5001 tcp:5001 &amp;&amp; adb reverse tcp:9099 tcp:9099 &amp;&amp; adb reverse tcp:9000 tcp:9000 &amp;&amp; adb reverse tcp:8080 tcp:8080</code></p>
+<p>Run client with a wildcard IP as hostname:</p>
+<p><code>flutter run -d web-server --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env --web-port=5000 --web-hostname=0.0.0.0</code></p>
+<p>You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at http://localhost:5000.</p>
+<p>Within a Webkit browser, access the Devtools Device Inspector, e.g. <code>chrome://inspect/#devices</code>. You should be able to inspect the running app within the AVD, as shown here:
+<img alt="A mobile app interface is shown on the left, alongside a web performance report with load metrics and console output on the right, inside chrome dev tools." src="https://res.cloudinary.com/dh0vegjku/image/upload/dpr_auto,f_auto,q_50/frankly_assets/adb.png" /></p>
 <h1 id="testing">Testing</h1>
 <h3 id="end-to-end-tests">End-to-End Tests</h3>
 <p>See instructions <a href="../e2e/">here</a> for developing and running end-to-end Playwright tests.</p>
