@@ -601,6 +601,25 @@ flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.da
 
 The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production [Web FAQ | Flutter](https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter); Chrome, Firefox, Safari, Edge.
 
+### Running Client in an Android Virtual Device
+
+This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web. 
+
+Install [Android Studio](https://developer.android.com/studio) and [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools).
+
+Set up reverse port forwarding for client and emulator open ports using Android Debug Bridge:
+
+`adb reverse tcp:5000 tcp:5000 && adb reverse tcp:5001 tcp:5001 && adb reverse tcp:9099 tcp:9099 && adb reverse tcp:9000 tcp:9000 && adb reverse tcp:8080 tcp:8080`
+
+Run client with a wildcard IP as hostname:
+
+`flutter run -d web-server --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env --web-port=5000 --web-hostname=0.0.0.0`
+
+You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at http://localhost:5000.
+
+Within a Webkit browser, access the Devtools Device Inspector, e.g. `chrome://inspect/#devices`. You should be able to inspect the running app within the AVD, as shown here:
+![A mobile app interface is shown on the left, alongside a web performance report with load metrics and console output on the right, inside chrome dev tools.](https://res.cloudinary.com/dh0vegjku/image/upload/dpr_auto,f_auto,q_50/frankly_assets/adb.png)
+
 # Testing
 
 ### End-to-End Tests
