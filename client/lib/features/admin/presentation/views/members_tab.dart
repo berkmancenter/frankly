@@ -529,6 +529,7 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       );
       if (!confirm) return;
     }
+    if (!mounted) return;
     setState(() => _isLoading = true);
     await alertOnError(
       context,
@@ -538,7 +539,9 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
         newStatus: newStatus!,
       ),
     );
-    setState(() => _isLoading = false);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
