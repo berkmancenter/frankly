@@ -1,9 +1,8 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
-const { Storage } = require('@google-cloud/storage')
 
 const firestore = admin.firestore()
-const storage = new Storage()
+const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
 // Triggered when a recording session transitions to 'stopped'.
