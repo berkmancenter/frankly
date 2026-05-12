@@ -23,10 +23,7 @@ function verifySignature(req) {
     // Agora signs the raw request body bytes, not a re-serialized JSON string.
     // Firebase Functions exposes the original bytes via req.rawBody.
     const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body))
-    const expected = crypto
-        .createHmac('sha1', secret)
-        .update(rawBody)
-        .digest('hex')
+    const expected = crypto.createHmac('sha1', secret).update(rawBody).digest('hex')
     const sigBuf = Buffer.from(signature)
     const expBuf = Buffer.from(expected)
     if (sigBuf.length !== expBuf.length) return false
