@@ -351,7 +351,10 @@ class AgoraRoom with ChangeNotifier {
   @override
   dispose() {
     engine.unregisterEventHandler(_rtcEngineEventHandler);
-    engine.stopPreview();
+    // Ensure local video preview was started before disposing
+    if(_localParticipant?.videoLocalPreviewStarted == true) {
+      engine.stopPreview();
+    }
     engine.enableLocalVideo(false);
     engine.enableLocalAudio(false);
     engine.leaveChannel();
