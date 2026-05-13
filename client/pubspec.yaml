@@ -7,7 +7,6 @@ environment:
 
 dependencies:
   markdown_editor_plus:
-    # path: ../../markdown_editor_plus
     git:
       url: https://github.com/dariusk/markdown_editor_plus.git
       ref: main

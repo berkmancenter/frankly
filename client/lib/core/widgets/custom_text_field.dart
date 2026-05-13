@@ -372,7 +372,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     // make room with contentPadding for toolbar
                     contentPadding: EdgeInsets.fromLTRB(
                       widget.contentPadding?.left ?? 12,
-                      (widget.contentPadding?.top ?? 12) + 110,
+                      (widget.contentPadding?.top ?? 12) + 50,
                       widget.contentPadding?.right ?? 12,
                       widget.contentPadding?.bottom ?? 12,
                     ),
@@ -394,6 +394,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     fillColor: widget.fillColor,
                     filled: widget.fillColor != null,
                     suffixIcon: widget.suffixIcon,
+                    isCollapsed: true,
                   ),
                   borderColor: _getBorderColor(),
                 ),
