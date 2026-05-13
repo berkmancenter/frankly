@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/app.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -361,8 +362,9 @@ class AgoraRoom with ChangeNotifier {
       engine.enableLocalAudio(false);
       engine.leaveChannel();
       engine.release();
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('Error disposing Agora engine: $e');
+      reportError(e, stackTrace);
     }
     super.dispose();
   }
