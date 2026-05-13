@@ -74,16 +74,16 @@ class AgoraUtils {
           breakoutSessionId: breakoutSessionId,
         ).toJson(),
       ),
-    ));
+    ),);
 
     print(
-        'recording_start: sessionId=$sessionId roomId=$roomId eventId=$eventId roomType=${roomType.name} breakoutSessionId=$breakoutSessionId');
+        'recording_start: sessionId=$sessionId roomId=$roomId eventId=$eventId roomType=${roomType.name} breakoutSessionId=$breakoutSessionId',);
 
     String resourceId;
     try {
       resourceId = await _acquireResourceId(roomId: roomId);
       print(
-          'recording_acquired: sessionId=$sessionId roomId=$roomId resourceId=$resourceId');
+          'recording_acquired: sessionId=$sessionId roomId=$roomId resourceId=$resourceId',);
     } catch (e) {
       print('Agora acquire failed for room $roomId: $e');
       await sessionRef.updateData(UpdateData.fromMap(
@@ -91,7 +91,7 @@ class AgoraUtils {
           RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
           'errorMessage': e.toString(),
         }),
-      ));
+      ),);
       return;
     }
 
@@ -111,11 +111,11 @@ class AgoraUtils {
         fileNamePrefixSegments: prefixSegments,
       );
       print(
-          'recording_started: sessionId=$sessionId roomId=$roomId resourceId=$resourceId sid=$sid gcsPrefix=$gcsPrefix');
+          'recording_started: sessionId=$sessionId roomId=$roomId resourceId=$resourceId sid=$sid gcsPrefix=$gcsPrefix',);
       await sessionRef.updateData(UpdateData.fromMap({
         'agoraSid': sid,
         RecordingSession.kFieldStatus: RecordingSessionStatus.recording.name,
-      }));
+      }),);
     } catch (e) {
       print('Agora start failed for room $roomId: $e');
       await sessionRef.updateData(UpdateData.fromMap(
@@ -123,7 +123,7 @@ class AgoraUtils {
           RecordingSession.kFieldStatus: RecordingSessionStatus.failed.name,
           'errorMessage': e.toString(),
         }),
-      ));
+      ),);
     }
   }
 
@@ -176,7 +176,7 @@ class AgoraUtils {
         RecordingSession.kFieldStatus: RecordingSessionStatus.stopped.name,
         'stoppedAt': serverTimestampValue,
       }),
-    ));
+    ),);
   }
 
   Map<String, String> _getAuthHeaders() {
@@ -208,7 +208,7 @@ class AgoraUtils {
     print('Acquire response (${result.statusCode}): ${result.body}');
     if (result.statusCode < 200 || result.statusCode > 299) {
       throw HttpsError(
-          HttpsError.internal, 'Acquire failed: ${result.body}', null);
+          HttpsError.internal, 'Acquire failed: ${result.body}', null,);
     }
     return convert.jsonDecode(result.body)['resourceId'] as String;
   }
@@ -225,6 +225,7 @@ class AgoraUtils {
       'clientRequest': {
         'token': token,
         'recordingConfig': {
+          'maxIdleTime': 300,
           'transcodingConfig': {
             'height': 360,
             'width': 640,
@@ -262,7 +263,7 @@ class AgoraUtils {
 
     if (result.statusCode < 200 || result.statusCode > 299) {
       throw HttpsError(
-          HttpsError.internal, 'Start failed: ${result.body}', null);
+          HttpsError.internal, 'Start failed: ${result.body}', null,);
     }
 
     return convert.jsonDecode(result.body)['sid'] as String;

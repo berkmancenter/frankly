@@ -539,6 +539,20 @@
             "queryScope": "COLLECTION",
             "fields": [
                 {
+                    "fieldPath": "communityId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "eventId",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "recording-sessions",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
                     "fieldPath": "eventId",
                     "order": "ASCENDING"
                 },

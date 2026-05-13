@@ -407,7 +407,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
               if (showRecording)
                 CheckboxListTile(
                   value: recordingSelected,
-                  enabled: recordingParts != null && recordingParts != 0,
+                  enabled: recordingParts != null && recordingParts > 0,
                   onChanged: (value) => setState(
                     () => recordingSelected = value ?? false,
                   ),
