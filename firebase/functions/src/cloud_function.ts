@@ -1,12 +1,12 @@
-import * as functions from 'firebase-functions'
+import { HttpsFunction, CloudFunction as FirebaseCloudFunction } from 'firebase-functions'
 
 /**
  * Base interface for all Cloud Functions.
- * Corresponds to Dart's abstract class CloudFunction.
  */
 export interface CloudFunction {
     readonly functionName: string
     register(
-        functions: typeof import('firebase-functions')
-    ): functions.HttpsFunction | functions.CloudFunction<unknown> | void
+        functions: typeof import('firebase-functions'),
+        cors: typeof import('cors')
+    ): HttpsFunction | FirebaseCloudFunction<unknown> | void
 }

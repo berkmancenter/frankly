@@ -90,7 +90,7 @@ import { OnRequestMethod } from './on_request_method'
 // Register OnCall / OnRequest functions (single export)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-exports.serverTimestamp = new GetServerTimestamp().register()
+exports.GetServerTimestamp = new GetServerTimestamp().register()
 
 // Community
 exports.CreateCommunity = new CreateCommunity().register()
