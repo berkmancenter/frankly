@@ -91,13 +91,14 @@ class EditEventPresenter {
   }
 
   String getEventTypeTitle(EventType eventType) {
+    final l10n = appLocalizationService.getLocalization();
     switch (eventType) {
       case EventType.hosted:
-        return 'Hosted';
+        return l10n.hosted;
       case EventType.hostless:
-        return 'Hostless';
+        return l10n.hostless;
       case EventType.livestream:
-        return 'Livestream';
+        return l10n.livestream;
     }
   }
 
@@ -314,7 +315,7 @@ class EditEventPresenterHelper {
   String? areChangesValid(Event event) {
     final title = event.title;
     if (title == null || title.isEmpty) {
-      return 'Title cannot be empty';
+      return appLocalizationService.getLocalization().titleCannotBeEmpty;
     }
 
     return null;

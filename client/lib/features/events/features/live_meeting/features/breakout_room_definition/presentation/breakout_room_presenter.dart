@@ -94,7 +94,9 @@ class BreakoutRoomPresenter extends ChangeNotifier {
     if (questions.isNotEmpty &&
         !isQuestionAndAnswersCompleted(questions.last)) {
       showRegularToast(
-        'Please complete previous question and both answers',
+        appLocalizationService
+            .getLocalization()
+            .pleaseCompletePreviousQuestionAndBothAnswers,
         ToastType.failed,
       );
     } else {
@@ -198,15 +200,16 @@ class BreakoutRoomPresenter extends ChangeNotifier {
   Future<bool> updateBreakoutRoomQuestion() async {
     final areAllQuestionsCompleted = _areAllQuestionsCompleted();
 
+    final l10n = appLocalizationService.getLocalization();
     if (!areAllQuestionsCompleted) {
       showRegularToast(
-        'Please complete all your questions and answers!',
+        l10n.pleaseCompleteAllYourQuestionsAndAnswers,
         ToastType.failed,
       );
       return false;
     } else {
       await _updateEventDetails();
-      showRegularToast('Question saved!', ToastType.success);
+      showRegularToast(l10n.questionSaved, ToastType.success);
       return true;
     }
   }
@@ -215,7 +218,10 @@ class BreakoutRoomPresenter extends ChangeNotifier {
     _breakoutRoomDefinition.breakoutQuestions
         .removeWhere((element) => element.id == questionId);
     await _updateEventDetails();
-    showRegularToast('Question deleted!', ToastType.success);
+    showRegularToast(
+      appLocalizationService.getLocalization().questionDeleted,
+      ToastType.success,
+    );
   }
 
   Future<void> _updateEventDetails() async {
@@ -234,7 +240,10 @@ class BreakoutRoomPresenter extends ChangeNotifier {
       keys: [Event.kFieldBreakoutRoomDefinition],
     );
 
-    showRegularToast('Breakout Updated!', ToastType.success);
+    showRegularToast(
+      appLocalizationService.getLocalization().breakoutUpdated,
+      ToastType.success,
+    );
     notifyListeners();
   }
 
@@ -256,7 +265,9 @@ class BreakoutRoomPresenter extends ChangeNotifier {
       await _updateEventDetails();
     } else {
       showRegularToast(
-        'Reordering not saved until all questions are completed.',
+        appLocalizationService
+            .getLocalization()
+            .reorderingNotSavedUntilQuestionsCompleted,
         ToastType.failed,
       );
     }

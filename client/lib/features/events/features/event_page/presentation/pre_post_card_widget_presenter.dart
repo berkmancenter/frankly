@@ -67,7 +67,7 @@ class PrePostCardWidgetPresenter {
 
   String? validateUrlParameter(String? text) {
     if (text == null || text.trim().isEmpty) {
-      return 'URL parameter cannot be empty';
+      return appLocalizationService.getLocalization().urlParameterCannotBeEmpty;
     } else {
       return null;
     }
@@ -80,7 +80,7 @@ class PrePostCardWidgetPresenter {
     final urlIsNotEmpty = urlIndex < prePostUrls.length &&
         prePostUrls[urlIndex].surveyUrl != null;
     if (urlIsNotEmpty && textIsEmpty) {
-      return 'Button text cannot be empty';
+      return appLocalizationService.getLocalization().buttonTextCannotBeEmpty;
     }
     return null;
   }
@@ -96,7 +96,9 @@ class PrePostCardWidgetPresenter {
       areAnyAttributesAdded = prePostUrls[urlIndex].attributes.isNotEmpty;
 
       if (!doesSurveyUrlExist && areAnyAttributesAdded) {
-        return 'URL cannot be empty if some attributes are entered';
+        return appLocalizationService
+            .getLocalization()
+            .urlCannotBeEmptyIfAttributesAreEntered;
       }
 
       // Only do validation for the URL if button text exists
@@ -357,7 +359,7 @@ class PrePostCardWidgetPresenter {
   }
 
   void afterPrePostDataSaved() {
-    _view.showToast('Saved');
+    _view.showToast(appLocalizationService.getLocalization().saved);
     toggleCardType();
   }
 
