@@ -101,12 +101,13 @@ class _TemplatePageState extends State<TemplatePage>
             keys: [Template.fieldPrerequisiteTemplate],
           );
 
-          showRegularToast(
-            // ignore: use_build_context_synchronously
-            context,
-            'Prerequisite saved',
-            toastType: ToastType.success,
-          );
+          if (mounted) {
+            showRegularToast(
+              context,
+              'Prerequisite saved',
+              toastType: ToastType.success,
+            );
+          }
         }),
       );
     } else {

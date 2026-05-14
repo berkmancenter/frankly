@@ -79,9 +79,8 @@ class _CategoryCardState extends State<CategoryCard> {
                       mainText: 'Are you sure you want to delete?',
                       cancelText: context.l10n.cancel,
                     ).show(context: context);
-                    if (delete) {
+                    if (delete && context.mounted) {
                       await alertOnError(
-                      // ignore: use_build_context_synchronously
                       context,
                       () => _presenter
                         .deleteBreakoutRoomCategory(widget.position),

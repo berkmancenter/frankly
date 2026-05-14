@@ -303,18 +303,18 @@ class _ProfileTabState extends State<_ProfileTab> {
 
     await controller.submitPressed();
     await createTagPresenter.submit();
-    showRegularToast(
-      // ignore: use_build_context_synchronously
-      context,
-      'Profile updated',
-      toastType: ToastType.success,
-    );
+    if (mounted) {
+      showRegularToast(
+        context,
+        'Profile updated',
+        toastType: ToastType.success,
+      );
+    }
 
     // Only close drawer if `preview` button is not visible. Preview button is only visible
     // in `Profile` tab in `Settings`.
-    if (!widget.isPreviewButtonVisible) {
+    if (!widget.isPreviewButtonVisible && mounted) {
       // Close drawer
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     }
   }
@@ -394,8 +394,9 @@ class _ProfileTabState extends State<_ProfileTab> {
           tags: tags,
           onAddTag: (text) async {
             await alertOnError(context, () => createTagPresenter.addTag(text));
-            // ignore: use_build_context_synchronously
-            context.read<AppDrawerProvider>().setUnsavedChanges(true);
+            if (mounted) {
+              context.read<AppDrawerProvider>().setUnsavedChanges(true);
+            }
           },
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),
           onTapTag: (tag) =>
