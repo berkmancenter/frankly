@@ -33,11 +33,11 @@ dependencies:
     quiver:
         git:
             url: https://github.com/berkmancenter/quiver-dart.git
-    uuid: ^4.1.0
     frankly_matching:
         path: ../../matching
     encrypt: ^5.0.3
     clock: ^1.1.0
+    uuid: ^4.1.0
     freezed_annotation: ^2.4.1
     freezed: ^2.4.7
     xml: ^6.5.0

@@ -25,7 +25,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
     GetMeetingJoinInfoRequest request,
     CallableContext context,
   ) async {
-    return firestore.runTransaction((transaction) async {
+    final result = await firestore.runTransaction((transaction) async {
       final event = await firestoreUtils.getFirestoreObject(
         transaction: transaction,
         path: request.eventPath,
@@ -59,7 +59,7 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         print('Public user display name: $displayName');
       }
 
-      final joinInfo = await liveMeetingUtils.getMeetingJoinInfo(
+      return liveMeetingUtils.getMeetingJoinInfo(
         transaction: transaction,
         event: event,
         communityId: event.communityId,
@@ -67,7 +67,21 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         meetingId: event.id,
         userId: context.authUid!,
       );
-      return joinInfo.toJson();
     });
+
+    final pending = result.pendingRecording;
+    if (pending != null) {
+      await liveMeetingUtils.agoraUtils.recordRoom(
+        roomId: pending.roomId,
+        sessionId: pending.sessionId,
+        eventId: pending.eventId,
+        communityId: pending.communityId,
+        roomType: pending.roomType,
+        chatPath: pending.chatPath,
+        participantIds: pending.participantIds,
+      );
+    }
+
+    return result.response.toJson();
   }
 }
