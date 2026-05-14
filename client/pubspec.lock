@@ -1066,9 +1066,11 @@ packages:
   markdown_editor_plus:
     dependency: "direct main"
     description:
-      path: "../../markdown_editor_plus"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: a731bfbac809d306a0198f3bed7645e54721891d
+      url: "https://github.com/dariusk/markdown_editor_plus.git"
+    source: git
     version: "0.2.15"
   matcher:
     dependency: transitive
