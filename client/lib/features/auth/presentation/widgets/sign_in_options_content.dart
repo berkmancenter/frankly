@@ -90,6 +90,15 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
 // Create a widget containing information about account error messages received from our backend
   Widget _accountErrorMessageBuilder(String errorCode) {
+    errorText({required String message}) {
+      return Text(
+        message,
+        style: context.theme.textTheme.bodyMedium?.copyWith(
+          color: context.theme.colorScheme.error,
+        ),
+      );
+    }
+
     switch (errorCode) {
       case 'email-already-in-use':
         return Text.rich(
@@ -143,13 +152,15 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             ],
           ),
         );
+      case 'invalid-credential':
+      case 'wrong-password':
+        return errorText(message: context.l10n.incorrectEmailOrPassword);
+      case 'invalid-email':
+        return errorText(message: context.l10n.invalidEmail);
+      case 'too-many-requests':
+        return errorText(message: context.l10n.tooManyRequests);
       case 'email-missing-pw':
-        return Text(
-          context.l10n.pleaseEnterValidEmail,
-          style: context.theme.textTheme.bodyMedium?.copyWith(
-            color: context.theme.colorScheme.error,
-          ),
-        );
+        return errorText(message: context.l10n.pleaseEnterValidEmail);
 
       default:
         return Text(
@@ -165,17 +176,20 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       errorCallback: (error, msg) => {
         if (msg == 'Email must be entered to reset password.')
           setState(() {
+            _formMessage = '';
             _formError = 'email-missing-pw';
             _ignorePassword = false;
           })
         else
           setState(() {
+            _formMessage = '';
             _formError = msg;
             _ignorePassword = false;
           }),
       },
       callback: () => {
         setState(() {
+          _formError = '';
           _formMessage =
               context.l10n.passwordResetLinkSent(_emailController.text);
           _ignorePassword = false;
@@ -305,11 +319,14 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     labelText: context.l10n.email,
                     autofillHints: const [
                       AutofillHints.email,
-                      AutofillHints.username],
+                      AutofillHints.username,
+                    ],
                     keyboardType: TextInputType.emailAddress,
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
-                      if (value == null || value.isEmpty || !isEmailValid(value)) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          !isEmailValid(value)) {
                         return context.l10n.pleaseEnterValidEmail;
                       }
                       return null;
@@ -337,7 +354,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                           onPressed: () =>
                               setState(() => _showPassword = !_showPassword),
                           icon: Icon(
-                            _showPassword ? Icons.visibility_off : Icons.visibility,
+                            _showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             size: 24,
                           ),
                         ),
