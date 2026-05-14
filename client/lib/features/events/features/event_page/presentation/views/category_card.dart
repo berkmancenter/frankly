@@ -74,19 +74,19 @@ class _CategoryCardState extends State<CategoryCard> {
                       () => _presenter
                           .deleteBreakoutRoomCategory(widget.position),
                     );
-                    } else {
+                  } else {
                     final delete = await ConfirmDialog(
                       mainText: 'Are you sure you want to delete?',
                       cancelText: context.l10n.cancel,
                     ).show(context: context);
                     if (delete && context.mounted) {
                       await alertOnError(
-                      context,
-                      () => _presenter
-                        .deleteBreakoutRoomCategory(widget.position),
+                        context,
+                        () => _presenter
+                            .deleteBreakoutRoomCategory(widget.position),
                       );
                     }
-                    }
+                  }
                 },
                 child: Icon(
                   CupertinoIcons.trash,

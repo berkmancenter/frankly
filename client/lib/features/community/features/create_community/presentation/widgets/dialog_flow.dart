@@ -76,8 +76,12 @@ class _DialogFlowState extends State<DialogFlow> {
         );
       } else {
         if (!mounted) return false;
-        Navigator.of(context).pop();
-        await showAlert(context, context.l10n.somethingWentWrongTryAgain);
+        final navigator = Navigator.of(context, rootNavigator: true);
+        final errorMessage = context.l10n.somethingWentWrongTryAgain;
+        
+        navigator.pop();
+        
+        await showAlert(navigator.context, errorMessage);   
         return false;
       }
     }

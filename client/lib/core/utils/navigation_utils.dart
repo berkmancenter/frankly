@@ -12,8 +12,8 @@ Future<void> launch(
 }) async {
   final webUrl =
       !isWeb || url.startsWith(RegExp('https?://')) ? url : 'https://$url';
-  final uri = Uri.parse(webUrl);
-  if (await url_launcher.canLaunchUrl(uri)) {
+  final uri = Uri.tryParse(webUrl);
+  if (uri != null && await url_launcher.canLaunchUrl(uri)) {
     await url_launcher.launchUrl(
       uri,
       webOnlyWindowName: targetIsSelf ? '_self' : '_blank',

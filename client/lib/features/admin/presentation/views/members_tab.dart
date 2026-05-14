@@ -529,8 +529,8 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       );
       if (!confirm) return;
     }
-    setState(() => _isLoading = true);
     if (!mounted) return;
+    setState(() => _isLoading = true);
     await alertOnError(
       context,
       () => userDataService.changeCommunityMembership(
