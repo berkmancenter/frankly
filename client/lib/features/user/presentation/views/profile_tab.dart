@@ -304,6 +304,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     await controller.submitPressed();
     await createTagPresenter.submit();
     showRegularToast(
+      // ignore: use_build_context_synchronously
       context,
       'Profile updated',
       toastType: ToastType.success,
@@ -313,6 +314,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     // in `Profile` tab in `Settings`.
     if (!widget.isPreviewButtonVisible) {
       // Close drawer
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     }
   }
@@ -392,6 +394,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           tags: tags,
           onAddTag: (text) async {
             await alertOnError(context, () => createTagPresenter.addTag(text));
+            // ignore: use_build_context_synchronously
             context.read<AppDrawerProvider>().setUnsavedChanges(true);
           },
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),

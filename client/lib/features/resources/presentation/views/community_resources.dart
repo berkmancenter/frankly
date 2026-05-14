@@ -124,7 +124,7 @@ class _CommunityResourcesState extends State<_CommunityResources> {
                                     'Are you sure you want to delete this resource?',
                               ).show();
 
-                              if (!delete) return;
+                              if (!delete || !mounted) return;
 
                               await alertOnError(
                                 context,

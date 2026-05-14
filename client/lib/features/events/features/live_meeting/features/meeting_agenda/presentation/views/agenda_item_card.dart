@@ -364,6 +364,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     ).show(context: context);
 
     if (delete) {
+      if (!mounted) return;
       await alertOnError(context, () => _presenter.deleteAgendaItem());
     }
   }

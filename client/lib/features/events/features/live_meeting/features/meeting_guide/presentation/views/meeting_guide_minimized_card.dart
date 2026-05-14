@@ -150,6 +150,7 @@ class _ForwardButton extends HookWidget {
         await agendaProvider.moveForward(
           currentAgendaItemId: currentAgendaItemId,
         );
+        if (!context.mounted) return;
         showRegularToast(
           context,
           "You're ready to move on",

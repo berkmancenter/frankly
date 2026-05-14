@@ -55,6 +55,7 @@ class _TemplateFabState extends State<TemplateFab> {
         if (template == null) return;
 
         final isAdmin = userDataService.getMembership(communityId).isAdmin;
+        // ignore: use_build_context_synchronously
         final permissions = context.read<CommunityPermissionsProvider>();
 
         final EventType? eventType;
@@ -101,6 +102,7 @@ class _TemplateFabState extends State<TemplateFab> {
 
         if (eventType != null) {
           await CreateEventDialog.show(
+            // ignore: use_build_context_synchronously
             context,
             eventType: eventType,
             template: template,

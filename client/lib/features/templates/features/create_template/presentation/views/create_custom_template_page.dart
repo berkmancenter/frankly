@@ -96,6 +96,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
             if (localAfterSubmit != null) {
               await localAfterSubmit(newTemplate);
             }
+            // ignore: use_build_context_synchronously
             Navigator.of(context).pop(newTemplate);
           }),
         );
@@ -119,6 +120,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
               context, templatePresenter.communityProvider.community, () async {
             final newTemplate = await templatePresenter.createTemplate();
             await tagPresenter.submit();
+            // ignore: use_build_context_synchronously
             Navigator.of(context).pop(newTemplate);
           }),
         );

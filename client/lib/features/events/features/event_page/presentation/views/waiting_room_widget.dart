@@ -259,6 +259,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   () async {
                     await _presenter.save();
                     showRegularToast(
+                      // ignore: use_build_context_synchronously
                       context,
                       'Waiting Room Changes Saved',
                       toastType: ToastType.success,
