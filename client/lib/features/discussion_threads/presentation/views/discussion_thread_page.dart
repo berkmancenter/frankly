@@ -95,7 +95,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         positiveButtonText: 'Add Comment',
       );
 
-      if (comment != null) {
+      if (comment != null && mounted) {
         await alertOnError(
           context,
           () => _presenter.addNewComment(
@@ -480,7 +480,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               positiveButtonText: 'Add Comment',
             );
 
-            if (comment != null) {
+            if (comment != null && mounted) {
               await alertOnError(
                 context,
                 () => _presenter.addNewComment(

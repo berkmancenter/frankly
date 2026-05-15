@@ -52,7 +52,7 @@ class _TemplateFabState extends State<TemplateFab> {
         final Template? template =
             await firestoreDatabase.getTemplate(communityId, templateId);
 
-        if (template == null) return;
+        if (template == null || !context.mounted) return;
 
         final isAdmin = userDataService.getMembership(communityId).isAdmin;
         final permissions = context.read<CommunityPermissionsProvider>();
@@ -99,7 +99,7 @@ class _TemplateFabState extends State<TemplateFab> {
           eventType = EventType.hosted;
         }
 
-        if (eventType != null) {
+        if (eventType != null && context.mounted) {
           await CreateEventDialog.show(
             context,
             eventType: eventType,
