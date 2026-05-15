@@ -91,18 +91,25 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
 // Create a widget containing information about account error messages received from our backend
   Widget _accountErrorMessageBuilder(String errorCode) {
-    errorText({required String message}) {
+    buildErrorText({required String message}) {
       return Text(
         message,
-        style: context.theme.textTheme.bodyMedium?.copyWith(
-          color: context.theme.colorScheme.error,
-        ),
       );
     }
 
+    boxedErrorText({required message}) {
+      return Container(
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      decoration: BoxDecoration(
+        color: context.theme.colorScheme.error.withOpacity(0.05),
+      ),
+      child: message,
+      );
+    }
     switch (errorCode) {
       case 'email-already-in-use':
-        return Text.rich(
+        return boxedErrorText(message: 
           TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
               color: context.theme.colorScheme.error,
@@ -128,7 +135,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         );
       case 'user-not-found':
-        return Text.rich(
+        return boxedErrorText(message: Text.rich(
           TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
               color: context.theme.colorScheme.error,
@@ -152,22 +159,38 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
               TextSpan(text: context.l10n.insteadSuffix),
             ],
           ),
-        );
+        ),);
       case 'invalid-credential':
       case 'wrong-password':
-        return errorText(message: context.l10n.incorrectEmailOrPassword);
+        return boxedErrorText(message: buildErrorText(message: context.l10n.incorrectEmailOrPassword));
       case 'invalid-email':
-        return errorText(message: context.l10n.invalidEmail);
+        return boxedErrorText(message: buildErrorText(message: context.l10n.invalidEmail));
       case 'too-many-requests':
-        return errorText(message: context.l10n.tooManyRequests);
+        return boxedErrorText(message: buildErrorText(message: context.l10n.tooManyRequests));
       case 'email-missing-pw':
-        return errorText(message: context.l10n.pleaseEnterValidEmail);
+        return boxedErrorText(message: buildErrorText(message: context.l10n.pleaseEnterValidEmail));
 
       default:
-        return Text(
-          context.l10n.somethingWentWrongTryAgain,
-          style: context.theme.textTheme.bodySmall,
-        );
+        return boxedErrorText(message: Text.rich(
+          TextSpan(
+            style: context.theme.textTheme.bodyMedium,
+            children: [
+              TextSpan(text: context.l10n.somethingWentWrongLongPrefix),
+                TextSpan(
+                  text: context.l10n.somethingWentWrongLongSuffix,
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrlString('mailto:${Environment.supportEmail}');
+                    },
+                  style: context.theme.textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              TextSpan(text: ' ${context.l10n.and} '),
+              TextSpan(text: '${context.l10n.tryAgainLater}.'),
+            ],
+          ),
+        ),);
     }
   }
 
@@ -228,11 +251,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     if (_showSignup) {
       return context.l10n.newToApp(Environment.appName);
     } else {
-      return context.l10n.signInToApp(Environment.appName);
+      return context.l10n.logIntoApp(Environment.appName);
     }
   }
 
-  Widget _getMessageText() {
+  Widget _buildSignUpLogInMessage() {
     return Text.rich(
       key: SignInOptionsContent.showSignUpToggleKey,
       TextSpan(
@@ -243,7 +266,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 '${_showSignup ? context.l10n.alreadyUserSignIn : context.l10n.notUserSignUp} ',
           ),
           TextSpan(
-            text: _showSignup ? context.l10n.signIn : context.l10n.signUp,
+            text: _showSignup ? context.l10n.login : context.l10n.signUp,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 if (_formError.isNotEmpty) {
@@ -282,8 +305,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       SizedBox(height: 9),
       Align(
         alignment: Alignment.center,
-        child: _getMessageText(),
+        child: _buildSignUpLogInMessage(),
       ),
+      if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
       Form(
         key: _formKey,
         child: Column(
@@ -419,7 +443,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ),
               ),
             SizedBox(height: 9),
-            if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
             if (_formMessage.isNotEmpty)
               Text(
                 _formMessage,
@@ -471,7 +494,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         ),
         text: _showSignup
             ? context.l10n.signUpWithGoogle
-            : context.l10n.signInWithGoogle,
+            : context.l10n.logInWithGoogle,
       ),
       SizedBox(height: 20),
       if (!_showSignup)
