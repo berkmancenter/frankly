@@ -24,75 +24,65 @@ class CalendarMenuButton extends StatefulWidget {
 }
 
 class _CalendarMenuButtonState extends State<CalendarMenuButton> {
-  var _isHovered = false;
-
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
-        if (!_isHovered) {
-          setState(() => _isHovered = true);
-        }
-      },
-      onExit: (_) {
-        if (_isHovered) {
-          setState(() => _isHovered = false);
-        }
-      },
-      child: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: _isHovered ? context.theme.colorScheme.primaryFixed : null,
+    return PopupMenuButton<CalendarMenuSelection>(
+      padding: EdgeInsets.zero,
+      offset: Offset(0, 20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      onSelected: (value) => widget.onSelected(value),
+      child: OutlinedButton(
+        onPressed: null,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(
+            color: context.theme.colorScheme.surfaceContainerLowest,
+          ),
+          foregroundColor: context.theme.colorScheme.onSurfaceVariant,
+          minimumSize: Size(96, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        child: TooltipTheme(
-          data: TooltipThemeData(
-            decoration: BoxDecoration(color: Colors.transparent),
-          ),
-          child: PopupMenuButton<CalendarMenuSelection>(
-            padding: EdgeInsets.zero,
-            offset: Offset(0, 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 14),
+              child: Icon(
+                CupertinoIcons.calendar_badge_plus,
+                size: 20,
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-            onSelected: (value) => widget.onSelected(value),
-            child: Row(
-              children: [
-                Icon(
-                  CupertinoIcons.calendar_badge_plus,
-                  size: 20,
-                  color: context.theme.colorScheme.onSurfaceVariant,
-                ),
-                SizedBox(width: 10),
-                HeightConstrainedText(
-                  context.l10n.addToCalendar,
-                  style: context.theme.textTheme.bodyMedium!.copyWith(
-                    color: context.theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
+            HeightConstrainedText(
+              context.l10n.addToCalendar,
+              style: context.theme.textTheme.bodyMedium!.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-            itemBuilder: (context) {
-              return CalendarMenuSelection.values.map(
-                (e) {
-                  final text = _getText(e);
-                  return PopupMenuItem(
-                    value: e,
-                    padding: EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      width: 100,
-                      child: HeightConstrainedText(
-                        text,
-                        style: context.theme.textTheme.bodyLarge,
-                      ),
-                    ),
-                  );
-                },
-              ).toList();
-            },
-          ),
+          ],
         ),
       ),
+      itemBuilder: (context) {
+        return CalendarMenuSelection.values.map(
+          (e) {
+            final text = _getText(e);
+            return PopupMenuItem(
+              value: e,
+              padding: EdgeInsets.all(10.0),
+              child: SizedBox(
+                width: 100,
+                child: HeightConstrainedText(
+                  text,
+                  style: context.theme.textTheme.bodyLarge,
+                ),
+              ),
+            );
+          },
+        ).toList();
+      },
     );
   }
 

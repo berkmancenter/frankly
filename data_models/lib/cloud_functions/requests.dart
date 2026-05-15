@@ -832,6 +832,18 @@ class EventEndedRequest
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
+class EndMeetingForAllRequest
+    with _$EndMeetingForAllRequest
+    implements SerializeableRequest {
+  factory EndMeetingForAllRequest({
+    required String eventPath,
+  }) = _EndMeetingForAllRequest;
+
+  factory EndMeetingForAllRequest.fromJson(Map<String, dynamic> json) =>
+      _$EndMeetingForAllRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
 class GetCommunityDonationsEnabledRequest
     with _$GetCommunityDonationsEnabledRequest
     implements SerializeableRequest {

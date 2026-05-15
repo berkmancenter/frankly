@@ -94,7 +94,12 @@ class FeaturedEventCarouselTab extends StatelessWidget {
         if (event.scheduledTime != null) ...[
           Align(
             alignment: Alignment.centerLeft,
-            child: VerticalTimeAndDateIndicator(time: event.scheduledTime!),
+            child: VerticalTimeAndDateIndicator(
+              time: event.scheduledTime!,
+              endTime: event.scheduledTime!.add(
+                Duration(minutes: event.durationInMinutes),
+              ),
+            ),
           ),
           SizedBox(height: 8),
         ],

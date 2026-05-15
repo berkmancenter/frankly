@@ -201,6 +201,8 @@ class EventSettings with _$EventSettings {
   static const kFieldChat = 'chat';
   static const kFieldShowChatMessagesInRealTime = 'showChatMessagesInRealTime';
   static const kFieldAgendaPreview = 'agendaPreview';
+  static const kFieldAutoEndMeeting = 'autoEndMeeting';
+  static const kFieldAutoEndGracePeriodMinutes = 'autoEndGracePeriodMinutes';
 
   static const EventSettings defaultSettings = EventSettings(
     reminderEmails: true,
@@ -215,6 +217,8 @@ class EventSettings with _$EventSettings {
     alwaysRecord: false,
     enablePrerequisites: false,
     agendaPreview: true,
+    autoEndMeeting: false,
+    autoEndGracePeriodMinutes: 0,
   );
 
   const factory EventSettings({
@@ -232,6 +236,8 @@ class EventSettings with _$EventSettings {
     bool? alwaysRecord,
     bool? enablePrerequisites,
     bool? agendaPreview,
+    bool? autoEndMeeting,
+    int? autoEndGracePeriodMinutes,
   }) = _EventSettings;
 
   factory EventSettings.fromJson(Map<String, dynamic> json) =>

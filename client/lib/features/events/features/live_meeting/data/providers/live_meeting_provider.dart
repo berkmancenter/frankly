@@ -82,6 +82,7 @@ class LiveMeetingProvider with ChangeNotifier {
   final Function(String, {bool? hideOnMobile}) showToast;
 
   bool _leftMeeting = false;
+  bool _leavingInProgress = false;
   bool _userLeftBreakouts = false;
   String? _activeBreakoutRoomId;
   String? _breakoutRoomOverride;
@@ -149,6 +150,9 @@ class LiveMeetingProvider with ChangeNotifier {
     required this.showToast,
   });
 
+  /// Suppress the post-event email for meetings shorter than this many minutes
+  /// past scheduled start. Prevents spam from test joins or accidental entries.
+  /// Recording stop still fires regardless of this threshold.
   static const int _postEventEmailThresholdInMinutes = 5;
 
   MeetingUiState get activeUiState {
@@ -474,6 +478,12 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _checkLoadBreakoutsStream(liveMeeting);
 
+    // Auto-leave when the host (or server) ends the meeting for everyone.
+    if (liveMeeting.meetingEndedAt != null && !_leftMeeting) {
+      leaveMeeting();
+      return;
+    }
+
     if (!breakoutsActive && !isNullOrEmpty(_activeBreakoutRoomId)) {
       leaveBreakoutRoom();
       _userLeftBreakouts = false;
@@ -687,6 +697,41 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<void> leaveMeeting() async {
+    if (_leftMeeting || _leavingInProgress) return;
+    _leavingInProgress = true;
+
+    try {
+    // If the meeting is still running and the user is the host or an admin,
+    // prompt whether to end the meeting for all participants.
+    final meetingAlreadyEnded = liveMeeting?.meetingEndedAt != null;
+    if (!meetingAlreadyEnded && eventProvider.event.isHosted) {
+      final isAdmin = userDataService
+          .getMembership(communityProvider.communityId)
+          .isAdmin;
+      if (isHost || isAdmin) {
+        final endForAll = await showCustomDialog<bool>(
+          isDismissible: false,
+          builder: (_) => ConfirmDialog(
+            mainText: appLocalizationService
+                .getLocalization()
+                .endMeetingConfirmation,
+            confirmText: appLocalizationService
+                .getLocalization()
+                .endMeeting,
+            cancelText: appLocalizationService
+                .getLocalization()
+                .leaveWithoutEnding,
+          ),
+        );
+        if (endForAll == null) return;
+        if (endForAll) {
+          await cloudFunctionsEventService.endMeetingForAll(
+            EndMeetingForAllRequest(eventPath: eventPath),
+          );
+        }
+      }
+    }
+
     if (_leftMeeting) return;
 
     _leftMeeting = true;
@@ -776,6 +821,9 @@ class LiveMeetingProvider with ChangeNotifier {
       // ignore: unnecessary_non_null_assertion
       html.window.location.href = html.window.location.origin! +
           (location.state as BeamState).uri.toString();
+    }
+    } finally {
+      _leavingInProgress = false;
     }
   }
 

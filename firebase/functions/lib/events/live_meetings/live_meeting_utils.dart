@@ -31,8 +31,15 @@ class PendingRecording {
 class MeetingJoinResult {
   final GetMeetingJoinInfoResponse response;
   final PendingRecording? pendingRecording;
+  final bool isFirstJoin;
+  final Event event;
 
-  MeetingJoinResult({required this.response, this.pendingRecording});
+  MeetingJoinResult({
+    required this.response,
+    required this.event,
+    this.pendingRecording,
+    this.isFirstJoin = false,
+  });
 }
 
 class LiveMeetingUtils {
@@ -95,6 +102,8 @@ class LiveMeetingUtils {
       );
     }
 
+    final isFirstJoin = !liveMeetingSnapshot.exists;
+
     PendingRecording? pendingRecording;
     if (newSessionId != null) {
       final chatPath =
@@ -123,7 +132,9 @@ class LiveMeetingUtils {
         meetingToken: token,
         meetingId: meetingId,
       ),
+      event: event,
       pendingRecording: pendingRecording,
+      isFirstJoin: isFirstJoin,
     );
   }
 

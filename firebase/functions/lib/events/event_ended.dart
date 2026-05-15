@@ -9,9 +9,9 @@ import '../utils/infra/firestore_utils.dart';
 import '../utils/notifications_utils.dart';
 import '../utils/subscription_plan_util.dart';
 import 'live_meetings/agora_api.dart';
+import 'live_meetings/stop_all_event_recordings.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
-import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/community.dart';
 
 /// This function handles events after event ends
@@ -48,49 +48,11 @@ class EventEnded extends OnCallMethod<EventEndedRequest> {
       constructor: (map) => Event.fromJson(map),
     );
 
-    // Stop main room recording if one is active.
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
-    try {
-      final liveMeeting = await firestoreUtils.getFirestoreObject(
-        path: liveMeetingPath,
-        constructor: (map) => LiveMeeting.fromJson(map),
-      );
-      if (liveMeeting.recordingSessionId != null) {
-        await agoraUtils.stopRoom(sessionId: liveMeeting.recordingSessionId!);
-      }
-    } catch (e) {
-      // Do not block event-ended flow on recording stop failure.
-      print('Error stopping main room recording on event end: $e');
-    }
-
-    // Stop all breakout room recordings.
-    // Structure: {liveMeetingPath}/breakout-room-sessions/{sessionId}/breakout-rooms/{roomId}
-    try {
-      final breakoutSessionDocs = await firestore
-          .collection('$liveMeetingPath/breakout-room-sessions')
-          .get();
-      for (final sessionDoc in breakoutSessionDocs.documents) {
-        final breakoutRoomDocs = await firestore
-            .collection('${sessionDoc.reference.path}/breakout-rooms')
-            .get();
-        for (final roomDoc in breakoutRoomDocs.documents) {
-          final breakoutRoom = BreakoutRoom.fromJson(
-            firestoreUtils.fromFirestoreJson(roomDoc.data.toMap()),
-          );
-          if (breakoutRoom.recordingSessionId != null) {
-            try {
-              await agoraUtils.stopRoom(
-                  sessionId: breakoutRoom.recordingSessionId!);
-            } catch (e) {
-              print(
-                  'Error stopping breakout recording ${breakoutRoom.recordingSessionId}: $e');
-            }
-          }
-        }
-      }
-    } catch (e) {
-      print('Error stopping breakout room recordings on event end: $e');
-    }
+    await stopAllEventRecordings(
+      liveMeetingPath: liveMeetingPath,
+      agoraUtils: agoraUtils,
+    );
 
     final capabilities =
         await subscriptionPlanUtil.calculateCapabilities(event.communityId);
