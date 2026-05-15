@@ -123,7 +123,7 @@ class _AdminPanelState extends State<AdminPanel> {
               SizedBox(width: 4),
               ActionButton(
                 onPressed: () => _providerRead.endBreakoutRooms(),
-                text: 'End Breakouts',
+                text: context.l10n.endBreakouts,
               ),
             ],
             SizedBox(width: 6),

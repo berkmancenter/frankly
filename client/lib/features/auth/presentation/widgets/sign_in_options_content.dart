@@ -374,7 +374,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 alignment: Alignment.topLeft,
                 child: Text.rich(
                   TextSpan(
-                    text: 'Forgot your password?',
+                    text: context.l10n.forgotYourPassword,
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         // We have to disable password validation for now so the form validation can succeed without it
