@@ -221,7 +221,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             ),
             if (agendaItem.timeInSeconds != null)
               Container(
-                width: 60,
+                width: 120,
                 alignment: Alignment.centerRight,
                 child: PeriodicBuilder(
                   period: const Duration(seconds: 1),
@@ -235,7 +235,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     } else {
                       negativeTimeRemaining = timeRemaining.isNegative;
                       formattedTime =
-                          timeRemaining.getFormattedTime(showHours: false);
+                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours > 0);
                     }
                     return HeightConstrainedText(
                       formattedTime,
