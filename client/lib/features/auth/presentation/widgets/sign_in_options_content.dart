@@ -12,6 +12,7 @@ import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
@@ -215,7 +216,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ..._buildSignIn(),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             _buildTermsOfService(),
           ],
         ),
@@ -382,31 +383,38 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ],
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 20),
             if (_showSignup)
               Text(
                 context.l10n.passwordRequirements,
-                style: context.theme.textTheme.bodySmall,
               ),
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
                 child: Text.rich(
                   TextSpan(
-                    text: 'Forgot your password?',
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        // We have to disable password validation for now so the form validation can succeed without it
-                        setState(() {
-                          _ignorePassword = true;
-                        });
-                        if (_formKey.currentState!.validate()) {
-                          _resetPassword();
-                        }
-                      },
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
+                    children: [
+                      TextSpan(
+                        text: context.l10n.forgotPasswordPrefix,
+                      ),
+                      TextSpan(
+                        text: context.l10n.forgotPasswordSuffix,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // We have to disable password validation for now so the form validation can succeed without it
+                            setState(() {
+                              _ignorePassword = true;
+                            });
+                            if (_formKey.currentState!.validate()) {
+                              _resetPassword();
+                            }
+                          },
+                        style: context.theme.textTheme.bodyMedium?.copyWith(
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      TextSpan(text: '.'),
+                    ],
                   ),
                 ),
               ),
@@ -419,22 +427,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 textAlign: TextAlign.center,
               ),
             SizedBox(height: 9),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ActionButton(
-                key: SignInOptionsContent.buttonSubmitKey,
-                onPressed: () => authMessageOnError(
-                  _onSubmit,
-                  errorCallback: (error, code) => setState(
-                    () => _formError = code,
-                  ),
+            ActionButton(
+              key: SignInOptionsContent.buttonSubmitKey,
+              onPressed: () => authMessageOnError(
+                _onSubmit,
+                errorCallback: (error, code) => setState(
+                  () => _formError = code,
                 ),
-                type: ActionButtonType.filled,
-                expand: true,
-                textColor: Colors.white,
-                color: Colors.black,
-                text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
               ),
+              type: ActionButtonType.filled,
+              expand: true,
+              textColor: Colors.white,
+              color: Colors.black,
+              text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
             ),
           ],
         ),
@@ -450,27 +455,52 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         ),
       ),
       SizedBox(height: 9),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ActionButton(
-          key: SignInOptionsContent.buttonGoogleKey,
-          expand: true,
-          maxTextWidth: googleButtonWidth,
-          onPressed: () => context.read<UserService>().signInWithGoogle(),
-          type: ActionButtonType.outline,
-          icon: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-            child: Image.asset(
-              'media/googleLogo.png',
-              width: 22,
-              height: 22,
+      ActionButton(
+        key: SignInOptionsContent.buttonGoogleKey,
+        expand: true,
+        maxTextWidth: googleButtonWidth,
+        onPressed: () => context.read<UserService>().signInWithGoogle(),
+        type: ActionButtonType.outline,
+        icon: Padding(
+          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+          child: Image.asset(
+            'media/googleLogo.png',
+            width: 22,
+            height: 22,
+          ),
+        ),
+        text: _showSignup
+            ? context.l10n.signUpWithGoogle
+            : context.l10n.signInWithGoogle,
+      ),
+      SizedBox(height: 20),
+      if (!_showSignup)
+        Align(
+          alignment: Alignment.center,
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: context.l10n.forgotAccountEmailOrNeedHelp,
+                ),
+                TextSpan(
+                  text: ' ',
+                ),
+                TextSpan(
+                  text: context.l10n.contactUs,
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrlString('mailto:${Environment.supportEmail}');
+                    },
+                  style: context.theme.textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+                TextSpan(text: '.'),
+              ],
             ),
           ),
-          text: _showSignup
-              ? context.l10n.signUpWithGoogle
-              : context.l10n.signInWithGoogle,
         ),
-      ),
     ];
   }
 
