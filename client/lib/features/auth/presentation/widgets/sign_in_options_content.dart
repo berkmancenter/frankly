@@ -10,6 +10,7 @@ import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -99,18 +100,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
     boxedErrorText({required message}) {
       return Container(
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-      decoration: BoxDecoration(
-        color: context.theme.colorScheme.error.withOpacity(0.05),
-      ),
-      child: message,
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        decoration: BoxDecoration(
+          color: context.theme.colorScheme.error.withOpacity(0.05),
+        ),
+        child: message,
       );
     }
+
     switch (errorCode) {
       case 'email-already-in-use':
-        return boxedErrorText(message: 
-          TextSpan(
+        return boxedErrorText(
+          message: TextSpan(
             style: context.theme.textTheme.bodyMedium?.copyWith(
               color: context.theme.colorScheme.error,
             ),
@@ -135,47 +137,80 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           ),
         );
       case 'user-not-found':
-        return boxedErrorText(message: Text.rich(
-          TextSpan(
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: context.theme.colorScheme.error,
-            ),
-            children: [
-              TextSpan(
-                text: context.l10n.couldntFindAccount,
+        return boxedErrorText(
+          message: Text.rich(
+            TextSpan(
+              style: context.theme.textTheme.bodyMedium?.copyWith(
+                color: context.theme.colorScheme.error,
               ),
-              TextSpan(
-                text: context.l10n.signingUp,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => setState(() {
-                        _showSignup = true;
-                        _formError = '';
-                      }),
-                style: context.theme.textTheme.bodyMedium?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: context.theme.colorScheme.error,
+              children: [
+                TextSpan(
+                  text: context.l10n.couldntFindAccount,
                 ),
-              ),
-              TextSpan(text: context.l10n.insteadSuffix),
-            ],
+                TextSpan(
+                  text: context.l10n.signingUp,
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => setState(() {
+                          _showSignup = true;
+                          _formError = '';
+                        }),
+                  style: context.theme.textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: context.theme.colorScheme.error,
+                  ),
+                ),
+                TextSpan(text: context.l10n.insteadSuffix),
+              ],
+            ),
           ),
-        ),);
+        );
       case 'invalid-credential':
       case 'wrong-password':
-        return boxedErrorText(message: buildErrorText(message: context.l10n.incorrectEmailOrPassword));
+        return boxedErrorText(
+          message: Column(
+            children: [
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                        text:
+                            '${context.l10n.emailAndPasswordMismatch}${context.l10n.forgotEmail} ',),
+                    TextSpan(
+                      text: context.l10n.contactUs,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          launchUrlString('mailto:${Environment.supportEmail}');
+                        },
+                      style: context.theme.textTheme.bodyMedium?.copyWith(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    TextSpan(text: '.'),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
+              _buildForgotPasswordMessage(),
+            ],
+          ),
+        );
       case 'invalid-email':
-        return boxedErrorText(message: buildErrorText(message: context.l10n.invalidEmail));
+        return boxedErrorText(
+            message: buildErrorText(message: context.l10n.invalidEmail),);
       case 'too-many-requests':
-        return boxedErrorText(message: buildErrorText(message: context.l10n.tooManyRequests));
+        return boxedErrorText(
+            message: buildErrorText(message: context.l10n.tooManyRequests),);
       case 'email-missing-pw':
-        return boxedErrorText(message: buildErrorText(message: context.l10n.pleaseEnterValidEmail));
+        return boxedErrorText(
+            message:
+                buildErrorText(message: context.l10n.pleaseEnterValidEmail),);
 
       default:
-        return boxedErrorText(message: Text.rich(
-          TextSpan(
-            style: context.theme.textTheme.bodyMedium,
-            children: [
-              TextSpan(text: context.l10n.somethingWentWrongLongPrefix),
+        return boxedErrorText(
+          message: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: context.l10n.somethingWentWrongLongPrefix),
                 TextSpan(
                   text: context.l10n.somethingWentWrongLongSuffix,
                   recognizer: TapGestureRecognizer()
@@ -186,11 +221,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     decoration: TextDecoration.underline,
                   ),
                 ),
-              TextSpan(text: ' ${context.l10n.and} '),
-              TextSpan(text: '${context.l10n.tryAgainLater}.'),
-            ],
+                TextSpan(text: ' ${context.l10n.and} '),
+                TextSpan(text: '${context.l10n.tryAgainLater}.'),
+              ],
+            ),
           ),
-        ),);
+        );
     }
   }
 
@@ -253,6 +289,35 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     } else {
       return context.l10n.logIntoApp(Environment.appName);
     }
+  }
+
+  Widget _buildForgotPasswordMessage() {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: context.l10n.forgotPasswordPrefix,
+          ),
+          TextSpan(
+            text: context.l10n.forgotPasswordSuffix,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                // We have to disable password validation for now so the form validation can succeed without it
+                setState(() {
+                  _ignorePassword = true;
+                });
+                if (_formKey.currentState!.validate()) {
+                  _resetPassword();
+                }
+              },
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          TextSpan(text: '.'),
+        ],
+      ),
+    );
   }
 
   Widget _buildSignUpLogInMessage() {
@@ -415,32 +480,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             if (!_showSignup)
               Align(
                 alignment: Alignment.topLeft,
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: context.l10n.forgotPasswordPrefix,
-                      ),
-                      TextSpan(
-                        text: context.l10n.forgotPasswordSuffix,
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // We have to disable password validation for now so the form validation can succeed without it
-                            setState(() {
-                              _ignorePassword = true;
-                            });
-                            if (_formKey.currentState!.validate()) {
-                              _resetPassword();
-                            }
-                          },
-                        style: context.theme.textTheme.bodyMedium?.copyWith(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                      TextSpan(text: '.'),
-                    ],
-                  ),
-                ),
+                child: _buildForgotPasswordMessage(),
               ),
             SizedBox(height: 9),
             if (_formMessage.isNotEmpty)
