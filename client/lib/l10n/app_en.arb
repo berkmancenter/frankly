@@ -144,6 +144,11 @@
       "displayName": {}
     }
   },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {}
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -215,7 +220,7 @@
       }
     }
   },
-  "@signInToApp": {
+  "@loginToApp": {
     "placeholders": {
       "appName": {}
     }
@@ -521,7 +526,10 @@
   "loading": "Loading",
   "locked": "Locked",
   "loggingIn": "logging in",
+  "logIntoApp": "Log into {appName}",
+  "logInto": "Log into",
   "login": "Login",
+  "logInWithGoogle": "Log in with Google",
   "logo": "Logo",
   "logout": "Logout",
   "loopVideo": "Loop Video",
@@ -758,9 +766,7 @@
   "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
   "sidebarUnfollowButton": "Sidebar Unfollow Button",
   "signIn": "Log In",
-  "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
-  "signInWithGoogle": "Sign in with Google",
   "signOut": "Sign Out",
   "signUp": "Sign Up",
   "signUpOrSignInToContinue": "Sign up (or sign in using an existing account) to continue.",

@@ -183,6 +183,13 @@
       }
     }
   },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -271,13 +278,6 @@
     "placeholders": {
       "communityName": {
         "type": "String"
-      }
-    }
-  },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
       }
     }
   },
@@ -594,7 +594,10 @@
   "loading": "Cargando",
   "locked": "Bloqueado",
   "loggingIn": "iniciando sesión",
+  "logIntoApp": "Iniciar sesión en {appName}",
+  "logInto": "Iniciar sesión en",
   "login": "Iniciar sesión",
+  "logInWithGoogle": "Iniciar sesión con Google",
   "logo": "Logotipo",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
@@ -831,9 +834,7 @@
   "sidebarFollowCommunityButton": "Botón de seguir comunidad barra lateral",
   "sidebarUnfollowButton": "Botón de dejar de seguir barra lateral",
   "signIn": "Iniciar sesión",
-  "signInToApp": "Iniciar sesión en {appName}",
   "signInWithEmail": "Iniciar sesión con email",
-  "signInWithGoogle": "Iniciar sesión con Google",
   "signOut": "Cerrar sesión",
   "signUp": "Registrarse",
   "signUpOrSignInToContinue": "Regístrate (o inicia sesión con una cuenta existente) para continuar.",

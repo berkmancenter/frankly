@@ -184,6 +184,13 @@
       }
     }
   },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {
+        "type": "Object"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -272,13 +279,6 @@
     "placeholders": {
       "communityName": {
         "type": "String"
-      }
-    }
-  },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
       }
     }
   },
@@ -596,8 +596,11 @@
   "livestream": "直播",
   "loading": "加载中",
   "locked": "已锁定",
-  "loggingIn": "登入",
-  "login": "登录",
+  "loggingIn": "登入中",
+  "logIntoApp": "登入 {appName}",
+  "logInto": "登入",
+  "login": "登入",
+  "logInWithGoogle": "使用 Google 登入",
   "logo": "标志",
   "logout": "退出登录",
   "loopVideo": "循环播放视频",
@@ -836,7 +839,6 @@
   "signIn": "登录",
   "signInToApp": "登录到 {appName}",
   "signInWithEmail": "使用邮箱登录",
-  "signInWithGoogle": "使用 Google 登录",
   "signOut": "退出登录",
   "signUp": "注册",
   "signUpOrSignInToContinue": "注册（或使用现有账户登录）以继续。",
