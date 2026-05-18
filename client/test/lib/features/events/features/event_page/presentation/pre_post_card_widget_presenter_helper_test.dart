@@ -14,10 +14,6 @@ void main() {
   final PrePostCardWidgetPresenterHelper helper =
       PrePostCardWidgetPresenterHelper();
 
-  setUp(() {
-    when(mockUserService.currentUserId).thenReturn('userId');
-  });
-
   tearDown(() {
     reset(mockCloudFunctionsService);
     reset(mockUserService);
@@ -31,6 +27,7 @@ void main() {
           await helper.getEmail(mockUserService, mockCloudFunctionsService);
 
       expect(result, isNull);
+      verifyNever(mockCloudFunctionsService.getUserAdminDetails(any));
     });
 
     test('response list is empty', () async {

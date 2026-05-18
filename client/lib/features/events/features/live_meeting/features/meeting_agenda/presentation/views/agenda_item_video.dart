@@ -36,12 +36,14 @@ class AgendaItemVideo extends StatefulWidget {
   final bool isEditMode;
   final AgendaItemVideoData agendaItemVideoData;
   final void Function(AgendaItemVideoData) onChanged;
+  final void Function(int durationSeconds)? onVideoDurationDetected;
 
   const AgendaItemVideo({
     Key? key,
     required this.isEditMode,
     required this.agendaItemVideoData,
     required this.onChanged,
+    this.onVideoDurationDetected,
   }) : super(key: key);
 
   @override
@@ -59,14 +61,25 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   late AgendaItemVideoModel _model;
   late AgendaItemVideoPresenter _presenter;
+  bool _hasPresenter = false;
 
   void _init() {
+    if (_hasPresenter) {
+      _presenter.dispose();
+    }
+
     _model = AgendaItemVideoModel(
       widget.isEditMode,
       widget.agendaItemVideoData,
       widget.onChanged,
     );
-    _presenter = AgendaItemVideoPresenter(context, this, _model);
+    _presenter = AgendaItemVideoPresenter(
+      context,
+      this,
+      _model,
+      onVideoDurationDetected: widget.onVideoDurationDetected,
+    );
+    _hasPresenter = true;
     _presenter.init();
 
     // Only temporarily made solution. Once we get rid of the flag, we should only read from
@@ -115,6 +128,9 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   @override
   void dispose() {
+    if (_hasPresenter) {
+      _presenter.dispose();
+    }
     _videoController.dispose();
     _youtubePlayerController?.close();
     super.dispose();

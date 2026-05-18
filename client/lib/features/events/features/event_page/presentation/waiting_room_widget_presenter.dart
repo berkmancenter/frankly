@@ -1,5 +1,7 @@
 import 'package:client/features/events/features/event_page/presentation/views/waiting_room_widget_contract.dart';
 import 'package:client/features/events/features/event_page/data/models/waiting_room_widget_model.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/services/video_metadata_service.dart';
+import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/core/utils/visible_exception.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
@@ -8,8 +10,13 @@ import 'package:data_models/events/media_item.dart';
 class WaitingRoomWidgetPresenter {
   final WaitingRoomWidgetView _view;
   final WaitingRoomWidgetModel _model;
+  final VideoMetadataService _videoMetadataService;
 
-  WaitingRoomWidgetPresenter(this._view, this._model);
+  WaitingRoomWidgetPresenter(
+    this._view,
+    this._model, {
+    VideoMetadataService? videoMetadataService,
+  }) : _videoMetadataService = videoMetadataService ?? VideoMetadataService();
 
   bool get enableIntroVideo => _model.event.eventType == EventType.hostless;
 
@@ -29,9 +36,34 @@ class WaitingRoomWidgetPresenter {
     _view.updateView();
   }
 
-  void updateIntroMedia(MediaItem mediaItem) {
+  bool _looksLikeVideoUrl(String url) {
+    final normalizedPath = (Uri.tryParse(url)?.path ?? url).toLowerCase();
+    return MediaHelperService.allowedVideoFormats.any(
+          (ext) => normalizedPath.endsWith('.$ext'),
+        ) ||
+        normalizedPath.contains('/video/upload/');
+  }
+
+  Future<void> updateIntroMedia(MediaItem mediaItem) async {
+    final shouldTreatAsVideo =
+        mediaItem.type == MediaType.video || _looksLikeVideoUrl(mediaItem.url);
+    final normalizedMediaItem = shouldTreatAsVideo &&
+            mediaItem.type != MediaType.video
+        ? mediaItem.copyWith(type: MediaType.video)
+        : mediaItem;
+
     _model.waitingRoomInfo =
-        _model.waitingRoomInfo.copyWith(introMediaItem: mediaItem);
+        _model.waitingRoomInfo.copyWith(introMediaItem: normalizedMediaItem);
+
+    if (shouldTreatAsVideo) {
+      final durationSeconds =
+          await _videoMetadataService.getVideoDurationInSeconds(mediaItem.url);
+      if (durationSeconds != null && durationSeconds > 0) {
+        _model.waitingRoomInfo =
+            _model.waitingRoomInfo.copyWith(durationSeconds: durationSeconds);
+      }
+    }
+
     _view.updateView();
   }
 
