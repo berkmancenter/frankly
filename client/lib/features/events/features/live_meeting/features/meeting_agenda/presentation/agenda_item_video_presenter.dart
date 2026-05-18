@@ -199,15 +199,16 @@ class AgendaItemVideoPresenter {
   }
 
   String getTabName(AgendaItemVideoTabType agendaItemVideoTabType) {
+    final l10n = appLocalizationService.getLocalization();
     switch (agendaItemVideoTabType) {
       case AgendaItemVideoTabType.local:
-        return 'UPLOAD';
+        return l10n.videoTabUpload;
       case AgendaItemVideoTabType.youtube:
-        return 'YOUTUBE';
+        return l10n.videoTabYoutube;
       case AgendaItemVideoTabType.vimeo:
-        return 'VIMEO';
+        return l10n.videoTabVimeo;
       case AgendaItemVideoTabType.url:
-        return 'URL';
+        return l10n.videoTabUrl;
     }
   }
 
