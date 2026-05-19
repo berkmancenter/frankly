@@ -113,8 +113,11 @@ class AgendaItemVideoPresenter {
 
     final path = Uri.tryParse(videoUrl)?.path.toLowerCase() ??
         videoUrl.toLowerCase();
-    return MediaHelperService.allowedVideoFormats
+    final isCloudinaryVideoUpload = path.contains('/video/upload/');
+    final hasAllowedVideoExtension = MediaHelperService.allowedVideoFormats
         .any((format) => path.endsWith('.$format'));
+
+    return isCloudinaryVideoUpload || hasAllowedVideoExtension;
   }
 
   /// Detects video duration and calls the callback if duration is found
