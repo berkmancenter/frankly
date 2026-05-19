@@ -1,5 +1,10 @@
 import 'package:client/core/localization/app_localization_service.dart';
+import 'package:client/core/data/services/media_helper_service.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
+    as reorderable;
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/features/community/data/providers/community_provider.dart';
+import 'package:data_models/community/community.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_card.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video.dart';
@@ -19,6 +24,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockCommunityPermissionsProvider mockCommunityPermissionsProvider;
+  late MockCommunityProvider mockCommunityProvider;
+  late MockMediaHelperService mockMediaHelperService;
   late AgendaProvider agendaProvider;
 
   setUpAll(() async {
@@ -38,6 +45,16 @@ void main() {
     mockCommunityPermissionsProvider = MockCommunityPermissionsProvider();
     when(mockCommunityPermissionsProvider.canEditTemplate(any)).thenReturn(true);
 
+    mockCommunityProvider = MockCommunityProvider();
+    when(mockCommunityProvider.settings)
+        .thenReturn(const CommunitySettings());
+
+    mockMediaHelperService = MockMediaHelperService();
+    if (!GetIt.instance.isRegistered<MediaHelperService>()) {
+      GetIt.instance
+          .registerSingleton<MediaHelperService>(mockMediaHelperService);
+    }
+
     agendaProvider = AgendaProvider(
       params: AgendaProviderParams(
         communityId: 'community-id',
@@ -56,6 +73,9 @@ void main() {
           ChangeNotifierProvider<CommunityPermissionsProvider>.value(
             value: mockCommunityPermissionsProvider,
           ),
+          ChangeNotifierProvider<CommunityProvider>.value(
+            value: mockCommunityProvider,
+          ),
         ],
         child: MaterialApp(
           localizationsDelegates: const [
@@ -68,7 +88,11 @@ void main() {
           locale: const Locale('en'),
           home: Scaffold(
             body: SingleChildScrollView(
-              child: AgendaItemCard(agendaItem: agendaItem),
+              child: reorderable.ReorderableList(
+                onReorder: (_, __) => false,
+                onReorderDone: (_) {},
+                child: AgendaItemCard(agendaItem: agendaItem),
+              ),
             ),
           ),
         ),
@@ -88,6 +112,13 @@ void main() {
         videoUrl: 'https://cdn.example.com/welcome.mp4',
       );
 
+      // Use a desktop-width viewport so isMobile() returns false and the
+      // formatted-time header ('00:00') is rendered in the top row.
+      tester.view.physicalSize = const Size(1200, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       await pumpWidgetUnderTest(tester, agendaItem);
       await tester.pumpAndSettle();
 
@@ -106,8 +137,5 @@ void main() {
 
       expect(find.text('02:05'), findsWidgets);
     },
-    // Flaky on Chrome due missing card subtree during callback wiring.
-    // TODO: re-enable with deterministic harness.
-    skip: true,
   );
 }
