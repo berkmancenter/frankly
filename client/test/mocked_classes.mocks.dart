@@ -1768,6 +1768,15 @@ class MockAgendaItemVideoView extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  void notifyVideoDurationDetected(int? seconds) => super.noSuchMethod(
+        Invocation.method(
+          #notifyVideoDurationDetected,
+          [seconds],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [AgendaItemView].
@@ -11950,6 +11959,17 @@ class MockMediaHelperService extends _i1.Mock
         ),
         returnValueForMissingStub: null,
       ) as String?);
+
+  @override
+  _i38.Future<int?> fetchVimeoDuration(String? vimeoId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #fetchVimeoDuration,
+          [vimeoId],
+        ),
+        returnValue: _i38.Future<int?>.value(),
+        returnValueForMissingStub: _i38.Future<int?>.value(),
+      ) as _i38.Future<int?>);
 }
 
 /// A class which mocks [MediaQueryData].

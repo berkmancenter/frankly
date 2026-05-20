@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js.dart' as js;
 import 'package:universal_html/js_util.dart' as js_util;
@@ -199,5 +200,20 @@ class MediaHelperService {
     return regExpMatch != null && regExpMatch.groupCount > 0
         ? regExpMatch.group(1)
         : null;
+  }
+
+  /// Fetches the duration in whole seconds for a Vimeo video using the public
+  /// oEmbed API. Returns null if the video is private, not found, or on network error.
+  Future<int?> fetchVimeoDuration(String vimeoId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://vimeo.com/api/oembed.json?url=https://vimeo.com/$vimeoId'),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return (data['duration'] as num?)?.round();
+      }
+    } catch (_) {}
+    return null;
   }
 }

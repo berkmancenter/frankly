@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/utils/agenda_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +62,10 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
   late TextEditingController _textEditingController;
   late TabController _tabController;
   YoutubePlayerController? _youtubePlayerController;
+  StreamSubscription<YoutubePlayerValue>? _youtubeStreamSubscription;
+  // Tracks whether the duration callback has already fired for a video ID so
+  // it doesn't fire again if the controller is recreated on a rebuild.
+  String? _reportedDurationForVideoId;
   late VideoPlayerController _videoController;
 
   late AgendaItemVideoModel _model;
@@ -120,6 +126,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   @override
   void dispose() {
+    _youtubeStreamSubscription?.cancel();
     _videoController.dispose();
     _youtubePlayerController?.close();
     super.dispose();
@@ -216,6 +223,56 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
   @override
   void updateView() {
     setState(() {});
+  }
+
+  @override
+  void notifyVideoDurationDetected(int seconds) {
+    widget.onVideoDurationDetected?.call(seconds);
+  }
+
+  /// Subscribes to a YouTube controller's stream to fire [onVideoDurationDetected]
+  /// once when the player reports a non-zero duration.
+  ///
+  /// Always resubscribes to the supplied [controller] (the Builder may produce a
+  /// fresh instance on each rebuild) but won't fire the callback again if the
+  /// same [videoId] already reported a duration.
+  ///
+  /// Two detection paths:
+  ///  1. [PlayerState.cued] — calls [YoutubePlayerController.duration] directly;
+  ///     works in Chrome even without playback (metadata loaded eagerly).
+  ///  2. [YoutubePlayerValue.metaData.duration] — fallback populated by the
+  ///     event handler only after the video actually plays.
+  void _attachYoutubeDurationListener(
+    YoutubePlayerController controller,
+    String videoId,
+  ) {
+    // Always cancel the old subscription — it may be targeting a stale controller.
+    _youtubeStreamSubscription?.cancel();
+
+    // Don't fire the callback again for the same video.
+    if (_reportedDurationForVideoId == videoId) {
+      _youtubeStreamSubscription = null;
+      return;
+    }
+
+    void reportDuration(int seconds) {
+      if (!mounted || _reportedDurationForVideoId == videoId) return;
+      _youtubeStreamSubscription?.cancel();
+      _youtubeStreamSubscription = null;
+      _reportedDurationForVideoId = videoId;
+      widget.onVideoDurationDetected?.call(seconds);
+    }
+
+    _youtubeStreamSubscription = controller.stream.listen((value) async {
+      if (value.playerState == PlayerState.cued) {
+        // getDuration() works for cued videos in Chrome (metadata loaded eagerly).
+        final seconds = await controller.duration;
+        if (seconds > 0) reportDuration(seconds.round());
+      } else if (value.metaData.duration > Duration.zero) {
+        // Fallback: metaData is populated by the event handler once playing.
+        reportDuration(value.metaData.duration.inSeconds);
+      }
+    });
   }
 
   Widget _buildVideoPicker(String text) {
@@ -346,6 +403,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 videoId: youtubeVideoId,
                 params: YoutubePlayerParams(showControls: true),
               );
+              _attachYoutubeDurationListener(_youtubePlayerController!, youtubeVideoId);
 
               return YoutubePlayer(
                 controller: _youtubePlayerController!,
@@ -470,6 +528,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               videoId: youtubeId,
               params: YoutubePlayerParams(showControls: true),
             );
+            _attachYoutubeDurationListener(_youtubePlayerController!, youtubeId);
             return YoutubePlayer(
               controller: _youtubePlayerController!,
               aspectRatio: 16 / 9,

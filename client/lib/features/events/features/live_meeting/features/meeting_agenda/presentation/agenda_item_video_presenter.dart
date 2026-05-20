@@ -69,12 +69,23 @@ class AgendaItemVideoPresenter {
     // the user pastes a link into the generic URL tab.
     if (_mediaHelperService.getYoutubeVideoId(trimmedUrl) != null) {
       _model.agendaItemVideoData.type = AgendaItemVideoType.youtube;
-    } else if (_mediaHelperService.getVimeoVideoId(trimmedUrl) != null) {
-      _model.agendaItemVideoData.type = AgendaItemVideoType.vimeo;
+    } else {
+      final vimeoId = _mediaHelperService.getVimeoVideoId(trimmedUrl);
+      if (vimeoId != null) {
+        _model.agendaItemVideoData.type = AgendaItemVideoType.vimeo;
+        _fetchAndNotifyVimeoDuration(vimeoId);
+      }
     }
 
     _view.updateView();
     _helper.updateParent(_model);
+  }
+
+  void _fetchAndNotifyVimeoDuration(String vimeoId) async {
+    final duration = await _mediaHelperService.fetchVimeoDuration(vimeoId);
+    if (duration != null) {
+      _view.notifyVideoDurationDetected(duration);
+    }
   }
 
   String getVideoUrl() {
