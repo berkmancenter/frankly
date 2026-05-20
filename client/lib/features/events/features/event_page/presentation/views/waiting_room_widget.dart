@@ -10,6 +10,7 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/media_item_section.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/time_input_form.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -48,14 +49,6 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
         Duration(seconds: _model.waitingRoomInfo.waitingMediaBufferSeconds);
     final waitingMediaItem = _model.waitingRoomInfo.waitingMediaItem;
     final introMediaItem = _model.waitingRoomInfo.introMediaItem;
-    final minutesInString = introLengthDuration.inMinutes.toString();
-    final secondsInString =
-        (introLengthDuration.inSeconds % 60).toString().padLeft(2, '0');
-
-    final waitingBufferMinutesInString =
-        waitingBufferDuration.inMinutes.toString();
-    final waitingBufferSecondsInString =
-        (waitingBufferDuration.inSeconds % 60).toString().padLeft(2, '0');
 
     final waitingBufferDurationDescription =
         prettyDuration(waitingBufferDuration)
@@ -105,6 +98,16 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             mediaItem: waitingMediaItem,
             onDelete: () => _presenter.deleteWaitingMedia(),
             onUpdate: (mediaItem) => _presenter.updateWaitingMedia(mediaItem),
+            onVideoDurationDetected: (durationInSeconds) {
+              _presenter.updateWaitingBufferDuration(
+                Duration(seconds: durationInSeconds),
+              );
+              showRegularToast(
+                context,
+                'Buffer time updated to ${ prettyDuration(Duration(seconds: durationInSeconds)).replaceAll('minute', 'min').replaceAll('second', 'sec')} to match video length.',
+                toastType: ToastType.neutral,
+              );
+            },
           ),
           SizedBox(height: 10),
           Row(
@@ -128,36 +131,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 50,
-                child: CustomTextField(
-                  padding: EdgeInsets.zero,
-                  maxLines: 1,
-                  initialValue: waitingBufferMinutesInString,
-                  onChanged: (value) =>
-                      _presenter.updateWaitingBufferMinutesInString(value),
-                  isOnlyDigits: true,
-                  numberThreshold: 60,
-                ),
-              ),
-              SizedBox(width: 4),
-              HeightConstrainedText(
-                ':',
-                style: AppTextStyle.bodyMedium
-                    .copyWith(color: context.theme.colorScheme.primary),
-              ),
-              SizedBox(width: 4),
-              SizedBox(
-                width: 50,
-                child: CustomTextField(
-                  padding: EdgeInsets.zero,
-                  maxLines: 1,
-                  initialValue: waitingBufferSecondsInString,
-                  onChanged: (value) =>
-                      _presenter.updateWaitingBufferSecondsInString(value),
-                  isOnlyDigits: true,
-                  numberThreshold: 59,
-                ),
+              TimeInputForm(
+                duration: waitingBufferDuration,
+                onUpdate: (d) => _presenter.updateWaitingBufferDuration(d),
               ),
               SizedBox(width: 20),
               Expanded(
@@ -186,6 +162,14 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
               mediaItem: introMediaItem,
               onDelete: () => _presenter.deleteIntroMedia(),
               onUpdate: (mediaItem) => _presenter.updateIntroMedia(mediaItem),
+              onVideoDurationDetected: (durationInSeconds) {
+                _presenter.updateDuration(Duration(seconds: durationInSeconds));
+                showRegularToast(
+                  context,
+                  'Intro Length updated to ${prettyDuration(Duration(seconds: durationInSeconds)).replaceAll('minute', 'min').replaceAll('second', 'sec')} to match video length.',
+                  toastType: ToastType.neutral,
+                );
+              },
             ),
             SizedBox(height: 10),
             HeightConstrainedText(
@@ -195,36 +179,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             SizedBox(height: 10),
             Row(
               children: [
-                SizedBox(
-                  width: 50,
-                  child: CustomTextField(
-                    padding: EdgeInsets.zero,
-                    maxLines: 1,
-                    initialValue: minutesInString,
-                    onChanged: (value) =>
-                        _presenter.updateMinutesInString(value),
-                    isOnlyDigits: true,
-                    numberThreshold: 60,
-                  ),
-                ),
-                SizedBox(width: 4),
-                HeightConstrainedText(
-                  ':',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: context.theme.colorScheme.primary),
-                ),
-                SizedBox(width: 4),
-                SizedBox(
-                  width: 50,
-                  child: CustomTextField(
-                    padding: EdgeInsets.zero,
-                    maxLines: 1,
-                    initialValue: secondsInString,
-                    onChanged: (value) =>
-                        _presenter.updateSecondsInString(value),
-                    isOnlyDigits: true,
-                    numberThreshold: 59,
-                  ),
+                TimeInputForm(
+                  duration: introLengthDuration,
+                  onUpdate: (d) => _presenter.updateDuration(d),
                 ),
                 SizedBox(width: 20),
                 Expanded(
@@ -258,8 +215,9 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
                   context,
                   () async {
                     await _presenter.save();
+                    if (!mounted) return;
                     showRegularToast(
-                      context,
+                      this.context,
                       'Waiting Room Changes Saved',
                       toastType: ToastType.success,
                     );

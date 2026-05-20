@@ -11883,14 +11883,15 @@ class MockManipulateDiscussionThreadView extends _i1.Mock
 class MockMediaHelperService extends _i1.Mock
     implements _i86.MediaHelperService {
   @override
-  _i38.Future<String?> pickVideoViaCloudinary() => (super.noSuchMethod(
+  _i38.Future<_i86.PickedVideoResult?> pickVideoViaCloudinary() =>
+      (super.noSuchMethod(
         Invocation.method(
           #pickVideoViaCloudinary,
           [],
         ),
-        returnValue: _i38.Future<String?>.value(),
-        returnValueForMissingStub: _i38.Future<String?>.value(),
-      ) as _i38.Future<String?>);
+        returnValue: _i38.Future<_i86.PickedVideoResult?>.value(),
+        returnValueForMissingStub: _i38.Future<_i86.PickedVideoResult?>.value(),
+      ) as _i38.Future<_i86.PickedVideoResult?>);
 
   @override
   _i38.Future<String?> pickImageViaCloudinary() => (super.noSuchMethod(

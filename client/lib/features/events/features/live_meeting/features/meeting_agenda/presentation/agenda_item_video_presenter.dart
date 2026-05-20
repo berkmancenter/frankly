@@ -62,9 +62,18 @@ class AgendaItemVideoPresenter {
   }
 
   void updateVideoUrl(String url) {
-    _model.agendaItemVideoData.url = url.trim();
-    _view.updateView();
+    final trimmedUrl = url.trim();
+    _model.agendaItemVideoData.url = trimmedUrl;
 
+    // Auto-detect YouTube/Vimeo links so the saved type is correct even when
+    // the user pastes a link into the generic URL tab.
+    if (_mediaHelperService.getYoutubeVideoId(trimmedUrl) != null) {
+      _model.agendaItemVideoData.type = AgendaItemVideoType.youtube;
+    } else if (_mediaHelperService.getVimeoVideoId(trimmedUrl) != null) {
+      _model.agendaItemVideoData.type = AgendaItemVideoType.vimeo;
+    }
+
+    _view.updateView();
     _helper.updateParent(_model);
   }
 

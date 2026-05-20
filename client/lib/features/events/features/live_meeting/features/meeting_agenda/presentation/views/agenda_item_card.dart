@@ -211,10 +211,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
               children: [
                 _buildDropDownButton(),
                 TimeInputForm(
-                  duration: Duration(
-                    seconds: _model.agendaItem.timeInSeconds ??
-                        AgendaItem.kDefaultTimeInSeconds,
-                  ),
+                  duration: Duration(seconds: _model.timeInSeconds),
                   onUpdate: (duration) => _presenter.updateTime(duration),
                   isClockShowing: true,
                 ),
@@ -308,6 +305,15 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           isEditMode: isEditMode,
           agendaItemVideoData: _model.agendaItemVideoData,
           onChanged: (data) => _presenter.updateAgendaItemVideoData(data),
+          onVideoDurationDetected: (durationInSeconds) {
+            final duration = Duration(seconds: durationInSeconds);
+            _presenter.updateTime(duration);
+            showRegularToast(
+              context,
+              'Slot time updated to ${_presenter.getFormattedDuration(duration)} to match video length.',
+              toastType: ToastType.neutral,
+            );
+          },
         );
       case AgendaItemType.image:
         return AgendaItemImage(
@@ -364,6 +370,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
     ).show(context: context);
 
     if (delete) {
+      if (!mounted) return;
       await alertOnError(context, () => _presenter.deleteAgendaItem());
     }
   }

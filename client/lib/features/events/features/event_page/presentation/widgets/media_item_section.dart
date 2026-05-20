@@ -16,27 +16,35 @@ class MediaItemSection extends StatelessWidget {
   final void Function() onDelete;
   final void Function(MediaItem) onUpdate;
 
+  /// Called after a direct Cloudinary video upload when the duration is known.
+  /// Not called for image uploads or external video URLs.
+  final void Function(int durationInSeconds)? onVideoDurationDetected;
+
   const MediaItemSection({
     Key? key,
     required this.mediaItem,
     required this.onDelete,
     required this.onUpdate,
+    this.onVideoDurationDetected,
   }) : super(key: key);
 
   Future<void> _showMediaPickerDialog(BuildContext context) async {
-    final mediaUrl =
-        await GetIt.instance<MediaHelperService>().pickMediaViaCloudinary(
+    final result = await GetIt.instance<MediaHelperService>()
+        .pickMediaViaCloudinaryWithDuration(
       uploadPreset: MediaHelperService.defaultMediaPreset,
     );
 
-    if (mediaUrl != null) {
+    if (result != null) {
       final isVideo = MediaHelperService.allowedVideoFormats
-          .any((ext) => mediaUrl.endsWith(ext));
+          .any((ext) => result.url.endsWith(ext));
       final mediaItem = MediaItem(
-        url: mediaUrl,
+        url: result.url,
         type: isVideo ? MediaType.video : MediaType.image,
       );
       onUpdate(mediaItem);
+      if (isVideo && result.durationInSeconds != null) {
+        onVideoDurationDetected?.call(result.durationInSeconds!);
+      }
     }
   }
 

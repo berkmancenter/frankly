@@ -37,11 +37,16 @@ class AgendaItemVideo extends StatefulWidget {
   final AgendaItemVideoData agendaItemVideoData;
   final void Function(AgendaItemVideoData) onChanged;
 
+  /// Called after a direct Cloudinary upload when the video duration is known.
+  /// Not called for YouTube/Vimeo/external URLs where duration is unavailable at upload time.
+  final void Function(int durationInSeconds)? onVideoDurationDetected;
+
   const AgendaItemVideo({
     Key? key,
     required this.isEditMode,
     required this.agendaItemVideoData,
     required this.onChanged,
+    this.onVideoDurationDetected,
   }) : super(key: key);
 
   @override
@@ -217,11 +222,14 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
     return ActionButton(
       text: text,
       onPressed: () async {
-        final url =
+        final result =
             await GetIt.instance<MediaHelperService>().pickVideoViaCloudinary();
-        if (url != null) {
-          _updateTextInController(url);
-          _presenter.updateVideoUrl(url);
+        if (result != null) {
+          _updateTextInController(result.url);
+          _presenter.updateVideoUrl(result.url);
+          if (result.durationInSeconds != null) {
+            widget.onVideoDurationDetected?.call(result.durationInSeconds!);
+          }
         }
       },
     );
@@ -292,6 +300,25 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
     }
   }
 
+  Widget _buildVideoDurationReminder() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Icon(Icons.info_outline, size: 16, color: context.theme.colorScheme.secondary),
+          SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              'Remember to set the slot time to match the video length.',
+              style: context.theme.textTheme.bodySmall!
+                  .copyWith(color: context.theme.colorScheme.secondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildYoutube(String videoUrl) {
     final youtubeVideoId = _presenter.getYoutubeVideoId(videoUrl);
 
@@ -310,7 +337,8 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             ),
           ],
         ),
-        SizedBox(height: 20),
+        _buildVideoDurationReminder(),
+        SizedBox(height: 8),
         if (youtubeVideoId != null)
           Builder(
             builder: (context) {
@@ -362,7 +390,8 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             ),
           ],
         ),
-        SizedBox(height: 20),
+        _buildVideoDurationReminder(),
+        SizedBox(height: 8),
         if (vimeoVideoId != null)
           AspectRatio(
             aspectRatio: 16 / 9,
@@ -388,7 +417,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
   }
 
   Widget _buildUrlVideo(String videoUrl) {
-    final isValidVideo = _model.agendaItemVideoData.url.isNotEmpty;
+    final url = _model.agendaItemVideoData.url;
 
     return Column(
       children: [
@@ -405,15 +434,9 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             ),
           ],
         ),
-        SizedBox(height: 20),
-        if (isValidVideo)
-          Expanded(
-            child: UrlVideoWidget(
-              playbackUrl: videoUrl,
-              autoplay: false,
-            ),
-          )
-        else
+        _buildVideoDurationReminder(),
+        SizedBox(height: 8),
+        if (url.isEmpty)
           Expanded(
             child: Container(
               color: context.theme.colorScheme.surface,
@@ -427,8 +450,45 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 ),
               ),
             ),
-          ),
+          )
+        else
+          _buildUrlVideoPreview(url),
       ],
+    );
+  }
+
+  /// Renders the correct preview widget for a URL, routing YouTube and Vimeo
+  /// links to their dedicated players so Video.js is never asked to play them.
+  Widget _buildUrlVideoPreview(String url) {
+    final youtubeId = _presenter.getYoutubeVideoId(url);
+    if (youtubeId != null) {
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Builder(
+          builder: (context) {
+            _youtubePlayerController = YoutubePlayerController.fromVideoId(
+              videoId: youtubeId,
+              params: YoutubePlayerParams(showControls: true),
+            );
+            return YoutubePlayer(
+              controller: _youtubePlayerController!,
+              aspectRatio: 16 / 9,
+            );
+          },
+        ),
+      );
+    }
+
+    final vimeoId = _presenter.getVimeoVideoId(url);
+    if (vimeoId != null) {
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: VimeoVideoWidget(vimeoId: vimeoId),
+      );
+    }
+
+    return Expanded(
+      child: UrlVideoWidget(playbackUrl: url, autoplay: false),
     );
   }
 }

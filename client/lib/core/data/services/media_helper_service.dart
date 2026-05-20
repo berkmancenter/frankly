@@ -7,6 +7,22 @@ import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js.dart' as js;
 import 'package:universal_html/js_util.dart' as js_util;
 
+class PickedVideoResult {
+  final String url;
+
+  /// Duration in whole seconds, as reported by Cloudinary. Null for non-direct uploads (YouTube,
+  /// Vimeo, external URLs) where the duration is not available at upload time.
+  final int? durationInSeconds;
+
+  PickedVideoResult({required this.url, this.durationInSeconds});
+}
+
+class _PickedMediaInfo {
+  final String url;
+  final double? duration;
+  _PickedMediaInfo(this.url, this.duration);
+}
+
 class MediaHelperService {
   static const defaultMediaPreset = Environment.cloudinaryDefaultPreset;
 
@@ -35,13 +51,17 @@ class MediaHelperService {
     return url;
   }
 
-  Future<String?> pickVideoViaCloudinary() async {
-    String? url = await pickMediaViaCloudinary(
+  Future<PickedVideoResult?> pickVideoViaCloudinary() async {
+    final info = await _pickMediaInfo(
       uploadPreset: Environment.cloudinaryVideoPreset,
       clientAllowedFormats: allowedVideoFormats,
     );
-
-    return tryTransformVideoUrlToMp4(url);
+    if (info == null) return null;
+    final url = tryTransformVideoUrlToMp4(info.url) ?? info.url;
+    return PickedVideoResult(
+      url: url,
+      durationInSeconds: info.duration?.round(),
+    );
   }
 
   Future<String?> pickImageViaCloudinary() {
@@ -61,8 +81,50 @@ class MediaHelperService {
     ],
     bool cropping = false,
     double? croppingAspectRatio,
+  }) async {
+    final info = await _pickMediaInfo(
+      uploadPreset: uploadPreset,
+      clientAllowedFormats: clientAllowedFormats,
+      cropping: cropping,
+      croppingAspectRatio: croppingAspectRatio,
+    );
+    return info?.url;
+  }
+
+  /// Like [pickMediaViaCloudinary] but also returns the video duration in seconds
+  /// when a video file is uploaded via Cloudinary (null for images or external URLs).
+  Future<PickedVideoResult?> pickMediaViaCloudinaryWithDuration({
+    required String uploadPreset,
+    List<String> clientAllowedFormats = const [
+      imageFormatDescription,
+      ...allowedVideoFormats,
+    ],
+    bool cropping = false,
+    double? croppingAspectRatio,
+  }) async {
+    final info = await _pickMediaInfo(
+      uploadPreset: uploadPreset,
+      clientAllowedFormats: clientAllowedFormats,
+      cropping: cropping,
+      croppingAspectRatio: croppingAspectRatio,
+    );
+    if (info == null) return null;
+    return PickedVideoResult(
+      url: info.url,
+      durationInSeconds: info.duration?.round(),
+    );
+  }
+
+  Future<_PickedMediaInfo?> _pickMediaInfo({
+    required String uploadPreset,
+    List<String> clientAllowedFormats = const [
+      imageFormatDescription,
+      ...allowedVideoFormats,
+    ],
+    bool cropping = false,
+    double? croppingAspectRatio,
   }) {
-    final completer = Completer<String?>();
+    final completer = Completer<_PickedMediaInfo?>();
 
     final parameters = {
       'cloudName': Environment.cloudinaryCloudName,
@@ -101,9 +163,10 @@ class MediaHelperService {
 
             // https://cloudinary.com/documentation/upload_widget_reference#success
             if (event == 'success') {
-              // Taking successfully uploaded video URL
-              final url = parsedResult['info']['url'];
-              completer.complete(tryTransformVideoUrlToMp4(url));
+              final info = parsedResult['info'] as Map<String, dynamic>;
+              final url = info['url'] as String;
+              final duration = (info['duration'] as num?)?.toDouble();
+              completer.complete(_PickedMediaInfo(url, duration));
             } else if (event == 'close') {
               completer.complete(null);
             }
@@ -118,14 +181,12 @@ class MediaHelperService {
   }
 
   String? getYoutubeVideoId(String url) {
+    // Handles watch, embed, shorts, and youtu.be short-link formats,
+    // with or without extra query parameters.
     final RegExp regExp = RegExp(
-      r'^(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=([^&\n]+)|youtu\.be/([a-zA-Z\d]+))$',
+      r'(?:youtube(?:-nocookie)?\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/|v/)|youtu\.be/)([a-zA-Z0-9_-]{11})',
     );
-    final regExpMatch = regExp.firstMatch(url);
-
-    return regExpMatch != null && regExpMatch.groupCount > 0
-        ? regExpMatch.group(1)
-        : null;
+    return regExp.firstMatch(url)?.group(1);
   }
 
   String? getVimeoVideoId(String url) {

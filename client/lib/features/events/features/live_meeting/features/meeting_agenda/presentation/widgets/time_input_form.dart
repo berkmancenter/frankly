@@ -36,6 +36,15 @@ class _TimeInputFormState extends State<TimeInputForm> {
   }
 
   @override
+  void didUpdateWidget(TimeInputForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.duration != widget.duration) {
+      _minutesTextEditingController.text = _getMinutesInString();
+      _secondsTextEditingController.text = _getSecondsInString();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,

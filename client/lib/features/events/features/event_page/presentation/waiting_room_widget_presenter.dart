@@ -35,43 +35,15 @@ class WaitingRoomWidgetPresenter {
     _view.updateView();
   }
 
-  void updateMinutesInString(String minutesInString) {
-    final minutesInt = int.tryParse(minutesInString) ?? 0;
-    final secondsInt = _model.waitingRoomInfo.durationSeconds % 60;
-    final durationInSeconds = minutesInt * 60 + secondsInt;
-
-    _model.waitingRoomInfo =
-        _model.waitingRoomInfo.copyWith(durationSeconds: durationInSeconds);
-    _view.updateView();
-  }
-
-  void updateSecondsInString(String secondsInString) {
-    final minutesInt = _model.waitingRoomInfo.durationSeconds ~/ 60;
-    final secondsInt = int.tryParse(secondsInString) ?? 0;
-    final durationInSeconds = minutesInt * 60 + secondsInt;
-
-    _model.waitingRoomInfo =
-        _model.waitingRoomInfo.copyWith(durationSeconds: durationInSeconds);
-    _view.updateView();
-  }
-
-  void updateWaitingBufferMinutesInString(String minutesInString) {
-    final minutesInt = int.tryParse(minutesInString) ?? 0;
-    final secondsInt = _model.waitingRoomInfo.waitingMediaBufferSeconds % 60;
-    final durationInSeconds = minutesInt * 60 + secondsInt;
-
+  void updateDuration(Duration duration) {
     _model.waitingRoomInfo = _model.waitingRoomInfo
-        .copyWith(waitingMediaBufferSeconds: durationInSeconds);
+        .copyWith(durationSeconds: duration.inSeconds);
     _view.updateView();
   }
 
-  void updateWaitingBufferSecondsInString(String secondsInString) {
-    final minutesInt = _model.waitingRoomInfo.waitingMediaBufferSeconds ~/ 60;
-    final secondsInt = int.tryParse(secondsInString) ?? 0;
-    final durationInSeconds = minutesInt * 60 + secondsInt;
-
+  void updateWaitingBufferDuration(Duration duration) {
     _model.waitingRoomInfo = _model.waitingRoomInfo
-        .copyWith(waitingMediaBufferSeconds: durationInSeconds);
+        .copyWith(waitingMediaBufferSeconds: duration.inSeconds);
     _view.updateView();
   }
 
