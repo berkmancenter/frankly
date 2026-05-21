@@ -189,7 +189,7 @@ class _AdminBillingContainerContentState
           mainText:
               'Effective immediately you will be enrolled in the ${priceInfo.name} '
               '($priceString/mo.). You can update this at any time.',
-          confirmText: 'Yes, update plan',
+          confirmText: context.l10n.yesUpdatePlan,
           cancelText: context.l10n.cancel,
         ).show();
 
@@ -208,7 +208,7 @@ class _AdminBillingContainerContentState
             title: context.l10n.cancelCurrentPlan,
             mainText:
                 'Immediately cancel your current plan and enroll in the free plan?',
-            confirmText: 'Yes, cancel plan',
+            confirmText: context.l10n.yesCancelPlan,
             cancelText: context.l10n.no,
           ).show();
 

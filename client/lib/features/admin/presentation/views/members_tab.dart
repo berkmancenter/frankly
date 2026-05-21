@@ -197,7 +197,7 @@ class MembersTabState extends State<MembersTab> {
           children: [
             Expanded(
               child: CustomTextField(
-                hintText: 'Filter member list by name',
+                hintText: context.l10n.filterMemberListByName,
                 prefixIcon: Icon(Icons.search),
                 onChanged: (value) {
                   setState(() {
@@ -239,7 +239,7 @@ class MembersTabState extends State<MembersTab> {
         DataColumn(
           label: Row(
             children: [
-              Text('Role'),
+              Text(context.l10n.role),
               Tooltip(
                 enableTapToDismiss: false,
                 padding: const EdgeInsets.all(16),

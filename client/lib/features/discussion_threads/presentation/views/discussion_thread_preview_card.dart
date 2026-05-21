@@ -284,11 +284,11 @@ class DiscussionThreadPreviewCard extends StatelessWidget {
                 context,
                 title: context.l10n.addComment,
                 isMobile: isMobile,
-                labelText: 'Comment',
+                labelText: context.l10n.comment,
                 validator: (text) => text == null || text.isEmpty
-                    ? 'Comment cannot be empty'
+                    ? context.l10n.commentCannotBeEmpty
                     : null,
-                positiveButtonText: 'Add Comment',
+                positiveButtonText: context.l10n.addComment,
               );
 
               if (comment != null) {
