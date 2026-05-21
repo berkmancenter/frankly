@@ -20,6 +20,7 @@ enum SignInState {
   loading,
   signedIn,
   signedOut,
+  awaitingEmailVerification,
 }
 
 class UserService with ChangeNotifier {
@@ -34,6 +35,7 @@ class UserService with ChangeNotifier {
 
   bool _signingInAnonymously = false;
   bool _redirectResultHandled = false;
+  bool _verifyAndChangeEmailHandled = false;
 
   String? _redirectErrorMessage;
 
@@ -45,8 +47,32 @@ class UserService with ChangeNotifier {
 
   SignInState _signInState = SignInState.loading;
 
-  void verifyEmail() {
-    _currentUser?.sendEmailVerification();
+  Future<void> sendMagicVerificationLink(String email) async {
+    await sharedPreferencesService.setPendingEmailVerification(email);
+    await _firebaseAuth.sendSignInLinkToEmail(
+      email: email,
+      actionCodeSettings: ActionCodeSettings(
+        url: html.window.location.origin,
+        handleCodeInApp: true,
+      ),
+    );
+  }
+
+  Future<void> updateEmailAndResendVerification(String newEmail) async {
+    await _currentUser?.verifyBeforeUpdateEmail(
+      newEmail,
+      ActionCodeSettings(
+        url: html.window.location.origin,
+        handleCodeInApp: true,
+      ),
+    );
+  }
+
+  Future<void> _handleEmailSignInLink(String emailLink) async {
+    final email = sharedPreferencesService.getPendingEmailVerification();
+    if (email == null) return;
+    await sharedPreferencesService.clearPendingEmailVerification();
+    await _firebaseAuth.signInWithEmailLink(email: email, emailLink: emailLink);
   }
 
   /// If there was an error signing in during redirect this flag indicates that.
@@ -60,7 +86,9 @@ class UserService with ChangeNotifier {
 
   bool get isSignedIn {
     final localCurrentUser = _currentUser;
-    return localCurrentUser != null && !localCurrentUser.isAnonymous;
+    return localCurrentUser != null &&
+        !localCurrentUser.isAnonymous &&
+        localCurrentUser.emailVerified;
   }
 
   SignInState get signInState => _signInState;
@@ -138,6 +166,20 @@ class UserService with ChangeNotifier {
       // On macos it throws un-implemented error, thus wrap in control flow
       if (kIsWeb) {
         unawaited(_handleRedirectResult());
+        final currentUrl = html.window.location.href;
+        final uri = Uri.tryParse(currentUrl);
+        final mode = uri?.queryParameters['mode'];
+        final oobCode = uri?.queryParameters['oobCode'];
+        if (!_verifyAndChangeEmailHandled &&
+            mode == 'verifyAndChangeEmail' &&
+            oobCode != null) {
+          _verifyAndChangeEmailHandled = true;
+          await _firebaseAuth.applyActionCode(oobCode);
+          // authStateChanges fires again with the updated verified user — return early here.
+          return;
+        } else if (_firebaseAuth.isSignInWithEmailLink(currentUrl)) {
+          await _handleEmailSignInLink(currentUrl);
+        }
       }
 
       if (!sharedPreferencesService.isReturningUser() &&
@@ -158,13 +200,17 @@ class UserService with ChangeNotifier {
     _returningUserTimer?.cancel();
 
     _setCurrentUser(user);
-    if (!user.isAnonymous) {
+    if (!user.isAnonymous && user.emailVerified) {
       await createCurrentUserInfoIfNotExists(
         displayName: _emailRegistrationDisplayName,
-      );
+        );
     }
 
-    _signInState = SignInState.signedIn;
+    if (!user.isAnonymous && !user.emailVerified) {
+      _signInState = SignInState.awaitingEmailVerification;
+    } else {
+      _signInState = SignInState.signedIn;
+    }
 
     notifyListeners();
   }
@@ -291,6 +337,7 @@ class UserService with ChangeNotifier {
         email: email,
         password: password,
       );
+      await sendMagicVerificationLink(email);
     } catch (e) {
       _emailRegistrationDisplayName = null;
       rethrow;
