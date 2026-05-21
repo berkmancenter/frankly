@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video.dart';
@@ -16,6 +18,17 @@ class AgendaItemVideoPresenter {
   final AgendaItemVideoHelper _helper;
   final MediaHelperService _mediaHelperService;
   final CommunityProvider _communityProvider;
+
+  /// Debounce timer for Vimeo duration fetches triggered while the user types.
+  Timer? _vimeoDebouncTimer;
+
+  /// The Vimeo ID whose duration has already been successfully fetched, so we
+  /// don't re-fetch the same ID on every keystroke.
+  String? _fetchedVimeoId;
+
+  /// Incremented each time a new fetch is kicked off; used to discard responses
+  /// that arrive after a newer fetch has been started.
+  int _vimeoFetchGeneration = 0;
 
   AgendaItemVideoPresenter(
     BuildContext context,
@@ -73,7 +86,7 @@ class AgendaItemVideoPresenter {
       final vimeoId = _mediaHelperService.getVimeoVideoId(trimmedUrl);
       if (vimeoId != null) {
         _model.agendaItemVideoData.type = AgendaItemVideoType.vimeo;
-        _fetchAndNotifyVimeoDuration(vimeoId);
+        _scheduleFetchVimeoDuration(vimeoId);
       }
     }
 
@@ -81,11 +94,30 @@ class AgendaItemVideoPresenter {
     _helper.updateParent(_model);
   }
 
+  void _scheduleFetchVimeoDuration(String vimeoId) {
+    // Skip if we already successfully fetched duration for this ID.
+    if (vimeoId == _fetchedVimeoId) return;
+
+    // Cancel any pending debounce so rapid edits collapse into one request.
+    _vimeoDebouncTimer?.cancel();
+    _vimeoDebouncTimer = Timer(const Duration(milliseconds: 600), () {
+      _fetchAndNotifyVimeoDuration(vimeoId);
+    });
+  }
+
   void _fetchAndNotifyVimeoDuration(String vimeoId) async {
+    final generation = ++_vimeoFetchGeneration;
     final duration = await _mediaHelperService.fetchVimeoDuration(vimeoId);
+    // Discard if a newer fetch has since been started.
+    if (generation != _vimeoFetchGeneration) return;
     if (duration != null) {
+      _fetchedVimeoId = vimeoId;
       _view.notifyVideoDurationDetected(duration);
     }
+  }
+
+  void dispose() {
+    _vimeoDebouncTimer?.cancel();
   }
 
   String getVideoUrl() {

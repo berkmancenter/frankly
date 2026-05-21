@@ -36,6 +36,13 @@ class _TimeInputFormState extends State<TimeInputForm> {
   }
 
   @override
+  void dispose() {
+    _minutesTextEditingController.dispose();
+    _secondsTextEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(TimeInputForm oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration) {
@@ -62,6 +69,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
         _buildNumberInput(
           _secondsTextEditingController,
           (value) => _getDurationFromSeconds(value),
+          numberThreshold: 59,
         ),
         if (widget.isClockShowing) ...[
           SizedBox(width: 8),
@@ -73,8 +81,9 @@ class _TimeInputFormState extends State<TimeInputForm> {
 
   Widget _buildNumberInput(
     TextEditingController textEditingController,
-    Duration Function(String) getDurationFromString,
-  ) {
+    Duration Function(String) getDurationFromString, {
+    int? numberThreshold,
+  }) {
     return SizedBox(
       width: 50,
       child: CustomTextField(
@@ -85,7 +94,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
           widget.onUpdate(duration);
         },
         isOnlyDigits: true,
-        numberThreshold: 59,
+        numberThreshold: numberThreshold,
       ),
     );
   }

@@ -70,14 +70,19 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   late AgendaItemVideoModel _model;
   late AgendaItemVideoPresenter _presenter;
+  bool _presenterInitialized = false;
 
   void _init() {
+    if (_presenterInitialized) {
+      _presenter.dispose();
+    }
     _model = AgendaItemVideoModel(
       widget.isEditMode,
       widget.agendaItemVideoData,
       widget.onChanged,
     );
     _presenter = AgendaItemVideoPresenter(context, this, _model);
+    _presenterInitialized = true;
     _presenter.init();
 
     // Only temporarily made solution. Once we get rid of the flag, we should only read from
@@ -126,6 +131,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   @override
   void dispose() {
+    _presenter.dispose();
     _youtubeStreamSubscription?.cancel();
     _videoController.dispose();
     _youtubePlayerController?.close();
@@ -227,6 +233,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
 
   @override
   void notifyVideoDurationDetected(int seconds) {
+    if (!mounted) return;
     widget.onVideoDurationDetected?.call(seconds);
   }
 

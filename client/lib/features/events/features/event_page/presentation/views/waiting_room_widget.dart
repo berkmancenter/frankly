@@ -99,6 +99,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
             onDelete: () => _presenter.deleteWaitingMedia(),
             onUpdate: (mediaItem) => _presenter.updateWaitingMedia(mediaItem),
             onVideoDurationDetected: (durationInSeconds) {
+              if (!mounted) return;
               _presenter.updateWaitingBufferDuration(
                 Duration(seconds: durationInSeconds),
               );
@@ -163,6 +164,7 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
               onDelete: () => _presenter.deleteIntroMedia(),
               onUpdate: (mediaItem) => _presenter.updateIntroMedia(mediaItem),
               onVideoDurationDetected: (durationInSeconds) {
+                if (!mounted) return;
                 _presenter.updateDuration(Duration(seconds: durationInSeconds));
                 showRegularToast(
                   context,

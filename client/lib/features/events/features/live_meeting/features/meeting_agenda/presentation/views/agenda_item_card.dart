@@ -306,6 +306,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           agendaItemVideoData: _model.agendaItemVideoData,
           onChanged: (data) => _presenter.updateAgendaItemVideoData(data),
           onVideoDurationDetected: (durationInSeconds) {
+            if (!mounted) return;
             final duration = Duration(seconds: durationInSeconds);
             _presenter.updateTime(duration);
             showRegularToast(
