@@ -74,6 +74,8 @@ class AgendaItemVideoPresenter {
       if (vimeoId != null) {
         _model.agendaItemVideoData.type = AgendaItemVideoType.vimeo;
         _fetchAndNotifyVimeoDuration(vimeoId);
+      } else {
+        _model.agendaItemVideoData.type = AgendaItemVideoType.url;
       }
     }
 
