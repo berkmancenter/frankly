@@ -206,14 +206,29 @@ class MediaHelperService {
   /// oEmbed API. Returns null if the video is private, not found, or on network error.
   Future<int?> fetchVimeoDuration(String vimeoId) async {
     try {
-      final response = await http.get(
-        Uri.parse('https://vimeo.com/api/oembed.json?url=https://vimeo.com/$vimeoId'),
-      );
+      final response = await http
+          .get(
+            Uri.parse(
+              'https://vimeo.com/api/oembed.json?url=https://vimeo.com/$vimeoId',
+            ),
+          )
+          .timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         return (data['duration'] as num?)?.round();
       }
-    } catch (_) {}
+      html.window.console.warn(
+        'fetchVimeoDuration: Vimeo oEmbed returned status ${response.statusCode} for video $vimeoId',
+      );
+    } on TimeoutException catch (error) {
+      html.window.console.error(
+        'fetchVimeoDuration: Timed out fetching Vimeo duration for video $vimeoId: $error',
+      );
+    } catch (error) {
+      html.window.console.error(
+        'fetchVimeoDuration: Failed to fetch Vimeo duration for video $vimeoId: $error',
+      );
+    }
     return null;
   }
 }
