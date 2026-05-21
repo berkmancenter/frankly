@@ -110,8 +110,9 @@ class MediaHelperService {
       croppingAspectRatio: croppingAspectRatio,
     );
     if (info == null) return null;
+    final url = tryTransformVideoUrlToMp4(info.url) ?? info.url;
     return PickedVideoResult(
-      url: info.url,
+      url: url,
       durationInSeconds: info.duration?.round(),
     );
   }

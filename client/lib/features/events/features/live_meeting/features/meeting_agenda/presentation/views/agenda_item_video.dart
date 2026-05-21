@@ -71,6 +71,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
   late AgendaItemVideoModel _model;
   late AgendaItemVideoPresenter _presenter;
   bool _presenterInitialized = false;
+  bool _isVideoDurationAvailable = false;
 
   void _init() {
     if (_presenterInitialized) {
@@ -234,7 +235,24 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
   @override
   void notifyVideoDurationDetected(int seconds) {
     if (!mounted) return;
+    if (!_isVideoDurationAvailable) {
+      setState(() {
+        _isVideoDurationAvailable = true;
+      });
+    }
     widget.onVideoDurationDetected?.call(seconds);
+  }
+
+  void _markVideoDurationUnavailable() {
+    if (_isVideoDurationAvailable) {
+      setState(() {
+        _isVideoDurationAvailable = false;
+      });
+    }
+  }
+
+  bool _shouldShowVideoDurationReminder(String videoUrl) {
+    return videoUrl.trim().isNotEmpty && !_isVideoDurationAvailable;
   }
 
   /// Subscribes to a YouTube controller's stream to fire [onVideoDurationDetected]
@@ -267,7 +285,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
       _youtubeStreamSubscription?.cancel();
       _youtubeStreamSubscription = null;
       _reportedDurationForVideoId = videoId;
-      widget.onVideoDurationDetected?.call(seconds);
+      notifyVideoDurationDetected(seconds);
     }
 
     _youtubeStreamSubscription = controller.stream.listen((value) async {
@@ -290,9 +308,10 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
             await GetIt.instance<MediaHelperService>().pickVideoViaCloudinary();
         if (result != null) {
           _updateTextInController(result.url);
+          _markVideoDurationUnavailable();
           _presenter.updateVideoUrl(result.url);
           if (result.durationInSeconds != null) {
-            widget.onVideoDurationDetected?.call(result.durationInSeconds!);
+            notifyVideoDurationDetected(result.durationInSeconds!);
           }
         }
       },
@@ -396,12 +415,16 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
                 labelText: 'YouTube URL',
-                onChanged: (value) => _presenter.updateVideoUrl(value),
+                onChanged: (value) {
+                  _markVideoDurationUnavailable();
+                  _presenter.updateVideoUrl(value);
+                },
               ),
             ),
           ],
         ),
-        _buildVideoDurationReminder(),
+        if (_shouldShowVideoDurationReminder(videoUrl))
+          _buildVideoDurationReminder(),
         SizedBox(height: 8),
         if (youtubeVideoId != null)
           Builder(
@@ -450,12 +473,16 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
                 labelText: 'Vimeo URL',
-                onChanged: (value) => _presenter.updateVideoUrl(value),
+                onChanged: (value) {
+                  _markVideoDurationUnavailable();
+                  _presenter.updateVideoUrl(value);
+                },
               ),
             ),
           ],
         ),
-        _buildVideoDurationReminder(),
+        if (_shouldShowVideoDurationReminder(videoUrl))
+          _buildVideoDurationReminder(),
         SizedBox(height: 8),
         if (vimeoVideoId != null)
           AspectRatio(
@@ -494,12 +521,15 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
                 labelText: 'Link must be MP4',
-                onChanged: (value) => _presenter.updateVideoUrl(value),
+                onChanged: (value) {
+                  _markVideoDurationUnavailable();
+                  _presenter.updateVideoUrl(value);
+                },
               ),
             ),
           ],
         ),
-        _buildVideoDurationReminder(),
+        if (_shouldShowVideoDurationReminder(url)) _buildVideoDurationReminder(),
         SizedBox(height: 8),
         if (url.isEmpty)
           Expanded(

@@ -9,12 +9,16 @@ class TimeInputForm extends StatefulWidget {
   final Duration duration;
   final void Function(Duration) onUpdate;
   final bool isClockShowing;
+  final int? minutesNumberThreshold;
+  final int? secondsNumberThreshold;
 
   const TimeInputForm({
     Key? key,
     required this.duration,
     required this.onUpdate,
     this.isClockShowing = false,
+    this.minutesNumberThreshold,
+    this.secondsNumberThreshold = 59,
   }) : super(key: key);
 
   @override
@@ -59,6 +63,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
         _buildNumberInput(
           _minutesTextEditingController,
           (value) => _getDurationFromMinutes(value),
+          numberThreshold: widget.minutesNumberThreshold,
         ),
         SizedBox(width: 4),
         HeightConstrainedText(
@@ -69,7 +74,7 @@ class _TimeInputFormState extends State<TimeInputForm> {
         _buildNumberInput(
           _secondsTextEditingController,
           (value) => _getDurationFromSeconds(value),
-          numberThreshold: 59,
+          numberThreshold: widget.secondsNumberThreshold,
         ),
         if (widget.isClockShowing) ...[
           SizedBox(width: 8),

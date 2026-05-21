@@ -1,12 +1,16 @@
 import 'dart:math';
 
+import 'package:client/core/data/services/media_helper_service.dart';
 import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/live_stream/presentation/widgets/url_video_widget.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/vimeo_video_widget.dart';
 import 'package:client/features/events/features/event_page/presentation/waiting_room_presenter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/user/presentation/widgets/user_profile_chip.dart';
@@ -59,8 +63,8 @@ class _WaitingRoom extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 )
-              : UrlVideoWidget(
-                  playbackUrl: presenter.media.url,
+              : _WaitingRoomVideoPlayer(
+                  url: presenter.media.url,
                   loop: presenter.loopVideo,
                   videoStartOffset: presenter.introVideoStartTime,
                   onEnded: presenter.isWaitingRoomMediaIntro
@@ -303,5 +307,90 @@ class RowParticipants extends StatelessWidget {
   double _getWidth(double size, double offset, int count) {
     final double offsetRemainder = size - offset;
     return (count * size + offsetRemainder) - count * offsetRemainder;
+  }
+}
+
+/// Routes waiting-room video playback to the correct player based on URL type.
+/// Manages the [YoutubePlayerController] lifecycle so it isn't recreated on
+/// every parent rebuild.
+class _WaitingRoomVideoPlayer extends StatefulWidget {
+  final String url;
+  final bool loop;
+  final Duration? videoStartOffset;
+  final VoidCallback? onEnded;
+
+  const _WaitingRoomVideoPlayer({
+    required this.url,
+    this.loop = false,
+    this.videoStartOffset,
+    this.onEnded,
+  });
+
+  @override
+  State<_WaitingRoomVideoPlayer> createState() =>
+      _WaitingRoomVideoPlayerState();
+}
+
+class _WaitingRoomVideoPlayerState extends State<_WaitingRoomVideoPlayer> {
+  YoutubePlayerController? _youtubeController;
+  late final MediaHelperService _mediaHelperService;
+
+  @override
+  void initState() {
+    super.initState();
+    _mediaHelperService = GetIt.instance<MediaHelperService>();
+    _setupYoutubeController(widget.url);
+  }
+
+  @override
+  void didUpdateWidget(_WaitingRoomVideoPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.url != widget.url) {
+      _youtubeController?.close();
+      _youtubeController = null;
+      _setupYoutubeController(widget.url);
+    }
+  }
+
+  @override
+  void dispose() {
+    _youtubeController?.close();
+    super.dispose();
+  }
+
+  void _setupYoutubeController(String url) {
+    final youtubeId = _mediaHelperService.getYoutubeVideoId(url);
+    if (youtubeId != null) {
+      _youtubeController = YoutubePlayerController.fromVideoId(
+        videoId: youtubeId,
+        autoPlay: true,
+        params: YoutubePlayerParams(showControls: true),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_youtubeController != null) {
+      return YoutubePlayer(
+        controller: _youtubeController!,
+        aspectRatio: 16 / 9,
+      );
+    }
+
+    final vimeoId = _mediaHelperService.getVimeoVideoId(widget.url);
+    if (vimeoId != null) {
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: VimeoVideoWidget(vimeoId: vimeoId),
+      );
+    }
+
+    return UrlVideoWidget(
+      playbackUrl: widget.url,
+      loop: widget.loop,
+      videoStartOffset: widget.videoStartOffset,
+      onEnded: widget.onEnded,
+    );
   }
 }
