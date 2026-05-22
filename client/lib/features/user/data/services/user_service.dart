@@ -76,7 +76,14 @@ class UserService with ChangeNotifier {
 
   Future<void> _handleEmailSignInLink(String emailLink) async {
     final email = sharedPreferencesService.getPendingEmailVerification();
-    if (email == null) return;
+    if (email == null) {
+      _emailVerificationError =
+          'We could not complete verification because the pending email address '
+          'was not found on this device or browser. Please request a new '
+          'verification link and open it from the same browser.';
+      notifyListeners();
+      return;
+    }
 
     final sentAt = sharedPreferencesService.getEmailVerificationSentAt();
     if (sentAt != null &&
