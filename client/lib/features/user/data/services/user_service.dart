@@ -54,7 +54,7 @@ class UserService with ChangeNotifier {
 
   Future<void> sendMagicVerificationLink(String email) async {
     _emailVerificationError = null;
-    await sharedPreferencesService.setPendingEmailVerification(email);
+    notifyListeners();
     await _firebaseAuth.sendSignInLinkToEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
@@ -62,10 +62,15 @@ class UserService with ChangeNotifier {
         handleCodeInApp: true,
       ),
     );
+    await sharedPreferencesService.setPendingEmailVerification(email);
   }
 
   Future<void> updateEmailAndResendVerification(String newEmail) async {
-    await _currentUser?.verifyBeforeUpdateEmail(
+    final currentUser = _currentUser;
+    if (currentUser == null) {
+      throw VisibleException('You must be signed in to update your email.');
+    }
+    await currentUser.verifyBeforeUpdateEmail(
       newEmail,
       ActionCodeSettings(
         url: html.window.location.origin,
@@ -88,8 +93,16 @@ class UserService with ChangeNotifier {
       return;
     }
 
-    await sharedPreferencesService.clearPendingEmailVerification();
-    await _firebaseAuth.signInWithEmailLink(email: email, emailLink: emailLink);
+    try {
+      await _firebaseAuth.signInWithEmailLink(
+          email: email, emailLink: emailLink);
+      await sharedPreferencesService.clearPendingEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      _emailVerificationError =
+          e.message ?? 'Unable to verify your email. Please try again.';
+      notifyListeners();
+      rethrow;
+    }
   }
 
   /// If there was an error signing in during redirect this flag indicates that.
@@ -192,7 +205,22 @@ class UserService with ChangeNotifier {
             oobCode != null) {
           _verifyAndChangeEmailHandled = true;
           await _firebaseAuth.applyActionCode(oobCode);
-          // authStateChanges fires again with the updated verified user — return early here.
+          await _firebaseAuth.currentUser?.reload();
+          if (uri != null) {
+             final sanitizedQueryParameters =
+                 Map<String, String>.from(uri.queryParameters)
+                   ..remove('mode')
+                   ..remove('oobCode')
+                   ..remove('apiKey')
+                   ..remove('continueUrl')
+                   ..remove('lang')
+                   ..remove('tenantId');
+             final sanitizedUrl = uri
+                 .replace(queryParameters: sanitizedQueryParameters)
+                 .toString();
+             html.window.history.replaceState(null, '', sanitizedUrl);
+          }
+           // Prevent refreshes from reusing the same action code; auth state will continue updating.
           return;
         } else if (_firebaseAuth.isSignInWithEmailLink(currentUrl)) {
           await _handleEmailSignInLink(currentUrl);
@@ -203,7 +231,9 @@ class UserService with ChangeNotifier {
           user == null &&
           !_signingInAnonymously) {
         await signInAnonymously();
-      } else if (user == null && _signInState == SignInState.signedIn) {
+      } else if (user == null &&
+          (_signInState == SignInState.signedIn ||
+              _signInState == SignInState.awaitingEmailVerification)) {
         _signInState = SignInState.signedOut;
         notifyListeners();
       } else if (user != null) {
@@ -220,7 +250,7 @@ class UserService with ChangeNotifier {
     if (!user.isAnonymous && user.emailVerified) {
       await createCurrentUserInfoIfNotExists(
         displayName: _emailRegistrationDisplayName,
-        );
+      );
     }
 
     if (!user.isAnonymous && !user.emailVerified) {

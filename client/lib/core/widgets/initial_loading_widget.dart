@@ -151,6 +151,9 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
     text: userService.firebaseAuth.currentUser?.email ?? '',
   );
 
+  late String _sentToEmail =
+      userService.firebaseAuth.currentUser?.email ?? '';
+
   bool _editingEmail = false;
   bool _saving = false;
   bool _resent = false;
@@ -176,6 +179,7 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
         _saving = false;
       }),
       callback: () => setState(() {
+        _sentToEmail = newEmail;
         _editingEmail = false;
         _resent = true;
         _saving = false;
@@ -184,15 +188,14 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
   }
 
   Future<void> _resend() async {
-    final email = userService.firebaseAuth.currentUser?.email;
-    if (email == null) return;
+    if (_sentToEmail.isEmpty) return;
     setState(() {
       _saving = true;
       _error = null;
       _resent = false;
     });
     await authMessageOnError(
-      () => userService.sendMagicVerificationLink(email),
+      () => userService.sendMagicVerificationLink(_sentToEmail),
       errorCallback: (msg, _) => setState(() {
         _error = msg;
         _saving = false;
@@ -206,9 +209,7 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final svc = context.watch<UserService>();
-    final email = svc.firebaseAuth.currentUser?.email ?? '';
-    final linkError = svc.emailVerificationError;
+    final linkError = context.watch<UserService>().emailVerificationError;
     return Scaffold(
       body: Center(
         child: ConstrainedBox(
@@ -235,7 +236,7 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
                 ],
                 if (!_editingEmail) ...[
                   HeightConstrainedText(
-                    'Check your inbox for the verification link sent to $email.',
+                    'Check your inbox for the verification link sent to $_sentToEmail.',
                     style: AppTextStyle.body,
                   ),
                   const SizedBox(height: 8),
