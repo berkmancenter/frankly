@@ -108,7 +108,6 @@ class UserService with ChangeNotifier {
       _emailVerificationError =
           e.message ?? 'Unable to verify your email. Please try again.';
       notifyListeners();
-      rethrow;
     }
   }
 
