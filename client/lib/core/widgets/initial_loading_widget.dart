@@ -206,7 +206,9 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final email = userService.firebaseAuth.currentUser?.email ?? '';
+    final svc = context.watch<UserService>();
+    final email = svc.firebaseAuth.currentUser?.email ?? '';
+    final linkError = svc.emailVerificationError;
     return Scaffold(
       body: Center(
         child: ConstrainedBox(
@@ -222,6 +224,15 @@ class _VerifyEmailScreenState extends State<_VerifyEmailScreen> {
                   style: AppTextStyle.subhead,
                 ),
                 const SizedBox(height: 12),
+                if (linkError != null) ...[
+                  HeightConstrainedText(
+                    linkError,
+                    style: AppTextStyle.body.copyWith(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 if (!_editingEmail) ...[
                   HeightConstrainedText(
                     'Check your inbox for the verification link sent to $email.',

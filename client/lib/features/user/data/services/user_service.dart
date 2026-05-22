@@ -36,6 +36,7 @@ class UserService with ChangeNotifier {
   bool _signingInAnonymously = false;
   bool _redirectResultHandled = false;
   bool _verifyAndChangeEmailHandled = false;
+  String? _emailVerificationError;
 
   String? _redirectErrorMessage;
 
@@ -47,7 +48,12 @@ class UserService with ChangeNotifier {
 
   SignInState _signInState = SignInState.loading;
 
+  static const _linkExpirationMs = 30 * 60 * 1000;
+
+  String? get emailVerificationError => _emailVerificationError;
+
   Future<void> sendMagicVerificationLink(String email) async {
+    _emailVerificationError = null;
     await sharedPreferencesService.setPendingEmailVerification(email);
     await _firebaseAuth.sendSignInLinkToEmail(
       email: email,
@@ -71,6 +77,17 @@ class UserService with ChangeNotifier {
   Future<void> _handleEmailSignInLink(String emailLink) async {
     final email = sharedPreferencesService.getPendingEmailVerification();
     if (email == null) return;
+
+    final sentAt = sharedPreferencesService.getEmailVerificationSentAt();
+    if (sentAt != null &&
+        DateTime.now().millisecondsSinceEpoch - sentAt > _linkExpirationMs) {
+      await sharedPreferencesService.clearPendingEmailVerification();
+      _emailVerificationError =
+          'Your verification link has expired. Please request a new one.';
+      notifyListeners();
+      return;
+    }
+
     await sharedPreferencesService.clearPendingEmailVerification();
     await _firebaseAuth.signInWithEmailLink(email: email, emailLink: emailLink);
   }
