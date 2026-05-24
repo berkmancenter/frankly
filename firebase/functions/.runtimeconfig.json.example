@@ -1,5 +1,7 @@
 {
   "functions": {
+    "region": "us-central1",
+    "cloud_tasks_region": "us-east4",
     "on_firestore": {
       "min_instances": "0"
     },

@@ -1,5 +1,6 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
+const { regionalFunctions } = require('./function-region')
 
 const firestore = admin.firestore()
 const storage = admin.storage()
@@ -8,7 +9,7 @@ const bucketName = functions.config().agora.storage_bucket_name
 // Triggered when a recording session transitions to 'stopped'.
 // Locates the MP4 Agora deposited under gcsPrefix and registers its path on
 // the session document.
-const produceSessions = functions.firestore
+const produceSessions = regionalFunctions().firestore
     .document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
         const before = change.before.data()

@@ -48,6 +48,7 @@ jobs:
           envkey_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
           envkey_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           envkey_FUNCTIONS_URL_PREFIX: ${{ secrets.FUNCTIONS_URL_PREFIX }}
+          envkey_FUNCTIONS_REGION: ${{ secrets.FUNCTIONS_REGION || 'us-central1' }}
           envkey_SHARE_LINK_URL: ${{ secrets.APP_FULL_URL }}/share
           envkey_SENTRY_RELEASE: ${{ github.ref_name }}
           envkey_SENTRY_ENVIRONMENT: production
@@ -76,6 +77,10 @@ jobs:
 
       - name: Build the Flutter App
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
+
+      - name: Render Firebase hosting config
+        working-directory: ${{ github.workspace }}
+        run: node scripts/render-firebase-config.mjs --region "${{ secrets.FUNCTIONS_REGION || 'us-central1' }}" --in-place
 
       - name: Upload sourcemaps to Sentry
         env:

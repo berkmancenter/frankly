@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:firebase_functions_interop/firebase_functions_interop.dart'
+    as functions_interop
+    show functions;
+import 'package:firebase_functions_interop/firebase_functions_interop.dart'
     hide CloudFunction;
 import '../../cloud_function.dart';
 import '../../utils/infra/firestore_utils.dart';
@@ -131,14 +134,14 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
   }
 
   @override
-  void register(FirebaseFunctions functions) {
-    functions[functionName] = functions
+  void register(FirebaseFunctions targetFunctions) {
+    targetFunctions[functionName] = targetFunctions
         .runWith(
           RuntimeOptions(
             timeoutSeconds: 60,
             memory: '256MB',
             minInstances: int.parse(
-              functions.config.get(
+              functions_interop.functions.config.get(
                 'functions.update_live_stream_participant_count.min_instances',
               ),
             ),
