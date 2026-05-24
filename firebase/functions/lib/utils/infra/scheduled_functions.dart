@@ -27,9 +27,30 @@ class ScheduledFunctions {
     return projectId;
   }
 
+  String _configValueOrEmpty(String key) {
+    try {
+      final value = functions.config.get(key);
+      if (value == null) return '';
+      return value.toString().trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String get queueRegion {
+    final configuredRegion =
+        _configValueOrEmpty('functions.cloud_tasks_region');
+    if (configuredRegion.isNotEmpty) return configuredRegion;
+
+    final functionsRegion = _configValueOrEmpty('functions.region');
+    if (functionsRegion.isNotEmpty) return functionsRegion;
+
+    return 'us-east4';
+  }
+
   String get parentPath => client.queuePath(
         _projectId,
-        'us-east4',
+        queueRegion,
         'scheduled-functions',
       );
 

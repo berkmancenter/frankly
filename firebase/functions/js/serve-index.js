@@ -16,6 +16,7 @@ const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
 const functions = require('firebase-functions')
+const { regionalFunctions } = require('./function-region')
 
 // Read the template once at module load. If the file is missing the function
 // will fail to start, which surfaces the error at deploy time rather than
@@ -68,21 +69,23 @@ function buildCsp(nonce) {
     return directives.join('; ')
 }
 
-const ServeIndex = functions.runWith({ minInstances: 1 }).https.onRequest((req, res) => {
-    if (req.method !== 'GET' && req.method !== 'HEAD') {
-        res.status(405).send('Method Not Allowed')
-        return
-    }
+const ServeIndex = regionalFunctions()
+    .runWith({ minInstances: 1 })
+    .https.onRequest((req, res) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') {
+            res.status(405).send('Method Not Allowed')
+            return
+        }
 
-    const nonce = crypto.randomBytes(16).toString('base64')
-    const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
-    const csp = buildCsp(nonce)
+        const nonce = crypto.randomBytes(16).toString('base64')
+        const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
+        const csp = buildCsp(nonce)
 
-    // no-store: the nonce is unique per response and must never be served from cache.
-    res.set('Cache-Control', 'no-store')
-    res.set('Content-Security-Policy', csp)
-    res.set('Content-Type', 'text/html; charset=utf-8')
-    res.send(html)
-})
+        // no-store: the nonce is unique per response and must never be served from cache.
+        res.set('Cache-Control', 'no-store')
+        res.set('Content-Security-Policy', csp)
+        res.set('Content-Type', 'text/html; charset=utf-8')
+        res.send(html)
+    })
 
 module.exports = ServeIndex
