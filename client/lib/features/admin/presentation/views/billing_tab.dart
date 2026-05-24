@@ -256,7 +256,7 @@ class _AdminBillingContainerContentState
               _buildPlansDropdown(),
               SizedBox(width: 10),
               ActionButton(
-                text: 'Update Plan',
+                text: context.l10n.updatePlan,
                 color: context.theme.colorScheme.primary,
                 textColor: context.theme.colorScheme.onPrimary,
                 onPressed: _newPlanSelected
@@ -404,7 +404,7 @@ class _AdminBillingContainerContentState
             ),
             SizedBox(width: 10),
             ActionButton(
-              text: 'Update billing',
+              text: context.l10n.updateBilling,
               color: Colors.transparent,
               textStyle: TextStyle(
                 decoration: TextDecoration.underline,

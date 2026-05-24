@@ -20,7 +20,7 @@ Future<T?> guardCommunityMember<T>(
         title: context.l10n.joinCommunity(community.name ?? ''),
         mainText:
             'You must be a member of this space to participate. Would you like to join?',
-        confirmText: 'Yes, Join!',
+        confirmText: context.l10n.yesJoinCommunity,
         cancelText: context.l10n.cancel,
       ).show();
 
