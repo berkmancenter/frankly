@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "./run-dev.sh",
-    "build": "./build-all.sh"
+    "build": "./build-all.sh",
+    "render:firebase-config": "node scripts/render-firebase-config.mjs"
   }
 }

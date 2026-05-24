@@ -71,7 +71,7 @@ import 'package:functions/admin/payments/stripe_webhooks.dart';
 import 'package:functions/community/trigger_email_digests.dart';
 import 'package:functions/events/live_meetings/update_live_stream_participant_count.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
-import 'package:node_interop/node.dart';
+import 'package:functions/utils/infra/function_region.dart';
 import 'package:uuid/uuid.dart';
 
 final _onCallFunctions = <CloudFunction>[
@@ -160,8 +160,7 @@ final _eventFunctions = <FirestoreEventFunction>[
 
 void _registerServices() {
   setFirebaseAppFactory(() => FirebaseAdmin.instance.initializeApp()!);
-  // reference firebaseApp to call initializeApp() and set singleton prior to
-  // javascript function registration
+  // Force initialization before any exported function code reads Firestore.
   firebaseApp.firestore();
   GetIt.instance.registerSingleton(const Uuid());
 }
@@ -180,15 +179,31 @@ void _registerJsFunctions() {
   functions['ServeIndex'] = require('../js/serve-index.js');
 }
 
+String _configValueOrEmpty(String key) {
+  try {
+    final value = functions.config.get(key);
+    if (value == null) return '';
+    return value.toString().trim();
+  } catch (_) {
+    return '';
+  }
+}
+
+String _functionsRegion() {
+  final configuredRegion = _configValueOrEmpty('functions.region');
+  return functionRegionOrDefault(configuredRegion);
+}
+
 void main() {
   _registerServices();
+  final regionalFunctions = functions.region(_functionsRegion());
 
   for (var function in _cloudFunctions) {
-    function.register(functions);
+    function.register(regionalFunctions);
   }
 
   for (var function in _eventFunctions) {
-    function.register(functions);
+    function.register(regionalFunctions);
   }
 
   _registerJsFunctions();

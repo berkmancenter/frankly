@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -142,8 +143,9 @@ class CloudFunctionsLiveMeetingService {
   Future<void> toggleLikeDislikeOnMeetingUserSuggestion(
     ParticipantAgendaItemDetailsMeta request,
   ) async {
-    final HttpsCallable callable = FirebaseFunctions.instance
-        .httpsCallable('toggleLikeDislikeOnMeetingUserSuggestion');
+    final HttpsCallable callable = FirebaseFunctions.instanceFor(
+      region: Environment.functionsRegion,
+    ).httpsCallable('toggleLikeDislikeOnMeetingUserSuggestion');
 
     await callable.call(request.toJson());
   }

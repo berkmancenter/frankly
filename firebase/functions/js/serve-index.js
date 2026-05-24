@@ -16,6 +16,7 @@ const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
 const functions = require('firebase-functions')
+const { regionalFunctions } = require('./function-region')
 
 // Read the template once at module load. If the file is missing the function
 // will fail to start, which surfaces the error at deploy time rather than
@@ -66,7 +67,7 @@ function buildCsp(nonce) {
     return directives.join('; ')
 }
 
-const ServeIndex = functions.runWith({ minInstances: 1 }).https.onRequest((req, res) => {
+const ServeIndex = regionalFunctions().runWith({ minInstances: 1 }).https.onRequest((req, res) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') {
         res.status(405).send('Method Not Allowed')
         return
