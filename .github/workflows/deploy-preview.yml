@@ -28,6 +28,8 @@ jobs:
           filters: |
             client:
               - 'client/**'
+              - 'firebase.json'
+              - 'scripts/render-firebase-config.mjs'
 
   build_and_deploy_preview:
     name: Build & Deploy Preview
@@ -108,7 +110,6 @@ jobs:
         run: flutter build web --release --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
       - name: Render Firebase hosting config
-        if: steps.changes.outputs.client == 'true'
         working-directory: ${{ github.workspace }}
         run: node scripts/render-firebase-config.mjs --region "${{ secrets.FUNCTIONS_REGION || 'us-central1' }}" --in-place
 

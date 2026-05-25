@@ -24,6 +24,8 @@ jobs:
           filters: |
             client:
               - 'client/**'
+              - 'firebase.json'
+              - 'scripts/render-firebase-config.mjs'
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'

@@ -25,6 +25,8 @@ jobs:
           filters: |
             client:
               - 'client/**'
+              - 'firebase.json'
+              - 'scripts/render-firebase-config.mjs'
       - name: Set up Node.js
         if: steps.changes.outputs.client == 'true'
         uses: actions/setup-node@v4
