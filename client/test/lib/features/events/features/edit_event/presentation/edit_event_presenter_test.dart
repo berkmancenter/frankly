@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/localization/app_localization_service.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,17 @@ void main() {
   late EditEventModel model;
   late EditEventPresenter presenter;
 
+  Event getEvent() {
+    return Event(
+      id: 'id',
+      status: EventStatus.active,
+      collectionPath: 'collectionPath',
+      communityId: 'communityId',
+      templateId: 'templateId',
+      creatorId: 'creatorId',
+    );
+  }
+
   setUp(() {
     model = EditEventModel();
     presenter = EditEventPresenter(
@@ -69,17 +81,6 @@ void main() {
     reset(mockFirestoreDatabase);
     reset(mockCommunityProvider);
   });
-
-  Event getEvent() {
-    return Event(
-      id: 'id',
-      status: EventStatus.active,
-      collectionPath: 'collectionPath',
-      communityId: 'communityId',
-      templateId: 'templateId',
-      creatorId: 'creatorId',
-    );
-  }
 
   test('init', () {
     final event = getEvent();
@@ -151,6 +152,33 @@ void main() {
     verify(mockAppDrawerProvider.setUnsavedChanges(true)).called(1);
     verify(mockView.updateView()).called(1);
   });
+
+  test('updateDembraneProjectId trims project id and forces alwaysRecord', () {
+    when(mockEditEventPresenterHelper.wereChangesMade(model)).thenReturn(true);
+    final event = getEvent().copyWith(
+      eventSettings: EventSettings.defaultSettings,
+    );
+    model.event = event;
+
+    presenter.updateDembraneProjectId('  project-123  ');
+
+    expect(model.event.dembraneProjectId, 'project-123');
+    expect(model.event.eventSettings?.alwaysRecord, isTrue);
+    verify(mockAppDrawerProvider.setUnsavedChanges(true)).called(1);
+    verify(mockView.updateView()).called(1);
+  }, skip: !Environment.dembraneEnabled);
+
+  test('updateDembraneProjectId clears project id when emptied', () {
+    when(mockEditEventPresenterHelper.wereChangesMade(model)).thenReturn(true);
+    final event = getEvent().copyWith(dembraneProjectId: 'project-123');
+    model.event = event;
+
+    presenter.updateDembraneProjectId('   ');
+
+    expect(model.event.dembraneProjectId, isNull);
+    verify(mockAppDrawerProvider.setUnsavedChanges(true)).called(1);
+    verify(mockView.updateView()).called(1);
+  }, skip: !Environment.dembraneEnabled);
 
   test('updateIsPublic', () {
     when(mockEditEventPresenterHelper.wereChangesMade(model)).thenReturn(true);
@@ -249,6 +277,9 @@ void main() {
   });
 
   group('saveChanges', () {
+    setUp(() {
+      model.initialEvent = getEvent();
+    });
     test('validation error', () async {
       final community = Community(id: 'communityId');
       when(mockCommunityProvider.community).thenReturn(community);

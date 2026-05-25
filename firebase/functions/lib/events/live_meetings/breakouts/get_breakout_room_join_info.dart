@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../live_meeting_utils.dart';
+import '../../../utils/utils.dart';
 import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -89,17 +90,18 @@ class GetBreakoutRoomJoinInfo
     final joinInfo = await liveMeetingUtils.getBreakoutRoomJoinInfo(
       communityId: event.communityId,
       eventId: request.eventId,
-      breakoutSessionId: currentBreakoutSession.breakoutRoomSessionId ?? '',
+      breakoutSessionId: currentBreakoutSession.breakoutRoomSessionId,
       breakoutRoomPath: breakoutRoomPath,
       meetingId: breakoutRoom.roomId,
       userId: context.authUid!,
       record: breakoutRoom.record,
+      dembraneProjectId: dembraneEnabled ? event.dembraneProjectId : null,
       existingRecordingSessionId: breakoutRoom.recordingSessionId,
       participantIds: breakoutRoom.participantIds,
     );
 
     // Map this user's Agora numeric UID to their Firebase user ID on the
-    // recording session doc. download-transcripts uses the map to replace 
+    // recording session doc. download-transcripts uses the map to replace
     // raw Agora UIDs with display names in exported transcripts.
     //
     // We re-read the breakout room doc here because the local `breakoutRoom`

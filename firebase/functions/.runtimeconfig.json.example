@@ -43,6 +43,11 @@
     "api_url": "<value>",
     "api_key": "<value>"
   },
+  "dembrane": {
+    "enabled": "false",
+    "bridge_url": "https://frankly-dembrane-bridge.example.com",
+    "bridge_token": "<value>"
+  },
   "ics": {
     "prod_id": "Frankly"
   },

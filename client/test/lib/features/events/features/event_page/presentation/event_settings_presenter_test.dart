@@ -1,8 +1,10 @@
+import 'package:client/config/environment.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/localization/app_localization_service.dart';
+import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/features/events/features/event_page/presentation/views/event_settings_drawer.dart';
 import 'package:client/features/events/features/event_page/data/models/event_settings_model.dart';
 import 'package:client/features/events/features/event_page/presentation/event_settings_presenter.dart';
@@ -113,6 +115,31 @@ void main() {
       expect(model.eventSettings.talkingTimer, isTrue);
       verify(mockView.updateView()).called(1);
     });
+
+    test('updateSetting blocks disabling recording for Dembrane-linked events',
+        () {
+      when(mockEventProvider.event).thenReturn(Event(
+        id: 'id',
+        status: EventStatus.active,
+        collectionPath: 'events',
+        communityId: 'community',
+        templateId: 'template',
+        creatorId: 'creator',
+        dembraneProjectId: 'project-123',
+      ));
+      model.eventSettings = defaultSettings().copyWith(alwaysRecord: true);
+
+      presenter.updateSetting(EventSettings.kFieldAlwaysRecord, false);
+
+      expect(model.eventSettings.alwaysRecord, isTrue);
+      verify(
+        mockView.showMessage(
+          'Dembrane-linked events must stay recorded. Unlink the Dembrane project first if you want to turn recording off.',
+          toastType: ToastType.failed,
+        ),
+      ).called(1);
+      verifyNever(mockView.updateView());
+    }, skip: !Environment.dembraneEnabled);
 
     test('saveSettings', () {
       model.eventSettings = defaultSettings();

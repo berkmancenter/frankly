@@ -681,3 +681,47 @@ flutter build web --release --source-maps --web-renderer html -t lib/main.dart -
 # Deploy hosting
 firebase deploy --only hosting
 ```
+
+## Optional Dembrane integration
+
+Dembrane project linking is disabled by default. To opt in, build the client with
+`DEMBRANE_ENABLED=true` and configure `dembrane.enabled="true"` on the server.
+The client deployment workflows accept the `DEMBRANE_ENABLED` GitHub environment
+variable. Also configure `dembrane.bridge_url` and `dembrane.bridge_token` as
+server-only values; never include the bridge token in the client build.
+
+When enabled, hosts can link an Echo project ID to an event. Linked events require
+recording, and participants see a disclosure before entering the meeting. After a
+recording stops, the bridge receives a signed recording URL and the Echo project
+ID. This transfers the recording itself; it does not anonymize its contents.
+Successful artifact deliveries are recorded on the recording-session document to
+avoid resending them on sequential retries. Concurrent delivery attempts are not
+transactionally deduplicated; the receiver should handle duplicate submissions.
+Bridge errors are stored on the session and do not prevent transcript discovery.
+
+Turning off `dembrane.enabled` and redeploying functions stops forwarding. Build
+and deploy the client with `DEMBRANE_ENABLED=false` to hide linking and branding.
+Existing event fields remain readable and require no schema migration. Recording
+settings already saved on events remain in effect when the integration is disabled.
+
+### Production rollout and rollback
+
+Before replacing an existing deployment, record the actual live Hosting release
+and version, every deployed function's region and source archive, runtime config,
+and active rules/indexes. A Git branch alone does not prove which code is live.
+Keep this snapshot outside version control because runtime config can contain
+secrets. Preserve both the original source archives and their dependency locks.
+
+Firebase Hosting supports restoring an earlier release from its release history.
+A saved live version can also be cloned to a rollback channel before deployment,
+then cloned back to `live`. This restores Hosting content and configuration;
+backend functions must be restored separately from their saved source/config.
+See the [Firebase Hosting release documentation](https://firebase.google.com/docs/hosting/manage-hosting-resources).
+
+Deploy functions in the existing region first, then the matching client. Do not
+change database locations, remove functions, or perform destructive data changes
+as part of this rollout. Validate sign-in, event creation/editing, meeting join,
+recording, transcription, and bridge delivery. Record release identifiers and
+verification evidence with the rollback snapshot. If verification fails, restore
+the saved backend and Hosting release; do not treat disabling the integration as
+a complete rollback of an upstream upgrade.

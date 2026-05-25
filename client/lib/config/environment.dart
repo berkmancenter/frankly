@@ -1,4 +1,6 @@
 class Environment {
+  static const dembraneEnabled = bool.fromEnvironment('DEMBRANE_ENABLED');
+
   // Firebase connection properties
   static const firebaseApiKey =
       String.fromEnvironment('FIREBASE_API_KEY', defaultValue: 'any');

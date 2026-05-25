@@ -24,6 +24,11 @@
       "full_url": "http://localhost:5000",
       "copyright": "2024 President and Fellows of Harvard College"
     },
+    "dembrane": {
+      "enabled": "true",
+      "bridge_url": "https://frankly-dembrane-bridge.example.com",
+      "bridge_token": "bridge-test-token"
+    },
     "ics": {
       "prod_id": "Frankly"
     },

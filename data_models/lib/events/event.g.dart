@@ -56,6 +56,7 @@ _$_Event _$$_EventFromJson(Map<String, dynamic> json) => _$_Event(
           : EventSettings.fromJson(
               json['eventSettings'] as Map<String, dynamic>),
       durationInMinutes: json['durationInMinutes'] as int? ?? 60,
+      dembraneProjectId: json['dembraneProjectId'] as String?,
       externalCommunityId: json['externalCommunityId'] as String?,
       externalCommunityStatus: json['externalCommunityStatus'] as String?,
       participantCountEstimate: json['participantCountEstimate'] as int?,
@@ -93,6 +94,7 @@ Map<String, dynamic> _$$_EventToJson(_$_Event instance) => <String, dynamic>{
       'postEventCardData': instance.postEventCardData?.toJson(),
       'eventSettings': instance.eventSettings?.toJson(),
       'durationInMinutes': instance.durationInMinutes,
+      'dembraneProjectId': instance.dembraneProjectId,
       'externalCommunityId': instance.externalCommunityId,
       'externalCommunityStatus': instance.externalCommunityStatus,
       'participantCountEstimate': instance.participantCountEstimate,

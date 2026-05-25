@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/image_utils.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,9 @@ class CreateEventDialogModel with ChangeNotifier {
         title: eventTemplate?.title,
         description: eventTemplate?.description,
         image: eventTemplate?.image,
+        dembraneProjectId: Environment.dembraneEnabled
+            ? eventTemplate?.dembraneProjectId
+            : null,
         minParticipants: eventTemplate?.minParticipants,
         maxParticipants: eventTemplate?.maxParticipants,
         agendaItems: eventTemplate?.agendaItems ?? [],
@@ -119,6 +123,11 @@ class CreateEventDialogModel with ChangeNotifier {
         eventSettings:
             _selectedTemplate?.eventSettings ?? communityProvider.eventSettings,
       );
+      if ((Environment.dembraneEnabled && _event.hasDembraneProjectLink)) {
+        _event = _event.copyWith(
+          eventSettings: _resolvedEventSettingsForSubmission(),
+        );
+      }
     }
   }
 
@@ -144,6 +153,23 @@ class CreateEventDialogModel with ChangeNotifier {
 
   void updateVisibility({required bool isPublic}) {
     _event = _event.copyWith(isPublic: isPublic);
+    notifyListeners();
+  }
+
+  void updateDembraneProjectId(String? value) {
+    if (!Environment.dembraneEnabled) return;
+    final trimmedValue = value?.trim();
+    final dembraneProjectId =
+        trimmedValue == null || trimmedValue.isEmpty ? null : trimmedValue;
+    var updatedEvent = _event.copyWith(dembraneProjectId: dembraneProjectId);
+    if (dembraneProjectId != null) {
+      updatedEvent = updatedEvent.copyWith(
+        eventSettings: _resolvedEventSettings(updatedEvent).copyWith(
+          alwaysRecord: true,
+        ),
+      );
+    }
+    _event = updatedEvent;
     notifyListeners();
   }
 
@@ -214,8 +240,7 @@ class CreateEventDialogModel with ChangeNotifier {
           _event.postEventCardData ?? selectedTemplate?.postEventCardData,
       prerequisiteTemplateId: _event.prerequisiteTemplateId ??
           selectedTemplate?.prerequisiteTemplateId,
-      eventSettings:
-          _selectedTemplate?.eventSettings ?? communityProvider.eventSettings,
+      eventSettings: _resolvedEventSettingsForSubmission(),
     );
 
     PrivateLiveStreamInfo? privateLiveStreamInfo;
@@ -291,6 +316,15 @@ class CreateEventDialogModel with ChangeNotifier {
       }
     }
 
+    if ((Environment.dembraneEnabled && _event.hasDembraneProjectLink) &&
+        _event.eventSettings?.alwaysRecord != true) {
+      _event = _event.copyWith(
+        eventSettings: _resolvedEventSettings(_event).copyWith(
+          alwaysRecord: true,
+        ),
+      );
+    }
+
     await firestoreEventService.updateEvent(
       event: _event,
       keys: [
@@ -301,6 +335,9 @@ class CreateEventDialogModel with ChangeNotifier {
         Event.kFieldMinParticipants,
         Event.kFieldMaxParticipants,
         Event.kFieldLiveStreamInfo,
+        if (Environment.dembraneEnabled) Event.kFieldDembraneProjectId,
+        if (Environment.dembraneEnabled && _event.hasDembraneProjectLink)
+          Event.kFieldEventSettings,
       ],
     );
 
@@ -330,5 +367,20 @@ class CreateEventDialogModel with ChangeNotifier {
       streamServerUrl: liveStreamResponse.streamServerUrl,
       streamKey: liveStreamResponse.streamKey,
     );
+  }
+
+  EventSettings _resolvedEventSettingsForSubmission() {
+    final eventSettings =
+        _selectedTemplate?.eventSettings ?? communityProvider.eventSettings;
+    if (Environment.dembraneEnabled && _event.hasDembraneProjectLink) {
+      return eventSettings.copyWith(alwaysRecord: true);
+    }
+    return eventSettings;
+  }
+
+  EventSettings _resolvedEventSettings(Event event) {
+    return event.eventSettings ??
+        _selectedTemplate?.eventSettings ??
+        communityProvider.eventSettings;
   }
 }

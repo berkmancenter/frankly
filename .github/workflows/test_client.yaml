@@ -58,6 +58,14 @@ jobs:
         id: test
         run: flutter test --platform chrome
 
+      - name: Test Dembrane opt-in
+        if: steps.changes.outputs.client == 'true'
+        run: >-
+          flutter test --platform chrome --dart-define=DEMBRANE_ENABLED=true
+          test/lib/features/events/features/create_event/data/providers/create_event_dialog_model_test.dart
+          test/lib/features/events/features/edit_event/presentation/edit_event_presenter_test.dart
+          test/lib/features/events/features/event_page/presentation/event_settings_presenter_test.dart
+
       - name: Update Product Version
         if: steps.changes.outputs.client == 'true'  && steps.test.outcome == 'success'
         run: |

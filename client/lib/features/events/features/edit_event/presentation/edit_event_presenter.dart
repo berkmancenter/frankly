@@ -1,3 +1,4 @@
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,26 @@ class EditEventPresenter {
     _view.updateView();
   }
 
+  void updateDembraneProjectId(String? value) {
+    if (!Environment.dembraneEnabled) return;
+    final trimmedValue = value?.trim();
+    final dembraneProjectId =
+        trimmedValue == null || trimmedValue.isEmpty ? null : trimmedValue;
+    var updatedEvent = _model.event.copyWith(
+      dembraneProjectId: dembraneProjectId,
+    );
+    if (dembraneProjectId != null) {
+      updatedEvent = updatedEvent.copyWith(
+        eventSettings: _resolvedEventSettingsForEdit().copyWith(
+          alwaysRecord: true,
+        ),
+      );
+    }
+    _model.event = updatedEvent;
+    _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
+    _view.updateView();
+  }
+
   void updateIsPublic(bool value) {
     _model.event = _model.event.copyWith(isPublic: value);
     _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
@@ -200,6 +221,15 @@ class EditEventPresenter {
   }
 
   Future<void> _updateEvent() async {
+    if ((Environment.dembraneEnabled && _model.event.hasDembraneProjectLink) &&
+        _model.event.eventSettings?.alwaysRecord != true) {
+      _model.event = _model.event.copyWith(
+        eventSettings: _resolvedEventSettingsForEdit().copyWith(
+          alwaysRecord: true,
+        ),
+      );
+    }
+
     final addLivesStreamInfo = _model.event.eventType == EventType.livestream &&
         _model.event.liveStreamInfo == null;
 
@@ -227,19 +257,28 @@ class EditEventPresenter {
       );
     }
 
+    final keys = <String>[
+      Event.kFieldEventType,
+      Event.kFieldTitle,
+      Event.kFieldImage,
+      Event.kFieldDescription,
+      Event.kFieldIsPublic,
+      Event.kFieldScheduledTime,
+      Event.kFieldMaxParticipants,
+      Event.kDurationInMinutes,
+      if (addLivesStreamInfo) Event.kFieldLiveStreamInfo,
+      if (Environment.dembraneEnabled &&
+          _model.event.dembraneProjectId !=
+              _model.initialEvent.dembraneProjectId)
+        Event.kFieldDembraneProjectId,
+      if (Environment.dembraneEnabled &&
+          _model.event.eventSettings != _model.initialEvent.eventSettings)
+        Event.kFieldEventSettings,
+    ];
+
     await _firestoreEventService.updateEvent(
       event: _model.event,
-      keys: [
-        Event.kFieldEventType,
-        Event.kFieldTitle,
-        Event.kFieldImage,
-        Event.kFieldDescription,
-        Event.kFieldIsPublic,
-        Event.kFieldScheduledTime,
-        Event.kFieldMaxParticipants,
-        Event.kDurationInMinutes,
-        if (addLivesStreamInfo) Event.kFieldLiveStreamInfo,
-      ],
+      keys: keys,
     );
   }
 
@@ -263,6 +302,12 @@ class EditEventPresenter {
     _model.event = _model.event.copyWith(image: url);
     _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
     _view.updateView();
+  }
+
+  EventSettings _resolvedEventSettingsForEdit() {
+    return _model.event.eventSettings ??
+        _eventPageProvider.eventProvider.template?.eventSettings ??
+        _communityProvider.eventSettings;
   }
 
   Future<void> cancelEvent() async {
