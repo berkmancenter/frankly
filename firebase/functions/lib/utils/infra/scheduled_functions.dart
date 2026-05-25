@@ -27,7 +27,8 @@ class ScheduledFunctions {
   }
 
   String get queueRegion {
-    final configuredRegion = _configValueOrEmpty('functions.cloud_tasks_region');
+    final configuredRegion =
+        _configValueOrEmpty('functions.cloud_tasks_region');
     if (configuredRegion.isNotEmpty) return configuredRegion;
 
     final functionsRegion = _configValueOrEmpty('functions.region');
