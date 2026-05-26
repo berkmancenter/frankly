@@ -322,6 +322,16 @@ class FirestoreEventService {
     return convertParticipantListAsync(participantDocs);
   }
 
+  // Returns the count of active registered participants using a server-side
+  // aggregation query. Costs 1 Firestore read regardless of participant count,
+  // making it safe for large non-hosted events where streaming all documents
+  // would be prohibitively expensive.
+  Future<int> getEventRegistrationCount({required Event event}) async {
+    final snapshot =
+        await eventParticipantsQuery(event: event).count().get();
+    return snapshot.count ?? 0;
+  }
+
   Future<PrivateLiveStreamInfo?> liveStreamPrivateInfo({
     required Event event,
   }) async {
