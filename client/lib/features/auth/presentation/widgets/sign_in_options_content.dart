@@ -221,7 +221,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     decoration: TextDecoration.underline,
                   ),
                 ),
-                TextSpan(text: ' ${context.l10n.and} '),
                 TextSpan(text: '${context.l10n.tryAgainLater}.'),
               ],
             ),
