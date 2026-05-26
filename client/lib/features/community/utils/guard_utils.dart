@@ -16,6 +16,8 @@ Future<T?> guardCommunityMember<T>(
   return guardSignedIn<T?>(() async {
     await userDataService.memberships.first;
     if (!userDataService.getMembership(communityId).isMember) {
+      if (!context.mounted) return null;
+
       final joinCommunity = await ConfirmDialog(
         title: context.l10n.joinCommunity(community.name ?? ''),
         mainText:
