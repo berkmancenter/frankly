@@ -20,14 +20,11 @@ class AccountErrorMessage extends StatelessWidget {
   final Function(bool)? onSwitchView;
   final VoidCallback? onForgotPassword;
 
-  const AccountErrorMessage(
-      {required this.errorCode, this.onSwitchView, this.onForgotPassword,});
-
-  Widget buildErrorText({required String message}) {
-    return Text(
-      message,
-    );
-  }
+  const AccountErrorMessage({
+    required this.errorCode,
+    this.onSwitchView,
+    this.onForgotPassword,
+  });
 
   Widget buildForgotPasswordMessage(BuildContext context) {
     return Text.rich(
@@ -145,17 +142,16 @@ class AccountErrorMessage extends StatelessWidget {
         );
       case 'invalid-email':
         return boxedErrorText(
-          message: buildErrorText(message: context.l10n.invalidEmail),
+          message: Text(context.l10n.invalidEmail),
         );
       case 'too-many-requests':
         return boxedErrorText(
-          message: buildErrorText(message: context.l10n.tooManyRequests),
+          message: Text(context.l10n.tooManyRequests),
         );
       case 'email-missing-pw':
         return boxedErrorText(
-          message: buildErrorText(message: context.l10n.pleaseEnterValidEmail),
+          message: Text(context.l10n.pleaseEnterValidEmail),
         );
-
       default:
         return boxedErrorText(
           message: Text.rich(
@@ -371,14 +367,15 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       ),
       if (_formError.isNotEmpty)
         AccountErrorMessage(
-            errorCode: _formError,
-            onSwitchView: (bool value) {
-              setState(() {
-                _showSignup = value;
-                _formError = '';
-              });
-            },
-            onForgotPassword: _resetPassword,),
+          errorCode: _formError,
+          onSwitchView: (bool value) {
+            setState(() {
+              _showSignup = value;
+              _formError = '';
+            });
+          },
+          onForgotPassword: _resetPassword,
+        ),
       Form(
         key: _formKey,
         child: Column(
