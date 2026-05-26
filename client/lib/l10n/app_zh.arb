@@ -846,7 +846,6 @@
   "sidebarFollowCommunityButton": "侧边栏关注社区按钮",
   "sidebarUnfollowButton": "侧边栏取消关注按钮",
   "signIn": "登录",
-  "signInToApp": "登录到 {appName}",
   "signInWithEmail": "使用邮箱登录",
   "signOut": "退出登录",
   "signUp": "注册",
