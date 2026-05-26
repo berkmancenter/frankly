@@ -70,7 +70,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
   Future<void> _showDeleteThreadDialog() async {
     await ConfirmDialog(
       title: context.l10n.deletePost,
-      mainText: 'Are you sure want to delete this post?',
+      mainText: context.l10n.confirmDeletePost,
       cancelText: context.l10n.no,
       confirmText: context.l10n.yes,
       onCancel: (context) => Navigator.pop(context),
@@ -95,7 +95,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         positiveButtonText: 'Add Comment',
       );
 
-      if (comment != null) {
+      if (comment != null && mounted) {
         await alertOnError(
           context,
           () => _presenter.addNewComment(
@@ -480,7 +480,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               positiveButtonText: 'Add Comment',
             );
 
-            if (comment != null) {
+            if (comment != null && mounted) {
               await alertOnError(
                 context,
                 () => _presenter.addNewComment(

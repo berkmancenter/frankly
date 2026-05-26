@@ -188,7 +188,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           if (widget.allowEdit)
             Expanded(
               child: CustomTextField(
-                labelText: 'Name',
+                labelText: context.l10n.name,
                 initialValue: changeRecord.displayName,
                 borderType: BorderType.outline,
                 borderRadius: 5,
@@ -278,7 +278,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                     currentUserId: userService.currentUserId!,
                   ),
                 ),
-                text: 'Preview',
+                text: context.l10n.preview,
                 expand: false,
               ),
             ActionButton(
@@ -288,7 +288,7 @@ class _ProfileTabState extends State<_ProfileTab> {
                       createTagPresenter.unsavedTags.isNotEmpty
                   ? () => alertOnError(context, () => _saveChanges())
                   : null,
-              text: 'Update Profile',
+              text: context.l10n.updateProfile,
               expand: false,
             ),
           ],
@@ -303,15 +303,18 @@ class _ProfileTabState extends State<_ProfileTab> {
 
     await controller.submitPressed();
     await createTagPresenter.submit();
+
+    if (!mounted) return;
+
     showRegularToast(
       context,
-      'Profile updated',
+      context.l10n.profileUpdated,
       toastType: ToastType.success,
     );
 
     // Only close drawer if `preview` button is not visible. Preview button is only visible
     // in `Profile` tab in `Settings`.
-    if (!widget.isPreviewButtonVisible) {
+    if (!widget.isPreviewButtonVisible && mounted) {
       // Close drawer
       Navigator.pop(context);
     }
@@ -323,7 +326,7 @@ class _ProfileTabState extends State<_ProfileTab> {
     return [
       if (widget.allowEdit)
         CustomTextField(
-          labelText: 'About me',
+          labelText: context.l10n.aboutMe,
           maxLines: 6,
           minLines: 6,
           keyboardType: TextInputType.multiline,
@@ -392,6 +395,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           tags: tags,
           onAddTag: (text) async {
             await alertOnError(context, () => createTagPresenter.addTag(text));
+            if (!mounted) return;
             context.read<AppDrawerProvider>().setUnsavedChanges(true);
           },
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),

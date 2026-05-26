@@ -253,7 +253,7 @@ class _MeetingGuideCardItemUserSuggestionsState
                                 Navigator.pop(context, true),
                           ).show();
 
-                          if (isSuccess == true) {
+                          if (isSuccess == true && mounted) {
                             await alertOnError(
                               context,
                               () => _presenter.removeSuggestion(

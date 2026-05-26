@@ -607,7 +607,7 @@ class _ReadyButton extends HookWidget {
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      tooltipText: 'Click Next when you’re ready to move on.',
+      tooltipText: context.l10n.clickNextWhenReady,
       color: Colors.transparent,
       type: ActionButtonType.outline,
       textColor: context.theme.colorScheme.primary,

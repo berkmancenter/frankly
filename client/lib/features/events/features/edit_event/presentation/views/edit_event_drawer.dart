@@ -296,7 +296,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       isExpanded: true,
       isDense: true,
       hint: HeightConstrainedText(
-        'Choose duration',
+        context.l10n.chooseDuration,
         style: context.theme.textTheme.bodySmall,
       ),
       icon: Icon(
@@ -309,7 +309,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         fillColor: context.theme.colorScheme.surfaceContainerLowest,
         filled: true,
         label: HeightConstrainedText(
-          'Length',
+          context.l10n.length,
           style: context.theme.textTheme.bodySmall!.copyWith(
             color: context.theme.colorScheme.onSurfaceVariant,
           ),
@@ -367,7 +367,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
           minNumber: 2,
           maxNumber: 50,
           currentNumber: maxParticipants.toDouble(),
-          buttonText: 'Update',
+          buttonText: context.l10n.updateButton,
         );
 
         if (selectedNumber != null) {
@@ -386,7 +386,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       children: [
         ActionButton(
           expand: true,
-          text: 'Save Event',
+          text: context.l10n.saveEvent,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),
