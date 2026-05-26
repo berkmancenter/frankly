@@ -132,6 +132,13 @@
       }
     }
   },
+  "@emailAndPasswordMismatch": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "@enterCategoryNum": {
     "placeholders": {
       "number": {
@@ -511,7 +518,7 @@
   "email": "Email",
   "emailAddressAlreadyInUse": "Ya ha creado una cuenta vinculada a esta dirección de email. Utilice Iniciar sesión con email y haga clic en Olvidé mi contraseña si no la conoce. O regístrese de nuevo con un email diferente.",
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
-  "emailAndPasswordMismatch": "Su combinación de correo electrónico y contraseña no coincide con una cuenta de Frankly.\nVerifique sus datos e inténtelo de nuevo.\n\n",
+  "emailAndPasswordMismatch": "Su combinación de correo electrónico y contraseña no coincide con una cuenta de {appName}.\nVerifique sus datos e inténtelo de nuevo.\n\n",
   "endBreakoutRooms": "Finalizar salas de grupo",
   "endBreakouts": "Finalizar grupos",
   "endTime": "Hora de finalización",
