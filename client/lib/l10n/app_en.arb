@@ -445,7 +445,7 @@
   "email": "Email",
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
-  "emailAndPasswordMismatch": "Your email and password combination don’t match n {appName} account.\nCheck your entries and try again.\n\n",
+  "emailAndPasswordMismatch": "Your email and password combination don’t match a {appName} account.\nCheck your entries and try again.\n\n",
   "endBreakoutRooms": "End Breakout Rooms",
   "endBreakouts": "End Breakouts",
   "endTime": "End Time",
