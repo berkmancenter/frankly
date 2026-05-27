@@ -376,6 +376,17 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           },
           onForgotPassword: _resetPassword,
         ),
+      if (_formMessage.isNotEmpty)
+        Column(
+          children: [
+            SizedBox(height: 9),
+            Text(
+              _formMessage,
+              style: context.theme.textTheme.bodySmall,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       Form(
         key: _formKey,
         child: Column(
@@ -479,13 +490,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             if (_showSignup)
               Text(
                 context.l10n.passwordRequirements,
-              ),
-            SizedBox(height: 9),
-            if (_formMessage.isNotEmpty)
-              Text(
-                _formMessage,
-                style: context.theme.textTheme.bodySmall,
-                textAlign: TextAlign.center,
               ),
             SizedBox(height: 9),
             ActionButton(
