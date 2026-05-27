@@ -235,7 +235,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     } else {
                       negativeTimeRemaining = timeRemaining.isNegative;
                       formattedTime =
-                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours > 0);
+                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours.abs() > 0);
                     }
                     return HeightConstrainedText(
                       formattedTime,
