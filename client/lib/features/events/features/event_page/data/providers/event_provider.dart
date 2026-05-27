@@ -82,6 +82,8 @@ class EventProvider with ChangeNotifier {
 
   late Future<bool> _hasParticipantAttendedPrerequisiteFuture;
 
+  int? _registrationCount;
+
   bool _hasAttendedPrerequisite = false;
 
   BreakoutRoomDefinition get defaultBreakoutRoomDefinition =>
@@ -222,6 +224,19 @@ class EventProvider with ChangeNotifier {
       ? max(1, event.participantCountEstimate ?? 0)
       : eventParticipants.length;
 
+  // Count of signed-up (active) participants. For hosted events this is the
+  // live participant stream length; for non-hosted it is fetched once via a
+  // server-side aggregation query to avoid expensive per-viewer streams.
+  int get registrationCount => useParticipantCountEstimate
+      ? (_registrationCount ?? 0)
+      : eventParticipants.length;
+
+  Future<void> _fetchRegistrationCount() async {
+    _registrationCount = await firestoreEventService
+        .getEventRegistrationCount(event: event);
+    notifyListeners();
+  }
+
   int get presentParticipantCount => useParticipantCountEstimate
       ? max(1, event.presentParticipantCountEstimate ?? 0)
       : eventParticipants.where((p) => p.isPresent).length;
@@ -301,6 +316,9 @@ class EventProvider with ChangeNotifier {
         );
         _eventParticipantsStreamSubscription =
             _eventParticipantsStream?.stream.listen((_) => notifyListeners());
+      }
+      if (useParticipantCountEstimate && _registrationCount == null) {
+        _fetchRegistrationCount();
       }
       notifyListeners();
     });
