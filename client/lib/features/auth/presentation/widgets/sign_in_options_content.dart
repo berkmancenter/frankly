@@ -66,9 +66,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    final name = _displayNameController.text.trim();
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
+    String name = _displayNameController.text.trim();
+    String email = _emailController.text.trim();
+    String password = _passwordController.text;
     final userService = context.read<UserService>();
     final onComplete = widget.onComplete;
 
