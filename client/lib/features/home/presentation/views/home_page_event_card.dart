@@ -129,7 +129,7 @@ class _HomePageEventCardState extends State<HomePageEventCard> {
                       participantIds: widget.participants,
                       event: widget.event,
                       numberOfIconsToShow: _maxParticipantsShown,
-                      registrationCount: widget.participants.length,
+                      registrationCount: widget.event.registrationCount,
                     ),
                   ),
                   if (widget.community != null)
