@@ -9,6 +9,7 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
+import 'package:client/features/auth/presentation/views/verify_email_dialog.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -65,27 +66,43 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    String name = _displayNameController.text.trim();
-    String email = _emailController.text.trim();
-    String password = _passwordController.text;
+    final name = _displayNameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final userService = context.read<UserService>();
+    final onComplete = widget.onComplete;
 
     if (_showSignup) {
-      await context.read<UserService>().registerWithEmail(
-            displayName: name,
-            email: email,
-            password: password,
-          );
+      await userService.registerWithEmail(
+        displayName: name,
+        email: email,
+        password: password,
+      );
+      await userService.verifyEmail();
+      if (mounted) {
+        TextInput.finishAutofillContext(shouldSave: true);
+        Navigator.of(context).pop();
+      }
+      await VerifyEmailDialog.show(email: email);
+      return;
     } else {
-      await context.read<UserService>().signInWithEmail(
-            email: email,
-            password: password,
-          );
+      await userService.signInWithEmail(email: email, password: password);
+      final emailVerified =
+          userService.firebaseAuth.currentUser?.emailVerified ?? false;
+      if (!emailVerified) {
+        await userService.verifyEmail();
+        if (mounted) {
+          TextInput.finishAutofillContext(shouldSave: true);
+          Navigator.of(context).pop();
+        }
+        await VerifyEmailDialog.show(email: email);
+        return;
+      }
     }
     if (mounted) {
       TextInput.finishAutofillContext(shouldSave: true);
       Navigator.of(context).pop();
-    }
-    widget.onComplete?.call();
+    }onComplete?.call();
   }
 
 // Create a widget containing information about account error messages received from our backend
@@ -305,7 +322,8 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     labelText: context.l10n.email,
                     autofillHints: const [
                       AutofillHints.email,
-                      AutofillHints.username],
+                      AutofillHints.username,
+                    ],
                     keyboardType: TextInputType.emailAddress,
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
@@ -374,7 +392,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 alignment: Alignment.topLeft,
                 child: Text.rich(
                   TextSpan(
-                    text: 'Forgot your password?',
+                    text: context.l10n.forgotPassword,
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         // We have to disable password validation for now so the form validation can succeed without it

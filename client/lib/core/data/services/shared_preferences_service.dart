@@ -5,8 +5,6 @@ class SharedPreferencesService {
   static const _defaultMicrophoneId = 'default-microphone-id';
   static const _isReturningUser = 'is-returning-user';
   static const _lastQueryParameters = 'last-query-parameters';
-  static const _kPendingEmailVerification = 'pending-email-verification';
-  static const _kEmailVerificationSentAt = 'email-verification-sent-at';
   static const _kWasMeetingTutorialShown = 'was-meeting-tutorial-shown';
   static const _kIsOnboardingOverviewTooltipShown =
       'is-onboarding-overview-tooltip-shown';
@@ -55,22 +53,6 @@ class SharedPreferencesService {
     final result =
         await _preferences.setBool(_kIsEditTemplateTooltipShown, isShown);
     return result;
-  }
-
-  String? getPendingEmailVerification() =>
-      _preferences.getString(_kPendingEmailVerification);
-  int? getEmailVerificationSentAt() =>
-      _preferences.getInt(_kEmailVerificationSentAt);
-  Future<void> setPendingEmailVerification(String email) async {
-    await _preferences.setString(_kPendingEmailVerification, email);
-    await _preferences.setInt(
-      _kEmailVerificationSentAt,
-      DateTime.now().millisecondsSinceEpoch,
-    );
-  }
-  Future<void> clearPendingEmailVerification() async {
-    await _preferences.remove(_kPendingEmailVerification);
-    await _preferences.remove(_kEmailVerificationSentAt);
   }
 
   String? getLastQueryParams() => _preferences.getString(_lastQueryParameters);

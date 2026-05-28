@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:client/config/environment.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +20,6 @@ enum SignInState {
   loading,
   signedIn,
   signedOut,
-  awaitingEmailVerification,
 }
 
 class UserService with ChangeNotifier {
@@ -37,15 +34,9 @@ class UserService with ChangeNotifier {
 
   bool _signingInAnonymously = false;
   bool _redirectResultHandled = false;
-  bool _verifyAndChangeEmailHandled = false;
-  String? _emailVerificationError;
-
-  /// Stores the email sign-in link URL that was present in the window at
-  /// startup, cleaned from the address bar synchronously in [initialize] so
-  /// that _storeQueryParameters never sees the OOB / apiKey params.
-  String? _pendingEmailSignInLink;
 
   String? _redirectErrorMessage;
+  String? _emailActionCodeError;
 
   /// Holds the display name to use with email registration.
   ///
@@ -55,117 +46,28 @@ class UserService with ChangeNotifier {
 
   SignInState _signInState = SignInState.loading;
 
-  static const _linkExpirationMs = 30 * 60 * 1000;
-
-  static const _kAuthQueryParamsToStrip = [
-    'mode',
-    'oobCode',
-    'apiKey',
-    'continueUrl',
-    'lang',
-    'tenantId',
-  ];
-
-  String? get emailVerificationError => _emailVerificationError;
-
-  Future<void> sendMagicVerificationLink(String email) async {
-    _emailVerificationError = null;
-    notifyListeners();
+  Future<void> verifyEmail() async {
     final continueUrl =
-      usingEmulator ? html.window.location.origin : Environment.appUrl;
-    await _firebaseAuth.sendSignInLinkToEmail(
-      email: email,
-      actionCodeSettings: ActionCodeSettings(
-        url: continueUrl,
-        handleCodeInApp: true,
-      ),
+        html.window.location.origin + (html.window.location.pathname ?? '/');
+    await _currentUser?.sendEmailVerification(
+      ActionCodeSettings(url: continueUrl, handleCodeInApp: true),
     );
-    await sharedPreferencesService.setPendingEmailVerification(email);
-    if (usingEmulator) {
-      unawaited(_logEmulatorSignInLink(email));
-    }
-  }
-
-  Future<void> _logEmulatorSignInLink(String email) async {
-    try {
-      final raw = await html.HttpRequest.getString(
-        'http://localhost:9099/emulator/v1/projects/${Environment.firebaseProjectId}/oobCodes',
-      );
-      final codes = (jsonDecode(raw)['oobCodes'] as List?)?.reversed;
-      final match = codes?.firstWhere(
-        (c) => c['email'] == email && c['requestType'] == 'EMAIL_SIGNIN',
-        orElse: () => null,
-      );
-      if (match != null) {
-        loggingService.log('📧 Emulator sign-in link: ${match['oobLink']}');
-      }
-    } catch (e) {
-      loggingService.log('Could not fetch emulator sign-in link: $e');
-    }
   }
 
   Future<void> updateEmailAndResendVerification(String newEmail) async {
-    final currentUser = _currentUser;
-    if (currentUser == null) {
-      throw VisibleException('You must be signed in to update your email.');
-    }
     final continueUrl =
-      usingEmulator ? html.window.location.origin : Environment.appUrl;
-    await currentUser.verifyBeforeUpdateEmail(
-      newEmail,
-      ActionCodeSettings(
-        url: continueUrl,
-        handleCodeInApp: true,
-      ),
+        html.window.location.origin + (html.window.location.pathname ?? '/');
+    await _currentUser?.updateEmail(newEmail);
+    await _currentUser?.sendEmailVerification(
+      ActionCodeSettings(url: continueUrl, handleCodeInApp: true),
     );
-  }
-
-  Future<void> _handleEmailSignInLink(String emailLink) async {
-    final email = sharedPreferencesService.getPendingEmailVerification();
-
-    if (email == null) {
-      _emailVerificationError =
-        'We could not complete verification because the pending email address '
-        'was not found on this browser. Please request a new verification '
-        'link and open it from the same browser.';
-      notifyListeners();
-      return;
-    }
-
-    final sentAt = sharedPreferencesService.getEmailVerificationSentAt();
-    if (sentAt != null &&
-        DateTime.now().millisecondsSinceEpoch - sentAt > _linkExpirationMs) {
-      await sharedPreferencesService.clearPendingEmailVerification();
-      _emailVerificationError =
-          'Your verification link has expired. Please request a new one.';
-      notifyListeners();
-      return;
-    }
-
-    try {
-      // The URL was already cleaned in initialize(); _pendingEmailSignInLink
-      // holds the original link that we pass here.
-      final credential = await _firebaseAuth.signInWithEmailLink(
-        email: email,
-        emailLink: emailLink,
-      );
-      await sharedPreferencesService.clearPendingEmailVerification();
-      // Drive the UI update immediately.  In the same-browser flow Firebase
-      // may not re-fire authStateChanges when only emailVerified toggles, so
-      // we cannot rely solely on the listener to advance the SignInState.
-      final signedInUser = credential.user;
-      if (signedInUser != null) {
-        await _handleUserSignedIn(signedInUser);
-      }
-    } on FirebaseAuthException catch (e) {
-      _emailVerificationError =
-          e.message ?? 'Unable to verify your email. Please try again.';
-      notifyListeners();
-    }
   }
 
   /// If there was an error signing in during redirect this flag indicates that.
   String? get redirectErrorMessage => _redirectErrorMessage;
+
+  /// Non-null when an email action code (verify link) was found in the URL but failed.
+  String? get emailActionCodeError => _emailActionCodeError;
 
   String? get currentUserId => _currentUser?.uid;
 
@@ -175,9 +77,7 @@ class UserService with ChangeNotifier {
 
   bool get isSignedIn {
     final localCurrentUser = _currentUser;
-    return localCurrentUser != null &&
-        !localCurrentUser.isAnonymous &&
-        localCurrentUser.emailVerified;
+    return localCurrentUser != null && !localCurrentUser.isAnonymous;
   }
 
   SignInState get signInState => _signInState;
@@ -232,22 +132,26 @@ class UserService with ChangeNotifier {
     }
   }
 
-  void _sanitizeAuthParamsFromUrl([Uri? currentUri]) {
-    final uri = currentUri ?? Uri.tryParse(html.window.location.href);
+  Future<void> _handleEmailActionCode() async {
+    final uri = Uri.tryParse(html.window.location.href);
     if (uri == null) return;
+    final mode = uri.queryParameters['mode'];
+    final oobCode = uri.queryParameters['oobCode'];
+    if (mode != 'verifyEmail' || oobCode == null) return;
 
-    final sanitizedQueryParameters = Map<String, String>.from(uri.queryParameters);
-    for (final key in _kAuthQueryParamsToStrip) {
-      sanitizedQueryParameters.remove(key);
+    // Strip action-code params so they don't persist on refresh.
+    html.window.history.replaceState(
+      null,
+      '',
+      html.window.location.pathname ?? '/',
+    );
+
+    try {
+      await _firebaseAuth.applyActionCode(oobCode);
+      await _firebaseAuth.currentUser?.reload();
+    } on FirebaseAuthException catch (e) {
+      _emailActionCodeError = e.message;
     }
-
-    final sanitizedUrl = uri
-        .replace(
-          queryParameters:
-              sanitizedQueryParameters.isEmpty ? null : sanitizedQueryParameters,
-        )
-        .toString();
-    html.window.history.replaceState(null, '', sanitizedUrl);
   }
 
   Future<void> initialize() async {
@@ -256,21 +160,11 @@ class UserService with ChangeNotifier {
       // Set persistence to session for emulator to avoid logout across hard reloads
       await _firebaseAuth.setPersistence(Persistence.SESSION);
     }
+
+    // Must run after emulator setup so applyActionCode targets the right endpoint.
+    await _handleEmailActionCode();
+
     await sharedPreferencesService.initialize();
-
-    // Stash the email sign-in link URL and wipe the auth params from the
-    // address bar *synchronously* here, before initialize() returns.
-    // InitialLoadingWidget calls _storeQueryParameters right after
-    // initializeServices() resolves, so this ensures oobCode / apiKey never
-    // end up stored as app query parameters.
-    if (kIsWeb) {
-      final startUrl = html.window.location.href;
-      if (_firebaseAuth.isSignInWithEmailLink(startUrl)) {
-        _pendingEmailSignInLink = startUrl;
-        _sanitizeAuthParamsFromUrl(Uri.tryParse(startUrl));
-      }
-    }
-
     if (sharedPreferencesService.isReturningUser()) {
       _handleReturningUser();
     }
@@ -287,44 +181,13 @@ class UserService with ChangeNotifier {
       // On macos it throws un-implemented error, thus wrap in control flow
       if (kIsWeb) {
         unawaited(_handleRedirectResult());
-        final currentUrl = html.window.location.href;
-        final uri = Uri.tryParse(currentUrl);
-        final mode = uri?.queryParameters['mode'];
-        final oobCode = uri?.queryParameters['oobCode'];
-        if (!_verifyAndChangeEmailHandled &&
-            mode == 'verifyAndChangeEmail' &&
-            oobCode != null) {
-          _verifyAndChangeEmailHandled = true;
-          try {
-            await _firebaseAuth.applyActionCode(oobCode);
-            await _firebaseAuth.currentUser?.reload();
-          } on FirebaseAuthException catch (e) {
-            _emailVerificationError = e.message ??
-                'Unable to verify your email change. Please request a new verification link.';
-            notifyListeners();
-          } finally {
-            _sanitizeAuthParamsFromUrl(uri);
-          }
-          // Prevent refreshes from reusing the same action code; auth state will continue updating.
-          return;
-        } else if (_pendingEmailSignInLink != null) {
-          // Consume the stashed sign-in link (URL was already cleaned in
-          // initialize()).  Return so the stale pre-verification `user` from
-          // this event never reaches _handleUserSignedIn.
-          final link = _pendingEmailSignInLink!;
-          _pendingEmailSignInLink = null;
-          await _handleEmailSignInLink(link);
-          return;
-        }
       }
 
       if (!sharedPreferencesService.isReturningUser() &&
           user == null &&
           !_signingInAnonymously) {
         await signInAnonymously();
-      } else if (user == null &&
-          (_signInState == SignInState.signedIn ||
-              _signInState == SignInState.awaitingEmailVerification)) {
+      } else if (user == null && _signInState == SignInState.signedIn) {
         _signInState = SignInState.signedOut;
         notifyListeners();
       } else if (user != null) {
@@ -338,17 +201,13 @@ class UserService with ChangeNotifier {
     _returningUserTimer?.cancel();
 
     _setCurrentUser(user);
-    if (!user.isAnonymous && user.emailVerified) {
+    if (!user.isAnonymous) {
       await createCurrentUserInfoIfNotExists(
         displayName: _emailRegistrationDisplayName,
       );
     }
 
-    if (!user.isAnonymous && !user.emailVerified) {
-      _signInState = SignInState.awaitingEmailVerification;
-    } else {
-      _signInState = SignInState.signedIn;
-    }
+    _signInState = SignInState.signedIn;
 
     notifyListeners();
   }
@@ -475,7 +334,6 @@ class UserService with ChangeNotifier {
         email: email,
         password: password,
       );
-      await sendMagicVerificationLink(email);
     } catch (e) {
       _emailRegistrationDisplayName = null;
       rethrow;
