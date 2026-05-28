@@ -41,6 +41,8 @@ class AgoraRoom with ChangeNotifier {
     required this.conferenceRoom,
   });
 
+  bool _disposed = false;
+
   AgoraRoomState _state = AgoraRoomState.CONNECTING;
   AgoraRoomState get state => _state;
 
@@ -140,6 +142,7 @@ class AgoraRoom with ChangeNotifier {
         }
       },
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
+        if (_disposed) return;
         _state = AgoraRoomState.CONNECTED;
 
         unawaited(conferenceRoom.onConnected(room: this));
@@ -352,6 +355,7 @@ class AgoraRoom with ChangeNotifier {
   @override
   dispose() {
     try {
+      _disposed = true;
       engine.unregisterEventHandler(_rtcEngineEventHandler);
       // Ensure local video preview was started before disposing
       if (_localParticipant?.videoLocalPreviewStarted == true) {
@@ -363,6 +367,7 @@ class AgoraRoom with ChangeNotifier {
       engine.leaveChannel();
       engine.release();
     } catch (e, stackTrace) {
+      _disposed = false;
       print('Error disposing Agora engine: $e');
       reportError(e, stackTrace);
     }
@@ -463,6 +468,7 @@ class AgoraParticipant with ChangeNotifier {
   }
 
   Future<void> enableVideo({required bool setEnabled}) async {
+    // if (_disposed) return;
     if (setEnabled) {
       await updateAgoraVideoDevice();
       await _rtcEngine.enableLocalVideo(true);

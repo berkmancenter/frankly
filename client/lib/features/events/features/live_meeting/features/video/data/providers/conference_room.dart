@@ -267,6 +267,7 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   void _muteOthersOnOverride() {
+    if (_isDisposed) return;
     final mutedUsers = liveMeetingProvider.eventProvider.eventParticipants
         .where((p) => p.muteOverride)
         .map((p) => p.id)
@@ -379,6 +380,7 @@ class ConferenceRoom with ChangeNotifier {
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
+        if (_isDisposed) return;
         await _room!.localParticipant!.enableVideo(
           setEnabled: updatedEnabledValue,
         );
@@ -552,6 +554,7 @@ class ConferenceRoom with ChangeNotifier {
           Timer(Duration(seconds: 4), () => notifyListeners());
     }
 
+    if (_isDisposed) return;
     liveMeetingProvider.setMeetingProviderParticipants(
       participants
           .map(

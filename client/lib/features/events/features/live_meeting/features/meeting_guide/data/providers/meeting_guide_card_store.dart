@@ -21,6 +21,8 @@ class MeetingGuideCardStore with ChangeNotifier {
   final AgendaProvider agendaProvider;
   final Function(String) showToast;
 
+  final bool _isDisposed = false;
+
   MeetingGuideCardStore({
     required this.communityProvider,
     required this.liveMeetingProvider,
@@ -96,6 +98,8 @@ class MeetingGuideCardStore with ChangeNotifier {
 
   bool get isPlayingVideo =>
       meetingGuideCardAgendaItem?.type == AgendaItemType.video;
+
+  bool get isDisposed => _isDisposed;
 
   void initialize() {
     agendaProvider.addListener(_onAgendaChange);
@@ -206,6 +210,7 @@ class MeetingGuideCardStore with ChangeNotifier {
 
     _loadParticipantAgendaItemDetails();
 
+    if (_isDisposed) return;
     Future.microtask(
       () => liveMeetingProvider.updateGuideCardIsMinimized(
         isMinimized: agendaProvider.isMeetingFinished,

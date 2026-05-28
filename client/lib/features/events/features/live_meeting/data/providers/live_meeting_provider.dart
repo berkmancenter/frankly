@@ -81,6 +81,7 @@ class LiveMeetingProvider with ChangeNotifier {
   final Function()? onLeave;
   final Function(String, {bool? hideOnMobile}) showToast;
 
+  bool _disposed = false;
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
   String? _activeBreakoutRoomId;
@@ -284,6 +285,7 @@ class LiveMeetingProvider with ChangeNotifier {
     if (value != null) conferenceRoomNotifier.add(value);
     _conferenceRoom = value;
 
+    if (_disposed) return;
     Future(() => notifyListeners());
   }
 
@@ -441,6 +443,8 @@ class LiveMeetingProvider with ChangeNotifier {
 
   @override
   void dispose() {
+    _disposed = true;
+
     _liveMeetingSubscription.cancel();
     _selfParticipantSubscription?.cancel();
     _breakoutLiveMeetingSubscription?.cancel();
@@ -632,7 +636,6 @@ class LiveMeetingProvider with ChangeNotifier {
                       .currentBreakoutSession?.breakoutRoomSessionId ??
                   '',
             );
-            if (!context.mounted) return;
             Navigator.of(context).pop(true);
           }),
         ).show();
@@ -774,8 +777,8 @@ class LiveMeetingProvider with ChangeNotifier {
             communityDisplayId: communityProvider.displayId,
           ).communityHome;
 
-      // ignore: unnecessary_non_null_assertion
-      html.window.location.href = html.window.location.origin! +
+      if (_disposed) return;
+      html.window.location.href = html.window.location.origin +
           (location.state as BeamState).uri.toString();
     }
   }
@@ -862,6 +865,7 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   void _loadBreakoutLiveMeetingStream(String roomId) {
+    if (_disposed) return;
     _breakoutLiveMeetingStream?.dispose();
 
     final event = eventProvider.event;
@@ -950,6 +954,7 @@ class LiveMeetingProvider with ChangeNotifier {
       updateProvider: false,
       setEnabled: shouldStartLocalAudioOn && !disabled,
     );
+    if (_disposed) return;
     if (disabled && (conferenceRoom?.isLocalSharingScreenActive ?? false)) {
       await conferenceRoom?.toggleScreenShare(setEnabled: false);
     }
