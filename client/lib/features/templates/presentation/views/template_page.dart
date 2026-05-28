@@ -101,6 +101,7 @@ class _TemplatePageState extends State<TemplatePage>
             keys: [Template.fieldPrerequisiteTemplate],
           );
 
+          if (!mounted) return;
           showRegularToast(
             context,
             'Prerequisite saved',
@@ -754,7 +755,8 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           );
 
           // Get existing templates to check for duplicate titles
-          final templates = await context.read<TemplatePageProvider>().templatesFuture;
+          final templates =
+              await context.read<TemplatePageProvider>().templatesFuture;
           final existingTitles = templates.map((t) => t.title).toSet();
           final newTitle = generateUniqueCopyTitle(
             widget.template.title ?? '',
@@ -772,9 +774,8 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
           );
         } else if (value == 'removeTemplate') {
           await alertOnError(context, () async {
-            final newStatus = isRemoved
-                ? TemplateStatus.active
-                : TemplateStatus.removed;
+            final newStatus =
+                isRemoved ? TemplateStatus.active : TemplateStatus.removed;
             await firestoreDatabase.updateTemplate(
               communityId: communityProvider.communityId,
               template: widget.template.copyWith(status: newStatus),
@@ -816,7 +817,9 @@ class _TemplateHeaderState extends State<_TemplateHeader> {
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    isRemoved ? context.l10n.reactivate : context.l10n.removeTemplate,
+                    isRemoved
+                        ? context.l10n.reactivate
+                        : context.l10n.removeTemplate,
                     style: context.theme.textTheme.bodyLarge?.copyWith(
                       color: isRemoved ? null : context.theme.colorScheme.error,
                     ),

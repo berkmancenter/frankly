@@ -363,7 +363,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
       cancelText: context.l10n.cancel,
     ).show(context: context);
 
-    if (delete) {
+    if (delete && mounted) {
       await alertOnError(context, () => _presenter.deleteAgendaItem());
     }
   }
