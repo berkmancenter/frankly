@@ -441,6 +441,14 @@ class LiveMeetingProvider with ChangeNotifier {
     }
   }
 
+  // Override notifyListeners to prevent calling it after disposal
+  @override
+  void notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
     _disposed = true;

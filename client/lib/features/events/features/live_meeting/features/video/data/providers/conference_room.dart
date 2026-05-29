@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/app.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
@@ -365,23 +366,29 @@ class ConferenceRoom with ChangeNotifier {
     final context = navigatorState.context;
 
     if (updatedEnabledValue) {
-      final permissionStatus = await Permission.camera.request();
-      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
-        if (!context.mounted) return;
-        await showAlert(
-          context,
-          'Error enabling camera. Please ensure you have granted permission.',
-        );
-        _room?.localParticipant?.videoTrackEnabled = false;
-        return;
+      try {
+        final permissionStatus = await Permission.camera.request();
+        if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+          if (!context.mounted) return;
+          await showAlert(
+            context,
+            'Error enabling camera. Please ensure you have granted permission.',
+          );
+          _room?.localParticipant?.videoTrackEnabled = false;
+          return;
+        }
+      } catch (e, stackTrace) {
+        await reportError(e, stackTrace);
       }
     }
 
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
-        if (_isDisposed) return;
-        await _room!.localParticipant!.enableVideo(
+        if (_isDisposed || _room == null || _room!.localParticipant == null) {
+          return;
+        }
+        await _room?.localParticipant?.enableVideo(
           setEnabled: updatedEnabledValue,
         );
         if (updateProvider) {
@@ -528,7 +535,7 @@ class ConferenceRoom with ChangeNotifier {
           () => toggleAudioEnabled(setEnabled: true),
         );
       }
-    if (!context.mounted) return;
+      if (!context.mounted) return;
       if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
           context,

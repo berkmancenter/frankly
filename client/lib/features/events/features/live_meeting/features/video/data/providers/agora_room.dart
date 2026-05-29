@@ -471,12 +471,17 @@ class AgoraParticipant with ChangeNotifier {
     // if (_disposed) return;
     if (setEnabled) {
       await updateAgoraVideoDevice();
-      await _rtcEngine.enableLocalVideo(true);
-      await _rtcEngine.updateChannelMediaOptions(
-        ChannelMediaOptions(
-          publishCameraTrack: true,
-        ),
-      );
+      try {
+        await _rtcEngine.enableLocalVideo(true);
+        await _rtcEngine.updateChannelMediaOptions(
+          ChannelMediaOptions(
+            publishCameraTrack: true,
+          ),
+        );
+      } catch (e, stackTrace) {
+        print('Error enabling local video: $e');
+        await reportError(e, stackTrace);
+      }
       if (!videoLocalPreviewStarted) {
         videoLocalPreviewStarted = true;
         await _rtcEngine.startPreview();

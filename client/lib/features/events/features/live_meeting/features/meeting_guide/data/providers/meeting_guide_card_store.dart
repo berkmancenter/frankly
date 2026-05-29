@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:client/app.dart';
 import 'package:client/core/utils/provider_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class MeetingGuideCardStore with ChangeNotifier {
   final AgendaProvider agendaProvider;
   final Function(String) showToast;
 
-  final bool _isDisposed = false;
+  bool _isDisposed = false;
 
   MeetingGuideCardStore({
     required this.communityProvider,
@@ -109,6 +110,8 @@ class MeetingGuideCardStore with ChangeNotifier {
 
   @override
   void dispose() {
+    _isDisposed = true;
+
     _resetParticipantAgendaItemDetails();
     agendaProvider.removeListener(_onAgendaChange);
 
@@ -212,9 +215,15 @@ class MeetingGuideCardStore with ChangeNotifier {
 
     if (_isDisposed) return;
     Future.microtask(
-      () => liveMeetingProvider.updateGuideCardIsMinimized(
-        isMinimized: agendaProvider.isMeetingFinished,
-      ),
+      () {
+        try {
+          liveMeetingProvider.updateGuideCardIsMinimized(
+            isMinimized: agendaProvider.isMeetingFinished,
+          );
+        } catch (e, stackTrace) {
+          reportError(e, stackTrace);
+        }
+      },
     );
   }
 
