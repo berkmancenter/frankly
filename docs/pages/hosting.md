@@ -362,7 +362,7 @@ Also create products and pricing with a `plan_type` metadata field (`individual`
 
 ### SendGrid
 
-SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridemail` Firestore collection.
+SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridmail` Firestore collection.
 
 ---
 

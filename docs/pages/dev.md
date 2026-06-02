@@ -544,8 +544,8 @@ CLOUDINARY_CLOUD_NAME=<value>
 
 ### SendGrid
 
-- Uses a Firestore extension. Emails definitions are written to the firestore collection sendgridemail.
-- Configure the firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your sendgrid info
+- Uses a Firestore extension. Email definitions are written to the Firestore collection `sendgridmail`.
+- Configure the Firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your SendGrid info
 
 ### Stripe
 
