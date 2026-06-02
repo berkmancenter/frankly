@@ -364,6 +364,30 @@ Also create products and pricing with a `plan_type` metadata field (`individual`
 
 SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridmail` Firestore collection.
 
+### Email Authentication DNS Records
+
+To prevent spoofing of your sender domain, configure these DNS records:
+
+**SPF** - Add a TXT record on your apex domain:
+
+```
+v=spf1 mx ip4:<your-mail-server-ip-range> include:sendgrid.net -all
+```
+
+**DKIM** - In SendGrid, go to Settings -> Sender Authentication -> Authenticate Your Domain. SendGrid will give you CNAME records to add in your DNS provider. Verify they resolve:
+
+```bash
+dig +short CNAME <selector>._domainkey.yourdomain.com
+```
+
+**DMARC** - Add a TXT record at `_dmarc.yourdomain.com`:
+
+```
+v=DMARC1; p=quarantine; rua=mailto:<your-reporting-address>
+```
+
+Start with `p=quarantine` to catch misaligned senders before moving to `p=reject`.
+
 ---
 
 ## 11. Build and Deploy
