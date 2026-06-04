@@ -8,7 +8,7 @@ environment:
 dependencies:
   markdown_editor_plus:
     git:
-      url: https://github.com/katherineqian/markdown_editor_plus
+      url: https://github.com/berkmancenter/markdown_editor_plus
       ref: main
   json_annotation: ^4.9.0
   crypto: ^3.0.2
