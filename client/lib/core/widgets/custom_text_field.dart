@@ -397,8 +397,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     isCollapsed: true,
                   ),
                   borderColor: _getBorderColor(),
-                ),
-              if (!widget.markdownEditor)
+                )
+              else if (!widget.markdownEditor)
                 TextFormField(
                   onTap: () {
                     _unfocus();
@@ -453,8 +453,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           AppTextStyle.bodySmall,
                                     )
                                   : SizedBox.square(
-                                      dimension: widget.counterStyle?.fontSize ??
-                                          AppTextStyle.bodySmall.fontSize,
+                                      dimension:
+                                          widget.counterStyle?.fontSize ??
+                                              AppTextStyle.bodySmall.fontSize,
                                     ),
                             )
                           : null,
