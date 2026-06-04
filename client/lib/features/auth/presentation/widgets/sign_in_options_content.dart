@@ -9,7 +9,6 @@ import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
-import 'package:client/features/auth/presentation/views/verify_email_dialog.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
@@ -83,11 +82,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         TextInput.finishAutofillContext(shouldSave: true);
         Navigator.of(context).pop();
       }
-      await VerifyEmailDialog.show(email: email);
       return;
     } else {
       await userService.signInWithEmail(email: email, password: password);
-      final emailVerified =
+      bool emailVerified =
           userService.firebaseAuth.currentUser?.emailVerified ?? false;
       if (!emailVerified) {
         await userService.verifyEmail();
@@ -95,7 +93,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           TextInput.finishAutofillContext(shouldSave: true);
           Navigator.of(context).pop();
         }
-        await VerifyEmailDialog.show(email: email);
         return;
       }
     }

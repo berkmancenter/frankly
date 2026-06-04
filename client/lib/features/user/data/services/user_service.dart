@@ -54,6 +54,11 @@ class UserService with ChangeNotifier {
     );
   }
 
+  Future<void> refreshEmailVerificationStatus() async {
+    await _firebaseAuth.currentUser?.reload();
+    notifyListeners();
+  }
+
   Future<void> updateEmailAndResendVerification(String newEmail) async {
     final continueUrl =
         html.window.location.origin + (html.window.location.pathname ?? '/');
