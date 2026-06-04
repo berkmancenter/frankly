@@ -1068,8 +1068,8 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: a731bfbac809d306a0198f3bed7645e54721891d
-      url: "https://github.com/dariusk/markdown_editor_plus.git"
+      resolved-ref: "2f933712e428fb8996259e9c1490762269d0f7a1"
+      url: "https://github.com/katherineqian/markdown_editor_plus"
     source: git
     version: "0.2.15"
   matcher:
