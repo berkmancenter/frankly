@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -231,7 +232,7 @@ class _ConferenceRoomWrapper extends StatelessWidget {
                 ),
                 SizedBox(height: 24),
                 ActionButton(
-                  text: 'Reload',
+                  text: context.l10n.reload,
                   onPressed: () => liveMeetingProvider.refreshMeeting(),
                 ),
               ],

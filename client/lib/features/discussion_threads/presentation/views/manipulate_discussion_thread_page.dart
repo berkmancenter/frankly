@@ -221,7 +221,7 @@ class _ManipulateDiscussionThreadPageState
                         isSuccess = await _presenter.addNewDiscussionThread();
                       }
 
-                      if (isSuccess) {
+                      if (isSuccess && mounted) {
                         Navigator.pop(context);
                       }
                     });

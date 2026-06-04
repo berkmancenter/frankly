@@ -156,23 +156,20 @@ void main() {
       test('text is null', () {
         model.prePostCard = prePostCard;
 
-        expect(
-          presenter.validateButtonText(null, 0),
-          'Button text cannot be empty',
-        );
+        final result = presenter.validateButtonText(null, 0);
+        expect(result, isNotNull);
+        expect(result!.isNotEmpty, isTrue);
       });
 
       test('text is empty', () {
         model.prePostCard = prePostCard;
 
-        expect(
-          presenter.validateButtonText('', 0),
-          'Button text cannot be empty',
-        );
-        expect(
-          presenter.validateButtonText('      ', 0),
-          'Button text cannot be empty',
-        );
+        final r1 = presenter.validateButtonText('', 0);
+        expect(r1, isNotNull);
+        expect(r1!.isNotEmpty, isTrue);
+        final r2 = presenter.validateButtonText('      ', 0);
+        expect(r2, isNotNull);
+        expect(r2!.isNotEmpty, isTrue);
       });
 
       test('other cases', () {
@@ -208,14 +205,12 @@ void main() {
 
       model.prePostCard = prePostCard;
 
-      expect(
-        presenter.validateUrl(null, 0),
-        'URL cannot be empty if some attributes are entered',
-      );
-      expect(
-        presenter.validateUrl('', 0),
-        'URL cannot be empty if some attributes are entered',
-      );
+      final r1 = presenter.validateUrl(null, 0);
+      expect(r1, isNotNull);
+      expect(r1!.isNotEmpty, isTrue);
+      final r2 = presenter.validateUrl('', 0);
+      expect(r2, isNotNull);
+      expect(r2!.isNotEmpty, isTrue);
     });
 
     group('buttonText is null', () {

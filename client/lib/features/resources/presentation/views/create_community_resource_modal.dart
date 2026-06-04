@@ -190,6 +190,8 @@ class CreateCommunityResourceModal extends StatelessWidget {
               onPressed: createResourcePresenter.resource.url != null
                   ? () => alertOnError(context, () async {
                         await createResourcePresenter.submit();
+                        
+                        if (!context.mounted) return;
                         Navigator.pop(context);
                       })
                   : null,

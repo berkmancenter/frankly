@@ -12,12 +12,13 @@ Future<void> launch(
 }) async {
   final webUrl =
       !isWeb || url.startsWith(RegExp('https?://')) ? url : 'https://$url';
-  if (await url_launcher.canLaunch(webUrl)) {
-    await url_launcher.launch(
-      webUrl,
+  final uri = Uri.tryParse(webUrl);
+  if (uri != null && await url_launcher.canLaunchUrl(uri)) {
+    await url_launcher.launchUrl(
+      uri,
       webOnlyWindowName: targetIsSelf ? '_self' : '_blank',
     );
-  } else {
-    await showAlert(navigatorState.context, 'Failed to open link.');
+  } else if (navigatorState.mounted) {
+      await showAlert(navigatorState.context, 'Failed to open link.');
   }
 }

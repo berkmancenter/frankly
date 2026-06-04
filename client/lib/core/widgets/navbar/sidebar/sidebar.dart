@@ -8,12 +8,10 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/community/features/create_community/presentation/widgets/dialog_flow.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/proxied_image.dart';
-import 'package:client/core/widgets/custom_ink_well.dart';
 import 'package:client/core/widgets/custom_list_view.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/nav_bar_provider.dart';
 import 'package:client/core/widgets/navbar/sidebar/sidebar_navigation_list_item.dart';
-import 'package:client/features/auth/presentation/widgets/sign_in_options_content.dart';
 import 'package:client/features/user/data/providers/user_info_builder.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/core/routing/locations.dart';
@@ -34,7 +32,7 @@ class SideBar extends StatefulWidget {
   SideBar() : super(key: Key('sideBar'));
 
   @override
-  _SideBarState createState() => _SideBarState();
+  State<SideBar> createState() => _SideBarState();
 }
 
 class _SideBarState extends State<SideBar> {
@@ -52,49 +50,29 @@ class _SideBarState extends State<SideBar> {
       color: context.theme.colorScheme.surfaceContainerLowest,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          if (constraints.maxHeight < 750) {
-            return _buildMobileLayout();
-          } else {
-            return _buildDesktopLayout();
-          }
+            return _buildLayout();
+
         },
       ),
     );
   }
 
-  Widget _buildMobileLayout() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildSidebarCloseButton(),
-        Expanded(
-          child: CustomListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: _buildNavigationOrSignIn(),
-              ),
-              _buildBottomSidebarButtons(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  Widget _buildLayout() {
+    final isSignedIn = Provider.of<UserService>(context).isSignedIn;
 
-  Widget _buildDesktopLayout() {
     return Column(
       children: [
         _buildSidebarCloseButton(),
-        Expanded(
-          child: CustomListView(
-            padding: const EdgeInsets.all(20),
-            children: [
-              _buildNavigationOrSignIn(),
-            ],
+        if (isSignedIn)
+          Expanded(
+            child: CustomListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                _buildNavigation(),
+              ],
+            ),
           ),
-        ),
-        _buildBottomSidebarButtons(),
+        _buildBottomSidebarButtons(isSignedIn),
       ],
     );
   }
@@ -104,27 +82,30 @@ class _SideBarState extends State<SideBar> {
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.only(top: 26, right: 26),
-        child: Semantics(
+        child:
+           Semantics(
           button: true,
           label: context.l10n.close,
-          child: CustomInkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: Icon(Icons.close, size: 20),
+          child: IconButton(
+            onPressed: () =>  Navigator.of(context).pop(),
+            icon: Icon(
+              Icons.close,
+              size: 34,
+              color: context.theme.colorScheme.secondary,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildNavigationOrSignIn() {
+  Widget _buildNavigation() {
     final isSignedIn = Provider.of<UserService>(context).isSignedIn;
 
     if (isSignedIn) {
       return _buildSignedInSidebarContent();
     } else {
-      return SignInOptionsContent(
-        onComplete: () => Navigator.of(context).pop(),
-      );
+      return SizedBox.shrink();
     }
   }
 
@@ -159,7 +140,7 @@ class _SideBarState extends State<SideBar> {
         !isInitializedOnHome) {
       final currentCommunity = communities.firstWhere(
         (element) =>
-            context.watch<CommunityProvider>().communityId == element.id,
+            context.watch<CommunityProvider?>()?.communityId == element.id,
       );
 
       communities = [
@@ -184,11 +165,11 @@ class _SideBarState extends State<SideBar> {
         ],
       );
 
-  Widget _buildBottomSidebarButtons() {
+  Widget _buildBottomSidebarButtons(bool isSignedIn) {
     final version =
         js_util.getProperty(html.window, 'platformVersion').toString();
     return Container(
-      color: context.theme.colorScheme.surface,
+      color: isSignedIn ? context.theme.colorScheme.surface : null,
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,

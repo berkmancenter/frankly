@@ -32,7 +32,7 @@ class DiscussionThreadCommentCard extends StatelessWidget {
   ) async {
     await ConfirmDialog(
       title: appLocalizationService.getLocalization().deleteComment,
-      mainText: 'Are you sure you want to delete this comment?',
+      mainText: appLocalizationService.getLocalization().confirmDeleteComment,
       cancelText: appLocalizationService.getLocalization().cancel,
       onConfirm: (context) {
         Navigator.pop(context);

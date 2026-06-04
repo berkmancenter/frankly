@@ -57,7 +57,7 @@ class OnTemplate extends OnFirestoreFunction<Template> {
       communityId,
       documentSnapshot,
       firestoreHelper,
-      OnboardingStep.createGuide,
+      OnboardingStep.createTemplate,
     );
   }
 
