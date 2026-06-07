@@ -388,6 +388,30 @@ v=DMARC1; p=quarantine; rua=mailto:<your-reporting-address>
 
 Start with `p=quarantine` to catch misaligned senders before moving to `p=reject`.
 
+### DNSSEC
+
+DNSSEC adds cryptographic signatures to DNS responses, preventing attackers from forging or tampering with DNS answers (cache poisoning). Without it, an attacker who can poison a resolver cache could redirect your users to a different server.
+
+If your domain uses Gandi nameservers (ns-\*.gandi.net), Gandi handles key generation and DS record publication automatically:
+
+1. Log in to Gandi -> go to your domain -> DNS Records tab
+2. Click "DNSSEC" in the sidebar
+3. Enable DNSSEC - Gandi will generate the signing keys and publish the DS record to the parent zone
+
+Verify it is active after propagation:
+
+```bash
+dig +short DS yourdomain.com
+```
+
+If you see one or more DS records, DNSSEC is live. You can also check with:
+
+```bash
+dig +dnssec yourdomain.com
+```
+
+Look for the `ad` (authenticated data) flag in the response header.
+
 ---
 
 ## 11. Build and Deploy
