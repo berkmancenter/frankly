@@ -26,6 +26,28 @@ class AccountErrorMessage extends StatelessWidget {
     this.onForgotPassword,
   });
 
+  WidgetSpan buildActionText(
+    BuildContext context,
+    String text, {
+    VoidCallback? onTap,
+    TextStyle? style,
+  }) {
+    return WidgetSpan(
+      alignment: PlaceholderAlignment.baseline,
+      baseline: TextBaseline.alphabetic,
+      child: InkWell(
+        onTap: onTap,
+        child: Text(
+          text,
+          style: style ??
+              context.theme.textTheme.bodyMedium?.copyWith(
+                decoration: TextDecoration.underline,
+              ),
+        ),
+      ),
+    );
+  }
+
   Widget buildForgotPasswordMessage(BuildContext context) {
     return Text.rich(
       TextSpan(
@@ -33,13 +55,10 @@ class AccountErrorMessage extends StatelessWidget {
           TextSpan(
             text: context.l10n.forgotPasswordPrefix,
           ),
-          TextSpan(
-            text: context.l10n.forgotPasswordSuffix,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () => onForgotPassword?.call(),
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              decoration: TextDecoration.underline,
-            ),
+          buildActionText(
+            context,
+            context.l10n.forgotPasswordSuffix,
+            onTap: () => onForgotPassword?.call(),
           ),
           TextSpan(text: '.'),
         ],
@@ -65,45 +84,33 @@ class AccountErrorMessage extends StatelessWidget {
         return boxedErrorText(
           message: Text.rich(
             TextSpan(
-              style: context.theme.textTheme.bodyMedium?.copyWith(
-                color: context.theme.colorScheme.error,
-              ),
+              // style: const TextStyle(textBaseline: TextBaseline.alphabetic),
               children: [
                 TextSpan(
-                text: context.l10n.emailAddressAlreadyInUseLoginError,
-              ),
-              TextSpan(
-                text: context.l10n.loggingIn,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => onSwitchView?.call(false),
-                style: context.theme.textTheme.bodyMedium?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: context.theme.colorScheme.error,
+                  text: context.l10n.emailAddressAlreadyInUseLoginError,
                 ),
-              ),
-              TextSpan(text: context.l10n.insteadSuffix),
-            ],
+                buildActionText(
+                  context,
+                  context.l10n.loggingIn,
+                  onTap: () => onSwitchView?.call(false),
+                ),
+                TextSpan(text: context.l10n.insteadSuffix),
+              ],
+            ),
           ),
-        ),);
+        );
       case 'user-not-found':
         return boxedErrorText(
           message: Text.rich(
             TextSpan(
-              style: context.theme.textTheme.bodyMedium?.copyWith(
-                color: context.theme.colorScheme.error,
-              ),
               children: [
                 TextSpan(
                   text: context.l10n.couldntFindAccount,
                 ),
-                TextSpan(
-                  text: context.l10n.signingUp,
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () => onSwitchView?.call(true),
-                  style: context.theme.textTheme.bodyMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                    color: context.theme.colorScheme.error,
-                  ),
+                buildActionText(
+                  context,
+                  context.l10n.signingUp,
+                  onTap: () => onSwitchView?.call(true),
                 ),
                 TextSpan(text: context.l10n.insteadSuffix),
               ],
@@ -122,15 +129,12 @@ class AccountErrorMessage extends StatelessWidget {
                       text:
                           '${context.l10n.emailAndPasswordMismatch(Environment.appName)}${context.l10n.forgotEmail} ',
                     ),
-                    TextSpan(
-                      text: context.l10n.contactUs,
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          launchUrlString('mailto:${Environment.supportEmail}');
-                        },
-                      style: context.theme.textTheme.bodyMedium?.copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
+                    buildActionText(
+                      context,
+                      context.l10n.contactUs,
+                      onTap: () {
+                        launchUrlString('mailto:${Environment.supportEmail}');
+                      },
                     ),
                     TextSpan(text: '.'),
                   ],
@@ -159,15 +163,12 @@ class AccountErrorMessage extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(text: context.l10n.somethingWentWrongLongPrefix),
-                TextSpan(
-                  text: context.l10n.somethingWentWrongLongSuffix,
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      launchUrlString('mailto:${Environment.supportEmail}');
-                    },
-                  style: context.theme.textTheme.bodyMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                  ),
+                buildActionText(
+                  context,
+                  context.l10n.somethingWentWrongLongSuffix,
+                  onTap: () {
+                    launchUrlString('mailto:${Environment.supportEmail}');
+                  },
                 ),
                 TextSpan(text: '${context.l10n.tryAgainLater}.'),
               ],
