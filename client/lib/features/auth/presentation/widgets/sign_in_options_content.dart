@@ -14,6 +14,28 @@ import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+WidgetSpan buildActionText(
+  BuildContext context,
+  String text, {
+  VoidCallback? onTap,
+  TextStyle? style,
+}) {
+  return WidgetSpan(
+    alignment: PlaceholderAlignment.baseline,
+    baseline: TextBaseline.alphabetic,
+    child: InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: style ??
+            context.theme.textTheme.bodyMedium?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+      ),
+    ),
+  );
+}
+
 // Create a widget containing information about account error messages received from our backend
 class AccountErrorMessage extends StatelessWidget {
   final String errorCode;
@@ -25,29 +47,6 @@ class AccountErrorMessage extends StatelessWidget {
     this.onSwitchView,
     this.onForgotPassword,
   });
-
-  WidgetSpan buildActionText(
-    BuildContext context,
-    String text, {
-    VoidCallback? onTap,
-    TextStyle? style,
-  }) {
-    return WidgetSpan(
-      alignment: PlaceholderAlignment.baseline,
-      baseline: TextBaseline.alphabetic,
-      child: InkWell(
-        onTap: onTap,
-        child: Text(
-          text,
-          style: style ??
-              context.theme.textTheme.bodyMedium?.copyWith(
-                decoration: TextDecoration.underline,
-              ),
-        ),
-      ),
-    );
-  }
-
   Widget buildForgotPasswordMessage(BuildContext context) {
     return Text.rich(
       TextSpan(
@@ -325,21 +324,18 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             text:
                 '${_showSignup ? context.l10n.alreadyUserSignIn : context.l10n.notUserSignUp} ',
           ),
-          TextSpan(
-            text: _showSignup ? context.l10n.login : context.l10n.signUp,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                if (_formError.isNotEmpty) {
-                  _formKey.currentState!.reset();
-                }
-                setState(() {
-                  _showSignup = !_showSignup;
-                  _formError = '';
-                });
-              },
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-            ),
+          buildActionText(
+            context,
+            _showSignup ? context.l10n.login : context.l10n.signUp,
+            onTap: () {
+              if (_formError.isNotEmpty) {
+                _formKey.currentState!.reset();
+              }
+              setState(() {
+                _showSignup = !_showSignup;
+                _formError = '';
+              });
+            },
           ),
           TextSpan(text: '.'),
         ],
@@ -553,15 +549,12 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 TextSpan(
                   text: ' ',
                 ),
-                TextSpan(
-                  text: context.l10n.contactUs,
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      launchUrlString('mailto:${Environment.supportEmail}');
-                    },
-                  style: context.theme.textTheme.bodyMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                  ),
+                buildActionText(
+                  context,
+                  context.l10n.contactUs,
+                  onTap: () {
+                    launchUrlString('mailto:${Environment.supportEmail}');
+                  },
                 ),
                 TextSpan(text: '.'),
               ],
@@ -579,13 +572,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           TextSpan(
             text: context.l10n.termsAgreementPrefix(Environment.appName),
           ),
-          TextSpan(
-            text: context.l10n.termsOfService(Environment.appName),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () => launch(Environment.termsUrl),
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              decoration: TextDecoration.underline,
-            ),
+          buildActionText(
+            context,
+            context.l10n.termsOfService(Environment.appName),
+            onTap: () => launchUrlString(Environment.termsUrl),
           ),
           TextSpan(text: '.'),
         ],
