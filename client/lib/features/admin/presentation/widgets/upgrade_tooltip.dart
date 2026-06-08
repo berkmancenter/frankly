@@ -6,6 +6,7 @@ import 'package:flutter_portal/flutter_portal.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/upgrade_icon.dart';
 import 'package:client/config/environment.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 
@@ -75,7 +76,7 @@ class _UpgradeTooltipContentsState extends State<_UpgradeTooltipContents> {
                   alignment: Alignment.centerLeft,
                   child: ActionButton(
                     type: ActionButtonType.outline,
-                    text: 'Explore Plans',
+                    text: context.l10n.explorePlans,
                     borderSide:
                         BorderSide(color: context.theme.colorScheme.primary),
                     textColor: context.theme.colorScheme.primary,

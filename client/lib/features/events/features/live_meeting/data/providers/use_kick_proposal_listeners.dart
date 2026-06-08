@@ -155,8 +155,8 @@ Future<String?> _kickProposalConfirmation(
           ' kick them out? They will not be allowed back in.',
       textLabel: 'Enter reason',
       textHint: 'e.g. They are trying to sabotage the event',
-      cancelText: 'No, let them stay',
-      confirmText: 'Yes, kick them out',
+      cancelText: context.l10n.noLetThemStay,
+      confirmText: context.l10n.yesKickThemOut,
     ),
   );
 }
