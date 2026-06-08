@@ -63,12 +63,13 @@ class AccountErrorMessage extends StatelessWidget {
     switch (errorCode) {
       case 'email-already-in-use':
         return boxedErrorText(
-          message: TextSpan(
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: context.theme.colorScheme.error,
-            ),
-            children: [
-              TextSpan(
+          message: Text.rich(
+            TextSpan(
+              style: context.theme.textTheme.bodyMedium?.copyWith(
+                color: context.theme.colorScheme.error,
+              ),
+              children: [
+                TextSpan(
                 text: context.l10n.emailAddressAlreadyInUseLoginError,
               ),
               TextSpan(
@@ -83,7 +84,7 @@ class AccountErrorMessage extends StatelessWidget {
               TextSpan(text: context.l10n.insteadSuffix),
             ],
           ),
-        );
+        ),);
       case 'user-not-found':
         return boxedErrorText(
           message: Text.rich(
