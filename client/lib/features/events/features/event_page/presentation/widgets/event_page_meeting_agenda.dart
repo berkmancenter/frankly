@@ -222,7 +222,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
       textAlign: TextAlign.start,
     ).show(context: context);
 
-    if (delete) {
+    if (delete && mounted) {
       await alertOnError(context, () => _presenter.deleteAgendaItems());
     }
   }

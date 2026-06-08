@@ -303,6 +303,9 @@ class _ProfileTabState extends State<_ProfileTab> {
 
     await controller.submitPressed();
     await createTagPresenter.submit();
+
+    if (!mounted) return;
+
     showRegularToast(
       context,
       context.l10n.profileUpdated,
@@ -311,7 +314,7 @@ class _ProfileTabState extends State<_ProfileTab> {
 
     // Only close drawer if `preview` button is not visible. Preview button is only visible
     // in `Profile` tab in `Settings`.
-    if (!widget.isPreviewButtonVisible) {
+    if (!widget.isPreviewButtonVisible && mounted) {
       // Close drawer
       Navigator.pop(context);
     }
@@ -392,6 +395,7 @@ class _ProfileTabState extends State<_ProfileTab> {
           tags: tags,
           onAddTag: (text) async {
             await alertOnError(context, () => createTagPresenter.addTag(text));
+            if (!mounted) return;
             context.read<AppDrawerProvider>().setUnsavedChanges(true);
           },
           checkIsSelected: (tag) => createTagPresenter.isSelected(tag),
