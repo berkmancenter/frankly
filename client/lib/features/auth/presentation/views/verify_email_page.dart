@@ -21,6 +21,7 @@ class VerifyEmailPage extends StatefulWidget {
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   static const _linkExpiryDuration = Duration(minutes: 30);
+  static const _pollingInterval = Duration(seconds: 5);
 
   String _error = '';
   String _message = '';
@@ -29,6 +30,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   late String _currentEmail;
   late TextEditingController _emailController;
   Timer? _expiryTimer;
+  Timer? _verificationPollingTimer;
 
   @override
   void initState() {
@@ -36,13 +38,34 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     _currentEmail = widget.email;
     _emailController = TextEditingController(text: _currentEmail);
     _startExpiryTimer();
+    _startVerificationPolling();
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _expiryTimer?.cancel();
+    _verificationPollingTimer?.cancel();
     super.dispose();
+  }
+
+  // Automatically poll Firebase Auth so that browsers like Brave — which block
+  // Firestore's WebChannel — still detect verification without the user having
+  // to manually press "Continue". reload() uses identitytoolkit.googleapis.com,
+  // which is not blocked by Brave's shields.
+  void _startVerificationPolling() {
+    _verificationPollingTimer = Timer.periodic(_pollingInterval, (_) async {
+      if (!mounted) return;
+      final userService = context.read<UserService>();
+      try {
+        await userService.refreshEmailVerificationStatus();
+        if (userService.firebaseAuth.currentUser?.emailVerified == true) {
+          _verificationPollingTimer?.cancel();
+        }
+      } catch (_) {
+        // Silently ignore — the manual "Continue" button handles error display.
+      }
+    });
   }
 
   void _startExpiryTimer() {
