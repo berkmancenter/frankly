@@ -4,6 +4,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
@@ -292,7 +293,16 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   Future<void> connect() async {
+    void join() async {
+      await _room!.connect(
+        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
+        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
+      );
+      _room!.addListener(notifyListeners);
+    }
+
     Debug.log('ConferenceRoom.connect()');
+
     try {
       hasStartedConnecting = true;
       _room = AgoraRoom(
@@ -302,11 +312,27 @@ class ConferenceRoom with ChangeNotifier {
         eventProvider: liveMeetingProvider.eventProvider,
         conferenceRoom: this,
       );
-      await _room!.connect(
-        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
-        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
-      );
-      _room!.addListener(notifyListeners);
+
+      // Before connecting, show mirror check dialog. if hosted event
+      // if (liveMeetingProvider.eventProvider.event.isHosted) {
+      //   // mediaDeviceService.
+      //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //     await showDialog(
+      //       context: navigatorState.context,
+      //       builder: (context) {
+      //         return MediaSettingsWidget(
+      //           conferenceRoom: this,
+      //           shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
+      //           isMirrorCheck: true,
+      //         );
+      //       },
+      //     );
+      //     join();
+      //   });
+      // } else {
+        join();
+      // }
+    
     } catch (err, stacktrace) {
       loggingService.log('error');
       loggingService.log(stacktrace);
@@ -379,11 +405,15 @@ class ConferenceRoom with ChangeNotifier {
     // Lock this code so that different sections toggling audio will not cause race conditions.
     await _videoTogglingLock.synchronized(
       () async {
-        await _room!.localParticipant!.enableVideo(
-          setEnabled: updatedEnabledValue,
-        );
-        if (updateProvider) {
-          liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
+        try {
+          await _room!.localParticipant!.enableVideo(
+            setEnabled: updatedEnabledValue,
+          );
+          if (updateProvider) {
+            liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
+          }
+        } catch (e) {
+          Debug.log('Error toggling video: $e, $_room.localParticipant');
         }
       },
       timeout: Duration(seconds: 4),
@@ -419,25 +449,29 @@ class ConferenceRoom with ChangeNotifier {
           return;
         }
 
-        final audioEnableFutures = [
-          _room!.localParticipant!.enableAudio(
-            setEnabled: updatedEnabledValue,
-          ),
-          if ((liveMeetingProvider
-                      .eventProvider.selfParticipant?.muteOverride ??
-                  false) &&
-              updatedEnabledValue)
-            firestoreLiveMeetingService.updateParticipantMuteOverride(
-              event: liveMeetingProvider.eventProvider.event,
-              participantId: userService.currentUserId!,
-              muteOverride: false,
+        try {
+          final audioEnableFutures = [
+            _room!.localParticipant!.enableAudio(
+              setEnabled: updatedEnabledValue,
             ),
-        ];
+            if ((liveMeetingProvider
+                        .eventProvider.selfParticipant?.muteOverride ??
+                    false) &&
+                updatedEnabledValue)
+              firestoreLiveMeetingService.updateParticipantMuteOverride(
+                event: liveMeetingProvider.eventProvider.event,
+                participantId: userService.currentUserId!,
+                muteOverride: false,
+              ),
+          ];
 
-        await Future.wait(audioEnableFutures);
+          await Future.wait(audioEnableFutures);
 
-        if (updateProvider) {
-          liveMeetingProvider.shouldStartLocalAudioOn = updatedEnabledValue;
+          if (updateProvider) {
+            liveMeetingProvider.shouldStartLocalAudioOn = updatedEnabledValue;
+          }
+        } catch (e) {
+          Debug.log('Error toggling audio: $e, $_room.localParticipant');
         }
       },
       timeout: Duration(seconds: 4),
@@ -503,6 +537,19 @@ class ConferenceRoom with ChangeNotifier {
 
     notifyListeners();
     _completer.complete(room);
+
+//  WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await showDialog(
+            context: navigatorState.context,
+            builder: (context) {
+              return MediaSettingsWidget(
+                conferenceRoom: this,
+                shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
+                isMirrorCheck: true,
+              );
+            },
+          );
+
     if (liveMeetingProvider.audioDefaultOn &&
             !(room.localParticipant?.audioTrackEnabled ?? true) ||
         liveMeetingProvider.videoDefaultOn &&
@@ -526,7 +573,7 @@ class ConferenceRoom with ChangeNotifier {
           () => toggleAudioEnabled(setEnabled: true),
         );
       }
-    if (!context.mounted) return;
+      if (!context.mounted) return;
       if (!(_room?.localParticipant?.videoTrackEnabled ?? false)) {
         await AudioVideoErrorDialog.showOnError(
           context,

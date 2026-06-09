@@ -3,6 +3,7 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
+import 'package:client/features/events/features/live_meeting/features/video/utils/debug.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,12 @@ class MediaSettingsWidget extends StatefulWidget {
     super.key,
     required this.conferenceRoom,
     required this.shouldShowVideoPreview,
+    this.isMirrorCheck = false,
   });
 
   final ConferenceRoom conferenceRoom;
   final bool shouldShowVideoPreview;
+  final bool isMirrorCheck;
 
   @override
   State<MediaSettingsWidget> createState() => _MediaSettingsWidgetState();
@@ -339,11 +342,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     ),
                   const SizedBox(height: 16),
                   ActionButton(
-                    text: context.l10n.save,
-                    onPressed: (_mediaService.selectedVideoInputId ==
-                                initialVideoDeviceId &&
-                            _mediaService.selectedAudioInputId ==
-                                initialAudioDeviceId)
+                    text: widget.isMirrorCheck
+                        ? context.l10n.ok
+                        : context.l10n.save,
+                    onPressed: ((!widget.isMirrorCheck &&
+                            (_mediaService.selectedVideoInputId ==
+                                    initialVideoDeviceId &&
+                                _mediaService.selectedAudioInputId ==
+                                    initialAudioDeviceId)))
                         ? null
                         : () async {
                             final savedInitialVideoDeviceId =
@@ -395,7 +401,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   );
                                 }
                               }
-                              if (_mediaService.selectedAudioInputId !=
+                              if (widget.isMirrorCheck || _mediaService.selectedAudioInputId !=
                                   initialAudioDeviceId) {
                                 await _mediaService.selectAudioDevice(
                                   deviceId: _mediaService.selectedAudioInputId!,
@@ -426,8 +432,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                     toastType: ToastType.success,
                                   );
                                 }
+
+                                // If mirror check, dismiss this dialog
+                                if (widget.isMirrorCheck && context.mounted) {
+                                  Navigator.of(context).pop();
+                                }
                               }
                             } catch (e) {
+                              Debug.log('Error saving device settings: $e');
                               if (!context.mounted) return;
                               // Reset to initial values if save fails
                               _mediaService.selectedVideoInputId =
