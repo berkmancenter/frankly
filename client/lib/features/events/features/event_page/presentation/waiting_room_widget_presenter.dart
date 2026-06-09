@@ -18,6 +18,11 @@ class WaitingRoomWidgetPresenter {
         _model.event.waitingRoomInfo?.copyWith() ?? WaitingRoomInfo();
   }
 
+  void updateEvent(Event event) {
+    _model.event = event;
+    _view.updateView();
+  }
+
   void updateWaitingText(String text) {
     _model.waitingRoomInfo = _model.waitingRoomInfo.copyWith(content: text);
     _view.updateView();

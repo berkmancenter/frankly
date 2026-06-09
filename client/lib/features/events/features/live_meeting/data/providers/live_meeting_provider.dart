@@ -116,6 +116,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
   StreamSubscription? _breakoutLiveMeetingSubscription;
   late StreamSubscription _onUnloadSubscription;
+  VoidCallback? _eventProviderListener;
 
   Timer? _scheduledStartTimer;
   Timer? _meetingStartTimer;
@@ -364,6 +365,12 @@ class LiveMeetingProvider with ChangeNotifier {
       );
     });
 
+    _eventProviderListener = () {
+      _updateTimersBeforeStart();
+      notifyListeners();
+    };
+    eventProvider.addListener(_eventProviderListener!);
+
     _updateTimersBeforeStart();
     canAutoplayLookupFuture = _checkIfCanAutoplay();
 
@@ -395,20 +402,46 @@ class LiveMeetingProvider with ChangeNotifier {
   /// build after the meeting start time. Without the buffer I fear race conditions where callers
   /// may still think the meeting time has not arrived yet.
   void _updateTimersBeforeStart() {
+    _scheduledStartTimer?.cancel();
+    _meetingStartTimer?.cancel();
+    _hostlessGoToBreakoutsFallbackController?.cancel();
+
+    final now = clockService.now();
     final timeUntilScheduledStart =
-        eventProvider.event.timeUntilScheduledStart(clockService.now());
+        eventProvider.event.timeUntilScheduledStart(now);
+    loggingService.log(
+      '[TEMP breakout-timer] updateTimers:start '
+      'now=$now '
+      'scheduledTime=${eventProvider.event.scheduledTime} '
+      'timeUntilScheduledStart=${timeUntilScheduledStart.inMilliseconds}ms '
+      'eventType=${eventProvider.event.eventType}',
+    );
     if (!timeUntilScheduledStart.isNegative) {
+      loggingService.log(
+        '[TEMP breakout-timer] scheduledStartTimer:set '
+        'delayMs=${(timeUntilScheduledStart + Duration(milliseconds: 100)).inMilliseconds}',
+      );
       _scheduledStartTimer =
           Timer(timeUntilScheduledStart + Duration(milliseconds: 100), () {
+        loggingService.log('[TEMP breakout-timer] scheduledStartTimer:fired');
         notifyListeners();
       });
     }
     final timeUntilWaitingRoomFinished =
-        eventProvider.event.timeUntilWaitingRoomFinished(clockService.now());
+        eventProvider.event.timeUntilWaitingRoomFinished(now);
+    loggingService.log(
+      '[TEMP breakout-timer] waitingRoomFinished '
+      'timeUntilWaitingRoomFinished=${timeUntilWaitingRoomFinished.inMilliseconds}ms',
+    );
     if (timeUntilWaitingRoomFinished != timeUntilScheduledStart &&
         !timeUntilWaitingRoomFinished.isNegative) {
+      loggingService.log(
+        '[TEMP breakout-timer] meetingStartTimer:set '
+        'delayMs=${(timeUntilWaitingRoomFinished + Duration(milliseconds: 100)).inMilliseconds}',
+      );
       _meetingStartTimer =
           Timer(timeUntilWaitingRoomFinished + Duration(milliseconds: 100), () {
+        loggingService.log('[TEMP breakout-timer] meetingStartTimer:fired');
         notifyListeners();
       });
     }
@@ -416,27 +449,34 @@ class LiveMeetingProvider with ChangeNotifier {
     if (!timeUntilWaitingRoomFinished.isNegative &&
         eventProvider.event.eventType == EventType.hostless) {
       // Setup a check that hostless is done
-      _hostlessGoToBreakoutsFallbackController?.cancel();
+      final fallbackDelay = timeUntilWaitingRoomFinished +
+          Duration(milliseconds: 5000 + random.nextInt(20000));
+      loggingService.log(
+        '[TEMP breakout-timer] hostlessFallback:set '
+        'participants=${eventProvider.presentParticipantCount} '
+        'delayMs=${fallbackDelay.inMilliseconds}',
+      );
       _hostlessGoToBreakoutsFallbackController =
           HostlessActionFallbackController(
         totalParticipants: eventProvider.presentParticipantCount,
         targetActionCount: 5,
         action: () async {
-          loggingService.log('Checking hostless during the fallback.');
+          loggingService.log('[TEMP breakout-timer] hostlessFallback:actionFired');
           await cloudFunctionsLiveMeetingService.checkHostlessGoToBreakouts(
             CheckHostlessGoToBreakoutsRequest(
               eventPath: eventPath,
             ),
           );
         },
-        delay: timeUntilWaitingRoomFinished +
-            Duration(milliseconds: 5000 + random.nextInt(20000)),
+        delay: fallbackDelay,
         checkIsActionCompleted: () async =>
             liveMeeting?.currentBreakoutSession?.breakoutRoomStatus != null &&
             liveMeeting?.currentBreakoutSession?.breakoutRoomStatus !=
                 BreakoutRoomStatus.inactive,
       )..initialize();
     }
+
+    loggingService.log('[TEMP breakout-timer] updateTimers:end');
   }
 
   @override
@@ -452,6 +492,10 @@ class LiveMeetingProvider with ChangeNotifier {
     _scheduledStartTimer?.cancel();
     _meetingStartTimer?.cancel();
     _checkAssignToBreakoutsTimer?.cancel();
+
+    if (_eventProviderListener != null) {
+      eventProvider.removeListener(_eventProviderListener!);
+    }
 
     _hostlessGoToBreakoutsFallbackController?.cancel();
     _pendingBreakoutsFallbackController?.cancel();

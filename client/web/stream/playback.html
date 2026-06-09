@@ -95,12 +95,12 @@
               }
 
               function makeMessage(type){
-                  return {
+                  return JSON.stringify({
                       source: 'videojs',
                       type: type,
                       currentTime: player.currentTime(),
                       videoDuration: player.duration()
-                  };
+                  });
               }
 
               console.log('dispatching ready event to parent');

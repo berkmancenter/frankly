@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -59,6 +60,18 @@ class UrlVideoWidget extends StatefulHookWidget {
 class _UrlVideoWidgetState extends State<UrlVideoWidget> {
   String _keyValue = uuid.v1();
   Timer? _errorTimer;
+
+  void _logVideoEvent(String label, {dynamic payload}) {
+    loggingService.log(
+      '[TEMP url-video] $label '
+      'ts=${DateTime.now().toIso8601String()} '
+      'playbackUrl=${widget.playbackUrl} '
+      'startOffsetSeconds=${widget.videoStartOffset?.inSeconds} '
+      'loop=${widget.loop} '
+      'autoplay=${widget.autoplay} '
+      'payload=$payload',
+    );
+  }
 
   String get encodedUrl {
     String playbackUrl = widget.playbackUrl;
@@ -125,24 +138,32 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
     useEffect(
       () {
         final subscription = html.window.onMessage.listen((event) {
-          
-          final messageObj = event.data;
+          dynamic messageObj = event.data;
 
-          // Check if the messageObj is a Map and contains the 'source' key;
-          // we have to do this because the messageObj is a native JS object and can be anything coming from the onMessage Stream
-          if(messageObj is Map && messageObj.containsKey('source')) {
+          if (messageObj is String) {
+            try {
+              messageObj = jsonDecode(messageObj);
+            } catch (error) {
+              _logVideoEvent('callback:ignoredMalformedMessage', payload: messageObj);
+              return;
+            }
+          }
+
+          if (messageObj is Map && messageObj.containsKey('source')) {
             if (messageObj['source'] == 'videojs') {
               final String messageType = messageObj['type'];
-              final double currentTime = messageObj['currentTime'];
-              final double videoDuration = messageObj['videoDuration'];
+              final double currentTime = (messageObj['currentTime'] as num).toDouble();
+              final double videoDuration = (messageObj['videoDuration'] as num).toDouble();
               final onReady = widget.onReady;
               if (messageType == 'video-ready' && onReady != null) {
                 loggingService.log('message ready received: ${event.data}');
+                _logVideoEvent('callback:onReady', payload: event.data);
                 onReady();
               }
               final onEnded = widget.onEnded;
               if (messageType == 'video-ended' && onEnded != null) {
                 loggingService.log('message ended received: ${event.data}');
+                _logVideoEvent('callback:onEnded', payload: event.data);
                 onEnded();
               }
               if (messageType == 'video-error') {

@@ -42,6 +42,15 @@ class _WaitingRoomWidgetState extends State<WaitingRoomWidget>
   }
 
   @override
+  void didUpdateWidget(covariant WaitingRoomWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.event != widget.event) {
+      _presenter.updateEvent(widget.event);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final introLengthDuration =
         Duration(seconds: _model.waitingRoomInfo.durationSeconds);

@@ -15,6 +15,7 @@ import 'package:client/services.dart';
 /// room is complete.
 class HostlessActionFallbackController {
   static const _maxCheckTime = Duration(minutes: 5);
+  static const _pollInterval = Duration(seconds: 5);
 
   final int totalParticipants;
   final int targetActionCount;
@@ -30,32 +31,93 @@ class HostlessActionFallbackController {
     required this.checkIsActionCompleted,
   });
 
-  late Timer _actionTimer;
+  Timer? _initialTimer;
+  Timer? _actionTimer;
+  bool _isCancelled = false;
+  DateTime? _checkStartedTime;
 
   void initialize() {
     if (totalParticipants == 0) return;
 
+    _isCancelled = false;
     final initializedTime = clockService.now();
-    _actionTimer = Timer.periodic(delay, (_) async {
-      loggingService.log('Checking if action was completed in fallback.');
-      final isActionCompleted = await checkIsActionCompleted();
-      loggingService.log('Action completed: $isActionCompleted');
+    _initialTimer = Timer(delay, () async {
+      _checkStartedTime = clockService.now();
+      loggingService.log(
+        '[TEMP breakout-fallback] tick '
+        'stage=initial '
+        'now=${clockService.now()} '
+        'initializedTime=$initializedTime '
+        'delayMs=${delay.inMilliseconds}',
+      );
+      await _checkAndMaybeAct(initializedTime, stage: 'initial');
 
-      final shouldDoAction = random.nextDouble() <
-          (targetActionCount.toDouble() / totalParticipants);
+      if (_isCancelled) return;
 
-      final timeSinceStart = clockService.now().difference(initializedTime);
-      if (isActionCompleted || timeSinceStart > _maxCheckTime) {
-        loggingService
-            .log('Action was completed so canceling action fallback.');
-        cancel();
-      } else if (!isActionCompleted && shouldDoAction) {
-        await action();
-      }
+      _actionTimer = Timer.periodic(_pollInterval, (_) async {
+        if (_isCancelled) return;
+        await _checkAndMaybeAct(initializedTime, stage: 'poll');
+      });
     });
   }
 
+  Future<void> _checkAndMaybeAct(
+    DateTime initializedTime, {
+    required String stage,
+  }) async {
+    loggingService.log(
+      '[TEMP breakout-fallback] tick '
+      'stage=$stage '
+      'now=${clockService.now()} '
+      'initializedTime=$initializedTime '
+      'delayMs=${delay.inMilliseconds}',
+    );
+
+    final isActionCompleted = await checkIsActionCompleted();
+    loggingService.log(
+      '[TEMP breakout-fallback] checkIsActionCompleted '
+      'result=$isActionCompleted',
+    );
+
+    final shouldDoAction = random.nextDouble() <
+        (targetActionCount.toDouble() / totalParticipants);
+
+    final checkStart = _checkStartedTime ?? initializedTime;
+    final timeSinceStart = clockService.now().difference(checkStart);
+    if (isActionCompleted) {
+      loggingService.log(
+        '[TEMP breakout-fallback] cancel '
+        'reason=completed '
+        'timeSinceStartMs=${timeSinceStart.inMilliseconds}',
+      );
+      cancel();
+    } else if (timeSinceStart > _maxCheckTime) {
+      loggingService.log(
+        '[TEMP breakout-fallback] cancel '
+        'reason=timeout '
+        'timeSinceStartMs=${timeSinceStart.inMilliseconds} '
+        'maxCheckTimeMs=${_maxCheckTime.inMilliseconds}',
+      );
+      cancel();
+    } else if (shouldDoAction) {
+      loggingService.log(
+        '[TEMP breakout-fallback] action '
+        'shouldDoAction=$shouldDoAction '
+        'timeSinceStartMs=${timeSinceStart.inMilliseconds}',
+      );
+      await action();
+    } else {
+      loggingService.log(
+        '[TEMP breakout-fallback] skip '
+        'shouldDoAction=$shouldDoAction '
+        'timeSinceStartMs=${timeSinceStart.inMilliseconds}',
+      );
+    }
+  }
+
   void cancel() {
-    _actionTimer.cancel();
+    _isCancelled = true;
+    _initialTimer?.cancel();
+    _actionTimer?.cancel();
   }
 }

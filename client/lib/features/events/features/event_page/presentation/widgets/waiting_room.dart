@@ -27,7 +27,9 @@ import 'package:provider/provider.dart';
 /// This can include just media before the scheduled time, or additional media such as informational
 /// videos.
 class WaitingRoom extends StatelessWidget {
-  const WaitingRoom({Key? key}) : super(key: key);
+  final WaitingRoomVideoPlayerBuilder? videoPlayerBuilder;
+
+  const WaitingRoom({Key? key, this.videoPlayerBuilder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +41,34 @@ class WaitingRoom extends StatelessWidget {
         liveMeetingProvider: context.read<LiveMeetingProvider>(),
       )..initialize(),
       update: (_, __, ___, presenter) => presenter!..update(),
-      child: _WaitingRoom(),
+      child: _WaitingRoom(
+        videoPlayerBuilder: videoPlayerBuilder,
+      ),
     );
   }
 }
 
+typedef WaitingRoomVideoPlayerBuilder = Widget Function({
+  required String url,
+  required bool isIntroMedia,
+  required bool loop,
+  required Duration? videoStartOffset,
+  required VoidCallback? onReady,
+  required VoidCallback? onEnded,
+});
+
 class _WaitingRoom extends StatelessWidget {
-  const _WaitingRoom({Key? key}) : super(key: key);
+  final WaitingRoomVideoPlayerBuilder? videoPlayerBuilder;
+
+  const _WaitingRoom({
+    Key? key,
+    this.videoPlayerBuilder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final presenter = context.watch<WaitingRoomPresenter>();
+    final isIntroMedia = presenter.isWaitingRoomMediaIntro;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,13 +82,18 @@ class _WaitingRoom extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 )
-              : _WaitingRoomVideoPlayer(
+              : (videoPlayerBuilder ?? _buildWaitingRoomVideoPlayer)(
                   url: presenter.media.url,
+                  isIntroMedia: isIntroMedia,
                   loop: presenter.loopVideo,
                   videoStartOffset: presenter.introVideoStartTime,
-                  onEnded: presenter.isWaitingRoomMediaIntro
-                      ? () => presenter.onIntroVideoCompleted()
-                      : null,
+                  onReady: () => presenter.onVideoReady(
+                    wasIntroVideo: isIntroMedia,
+                    playbackUrl: presenter.media.url,
+                  ),
+                  onEnded: () => presenter.onVideoEnded(
+                    wasIntroVideo: isIntroMedia,
+                  ),
                 ),
         ),
         if (responsiveLayoutService.isMobile(context))
@@ -253,6 +277,25 @@ class _WaitingRoom extends StatelessWidget {
     }
     return durationString(remainingTime);
   }
+
+  Widget _buildWaitingRoomVideoPlayer({
+    required String url,
+    required bool isIntroMedia,
+    required bool loop,
+    required Duration? videoStartOffset,
+    required VoidCallback? onReady,
+    required VoidCallback? onEnded,
+  }) {
+    return _WaitingRoomVideoPlayer(
+      key: ValueKey('waiting-room-video-$isIntroMedia-$url'),
+      url: url,
+      isIntroMedia: isIntroMedia,
+      loop: loop,
+      videoStartOffset: videoStartOffset,
+      onReady: onReady,
+      onEnded: onEnded,
+    );
+  }
 }
 
 class RowParticipants extends StatelessWidget {
@@ -315,14 +358,19 @@ class RowParticipants extends StatelessWidget {
 /// every parent rebuild.
 class _WaitingRoomVideoPlayer extends StatefulWidget {
   final String url;
+  final bool isIntroMedia;
   final bool loop;
   final Duration? videoStartOffset;
+  final VoidCallback? onReady;
   final VoidCallback? onEnded;
 
   const _WaitingRoomVideoPlayer({
+    super.key,
     required this.url,
+    required this.isIntroMedia,
     this.loop = false,
     this.videoStartOffset,
+    this.onReady,
     this.onEnded,
   });
 
@@ -345,7 +393,8 @@ class _WaitingRoomVideoPlayerState extends State<_WaitingRoomVideoPlayer> {
   @override
   void didUpdateWidget(_WaitingRoomVideoPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.url != widget.url) {
+    if (oldWidget.url != widget.url ||
+        oldWidget.isIntroMedia != widget.isIntroMedia) {
       _youtubeController?.close();
       _youtubeController = null;
       _setupYoutubeController(widget.url);
@@ -387,9 +436,11 @@ class _WaitingRoomVideoPlayerState extends State<_WaitingRoomVideoPlayer> {
     }
 
     return UrlVideoWidget(
+      key: ValueKey('url-video-${widget.isIntroMedia}-${widget.url}'),
       playbackUrl: widget.url,
       loop: widget.loop,
       videoStartOffset: widget.videoStartOffset,
+      onReady: widget.onReady,
       onEnded: widget.onEnded,
     );
   }
