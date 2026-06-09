@@ -31,23 +31,28 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
   String get documentPath =>
       'community/{communityId}/templates/{templateId}/events/{eventId}/event-participants/{participantId}';
 
+  // firestoreOnWrite (base class) dispatches to onUpdate, not onWrite.
+  // onCreate and onDelete are not triggered by the onWrite registration, so
+  // they are intentionally unreachable here.
   @override
-  Future<void> onWrite(
+  Future<void> onUpdate(
     Change<DocumentSnapshot> changes,
     Participant before,
     Participant after,
     DateTime updateTime,
     EventContext context,
   ) async {
+    // Skip writes that don't affect active status (presence, breakout room,
+    // timestamp updates, etc.) to avoid rescanning all participants on every
+    // live-meeting heartbeat.
+    if (before.status == after.status) return;
+
     try {
-      // Resolve the participant path regardless of whether this is a create,
-      // update, or delete (after may not exist on delete).
       final participantRef = changes.after.exists
           ? changes.after.reference
           : changes.before.reference;
       final eventPath = participantRef.path.split('/event-participants/').first;
 
-      // Count participants whose status is 'active'.
       final activeDocs = await firestore
           .collection('$eventPath/event-participants')
           .where(
@@ -62,9 +67,7 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
             UpdateData.fromMap({Event.kFieldRegistrationCount: count}),
           );
 
-      print(
-        '$_functionName: set registrationCount=$count on $eventPath',
-      );
+      print('$_functionName: set registrationCount=$count on $eventPath');
     } catch (e, s) {
       print('Error in $_functionName: $e\n$s');
       rethrow;
@@ -72,9 +75,10 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
   }
 
   @override
-  Future<void> onCreate(
-    DocumentSnapshot documentSnapshot,
-    Participant parsedData,
+  Future<void> onWrite(
+    Change<DocumentSnapshot> changes,
+    Participant before,
+    Participant after,
     DateTime updateTime,
     EventContext context,
   ) {
@@ -82,10 +86,9 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
   }
 
   @override
-  Future<void> onUpdate(
-    Change<DocumentSnapshot> changes,
-    Participant before,
-    Participant after,
+  Future<void> onCreate(
+    DocumentSnapshot documentSnapshot,
+    Participant parsedData,
     DateTime updateTime,
     EventContext context,
   ) {
