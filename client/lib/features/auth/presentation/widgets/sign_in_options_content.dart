@@ -1,6 +1,4 @@
-import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/styles/styles.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -13,6 +11,8 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+FocusNode _emailFocusNode = FocusNode();
 
 WidgetSpan buildActionText(
   BuildContext context,
@@ -27,6 +27,7 @@ WidgetSpan buildActionText(
       onTap: onTap,
       child: Text(
         text,
+        softWrap: true,
         style: style ??
             context.theme.textTheme.bodyMedium?.copyWith(
               decoration: TextDecoration.underline,
@@ -47,12 +48,21 @@ class AccountErrorMessage extends StatelessWidget {
     this.onSwitchView,
     this.onForgotPassword,
   });
+
   Widget buildForgotPasswordMessage(BuildContext context) {
     return Text.rich(
       TextSpan(
         children: [
           TextSpan(
             text: context.l10n.forgotPasswordPrefix,
+          ),
+          buildActionText(
+            context,
+            context.l10n.forgotPasswordEnterEmail,
+            onTap: () => _emailFocusNode.requestFocus(),
+          ),
+          TextSpan(
+            text: ', ${context.l10n.forgotPasswordThen}',
           ),
           buildActionText(
             context,
@@ -68,13 +78,15 @@ class AccountErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     boxedErrorText({required message}) {
-      return Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.error.withOpacity(0.05),
+      return Focus(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          decoration: BoxDecoration(
+            color: context.theme.colorScheme.error.withOpacity(0.05),
+          ),
+          child: message,
         ),
-        child: message,
       );
     }
 
@@ -121,12 +133,28 @@ class AccountErrorMessage extends StatelessWidget {
         return boxedErrorText(
           message: Column(
             children: [
+              Text(
+                context.l10n.emailAndPasswordMismatch(Environment.appName),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    buildActionText(
+                      context,
+                      context.l10n.emailAndPasswordMismatchCheck,
+                      onTap: () => _emailFocusNode.requestFocus(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
               Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          '${context.l10n.emailAndPasswordMismatch(Environment.appName)}${context.l10n.forgotEmail} ',
+                      text: '${context.l10n.forgotEmail} ',
                     ),
                     buildActionText(
                       context,
@@ -161,7 +189,11 @@ class AccountErrorMessage extends StatelessWidget {
           message: Text.rich(
             TextSpan(
               children: [
-                TextSpan(text: context.l10n.somethingWentWrongLongPrefix),
+                TextSpan(
+                  text: '${context.l10n.somethingWentWrongLongPrefix}\n\n',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: '${context.l10n.somethingWentWrongLongMiddle} '),
                 buildActionText(
                   context,
                   context.l10n.somethingWentWrongLongSuffix,
@@ -433,6 +465,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                       }
                       return null;
                     },
+                    focusNode: _emailFocusNode,
                   ),
                   SizedBox(height: 10),
                   CustomTextField(
