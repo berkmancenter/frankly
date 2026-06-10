@@ -23,6 +23,9 @@ class MediaDeviceService {
   String? selectedAudioInputId;
   String? selectedVideoInputId;
 
+  // Tracks if user has completed mirror check
+  bool hasCompletedMirrorCheck = false;
+
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {
       // The ".status" call does not work on all platforms - catch the exception.

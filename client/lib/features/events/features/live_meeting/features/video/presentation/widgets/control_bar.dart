@@ -42,16 +42,17 @@ class _ControlBarState extends State<ControlBar> {
       LiveMeetingProvider.read(context).conferenceRoom!;
 
   Widget _buildVideoToggle() {
+    
     return _IconButton(
       onTap: () => AudioVideoErrorDialog.showOnError(
         context,
         () => _conferenceRoomRead.toggleVideoEnabled(),
       ),
-      text: _conferenceRoom.videoEnabled ? 'Stop Video' : 'Start Video',
-      icon: _conferenceRoom.videoEnabled
+      text: _conferenceRoom.videoIsStreaming ? 'Stop Video' : 'Start Video',
+      icon: _conferenceRoom.videoIsStreaming
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
-      iconColor: _conferenceRoom.videoEnabled
+      iconColor: _conferenceRoom.videoIsStreaming
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.errorContainer,
     );
@@ -116,11 +117,11 @@ class _ControlBarState extends State<ControlBar> {
                     toastType: ToastType.success,
                   );
                 },
-          text: _conferenceRoom.audioEnabled ? 'Mute' : 'Unmute',
-          icon: _conferenceRoom.audioEnabled
+          text: _conferenceRoom.audioIsStreaming ? 'Mute' : 'Unmute',
+          icon: _conferenceRoom.audioIsStreaming
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
-          iconColor: _conferenceRoom.audioEnabled
+          iconColor: _conferenceRoom.audioIsStreaming 
               ? context.theme.colorScheme.onPrimary
               : context.theme.colorScheme.errorContainer,
         ),
