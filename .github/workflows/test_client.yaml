@@ -25,6 +25,8 @@ jobs:
           filters: |
             client:
               - 'client/**'
+              - 'firebase.json'
+              - 'scripts/render-firebase-config.mjs'
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true'
@@ -74,6 +76,7 @@ jobs:
           envkey_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
           envkey_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           envkey_FUNCTIONS_URL_PREFIX: ${{ secrets.FUNCTIONS_URL_PREFIX }}
+          envkey_FUNCTIONS_REGION: ${{ secrets.FUNCTIONS_REGION || 'us-central1' }}
           envkey_SHARE_LINK_URL: ${{ secrets.APP_STAGING_FULL_URL }}/share
           envkey_ENABLE_FAKE_PARTICIPANTS: true
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
@@ -104,6 +107,11 @@ jobs:
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
         id: build_app
         run: flutter build web --release web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
+
+      - name: Render Firebase hosting config
+        if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
+        working-directory: ${{ github.workspace }}
+        run: node scripts/render-firebase-config.mjs --region "${{ secrets.FUNCTIONS_REGION || 'us-central1' }}" --in-place
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
