@@ -187,7 +187,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
                     style: TextButton.styleFrom(
                       foregroundColor: context.theme.colorScheme.error,
                     ),
-                    child: Text(context.l10n.close),
+                    child: Text(context.l10n.leave),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(context, true),
