@@ -357,12 +357,13 @@ class _CommunityDetailWidget extends StatelessWidget {
 
   final Community community;
 
+  // Carousel is half the screen width on desktop.
   double _carouselSize(BuildContext context) =>
       responsiveLayoutService.isMobile(context)
           ? min(MediaQuery.of(context).size.width, AppSize.kMaxCarouselSize)
           : min(
-              AppSize.kMaxCarouselSize,
               (MediaQuery.of(context).size.width - 100) / 2,
+              AppSize.kMaxCarouselSize,
             );
 
   @override
