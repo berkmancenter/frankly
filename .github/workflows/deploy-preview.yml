@@ -40,17 +40,17 @@ jobs:
         run: flutter pub get
 
       - name: Update Product Version
-        if: steps.changes.outputs.client == 'true' 
+        if: steps.changes.outputs.client == 'true'
         run: |
           sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
 
       - name: Update Google Auth Client ID
-        if: steps.changes.outputs.client == 'true' 
+        if: steps.changes.outputs.client == 'true'
         run: |
           sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
 
       - name: Create .env file
-        if: steps.changes.outputs.client == 'true' 
+        if: steps.changes.outputs.client == 'true'
         uses: SpicyPizza/create-envfile@v2.0
         with:
           envkey_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
@@ -79,7 +79,7 @@ jobs:
           envkey_TROUBLESHOOTING_GUIDE_URL: https://rebootingsocialmedia.notion.site/Troubleshooting-c6f922b816a742a9bba4bf000e84565d
           envkey_LOGO_URL: https://res.cloudinary.com/dh0vegjku/image/upload/v1725488238/frankly_assets/Frankly-Icon-144x144_ex8nky.png
           envkey_SIDEBAR_FOOTER: "Frankly is operated by the Applied Social Media Lab at the Berkman Klein Center for Internet & Society"
-          envkey_COPYRIGHT_STATEMENT: "2024 President and Fellows of Harvard College."
+          envkey_COPYRIGHT_STATEMENT: "President and Fellows of Harvard College."
           envkey_CLOUDINARY_IMAGE_PRESET: ${{ secrets.CLOUDINARY_IMAGE_PRESET }}
           envkey_CLOUDINARY_VIDEO_PRESET: ${{ secrets.CLOUDINARY_VIDEO_PRESET }}
           envkey_CLOUDINARY_DEFAULT_PRESET: ${{ secrets.CLOUDINARY_DEFAULT_PRESET }}
@@ -87,7 +87,7 @@ jobs:
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
 
       - name: Build App
-        if: steps.changes.outputs.client == 'true' 
+        if: steps.changes.outputs.client == 'true'
         id: build_app
         run: flutter build web --release web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
