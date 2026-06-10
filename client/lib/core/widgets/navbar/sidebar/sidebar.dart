@@ -239,7 +239,7 @@ class _SideBarState extends State<SideBar> {
                   TextSpan(text: Environment.sidebarFooter),
                   TextSpan(
                     text:
-                        '.\n© ${DateTime.now().year}${Environment.copyrightStatement}',
+                        '.\n© ${DateTime.now().year} ${Environment.copyrightStatement}',
                   ),
                 ],
                 style: context.theme.textTheme.labelMedium!.copyWith(
