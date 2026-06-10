@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
@@ -389,11 +390,10 @@ class _CommunityDetailWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (community.profileImageUrl != null)
-                      CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(community.profileImageUrl!),
-                        radius: max(min(100, (size - 300) / 2), 40),
-                        backgroundColor: Colors.transparent,
+                      ProxiedImage(
+                        community.profileImageUrl!,
+                        borderRadius: BorderRadius.circular(200),
+                        width: max(min(200, (size - 300)), 80),
                       ),
                     SizedBox(height: 24),
                     Text(
