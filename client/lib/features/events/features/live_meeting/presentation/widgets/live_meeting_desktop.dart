@@ -537,7 +537,7 @@ class EnterMeetingScreen extends StatelessWidget {
                 ActionButton(
                   key: MeetingDialog.enterMeetingPromptButton,
                   onPressed: () => provider.clickedEnterMeeting = true,
-                  text: 'Join Now',
+                  text: context.l10n.joinNow,
                 ),
               ],
             );

@@ -123,6 +123,9 @@
       "EventOnUpdate",
       "EventOnCreate"
     ],
+    "firebase/functions/lib/events/on_event_participant.dart": [
+      "EventParticipantOnWrite"
+    ],
     "firebase/functions/lib/events/calendar/calendar_feed_ics.dart": [
       "CalendarFeedIcs"
     ],
@@ -220,6 +223,7 @@
     "firebase/functions/lib/utils/infra/firestore_event_function.dart": [
       "EventOnUpdate",
       "EventOnCreate",
+      "EventParticipantOnWrite",
       "DiscussionThreadOnDelete",
       "DiscussionThreadCommentOnCreate",
       "DiscussionThreadCommentOnDelete",
@@ -239,6 +243,7 @@
       "DiscussionThreadCommentOnDelete",
       "EventOnUpdate",
       "EventOnCreate",
+      "EventParticipantOnWrite",
       "DiscussionThreadOnDelete",
       "CommunityMembershipOnCreate",
       "PartnerAgreementOnCreate",
@@ -362,6 +367,7 @@
     "event": [
       "EventOnUpdate",
       "EventOnCreate",
+      "EventParticipantOnWrite",
       "DiscussionThreadOnDelete",
       "DiscussionThreadCommentOnCreate",
       "DiscussionThreadCommentOnDelete",

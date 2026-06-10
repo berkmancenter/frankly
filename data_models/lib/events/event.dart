@@ -43,6 +43,7 @@ class Event with _$Event implements SerializeableRequest {
       'presentParticipantCountEstimate';
   static const String kFieldParticipantCountEstimate =
       'participantCountEstimate';
+  static const String kFieldRegistrationCount = 'registrationCount';
   static const String kFieldScheduledTime = 'scheduledTime';
   static const String kFieldIsPublic = 'isPublic';
   static const String kFieldTitle = 'title';
@@ -119,6 +120,11 @@ class Event with _$Event implements SerializeableRequest {
     /// of seconds and update this field due to large numbers of people
     int? participantCountEstimate,
     int? presentParticipantCountEstimate,
+
+    /// Total number of active registered participants. Updated by a Cloud
+    /// Function on each event-participants write. Safe to read for all event
+    /// types without opening the full participants stream.
+    int? registrationCount,
 
     /// Temporary hacky solution to allow us to specify that some breakout rooms that were matched
     /// using match IDs should be recorded.

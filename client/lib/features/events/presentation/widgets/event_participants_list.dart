@@ -22,7 +22,9 @@ class EventPageParticipantsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final participantCount = EventProvider.watch(context).participantCount;
+    final eventProvider = EventProvider.watch(context);
+    final participantCount = eventProvider.participantCount;
+    final registrationCount = eventProvider.registrationCount;
     final maxNumberOfParticipantsToShow =
         responsiveLayoutService.isMobile(context) ? 4 : 6;
     final numberOfParticipantsToShow =
@@ -30,7 +32,7 @@ class EventPageParticipantsList extends StatelessWidget {
 
     return CustomStreamBuilder<List<Participant>>(
       entryFrom: 'event_participants_list.build_participants',
-      stream: EventProvider.watch(context).eventParticipantsStream,
+      stream: eventProvider.eventParticipantsStream,
       showLoading: false,
       builder: (context, participants) {
         final activeParticipants = (participants ?? [])
@@ -40,6 +42,7 @@ class EventPageParticipantsList extends StatelessWidget {
           event: event,
           participantIds: activeParticipants.map((e) => e.id).toList(),
           numberOfIconsToShow: numberOfParticipantsToShow,
+          registrationCount: registrationCount,
         );
       },
     );

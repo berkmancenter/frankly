@@ -77,6 +77,11 @@ mixin _$Event {
   int? get presentParticipantCountEstimate =>
       throw _privateConstructorUsedError;
 
+  /// Total number of active registered participants. Updated by a Cloud
+  /// Function on each event-participants write. Safe to read for all event
+  /// types without opening the full participants stream.
+  int? get registrationCount => throw _privateConstructorUsedError;
+
   /// Temporary hacky solution to allow us to specify that some breakout rooms that were matched
   /// using match IDs should be recorded.
   dynamic get breakoutMatchIdsToRecord => throw _privateConstructorUsedError;
@@ -131,6 +136,7 @@ abstract class $EventCopyWith<$Res> {
       String? externalCommunityStatus,
       int? participantCountEstimate,
       int? presentParticipantCountEstimate,
+      int? registrationCount,
       dynamic breakoutMatchIdsToRecord});
 
   $WaitingRoomInfoCopyWith<$Res>? get waitingRoomInfo;
@@ -187,6 +193,7 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? externalCommunityStatus = freezed,
     Object? participantCountEstimate = freezed,
     Object? presentParticipantCountEstimate = freezed,
+    Object? registrationCount = freezed,
     Object? breakoutMatchIdsToRecord = freezed,
   }) {
     return _then(_value.copyWith(
@@ -318,6 +325,10 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
               presentParticipantCountEstimate
           ? _value.presentParticipantCountEstimate
           : presentParticipantCountEstimate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      registrationCount: freezed == registrationCount
+          ? _value.registrationCount
+          : registrationCount // ignore: cast_nullable_to_non_nullable
               as int?,
       breakoutMatchIdsToRecord: freezed == breakoutMatchIdsToRecord
           ? _value.breakoutMatchIdsToRecord
@@ -458,6 +469,7 @@ abstract class _$$_EventCopyWith<$Res> implements $EventCopyWith<$Res> {
       String? externalCommunityStatus,
       int? participantCountEstimate,
       int? presentParticipantCountEstimate,
+      int? registrationCount,
       dynamic breakoutMatchIdsToRecord});
 
   @override
@@ -517,6 +529,7 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
     Object? externalCommunityStatus = freezed,
     Object? participantCountEstimate = freezed,
     Object? presentParticipantCountEstimate = freezed,
+    Object? registrationCount = freezed,
     Object? breakoutMatchIdsToRecord = freezed,
   }) {
     return _then(_$_Event(
@@ -649,6 +662,10 @@ class __$$_EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res, _$_Event>
           ? _value.presentParticipantCountEstimate
           : presentParticipantCountEstimate // ignore: cast_nullable_to_non_nullable
               as int?,
+      registrationCount: freezed == registrationCount
+          ? _value.registrationCount
+          : registrationCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       breakoutMatchIdsToRecord: freezed == breakoutMatchIdsToRecord
           ? _value.breakoutMatchIdsToRecord!
           : breakoutMatchIdsToRecord,
@@ -699,6 +716,7 @@ class _$_Event extends _Event {
       this.externalCommunityStatus,
       this.participantCountEstimate,
       this.presentParticipantCountEstimate,
+      this.registrationCount,
       this.breakoutMatchIdsToRecord = const []})
       : super._();
 
@@ -796,6 +814,12 @@ class _$_Event extends _Event {
   @override
   final int? presentParticipantCountEstimate;
 
+  /// Total number of active registered participants. Updated by a Cloud
+  /// Function on each event-participants write. Safe to read for all event
+  /// types without opening the full participants stream.
+  @override
+  final int? registrationCount;
+
   /// Temporary hacky solution to allow us to specify that some breakout rooms that were matched
   /// using match IDs should be recorded.
   @override
@@ -804,7 +828,7 @@ class _$_Event extends _Event {
 
   @override
   String toString() {
-    return 'Event(id: $id, status: $status, nullableEventType: $nullableEventType, collectionPath: $collectionPath, communityId: $communityId, templateId: $templateId, creatorId: $creatorId, prerequisiteTemplateId: $prerequisiteTemplateId, creatorDisplayName: $creatorDisplayName, createdDate: $createdDate, scheduledTime: $scheduledTime, scheduledTimeZone: $scheduledTimeZone, title: $title, description: $description, image: $image, isPublic: $isPublic, minParticipants: $minParticipants, maxParticipants: $maxParticipants, agendaItems: $agendaItems, waitingRoomInfo: $waitingRoomInfo, breakoutRoomDefinition: $breakoutRoomDefinition, isLocked: $isLocked, liveStreamInfo: $liveStreamInfo, preEventCardData: $preEventCardData, postEventCardData: $postEventCardData, externalPlatform: $externalPlatform, eventSettings: $eventSettings, durationInMinutes: $durationInMinutes, externalCommunityId: $externalCommunityId, externalCommunityStatus: $externalCommunityStatus, participantCountEstimate: $participantCountEstimate, presentParticipantCountEstimate: $presentParticipantCountEstimate, breakoutMatchIdsToRecord: $breakoutMatchIdsToRecord)';
+      return 'Event(id: $id, status: $status, nullableEventType: $nullableEventType, collectionPath: $collectionPath, communityId: $communityId, templateId: $templateId, creatorId: $creatorId, prerequisiteTemplateId: $prerequisiteTemplateId, creatorDisplayName: $creatorDisplayName, createdDate: $createdDate, scheduledTime: $scheduledTime, scheduledTimeZone: $scheduledTimeZone, title: $title, description: $description, image: $image, isPublic: $isPublic, minParticipants: $minParticipants, maxParticipants: $maxParticipants, agendaItems: $agendaItems, waitingRoomInfo: $waitingRoomInfo, breakoutRoomDefinition: $breakoutRoomDefinition, isLocked: $isLocked, liveStreamInfo: $liveStreamInfo, preEventCardData: $preEventCardData, postEventCardData: $postEventCardData, eventSettings: $eventSettings, durationInMinutes: $durationInMinutes, externalCommunityId: $externalCommunityId, externalCommunityStatus: $externalCommunityStatus, participantCountEstimate: $participantCountEstimate, presentParticipantCountEstimate: $presentParticipantCountEstimate, registrationCount: $registrationCount, breakoutMatchIdsToRecord: $breakoutMatchIdsToRecord)';
   }
 
   @override
@@ -876,6 +900,8 @@ class _$_Event extends _Event {
                     presentParticipantCountEstimate) ||
                 other.presentParticipantCountEstimate ==
                     presentParticipantCountEstimate) &&
+            (identical(other.registrationCount, registrationCount) ||
+                other.registrationCount == registrationCount) &&
             const DeepCollectionEquality().equals(
                 other.breakoutMatchIdsToRecord, breakoutMatchIdsToRecord));
   }
@@ -916,6 +942,7 @@ class _$_Event extends _Event {
         externalCommunityStatus,
         participantCountEstimate,
         presentParticipantCountEstimate,
+        registrationCount,
         const DeepCollectionEquality().hash(breakoutMatchIdsToRecord)
       ]);
 
@@ -974,6 +1001,7 @@ abstract class _Event extends Event {
       final String? externalCommunityStatus,
       final int? participantCountEstimate,
       final int? presentParticipantCountEstimate,
+      final int? registrationCount,
       final dynamic breakoutMatchIdsToRecord}) = _$_Event;
   _Event._() : super._();
 
@@ -1065,6 +1093,12 @@ abstract class _Event extends Event {
   int? get participantCountEstimate;
   @override
   int? get presentParticipantCountEstimate;
+  @override
+
+  /// Total number of active registered participants. Updated by a Cloud
+  /// Function on each event-participants write. Safe to read for all event
+  /// types without opening the full participants stream.
+  int? get registrationCount;
   @override
 
   /// Temporary hacky solution to allow us to specify that some breakout rooms that were matched

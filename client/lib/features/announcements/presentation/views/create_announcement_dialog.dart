@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -19,7 +20,7 @@ class CreateAnnouncementDialog extends StatefulWidget {
   }
 
   @override
-  _CreateAnnouncementDialogState createState() =>
+  State<CreateAnnouncementDialog> createState() =>
       _CreateAnnouncementDialogState();
 }
 
@@ -38,7 +39,7 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
           message: _message,
           emailToMembers: _emailToMembers,
         );
-
+        if (!mounted) return;
         Navigator.of(context).pop();
       },
     );
@@ -53,7 +54,7 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
           children: [
             SizedBox(height: 50),
             HeightConstrainedText(
-              'Create New Announcement',
+              context.l10n.createNewAnnouncement,
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
@@ -61,11 +62,11 @@ class _CreateAnnouncementDialogState extends State<CreateAnnouncementDialog> {
             ),
             SizedBox(height: 12),
             CustomTextField(
-              labelText: 'Enter a title',
+              labelText: context.l10n.enterATitle,
               onChanged: (value) => setState(() => _title = value),
             ),
             CustomTextField(
-              labelText: 'Enter a message',
+              labelText: context.l10n.enterAMessage,
               minLines: 4,
               maxLines: 8,
               keyboardType: TextInputType.multiline,

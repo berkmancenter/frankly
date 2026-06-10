@@ -221,7 +221,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             ),
             if (agendaItem.timeInSeconds != null)
               Container(
-                width: 60,
+                width: 120,
                 alignment: Alignment.centerRight,
                 child: PeriodicBuilder(
                   period: const Duration(seconds: 1),
@@ -235,7 +235,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     } else {
                       negativeTimeRemaining = timeRemaining.isNegative;
                       formattedTime =
-                          timeRemaining.getFormattedTime(showHours: false);
+                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours.abs() > 0);
                     }
                     return HeightConstrainedText(
                       formattedTime,
@@ -607,7 +607,7 @@ class _ReadyButton extends HookWidget {
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      tooltipText: 'Click Next when you’re ready to move on.',
+      tooltipText: context.l10n.clickNextWhenReady,
       color: Colors.transparent,
       type: ActionButtonType.outline,
       textColor: context.theme.colorScheme.primary,
