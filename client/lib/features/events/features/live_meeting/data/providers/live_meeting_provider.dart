@@ -303,13 +303,6 @@ class LiveMeetingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _resetAudioVideoOn() {
-    shouldStartLocalAudioOn =
-        shouldStartLocalAudioOn && eventProvider.event.isHosted;
-    shouldStartLocalVideoOn =
-        shouldStartLocalVideoOn && eventProvider.event.isHosted;
-  }
-
   Stream<List<EventProposal>> get proposals {
     final path =
         firestoreLiveMeetingService.getLiveMeetingPath(eventProvider.event);
@@ -327,8 +320,6 @@ class LiveMeetingProvider with ChangeNotifier {
 
     shouldStartLocalAudioOn = audioDefaultOn;
     shouldStartLocalVideoOn = videoDefaultOn;
-
-    _resetAudioVideoOn();
 
     _liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
       parentDoc: eventPath,
@@ -830,8 +821,6 @@ class LiveMeetingProvider with ChangeNotifier {
       event: eventProvider.event,
       isPresent: true,
     );
-
-    _resetAudioVideoOn();
 
     notifyListeners();
   }
