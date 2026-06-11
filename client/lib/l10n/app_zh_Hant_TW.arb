@@ -136,6 +136,8 @@
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
+    }
+  },
   "@emailAndPasswordMismatch": {
     "placeholders": {
       "appName": {
