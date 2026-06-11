@@ -161,7 +161,7 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
 
     Widget videoView() {
       // For testing, show video view for fake participants
-      if (widget.participant.mediaDeviceService is FakeParticipant ||
+      if (widget.participant is FakeParticipant ||
           videoViewController == null) {
         return Container(color: Colors.orange);
       }

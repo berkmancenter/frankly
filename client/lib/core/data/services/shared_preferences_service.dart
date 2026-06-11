@@ -58,7 +58,7 @@ class SharedPreferencesService {
 
   bool getMirrorCheckComplete() => _preferences.getBool(_kMirrorCheckComplete) ?? false;
   
-  Future<void> setMirrorCheckComplete(bool complete) =>
+  Future<bool> setMirrorCheckComplete(bool complete) =>
       _preferences.setBool(_kMirrorCheckComplete, complete);
 
   String? getLastQueryParams() => _preferences.getString(_lastQueryParameters);

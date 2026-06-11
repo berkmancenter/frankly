@@ -316,7 +316,6 @@ class ConferenceRoom with ChangeNotifier {
         enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
       );
       _room!.addListener(notifyListeners);
-
     } catch (err, stacktrace) {
       loggingService.log('error');
       loggingService.log(stacktrace);
@@ -399,7 +398,7 @@ class ConferenceRoom with ChangeNotifier {
             liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
           }
         } catch (e) {
-          Debug.log('Error toggling video: $e, $_room.localParticipant');
+          loggingService.log('Error toggling video: $e');
         }
       },
       timeout: Duration(seconds: 4),
@@ -458,7 +457,7 @@ class ConferenceRoom with ChangeNotifier {
             liveMeetingProvider.shouldStartLocalAudioOn = updatedEnabledValue;
           }
         } catch (e) {
-          Debug.log('Error toggling audio: $e, $_room.localParticipant');
+          loggingService.log('Error toggling audio: $e');
         }
       },
       timeout: Duration(seconds: 4),
@@ -541,12 +540,12 @@ class ConferenceRoom with ChangeNotifier {
 
       await sharedPreferencesService.setMirrorCheckComplete(true);
     }
-    
+
     if (liveMeetingProvider.audioDefaultOn &&
             !(room.localParticipant?.audioTrackEnabled ?? true) ||
         liveMeetingProvider.videoDefaultOn &&
             !(room.localParticipant?.videoTrackEnabled ?? true)) {
-    await _promptToTurnOnVideo();
+      await _promptToTurnOnVideo();
     }
   }
 
