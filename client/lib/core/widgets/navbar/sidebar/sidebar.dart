@@ -50,8 +50,7 @@ class _SideBarState extends State<SideBar> {
       color: context.theme.colorScheme.surfaceContainerLowest,
       child: LayoutBuilder(
         builder: (context, constraints) {
-            return _buildLayout();
-
+          return _buildLayout();
         },
       ),
     );
@@ -82,12 +81,11 @@ class _SideBarState extends State<SideBar> {
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.only(top: 26, right: 26),
-        child:
-           Semantics(
+        child: Semantics(
           button: true,
           label: context.l10n.close,
           child: IconButton(
-            onPressed: () =>  Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).pop(),
             icon: Icon(
               Icons.close,
               size: 34,
@@ -237,10 +235,11 @@ class _SideBarState extends State<SideBar> {
             padding: const EdgeInsets.fromLTRB(8, 24, 8, 24),
             child: RichText(
               text: TextSpan(
-                children: const [
+                children: [
                   TextSpan(text: Environment.sidebarFooter),
                   TextSpan(
-                    text: '.\n© ${Environment.copyrightStatement}',
+                    text:
+                        '.\n© ${DateTime.now().year} ${Environment.copyrightStatement}',
                   ),
                 ],
                 style: context.theme.textTheme.labelMedium!.copyWith(
