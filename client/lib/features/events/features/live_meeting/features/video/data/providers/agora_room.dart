@@ -408,11 +408,12 @@ class AgoraParticipant with ChangeNotifier {
 
   MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
-  // Audio and video tracks have to be enabled immediately to support mirror;
+  // Audio and video tracks have to be enabled immediately to support mirror check;
   // this does not mean that AV is being streamed out though
   bool audioTrackEnabled = true;
   bool videoTrackEnabled = true;
 
+  // These represent whether audio/video is actually being captured and sent out
   bool audioIsStreaming = false;
   bool videoIsStreaming = false;
 

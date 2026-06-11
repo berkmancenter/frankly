@@ -23,8 +23,7 @@ class MediaDeviceService {
   String? selectedAudioInputId;
   String? selectedVideoInputId;
 
-  // Tracks if user has completed mirror check
-  bool hasCompletedMirrorCheck = false;
+  bool hasCompletedMirrorCheck = sharedPreferencesService.getMirrorCheckComplete();
 
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {

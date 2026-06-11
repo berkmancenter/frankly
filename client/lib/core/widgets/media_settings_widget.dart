@@ -227,7 +227,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     return DropdownMenuItem<String>(
                       value: device.deviceId,
                       child: Text(
-                         device.deviceId!,
+                         device.label!,
                         style: context.theme.textTheme.titleMedium,
                       ),
                     );
@@ -449,7 +449,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   );
                                 }
 
-                                // If mirror check,  update status,dismiss this dialog
+                                // If mirror check, update status,dismiss this dialog
                                 if (widget.isMirrorCheck && context.mounted) {
                                   _mediaService.hasCompletedMirrorCheck = true;
                                   Navigator.of(context).pop();

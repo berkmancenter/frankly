@@ -42,7 +42,6 @@ class _ControlBarState extends State<ControlBar> {
       LiveMeetingProvider.read(context).conferenceRoom!;
 
   Widget _buildVideoToggle() {
-    
     return _IconButton(
       onTap: () => AudioVideoErrorDialog.showOnError(
         context,
@@ -94,7 +93,9 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   Widget _buildControlWidgets() {
-    final enabled = !_liveMeetingProvider.audioTemporarilyDisabled;
+    // Disable the toggles if audio is temporarily disabled for the user or if they haven't completed the mirror check
+    final enabled = !_liveMeetingProvider.audioTemporarilyDisabled &&
+        _conferenceRoomRead.mediaDeviceService?.hasCompletedMirrorCheck == true;
     final isMobile = responsiveLayoutService.isMobile(context);
     final double spacerWidth = isMobile ? 6 : 12;
     bool showTalkingTimer =
@@ -121,7 +122,7 @@ class _ControlBarState extends State<ControlBar> {
           icon: _conferenceRoom.audioIsStreaming
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
-          iconColor: _conferenceRoom.audioIsStreaming 
+          iconColor: _conferenceRoom.audioIsStreaming
               ? context.theme.colorScheme.onPrimary
               : context.theme.colorScheme.errorContainer,
         ),
