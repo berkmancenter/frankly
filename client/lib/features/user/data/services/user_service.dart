@@ -206,15 +206,30 @@ class UserService with ChangeNotifier {
     _returningUserTimer?.cancel();
 
     _setCurrentUser(user);
+
+    // If the user is unverified, reload before gating on emailVerified so that
+    // a verification completed on Firebase's hosted action page (which processes
+    // the code itself, then redirects to continueUrl without the oobCode) is
+    // detected immediately rather than requiring the polling timer to catch it.
+    if (!user.isAnonymous && !user.emailVerified) {
+      try {
+        await _firebaseAuth.currentUser?.reload();
+      } catch (_) {}
+    }
+
+    // Set signedIn immediately so the UI (email verification gate, etc.) is
+    // not blocked waiting for the Firestore call below. Brave's shields block
+    // Firestore's WebChannel, which can cause createCurrentUserInfoIfNotExists
+    // to hang indefinitely if we await it before notifying.
+    _signInState = SignInState.signedIn;
+    notifyListeners();
+
     if (!user.isAnonymous) {
       await createCurrentUserInfoIfNotExists(
         displayName: _emailRegistrationDisplayName,
       );
+      notifyListeners();
     }
-
-    _signInState = SignInState.signedIn;
-
-    notifyListeners();
   }
 
   PublicUserInfo getDefaultPublicUserInfo({String? displayName}) {
