@@ -73,6 +73,7 @@ jobs:
           envkey_CLOUDINARY_DEFAULT_PRESET: ${{ secrets.CLOUDINARY_DEFAULT_PRESET }}
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
+          envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
 
       - name: Build the Flutter App
         run: flutter build web --release --source-maps --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
