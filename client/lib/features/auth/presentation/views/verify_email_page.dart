@@ -154,7 +154,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 400),
+          constraints: const BoxConstraints(maxWidth: 520),
           child: ListView(
             padding: const EdgeInsets.all(40) + const EdgeInsets.only(top: 30),
             shrinkWrap: true,
@@ -165,7 +165,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   label: context.l10n.franklyLogo,
                   child: Image.asset(
                     AppAsset.kLogoPng.path,
-                    height: 60,
+                    height: 90,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -185,7 +185,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   style: context.theme.textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 16),
                 Text(
                   context.l10n.verificationLinkExpiresIn,
                   style: context.theme.textTheme.bodyMedium?.copyWith(
