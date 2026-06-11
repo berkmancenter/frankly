@@ -408,11 +408,12 @@ class AgoraParticipant with ChangeNotifier {
 
   MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
-  // Audio and video tracks have to be enabled immediately to support mirror;
+  // Audio and video tracks have to be enabled immediately to support mirror check;
   // this does not mean that AV is being streamed out though
   bool audioTrackEnabled = true;
   bool videoTrackEnabled = true;
 
+  // These represent whether audio/video is actually being captured and sent out
   bool audioIsStreaming = false;
   bool videoIsStreaming = false;
 
@@ -443,10 +444,7 @@ class AgoraParticipant with ChangeNotifier {
       if (deviceId == null) {
         throw Exception('No video devices found.');
       }
-      await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
-      final id = await _rtcEngine.getVideoDeviceManager().getDevice();
-    loggingService
-        .log('Set id to $id.');
+      await _rtcEngine.getVideoDeviceManager().setDevice(deviceId); 
     } catch (e) {
       print('Error setting device ID $deviceId. $e');
     }

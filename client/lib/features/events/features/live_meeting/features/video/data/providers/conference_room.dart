@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/core/data/services/shared_preferences_service.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
@@ -18,6 +19,7 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart' hide Participant;
+import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -94,6 +96,7 @@ class ConferenceRoom with ChangeNotifier {
   final AgendaProvider agendaProvider;
   final CommunityProvider communityProvider;
   final MeetingGuideCardStore meetingGuideCardModel;
+
   final String token;
   final String roomName;
 
@@ -156,9 +159,13 @@ class ConferenceRoom with ChangeNotifier {
   Future<AgoraRoom> get connectionFuture => _completer.future;
   bool flashEnabled = false;
 
-  bool get audioIsStreaming => _room?.localParticipant?.audioIsStreaming ?? false;
+  bool get audioEnabled => _room?.localParticipant?.audioTrackEnabled ?? false;
+  bool get audioIsStreaming =>
+      _room?.localParticipant?.audioIsStreaming ?? false;
 
-  bool get videoIsStreaming => _room?.localParticipant?.videoIsStreaming ?? false;
+  bool get videoEnabled => _room?.localParticipant?.videoTrackEnabled ?? false;
+  bool get videoIsStreaming =>
+      _room?.localParticipant?.videoIsStreaming ?? false;
 
   List<AgoraParticipant> get handRaisedParticipants => _orderedParticipants
       .where((p) => meetingGuideCardModel.getHandRaisedTime(p.identity) != null)
@@ -291,18 +298,11 @@ class ConferenceRoom with ChangeNotifier {
   }
 
   Future<void> connect() async {
-    void join() async {
-      await _room!.connect(
-        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
-        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
-      );
-      _room!.addListener(notifyListeners);
-    }
-
     Debug.log('ConferenceRoom.connect()');
 
     try {
       hasStartedConnecting = true;
+
       _room = AgoraRoom(
         channelName: roomName,
         token: token,
@@ -311,25 +311,12 @@ class ConferenceRoom with ChangeNotifier {
         conferenceRoom: this,
       );
 
-      // Before connecting, show mirror check dialog. if hosted event
-      // if (liveMeetingProvider.eventProvider.event.isHosted) {
-      //   // mediaDeviceService.
-      //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //     await showDialog(
-      //       context: navigatorState.context,
-      //       builder: (context) {
-      //         return MediaSettingsWidget(
-      //           conferenceRoom: this,
-      //           shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
-      //           isMirrorCheck: true,
-      //         );
-      //       },
-      //     );
-      //     join();
-      //   });
-      // } else {
-      join();
-      // }
+      await _room!.connect(
+        enableAudio: liveMeetingProvider.shouldStartLocalAudioOn,
+        enableVideo: liveMeetingProvider.shouldStartLocalVideoOn,
+      );
+      _room!.addListener(notifyListeners);
+
     } catch (err, stacktrace) {
       loggingService.log('error');
       loggingService.log(stacktrace);
@@ -403,10 +390,11 @@ class ConferenceRoom with ChangeNotifier {
     await _videoTogglingLock.synchronized(
       () async {
         try {
-        if (mediaDeviceService?.hasCompletedMirrorCheck ?? false){
-          await _room!.localParticipant!.enableVideo(
-            setEnabled: updatedEnabledValue,
-          );}
+          if (mediaDeviceService?.hasCompletedMirrorCheck ?? false) {
+            await _room!.localParticipant!.enableVideo(
+              setEnabled: updatedEnabledValue,
+            );
+          }
           if (updateProvider) {
             liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
           }
@@ -449,11 +437,10 @@ class ConferenceRoom with ChangeNotifier {
 
         try {
           final audioEnableFutures = [
-            if(mediaDeviceService?.hasCompletedMirrorCheck ?? false)
+            if (mediaDeviceService?.hasCompletedMirrorCheck ?? false)
               _room!.localParticipant!.enableAudio(
                 setEnabled: updatedEnabledValue,
               ),
-
             if ((liveMeetingProvider
                         .eventProvider.selfParticipant?.muteOverride ??
                     false) &&
@@ -538,29 +525,29 @@ class ConferenceRoom with ChangeNotifier {
     notifyListeners();
     _completer.complete(room);
 
-//  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    final context = navigatorState.context;
-    // await liveMeetingProvider.setAudioTemporarilyDisabled(
-    //   disabled: true,
-    // );
-    if (!context.mounted) return;
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return MediaSettingsWidget(
-          conferenceRoom: this,
-          shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
-          isMirrorCheck: true,
-        );
-      },
-    );
+    // Show mirror check if not completed before
+    if (!sharedPreferencesService.getMirrorCheckComplete()) {
+      await showDialog(
+        barrierDismissible: false,
+        context: navigatorState.context,
+        builder: (context) {
+          return MediaSettingsWidget(
+            conferenceRoom: this,
+            shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
+            isMirrorCheck: true,
+          );
+        },
+      );
 
-    // if (liveMeetingProvider.audioDefaultOn &&
-    //         !(room.localParticipant?.audioTrackEnabled ?? true) ||
-    //     liveMeetingProvider.videoDefaultOn &&
-    //         !(room.localParticipant?.videoTrackEnabled ?? true)) {
-      await _promptToTurnOnVideo();
-    // }
+      await sharedPreferencesService.setMirrorCheckComplete(true);
+    }
+    
+    if (liveMeetingProvider.audioDefaultOn &&
+            !(room.localParticipant?.audioTrackEnabled ?? true) ||
+        liveMeetingProvider.videoDefaultOn &&
+            !(room.localParticipant?.videoTrackEnabled ?? true)) {
+    await _promptToTurnOnVideo();
+    }
   }
 
   Future<void> _promptToTurnOnVideo() async {

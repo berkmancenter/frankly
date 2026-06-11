@@ -74,7 +74,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     ui_web.platformViewRegistry.registerViewFactory(
       _viewType,
       (int viewId) => _videoElement,
-
     );
   }
 
@@ -214,7 +213,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   ),
                 )
               : DropdownButton<String>(
-                
                   // Prevent dropdown errors by first checking that the selected
                   // device still exists in available inputs.
                   value: _mediaService.videoInputs.any(
@@ -227,7 +225,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     return DropdownMenuItem<String>(
                       value: device.deviceId,
                       child: Text(
-                         device.deviceId!,
+                        device.label!,
                         style: context.theme.textTheme.titleMedium,
                       ),
                     );
@@ -355,140 +353,127 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   ActionButton(
                     text: widget.isMirrorCheck
                         ? 'Looks Good!'
-                        : context.l10n.save,
-                    onPressed: ((!widget.isMirrorCheck &&
-                            (_mediaService.selectedVideoInputId ==
-                                    initialVideoDeviceId &&
-                                _mediaService.selectedAudioInputId ==
-                                    initialAudioDeviceId)))
-                        ? null
-                        : () async {
-                            final savedInitialVideoDeviceId =
-                                initialVideoDeviceId;
-                            final savedInitialAudioId = initialAudioDeviceId;
+                        : '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
+                    onPressed: () async {
+                      final savedInitialVideoDeviceId = initialVideoDeviceId;
+                      final savedInitialAudioId = initialAudioDeviceId;
 
-                            try {
-                              if (_mediaService.selectedVideoInputId !=
-                                  initialVideoDeviceId || widget.isMirrorCheck) {
-                                setState(() {
-                                  isLoadingCameraChange = true;
-                                });
+                      try {
+                        if (_mediaService.selectedVideoInputId !=
+                                initialVideoDeviceId ||
+                            widget.isMirrorCheck) {
+                          setState(() {
+                            isLoadingCameraChange = true;
+                          });
 
-                                // // For mirror check, we want to update video device ID from state since the value may not have changed
-                                if(widget.isMirrorCheck) {
-                                  _mediaService.selectedVideoInputId = initialVideoDeviceId;
-                                }
+                          // Turn the video off and on again to ensure a successful device update.
+                          await widget.conferenceRoom.toggleVideoEnabled(
+                            setEnabled: false,
+                          );
 
-                                // Turn the video off and on again to ensure a successful device update.
-                                await widget.conferenceRoom.toggleVideoEnabled(
-                                  setEnabled: false,
-                                );
+                          if (!userVideoEnabled ||
+                              !widget.shouldShowVideoPreview) {
+                            // If user's video isn't on or we don't show
+                            // a video preview, we still need to attempt
+                            // an Agora device update to catch any errors.
+                            // Attempt to update the Agora
+                            // device to catch any errors.
+                            await widget.conferenceRoom.room?.localParticipant
+                                ?.updateAgoraVideoDevice();
+                          }
 
-                                if (!userVideoEnabled ||
-                                    !widget.shouldShowVideoPreview) {
-                                  // If user's video isn't on or we don't show
-                                  // a video preview, we still need to attempt
-                                  // an Agora device update to catch any errors.
-                                  // Attempt to update the Agora
-                                  // device to catch any errors.
-                                  await widget
-                                      .conferenceRoom.room?.localParticipant
-                                      ?.updateAgoraVideoDevice();
-                                }
+                          if (userVideoEnabled) {
+                            await widget.conferenceRoom.toggleVideoEnabled(
+                              setEnabled: true,
+                            );
+                          }
+                          initialVideoDeviceId =
+                              _mediaService.selectedVideoInputId;
 
-                                if (userVideoEnabled) {
-                                  await widget.conferenceRoom
-                                      .toggleVideoEnabled(
-                                    setEnabled: true,
-                                  );
-                                }
-                                initialVideoDeviceId =
-                                    _mediaService.selectedVideoInputId;
+                          if (widget.shouldShowVideoPreview) {
+                            // Re-enable the preview after the update.
+                            await updatePreviewWidget();
+                          }
+                          if (context.mounted) {
+                            showRegularToast(
+                              context,
+                              context.l10n.videoDeviceUpdated,
+                              toastType: ToastType.success,
+                            );
+                          }
+                        }
+                        if (widget.isMirrorCheck ||
+                            _mediaService.selectedAudioInputId !=
+                                initialAudioDeviceId) {
+                          await _mediaService.selectAudioDevice(
+                            deviceId: _mediaService.selectedAudioInputId!,
+                            shouldUpdatePreview: widget.shouldShowVideoPreview,
+                          );
+                          await widget.conferenceRoom.toggleAudioEnabled(
+                            setEnabled: false,
+                          );
+                          if (userAudioEnabled) {
+                            await widget.conferenceRoom.toggleAudioEnabled(
+                              setEnabled: true,
+                            );
+                          } else {
+                            // Still need to attempt to update the Agora
+                            // device to catch any errors.
+                            await widget.conferenceRoom.room?.localParticipant
+                                ?.updateAgoraAudioDevice();
+                          }
+                          initialAudioDeviceId =
+                              _mediaService.selectedAudioInputId;
+                          if (context.mounted) {
+                            showRegularToast(
+                              context,
+                              context.l10n.audioDeviceUpdated,
+                              toastType: ToastType.success,
+                            );
+                          }
 
-                                if (widget.shouldShowVideoPreview) {
-                                  // Re-enable the preview after the update.
-                                  await updatePreviewWidget();
-                                }
-                                if (context.mounted) {
-                                  showRegularToast(
-                                    context,
-                                    context.l10n.videoDeviceUpdated,
-                                    toastType: ToastType.success,
-                                  );
-                                }
-                              }
-                              if (widget.isMirrorCheck || _mediaService.selectedAudioInputId !=
-                                  initialAudioDeviceId) {
-                                await _mediaService.selectAudioDevice(
-                                  deviceId: _mediaService.selectedAudioInputId!,
-                                  shouldUpdatePreview:
-                                      widget.shouldShowVideoPreview,
-                                );
-                                await widget.conferenceRoom.toggleAudioEnabled(
-                                  setEnabled: false,
-                                );
-                                if (userAudioEnabled) {
-                                  await widget.conferenceRoom
-                                      .toggleAudioEnabled(
-                                    setEnabled: true,
-                                  );
-                                } else {
-                                  // Still need to attempt to update the Agora
-                                  // device to catch any errors.
-                                  await widget
-                                      .conferenceRoom.room?.localParticipant
-                                      ?.updateAgoraAudioDevice();
-                                }
-                                initialAudioDeviceId =
-                                    _mediaService.selectedAudioInputId;
-                                if (context.mounted) {
-                                  showRegularToast(
-                                    context,
-                                    context.l10n.audioDeviceUpdated,
-                                    toastType: ToastType.success,
-                                  );
-                                }
+                          // If mirror check, update status
+                          if (widget.isMirrorCheck) {
+                            _mediaService.hasCompletedMirrorCheck = true;
+                          }
+                        }
 
-                                // If mirror check,  update status,dismiss this dialog
-                                if (widget.isMirrorCheck && context.mounted) {
-                                  _mediaService.hasCompletedMirrorCheck = true;
-                                  Navigator.of(context).pop();
-                                }
-                              }
-                            } catch (e) {
-                              Debug.log('Error saving device settings: $e');
-                              if (!context.mounted) return;
-                              // Reset to initial values if save fails
-                              _mediaService.selectedVideoInputId =
-                                  savedInitialVideoDeviceId;
-                              initialAudioDeviceId = savedInitialVideoDeviceId;
-                              initialAudioDeviceId = savedInitialAudioId;
-                              if (userAudioEnabled) {
-                                await widget.conferenceRoom.toggleAudioEnabled(
-                                  setEnabled: true,
-                                );
-                              }
-                              if (userVideoEnabled) {
-                                await widget.conferenceRoom.toggleVideoEnabled(
-                                  setEnabled: true,
-                                );
-                              }
-                              if (context.mounted) {
-                                showRegularToast(
-                                  context,
-                                  context.l10n.avErrorSaveDeviceSettings,
-                                  toastType: ToastType.failed,
-                                );
-                              }
-                              if (widget.shouldShowVideoPreview) {
-                                // Re-enable the preview.
-                                await updatePreviewWidget();
-                              }
-                            }
-                            setState(() {
-                              isLoadingCameraChange = false;
-                            });
-                          },
+                        if (!context.mounted) return;
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        Debug.log('Error saving device settings: $e');
+                        if (!context.mounted) return;
+                        // Reset to initial values if save fails
+                        _mediaService.selectedVideoInputId =
+                            savedInitialVideoDeviceId;
+                        initialAudioDeviceId = savedInitialVideoDeviceId;
+                        initialAudioDeviceId = savedInitialAudioId;
+                        if (userAudioEnabled) {
+                          await widget.conferenceRoom.toggleAudioEnabled(
+                            setEnabled: true,
+                          );
+                        }
+                        if (userVideoEnabled) {
+                          await widget.conferenceRoom.toggleVideoEnabled(
+                            setEnabled: true,
+                          );
+                        }
+                        if (context.mounted) {
+                          showRegularToast(
+                            context,
+                            context.l10n.avErrorSaveDeviceSettings,
+                            toastType: ToastType.failed,
+                          );
+                        }
+                        if (widget.shouldShowVideoPreview) {
+                          // Re-enable the preview.
+                          await updatePreviewWidget();
+                        }
+                      }
+                      setState(() {
+                        isLoadingCameraChange = false;
+                      });
+                    },
                   ),
                 ],
               ),

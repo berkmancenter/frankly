@@ -426,7 +426,10 @@ class _ParticipantWidgetViewState extends State<_ParticipantWidgetView> {
               child: Container(
                 padding: const EdgeInsets.all(8),
                 alignment: Alignment.center,
-                child: ParticipantGridLayout(),
+                // Only show the grid if mirror check is complete
+                child: widget.conferenceRoom.mediaDeviceService?.hasCompletedMirrorCheck == true
+                    ? ParticipantGridLayout()
+                    : const SizedBox.shrink(),
               ),
             ),
             if (showGuideCardLayout)
