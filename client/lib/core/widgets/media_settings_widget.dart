@@ -3,6 +3,7 @@ import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
+import 'package:client/features/events/features/live_meeting/features/video/utils/debug.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,11 @@ class MediaSettingsWidget extends StatefulWidget {
     super.key,
     required this.conferenceRoom,
     required this.shouldShowVideoPreview,
+    this.isMirrorCheck = false,
   });
-
   final ConferenceRoom conferenceRoom;
   final bool shouldShowVideoPreview;
+  final bool isMirrorCheck;
 
   @override
   State<MediaSettingsWidget> createState() => _MediaSettingsWidgetState();
@@ -34,6 +36,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   String? initialAudioDeviceId;
   String? initialVideoDeviceId;
+
+  String? currentAudioDeviceId;
+  String? currentVideoDeviceId;
+
   // Used to ensure A/V maintains the same state (e.g. person stays muted even if
   // they change devices).
   bool userVideoEnabled = false;
@@ -68,6 +74,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     ui_web.platformViewRegistry.registerViewFactory(
       _viewType,
       (int viewId) => _videoElement,
+
     );
   }
 
@@ -77,8 +84,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
     initialVideoDeviceId = _mediaService.selectedVideoInputId;
 
-    userAudioEnabled = widget.conferenceRoom.audioEnabled;
-    userVideoEnabled = widget.conferenceRoom.videoEnabled;
+    userAudioEnabled = widget.conferenceRoom.audioIsStreaming;
+    userVideoEnabled = widget.conferenceRoom.videoIsStreaming;
 
     await updatePreviewWidget();
     if (!mounted) return;
@@ -123,6 +130,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (widget.isMirrorCheck)
+            Text(
+              "Let's check your camera and mic!",
+              style: context.theme.textTheme.headlineSmall,
+            ),
           Text(
             context.l10n.audioInputDevice,
             style: context.theme.textTheme.titleMedium,
@@ -202,6 +214,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   ),
                 )
               : DropdownButton<String>(
+                
                   // Prevent dropdown errors by first checking that the selected
                   // device still exists in available inputs.
                   value: _mediaService.videoInputs.any(
@@ -214,7 +227,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     return DropdownMenuItem<String>(
                       value: device.deviceId,
                       child: Text(
-                        device.label!,
+                         device.deviceId!,
                         style: context.theme.textTheme.titleMedium,
                       ),
                     );
@@ -243,6 +256,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     if (val == null) return;
                     setState(() {
                       isLoading = true;
+                      currentVideoDeviceId = val;
                     });
                     await _mediaService.selectVideoDevice(
                       deviceId: val,
@@ -339,11 +353,14 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     ),
                   const SizedBox(height: 16),
                   ActionButton(
-                    text: context.l10n.save,
-                    onPressed: (_mediaService.selectedVideoInputId ==
-                                initialVideoDeviceId &&
-                            _mediaService.selectedAudioInputId ==
-                                initialAudioDeviceId)
+                    text: widget.isMirrorCheck
+                        ? 'Looks Good!'
+                        : context.l10n.save,
+                    onPressed: ((!widget.isMirrorCheck &&
+                            (_mediaService.selectedVideoInputId ==
+                                    initialVideoDeviceId &&
+                                _mediaService.selectedAudioInputId ==
+                                    initialAudioDeviceId)))
                         ? null
                         : () async {
                             final savedInitialVideoDeviceId =
@@ -352,10 +369,15 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
                             try {
                               if (_mediaService.selectedVideoInputId !=
-                                  initialVideoDeviceId) {
+                                  initialVideoDeviceId || widget.isMirrorCheck) {
                                 setState(() {
                                   isLoadingCameraChange = true;
                                 });
+
+                                // // For mirror check, we want to update video device ID from state since the value may not have changed
+                                if(widget.isMirrorCheck) {
+                                  _mediaService.selectedVideoInputId = initialVideoDeviceId;
+                                }
 
                                 // Turn the video off and on again to ensure a successful device update.
                                 await widget.conferenceRoom.toggleVideoEnabled(
@@ -395,7 +417,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   );
                                 }
                               }
-                              if (_mediaService.selectedAudioInputId !=
+                              if (widget.isMirrorCheck || _mediaService.selectedAudioInputId !=
                                   initialAudioDeviceId) {
                                 await _mediaService.selectAudioDevice(
                                   deviceId: _mediaService.selectedAudioInputId!,
@@ -426,8 +448,15 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                     toastType: ToastType.success,
                                   );
                                 }
+
+                                // If mirror check,  update status,dismiss this dialog
+                                if (widget.isMirrorCheck && context.mounted) {
+                                  _mediaService.hasCompletedMirrorCheck = true;
+                                  Navigator.of(context).pop();
+                                }
                               }
                             } catch (e) {
+                              Debug.log('Error saving device settings: $e');
                               if (!context.mounted) return;
                               // Reset to initial values if save fails
                               _mediaService.selectedVideoInputId =

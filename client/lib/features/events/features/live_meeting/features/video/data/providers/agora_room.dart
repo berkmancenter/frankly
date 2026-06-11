@@ -57,7 +57,7 @@ class AgoraRoom with ChangeNotifier {
   final Map<int, bool> _videoMutedState = {};
 
   final MediaDeviceService mediaDeviceService = MediaDeviceService();
-
+  
   final _dominantSpeakerStream = BehaviorSubject<AgoraParticipant?>();
   BehaviorSubject<AgoraParticipant?> get dominantSpeakerStream =>
       _dominantSpeakerStream;
@@ -408,10 +408,17 @@ class AgoraParticipant with ChangeNotifier {
 
   MediaDeviceService get mediaDeviceService => MediaDeviceService();
 
+  // Audio and video tracks have to be enabled immediately to support mirror;
+  // this does not mean that AV is being streamed out though
   bool audioTrackEnabled = true;
+  bool videoTrackEnabled = true;
+
+  bool audioIsStreaming = false;
+  bool videoIsStreaming = false;
+
+
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
-  bool videoTrackEnabled = true;
 
   html.MediaStreamTrack? get screenshareTrack => null;
 
@@ -437,6 +444,9 @@ class AgoraParticipant with ChangeNotifier {
         throw Exception('No video devices found.');
       }
       await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
+      final id = await _rtcEngine.getVideoDeviceManager().getDevice();
+    loggingService
+        .log('Set id to $id.');
     } catch (e) {
       print('Error setting device ID $deviceId. $e');
     }
@@ -460,6 +470,7 @@ class AgoraParticipant with ChangeNotifier {
       );
     }
     audioTrackEnabled = setEnabled;
+    audioIsStreaming = setEnabled;
   }
 
   Future<void> enableVideo({required bool setEnabled}) async {
@@ -485,6 +496,7 @@ class AgoraParticipant with ChangeNotifier {
     }
 
     videoTrackEnabled = setEnabled;
+    videoIsStreaming = setEnabled;
   }
 
   startScreenShare() {
