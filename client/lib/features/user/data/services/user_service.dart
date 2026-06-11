@@ -50,7 +50,7 @@ class UserService with ChangeNotifier {
     final continueUrl =
         html.window.location.origin + (html.window.location.pathname ?? '/');
     await _currentUser?.sendEmailVerification(
-      ActionCodeSettings(url: continueUrl, handleCodeInApp: false),
+      ActionCodeSettings(url: continueUrl, handleCodeInApp: true),
     );
   }
 
@@ -64,7 +64,7 @@ class UserService with ChangeNotifier {
         html.window.location.origin + (html.window.location.pathname ?? '/');
     await _currentUser?.verifyBeforeUpdateEmail(
       newEmail,
-      ActionCodeSettings(url: continueUrl, handleCodeInApp: false),
+      ActionCodeSettings(url: continueUrl, handleCodeInApp: true),
     );
   }
 
