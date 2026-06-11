@@ -1,11 +1,11 @@
 import 'package:client/styles/styles.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/config/environment.dart';
-import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -301,7 +301,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
 
   Future<void> _resetPassword() async {
     await authMessageOnError(
-      () => userService.resetPassword(email: _emailController.text),
+      () => context.read<UserService>().resetPassword(email: _emailController.text),
       errorCallback: (error, msg) => {
         if (msg == 'Email must be entered to reset password.')
           setState(() {
@@ -560,7 +560,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ),
               ),
             SizedBox(height: 9),
-            if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
+            if (_formError.isNotEmpty) AccountErrorMessage(errorCode: _formError),
             if (_formMessage.isNotEmpty)
               Text(
                 _formMessage,
