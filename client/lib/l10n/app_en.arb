@@ -96,6 +96,11 @@
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
+  "@emailAndPasswordMismatch": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
     }
   },
   "@enterCategoryNum": {
@@ -137,6 +142,11 @@
   "@kickOutUser": {
     "placeholders": {
       "displayName": {}
+    }
+  },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {}
     }
   },
   "@manageJoinRequests": {
@@ -227,11 +237,6 @@
       }
     }
   },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {}
-    }
-  },
   "@termsAgreementPrefix": {
     "placeholders": {
       "appName": {}
@@ -305,6 +310,7 @@
   "addToCalendar": "Add to calendar",
   "admin": "Admin",
   "agendaItemsWereRemoved": "Agenda items were removed",
+  "adminBilling": "Admin Billing",
   "agendaItemWasDeleted": "Agenda item was deleted",
   "agendaItemWasDuplicated": "Agenda item was duplicated!",
   "agendaItemWasSaved": "Agenda item was saved",
@@ -326,6 +332,7 @@
   "appTitleUnsubscribe": "{appName} - Unsubscribe",
   "appTitleUserSettings": "{appName} - User Settings",
   "appTitleWelcome": "{appName} - Welcome",
+  "and": "and",
   "areYouSure": "Are you sure?",
   "areYouSureYouWantToDeleteMedia": "Are you sure you want to delete media?",
   "areYouSureYouWantToRefreshTheTemplate": "Are you sure you want to refresh the template?",
@@ -412,6 +419,7 @@
   "congratulations": "Congratulations!",
   "contactEmail": "Contact email",
   "continueAfterVerification": "I've Verified My Email",
+  "contactUs": "Contact us",
   "continueButton": "Continue",
   "copiedToClipboard": "Copied to clipboard",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
@@ -443,6 +451,7 @@
   "deletePrerequisiteTemplate": "Delete prerequisite template",
   "deleteTitleAgendaItem": "Delete $title agenda item",
   "devSettings": "Developer Settings",
+  "discard": "Discard",
   "displayIdWarning": "URL display name can only contain letters, numbers, and dashes.",
   "donate": "Donate",
   "download": "Download",
@@ -462,6 +471,8 @@
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
   "emailNotYetVerified": "Your email hasn't been verified yet. Please check your inbox and click the verification link.",
   "emailUpdatedResent": "Verification email sent to {email}.",
+  "emailAndPasswordMismatch": "Your email and password combination don’t match a {appName} account.",
+  "emailAndPasswordMismatchCheck": "You can check what you entered and try again.",
   "endBreakoutRooms": "End Breakout Rooms",
   "endBreakouts": "End Breakouts",
   "endTime": "End Time",
@@ -472,6 +483,7 @@
   "enterEvent": "Enter Event",
   "enterHeadline": "Enter Headline",
   "enterImageTitle": "Enter Image title",
+  "enterMessage": "Enter message",
   "enterQuestionWithNumber": "Enter Question {number}",
   "enterRoomNumber": "Ex: 2",
   "enterValidCommunityUrl": "Please enter a valid community URL",
@@ -510,6 +522,7 @@
   "eventWasNotEntered": "Event was not entered.",
   "ex2": "Ex: 2",
   "exTwo": "Ex: 2",
+  "explorePlans": "Explore Plans",
   "facebookUrl": "Facebook URL",
   "facilitator": "Facilitator",
   "fakeParticipantCount": "Fake Participant Count",
@@ -518,8 +531,12 @@
   "finish": "Finish",
   "floatingChat": "Floating Chat",
   "followCommunityButton": "Follow Community Button",
-  "forgotPassword": "Forgot Password?",
-  "forgotYourPassword": "Forgot your password?",
+  "forgotPasswordPrefix": "Forgot your password?",
+  "forgotPasswordEnterEmail": "Enter your email",
+  "forgotPasswordSuffix": "reset your password",
+  "forgotPasswordThen": "then ",
+  "forgotAccountEmailOrNeedHelp": "Forgot your account email or need other help signing in?",
+  "forgotEmail": "Forgot the email associated with your account?",
   "franklyLogo": "Frankly Logo",
   "galleryView": "Gallery View",
   "getCustomColors": "Get custom colors ",
@@ -543,12 +560,14 @@
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
   "imageUrlNotSet": "(Image URL is not set.)",
+  "incorrectEmailOrPassword": "Incorrect email or password",
   "instagramUrl": "Instagram URL",
   "instantMeeting": "Instant Meeting",
   "insteadSuffix": " instead.",
   "introBeforeBreakouts": "About {duration} of intro before breakout rooms",
   "introductionContent": "_Introduce yourselves!  Each take one minute to answer one of the following questions._\n\n* What's something you did recently that was a lot of fun?\n* Who is your favorite cartoon character and why?\n* What's one thing you wish to accomplish before you die?\n* What movie did you NOT like?\n",
   "introductions": "Introductions",
+  "invalidEmail": "Invalid email",
   "items": "Items",
   "joinCommunity": "Join {communityName}?",
   "joinEvent": "Join Event",
@@ -560,13 +579,17 @@
   "leave": "Leave",
   "length": "Length",
   "lightColorHex": "Light Color HEX#",
+  "linkCopied": "Link Copied!",
   "linkedinUrl": "LinkedIn URL",
   "links": "Links",
   "livestream": "Livestream",
   "loading": "Loading",
   "locked": "Locked",
   "loggingIn": "logging in",
+  "logIntoApp": "Log into {appName}",
+  "logInto": "Log into",
   "login": "Login",
+  "logInWithGoogle": "Log in with Google",
   "logo": "Logo",
   "logout": "Logout",
   "loopVideo": "Loop Video",
@@ -619,6 +642,7 @@
   "noDevicesFound": "No devices found.",
   "noEventsFound": "No events found",
   "noItems": "No {name}",
+  "noLetThemStay": "No, let them stay",
   "noMatchingMembersFound": "No matching members found.",
   "noMembersFoundToExport": "No members found to export.",
   "none": "None",
@@ -629,6 +653,11 @@
   "noRoomsFound": "No rooms found.",
   "noRoomsNeedHelp": "No rooms need help.",
   "notAuthorized": "Sorry, you aren't authorized to do that.",
+  "noSkip": "No, skip",
+  "noUpcomingEventsMessage": "You haven't registered for any upcoming events.",
+  "notAuthorized": "Sorry, you aren't authorized to do that.",
+  "notNow": "Not now",
+  "notUserSignUp": "Don't have an account?",
   "notifications": "Notifications",
   "notifyMeAboutNewAnnouncements": "Notify me about new announcements",
   "notifyMeAboutNewEvents": "Notify me about new events",
@@ -762,6 +791,7 @@
   "save": "Save",
   "saveAgendaItem": "Save Agenda Item",
   "saved": "Saved",
+  "saveChangesQuestion": "Save changes?",
   "saveEvent": "Save Event",
   "saveSettings": "Save Settings",
   "search": "Search",
@@ -799,6 +829,7 @@
   "settings": "Settings",
   "settingsFor": "Settings for {communityName}",
   "setYourPayeeAccountDetails": "Set your payee account details",
+  "showAgendaItem": "Show Agenda Item",
   "showAnnouncementsButton": "Show Announcements Button",
   "showOptions": "Show Options",
   "showPassword": "Show Password",
@@ -809,13 +840,14 @@
   "signingUp": "signing up",
   "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
-  "signInWithGoogle": "Sign in with Google",
   "signOut": "Sign Out",
   "signUp": "Sign Up",
   "signUpOrSignInToContinue": "Sign up (or sign in using an existing account) to continue.",
   "signUpToGetStarted": "Sign up to get started.",
   "signUpWithEmail": "Sign up with Email",
   "signUpWithGoogle": "Sign up with Google",
+  "signingUp": "signing up",
+  "skip": "Skip",
   "skipStripeAccountSetupForNow": "Skip Stripe account setup for now",
   "smartMatch": "Smart Match",
   "smartMatchParticipants": "Smart Match Participants",
@@ -824,6 +856,9 @@
   "socialLinkedIn": "LinkedIn URL",
   "socialTwitter": "Twitter URL",
   "somethingWentWrong": "Something went wrong",
+  "somethingWentWrongLongPrefix": "We’re sorry, something went wrong.",
+  "somethingWentWrongLongMiddle": "Refresh the page and try logging in to Frankly again.\n\nIf you continue having trouble, you can",
+  "somethingWentWrongLongSuffix": "contact us for support",
   "somethingWentWrongTryAgain": "Something went wrong. Please try again.",
   "sorryVimeoVideoLookupFailed": "Sorry, vimeo video lookup failed.",
   "sorryYoutubeVideoLookupFailed": "Sorry, youtube video lookup failed.",
@@ -863,18 +898,23 @@
   "thisUser": "this user",
   "titleCannotBeEmpty": "Title cannot be empty",
   "titleIsRequired": "Title is required",
+  "tooManyRequests": "Too many failed requests. Please try again later.",
   "troubleshoot": "Troubleshoot",
   "tryAgain": "Please try again",
+  "tryAgainLater": " and try again later",
   "turnOnAudioVideo": "Turn on Audio/Video?",
   "twitterUrl": "Twitter URL",
   "typeSomething": "Type something",
   "unfollow": "Unfollow",
   "uniqueUrlDisplayName": "Unique URL display name (Optional)",
   "uniqueUrlDisplayNameOptional": "Unique URL display name (Optional)",
+  "unsubscribeNow": "Unsubscribe Now",
   "upcomingEvents": "Upcoming Events",
   "updateAction": "Update",
+  "updateBilling": "Update billing",
   "updateButton": "Update",
   "updateEmail": "Update Email",
+  "updatePlan": "Update Plan",
   "updateProfile": "Update Profile",
   "updateTemplate": "Update template",
   "updateToPlan": "Update to {name} plan",
@@ -921,11 +961,17 @@
   "wordCloudPromptRequired": "Word Cloud prompt is required",
   "wordList": "Word List",
   "wrongEmail": "Wrong email? Edit",
+  "wouldYouLikeToTurnOnAv": "Would you like to turn on audio and video?",
   "yes": "Yes",
   "yesCancel": "Yes, cancel",
   "yesCancelPlan": "Yes, cancel plan",
   "yesClear": "Yes, clear",
   "yesDelete": "Yes, Delete",
+  "yesJoin": "Yes, join",
+  "yesJoinCommunity": "Yes, Join!",
+  "yesKickThemOut": "Yes, kick them out",
+  "yesPollParticipants": "Yes, poll participants",
+  "yesRefresh": "Yes, refresh",
   "yesUpdatePlan": "Yes, update plan",
   "you": "You",
   "youCanChangeThisLater": "You can change this later",

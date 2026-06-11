@@ -20,6 +20,7 @@ class ParticipantsList extends StatefulWidget {
   final int numberOfIconsToShow;
   final double iconSize;
   final int? participantCount;
+  final int? registrationCount;
 
   const ParticipantsList({
     required this.event,
@@ -27,6 +28,7 @@ class ParticipantsList extends StatefulWidget {
     required this.numberOfIconsToShow,
     this.iconSize = 40,
     this.participantCount,
+    this.registrationCount,
     Key? key,
   }) : super(key: key);
 
@@ -128,6 +130,15 @@ class _ParticipantsListState extends State<ParticipantsList> {
   }
 
   Widget _buildParticipantCount() {
+    final regCount = widget.registrationCount;
+    if (widget.event.useParticipantCountEstimate && regCount != null && regCount > 0) {
+      return HeightConstrainedText(
+        '$regCount ${regCount == 1 ? 'Registration' : 'Registrations'}',
+        style: context.theme.textTheme.bodyMedium!
+            .copyWith(color: context.theme.colorScheme.onSurface),
+      );
+    }
+
     if (_participantCount == 1 &&
         !widget.event.useParticipantCountEstimate &&
         !isParticipant) {

@@ -266,7 +266,7 @@ class _EventInfoState extends State<EventInfo> {
       title: context.l10n.confirmRefreshTemplate,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
-      confirmText: 'Yes, refresh',
+      confirmText: context.l10n.yesRefresh,
       onConfirm: (context) async {
         await alertOnError(context, () async {
           await _presenter.refreshEvent();

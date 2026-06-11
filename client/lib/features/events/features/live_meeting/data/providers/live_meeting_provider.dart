@@ -303,13 +303,6 @@ class LiveMeetingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _resetAudioVideoOn() {
-    shouldStartLocalAudioOn =
-        shouldStartLocalAudioOn && eventProvider.event.isHosted;
-    shouldStartLocalVideoOn =
-        shouldStartLocalVideoOn && eventProvider.event.isHosted;
-  }
-
   Stream<List<EventProposal>> get proposals {
     final path =
         firestoreLiveMeetingService.getLiveMeetingPath(eventProvider.event);
@@ -327,8 +320,6 @@ class LiveMeetingProvider with ChangeNotifier {
 
     shouldStartLocalAudioOn = audioDefaultOn;
     shouldStartLocalVideoOn = videoDefaultOn;
-
-    _resetAudioVideoOn();
 
     _liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
       parentDoc: eventPath,
@@ -599,8 +590,8 @@ class LiveMeetingProvider with ChangeNotifier {
           final confirmJoiningBreakouts = await ConfirmDialog(
             mainText:
                 'Would you like to participate in breakout room assignments?',
-            confirmText: 'Yes, join',
-            cancelText: 'No, skip',
+            confirmText: appLocalizationService.getLocalization().yesJoin,
+            cancelText: appLocalizationService.getLocalization().noSkip,
           ).show();
 
           if (!confirmJoiningBreakouts) {
@@ -622,7 +613,7 @@ class LiveMeetingProvider with ChangeNotifier {
         await ConfirmDialog(
           mainText:
               'Host is sending you to a breakout room. Join breakout room?',
-          confirmText: 'Yes, join',
+          confirmText: appLocalizationService.getLocalization().yesJoin,
           cancelText: appLocalizationService.getLocalization().cancel,
           onConfirm: (context) => alertOnError(context, () async {
             await firestoreLiveMeetingService
@@ -831,8 +822,6 @@ class LiveMeetingProvider with ChangeNotifier {
       isPresent: true,
     );
 
-    _resetAudioVideoOn();
-
     notifyListeners();
   }
 
@@ -971,7 +960,7 @@ class LiveMeetingProvider with ChangeNotifier {
         textLabel: 'Enter reason',
         textHint: 'e.g. They are trying to sabotage the event',
         cancelText: 'No, cancel',
-        confirmText: 'Yes, poll participants',
+        confirmText: l10n.yesPollParticipants,
       ),
     );
     if (reason != null) {

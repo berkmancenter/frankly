@@ -1,12 +1,12 @@
 import 'dart:math';
 
+import 'package:client/core/widgets/proxied_image.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/core/widgets/constrained_body.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/community/presentation/widgets/about_section.dart';
-import 'package:client/features/community/presentation/widgets/carousel/carousel_initializer.dart';
 import 'package:client/features/community/presentation/widgets/event_card.dart';
 import 'package:client/features/community/presentation/widgets/edit_community_button.dart';
 import 'package:client/features/community/data/providers/community_home_provider.dart';
@@ -95,7 +95,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                         ? BoxDecoration(borderRadius: BorderRadius.circular(10))
                         : null,
                 constraints: BoxConstraints(maxWidth: AppSize.kMaxCarouselSize),
-                child: CarouselInitializer(),
+                child: _CommunityDetailWidget(community: community),
               ),
             ),
             if (Provider.of<CommunityPermissionsProvider>(context)
@@ -157,7 +157,7 @@ class _CommunityHomeState extends State<CommunityHome> {
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           clipBehavior: Clip.hardEdge,
-          child: CarouselInitializer(),
+          child: _CommunityDetailWidget(community: community),
         ),
         SizedBox(height: 30),
         CommunityHomeAboutSection(community: community),
@@ -348,6 +348,79 @@ class _CommunityHomeState extends State<CommunityHome> {
         SizedBox(height: 30),
         _buildEngagementButtons(showDonations),
       ],
+    );
+  }
+}
+
+class _CommunityDetailWidget extends StatelessWidget {
+  const _CommunityDetailWidget({required this.community, Key? key})
+      : super(key: key);
+
+  final Community community;
+
+  // Carousel is half the screen width on desktop.
+  double _carouselSize(BuildContext context) =>
+      responsiveLayoutService.isMobile(context)
+          ? min(MediaQuery.of(context).size.width, AppSize.kMaxCarouselSize)
+          : min(
+              (MediaQuery.of(context).size.width - 100) / 2,
+              AppSize.kMaxCarouselSize,
+            );
+
+  @override
+  Widget build(BuildContext context) {
+    final size = _carouselSize(context);
+
+    return Center(
+      child: SizedBox(
+        width: min(MediaQuery.of(context).size.width, 1400),
+        height: size,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Container(
+                color: context.theme.colorScheme.primary,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (community.profileImageUrl != null)
+                      ProxiedImage(
+                        community.profileImageUrl!,
+                        borderRadius: BorderRadius.circular(200),
+                        width: max(min(200, (size - 300)), 80),
+                      ),
+                    SizedBox(height: 24),
+                    Text(
+                      community.name ?? '',
+                      style: context.theme.textTheme.headlineMedium!.copyWith(
+                        color: context.theme.colorScheme.onPrimary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    if (community.tagLine != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          community.tagLine!,
+                          style: context.theme.textTheme.titleMedium!.copyWith(
+                            color: context.theme.colorScheme.onPrimary,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

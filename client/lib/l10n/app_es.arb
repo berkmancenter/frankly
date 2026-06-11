@@ -135,6 +135,11 @@
   "@emailUpdatedResent": {
     "placeholders": {
       "email": {}
+  "@emailAndPasswordMismatch": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
     }
   },
   "@enterCategoryNum": {
@@ -184,6 +189,13 @@
   "@kickOutUser": {
     "placeholders": {
       "displayName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {
         "type": "Object"
       }
     }
@@ -286,13 +298,6 @@
       }
     }
   },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
   "@termsAgreementPrefix": {
     "placeholders": {
       "appName": {
@@ -378,6 +383,7 @@
   "addToCalendar": "Añadir al calendario",
   "admin": "Administrador",
   "agendaItemsWereRemoved": "Los elementos de agenda fueron eliminados",
+  "adminBilling": "Facturación de administración",
   "agendaItemWasDeleted": "El elemento de agenda fue eliminado",
   "agendaItemWasDuplicated": "¡El elemento de agenda fue duplicado!",
   "agendaItemWasSaved": "El elemento de agenda fue guardado",
@@ -387,6 +393,7 @@
   "agreeAndContinue": "Aceptar y continuar",
   "alreadyUserSignIn": "¿Ya eres usuario?",
   "anonymous": "Anónimo",
+  "and": "y",
   "appDescription": "Una plataforma para deliberaciones en línea",
   "appNameHome": "{appName} - Inicio",
   "appNameTermsOfService": "Términos de Servicio de {appName}",
@@ -485,6 +492,7 @@
   "congratulations": "¡Felicidades!",
   "contactEmail": "Correo de contacto",
   "continueAfterVerification": "He Verificado Mi Correo",
+  "contactUs": "Contáctanos",
   "continueButton": "Continuar",
   "copiedToClipboard": "Copiado al portapapeles",
   "couldntFindAccount": "No pudimos encontrar una cuenta con este correo electrónico. Inténtalo ",
@@ -516,6 +524,7 @@
   "deletePrerequisiteTemplate": "Eliminar plantilla de requisitos previos",
   "deleteTitleAgendaItem": "Eliminar $title elemento de agenda",
   "devSettings": "Configuración para desarrolladores",
+  "discard": "Descartar",
   "displayIdWarning": "El nombre de visualización de URL solo puede contener letras, números y guiones.",
   "donate": "Donar",
   "download": "Descargar",
@@ -535,6 +544,8 @@
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
   "emailNotYetVerified": "Tu correo aún no ha sido verificado. Por favor revisa tu bandeja de entrada y haz clic en el enlace de verificación.",
   "emailUpdatedResent": "Verification email sent to {email}.",
+  "emailAndPasswordMismatch": "Su combinación de correo electrónico y contraseña no coincide con una cuenta de {appName}.",
+  "emailAndPasswordMismatchCheck": "Puede verificar lo que ingresó e intentarlo de nuevo.",
   "endBreakoutRooms": "Finalizar salas de grupo",
   "endBreakouts": "Finalizar grupos",
   "endTime": "Hora de finalización",
@@ -545,6 +556,7 @@
   "enterEvent": "Entrar al evento",
   "enterHeadline": "Introducir título",
   "enterImageTitle": "Introducir título de la imagen",
+  "enterMessage": "Ingrese un mensaje",
   "enterQuestionWithNumber": "Ingrese la pregunta {number}",
   "enterRoomNumber": "Ej: 2",
   "enterValidCommunityUrl": "Por favor, introduzca una URL de comunidad válida",
@@ -583,6 +595,7 @@
   "eventWasNotEntered": "No se entró al evento.",
   "ex2": "Ej: 2",
   "exTwo": "Ej: 2",
+  "explorePlans": "Explorar planes",
   "facebookUrl": "URL de Facebook",
   "facilitator": "Facilitador",
   "fakeParticipantCount": "Recuento de participantes falsos",
@@ -591,8 +604,12 @@
   "finish": "Finalizar",
   "floatingChat": "Chat Flotante",
   "followCommunityButton": "Botón seguir comunidad",
-  "forgotPassword": "¿Olvidaste tu contraseña?",
-  "forgotYourPassword": "¿Olvidó su contraseña?",
+  "forgotPasswordPrefix": "¿Olvidaste tu contraseña?",
+  "forgotPasswordEnterEmail": "Ingresa tu correo electrónico",
+  "forgotPasswordSuffix": "restablece tu contraseña",
+  "forgotPasswordThen": "entonces ",
+  "forgotAccountEmailOrNeedHelp": "¿Olvidaste tu correo electrónico de la cuenta o necesitas otra ayuda para iniciar sesión?",
+  "forgotEmail": "¿Olvidaste el correo electrónico asociado a tu cuenta?",
   "franklyLogo": "Logo de Frankly",
   "galleryView": "Vista de galería",
   "getCustomColors": "Obtener colores personalizados",
@@ -616,12 +633,14 @@
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
   "imageUrlNotSet": "(URL de imagen no establecida.)",
+  "incorrectEmailOrPassword": "Correo electrónico o contraseña incorrectos",
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
   "insteadSuffix": " en cambio.",
   "introBeforeBreakouts": "Aproximadamente {duration} de introducción antes de las salas de grupos",
   "introductionContent": "_¡Preséntense! Cada uno toma un minuto para responder una de las siguientes preguntas._\n\n* ¿Qué has hecho recientemente que fue muy divertido?\n* ¿Quién es tu personaje de dibujos animados favorito y por qué?\n* ¿Qué es algo que deseas lograr antes de morir?\n* ¿Qué película NO te gustó?\n",
   "introductions": "Introducciones",
+  "invalidEmail": "Correo electrónico no válido",
   "items": "Artículos",
   "joinCommunity": "¿Unirse a {communityName}?",
   "joinEvent": "Unirse al evento",
@@ -633,13 +652,17 @@
   "leave": "Salir",
   "length": "Duración",
   "lightColorHex": "Color claro HEX#",
+  "linkCopied": "¡Enlace copiado!",
   "linkedinUrl": "URL de LinkedIn",
   "links": "Enlaces",
   "livestream": "Transmisión en vivo",
   "loading": "Cargando",
   "locked": "Bloqueado",
   "loggingIn": "iniciando sesión",
+  "logIntoApp": "Iniciar sesión en {appName}",
+  "logInto": "Iniciar sesión en",
   "login": "Iniciar sesión",
+  "logInWithGoogle": "Iniciar sesión con Google",
   "logo": "Logotipo",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
@@ -692,6 +715,7 @@
   "noDevicesFound": "No se encontraron dispositivos",
   "noEventsFound": "No se encontraron eventos.",
   "noItems": "No hay {name}",
+  "noLetThemStay": "No, déjalos quedarse",
   "noMatchingMembersFound": "No se encontraron miembros coincidentes.",
   "noMembersFoundToExport": "No se encontraron miembros para exportar.",
   "none": "Ninguno",
@@ -702,6 +726,11 @@
   "noRoomsFound": "No se encontraron salas.",
   "noRoomsNeedHelp": "No hay salas que necesiten ayuda.",
   "notAuthorized": "Lo sentimos, no está autorizado para hacer eso.",
+  "noSkip": "No, omitir",
+  "noUpcomingEventsMessage": "No te has registrado para ningún evento próximo.",
+  "notAuthorized": "Lo sentimos, no está autorizado para hacer eso.",
+  "notNow": "Ahora no",
+  "notUserSignUp": "¿No tienes una cuenta?",
   "notifications": "Notificaciones",
   "notifyMeAboutNewAnnouncements": "Notificarme sobre nuevos anuncios",
   "notifyMeAboutNewEvents": "Notificarme sobre nuevos eventos.",
@@ -835,6 +864,7 @@
   "save": "Guardar",
   "saveAgendaItem": "Guardar elemento de agenda",
   "saved": "Guardado",
+  "saveChangesQuestion": "¿Guardar cambios?",
   "saveEvent": "Guardar evento",
   "saveSettings": "Guardar configuración",
   "search": "Buscar",
@@ -872,6 +902,7 @@
   "settings": "Configuración",
   "settingsFor": "Configuración para {communityName}",
   "setYourPayeeAccountDetails": "Establecer los detalles de su cuenta de pagos",
+  "showAgendaItem": "Mostrar elemento de agenda",
   "showAnnouncementsButton": "Botón mostrar anuncios",
   "showOptions": "Mostrar opciones",
   "showPassword": "Mostrar contraseña",
@@ -882,13 +913,14 @@
   "signingUp": "registrándose",
   "signInToApp": "Iniciar sesión en {appName}",
   "signInWithEmail": "Iniciar sesión con email",
-  "signInWithGoogle": "Iniciar sesión con Google",
   "signOut": "Cerrar sesión",
   "signUp": "Registrarse",
   "signUpOrSignInToContinue": "Regístrate (o inicia sesión con una cuenta existente) para continuar.",
   "signUpToGetStarted": "Regístrate para comenzar.",
   "signUpWithEmail": "Registrarse con email",
   "signUpWithGoogle": "Registrarse con Google",
+  "signingUp": "registrándose",
+  "skip": "Omitir",
   "skipStripeAccountSetupForNow": "Omitir la configuración de la cuenta de Stripe por ahora.",
   "smartMatch": "Coincidencia inteligente",
   "smartMatchParticipants": "Emparejamiento Inteligente",
@@ -897,6 +929,9 @@
   "socialLinkedIn": "LinkedIn",
   "socialTwitter": "Twitter",
   "somethingWentWrong": "Algo salió mal",
+  "somethingWentWrongLongPrefix": "Lo sentimos, algo salió mal.",
+  "somethingWentWrongLongMiddle": "Actualiza la página e intenta iniciar sesión en Frankly nuevamente.\n\nSi continúas teniendo problemas, puedes ",
+  "somethingWentWrongLongSuffix": "contactar al soporte para obtener ayuda",
   "somethingWentWrongTryAgain": "Algo salió mal. Por favor, inténtelo de nuevo.",
   "sorryVimeoVideoLookupFailed": "Lo sentimos, la búsqueda del video de Vimeo falló.",
   "sorryYoutubeVideoLookupFailed": "Lo sentimos, la búsqueda del video de YouTube falló.",
@@ -936,18 +971,23 @@
   "thisUser": "este usuario",
   "titleCannotBeEmpty": "El título no puede estar vacío",
   "titleIsRequired": "El título es obligatorio",
+  "tooManyRequests": "Demasiadas solicitudes fallidas. Por favor, inténtelo de nuevo más tarde.",
   "troubleshoot": "Solucionar problemas",
   "tryAgain": "Por favor, inténtelo de nuevo",
+  "tryAgainLater": " y inténtelo de nuevo más tarde",
   "turnOnAudioVideo": "¿Activar audio/vídeo?",
   "twitterUrl": "URL de Twitter",
   "typeSomething": "Escribe algo",
   "unfollow": "Dejar de seguir",
   "uniqueUrlDisplayName": "Nombre de URL único (Opcional)",
   "uniqueUrlDisplayNameOptional": "Nombre de URL único (Opcional)",
+  "unsubscribeNow": "Cancelar suscripción ahora",
   "upcomingEvents": "Próximos eventos",
   "updateAction": "Actualizar",
+  "updateBilling": "Actualizar facturación",
   "updateButton": "Actualizar",
   "updateEmail": "Update Email",
+  "updatePlan": "Actualizar plan",
   "updateProfile": "Actualizar perfil",
   "updateTemplate": "Actualizar plantilla",
   "updateToPlan": "Actualizar al plan {name}",
@@ -994,11 +1034,17 @@
   "wordCloudPromptRequired": "Por favor, introduzca una palabra para la nube de palabras",
   "wordList": "Lista de palabras",
   "wrongEmail": "Wrong email? Edit",
+  "wouldYouLikeToTurnOnAv": "¿Quieres activar el audio y el video?",
   "yes": "Sí",
   "yesCancel": "Sí, cancelar",
   "yesCancelPlan": "Sí, cancelar plan",
   "yesClear": "Sí, borrar",
   "yesDelete": "Sí, eliminar",
+  "yesJoin": "Sí, unirme",
+  "yesJoinCommunity": "¡Sí, unirme!",
+  "yesKickThemOut": "Sí, expulsarlos",
+  "yesPollParticipants": "Sí, encuestar participantes",
+  "yesRefresh": "Sí, actualizar",
   "yesUpdatePlan": "Sí, actualizar plan",
   "you": "Tú",
   "youCanChangeThisLater": "Puedes cambiar esto más tarde",
