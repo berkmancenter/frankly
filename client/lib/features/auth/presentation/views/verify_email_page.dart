@@ -25,6 +25,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   String _error = '';
   String _message = '';
+  String _tabCheckError = '';
   bool _editingEmail = false;
   bool _linkExpired = false;
   late String _currentEmail;
@@ -39,6 +40,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     _emailController = TextEditingController(text: _currentEmail);
     _startExpiryTimer();
     _startVerificationPolling();
+    // Eagerly reload on mount so that a user who already verified (e.g. via
+    // Firebase's hosted action page, which processes the code itself before
+    // redirecting back without an oobCode) is sent straight to home without
+    // waiting for the first polling tick.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      try {
+        await context.read<UserService>().refreshEmailVerificationStatus();
+      } catch (_) {}
+    });
   }
 
   @override
@@ -63,7 +74,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           _verificationPollingTimer?.cancel();
         }
       } catch (_) {
-        // Silently ignore — the manual "Continue" button handles error display.
+        // Silently ignore.
       }
     });
   }
@@ -75,6 +86,19 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     });
   }
 
+
+  Future<void> _checkVerifiedInOtherTab() async {
+    final userService = context.read<UserService>();
+    try {
+      await userService.refreshEmailVerificationStatus();
+    } catch (_) {}
+    if (!mounted) return;
+    if (userService.firebaseAuth.currentUser?.emailVerified == true) {
+      // Verified — InitialLoadingWidget observes UserService and will navigate home.
+      return;
+    }
+    setState(() => _tabCheckError = context.l10n.emailNotYetVerified);
+  }
 
   Future<void> _resendEmail() async {
     final userService = context.read<UserService>();
@@ -99,6 +123,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     );
   }
 
+  // This functionality for a user to correct a typo in their email address was removed in the latest design iteration, but the code is left here for now in case we want to easily re-enable it in the future.
   // Future<void> _updateEmail() async {
   //   final newEmail = _emailController.text.trim();
   //   if (newEmail == _currentEmail) {
@@ -163,7 +188,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 const SizedBox(height: 6),
                 Text(
                   context.l10n.verificationLinkExpiresIn,
-                  style: context.theme.textTheme.bodySmall?.copyWith(
+                  style: context.theme.textTheme.bodyMedium?.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
@@ -264,6 +289,27 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   text: context.l10n.resendVerificationEmail,
                 ),
               ),
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: _checkVerifiedInOtherTab,
+                child: Text(
+                  'I verified my email in another tab or window',
+                  style: context.theme.textTheme.bodySmall?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              if (_tabCheckError.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  _tabCheckError,
+                  style: context.theme.textTheme.bodySmall?.copyWith(
+                    color: context.theme.colorScheme.error,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ],
           ),
         ),
