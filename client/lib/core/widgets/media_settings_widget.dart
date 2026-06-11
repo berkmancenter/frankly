@@ -374,11 +374,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                                   isLoadingCameraChange = true;
                                 });
 
-                                // // For mirror check, we want to update video device ID from state since the value may not have changed
-                                if(widget.isMirrorCheck) {
-                                  _mediaService.selectedVideoInputId = initialVideoDeviceId;
-                                }
-
                                 // Turn the video off and on again to ensure a successful device update.
                                 await widget.conferenceRoom.toggleVideoEnabled(
                                   setEnabled: false,
