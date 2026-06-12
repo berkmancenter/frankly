@@ -1,26 +1,24 @@
 import 'dart:async';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
 import 'package:client/features/events/features/live_meeting/features/video/utils/debug.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:ui_web' as ui_web;
-import 'package:client/core/utils/media_device_service.dart';
 
 const _kTotalDialogContentPadding = 88.0;
 
 class MediaSettingsWidget extends StatefulWidget {
   const MediaSettingsWidget({
     super.key,
-    required this.conferenceRoom,
     required this.shouldShowVideoPreview,
     this.isMirrorCheck = false,
   });
-  final ConferenceRoom conferenceRoom;
   final bool shouldShowVideoPreview;
   final bool isMirrorCheck;
 
@@ -36,11 +34,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   String? initialAudioDeviceId;
   String? initialVideoDeviceId;
-
-  // Used to ensure A/V maintains the same state (e.g. person stays muted even if
-  // they change devices).
-  bool userVideoEnabled = false;
-  bool userAudioEnabled = false;
 
   bool isLoading = true;
   bool isLoadingCameraChange = false;
@@ -79,9 +72,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
     initialVideoDeviceId = _mediaService.selectedVideoInputId;
-
-    userAudioEnabled = widget.conferenceRoom.audioIsStreaming;
-    userVideoEnabled = widget.conferenceRoom.videoIsStreaming;
 
     await updatePreviewWidget();
     if (!mounted) return;
@@ -350,38 +340,57 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     text:
                         '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
                     onPressed: () async {
+                      if (widget.isMirrorCheck) {
+                        await sharedPreferencesService.setDefaultCameraId(
+                            _mediaService.selectedVideoInputId!,);
+                        if (context.mounted) Navigator.of(context).pop();
+                      }
+                      
                       final savedInitialVideoDeviceId = initialVideoDeviceId;
                       final savedInitialAudioId = initialAudioDeviceId;
 
                       try {
                         if (_mediaService.selectedVideoInputId !=
-                                initialVideoDeviceId ||
-                            widget.isMirrorCheck) {
+                            initialVideoDeviceId) {
                           setState(() {
                             isLoadingCameraChange = true;
                           });
 
                           // Turn the video off and on again to ensure a successful device update.
-                          await widget.conferenceRoom.toggleVideoEnabled(
-                            setEnabled: false,
+                          // await conferenceRoom.toggleVideoEnabled(
+                          //   setEnabled: false,
+                          // );
+
+                          appEventBus.emit(
+                            AVDeviceChangedEvent(
+                              changes: [AVDeviceChange.disableVideo],
+                            ),
                           );
 
-                          if (!userVideoEnabled ||
-                              !widget.shouldShowVideoPreview) {
+                          if (widget.isMirrorCheck) {
                             // If user's video isn't on or we don't show
                             // a video preview, we still need to attempt
                             // an Agora device update to catch any errors.
                             // Attempt to update the Agora
                             // device to catch any errors.
-                            await widget.conferenceRoom.room?.localParticipant
-                                ?.updateAgoraVideoDevice();
-                          }
-
-                          if (userVideoEnabled) {
-                            await widget.conferenceRoom.toggleVideoEnabled(
-                              setEnabled: true,
+                            // await conferenceRoom.room?.localParticipant
+                            //     ?.updateAgoraVideoDevice();
+                            appEventBus.emit(
+                              AVDeviceChangedEvent(
+                                changes: [AVDeviceChange.updateVideoDevice],
+                              ),
                             );
                           }
+
+                          // await conferenceRoom.toggleVideoEnabled(
+                          //   setEnabled: true,
+                          // );
+                          appEventBus.emit(
+                            AVDeviceChangedEvent(
+                              changes: [AVDeviceChange.enableVideo],
+                            ),
+                          );
+
                           initialVideoDeviceId =
                               _mediaService.selectedVideoInputId;
 
@@ -404,18 +413,30 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             deviceId: _mediaService.selectedAudioInputId!,
                             shouldUpdatePreview: widget.shouldShowVideoPreview,
                           );
-                          await widget.conferenceRoom.toggleAudioEnabled(
-                            setEnabled: false,
+                          // await conferenceRoom.toggleAudioEnabled(
+                          //   setEnabled: false,
+                          // );
+                          appEventBus.emit(
+                            AVDeviceChangedEvent(
+                              changes: [AVDeviceChange.disableAudio],
+                            ),
                           );
-                          if (userAudioEnabled) {
-                            await widget.conferenceRoom.toggleAudioEnabled(
-                              setEnabled: true,
+                          if (!widget.isMirrorCheck) {
+                            appEventBus.emit(
+                              AVDeviceChangedEvent(
+                                changes: [AVDeviceChange.enableAudio],
+                              ),
                             );
                           } else {
                             // Still need to attempt to update the Agora
                             // device to catch any errors.
-                            await widget.conferenceRoom.room?.localParticipant
-                                ?.updateAgoraAudioDevice();
+                            // await conferenceRoom.room?.localParticipant
+                            //     ?.updateAgoraAudioDevice();
+                            appEventBus.emit(
+                              AVDeviceChangedEvent(
+                                changes: [AVDeviceChange.updateAudioDevice],
+                              ),
+                            );
                           }
                           initialAudioDeviceId =
                               _mediaService.selectedAudioInputId;
@@ -438,16 +459,16 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             savedInitialVideoDeviceId;
                         initialVideoDeviceId = savedInitialVideoDeviceId;
                         initialAudioDeviceId = savedInitialAudioId;
-                        if (userAudioEnabled) {
-                          await widget.conferenceRoom.toggleAudioEnabled(
-                            setEnabled: true,
-                          );
-                        }
-                        if (userVideoEnabled) {
-                          await widget.conferenceRoom.toggleVideoEnabled(
-                            setEnabled: true,
-                          );
-                        }
+
+                        appEventBus.emit(
+                          AVDeviceChangedEvent(
+                            changes: [
+                              AVDeviceChange.enableAudio,
+                              AVDeviceChange.enableVideo,
+                            ],
+                          ),
+                        );
+
                         if (context.mounted) {
                           showRegularToast(
                             context,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
@@ -18,6 +19,7 @@ import 'package:client/core/widgets/confirm_dialog.dart';
 import 'package:client/core/utils/firestore_utils.dart';
 import 'package:client/services.dart';
 import 'package:data_models/events/event.dart' hide Participant;
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -187,6 +189,8 @@ class ConferenceRoom with ChangeNotifier {
   BehaviorSubjectWrapper<AgoraParticipant?>? _debouncedDominantSpeakerStream;
   StreamSubscription<AgoraParticipant?>? _debouncedDominantSpeakerSubscription;
 
+  StreamSubscription<AVDeviceChangedEvent>? _avDeviceChangeSubscription;
+
   /// Returns an ordered list of participants to be displayed on screen.
   ///
   /// In order to keep a consistent ordering the determined ordering is stored in
@@ -268,6 +272,35 @@ class ConferenceRoom with ChangeNotifier {
     liveMeetingProvider.conferenceRoom = this;
 
     liveMeetingProvider.eventProvider.addListener(_muteOthersOnOverride);
+
+    _avDeviceChangeSubscription = appEventBus.stream
+        .whereType<AVDeviceChangedEvent>()
+        .listen(_onAVDeviceChanges);
+    
+  }
+
+  void _onAVDeviceChanges(AVDeviceChangedEvent event) {
+    if (event.changes.contains(AVDeviceChange.enableVideo) ||
+        event.changes.contains(AVDeviceChange.disableVideo)) {
+      toggleVideoEnabled(
+        setEnabled:
+          event.changes.contains(AVDeviceChange.enableVideo),
+      );
+    }
+    if (event.changes.contains(AVDeviceChange.enableAudio) ||
+        event.changes.contains(AVDeviceChange.disableAudio)) {
+      toggleAudioEnabled(
+        setEnabled:
+          event.changes.contains(AVDeviceChange.enableAudio),
+      );
+    }
+
+    if (event.changes.contains(AVDeviceChange.updateAudioDevice)) {
+      _room?.localParticipant?.updateAgoraAudioDevice();
+    }
+    if (event.changes.contains(AVDeviceChange.updateVideoDevice)) {
+      _room?.localParticipant?.updateAgoraVideoDevice();
+    }
   }
 
   void _muteOthersOnOverride() {
@@ -352,6 +385,7 @@ class ConferenceRoom with ChangeNotifier {
 
   void _disposeStreamsAndSubscriptions() {
     liveMeetingProvider.eventProvider.removeListener(_muteOthersOnOverride);
+    _avDeviceChangeSubscription?.cancel();
 
     _debouncedDominantSpeakerSubscription?.cancel();
     _unraiseHandSubscription.cancel();
@@ -524,22 +558,21 @@ class ConferenceRoom with ChangeNotifier {
     notifyListeners();
     _completer.complete(room);
 
-    // Show mirror check if not completed before in this event
-    if (!sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId)) {
-      await showDialog(
-        barrierDismissible: false,
-        context: navigatorState.context,
-        builder: (context) {
-          return MediaSettingsWidget(
-            conferenceRoom: this,
-            shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
-            isMirrorCheck: true,
-          );
-        },
-      );
+    // // Show mirror check if not completed before in this event
+    // if (!sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId)) {
+    //   await showDialog(
+    //     barrierDismissible: false,
+    //     context: navigatorState.context,
+    //     builder: (context) {
+    //       return MediaSettingsWidget(
+    //         shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
+    //         isMirrorCheck: true,
+    //       );
+    //     },
+    //   );
 
-      await sharedPreferencesService.setMirrorCheckCompleteForEvent(eventId);
-    }
+    //   await sharedPreferencesService.setMirrorCheckCompleteForEvent(eventId);
+    // }
 
     if (liveMeetingProvider.audioDefaultOn &&
             !(room.localParticipant?.audioTrackEnabled ?? true) ||

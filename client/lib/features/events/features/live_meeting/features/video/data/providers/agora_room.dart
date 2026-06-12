@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/app.dart';
+import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -61,6 +62,8 @@ class AgoraRoom with ChangeNotifier {
   final _dominantSpeakerStream = BehaviorSubject<AgoraParticipant?>();
   BehaviorSubject<AgoraParticipant?> get dominantSpeakerStream =>
       _dominantSpeakerStream;
+
+  // StreamSubscription<AVDeviceChangedEvent>? _avDeviceChangeSubscription;
 
   void _updateDominantSpeaker({
     int? localUid,
