@@ -22,9 +22,7 @@ class MediaDeviceService {
 
   String? selectedAudioInputId;
   String? selectedVideoInputId;
-
-  bool hasCompletedMirrorCheck = sharedPreferencesService.getMirrorCheckComplete();
-
+  
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {
       // The ".status" call does not work on all platforms - catch the exception.

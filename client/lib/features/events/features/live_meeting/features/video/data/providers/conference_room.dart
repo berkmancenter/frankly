@@ -389,7 +389,7 @@ class ConferenceRoom with ChangeNotifier {
     await _videoTogglingLock.synchronized(
       () async {
         try {
-          if (mediaDeviceService?.hasCompletedMirrorCheck ?? false) {
+          if (sharedPreferencesService.hasMirrorCheckCompletedForEvent(liveMeetingProvider.eventProvider.eventId)) {
             await _room!.localParticipant!.enableVideo(
               setEnabled: updatedEnabledValue,
             );
@@ -436,7 +436,7 @@ class ConferenceRoom with ChangeNotifier {
 
         try {
           final audioEnableFutures = [
-            if (mediaDeviceService?.hasCompletedMirrorCheck ?? false)
+            if (sharedPreferencesService.hasMirrorCheckCompletedForEvent(liveMeetingProvider.eventProvider.eventId))
               _room!.localParticipant!.enableAudio(
                 setEnabled: updatedEnabledValue,
               ),
@@ -481,6 +481,8 @@ class ConferenceRoom with ChangeNotifier {
   }) async {
     Debug.log('ConferenceRoom._onConnected => state: ${room.state}');
 
+    String eventId = liveMeetingProvider.eventProvider.eventId;
+
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(
       room.dominantSpeakerStream
           .distinct()
@@ -524,8 +526,8 @@ class ConferenceRoom with ChangeNotifier {
     notifyListeners();
     _completer.complete(room);
 
-    // Show mirror check if not completed before
-    if (!sharedPreferencesService.getMirrorCheckComplete()) {
+    // Show mirror check if not completed before in this event
+    if (!sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId)) {
       await showDialog(
         barrierDismissible: false,
         context: navigatorState.context,
@@ -538,7 +540,7 @@ class ConferenceRoom with ChangeNotifier {
         },
       );
 
-      await sharedPreferencesService.setMirrorCheckComplete(true);
+      await sharedPreferencesService.setMirrorCheckCompleteForEvent(eventId);
     }
 
     if (liveMeetingProvider.audioDefaultOn &&

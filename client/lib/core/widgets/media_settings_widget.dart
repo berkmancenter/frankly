@@ -129,11 +129,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.isMirrorCheck)
-            Text(
-              "Let's check your camera and mic!",
-              style: context.theme.textTheme.headlineSmall,
-            ),
+          Text(
+            'Audiovisual Settings',
+            style: context.theme.textTheme.headlineSmall,
+          ),
+          SizedBox(height: 10),
           Text(
             context.l10n.audioInputDevice,
             style: context.theme.textTheme.titleMedium,
@@ -351,9 +351,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     ),
                   const SizedBox(height: 16),
                   ActionButton(
-                    text: widget.isMirrorCheck
-                        ? 'Looks Good!'
-                        : '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
+                    text: '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
                     onPressed: () async {
                       final savedInitialVideoDeviceId = initialVideoDeviceId;
                       final savedInitialAudioId = initialAudioDeviceId;
@@ -430,11 +428,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               context.l10n.audioDeviceUpdated,
                               toastType: ToastType.success,
                             );
-                          }
-
-                          // If mirror check, update status
-                          if (widget.isMirrorCheck) {
-                            _mediaService.hasCompletedMirrorCheck = true;
                           }
                         }
 

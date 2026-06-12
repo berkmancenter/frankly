@@ -167,7 +167,9 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
       }
 
       // Only show video view if mirror check is completed
-      if (widget.participant.mediaDeviceService.hasCompletedMirrorCheck) {
+      if (sharedPreferencesService.hasMirrorCheckCompletedForEvent(
+        EventProvider.watch(context).eventId,
+      )) {
         return videoEnabled
             ? AgoraVideoView(
                 controller: videoViewController!,

@@ -93,9 +93,9 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   Widget _buildControlWidgets() {
-    // Disable the toggles if audio is temporarily disabled for the user or if they haven't completed the mirror check
+    // Disable the toggles if audio is temporarily disabled for the user or if they haven't completed the mirror check for this event
     final enabled = !_liveMeetingProvider.audioTemporarilyDisabled &&
-        _conferenceRoomRead.mediaDeviceService?.hasCompletedMirrorCheck == true;
+        sharedPreferencesService.hasMirrorCheckCompletedForEvent(_liveMeetingProvider.eventProvider.eventId);
     final isMobile = responsiveLayoutService.isMobile(context);
     final double spacerWidth = isMobile ? 6 : 12;
     bool showTalkingTimer =
