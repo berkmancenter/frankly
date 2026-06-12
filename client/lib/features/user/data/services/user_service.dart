@@ -36,6 +36,7 @@ class UserService with ChangeNotifier {
   bool _redirectResultHandled = false;
 
   String? _redirectErrorMessage;
+  String? _emailActionCodeError;
 
   /// Holds the display name to use with email registration.
   ///
@@ -45,12 +46,37 @@ class UserService with ChangeNotifier {
 
   SignInState _signInState = SignInState.loading;
 
-  void verifyEmail() {
-    _currentUser?.sendEmailVerification();
+  String _emailActionContinueUrl() => '${html.window.location.origin}/';
+
+  Future<void> verifyEmail() async {
+    await _currentUser?.sendEmailVerification(
+      ActionCodeSettings(
+        url: _emailActionContinueUrl(),
+        handleCodeInApp: true,
+      ),
+    );
+  }
+
+  Future<void> refreshEmailVerificationStatus() async {
+    await _firebaseAuth.currentUser?.reload();
+    notifyListeners();
+  }
+
+  Future<void> updateEmailAndResendVerification(String newEmail) async {
+    await _currentUser?.verifyBeforeUpdateEmail(
+      newEmail,
+      ActionCodeSettings(
+        url: _emailActionContinueUrl(),
+        handleCodeInApp: true,
+      ),
+    );
   }
 
   /// If there was an error signing in during redirect this flag indicates that.
   String? get redirectErrorMessage => _redirectErrorMessage;
+
+  /// Non-null when an email action code (verify link) was found in the URL but failed.
+  String? get emailActionCodeError => _emailActionCodeError;
 
   String? get currentUserId => _currentUser?.uid;
 
@@ -115,12 +141,38 @@ class UserService with ChangeNotifier {
     }
   }
 
+  Future<void> _handleEmailActionCode() async {
+    final uri = Uri.tryParse(html.window.location.href);
+    if (uri == null) return;
+    final mode = uri.queryParameters['mode'];
+    final oobCode = uri.queryParameters['oobCode'];
+    if (mode != 'verifyEmail' || oobCode == null) return;
+
+    // Strip action-code params so they don't persist on refresh.
+    html.window.history.replaceState(
+      null,
+      '',
+      html.window.location.pathname ?? '/',
+    );
+
+    try {
+      await _firebaseAuth.applyActionCode(oobCode);
+      await _firebaseAuth.currentUser?.reload();
+    } on FirebaseAuthException catch (e) {
+      _emailActionCodeError = e.message;
+    }
+  }
+
   Future<void> initialize() async {
     if (usingEmulator) {
       await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
       // Set persistence to session for emulator to avoid logout across hard reloads
       await _firebaseAuth.setPersistence(Persistence.SESSION);
     }
+
+    // Must run after emulator setup so applyActionCode targets the right endpoint.
+    await _handleEmailActionCode();
+
     await sharedPreferencesService.initialize();
     if (sharedPreferencesService.isReturningUser()) {
       _handleReturningUser();
@@ -158,15 +210,30 @@ class UserService with ChangeNotifier {
     _returningUserTimer?.cancel();
 
     _setCurrentUser(user);
+
+    // If the user is unverified, reload before gating on emailVerified so that
+    // a verification completed on Firebase's hosted action page (which processes
+    // the code itself, then redirects to continueUrl without the oobCode) is
+    // detected immediately rather than requiring the polling timer to catch it.
+    if (!user.isAnonymous && !user.emailVerified) {
+      try {
+        await _firebaseAuth.currentUser?.reload();
+      } catch (_) {}
+    }
+
+    // Set signedIn immediately so the UI (email verification gate, etc.) is
+    // not blocked waiting for the Firestore call below. Brave's shields block
+    // Firestore's WebChannel, which can cause createCurrentUserInfoIfNotExists
+    // to hang indefinitely if we await it before notifying.
+    _signInState = SignInState.signedIn;
+    notifyListeners();
+
     if (!user.isAnonymous) {
       await createCurrentUserInfoIfNotExists(
         displayName: _emailRegistrationDisplayName,
       );
+      notifyListeners();
     }
-
-    _signInState = SignInState.signedIn;
-
-    notifyListeners();
   }
 
   PublicUserInfo getDefaultPublicUserInfo({String? displayName}) {
