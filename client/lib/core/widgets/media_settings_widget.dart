@@ -37,9 +37,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
   String? initialAudioDeviceId;
   String? initialVideoDeviceId;
 
-  String? currentAudioDeviceId;
-  String? currentVideoDeviceId;
-
   // Used to ensure A/V maintains the same state (e.g. person stays muted even if
   // they change devices).
   bool userVideoEnabled = false;
@@ -254,7 +251,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     if (val == null) return;
                     setState(() {
                       isLoading = true;
-                      currentVideoDeviceId = val;
                     });
                     await _mediaService.selectVideoDevice(
                       deviceId: val,
@@ -351,7 +347,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     ),
                   const SizedBox(height: 16),
                   ActionButton(
-                    text: '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
+                    text:
+                        '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
                     onPressed: () async {
                       final savedInitialVideoDeviceId = initialVideoDeviceId;
                       final savedInitialAudioId = initialAudioDeviceId;
@@ -439,7 +436,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                         // Reset to initial values if save fails
                         _mediaService.selectedVideoInputId =
                             savedInitialVideoDeviceId;
-                        initialAudioDeviceId = savedInitialVideoDeviceId;
+                        initialVideoDeviceId = savedInitialVideoDeviceId;
                         initialAudioDeviceId = savedInitialAudioId;
                         if (userAudioEnabled) {
                           await widget.conferenceRoom.toggleAudioEnabled(

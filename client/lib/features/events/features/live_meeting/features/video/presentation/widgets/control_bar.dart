@@ -41,12 +41,12 @@ class _ControlBarState extends State<ControlBar> {
   ConferenceRoom get _conferenceRoomRead =>
       LiveMeetingProvider.read(context).conferenceRoom!;
 
-  Widget _buildVideoToggle() {
+  Widget _buildVideoToggle({required bool enabled}) {
     return _IconButton(
-      onTap: () => AudioVideoErrorDialog.showOnError(
+      onTap: enabled ? () => AudioVideoErrorDialog.showOnError(
         context,
         () => _conferenceRoomRead.toggleVideoEnabled(),
-      ),
+      ) : () async {},
       text: _conferenceRoom.videoIsStreaming ? 'Stop Video' : 'Start Video',
       icon: _conferenceRoom.videoIsStreaming
           ? Icons.videocam_outlined
@@ -94,8 +94,10 @@ class _ControlBarState extends State<ControlBar> {
 
   Widget _buildControlWidgets() {
     // Disable the toggles if audio is temporarily disabled for the user or if they haven't completed the mirror check for this event
-    final enabled = !_liveMeetingProvider.audioTemporarilyDisabled &&
-        sharedPreferencesService.hasMirrorCheckCompletedForEvent(_liveMeetingProvider.eventProvider.eventId);
+    final enabled = !_liveMeetingProvider.audioTemporarilyDisabled;
+    final mirrorCheckCompleted =
+        sharedPreferencesService.hasMirrorCheckCompletedForEvent(
+            _liveMeetingProvider.eventProvider.eventId,);
     final isMobile = responsiveLayoutService.isMobile(context);
     final double spacerWidth = isMobile ? 6 : 12;
     bool showTalkingTimer =
@@ -104,13 +106,15 @@ class _ControlBarState extends State<ControlBar> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(width: spacerWidth),
-        _buildVideoToggle(),
+        _buildVideoToggle(enabled: mirrorCheckCompleted),
         _IconButton(
           onTap: enabled
-              ? () => AudioVideoErrorDialog.showOnError(
-                    context,
-                    () => _conferenceRoomRead.toggleAudioEnabled(),
-                  )
+              ? (mirrorCheckCompleted
+                  ? () => AudioVideoErrorDialog.showOnError(
+                        context,
+                        () => _conferenceRoomRead.toggleAudioEnabled(),
+                      )
+                  : () async {})
               : () async {
                   showRegularToast(
                     context,
