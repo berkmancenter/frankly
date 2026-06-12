@@ -1,11 +1,11 @@
 import 'package:client/styles/styles.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/config/environment.dart';
+import 'package:client/services.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
@@ -265,43 +265,39 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     String name = _displayNameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text;
-    final userService = context.read<UserService>();
-    final onComplete = widget.onComplete;
 
     if (_showSignup) {
-      await userService.registerWithEmail(
-        displayName: name,
-        email: email,
-        password: password,
-      );
+      await context.read<UserService>().registerWithEmail(
+            displayName: name,
+            email: email,
+            password: password,
+          );
+    } else {
+      await context.read<UserService>().signInWithEmail(
+            email: email,
+            password: password,
+          );
+    }
+    bool emailVerified =
+          userService.firebaseAuth.currentUser?.emailVerified ?? false;
+    if (!emailVerified) {
       await userService.verifyEmail();
       if (mounted) {
         TextInput.finishAutofillContext(shouldSave: true);
         Navigator.of(context).pop();
       }
       return;
-    } else {
-      await userService.signInWithEmail(email: email, password: password);
-      bool emailVerified =
-          userService.firebaseAuth.currentUser?.emailVerified ?? false;
-      if (!emailVerified) {
-        await userService.verifyEmail();
-        if (mounted) {
-          TextInput.finishAutofillContext(shouldSave: true);
-          Navigator.of(context).pop();
-        }
-        return;
-      }
     }
     if (mounted) {
       TextInput.finishAutofillContext(shouldSave: true);
       Navigator.of(context).pop();
-    }onComplete?.call();
+    }
+    widget.onComplete?.call();
   }
 
   Future<void> _resetPassword() async {
     await authMessageOnError(
-      () => context.read<UserService>().resetPassword(email: _emailController.text),
+      () => userService.resetPassword(email: _emailController.text),
       errorCallback: (error, msg) => {
         if (msg == 'Email must be entered to reset password.')
           setState(() {
@@ -535,37 +531,6 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             if (_showSignup)
               Text(
                 context.l10n.passwordRequirements,
-                style: context.theme.textTheme.bodySmall,
-              ),
-            if (!_showSignup)
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text.rich(
-                  TextSpan(
-                    text: context.l10n.forgotPassword,
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        // We have to disable password validation for now so the form validation can succeed without it
-                        setState(() {
-                          _ignorePassword = true;
-                        });
-                        if (_formKey.currentState!.validate()) {
-                          _resetPassword();
-                        }
-                      },
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ),
-            SizedBox(height: 9),
-            if (_formError.isNotEmpty) AccountErrorMessage(errorCode: _formError),
-            if (_formMessage.isNotEmpty)
-              Text(
-                _formMessage,
-                style: context.theme.textTheme.bodySmall,
-                textAlign: TextAlign.center,
               ),
             SizedBox(height: 9),
             ActionButton(
