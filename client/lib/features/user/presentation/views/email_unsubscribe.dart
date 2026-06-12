@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/custom_stream_builder.dart';
 import 'package:client/core/widgets/navbar/custom_scaffold.dart';
@@ -44,7 +45,7 @@ class _EmailUnsubscribePageState extends State<EmailUnsubscribePage> {
                     'This will unsubscribe from ${Environment.appName} updates:',
                   ),
                   ActionButton(
-                    text: 'Unsubscribe Now',
+                    text: buildContext.l10n.unsubscribeNow,
                     onPressed: _unsubscribe,
                   ),
                 ],

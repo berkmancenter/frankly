@@ -69,7 +69,7 @@
       body {
         margin: 0;
         padding: 0;
-        /* Prevent body scroll, allow Fltter to handle it internally.*/
+        /* Prevent body scroll, allow Flutter to handle it internally.*/
         overflow: hidden;
         overscroll-behavior: none;
       }
@@ -161,7 +161,12 @@
   -->
     <script src="./agora/iris-web-rtc.js"></script>
 
-    <script nonce="__SCRIPT_NONCE__">
+    <script type="application/javascript" nonce="__SCRIPT_NONCE__">
+      // Keep this in sync with the flutter_bootstrap.js version below
+      window.platformVersion = "__VERSION__";
+    </script>
+
+    <script>
       if (window.location.hostname == "localhost") {
         // needed to make the auth emulator work correctly
         window.indexedDB.deleteDatabase("firebaseLocalStorageDb");

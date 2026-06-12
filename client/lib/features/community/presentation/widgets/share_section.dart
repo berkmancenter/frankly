@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
@@ -105,7 +106,7 @@ class _ShareSectionState extends State<ShareSection> {
 
   void _tapLink() {
     Clipboard.setData(ClipboardData(text: _withCacheBuster(widget.url)));
-    showRegularToast(context, 'Link Copied!', toastType: ToastType.success);
+    showRegularToast(context, context.l10n.linkCopied, toastType: ToastType.success);
     _shareCallback(ShareType.link);
   }
 

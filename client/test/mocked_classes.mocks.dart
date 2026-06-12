@@ -5313,13 +5313,6 @@ class MockCommunitySettings extends _i1.Mock implements _i25.CommunitySettings {
       ) as bool);
 
   @override
-  bool get enablePlatformSelection => (super.noSuchMethod(
-        Invocation.getter(#enablePlatformSelection),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
   bool get enableUpdatedLiveMeetingMobile => (super.noSuchMethod(
         Invocation.getter(#enableUpdatedLiveMeetingMobile),
         returnValue: false,
@@ -15820,6 +15813,27 @@ class MockSharedPreferencesService extends _i1.Mock
       ) as _i38.Future<bool>);
 
   @override
+  _i38.Future<void> setPendingEmailVerification(String? email) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setPendingEmailVerification,
+          [email],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> clearPendingEmailVerification() => (super.noSuchMethod(
+        Invocation.method(
+          #clearPendingEmailVerification,
+          [],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
   _i38.Future<void> setLastQueryParameters(String? lastQueryParameters) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -17055,13 +17069,26 @@ class MockUserService extends _i1.Mock implements _i113.UserService {
       ) as bool);
 
   @override
-  void verifyEmail() => super.noSuchMethod(
+  _i38.Future<void> sendMagicVerificationLink(String? email) =>
+      (super.noSuchMethod(
         Invocation.method(
-          #verifyEmail,
-          [],
+          #sendMagicVerificationLink,
+          [email],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> updateEmailAndResendVerification(String? newEmail) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateEmailAndResendVerification,
+          [newEmail],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
 
   @override
   _i38.Future<void> initialize() => (super.noSuchMethod(
@@ -17576,13 +17603,26 @@ class MockUserServiceNullable extends _i1.Mock implements _i113.UserService {
       ) as bool);
 
   @override
-  void verifyEmail() => super.noSuchMethod(
+  _i38.Future<void> sendMagicVerificationLink(String? email) =>
+      (super.noSuchMethod(
         Invocation.method(
-          #verifyEmail,
-          [],
+          #sendMagicVerificationLink,
+          [email],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> updateEmailAndResendVerification(String? newEmail) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateEmailAndResendVerification,
+          [newEmail],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
 
   @override
   _i38.Future<void> initialize() => (super.noSuchMethod(

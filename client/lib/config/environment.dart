@@ -44,6 +44,7 @@ class Environment {
   static const termsUrl = String.fromEnvironment('TERMS_URL');
   static const pricingUrl = String.fromEnvironment('PRICING_URL');
   static const aboutUrl = String.fromEnvironment('ABOUT_URL');
+  static const supportEmail = String.fromEnvironment('SUPPORT_EMAIL');
   static const privacyPolicyUrl = String.fromEnvironment('PRIVACY_POLICY_URL');
   static const helpCenterUrl = String.fromEnvironment('HELP_CENTER_URL');
   static const helpCenterManagingCommunityUrl =

@@ -20,14 +20,14 @@ import 'package:client/core/localization/localization_helper.dart';
 class ChatWidget extends StatelessWidget {
   final String parentPath;
   final ChatModel? chatModel;
-  final String messageInputHint;
+  final String? messageInputHint;
   final bool shouldGuardCommunityMember;
   final bool allowBroadcast;
 
   const ChatWidget({
     required this.parentPath,
     this.chatModel,
-    this.messageInputHint = 'Enter message',
+    this.messageInputHint,
     this.shouldGuardCommunityMember = false,
     this.allowBroadcast = false,
   });
@@ -55,12 +55,12 @@ class ChatWidget extends StatelessWidget {
 }
 
 class _ChatWidget extends StatefulWidget {
-  final String messageInputHint;
+  final String? messageInputHint;
   final bool shouldGuardCommunityMember;
   final bool allowBroadcast;
 
   const _ChatWidget({
-    this.messageInputHint = 'Enter message',
+    this.messageInputHint,
     this.shouldGuardCommunityMember = false,
     this.allowBroadcast = false,
   });
@@ -145,7 +145,7 @@ class _ChatWidgetState extends State<_ChatWidget> {
             controller: _message,
             maxLines: 1,
             borderType: BorderType.none,
-            hintText: widget.messageInputHint,
+            hintText: widget.messageInputHint ?? context.l10n.enterMessage,
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             maxLength: 2000,
             hideCounter: true,
