@@ -46,11 +46,14 @@ class UserService with ChangeNotifier {
 
   SignInState _signInState = SignInState.loading;
 
+  String _emailActionContinueUrl() => '${html.window.location.origin}/';
+
   Future<void> verifyEmail() async {
-    final continueUrl =
-        html.window.location.origin + (html.window.location.pathname ?? '/');
     await _currentUser?.sendEmailVerification(
-      ActionCodeSettings(url: continueUrl, handleCodeInApp: true),
+      ActionCodeSettings(
+        url: _emailActionContinueUrl(),
+        handleCodeInApp: true,
+      ),
     );
   }
 
@@ -60,11 +63,12 @@ class UserService with ChangeNotifier {
   }
 
   Future<void> updateEmailAndResendVerification(String newEmail) async {
-    final continueUrl =
-        html.window.location.origin + (html.window.location.pathname ?? '/');
     await _currentUser?.verifyBeforeUpdateEmail(
       newEmail,
-      ActionCodeSettings(url: continueUrl, handleCodeInApp: true),
+      ActionCodeSettings(
+        url: _emailActionContinueUrl(),
+        handleCodeInApp: true,
+      ),
     );
   }
 
