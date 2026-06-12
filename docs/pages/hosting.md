@@ -362,7 +362,55 @@ Also create products and pricing with a `plan_type` metadata field (`individual`
 
 ### SendGrid
 
-SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridemail` Firestore collection.
+SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridmail` Firestore collection.
+
+### Email Authentication DNS Records
+
+To prevent spoofing of your sender domain, configure these DNS records:
+
+**SPF** - Add a TXT record on your apex domain:
+
+```
+v=spf1 mx ip4:<your-mail-server-ip-range> include:sendgrid.net -all
+```
+
+**DKIM** - In SendGrid, go to Settings -> Sender Authentication -> Authenticate Your Domain. SendGrid will give you CNAME records to add in your DNS provider. Verify they resolve:
+
+```bash
+dig +short CNAME <selector>._domainkey.yourdomain.com
+```
+
+**DMARC** - Add a TXT record at `_dmarc.yourdomain.com`:
+
+```
+v=DMARC1; p=quarantine; rua=mailto:<your-reporting-address>
+```
+
+Start with `p=quarantine` to catch misaligned senders before moving to `p=reject`.
+
+### DNSSEC
+
+DNSSEC adds cryptographic signatures to DNS responses, preventing attackers from forging or tampering with DNS answers (cache poisoning). Without it, an attacker who can poison a resolver cache could redirect your users to a different server.
+
+If your domain uses Gandi nameservers (ns-\*.gandi.net), Gandi handles key generation and DS record publication automatically:
+
+1. Log in to Gandi -> go to your domain -> DNS Records tab
+2. Click "DNSSEC" in the sidebar
+3. Enable DNSSEC - Gandi will generate the signing keys and publish the DS record to the parent zone
+
+Verify it is active after propagation:
+
+```bash
+dig +short DS yourdomain.com
+```
+
+If you see one or more DS records, DNSSEC is live. You can also check with:
+
+```bash
+dig +dnssec yourdomain.com
+```
+
+Look for the `ad` (authenticated data) flag in the response header.
 
 ---
 

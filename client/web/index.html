@@ -43,6 +43,18 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="icons/favicon.png" />
 
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; 
+               worker-src 'self' blob:;
+               script-src 'self' 'wasm-unsafe-eval' 'nonce-__SCRIPT_NONCE__' https://www.gstatic.com https://zencdn.net https://vjs.zencdn.net https://player.vimeo.com http://media.twiliocdn.com https://upload-widget.cloudinary.com https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://vjs.zencdn.net;
+               img-src 'self' data: https://res.cloudinary.com;
+               font-src 'self' data: https://fonts.gstatic.com;
+               connect-src 'self' https://frankly.org https://*.gstatic.com https://www.gstatic.com https://fonts.gstatic.com https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://firebasestorage.googleapis.com https://*.cloudfunctions.net;
+               frame-src 'self' https://player.vimeo.com;"
+    />
+
     <title>Frankly</title>
 
     <meta name="google-signin-client_id" content="__GOOGLE_ID__" />
@@ -89,20 +101,46 @@
     }
   </script-->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"
+    ></script>
 
     <!--https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-functions.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
-
-    <script src="//media.twiliocdn.com/sdk/js/video/releases/2.17.1/twilio-video.min.js"></script>
-    <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
-    <script src="./utils/app-utils.js"></script>
-    <script src="./utils/hark.bundle.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/can-autoplay@3.0.0/build/can-autoplay.min.js"></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"
+    ></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"
+    ></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"
+    ></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://www.gstatic.com/firebasejs/8.6.1/firebase-functions.js"
+    ></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"
+    ></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="//media.twiliocdn.com/sdk/js/video/releases/2.17.1/twilio-video.min.js"
+    ></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://vjs.zencdn.net/7.10.2/video.min.js"
+    ></script>
+    <script nonce="__SCRIPT_NONCE__" src="./utils/app-utils.js"></script>
+    <script nonce="__SCRIPT_NONCE__" src="./utils/hark.bundle.js"></script>
+    <script
+      nonce="__SCRIPT_NONCE__"
+      src="https://cdn.jsdelivr.net/npm/can-autoplay@3.0.0/build/can-autoplay.min.js"
+    ></script>
     <script
       src="https://upload-widget.cloudinary.com/global/all.js"
       type="text/javascript"
@@ -123,7 +161,7 @@
   -->
     <script src="./agora/iris-web-rtc.js"></script>
 
-    <script type="application/javascript">
+    <script type="application/javascript" nonce="__SCRIPT_NONCE__">
       // Keep this in sync with the flutter_bootstrap.js version below
       window.platformVersion = "__VERSION__";
     </script>
@@ -136,6 +174,10 @@
     </script>
 
     <div id="flutter-container" role="main"></div>
-    <script src="flutter_bootstrap.js?version=__VERSION__" async></script>
+    <script
+      src="flutter_bootstrap.js?version=__VERSION__"
+      async
+      nonce="__SCRIPT_NONCE__"
+    ></script>
   </body>
 </html>
