@@ -130,12 +130,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Audiovisual Settings',
+            context.l10n.audiovisualSettings,
             style: context.theme.textTheme.headlineSmall,
           ),
           SizedBox(height: 10),
           Text(
-            context.l10n.audioInputDevice,
+            context.l10n.microphoneInput,
             style: context.theme.textTheme.titleMedium,
           ),
           _mediaService.audioInputs.isEmpty
@@ -199,7 +199,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                 ),
           const SizedBox(height: 24),
           Text(
-            context.l10n.videoInputDevice,
+            context.l10n.cameraInput,
             style: context.theme.textTheme.titleMedium,
           ),
           _mediaService.videoInputs.isEmpty
