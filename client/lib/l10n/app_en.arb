@@ -93,6 +93,13 @@
       "itemName": {}
     }
   },
+  "@emailAndPasswordMismatch": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "@enterCategoryNum": {
     "placeholders": {
       "number": {
@@ -142,6 +149,11 @@
   "@kickOutUser": {
     "placeholders": {
       "displayName": {}
+    }
+  },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {}
     }
   },
   "@manageJoinRequests": {
@@ -213,11 +225,6 @@
       "communityName": {
         "type": "String"
       }
-    }
-  },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {}
     }
   },
   "@termsAgreementPrefix": {
@@ -306,6 +313,7 @@
   "appTitleUnsubscribe": "{appName} - Unsubscribe",
   "appTitleUserSettings": "{appName} - User Settings",
   "appTitleWelcome": "{appName} - Welcome",
+  "and": "and",
   "areYouSure": "Are you sure?",
   "areYouSureYouWantToDeleteMedia": "Are you sure you want to delete media?",
   "areYouSureYouWantToRefreshTheTemplate": "Are you sure you want to refresh the template?",
@@ -394,6 +402,7 @@
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "congratulations": "Congratulations!",
   "contactEmail": "Contact email",
+  "contactUs": "Contact us",
   "continueButton": "Continue",
   "copiedToClipboard": "Copied to clipboard",
   "couldntFindAccount": "We couldn’t find an account with this email. Try ",
@@ -443,6 +452,8 @@
   "email": "Email",
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
+  "emailAndPasswordMismatch": "Your email and password combination don’t match a {appName} account.",
+  "emailAndPasswordMismatchCheck": "You can check what you entered and try again.",
   "endBreakoutRooms": "End Breakout Rooms",
   "endBreakouts": "End Breakouts",
   "endTime": "End Time",
@@ -503,8 +514,12 @@
   "finish": "Finish",
   "floatingChat": "Floating Chat",
   "followCommunityButton": "Follow Community Button",
-  "forgotPassword": "Forgot Password?",
-  "forgotYourPassword": "Forgot your password?",
+  "forgotPasswordPrefix": "Forgot your password?",
+  "forgotPasswordEnterEmail": "Enter your email",
+  "forgotPasswordSuffix": "reset your password",
+  "forgotPasswordThen": "then ",
+  "forgotAccountEmailOrNeedHelp": "Forgot your account email or need other help signing in?",
+  "forgotEmail": "Forgot the email associated with your account?",
   "franklyLogo": "Frankly Logo",
   "galleryView": "Gallery View",
   "getCustomColors": "Get custom colors ",
@@ -530,12 +545,14 @@
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
   "imageUrlNotSet": "(Image URL is not set.)",
+  "incorrectEmailOrPassword": "Incorrect email or password",
   "instagramUrl": "Instagram URL",
   "instantMeeting": "Instant Meeting",
   "insteadSuffix": " instead.",
   "introBeforeBreakouts": "About {duration} of intro before breakout rooms",
   "introductionContent": "_Introduce yourselves!  Each take one minute to answer one of the following questions._\n\n* What's something you did recently that was a lot of fun?\n* Who is your favorite cartoon character and why?\n* What's one thing you wish to accomplish before you die?\n* What movie did you NOT like?\n",
   "introductions": "Introductions",
+  "invalidEmail": "Invalid email",
   "items": "Items",
   "joinCommunity": "Join {communityName}?",
   "joinEvent": "Join Event",
@@ -557,7 +574,10 @@
   "loading": "Loading",
   "locked": "Locked",
   "loggingIn": "logging in",
+  "logIntoApp": "Log into {appName}",
+  "logInto": "Log into",
   "login": "Login",
+  "logInWithGoogle": "Log in with Google",
   "logo": "Logo",
   "logout": "Logout",
   "loopVideo": "Loop Video",
@@ -816,9 +836,7 @@
   "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
   "sidebarUnfollowButton": "Sidebar Unfollow Button",
   "signIn": "Log In",
-  "signInToApp": "Sign in to {appName}",
   "signInWithEmail": "Sign in with Email",
-  "signInWithGoogle": "Sign in with Google",
   "signOut": "Sign Out",
   "signUp": "Sign Up",
   "signUpOrSignInToContinue": "Sign up (or sign in using an existing account) to continue.",
@@ -835,6 +853,9 @@
   "socialLinkedIn": "LinkedIn URL",
   "socialTwitter": "Twitter URL",
   "somethingWentWrong": "Something went wrong",
+  "somethingWentWrongLongPrefix": "We’re sorry, something went wrong.",
+  "somethingWentWrongLongMiddle": "Refresh the page and try logging in to Frankly again.\n\nIf you continue having trouble, you can",
+  "somethingWentWrongLongSuffix": "contact us for support",
   "somethingWentWrongTryAgain": "Something went wrong. Please try again.",
   "sorryVimeoVideoLookupFailed": "Sorry, vimeo video lookup failed.",
   "sorryYoutubeVideoLookupFailed": "Sorry, youtube video lookup failed.",
@@ -874,9 +895,11 @@
   "thisUser": "this user",
   "titleCannotBeEmpty": "Title cannot be empty",
   "titleIsRequired": "Title is required",
+  "tooManyRequests": "Too many failed requests. Please try again later.",
   "troubleshoot": "Troubleshoot",
   "troubleshootingGuide": "Troubleshooting Guide",
   "tryAgain": "Please try again",
+  "tryAgainLater": " and try again later",
   "turnOnAudioVideo": "Turn on Audio/Video?",
   "twitterUrl": "Twitter URL",
   "typeSomething": "Type something",

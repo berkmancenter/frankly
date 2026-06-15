@@ -133,6 +133,13 @@
       }
     }
   },
+  "@emailAndPasswordMismatch": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "@enterCategoryNum": {
     "placeholders": {
       "number": {
@@ -180,6 +187,13 @@
   "@kickOutUser": {
     "placeholders": {
       "displayName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@logIntoApp": {
+    "placeholders": {
+      "appName": {
         "type": "Object"
       }
     }
@@ -275,13 +289,6 @@
       }
     }
   },
-  "@signInToApp": {
-    "placeholders": {
-      "appName": {
-        "type": "Object"
-      }
-    }
-  },
   "@termsAgreementPrefix": {
     "placeholders": {
       "appName": {
@@ -335,7 +342,6 @@
   "aVIssues": "影音問題？",
   "about": "關於",
   "aboutHint": "新增更多關於此社群目標的詳細資訊",
-  "aboutMe": "關於我",
   "aboutUs": "關於我們",
   "accentColor": "強調色",
   "accentColorMustBeDarker": "強調色必須更深",
@@ -354,7 +360,6 @@
   "addPrerequisiteTemplate": "新增先決條件模板",
   "addQuestion": "新增問題",
   "addRoom": "新增房間",
-  "addBreakouts": "新增分組討論",
   "addSomethingHere": "在此處新增內容",
   "addToCalendar": "新增至日曆",
   "admin": "管理員",
@@ -365,9 +370,9 @@
   "agendaItemsWereRemoved": "議程項目已移除",
   "agendaPromptReady": "您的活動已準備好開始！",
   "agendaPromptWaiting": "等待主持人開始活動...",
-  "agendaTitle": "議程",
   "agreeAndContinue": "同意並繼續",
   "alreadyUserSignIn": "已有帳戶？",
+  "and": "和",
   "anonymous": "匿名",
   "appDescription": "線上審議平臺",
   "appNameHome": "{appName} - 首頁",
@@ -439,14 +444,9 @@
   "chatWelcome": "歡迎！",
   "chatWithParticipants": "和參與者聊天",
   "chooseABackgroundAndAccentColor": "選擇淺色背景和深色強調色，提供足夠的對比度，讓包括中度視力不佳用戶在內的廣大用戶都能閱讀文字。我們會檢查其可讀性。",
-  "chooseDuration": "選擇時長",
   "clearAgenda": "清除議程？",
-  "clearAll": "全部清除",
-  "clickNextWhenReady": "準備好繼續時請點擊下一步。",
   "close": "關閉",
   "closeEdit": "關閉編輯",
-  "comment": "留言",
-  "commentCannotBeEmpty": "留言不能為空",
   "commentWasDeleted": "留言已刪除",
   "communityDescription": "社區描述",
   "communityDescriptionHint": "添加更多有關此社區目標的詳細信息",
@@ -459,16 +459,15 @@
   "confirm": "確認",
   "confirmCancelQuestion": "您確定要取消嗎？",
   "confirmDelete": "確定要刪除嗎？",
-  "confirmDeleteComment": "您確定要刪除此留言嗎？",
   "confirmDeleteMedia": "您確定要刪除媒體嗎？",
   "confirmDeletePost": "您確定要刪除此貼文嗎？",
   "confirmDiscardChanges": "您確定要放棄變更嗎？",
   "confirmMakeOwner": "您確定要將 {userName} 變更為 {communityName} 的擁有者嗎？這將賦予他們在此社區中的所有可能權限，包括刪除社區的能力。",
   "confirmRefreshTemplate": "您確定要刷新模板嗎？",
-  "confirmRemoveAllAgendaItems": "您確定要從分組討論中移除所有議程項目嗎？此操作無法復原。",
   "confirmRemoveParticipant": "您確定要將 {name} 從此活動中移除嗎？",
   "congratulations": "恭喜！",
   "contactEmail": "聯絡電郵",
+  "contactUs": "聯絡我們",
   "continueButton": "繼續",
   "copiedToClipboard": "已複製到剪貼簿",
   "couldntFindAccount": "我们找不到使用此邮箱的账户。请尝试 ",
@@ -482,7 +481,6 @@
   "createAnAnnouncement": "創建公告",
   "createAnEvent": "創建活動",
   "createEvent": "建立活動",
-  "createNewAnnouncement": "建立新公告",
   "createPost": "建立貼文",
   "createTemplateFromEvent": "從活動建立模板",
   "currentParticipants": "目前\n參與者",
@@ -512,20 +510,17 @@
   "duplicateItem": "複製項目",
   "duplicateTemplate": "複製範本",
   "edit": "編輯",
-  "editEvent": "編輯活動",
   "editImage": "編輯圖片",
   "editItem": "編輯項目",
   "email": "電子郵件",
   "emailAddressAlreadyInUse": "您已經創建了一個與此電子郵件地址關聯的帳戶。請使用電子郵件登入，如果不知道密碼請點擊忘記密碼。或者，使用其他電子郵件重新註冊。",
   "emailAddressAlreadyInUseLoginError": "此電子郵件已被使用。請嘗試 ",
+  "emailAndPasswordMismatch": "您的電子郵件和密碼組合與 {appName} 帳戶不匹配。",
+  "emailAndPasswordMismatchCheck": "您可以檢查您輸入的內容並重試。",
   "endBreakoutRooms": "結束分組討論",
-  "endBreakouts": "結束分組",
   "endTime": "結束時間",
-  "enterAMessage": "輸入訊息",
-  "enterATitle": "輸入標題",
   "enterAmount": "輸入金額",
   "enterCategoryNum": "輸入類別 {number}",
-  "enterEvent": "進入活動",
   "enterHeadline": "輸入標題",
   "enterImageTitle": "輸入圖片標題",
   "enterMessage": "輸入訊息",
@@ -556,16 +551,12 @@
   "eventData": "活動資料",
   "eventDescription": "活動描述",
   "eventDetails": "活動詳情",
-  "eventEnded": "活動已結束",
-  "eventFull": "已額滿",
-  "eventHasNotStartedYet": "活動尚未開始。我們很快會再見！",
   "eventIsLocked": "此活動已鎖定",
   "eventLocked": "此活動已鎖定",
   "eventSettings": "活動設定",
   "eventSettingsDescription": "定義社區內活動的預設設定。這些設定可以針對個別活動和模板進行覆蓋。",
   "eventTabsContent": "活動標籤內容",
   "eventTitle": "活動標題",
-  "eventWasNotEntered": "未進入活動。",
   "events": "活動",
   "ex2": "例如：2",
   "exTwo": "例：2",
@@ -574,12 +565,15 @@
   "facilitator": "引導者",
   "fakeParticipantCount": "假參與者數量",
   "filter": "篩選",
-  "filterMemberListByName": "依姓名篩選成員列表",
   "finish": "完成",
   "floatingChat": "浮動聊天",
   "followCommunityButton": "追蹤社群按鈕",
-  "forgotPassword": "忘記密碼？",
-  "forgotYourPassword": "忘記密碼？",
+  "forgotPasswordPrefix": "忘記您的密碼？",
+  "forgotPasswordEnterEmail": "輸入您的電子郵件",
+  "forgotPasswordSuffix": "重設您的密碼",
+  "forgotPasswordThen": "然後 ",
+  "forgotAccountEmailOrNeedHelp": "忘記您的帳戶電子郵件或需要其他登入幫助？",
+  "forgotEmail": "忘記與您的帳戶相關聯的電子郵件？",
   "franklyLogo": "Frankly 標誌",
   "galleryView": "畫廊檢視",
   "getCustomColors": "獲取自定義顏色",
@@ -600,6 +594,7 @@
   "iAgreeToThe": "我同意",
   "iCalCalendar": "iCal 日曆",
   "illBeThere": "我會去！",
+  "incorrectEmailOrPassword": "電子郵件或密碼不正確",
   "image": "圖片",
   "imageUrl": "圖片連結",
   "imageUrlIsNotSet": "（圖片URL未設置。）",
@@ -612,6 +607,7 @@
   "introBeforeBreakouts": "分組討論前約{duration}的介紹時間",
   "introductionContent": "_介紹一下自己！每位花一分鐘回答下列問題之一。_\n\n* 最近做了什麼有趣的事情？\n* 你最喜歡的動畫角色是誰，為什麼？\n* 在你離開這個世界之前，有什麼事情想要完成？\n* 你不喜歡哪部電影？\n",
   "introductions": "介紹",
+  "invalidEmail": "無效的電子郵件",
   "items": "項目",
   "joinCommunity": "加入{communityName}？",
   "joinEvent": "加入活動",
@@ -632,8 +628,11 @@
   "livestream": "直播",
   "loading": "載入中",
   "locked": "已鎖定",
-  "loggingIn": "登录",
+  "loggingIn": "登入中",
+  "logIntoApp": "登入 {appName}",
+  "logInto": "登入",
   "login": "登入",
+  "logInWithGoogle": "使用 Google 登入",
   "logo": "標誌",
   "logout": "登出",
   "loopVideo": "循環播放影片",
@@ -662,7 +661,6 @@
   "mins": "分鐘",
   "miscellaneous": "其他",
   "moderator": "版主",
-  "mustAddAtLeastTwoCategories": "您必須至少新增兩 (2) 個類別。",
   "mustBeLoggedInToAccessThisSection": "必須登錄才能訪問此部分。",
   "mustBeValidHexColor": "必須是有效的十六進制顏色值。",
   "muteAll": "全部靜音",
@@ -768,17 +766,13 @@
   "prerequisiteRequired": "需要先決條件",
   "presets": "預設",
   "pressToPromote": "點擊推廣",
-  "preview": "預覽",
   "previewAgenda": "預覽議程",
   "previewVideo": "預覽影片",
   "primaryContent": "主要內容",
   "privacyPolicy": "隱私政策",
-  "privateVisibility": "私密",
   "profile": "個人檔案",
   "profileButton": "個人資料按鈕",
-  "profileUpdated": "個人檔案已更新",
   "proposeToRemoveUser": "提議移除用戶？",
-  "publicVisibility": "公開",
   "questionDeleted": "問題已刪除！",
   "questionGoesHere": "問題寫在這裡",
   "questionIsRequired": "問題為必填項",
@@ -818,7 +812,6 @@
   "registered": "已註冊",
   "registrantList": "報名者名單",
   "registrationDataDownload": "註冊數據下載",
-  "reload": "重新載入",
   "remove": "移除",
   "removeParticipant": "移除參與者",
   "removeSuggestion": "刪除建議",
@@ -839,7 +832,6 @@
   "rolesTooltip": "成員角色決定社區內的權限和訪問。",
   "roomNumber": "房間號碼",
   "roomsCountMayChange": "如果參與者退出，房間數量可能會變化。",
-  "rsvp": "報名",
   "save": "儲存",
   "saveAgendaItem": "儲存議程項目",
   "saveChangesQuestion": "儲存變更？",
@@ -892,9 +884,7 @@
   "sidebarFollowCommunityButton": "側邊欄追蹤社群按鈕",
   "sidebarUnfollowButton": "側邊欄取消追蹤按鈕",
   "signIn": "登入",
-  "signInToApp": "登入到 {appName}",
   "signInWithEmail": "使用電郵登入",
-  "signInWithGoogle": "使用 Google 登入",
   "signOut": "登出",
   "signUp": "註冊",
   "signUpOrSignInToContinue": "註冊（或使用現有帳戶登入）以繼續。",
@@ -911,6 +901,9 @@
   "socialLinkedIn": "LinkedIn",
   "socialTwitter": "Twitter",
   "somethingWentWrong": "出了些問題",
+  "somethingWentWrongLongPrefix": "抱歉，出了些問題。",
+  "somethingWentWrongLongMiddle": "請刷新頁面並嘗試重新登入 Frankly。\n\n如果問題持續，您可以 ",
+  "somethingWentWrongLongSuffix": "聯繫支援以獲取幫助。",
   "somethingWentWrongTryAgain": "出現錯誤，請重試。",
   "sorryVimeoVideoLookupFailed": "抱歉，Vimeo 影片查詢失敗。",
   "sorryYoutubeVideoLookupFailed": "抱歉，YouTube 影片查詢失敗。",
@@ -920,7 +913,6 @@
   "startCommunity": "創建社區",
   "startEvent": "開始活動",
   "startTime": "開始時間",
-  "startsTomorrow": "明天開始",
   "submitChatButton": "提交聊天按鈕",
   "submitMessageButton": "提交訊息按鈕",
   "submitTagButton": "提交",
@@ -950,9 +942,11 @@
   "thisUser": "此用戶",
   "titleCannotBeEmpty": "標題不能為空",
   "titleIsRequired": "標題為必填項",
+  "tooManyRequests": "請求失敗次數過多。請稍後再試。",
   "troubleshoot": "故障排除",
   "troubleshootingGuide": "疑難排解指南",
   "tryAgain": "請再試一次",
+  "tryAgainLater": "請稍後再試",
   "turnOnAudioVideo": "開啟音訊/視訊？",
   "twitterUrl": "Twitter連結",
   "typeSomething": "輸入內容",
@@ -1011,8 +1005,6 @@
   "wouldYouLikeToTurnOnAv": "您想要開啟音訊和視訊嗎？",
   "yes": "是",
   "yesCancel": "是的，取消",
-  "yesCancelPlan": "是的，取消方案",
-  "yesClear": "是的，清除",
   "yesDelete": "是的，刪除",
   "yesJoin": "是的，加入",
   "yesJoinCommunity": "是的，加入！",
