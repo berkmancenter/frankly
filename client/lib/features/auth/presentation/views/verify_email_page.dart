@@ -33,6 +33,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool _linkExpired = false;
   bool _editingEmail = false;
   bool _emailAlreadyInUse = false;
+  String _emailValidationError = '';
   late String _currentEmail;
   late TextEditingController _emailController;
   Timer? _expiryTimer;
@@ -44,7 +45,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     _currentEmail = widget.email;
     _emailController = TextEditingController(text: _currentEmail);
     _emailController.addListener(() {
-      if (_emailAlreadyInUse) setState(() => _emailAlreadyInUse = false);
+      if (_emailAlreadyInUse || _emailValidationError.isNotEmpty) {
+        setState(() {
+          _emailAlreadyInUse = false;
+          _emailValidationError = '';
+        });
+      }
     });
     _startExpiryTimer();
     _startVerificationPolling();
@@ -105,7 +111,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       // Verified — InitialLoadingWidget observes UserService and will navigate home.
       return;
     }
-    setState(() => _tabCheckError = context.l10n.emailNotYetVerified);
+    setState(() {
+      _tabCheckError = context.l10n.emailNotYetVerified;
+      _resendSuccessMessage = '';
+    });
   }
 
   Future<void> _resendEmail() async {
@@ -132,9 +141,19 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     );
   }
 
+  bool _isEmailValid(String email) {
+    return RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(email);
+  }
+
   Future<void> _updateEmail() async {
     final newEmail = _emailController.text.trim();
-    if (newEmail.isEmpty || newEmail == _currentEmail) {
+    if (newEmail.isEmpty || !_isEmailValid(newEmail)) {
+      setState(() => _emailValidationError = context.l10n.pleaseEnterValidEmail);
+      return;
+    }
+    if (newEmail == _currentEmail) {
       setState(() {
         _editingEmail = false;
         _error = '';
@@ -212,7 +231,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   Widget _buildEmailAlreadyInUseError() {
     final bodyStyle = context.theme.textTheme.bodyMedium;
-    final boldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
+    final boldStyle = GoogleFonts.inter(textStyle: bodyStyle, fontWeight: FontWeight.bold);
     final linkStyle = bodyStyle?.copyWith(decoration: TextDecoration.underline);
 
     return Container(
@@ -264,8 +283,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final titleStyle = context.theme.textTheme.titleLarge;
 
     return ListView(
-      padding: const EdgeInsets.all(40) + const EdgeInsets.only(top: 30),
-      shrinkWrap: true,
+      padding: const EdgeInsets.all(40),
       children: [
         Align(
           alignment: Alignment.center,
@@ -278,7 +296,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             ),
           ),
         ),
-        const SizedBox(height: 60),
+        const SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
           child: Text(
@@ -303,7 +321,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               fontSize: 16,
               fontWeight: FontWeight.w400,
               letterSpacing: 0.5,
-              color: _emailAlreadyInUse
+              color: (_emailAlreadyInUse || _emailValidationError.isNotEmpty)
                   ? context.theme.colorScheme.error
                   : const Color(0xFF47464A),
             ),
@@ -313,14 +331,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             enabledBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(Radius.circular(4)),
               borderSide: BorderSide(
-                color: _emailAlreadyInUse
+                color: (_emailAlreadyInUse || _emailValidationError.isNotEmpty)
                     ? context.theme.colorScheme.error
                     : const Color(0xFF78767B),
               ),
             ),
             errorText: _emailAlreadyInUse
                 ? context.l10n.emailCannotBeUsedFieldError
-                : null,
+                : _emailValidationError.isNotEmpty
+                    ? _emailValidationError
+                    : null,
             errorStyle: context.theme.textTheme.bodySmall?.copyWith(
               color: context.theme.colorScheme.error,
             ),
@@ -345,6 +365,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 onPressed: () => setState(() {
                   _editingEmail = false;
                   _emailAlreadyInUse = false;
+                  _emailValidationError = '';
                   _error = '';
                 }),
                 type: ActionButtonType.outline,
@@ -380,7 +401,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     if (_editingEmail) {
       return Scaffold(
         backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-        body: Center(
+        body: Align(
+          alignment: Alignment.topCenter,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
             child: _buildEditEmailView(),
@@ -391,12 +413,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
     return Scaffold(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-      body: Center(
+      body: Align(
+        alignment: Alignment.topCenter,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 760),
           child: ListView(
-            padding: const EdgeInsets.all(40) + const EdgeInsets.only(top: 30),
-            shrinkWrap: true,
+            padding: const EdgeInsets.all(40),
             children: [
               Align(
                 alignment: Alignment.center,
@@ -443,7 +465,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                       children: [
                                         TextSpan(
                                           text: context.l10n.verificationLinkExpiredTitle,
-                                          style: context.theme.textTheme.bodyMedium?.copyWith(
+                                          style: GoogleFonts.inter(
+                                            textStyle: context.theme.textTheme.bodyMedium,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -464,7 +487,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                     children: [
                                       Text(
                                         context.l10n.emailNotYetVerifiedHeader,
-                                        style: context.theme.textTheme.bodyMedium?.copyWith(
+                                        style: GoogleFonts.inter(
+                                          textStyle: context.theme.textTheme.bodyMedium,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -534,7 +558,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 onTap: _checkVerifiedInOtherTab,
                 child: Text(
                   context.l10n.emailVerifiedInAnotherTab,
-                  style: context.theme.textTheme.bodyMedium?.copyWith(
+                  style: GoogleFonts.inter(
+                    textStyle: context.theme.textTheme.bodyMedium,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
