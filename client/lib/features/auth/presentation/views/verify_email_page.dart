@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
 class VerifyEmailPage extends StatefulWidget {
@@ -24,10 +28,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   static const _pollingInterval = Duration(seconds: 5);
 
   String _error = '';
-  String _message = '';
   String _tabCheckError = '';
-  bool _editingEmail = false;
+  String _resendSuccessMessage = '';
   bool _linkExpired = false;
+  bool _editingEmail = false;
+  bool _emailAlreadyInUse = false;
   late String _currentEmail;
   late TextEditingController _emailController;
   Timer? _expiryTimer;
@@ -38,6 +43,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     super.initState();
     _currentEmail = widget.email;
     _emailController = TextEditingController(text: _currentEmail);
+    _emailController.addListener(() {
+      if (_emailAlreadyInUse) setState(() => _emailAlreadyInUse = false);
+    });
     _startExpiryTimer();
     _startVerificationPolling();
     // Eagerly reload on mount so that a user who already verified (e.g. via
@@ -112,49 +120,308 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       () => userService.verifyEmail(),
       errorCallback: (error, _) => setState(() {
         _error = error;
-        _message = '';
+        _resendSuccessMessage = '';
       }),
       callback: () => setState(() {
         _linkExpired = false;
         _startExpiryTimer();
-        _message = resentMessage;
+        _resendSuccessMessage = resentMessage;
+        _tabCheckError = '';
         _error = '';
       }),
     );
   }
 
-  // This functionality for a user to correct a typo in their email address was removed in the latest design iteration, but the code is left here for now in case we want to easily re-enable it in the future.
-  // Future<void> _updateEmail() async {
-  //   final newEmail = _emailController.text.trim();
-  //   if (newEmail == _currentEmail) {
-  //     setState(() => _editingEmail = false);
-  //     return;
-  //   }
-  //   final userService = context.read<UserService>();
-  //   await authMessageOnError(
-  //     () => userService.updateEmailAndResendVerification(newEmail),
-  //     errorCallback: (error, _) => setState(() {
-  //       _error = error;
-  //       _message = '';
-  //     }),
-  //     callback: () => setState(() {
-  //       _currentEmail = newEmail;
-  //       _editingEmail = false;
-  //       _linkExpired = false;
-  //       _startExpiryTimer();
-  //       _message = context.l10n.emailUpdatedResent(newEmail);
-  //       _error = '';
-  //     }),
-  //   );
-  // }
+  Future<void> _updateEmail() async {
+    final newEmail = _emailController.text.trim();
+    if (newEmail.isEmpty || newEmail == _currentEmail) {
+      setState(() {
+        _editingEmail = false;
+        _error = '';
+      });
+      return;
+    }
+    final userService = context.read<UserService>();
+    await authMessageOnError(
+      () => userService.updateEmailAndResendVerification(newEmail),
+      errorCallback: (error, code) => setState(() {
+        _emailAlreadyInUse = code == 'email-already-in-use';
+        _error = _emailAlreadyInUse ? '' : error;
+      }),
+      callback: () => setState(() {
+        _currentEmail = newEmail;
+        _editingEmail = false;
+        _linkExpired = false;
+        _emailAlreadyInUse = false;
+        _startExpiryTimer();
+        _resendSuccessMessage = context.l10n.emailUpdatedResent(newEmail);
+        _tabCheckError = '';
+        _error = '';
+      }),
+    );
+  }
+
+  Widget _buildEmailSentText() {
+    final style = GoogleFonts.inter(
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      color: Colors.black,
+    );
+
+    final sentTo = context.l10n.verificationEmailSentTo(_currentEmail);
+
+    final wrongEmailFull = context.l10n.wrongEmailEditAddress;
+    final linkText = context.l10n.editYourAddressLink;
+    final linkStart = wrongEmailFull.indexOf(linkText);
+    final wrongEmailSpans = <InlineSpan>[];
+    if (linkStart >= 0) {
+      if (linkStart > 0) {
+        wrongEmailSpans.add(TextSpan(text: wrongEmailFull.substring(0, linkStart)));
+      }
+      wrongEmailSpans.add(
+        TextSpan(
+          text: linkText,
+          style: const TextStyle(decoration: TextDecoration.underline),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => setState(() {
+                  _editingEmail = true;
+                  _emailController.text = '';
+                  _error = '';
+                }),
+        ),
+      );
+      if (linkStart + linkText.length < wrongEmailFull.length) {
+        wrongEmailSpans.add(TextSpan(text: wrongEmailFull.substring(linkStart + linkText.length)));
+      }
+    } else {
+      wrongEmailSpans.add(TextSpan(text: wrongEmailFull));
+    }
+
+    return Text.rich(
+      TextSpan(
+        style: style,
+        children: [
+          TextSpan(text: sentTo),
+          const TextSpan(text: '\n'),
+          ...wrongEmailSpans,
+          const TextSpan(text: '\n\n'),
+          TextSpan(text: context.l10n.verificationAccountInstructions),
+          const TextSpan(text: '\n'),
+          TextSpan(text: context.l10n.verificationLinkExpiresIn),
+        ],
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _buildEmailAlreadyInUseError() {
+    final bodyStyle = GoogleFonts.inter(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      color: Colors.black,
+      height: 24 / 16,
+    );
+    final boldStyle = bodyStyle.copyWith(
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.15,
+    );
+    final linkStyle = bodyStyle.copyWith(
+      decoration: TextDecoration.underline,
+    );
+
+    return Container(
+      width: 348,
+      padding: const EdgeInsets.all(16),
+      color: const Color(0xFFFFEDEA),
+      child: Text.rich(
+        TextSpan(
+          style: bodyStyle,
+          children: [
+            TextSpan(
+              text: context.l10n.emailCannotBeUsedTitle,
+              style: boldStyle,
+            ),
+            const TextSpan(text: '\n\n'),
+            TextSpan(text: context.l10n.emailCannotBeUsedBody),
+            const TextSpan(text: '\n\n'),
+            TextSpan(
+              text: context.l10n.logInInsteadLink,
+              style: linkStyle,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async {
+                  final userService = context.read<UserService>();
+                  await userService.signOut();
+                },
+            ),
+            TextSpan(text: context.l10n.orCheckAndTryAgain),
+            TextSpan(
+              text: context.l10n.tryAgainLink,
+              style: linkStyle,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => setState(() => _emailAlreadyInUse = false),
+            ),
+            const TextSpan(text: '.\n\n'),
+            TextSpan(text: context.l10n.needHelp),
+            TextSpan(
+              text: context.l10n.contactUsDot,
+              style: linkStyle,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => launchUrlString('mailto:${Environment.supportEmail}'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEditEmailView() {
+    final titleStyle = GoogleFonts.inter(
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      height: 32 / 24,
+      color: Colors.black,
+    );
+
+    return ListView(
+      padding: const EdgeInsets.all(40) + const EdgeInsets.only(top: 30),
+      shrinkWrap: true,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Semantics(
+            label: context.l10n.franklyLogo,
+            child: Image.asset(
+              AppAsset.kLogoPng.path,
+              height: 90,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        const SizedBox(height: 60),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            context.l10n.editYourEmailAddressLink,
+            style: titleStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 24),
+        if (_emailAlreadyInUse) ...[
+          Center(child: _buildEmailAlreadyInUseError()),
+          const SizedBox(height: 24),
+        ],
+        Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 348),
+            child: TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autofocus: true,
+              onSubmitted: (_) => _updateEmail(),
+              decoration: InputDecoration(
+                labelText: context.l10n.email,
+                labelStyle: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.5,
+                  color: _emailAlreadyInUse
+                      ? context.theme.colorScheme.error
+                      : const Color(0xFF47464A),
+                ),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                    color: _emailAlreadyInUse
+                        ? context.theme.colorScheme.error
+                        : const Color(0xFF78767B),
+                  ),
+                ),
+                errorText: _emailAlreadyInUse
+                    ? context.l10n.emailCannotBeUsedFieldError
+                    : null,
+                errorStyle: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.4,
+                  color: context.theme.colorScheme.error,
+                ),
+              ),
+            ),
+          ),
+        ),
+        if (_error.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Center(
+            child: Text(
+              _error,
+              style: context.theme.textTheme.bodyMedium
+                  ?.copyWith(color: context.theme.colorScheme.error),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+        const SizedBox(height: 36),
+        Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ActionButton(
+                onPressed: () => setState(() {
+                  _editingEmail = false;
+                  _emailAlreadyInUse = false;
+                  _error = '';
+                }),
+                type: ActionButtonType.outline,
+                color: const Color(0xFF78767B),
+                textColor: const Color(0xFF201F1F),
+                height: 40,
+                minWidth: 168,
+                borderRadius: BorderRadius.circular(8),
+                text: context.l10n.cancelEmailEdit,
+              ),
+              const SizedBox(width: 12),
+              ActionButton(
+                onPressed: _updateEmail,
+                type: ActionButtonType.filled,
+                color: const Color(0xFF201F1F),
+                textColor: Colors.white,
+                height: 40,
+                minWidth: 168,
+                borderRadius: BorderRadius.circular(8),
+                text: context.l10n.saveEmail,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_editingEmail) {
+      return Scaffold(
+        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520),
+            child: _buildEditEmailView(),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 520),
+          constraints: const BoxConstraints(maxWidth: 760),
           child: ListView(
             padding: const EdgeInsets.all(40) + const EdgeInsets.only(top: 30),
             shrinkWrap: true,
@@ -170,84 +437,104 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 60),
               Align(
                 alignment: Alignment.center,
                 child: HeightConstrainedText(
                   context.l10n.verifyYourEmail,
-                  style: context.theme.textTheme.titleLarge,
+                  style: GoogleFonts.inter(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    height: 32 / 24,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
-              if (!_editingEmail) ...[
-                Text(
-                  context.l10n.verificationEmailSent(_currentEmail),
-                  style: context.theme.textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  context.l10n.verificationLinkExpiresIn,
-                  style: context.theme.textTheme.bodyMedium?.copyWith(
-                    color: context.theme.colorScheme.onSurfaceVariant,
+              const SizedBox(height: 36),
+              if (_tabCheckError.isNotEmpty || _resendSuccessMessage.isNotEmpty) ...[
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 440),
+                    child: Focus(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        margin: const EdgeInsets.symmetric(horizontal: 40),
+                        color: _resendSuccessMessage.isNotEmpty
+                            ? const Color(0xFFCCFFBE)
+                            : const Color(0xFFFFEDEA),
+                        child: _resendSuccessMessage.isNotEmpty
+                            ? Text(
+                                _resendSuccessMessage,
+                                style: context.theme.textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              )
+                            : _linkExpired
+                                ? Text.rich(
+                                    TextSpan(
+                                      style: GoogleFonts.inter(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 0.5,
+                                        color: Colors.black,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: context.l10n.verificationLinkExpiredTitle,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 0.15,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        const TextSpan(text: '\n\n'),
+                                        TextSpan(
+                                          text: context.l10n.resendEmailAndTryAgain,
+                                          style: const TextStyle(
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                          recognizer: TapGestureRecognizer()..onTap = _resendEmail,
+                                        ),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        context.l10n.emailNotYetVerifiedHeader,
+                                        style: context.theme.textTheme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(text: _tabCheckError),
+                                            TextSpan(
+                                              text: context.l10n.resendVerificationEmailLink,
+                                              style: const TextStyle(
+                                                decoration: TextDecoration.underline,
+                                              ),
+                                              recognizer: TapGestureRecognizer()..onTap = _resendEmail,
+                                            ),
+                                          ],
+                                        ),
+                                        style: context.theme.textTheme.bodyMedium,
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ],
+                                  ),
+                      ),
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                // const SizedBox(height: 4),
-                // Align(
-                //   alignment: Alignment.center,
-                //   child: TextButton(
-                //     style: TextButton.styleFrom(
-                //       padding: EdgeInsets.zero,
-                //       minimumSize: Size.zero,
-                //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                //     ),
-                //     onPressed: () => setState(() {
-                //       _editingEmail = true;
-                //       _emailController.text = _currentEmail;
-                //       _error = '';
-                //       _message = '';
-                //     }),
-                //     child: Text(
-                //       context.l10n.wrongEmail,
-                //       style: context.theme.textTheme.bodySmall?.copyWith(
-                //         color: context.theme.colorScheme.primary,
-                //       ),
-                //     ),
-                //   ),
-                // ),
-              // ] else ...[
-              //   TextField(
-              //     controller: _emailController,
-              //     keyboardType: TextInputType.emailAddress,
-              //     autofocus: true,
-              //     decoration: const InputDecoration(
-              //       labelText: 'Email',
-              //       border: OutlineInputBorder(),
-              //       isDense: true,
-              //     ),
-              //     onSubmitted: (_) => _updateEmail(),
-              //   ),
-              //   const SizedBox(height: 8),
-              //   Row(
-              //     mainAxisAlignment: MainAxisAlignment.end,
-              //     children: [
-              //       TextButton(
-              //         onPressed: () => setState(() {
-              //           _editingEmail = false;
-              //           _error = '';
-              //         }),
-              //         child: Text(context.l10n.cancelEmailEdit),
-              //       ),
-              //       const SizedBox(width: 8),
-              //       FilledButton(
-              //         onPressed: _updateEmail,
-              //         child: Text(context.l10n.updateEmail),
-              //       ),
-              //     ],
-              //   ),
+                const SizedBox(height: 24),
               ],
-              const SizedBox(height: 16),
+              _buildEmailSentText(),
+              const SizedBox(height: 24),
               if (_linkExpired)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -269,47 +556,36 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              if (_message.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    _message,
-                    style: context.theme.textTheme.bodySmall,
-                    textAlign: TextAlign.center,
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 300),
+                  child: ActionButton(
+                    onPressed: _resendEmail,
+                    type: ActionButtonType.filled,
+                    expand: true,
+                    textColor: Colors.white,
+                    color: Colors.black,
+                    text: context.l10n.resendVerificationEmail,
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ActionButton(
-                  onPressed: _resendEmail,
-                  type: ActionButtonType.filled,
-                  expand: true,
-                  textColor: Colors.white,
-                  color: Colors.black,
-                  text: context.l10n.resendVerificationEmail,
-                ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               GestureDetector(
                 onTap: _checkVerifiedInOtherTab,
                 child: Text(
-                  'I verified my email in another tab or window',
-                  style: context.theme.textTheme.bodySmall?.copyWith(
+                  context.l10n.emailVerifiedInAnotherTab,
+                  style: GoogleFonts.roboto(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 20 / 16,
+                    letterSpacing: 0.1,
                     decoration: TextDecoration.underline,
+                    decorationStyle: TextDecorationStyle.solid,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              if (_tabCheckError.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                Text(
-                  _tabCheckError,
-                  style: context.theme.textTheme.bodySmall?.copyWith(
-                    color: context.theme.colorScheme.error,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
             ],
           ),
         ),

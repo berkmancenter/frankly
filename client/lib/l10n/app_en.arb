@@ -264,6 +264,11 @@
       "email": {}
     }
   },
+  "@verificationEmailSentTo": {
+    "placeholders": {
+      "email": {}
+    }
+  },
   "@videoElement": {
     "placeholders": {
       "label": {}
@@ -471,10 +476,12 @@
   "email": "Email",
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
-  "emailNotYetVerified": "Your email hasn't been verified yet. Please check your inbox and click the verification link.",
+  "emailNotYetVerified": "Check your inbox for the verification email and select the verification link. If you can't find it, it may be in your spam folder. You can also ",
+  "emailNotYetVerifiedHeader": "Your email hasn't been verified yet.",
   "emailUpdatedResent": "Verification email sent to {email}.",
   "emailAndPasswordMismatch": "Your email and password combination don’t match a {appName} account.",
   "emailAndPasswordMismatchCheck": "You can check what you entered and try again.",
+  "emailVerifiedInAnotherTab": "I verified my email in another window",
   "endBreakoutRooms": "End Breakout Rooms",
   "endBreakouts": "End Breakouts",
   "endTime": "End Time",
@@ -777,6 +784,7 @@
   "reorderingNotSavedUntilQuestionsCompleted": "Reordering not saved until all questions are completed.",
   "required": "Required",
   "resendVerificationEmail": "Resend Email",
+  "resendVerificationEmailLink": "resend the email.",
   "resources": "Resources",
   "restoreSettings": "Restore Default Settings",
   "role": "Role",
@@ -916,6 +924,7 @@
   "updateBilling": "Update billing",
   "updateButton": "Update",
   "updateEmail": "Update Email",
+  "saveEmail": "Save Email",
   "updatePlan": "Update Plan",
   "updateProfile": "Update Profile",
   "updateTemplate": "Update template",
@@ -933,9 +942,13 @@
   "usersAreInBreakoutRooms": "Users are in breakout rooms.",
   "verificationEmailResent": "Verification email resent to {email}.",
   "verificationEmailSent": "We sent a verification email to {email}. \n To verify your account and continue, use the link in the email.",
+  "verificationEmailSentTo": "We sent a verification email to {email}.",
+  "verificationAccountInstructions": "To verify your account and continue, use the link in the email.",
   "verificationLinkExpired": "Your verification link has expired. Please resend a new one.",
+  "verificationLinkExpiredTitle": "Your verification link has expired.",
+  "resendEmailAndTryAgain": "Resend the verification email and try again.",
   "verificationLinkExpiresIn": "This email link will expire in 30 minutes.",
-  "verifyYourEmail": "Verify Your Email",
+  "verifyYourEmail": "Verify your email",
   "video": "Video",
   "videoDeviceUpdated": "Video device updated.",
   "videoDisabled": "Video Off",
@@ -963,6 +976,17 @@
   "wordCloudPromptRequired": "Word Cloud prompt is required",
   "wordList": "Word List",
   "wrongEmail": "Wrong email? Edit",
+  "wrongEmailEditAddress": "Wrong email? Edit your address.",
+  "editYourEmailAddressLink": "Edit your email address",
+  "editYourAddressLink": "Edit your address",
+  "emailCannotBeUsedTitle": "The email entered cannot be used.",
+  "emailCannotBeUsedBody": "This email may be in use already on Frankly, flagged as a spam-associated address, or something else.",
+  "logInInsteadLink": "Log in instead",
+  "orCheckAndTryAgain": " or you can check what you entered and ",
+  "tryAgainLink": "try again",
+  "needHelp": "Need help? ",
+  "contactUsDot": "Contact us.",
+  "emailCannotBeUsedFieldError": "This email address cannot be used.",
   "wouldYouLikeToTurnOnAv": "Would you like to turn on audio and video?",
   "yes": "Yes",
   "yesCancel": "Yes, cancel",
