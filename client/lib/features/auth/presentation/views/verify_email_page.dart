@@ -162,12 +162,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Widget _buildEmailSentText() {
-    final style = GoogleFonts.inter(
-      fontSize: 20,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.5,
-      color: Colors.black,
-    );
+    final style = context.theme.textTheme.bodyMedium;
 
     final sentTo = context.l10n.verificationEmailSentTo(_currentEmail);
 
@@ -216,20 +211,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Widget _buildEmailAlreadyInUseError() {
-    final bodyStyle = GoogleFonts.inter(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.5,
-      color: Colors.black,
-      height: 24 / 16,
-    );
-    final boldStyle = bodyStyle.copyWith(
-      fontWeight: FontWeight.bold,
-      letterSpacing: 0.15,
-    );
-    final linkStyle = bodyStyle.copyWith(
-      decoration: TextDecoration.underline,
-    );
+    final bodyStyle = context.theme.textTheme.bodyMedium;
+    final boldStyle = bodyStyle?.copyWith(fontWeight: FontWeight.bold);
+    final linkStyle = bodyStyle?.copyWith(decoration: TextDecoration.underline);
 
     return Container(
       width: 348,
@@ -277,12 +261,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Widget _buildEditEmailView() {
-    final titleStyle = GoogleFonts.inter(
-      fontSize: 24,
-      fontWeight: FontWeight.w400,
-      height: 32 / 24,
-      color: Colors.black,
-    );
+    final titleStyle = context.theme.textTheme.titleLarge;
 
     return ListView(
       padding: const EdgeInsets.all(40) + const EdgeInsets.only(top: 30),
@@ -300,8 +279,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         ),
         const SizedBox(height: 60),
-        Align(
-          alignment: Alignment.center,
+        SizedBox(
+          width: double.infinity,
           child: Text(
             context.l10n.editYourEmailAddressLink,
             style: titleStyle,
@@ -313,45 +292,37 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           Center(child: _buildEmailAlreadyInUseError()),
           const SizedBox(height: 24),
         ],
-        Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 348),
-            child: TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              autofocus: true,
-              onSubmitted: (_) => _updateEmail(),
-              decoration: InputDecoration(
-                labelText: context.l10n.email,
-                labelStyle: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 0.5,
-                  color: _emailAlreadyInUse
-                      ? context.theme.colorScheme.error
-                      : const Color(0xFF47464A),
-                ),
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                    color: _emailAlreadyInUse
-                        ? context.theme.colorScheme.error
-                        : const Color(0xFF78767B),
-                  ),
-                ),
-                errorText: _emailAlreadyInUse
-                    ? context.l10n.emailCannotBeUsedFieldError
-                    : null,
-                errorStyle: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 0.4,
-                  color: context.theme.colorScheme.error,
-                ),
+        TextField(
+          controller: _emailController,
+          keyboardType: TextInputType.emailAddress,
+          autofocus: true,
+          onSubmitted: (_) => _updateEmail(),
+          decoration: InputDecoration(
+            labelText: context.l10n.email,
+            labelStyle: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 0.5,
+              color: _emailAlreadyInUse
+                  ? context.theme.colorScheme.error
+                  : const Color(0xFF47464A),
+            ),
+            border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              borderSide: BorderSide(
+                color: _emailAlreadyInUse
+                    ? context.theme.colorScheme.error
+                    : const Color(0xFF78767B),
               ),
+            ),
+            errorText: _emailAlreadyInUse
+                ? context.l10n.emailCannotBeUsedFieldError
+                : null,
+            errorStyle: context.theme.textTheme.bodySmall?.copyWith(
+              color: context.theme.colorScheme.error,
             ),
           ),
         ),
@@ -367,11 +338,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         ],
         const SizedBox(height: 36),
-        Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ActionButton(
+        Row(
+          children: [
+            Expanded(
+              child: ActionButton(
                 onPressed: () => setState(() {
                   _editingEmail = false;
                   _emailAlreadyInUse = false;
@@ -381,23 +351,25 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 color: const Color(0xFF78767B),
                 textColor: const Color(0xFF201F1F),
                 height: 40,
-                minWidth: 168,
+                expand: true,
                 borderRadius: BorderRadius.circular(8),
                 text: context.l10n.cancelEmailEdit,
               ),
-              const SizedBox(width: 12),
-              ActionButton(
+            ),
+            const SizedBox(width: 24),
+            Expanded(
+              child: ActionButton(
                 onPressed: _updateEmail,
                 type: ActionButtonType.filled,
                 color: const Color(0xFF201F1F),
                 textColor: Colors.white,
                 height: 40,
-                minWidth: 168,
+                expand: true,
                 borderRadius: BorderRadius.circular(8),
                 text: context.l10n.saveEmail,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
@@ -438,16 +410,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 ),
               ),
               const SizedBox(height: 60),
-              Align(
-                alignment: Alignment.center,
+              SizedBox(
+                width: double.infinity,
                 child: HeightConstrainedText(
                   context.l10n.verifyYourEmail,
-                  style: GoogleFonts.inter(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                    height: 32 / 24,
-                    color: Colors.black,
-                  ),
+                  textAlign: TextAlign.center,
+                  style: context.theme.textTheme.titleLarge,
                 ),
               ),
               const SizedBox(height: 36),
@@ -471,20 +439,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             : _linkExpired
                                 ? Text.rich(
                                     TextSpan(
-                                      style: GoogleFonts.inter(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: 0.5,
-                                        color: Colors.black,
-                                      ),
+                                      style: context.theme.textTheme.bodyMedium,
                                       children: [
                                         TextSpan(
                                           text: context.l10n.verificationLinkExpiredTitle,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 16,
+                                          style: context.theme.textTheme.bodyMedium?.copyWith(
                                             fontWeight: FontWeight.bold,
-                                            letterSpacing: 0.15,
-                                            color: Colors.black,
                                           ),
                                         ),
                                         const TextSpan(text: '\n\n'),
@@ -574,12 +534,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 onTap: _checkVerifiedInOtherTab,
                 child: Text(
                   context.l10n.emailVerifiedInAnotherTab,
-                  style: GoogleFonts.roboto(
-                    color: Colors.black,
+                  style: context.theme.textTheme.bodyMedium?.copyWith(
                     fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    height: 20 / 16,
-                    letterSpacing: 0.1,
+                    fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                     decorationStyle: TextDecorationStyle.solid,
                   ),
