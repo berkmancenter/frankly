@@ -426,7 +426,6 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
   bool _isLoading = false;
 
   bool? _isPinnedLocal;
-  bool _isHovered = false;
 
   final _menuKey = GlobalKey();
 
@@ -565,9 +564,6 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
       child: CustomInkWell(
         onTap: widget.isVisible
             ? () => _showMoreMenu(_getMenuItems(context: context))
-            : null,
-        onHover: widget.isVisible
-            ? (isHovered) => setState(() => _isHovered = isHovered)
             : null,
         child: Container(
           key: _menuKey,
