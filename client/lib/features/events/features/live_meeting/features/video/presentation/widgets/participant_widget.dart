@@ -573,7 +573,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           key: _menuKey,
           padding: const EdgeInsets.all(5),
           child: Icon(
-            isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
+            isPinned ? Icons.push_pin : Icons.more_horiz,
             size: 16,
             color: _isHovered
                 ? context.theme.colorScheme.onSurface
