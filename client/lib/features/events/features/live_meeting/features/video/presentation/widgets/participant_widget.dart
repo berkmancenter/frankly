@@ -575,9 +575,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
           child: Icon(
             isPinned ? Icons.push_pin : Icons.more_horiz,
             size: 16,
-            color: _isHovered
-                ? context.theme.colorScheme.onSurface
-                : context.theme.colorScheme.onSurfaceVariant,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),
