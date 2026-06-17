@@ -25,7 +25,7 @@ class VerifyEmailPage extends StatefulWidget {
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   // If changed, this value should also be updated in l10n messages referencing the expiry duration.
-  static const _linkExpiryDuration = Duration(minutes: 1);
+  static const _linkExpiryDuration = Duration(minutes: 30);
   static const _pollingInterval = Duration(seconds: 5);
 
   String _error = '';
