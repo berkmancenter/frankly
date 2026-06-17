@@ -540,7 +540,7 @@
   "emailAddressAlreadyInUseLoginError": "此邮箱已被使用。请尝试",
   "emailNotYetVerified": "您的电子邮件尚未验证。请检查您的收件箱并点击验证链接。",
   "emailNotYetVerifiedHeader": "您的电子邮件尚未验证。",
-  "emailUpdatedResent": "Verification email sent to {email}.",
+  "emailUpdatedResent": "Your email address edit has been saved.\n\nA verification message was sent to {email}.",
   "emailAndPasswordMismatch": "您的电子邮件和密码组合与 {appName} 帐户不匹配。",
   "emailAndPasswordMismatchCheck": "您可以检查您输入的内容并重试。",
   "emailVerifiedInAnotherTab": "我已在另一个标签页或窗口中验证了我的电子邮件",

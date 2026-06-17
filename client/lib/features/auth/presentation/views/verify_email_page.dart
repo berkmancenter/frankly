@@ -24,7 +24,8 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
-  static const _linkExpiryDuration = Duration(minutes: 30);
+  // If changed, this value should also be updated in l10n messages referencing the expiry duration.
+  static const _linkExpiryDuration = Duration(minutes: 1);
   static const _pollingInterval = Duration(seconds: 5);
 
   String _error = '';
@@ -84,7 +85,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       final userService = context.read<UserService>();
       try {
         await userService.refreshEmailVerificationStatus();
-        if (userService.firebaseAuth.currentUser?.emailVerified == true) {
+        if (userService.isCurrentUserEmailVerified) {
           _verificationPollingTimer?.cancel();
         }
       } catch (_) {
@@ -107,7 +108,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       await userService.refreshEmailVerificationStatus();
     } catch (_) {}
     if (!mounted) return;
-    if (userService.firebaseAuth.currentUser?.emailVerified == true) {
+    if (userService.isCurrentUserEmailVerified) {
       // Verified — InitialLoadingWidget observes UserService and will navigate home.
       return;
     }
@@ -121,7 +122,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final userService = context.read<UserService>();
     final resentMessage = context.l10n.verificationEmailResent(_currentEmail);
     await userService.refreshEmailVerificationStatus();
-    if (userService.firebaseAuth.currentUser?.emailVerified == true) {
+    if (userService.isCurrentUserEmailVerified) {
       // Already verified — InitialLoadingWidget observes UserService and will navigate home.
       return;
     }
@@ -233,11 +234,34 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final bodyStyle = context.theme.textTheme.bodyMedium;
     final boldStyle = GoogleFonts.inter(textStyle: bodyStyle, fontWeight: FontWeight.bold);
     final linkStyle = bodyStyle?.copyWith(decoration: TextDecoration.underline);
+    final contactUsFull = context.l10n.contactUsDot;
+    final contactUsLinkText = contactUsFull.replaceFirst(RegExp(r'\.\s*$'), '');
+    final contactUsStart = contactUsFull.indexOf(contactUsLinkText);
+    final contactUsSpans = <InlineSpan>[];
+
+    if (contactUsStart > 0) {
+      contactUsSpans.add(TextSpan(text: contactUsFull.substring(0, contactUsStart)));
+    }
+
+    contactUsSpans.add(
+      TextSpan(
+        text: contactUsLinkText,
+        style: linkStyle,
+        recognizer: TapGestureRecognizer()
+          ..onTap = () => launchUrlString('mailto:${Environment.supportEmail}'),
+      ),
+    );
+
+    if (contactUsStart + contactUsLinkText.length < contactUsFull.length) {
+      contactUsSpans.add(
+        TextSpan(text: contactUsFull.substring(contactUsStart + contactUsLinkText.length)),
+      );
+    }
 
     return Container(
       width: 348,
       padding: const EdgeInsets.all(16),
-      color: const Color(0xFFFFEDEA),
+      color: context.theme.colorScheme.errorContainer,
       child: Text.rich(
         TextSpan(
           style: bodyStyle,
@@ -267,12 +291,69 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             ),
             const TextSpan(text: '.\n\n'),
             TextSpan(text: context.l10n.needHelp),
+            ...contactUsSpans,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLinkExpiredContainer() {
+    final bodyStyle = context.theme.textTheme.bodyMedium;
+    final boldStyle = GoogleFonts.inter(textStyle: bodyStyle, fontWeight: FontWeight.bold);
+    final linkStyle = bodyStyle?.copyWith(decoration: TextDecoration.underline);
+
+    final full = context.l10n.resendEmailAndTryAgain;
+    const trailSuffix = ' and try again.';
+    final trailIndex = full.lastIndexOf(trailSuffix);
+    final linkText = trailIndex >= 0 ? full.substring(0, trailIndex) : full;
+    final trailText = trailIndex >= 0 ? full.substring(trailIndex) : '';
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 40),
+      color: context.theme.colorScheme.errorContainer,
+      child: Text.rich(
+        TextSpan(
+          style: bodyStyle,
+          children: [
+            TextSpan(text: context.l10n.verificationLinkExpiredTitle, style: boldStyle),
+            const TextSpan(text: '\n\n'),
             TextSpan(
-              text: context.l10n.contactUsDot,
+              text: linkText,
+              style: linkStyle,
+              recognizer: TapGestureRecognizer()..onTap = _resendEmail,
+            ),
+            TextSpan(text: trailText),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAuthErrorContainer() {
+    final bodyStyle = context.theme.textTheme.bodyMedium;
+    final boldStyle = GoogleFonts.inter(textStyle: bodyStyle, fontWeight: FontWeight.bold);
+    final linkStyle = bodyStyle?.copyWith(decoration: TextDecoration.underline);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 40),
+      color: context.theme.colorScheme.errorContainer,
+      child: Text.rich(
+        TextSpan(
+          style: bodyStyle,
+          children: [
+            TextSpan(text: context.l10n.emailCannotBeVerifiedTitle, style: boldStyle),
+            const TextSpan(text: '\n\n'),
+            TextSpan(text: context.l10n.emailCannotBeVerifiedBodyBeforeLink),
+            TextSpan(
+              text: context.l10n.contactUs,
               style: linkStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () => launchUrlString('mailto:${Environment.supportEmail}'),
             ),
+            TextSpan(text: context.l10n.emailCannotBeVerifiedBodyAfterLink),
           ],
         ),
       ),
@@ -280,7 +361,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Widget _buildEditEmailView() {
-    final titleStyle = context.theme.textTheme.titleLarge;
 
     return ListView(
       padding: const EdgeInsets.all(40),
@@ -297,17 +377,33 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         ),
         const SizedBox(height: 32),
-        SizedBox(
+        Container(
           width: double.infinity,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(4),
+              topRight: Radius.circular(4),
+            ),
+          ),
           child: Text(
             context.l10n.editYourEmailAddressLink,
-            style: titleStyle,
+            style: context.theme.textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
         ),
         const SizedBox(height: 24),
         if (_emailAlreadyInUse) ...[
           Center(child: _buildEmailAlreadyInUseError()),
+          const SizedBox(height: 24),
+        ] else if (_error.isNotEmpty) ...[
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: Focus(
+                child: _buildAuthErrorContainer(),
+              ),
+            ),
+          ),
           const SizedBox(height: 24),
         ],
         TextField(
@@ -323,7 +419,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               letterSpacing: 0.5,
               color: (_emailAlreadyInUse || _emailValidationError.isNotEmpty)
                   ? context.theme.colorScheme.error
-                  : const Color(0xFF47464A),
+                  : context.theme.colorScheme.onSurfaceVariant,
             ),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -333,7 +429,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               borderSide: BorderSide(
                 color: (_emailAlreadyInUse || _emailValidationError.isNotEmpty)
                     ? context.theme.colorScheme.error
-                    : const Color(0xFF78767B),
+                    : context.theme.colorScheme.outline,
               ),
             ),
             errorText: _emailAlreadyInUse
@@ -346,17 +442,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             ),
           ),
         ),
-        if (_error.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              _error,
-              style: context.theme.textTheme.bodyMedium
-                  ?.copyWith(color: context.theme.colorScheme.error),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
         const SizedBox(height: 36),
         Row(
           children: [
@@ -369,8 +454,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   _error = '';
                 }),
                 type: ActionButtonType.outline,
-                color: const Color(0xFF78767B),
-                textColor: const Color(0xFF201F1F),
+                color: context.theme.colorScheme.outline,
+                textColor: context.theme.colorScheme.onSurface,
                 height: 40,
                 expand: true,
                 borderRadius: BorderRadius.circular(8),
@@ -382,8 +467,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               child: ActionButton(
                 onPressed: _updateEmail,
                 type: ActionButtonType.filled,
-                color: const Color(0xFF201F1F),
-                textColor: Colors.white,
+                color: context.theme.colorScheme.onSurface,
+                textColor: context.theme.colorScheme.onPrimary,
                 height: 40,
                 expand: true,
                 borderRadius: BorderRadius.circular(8),
@@ -440,7 +525,18 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   style: context.theme.textTheme.titleLarge,
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 24),
+              if (_linkExpired) ...[
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 440),
+                    child: Focus(
+                      child: _buildLinkExpiredContainer(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
               if (_tabCheckError.isNotEmpty || _resendSuccessMessage.isNotEmpty) ...[
                 Center(
                   child: ConstrainedBox(
@@ -451,38 +547,31 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         margin: const EdgeInsets.symmetric(horizontal: 40),
                         color: _resendSuccessMessage.isNotEmpty
                             ? const Color(0xFFCCFFBE)
-                            : const Color(0xFFFFEDEA),
+                            : context.theme.colorScheme.errorContainer,
                         child: _resendSuccessMessage.isNotEmpty
-                            ? Text(
-                                _resendSuccessMessage,
-                                style: context.theme.textTheme.bodyMedium,
-                                textAlign: TextAlign.center,
-                              )
-                            : _linkExpired
-                                ? Text.rich(
-                                    TextSpan(
-                                      style: context.theme.textTheme.bodyMedium,
-                                      children: [
-                                        TextSpan(
-                                          text: context.l10n.verificationLinkExpiredTitle,
-                                          style: GoogleFonts.inter(
-                                            textStyle: context.theme.textTheme.bodyMedium,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                            ? Builder(builder: (_) {
+                                final parts = _resendSuccessMessage.split('\n\n');
+                                return Text.rich(
+                                  TextSpan(
+                                    style: context.theme.textTheme.bodyMedium,
+                                    children: [
+                                      TextSpan(
+                                        text: parts.first,
+                                        style: GoogleFonts.inter(
+                                          textStyle: context.theme.textTheme.bodyMedium,
+                                          fontWeight: FontWeight.bold,
                                         ),
+                                      ),
+                                      if (parts.length > 1) ...[
                                         const TextSpan(text: '\n\n'),
-                                        TextSpan(
-                                          text: context.l10n.resendEmailAndTryAgain,
-                                          style: const TextStyle(
-                                            decoration: TextDecoration.underline,
-                                          ),
-                                          recognizer: TapGestureRecognizer()..onTap = _resendEmail,
-                                        ),
+                                        TextSpan(text: parts.sublist(1).join('\n\n')),
                                       ],
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : Column(
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.left,
+                                );
+                              },)
+                            : Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
@@ -493,21 +582,51 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(text: _tabCheckError),
+                                      Builder(
+                                        builder: (_) {
+                                          final resendFull = context.l10n.resendVerificationEmailLink;
+                                          final linkText = resendFull.replaceFirst(
+                                            RegExp(r'\.\s*$'),
+                                            '',
+                                          );
+                                          final linkStart = resendFull.indexOf(linkText);
+                                          final resendSpans = <InlineSpan>[];
+
+                                          if (linkStart > 0) {
+                                            resendSpans.add(
+                                              TextSpan(text: resendFull.substring(0, linkStart)),
+                                            );
+                                          }
+
+                                          resendSpans.add(
                                             TextSpan(
-                                              text: context.l10n.resendVerificationEmailLink,
+                                              text: linkText,
                                               style: const TextStyle(
                                                 decoration: TextDecoration.underline,
                                               ),
                                               recognizer: TapGestureRecognizer()..onTap = _resendEmail,
                                             ),
-                                          ],
-                                        ),
-                                        style: context.theme.textTheme.bodyMedium,
-                                        textAlign: TextAlign.justify,
+                                          );
+
+                                          if (linkStart + linkText.length < resendFull.length) {
+                                            resendSpans.add(
+                                              TextSpan(
+                                                text: resendFull.substring(linkStart + linkText.length),
+                                              ),
+                                            );
+                                          }
+
+                                          return Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(text: _tabCheckError),
+                                                ...resendSpans,
+                                              ],
+                                            ),
+                                            style: context.theme.textTheme.bodyMedium,
+                                            textAlign: TextAlign.justify,
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
@@ -519,17 +638,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               ],
               _buildEmailSentText(),
               const SizedBox(height: 24),
-              if (_linkExpired)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    context.l10n.verificationLinkExpired,
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      color: context.theme.colorScheme.error,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
               if (_error.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -545,10 +653,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   constraints: const BoxConstraints(maxWidth: 300),
                   child: ActionButton(
                     onPressed: _resendEmail,
-                    type: ActionButtonType.filled,
+                    type: ActionButtonType.outline,
                     expand: true,
-                    textColor: Colors.white,
-                    color: Colors.black,
+                    textColor: Colors.black,
                     text: context.l10n.resendVerificationEmail,
                   ),
                 ),

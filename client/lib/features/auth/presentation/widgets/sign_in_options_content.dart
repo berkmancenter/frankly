@@ -278,9 +278,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             password: password,
           );
     }
-    bool emailVerified =
-          userService.firebaseAuth.currentUser?.emailVerified ?? false;
-    if (!emailVerified) {
+    if (!userService.isCurrentUserEmailVerified) {
       await userService.verifyEmail();
       if (mounted) {
         TextInput.finishAutofillContext(shouldSave: true);

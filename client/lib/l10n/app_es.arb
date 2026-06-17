@@ -546,7 +546,7 @@
   "emailAddressAlreadyInUseLoginError": "Este correo electrónico ya está en uso. Inténtalo ",
   "emailNotYetVerified": "Tu correo aún no ha sido verificado. Por favor revisa tu bandeja de entrada y haz clic en el enlace de verificación.",
   "emailNotYetVerifiedHeader": "Tu correo electrónico aún no ha sido verificado.",
-  "emailUpdatedResent": "Verification email sent to {email}.",
+  "emailUpdatedResent": "Your email address edit has been saved.\n\nA verification message was sent to {email}.",
   "emailAndPasswordMismatch": "Su combinación de correo electrónico y contraseña no coincide con una cuenta de {appName}.",
   "emailAndPasswordMismatchCheck": "Puede verificar lo que ingresó e intentarlo de nuevo.",
   "emailVerifiedInAnotherTab": "Verifiqué mi correo en otra pestaña o ventana",

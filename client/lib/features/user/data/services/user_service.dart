@@ -84,6 +84,9 @@ class UserService with ChangeNotifier {
 
   FirebaseAuth get firebaseAuth => _firebaseAuth;
 
+  bool get isCurrentUserEmailVerified =>
+      _firebaseAuth.currentUser?.emailVerified ?? false;
+
   bool get isSignedIn {
     final localCurrentUser = _currentUser;
     return localCurrentUser != null && !localCurrentUser.isAnonymous;

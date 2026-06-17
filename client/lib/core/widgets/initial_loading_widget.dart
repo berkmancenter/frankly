@@ -100,11 +100,10 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
     final userService = context.watch<UserService>();
 
     if (userService.signInState == SignInState.signedIn && _initialized) {
-      final currentUser = userService.firebaseAuth.currentUser;
-      if (currentUser != null &&
-          !currentUser.isAnonymous &&
-          !currentUser.emailVerified) {
-        return VerifyEmailPage(email: currentUser.email ?? '');
+      if (userService.isSignedIn && !userService.isCurrentUserEmailVerified) {
+        return VerifyEmailPage(
+          email: userService.firebaseAuth.currentUser?.email ?? '',
+        );
       }
       return widget.child;
     } else if (userService.signInState == SignInState.signedOut) {

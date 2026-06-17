@@ -536,7 +536,7 @@
   "emailAddressAlreadyInUseLoginError": "此電子郵件已被使用。請嘗試 ",
   "emailNotYetVerified": "您的電子郵件尚未驗證。請查看您的收件匣並點擊驗證連結。",
   "emailNotYetVerifiedHeader": "您的電子郵件尚未驗證。",
-  "emailUpdatedResent": "Verification email sent to {email}.",
+  "emailUpdatedResent": "Your email address edit has been saved.\n\nA verification message was sent to {email}.",
   "emailAndPasswordMismatch": "您的電子郵件和密碼組合與 {appName} 帳戶不匹配。",
   "emailAndPasswordMismatchCheck": "您可以檢查您輸入的內容並重試。",
   "emailVerifiedInAnotherTab": "我已在另一個分頁或視窗中驗證了我的電子郵件",
