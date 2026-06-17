@@ -34,6 +34,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool _linkExpired = false;
   bool _editingEmail = false;
   bool _emailAlreadyInUse = false;
+  bool _pendingEmailChange = false;
   String _emailValidationError = '';
   late String _currentEmail;
   late TextEditingController _emailController;
@@ -136,9 +137,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       return;
     }
     await authMessageOnError(
-      () => userService.verifyEmail(),
-      errorCallback: (error, _) => setState(() {
-        _error = error;
+      () => _pendingEmailChange
+          ? userService.updateEmailAndResendVerification(_currentEmail)
+          : userService.verifyEmail(),
+      errorCallback: (error, code) => setState(() {
+        if (_pendingEmailChange && code == 'email-already-in-use') {
+          _emailAlreadyInUse = true;
+          _editingEmail = true;
+        } else {
+          _error = error;
+        }
         _resendSuccessMessage = '';
       }),
       callback: () => setState(() {
@@ -180,6 +188,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         _editingEmail = false;
         _linkExpired = false;
         _emailAlreadyInUse = false;
+        _pendingEmailChange = true;
         _startExpiryTimer();
         _resendSuccessMessage = context.l10n.emailUpdatedResent(newEmail);
         _tabCheckError = '';
