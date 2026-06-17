@@ -121,7 +121,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   Future<void> _resendEmail() async {
     final userService = context.read<UserService>();
     final resentMessage = context.l10n.verificationEmailResent(_currentEmail);
-    await userService.refreshEmailVerificationStatus();
+    try {
+      await userService.refreshEmailVerificationStatus();
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _error = context.l10n.somethingWentWrongTryAgain;
+        _resendSuccessMessage = '';
+      });
+      return;
+    }
     if (userService.isCurrentUserEmailVerified) {
       // Already verified — InitialLoadingWidget observes UserService and will navigate home.
       return;
@@ -143,9 +152,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   bool _isEmailValid(String email) {
-    return RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-    ).hasMatch(email);
+    return RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email);
   }
 
   Future<void> _updateEmail() async {
@@ -304,10 +311,25 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final linkStyle = bodyStyle?.copyWith(decoration: TextDecoration.underline);
 
     final full = context.l10n.resendEmailAndTryAgain;
-    const trailSuffix = ' and try again.';
-    final trailIndex = full.lastIndexOf(trailSuffix);
-    final linkText = trailIndex >= 0 ? full.substring(0, trailIndex) : full;
-    final trailText = trailIndex >= 0 ? full.substring(trailIndex) : '';
+    final linkText = full.replaceFirst(RegExp(r'\.\s*$'), '');
+    final linkStart = full.indexOf(linkText);
+    final linkSpans = <InlineSpan>[];
+
+    if (linkStart > 0) {
+      linkSpans.add(TextSpan(text: full.substring(0, linkStart)));
+    }
+
+    linkSpans.add(
+      TextSpan(
+        text: linkText,
+        style: linkStyle,
+        recognizer: TapGestureRecognizer()..onTap = _resendEmail,
+      ),
+    );
+
+    if (linkStart + linkText.length < full.length) {
+      linkSpans.add(TextSpan(text: full.substring(linkStart + linkText.length)));
+    }
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -319,12 +341,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           children: [
             TextSpan(text: context.l10n.verificationLinkExpiredTitle, style: boldStyle),
             const TextSpan(text: '\n\n'),
-            TextSpan(
-              text: linkText,
-              style: linkStyle,
-              recognizer: TapGestureRecognizer()..onTap = _resendEmail,
-            ),
-            TextSpan(text: trailText),
+              ...linkSpans,
           ],
         ),
       ),
@@ -537,7 +554,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 ),
                 const SizedBox(height: 24),
               ],
-              if (_tabCheckError.isNotEmpty || _resendSuccessMessage.isNotEmpty) ...[
+                if (!_linkExpired && (_tabCheckError.isNotEmpty || _resendSuccessMessage.isNotEmpty)) ...[
                 Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 440),

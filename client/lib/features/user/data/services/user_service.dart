@@ -63,6 +63,10 @@ class UserService with ChangeNotifier {
   }
 
   Future<void> updateEmailAndResendVerification(String newEmail) async {
+    final methods = await _firebaseAuth.fetchSignInMethodsForEmail(newEmail);
+    if (methods.isNotEmpty) {
+      throw FirebaseAuthException(code: 'email-already-in-use');
+    }
     await _currentUser?.verifyBeforeUpdateEmail(
       newEmail,
       ActionCodeSettings(
