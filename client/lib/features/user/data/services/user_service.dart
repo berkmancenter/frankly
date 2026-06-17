@@ -63,12 +63,30 @@ class UserService with ChangeNotifier {
   }
 
   Future<void> updateEmailAndResendVerification(String newEmail) async {
-    final methods = await _firebaseAuth.fetchSignInMethodsForEmail(newEmail);
-    if (methods.isNotEmpty) {
-      throw FirebaseAuthException(code: 'email-already-in-use');
+    final normalizedEmail = newEmail.trim().toLowerCase();
+
+    // Use server-side admin auth check because fetchSignInMethodsForEmail can
+    // be unreliable when email enumeration protection is enabled.
+    try {
+      final response = await cloudFunctions.callFunction(
+        'checkEmailAvailable',
+        {'email': normalizedEmail},
+        isWeb: kIsWeb,
+      );
+      final isAvailable = response['available'] == true;
+      if (!isAvailable) {
+        throw FirebaseAuthException(code: 'email-already-in-use');
+      }
+    } catch (_) {
+      // Fallback check for local/dev scenarios where functions may be missing.
+      final methods = await _firebaseAuth.fetchSignInMethodsForEmail(normalizedEmail);
+      if (methods.isNotEmpty) {
+        throw FirebaseAuthException(code: 'email-already-in-use');
+      }
     }
+
     await _currentUser?.verifyBeforeUpdateEmail(
-      newEmail,
+      normalizedEmail,
       ActionCodeSettings(
         url: _emailActionContinueUrl(),
         handleCodeInApp: true,
