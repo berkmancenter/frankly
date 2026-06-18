@@ -1,3 +1,4 @@
+import 'package:client/core/utils/transitions.dart';
 import 'package:flutter/material.dart';
 
 class MaterialTheme {
@@ -125,6 +126,7 @@ class MaterialTheme {
         ),
         scaffoldBackgroundColor: colorScheme.surface,
         canvasColor: colorScheme.surface,
+        pageTransitionsTheme: NoTransitionsOnWeb(),
       );
 
   List<ExtendedColor> get extendedColors => [];
