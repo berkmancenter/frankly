@@ -1,8 +1,3 @@
-/// This is an auto-generated file from the Material 3
-/// Plugin for Figma. The only thing that has been changed
-/// is the util method toColorScheme, which only creates a very
-/// limited palette by default and has been extended to fix that issue.
-
 import 'package:flutter/material.dart';
 
 class MaterialTheme {
@@ -65,10 +60,6 @@ class MaterialTheme {
     );
   }
 
-  ThemeData light() {
-    return theme(lightScheme().toColorScheme());
-  }
-
   static MaterialScheme darkScheme() {
     return const MaterialScheme(
       brightness: Brightness.dark,
@@ -122,10 +113,6 @@ class MaterialTheme {
       surfaceContainerHigh: Color(0xff2b2a2a),
       surfaceContainerHighest: Color(0xff353434),
     );
-  }
-
-  ThemeData dark() {
-    return theme(darkScheme().toColorScheme());
   }
 
   ThemeData theme(ColorScheme colorScheme) => ThemeData(
