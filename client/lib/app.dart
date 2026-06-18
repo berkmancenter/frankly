@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
+import 'package:client/styles/material_theme.dart';
 import 'package:client/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -152,7 +153,8 @@ class _AppState extends State<App> {
               backButtonDispatcher:
                   BeamerBackButtonDispatcher(delegate: routerDelegate),
               routeInformationParser: BeamerParser(),
-              theme: appTheme,
+              theme: MaterialTheme(textTheme)
+                  .theme(MaterialTheme.lightScheme().toColorScheme()),
             ),
           );
         },
