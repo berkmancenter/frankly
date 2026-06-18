@@ -81,8 +81,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   // to manually press "Continue". reload() uses identitytoolkit.googleapis.com,
   // which is not blocked by Brave's shields.
   void _startVerificationPolling() {
+    _verificationPollingTimer?.cancel();
+    var pollInFlight = false;
     _verificationPollingTimer = Timer.periodic(_pollingInterval, (_) async {
-      if (!mounted) return;
+      if (!mounted || pollInFlight) return;
+      pollInFlight = true;
       final userService = context.read<UserService>();
       try {
         await userService.refreshEmailVerificationStatus();
@@ -91,6 +94,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         }
       } catch (_) {
         // Silently ignore.
+      } finally {
+        pollInFlight = false;
       }
     });
   }
