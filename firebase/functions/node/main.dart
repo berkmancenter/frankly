@@ -68,14 +68,12 @@ import 'package:functions/admin/payments/stripe_connected_account_webhooks.dart'
 import 'package:functions/admin/payments/stripe_webhooks.dart';
 import 'package:functions/community/trigger_email_digests.dart';
 import 'package:functions/events/live_meetings/update_live_stream_participant_count.dart';
-import 'package:functions/community/check_email_available.dart';
 import 'package:functions/utils/infra/firestore_utils.dart';
 import 'package:node_interop/node.dart';
 import 'package:uuid/uuid.dart';
 
 final _onCallFunctions = <CloudFunction>[
   CancelStripeSubscriptionPlan(),
-  CheckEmailAvailable(),
   CheckAdvanceMeetingGuide(),
   CheckAssignToBreakouts(),
   CheckHostlessGoToBreakouts(),

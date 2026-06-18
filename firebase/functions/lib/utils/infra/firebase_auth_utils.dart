@@ -18,23 +18,4 @@ class FirebaseAuthUtils {
 
     return Future.wait(getUserFutures);
   }
-
-  Future<UserRecord?> getUserByEmailIfExists(String email) async {
-    try {
-      return await firebaseApp.auth().getUserByEmail(email);
-    } catch (e) {
-      if (e.toString().contains('user-not-found')) {
-        return null;
-      }
-      rethrow;
-    }
-  }
-
-  Future<bool> isEmailAvailableForUser(String email, String uid) async {
-    final existingUser = await getUserByEmailIfExists(email);
-    if (existingUser == null) {
-      return true;
-    }
-    return existingUser.uid == uid;
-  }
 }
