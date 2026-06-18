@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:beamer/beamer.dart';
 import 'package:client/styles/material_theme.dart';
-import 'package:client/styles/theme.dart';
+import 'package:client/styles/text_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
