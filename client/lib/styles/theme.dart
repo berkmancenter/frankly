@@ -1,5 +1,3 @@
-import 'package:client/core/utils/transitions.dart';
-import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
