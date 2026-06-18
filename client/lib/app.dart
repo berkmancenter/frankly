@@ -153,8 +153,8 @@ class _AppState extends State<App> {
               backButtonDispatcher:
                   BeamerBackButtonDispatcher(delegate: routerDelegate),
               routeInformationParser: BeamerParser(),
-              theme: MaterialTheme(textTheme)
-                  .theme(MaterialTheme.lightScheme().toColorScheme()),
+              theme:
+                  MaterialTheme(textTheme).theme(MaterialTheme.lightScheme()),
             ),
           );
         },
