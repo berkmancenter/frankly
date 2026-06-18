@@ -137,3 +137,21 @@ class ColorFamily {
   final Color colorContainer;
   final Color onColorContainer;
 }
+
+// *** Custom colors. ***
+extension CustomColorPalette on ColorScheme {
+  ColorFamily get success => brightness == Brightness.light
+      ? const ColorFamily(
+          color: Color(0xff1a6e2e),
+          onColor: Color(0xffffffff),
+          colorContainer: Color(0xffCCFFBE),
+          // Same as primary color
+          onColorContainer: Color(0xff313030),
+        )
+      : const ColorFamily(
+          color: Color(0xff8dd88e),
+          onColor: Color(0xff000000),
+          colorContainer: Color(0xff005320),
+          onColorContainer: Color(0xffa8f5a8),
+        );
+}
