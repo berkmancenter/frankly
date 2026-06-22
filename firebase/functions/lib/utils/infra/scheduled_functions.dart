@@ -16,9 +16,30 @@ class ScheduledFunctions {
   tasks.CloudTasksClient get client =>
       _client ??= tasks.createCloudTasksClient();
 
+  String _configValueOrEmpty(String key) {
+    try {
+      final value = functions.config.get(key);
+      if (value == null) return '';
+      return value.toString().trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String get queueRegion {
+    final configuredRegion =
+        _configValueOrEmpty('functions.cloud_tasks_region');
+    if (configuredRegion.isNotEmpty) return configuredRegion;
+
+    final functionsRegion = _configValueOrEmpty('functions.region');
+    if (functionsRegion.isNotEmpty) return functionsRegion;
+
+    return 'us-east4';
+  }
+
   String get parentPath => client.queuePath(
         functions.config.get('app.project_id') as String,
-        'us-east4',
+        queueRegion,
         'scheduled-functions',
       );
 

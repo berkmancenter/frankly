@@ -3,6 +3,7 @@ library web_utils;
 
 import 'dart:ui_web' as ui_web;
 
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:cloud_functions_platform_interface/cloud_functions_platform_interface.dart';
 import 'package:cloud_functions_web/cloud_functions_web.dart';
@@ -79,7 +80,7 @@ void registerWebViewFactory(String key, html.Element Function(int) factory) {
 
 HttpsCallablePlatform? getHttpsCallableWeb(String functionName) {
   final callable = FirebaseFunctionsWeb(
-    region: 'us-central1',
+    region: Environment.functionsRegion,
     app: FirebaseFunctionsWeb.instance.app,
   ).httpsCallable(null, functionName, HttpsCallableOptions());
 

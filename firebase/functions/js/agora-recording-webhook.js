@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const crypto = require('crypto')
+const { regionalFunctions } = require('./function-region')
 
 const firestore = admin.firestore()
 
@@ -30,7 +31,7 @@ function verifySignature(req) {
     return crypto.timingSafeEqual(sigBuf, expBuf)
 }
 
-const agoraRecordingWebhook = functions.https.onRequest(async (req, res) => {
+const agoraRecordingWebhook = regionalFunctions().https.onRequest(async (req, res) => {
     if (req.method !== 'POST') {
         res.status(405).send('Method Not Allowed')
         return
