@@ -922,7 +922,7 @@
   "updateBilling": "Update billing",
   "updateButton": "Update",
   "updateEmail": "Update Email",
-  "saveEmail": "Save Email",
+  "sendVerification": "Send verification",
   "updatePlan": "Update Plan",
   "updateProfile": "Update Profile",
   "updateTemplate": "Update template",

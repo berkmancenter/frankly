@@ -503,7 +503,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 height: 40,
                 expand: true,
                 borderRadius: BorderRadius.circular(8),
-                text: context.l10n.saveEmail,
+                text: context.l10n.sendVerification,
               ),
             ),
           ],
@@ -577,7 +577,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         padding: const EdgeInsets.all(16),
                         margin: const EdgeInsets.symmetric(horizontal: 40),
                         color: _resendSuccessMessage.isNotEmpty
-                            ? const Color(0xFFCCFFBE)
+                            ? context.theme.colorScheme.success.colorContainer
                             : context.theme.colorScheme.errorContainer,
                         child: _resendSuccessMessage.isNotEmpty
                             ? Builder(builder: (_) {
