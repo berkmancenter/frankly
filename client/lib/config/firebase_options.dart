@@ -16,27 +16,6 @@ import 'package:client/config/environment.dart';
 /// );
 /// ```
 class DefaultFirebaseOptions {
-  static String _resolvedAuthDomain() {
-    final rawDomain = Environment.firebaseAuthDomain.trim();
-
-    if (rawDomain.isEmpty || rawDomain == 'any') {
-      return '${Environment.firebaseProjectId}.firebaseapp.com';
-    }
-
-    // Allow either a bare hostname or a full URL in env config.
-    var normalized = rawDomain
-        .replaceFirst(RegExp(r'^https?://', caseSensitive: false), '')
-        .split('/')
-        .first
-        .trim();
-
-    if (normalized.isEmpty) {
-      normalized = '${Environment.firebaseProjectId}.firebaseapp.com';
-    }
-
-    return normalized;
-  }
-
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       return web;
@@ -74,14 +53,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static FirebaseOptions get web => FirebaseOptions(
-        apiKey: Environment.firebaseApiKey,
-        appId: Environment.firebaseAppId,
-        messagingSenderId: Environment.firebaseMessagingSenderId,
-        projectId: Environment.firebaseProjectId,
-        authDomain: _resolvedAuthDomain(),
-        databaseURL: Environment.firebaseDatabaseUrl,
-        storageBucket: Environment.firebaseStorageBucket,
-        measurementId: Environment.firebaseMeasurementId,
-      );
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: Environment.firebaseApiKey,
+    appId: Environment.firebaseAppId,
+    messagingSenderId: Environment.firebaseMessagingSenderId,
+    projectId: Environment.firebaseProjectId,
+    authDomain: Environment.firebaseAuthDomain,
+    databaseURL: Environment.firebaseDatabaseUrl,
+    storageBucket: Environment.firebaseStorageBucket,
+    measurementId: Environment.firebaseMeasurementId,
+  );
 }

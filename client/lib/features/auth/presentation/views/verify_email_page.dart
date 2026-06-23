@@ -39,6 +39,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   String _emailValidationError = '';
   late String _currentEmail;
   late TextEditingController _emailController;
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _cancelFocusNode = FocusNode();
+  final FocusNode _updateEmailFocusNode = FocusNode();
+  final FocusNode _resendFocusNode = FocusNode();
+  final FocusNode _verifiedTabFocusNode = FocusNode();
   Timer? _expiryTimer;
   Timer? _verificationPollingTimer;
   Timer? _resendCooldownTimer;
@@ -75,6 +80,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   @override
   void dispose() {
     _emailController.dispose();
+    _emailFocusNode.dispose();
+    _cancelFocusNode.dispose();
+    _updateEmailFocusNode.dispose();
+    _resendFocusNode.dispose();
+    _verifiedTabFocusNode.dispose();
     _expiryTimer?.cancel();
     _verificationPollingTimer?.cancel();
     _resendCooldownTimer?.cancel();
@@ -82,6 +92,15 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   bool get _canResend => !_isResending && _resendCooldownRemainingSeconds <= 0;
+
+  String _notYetVerifiedBodyText(BuildContext context) {
+    final base = context.l10n.emailNotYetVerified;
+    if (_canResend) return base;
+
+    return base
+        .replaceFirst(RegExp(r'\s*You can also\s*$', caseSensitive: false), '')
+        .trimRight();
+  }
 
   void _startResendCooldown() {
     _resendCooldownTimer?.cancel();
@@ -225,6 +244,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         _editingEmail = false;
         _error = '';
       });
+      _resendFocusNode.requestFocus();
       return;
     }
     final userService = context.read<UserService>();
@@ -234,24 +254,31 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         _emailAlreadyInUse = code == 'email-already-in-use';
         _error = _emailAlreadyInUse ? '' : error;
       }),
-      callback: () => setState(() {
-        _currentEmail = newEmail;
-        _editingEmail = false;
-        _linkExpired = false;
-        _emailAlreadyInUse = false;
-        _pendingEmailChange = true;
-        _startExpiryTimer();
-        _resendSuccessMessage = context.l10n.emailUpdatedResent(newEmail);
-        _tabCheckError = '';
-        _error = '';
-      }),
+      callback: () {
+        setState(() {
+          _currentEmail = newEmail;
+          _editingEmail = false;
+          _linkExpired = false;
+          _emailAlreadyInUse = false;
+          _pendingEmailChange = true;
+          _startExpiryTimer();
+          _resendSuccessMessage = context.l10n.emailUpdatedResent(newEmail);
+          _tabCheckError = '';
+          _error = '';
+        });
+        _resendFocusNode.requestFocus();
+      },
     );
   }
 
   Widget _buildEmailSentText() {
     final style = context.theme.textTheme.bodyMedium;
 
-    final sentTo = context.l10n.verificationEmailSentTo(_currentEmail);
+    const maxEmailDisplayLength = 50;
+    final displayEmail = _currentEmail.length > maxEmailDisplayLength
+        ? '${_currentEmail.substring(0, maxEmailDisplayLength - 3)}...'
+        : _currentEmail;
+    final sentTo = context.l10n.verificationEmailSentTo(displayEmail);
 
     final wrongEmailFull = context.l10n.wrongEmailEditAddress;
     final linkText = context.l10n.editYourAddressLink;
@@ -486,6 +513,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         ],
         TextField(
           controller: _emailController,
+          focusNode: _emailFocusNode,
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
           onSubmitted: (_) => _updateEmail(),
@@ -525,12 +553,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           children: [
             Expanded(
               child: ActionButton(
-                onPressed: () => setState(() {
-                  _editingEmail = false;
-                  _emailAlreadyInUse = false;
-                  _emailValidationError = '';
-                  _error = '';
-                }),
+                focusNode: _cancelFocusNode,
+                onPressed: () {
+                  setState(() {
+                    _editingEmail = false;
+                    _emailAlreadyInUse = false;
+                    _emailValidationError = '';
+                    _error = '';
+                  });
+                  _resendFocusNode.requestFocus();
+                },
                 type: ActionButtonType.outline,
                 color: context.theme.colorScheme.outline,
                 textColor: context.theme.colorScheme.onSurface,
@@ -543,6 +575,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             const SizedBox(width: 24),
             Expanded(
               child: ActionButton(
+                focusNode: _updateEmailFocusNode,
                 onPressed: _updateEmail,
                 type: ActionButtonType.filled,
                 color: context.theme.colorScheme.onSurface,
@@ -626,11 +659,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 if (!_linkExpired && (_tabCheckError.isNotEmpty || _resendSuccessMessage.isNotEmpty)) ...[
                 Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 440),
+                    constraints: const BoxConstraints(maxWidth:380),
                     child: Focus(
                       child: Container(
                         padding: const EdgeInsets.all(16),
-                        margin: const EdgeInsets.symmetric(horizontal: 40),
                         color: _resendSuccessMessage.isNotEmpty
                             ? context.theme.colorScheme.success.colorContainer
                             : context.theme.colorScheme.errorContainer,
@@ -685,13 +717,22 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                           }
 
                                           resendSpans.add(
-                                            TextSpan(
-                                              text: linkText,
-                                              style: const TextStyle(
-                                                decoration: TextDecoration.underline,
+                                            WidgetSpan(
+                                              baseline: TextBaseline.alphabetic,
+                                              alignment: PlaceholderAlignment.baseline,
+                                              child: Semantics(
+                                                link: true,
+                                                child: InkWell(
+                                                  onTap: _canResend ? _resendEmail : null,
+                                                  mouseCursor: SystemMouseCursors.click,
+                                                  child: Text(
+                                                    linkText,
+                                                    style: context.theme.textTheme.bodyMedium?.copyWith(
+                                                      decoration: TextDecoration.underline,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = _canResend ? _resendEmail : null,
                                             ),
                                           );
 
@@ -706,8 +747,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                           return Text.rich(
                                             TextSpan(
                                               children: [
-                                                TextSpan(text: _tabCheckError),
-                                                ...resendSpans,
+                                                TextSpan(
+                                                  text: _notYetVerifiedBodyText(context),
+                                                ),
+                                                if (_canResend) ...resendSpans,
                                               ],
                                             ),
                                             style: context.theme.textTheme.bodyMedium,
@@ -739,6 +782,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 300),
                   child: ActionButton(
+                    focusNode: _resendFocusNode,
                     onPressed: _canResend ? _resendEmail : null,
                     type: ActionButtonType.outline,
                     expand: true,
@@ -748,18 +792,23 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              GestureDetector(
-                onTap: _checkVerifiedInOtherTab,
-                child: Text(
-                  context.l10n.emailVerifiedInAnotherTab,
-                  style: GoogleFonts.inter(
-                    textStyle: context.theme.textTheme.bodyMedium,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    decorationStyle: TextDecorationStyle.solid,
+              Semantics(
+                link: true,
+                child: InkWell(
+                  focusNode: _verifiedTabFocusNode,
+                  onTap: _checkVerifiedInOtherTab,
+                  mouseCursor: SystemMouseCursors.click,
+                  child: Text(
+                    context.l10n.emailVerifiedInAnotherTab,
+                    style: GoogleFonts.inter(
+                      textStyle: context.theme.textTheme.bodyMedium,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      decorationStyle: TextDecorationStyle.solid,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ],
