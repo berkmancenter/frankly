@@ -558,22 +558,6 @@ class ConferenceRoom with ChangeNotifier {
     notifyListeners();
     _completer.complete(room);
 
-    // // Show mirror check if not completed before in this event
-    // if (!sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId)) {
-    //   await showDialog(
-    //     barrierDismissible: false,
-    //     context: navigatorState.context,
-    //     builder: (context) {
-    //       return MediaSettingsWidget(
-    //         shouldShowVideoPreview: liveMeetingProvider.videoDefaultOn,
-    //         isMirrorCheck: true,
-    //       );
-    //     },
-    //   );
-
-    //   await sharedPreferencesService.setMirrorCheckCompleteForEvent(eventId);
-    // }
-
     if (liveMeetingProvider.audioDefaultOn &&
             !(room.localParticipant?.audioTrackEnabled ?? true) ||
         liveMeetingProvider.videoDefaultOn &&

@@ -66,7 +66,6 @@ class _ControlBarState extends State<ControlBar> {
               context: context,
               builder: (context) {
                 return MediaSettingsWidget(
-                  // conferenceRoom: _conferenceRoomRead,
                   shouldShowVideoPreview:
                       !(defaultTargetPlatform == TargetPlatform.iOS ||
                           defaultTargetPlatform == TargetPlatform.android),
