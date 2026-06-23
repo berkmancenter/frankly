@@ -5,7 +5,6 @@ import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
-import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
@@ -276,22 +275,19 @@ class ConferenceRoom with ChangeNotifier {
     _avDeviceChangeSubscription = appEventBus.stream
         .whereType<AVDeviceChangedEvent>()
         .listen(_onAVDeviceChanges);
-    
   }
 
   void _onAVDeviceChanges(AVDeviceChangedEvent event) {
     if (event.changes.contains(AVDeviceChange.enableVideo) ||
         event.changes.contains(AVDeviceChange.disableVideo)) {
       toggleVideoEnabled(
-        setEnabled:
-          event.changes.contains(AVDeviceChange.enableVideo),
+        setEnabled: event.changes.contains(AVDeviceChange.enableVideo),
       );
     }
     if (event.changes.contains(AVDeviceChange.enableAudio) ||
         event.changes.contains(AVDeviceChange.disableAudio)) {
       toggleAudioEnabled(
-        setEnabled:
-          event.changes.contains(AVDeviceChange.enableAudio),
+        setEnabled: event.changes.contains(AVDeviceChange.enableAudio),
       );
     }
 
@@ -412,7 +408,13 @@ class ConferenceRoom with ChangeNotifier {
           context,
           'Error enabling camera. Please ensure you have granted permission.',
         );
-        _room?.localParticipant?.videoTrackEnabled = false;
+        _room?.localParticipant
+          ?..videoTrackEnabled = false
+          ..videoIsStreaming = false;
+
+        if (updateProvider) {
+          liveMeetingProvider.shouldStartLocalVideoOn = false;
+        }
         return;
       }
     }
@@ -421,11 +423,10 @@ class ConferenceRoom with ChangeNotifier {
     await _videoTogglingLock.synchronized(
       () async {
         try {
-          if (sharedPreferencesService.hasMirrorCheckCompletedForEvent(liveMeetingProvider.eventProvider.eventId)) {
-            await _room!.localParticipant!.enableVideo(
-              setEnabled: updatedEnabledValue,
-            );
-          }
+          await _room!.localParticipant!.enableVideo(
+            setEnabled: updatedEnabledValue,
+          );
+
           if (updateProvider) {
             liveMeetingProvider.shouldStartLocalVideoOn = updatedEnabledValue;
           }
@@ -453,7 +454,12 @@ class ConferenceRoom with ChangeNotifier {
           context,
           'Error enabling microphone. Please ensure you have granted permission.',
         );
-        _room?.localParticipant?.audioIsStreaming = false;
+        _room?.localParticipant
+          ?..audioIsStreaming = false
+          ..audioTrackEnabled = false;
+        if (updateProvider) {
+          liveMeetingProvider.shouldStartLocalAudioOn = false;
+        }
         return;
       }
     }
@@ -468,10 +474,9 @@ class ConferenceRoom with ChangeNotifier {
 
         try {
           final audioEnableFutures = [
-            if (sharedPreferencesService.hasMirrorCheckCompletedForEvent(liveMeetingProvider.eventProvider.eventId))
-              _room!.localParticipant!.enableAudio(
-                setEnabled: updatedEnabledValue,
-              ),
+            _room!.localParticipant!.enableAudio(
+              setEnabled: updatedEnabledValue,
+            ),
             if ((liveMeetingProvider
                         .eventProvider.selfParticipant?.muteOverride ??
                     false) &&

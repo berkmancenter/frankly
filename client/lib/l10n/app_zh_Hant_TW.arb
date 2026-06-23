@@ -817,6 +817,7 @@
   "roomsCountMayChange": "如果參與者退出，房間數量可能會變化。",
   "save": "儲存",
   "saveAgendaItem": "儲存議程項目",
+  "saveAndClose": "儲存並關閉",
   "saveChangesQuestion": "儲存變更？",
   "saveEvent": "儲存活動",
   "saveSettings": "儲存設定",

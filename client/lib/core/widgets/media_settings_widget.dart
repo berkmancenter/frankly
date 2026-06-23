@@ -324,8 +324,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     ),
                   const SizedBox(height: 16),
                   ActionButton(
-                    text:
-                        '${context.l10n.save} ${context.l10n.and} ${context.l10n.close}',
+                    text: context.l10n.saveAndClose,
                     onPressed: () async {
                       if (widget.isMirrorCheck) {
                         await sharedPreferencesService.setDefaultCameraId(
@@ -469,6 +468,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           await updatePreviewWidget();
                         }
                       }
+                      
+                      if (!mounted) return;
                       setState(() {
                         isLoadingCameraChange = false;
                       });

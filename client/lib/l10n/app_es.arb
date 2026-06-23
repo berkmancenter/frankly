@@ -846,6 +846,7 @@
   "rsvp": "RSVP",
   "save": "Guardar",
   "saveAgendaItem": "Guardar elemento de agenda",
+  "saveAndClose": "Guardar y cerrar",
   "saveChangesQuestion": "¿Guardar cambios?",
   "saveEvent": "Guardar evento",
   "saveSettings": "Guardar configuración",
