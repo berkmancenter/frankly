@@ -129,7 +129,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
               ? Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
-                    context.l10n.avErrorNotFound,
+                    context.l10n.avAudioErrorNotFound,
                     style: context.theme.textTheme.bodyMedium!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -193,7 +193,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
               ? Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
-                    context.l10n.avErrorNotFound,
+                    context.l10n.avVideoErrorNotFound,
                     style: context.theme.textTheme.bodyMedium!.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),
@@ -259,7 +259,8 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
             children: [
               Column(
                 children: [
-                  if (widget.shouldShowVideoPreview)
+                  if (widget.shouldShowVideoPreview &&
+                      _mediaService.videoInputs.isNotEmpty)
                     Column(
                       children: [
                         Text(
@@ -280,57 +281,43 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                               color: context
                                   .theme.colorScheme.surfaceContainerHighest,
                             ),
-                            child: _mediaService.videoInputs.isEmpty
-                                ? Center(
-                                    child: Text(
-                                      context.l10n.avErrorNotFound,
-                                      style: context.theme.textTheme.bodyMedium!
-                                          .copyWith(
-                                        color: context
-                                            .theme.colorScheme.onSurfaceVariant,
-                                      ),
-                                    ),
-                                  )
-                                : Stack(
-                                    children: [
-                                      HtmlElementView(viewType: _viewType),
-                                      isLoadingCameraChange
-                                          ?
-                                          // Cover the video element while setting video source
-                                          Container(
+                            child: Stack(
+                              children: [
+                                HtmlElementView(viewType: _viewType),
+                                isLoadingCameraChange
+                                    ?
+                                    // Cover the video element while setting video source
+                                    Container(
+                                        color: context.theme.colorScheme
+                                            .surfaceContainerHighest,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            CircularProgressIndicator(
                                               color: context.theme.colorScheme
-                                                  .surfaceContainerHighest,
-                                              alignment: Alignment.center,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  CircularProgressIndicator(
-                                                    color: context
-                                                        .theme
-                                                        .colorScheme
-                                                        .onSurfaceVariant,
-                                                  ),
-                                                  const SizedBox(height: 16),
-                                                  Text(
-                                                    context.l10n.videoUpdating,
-                                                    style: context.theme
-                                                        .textTheme.bodyMedium,
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          : isLoading
-                                              ? Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: context.theme
-                                                        .colorScheme.onPrimary,
-                                                  ),
-                                                )
-                                              : const SizedBox.shrink(),
-                                    ],
-                                  ),
+                                                  .onSurfaceVariant,
+                                            ),
+                                            const SizedBox(height: 16),
+                                            Text(
+                                              context.l10n.videoUpdating,
+                                              style: context
+                                                  .theme.textTheme.bodyMedium,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator(
+                                              color: context
+                                                  .theme.colorScheme.onPrimary,
+                                            ),
+                                          )
+                                        : const SizedBox.shrink(),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -342,10 +329,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                     onPressed: () async {
                       if (widget.isMirrorCheck) {
                         await sharedPreferencesService.setDefaultCameraId(
-                            _mediaService.selectedVideoInputId!,);
+                          _mediaService.selectedVideoInputId!,
+                        );
                         if (context.mounted) Navigator.of(context).pop();
                       }
-                      
+
                       final savedInitialVideoDeviceId = initialVideoDeviceId;
                       final savedInitialAudioId = initialAudioDeviceId;
 
