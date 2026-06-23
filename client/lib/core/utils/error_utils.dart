@@ -13,7 +13,7 @@ import 'dart:async';
 String? _firebaseAuthCodeMessage(String code) {
   switch (code) {
     case 'too-many-requests':
-      return appLocalizationService.getLocalization().somethingWentWrongTryAgain;
+      return appLocalizationService.getLocalization().tooManyRequests;
     default:
       return null;
   }

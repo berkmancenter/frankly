@@ -27,6 +27,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   // If changed, this value should also be updated in l10n messages referencing the expiry duration.
   static const _linkExpiryDuration = Duration(minutes: 30);
   static const _pollingInterval = Duration(seconds: 5);
+  static const _resendCooldownDuration = Duration(seconds: 60);
 
   String _error = '';
   String _tabCheckError = '';
@@ -40,6 +41,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   late TextEditingController _emailController;
   Timer? _expiryTimer;
   Timer? _verificationPollingTimer;
+  Timer? _resendCooldownTimer;
+  int _resendCooldownRemainingSeconds = 0;
+  bool _isResending = false;
 
   @override
   void initState() {
@@ -73,7 +77,33 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     _emailController.dispose();
     _expiryTimer?.cancel();
     _verificationPollingTimer?.cancel();
+    _resendCooldownTimer?.cancel();
     super.dispose();
+  }
+
+  bool get _canResend => !_isResending && _resendCooldownRemainingSeconds <= 0;
+
+  void _startResendCooldown() {
+    _resendCooldownTimer?.cancel();
+    setState(() {
+      _resendCooldownRemainingSeconds = _resendCooldownDuration.inSeconds;
+    });
+    _resendCooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      if (_resendCooldownRemainingSeconds <= 1) {
+        timer.cancel();
+        setState(() {
+          _resendCooldownRemainingSeconds = 0;
+        });
+        return;
+      }
+      setState(() {
+        _resendCooldownRemainingSeconds -= 1;
+      });
+    });
   }
 
   // Automatically poll Firebase Auth so that browsers like Brave — which block
@@ -125,13 +155,20 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Future<void> _resendEmail() async {
+    if (!_canResend) return;
+
     final userService = context.read<UserService>();
     final resentMessage = context.l10n.verificationEmailResent(_currentEmail);
+    setState(() {
+      _isResending = true;
+      _error = '';
+    });
     try {
       await userService.refreshEmailVerificationStatus();
     } catch (_) {
       if (!mounted) return;
       setState(() {
+        _isResending = false;
         _error = context.l10n.somethingWentWrongTryAgain;
         _resendSuccessMessage = '';
       });
@@ -139,6 +176,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     }
     if (userService.isCurrentUserEmailVerified) {
       // Already verified — InitialLoadingWidget observes UserService and will navigate home.
+      setState(() {
+        _isResending = false;
+      });
       return;
     }
     await authMessageOnError(
@@ -146,17 +186,23 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ? userService.updateEmailAndResendVerification(_currentEmail)
           : userService.verifyEmail(),
       errorCallback: (error, code) => setState(() {
+        _isResending = false;
         if (_pendingEmailChange && code == 'email-already-in-use') {
           _emailAlreadyInUse = true;
           _editingEmail = true;
         } else {
           _error = error;
         }
+        if (code == 'too-many-requests') {
+          _startResendCooldown();
+        }
         _resendSuccessMessage = '';
       }),
       callback: () => setState(() {
+        _isResending = false;
         _linkExpired = false;
         _startExpiryTimer();
+        _startResendCooldown();
         _resendSuccessMessage = resentMessage;
         _tabCheckError = '';
         _error = '';
@@ -337,7 +383,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       TextSpan(
         text: linkText,
         style: linkStyle,
-        recognizer: TapGestureRecognizer()..onTap = _resendEmail,
+        recognizer: TapGestureRecognizer()
+          ..onTap = _canResend ? _resendEmail : null,
       ),
     );
 
@@ -643,7 +690,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                               style: const TextStyle(
                                                 decoration: TextDecoration.underline,
                                               ),
-                                              recognizer: TapGestureRecognizer()..onTap = _resendEmail,
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = _canResend ? _resendEmail : null,
                                             ),
                                           );
 
@@ -691,7 +739,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 300),
                   child: ActionButton(
-                    onPressed: _resendEmail,
+                    onPressed: _canResend ? _resendEmail : null,
                     type: ActionButtonType.outline,
                     expand: true,
                     textColor: Colors.black,
