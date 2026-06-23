@@ -277,6 +277,8 @@ class ConferenceRoom with ChangeNotifier {
         .listen(_onAVDeviceChanges);
   }
 
+  // When AVDeviceChangedEvent is emitted on event bus, check the changes in the event and toggles the video/audio enabled state accordingly;
+  // Also updates the audio/video device if necessary.
   void _onAVDeviceChanges(AVDeviceChangedEvent event) {
     if (event.changes.contains(AVDeviceChange.enableVideo) ||
         event.changes.contains(AVDeviceChange.disableVideo)) {

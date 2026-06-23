@@ -343,11 +343,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             isLoadingCameraChange = true;
                           });
 
-                          // Turn the video off and on again to ensure a successful device update.
-                          // await conferenceRoom.toggleVideoEnabled(
-                          //   setEnabled: false,
-                          // );
-
                           appEventBus.emit(
                             AVDeviceChangedEvent(
                               changes: [AVDeviceChange.disableVideo],
@@ -355,23 +350,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           );
 
                           if (widget.isMirrorCheck) {
-                            // If user's video isn't on or we don't show
-                            // a video preview, we still need to attempt
-                            // an Agora device update to catch any errors.
-                            // Attempt to update the Agora
-                            // device to catch any errors.
-                            // await conferenceRoom.room?.localParticipant
-                            //     ?.updateAgoraVideoDevice();
-                            appEventBus.emit(
                               AVDeviceChangedEvent(
                                 changes: [AVDeviceChange.updateVideoDevice],
-                              ),
-                            );
+                              );
                           }
-
-                          // await conferenceRoom.toggleVideoEnabled(
-                          //   setEnabled: true,
-                          // );
+                          
                           appEventBus.emit(
                             AVDeviceChangedEvent(
                               changes: [AVDeviceChange.enableVideo],
@@ -400,14 +383,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             deviceId: _mediaService.selectedAudioInputId!,
                             shouldUpdatePreview: widget.shouldShowVideoPreview,
                           );
-                          // await conferenceRoom.toggleAudioEnabled(
-                          //   setEnabled: false,
-                          // );
                           appEventBus.emit(
                             AVDeviceChangedEvent(
                               changes: [AVDeviceChange.disableAudio],
                             ),
                           );
+
                           if (!widget.isMirrorCheck) {
                             appEventBus.emit(
                               AVDeviceChangedEvent(
@@ -417,8 +398,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           } else {
                             // Still need to attempt to update the Agora
                             // device to catch any errors.
-                            // await conferenceRoom.room?.localParticipant
-                            //     ?.updateAgoraAudioDevice();
                             appEventBus.emit(
                               AVDeviceChangedEvent(
                                 changes: [AVDeviceChange.updateAudioDevice],
