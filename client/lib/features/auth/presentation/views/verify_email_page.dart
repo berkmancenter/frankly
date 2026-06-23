@@ -514,20 +514,28 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final pageTitle = '${Environment.appName} - ${context.l10n.verifyYourEmail}';
     if (_editingEmail) {
-      return Scaffold(
-        backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-        body: Align(
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520),
-            child: _buildEditEmailView(),
+      return Title(
+        title: pageTitle,
+        color: context.theme.colorScheme.primary,
+        child: Scaffold(
+          backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
+          body: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 520),
+              child: _buildEditEmailView(),
+            ),
           ),
         ),
       );
     }
 
-    return Scaffold(
+    return Title(
+      title: pageTitle,
+      color: context.theme.colorScheme.primary,
+      child: Scaffold(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       body: Align(
         alignment: Alignment.topCenter,
@@ -710,6 +718,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         ),
       ),
-    );
+    ),);
   }
 }
