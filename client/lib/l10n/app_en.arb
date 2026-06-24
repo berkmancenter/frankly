@@ -753,6 +753,7 @@
   "removeTemplate": "Remove Template",
   "removedFromEvent": "You were removed from this event and cannot rejoin.",
   "reorderingNotSavedUntilQuestionsCompleted": "Reordering not saved until all questions are completed.",
+  "requests": "Requests",
   "required": "Required",
   "resources": "Resources",
   "restoreSettings": "Restore Default Settings",

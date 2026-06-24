@@ -799,6 +799,7 @@
   "removeTemplate": "移除範本",
   "removedFromEvent": "您已被從此活動中移除，無法重新加入。",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有問題完成之前，重新排序不會被儲存。",
+  "requests": "請求",
   "required": "必填",
   "resources": "資源",
   "restoreSettings": "恢復預設設定",

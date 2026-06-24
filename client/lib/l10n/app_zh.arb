@@ -799,6 +799,7 @@
   "removeTemplate": "删除模板",
   "removedFromEvent": "您已被从此活动中移除，无法重新加入。",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有问题完成之前，重新排序不会被保存。",
+  "requests": "请求",
   "required": "必填",
   "resources": "资源",
   "restoreSettings": "恢复默认设置",

@@ -4,7 +4,9 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
+import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/admin/utils/member_data.dart';
+import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/user/public_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -101,11 +103,13 @@ class MembershipDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-class MembersTabState extends State<MembersTab> {
+class MembersTabState extends State<MembersTab>
+    with SingleTickerProviderStateMixin {
   final whiteBackground = Colors.white70;
 
   late Stream<List<Membership>> _memberships;
   late BehaviorSubjectWrapper<List<MembershipRequest>> _requests;
+  late TabController _tabController;
 
   Future<void>? _loadUsersFuture;
   String? _currentSearch;
@@ -151,8 +155,23 @@ class MembersTabState extends State<MembersTab> {
     return members;
   }
 
+
+  Future<void> _resolveRequest({
+    required MembershipRequest request,
+    required bool approve,
+  }) async {
+    await cloudFunctionsCommunityService.resolveJoinRequest(
+      ResolveJoinRequestRequest(
+        communityId: request.communityId,
+        userId: request.userId,
+        approve: approve,
+      ),
+    );
+  }
+  
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     final communityId =
         Provider.of<CommunityProvider>(context, listen: false).community.id;
     _memberships = firestoreMembershipService
@@ -172,6 +191,7 @@ class MembersTabState extends State<MembersTab> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _requests.dispose();
     super.dispose();
   }
@@ -260,6 +280,7 @@ class MembersTabState extends State<MembersTab> {
                 ),
                 richMessage: TextSpan(
                   children: <InlineSpan>[
+
                     WidgetSpan(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,6 +325,118 @@ class MembersTabState extends State<MembersTab> {
       source: dataSource,
     );
   }
+
+  // Widget _buildRequestEntry(int index, MembershipRequest request) {
+  //   return Container(
+  //     key: Key(request.userId),
+  //     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
+  //     color: index.isEven
+  //         ? context.theme.colorScheme.primary.withOpacity(0.1)
+  //         : Colors.white70,
+  //     child: Wrap(
+  //       alignment: WrapAlignment.spaceBetween,
+  //       crossAxisAlignment: WrapCrossAlignment.center,
+  //       children: [
+  //         IntrinsicWidth(
+  //           child: UserProfileChip(
+  //             key: Key('user-profile-chip-${request.userId}'),
+  //             userId: request.userId,
+  //             imageHeight: 32,
+  //             textStyle: TextStyle(
+  //               color: context.theme.colorScheme.primary,
+  //             ),
+  //           ),
+  //         ),
+  //         UserAdminDetailsBuilder(
+  //           userId: request.userId,
+  //           communityId: request.communityId,
+  //           builder: (_, loading, detailsSnapshot) {
+  //             if (loading) {
+  //               return Container(
+  //                 height: 50,
+  //                 width: 50,
+  //                 alignment: Alignment.center,
+  //                 child: CustomLoadingIndicator(),
+  //               );
+  //             }
+
+  //             final email = detailsSnapshot.data?.email;
+  //             final isError =
+  //                 detailsSnapshot.hasError || email == null || email.isEmpty;
+
+  //             const errorText = 'Error loading email.';
+
+  //             return Padding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 30),
+  //               child: SelectableText(
+  //                 isError ? errorText : email,
+  //                 style: Theme.of(context)
+  //                     .textTheme
+  //                     .bodyMedium
+  //                     ?.copyWith(fontSize: 12),
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.end,
+  //           mainAxisSize: !responsiveLayoutService.isMobile(context)
+  //               ? MainAxisSize.min
+  //               : MainAxisSize.max,
+  //           children: [
+  //             Padding(
+  //               padding: EdgeInsets.symmetric(horizontal: 4),
+  //               child: ActionButton(
+  //                 height: 44,
+  //                 minWidth: 44,
+  //                 padding: EdgeInsets.zero,
+  //                 color: context.theme.colorScheme.primary,
+  //                 shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(100),
+  //                 ),
+  //                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
+  //                 onPressed: () => alertOnError(
+  //                   context,
+  //                   () => _resolveRequest(request: request, approve: true),
+  //                 ),
+  //                 child: Icon(
+  //                   Icons.check,
+  //                   color: context.theme.colorScheme.tertiaryFixed,
+  //                   size: 20,
+  //                 ),
+  //               ),
+  //             ),
+  //             Padding(
+  //               padding: EdgeInsets.symmetric(horizontal: 4),
+  //               child: ActionButton(
+  //                 height: 44,
+  //                 minWidth: 44,
+  //                 padding: EdgeInsets.zero,
+  //                 type: ActionButtonType.outline,
+  //                 shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(100),
+  //                 ),
+  //                 borderSide:
+  //                     BorderSide(color: context.theme.colorScheme.error),
+  //                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
+  //                 onPressed: () => alertOnError(
+  //                   context,
+  //                   () => _resolveRequest(request: request, approve: false),
+  //                 ),
+  //                 child: Icon(
+  //                   Icons.close,
+  //                   color: context.theme.colorScheme.error,
+  //                   size: 20,
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildMembersSection() {
     return CustomStreamBuilder<List<Membership>>(
@@ -362,6 +495,50 @@ class MembersTabState extends State<MembersTab> {
     );
   }
 
+  // Widget _buildRequestList(List<MembershipRequest> requestList) {
+  //   return ConstrainedBox(
+  //     constraints: BoxConstraints(maxHeight: 400, maxWidth: 600),
+  //     child: ListView(
+  //       shrinkWrap: true,
+  //       children: [
+  //         for (var i = 0; i < requestList.length; i++)
+  //           _buildRequestEntry(i, requestList[i]),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget _buildRequestsSection() {
+    return CustomStreamBuilder<List<MembershipRequest>>(
+      entryFrom: '_MembersTabState._buildRequestsSection',
+      stream: _requests,
+      errorMessage: 'Something went wrong loading requests. Please refresh.',
+      showLoading: false,
+      builder: (context, requestList) {
+        return Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: context.theme.colorScheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeightConstrainedText(
+                requestList!.isEmpty
+                    ? 'No Pending Join Requests'
+                    : 'Manage Join Requests (${requestList.length})',
+                style: AppTextStyle.headline4,
+              ),
+              SizedBox(height: 8),
+              // if (requestList.isNotEmpty) _buildRequestList(requestList),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = responsiveLayoutService.isMobile(context);
@@ -393,14 +570,27 @@ class MembersTabState extends State<MembersTab> {
               );
             },
           ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: _buildMembersSection(),
-              ),
+          SizedBox(height: 12),
+          TabBar(
+            controller: _tabController,
+            onTap: (_) => setState(() {}),
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: [
+              Tab(text: context.l10n.members),
+              Tab(text: context.l10n.requests),
             ],
           ),
+          SizedBox(height: 20),
+          if (_tabController.index == 0)
+            Row(
+              children: [
+                Expanded(
+                  child: _buildMembersSection(),
+                ),
+              ],
+            )
+          else
+            _buildRequestsSection(),
         ],
       ),
     );

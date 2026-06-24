@@ -826,6 +826,7 @@
   "removeTemplate": "Eliminar plantilla",
   "removedFromEvent": "Ha sido eliminado de este evento y no puede volver a unirse.",
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
+  "requests": "Solicitudes",
   "required": "Requerido",
   "resources": "Recursos",
   "restoreSettings": "Restaurar configuración predeterminada",
