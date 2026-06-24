@@ -65,6 +65,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     });
     _startExpiryTimer();
     _startVerificationPolling();
+    _startResendCooldown();
     // Eagerly reload on mount so that a user who already verified (e.g. via
     // Firebase's hosted action page, which processes the code itself before
     // redirecting back without an oobCode) is sent straight to home without
@@ -768,16 +769,23 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               ],
               _buildEmailSentText(),
               const SizedBox(height: 24),
-              if (_error.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    _error,
-                    style: context.theme.textTheme.bodyMedium
-                        ?.copyWith(color: context.theme.colorScheme.error),
-                    textAlign: TextAlign.center,
+              if (_error.isNotEmpty) ...[
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 440),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.symmetric(horizontal: 40),
+                      color: context.theme.colorScheme.errorContainer,
+                      child: Text(
+                        _error,
+                        style: context.theme.textTheme.bodyMedium,
+                      ),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 8),
+              ],
               Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 300),
@@ -787,7 +795,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     type: ActionButtonType.outline,
                     expand: true,
                     textColor: Colors.black,
-                    text: context.l10n.resendVerificationEmail,
+                    text: _resendCooldownRemainingSeconds > 0
+                        ? '${context.l10n.resendVerificationEmail} (${_resendCooldownRemainingSeconds}s)'
+                        : context.l10n.resendVerificationEmail,
                   ),
                 ),
               ),
