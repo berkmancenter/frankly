@@ -22,7 +22,7 @@ class MediaDeviceService {
 
   String? selectedAudioInputId;
   String? selectedVideoInputId;
-
+  
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {
       // The ".status" call does not work on all platforms - catch the exception.

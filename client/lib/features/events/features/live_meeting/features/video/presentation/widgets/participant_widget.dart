@@ -90,7 +90,7 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
 
   bool get audioEnabled => isRemote
       ? _isRemoteAudioEnabled(widget.participant.userId)
-      : conferenceRoom.audioEnabled;
+      : conferenceRoom.audioIsStreaming;
 
   bool get isStarted => widget.participant.videoTrackEnabled;
 
@@ -158,6 +158,26 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
   Widget build(BuildContext context) {
     final isMobile = responsiveLayoutService.isMobile(context);
 
+    Widget videoView() {
+      // For testing, show video view for fake participants
+      if (widget.participant is FakeParticipant ||
+          videoViewController == null) {
+        return Container(color: Colors.orange);
+      }
+
+      // Only show video view if mirror check is completed
+      if (sharedPreferencesService.hasMirrorCheckCompletedForEvent(
+        EventProvider.watch(context).eventId,
+      )) {
+        return videoEnabled
+            ? AgoraVideoView(
+                controller: videoViewController!,
+              )
+            : SizedBox.shrink();
+      }
+      return SizedBox.shrink();
+    }
+
     return Listener(
       onPointerDown: isMobile ? (_) => _showParticipantName() : null,
       child: Stack(
@@ -168,13 +188,7 @@ class ParticipantWidgetState extends State<ParticipantWidget> {
             isRemote: isRemote,
             startedTimer: _startedTimer,
           ),
-          widget.participant is FakeParticipant || videoViewController == null
-              ? Container(color: Colors.orange)
-              : (videoEnabled)
-                  ? AgoraVideoView(
-                      controller: videoViewController!,
-                    )
-                  : SizedBox.shrink(),
+          videoView(),
           _VideoOverlayWidget(
             participant: widget.participant,
             showName: _showName,
@@ -218,12 +232,12 @@ class _DisabledVideoWidget extends StatelessWidget {
           SizedBox(height: isMobile ? 16 : 30),
           Flexible(
             child: Container(
-              constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+              constraints: BoxConstraints(maxHeight: 100, maxWidth: 100),
               child: UserProfileChip(
                 userId: participant.identity,
                 showName: false,
                 enableOnTap: false,
-                imageHeight: 200,
+                imageHeight: 100,
                 alignment: Alignment.center,
               ),
             ),

@@ -28,6 +28,14 @@ void main() {
         l10n.avErrorNotFound,
         equals('Audio/video devices not found. Please check permissions.'),
       );
+      expect(
+        l10n.avAudioErrorNotFound,
+        equals('Audio devices not found. Please check permissions.'),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        equals('Video devices not found. Please check permissions.'),
+      );
     });
 
     testWidgets('Spanish localization works', (WidgetTester tester) async {
@@ -54,8 +62,12 @@ void main() {
 
       // Error messages should be translated
       expect(
-        l10n.avErrorNotFound,
-        isNot('Audio/video devices not found. Please check permissions.'),
+        l10n.avAudioErrorNotFound,
+        isNot('Audio devices not found. Please check permissions.'),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        isNot('Video devices not found. Please check permissions.'),
       );
     });
 
@@ -86,6 +98,14 @@ void main() {
       expect(
         l10n.avErrorNotFound,
         isNot('Audio/video devices not found. Please check permissions.'),
+      );
+      expect(
+        l10n.avAudioErrorNotFound,
+        isNot('Audio devices not found. Please check permissions.'),
+      );
+      expect(
+        l10n.avVideoErrorNotFound,
+        isNot('Video devices not found. Please check permissions.'),
       );
     });
 
@@ -118,7 +138,11 @@ void main() {
 
       // Error messages should be translated
       expect(l10n.avErrorNotFound,
-          isNot('Audio/video devices not found. Please check permissions.'));
+          isNot('Audio/video devices not found. Please check permissions.'),);
+      expect(l10n.avAudioErrorNotFound,
+          isNot('Audio devices not found. Please check permissions.'),);
+      expect(l10n.avVideoErrorNotFound,
+          isNot('Video devices not found. Please check permissions.'),);
     });
 
     testWidgets(

@@ -2,6 +2,7 @@ import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -394,6 +395,25 @@ class _EventInfoState extends State<EventInfo> {
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () async {
+        // Show mirror check if not completed before in this event
+        if (!sharedPreferencesService
+            .hasMirrorCheckCompletedForEvent(widget.event.id)) {
+          await showDialog(
+            barrierDismissible: false,
+            context: navigatorState.context,
+            builder: (context) {
+              return MediaSettingsWidget(
+                shouldShowVideoPreview:true,
+                isMirrorCheck: true,
+              );
+            },
+          );
+
+          await sharedPreferencesService
+              .setMirrorCheckCompleteForEvent(widget.event.id);
+        }
+
+
         final successfullyJoined =
             await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
         if (!mounted) return;

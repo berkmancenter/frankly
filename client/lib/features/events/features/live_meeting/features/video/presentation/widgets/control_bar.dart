@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
+import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,17 +42,54 @@ class _ControlBarState extends State<ControlBar> {
   ConferenceRoom get _conferenceRoomRead =>
       LiveMeetingProvider.read(context).conferenceRoom!;
 
-  Widget _buildVideoToggle() {
+  Widget _buildVideoToggle({required bool enabled}) {
+    Future<void> handleVideoToggle() async {
+      // Edge case: If user has managed to enter event without completing the mirror check, pop it now
+      final eventId = Provider.of<LiveMeetingProvider>(context, listen: false).eventProvider.eventId;
+      final mirrorCheckCompleted =
+          sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId,
+         
+      );
+
+      if (!mirrorCheckCompleted) {
+        if (mounted) {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return MediaSettingsWidget(
+                shouldShowVideoPreview:
+                    !(defaultTargetPlatform == TargetPlatform.iOS ||
+                        defaultTargetPlatform == TargetPlatform.android),
+                isMirrorCheck: true,
+              );
+            },
+          );
+        }
+
+        await sharedPreferencesService
+            .setMirrorCheckCompleteForEvent(eventId);
+
+        // We can bail here because the media settings widget dispatches an event to update the video device
+        return;
+      }
+      
+      if (mounted) {
+        // TODO: this can be handled by the event bus
+        await AudioVideoErrorDialog.showOnError(
+          context,
+          () => _conferenceRoomRead.toggleVideoEnabled(
+              setEnabled: !_conferenceRoomRead.videoIsStreaming,),
+        );
+      }
+    }
+
     return _IconButton(
-      onTap: () => AudioVideoErrorDialog.showOnError(
-        context,
-        () => _conferenceRoomRead.toggleVideoEnabled(),
-      ),
-      text: _conferenceRoom.videoEnabled ? 'Stop Video' : 'Start Video',
-      icon: _conferenceRoom.videoEnabled
+      onTap: enabled ? handleVideoToggle : () async {},
+      text: _conferenceRoom.videoIsStreaming ? 'Stop Video' : 'Start Video',
+      icon: _conferenceRoom.videoIsStreaming
           ? Icons.videocam_outlined
           : Icons.videocam_off_outlined,
-      iconColor: _conferenceRoom.videoEnabled
+      iconColor: _conferenceRoom.videoIsStreaming
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.errorContainer,
     );
@@ -66,7 +104,6 @@ class _ControlBarState extends State<ControlBar> {
               context: context,
               builder: (context) {
                 return MediaSettingsWidget(
-                  conferenceRoom: _conferenceRoomRead,
                   shouldShowVideoPreview:
                       !(defaultTargetPlatform == TargetPlatform.iOS ||
                           defaultTargetPlatform == TargetPlatform.android),
@@ -93,6 +130,7 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   Widget _buildControlWidgets() {
+    // Disable the toggles if audio is temporarily disabled for the user
     final enabled = !_liveMeetingProvider.audioTemporarilyDisabled;
     final isMobile = responsiveLayoutService.isMobile(context);
     final double spacerWidth = isMobile ? 6 : 12;
@@ -102,7 +140,7 @@ class _ControlBarState extends State<ControlBar> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(width: spacerWidth),
-        _buildVideoToggle(),
+        _buildVideoToggle(enabled: enabled),
         _IconButton(
           onTap: enabled
               ? () => AudioVideoErrorDialog.showOnError(
@@ -116,11 +154,11 @@ class _ControlBarState extends State<ControlBar> {
                     toastType: ToastType.success,
                   );
                 },
-          text: _conferenceRoom.audioEnabled ? 'Mute' : 'Unmute',
-          icon: _conferenceRoom.audioEnabled
+          text: _conferenceRoom.audioIsStreaming ? 'Mute' : 'Unmute',
+          icon: _conferenceRoom.audioIsStreaming
               ? Icons.mic_outlined
               : Icons.mic_off_outlined,
-          iconColor: _conferenceRoom.audioEnabled
+          iconColor: _conferenceRoom.audioIsStreaming
               ? context.theme.colorScheme.onPrimary
               : context.theme.colorScheme.errorContainer,
         ),
