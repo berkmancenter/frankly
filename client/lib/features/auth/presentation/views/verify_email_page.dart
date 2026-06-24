@@ -795,6 +795,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     type: ActionButtonType.outline,
                     expand: true,
                     textColor: Colors.black,
+                    disabledColor: context.theme.colorScheme.onSurfaceVariant,
                     text: _resendCooldownRemainingSeconds > 0
                         ? '${context.l10n.resendVerificationEmail} (${_resendCooldownRemainingSeconds}s)'
                         : context.l10n.resendVerificationEmail,
