@@ -103,10 +103,119 @@ class MembershipDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
+class MembershipRequestDataSource extends DataTableSource {
+  BuildContext context;
+  final Future<void> Function({
+    required MembershipRequest request,
+    required bool approve,
+  }) onResolve;
+
+  MembershipRequestDataSource(
+    List<MembershipRequest>? requestList,
+    this.context,
+    this.onResolve,
+  ) : _requestList = requestList ?? [];
+
+  final List<MembershipRequest> _requestList;
+
+  @override
+  int get rowCount => _requestList.length;
+
+  DataRow _buildRequestRow(int index, MembershipRequest request) {
+    PublicUserInfo? userInfo = UserInfoProvider.forUser(request.userId).info;
+    return DataRow(
+      color: WidgetStateProperty.all(Colors.white70),
+      cells: <DataCell>[
+        DataCell(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    userInfo?.imageUrl ?? '',
+                  ),
+                ),
+                SizedBox(width: 8),
+                userInfo?.displayName == null
+                    ? Text(context.l10n.unknownUser)
+                    : Text(userInfo?.displayName ?? context.l10n.unknownUser),
+              ],
+            ),
+          ),
+        ),
+        DataCell(
+          ChangeMembershipDropdown(
+            membership: Membership(
+              userId: request.userId,
+              communityId: request.communityId,
+              status: MembershipStatus.member,
+            ),
+          ),
+        ),
+        DataCell(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: ActionButton(
+                  height: 48,
+                  minWidth: 48,
+                  padding: EdgeInsets.zero,
+                  color: context.theme.colorScheme.primary,
+                  shape: CircleBorder(),
+                  onPressed: () => alertOnError(
+                    context,
+                    () => onResolve(request: request, approve: true),
+                  ),
+                  child: Icon(
+                    Icons.check,
+                    color: context.theme.colorScheme.tertiaryFixed,
+                    size: 24,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: ActionButton(
+                  height: 48,
+                  minWidth: 48,
+                  padding: EdgeInsets.zero,
+                  type: ActionButtonType.outline,
+                  shape: CircleBorder( ),
+                  onPressed: () => alertOnError(
+                    context,
+                    () => onResolve(request: request, approve: false),
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  DataRow? getRow(int index) {
+    final request = _requestList[index];
+    return _buildRequestRow(index, request);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
 class MembersTabState extends State<MembersTab>
     with SingleTickerProviderStateMixin {
-  final whiteBackground = Colors.white70;
-
   late Stream<List<Membership>> _memberships;
   late BehaviorSubjectWrapper<List<MembershipRequest>> _requests;
   late TabController _tabController;
@@ -155,20 +264,21 @@ class MembersTabState extends State<MembersTab>
     return members;
   }
 
-
   Future<void> _resolveRequest({
     required MembershipRequest request,
     required bool approve,
+    MembershipStatus? role,
   }) async {
     await cloudFunctionsCommunityService.resolveJoinRequest(
       ResolveJoinRequestRequest(
         communityId: request.communityId,
         userId: request.userId,
         approve: approve,
+        role: role,
       ),
     );
   }
-  
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -255,7 +365,7 @@ class MembersTabState extends State<MembersTab>
       headingRowColor:
           WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
       columns: <DataColumn>[
-        DataColumn(label: Text('Member')),
+        DataColumn(label: Text(context.l10n.member)),
         DataColumn(
           label: Row(
             children: [
@@ -280,7 +390,6 @@ class MembersTabState extends State<MembersTab>
                 ),
                 richMessage: TextSpan(
                   children: <InlineSpan>[
-
                     WidgetSpan(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,118 +434,6 @@ class MembersTabState extends State<MembersTab>
       source: dataSource,
     );
   }
-
-  // Widget _buildRequestEntry(int index, MembershipRequest request) {
-  //   return Container(
-  //     key: Key(request.userId),
-  //     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
-  //     color: index.isEven
-  //         ? context.theme.colorScheme.primary.withOpacity(0.1)
-  //         : Colors.white70,
-  //     child: Wrap(
-  //       alignment: WrapAlignment.spaceBetween,
-  //       crossAxisAlignment: WrapCrossAlignment.center,
-  //       children: [
-  //         IntrinsicWidth(
-  //           child: UserProfileChip(
-  //             key: Key('user-profile-chip-${request.userId}'),
-  //             userId: request.userId,
-  //             imageHeight: 32,
-  //             textStyle: TextStyle(
-  //               color: context.theme.colorScheme.primary,
-  //             ),
-  //           ),
-  //         ),
-  //         UserAdminDetailsBuilder(
-  //           userId: request.userId,
-  //           communityId: request.communityId,
-  //           builder: (_, loading, detailsSnapshot) {
-  //             if (loading) {
-  //               return Container(
-  //                 height: 50,
-  //                 width: 50,
-  //                 alignment: Alignment.center,
-  //                 child: CustomLoadingIndicator(),
-  //               );
-  //             }
-
-  //             final email = detailsSnapshot.data?.email;
-  //             final isError =
-  //                 detailsSnapshot.hasError || email == null || email.isEmpty;
-
-  //             const errorText = 'Error loading email.';
-
-  //             return Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 30),
-  //               child: SelectableText(
-  //                 isError ? errorText : email,
-  //                 style: Theme.of(context)
-  //                     .textTheme
-  //                     .bodyMedium
-  //                     ?.copyWith(fontSize: 12),
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //             );
-  //           },
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.end,
-  //           mainAxisSize: !responsiveLayoutService.isMobile(context)
-  //               ? MainAxisSize.min
-  //               : MainAxisSize.max,
-  //           children: [
-  //             Padding(
-  //               padding: EdgeInsets.symmetric(horizontal: 4),
-  //               child: ActionButton(
-  //                 height: 44,
-  //                 minWidth: 44,
-  //                 padding: EdgeInsets.zero,
-  //                 color: context.theme.colorScheme.primary,
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(100),
-  //                 ),
-  //                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-  //                 onPressed: () => alertOnError(
-  //                   context,
-  //                   () => _resolveRequest(request: request, approve: true),
-  //                 ),
-  //                 child: Icon(
-  //                   Icons.check,
-  //                   color: context.theme.colorScheme.tertiaryFixed,
-  //                   size: 20,
-  //                 ),
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.symmetric(horizontal: 4),
-  //               child: ActionButton(
-  //                 height: 44,
-  //                 minWidth: 44,
-  //                 padding: EdgeInsets.zero,
-  //                 type: ActionButtonType.outline,
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(100),
-  //                 ),
-  //                 borderSide:
-  //                     BorderSide(color: context.theme.colorScheme.error),
-  //                 sendingIndicatorAlign: ActionButtonSendingIndicatorAlign.none,
-  //                 onPressed: () => alertOnError(
-  //                   context,
-  //                   () => _resolveRequest(request: request, approve: false),
-  //                 ),
-  //                 child: Icon(
-  //                   Icons.close,
-  //                   color: context.theme.colorScheme.error,
-  //                   size: 20,
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget _buildMembersSection() {
     return CustomStreamBuilder<List<Membership>>(
@@ -495,46 +492,64 @@ class MembersTabState extends State<MembersTab>
     );
   }
 
-  // Widget _buildRequestList(List<MembershipRequest> requestList) {
-  //   return ConstrainedBox(
-  //     constraints: BoxConstraints(maxHeight: 400, maxWidth: 600),
-  //     child: ListView(
-  //       shrinkWrap: true,
-  //       children: [
-  //         for (var i = 0; i < requestList.length; i++)
-  //           _buildRequestEntry(i, requestList[i]),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildRequestList(List<MembershipRequest> requestList) {
+    return PaginatedDataTable(
+      headingRowColor:
+          WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
+      columns: <DataColumn>[
+        DataColumn(label: Text(context.l10n.followerRequest)),
+        DataColumn(label: Text(context.l10n.role)),
+        DataColumn(
+          label: ActionButton(
+            text: context.l10n.approveAll,
+            icon: Icon(Icons.check),
+            onPressed: () {
+              for (var request in requestList) {
+                alertOnError(
+                  context,
+                  () => _resolveRequest(request: request, approve: true),
+                );
+              }
+            },
+          ),
+        ),
+      ],
+      source:
+          MembershipRequestDataSource(requestList, context, _resolveRequest),
+    );
+  }
 
   Widget _buildRequestsSection() {
     return CustomStreamBuilder<List<MembershipRequest>>(
       entryFrom: '_MembersTabState._buildRequestsSection',
       stream: _requests,
-      errorMessage: 'Something went wrong loading requests. Please refresh.',
+      errorMessage: context.l10n.errorLoadingRequests,
       showLoading: false,
       builder: (context, requestList) {
-        return Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: context.theme.colorScheme.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeightConstrainedText(
-                requestList!.isEmpty
-                    ? 'No Pending Join Requests'
-                    : 'Manage Join Requests (${requestList.length})',
-                style: AppTextStyle.headline4,
+        if (requestList!.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    context.l10n.noPendingJoinRequests,
+                    style: AppTextStyle.headline4,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    context.l10n.shareYourCommunityWithOthers,
+                    style: AppTextStyle.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-              SizedBox(height: 8),
-              // if (requestList.isNotEmpty) _buildRequestList(requestList),
-            ],
-          ),
-        );
+            ),
+          );
+        }
+        return _buildRequestList(requestList);
       },
     );
   }
@@ -581,16 +596,15 @@ class MembersTabState extends State<MembersTab>
             ],
           ),
           SizedBox(height: 20),
-          if (_tabController.index == 0)
-            Row(
-              children: [
-                Expanded(
-                  child: _buildMembersSection(),
-                ),
-              ],
-            )
-          else
-            _buildRequestsSection(),
+          Row(
+            children: [
+              Expanded(
+                child: _tabController.index == 0
+                    ? _buildMembersSection()
+                    : _buildRequestsSection(),
+              ),
+            ],
+          ),
         ],
       ),
     );
