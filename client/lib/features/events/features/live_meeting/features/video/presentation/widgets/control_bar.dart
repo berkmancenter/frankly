@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
+import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +43,48 @@ class _ControlBarState extends State<ControlBar> {
       LiveMeetingProvider.read(context).conferenceRoom!;
 
   Widget _buildVideoToggle({required bool enabled}) {
+    Future<void> handleVideoToggle() async {
+      // Edge case: If user has managed to enter event without completing the mirror check, pop it now
+      final eventId = Provider.of<LiveMeetingProvider>(context, listen: false).eventProvider.eventId;
+      final mirrorCheckCompleted =
+          sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId,
+         
+      );
+
+      if (!mirrorCheckCompleted) {
+        if (mounted) {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return MediaSettingsWidget(
+                shouldShowVideoPreview:
+                    !(defaultTargetPlatform == TargetPlatform.iOS ||
+                        defaultTargetPlatform == TargetPlatform.android),
+                isMirrorCheck: true,
+              );
+            },
+          );
+        }
+
+        await sharedPreferencesService
+            .setMirrorCheckCompleteForEvent(eventId);
+
+        // We can bail here because the media settings widget dispatches an event to update the video device
+        return;
+      }
+      
+      if (mounted) {
+        // TODO: this can be handled by the event bus
+        await AudioVideoErrorDialog.showOnError(
+          context,
+          () => _conferenceRoomRead.toggleVideoEnabled(
+              setEnabled: !_conferenceRoomRead.videoIsStreaming,),
+        );
+      }
+    }
+
     return _IconButton(
-      onTap: enabled ? () => AudioVideoErrorDialog.showOnError(
-        context,
-        () => _conferenceRoomRead.toggleVideoEnabled(),
-      ) : () async {},
+      onTap: enabled ? handleVideoToggle : () async {},
       text: _conferenceRoom.videoIsStreaming ? 'Stop Video' : 'Start Video',
       icon: _conferenceRoom.videoIsStreaming
           ? Icons.videocam_outlined
@@ -92,11 +130,8 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   Widget _buildControlWidgets() {
-    // Disable the toggles if audio is temporarily disabled for the user or if they haven't completed the mirror check for this event
+    // Disable the toggles if audio is temporarily disabled for the user
     final enabled = !_liveMeetingProvider.audioTemporarilyDisabled;
-    final mirrorCheckCompleted =
-        sharedPreferencesService.hasMirrorCheckCompletedForEvent(
-            _liveMeetingProvider.eventProvider.eventId,);
     final isMobile = responsiveLayoutService.isMobile(context);
     final double spacerWidth = isMobile ? 6 : 12;
     bool showTalkingTimer =
@@ -105,15 +140,13 @@ class _ControlBarState extends State<ControlBar> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(width: spacerWidth),
-        _buildVideoToggle(enabled: mirrorCheckCompleted),
+        _buildVideoToggle(enabled: enabled),
         _IconButton(
           onTap: enabled
-              ? (mirrorCheckCompleted
-                  ? () => AudioVideoErrorDialog.showOnError(
-                        context,
-                        () => _conferenceRoomRead.toggleAudioEnabled(),
-                      )
-                  : () async {})
+              ? () => AudioVideoErrorDialog.showOnError(
+                    context,
+                    () => _conferenceRoomRead.toggleAudioEnabled(),
+                  )
               : () async {
                   showRegularToast(
                     context,
