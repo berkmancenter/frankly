@@ -601,6 +601,7 @@ _$_ResolveJoinRequestRequest _$$_ResolveJoinRequestRequestFromJson(
       communityId: json['communityId'] as String,
       userId: json['userId'] as String,
       approve: json['approve'] as bool,
+      role: $enumDecodeNullable(_$MembershipStatusEnumMap, json['role']),
     );
 
 Map<String, dynamic> _$$_ResolveJoinRequestRequestToJson(
@@ -609,7 +610,19 @@ Map<String, dynamic> _$$_ResolveJoinRequestRequestToJson(
       'communityId': instance.communityId,
       'userId': instance.userId,
       'approve': instance.approve,
+      'role': _$MembershipStatusEnumMap[instance.role],
     };
+
+const _$MembershipStatusEnumMap = {
+  MembershipStatus.owner: 'owner',
+  MembershipStatus.admin: 'admin',
+  MembershipStatus.moderator: 'moderator',
+  MembershipStatus.facilitator: 'facilitator',
+  MembershipStatus.member: 'member',
+  MembershipStatus.banned: 'banned',
+  MembershipStatus.nonmember: 'nonmember',
+  MembershipStatus.attendee: 'attendee',
+};
 
 _$_InitiateBreakoutsRequest _$$_InitiateBreakoutsRequestFromJson(
         Map<String, dynamic> json) =>
@@ -892,17 +905,6 @@ Map<String, dynamic> _$$_UpdateMembershipRequestToJson(
       'status': _$MembershipStatusEnumMap[instance.status],
       'invisible': instance.invisible,
     };
-
-const _$MembershipStatusEnumMap = {
-  MembershipStatus.owner: 'owner',
-  MembershipStatus.admin: 'admin',
-  MembershipStatus.moderator: 'moderator',
-  MembershipStatus.facilitator: 'facilitator',
-  MembershipStatus.member: 'member',
-  MembershipStatus.banned: 'banned',
-  MembershipStatus.nonmember: 'nonmember',
-  MembershipStatus.attendee: 'attendee',
-};
 
 _$_VoteToKickRequest _$$_VoteToKickRequestFromJson(Map<String, dynamic> json) =>
     _$_VoteToKickRequest(
