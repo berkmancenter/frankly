@@ -467,6 +467,7 @@ class _QuestionCardState extends State<QuestionCard> {
                                     cancelText: context.l10n.cancel,
                                   ).show(context: context);
                                   if (delete) {
+                                    if (!context.mounted) return;
                                     await alertOnError(
                                       context,
                                       () =>

@@ -90,7 +90,6 @@ class _ReassignBreakoutRoomDialogState
           onPressed: () => Navigator.of(context)
               .pop(ReassignResult(reassignId: _roomAssignment)),
           text: context.l10n.reassign,
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );

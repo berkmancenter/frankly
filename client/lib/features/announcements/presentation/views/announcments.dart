@@ -71,7 +71,7 @@ class _AnnouncementsState extends State<Announcements> {
                     cancelText: context.l10n.no,
                   ).show();
 
-                  if (confirmedDelete) {
+                  if (confirmedDelete && mounted) {
                     await firestoreAnnouncementsService.deleteAnnouncement(
                       communityId: CommunityProvider.read(context).communityId,
                       announcementId: announcement.id!,

@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -166,7 +167,7 @@ class _PrePostEventDialogPageState extends State<PrePostEventDialogPage>
   Widget _buildNotNowWidget() {
     return ActionButton(
       type: ActionButtonType.outline,
-      text: 'Next',
+      text: context.l10n.close,
       onPressed: () => Navigator.of(context).pop(),
     );
   }

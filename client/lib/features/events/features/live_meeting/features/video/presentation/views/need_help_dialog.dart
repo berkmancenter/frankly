@@ -1,7 +1,9 @@
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
 import 'package:client/config/environment.dart';
 import 'package:client/styles/styles.dart';
@@ -97,14 +99,14 @@ class NeedHelpDialog extends StatelessWidget {
               SizedBox(height: 12),
               RichText(
                 text: TextSpan(
-                  text: 'Need more help? ',
+                  text: context.l10n.needMoreHelp,
                   style: AppTextStyle.bodyMedium.copyWith(
                     color: context.theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
                   children: [
                     TextSpan(
-                      text: 'Troubleshooting Guide',
+                      text: context.l10n.troubleshootingGuide,
                       style: AppTextStyle.bodyMedium.copyWith(
                         fontWeight: FontWeight.w500,
                         color: context.theme.colorScheme.primary,

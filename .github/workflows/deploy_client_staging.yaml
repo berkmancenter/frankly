@@ -80,6 +80,7 @@ jobs:
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
+          envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_SENTRY_RELEASE: ${{ env.CURRENT_RELEASE }}
           envkey_SENTRY_ENVIRONMENT: staging
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -98,12 +99,13 @@ jobs:
           envkey_TROUBLESHOOTING_GUIDE_URL: https://rebootingsocialmedia.notion.site/Troubleshooting-c6f922b816a742a9bba4bf000e84565d
           envkey_LOGO_URL: https://res.cloudinary.com/dh0vegjku/image/upload/v1725488238/frankly_assets/Frankly-Icon-144x144_ex8nky.png
           envkey_SIDEBAR_FOOTER: "Frankly is operated by the Applied Social Media Lab at the Berkman Klein Center for Internet & Society"
-          envkey_COPYRIGHT_STATEMENT: "2024 President and Fellows of Harvard College."
+          envkey_COPYRIGHT_STATEMENT: "President and Fellows of Harvard College."
           envkey_CLOUDINARY_IMAGE_PRESET: ${{ secrets.CLOUDINARY_IMAGE_PRESET }}
           envkey_CLOUDINARY_VIDEO_PRESET: ${{ secrets.CLOUDINARY_VIDEO_PRESET }}
           envkey_CLOUDINARY_DEFAULT_PRESET: ${{ secrets.CLOUDINARY_DEFAULT_PRESET }}
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
+          envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
 
       - name: Build the Flutter App
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'

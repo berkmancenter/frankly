@@ -61,6 +61,7 @@ _$_Event _$$_EventFromJson(Map<String, dynamic> json) => _$_Event(
       participantCountEstimate: json['participantCountEstimate'] as int?,
       presentParticipantCountEstimate:
           json['presentParticipantCountEstimate'] as int?,
+      registrationCount: json['registrationCount'] as int?,
       breakoutMatchIdsToRecord: json['breakoutMatchIdsToRecord'] ?? const [],
     );
 
@@ -97,6 +98,7 @@ Map<String, dynamic> _$$_EventToJson(_$_Event instance) => <String, dynamic>{
       'participantCountEstimate': instance.participantCountEstimate,
       'presentParticipantCountEstimate':
           instance.presentParticipantCountEstimate,
+      'registrationCount': instance.registrationCount,
       'breakoutMatchIdsToRecord': instance.breakoutMatchIdsToRecord,
     };
 

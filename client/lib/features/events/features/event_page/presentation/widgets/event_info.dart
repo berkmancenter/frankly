@@ -268,7 +268,7 @@ class _EventInfoState extends State<EventInfo> {
       title: context.l10n.confirmRefreshTemplate,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
-      confirmText: 'Yes, refresh',
+      confirmText: context.l10n.yesRefresh,
       onConfirm: (context) async {
         await alertOnError(context, () async {
           await _presenter.refreshEvent();
@@ -337,7 +337,7 @@ class _EventInfoState extends State<EventInfo> {
           child: EditEventDrawer(),
         ),
       ),
-      toolTipText: 'Edit event',
+      toolTipText: context.l10n.editEvent,
       icon: Icons.edit_outlined,
     );
   }
@@ -369,7 +369,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   ActionButton _buildEnterEvent(DateTime scheduled) {
-    const kEventOpenText = 'Enter Event';
+    final kEventOpenText = context.l10n.enterEvent;
     final now = clockService.now();
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
@@ -378,12 +378,12 @@ class _EventInfoState extends State<EventInfo> {
     if (daysDifference > 1) {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
-      text = 'Starts Tomorrow';
+      text = context.l10n.startsTomorrow;
     } else if (daysDifference == 0 &&
         difference.inMinutes > kMinutesBeforeEventToJoin) {
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
-      text = 'Event Ended';
+      text = context.l10n.eventEnded;
     } else {
       text = kEventOpenText;
     }
@@ -405,14 +405,14 @@ class _EventInfoState extends State<EventInfo> {
           if (daysDifference >= 0) {
             await showAlert(
               context,
-              'The event has not started yet. We\'ll see you soon!',
+              context.l10n.eventHasNotStartedYet,
             );
           }
           return;
         } else if (!successfullyJoined) {
           showRegularToast(
             context,
-            'Event was not entered.',
+            context.l10n.eventWasNotEntered,
             toastType: ToastType.neutral,
           );
         }
@@ -481,7 +481,7 @@ class _EventInfoState extends State<EventInfo> {
     } else if (_status == _ParticipantStatus.full) {
       return ActionButton(
         height: 64,
-        text: 'FULL',
+        text: context.l10n.eventFull,
         expand: true,
       );
     } else if (showJoinButton) {
@@ -498,7 +498,7 @@ class _EventInfoState extends State<EventInfo> {
               );
             }),
             expand: true,
-            text: 'RSVP',
+            text: context.l10n.rsvp,
           ),
           if (canShowFollowCommunity) ...[
             SizedBox(height: 10),
@@ -693,14 +693,14 @@ class _EventInfoState extends State<EventInfo> {
         if (isPublic) {
           if (_canEditEvent) {
             text =
-                'Public${featuredItems!.any((f) => f.documentPath == docPath) && _canModerateEvent ? ', Featured' : ''}';
+                '${context.l10n.publicVisibility}${featuredItems!.any((f) => f.documentPath == docPath) && _canModerateEvent ? ', Featured' : ''}';
             appAsset = AppAsset.kGlobePng;
           } else {
             text = null;
             appAsset = null;
           }
         } else {
-          text = 'Private';
+          text = context.l10n.privateVisibility;
           appAsset = AppAsset.kLockPng;
         }
 
@@ -713,7 +713,7 @@ class _EventInfoState extends State<EventInfo> {
         return Row(
           children: [
             Tooltip(
-              message: isPublic ? 'Public' : 'Private',
+              message: isPublic ? context.l10n.publicVisibility : context.l10n.privateVisibility,
               child: ProxiedImage(null, asset: appAsset, width: 20, height: 20),
             ),
             SizedBox(width: 6),

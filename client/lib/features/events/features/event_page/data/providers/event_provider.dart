@@ -222,6 +222,13 @@ class EventProvider with ChangeNotifier {
       ? max(1, event.participantCountEstimate ?? 0)
       : eventParticipants.length;
 
+  // Count of signed-up (active) participants. For hosted events this is the
+  // live participant stream length; for non-hosted it is read from the
+  // server-maintained registrationCount field on the event document.
+  int get registrationCount => useParticipantCountEstimate
+      ? (event.registrationCount ?? 0)
+      : eventParticipants.length;
+
   int get presentParticipantCount => useParticipantCountEstimate
       ? max(1, event.presentParticipantCountEstimate ?? 0)
       : eventParticipants.where((p) => p.isPresent).length;

@@ -84,7 +84,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
       numPerRoom: _numPerRoom,
       assignmentMethod: assignmentMethod,
     );
-    Navigator.of(context).pop();
+    if (mounted) Navigator.of(context).pop();
   }
 
   Widget _buildNumPicker({

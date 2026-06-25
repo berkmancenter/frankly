@@ -1,6 +1,8 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_tag_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -195,7 +197,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
       children: [
         ActionButton(
           expand: true,
-          text: 'Save template',
+          text: context.l10n.saveTemplate,
           color: context.theme.colorScheme.primary,
           onPressed: () => alertOnError(
             context,

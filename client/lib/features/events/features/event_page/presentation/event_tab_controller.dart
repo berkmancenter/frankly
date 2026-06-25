@@ -215,8 +215,7 @@ class _EventTabsDefinitionState extends State<EventTabsDefinition> {
       positiveButtonText: 'Send',
     );
 
-    if (message != null) {
-      if (!mounted) return;
+    if (message != null && mounted) {
       await alertOnError(context, () => tabsController.sendMessage(message));
     }
   }

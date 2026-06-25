@@ -146,6 +146,7 @@ class _ParticipantsList extends HookWidget {
           iconSize: 30,
           participantIds: snapshot.map((e) => e.id).toList(),
           numberOfIconsToShow: numberOfParticipantsToShow,
+          registrationCount: event.registrationCount,
         );
       },
     );
