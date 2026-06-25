@@ -182,7 +182,7 @@ class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
       child: Stack(
         children: [
           ActionButton(
-            text: 'Rewatch',
+            text: context.l10n.rewatch,
             icon: Icons.refresh,
             onPressed: onRewatch,
             color: Colors.transparent,

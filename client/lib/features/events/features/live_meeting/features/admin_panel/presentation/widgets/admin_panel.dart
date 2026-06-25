@@ -187,7 +187,7 @@ class _AdminPanelState extends State<AdminPanel> {
                           .read<CommunityPermissionsProvider>()
                           .canModerateContent,
                     ).show(),
-            text: 'Breakouts',
+            text: context.l10n.breakouts,
           ),
           SizedBox(width: 6),
           _MeetingControlsMenu(),
@@ -201,7 +201,7 @@ class _AdminPanelState extends State<AdminPanel> {
       else ...[
         ActionButton(
           expand: true,
-          text: 'Mute All',
+          text: context.l10n.muteAll,
           onPressed: () => _providerRead.muteAllParticipants(),
         ),
         Expanded(
@@ -487,7 +487,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                           setState(() => _selectedRoom = room.roomId);
                         }
                       }),
-                      text: 'Jump To',
+                      text: context.l10n.jumpTo,
                     ),
                   ],
                 ),
@@ -500,7 +500,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                       () => _selectedRoom =
                           liveMeetingProvider.currentBreakoutRoomId,
                     ),
-                    text: 'View Current Room',
+                    text: context.l10n.viewCurrentRoom,
                     expand: true,
                   ),
                   SizedBox(height: 16),
@@ -1134,7 +1134,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                               );
                             }
                           },
-                          text: 'Leave Room',
+                          text: context.l10n.leaveRoom,
                         )
                       else
                         ActionButton(
@@ -1149,7 +1149,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           textColor: needsHelp
                               ? context.theme.colorScheme.onErrorContainer
                               : null,
-                          text: 'Enter Room',
+                          text: context.l10n.enterRoom,
                         ),
                     ],
                   ),
@@ -1180,7 +1180,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                     );
                   },
                   expand: true,
-                  text: 'Cancel Help Needed',
+                  text: context.l10n.cancelHelpNeeded,
                 ),
               ],
               SizedBox(height: 8),

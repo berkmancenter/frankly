@@ -391,7 +391,7 @@ class _AgendaItemCardState extends State<AgendaItemCard>
           onPressed: () async {
             if (hasBeenEdited) {
               final isDiscardChangesConfirmed = await ConfirmDialog(
-                mainText: 'Are you sure you want to discard changes?',
+                mainText: context.l10n.confirmDiscardChanges,
                 cancelText: context.l10n.cancel,
               ).show(context: context);
 
