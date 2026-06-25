@@ -80,6 +80,7 @@ jobs:
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
+          envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_SENTRY_RELEASE: ${{ env.CURRENT_RELEASE }}
           envkey_SENTRY_ENVIRONMENT: staging
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
