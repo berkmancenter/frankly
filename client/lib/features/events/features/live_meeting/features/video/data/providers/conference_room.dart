@@ -548,7 +548,7 @@ class ConferenceRoom with ChangeNotifier {
     final context = navigatorState.context;
     final enableAudioVideo = await ConfirmDialog(
       title: appLocalizationService.getLocalization().turnOnAudioVideo,
-      mainText: 'Would you like to turn on audio and video?',
+      mainText: appLocalizationService.getLocalization().wouldYouLikeToTurnOnAv,
       cancelText: appLocalizationService.getLocalization().cancel,
     ).show();
     if (!context.mounted) return;

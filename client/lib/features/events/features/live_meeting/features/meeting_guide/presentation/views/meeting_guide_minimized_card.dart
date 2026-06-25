@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -105,7 +106,7 @@ class _MeetingGuideMinimizedCardState extends State<MeetingGuideMinimizedCard>
           Padding(
             padding: spacerPadding,
             child: ActionButton(
-              tooltipText: 'Show Agenda Item',
+              tooltipText: context.l10n.showAgendaItem,
               type: ActionButtonType.filled,
               minWidth: 40,
               onPressed: widget.onExpandCard,
@@ -150,6 +151,7 @@ class _ForwardButton extends HookWidget {
         await agendaProvider.moveForward(
           currentAgendaItemId: currentAgendaItemId,
         );
+        if (!context.mounted) return;
         showRegularToast(
           context,
           "You're ready to move on",

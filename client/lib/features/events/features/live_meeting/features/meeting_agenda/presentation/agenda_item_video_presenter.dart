@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_video.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/data/services/media_helper_service.dart';
+import 'package:client/services.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/provider.dart';
 
@@ -107,15 +108,16 @@ class AgendaItemVideoPresenter {
   }
 
   String getTabName(AgendaItemVideoTabType agendaItemVideoTabType) {
+    final l10n = appLocalizationService.getLocalization();
     switch (agendaItemVideoTabType) {
       case AgendaItemVideoTabType.local:
-        return 'UPLOAD';
+        return l10n.videoTabUpload;
       case AgendaItemVideoTabType.youtube:
-        return 'YOUTUBE';
+        return l10n.videoTabYoutube;
       case AgendaItemVideoTabType.vimeo:
-        return 'VIMEO';
+        return l10n.videoTabVimeo;
       case AgendaItemVideoTabType.url:
-        return 'URL';
+        return l10n.videoTabUrl;
     }
   }
 

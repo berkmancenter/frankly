@@ -4,7 +4,6 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_permissions_provider.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -426,7 +425,6 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
   bool _isLoading = false;
 
   bool? _isPinnedLocal;
-  bool _isHovered = false;
 
   final _menuKey = GlobalKey();
 
@@ -566,18 +564,13 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
         onTap: widget.isVisible
             ? () => _showMoreMenu(_getMenuItems(context: context))
             : null,
-        onHover: widget.isVisible
-            ? (isHovered) => setState(() => _isHovered = isHovered)
-            : null,
         child: Container(
           key: _menuKey,
           padding: const EdgeInsets.all(5),
           child: Icon(
-            isPinned ? Icons.push_pin : CupertinoIcons.ellipsis,
+            isPinned ? Icons.push_pin : Icons.more_horiz,
             size: 16,
-            color: _isHovered
-                ? context.theme.colorScheme.onSurface
-                : context.theme.colorScheme.onSurfaceVariant,
+            color: context.theme.colorScheme.onPrimary,
           ),
         ),
       ),

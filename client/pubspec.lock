@@ -361,6 +361,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  expandable:
+    dependency: transitive
+    description:
+      name: expandable
+      sha256: "9604d612d4d1146dafa96c6d8eec9c2ff0994658d6d09fed720ab788c7f5afc2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -649,14 +657,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_markdown:
+  flutter_markdown_plus:
     dependency: "direct main"
     description:
-      name: flutter_markdown
-      sha256: "04c4722cc36ec5af38acc38ece70d22d3c2123c61305d555750a091517bbe504"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.23"
+      path: "."
+      ref: frankly
+      resolved-ref: bb1af75f6f5547e49297c0aad216955890bfc982
+      url: "https://github.com/dariusk/flutter_markdown_plus.git"
+    source: git
+    version: "1.0.1+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1054,6 +1063,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.2.2"
+  markdown_editor_plus:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "5da0fbbc30c60da4bbb80ce39c7e548026dee2fc"
+      url: "https://github.com/berkmancenter/markdown_editor_plus"
+    source: git
+    version: "0.2.15"
   matcher:
     dependency: transitive
     description:
@@ -2005,4 +2023,4 @@ packages:
     version: "2.0.2"
 sdks:
   dart: ">=3.4.1 <4.0.0"
-  flutter: ">=3.19.0"
+  flutter: ">=3.22.0"

@@ -184,7 +184,7 @@ class _SelectTemplateState extends State<SelectTemplate> {
             alignment: Alignment.center,
             child: ActionButton(
               onPressed: provider.showMoreTemplates,
-              text: 'View more templates',
+              text: context.l10n.viewMoreTemplates,
             ),
           ),
       ],

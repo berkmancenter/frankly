@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:client/app.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -111,7 +113,7 @@ class AgoraRoom with ChangeNotifier {
 
     await engine.initialize(
       RtcEngineContext(
-        appId: '76cd63ec061d4192ac03ff8cdde51395',
+        appId: Environment.agoraAppId,
       ),
     );
 
@@ -350,13 +352,21 @@ class AgoraRoom with ChangeNotifier {
 
   @override
   dispose() {
-    engine.unregisterEventHandler(_rtcEngineEventHandler);
-    engine.stopPreview();
-    engine.enableLocalVideo(false);
-    engine.enableLocalAudio(false);
-    engine.leaveChannel();
-    engine.release();
+    try {
+      engine.unregisterEventHandler(_rtcEngineEventHandler);
+      // Ensure local video preview was started before disposing
+      if (_localParticipant?.videoLocalPreviewStarted == true) {
+        engine.stopPreview();
+      }
 
+      engine.enableLocalVideo(false);
+      engine.enableLocalAudio(false);
+      engine.leaveChannel();
+      engine.release();
+    } catch (e, stackTrace) {
+      print('Error disposing Agora engine: $e');
+      reportError(e, stackTrace);
+    }
     super.dispose();
   }
 }

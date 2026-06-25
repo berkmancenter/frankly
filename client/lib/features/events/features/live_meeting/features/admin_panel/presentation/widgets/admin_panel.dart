@@ -123,7 +123,7 @@ class _AdminPanelState extends State<AdminPanel> {
               SizedBox(width: 4),
               ActionButton(
                 onPressed: () => _providerRead.endBreakoutRooms(),
-                text: 'End Breakouts',
+                text: context.l10n.endBreakouts,
               ),
             ],
             SizedBox(width: 6),
@@ -187,7 +187,7 @@ class _AdminPanelState extends State<AdminPanel> {
                           .read<CommunityPermissionsProvider>()
                           .canModerateContent,
                     ).show(),
-            text: 'Breakouts',
+            text: context.l10n.breakouts,
           ),
           SizedBox(width: 6),
           _MeetingControlsMenu(),
@@ -201,7 +201,7 @@ class _AdminPanelState extends State<AdminPanel> {
       else ...[
         ActionButton(
           expand: true,
-          text: 'Mute All',
+          text: context.l10n.muteAll,
           onPressed: () => _providerRead.muteAllParticipants(),
         ),
         Expanded(
@@ -466,11 +466,12 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                     SizedBox(width: 4),
                     ActionButton(
                       onPressed: () => alertOnError(context, () async {
+                        final event = EventProvider.read(context).event;
                         final roomNumber = await JumpToRoomDialog().show();
                         if (!isNullOrEmpty(roomNumber)) {
                           final room = await firestoreLiveMeetingService
                               .getBreakoutRoomFromRoomNumber(
-                            event: EventProvider.read(context).event,
+                            event: event,
                             breakoutRoomSessionId: liveMeetingProvider
                                     .liveMeeting
                                     ?.currentBreakoutSession
@@ -486,7 +487,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                           setState(() => _selectedRoom = room.roomId);
                         }
                       }),
-                      text: 'Jump To',
+                      text: context.l10n.jumpTo,
                     ),
                   ],
                 ),
@@ -499,7 +500,7 @@ class _BreakoutRoomGridState extends State<BreakoutRoomGrid> {
                       () => _selectedRoom =
                           liveMeetingProvider.currentBreakoutRoomId,
                     ),
-                    text: 'View Current Room',
+                    text: context.l10n.viewCurrentRoom,
                     expand: true,
                   ),
                   SizedBox(height: 16),
@@ -590,7 +591,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
             ).show();
             if (numParticipants == null) return;
             final countValue = int.tryParse(numParticipants);
-            if (countValue == null) return;
+            if (countValue == null || !mounted) return;
 
             LiveMeetingProvider.read(context)
                 .conferenceRoom
@@ -686,7 +687,7 @@ class __ParticipantMenuState extends State<_ParticipantMenu> {
             userName:
                 UserInfoProvider.forUser(widget.kickedUserId).info?.displayName,
           ).show();
-          if (!(confirmResult?.kickParticipant ?? false)) return;
+          if (!(confirmResult?.kickParticipant ?? false) || !mounted) return;
 
           final event = EventProvider.read(context).event;
           if (event.creatorId == widget.kickedUserId) {
@@ -993,8 +994,11 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
             color: context.theme.colorScheme.surfaceContainer,
             textColor: context.theme.colorScheme.onSurface,
             onPressed: () => alertOnError(context, () async {
-              final ReassignResult? newRoomAssignment =
-                  await ReassignBreakoutRoomDialog(
+                  final liveMeetingProvider =
+                      LiveMeetingProvider.read(context);
+                  final localContext = context;
+                  final ReassignResult? newRoomAssignment =
+                    await ReassignBreakoutRoomDialog(
                 outerContext: context,
                 userId: id,
                 currentRoomNumber: [
@@ -1006,10 +1010,9 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               ).show();
               final reassignId = newRoomAssignment?.reassignId;
               if (reassignId == null || reassignId.trim().isEmpty) return;
-
+              if (!localContext.mounted) return;
               final newBreakoutRoom =
-                  await Provider.of<LiveMeetingProvider>(context, listen: false)
-                      .reassignBreakoutRoom(
+                  await liveMeetingProvider.reassignBreakoutRoom(
                 userId: id,
                 newRoomNumber: reassignId,
               );
@@ -1020,13 +1023,14 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
               if (reassignId == reassignNewRoomId &&
                   newRoomAssignment?.expectedNewRoom?.toString() !=
                       newBreakoutRoom.roomName) {
+                if (!localContext.mounted) return;
                 await ConfirmDialog(
-                  title: context.l10n.participantReassigned,
+                  title: localContext.l10n.participantReassigned,
                   mainText: 'Reassigned to Room ${newBreakoutRoom.roomName}',
                   confirmText: 'Continue',
-                ).show(context: context);
+                ).show(context: localContext);
               }
-            }),
+              }),
             text: 'Reassign',
           ),
           if (!local)
@@ -1130,7 +1134,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                               );
                             }
                           },
-                          text: 'Leave Room',
+                          text: context.l10n.leaveRoom,
                         )
                       else
                         ActionButton(
@@ -1145,7 +1149,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                           textColor: needsHelp
                               ? context.theme.colorScheme.onErrorContainer
                               : null,
-                          text: 'Enter Room',
+                          text: context.l10n.enterRoom,
                         ),
                     ],
                   ),
@@ -1176,7 +1180,7 @@ class _BreakoutRoomDetailsState extends State<BreakoutRoomDetails> {
                     );
                   },
                   expand: true,
-                  text: 'Cancel Help Needed',
+                  text: context.l10n.cancelHelpNeeded,
                 ),
               ],
               SizedBox(height: 8),
