@@ -334,7 +334,7 @@ class EventPageProvider with ChangeNotifier {
       final context = navigatorState.context;
       final cancelParticipation = await ConfirmDialog(
         title: appLocalizationService.getLocalization().cancelParticipation,
-        mainText: 'Are you sure you want to cancel?',
+        mainText: appLocalizationService.getLocalization().confirmCancelQuestion,
         confirmText: appLocalizationService.getLocalization().yes,
         cancelText: appLocalizationService.getLocalization().no,
       ).show();

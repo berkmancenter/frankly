@@ -267,6 +267,9 @@ FUNCTIONS_URL_PREFIX=<value>   # Base URL for your Google Cloud Run Functions
 SHARE_LINK_URL=<value>         # URL prefix for share links, e.g. https://<app-url>/share
 ```
 
+**Agora** (voice/video SDK):
+AGORA_APP_ID=<value>           # For client-side connections to Agora.
+
 **Cloudinary** (for media uploads):
 
 ```bash
