@@ -141,9 +141,12 @@ class MembershipRequestDataSource extends DataTableSource {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    userInfo?.imageUrl ?? '',
-                  ),
+                  backgroundImage: userInfo?.imageUrl?.isNotEmpty == true
+                      ? NetworkImage(userInfo!.imageUrl)
+                      : null,
+                  child: userInfo?.imageUrl?.isNotEmpty == true
+                      ? null
+                      : const Icon(Icons.person_outline),
                 ),
                 SizedBox(width: 8),
                 userInfo?.displayName == null
@@ -545,9 +548,9 @@ class MembersTabState extends State<MembersTab>
           label: ActionButton(
             text: context.l10n.approveAll,
             icon: Icon(Icons.check),
-            onPressed: () {
-              for (var request in requestList) {
-                alertOnError(
+            onPressed: () async {
+              for (final request in requestList) {
+                await alertOnError(
                   context,
                   () => _resolveRequest(request: request, approve: true),
                 );
@@ -855,7 +858,9 @@ class MembershipDropdownState extends State<MembershipDropdown> {
       setState(() {
         _selectedStatus = status;
       });
-      widget.onRoleChanged?.call(status!);
+      if (status != null) {
+        widget.onRoleChanged?.call(status);
+      }
     }
   }
 
