@@ -26,6 +26,8 @@ class Environment {
     return 'http://127.0.0.1:5001/$firebaseProjectId/us-central1';
   }
 
+  static const agoraAppId = String.fromEnvironment('AGORA_APP_ID');
+
   static const sentryDSN = String.fromEnvironment('SENTRY_DSN');
   static const sentryEnvironment = String.fromEnvironment('SENTRY_ENVIRONMENT');
 
@@ -35,8 +37,10 @@ class Environment {
   // App branding and URL properties
   static const appName =
       String.fromEnvironment('APP_NAME', defaultValue: 'Frankly');
-  static const appUrl = String.fromEnvironment('APP_URL',
-      defaultValue: 'https://app.frankly.org',);
+  static const appUrl = String.fromEnvironment(
+    'APP_URL',
+    defaultValue: 'https://app.frankly.org',
+  );
   static const sidebarFooter = String.fromEnvironment('SIDEBAR_FOOTER');
   static const copyrightStatement =
       String.fromEnvironment('COPYRIGHT_STATEMENT');

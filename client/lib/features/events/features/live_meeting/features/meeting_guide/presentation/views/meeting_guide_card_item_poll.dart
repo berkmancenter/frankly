@@ -87,7 +87,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
               Align(
                 alignment: Alignment.centerLeft,
                 child: ActionButton(
-                  text: 'Show Results',
+                  text: context.l10n.showResults,
                   color: context.theme.colorScheme.primary,
                   textColor: context.theme.colorScheme.onPrimary,
                   onPressed: currentVote != null
@@ -130,7 +130,7 @@ class _MeetingGuideCardItemPollState extends State<MeetingGuideCardItemPoll>
                 alignment: Alignment.centerLeft,
                 child: ActionButton(
                   type: ActionButtonType.outline,
-                  text: 'Show Questions',
+                  text: context.l10n.showQuestions,
                   color: Colors.transparent,
                   onPressed: () =>
                       _presenter.showQuestions(currentCardAgendaItemId),

@@ -304,7 +304,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               child: CustomTextField(
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
-                labelText: 'YouTube URL',
+                labelText: context.l10n.youtubeUrl,
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),
@@ -356,7 +356,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               child: CustomTextField(
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
-                labelText: 'Vimeo URL',
+                labelText: context.l10n.vimeoUrl,
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),
