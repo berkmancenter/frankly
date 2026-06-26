@@ -4,10 +4,13 @@ import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
-import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/admin/utils/member_data.dart';
+import 'package:client/features/community/presentation/views/app_share.dart';
+import 'package:client/features/community/presentation/widgets/share_section.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/user/public_user_info.dart';
+import 'package:data_models/utils/share_type.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -126,7 +129,7 @@ class MembershipRequestDataSource extends DataTableSource {
 
   DataRow _buildRequestRow(int index, MembershipRequest request) {
     PublicUserInfo? userInfo = UserInfoProvider.forUser(request.userId).info;
-    
+
     final requestKey = '${request.userId}_${request.communityId}';
 
     return DataRow(
@@ -389,6 +392,65 @@ class MembersTabState extends State<MembersTab>
     );
   }
 
+  Widget _buildRoleTooltip() {
+    return Tooltip(
+      enableTapToDismiss: false,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.24),
+            blurRadius: 8,
+            spreadRadius: 2,
+            offset: Offset(
+              2,
+              2,
+            ),
+          ),
+        ],
+        color: context.theme.colorScheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      richMessage: TextSpan(
+        children: <InlineSpan>[
+          WidgetSpan(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    context.l10n.rolesTooltip,
+                    style: TextStyle(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => launch(
+                    Environment.helpCenterManagingCommunityUrl,
+                  ),
+                  child: Text(
+                    context.l10n.seeManagingYourCommunity,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      // The child widget that triggers the tooltip
+      child: IconButton(
+        icon: Icon(Icons.info_outline),
+        onPressed: () {},
+      ),
+    );
+  }
+
   Widget _buildTable(DataTableSource dataSource) {
     return PaginatedDataTable(
       headingRowColor:
@@ -399,63 +461,7 @@ class MembersTabState extends State<MembersTab>
           label: Row(
             children: [
               Text(context.l10n.role),
-              Tooltip(
-                enableTapToDismiss: false,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.24),
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                      offset: Offset(
-                        2,
-                        2,
-                      ),
-                    ),
-                  ],
-                  color: context.theme.colorScheme.surfaceContainerLowest,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                richMessage: TextSpan(
-                  children: <InlineSpan>[
-                    WidgetSpan(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              context.l10n.rolesTooltip,
-                              style: TextStyle(
-                                color:
-                                    context.theme.colorScheme.onSurfaceVariant,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          TextButton(
-                            onPressed: () => launch(
-                              Environment.helpCenterManagingCommunityUrl,
-                            ),
-                            child: Text(
-                              context.l10n.seeManagingYourCommunity,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                // The child widget that triggers the tooltip
-                child: IconButton(
-                  icon: Icon(Icons.info_outline),
-                  onPressed: () {},
-                ),
-              ),
+              _buildRoleTooltip(),
             ],
           ),
         ),
@@ -527,7 +533,14 @@ class MembersTabState extends State<MembersTab>
           WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
       columns: <DataColumn>[
         DataColumn(label: Text(context.l10n.followerRequest)),
-        DataColumn(label: Text(context.l10n.role)),
+        DataColumn(
+          label: Row(
+            children: [
+              Text(context.l10n.role),
+              _buildRoleTooltip(),
+            ],
+          ),
+        ),
         DataColumn(
           label: ActionButton(
             text: context.l10n.approveAll,
@@ -556,6 +569,12 @@ class MembersTabState extends State<MembersTab>
       showLoading: false,
       builder: (context, requestList) {
         if (requestList!.isEmpty) {
+          final community = Provider.of<CommunityProvider>(context).community;
+          final subject = 'Join ${community.name} on ${Environment.appName}';
+          final body =
+              'Hey, check out ${community.name} on ${Environment.appName}!';
+          final shareData = AppShareData(subject: subject, body: body);
+
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -564,14 +583,39 @@ class MembersTabState extends State<MembersTab>
                 children: [
                   SizedBox(height: 20),
                   Text(
-                    context.l10n.noPendingJoinRequests,
-                    style: AppTextStyle.headline4,
+                    context.l10n.noFollowRequestsCurrently,
+                    style: context.theme.textTheme.headlineSmall,
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 20),
                   Text(
                     context.l10n.shareYourCommunityWithOthers,
-                    style: AppTextStyle.bodyMedium,
+                    style: context.theme.textTheme.bodyLarge,
                     textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 350,
+                    ),
+                    child: ShareSection(
+                      iconColor: Theme.of(context).colorScheme.primary,
+                      iconBackgroundColor: null,
+                      url: shareData.pathToPage,
+                      body: body,
+                      subject: subject,
+                      wrapIcons: false,
+                      buttonPadding: 0,
+                      size: 39,
+                      iconSize: 16,
+                      shareCallback: (ShareType type) {
+                        analytics.logEvent(
+                          AnalyticsPressShareCommunityLinkEvent(
+                            communityId: community.id,
+                            shareType: type,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
