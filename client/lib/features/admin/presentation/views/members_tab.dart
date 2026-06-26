@@ -126,6 +126,7 @@ class MembershipRequestDataSource extends DataTableSource {
 
   DataRow _buildRequestRow(int index, MembershipRequest request) {
     PublicUserInfo? userInfo = UserInfoProvider.forUser(request.userId).info;
+    
     final requestKey = '${request.userId}_${request.communityId}';
 
     return DataRow(
@@ -177,7 +178,10 @@ class MembershipRequestDataSource extends DataTableSource {
                   onPressed: () => alertOnError(
                     context,
                     () => onResolve(
-                        request: request, approve: true, role:  _selectedMemberships[requestKey],),
+                      request: request,
+                      approve: true,
+                      role: _selectedMemberships[requestKey],
+                    ),
                   ),
                   child: Icon(
                     Icons.check,
@@ -231,6 +235,7 @@ class MembersTabState extends State<MembersTab>
   late TabController _tabController;
 
   Future<void>? _loadUsersFuture;
+  Future<void>? _loadRequestsFuture;
   String? _currentSearch;
 
   int _sortMemberships(Membership a, Membership b) {
@@ -323,6 +328,20 @@ class MembersTabState extends State<MembersTab>
     for (final batch in batches) {
       await Future.wait(
         batch.map((m) => UserInfoProvider.forUser(m.userId).infoFuture),
+      );
+
+      await Future.microtask(() => Future.value());
+    }
+  }
+
+  Future<void> _loadAllRequestUserInfo(
+    List<MembershipRequest> requests,
+  ) async {
+    final batches = partition(requests, 500);
+
+    for (final batch in batches) {
+      await Future.wait(
+        batch.map((r) => UserInfoProvider.forUser(r.userId).infoFuture),
       );
 
       await Future.microtask(() => Future.value());
@@ -559,7 +578,17 @@ class MembersTabState extends State<MembersTab>
             ),
           );
         }
-        return _buildRequestList(requestList);
+        // If there are requests, load user info for all requests in batches
+        _loadRequestsFuture ??= _loadAllRequestUserInfo(requestList);
+        return FutureBuilder(
+          future: _loadRequestsFuture,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CustomLoadingIndicator());
+            }
+            return _buildRequestList(requestList);
+          },
+        );
       },
     );
   }
@@ -596,16 +625,26 @@ class MembersTabState extends State<MembersTab>
             },
           ),
           SizedBox(height: 12),
-          TabBar(
-            controller: _tabController,
-            onTap: (_) => setState(() {}),
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: context.l10n.members),
-              Tab(
-                  text:
-                      '${context.l10n.requests} (${_requests.value?.length ?? 0})',),
-            ],
+          // We have to stream in the requests here, so the count updates in real time
+          CustomStreamBuilder<List<MembershipRequest>>(
+            entryFrom: '_MembersTabState._buildRequestsSection',
+            stream: _requests,
+            errorMessage: context.l10n.errorLoadingRequests,
+            showLoading: true,
+            builder: (context, requestList) {
+              return TabBar(
+                controller: _tabController,
+                onTap: (_) => setState(() {}),
+                indicatorSize: TabBarIndicatorSize.tab,
+                tabs: [
+                  Tab(text: context.l10n.members),
+                  Tab(
+                    text:
+                        '${context.l10n.requests} (${requestList?.length ?? 0})',
+                  ),
+                ],
+              );
+            },
           ),
           SizedBox(height: 20),
           Row(
