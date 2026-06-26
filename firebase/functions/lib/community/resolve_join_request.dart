@@ -80,6 +80,7 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
 
         final userMembershipUpdated =
             userMembership.copyWith(status: request.role ?? MembershipStatus.member);
+            
         if (userMembershipSnapshot.exists) {
           transaction.update(
             userMembershipSnapshot.reference,
