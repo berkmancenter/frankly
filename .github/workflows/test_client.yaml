@@ -25,6 +25,11 @@ jobs:
           filters: |
             client:
               - 'client/**'
+      - name: Set up Node.js
+        if: steps.changes.outputs.client == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.23.1"
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true'
@@ -112,5 +117,4 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           expires: 14d
-          channelId: pr-${{ github.event.pull_request.number }}
           projectId: ${{secrets.APP_STAGING_PROJECT_ID}}
