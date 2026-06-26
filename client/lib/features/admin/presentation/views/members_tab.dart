@@ -82,8 +82,9 @@ class MembershipDataSource extends DataTableSource {
           ),
         ),
         DataCell(
-          ChangeMembershipDropdown(
+          MembershipDropdown(
             membership: membership,
+            updateMembership: true,
           ),
         ),
       ],
@@ -108,7 +109,9 @@ class MembershipRequestDataSource extends DataTableSource {
   final Future<void> Function({
     required MembershipRequest request,
     required bool approve,
+    MembershipStatus? role,
   }) onResolve;
+  final Map<String, MembershipStatus> _selectedMemberships = {};
 
   MembershipRequestDataSource(
     List<MembershipRequest>? requestList,
@@ -123,6 +126,8 @@ class MembershipRequestDataSource extends DataTableSource {
 
   DataRow _buildRequestRow(int index, MembershipRequest request) {
     PublicUserInfo? userInfo = UserInfoProvider.forUser(request.userId).info;
+    final requestKey = '${request.userId}_${request.communityId}';
+
     return DataRow(
       color: WidgetStateProperty.all(Colors.white70),
       cells: <DataCell>[
@@ -145,12 +150,16 @@ class MembershipRequestDataSource extends DataTableSource {
           ),
         ),
         DataCell(
-          ChangeMembershipDropdown(
+          MembershipDropdown(
             membership: Membership(
               userId: request.userId,
               communityId: request.communityId,
               status: MembershipStatus.member,
             ),
+            // We don't want to update the membership here, we just want to select the role for approval
+            onRoleChanged: (newStatus) {
+              _selectedMemberships[requestKey] = newStatus;
+            },
           ),
         ),
         DataCell(
@@ -167,7 +176,8 @@ class MembershipRequestDataSource extends DataTableSource {
                   shape: CircleBorder(),
                   onPressed: () => alertOnError(
                     context,
-                    () => onResolve(request: request, approve: true),
+                    () => onResolve(
+                        request: request, approve: true, role:  _selectedMemberships[requestKey],),
                   ),
                   child: Icon(
                     Icons.check,
@@ -183,7 +193,7 @@ class MembershipRequestDataSource extends DataTableSource {
                   minWidth: 48,
                   padding: EdgeInsets.zero,
                   type: ActionButtonType.outline,
-                  shape: CircleBorder( ),
+                  shape: CircleBorder(),
                   onPressed: () => alertOnError(
                     context,
                     () => onResolve(request: request, approve: false),
@@ -592,7 +602,9 @@ class MembersTabState extends State<MembersTab>
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: [
               Tab(text: context.l10n.members),
-              Tab(text: context.l10n.requests),
+              Tab(
+                  text:
+                      '${context.l10n.requests} (${_requests.value?.length ?? 0})',),
             ],
           ),
           SizedBox(height: 20),
@@ -666,20 +678,25 @@ class RolePermissionListTile extends StatelessWidget {
   }
 }
 
-class ChangeMembershipDropdown extends StatefulWidget {
+class MembershipDropdown extends StatefulWidget {
   final Membership membership;
+  final bool updateMembership;
+  final Function(MembershipStatus)? onRoleChanged;
 
-  const ChangeMembershipDropdown({
+  const MembershipDropdown({
     required this.membership,
+    this.updateMembership = false,
+    this.onRoleChanged,
   });
 
   @override
-  _ChangeMembershipDropdownState createState() =>
-      _ChangeMembershipDropdownState();
+  MembershipDropdownState createState() => MembershipDropdownState();
 }
 
-class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
+class MembershipDropdownState extends State<MembershipDropdown> {
   bool _isLoading = false;
+  // Store the selected status for pending requests
+  MembershipStatus? _selectedStatus;
 
   bool get _isCurrentOwner =>
       widget.membership.status == MembershipStatus.owner;
@@ -748,6 +765,17 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
     }
   }
 
+  void _handleRoleChanged(MembershipStatus? status) {
+    if (widget.updateMembership) {
+      _updateMembership(status);
+    } else {
+      setState(() {
+        _selectedStatus = status;
+      });
+      widget.onRoleChanged?.call(status!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final disableDropdown = _isLoading;
@@ -768,8 +796,9 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       height: 100,
       constraints: BoxConstraints(maxWidth: 280, maxHeight: 400),
       child: DropdownButton<MembershipStatus>(
-        value: widget.membership.status,
-        onChanged: disableDropdown ? null : _updateMembership,
+        // Use the selected status if it's set
+        value: _selectedStatus ?? widget.membership.status,
+        onChanged: disableDropdown ? null : _handleRoleChanged,
         itemHeight: null,
         selectedItemBuilder: (context) => _isCurrentOwner
             ? [
