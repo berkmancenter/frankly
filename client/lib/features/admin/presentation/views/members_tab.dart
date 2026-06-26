@@ -141,10 +141,10 @@ class MembershipRequestDataSource extends DataTableSource {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: userInfo?.imageUrl?.isNotEmpty == true
-                      ? NetworkImage(userInfo!.imageUrl)
+                  backgroundImage: userInfo?.imageUrl != null && userInfo!.imageUrl!.isNotEmpty == true
+                      ? NetworkImage(userInfo.imageUrl!)
                       : null,
-                  child: userInfo?.imageUrl?.isNotEmpty == true
+                  child: userInfo?.imageUrl != null && userInfo?.imageUrl!.isNotEmpty == true
                       ? null
                       : const Icon(Icons.person_outline),
                 ),
