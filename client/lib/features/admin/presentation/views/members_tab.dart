@@ -240,6 +240,7 @@ class MembersTabState extends State<MembersTab>
   Future<void>? _loadUsersFuture;
   Future<void>? _loadRequestsFuture;
   String? _currentSearch;
+  List<MembershipRequest>? _lastRequestsCached;
 
   int _sortMemberships(Membership a, Membership b) {
     const membershipOrder = [
@@ -623,7 +624,14 @@ class MembersTabState extends State<MembersTab>
           );
         }
         // If there are requests, load user info for all requests in batches
+        if (_lastRequestsCached != requestList) {
+          _lastRequestsCached = requestList;
+           // Reset the future to allow reloading
+          _loadRequestsFuture = null;
+        }
         _loadRequestsFuture ??= _loadAllRequestUserInfo(requestList);
+        _lastRequestsCached = requestList;
+
         return FutureBuilder(
           future: _loadRequestsFuture,
           builder: (_, snapshot) {
