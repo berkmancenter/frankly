@@ -12,7 +12,9 @@ class MembershipRequest with _$MembershipRequest {
     required String userId,
     required String communityId,
     @Default(MembershipRequestStatus.requested)
+    @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
     MembershipRequestStatus? status,
+    @JsonKey(unknownEnumValue: MembershipStatus.member)
     MembershipStatus? role,
   }) = _MembershipRequest;
 
