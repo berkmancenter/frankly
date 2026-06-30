@@ -420,7 +420,7 @@ class EventProvider with ChangeNotifier {
       row.add(
         mostRecentPresentTime != null
             ? dateTimeFormat(date: mostRecentPresentTime.toLocal())
-            : '\u200B',
+            : '',
       );
 
       // Look up the participant's breakout room within the breakout info. We
