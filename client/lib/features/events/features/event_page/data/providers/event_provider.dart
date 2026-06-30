@@ -420,16 +420,20 @@ class EventProvider with ChangeNotifier {
             : '\u200B',
       );
 
-      // Added Room Assigned field from Participant.currentBreakoutRoomId
-      // Convert room ID to room name for better readability
-      final currentRoomId =
-          registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
-
-      final roomAssigned = _getRoomName(
-        roomId: currentRoomId ?? '',
-        eventId: eventId,
-        breakoutRooms: breakoutRooms,
+      // Look up the participant's breakout room within the breakout info. We
+      // can't rely on the breakoutRoomId in Participant because it is a live
+      // value that is cleared when users leave the event.
+      final participantId = registrationData[i].id;
+      final assignedRoom = breakoutRooms.firstWhereOrNull(
+        (room) => room.participantIds.contains(participantId),
       );
+      final roomAssigned = assignedRoom != null
+          ? _getRoomName(
+              roomId: assignedRoom.roomId,
+              eventId: eventId,
+              breakoutRooms: breakoutRooms,
+            )
+          : 'Main room';
       row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
