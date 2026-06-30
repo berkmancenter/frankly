@@ -134,6 +134,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       await provider.generateRegistrationDataCsvFile(
         eventId: event.id,
         registrationData: members,
+        participantData: participants.toList(),
         breakoutRooms: breakoutRooms,
       );
     } finally {
