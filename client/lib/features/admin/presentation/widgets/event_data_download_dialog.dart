@@ -424,7 +424,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                   ),
                   title: Text(context.l10n.registrationDataDownload),
                   subtitle: Text(
-                    'Times are shown in your local timezone.',
+                    context.l10n.timesShownInLocalTimezone,
                     style: context.theme.textTheme.bodySmall?.copyWith(
                       color: context.theme.colorScheme.onSurfaceVariant,
                     ),

@@ -924,6 +924,7 @@
   "thisEventIsNowBeingRecorded": "This event is now\nbeing recorded.",
   "thisUrlWasNotFound": "This URL was not found.",
   "thisUser": "this user",
+  "timesShownInLocalTimezone": "Times are shown in your local timezone.",
   "titleCannotBeEmpty": "Title cannot be empty",
   "titleIsRequired": "Title is required",
   "tooManyRequests": "Too many failed requests. Please try again later.",
