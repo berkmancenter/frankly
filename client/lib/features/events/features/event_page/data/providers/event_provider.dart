@@ -409,14 +409,17 @@ class EventProvider with ChangeNotifier {
       row.add(
         EnumToString.convertToString(registrationData[i].membership?.status),
       );
+      final createdDate =
+          registrationData[i].memberEvent?.participant?.createdDate;
       row.add(
-        registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
+        createdDate != null ? dateTimeFormat(date: createdDate.toLocal()) : '',
+      );
       final mostRecentPresentTime = participantData
           .firstWhereOrNull((p) => p.id == registrationData[i].id)
           ?.mostRecentPresentTime;
       row.add(
         mostRecentPresentTime != null
-            ? dateTimeFormat(date: mostRecentPresentTime.toUtc())
+            ? dateTimeFormat(date: mostRecentPresentTime.toLocal())
             : '\u200B',
       );
 
