@@ -387,7 +387,7 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
-    firstRow.add('Last Active Time');
+    firstRow.add('Last Activity Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
 
