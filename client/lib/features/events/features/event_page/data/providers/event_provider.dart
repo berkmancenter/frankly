@@ -375,7 +375,6 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateRegistrationDataCsvFile({
     required List<MemberDetails> registrationData,
-    required List<Participant> participantData,
     required String eventId,
     required List<BreakoutRoom> breakoutRooms,
   }) async {
@@ -387,7 +386,6 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
-    firstRow.add('Last Activity Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
 
@@ -409,34 +407,20 @@ class EventProvider with ChangeNotifier {
       row.add(
         EnumToString.convertToString(registrationData[i].membership?.status),
       );
-      final createdDate =
-          registrationData[i].memberEvent?.participant?.createdDate;
       row.add(
-        createdDate != null ? dateTimeFormat(date: createdDate.toLocal()) : '',
-      );
-      final mostRecentPresentTime = participantData
-          .firstWhereOrNull((p) => p.id == registrationData[i].id)
-          ?.mostRecentPresentTime;
-      row.add(
-        mostRecentPresentTime != null
-            ? dateTimeFormat(date: mostRecentPresentTime.toLocal())
-            : '',
+        registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
       );
 
-      // Look up the participant's breakout room within the breakout info. We
-      // can't rely on the breakoutRoomId in Participant because it is a live
-      // value that is cleared when users leave the event.
-      final participantId = registrationData[i].id;
-      final assignedRoom = breakoutRooms.firstWhereOrNull(
-        (room) => room.participantIds.contains(participantId),
+      // Added Room Assigned field from Participant.currentBreakoutRoomId
+      // Convert room ID to room name for better readability
+      final currentRoomId =
+          registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
+
+      final roomAssigned = _getRoomName(
+        roomId: currentRoomId ?? '',
+        eventId: eventId,
+        breakoutRooms: breakoutRooms,
       );
-      final roomAssigned = assignedRoom != null
-          ? _getRoomName(
-              roomId: assignedRoom.roomId,
-              eventId: eventId,
-              breakoutRooms: breakoutRooms,
-            )
-          : 'Main room';
       row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
