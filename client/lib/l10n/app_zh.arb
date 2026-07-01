@@ -976,6 +976,7 @@
   "thisEventIsNowBeingRecorded": "此活动现在正在录制中",
   "thisUrlWasNotFound": "未找到此URL。",
   "thisUser": "该用户",
+  "timesShownInLocalTimezone": "时间以您的本地时区显示。",
   "titleCannotBeEmpty": "标题不能为空",
   "titleIsRequired": "标题为必填项",
   "tooManyRequests": "请求失败次数过多。请稍后再试。",

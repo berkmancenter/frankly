@@ -992,6 +992,7 @@
   "thisEventIsNowBeingRecorded": "Este evento ahora está\nsiendo grabado.",
   "thisUrlWasNotFound": "Esta URL no se encontró.",
   "thisUser": "este usuario",
+  "timesShownInLocalTimezone": "Los horarios se muestran en su zona horaria local.",
   "titleCannotBeEmpty": "El título no puede estar vacío",
   "titleIsRequired": "El título es obligatorio",
   "tooManyRequests": "Demasiadas solicitudes fallidas. Por favor, inténtelo de nuevo más tarde.",
