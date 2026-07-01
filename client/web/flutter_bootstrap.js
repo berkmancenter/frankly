@@ -23,6 +23,7 @@ _flutter.loader.load({
      */
     const appRunner = await engineInitializer.initializeEngine({
       hostElement: document.querySelector("#flutter-container"),
+      nonce: window.__CSP_NONCE__,
     });
     await appRunner.runApp();
   },
