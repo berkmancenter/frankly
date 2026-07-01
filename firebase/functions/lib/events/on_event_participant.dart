@@ -21,9 +21,6 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
             ),
           ],
           (snapshot) {
-            if (!snapshot.exists) {
-              return Participant(id: snapshot.documentID);
-            }
             return Participant.fromJson(
               firestoreUtils.fromFirestoreJson(snapshot.data.toMap()),
             ).copyWith(id: snapshot.documentID);
@@ -34,11 +31,9 @@ class OnEventParticipant extends OnFirestoreFunction<Participant> {
   String get documentPath =>
       'community/{communityId}/templates/{templateId}/events/{eventId}/event-participants/{participantId}';
 
-  // firestoreOnWrite (base class) dispatches to onUpdate for all event
-  // types (create, update, delete). For non-existent snapshots (create has
-  // no before, delete has no after), the parser above returns a stub
-  // Participant with null status, ensuring the status-change guard below
-  // passes through to the recount query.
+  // firestoreOnWrite (base class) dispatches to onUpdate, not onWrite.
+  // onCreate and onDelete are not triggered by the onWrite registration, so
+  // they are intentionally unreachable here.
   @override
   Future<void> onUpdate(
     Change<DocumentSnapshot> changes,
