@@ -852,6 +852,7 @@
   "thisEventIsLocked": "This event is locked",
   "thisUrlWasNotFound": "This URL was not found.",
   "thisUser": "this user",
+  "timesShownInLocalTimezone": "Times are shown in your local timezone.",
   "titleCannotBeEmpty": "Title cannot be empty",
   "titleIsRequired": "Title is required",
   "troubleshoot": "Troubleshoot",
