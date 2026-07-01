@@ -1,13 +1,7 @@
-{
-  {
-    flutter_js;
-  }
-}
-{
-  {
-    flutter_build_config;
-  }
-}
+// prettier-ignore
+{{flutter_js}}
+// prettier-ignore
+{{flutter_build_config}}
 
 _flutter.loader.load({
   onEntrypointLoaded: async function (engineInitializer) {
