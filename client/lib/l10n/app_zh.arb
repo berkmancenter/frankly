@@ -916,7 +916,7 @@
   "showSidebarButton": "显示侧边栏按钮",
   "sidebarFollowCommunityButton": "侧边栏关注社区按钮",
   "sidebarUnfollowButton": "侧边栏取消关注按钮",
-  "sessionExpiredSignInAgain": "您的会话已过期。请刷新页面并重新登录。",
+  "sessionExpiredSignInAgain": "您的会话已过期，请重新登录。",
   "signIn": "登录",
   "signingUp": "報名",
   "signInToApp": "登录到 {appName}",

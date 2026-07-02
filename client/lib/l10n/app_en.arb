@@ -864,7 +864,7 @@
   "showSidebarButton": "Show Sidebar Button",
   "sidebarFollowCommunityButton": "Sidebar Follow Community Button",
   "sidebarUnfollowButton": "Sidebar Unfollow Button",
-  "sessionExpiredSignInAgain": "Your session has expired. Please refresh the page and sign in again.",
+  "sessionExpiredSignInAgain": "Your session has expired. Please sign in again.",
   "signIn": "Log In",
   "signingUp": "signing up",
   "signInToApp": "Sign in to {appName}",

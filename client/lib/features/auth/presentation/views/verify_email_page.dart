@@ -31,9 +31,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   static const _resendCooldownDuration = Duration(seconds: 60);
 
   // These are the codes reload() throws when the persisted Firebase session is no longer
-  // valid server-side (e.g. a returning user whose cached credential was
-  // revoked or invalidated) — users are prompted to sign-in-again rather than
-  //the generic "something went wrong" message.
+   // valid server-side (e.g. a returning user whose cached credential was revoked or invalidated)
+   // — users are prompted to sign in again rather than the generic
+   // "something went wrong" message.
   static const _sessionInvalidatedAuthCodes = {
     'user-token-expired',
     'user-disabled',
@@ -56,6 +56,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   final FocusNode _updateEmailFocusNode = FocusNode();
   final FocusNode _resendFocusNode = FocusNode();
   final FocusNode _verifiedTabFocusNode = FocusNode();
+  final FocusNode _signOutFocusNode = FocusNode();
   Timer? _expiryTimer;
   Timer? _verificationPollingTimer;
   Timer? _resendCooldownTimer;
@@ -86,7 +87,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       if (!mounted) return;
       try {
         await context.read<UserService>().refreshEmailVerificationStatus();
-      } catch (_) {}
+      } catch (e) {
+        if (_isSessionInvalidated(e)) await _signOutFromInvalidatedSession();
+      }
     });
   }
 
@@ -98,6 +101,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     _updateEmailFocusNode.dispose();
     _resendFocusNode.dispose();
     _verifiedTabFocusNode.dispose();
+    _signOutFocusNode.dispose();
     _expiryTimer?.cancel();
     _verificationPollingTimer?.cancel();
     _resendCooldownTimer?.cancel();
@@ -105,6 +109,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   bool get _canResend => !_isResending && _resendCooldownRemainingSeconds <= 0;
+
+  bool _isSessionInvalidated(Object error) =>
+      error is FirebaseAuthException &&
+      _sessionInvalidatedAuthCodes.contains(error.code);
+
+  Future<void> _signOutFromInvalidatedSession() async {
+    _verificationPollingTimer?.cancel();
+    if (!mounted) return;
+    await context.read<UserService>().signOut();
+  }
 
   String _notYetVerifiedBodyText(BuildContext context) {
     final base = context.l10n.emailNotYetVerified;
@@ -154,8 +168,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         if (userService.isCurrentUserEmailVerified) {
           _verificationPollingTimer?.cancel();
         }
-      } catch (_) {
-        // Silently ignore.
+      } catch (e) {
+        if (_isSessionInvalidated(e)) {
+          await _signOutFromInvalidatedSession();
+        }
       } finally {
         pollInFlight = false;
       }
@@ -174,7 +190,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final userService = context.read<UserService>();
     try {
       await userService.refreshEmailVerificationStatus();
-    } catch (_) {}
+    } catch (e) {
+      if (_isSessionInvalidated(e)) {
+        await _signOutFromInvalidatedSession();
+        return;
+      }
+    }
     if (!mounted) return;
     if (userService.isCurrentUserEmailVerified) {
       // Verified — InitialLoadingWidget observes UserService and will navigate home.
@@ -199,8 +220,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       await userService.refreshEmailVerificationStatus();
     } catch (e) {
       if (!mounted) return;
-      final sessionInvalidated = e is FirebaseAuthException &&
-          _sessionInvalidatedAuthCodes.contains(e.code);
+      final sessionInvalidated = _isSessionInvalidated(e);
       setState(() {
         _isResending = false;
         _error = sessionInvalidated
@@ -208,11 +228,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             : context.l10n.somethingWentWrongTryAgain;
         _resendSuccessMessage = '';
       });
-      // The persisted Firebase session is invalid — clear the cached
-      // credentials so the browser doesn't keep retrying with them, and
-      // reload into a fresh, signed-out state.
       if (sessionInvalidated) {
-        await userService.signOut();
+        await _signOutFromInvalidatedSession();
       }
       return;
     }
@@ -841,6 +858,29 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       decorationStyle: TextDecorationStyle.solid,
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Semantics(
+                  link: true,
+                  child: InkWell(
+                    focusNode: _signOutFocusNode,
+                    onTap: () async {
+                      await context.read<UserService>().signOut();
+                    },
+                    mouseCursor: SystemMouseCursors.click,
+                    child: Text(
+                      context.l10n.signOut,
+                      style: GoogleFonts.inter(
+                        textStyle: context.theme.textTheme.bodyMedium,
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

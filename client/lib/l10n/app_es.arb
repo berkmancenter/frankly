@@ -932,7 +932,7 @@
   "showSidebarButton": "Mostrar Botón de Barra Lateral",
   "sidebarFollowCommunityButton": "Botón de seguir comunidad barra lateral",
   "sidebarUnfollowButton": "Botón de dejar de seguir barra lateral",
-  "sessionExpiredSignInAgain": "Tu sesión ha expirado. Actualiza la página e inicia sesión nuevamente.",
+  "sessionExpiredSignInAgain": "Tu sesión ha expirado. Inicia sesión nuevamente.",
   "signIn": "Iniciar sesión",
   "signingUp": "registrándose",
   "signInToApp": "Iniciar sesión en {appName}",
