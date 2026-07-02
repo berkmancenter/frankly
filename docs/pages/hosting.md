@@ -104,7 +104,7 @@ For **Google sign-in**, you will also need to set the Google OAuth Client ID via
 
 Frankly is hosted via Firebase Hosting. The built Flutter web app is served from `client/build/web`.
 
-All HTML page requests are routed through the `ServeIndex` Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.
+All HTML page requests are routed through the `ServeIndex` Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted <script> tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.
 
 This is configured by the catch-all rewrite in `firebase.json`:
 
@@ -130,6 +130,7 @@ The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/function
 2. Copy the updated file to `firebase/functions/web/index.html` (the ServeIndex template).
 3. If the script makes network requests to new domains, add those domains to `connect-src` in `serve-index.js`.
 4. If the script loads images or media from new domains, update `img-src` or `media-src` accordingly.
+5. If the script loads stylesheets or fonts from new domains, update `style-src` or `font-src` accordingly.
 
 ### Template sync
 
