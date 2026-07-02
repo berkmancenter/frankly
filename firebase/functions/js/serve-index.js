@@ -8,9 +8,9 @@
 // placeholder with a cryptographically random value, and sets a matching
 // Content-Security-Policy response header.
 //
-// TEMPLATE SYNC: firebase/functions/web/index.html must be kept in sync with
-// client/web/index.html. When client/web/index.html changes, copy it here.
-// A CI/CD step will automate this for production deploys (see deploy workflow).
+// TEMPLATE SYNC: firebase/functions/web/index.html is a copy of
+// client/web/index.html. The CI/CD workflows, build-all.sh, and run-dev.sh
+// copy client/web/index.html here automatically before building functions.
 
 const crypto = require('crypto')
 const fs = require('fs')

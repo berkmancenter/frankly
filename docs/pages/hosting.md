@@ -134,7 +134,7 @@ The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/function
 
 ### Template sync
 
-`firebase/functions/web/index.html` is a committed copy of `client/web/index.html`. These two files must be kept in sync. When you edit `client/web/index.html`, copy it to `firebase/functions/web/index.html` before committing.
+`firebase/functions/web/index.html` is a copy of `client/web/index.html` used by the ServeIndex function. The CI/CD workflows, `build-all.sh`, and `run-dev.sh` all copy `client/web/index.html` to `firebase/functions/web/index.html` automatically before building functions. You do not need to sync these files manually.
 
 If you are using multiple hosting targets (e.g. staging and production sites), configure them with:
 
