@@ -911,6 +911,7 @@
   "showSidebarButton": "顯示側邊欄按鈕",
   "sidebarFollowCommunityButton": "側邊欄追蹤社群按鈕",
   "sidebarUnfollowButton": "側邊欄取消追蹤按鈕",
+  "sessionExpiredSignInAgain": "您的工作階段已過期。請重新整理頁面並重新登入。",
   "signIn": "登入",
   "signingUp": "报名",
   "signInToApp": "登入到 {appName}",

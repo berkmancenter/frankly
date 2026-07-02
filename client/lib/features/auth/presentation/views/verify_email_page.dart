@@ -7,6 +7,7 @@ import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/app_asset.dart';
 import 'package:client/styles/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,17 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   static const _linkExpiryDuration = Duration(minutes: 30);
   static const _pollingInterval = Duration(seconds: 5);
   static const _resendCooldownDuration = Duration(seconds: 60);
+
+  // These are the codes reload() throws when the persisted Firebase session is no longer
+  // valid server-side (e.g. a returning user whose cached credential was
+  // revoked or invalidated) — users are prompted to sign-in-again rather than
+  //the generic "something went wrong" message.
+  static const _sessionInvalidatedAuthCodes = {
+    'user-token-expired',
+    'user-disabled',
+    'user-not-found',
+    'invalid-user-token',
+  };
 
   String _error = '';
   String _tabCheckError = '';
@@ -185,13 +197,23 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     });
     try {
       await userService.refreshEmailVerificationStatus();
-    } catch (_) {
+    } catch (e) {
       if (!mounted) return;
+      final sessionInvalidated = e is FirebaseAuthException &&
+          _sessionInvalidatedAuthCodes.contains(e.code);
       setState(() {
         _isResending = false;
-        _error = context.l10n.somethingWentWrongTryAgain;
+        _error = sessionInvalidated
+            ? context.l10n.sessionExpiredSignInAgain
+            : context.l10n.somethingWentWrongTryAgain;
         _resendSuccessMessage = '';
       });
+      // The persisted Firebase session is invalid — clear the cached
+      // credentials so the browser doesn't keep retrying with them, and
+      // reload into a fresh, signed-out state.
+      if (sessionInvalidated) {
+        await userService.signOut();
+      }
       return;
     }
     if (userService.isCurrentUserEmailVerified) {
