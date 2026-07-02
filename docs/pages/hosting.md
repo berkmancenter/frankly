@@ -96,13 +96,44 @@ Enable the required auth providers in the Firebase Console under **Authenticatio
 - **Email/Password**
 - **Google**
 
-For **Google sign-in**, you will also need to set the Google OAuth Client ID in `client/web/index.html`. The file contains the placeholder `__GOOGLE_ID__` which must be replaced with your OAuth client ID before building.
+For **Google sign-in**, you will also need to set the Google OAuth Client ID via the `app.google_id` runtime config value (see section 8). The `ServeIndex` function substitutes this into the HTML at request time.
 
 ---
 
 ## 4. Configure Firebase Hosting
 
 Frankly is hosted via Firebase Hosting. The built Flutter web app is served from `client/build/web`.
+
+All HTML page requests are routed through the `ServeIndex` Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.
+
+This is configured by the catch-all rewrite in `firebase.json`:
+
+```json
+{
+  "source": "**",
+  "function": "ServeIndex"
+}
+```
+
+### Content Security Policy (CSP)
+
+The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/functions/js/serve-index.js`). It uses `'strict-dynamic'` with a per-request nonce, which means:
+
+- Every `<script>` tag in `index.html` must have `nonce="__SCRIPT_NONCE__"`. The function replaces this placeholder with a cryptographic random value on each request.
+- Scripts dynamically created by trusted (nonced) parent scripts are automatically trusted via `strict-dynamic` propagation. This covers Firebase SDK internals, Cloudinary widget internals, etc.
+- `connect-src` restricts which domains the app can make fetch/XHR/WebSocket calls to. If you add a new backend service integration, add its domain to the `connect-src` list in `serve-index.js`.
+- `frame-ancestors 'self'` prevents the app from being embedded in iframes on other sites (clickjacking protection). This directive only works as an HTTP header, not a meta tag.
+
+### Adding a new third-party script
+
+1. Add the `<script>` tag to `client/web/index.html` with `nonce="__SCRIPT_NONCE__"`.
+2. Copy the updated file to `firebase/functions/web/index.html` (the ServeIndex template).
+3. If the script makes network requests to new domains, add those domains to `connect-src` in `serve-index.js`.
+4. If the script loads images or media from new domains, update `img-src` or `media-src` accordingly.
+
+### Template sync
+
+`firebase/functions/web/index.html` is a committed copy of `client/web/index.html`. These two files must be kept in sync. When you edit `client/web/index.html`, copy it to `firebase/functions/web/index.html` before committing.
 
 If you are using multiple hosting targets (e.g. staging and production sites), configure them with:
 
@@ -195,6 +226,8 @@ firebase functions:config:set \
   app.functions_url_prefix="<YOUR_VALUE_HERE>" \
   app.project_id="<YOUR_VALUE_HERE>" \
   app.copyright="<YOUR_VALUE_HERE>" \
+  app.google_id="<YOUR_VALUE_HERE>" \
+  app.version="<YOUR_VALUE_HERE>" \
   ics.prod_id="<YOUR_VALUE_HERE>" \
   xmlns.url="<YOUR_VALUE_HERE>" \
   xmlns.media_url="<YOUR_VALUE_HERE>" \
@@ -219,6 +252,8 @@ firebase functions:config:set \
 - `app.project_id` — Firebase project ID
 - `app.copyright` — Copyright statement for outgoing emails
 - `app.unsubscribe_encryption_key` — Random string used for unsubscribe link signing
+- `app.google_id` — Google OAuth Client ID for Google Sign-In (substituted into the HTML by ServeIndex)
+- `app.version` — Application version string (substituted into the HTML by ServeIndex; typically set by CI/CD)
 
 **Calendar / XML namespace values**
 
