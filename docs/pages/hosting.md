@@ -104,7 +104,7 @@ For **Google sign-in**, you will also need to set the Google OAuth Client ID via
 
 Frankly is hosted via Firebase Hosting. The built Flutter web app is served from `client/build/web`.
 
-All HTML page requests are routed through the `ServeIndex` Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted <script> tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.
+All HTML page requests are routed through the `ServeIndex` Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted `<script>` tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.
 
 This is configured by the catch-all rewrite in `firebase.json`:
 
@@ -127,14 +127,14 @@ The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/function
 ### Adding a new third-party script
 
 1. Add the `<script>` tag to `client/web/index.html` with `nonce="__SCRIPT_NONCE__"`.
-2. Copy the updated file to `firebase/functions/web/index.html` (the ServeIndex template).
+2. Run `build-all.sh` or `run-dev.sh` (or let CI handle it) so `client/web/index.html` is copied to `firebase/functions/web/index.html` before building/deploying functions.
 3. If the script makes network requests to new domains, add those domains to `connect-src` in `serve-index.js`.
 4. If the script loads images or media from new domains, update `img-src` or `media-src` accordingly.
 5. If the script loads stylesheets or fonts from new domains, update `style-src` or `font-src` accordingly.
 
 ### Template sync
 
-`firebase/functions/web/index.html` is a copy of `client/web/index.html` used by the ServeIndex function. The CI/CD workflows, `build-all.sh`, and `run-dev.sh` all copy `client/web/index.html` to `firebase/functions/web/index.html` automatically before building functions. You do not need to sync these files manually.
+`firebase/functions/web/index.html` is a copy of `client/web/index.html` used by the ServeIndex function. The CI/CD workflows, `build-all.sh`, and `run-dev.sh` all copy `client/web/index.html` to `firebase/functions/web/index.html` automatically before building functions. You should not need to sync these files manually.
 
 If you are using multiple hosting targets (e.g. staging and production sites), configure them with:
 

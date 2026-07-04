@@ -35,6 +35,7 @@ const stableTemplate = rawTemplate
 
 function buildCsp(nonce) {
     const directives = [
+        `default-src 'self'`,
         `script-src 'strict-dynamic' 'nonce-${nonce}' 'wasm-unsafe-eval'`,
         `style-src 'self' 'unsafe-inline' https://vjs.zencdn.net`,
         `font-src 'self' data: https://fonts.gstatic.com`,
@@ -69,7 +70,7 @@ const ServeIndex = functions.https.onRequest((req, res) => {
         return
     }
 
-    const nonce = crypto.randomUUID()
+    const nonce = crypto.randomBytes(16).toString('base64')
     const html = stableTemplate.replace(/__SCRIPT_NONCE__/g, nonce)
     const csp = buildCsp(nonce)
 

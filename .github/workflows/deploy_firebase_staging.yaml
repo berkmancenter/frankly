@@ -34,6 +34,7 @@ jobs:
               - 'firebase/functions/js/**'
               - 'firebase/functions/lib/**'
               - 'matching/lib/**'
+              - 'client/web/index.html'
             firestore:
               - 'firebase/firestore/**'
             shared:
