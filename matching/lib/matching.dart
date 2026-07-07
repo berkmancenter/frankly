@@ -176,9 +176,9 @@ List<String> _getNextCluster(Map<String, List<String>> buckets,
       .toList()
     ..sort((a, b) => -buckets[a]!.length.compareTo(buckets[b]!.length));
 
-  String? node = null;
-  Queue Q = Queue.from([sortedBucketKeys[0]]);
-  Set qSet = Set.from(Q);
+  String? node;
+  final Queue<String> Q = Queue.from([sortedBucketKeys[0]]);
+  final Set<String> qSet = Set.from(Q);
   while (cluster.length < clusterSize) {
     if (node != null && buckets[node]!.isNotEmpty) {
       cluster.add(buckets[node]!.removeLast());
