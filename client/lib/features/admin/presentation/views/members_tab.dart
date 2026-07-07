@@ -189,7 +189,7 @@ class MembershipRequestDataSource extends DataTableSource {
                       role: _selectedMemberships[requestKey],
                     ),
                   ),
-                  child: Icon(
+                  icon: Icon(
                     Icons.check,
                     color: context.theme.colorScheme.tertiaryFixed,
                     size: 24,
@@ -208,7 +208,7 @@ class MembershipRequestDataSource extends DataTableSource {
                     context,
                     () => onResolve(request: request, approve: false),
                   ),
-                  child: Icon(
+                  icon: Icon(
                     Icons.close,
                     size: 24,
                   ),
