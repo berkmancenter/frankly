@@ -1,10 +1,5 @@
 import 'dart:collection';
-import 'dart:convert';
-import 'dart:core';
-import 'dart:io';
 import 'dart:math';
-import 'package:csv/csv.dart';
-import 'package:args/args.dart';
 
 const _minDistance = 3;
 const _idealDistance = 4;
