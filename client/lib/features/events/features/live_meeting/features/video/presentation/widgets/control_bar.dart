@@ -53,7 +53,7 @@ class _ControlBarState extends State<ControlBar> {
           : Icons.videocam_off_outlined,
       iconColor: _conferenceRoom.videoEnabled
           ? context.theme.colorScheme.onPrimary
-          : context.theme.colorScheme.errorContainer,
+          : context.theme.colorScheme.error,
     );
   }
 
@@ -122,7 +122,7 @@ class _ControlBarState extends State<ControlBar> {
               : Icons.mic_off_outlined,
           iconColor: _conferenceRoom.audioEnabled
               ? context.theme.colorScheme.onPrimary
-              : context.theme.colorScheme.errorContainer,
+              : context.theme.colorScheme.error,
         ),
         _buildMoreOptionsButton(),
         SizedBox(width: spacerWidth),

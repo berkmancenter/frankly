@@ -264,7 +264,7 @@ class _RecordingBadgePill extends StatelessWidget {
               width: _kRecordingPulseSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: context.theme.colorScheme.errorContainer,
+                color: context.theme.colorScheme.error,
               ),
             ),
             SizedBox(width: 8),
