@@ -1,3 +1,15 @@
+/// Diversity-maximizing group matching for deliberative conversations.
+///
+/// Assigns participants into groups that maximise Hamming distance across
+/// binary survey-response masks.
+///
+/// API methods:
+/// - [bucketMatch] — pair / small-group matching (low participant count).
+/// - [groupMatch] — BFS-cluster matching (larger groups).
+/// - [randomGroups] — random assignment baseline (no survey data needed).
+///
+library;
+
 import 'dart:collection';
 import 'dart:math';
 
@@ -80,13 +92,19 @@ List<List<String>> _pairsAtThreshold(Map<String, int> distances,
   return pairs;
 }
 
+/// Matches participants into pairs or small groups, maximizing the direct
+/// Hamming distance between pairs of samples. This method breaks down for
+/// large groups as the number of potential pairings to check grows
+/// exponentially. For group sizes greater than 3, use [groupMatch].
+///
 /// Expects an input Map of samples that are userID => a binary string
 /// representing answers to yes/no questions.
-///
-/// These users will then be matched together based on an ideal distance
-/// threshold in their answers.
+/// - [samples]: `participantId → binaryAnswerMask` (e.g. `"01001"`)
+/// - [idealDistance]: target Hamming distance between partners (default 4)
+/// - [minDistance]: minimum acceptable distance before random fallback (default 3)
 ///
 /// The response is lists with user IDs that have been matched.
+///
 List<List<String>> bucketMatch({
   required Map<String, String> samples,
   int idealDistance = _idealDistance,
@@ -120,8 +138,8 @@ List<List<String>> bucketMatch({
   return pairs;
 }
 
-// Assign groups randomly, with no smart matching
-
+/// Assigns [items] into random groups of [targetGroupSize]. No survey data
+/// required. Mutates [items] in place.
 List<List<String>> randomGroups(List<String> items, int targetGroupSize) {
   items.shuffle();
   final groups = <List<String>>[];
@@ -181,7 +199,17 @@ List<String> _getNextCluster(Map<String, List<String>> buckets,
   return cluster;
 }
 
-// Matching for groups
+/// Creates diversity-maximised groups by first using BFS clustering to create
+/// groups of similar binary answer masks. Groups vary by ±1 when participant
+/// count is not evenly divisible by [targetGroupSize].
+/// [bucketMatch] is recommended for groups of 3 or less participants for
+/// efficiency and the fact that it is designed to maximize direct distance
+/// between participants.
+///
+/// - [participantResponses]: `participantId → binaryAnswerMask`
+/// - [targetGroupSize]: desired participants per group (≥ 2)
+/// - [logclusters]: Whether to print cluster debug info
+///
 List<List<String>> groupMatch({
   required Map<String, String> participantResponses,
   required int targetGroupSize,
