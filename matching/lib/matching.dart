@@ -136,7 +136,7 @@ List<List<String>> randomGroups(List<String> items, int targetGroupSize) {
   return groups;
 }
 
-Map<String, List<String>> createGraph(
+Map<String, List<String>> _createGraph(
     Map<String, List<String>> buckets, Map<String, int> distances) {
   // Returns a graph G specified by a mapping of bucket key --> neighbors
   final List<String> bucketKeys = buckets.keys.toList();
@@ -150,7 +150,7 @@ Map<String, List<String>> createGraph(
   };
 }
 
-List<String> getNextCluster(Map<String, List<String>> buckets,
+List<String> _getNextCluster(Map<String, List<String>> buckets,
     Map<String, List<String>> G, int clusterSize) {
   // Make a graph --> BFS from largest bucket until cluster is full
   List<String> cluster = [];
@@ -189,7 +189,7 @@ List<List<String>> groupMatch({
 }) {
   final buckets = _bucketSamples(participantResponses);
   final distances = _distanceMatrix(buckets.keys.toList());
-  Map<String, List<String>> G = createGraph(buckets, distances);
+  final Map<String, List<String>> G = _createGraph(buckets, distances);
 
   // Return simple value if not enough participants or single participant.
   final numParticipants = participantResponses.length;
@@ -205,9 +205,9 @@ List<List<String>> groupMatch({
 
   for (int i = 0; i < targetGroupSize; i++) {
     if (i < remainder) {
-      clusters.add(getNextCluster(buckets, G, clusterSize + 1));
+      clusters.add(_getNextCluster(buckets, G, clusterSize + 1));
     } else {
-      clusters.add(getNextCluster(buckets, G, clusterSize));
+      clusters.add(_getNextCluster(buckets, G, clusterSize));
     }
   }
 
