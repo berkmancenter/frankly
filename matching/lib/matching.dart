@@ -39,7 +39,7 @@ Map<String, int> _distanceMatrix(List<String> samples) {
 
 List<List<String>> _pairsAtThreshold(Map<String, int> distances,
     Map<String, List<String>> buckets, int threshold) {
-  List<List<String>> pairs = [];
+  final List<List<String>> pairs = [];
   List<String> sortedBucketKeys =
       buckets.keys.toList().where((k) => (buckets[k]!.length > 0)).toList();
 
@@ -62,10 +62,10 @@ List<List<String>> _pairsAtThreshold(Map<String, int> distances,
         .where((k) => (!skipBuckets.contains(k) && buckets[k]!.length > 0))
         .toList()
       ..sort((a, b) => -buckets[a]!.length.compareTo(buckets[b]!.length));
-    String k1 = sortedBucketKeys[0]; // Largest bucket
+    final String k1 = sortedBucketKeys[0]; // Largest bucket
     String? k2 = null;
     for (int i = 1; i < sortedBucketKeys.length; i++) {
-      String bk = sortedBucketKeys[i];
+      final String bk = sortedBucketKeys[i];
       if (distances[k1 + bk]! >= threshold) {
         k2 = bk; // Largest bucket that can be paired with k1
         break;
@@ -99,7 +99,7 @@ List<List<String>> bucketMatch({
   int minDistance = _minDistance,
 }) {
   // Match samples into pairs.  If odd, last pair will be a singleton.
-  var pairs = <List<String>>[];
+  final pairs = <List<String>>[];
   final buckets = _bucketSamples(samples);
   final distances = _distanceMatrix(buckets.keys.toList());
 
@@ -130,12 +130,12 @@ List<List<String>> bucketMatch({
 
 List<List<String>> randomGroups(List<String> items, int targetGroupSize) {
   items.shuffle();
-  var groups = <List<String>>[];
+  final groups = <List<String>>[];
   while (items.length >= targetGroupSize) {
     groups
         .add([for (var i = 0; i < targetGroupSize; i += 1) items.removeLast()]);
   }
-  int r = items.length;
+  final int r = items.length;
   for (var i = 0; i < r; i++) {
     groups[i % groups.length].add(items.removeLast());
   }
@@ -145,7 +145,7 @@ List<List<String>> randomGroups(List<String> items, int targetGroupSize) {
 Map<String, List<String>> createGraph(
     Map<String, List<String>> buckets, Map<String, int> distances) {
   // Returns a graph G specified by a mapping of bucket key --> neighbors
-  List<String> bucketKeys = buckets.keys.toList();
+  final List<String> bucketKeys = buckets.keys.toList();
 
   return <String, List<String>>{
     for (final b1 in bucketKeys)
@@ -203,8 +203,8 @@ List<List<String>> groupMatch({
     return [participantResponses.keys.toList()];
   }
 
-  int clusterSize = numParticipants ~/ targetGroupSize;
-  int remainder = numParticipants - (clusterSize * targetGroupSize);
+  final int clusterSize = numParticipants ~/ targetGroupSize;
+  final int remainder = numParticipants - (clusterSize * targetGroupSize);
   final clusters = <List<String>>[];
   print(
       'numParticipants=${numParticipants}, targetGroupSize=${targetGroupSize}, clusterSize=${clusterSize}, remainder =${remainder}');
@@ -224,7 +224,7 @@ List<List<String>> groupMatch({
           '\nCluster Size: ${cluster.length}\n${cluster.map((c) => participantResponses[c]).toSet()}');
     });
   }
-  var groups = [
+  final groups = [
     // Each group is composed to contain 1 p from each cluster
     for (var i = 0; i < clusterSize; i++)
       clusters.map((c) => c.removeLast()).toList()
