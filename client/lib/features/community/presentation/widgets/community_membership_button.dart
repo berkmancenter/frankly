@@ -73,7 +73,7 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
           height: 42,
           width: 42,
           builder: (_, request) {
-            if (request == null) {
+            if (request == null || request.status == MembershipRequestStatus.denied) {
               return ActionButton(
                 text: 'Request To Follow',
                 color: context.theme.colorScheme.primary,
@@ -83,7 +83,6 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
               );
             } else if ([
               MembershipRequestStatus.requested,
-              MembershipRequestStatus.denied,
             ].contains(request.status)) {
               return ActionButton(
                 text: 'Follow Request Sent',
