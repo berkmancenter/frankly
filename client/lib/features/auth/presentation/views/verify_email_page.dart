@@ -10,6 +10,7 @@ import 'package:client/styles/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -57,6 +58,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   final FocusNode _resendFocusNode = FocusNode();
   final FocusNode _verifiedTabFocusNode = FocusNode();
   final FocusNode _signOutFocusNode = FocusNode();
+  final FocusNode _bottomSignOutFocusNode = FocusNode();
   Timer? _expiryTimer;
   Timer? _verificationPollingTimer;
   Timer? _resendCooldownTimer;
@@ -102,6 +104,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     _resendFocusNode.dispose();
     _verifiedTabFocusNode.dispose();
     _signOutFocusNode.dispose();
+    _bottomSignOutFocusNode.dispose();
     _expiryTimer?.cancel();
     _verificationPollingTimer?.cancel();
     _resendCooldownTimer?.cancel();
@@ -319,6 +322,21 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         ? '${_currentEmail.substring(0, maxEmailDisplayLength - 3)}...'
         : _currentEmail;
     final sentTo = context.l10n.verificationEmailSentTo(displayEmail);
+    final boldStyle = GoogleFonts.inter(textStyle: style, fontWeight: FontWeight.bold);
+    final sentToEmailStart = sentTo.indexOf(displayEmail);
+    final sentToSpans = <InlineSpan>[];
+    if (sentToEmailStart >= 0) {
+      if (sentToEmailStart > 0) {
+        sentToSpans.add(TextSpan(text: sentTo.substring(0, sentToEmailStart)));
+      }
+      sentToSpans.add(TextSpan(text: displayEmail, style: boldStyle));
+      final tailStart = sentToEmailStart + displayEmail.length;
+      if (tailStart < sentTo.length) {
+        sentToSpans.add(TextSpan(text: sentTo.substring(tailStart)));
+      }
+    } else {
+      sentToSpans.add(TextSpan(text: sentTo));
+    }
 
     final wrongEmailFull = context.l10n.wrongEmailEditAddress;
     final linkText = context.l10n.editYourAddressLink;
@@ -351,7 +369,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       TextSpan(
         style: style,
         children: [
-          TextSpan(text: sentTo),
+          ...sentToSpans,
           const TextSpan(text: '\n'),
           ...wrongEmailSpans,
           const TextSpan(text: '\n\n'),
@@ -500,6 +518,50 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             ),
             TextSpan(text: context.l10n.emailCannotBeVerifiedBodyAfterLink),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopNav(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 760),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16, left: 40, right: 40),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Semantics(
+              link: true,
+              child: InkWell(
+                focusNode: _signOutFocusNode,
+                onTap: () async {
+                  await context.read<UserService>().signOut();
+                },
+                mouseCursor: SystemMouseCursors.click,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      AppAsset.kArrowLeftThinSvg.path,
+                      width: 18,
+                      height: 18,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      context.l10n.logout,
+                      style: GoogleFonts.inter(
+                        textStyle: context.theme.textTheme.bodyMedium,
+                        fontSize: 14,
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -657,7 +719,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       color: context.theme.colorScheme.primary,
       child: Scaffold(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
-      body: Align(
+      body: Column(
+        children: [
+          _buildTopNav(context),
+          Expanded(
+            child: Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 760),
@@ -853,7 +919,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     style: GoogleFonts.inter(
                       textStyle: context.theme.textTheme.bodyMedium,
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationStyle: TextDecorationStyle.solid,
                     ),
@@ -861,32 +926,59 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
+              Center(
+                child: Text(
+                  context.l10n.meantToUseExistingAccount,
+                  style: context.theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 8),
               Center(
                 child: Semantics(
                   link: true,
-                  child: InkWell(
-                    focusNode: _signOutFocusNode,
-                    onTap: () async {
-                      await context.read<UserService>().signOut();
-                    },
-                    mouseCursor: SystemMouseCursors.click,
-                    child: Text(
-                      context.l10n.signOut,
+                  child: Text.rich(
+                    TextSpan(
                       style: GoogleFonts.inter(
                         textStyle: context.theme.textTheme.bodyMedium,
-                        fontSize: 14,
-                        decoration: TextDecoration.underline,
+                        fontSize: 12,
                         color: context.theme.colorScheme.onSurfaceVariant,
                       ),
-                      textAlign: TextAlign.center,
+                      children: [
+                        WidgetSpan(
+                          baseline: TextBaseline.alphabetic,
+                          alignment: PlaceholderAlignment.baseline,
+                          child: InkWell(
+                            focusNode: _bottomSignOutFocusNode,
+                            onTap: () async {
+                              await context.read<UserService>().signOut();
+                            },
+                            mouseCursor: SystemMouseCursors.click,
+                            child: Text(
+                              context.l10n.logout,
+                              style: GoogleFonts.inter(
+                                textStyle: context.theme.textTheme.bodyMedium,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                                color: context.theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const TextSpan(text: '.'),
+                      ],
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
             ],
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     ),);
   }
