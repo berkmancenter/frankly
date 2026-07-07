@@ -153,8 +153,8 @@ Map<String, List<String>> _createGraph(
 List<String> _getNextCluster(Map<String, List<String>> buckets,
     Map<String, List<String>> G, int clusterSize) {
   // Make a graph --> BFS from largest bucket until cluster is full
-  List<String> cluster = [];
-  List<String> sortedBucketKeys = buckets.keys // Sort remaining by size
+  final List<String> cluster = [];
+  final List<String> sortedBucketKeys = buckets.keys // Sort remaining by size
       .toList()
     ..sort((a, b) => -buckets[a]!.length.compareTo(buckets[b]!.length));
 
