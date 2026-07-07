@@ -404,7 +404,11 @@ service cloud.firestore {
                 allow get: if hasAuth() && (request.auth.uid == userId || isCommunityMod());
                 allow create: if hasAuth() && request.auth.uid == userId && request.resource.data.get('status', '') == 'requested';
                 allow list: if hasAuth() && isCommunityMod();
-                allow update: if false;
+                // Allow a user to re-request membership after a prior denial.
+                allow update: if hasAuth() && request.auth.uid == userId
+                    && resource.data.get('status', '') == 'denied'
+                    && request.resource.data.get('status', '') == 'requested'
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
             }
         }
 
