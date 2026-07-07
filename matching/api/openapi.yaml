@@ -1,0 +1,311 @@
+openapi: 3.0.3
+info:
+  title: Frankly Match API
+  description: |
+    Group matching algorithms for creating groups of participants in deliberations, in order to foster constructive dialogue.
+  version: 1.0.0
+  contact:
+    name: Frankly / Berkman Klein Center
+    url: https://github.com/berkmancenter/frankly
+
+servers:
+  - url: https://cloud-run-app-url.placeholder.url
+    description: Cloud Run (production)
+  - url: http://localhost:8080/v1
+    description: Local (development)
+
+paths:
+  /health:
+    get:
+      operationId: healthCheck
+      summary: Health check
+      tags: [Infrastructure]
+      responses:
+        "200":
+          description: Service is up and running
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /match:
+    post:
+      operationId: match
+      summary: Match participants into discussion groups
+      description: |
+        Currently, accepts a map of participant IDs to binary answer strings and returns groups whose members have maximally different answer patterns (high Hamming distance).
+
+        Answer strings encode survey responses as `"0"`/`"1"` characters, one character per question (e.g. `"01001"`). The API treats these as opaque — all semantic meaning lives in the caller. Strings shorter than the maximum are random-padded server-side; strings longer than 9 characters are truncated to 9.
+
+        **`binaryGroupMatch` algorithm:**
+        1. Create "buckets" of participants grouped by identical answer mask
+        2. Build a graph where buckets are nodes; edges connect buckets with Hamming distance = 1
+        3. BFS-cluster similar answer patterns until `targetGroupSize` clusters are formed
+        4. Composes final groups by taking one person from each cluster — guaranteeing each group has diverse views represented
+
+        **Group sizes**: Groups may vary by ±1 when `len(participants)` is not evenly divisible by `targetGroupSize`. If `len(participants) ≤ targetGroupSize`, all participants are returned as a single group.
+      tags: [Matching]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchRequest"
+            examples:
+              threeGroups:
+                summary: 6 participants → 2 groups of 3
+                value:
+                  algorithm: binaryGroupMatch
+                  targetGroupSize: 3
+                  participants:
+                    uid_alice:
+                      binaryAnswerMask: "01001"
+                    uid_bob:
+                      binaryAnswerMask: "10110"
+                    uid_carol:
+                      binaryAnswerMask: "01100"
+                    uid_dave:
+                      binaryAnswerMask: "10011"
+                    uid_eve:
+                      binaryAnswerMask: "00111"
+                    uid_frank:
+                      binaryAnswerMask: "11000"
+              threeGroupsWithExtras:
+                summary: 6 participants with extra data fields (hypothetical)
+                value:
+                  algorithm: binaryGroupMatch
+                  targetGroupSize: 3
+                  participants:
+                    uid_alice:
+                      binaryAnswerMask: "01001"
+                      freeTextResponse: "I think sandwiches are underrated"
+                    uid_bob:
+                      binaryAnswerMask: "10110"
+                      freeTextResponse: "Sandwiches are overrated"
+                    uid_carol:
+                      binaryAnswerMask: "01100"
+              pairs:
+                summary: Pair matching via targetGroupSize 2
+                value:
+                  algorithm: binaryGroupMatch
+                  targetGroupSize: 2
+                  participants:
+                    uid_alice:
+                      binaryAnswerMask: "01001"
+                    uid_bob:
+                      binaryAnswerMask: "10110"
+                    uid_carol:
+                      binaryAnswerMask: "01100"
+                    uid_dave:
+                      binaryAnswerMask: "10011"
+              tooFewParticipants:
+                summary: Fewer participants than targetGroupSize → single group
+                value:
+                  algorithm: binaryGroupMatch
+                  targetGroupSize: 5
+                  participants:
+                    uid_alice:
+                      binaryAnswerMask: "01"
+                    uid_bob:
+                      binaryAnswerMask: "10"
+      responses:
+        "200":
+          description: Successfully computed groups
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchResponse"
+              examples:
+                result:
+                  value:
+                    results:
+                      - participantIds: ["uid_alice", "uid_dave", "uid_eve"]
+                      - participantIds: ["uid_bob", "uid_carol", "uid_frank"]
+                resultWithGroupPrompt:
+                  value:
+                    results:
+                      - participantIds: ["uid_alice", "uid_dave", "uid_eve"]
+                        reflectionPrompt: "Consider how different perspectives on this topic might apply to your group."
+                      - participantIds: ["uid_bob", "uid_carol", "uid_frank"]
+                        reflectionPrompt: "Think about what common ground exists despite different views."
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+components:
+  schemas:
+    MatchRequest:
+      type: object
+      required: [algorithm, targetGroupSize, participants]
+      properties:
+        algorithm:
+          $ref: "#/components/schemas/MatchAlgorithm"
+        targetGroupSize:
+          type: integer
+          minimum: 2
+          description: |
+            Desired number of participants per output group. Must be ≥ 2.
+
+            If `len(participants) ≤ targetGroupSize`, all participants are returned as one group regardless of this value.
+          example: 3
+        participants:
+          type: object
+          description: |
+            Map of participantId → participantData.
+            - Keys: opaque, non-empty participant identifiers
+            - Values: free-form objects. Keys are defined by the caller and may include anything the algorithm or enrichment step needs (e.g. `binaryAnswerMask`, `freeTextResponse`). The server passes unknown keys through to the algorithm untouched.
+          minProperties: 1
+          additionalProperties:
+            $ref: "#/components/schemas/ParticipantData"
+          example:
+            uid_alice:
+              binaryAnswerMask: "01001"
+              freeTextResponse: "I think sandwiches are underrated"
+            uid_bob:
+              binaryAnswerMask: "10110"
+            uid_carol:
+              binaryAnswerMask: "01100"
+
+    MatchAlgorithm:
+      type: string
+      enum:
+        - binaryGroupMatch
+      description: |
+        Matching algorithm to use. Currently supported:
+        - `binaryGroupMatch`: BFS cluster-then-compose matching on binary answer masks. Add new algorithms here as enum values without changing the rest of the request shape.
+
+    ParticipantData:
+      type: object
+      description: |
+        Free-form per-participant data. No keys are required by the base contract — the algorithm declared in `algorithm` determines which keys it reads (e.g. `binaryGroupMatch` reads `binaryAnswerMask`).
+
+        Unknown keys are ignored by the server and never returned.
+      properties:
+        binaryAnswerMask:
+          type: string
+          pattern: "^[01]+$"
+          minLength: 1
+          description: |
+            Binary string encoding survey responses as `"0"`/`"1"` characters, one per question (e.g. `"01001"`). Required by `binaryGroupMatch`.
+
+            Strings shorter than the longest mask in the request are
+            random-padded server-side; strings longer than 9 characters are truncated to 9.
+          example: "01001"
+      additionalProperties: true
+      example:
+        binaryAnswerMask: "01001"
+        freeTextResponse: "I think sandwiches are underrated"
+
+    MatchResponse:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: array
+          description: |
+            List of group result objects. Every input participantId appears in exactly one group. Each object contains at minimum `groupId` and `participantIds`; additional keys may be present depending on the algorithm (e.g `reflectionPrompt`). Callers should treat unknown keys as optional enrichment and ignore them if not needed.
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/GroupResult"
+          example:
+            - groupId: "1a"
+              participantIds: ["uid_alice", "uid_dave"]
+            - groupId: "2b"
+              participantIds: ["uid_bob", "uid_carol"]
+
+    GroupResult:
+      type: object
+      required: [participantIds]
+      properties:
+        participantIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: IDs of participants assigned to this group.
+          example: ["uid_alice", "uid_dave", "uid_eve"]
+      additionalProperties: true
+      description: |
+        A single group result. `participantIds` is the only required key.
+
+        Algorithms may attach arbitrary additional keys (e.g. `reflectionPrompt`, `diversityScore`) — app developers should treat these as optional.
+
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: Machine-readable error identifier
+          enum:
+            - INVALID_ANSWER_MASK
+            - INCONSISTENT_MASK_LENGTH
+            - NO_PARTICIPANTS
+            - TARGET_GROUP_SIZE_TOO_SMALL
+            - UNKNOWN_ALGORITHM
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: Human-readable explanation
+
+  responses:
+    BadRequest:
+      description: Malformed request body (unparseable JSON, missing required fields)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            targetTooSmall:
+              value:
+                code: TARGET_GROUP_SIZE_TOO_SMALL
+                message: "targetGroupSize must be at least 2"
+            unknownAlgorithm:
+              value:
+                code: UNKNOWN_ALGORITHM
+                message: "Unknown algorithm 'semanticMatch'. Supported: binaryGroupMatch"
+    UnprocessableEntity:
+      description: Request is well-formed but semantically invalid
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            badMask:
+              value:
+                code: INVALID_ANSWER_MASK
+                message: "participants.uid_alice.binaryAnswerMask must contain only '0' and '1' characters"
+            noParticipants:
+              value:
+                code: NO_PARTICIPANTS
+                message: "participants map must contain at least one entry"
+    InternalError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            code: INTERNAL_ERROR
+            message: "An unexpected error occurred"
+
+  securitySchemes: {}
+
+security: []
+
+tags:
+  - name: Matching
+    description: Core matching endpoint
+  - name: Infrastructure
+    description: Health probes
