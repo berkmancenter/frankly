@@ -1,23 +1,22 @@
-# Frankly Matching
+# Frankly Match
 
-This directory contains code related to Frankly's matching feature. This code is broadly aimed at providing functionality to match people in interesting/generative/etc. ways based on their responses to survey questions. 
+This directory is home to Frankly's matching feature. Frankly Match is an ongoing research and engineering effort to develop ways to match people in interesting, generative, diverse, or other ways to facilitate constructive dialogue.
 
-### Contents [WIP]
-* `/functions` contains Cloud Functions code which responds to matching requests. 
-* `/lib/matching.dart`, which contains the original matching code developed by JuntoChat. This is imported by Frankly as a package in the main client.  
-* `/client` contains a Flutter web app that serves as the frontend for the Frankly in-person matching application. 
+Code for the "smart matching" feature that is currently used by Frankly lives here. We welcome contributions, forks, comments, issues, etc. from the community. Thanks for stopping by!
 
-### Legacy documentation
-The following documentation was provided by the original JuntoChat team in their README for the matching algorithm. 
+## Contents
 
-**For dart command line apps**
-[Dart documentation here](https://dart.dev/tutorials/server/cmdline)
+- `dart/` — [`frankly_matching`](https://pub.dev/packages/frankly_matching) pub.dev Dart package.
+- `api/` — Google Cloud Run service implementing the [match API](./openapi.yaml). Written in Python for research purposes.
 
-**Matching conversation participants**
-For information on how parameters are stored, refer to `/client/shared/lib/firestore/discussion.dart#L109`. 
+## Description
 
-**Useful libraries for vectors**
-[SciDart](https://github.com/scidart/scidart_examples)
-[KDTree](https://pub.dev/packages/kdtree)
-[KMeans](https://pub.dev/packages/kmeans)
-[simple_cluster](https://pub.dev/packages/simple_cluster)
+Frankly Match currently consists of one main algorithm which is based on maximizing [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) between participant survey answers. 
+
+Each participant's survey answers are encoded as a binary string (`"01001"` = one bit per question). The endpoints available are as follows:
+
+- **`bucketMatch`** — for pairs. Directly maximises pairwise Hamming distance.
+- **`groupMatch`** — for groups of 3+. BFS-clusters by similarity, then composes groups by taking one member from each cluster.
+- **`randomGroups`** — no survey data needed. Random assignment baseline.
+
+We aim to develop other matching algorithms which may optimize for different heuristics (e.g. maximizing similarity, or creating other interesting configurations). We are also interested in expanding the diversity-matching algorithm to allow it to ingest and factor in more than simple binary answers (e.g. text, multiple-choice, drawings?!). 
