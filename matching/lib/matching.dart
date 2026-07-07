@@ -4,12 +4,6 @@ import 'dart:math';
 const _minDistance = 3;
 const _idealDistance = 4;
 
-// ignore: unused_element
-List<int> _strkeyToInts(String strkey) {
-  // Convert a string key to a list of ints
-  return strkey.split('').map(int.parse).toList();
-}
-
 int _hamming(String s1, String s2) {
   if (s1.length != s2.length) return (s1.length - s2.length).abs();
   // Number of different characters
