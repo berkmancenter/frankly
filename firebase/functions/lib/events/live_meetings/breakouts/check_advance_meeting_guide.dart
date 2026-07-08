@@ -24,6 +24,7 @@ class CheckAdvanceMeetingGuide
     required String liveMeetingPath,
     required String? agendaItemId,
     required String meetingId,
+    required bool ready,
   }) async {
     final documentId =
         '$liveMeetingPath/participant-agenda-item-details/$agendaItemId/participant-details/$userId';
@@ -40,7 +41,7 @@ class CheckAdvanceMeetingGuide
           ParticipantAgendaItemDetails(
             agendaItemId: agendaItemId,
             meetingId: meetingId,
-            readyToAdvance: true,
+            readyToAdvance: ready,
             userId: userId,
           ).toJson(),
         ),
@@ -71,6 +72,19 @@ class CheckAdvanceMeetingGuide
     final activeLiveMeetingPath =
         isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
 
+    if (!isNullOrEmpty(request.userReadyAgendaId) && !request.ready) {
+      // User is undoing their ready vote for this agenda item. Undoing a
+      // vote can never trigger an advance, so there's nothing to check.
+      await _markReady(
+        userId: context.authUid!,
+        agendaItemId: request.userReadyAgendaId,
+        liveMeetingPath: activeLiveMeetingPath,
+        meetingId: activeLiveMeetingPath.split('/').last,
+        ready: false,
+      );
+      return;
+    }
+
     await _checkAdvanceMeetingGuide(
       liveMeetingPath: activeLiveMeetingPath,
       parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
@@ -89,6 +103,7 @@ class CheckAdvanceMeetingGuide
       agendaItemId: request.userReadyAgendaId,
       liveMeetingPath: activeLiveMeetingPath,
       meetingId: activeLiveMeetingPath.split('/').last,
+      ready: true,
     );
   }
 
