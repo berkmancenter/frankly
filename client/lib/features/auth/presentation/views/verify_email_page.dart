@@ -347,15 +347,21 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         wrongEmailSpans.add(TextSpan(text: wrongEmailFull.substring(0, linkStart)));
       }
       wrongEmailSpans.add(
-        TextSpan(
-          text: linkText,
-          style: const TextStyle(decoration: TextDecoration.underline),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => setState(() {
-                  _editingEmail = true;
-                  _emailController.text = '';
-                  _error = '';
-                }),
+        WidgetSpan(
+          baseline: TextBaseline.alphabetic,
+          alignment: PlaceholderAlignment.baseline,
+          child: InkWell(
+            onTap: () => setState(() {
+              _editingEmail = true;
+              _emailController.text = '';
+              _error = '';
+            }),
+            mouseCursor: SystemMouseCursors.click,
+            child: Text(
+              linkText,
+              style: style?.copyWith(decoration: TextDecoration.underline),
+            ),
+          ),
         ),
       );
       if (linkStart + linkText.length < wrongEmailFull.length) {
@@ -892,37 +898,51 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 const SizedBox(height: 8),
               ],
               Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 300),
-                  child: ActionButton(
-                    focusNode: _resendFocusNode,
-                    onPressed: _canResend ? _resendEmail : null,
-                    type: ActionButtonType.outline,
-                    expand: true,
-                    textColor: Colors.black,
-                    disabledColor: context.theme.colorScheme.onSurfaceVariant,
-                    text: _resendCooldownRemainingSeconds > 0
-                        ? '${context.l10n.resendVerificationEmail} (${_resendCooldownRemainingSeconds}s)'
-                        : context.l10n.resendVerificationEmail,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Semantics(
-                link: true,
-                child: InkWell(
-                  focusNode: _verifiedTabFocusNode,
-                  onTap: _checkVerifiedInOtherTab,
-                  mouseCursor: SystemMouseCursors.click,
-                  child: Text(
-                    context.l10n.emailVerifiedInAnotherTab,
-                    style: GoogleFonts.inter(
-                      textStyle: context.theme.textTheme.bodyMedium,
-                      fontSize: 16,
-                      decoration: TextDecoration.underline,
-                      decorationStyle: TextDecorationStyle.solid,
-                    ),
-                    textAlign: TextAlign.center,
+                child: IntrinsicWidth(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ActionButton(
+                        focusNode: _resendFocusNode,
+                        onPressed: _canResend ? _resendEmail : null,
+                        type: ActionButtonType.outline,
+                        expand: true,
+                        textColor: Colors.black,
+                        disabledColor: context.theme.colorScheme.onSurfaceVariant,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 24,
+                        ),
+                        text: _resendCooldownRemainingSeconds > 0
+                            ? '${context.l10n.resendVerificationEmail} (${_resendCooldownRemainingSeconds}s)'
+                            : context.l10n.resendVerificationEmail,
+                      ),
+                      const SizedBox(height: 24),
+                      Align(
+                        alignment: Alignment.center,
+                        child: IntrinsicWidth(
+                          child: Semantics(
+                            link: true,
+                            child: InkWell(
+                              focusNode: _verifiedTabFocusNode,
+                              onTap: _checkVerifiedInOtherTab,
+                              mouseCursor: SystemMouseCursors.click,
+                              child: Text(
+                                context.l10n.emailVerifiedInAnotherTab,
+                                style: GoogleFonts.inter(
+                                  textStyle: context.theme.textTheme.bodyMedium,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.underline,
+                                  decorationStyle: TextDecorationStyle.solid,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -930,7 +950,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               Center(
                 child: Text(
                   context.l10n.meantToUseExistingAccount,
-                  style: context.theme.textTheme.bodyMedium,
+                  style: context.theme.textTheme.bodyMedium?.copyWith(
+                    color: context.theme.colorScheme.secondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -959,9 +981,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               context.l10n.logout,
                               style: GoogleFonts.inter(
                                 textStyle: context.theme.textTheme.bodyMedium,
-                                fontSize: 12,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                height: 20 / 14,
+                                letterSpacing: 0.25,
                                 decoration: TextDecoration.underline,
-                                color: context.theme.colorScheme.onSurfaceVariant,
+                                color: context.theme.colorScheme.secondary,
                               ),
                             ),
                           ),
