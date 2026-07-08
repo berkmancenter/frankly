@@ -234,8 +234,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       formattedTime = context.l10n.start;
                     } else {
                       negativeTimeRemaining = timeRemaining.isNegative;
-                      formattedTime =
-                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours.abs() > 0);
+                      formattedTime = timeRemaining.getFormattedTime(
+                        showHours: timeRemaining.inHours.abs() > 0,
+                      );
                     }
                     return HeightConstrainedText(
                       formattedTime,
@@ -503,7 +504,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     if (!meetingFinished)
                       Align(
                         alignment: Alignment.centerRight,
-                        child: _ReadyButton(
+                        child: _NextButton(
                           currentAgendaItemId: currentAgendaItemId ?? '',
                         ),
                       ),
@@ -512,31 +513,46 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               } else {
                 return Row(
                   children: [
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Tooltip(
-                        message:
-                            '$readyToMoveOnCount out of ${presentParticipantIds.length} participants '
-                            'are ready to move on.',
-                        child: Text(
-                          '$readyToMoveOnCount/${presentParticipantIds.length}',
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '$readyToMoveOnCount people ready',
                           style: AppTextStyle.body.copyWith(
-                            color: context.theme.colorScheme.primary,
+                            color: context.theme.colorScheme.secondary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
+                        // Majority (51%) required to move on
+                        Text(
+                          '${(presentParticipantIds.length * 0.51).floor()} required to move on',
+                          style: AppTextStyle.body.copyWith(
+                            color: context.theme.colorScheme.secondary,
+                          ),
+                        ),
+                      ],
                     ),
-                    if (readyToAdvance)
-                      ActionButton(
-                        type: ActionButtonType.outline,
-                        textColor: context.theme.colorScheme.primary,
-                        text: context.l10n.ready,
-                        icon: Icons.check_circle_outline,
-                      )
-                    else
+                    // if (readyToAdvance)
+                    //   ActionButton(
+                    //     type: ActionButtonType.outline,
+                    //     textColor: context.theme.colorScheme.primary,
+                    //     text: context.l10n.ready,
+                    //     icon: Icons.check_circle_outline,
+                    //   )
+                    // else
                       _ReadyButton(
                         currentAgendaItemId: currentAgendaItemId ?? '',
+                        userIsReady: participantAgendaItemDetailsList
+                                ?.firstWhere(
+                                  (p) =>
+                                      p.userId ==
+                                      _presenter.getUserId(),
+                                  orElse: () => ParticipantAgendaItemDetails(
+                                    readyToAdvance: false,
+                                  ),
+                                )
+                                .readyToAdvance ??
+                            false,
                       ),
                   ],
                 );
@@ -597,8 +613,49 @@ class CountdownWidget extends StatelessWidget {
 
 class _ReadyButton extends HookWidget {
   final String currentAgendaItemId;
+  final bool userIsReady;
 
   const _ReadyButton({
+    Key? key,
+    required this.currentAgendaItemId,
+    required this.userIsReady,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final agendaProvider = AgendaProvider.watch(context);
+    return ActionButton(
+      color: Colors.transparent,
+      type: ActionButtonType.outline,
+      textColor: context.theme.colorScheme.primary,
+      onPressed: () => alertOnError(context, () async {
+        await agendaProvider.moveForward(
+          currentAgendaItemId: currentAgendaItemId,
+        );
+      }),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Checkbox(
+            value: userIsReady,
+            onChanged: null,
+            activeColor: context.theme.colorScheme.primary,
+          ),
+          SizedBox(width: 8),
+          Text(
+            "I'm ready to move on",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NextButton extends HookWidget {
+  final String currentAgendaItemId;
+
+  const _NextButton({
     Key? key,
     required this.currentAgendaItemId,
   }) : super(key: key);
