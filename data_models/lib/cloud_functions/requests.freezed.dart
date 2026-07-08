@@ -9113,6 +9113,7 @@ mixin _$CheckAdvanceMeetingGuideRequest {
   String? get breakoutRoomId => throw _privateConstructorUsedError;
   List<String> get presentIds => throw _privateConstructorUsedError;
   String? get userReadyAgendaId => throw _privateConstructorUsedError;
+  bool get ready => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -9133,7 +9134,8 @@ abstract class $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
       String? breakoutSessionId,
       String? breakoutRoomId,
       List<String> presentIds,
-      String? userReadyAgendaId});
+      String? userReadyAgendaId,
+      bool ready});
 }
 
 /// @nodoc
@@ -9155,6 +9157,7 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
     Object? breakoutRoomId = freezed,
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
+    Object? ready = null,
   }) {
     return _then(_value.copyWith(
       eventPath: null == eventPath
@@ -9177,6 +9180,10 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
           ? _value.userReadyAgendaId
           : userReadyAgendaId // ignore: cast_nullable_to_non_nullable
               as String?,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -9195,7 +9202,8 @@ abstract class _$$_CheckAdvanceMeetingGuideRequestCopyWith<$Res>
       String? breakoutSessionId,
       String? breakoutRoomId,
       List<String> presentIds,
-      String? userReadyAgendaId});
+      String? userReadyAgendaId,
+      bool ready});
 }
 
 /// @nodoc
@@ -9216,6 +9224,7 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
     Object? breakoutRoomId = freezed,
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
+    Object? ready = null,
   }) {
     return _then(_$_CheckAdvanceMeetingGuideRequest(
       eventPath: null == eventPath
@@ -9238,6 +9247,10 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
           ? _value.userReadyAgendaId
           : userReadyAgendaId // ignore: cast_nullable_to_non_nullable
               as String?,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -9251,7 +9264,8 @@ class _$_CheckAdvanceMeetingGuideRequest
       this.breakoutSessionId,
       this.breakoutRoomId,
       required this.presentIds,
-      this.userReadyAgendaId});
+      this.userReadyAgendaId,
+      this.ready = true});
 
   factory _$_CheckAdvanceMeetingGuideRequest.fromJson(
           Map<String, dynamic> json) =>
@@ -9267,10 +9281,13 @@ class _$_CheckAdvanceMeetingGuideRequest
   final List<String> presentIds;
   @override
   final String? userReadyAgendaId;
+  @override
+  @JsonKey()
+  final bool ready;
 
   @override
   String toString() {
-    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId)';
+    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId, ready: $ready)';
   }
 
   @override
@@ -9287,7 +9304,8 @@ class _$_CheckAdvanceMeetingGuideRequest
             const DeepCollectionEquality()
                 .equals(other.presentIds, presentIds) &&
             (identical(other.userReadyAgendaId, userReadyAgendaId) ||
-                other.userReadyAgendaId == userReadyAgendaId));
+                other.userReadyAgendaId == userReadyAgendaId) &&
+            (identical(other.ready, ready) || other.ready == ready));
   }
 
   @JsonKey(ignore: true)
@@ -9298,7 +9316,8 @@ class _$_CheckAdvanceMeetingGuideRequest
       breakoutSessionId,
       breakoutRoomId,
       const DeepCollectionEquality().hash(presentIds),
-      userReadyAgendaId);
+      userReadyAgendaId,
+      ready);
 
   @JsonKey(ignore: true)
   @override
@@ -9323,7 +9342,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
       final String? breakoutSessionId,
       final String? breakoutRoomId,
       required final List<String> presentIds,
-      final String? userReadyAgendaId}) = _$_CheckAdvanceMeetingGuideRequest;
+      final String? userReadyAgendaId,
+      final bool ready}) = _$_CheckAdvanceMeetingGuideRequest;
 
   factory _CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =
       _$_CheckAdvanceMeetingGuideRequest.fromJson;
@@ -9338,6 +9358,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
   List<String> get presentIds;
   @override
   String? get userReadyAgendaId;
+  @override
+  bool get ready;
   @override
   @JsonKey(ignore: true)
   _$$_CheckAdvanceMeetingGuideRequestCopyWith<

@@ -737,6 +737,7 @@ class CheckAdvanceMeetingGuideRequest
     String? breakoutRoomId,
     required List<String> presentIds,
     String? userReadyAgendaId,
+    @Default(true) bool ready,
   }) = _CheckAdvanceMeetingGuideRequest;
 
   factory CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =>

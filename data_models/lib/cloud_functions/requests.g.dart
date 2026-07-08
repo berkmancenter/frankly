@@ -825,6 +825,7 @@ _$_CheckAdvanceMeetingGuideRequest _$$_CheckAdvanceMeetingGuideRequestFromJson(
           .map((e) => e as String)
           .toList(),
       userReadyAgendaId: json['userReadyAgendaId'] as String?,
+      ready: json['ready'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$_CheckAdvanceMeetingGuideRequestToJson(
@@ -835,6 +836,7 @@ Map<String, dynamic> _$$_CheckAdvanceMeetingGuideRequestToJson(
       'breakoutRoomId': instance.breakoutRoomId,
       'presentIds': instance.presentIds,
       'userReadyAgendaId': instance.userReadyAgendaId,
+      'ready': instance.ready,
     };
 
 _$_CheckHostlessGoToBreakoutsRequest
