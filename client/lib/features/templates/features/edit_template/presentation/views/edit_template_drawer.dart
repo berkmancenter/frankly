@@ -153,7 +153,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildTitleSection() {
     return CustomTextField(
-      labelText: 'Title',
+      labelText: context.l10n.title,
       initialValue: _model.template.title,
       maxLines: 2,
       maxLength: 80,
@@ -164,7 +164,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildDescriptionSection() {
     return CustomTextField(
-      labelText: 'Description',
+      labelText: context.l10n.description,
       initialValue: _model.template.description,
       onChanged: (value) => _presenter.updateDescription(value),
     );

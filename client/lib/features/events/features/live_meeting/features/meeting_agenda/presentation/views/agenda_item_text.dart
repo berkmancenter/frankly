@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/utils/agenda_utils.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class AgendaItemText extends StatelessWidget {
         children: [
           CustomTextField(
             initialValue: agendaItemTextData.title,
-            labelText: 'Title',
+            labelText: context.l10n.title,
             maxLength: agendaTitleCharactersLength,
             maxLines: 1,
             counterStyle: context.theme.textTheme.labelMedium,
@@ -39,7 +40,7 @@ class AgendaItemText extends StatelessWidget {
           CustomTextField(
             initialValue: agendaItemTextData.content,
             markdownEditor: true,
-            labelText: 'Content',
+            labelText: context.l10n.content,
             hintText:
                 'Keep it short! You don’t want people to spend time reading.',
             maxLines: null,
