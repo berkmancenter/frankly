@@ -111,6 +111,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
     implements MeetingGuideCardView {
   late final MeetingGuideCardModel _model;
   late final MeetingGuideCardPresenter _presenter;
+  bool _showReadyToMoveOnTooltip = false;
 
   @override
   void initState() {
@@ -504,7 +505,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     if (!meetingFinished)
                       Align(
                         alignment: Alignment.centerRight,
-                        child: _NextButton(
+                        child: NextButton(
                           currentAgendaItemId: currentAgendaItemId ?? '',
                         ),
                       ),
@@ -515,45 +516,109 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   children: [
                     Column(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '$readyToMoveOnCount people ready',
-                          style: AppTextStyle.body.copyWith(
-                            color: context.theme.colorScheme.secondary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              '$readyToMoveOnCount people ready',
+                              style: AppTextStyle.body.copyWith(
+                                color: context.theme.colorScheme.secondary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            if (_showReadyToMoveOnTooltip)
+                              Tooltip(
+                                enableTapToDismiss: false,
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.24),
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                      offset: Offset(
+                                        2,
+                                        2,
+                                      ),
+                                    ),
+                                  ],
+                                  color: context
+                                      .theme.colorScheme.surfaceContainerLowest,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                richMessage: TextSpan(
+                                  children: <InlineSpan>[
+                                    WidgetSpan(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                            ),
+                                            child: Text(
+                                              context
+                                                  .l10n.startingNextAgendaItem,
+                                              style: TextStyle(
+                                                color: context.theme.colorScheme
+                                                    .onSurfaceVariant,
+                                                fontSize: context
+                                                    .theme
+                                                    .textTheme
+                                                    .bodySmall
+                                                    ?.fontSize,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            IconButton(
+                              icon: Icon(Icons.question_mark),
+                              onPressed: () {
+                                setState(() {
+                                  _showReadyToMoveOnTooltip =
+                                      !_showReadyToMoveOnTooltip;
+                                });
+                              },
+                              iconSize: 20,
+                              style: IconButton.styleFrom(
+                                side: BorderSide(
+                                  color: context.theme.colorScheme.outline,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         // Majority (51%) required to move on
                         Text(
-                          '${(presentParticipantIds.length * 0.51).floor()} required to move on',
+                          '${presentParticipantIds.length > 1 ? (presentParticipantIds.length * 0.51).floor() : 1} required to move on',
                           style: AppTextStyle.body.copyWith(
                             color: context.theme.colorScheme.secondary,
                           ),
                         ),
                       ],
                     ),
-                    // if (readyToAdvance)
-                    //   ActionButton(
-                    //     type: ActionButtonType.outline,
-                    //     textColor: context.theme.colorScheme.primary,
-                    //     text: context.l10n.ready,
-                    //     icon: Icons.check_circle_outline,
-                    //   )
-                    // else
-                      _ReadyButton(
-                        currentAgendaItemId: currentAgendaItemId ?? '',
-                        userIsReady: participantAgendaItemDetailsList
-                                ?.firstWhere(
-                                  (p) =>
-                                      p.userId ==
-                                      _presenter.getUserId(),
-                                  orElse: () => ParticipantAgendaItemDetails(
-                                    readyToAdvance: false,
-                                  ),
-                                )
-                                .readyToAdvance ??
-                            false,
-                      ),
+                    SizedBox(width: 20),
+                    ReadyButton(
+                      currentAgendaItemId: currentAgendaItemId ?? '',
+                      userIsReady: participantAgendaItemDetailsList
+                              ?.firstWhere(
+                                (p) => p.userId == _presenter.getUserId(),
+                                orElse: () => ParticipantAgendaItemDetails(
+                                  readyToAdvance: false,
+                                ),
+                              )
+                              .readyToAdvance ??
+                          false,
+                    ),
                   ],
                 );
               }
@@ -611,11 +676,12 @@ class CountdownWidget extends StatelessWidget {
   }
 }
 
-class _ReadyButton extends HookWidget {
+// Button for participants to indicate they are ready to move on to the next agenda item.
+class ReadyButton extends HookWidget {
   final String currentAgendaItemId;
   final bool userIsReady;
 
-  const _ReadyButton({
+  const ReadyButton({
     Key? key,
     required this.currentAgendaItemId,
     required this.userIsReady,
@@ -625,12 +691,13 @@ class _ReadyButton extends HookWidget {
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      color: Colors.transparent,
+      color: context.theme.colorScheme.outline,
       type: ActionButtonType.outline,
       textColor: context.theme.colorScheme.primary,
       onPressed: () => alertOnError(context, () async {
-        await agendaProvider.moveForward(
+        await agendaProvider.toggleMoveForward(
           currentAgendaItemId: currentAgendaItemId,
+          ready: !userIsReady,
         );
       }),
       child: Row(
@@ -640,6 +707,7 @@ class _ReadyButton extends HookWidget {
             value: userIsReady,
             onChanged: null,
             activeColor: context.theme.colorScheme.primary,
+            checkColor: context.theme.colorScheme.onPrimary,
           ),
           SizedBox(width: 8),
           Text(
@@ -652,10 +720,10 @@ class _ReadyButton extends HookWidget {
   }
 }
 
-class _NextButton extends HookWidget {
+class NextButton extends HookWidget {
   final String currentAgendaItemId;
 
-  const _NextButton({
+  const NextButton({
     Key? key,
     required this.currentAgendaItemId,
   }) : super(key: key);
@@ -670,7 +738,7 @@ class _NextButton extends HookWidget {
       textColor: context.theme.colorScheme.primary,
       icon: Icons.arrow_forward_ios,
       onPressed: () => alertOnError(context, () async {
-        await agendaProvider.moveForward(
+        await agendaProvider.toggleMoveForward(
           currentAgendaItemId: currentAgendaItemId,
         );
       }),

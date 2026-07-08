@@ -834,9 +834,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               ),
                               onPressed: () => alertOnError(
                                 context,
-                                () => agendaProvider.moveForward(
+                                () => agendaProvider.toggleMoveForward(
                                   currentAgendaItemId:
                                       _presenter.getCurrentAgendaItemId()!,
+                                  ready: !readyToAdvance,
                                 ),
                               ),
                             ),
