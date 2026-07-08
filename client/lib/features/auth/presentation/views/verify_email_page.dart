@@ -937,6 +937,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                   decorationStyle: TextDecorationStyle.solid,
                                 ),
                                 textAlign: TextAlign.center,
+                                softWrap: false,
                               ),
                             ),
                           ),
