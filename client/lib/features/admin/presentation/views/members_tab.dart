@@ -694,8 +694,17 @@ class MembersTabState extends State<MembersTab>
                 tabs: [
                   Tab(text: context.l10n.members),
                   Tab(
-                    text:
-                        '${context.l10n.requests} (${requestList?.length ?? 0})',
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                      Text('${context.l10n.requests} (${requestList?.length ?? 0})'),
+                        SizedBox(width: 4),
+                        if (requestList != null && requestList.isNotEmpty)
+                          Badge(
+                            backgroundColor: context.theme.colorScheme.error,
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               );
