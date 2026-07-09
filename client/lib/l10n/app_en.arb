@@ -151,6 +151,16 @@
       "appName": {}
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -614,6 +624,8 @@
   "logo": "Logo",
   "logout": "Logout",
   "loopVideo": "Loop Video",
+  "majorityOfParticipants": "The majority of participants must agree to advance to the next event activity.",
+  "majorityOfParticipantsExample": "In this event, {count} out of the {total} people participating must indicate they’re ready to move on before starting the next item.",
   "makeASuggestion": "Make a suggestion",
   "makeThisSpacePrivate": "Make this space private",
   "manageCommunity": "Manage Community",
@@ -895,6 +907,7 @@
   "start": "Start",
   "startCommunity": "Start a community",
   "startEvent": "Start Event",
+  "startingNextAgendaItem": "Starting the Next Agenda Item",
   "startsTomorrow": "Starts Tomorrow",
   "startTime": "Start Time",
   "submitChatButton": "Submit Chat Button",

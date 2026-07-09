@@ -203,6 +203,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -671,6 +681,8 @@
   "logo": "标志",
   "logout": "退出登录",
   "loopVideo": "循环播放视频",
+  "majorityOfParticipants": "大多数参与者必须同意才能进入下一项活动。",
+  "majorityOfParticipantsExample": "在此活动中，参与的 {count} 人中有 {total} 人必须表示他们已准备好才能开始下一项内容。",
   "makeASuggestion": "提出建议",
   "makeThisSpacePrivate": "设此为私密空间",
   "manageCommunity": "管理社区",
@@ -947,6 +959,7 @@
   "start": "开始",
   "startCommunity": "创建社区",
   "startEvent": "开始活动",
+  "startingNextAgendaItem": "开始下一项议程",
   "startsTomorrow": "明天开始",
   "startTime": "开始时间",
   "submitChatButton": "提交聊天按钮",

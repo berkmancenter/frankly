@@ -203,6 +203,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -667,6 +677,8 @@
   "logo": "標誌",
   "logout": "登出",
   "loopVideo": "循環播放影片",
+  "majorityOfParticipants": "大多數參與者必須同意才能進入下一項活動。",
+  "majorityOfParticipantsExample": "在此活動中，參與的 {count} 人中有 {total} 人必須表示他們已準備好才能開始下一項內容。",
   "makeASuggestion": "提出建議",
   "makeThisSpacePrivate": "設此為私密空間",
   "manageCommunity": "管理社群",
@@ -942,6 +954,7 @@
   "start": "開始",
   "startCommunity": "創建社區",
   "startEvent": "開始活動",
+  "startingNextAgendaItem": "開始下一個議程項目",
   "startsTomorrow": "明天開始",
   "startTime": "開始時間",
   "submitChatButton": "提交聊天按鈕",

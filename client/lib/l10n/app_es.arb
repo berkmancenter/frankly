@@ -202,6 +202,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -682,6 +692,8 @@
   "logo": "Logotipo",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
+  "majorityOfParticipants": "La mayoría de los participantes deben estar de acuerdo para avanzar a la siguiente actividad del evento.",
+  "majorityOfParticipantsExample": "En este evento, {count} de las {total} personas que participan deben indicar que están listas para continuar antes de comenzar el siguiente elemento.",
   "makeASuggestion": "Hacer una sugerencia",
   "makeThisSpacePrivate": "Hacer este espacio privado",
   "manageCommunity": "Administrar comunidad",
@@ -963,6 +975,7 @@
   "start": "Iniciar",
   "startCommunity": "Iniciar una comunidad",
   "startEvent": "Iniciar Evento",
+  "startingNextAgendaItem": "Iniciando el siguiente punto de la agenda",
   "startsTomorrow": "Comienza mañana",
   "startTime": "Hora de inicio",
   "submitChatButton": "Botón enviar chat",
