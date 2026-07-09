@@ -899,7 +899,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               ],
               Center(
                 child: SizedBox(
-                  width: 360,
+                  width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -921,23 +921,27 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       const SizedBox(height: 24),
                       Align(
                         alignment: Alignment.center,
-                        child: IntrinsicWidth(
-                          child: Semantics(
-                            link: true,
-                            child: InkWell(
-                              focusNode: _verifiedTabFocusNode,
-                              onTap: _checkVerifiedInOtherTab,
-                              mouseCursor: SystemMouseCursors.click,
-                              child: Text(
-                                context.l10n.emailVerifiedInAnotherTab,
-                                style: GoogleFonts.inter(
-                                  textStyle: context.theme.textTheme.bodyMedium,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  decoration: TextDecoration.underline,
-                                  decorationStyle: TextDecorationStyle.solid,
+                        child: UnconstrainedBox(
+                          child: IntrinsicWidth(
+                            child: Semantics(
+                              link: true,
+                              child: InkWell(
+                                focusNode: _verifiedTabFocusNode,
+                                onTap: _checkVerifiedInOtherTab,
+                                mouseCursor: SystemMouseCursors.click,
+                                child: Text(
+                                  context.l10n.emailVerifiedInAnotherTab,
+                                  style: GoogleFonts.inter(
+                                    textStyle: context.theme.textTheme.bodyMedium,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline,
+                                    decorationStyle: TextDecorationStyle.solid,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  softWrap: false,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
