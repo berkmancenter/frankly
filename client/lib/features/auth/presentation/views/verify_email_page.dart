@@ -898,7 +898,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 const SizedBox(height: 8),
               ],
               Center(
-                child: IntrinsicWidth(
+                child: SizedBox(
+                  width: 360,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -937,7 +938,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                   decorationStyle: TextDecorationStyle.solid,
                                 ),
                                 textAlign: TextAlign.center,
-                                softWrap: false,
                               ),
                             ),
                           ),
