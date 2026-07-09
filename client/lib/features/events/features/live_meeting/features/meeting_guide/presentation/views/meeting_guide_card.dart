@@ -111,7 +111,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
     implements MeetingGuideCardView {
   late final MeetingGuideCardModel _model;
   late final MeetingGuideCardPresenter _presenter;
-  bool _showReadyToMoveOnTooltip = false;
+
+  final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
 
   @override
   void initState() {
@@ -477,6 +478,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               final currentItem = _presenter.getCurrentAgendaItem();
               final presentParticipantIds =
                   _presenter.getPresentParticipantIds().toSet();
+              final readyThreshold = presentParticipantIds.length > 1
+                  ? (presentParticipantIds.length * 0.51).floor()
+                  : 1;
               final readyToMoveOnCount = _presenter.readyToMoveOnCount(
                 participantAgendaItemDetailsList,
                 presentParticipantIds,
@@ -527,42 +531,73 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            if (_showReadyToMoveOnTooltip)
-                              Tooltip(
-                                enableTapToDismiss: false,
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.24),
-                                      blurRadius: 8,
-                                      spreadRadius: 2,
-                                      offset: Offset(
-                                        2,
-                                        2,
-                                      ),
+                            // if (_showReadyToMoveOnTooltip)
+                            Tooltip(
+                              key: tooltipKey,
+                              enableTapToDismiss: false,
+                              padding: const EdgeInsets.all(16),
+                              triggerMode: TooltipTriggerMode.manual,
+                              decoration: BoxDecoration(
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.24),
+                                    blurRadius: 8,
+                                    spreadRadius: 2,
+                                    offset: Offset(
+                                      2,
+                                      2,
                                     ),
-                                  ],
-                                  color: context
-                                      .theme.colorScheme.surfaceContainerLowest,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                richMessage: TextSpan(
-                                  children: <InlineSpan>[
-                                    WidgetSpan(
+                                  ),
+                                ],
+                                color:
+                                    context.theme.colorScheme.surfaceContainer,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              richMessage: TextSpan(
+                                children: <InlineSpan>[
+                                  WidgetSpan(
+                                    child: Container(
+                                      // Apply your size constraints here instead
+                                      constraints: BoxConstraints(
+                                        maxWidth: 315,
+                                        maxHeight: 250,
+                                      ),
+                                      padding: EdgeInsets.all(16),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 10,
+                                          // Header
+                                          Text(
+                                            context.l10n.startingNextAgendaItem,
+                                            style: TextStyle(
+                                              color: context.theme.colorScheme
+                                                  .onSurfaceVariant,
+                                              fontSize: context.theme.textTheme
+                                                  .bodySmall?.fontSize,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            child: Text(
-                                              context
-                                                  .l10n.startingNextAgendaItem,
-                                              style: TextStyle(
+                                          ),
+                                          SizedBox(height: 8),
+                                          // Description
+                                          Text(
+                                            '${context.l10n.majorityOfParticipants}\n\n'
+                                            '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
+                                            style: TextStyle(
+                                              color: context.theme.colorScheme
+                                                  .onSurfaceVariant,
+                                              fontSize: context.theme.textTheme
+                                                  .bodySmall?.fontSize,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: ActionButton(
+                                              type: ActionButtonType.text,
+                                              text: context.l10n.close,
+                                              textStyle: TextStyle(
                                                 color: context.theme.colorScheme
                                                     .onSurfaceVariant,
                                                 fontSize: context
@@ -572,23 +607,30 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                                                     ?.fontSize,
                                                 fontWeight: FontWeight.bold,
                                               ),
+                                              onPressed: () {
+                                                tooltipKey.currentState
+                                                    ?.ensureTooltipVisible();
+                                              },
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
+                              child: SizedBox.shrink(),
+                            ),
+                            SizedBox(width: 10),
                             IconButton(
                               icon: Icon(Icons.question_mark),
+                              iconSize: 17,
+                              padding: EdgeInsets.zero,
+                              constraints:
+                                  BoxConstraints(maxHeight: 30, maxWidth: 30),
                               onPressed: () {
-                                setState(() {
-                                  _showReadyToMoveOnTooltip =
-                                      !_showReadyToMoveOnTooltip;
-                                });
+                                tooltipKey.currentState?.ensureTooltipVisible();
                               },
-                              iconSize: 20,
                               style: IconButton.styleFrom(
                                 side: BorderSide(
                                   color: context.theme.colorScheme.outline,
@@ -599,7 +641,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         ),
                         // Majority (51%) required to move on
                         Text(
-                          '${presentParticipantIds.length > 1 ? (presentParticipantIds.length * 0.51).floor() : 1} required to move on',
+                          '$readyThreshold required to move on',
                           style: AppTextStyle.body.copyWith(
                             color: context.theme.colorScheme.secondary,
                           ),
