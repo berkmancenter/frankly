@@ -5,6 +5,7 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import '../../../utils/utils.dart';
+import 'advance_meeting_guide_after_delay_server.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -13,6 +14,8 @@ import 'package:data_models/utils/utils.dart';
 
 class CheckAdvanceMeetingGuide
     extends OnCallMethod<CheckAdvanceMeetingGuideRequest> {
+  static const _advanceDelay = Duration(seconds: 10);
+
   CheckAdvanceMeetingGuide()
       : super(
           'CheckAdvanceMeetingGuide',
@@ -85,13 +88,20 @@ class CheckAdvanceMeetingGuide
       return;
     }
 
-    await _checkAdvanceMeetingGuide(
+    final isPendingOrAdvancing = await _checkAdvanceMeetingGuide(
       liveMeetingPath: activeLiveMeetingPath,
       parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
       isBreakout: isBreakout,
       request: request,
       userId: context.authUid!,
     );
+
+    if (isPendingOrAdvancing) {
+      // A countdown to advance is already running (or was just started) for the current agenda
+      // item. Once that starts, further ready votes can no longer change the outcome.
+      print('Advance is pending. Not marking user ready.');
+      return;
+    }
 
     if (isNullOrEmpty(request.userReadyAgendaId)) {
       print('No agenda ID passed in so not marking user ready.');
@@ -107,7 +117,9 @@ class CheckAdvanceMeetingGuide
     );
   }
 
-  Future<void> _checkAdvanceMeetingGuide({
+  /// Returns true if an advance is already pending (or was just scheduled) for the current
+  /// agenda item, meaning any ready vote from here on can no longer change the outcome.
+  Future<bool> _checkAdvanceMeetingGuide({
     required bool isBreakout,
     required String userId,
     required String liveMeetingPath,
@@ -121,12 +133,12 @@ class CheckAdvanceMeetingGuide
 
     if (!isBreakout) {
       print('Only breakouts are currently hostless');
-      return;
+      return false;
     }
     if (liveMeeting.events
         .any((e) => e.event == LiveMeetingEventType.finishMeeting)) {
       print('Meeting already finished. Not checking advanced');
-      return;
+      return false;
     }
     // Get current agenda
     final event = await firestoreUtils.getFirestoreObject(
@@ -136,6 +148,11 @@ class CheckAdvanceMeetingGuide
 
     final currentAgendaItemId = _getCurrentAgendaItemId(event, liveMeeting);
     print('current agenda item: $currentAgendaItemId');
+
+    if (liveMeeting.pendingAdvanceAgendaItemId == currentAgendaItemId) {
+      print('Advance is already pending for $currentAgendaItemId');
+      return true;
+    }
 
     // Determine who is present
     DocumentQuery participantsQuery =
@@ -193,15 +210,64 @@ class CheckAdvanceMeetingGuide
     print('present: $presentParticipantIds');
     print('registered: $registeredParticipantIds');
 
-    // If it is the first one, then take the current time into account
-    if (readyToMoveOnIds.length >= presentParticipantIds.length / 2) {
-      await _advanceMeetingGuide(
-        liveMeetingPath: liveMeetingPath,
-        event: event,
-        currentAgendaItemId: currentAgendaItemId,
-        parentLiveMeetingPath: parentLiveMeetingPath,
+    final threshold = readyToAdvanceThreshold(presentParticipantIds.length);
+    if (readyToMoveOnIds.length < threshold) {
+      return false;
+    }
+
+    print('$threshold required to advance. Scheduling advance in '
+        '${_advanceDelay.inSeconds}s.');
+
+    final pendingAdvanceTime = DateTime.now().toUtc().add(_advanceDelay);
+
+    // Write the pending advance in a transaction so that two participants crossing the
+    // threshold at nearly the same time don't each schedule their own advance.
+    final alreadyPending = await firestore.runTransaction((transaction) async {
+      final latestLiveMeeting = await firestoreUtils.getFirestoreObject(
+        path: liveMeetingPath,
+        constructor: (map) => LiveMeeting.fromJson(map),
+        transaction: transaction,
+      );
+
+      if (latestLiveMeeting.pendingAdvanceAgendaItemId == currentAgendaItemId) {
+        return true;
+      }
+
+      transaction.set(
+        firestore.document(liveMeetingPath),
+        DocumentData.fromMap(
+          jsonSubset(
+            [
+              LiveMeeting.kFieldPendingAdvanceAgendaItemId,
+              LiveMeeting.kFieldPendingAdvanceTime,
+            ],
+            firestoreUtils.toFirestoreJson(
+              LiveMeeting(
+                pendingAdvanceAgendaItemId: currentAgendaItemId,
+                pendingAdvanceTime: pendingAdvanceTime,
+              ).toJson(),
+            ),
+          ),
+        ),
+        merge: true,
+      );
+
+      return false;
+    });
+
+    if (!alreadyPending) {
+      await AdvanceMeetingGuideAfterDelayServer().schedule(
+        AdvanceMeetingGuideAfterDelayRequest(
+          eventPath: request.eventPath,
+          breakoutSessionId: request.breakoutSessionId,
+          breakoutRoomId: request.breakoutRoomId,
+          agendaItemId: currentAgendaItemId,
+        ),
+        pendingAdvanceTime,
       );
     }
+
+    return true;
   }
 
   String _getCurrentAgendaItemId(
@@ -215,7 +281,10 @@ class CheckAdvanceMeetingGuide
     return events.lastOrNull?.agendaItem ?? startMeetingAgendaItemId;
   }
 
-  Future<void> _advanceMeetingGuide({
+  /// Advances the meeting guide to the next agenda item, clearing any pending advance in the
+  /// same write. Called directly for host-controlled advances, and by
+  /// [AdvanceMeetingGuideAfterDelay] once a majority-vote countdown finishes.
+  Future<void> advanceMeetingGuide({
     required Event event,
     required String liveMeetingPath,
     required String currentAgendaItemId,
@@ -226,6 +295,7 @@ class CheckAdvanceMeetingGuide
       final liveMeeting = await firestoreUtils.getFirestoreObject(
         path: liveMeetingPath,
         constructor: (map) => LiveMeeting.fromJson(map),
+        transaction: transaction,
       );
 
       // Ensure current agenda item is still current
@@ -294,13 +364,20 @@ class CheckAdvanceMeetingGuide
         firestore.document(liveMeetingPath),
         DocumentData.fromMap(
           jsonSubset(
-            [LiveMeeting.kFieldEvents],
+            [
+              LiveMeeting.kFieldEvents,
+              LiveMeeting.kFieldPendingAdvanceAgendaItemId,
+              LiveMeeting.kFieldPendingAdvanceTime,
+            ],
             firestoreUtils.toFirestoreJson(
               LiveMeeting(
                 events: [
                   ...currentLiveMeetingEvents,
                   newEvent,
                 ],
+                // Clear any pending advance now that we're actually advancing.
+                pendingAdvanceAgendaItemId: null,
+                pendingAdvanceTime: null,
               ).toJson(),
             ),
           ),
