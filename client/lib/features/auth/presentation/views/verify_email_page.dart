@@ -918,36 +918,31 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             ? '${context.l10n.resendVerificationEmail} (${_resendCooldownRemainingSeconds}s)'
                             : context.l10n.resendVerificationEmail,
                       ),
-                      const SizedBox(height: 24),
-                      Align(
-                        alignment: Alignment.center,
-                        child: UnconstrainedBox(
-                          child: IntrinsicWidth(
-                            child: Semantics(
-                              link: true,
-                              child: InkWell(
-                                focusNode: _verifiedTabFocusNode,
-                                onTap: _checkVerifiedInOtherTab,
-                                mouseCursor: SystemMouseCursors.click,
-                                child: Text(
-                                  context.l10n.emailVerifiedInAnotherTab,
-                                  style: GoogleFonts.inter(
-                                    textStyle: context.theme.textTheme.bodyMedium,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    decoration: TextDecoration.underline,
-                                    decorationStyle: TextDecorationStyle.solid,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  softWrap: false,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: Semantics(
+                  link: true,
+                  child: InkWell(
+                    focusNode: _verifiedTabFocusNode,
+                    onTap: _checkVerifiedInOtherTab,
+                    mouseCursor: SystemMouseCursors.click,
+                    child: Text(
+                      context.l10n.emailVerifiedInAnotherTab,
+                      style: GoogleFonts.inter(
+                        textStyle: context.theme.textTheme.bodyMedium,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                        decorationStyle: TextDecorationStyle.solid,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      softWrap: false,
+                    ),
                   ),
                 ),
               ),
