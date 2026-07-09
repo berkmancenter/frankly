@@ -760,6 +760,26 @@ class CheckHostlessGoToBreakoutsRequest
 }
 
 @Freezed(makeCollectionsUnmodifiable: false)
+class AdvanceMeetingGuideAfterDelayRequest
+    with _$AdvanceMeetingGuideAfterDelayRequest
+    implements SerializeableRequest {
+  static const functionName = 'AdvanceMeetingGuideAfterDelay';
+
+  factory AdvanceMeetingGuideAfterDelayRequest({
+    required String eventPath,
+    String? breakoutSessionId,
+    String? breakoutRoomId,
+    // The agenda item that was current when the countdown was scheduled, used to verify the
+    // pending advance is still valid by the time this call fires.
+    required String agendaItemId,
+  }) = _AdvanceMeetingGuideAfterDelayRequest;
+
+  factory AdvanceMeetingGuideAfterDelayRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$AdvanceMeetingGuideAfterDelayRequestFromJson(json);
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
 class CheckAssignToBreakoutsRequest
     with _$CheckAssignToBreakoutsRequest
     implements SerializeableRequest {

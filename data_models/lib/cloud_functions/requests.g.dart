@@ -851,6 +851,25 @@ Map<String, dynamic> _$$_CheckHostlessGoToBreakoutsRequestToJson(
       'eventPath': instance.eventPath,
     };
 
+_$_AdvanceMeetingGuideAfterDelayRequest
+    _$$_AdvanceMeetingGuideAfterDelayRequestFromJson(
+            Map<String, dynamic> json) =>
+        _$_AdvanceMeetingGuideAfterDelayRequest(
+          eventPath: json['eventPath'] as String,
+          breakoutSessionId: json['breakoutSessionId'] as String?,
+          breakoutRoomId: json['breakoutRoomId'] as String?,
+          agendaItemId: json['agendaItemId'] as String,
+        );
+
+Map<String, dynamic> _$$_AdvanceMeetingGuideAfterDelayRequestToJson(
+        _$_AdvanceMeetingGuideAfterDelayRequest instance) =>
+    <String, dynamic>{
+      'eventPath': instance.eventPath,
+      'breakoutSessionId': instance.breakoutSessionId,
+      'breakoutRoomId': instance.breakoutRoomId,
+      'agendaItemId': instance.agendaItemId,
+    };
+
 _$_CheckAssignToBreakoutsRequest _$$_CheckAssignToBreakoutsRequestFromJson(
         Map<String, dynamic> json) =>
     _$_CheckAssignToBreakoutsRequest(
