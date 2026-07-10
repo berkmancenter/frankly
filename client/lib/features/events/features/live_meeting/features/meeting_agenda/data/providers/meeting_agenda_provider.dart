@@ -109,6 +109,14 @@ class AgendaProvider with ChangeNotifier {
   AgendaItem? get currentAgendaItem =>
       _currentAgendaItemForLiveMeeting(currentLiveMeeting);
 
+  /// The agenda item that a majority of participants have voted to advance past, while the
+  /// synchronized countdown before actually advancing is running. Null if no countdown is active.
+  String? get pendingAdvanceAgendaItemId =>
+      currentLiveMeeting?.pendingAdvanceAgendaItemId;
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  DateTime? get pendingAdvanceTime => currentLiveMeeting?.pendingAdvanceTime;
+
   void initialize() {
     liveMeetingProvider?.addListener(onLiveMeetingUpdate);
 
@@ -559,8 +567,16 @@ class AgendaProvider with ChangeNotifier {
 
     final liveMeetingUpdate = firestoreLiveMeetingService.update(
       liveMeetingPath: liveMeetingPath,
-      liveMeeting: localCurrentLiveMeeting.copyWith(events: []),
-      keys: [LiveMeeting.kFieldEvents],
+      liveMeeting: localCurrentLiveMeeting.copyWith(
+        events: [],
+        pendingAdvanceAgendaItemId: null,
+        pendingAdvanceTime: null,
+      ),
+      keys: [
+        LiveMeeting.kFieldEvents,
+        LiveMeeting.kFieldPendingAdvanceAgendaItemId,
+        LiveMeeting.kFieldPendingAdvanceTime,
+      ],
     );
     final agendaItemsDelete =
         cloudFunctionsLiveMeetingService.resetParticipantAgendaItems(

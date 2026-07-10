@@ -189,6 +189,24 @@ class MeetingGuideCardPresenter {
         .length;
   }
 
+  /// The number of ready votes required to advance, kept in sync with the backend's real trigger
+  /// threshold via the shared [readyToAdvanceThreshold] helper.
+  int getReadyThreshold(Set<String> presentParticipantIds) {
+    return readyToAdvanceThreshold(presentParticipantIds.length);
+  }
+
+  /// Whether a synchronized countdown to advance past [currentAgendaItemId] is currently running.
+  bool isPendingAdvance(String? currentAgendaItemId) {
+    final pendingAgendaItemId = _agendaProvider.pendingAdvanceAgendaItemId;
+    return pendingAgendaItemId != null &&
+        pendingAgendaItemId == currentAgendaItemId;
+  }
+
+  /// The server-computed time at which the pending advance will actually occur.
+  DateTime? getPendingAdvanceTime(String? currentAgendaItemId) {
+    return _agendaProvider.pendingAdvanceTime;
+  }
+
   bool isControlledByHost() {
     final isAdmin =
         _userDataService.getMembership(_communityProvider.community.id).isAdmin;
@@ -205,6 +223,7 @@ class MeetingGuideCardPresenter {
   }
 
   Future<void> moveForward(String currentAgendaItemId) async {
-    await _agendaProvider.toggleMoveForward(currentAgendaItemId: currentAgendaItemId);
+    await _agendaProvider.toggleMoveForward(
+        currentAgendaItemId: currentAgendaItemId);
   }
 }
