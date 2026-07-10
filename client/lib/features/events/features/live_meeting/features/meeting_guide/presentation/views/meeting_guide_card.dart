@@ -437,12 +437,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
   Widget _buildBottomSection() {
     context.watch<AgendaProvider>();
     context.watch<MeetingGuideCardStore>();
-
-    final isCardPending = _presenter.isCardPending();
-    if (isCardPending) {
-      return CountdownWidget();
-    }
-
     context.watch<LiveMeetingProvider>();
     context.watch<UserService>();
     context.watch<CommunityProvider>();
@@ -478,9 +472,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               final currentItem = _presenter.getCurrentAgendaItem();
               final presentParticipantIds =
                   _presenter.getPresentParticipantIds().toSet();
-              final readyThreshold = presentParticipantIds.length > 1
-                  ? (presentParticipantIds.length * 0.51).floor()
-                  : 1;
+              final readyThreshold =
+                  _presenter.getReadyThreshold(presentParticipantIds);
               final readyToMoveOnCount = _presenter.readyToMoveOnCount(
                 participantAgendaItemDetailsList,
                 presentParticipantIds,
@@ -516,6 +509,30 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   ],
                 );
               } else {
+                if (_presenter.isPendingAdvance(currentAgendaItemId)) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Moving onto the next agenda item',
+                        style: AppTextStyle.body.copyWith(
+                          color: context.theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxWidth: 64, maxHeight: 64),
+                        child: Countdown(
+                          startingPendingAdvanceTime: Duration(
+                            seconds: 10,
+                          ), // TODO: Get from backend when the card is pending and the time remaining
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
                 return Row(
                   children: [
                     Column(
@@ -678,38 +695,75 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
   }
 }
 
-class CountdownWidget extends StatelessWidget {
-  const CountdownWidget({Key? key}) : super(key: key);
+class Countdown extends StatefulWidget {
+  final Duration startingPendingAdvanceTime;
+
+  const Countdown({
+    required this.startingPendingAdvanceTime,
+  });
+
+  @override
+  SyncedAdvanceCountdownWidget createState() => SyncedAdvanceCountdownWidget();
+}
+
+/// Shown to all participants once a majority have voted to move on, counting down to the moment
+/// the meeting guide actually advances.
+class SyncedAdvanceCountdownWidget extends State<Countdown>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: widget.startingPendingAdvanceTime,
+    )..reverse(from: 1.0);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PeriodicBuilder(
       period: Duration(seconds: 1),
       builder: (context) {
-        final countdownSeconds = 3 -
-            Provider.of<MeetingGuideCardStore>(context)
-                .pendingMeetingGuideAgendaItemElapsed
-                .elapsed
-                .inSeconds;
         final isMobile = responsiveLayoutService.isMobile(context);
-        return Row(
+        return Stack(
+          alignment: Alignment.center,
           children: [
-            if (!isMobile) ...[
-              Expanded(
-                child: HeightConstrainedText(
-                  'Moving to the next agenda item...',
-                  style: AppTextStyle.subhead
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
-                ),
+            SizedBox(
+              width: 150,
+              height: 150,
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (context, child) {
+                  return CircularProgressIndicator(
+                    // The countdown is reversed from the starting pending advance time, so we need to divide by 1 to get the correct value.
+                    value: controller.value,
+                    strokeWidth: 5.0,
+                    backgroundColor:
+                        context.theme.colorScheme.onPrimaryContainer,
+                  );
+                },
               ),
-              SizedBox(width: 10),
-            ],
-            HeightConstrainedText(
-              math.max(1, countdownSeconds).toString(),
-              style: TextStyle(
-                fontSize: isMobile ? 24 : 38,
-                color: context.theme.colorScheme.onPrimary,
-              ),
+            ),
+            AnimatedBuilder(
+              animation: controller,
+              builder: (context, child) {
+                return Text(
+                  '${(controller.value * widget.startingPendingAdvanceTime.inSeconds).ceil()}',
+                  style: TextStyle(
+                    fontSize: context.theme.textTheme.titleLarge?.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                );
+              },
             ),
           ],
         );

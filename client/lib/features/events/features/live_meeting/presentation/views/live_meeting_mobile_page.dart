@@ -795,7 +795,10 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                     else
                       Spacer(),
                     if (isCardPending)
-                      CountdownWidget()
+                      Countdown(
+                        // TODO: Get from backend when the card is pending and the time remaining
+                        startingPendingAdvanceTime: Duration(seconds: 10),
+                      )
                     else ...[
                       if (!isHosted || canUserControlMeeting) ...[
                         if (isBackButtonShown)
