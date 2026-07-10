@@ -126,6 +126,15 @@ class CheckAdvanceMeetingGuide
     required String? parentLiveMeetingPath,
     required CheckAdvanceMeetingGuideRequest request,
   }) async {
+    attemptAdvance(currentAgendaItemId) {
+      return AdvanceMeetingGuideAfterDelayRequest(
+        eventPath: request.eventPath,
+        breakoutSessionId: request.breakoutSessionId,
+        breakoutRoomId: request.breakoutRoomId,
+        agendaItemId: currentAgendaItemId,
+      );
+    }
+
     final liveMeeting = await firestoreUtils.getFirestoreObject(
       path: liveMeetingPath,
       constructor: (map) => LiveMeeting.fromJson(map),
@@ -140,11 +149,19 @@ class CheckAdvanceMeetingGuide
       print('Meeting already finished. Not checking advanced');
       return false;
     }
+    print('Checking advance for event: ${request.eventPath}, '
+        'live meeting: $liveMeetingPath');
+
     // Get current agenda
-    final event = await firestoreUtils.getFirestoreObject(
-      path: request.eventPath,
-      constructor: (map) => Event.fromJson(map),
-    );
+    final Event event;
+    try {
+      event = await firestoreUtils.getFirestoreObject(
+        path: request.eventPath,
+        constructor: (map) => Event.fromJson(map),
+      );
+    } catch (e) {
+      throw StateError('Failed to load event at ${request.eventPath}: $e');
+    }
 
     final currentAgendaItemId = _getCurrentAgendaItemId(event, liveMeeting);
     print('current agenda item: $currentAgendaItemId');
@@ -212,6 +229,8 @@ class CheckAdvanceMeetingGuide
 
     final threshold = readyToAdvanceThreshold(presentParticipantIds.length);
     if (readyToMoveOnIds.length < threshold) {
+      print(
+          'Not enough participants ready to advance. Threshold: $threshold, ready: ${readyToMoveOnIds.length}');
       return false;
     }
 
@@ -256,13 +275,23 @@ class CheckAdvanceMeetingGuide
     });
 
     if (!alreadyPending) {
+      // if running on localhost, skip scheduling and just run the function after an interval of 10 seconds
+      if (functions.config
+              .get('app.functions_url_prefix')
+              .toString()
+              .startsWith('http://localhost') ||
+          functions.config
+              .get('app.functions_url_prefix')
+              .toString()
+              .startsWith('http://127.0.0.1')) {
+        print(
+            'Running on local host, skipping scheduling and running after 10 seconds');
+        await Future.delayed(const Duration(seconds: 10), () async {
+          attemptAdvance(currentAgendaItemId);
+        });
+      }
       await AdvanceMeetingGuideAfterDelayServer().schedule(
-        AdvanceMeetingGuideAfterDelayRequest(
-          eventPath: request.eventPath,
-          breakoutSessionId: request.breakoutSessionId,
-          breakoutRoomId: request.breakoutRoomId,
-          agendaItemId: currentAgendaItemId,
-        ),
+        attemptAdvance(currentAgendaItemId),
         pendingAdvanceTime,
       );
     }
