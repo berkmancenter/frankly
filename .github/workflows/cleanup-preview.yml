@@ -6,12 +6,17 @@ permissions:
   contents: read
 jobs:
   cleanup:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
+      # Mirrors action-hosting-deploy's own default channel ID generation (used by
+      # test_client.yaml's PR-triggered deploy, which doesn't set an explicit channelId):
+      # "pr<PR#>-<branch, truncated to 20 chars>", with unsupported characters replaced by "_".
       - name: Generate the channel ID for the Firebase preview channel
         run: |
-          REF_NAME="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
-          echo "PREVIEW_CHANNEL_ID=$(echo ${REF_NAME:0:26} | sed 's/\//-/g')" >> $GITHUB_ENV
+          BRANCH_NAME="${GITHUB_HEAD_REF:0:20}"
+          RAW_CHANNEL_ID="pr${{ github.event.pull_request.number }}-${BRANCH_NAME}"
+          echo "PREVIEW_CHANNEL_ID=$(echo "$RAW_CHANNEL_ID" | sed -E 's/[^a-zA-Z0-9_.-]/_/g')" >> $GITHUB_ENV
 
       - name: Install Firebase Tools
         run: npm install -g firebase-tools

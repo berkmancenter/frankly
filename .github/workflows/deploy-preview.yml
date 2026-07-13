@@ -1,8 +1,5 @@
 name: Deploy to Staging Preview Channel
-on:
-  workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
+on: workflow_dispatch
 permissions:
   checks: write
   contents: read
@@ -101,9 +98,7 @@ jobs:
       # documented when triggered manually via workflow_dispatch
       - name: Generate a channel ID for the Firebase preview channel
         if: steps.changes.outputs.client == 'true'
-        run: |
-          REF_NAME="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
-          echo "PREVIEW_CHANNEL_ID=$(echo ${REF_NAME:0:26} | sed 's/\//-/g')" >> $GITHUB_ENV
+        run: echo "PREVIEW_CHANNEL_ID=$(echo ${GITHUB_REF_NAME:0:26} | sed 's/\//-/g')" >> $GITHUB_ENV
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true'
@@ -117,6 +112,7 @@ jobs:
           projectId: ${{ secrets.APP_STAGING_PROJECT_ID }}
 
       - name: Add domain to Firebase Auth
+        if: steps.changes.outputs.client == 'true'
         uses: wavezync/firebase-authorized-domains@v1.0.0
         with:
           service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
