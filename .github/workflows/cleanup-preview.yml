@@ -1,0 +1,41 @@
+name: Clean Up Staging Preview Channel
+on:
+  pull_request:
+    types: [closed]
+permissions:
+  contents: read
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate the channel ID for the Firebase preview channel
+        run: |
+          REF_NAME="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          echo "PREVIEW_CHANNEL_ID=$(echo ${REF_NAME:0:26} | sed 's/\//-/g')" >> $GITHUB_ENV
+
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools
+
+      - name: Write Firebase service account credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+
+      # The channel's URL (including its Firebase-generated hash suffix) is fixed when the
+      # channel is first created, so it must be looked up rather than reconstructed here.
+      - name: Look up the preview channel URL
+        id: lookup_url
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-service-account.json
+        run: |
+          URL=$(firebase hosting:channel:list --project ${{ secrets.APP_STAGING_PROJECT_ID }} --json \
+            | jq -r --arg id "$PREVIEW_CHANNEL_ID" '.result.channels[] | select(.name | endswith("/channels/" + $id)) | .url')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Remove domain from Firebase Auth
+        if: steps.lookup_url.outputs.url != ''
+        uses: wavezync/firebase-authorized-domains@v1.0.0
+        with:
+          service_account_key_json: ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }}
+          domain: ${{ steps.lookup_url.outputs.url }}
+          action: remove
