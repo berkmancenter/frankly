@@ -36,6 +36,6 @@ jobs:
         if: steps.lookup_url.outputs.url != ''
         uses: wavezync/firebase-authorized-domains@v1.0.0
         with:
-          service_account_key_json: ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }}
+          service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           domain: ${{ steps.lookup_url.outputs.url }}
           action: remove

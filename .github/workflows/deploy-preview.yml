@@ -119,6 +119,6 @@ jobs:
       - name: Add domain to Firebase Auth
         uses: wavezync/firebase-authorized-domains@v1.0.0
         with:
-          service_account_key_json: ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }}
+          service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           domain: ${{ steps.deploy_preview.outputs.details_url }}
           action: add
