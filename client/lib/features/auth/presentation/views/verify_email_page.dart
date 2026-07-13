@@ -549,10 +549,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SvgPicture.asset(
-                      AppAsset.kArrowLeftThinSvg.path,
-                      width: 18,
-                      height: 18,
+                    Icon(
+                      Icons.arrow_back,
+                      size: 18,
+                      color: context.theme.colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 4),
                     Text(
