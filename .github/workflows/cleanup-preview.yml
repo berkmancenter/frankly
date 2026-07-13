@@ -28,6 +28,8 @@ jobs:
 
       # The channel's URL (including its Firebase-generated hash suffix) is fixed when the
       # channel is first created, so it must be looked up rather than reconstructed here.
+      # wavezync/firebase-authorized-domains@v1.0.0 sends the domain input to the Firebase
+      # Auth API as-is (no scheme stripping), which rejects a full URL, so strip it here.
       - name: Look up the preview channel URL
         id: lookup_url
         env:
@@ -35,12 +37,15 @@ jobs:
         run: |
           URL=$(firebase hosting:channel:list --project ${{ secrets.APP_STAGING_PROJECT_ID }} --json \
             | jq -r --arg id "$PREVIEW_CHANNEL_ID" '.result.channels[] | select(.name | endswith("/channels/" + $id)) | .url')
-          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          HOST="${URL#http://}"
+          HOST="${HOST#https://}"
+          HOST="${HOST%%/*}"
+          echo "domain=$HOST" >> "$GITHUB_OUTPUT"
 
       - name: Remove domain from Firebase Auth
-        if: steps.lookup_url.outputs.url != ''
+        if: steps.lookup_url.outputs.domain != ''
         uses: wavezync/firebase-authorized-domains@v1.0.0
         with:
           service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          domain: ${{ steps.lookup_url.outputs.url }}
+          domain: ${{ steps.lookup_url.outputs.domain }}
           action: remove

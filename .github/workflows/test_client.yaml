@@ -121,10 +121,22 @@ jobs:
           expires: 14d
           projectId: ${{secrets.APP_STAGING_PROJECT_ID}}
 
+      # wavezync/firebase-authorized-domains@v1.0.0 sends the domain input to the Firebase
+      # Auth API as-is (no scheme stripping), which rejects a full URL, so strip it here.
+      - name: Extract preview channel hostname
+        if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository
+        id: preview_domain
+        run: |
+          URL="${{ steps.deploy_preview.outputs.details_url }}"
+          HOST="${URL#http://}"
+          HOST="${HOST#https://}"
+          HOST="${HOST%%/*}"
+          echo "hostname=$HOST" >> "$GITHUB_OUTPUT"
+
       - name: Add domain to Firebase Auth
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository
         uses: wavezync/firebase-authorized-domains@v1.0.0
         with:
           service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          domain: ${{ steps.deploy_preview.outputs.details_url }}
+          domain: ${{ steps.preview_domain.outputs.hostname }}
           action: add
