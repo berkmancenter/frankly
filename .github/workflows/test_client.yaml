@@ -113,9 +113,18 @@ jobs:
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
+        id: deploy_preview
         uses: FirebaseExtended/action-hosting-deploy@v0.9.0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           expires: 14d
           projectId: ${{secrets.APP_STAGING_PROJECT_ID}}
+
+      - name: Add domain to Firebase Auth
+        if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: wavezync/firebase-authorized-domains@v1.0.0
+        with:
+          service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          domain: ${{ steps.deploy_preview.outputs.details_url }}
+          action: add
