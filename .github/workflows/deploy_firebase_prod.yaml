@@ -36,6 +36,9 @@ jobs:
       - name: Install Dart Dependencies
         run: flutter pub get
 
+      - name: Sync index.html template for ServeIndex
+        run: cp ../../client/web/index.html web/index.html
+
       - name: Build Functions
         run: dart run build_runner build --output=build
 
