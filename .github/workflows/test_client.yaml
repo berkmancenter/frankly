@@ -109,7 +109,7 @@ jobs:
       - name: Build App
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
         id: build_app
-        run: flutter build web --release web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
+        run: flutter build web --release --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository
