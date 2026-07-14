@@ -64,7 +64,7 @@ function buildCsp(nonce) {
     return directives.join('; ')
 }
 
-const ServeIndex = functions.https.onRequest((req, res) => {
+const ServeIndex = functions.runWith({ minInstances: 1 }).https.onRequest((req, res) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') {
         res.status(405).send('Method Not Allowed')
         return
@@ -77,10 +77,6 @@ const ServeIndex = functions.https.onRequest((req, res) => {
     // no-store: the nonce is unique per response and must never be served from cache.
     res.set('Cache-Control', 'no-store')
     res.set('Content-Security-Policy', csp)
-    // Report-Only duplicate: logs violations to the browser console without
-    // blocking anything. Useful during staging validation to catch missing
-    // domains. Remove once the enforcing policy is stable in production.
-    res.set('Content-Security-Policy-Report-Only', csp)
     res.set('Content-Type', 'text/html; charset=utf-8')
     res.send(html)
 })
