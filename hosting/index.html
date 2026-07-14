@@ -493,6 +493,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4. Configure Firebase Hosting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#content-security-policy-csp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Security Policy (CSP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-third-party-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a new third-party script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -695,6 +734,28 @@
     <span class="md-ellipsis">
       
         SendGrid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-authentication-dns-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email Authentication DNS Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dnssec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNSSEC
       
     </span>
   </a>
@@ -1092,6 +1153,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4. Configure Firebase Hosting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#content-security-policy-csp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Security Policy (CSP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-third-party-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a new third-party script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1294,6 +1394,28 @@
     <span class="md-ellipsis">
       
         SendGrid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-authentication-dns-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email Authentication DNS Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dnssec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNSSEC
       
     </span>
   </a>
@@ -1663,10 +1785,35 @@
 <li><strong>Email/Password</strong></li>
 <li><strong>Google</strong></li>
 </ul>
-<p>For <strong>Google sign-in</strong>, you will also need to set the Google OAuth Client ID in <code>client/web/index.html</code>. The file contains the placeholder <code>__GOOGLE_ID__</code> which must be replaced with your OAuth client ID before building.</p>
+<p>For <strong>Google sign-in</strong>, you will also need to set the Google OAuth Client ID via the <code>app.google_id</code> runtime config value (see section 8). The <code>ServeIndex</code> function substitutes this into the HTML at request time.</p>
 <hr />
 <h2 id="4-configure-firebase-hosting">4. Configure Firebase Hosting</h2>
 <p>Frankly is hosted via Firebase Hosting. The built Flutter web app is served from <code>client/build/web</code>.</p>
+<p>All HTML page requests are routed through the <code>ServeIndex</code> Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted <code>&lt;script&gt;</code> tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.</p>
+<p>This is configured by the catch-all rewrite in <code>firebase.json</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;**&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;function&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ServeIndex&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="content-security-policy-csp">Content Security Policy (CSP)</h3>
+<p>The CSP is set as an HTTP response header by <code>ServeIndex</code> (in <code>firebase/functions/js/serve-index.js</code>). It uses <code>'strict-dynamic'</code> with a per-request nonce, which means:</p>
+<ul>
+<li>Every <code>&lt;script&gt;</code> tag in <code>index.html</code> must have <code>nonce="__SCRIPT_NONCE__"</code>. The function replaces this placeholder with a cryptographic random value on each request.</li>
+<li>Scripts dynamically created by trusted (nonced) parent scripts are automatically trusted via <code>strict-dynamic</code> propagation. This covers Firebase SDK internals, Cloudinary widget internals, etc.</li>
+<li><code>connect-src</code> restricts which domains the app can make fetch/XHR/WebSocket calls to. If you add a new backend service integration, add its domain to the <code>connect-src</code> list in <code>serve-index.js</code>.</li>
+<li><code>frame-ancestors 'self'</code> prevents the app from being embedded in iframes on other sites (clickjacking protection). This directive only works as an HTTP header, not a meta tag.</li>
+</ul>
+<h3 id="adding-a-new-third-party-script">Adding a new third-party script</h3>
+<ol>
+<li>Add the <code>&lt;script&gt;</code> tag to <code>client/web/index.html</code> with <code>nonce="__SCRIPT_NONCE__"</code>.</li>
+<li>Run <code>build-all.sh</code> or <code>run-dev.sh</code> (or let CI handle it) so <code>client/web/index.html</code> is copied to <code>firebase/functions/web/index.html</code> before building/deploying functions.</li>
+<li>If the script makes network requests to new domains, add those domains to <code>connect-src</code> in <code>serve-index.js</code>.</li>
+<li>If the script loads images or media from new domains, update <code>img-src</code> or <code>media-src</code> accordingly.</li>
+<li>If the script loads stylesheets or fonts from new domains, update <code>style-src</code> or <code>font-src</code> accordingly.</li>
+</ol>
+<h3 id="template-sync">Template sync</h3>
+<p><code>firebase/functions/web/index.html</code> is a copy of <code>client/web/index.html</code> used by the ServeIndex function. The CI/CD workflows, <code>build-all.sh</code>, and <code>run-dev.sh</code> all copy <code>client/web/index.html</code> to <code>firebase/functions/web/index.html</code> automatically before building functions. You should not need to sync these files manually.</p>
 <p>If you are using multiple hosting targets (e.g. staging and production sites), configure them with:</p>
 <div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>target:apply<span class="w"> </span>hosting<span class="w"> </span>staging<span class="w"> </span>your-staging-site-name
 firebase<span class="w"> </span>target:apply<span class="w"> </span>hosting<span class="w"> </span>prod<span class="w"> </span>your-production-site-name
@@ -1725,6 +1872,8 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
 <span class="w">  </span>app.functions_url_prefix<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>app.project_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>app.copyright<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.google_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.version<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>ics.prod_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>xmlns.url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>xmlns.media_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -1747,6 +1896,8 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
 <li><code>app.project_id</code> — Firebase project ID</li>
 <li><code>app.copyright</code> — Copyright statement for outgoing emails</li>
 <li><code>app.unsubscribe_encryption_key</code> — Random string used for unsubscribe link signing</li>
+<li><code>app.google_id</code> — Google OAuth Client ID for Google Sign-In (substituted into the HTML by ServeIndex)</li>
+<li><code>app.version</code> — Application version string (substituted into the HTML by ServeIndex; typically set by CI/CD)</li>
 </ul>
 <p><strong>Calendar / XML namespace values</strong></p>
 <ul>
@@ -1847,7 +1998,34 @@ stripe.webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_
 </code></pre></div>
 <p>Also create products and pricing with a <code>plan_type</code> metadata field (<code>individual</code>, <code>club</code>, or <code>pro</code>) and configure prices for each.</p>
 <h3 id="sendgrid">SendGrid</h3>
-<p>SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension <code>firebase/firestore-send-email@0.1.9</code> with your SendGrid credentials. Email definitions are written to the <code>sendgridemail</code> Firestore collection.</p>
+<p>SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension <code>firebase/firestore-send-email@0.1.9</code> with your SendGrid credentials. Email definitions are written to the <code>sendgridmail</code> Firestore collection.</p>
+<h3 id="email-authentication-dns-records">Email Authentication DNS Records</h3>
+<p>To prevent spoofing of your sender domain, configure these DNS records:</p>
+<p><strong>SPF</strong> - Add a TXT record on your apex domain:</p>
+<div class="highlight"><pre><span></span><code>v=spf1 mx ip4:&lt;your-mail-server-ip-range&gt; include:sendgrid.net -all
+</code></pre></div>
+<p><strong>DKIM</strong> - In SendGrid, go to Settings -&gt; Sender Authentication -&gt; Authenticate Your Domain. SendGrid will give you CNAME records to add in your DNS provider. Verify they resolve:</p>
+<div class="highlight"><pre><span></span><code>dig<span class="w"> </span>+short<span class="w"> </span>CNAME<span class="w"> </span>&lt;selector&gt;._domainkey.yourdomain.com
+</code></pre></div>
+<p><strong>DMARC</strong> - Add a TXT record at <code>_dmarc.yourdomain.com</code>:</p>
+<div class="highlight"><pre><span></span><code>v=DMARC1; p=quarantine; rua=mailto:&lt;your-reporting-address&gt;
+</code></pre></div>
+<p>Start with <code>p=quarantine</code> to catch misaligned senders before moving to <code>p=reject</code>.</p>
+<h3 id="dnssec">DNSSEC</h3>
+<p>DNSSEC adds cryptographic signatures to DNS responses, preventing attackers from forging or tampering with DNS answers (cache poisoning). Without it, an attacker who can poison a resolver cache could redirect your users to a different server.</p>
+<p>If your domain uses Gandi nameservers (ns-*.gandi.net), Gandi handles key generation and DS record publication automatically:</p>
+<ol>
+<li>Log in to Gandi -&gt; go to your domain -&gt; DNS Records tab</li>
+<li>Click "DNSSEC" in the sidebar</li>
+<li>Enable DNSSEC - Gandi will generate the signing keys and publish the DS record to the parent zone</li>
+</ol>
+<p>Verify it is active after propagation:</p>
+<div class="highlight"><pre><span></span><code>dig<span class="w"> </span>+short<span class="w"> </span>DS<span class="w"> </span>yourdomain.com
+</code></pre></div>
+<p>If you see one or more DS records, DNSSEC is live. You can also check with:</p>
+<div class="highlight"><pre><span></span><code>dig<span class="w"> </span>+dnssec<span class="w"> </span>yourdomain.com
+</code></pre></div>
+<p>Look for the <code>ad</code> (authenticated data) flag in the response header.</p>
 <hr />
 <h2 id="11-build-and-deploy">11. Build and Deploy</h2>
 <h3 id="step-1-select-the-target-project">Step 1: Select the target project</h3>

@@ -1753,8 +1753,9 @@ CLOUDINARY_CLOUD_NAME=&lt;value&gt;
 </code></pre></div>
 <h3 id="sendgrid">SendGrid</h3>
 <ul>
-<li>Uses a Firestore extension. Emails definitions are written to the firestore collection sendgridemail.</li>
-<li>Configure the firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your sendgrid info</li>
+<li>Uses a Firestore extension. Email definitions are written to the Firestore collection <code>sendgridmail</code>.</li>
+<li>Configure the Firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your SendGrid info</li>
+<li>Set up SPF, DKIM, and DMARC DNS records for your sender domain. See the <a href="../hosting/#email-authentication-dns-records">Hosting guide</a> for details.</li>
 </ul>
 <h3 id="stripe">Stripe</h3>
 <p>Stripe is currently disabled for the platform. The following instructions will apply if you choose to enable Stripe:</p>
