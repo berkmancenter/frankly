@@ -102,6 +102,7 @@ jobs:
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true'
+        id: deploy_preview
         uses: FirebaseExtended/action-hosting-deploy@v0.9.0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
@@ -109,3 +110,23 @@ jobs:
           expires: 14d
           channelId: ${{ env.PREVIEW_CHANNEL_ID }}
           projectId: ${{ secrets.APP_STAGING_PROJECT_ID }}
+
+      # wavezync/firebase-authorized-domains@v1.0.0 sends the domain input to the Firebase
+      # Auth API as-is (no scheme stripping), which rejects a full URL, so strip it here.
+      - name: Extract preview channel hostname
+        if: steps.changes.outputs.client == 'true'
+        id: preview_domain
+        run: |
+          URL="${{ steps.deploy_preview.outputs.details_url }}"
+          HOST="${URL#http://}"
+          HOST="${HOST#https://}"
+          HOST="${HOST%%/*}"
+          echo "hostname=$HOST" >> "$GITHUB_OUTPUT"
+
+      - name: Add domain to Firebase Auth
+        if: steps.changes.outputs.client == 'true'
+        uses: wavezync/firebase-authorized-domains@v1.0.0
+        with:
+          service_account_key_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          domain: ${{ steps.preview_domain.outputs.hostname }}
+          action: add
