@@ -50,6 +50,7 @@ import 'package:functions/events/live_meetings/vote_to_kick.dart';
 import 'package:functions/events/live_meetings/update_presence_status.dart';
 import 'package:functions/events/on_event.dart';
 import 'package:functions/events/on_event_participant.dart';
+import 'package:functions/events/backfill_registration_count.dart';
 import 'package:functions/discussion_threads/on_discussion_thread.dart';
 import 'package:functions/discussion_threads/on_discussion_thread_comment.dart';
 import 'package:functions/community/on_community.dart';
@@ -116,6 +117,7 @@ final _onCallFunctions = <CloudFunction>[
   UpdateStripeSubscriptionPlan(),
   VoteToKick(),
   EventEnded(),
+  BackfillRegistrationCount(),
 ];
 
 final _onRequestFunctions = <CloudFunction>[

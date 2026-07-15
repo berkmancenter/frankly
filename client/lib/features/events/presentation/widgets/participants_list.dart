@@ -139,8 +139,13 @@ class _ParticipantsListState extends State<ParticipantsList> {
       );
     }
 
+    // For non-hosted events without a populated registrationCount, don't show
+    // the misleading "1 Person" fallback from participantCountEstimate.
+    if (widget.event.useParticipantCountEstimate) {
+      return SizedBox.shrink();
+    }
+
     if (_participantCount == 1 &&
-        !widget.event.useParticipantCountEstimate &&
         !isParticipant) {
       return _buildSingleParticipantName();
     } else {
@@ -149,9 +154,6 @@ class _ParticipantsListState extends State<ParticipantsList> {
       if (isParticipant) {
         text =
             'You ${_participantCount > 1 ? '+ ${_participantCount - 1}' : ''}';
-      } else if (widget.event.useParticipantCountEstimate) {
-        text =
-            '$_participantCount ${_participantCount == 1 ? 'Person' : 'People'}';
       } else if (_participantCount > widget.numberOfIconsToShow) {
         text = '+${_participantCount - widget.numberOfIconsToShow}';
       } else if (_participantCount > 1) {
