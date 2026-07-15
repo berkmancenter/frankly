@@ -24,7 +24,8 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
     UpdateMembershipRequest request,
     CallableContext context,
   ) async {
-    orElseUnauthorized(context.authUid != null);
+    orElseUnauthorized(context.authUid != null,
+        logMessage: 'User must be authenticated to update membership.');
     orElseInvalidArgument(request.status != null);
 
     final authUid = context.authUid;
@@ -74,10 +75,11 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
         requestingUserId: context.authUid!,
         targetUserId: targetUserId,
       ),
+      logMessage:
+          'User is not authorized to change membership status from $currentStatus to $targetStatus for user $targetUserId in community $communityId',
     );
 
     // If elevating to admin, ensure sufficient quota.
-
     final adminStatuses = [
       MembershipStatus.admin,
       MembershipStatus.owner,
@@ -116,7 +118,8 @@ class UpdateMembership extends OnCallMethod<UpdateMembershipRequest> {
             .where(Membership.kFieldCommunityId, isEqualTo: request.communityId)
             .where(
               Membership.kFieldStatus,
-              isEqualTo: EnumToString.convertToString(MembershipStatus.moderator),
+              isEqualTo:
+                  EnumToString.convertToString(MembershipStatus.moderator),
             )
             .get();
 
