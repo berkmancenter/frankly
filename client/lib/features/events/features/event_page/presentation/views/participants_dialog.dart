@@ -173,7 +173,7 @@ class ParticipantsDialog extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, documentSnapshot) {
         final participant = Participant.fromJson(
-          fromFirestoreJson(documentSnapshot.data() as Map<String, dynamic>),
+          fromFirestoreJson(documentSnapshot.data()),
         );
         return _buildParticipant(participant, context);
       },
