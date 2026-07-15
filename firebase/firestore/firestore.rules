@@ -409,6 +409,8 @@ service cloud.firestore {
                     && resource.data.get('status', '') == 'denied'
                     && request.resource.data.get('status', '') == 'requested'
                     && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+                // Allow a user to clear their own request (e.g. after leaving a community they were previously approved for), so they can request again in the future.
+                allow delete: if hasAuth() && request.auth.uid == userId;
             }
         }
 
