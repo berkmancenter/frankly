@@ -139,11 +139,19 @@ class ParticipantsDialog extends StatelessWidget {
   }
 
   Widget _buildDialogTitle(BuildContext context) {
-    final l10n = appLocalizationService.getLocalization();
+    final String titleText;
+    if (eventProvider.useParticipantCountEstimate) {
+      final regCount = eventProvider.registrationCount;
+      final activeCount = eventProvider.presentParticipantCount;
+      titleText = '$regCount registrations ($activeCount active)';
+    } else {
+      final l10n = appLocalizationService.getLocalization();
+      titleText = l10n.participantCount(eventProvider.participantCount);
+    }
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: HeightConstrainedText(
-        l10n.participantCount(eventProvider.participantCount),
+        titleText,
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
