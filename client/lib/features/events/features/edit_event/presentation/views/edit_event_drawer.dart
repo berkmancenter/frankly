@@ -201,7 +201,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
 
   Widget _buildTitleSection() {
     return CustomTextField(
-      labelText: 'Title',
+      labelText: context.l10n.title,
       initialValue: _model.event.title,
       maxLines: 2,
       maxLength: 60,
@@ -212,7 +212,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
 
   Widget _buildDescriptionSection() {
     return CustomTextField(
-      labelText: 'Description',
+      labelText: context.l10n.description,
       initialValue: _model.event.description,
       onChanged: (value) => _presenter.updateDescription(value),
     );
@@ -239,7 +239,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
 
     return CustomTextField(
       key: Key(dateString),
-      labelText: 'Date',
+      labelText: context.l10n.date,
       initialValue: dateString,
       maxLength: null,
       onTap: () async {
@@ -269,7 +269,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     }
     return CustomTextField(
       key: Key(timeString),
-      labelText: 'Time',
+      labelText: context.l10n.time,
       initialValue: timeString,
       onTap: () async {
         final now = clock.now();

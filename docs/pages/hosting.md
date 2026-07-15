@@ -96,13 +96,45 @@ Enable the required auth providers in the Firebase Console under **Authenticatio
 - **Email/Password**
 - **Google**
 
-For **Google sign-in**, you will also need to set the Google OAuth Client ID in `client/web/index.html`. The file contains the placeholder `__GOOGLE_ID__` which must be replaced with your OAuth client ID before building.
+For **Google sign-in**, you will also need to set the Google OAuth Client ID via the `app.google_id` runtime config value (see section 8). The `ServeIndex` function substitutes this into the HTML at request time.
 
 ---
 
 ## 4. Configure Firebase Hosting
 
 Frankly is hosted via Firebase Hosting. The built Flutter web app is served from `client/build/web`.
+
+All HTML page requests are routed through the `ServeIndex` Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted `<script>` tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.
+
+This is configured by the catch-all rewrite in `firebase.json`:
+
+```json
+{
+  "source": "**",
+  "function": "ServeIndex"
+}
+```
+
+### Content Security Policy (CSP)
+
+The CSP is set as an HTTP response header by `ServeIndex` (in `firebase/functions/js/serve-index.js`). It uses `'strict-dynamic'` with a per-request nonce, which means:
+
+- Every `<script>` tag in `index.html` must have `nonce="__SCRIPT_NONCE__"`. The function replaces this placeholder with a cryptographic random value on each request.
+- Scripts dynamically created by trusted (nonced) parent scripts are automatically trusted via `strict-dynamic` propagation. This covers Firebase SDK internals, Cloudinary widget internals, etc.
+- `connect-src` restricts which domains the app can make fetch/XHR/WebSocket calls to. If you add a new backend service integration, add its domain to the `connect-src` list in `serve-index.js`.
+- `frame-ancestors 'self'` prevents the app from being embedded in iframes on other sites (clickjacking protection). This directive only works as an HTTP header, not a meta tag.
+
+### Adding a new third-party script
+
+1. Add the `<script>` tag to `client/web/index.html` with `nonce="__SCRIPT_NONCE__"`.
+2. Run `build-all.sh` or `run-dev.sh` (or let CI handle it) so `client/web/index.html` is copied to `firebase/functions/web/index.html` before building/deploying functions.
+3. If the script makes network requests to new domains, add those domains to `connect-src` in `serve-index.js`.
+4. If the script loads images or media from new domains, update `img-src` or `media-src` accordingly.
+5. If the script loads stylesheets or fonts from new domains, update `style-src` or `font-src` accordingly.
+
+### Template sync
+
+`firebase/functions/web/index.html` is a copy of `client/web/index.html` used by the ServeIndex function. The CI/CD workflows, `build-all.sh`, and `run-dev.sh` all copy `client/web/index.html` to `firebase/functions/web/index.html` automatically before building functions. You should not need to sync these files manually.
 
 If you are using multiple hosting targets (e.g. staging and production sites), configure them with:
 
@@ -195,6 +227,8 @@ firebase functions:config:set \
   app.functions_url_prefix="<YOUR_VALUE_HERE>" \
   app.project_id="<YOUR_VALUE_HERE>" \
   app.copyright="<YOUR_VALUE_HERE>" \
+  app.google_id="<YOUR_VALUE_HERE>" \
+  app.version="<YOUR_VALUE_HERE>" \
   ics.prod_id="<YOUR_VALUE_HERE>" \
   xmlns.url="<YOUR_VALUE_HERE>" \
   xmlns.media_url="<YOUR_VALUE_HERE>" \
@@ -219,6 +253,8 @@ firebase functions:config:set \
 - `app.project_id` — Firebase project ID
 - `app.copyright` — Copyright statement for outgoing emails
 - `app.unsubscribe_encryption_key` — Random string used for unsubscribe link signing
+- `app.google_id` — Google OAuth Client ID for Google Sign-In (substituted into the HTML by ServeIndex)
+- `app.version` — Application version string (substituted into the HTML by ServeIndex; typically set by CI/CD)
 
 **Calendar / XML namespace values**
 
@@ -365,7 +401,55 @@ Also create products and pricing with a `plan_type` metadata field (`individual`
 
 ### SendGrid
 
-SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridemail` Firestore collection.
+SendGrid email delivery is handled through a Firestore extension. Configure the Firebase extension `firebase/firestore-send-email@0.1.9` with your SendGrid credentials. Email definitions are written to the `sendgridmail` Firestore collection.
+
+### Email Authentication DNS Records
+
+To prevent spoofing of your sender domain, configure these DNS records:
+
+**SPF** - Add a TXT record on your apex domain:
+
+```
+v=spf1 mx ip4:<your-mail-server-ip-range> include:sendgrid.net -all
+```
+
+**DKIM** - In SendGrid, go to Settings -> Sender Authentication -> Authenticate Your Domain. SendGrid will give you CNAME records to add in your DNS provider. Verify they resolve:
+
+```bash
+dig +short CNAME <selector>._domainkey.yourdomain.com
+```
+
+**DMARC** - Add a TXT record at `_dmarc.yourdomain.com`:
+
+```
+v=DMARC1; p=quarantine; rua=mailto:<your-reporting-address>
+```
+
+Start with `p=quarantine` to catch misaligned senders before moving to `p=reject`.
+
+### DNSSEC
+
+DNSSEC adds cryptographic signatures to DNS responses, preventing attackers from forging or tampering with DNS answers (cache poisoning). Without it, an attacker who can poison a resolver cache could redirect your users to a different server.
+
+If your domain uses Gandi nameservers (ns-\*.gandi.net), Gandi handles key generation and DS record publication automatically:
+
+1. Log in to Gandi -> go to your domain -> DNS Records tab
+2. Click "DNSSEC" in the sidebar
+3. Enable DNSSEC - Gandi will generate the signing keys and publish the DS record to the parent zone
+
+Verify it is active after propagation:
+
+```bash
+dig +short DS yourdomain.com
+```
+
+If you see one or more DS records, DNSSEC is live. You can also check with:
+
+```bash
+dig +dnssec yourdomain.com
+```
+
+Look for the `ad` (authenticated data) flag in the response header.
 
 ---
 

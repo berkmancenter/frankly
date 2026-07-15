@@ -90,9 +90,10 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
         title: context.l10n.addComment,
         isMobile: isMobile,
         labelText: 'Comment',
-        validator: (text) =>
-            text == null || text.isEmpty ? 'Comment cannot be empty' : null,
-        positiveButtonText: 'Add Comment',
+        validator: (text) => text == null || text.isEmpty
+            ? context.l10n.commentCannotBeEmpty
+            : null,
+        positiveButtonText: context.l10n.addComment,
       );
 
       if (comment != null && mounted) {
@@ -189,7 +190,7 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
             ),
             SizedBox(width: 10),
             Text(
-              'Add a comment',
+              context.l10n.addAComment,
               style: AppTextStyle.subhead
                   .copyWith(color: context.theme.colorScheme.onPrimary),
             ),
@@ -475,9 +476,9 @@ class _DiscussionThreadPageState extends State<DiscussionThreadPage>
               isMobile: isMobile,
               labelText: 'Comment',
               validator: (text) => text == null || text.isEmpty
-                  ? 'Comment cannot be empty'
+                  ? context.l10n.commentCannotBeEmpty
                   : null,
-              positiveButtonText: 'Add Comment',
+              positiveButtonText: context.l10n.addComment,
             );
 
             if (comment != null && mounted) {

@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/auth/utils/auth_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
           builder: (_, request) {
             if (request == null || request.status == MembershipRequestStatus.denied) {
               return ActionButton(
-                text: 'Request To Follow',
+                text: context.l10n.requestToFollow,
                 color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
@@ -85,7 +86,7 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
               MembershipRequestStatus.requested,
             ].contains(request.status)) {
               return ActionButton(
-                text: 'Follow Request Sent',
+                text: context.l10n.followRequestSent,
                 color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
@@ -93,7 +94,7 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
               );
             } else {
               return ActionButton(
-                text: widget.text ?? 'Follow',
+                text: widget.text ?? context.l10n.follow,
                 color: context.theme.colorScheme.primary,
                 height: widget.height,
                 minWidth: widget.minWidth,
@@ -111,7 +112,7 @@ class CommunityMembershipButtonState extends State<CommunityMembershipButton> {
       );
     } else {
       return ActionButton(
-        text: 'Follow',
+        text: context.l10n.follow,
         color: context.theme.colorScheme.primary,
         minWidth: widget.minWidth,
         height: widget.height,
