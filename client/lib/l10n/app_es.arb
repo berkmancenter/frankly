@@ -1120,7 +1120,7 @@
   "youCanChangeThisLater": "Puedes cambiar esto más tarde",
   "youHaventJoinedAnyCommunities": "No te has unido a ninguna comunidad",
   "youNeedToBeLoggedInToDoThis": "Necesita iniciar sesión para hacer esto",
-  "youWereRemovedFromThisEventAndCannotRejoin": "<MISSING: youWereRemovedFromThisEventAndCannotRejoin>",
+  "youWereRemovedFromThisEventAndCannotRejoin": "Has sido eliminado de este evento y no puedes volver a unirte.",
   "yourChangesToProfileCantBeSaved": "Tus cambios al perfil no se pueden guardar ahora mismo",
   "yourName": "Tu nombre",
   "youtubeUrl": "URL de YouTube",
