@@ -210,14 +210,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
-  csv:
-    dependency: transitive
-    description:
-      name: csv
-      sha256: "63ed2871dd6471193dffc52c0e6c76fb86269c00244d244297abbb355c84a86e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.1.1"
   dart_style:
     dependency: transitive
     description:
@@ -291,13 +283,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  frankly_matching:
+  frankly_match:
     dependency: "direct main"
     description:
-      path: "../../matching"
-      relative: true
-    source: path
-    version: "1.0.0+1"
+      path: dart
+      ref: HEAD
+      resolved-ref: "80194eafaea28d7f1eb288eb590be0b63e124466"
+      url: "https://github.com/berkmancenter/frankly-match.git"
+    source: git
+    version: "0.1.0"
   freezed:
     dependency: "direct main"
     description:

@@ -33,8 +33,10 @@ dependencies:
     quiver:
         git:
             url: https://github.com/berkmancenter/quiver-dart.git
-    frankly_matching:
-        path: ../../matching
+    frankly_match:
+        git:
+            url: https://github.com/berkmancenter/frankly-match.git
+            path: dart
     encrypt: ^5.0.3
     clock: ^1.1.0
     uuid: ^4.1.0
