@@ -27,7 +27,6 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
   ) async {
     return firestore.runTransaction((transaction) async {
       // get docs and verify admin permitted to approve / deny
-
       final modMembership = await firestoreUtils.getFirestoreObject(
         transaction: transaction,
         path:
@@ -66,28 +65,32 @@ class ResolveJoinRequest extends OnCallMethod<ResolveJoinRequestRequest> {
       if (!modMembership.isMod ||
           !hasActiveRequest ||
           userMembership.status?.isMember == true) {
-        throw HttpsError(HttpsError.failedPrecondition,
-            'Unauthorized to resolve join request.', null);
+        throw HttpsError(
+          HttpsError.failedPrecondition,
+          'Unauthorized to resolve join request.',
+          null,
+        );
       }
 
       // perform approval / denial
       if (request.approve == true) {
-        final email = await constructApprovalEmail(
-          transaction: transaction,
-          userId: request.userId,
-          communityId: request.communityId,
-        );
-
         // If approving member as an admin, verify user approving is also an admin or owner.
         // If not, throw an error. This is to prevent moderators from approving other moderators as admins.
         if (request.role == MembershipStatus.admin &&
             (modMembership.status != MembershipStatus.admin &&
                 modMembership.status != MembershipStatus.owner)) {
           throw HttpsError(
-              HttpsError.failedPrecondition,
-              'Unauthorized to approve as admin. Only admins or owners can approve as admin.',
-              null);
+            HttpsError.failedPrecondition,
+            'Unauthorized to approve as admin. Only admins or owners can approve as admin.',
+            null,
+          );
         }
+
+        final email = await constructApprovalEmail(
+          transaction: transaction,
+          userId: request.userId,
+          communityId: request.communityId,
+        );
 
         final userMembershipUpdated = userMembership.copyWith(
           status: request.role ?? MembershipStatus.member,
