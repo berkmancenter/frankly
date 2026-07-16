@@ -335,7 +335,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _selfParticipantSubscription =
         eventProvider.selfParticipantStream?.listen((currentParticipant) {
       if (currentParticipant.status == ParticipantStatus.banned) {
-        leaveMeeting();
+        unawaited(leaveMeeting());
       }
 
       if (currentParticipant.muteOverride &&
@@ -471,7 +471,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
     // Auto-leave when the host (or server) ends the meeting for everyone.
     if (liveMeeting.meetingEndedAt != null && !_leftMeeting) {
-      leaveMeeting();
+      unawaited(leaveMeeting());
       return;
     }
 
