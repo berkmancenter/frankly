@@ -33,5 +33,6 @@ cd "$DATA_MODELS_DIR"
 
 cd "$FUNCTIONS_DIR"
 npm install
+cp "$REPO_ROOT/client/web/index.html" web/index.html
 "$FLUTTER_CMD" pub get
 "$DART_CMD" run build_runner build --output=build

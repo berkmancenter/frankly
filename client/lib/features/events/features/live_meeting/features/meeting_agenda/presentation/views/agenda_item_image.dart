@@ -85,7 +85,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
         children: [
           CustomTextField(
             initialValue: _model.agendaItemImageData.title,
-            labelText: 'Title',
+            labelText: context.l10n.title,
             hintText: context.l10n.enterImageTitle,
             maxLength: agendaTitleCharactersLength,
             counterStyle: context.theme.textTheme.bodySmall,
@@ -106,7 +106,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
                       )
                     : null,
               ),
-              if (!isImageUploaded) _buildUploadImage('Upload Image'),
+              if (!isImageUploaded) _buildUploadImage(context.l10n.uploadImage),
             ],
           ),
           SizedBox(height: 20),
@@ -122,7 +122,7 @@ class _AgendaItemImageState extends State<AgendaItemImage>
             ],
           ),
           SizedBox(height: 20),
-          if (isImageUploaded) _buildUploadImage('Upload New Image'),
+          if (isImageUploaded) _buildUploadImage(context.l10n.uploadNewImage),
         ],
       );
     } else {
