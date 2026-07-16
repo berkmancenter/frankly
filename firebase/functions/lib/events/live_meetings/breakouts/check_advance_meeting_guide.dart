@@ -5,12 +5,34 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import '../../../utils/utils.dart';
+import 'advance_meeting_guide_after_delay.dart';
 import 'advance_meeting_guide_after_delay_server.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/utils/utils.dart';
+
+/// Result of checking whether enough participants are ready to advance past the current
+/// agenda item. See [CheckAdvanceMeetingGuide._checkAdvanceMeetingGuide].
+class AdvanceCheckResult {
+  /// True if an advance is already pending (or was just scheduled) for the current agenda
+  /// item, meaning any ready vote from here on can no longer change the outcome.
+  final bool isPendingOrAdvancing;
+
+  /// Non-null only when this call is the one that just crossed the ready threshold, meaning
+  /// the caller is responsible for actually triggering the advance.
+  final String? newlyPendingAgendaItemId;
+
+  /// The time the advance should be triggered at. Set whenever [newlyPendingAgendaItemId] is.
+  final DateTime? pendingAdvanceTime;
+
+  AdvanceCheckResult({
+    required this.isPendingOrAdvancing,
+    this.newlyPendingAgendaItemId,
+    this.pendingAdvanceTime,
+  });
+}
 
 class CheckAdvanceMeetingGuide
     extends OnCallMethod<CheckAdvanceMeetingGuideRequest> {
@@ -88,7 +110,7 @@ class CheckAdvanceMeetingGuide
       return;
     }
 
-    final isPendingOrAdvancing = await _checkAdvanceMeetingGuide(
+    final checkResult = await _checkAdvanceMeetingGuide(
       liveMeetingPath: activeLiveMeetingPath,
       parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
       isBreakout: isBreakout,
@@ -96,7 +118,36 @@ class CheckAdvanceMeetingGuide
       userId: context.authUid!,
     );
 
-    if (isPendingOrAdvancing) {
+    final newlyPendingAgendaItemId = checkResult.newlyPendingAgendaItemId;
+    if (newlyPendingAgendaItemId != null) {
+      // We're the caller that just crossed the ready threshold, so we're responsible for
+      // actually triggering the advance once the delay elapses.
+      final advanceRequest = AdvanceMeetingGuideAfterDelayRequest(
+        eventPath: request.eventPath,
+        breakoutSessionId: request.breakoutSessionId,
+        breakoutRoomId: request.breakoutRoomId,
+        agendaItemId: newlyPendingAgendaItemId,
+      );
+
+      final functionsUrlPrefix =
+          functions.config.get('app.functions_url_prefix').toString();
+      if (functionsUrlPrefix.startsWith('http://localhost') ||
+          functionsUrlPrefix.startsWith('http://127.0.0.1')) {
+        print('Running on localhost, skipping scheduling and running after '
+            '${_advanceDelay.inSeconds} seconds');
+        await Future.delayed(_advanceDelay, () async {
+          await AdvanceMeetingGuideAfterDelay()
+              .advanceMeetingGuideAfterDelay(advanceRequest);
+        });
+      } else {
+        await AdvanceMeetingGuideAfterDelayServer().schedule(
+          advanceRequest,
+          checkResult.pendingAdvanceTime!,
+        );
+      }
+    }
+
+    if (checkResult.isPendingOrAdvancing) {
       // A countdown to advance is already running (or was just started) for the current agenda
       // item. Once that starts, further ready votes can no longer change the outcome.
       print('Advance is pending. Not marking user ready.');
@@ -117,24 +168,20 @@ class CheckAdvanceMeetingGuide
     );
   }
 
-  /// Returns true if an advance is already pending (or was just scheduled) for the current
-  /// agenda item, meaning any ready vote from here on can no longer change the outcome.
-  Future<bool> _checkAdvanceMeetingGuide({
+  /// Checks whether enough participants are ready to advance past the current agenda item.
+  ///
+  /// [AdvanceCheckResult.isPendingOrAdvancing] is true if an advance is already pending (or was
+  /// just scheduled) for the current agenda item, meaning any ready vote from here on can no
+  /// longer change the outcome. [AdvanceCheckResult.newlyPendingAgendaItemId] is non-null only
+  /// when this call is the one that just crossed the ready threshold, meaning the caller is
+  /// responsible for actually triggering the advance.
+  Future<AdvanceCheckResult> _checkAdvanceMeetingGuide({
     required bool isBreakout,
     required String userId,
     required String liveMeetingPath,
     required String? parentLiveMeetingPath,
     required CheckAdvanceMeetingGuideRequest request,
   }) async {
-    attemptAdvance(currentAgendaItemId) {
-      return AdvanceMeetingGuideAfterDelayRequest(
-        eventPath: request.eventPath,
-        breakoutSessionId: request.breakoutSessionId,
-        breakoutRoomId: request.breakoutRoomId,
-        agendaItemId: currentAgendaItemId,
-      );
-    }
-
     final liveMeeting = await firestoreUtils.getFirestoreObject(
       path: liveMeetingPath,
       constructor: (map) => LiveMeeting.fromJson(map),
@@ -142,12 +189,12 @@ class CheckAdvanceMeetingGuide
 
     if (!isBreakout) {
       print('Only breakouts are currently hostless');
-      return false;
+      return AdvanceCheckResult(isPendingOrAdvancing: false);
     }
     if (liveMeeting.events
         .any((e) => e.event == LiveMeetingEventType.finishMeeting)) {
       print('Meeting already finished. Not checking advanced');
-      return false;
+      return AdvanceCheckResult(isPendingOrAdvancing: false);
     }
     print('Checking advance for event: ${request.eventPath}, '
         'live meeting: $liveMeetingPath');
@@ -168,7 +215,7 @@ class CheckAdvanceMeetingGuide
 
     if (liveMeeting.pendingAdvanceAgendaItemId == currentAgendaItemId) {
       print('Advance is already pending for $currentAgendaItemId');
-      return true;
+      return AdvanceCheckResult(isPendingOrAdvancing: true);
     }
 
     // Determine who is present
@@ -231,7 +278,7 @@ class CheckAdvanceMeetingGuide
     if (readyToMoveOnIds.length < threshold) {
       print(
           'Not enough participants ready to advance. Threshold: $threshold, ready: ${readyToMoveOnIds.length}');
-      return false;
+      return AdvanceCheckResult(isPendingOrAdvancing: false);
     }
 
     print('$threshold required to advance. Scheduling advance in '
@@ -274,29 +321,17 @@ class CheckAdvanceMeetingGuide
       return false;
     });
 
-    if (!alreadyPending) {
-      // if running on localhost, skip scheduling and just run the function after an interval of 10 seconds
-      if (functions.config
-              .get('app.functions_url_prefix')
-              .toString()
-              .startsWith('http://localhost') ||
-          functions.config
-              .get('app.functions_url_prefix')
-              .toString()
-              .startsWith('http://127.0.0.1')) {
-        print(
-            'Running on local host, skipping scheduling and running after 10 seconds');
-        await Future.delayed(const Duration(seconds: 10), () async {
-          attemptAdvance(currentAgendaItemId);
-        });
-      }
-      await AdvanceMeetingGuideAfterDelayServer().schedule(
-        attemptAdvance(currentAgendaItemId),
-        pendingAdvanceTime,
-      );
+    if (alreadyPending) {
+      return AdvanceCheckResult(isPendingOrAdvancing: true);
     }
 
-    return true;
+    // We're the one who just wrote the pending state, so the caller is responsible for
+    // actually triggering the advance after the delay.
+    return AdvanceCheckResult(
+      isPendingOrAdvancing: true,
+      newlyPendingAgendaItemId: currentAgendaItemId,
+      pendingAdvanceTime: pendingAdvanceTime,
+    );
   }
 
   String _getCurrentAgendaItemId(
