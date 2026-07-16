@@ -357,10 +357,6 @@
       "TemplateOnCreate",
       "ShareLink",
       "TriggerEmailDigests"
-    ],
-    "matching/lib/matching.dart": [
-      "CheckAssignToBreakouts",
-      "InitiateBreakouts"
     ]
   },
   "groups": {
