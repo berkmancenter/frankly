@@ -700,6 +700,36 @@
   "participantActions": "Acciones del participante",
   "participantActionsForUserWithId": "Acciones del participante para el usuario con ID {userId}",
   "participantCount": "{count} participantes",
+  "registrationCountLabel": "{count} {count, plural, =1{Registro} other{Registros}}",
+  "@registrationCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithActive": "{regCount} registros ({activeCount} activos)",
+  "@registrationCountWithActive": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "activeCount": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithAttended": "{regCount} registros ({attendedCount} asistieron)",
+  "@registrationCountWithAttended": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "attendedCount": {
+        "type": "int"
+      }
+    }
+  },
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
   "participantsLoadError": "Algo salió mal al cargar los participantes. Por favor, actualice.",

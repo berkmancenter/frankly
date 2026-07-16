@@ -10,6 +10,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/src/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is a list indicating the number of users registered for an event.
 /// The profile icons are arranged in a stack next to text with a description
@@ -133,7 +134,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
     final regCount = widget.registrationCount;
     if (widget.event.useParticipantCountEstimate && regCount != null && regCount > 0) {
       return HeightConstrainedText(
-        '$regCount ${regCount == 1 ? 'Registration' : 'Registrations'}',
+        context.l10n.registrationCountLabel(regCount),
         style: context.theme.textTheme.bodyMedium!
             .copyWith(color: context.theme.colorScheme.onSurface),
       );

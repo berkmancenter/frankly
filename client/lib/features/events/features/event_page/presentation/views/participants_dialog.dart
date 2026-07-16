@@ -147,9 +147,10 @@ class ParticipantsDialog extends StatelessWidget {
           ?.add(Duration(minutes: event.durationInMinutes));
       final hasEnded =
           endTime != null && endTime.isBefore(clockService.now());
-      final suffix =
-          hasEnded ? '($attendedCount attended)' : '($attendedCount active)';
-      titleText = '$regCount registrations $suffix';
+      final suffix = hasEnded
+          ? context.l10n.registrationCountWithAttended(regCount, attendedCount)
+          : context.l10n.registrationCountWithActive(regCount, attendedCount);
+      titleText = suffix;
     } else {
       final l10n = appLocalizationService.getLocalization();
       titleText = l10n.participantCount(eventProvider.participantCount);
