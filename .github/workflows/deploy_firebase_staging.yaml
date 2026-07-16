@@ -32,8 +32,7 @@ jobs:
           filters: |
             functions:
               - 'firebase/functions/js/**'
-              - 'firebase/functions/lib/**'
-              - 'matching/lib/**'
+              - 'firebase/functions/lib/**'              
             firestore:
               - 'firebase/firestore/**'
             shared:
