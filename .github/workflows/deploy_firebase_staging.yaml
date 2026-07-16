@@ -32,7 +32,8 @@ jobs:
           filters: |
             functions:
               - 'firebase/functions/js/**'
-              - 'firebase/functions/lib/**'              
+              - 'firebase/functions/lib/**'
+              - 'client/web/index.html'
             firestore:
               - 'firebase/firestore/**'
             shared:
@@ -68,6 +69,10 @@ jobs:
       - name: Install Dart Dependencies
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
         run: flutter pub get
+
+      - name: Sync index.html template for ServeIndex
+        if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
+        run: cp ../../client/web/index.html web/index.html
 
       - name: Build Functions
         if: steps.changes.outputs.functions == 'true' || github.event_name== 'workflow_dispatch' || steps.changes.outputs.shared == 'true'
