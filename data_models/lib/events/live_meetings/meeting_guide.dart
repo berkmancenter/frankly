@@ -15,7 +15,7 @@ const startMeetingWaitingPeriod = Duration(minutes: 5);
 /// Shared between the client (for display) and the backend (for the real trigger) so they can
 /// never disagree about what "majority" means.
 int readyToAdvanceThreshold(int presentParticipantCount) =>
-    presentParticipantCount > 1 ? (presentParticipantCount * 0.51).floor() : 1;
+    presentParticipantCount ~/ 2;
 
 @Freezed(makeCollectionsUnmodifiable: false)
 class ParticipantAgendaItemDetails
