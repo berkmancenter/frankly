@@ -20,6 +20,9 @@ class AdvanceCheckResult {
   /// item, meaning any ready vote from here on can no longer change the outcome.
   final bool isPendingOrAdvancing;
 
+  // True if this is the last agenda item that was voted to advance, in which case the scheduled countdown will be skipped
+  final bool isLastAgendaItem;
+
   /// Non-null only when this call is the one that just crossed the ready threshold, meaning
   /// the caller is responsible for actually triggering the advance.
   final String? newlyPendingAgendaItemId;
@@ -29,6 +32,7 @@ class AdvanceCheckResult {
 
   AdvanceCheckResult({
     required this.isPendingOrAdvancing,
+    required this.isLastAgendaItem,
     this.newlyPendingAgendaItemId,
     this.pendingAdvanceTime,
   });
@@ -118,6 +122,18 @@ class CheckAdvanceMeetingGuide
       userId: context.authUid!,
     );
 
+    // If this is the last item, we can move on immediately
+    if (checkResult.isLastAgendaItem) {
+      print('Last agenda item reached. Advancing immediately.');
+      await advanceMeetingGuide(
+        event: event,
+        liveMeetingPath: activeLiveMeetingPath,
+        currentAgendaItemId: checkResult.newlyPendingAgendaItemId!,
+        parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
+      );
+      return;
+    }
+
     final newlyPendingAgendaItemId = checkResult.newlyPendingAgendaItemId;
     if (newlyPendingAgendaItemId != null) {
       // We're the caller that just crossed the ready threshold, so we're responsible for
@@ -174,7 +190,8 @@ class CheckAdvanceMeetingGuide
   /// just scheduled) for the current agenda item, meaning any ready vote from here on can no
   /// longer change the outcome. [AdvanceCheckResult.newlyPendingAgendaItemId] is non-null only
   /// when this call is the one that just crossed the ready threshold, meaning the caller is
-  /// responsible for actually triggering the advance.
+  /// responsible for actually triggering the advance. [AdvanceCheckResult.isLastAgendaItem] is true
+  /// if this is the last agenda item that was voted to advance, in which case the scheduled countdown will be skipped.
   Future<AdvanceCheckResult> _checkAdvanceMeetingGuide({
     required bool isBreakout,
     required String userId,
@@ -189,12 +206,14 @@ class CheckAdvanceMeetingGuide
 
     if (!isBreakout) {
       print('Only breakouts are currently hostless');
-      return AdvanceCheckResult(isPendingOrAdvancing: false);
+      return AdvanceCheckResult(
+          isPendingOrAdvancing: false, isLastAgendaItem: false);
     }
     if (liveMeeting.events
         .any((e) => e.event == LiveMeetingEventType.finishMeeting)) {
       print('Meeting already finished. Not checking advanced');
-      return AdvanceCheckResult(isPendingOrAdvancing: false);
+      return AdvanceCheckResult(
+          isPendingOrAdvancing: false, isLastAgendaItem: false);
     }
     print('Checking advance for event: ${request.eventPath}, '
         'live meeting: $liveMeetingPath');
@@ -215,7 +234,8 @@ class CheckAdvanceMeetingGuide
 
     if (liveMeeting.pendingAdvanceAgendaItemId == currentAgendaItemId) {
       print('Advance is already pending for $currentAgendaItemId');
-      return AdvanceCheckResult(isPendingOrAdvancing: true);
+      return AdvanceCheckResult(
+          isPendingOrAdvancing: true, isLastAgendaItem: false);
     }
 
     // Determine who is present
@@ -278,7 +298,8 @@ class CheckAdvanceMeetingGuide
     if (readyToMoveOnIds.length < threshold) {
       print(
           'Not enough participants ready to advance. Threshold: $threshold, ready: ${readyToMoveOnIds.length}');
-      return AdvanceCheckResult(isPendingOrAdvancing: false);
+      return AdvanceCheckResult(
+          isPendingOrAdvancing: false, isLastAgendaItem: false);
     }
 
     print('$threshold required to advance. Scheduling advance in '
@@ -322,13 +343,15 @@ class CheckAdvanceMeetingGuide
     });
 
     if (alreadyPending) {
-      return AdvanceCheckResult(isPendingOrAdvancing: true);
+      return AdvanceCheckResult(
+          isPendingOrAdvancing: true, isLastAgendaItem: false);
     }
 
     // We're the one who just wrote the pending state, so the caller is responsible for
     // actually triggering the advance after the delay.
     return AdvanceCheckResult(
       isPendingOrAdvancing: true,
+      isLastAgendaItem: currentAgendaItemId == event.agendaItems.lastOrNull?.id,
       newlyPendingAgendaItemId: currentAgendaItemId,
       pendingAdvanceTime: pendingAdvanceTime,
     );
