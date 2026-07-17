@@ -552,7 +552,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                             Tooltip(
                               key: tooltipKey,
                               enableTapToDismiss: false,
-                              padding: const EdgeInsets.all(16),
                               triggerMode: TooltipTriggerMode.manual,
                               decoration: BoxDecoration(
                                 boxShadow: const [
@@ -579,55 +578,83 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                                         maxWidth: 315,
                                         maxHeight: 250,
                                       ),
-                                      padding: EdgeInsets.all(16),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           // Header
-                                          Text(
-                                            context.l10n.startingNextAgendaItem,
-                                            style: TextStyle(
-                                              color: context.theme.colorScheme
-                                                  .onSurfaceVariant,
-                                              fontSize: context.theme.textTheme
-                                                  .bodySmall?.fontSize,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          // Description
-                                          Text(
-                                            '${context.l10n.majorityOfParticipants}\n\n'
-                                            '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
-                                            style: TextStyle(
-                                              color: context.theme.colorScheme
-                                                  .onSurfaceVariant,
-                                              fontSize: context.theme.textTheme
-                                                  .bodySmall?.fontSize,
+                                          Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  context.l10n
+                                                      .startingNextAgendaItem,
+                                                  style: TextStyle(
+                                                    color: context
+                                                        .theme
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                    fontSize: context
+                                                        .theme
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.fontSize,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8),
+                                                // Description
+                                                Text(
+                                                  '${context.l10n.majorityOfParticipants}\n\n'
+                                                  '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
+                                                  style: TextStyle(
+                                                    color: context
+                                                        .theme
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                    fontSize: context
+                                                        .theme
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.fontSize,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           SizedBox(height: 8),
                                           Align(
                                             alignment: Alignment.bottomLeft,
-                                            child: ActionButton(
-                                              type: ActionButtonType.text,
-                                              text: context.l10n.close,
-                                              textStyle: TextStyle(
-                                                color: context.theme.colorScheme
-                                                    .onSurfaceVariant,
-                                                fontSize: context
-                                                    .theme
-                                                    .textTheme
-                                                    .bodySmall
-                                                    ?.fontSize,
-                                                fontWeight: FontWeight.bold,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 5,
                                               ),
-                                              onPressed: () {
-                                                tooltipKey.currentState
-                                                    ?.ensureTooltipVisible();
-                                              },
+                                              child: ActionButton(
+                                                type: ActionButtonType.text,
+                                                text: context.l10n.close,
+                                                textStyle: TextStyle(
+                                                  color: context
+                                                      .theme
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                                  fontSize: context
+                                                      .theme
+                                                      .textTheme
+                                                      .bodySmall
+                                                      ?.fontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                onPressed: () {
+                                                  Tooltip.dismissAllToolTips();
+                                                },
+                                                minWidth: 0,
+                                                height: 40,
+                                              ),
                                             ),
                                           ),
                                         ],
