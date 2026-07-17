@@ -286,12 +286,11 @@ packages:
   frankly_match:
     dependency: "direct main"
     description:
-      path: dart
-      ref: HEAD
-      resolved-ref: "80194eafaea28d7f1eb288eb590be0b63e124466"
-      url: "https://github.com/berkmancenter/frankly-match.git"
-    source: git
-    version: "0.1.0"
+      name: frankly_match
+      sha256: e4ac3c309bcbd7b6d8179501b0dd4367fa9a03a667a7a832a2dd6dd5994d58d6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   freezed:
     dependency: "direct main"
     description:
