@@ -1,4 +1,5 @@
 import 'package:client/core/utils/provider_utils.dart';
+import 'package:client/features/user/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:client/features/chat/data/providers/chat_model.dart';
@@ -24,6 +25,7 @@ class LiveMeetingMobilePresenter {
   final LiveMeetingMobileView _view;
   final LiveMeetingMobileModel _model;
   final ResponsiveLayoutService _responsiveLayoutService;
+  final UserService _userService;
   final EventProvider _eventProvider;
   final EventTabsControllerState _eventTabsControllerState;
   final ConferenceRoom? _conferenceRoom;
@@ -37,6 +39,7 @@ class LiveMeetingMobilePresenter {
     this._view,
     this._model, {
     ResponsiveLayoutService? responsiveLayoutService,
+    UserService? userService,
     EventProvider? eventProvider,
     EventTabsControllerState? eventTabsControllerState,
     ConferenceRoom? conferenceRoom,
@@ -56,7 +59,8 @@ class LiveMeetingMobilePresenter {
             chatModel ?? providerOrNull(() => context.read<ChatModel>()),
         _agendaProvider = agendaProvider ?? context.read<AgendaProvider>(),
         _meetingGuideCardStore =
-            meetingGuideCardStore ?? context.read<MeetingGuideCardStore>();
+            meetingGuideCardStore ?? context.read<MeetingGuideCardStore>(),
+        _userService = userService ?? GetIt.instance<UserService>();
 
   bool get canUserControlMeeting => _agendaProvider.canUserControlMeeting;
 
@@ -112,6 +116,10 @@ class LiveMeetingMobilePresenter {
 
   bool isMobile(BuildContext context) {
     return _responsiveLayoutService.isMobile(context);
+  }
+
+  String getUserId() {
+    return _userService.currentUserId ?? '';
   }
 
   Future<void> sendMessage(String message) async {
@@ -189,6 +197,19 @@ class LiveMeetingMobilePresenter {
 
   String? getCurrentAgendaItemId() {
     return _meetingGuideCardStore.currentAgendaModelItemId;
+  }
+
+  /// Whether a synchronized countdown to advance past [currentAgendaItemId] is currently running.
+  bool isPendingAdvance(String? currentAgendaItemId) {
+    final pendingAgendaItemId = _agendaProvider.pendingAdvanceAgendaItemId;
+    return pendingAgendaItemId != null &&
+        pendingAgendaItemId == currentAgendaItemId;
+  }
+
+  /// The number of ready votes required to advance, kept in sync with the backend's real trigger
+  /// threshold via the shared [readyToAdvanceThreshold] helper.
+  int getReadyThreshold(Set<String> presentParticipantIds) {
+    return readyToAdvanceThreshold(presentParticipantIds.length);
   }
 
   bool isMeetingStarted() {

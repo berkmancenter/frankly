@@ -514,7 +514,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'Moving onto the next agenda item',
+                        context.l10n.movingOntoNextAgendaItem,
                         style: AppTextStyle.body.copyWith(
                           color: context.theme.colorScheme.onSurfaceVariant,
                         ),
@@ -594,6 +594,34 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isMobile) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ReadyButton(
+              currentAgendaItemId: currentAgendaItemId ?? '',
+              userIsReady: userIsReady,
+              isMobile: isMobile,
+            ),
+            SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildReadyCountText(context, true),
+                  _buildInfoTooltip(context),
+                  SizedBox(width: 20),
+                  _buildInfoButton(context),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Row(
       children: [
         Column(
@@ -602,150 +630,184 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  '$readyToMoveOnCount people ready',
-                  style: AppTextStyle.body.copyWith(
-                    color: context.theme.colorScheme.secondary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Tooltip(
-                  key: tooltipKey,
-                  enableTapToDismiss: false,
-                  triggerMode: TooltipTriggerMode.manual,
-                  decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.24),
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                        offset: Offset(
-                          2,
-                          2,
-                        ),
-                      ),
-                    ],
-                    color: context.theme.colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  richMessage: TextSpan(
-                    children: <InlineSpan>[
-                      WidgetSpan(
-                        child: Container(
-                          // Apply your size constraints here instead
-                          constraints: BoxConstraints(
-                            maxWidth: 315,
-                            maxHeight: 250,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Header
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      context.l10n.startingNextAgendaItem,
-                                      style: TextStyle(
-                                        color: context
-                                            .theme.colorScheme.onSurfaceVariant,
-                                        fontSize: context.theme.textTheme
-                                            .bodySmall?.fontSize,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    // Description
-                                    Text(
-                                      '${context.l10n.majorityOfParticipants}\n\n'
-                                      '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
-                                      style: TextStyle(
-                                        color: context
-                                            .theme.colorScheme.onSurfaceVariant,
-                                        fontSize: context.theme.textTheme
-                                            .bodySmall?.fontSize,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                  ),
-                                  child: ActionButton(
-                                    type: ActionButtonType.text,
-                                    text: context.l10n.close,
-                                    textStyle: TextStyle(
-                                      color: context
-                                          .theme.colorScheme.onSurfaceVariant,
-                                      fontSize: context
-                                          .theme.textTheme.bodySmall?.fontSize,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    onPressed: () {
-                                      Tooltip.dismissAllToolTips();
-                                    },
-                                    minWidth: 0,
-                                    height: 40,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  child: SizedBox.shrink(),
-                ),
+                _buildReadyCountText(context),
+                _buildInfoTooltip(context),
                 SizedBox(width: 10),
-                IconButton(
-                  icon: Icon(Icons.question_mark),
-                  iconSize: 17,
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
-                  onPressed: () {
-                    tooltipKey.currentState?.ensureTooltipVisible();
-                  },
-                  style: IconButton.styleFrom(
-                    side: BorderSide(
-                      color: context.theme.colorScheme.outline,
-                    ),
-                  ),
-                ),
+                _buildInfoButton(context),
               ],
             ),
-            // Majority (51%) required to move on
-            Text(
-              '$readyThreshold required to move on',
-              style: AppTextStyle.body.copyWith(
-                color: context.theme.colorScheme.secondary,
-              ),
-            ),
+            _buildThresholdText(context),
           ],
         ),
         SizedBox(width: 20),
         ReadyButton(
           currentAgendaItemId: currentAgendaItemId ?? '',
           userIsReady: userIsReady,
+          isMobile: isMobile,
         ),
       ],
     );
   }
+
+  Widget _buildReadyCountText(BuildContext context, [bool isMobile = false]) {
+    return Text(
+      isMobile
+          ? context.l10n.peopleRequiredToMoveOn(
+              readyToMoveOnCount,
+              presentParticipantIds.length,
+            )
+          : '$readyToMoveOnCount ${context.l10n.peopleReady}',
+      style: AppTextStyle.body.copyWith(
+        color: isMobile
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.onSurface,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildInfoTooltip(BuildContext context) {
+    return Tooltip(
+      key: tooltipKey,
+      enableTapToDismiss: false,
+      triggerMode: TooltipTriggerMode.manual,
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.24),
+            blurRadius: 8,
+            spreadRadius: 2,
+            offset: Offset(
+              2,
+              2,
+            ),
+          ),
+        ],
+        color: context.theme.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      richMessage: TextSpan(
+        children: <InlineSpan>[
+          WidgetSpan(
+            child: _buildTooltipContent(context),
+          ),
+        ],
+      ),
+      child: SizedBox.shrink(),
+    );
+  }
+
+  Widget _buildTooltipContent(BuildContext context) {
+    return Container(
+      // Apply your size constraints here instead
+      constraints: BoxConstraints(
+        maxWidth: 315,
+        maxHeight: 250,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.startingNextAgendaItem,
+                  style: TextStyle(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                    fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                // Description
+                Text(
+                  '${context.l10n.majorityOfParticipants}\n\n'
+                  '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
+                  style: TextStyle(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                    fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 8),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+              ),
+              child: ActionButton(
+                type: ActionButtonType.text,
+                text: context.l10n.close,
+                textStyle: TextStyle(
+                  color: context.theme.colorScheme.onSurfaceVariant,
+                  fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                onPressed: () {
+                  Tooltip.dismissAllToolTips();
+                },
+                minWidth: 0,
+                height: 40,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.question_mark),
+      iconSize: 17,
+      padding: EdgeInsets.zero,
+      constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
+      onPressed: () {
+        tooltipKey.currentState?.ensureTooltipVisible();
+      },
+      color: isMobile
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.onSurfaceVariant,
+      style: IconButton.styleFrom(
+        side: BorderSide(
+          color: isMobile
+              ? context.theme.colorScheme.onPrimary
+              : context.theme.colorScheme.outline,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThresholdText(BuildContext context) {
+    // Majority (51%) required to move on
+    return Text(
+      '$readyThreshold ${context.l10n.requiredToMoveOn}',
+      style: AppTextStyle.body.copyWith(
+        color: isMobile
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.secondary,
+      ),
+    );
+  }
 }
 
+/// Countdown timer shown to all participants once a majority have voted to move on, counting down to the moment
+/// [startingPendingAdvanceTime] The duration for which the countdown should run.
+/// [isMobile] Whether the user is on a mobile device.
 class Countdown extends StatefulWidget {
   final Duration startingPendingAdvanceTime;
+  final bool isMobile;
 
   const Countdown({
     required this.startingPendingAdvanceTime,
+    this.isMobile = false,
   });
 
   @override
@@ -778,7 +840,6 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
     return PeriodicBuilder(
       period: Duration(seconds: 1),
       builder: (context) {
-        final isMobile = responsiveLayoutService.isMobile(context);
         return Stack(
           alignment: Alignment.center,
           children: [
@@ -789,11 +850,17 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
                 animation: controller,
                 builder: (context, child) {
                   return CircularProgressIndicator(
-                    // The countdown is reversed from the starting pending advance time, so we need to divide by 1 to get the correct value.
+                    // The countdown is reversed from the starting pending advance time, so we need to divide by 1 to get the correct value.f
                     value: controller.value,
                     strokeWidth: 5.0,
-                    backgroundColor:
-                        context.theme.colorScheme.onPrimaryContainer,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      widget.isMobile
+                          ? context.theme.colorScheme.onPrimary
+                          : context.theme.colorScheme.primary,
+                    ),
+                    backgroundColor: widget.isMobile
+                        ? context.theme.colorScheme.secondary
+                        : context.theme.colorScheme.onPrimaryContainer,
                   );
                 },
               ),
@@ -804,8 +871,13 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
                 return Text(
                   '${(controller.value * widget.startingPendingAdvanceTime.inSeconds).ceil()}',
                   style: TextStyle(
-                    fontSize: context.theme.textTheme.titleLarge?.fontSize,
+                    fontSize: widget.isMobile
+                        ? context.theme.textTheme.titleMedium?.fontSize
+                        : context.theme.textTheme.titleLarge?.fontSize,
                     fontWeight: FontWeight.bold,
+                    color: widget.isMobile
+                        ? context.theme.colorScheme.onPrimary
+                        : context.theme.colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                 );
@@ -822,20 +894,27 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
 class ReadyButton extends HookWidget {
   final String currentAgendaItemId;
   final bool userIsReady;
+  final bool isMobile;
 
   const ReadyButton({
     Key? key,
     required this.currentAgendaItemId,
     required this.userIsReady,
+    this.isMobile = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      color: context.theme.colorScheme.outline,
+      minWidth: isMobile ? 350 : null,
+      color: isMobile
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.outline,
       type: ActionButtonType.outline,
-      textColor: context.theme.colorScheme.primary,
+      textColor: isMobile
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.primary,
       onPressed: () => alertOnError(context, () async {
         await agendaProvider.toggleMoveForward(
           currentAgendaItemId: currentAgendaItemId,
@@ -848,13 +927,30 @@ class ReadyButton extends HookWidget {
           Checkbox(
             value: userIsReady,
             onChanged: null,
-            activeColor: context.theme.colorScheme.primary,
-            checkColor: context.theme.colorScheme.onPrimary,
+            activeColor: isMobile
+                ? context.theme.colorScheme.onPrimary
+                : context.theme.colorScheme.primary,
+            fillColor: WidgetStateProperty.all(Colors.transparent),
+            checkColor: isMobile
+                ? context.theme.colorScheme.onPrimary
+                : context.theme.colorScheme.primary,
+            side: BorderSide(
+              width: 2,
+              color: isMobile
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.primary,
+            ),
+            semanticLabel: context.l10n.imReadyToMoveOn,
           ),
           SizedBox(width: 8),
           Text(
-            "I'm ready to move on",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            context.l10n.imReadyToMoveOn,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isMobile
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.primary,
+            ),
           ),
         ],
       ),
@@ -884,7 +980,7 @@ class NextButton extends HookWidget {
           currentAgendaItemId: currentAgendaItemId,
         );
       }),
-      text: 'Next',
+      text: context.l10n.next,
     );
   }
 }
