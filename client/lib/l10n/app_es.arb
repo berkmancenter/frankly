@@ -272,6 +272,16 @@
       }
     }
   },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@playsAt": {
     "placeholders": {
       "time": {
@@ -656,6 +666,7 @@
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
   "imageUrlNotSet": "(URL de imagen no establecida.)",
+  "imReadyToMoveOn": "Estoy listo para continuar",
   "incorrectEmailOrPassword": "Correo electrónico o contraseña incorrectos",
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
@@ -719,6 +730,7 @@
   "mins": "mins",
   "miscellaneous": "Misceláneo",
   "moderator": "Moderador",
+  "movingOntoNextAgendaItem": "Pasando al siguiente punto de la agenda",
   "mustAddAtLeastTwoCategories": "Debe añadir al menos dos (2) categorías.",
   "mustBeLoggedInToAccessThisSection": "Debe estar conectado para acceder a esta sección",
   "mustBeValidHexColor": "Debe ser un HEX válido",
@@ -793,6 +805,8 @@
   "pasteOrEnterAUrl": "Pegue o ingrese una URL",
   "pasteOrEnterUrl": "Pegar o ingresar URL",
   "people": "personas",
+  "peopleReady": "personas listas",
+  "peopleRequiredToMoveOn": "{count} de {total} personas necesarias para continuar",
   "permissionsAdminDescription": "Control total sobre la configuración de la comunidad, roles de miembros y todo el contenido.",
   "permissionsFacilitatorDescription": "Puede programar y organizar eventos basados en plantillas existentes.",
   "permissionsMemberDescription": "Alguien que se ha unido a la comunidad. Puede asistir a eventos, crear publicaciones y recibir anuncios de la comunidad.",
@@ -877,6 +891,7 @@
   "removeTemplate": "Eliminar plantilla",
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
   "required": "Requerido",
+  "requiredToMoveOn": "requerido para continuar",
   "resendVerificationEmail": "Reenviar Correo",
   "resendVerificationEmailLink": "reenviar el correo.",
   "resources": "Recursos",

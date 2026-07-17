@@ -273,6 +273,16 @@
       }
     }
   },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@playsAt": {
     "placeholders": {
       "time": {
@@ -641,6 +651,7 @@
   "imageUrlIsNotSet": "（圖片URL未設置。）",
   "imageUrlIsRequired": "圖片網址為必填項",
   "imageUrlNotSet": "(圖片URL未設置。)",
+  "imReadyToMoveOn": "我已準備好繼續",
   "instagramUrl": "Instagram連結",
   "instantMeeting": "即時會議",
   "instead": "反而",
@@ -704,6 +715,7 @@
   "mins": "分鐘",
   "miscellaneous": "其他",
   "moderator": "版主",
+  "movingOntoNextAgendaItem": "進入下一個議程項目",
   "mustBeLoggedInToAccessThisSection": "必須登錄才能訪問此部分。",
   "mustBeValidHexColor": "必須是有效的十六進制顏色值。",
   "muteAll": "全部靜音",
@@ -777,6 +789,8 @@
   "pasteOrEnterAUrl": "貼上或輸入URL",
   "pasteOrEnterUrl": "貼上或輸入URL",
   "people": "人",
+  "peopleReady": "人已準備好",
+  "peopleRequiredToMoveOn": "{count} / {total} 人需要繼續",
   "permissionsAdminDescription": "對社區設置、成員角色和所有內容的完全控制。",
   "permissionsFacilitatorDescription": "可以根據現有模板安排和主持活動。",
   "permissionsMemberDescription": "已加入社區的人。可以參加活動、創建帖子並接收社區公告。",
@@ -857,6 +871,7 @@
   "removeTemplate": "移除範本",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有問題完成之前，重新排序不會被儲存。",
   "required": "必填",
+  "requiredToMoveOn": "必填以繼續",
   "resendVerificationEmail": "重新發送郵件",
   "resendVerificationEmailLink": "重新發送郵件",
   "resources": "資源",

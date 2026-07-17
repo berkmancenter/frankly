@@ -213,6 +213,16 @@
       "email": {}
     }
   },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@playsAt": {
     "placeholders": {
       "time": {
@@ -588,6 +598,7 @@
   "imageUrlIsNotSet": "(Image URL is not set.)",
   "imageUrlIsRequired": "Image URL is required",
   "imageUrlNotSet": "(Image URL is not set.)",
+  "imReadyToMoveOn": "I'm ready to move on",
   "incorrectEmailOrPassword": "Incorrect email or password",
   "instagramUrl": "Instagram URL",
   "instantMeeting": "Instant Meeting",
@@ -651,6 +662,7 @@
   "mins": "mins",
   "miscellaneous": "Miscellaneous",
   "moderator": "Moderator",
+  "movingOntoNextAgendaItem": "Moving onto the next agenda item",
   "mustAddAtLeastTwoCategories": "You must add at least two (2) categories.",
   "mustBeLoggedInToAccessThisSection": "Must be logged in to access this section",
   "mustBeValidHexColor": "Must be HEX format",
@@ -725,6 +737,8 @@
   "pasteOrEnterAUrl": "Paste or enter a URL",
   "pasteOrEnterUrl": "Paste or enter URL",
   "people": "people",
+  "peopleReady": "people ready",
+  "peopleRequiredToMoveOn": "{count} of {total} people required to move on",
   "permissionsAdminDescription": "Full control over community settings, member roles, and all content.",
   "permissionsFacilitatorDescription": "Can schedule and host events based on existing templates.",
   "permissionsMemberDescription": "Someone who has joined the community. May attend events, create posts, and receive community announcements.",
@@ -809,6 +823,7 @@
   "removeTemplate": "Remove Template",
   "reorderingNotSavedUntilQuestionsCompleted": "Reordering not saved until all questions are completed.",
   "required": "Required",
+  "requiredToMoveOn": "required to move on",
   "resendVerificationEmail": "Resend Email",
   "resendVerificationEmailLink": "resend the email.",
   "resources": "Resources",
