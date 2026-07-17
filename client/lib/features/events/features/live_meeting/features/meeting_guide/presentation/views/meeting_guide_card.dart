@@ -526,186 +526,28 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         child: Countdown(
                           startingPendingAdvanceTime: Duration(
                             seconds: 10,
-                          ), // TODO: Get from backend when the card is pending and the time remaining
+                          ),
                         ),
                       ),
                     ],
                   );
                 }
-
-                return Row(
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '$readyToMoveOnCount people ready',
-                              style: AppTextStyle.body.copyWith(
-                                color: context.theme.colorScheme.secondary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                return ReadyToMoveOnBuilder(
+                  isMobile: responsiveLayoutService.isMobile(context),
+                  readyToMoveOnCount: readyToMoveOnCount,
+                  tooltipKey: tooltipKey,
+                  readyThreshold: readyThreshold,
+                  presentParticipantIds: presentParticipantIds,
+                  userIsReady: participantAgendaItemDetailsList
+                          ?.firstWhere(
+                            (p) => p.userId == _presenter.getUserId(),
+                            orElse: () => ParticipantAgendaItemDetails(
+                              readyToAdvance: false,
                             ),
-                            // if (_showReadyToMoveOnTooltip)
-                            Tooltip(
-                              key: tooltipKey,
-                              enableTapToDismiss: false,
-                              triggerMode: TooltipTriggerMode.manual,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.24),
-                                    blurRadius: 8,
-                                    spreadRadius: 2,
-                                    offset: Offset(
-                                      2,
-                                      2,
-                                    ),
-                                  ),
-                                ],
-                                color:
-                                    context.theme.colorScheme.surfaceContainer,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              richMessage: TextSpan(
-                                children: <InlineSpan>[
-                                  WidgetSpan(
-                                    child: Container(
-                                      // Apply your size constraints here instead
-                                      constraints: BoxConstraints(
-                                        maxWidth: 315,
-                                        maxHeight: 250,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // Header
-                                          Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  context.l10n
-                                                      .startingNextAgendaItem,
-                                                  style: TextStyle(
-                                                    color: context
-                                                        .theme
-                                                        .colorScheme
-                                                        .onSurfaceVariant,
-                                                    fontSize: context
-                                                        .theme
-                                                        .textTheme
-                                                        .bodySmall
-                                                        ?.fontSize,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8),
-                                                // Description
-                                                Text(
-                                                  '${context.l10n.majorityOfParticipants}\n\n'
-                                                  '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
-                                                  style: TextStyle(
-                                                    color: context
-                                                        .theme
-                                                        .colorScheme
-                                                        .onSurfaceVariant,
-                                                    fontSize: context
-                                                        .theme
-                                                        .textTheme
-                                                        .bodySmall
-                                                        ?.fontSize,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 5,
-                                              ),
-                                              child: ActionButton(
-                                                type: ActionButtonType.text,
-                                                text: context.l10n.close,
-                                                textStyle: TextStyle(
-                                                  color: context
-                                                      .theme
-                                                      .colorScheme
-                                                      .onSurfaceVariant,
-                                                  fontSize: context
-                                                      .theme
-                                                      .textTheme
-                                                      .bodySmall
-                                                      ?.fontSize,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                onPressed: () {
-                                                  Tooltip.dismissAllToolTips();
-                                                },
-                                                minWidth: 0,
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              child: SizedBox.shrink(),
-                            ),
-                            SizedBox(width: 10),
-                            IconButton(
-                              icon: Icon(Icons.question_mark),
-                              iconSize: 17,
-                              padding: EdgeInsets.zero,
-                              constraints:
-                                  BoxConstraints(maxHeight: 30, maxWidth: 30),
-                              onPressed: () {
-                                tooltipKey.currentState?.ensureTooltipVisible();
-                              },
-                              style: IconButton.styleFrom(
-                                side: BorderSide(
-                                  color: context.theme.colorScheme.outline,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Majority (51%) required to move on
-                        Text(
-                          '$readyThreshold required to move on',
-                          style: AppTextStyle.body.copyWith(
-                            color: context.theme.colorScheme.secondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 20),
-                    ReadyButton(
-                      currentAgendaItemId: currentAgendaItemId ?? '',
-                      userIsReady: participantAgendaItemDetailsList
-                              ?.firstWhere(
-                                (p) => p.userId == _presenter.getUserId(),
-                                orElse: () => ParticipantAgendaItemDetails(
-                                  readyToAdvance: false,
-                                ),
-                              )
-                              .readyToAdvance ??
-                          false,
-                    ),
-                  ],
+                          )
+                          .readyToAdvance ??
+                      false,
+                  currentAgendaItemId: currentAgendaItemId,
                 );
               }
             },
@@ -719,6 +561,183 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
   @override
   void updateView() {
     setState(() {});
+  }
+}
+
+/// Information about how many participants are ready to move on to the next agenda item.
+/// [isMobile] Whether the user is on a mobile device.
+/// [userIsReady] Whether the current user has marked themselves as ready to move on.
+/// [readyToMoveOnCount] The number of participants ready to move on.
+/// [readyThreshold] The number of participants required to be ready to move on.
+/// [currentAgendaItemId] The ID of the current agenda item.
+/// [tooltipKey] The key for the tooltip widget.
+/// [presentParticipantIds] The set of participant IDs who are present.
+class ReadyToMoveOnBuilder extends StatelessWidget {
+  final bool isMobile;
+  final bool userIsReady;
+  final int readyToMoveOnCount;
+  final int readyThreshold;
+  final String? currentAgendaItemId;
+  final GlobalKey<TooltipState> tooltipKey;
+  final Set<String> presentParticipantIds;
+
+  const ReadyToMoveOnBuilder({
+    Key? key,
+    required this.isMobile,
+    required this.userIsReady,
+    required this.currentAgendaItemId,
+    required this.readyToMoveOnCount,
+    required this.tooltipKey,
+    required this.readyThreshold,
+    required this.presentParticipantIds,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '$readyToMoveOnCount people ready',
+                  style: AppTextStyle.body.copyWith(
+                    color: context.theme.colorScheme.secondary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Tooltip(
+                  key: tooltipKey,
+                  enableTapToDismiss: false,
+                  triggerMode: TooltipTriggerMode.manual,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.24),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                        offset: Offset(
+                          2,
+                          2,
+                        ),
+                      ),
+                    ],
+                    color: context.theme.colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  richMessage: TextSpan(
+                    children: <InlineSpan>[
+                      WidgetSpan(
+                        child: Container(
+                          // Apply your size constraints here instead
+                          constraints: BoxConstraints(
+                            maxWidth: 315,
+                            maxHeight: 250,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Header
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      context.l10n.startingNextAgendaItem,
+                                      style: TextStyle(
+                                        color: context
+                                            .theme.colorScheme.onSurfaceVariant,
+                                        fontSize: context.theme.textTheme
+                                            .bodySmall?.fontSize,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    // Description
+                                    Text(
+                                      '${context.l10n.majorityOfParticipants}\n\n'
+                                      '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
+                                      style: TextStyle(
+                                        color: context
+                                            .theme.colorScheme.onSurfaceVariant,
+                                        fontSize: context.theme.textTheme
+                                            .bodySmall?.fontSize,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                  ),
+                                  child: ActionButton(
+                                    type: ActionButtonType.text,
+                                    text: context.l10n.close,
+                                    textStyle: TextStyle(
+                                      color: context
+                                          .theme.colorScheme.onSurfaceVariant,
+                                      fontSize: context
+                                          .theme.textTheme.bodySmall?.fontSize,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    onPressed: () {
+                                      Tooltip.dismissAllToolTips();
+                                    },
+                                    minWidth: 0,
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  child: SizedBox.shrink(),
+                ),
+                SizedBox(width: 10),
+                IconButton(
+                  icon: Icon(Icons.question_mark),
+                  iconSize: 17,
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
+                  onPressed: () {
+                    tooltipKey.currentState?.ensureTooltipVisible();
+                  },
+                  style: IconButton.styleFrom(
+                    side: BorderSide(
+                      color: context.theme.colorScheme.outline,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // Majority (51%) required to move on
+            Text(
+              '$readyThreshold required to move on',
+              style: AppTextStyle.body.copyWith(
+                color: context.theme.colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(width: 20),
+        ReadyButton(
+          currentAgendaItemId: currentAgendaItemId ?? '',
+          userIsReady: userIsReady,
+        ),
+      ],
+    );
   }
 }
 
