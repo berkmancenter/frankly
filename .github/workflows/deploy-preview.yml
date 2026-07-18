@@ -16,15 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            client:
-              - 'client/**'
-
       - name: Set Up Flutter
-        if: steps.changes.outputs.client == 'true'
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.22.2" # could read version from pubspec file, but would need to be exact
@@ -36,21 +28,17 @@ jobs:
           pub-cache-path: "/home/runner/.pub-cache"
 
       - name: Install Dependencies
-        if: steps.changes.outputs.client == 'true'
         run: flutter pub get
 
       - name: Update Product Version
-        if: steps.changes.outputs.client == 'true'
         run: |
           sed -i 's/__VERSION__/${{ github.sha }}/g' ${{ github.workspace }}/client/web/index.html
 
       - name: Update Google Auth Client ID
-        if: steps.changes.outputs.client == 'true'
         run: |
           sed -i 's/__GOOGLE_ID__/${{ secrets.GOOGLE_SIGN_IN_ID }}/g' ${{ github.workspace }}/client/web/index.html
 
       - name: Create .env file
-        if: steps.changes.outputs.client == 'true'
         uses: SpicyPizza/create-envfile@v2.0
         with:
           envkey_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
@@ -89,7 +77,6 @@ jobs:
           envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
 
       - name: Build App
-        if: steps.changes.outputs.client == 'true'
         id: build_app
         run: flutter build web --release --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
@@ -97,11 +84,9 @@ jobs:
       # doesn't automatically generate default preview channel IDs as
       # documented when triggered manually via workflow_dispatch
       - name: Generate a channel ID for the Firebase preview channel
-        if: steps.changes.outputs.client == 'true'
         run: echo "PREVIEW_CHANNEL_ID=$(echo ${GITHUB_REF_NAME:0:26} | sed 's/\//-/g')" >> $GITHUB_ENV
 
       - name: Deploy to Preview Channel
-        if: steps.changes.outputs.client == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0.9.0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
