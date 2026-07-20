@@ -29,7 +29,8 @@ void main() {
     communityId = await communityTestUtils.createTestCommunity();
   });
 
-  test('Agenda is advanced when half the participants are ready', () async {
+  test('Agenda is advanced when majority of the participants are ready',
+      () async {
     var event = Event(
       id: '12341dff2837',
       status: EventStatus.active,
@@ -108,10 +109,16 @@ void main() {
     );
     expect(createdDetails, equals(expectedDetails));
 
-    // call again with another participant, which should be enough to advance (half of total participants)
+    // call again with another participant
     await guideAdvancer.action(
       req,
       CallableContext('555', null, 'fakeInstanceId'),
+    );
+
+    // call one more time with another participant to reach majority
+    await guideAdvancer.action(
+      req,
+      CallableContext('777', null, 'fakeInstanceId'),
     );
 
     final meetingPathSnap = await firestore
