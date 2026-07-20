@@ -465,8 +465,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             stream: participantAgendaItemDetailsStream,
             height: 100,
             builder: (context, participantAgendaItemDetailsList) {
-              final readyToAdvance =
-                  _presenter.isReadyToAdvance(participantAgendaItemDetailsList);
               final canUserControlMeeting = _presenter.canUserControlMeeting;
               final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
               final currentItem = _presenter.getCurrentAgendaItem();
@@ -531,6 +529,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       ),
                     ],
                   );
+                }
+                // If the meeting is finished, we don't want to show the ready button/count of participants ready
+                if (meetingFinished) {
+                  return SizedBox.shrink();
                 }
                 return ReadyToMoveOnBuilder(
                   isMobile: responsiveLayoutService.isMobile(context),

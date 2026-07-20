@@ -678,13 +678,11 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       stream: participantAgendaItemDetailsStream,
       height: 100,
       builder: (context, participantAgendaItemDetailsList) {
-        final readyToAdvance =
-            _presenter.isReadyToAdvance(participantAgendaItemDetailsList);
         final canUserControlMeeting = _presenter.canUserControlMeeting;
 
         final currentItem = _presenter.getCurrentAgendaItem();
         final isMeetingStarted = _presenter.isMeetingStarted();
-        final meetingFinished = currentItem == null && isMeetingStarted;
+        final isMeetingFinished = currentItem == null && isMeetingStarted;
         final isHosted = _presenter.isHosted();
         final isBackButtonShown = _presenter.isBackButtonShown();
 
@@ -724,6 +722,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                 ),
               // Bottom section shown below the agenda item card body.
               if (!isCardPending &&
+                  !isMeetingFinished &&
                   isBottomSheetPresent &&
                   agendaProvider.agendaItems.isNotEmpty)
                 _buildReadyInfo(),
@@ -841,14 +840,6 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                                   .goToPreviousAgendaItem(),
                             ),
                           ),
-                        SizedBox(width: 10),
-                        // if (showReadyToMoveOn)
-                        //   _buildReadyText(
-                        //     participantAgendaItemDetailsList ?? [],
-                        //   ),
-                        SizedBox(width: 10),
-                        // if (!meetingFinished &&
-                        //     agendaProvider.agendaItems.isNotEmpty)
                       ],
                     ],
                     if (!isBottomSheetPresent &&
