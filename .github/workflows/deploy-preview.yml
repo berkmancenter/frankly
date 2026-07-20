@@ -1,12 +1,38 @@
 name: Deploy to Staging Preview Channel
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      force_preview_build:
+        description: "Force build even if no client files changed (incurs cost, so unchecked by default)."
+        type: boolean
+        required: false
+        default: false
 permissions:
   checks: write
   contents: read
   pull-requests: write
 jobs:
+  check_for_changes:
+    name: Check for Client Changes
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.filter.outputs.client == 'true' || github.event.inputs.force_preview_build == 'true' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v3
+        if: ${{ github.event.inputs.force_preview_build != 'true' }}
+        id: filter
+        with:
+          filters: |
+            client:
+              - 'client/**'
+
   build_and_deploy_preview:
     name: Build & Deploy Preview
+    needs: check_for_changes
+    if: ${{ needs.check_for_changes.outputs.should_build == 'true' }}
     runs-on: ubuntu-latest
     environment: staging
     defaults:
