@@ -522,7 +522,7 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _checkLoadBreakoutsStream(liveMeeting);
 
-    if (!breakoutsActive && isInBreakoutTransition) {
+    if (!breakoutsActive && (isInBreakoutTransition || isInBreakout)) {
       leaveBreakoutRoom();
       // True immediately after calling leaveBreakoutRoom, so reset it here since
       // the user is moving to another room rather than leaving breakouts entirely.
