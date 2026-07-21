@@ -717,6 +717,21 @@ class LiveMeetingProvider with ChangeNotifier {
           '$_breakoutRoomTransitionTimeoutSeconds seconds. '
           'Canceling transition and returning to main meeting.',
         );
+
+        // Emit analytics before leaveBreakoutRoom() clears _transitionStartTime.
+        final startTime = _transitionStartTime;
+        if (startTime != null) {
+          final elapsedMs = DateTime.now().difference(startTime).inMilliseconds;
+          analytics.logEvent(
+            AnalyticsBreakoutRoomTransitionEvent(
+              communityId: eventProvider.communityId,
+              eventId: eventProvider.eventId,
+              durationMs: elapsedMs,
+              templateId: eventProvider.templateId,
+            ),
+          );
+        }
+
         leaveBreakoutRoom();
         showToast(
           appLocalizationService
