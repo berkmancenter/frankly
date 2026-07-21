@@ -431,20 +431,22 @@ class _EventInfoState extends State<EventInfo> {
     final localEventProvider = _eventProvider;
     final isBanned = localEventProvider.isBanned;
     final canShowFollowCommunity = _canShowFollowCommunity();
-    final eventAlmostStarted = clockService.now().isAfter(
-          startTime.subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
-        );
-    final eventHasStarted = clockService.now().isAfter(startTime);
 
     final showJoinButton = !isBanned &&
         context.read<EventPermissionsProvider>().canJoinEvent &&
         _status != _ParticipantStatus.full;
+    final eventAlmostStarted = showJoinButton &&
+        clockService.now().isAfter(
+              startTime.subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
+            );
+    final eventHasStarted =
+        showJoinButton && clockService.now().isAfter(startTime);
 
     // Show the "Enter Event" button if the user already RSVP'd/joined
     // or if the event is within 15 minutes of starting,
     // or if the event has already started
-    final showEnterEventButton = _isParticipant ||
-        (showJoinButton && eventAlmostStarted || eventHasStarted);
+    final showEnterEventButton =
+        _isParticipant || (eventAlmostStarted || eventHasStarted);
     if (showPrerequisiteWarning) {
       return WarningInfo(
         icon: CircleAvatar(
