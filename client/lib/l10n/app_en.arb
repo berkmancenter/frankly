@@ -750,6 +750,13 @@
   "recordingStatusFile": "file",
   "recordingStatusFiles": "files",
   "recordingStatusParts": "({count} parts)",
+  "@recordingStatusParts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "refresh": "Refresh",
   "refreshConnection": "Refresh Connection",
   "refreshTemplate": "Refresh Template",
