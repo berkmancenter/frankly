@@ -62,9 +62,7 @@ Map<String, dynamic> _$$_LiveMeetingParticipantToJson(
 _$_LiveMeetingEvent _$$_LiveMeetingEventFromJson(Map<String, dynamic> json) =>
     _$_LiveMeetingEvent(
       event: $enumDecodeNullable(_$LiveMeetingEventTypeEnumMap, json['event']),
-      timestamp: json['timestamp'] == null
-          ? null
-          : DateTime.parse(json['timestamp'] as String),
+      timestamp: dateTimeFromTimestamp(json['timestamp']),
       agendaItem: json['agendaItem'] as String?,
       hostless: json['hostless'] as bool? ?? false,
     );
