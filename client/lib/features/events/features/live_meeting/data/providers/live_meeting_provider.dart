@@ -237,14 +237,18 @@ class LiveMeetingProvider with ChangeNotifier {
       case MeetingUiState.waitingRoom:
         return breakoutsWaitingRoomId;
       case MeetingUiState.breakoutRoom:
-        if (!isInBreakoutTransition) {
+        // Priority: transition target (joining), then confirmed room (connected).
+        // During transition: _inTransitionToBreakoutRoomId is set.
+        // After Agora confirms: _inTransitionToBreakoutRoomId is null,
+        //   but currentBreakoutRoomId remains valid (override or assigned).
+        final roomId = _inTransitionToBreakoutRoomId ?? currentBreakoutRoomId;
+        if (roomId == null) {
           loggingService.log(
-            'Heartbeat: user is in the breakout UI state but the breakout '
-            'room is not specified. This may occur if the breakout room is '
-            'removed or closed while someone is transitioning to it.',
+            'Heartbeat: user is in the breakout UI state but no room ID is '
+            'available. The room may have been removed or closed.',
           );
         }
-        return _inTransitionToBreakoutRoomId;
+        return roomId;
 
       case MeetingUiState.liveStream:
       case MeetingUiState.inMeeting:
