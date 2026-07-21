@@ -172,6 +172,7 @@ void _registerJsFunctions() {
   functions['agoraRecordingWebhook'] =
       require('../js/agora-recording-webhook.js');
   functions['imageProxy'] = require('../js/image-proxy.js');
+  functions['ServeIndex'] = require('../js/serve-index.js');
 }
 
 void main() {
