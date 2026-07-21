@@ -278,6 +278,14 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             password: password,
           );
     }
+    if (!userService.isCurrentUserEmailVerified) {
+      await userService.verifyEmail();
+      if (mounted) {
+        TextInput.finishAutofillContext(shouldSave: true);
+        Navigator.of(context).pop();
+      }
+      return;
+    }
     if (mounted) {
       TextInput.finishAutofillContext(shouldSave: true);
       Navigator.of(context).pop();
