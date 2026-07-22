@@ -743,6 +743,47 @@ class AnalyticsRsvpEventEvent implements AnalyticsEvent {
 }
 
 @JsonSerializable()
+class AnalyticsBreakoutRoomTransitionEvent implements AnalyticsEvent {
+  @override
+  String getEventType() {
+    return 'Breakout Room Transition';
+  }
+
+  final String communityId;
+  final String eventId;
+
+  /// Duration of the breakout room transition in milliseconds.
+  final int durationMs;
+  final String? templateId;
+
+  AnalyticsBreakoutRoomTransitionEvent({
+    required this.communityId,
+    required this.eventId,
+    required this.durationMs,
+    this.templateId,
+  });
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$AnalyticsBreakoutRoomTransitionEventToJson(this);
+
+  @override
+  String getEventCategory() {
+    return AnalyticsEvent.eventCategory;
+  }
+
+  @override
+  String? getEventName() {
+    return eventId;
+  }
+
+  @override
+  num? getMetricValue() {
+    return durationMs;
+  }
+}
+
+@JsonSerializable()
 class AnalyticsDonateEvent implements AnalyticsEvent {
   @override
   String getEventType() {

@@ -24,6 +24,7 @@ import 'package:client/services.dart';
 import 'package:client/core/data/providers/dialog_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/hostless_action_fallback_controller.dart';
 import 'package:client/core/utils/platform_utils.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_proposal.dart';
@@ -83,7 +84,15 @@ class LiveMeetingProvider with ChangeNotifier {
 
   bool _leftMeeting = false;
   bool _userLeftBreakouts = false;
-  String? _activeBreakoutRoomId;
+
+  /// The ID of the breakout room the user is currently transitioning into, or null if no
+  /// transition is in progress. We need to track this separately because there may be a delay
+  /// between when the user is sent to the breakout room and when they actually join the breakout
+  /// room stream. During this time we want to show the breakout room UI but we won't have a
+  /// breakout room stream to listen to yet.
+  /// Use [isInBreakoutTransition] to check whether a transition is in progress.
+  String? _inTransitionToBreakoutRoomId;
+  String? _cachedJoinInfoRoomId;
   String? _breakoutRoomOverride;
 
   /// Holds a reference to the current breakout room join info
@@ -122,6 +131,9 @@ class LiveMeetingProvider with ChangeNotifier {
   Timer? _checkAssignToBreakoutsTimer;
 
   Timer? _presenceUpdater;
+  Timer? _transitionTimer;
+  int _transitionElapsedSeconds = 0;
+  DateTime? _transitionStartTime;
 
   HostlessActionFallbackController? _hostlessGoToBreakoutsFallbackController;
   HostlessActionFallbackController? _pendingBreakoutsFallbackController;
@@ -150,6 +162,13 @@ class LiveMeetingProvider with ChangeNotifier {
   });
 
   static const int _postEventEmailThresholdInMinutes = 5;
+  static const int _presenceHeartbeatIntervalSeconds = 5;
+  static const int _meetingStartTimerBufferMs = 100;
+  static const int _fallbackControllerBaseDelayMs = 5000;
+  static const int _hostlessFallbackJitterMs = 20000;
+  static const int _pendingBreakoutsFallbackJitterMs = 30000;
+  static const int _breakoutRoomTransitionHeartbeatSeconds = 5;
+  static const int _breakoutRoomTransitionTimeoutSeconds = 10;
 
   MeetingUiState get activeUiState {
     final showEnterMeeting = isInstant && !clickedEnterMeeting;
@@ -204,9 +223,39 @@ class LiveMeetingProvider with ChangeNotifier {
 
   String? get breakoutRoomOverride => _breakoutRoomOverride;
 
+  /// Whether the user is currently transitioning into a breakout room. True from the moment the
+  /// user is assigned to a room until they have successfully joined the room stream.
+  bool get isInBreakoutTransition => _inTransitionToBreakoutRoomId != null;
+
   String? get currentBreakoutRoomId {
     if (_userLeftBreakouts) return null;
     return breakoutRoomOverride ?? assignedBreakoutRoomId;
+  }
+
+  String? get _presenceRoomId {
+    switch (activeUiState) {
+      case MeetingUiState.waitingRoom:
+        return breakoutsWaitingRoomId;
+      case MeetingUiState.breakoutRoom:
+        // Priority: transition target (joining), then confirmed room (connected).
+        // During transition: _inTransitionToBreakoutRoomId is set.
+        // After Agora confirms: _inTransitionToBreakoutRoomId is null,
+        //   but currentBreakoutRoomId remains valid (override or assigned).
+        final roomId = _inTransitionToBreakoutRoomId ?? currentBreakoutRoomId;
+        if (roomId == null) {
+          loggingService.log(
+            'Heartbeat: user is in the breakout UI state but no room ID is '
+            'available. The room may have been removed or closed.',
+          );
+        }
+        return roomId;
+
+      case MeetingUiState.liveStream:
+      case MeetingUiState.inMeeting:
+      case MeetingUiState.leftMeeting:
+      case MeetingUiState.enterMeetingPrescreen:
+        return null;
+    }
   }
 
   bool get isHost => eventProvider.event.creatorId == userService.currentUserId;
@@ -358,16 +407,20 @@ class LiveMeetingProvider with ChangeNotifier {
     _updateTimersBeforeStart();
     canAutoplayLookupFuture = _checkIfCanAutoplay();
 
-    _presenceUpdater = Timer.periodic(Duration(seconds: 5), (_) {
-      if (_activeBreakoutRoomId != null &&
-          eventProvider.selfParticipant?.currentBreakoutRoomId !=
-              _activeBreakoutRoomId) {
+    _presenceUpdater = Timer.periodic(
+        Duration(seconds: _presenceHeartbeatIntervalSeconds), (_) {
+      if (activeUiState == MeetingUiState.leftMeeting ||
+          activeUiState == MeetingUiState.enterMeetingPrescreen) {
+        return;
+      }
+
+      unawaited(
         firestoreLiveMeetingService.updateMeetingPresence(
           event: eventProvider.event,
-          currentBreakoutRoomId: _activeBreakoutRoomId,
+          currentBreakoutRoomId: _presenceRoomId,
           isPresent: true,
-        );
-      }
+        ),
+      );
     });
   }
 
@@ -389,8 +442,9 @@ class LiveMeetingProvider with ChangeNotifier {
     final timeUntilScheduledStart =
         eventProvider.event.timeUntilScheduledStart(clockService.now());
     if (!timeUntilScheduledStart.isNegative) {
-      _scheduledStartTimer =
-          Timer(timeUntilScheduledStart + Duration(milliseconds: 100), () {
+      _scheduledStartTimer = Timer(
+          timeUntilScheduledStart +
+              Duration(milliseconds: _meetingStartTimerBufferMs), () {
         notifyListeners();
       });
     }
@@ -398,8 +452,9 @@ class LiveMeetingProvider with ChangeNotifier {
         eventProvider.event.timeUntilWaitingRoomFinished(clockService.now());
     if (timeUntilWaitingRoomFinished != timeUntilScheduledStart &&
         !timeUntilWaitingRoomFinished.isNegative) {
-      _meetingStartTimer =
-          Timer(timeUntilWaitingRoomFinished + Duration(milliseconds: 100), () {
+      _meetingStartTimer = Timer(
+          timeUntilWaitingRoomFinished +
+              Duration(milliseconds: _meetingStartTimerBufferMs), () {
         notifyListeners();
       });
     }
@@ -421,7 +476,10 @@ class LiveMeetingProvider with ChangeNotifier {
           );
         },
         delay: timeUntilWaitingRoomFinished +
-            Duration(milliseconds: 5000 + random.nextInt(20000)),
+            Duration(
+              milliseconds: _fallbackControllerBaseDelayMs +
+                  random.nextInt(_hostlessFallbackJitterMs),
+            ),
         checkIsActionCompleted: () async =>
             liveMeeting?.currentBreakoutSession?.breakoutRoomStatus != null &&
             liveMeeting?.currentBreakoutSession?.breakoutRoomStatus !=
@@ -439,6 +497,7 @@ class LiveMeetingProvider with ChangeNotifier {
     _assignedBreakoutRoomsStreamSubscription?.cancel();
 
     _presenceUpdater?.cancel();
+    _transitionTimer?.cancel();
 
     _scheduledStartTimer?.cancel();
     _meetingStartTimer?.cancel();
@@ -465,8 +524,10 @@ class LiveMeetingProvider with ChangeNotifier {
 
     _checkLoadBreakoutsStream(liveMeeting);
 
-    if (!breakoutsActive && !isNullOrEmpty(_activeBreakoutRoomId)) {
+    if (!breakoutsActive && (isInBreakoutTransition || isInBreakout)) {
       leaveBreakoutRoom();
+      // True immediately after calling leaveBreakoutRoom, so reset it here since
+      // the user is moving to another room rather than leaving breakouts entirely.
       _userLeftBreakouts = false;
       _restartMainRoomRecordingIfNeeded();
     }
@@ -570,7 +631,10 @@ class LiveMeetingProvider with ChangeNotifier {
             );
           },
           delay: timeUntilBreakouts +
-              Duration(milliseconds: 5000 + random.nextInt(30000)),
+              Duration(
+                milliseconds: _fallbackControllerBaseDelayMs +
+                    random.nextInt(_pendingBreakoutsFallbackJitterMs),
+              ),
           checkIsActionCompleted: () async =>
               liveMeeting?.currentBreakoutSession?.breakoutRoomStatus !=
               BreakoutRoomStatus.pending,
@@ -631,8 +695,84 @@ class LiveMeetingProvider with ChangeNotifier {
     }
   }
 
+  void _startBreakoutRoomTransitionTimer() {
+    _transitionTimer?.cancel();
+    _transitionElapsedSeconds = 0;
+    _transitionStartTime = DateTime.now();
+    _transitionTimer = Timer.periodic(
+        Duration(seconds: _breakoutRoomTransitionHeartbeatSeconds), (timer) {
+      if (!isInBreakoutTransition) {
+        timer.cancel();
+        return;
+      }
+
+      _transitionElapsedSeconds += _breakoutRoomTransitionHeartbeatSeconds;
+      loggingService.log(
+        'Heartbeat: user is in breakout UI state but has not yet joined a room '
+        'after $_transitionElapsedSeconds seconds.',
+      );
+
+      if (_transitionElapsedSeconds >= _breakoutRoomTransitionTimeoutSeconds) {
+        timer.cancel();
+        loggingService.log(
+          'Breakout room transition timed out after '
+          '$_breakoutRoomTransitionTimeoutSeconds seconds. '
+          'Canceling transition and returning to main meeting.',
+        );
+
+        // Emit analytics before leaveBreakoutRoom() clears _transitionStartTime.
+        final startTime = _transitionStartTime;
+        if (startTime != null) {
+          final elapsedMs = DateTime.now().difference(startTime).inMilliseconds;
+          analytics.logEvent(
+            AnalyticsBreakoutRoomTransitionEvent(
+              communityId: eventProvider.communityId,
+              eventId: eventProvider.eventId,
+              durationMs: elapsedMs,
+              templateId: eventProvider.templateId,
+            ),
+          );
+        }
+
+        leaveBreakoutRoom();
+        showToast(
+          appLocalizationService
+              .getLocalization()
+              .breakoutRoomTransitionTimeout,
+        );
+      }
+    });
+  }
+
+  void _clearBreakoutRoomTransition() {
+    _inTransitionToBreakoutRoomId = null;
+    _transitionTimer?.cancel();
+    _transitionTimer = null;
+    _transitionElapsedSeconds = 0;
+    _transitionStartTime = null;
+  }
+
+  void clearBreakoutRoomTransition() {
+    final startTime = _transitionStartTime;
+    if (startTime != null) {
+      final elapsedMs = DateTime.now().difference(startTime).inMilliseconds;
+      loggingService.log(
+        'Breakout room transition completed in ${elapsedMs}ms.',
+      );
+      analytics.logEvent(
+        AnalyticsBreakoutRoomTransitionEvent(
+          communityId: eventProvider.communityId,
+          eventId: eventProvider.eventId,
+          durationMs: elapsedMs,
+          templateId: eventProvider.templateId,
+        ),
+      );
+    }
+    _clearBreakoutRoomTransition();
+  }
+
   Future<GetMeetingJoinInfoResponse>? getCurrentMeetingJoinInfo() {
-    if (_activeBreakoutRoomId == currentBreakoutRoomId &&
+    if (_cachedJoinInfoRoomId == currentBreakoutRoomId &&
         _activeRoomJoinInfoFuture != null) {
       return _activeRoomJoinInfoFuture;
     }
@@ -650,7 +790,8 @@ class LiveMeetingProvider with ChangeNotifier {
   }
 
   Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo() {
-    _activeBreakoutRoomId = null;
+    _clearBreakoutRoomTransition();
+    _cachedJoinInfoRoomId = null;
     _activeRoomJoinInfoFuture = null;
     _breakoutLiveMeetingStream?.dispose();
     _breakoutLiveMeetingStream = null;
@@ -810,7 +951,8 @@ class LiveMeetingProvider with ChangeNotifier {
   void leaveBreakoutRoom() {
     _userLeftBreakouts = true;
 
-    _activeBreakoutRoomId = null;
+    _clearBreakoutRoomTransition();
+    _cachedJoinInfoRoomId = null;
     _breakoutRoomOverride = null;
     _activeRoomJoinInfoFuture = null;
 
@@ -872,8 +1014,10 @@ class LiveMeetingProvider with ChangeNotifier {
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomFuture({
     required String roomId,
   }) async {
-    _activeBreakoutRoomId = roomId;
+    _inTransitionToBreakoutRoomId = roomId;
+    _cachedJoinInfoRoomId = roomId;
     _activeRoomJoinInfoFuture = null;
+    _startBreakoutRoomTransitionTimer();
 
     _loadBreakoutLiveMeetingStream(roomId);
 
@@ -889,11 +1033,9 @@ class LiveMeetingProvider with ChangeNotifier {
       ),
     );
 
-    await firestoreLiveMeetingService.updateMeetingPresence(
-      event: eventProvider.event,
-      isPresent: true,
-      currentBreakoutRoomId: _activeBreakoutRoomId,
-    );
+    // Room membership is updated in ConferenceRoom.onConnected once Agora
+    // confirms the connection. The heartbeat timer continues updating
+    // mostRecentPresentTime in the meantime.
 
     return breakoutRoomJoinInfo;
   }
