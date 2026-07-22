@@ -713,6 +713,36 @@
   "participantActions": "Participant Actions",
   "participantActionsForUserWithId": "Participant Actions for user with ID {userId}",
   "participantCount": "{count} participants",
+  "registrationCountLabel": "{count} {count, plural, =1{Registration} other{Registrations}}",
+  "@registrationCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithActive": "{regCount} registrations ({activeCount} active)",
+  "@registrationCountWithActive": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "activeCount": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithAttended": "{regCount} registrations ({attendedCount} attended)",
+  "@registrationCountWithAttended": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "attendedCount": {
+        "type": "int"
+      }
+    }
+  },
   "participantReassigned": "Participant Reassigned",
   "participants": "Participants",
   "participantsLoadError": "Something went wrong loading participants. Please refresh.",
