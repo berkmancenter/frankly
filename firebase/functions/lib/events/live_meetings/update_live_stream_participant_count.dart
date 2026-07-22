@@ -115,6 +115,7 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
       $models.Event.kFieldPresentParticipantCountEstimate:
           presentParticipantCount,
       $models.Event.kFieldParticipantCountEstimate: participantCount,
+      $models.Event.kFieldRegistrationCount: participantCount,
     };
     print('updated counts for $eventPath: $updateMap');
     await firestore.document(eventPath).updateData(
