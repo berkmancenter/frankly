@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:client/app.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/core/utils/media_device_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -112,7 +113,7 @@ class AgoraRoom with ChangeNotifier {
 
     await engine.initialize(
       RtcEngineContext(
-        appId: '76cd63ec061d4192ac03ff8cdde51395',
+        appId: Environment.agoraAppId,
       ),
     );
 

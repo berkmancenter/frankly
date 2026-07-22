@@ -25,6 +25,11 @@ jobs:
           filters: |
             client:
               - 'client/**'
+      - name: Set up Node.js
+        if: steps.changes.outputs.client == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.23.1"
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true'
@@ -79,6 +84,7 @@ jobs:
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
+          envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_APP_NAME: Frankly
           envkey_APP_URL: https://app.frankly.org
           envkey_TERMS_URL: https://frankly.org/terms
@@ -98,6 +104,7 @@ jobs:
           envkey_CLOUDINARY_DEFAULT_PRESET: ${{ secrets.CLOUDINARY_DEFAULT_PRESET }}
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
+          envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
 
       - name: Build App
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'

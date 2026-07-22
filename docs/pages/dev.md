@@ -420,8 +420,9 @@ agora.webhook_secret="<YOUR_VALUE_HERE>"
   - `storage_bucket_name`: Enter the bucket name you selected.
   - `storage_access_key`: Select **Settings** under the Cloud Storage left-side settings panel. Click on the **Interopability** tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select **Create a Key**. Then, paste the generated **Access key** here.
   - `storage_secret_key`: From the generated key, paste the **Secret**.
-- **In the codebase**
+- **Update client-side environment variables**
   - In `client/.env`, change `FUNCTIONS_URL_PREFIX` to reflect your Google Cloud Run Functions prefix.
+  - In `client/.env`, set `AGORA_APP_ID` to the App ID copied from the Agora console (the same value as `agora.app_id` above). This is used by the Flutter client to initialize the Agora RTC engine.
 - **Agora recording webhook**
   - Deploy the `AgoraRecordingWebhook` Cloud Function and note its URL.
   - In the Agora console, go to **Notifications** (under Developer Toolkit / Developer Resources). Add a new rule targeting **Cloud Recording** events, set the callback URL to the deployed function URL, and choose a secret string.

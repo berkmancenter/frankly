@@ -1,6 +1,4 @@
-import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/styles/styles.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -12,6 +10,205 @@ import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:provider/provider.dart';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+FocusNode _emailFocusNode = FocusNode();
+
+WidgetSpan buildActionText(
+  BuildContext context,
+  String text, {
+  VoidCallback? onTap,
+  TextStyle? style,
+}) {
+  return WidgetSpan(
+    alignment: PlaceholderAlignment.baseline,
+    baseline: TextBaseline.alphabetic,
+    child: InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        softWrap: true,
+        style: style ??
+            context.theme.textTheme.bodyMedium?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+      ),
+    ),
+  );
+}
+
+// Create a widget containing information about account error messages received from our backend
+class AccountErrorMessage extends StatelessWidget {
+  final String errorCode;
+  final Function(bool)? onSwitchView;
+  final VoidCallback? onForgotPassword;
+
+  const AccountErrorMessage({
+    required this.errorCode,
+    this.onSwitchView,
+    this.onForgotPassword,
+  });
+
+  Widget buildForgotPasswordMessage(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: context.l10n.forgotPasswordPrefix,
+          ),
+          buildActionText(
+            context,
+            context.l10n.forgotPasswordEnterEmail,
+            onTap: () => _emailFocusNode.requestFocus(),
+          ),
+          TextSpan(
+            text: ', ${context.l10n.forgotPasswordThen}',
+          ),
+          buildActionText(
+            context,
+            context.l10n.forgotPasswordSuffix,
+            onTap: () => onForgotPassword?.call(),
+          ),
+          TextSpan(text: '.'),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    boxedErrorText({required message}) {
+      return Focus(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          decoration: BoxDecoration(
+            color: context.theme.colorScheme.error.withOpacity(0.05),
+          ),
+          child: message,
+        ),
+      );
+    }
+
+    switch (errorCode) {
+      case 'email-already-in-use':
+        return boxedErrorText(
+          message: Text.rich(
+            TextSpan(
+              // style: const TextStyle(textBaseline: TextBaseline.alphabetic),
+              children: [
+                TextSpan(
+                  text: context.l10n.emailAddressAlreadyInUseLoginError,
+                ),
+                buildActionText(
+                  context,
+                  context.l10n.loggingIn,
+                  onTap: () => onSwitchView?.call(false),
+                ),
+                TextSpan(text: context.l10n.insteadSuffix),
+              ],
+            ),
+          ),
+        );
+      case 'user-not-found':
+        return boxedErrorText(
+          message: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: context.l10n.couldntFindAccount,
+                ),
+                buildActionText(
+                  context,
+                  context.l10n.signingUp,
+                  onTap: () => onSwitchView?.call(true),
+                ),
+                TextSpan(text: context.l10n.insteadSuffix),
+              ],
+            ),
+          ),
+        );
+      case 'invalid-credential':
+      case 'wrong-password':
+        return boxedErrorText(
+          message: Column(
+            children: [
+              Text(
+                context.l10n.emailAndPasswordMismatch(Environment.appName),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    buildActionText(
+                      context,
+                      context.l10n.emailAndPasswordMismatchCheck,
+                      onTap: () => _emailFocusNode.requestFocus(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${context.l10n.forgotEmail} ',
+                    ),
+                    buildActionText(
+                      context,
+                      context.l10n.contactUs,
+                      onTap: () {
+                        launchUrlString('mailto:${Environment.supportEmail}');
+                      },
+                    ),
+                    TextSpan(text: '.'),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
+              buildForgotPasswordMessage(context),
+            ],
+          ),
+        );
+      case 'invalid-email':
+        return boxedErrorText(
+          message: Text(context.l10n.invalidEmail),
+        );
+      case 'too-many-requests':
+        return boxedErrorText(
+          message: Text(context.l10n.tooManyRequests),
+        );
+      case 'email-missing-pw':
+        return boxedErrorText(
+          message: Text(context.l10n.pleaseEnterValidEmail),
+        );
+      default:
+        return boxedErrorText(
+          message: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '${context.l10n.somethingWentWrongLongPrefix}\n\n',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: '${context.l10n.somethingWentWrongLongMiddle} '),
+                buildActionText(
+                  context,
+                  context.l10n.somethingWentWrongLongSuffix,
+                  onTap: () {
+                    launchUrlString('mailto:${Environment.supportEmail}');
+                  },
+                ),
+                TextSpan(text: '${context.l10n.tryAgainLater}.'),
+              ],
+            ),
+          ),
+        );
+    }
+  }
+}
 
 class SignInOptionsContent extends StatefulWidget {
   const SignInOptionsContent({
@@ -81,82 +278,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             password: password,
           );
     }
+    if (!userService.isCurrentUserEmailVerified) {
+      await userService.verifyEmail();
+      if (mounted) {
+        TextInput.finishAutofillContext(shouldSave: true);
+        Navigator.of(context).pop();
+      }
+      return;
+    }
     if (mounted) {
       TextInput.finishAutofillContext(shouldSave: true);
       Navigator.of(context).pop();
     }
     widget.onComplete?.call();
-  }
-
-// Create a widget containing information about account error messages received from our backend
-  Widget _accountErrorMessageBuilder(String errorCode) {
-    switch (errorCode) {
-      case 'email-already-in-use':
-        return Text.rich(
-          TextSpan(
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: context.theme.colorScheme.error,
-            ),
-            children: [
-              TextSpan(
-                text: context.l10n.emailAddressAlreadyInUseLoginError,
-              ),
-              TextSpan(
-                text: context.l10n.loggingIn,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => setState(() {
-                        _showSignup = false;
-                        _formError = '';
-                      }),
-                style: context.theme.textTheme.bodyMedium?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: context.theme.colorScheme.error,
-                ),
-              ),
-              TextSpan(text: context.l10n.insteadSuffix),
-            ],
-          ),
-        );
-      case 'user-not-found':
-        return Text.rich(
-          TextSpan(
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              color: context.theme.colorScheme.error,
-            ),
-            children: [
-              TextSpan(
-                text: context.l10n.couldntFindAccount,
-              ),
-              TextSpan(
-                text: context.l10n.signingUp,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => setState(() {
-                        _showSignup = true;
-                        _formError = '';
-                      }),
-                style: context.theme.textTheme.bodyMedium?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: context.theme.colorScheme.error,
-                ),
-              ),
-              TextSpan(text: context.l10n.insteadSuffix),
-            ],
-          ),
-        );
-      case 'email-missing-pw':
-        return Text(
-          context.l10n.pleaseEnterValidEmail,
-          style: context.theme.textTheme.bodyMedium?.copyWith(
-            color: context.theme.colorScheme.error,
-          ),
-        );
-
-      default:
-        return Text(
-          context.l10n.somethingWentWrongTryAgain,
-          style: context.theme.textTheme.bodySmall,
-        );
-    }
   }
 
   Future<void> _resetPassword() async {
@@ -165,17 +299,20 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       errorCallback: (error, msg) => {
         if (msg == 'Email must be entered to reset password.')
           setState(() {
+            _formMessage = '';
             _formError = 'email-missing-pw';
             _ignorePassword = false;
           })
         else
           setState(() {
+            _formMessage = '';
             _formError = msg;
             _ignorePassword = false;
           }),
       },
       callback: () => {
         setState(() {
+          _formError = '';
           _formMessage =
               context.l10n.passwordResetLinkSent(_emailController.text);
           _ignorePassword = false;
@@ -201,7 +338,7 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ..._buildSignIn(),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             _buildTermsOfService(),
           ],
         ),
@@ -213,11 +350,11 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
     if (_showSignup) {
       return context.l10n.newToApp(Environment.appName);
     } else {
-      return context.l10n.signInToApp(Environment.appName);
+      return context.l10n.logIntoApp(Environment.appName);
     }
   }
 
-  Widget _getMessageText() {
+  Widget _buildSignUpLogInMessage() {
     return Text.rich(
       key: SignInOptionsContent.showSignUpToggleKey,
       TextSpan(
@@ -227,21 +364,18 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
             text:
                 '${_showSignup ? context.l10n.alreadyUserSignIn : context.l10n.notUserSignUp} ',
           ),
-          TextSpan(
-            text: _showSignup ? context.l10n.signIn : context.l10n.signUp,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                if (_formError.isNotEmpty) {
-                  _formKey.currentState!.reset();
-                }
-                setState(() {
-                  _showSignup = !_showSignup;
-                  _formError = '';
-                });
-              },
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-            ),
+          buildActionText(
+            context,
+            _showSignup ? context.l10n.login : context.l10n.signUp,
+            onTap: () {
+              if (_formError.isNotEmpty) {
+                _formKey.currentState!.reset();
+              }
+              setState(() {
+                _showSignup = !_showSignup;
+                _formError = '';
+              });
+            },
           ),
           TextSpan(text: '.'),
         ],
@@ -267,8 +401,30 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
       SizedBox(height: 9),
       Align(
         alignment: Alignment.center,
-        child: _getMessageText(),
+        child: _buildSignUpLogInMessage(),
       ),
+      if (_formError.isNotEmpty)
+        AccountErrorMessage(
+          errorCode: _formError,
+          onSwitchView: (bool value) {
+            setState(() {
+              _showSignup = value;
+              _formError = '';
+            });
+          },
+          onForgotPassword: _resetPassword,
+        ),
+      if (_formMessage.isNotEmpty)
+        Column(
+          children: [
+            SizedBox(height: 9),
+            Text(
+              _formMessage,
+              style: context.theme.textTheme.bodySmall,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       Form(
         key: _formKey,
         child: Column(
@@ -305,15 +461,19 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                     labelText: context.l10n.email,
                     autofillHints: const [
                       AutofillHints.email,
-                      AutofillHints.username],
+                      AutofillHints.username,
+                    ],
                     keyboardType: TextInputType.emailAddress,
                     onEditingComplete: () => _submitForm(),
                     validator: (value) {
-                      if (value == null || value.isEmpty || !isEmailValid(value)) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          !isEmailValid(value)) {
                         return context.l10n.pleaseEnterValidEmail;
                       }
                       return null;
                     },
+                    focusNode: _emailFocusNode,
                   ),
                   SizedBox(height: 10),
                   CustomTextField(
@@ -337,7 +497,9 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                           onPressed: () =>
                               setState(() => _showPassword = !_showPassword),
                           icon: Icon(
-                            _showPassword ? Icons.visibility_off : Icons.visibility,
+                            _showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             size: 24,
                           ),
                         ),
@@ -363,59 +525,25 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 ],
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 20),
             if (_showSignup)
               Text(
                 context.l10n.passwordRequirements,
-                style: context.theme.textTheme.bodySmall,
-              ),
-            if (!_showSignup)
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text.rich(
-                  TextSpan(
-                    text: context.l10n.forgotYourPassword,
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        // We have to disable password validation for now so the form validation can succeed without it
-                        setState(() {
-                          _ignorePassword = true;
-                        });
-                        if (_formKey.currentState!.validate()) {
-                          _resetPassword();
-                        }
-                      },
-                    style: context.theme.textTheme.bodySmall?.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
               ),
             SizedBox(height: 9),
-            if (_formError.isNotEmpty) _accountErrorMessageBuilder(_formError),
-            if (_formMessage.isNotEmpty)
-              Text(
-                _formMessage,
-                style: context.theme.textTheme.bodySmall,
-                textAlign: TextAlign.center,
-              ),
-            SizedBox(height: 9),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ActionButton(
-                key: SignInOptionsContent.buttonSubmitKey,
-                onPressed: () => authMessageOnError(
-                  _onSubmit,
-                  errorCallback: (error, code) => setState(
-                    () => _formError = code,
-                  ),
+            ActionButton(
+              key: SignInOptionsContent.buttonSubmitKey,
+              onPressed: () => authMessageOnError(
+                _onSubmit,
+                errorCallback: (error, code) => setState(
+                  () => _formError = code,
                 ),
-                type: ActionButtonType.filled,
-                expand: true,
-                textColor: Colors.white,
-                color: Colors.black,
-                text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
               ),
+              type: ActionButtonType.filled,
+              expand: true,
+              textColor: Colors.white,
+              color: Colors.black,
+              text: !_showSignup ? context.l10n.signIn : context.l10n.signUp,
             ),
           ],
         ),
@@ -431,27 +559,49 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
         ),
       ),
       SizedBox(height: 9),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ActionButton(
-          key: SignInOptionsContent.buttonGoogleKey,
-          expand: true,
-          maxTextWidth: googleButtonWidth,
-          onPressed: () => context.read<UserService>().signInWithGoogle(),
-          type: ActionButtonType.outline,
-          icon: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
-            child: Image.asset(
-              'media/googleLogo.png',
-              width: 22,
-              height: 22,
+      ActionButton(
+        key: SignInOptionsContent.buttonGoogleKey,
+        expand: true,
+        maxTextWidth: googleButtonWidth,
+        onPressed: () => context.read<UserService>().signInWithGoogle(),
+        type: ActionButtonType.outline,
+        icon: Padding(
+          padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+          child: Image.asset(
+            'media/googleLogo.png',
+            width: 22,
+            height: 22,
+          ),
+        ),
+        text: _showSignup
+            ? context.l10n.signUpWithGoogle
+            : context.l10n.logInWithGoogle,
+      ),
+      SizedBox(height: 20),
+      if (!_showSignup)
+        Align(
+          alignment: Alignment.center,
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: context.l10n.forgotAccountEmailOrNeedHelp,
+                ),
+                TextSpan(
+                  text: ' ',
+                ),
+                buildActionText(
+                  context,
+                  context.l10n.contactUs,
+                  onTap: () {
+                    launchUrlString('mailto:${Environment.supportEmail}');
+                  },
+                ),
+                TextSpan(text: '.'),
+              ],
             ),
           ),
-          text: _showSignup
-              ? context.l10n.signUpWithGoogle
-              : context.l10n.signInWithGoogle,
         ),
-      ),
     ];
   }
 
@@ -463,13 +613,10 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
           TextSpan(
             text: context.l10n.termsAgreementPrefix(Environment.appName),
           ),
-          TextSpan(
-            text: context.l10n.termsOfService(Environment.appName),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () => launch(Environment.termsUrl),
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              decoration: TextDecoration.underline,
-            ),
+          buildActionText(
+            context,
+            context.l10n.termsOfService(Environment.appName),
+            onTap: () => launchUrlString(Environment.termsUrl),
           ),
           TextSpan(text: '.'),
         ],

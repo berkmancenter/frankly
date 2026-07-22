@@ -30,6 +30,8 @@ class AppAsset {
       AppAsset('media/dislike-selected.png');
   static const AppAsset kDislikeNotSelectedPng = AppAsset('media/dislike.png');
   static const AppAsset kArrowBackPng = AppAsset('media/arrow-back.png');
+  static const AppAsset kArrowLeftThinSvg =
+      AppAsset('media/arrow-left-thin.svg');
   static const AppAsset kMorePng = AppAsset('media/more-gray.png');
   static const AppAsset kHomePng = AppAsset('media/home.png');
   static const AppAsset kChatBubblePng = AppAsset('media/chatBubble.png');

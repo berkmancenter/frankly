@@ -80,6 +80,7 @@ jobs:
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
+          envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_SENTRY_RELEASE: ${{ env.CURRENT_RELEASE }}
           envkey_SENTRY_ENVIRONMENT: staging
           envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -104,6 +105,7 @@ jobs:
           envkey_CLOUDINARY_DEFAULT_PRESET: ${{ secrets.CLOUDINARY_DEFAULT_PRESET }}
           envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           envkey_LINK_PREVIEW_API_KEY: ${{ secrets.LINK_PREVIEW_API_KEY }}
+          envkey_SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
 
       - name: Build the Flutter App
         if: steps.changes.outputs.client == 'true' || github.event_name== 'workflow_dispatch'
