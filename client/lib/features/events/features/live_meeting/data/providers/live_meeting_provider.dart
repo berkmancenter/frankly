@@ -414,10 +414,12 @@ class LiveMeetingProvider with ChangeNotifier {
         return;
       }
 
-      firestoreLiveMeetingService.updateMeetingPresence(
-        event: eventProvider.event,
-        currentBreakoutRoomId: _presenceRoomId,
-        isPresent: true,
+      unawaited(
+        firestoreLiveMeetingService.updateMeetingPresence(
+          event: eventProvider.event,
+          currentBreakoutRoomId: _presenceRoomId,
+          isPresent: true,
+        ),
       );
     });
   }
