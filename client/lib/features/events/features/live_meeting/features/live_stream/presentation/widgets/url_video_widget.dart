@@ -130,6 +130,8 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
     useEffect(
       () {
         final subscription = html.window.onMessage.listen((event) {
+          if (event.origin != html.window.location!.origin) return;
+
           final messageObj = event.data;
 
           // Check if the messageObj is a Map and contains the 'source' key;
