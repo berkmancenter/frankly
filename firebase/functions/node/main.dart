@@ -17,6 +17,8 @@ import 'package:functions/events/live_meetings/create_live_stream.dart';
 import 'package:functions/admin/payments/create_stripe_connected_account.dart';
 import 'package:functions/admin/payments/create_subscription_checkout_session.dart';
 import 'package:functions/events/event_ended.dart';
+import 'package:functions/events/live_meetings/end_meeting_for_all.dart';
+import 'package:functions/events/live_meetings/scheduled_end_meeting.dart';
 import 'package:functions/events/live_meetings/breakouts/get_breakout_room_assignment.dart';
 import 'package:functions/events/live_meetings/breakouts/get_breakout_room_join_info.dart';
 import 'package:functions/events/calendar/get_calendar_link.dart';
@@ -116,6 +118,7 @@ final _onCallFunctions = <CloudFunction>[
   UpdateStripeSubscriptionPlan(),
   VoteToKick(),
   EventEnded(),
+  EndMeetingForAll(),
 ];
 
 final _onRequestFunctions = <CloudFunction>[
@@ -126,6 +129,7 @@ final _onRequestFunctions = <CloudFunction>[
   EmailEventReminder(),
   ExtendCloudTaskScheduler(),
   MuxWebhooks(),
+  ScheduledEndMeeting(),
   ShareLink(),
   StripeConnectedAccountWebhooks(),
   StripeWebhooks(),

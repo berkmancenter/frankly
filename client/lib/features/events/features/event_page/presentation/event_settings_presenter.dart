@@ -118,6 +118,18 @@ class EventSettingsPresenter {
     _view.updateView();
   }
 
+  void updateSettingValue(String setting, dynamic value) {
+    final settings = EventSettings.fromJson(
+      _model.eventSettings.toJson()
+        ..addEntries([
+          MapEntry(setting, value),
+        ]),
+    );
+    _model.eventSettings = settings;
+    _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));
+    _view.updateView();
+  }
+
   Future<void> saveSettings() async {
     switch (_model.eventSettingsDrawerType) {
       case EventSettingsDrawerType.template:

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,23 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     implements EventSettingsView {
   late final EventSettingsModel _model;
   late final EventSettingsPresenter _presenter;
+  // Grace period input uses a managed TextEditingController + FocusNode
+  // rather than TextFormField's initialValue/ValueKey pattern. This avoids
+  // losing focus on every keystroke (ValueKey rebuilds destroy the widget).
+  //
+  // Validation: valid range is 0-120 (integer). While typing, invalid input
+  // shows a red border and red text immediately. Auto-correction fires after
+  // a 1-second debounce, on focus loss, or on save -- whichever comes first
+  // -- clamping to 0-120 and flooring any decimals.
+  //
+  // The _gracePeriodEditing flag prevents _syncGracePeriodController (called
+  // from updateView) from overwriting the controller text while the user is
+  // actively typing.
+  final _gracePeriodController = TextEditingController();
+  final _gracePeriodFocusNode = FocusNode();
+  Timer? _gracePeriodDebounce;
+  bool _gracePeriodInvalid = false;
+  bool _gracePeriodEditing = false;
 
   @override
   void initState() {
@@ -48,6 +67,81 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
     _model = EventSettingsModel(widget.eventSettingsDrawerType);
     _presenter = EventSettingsPresenter(context, this, _model);
     _presenter.init();
+    _syncGracePeriodController();
+    _gracePeriodFocusNode.addListener(_onGracePeriodFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _gracePeriodDebounce?.cancel();
+    _gracePeriodController.dispose();
+    _gracePeriodFocusNode.removeListener(_onGracePeriodFocusChange);
+    _gracePeriodFocusNode.dispose();
+    super.dispose();
+  }
+
+  /// Syncs the controller text to the model value. Skipped while the user
+  /// is actively editing to avoid overwriting mid-keystroke.
+  void _syncGracePeriodController() {
+    if (_gracePeriodEditing) return;
+    final value =
+        (_model.eventSettings.autoEndGracePeriodMinutes ?? 0).toString();
+    if (_gracePeriodController.text != value) {
+      _gracePeriodController.text = value;
+    }
+  }
+
+  void _onGracePeriodFocusChange() {
+    if (_gracePeriodFocusNode.hasFocus) {
+      _gracePeriodEditing = true;
+    } else {
+      _correctGracePeriodInput();
+      _gracePeriodEditing = false;
+    }
+  }
+
+  void _onGracePeriodChanged(String value) {
+    _gracePeriodDebounce?.cancel();
+    _gracePeriodEditing = true;
+    final parsed = int.tryParse(value);
+    final isValid = parsed != null && parsed >= 0 && parsed <= 120;
+    if (isValid) {
+      _presenter.updateSettingValue(
+        EventSettings.kFieldAutoEndGracePeriodMinutes,
+        parsed,
+      );
+    }
+    setState(() {
+      _gracePeriodInvalid = !isValid && value.isNotEmpty;
+    });
+    _gracePeriodDebounce = Timer(const Duration(seconds: 1), () {
+      _correctGracePeriodInput();
+    });
+  }
+
+  /// Clamps the current input to 0-120, floors decimals, and pushes the
+  /// corrected value to the controller and presenter.
+  void _correctGracePeriodInput() {
+    _gracePeriodDebounce?.cancel();
+    final text = _gracePeriodController.text;
+    final parsed = num.tryParse(text);
+    int corrected;
+    if (parsed == null || parsed < 0) {
+      corrected = 0;
+    } else if (parsed > 120) {
+      corrected = 120;
+    } else {
+      corrected = parsed.floor();
+    }
+    _gracePeriodController.text = corrected.toString();
+    _gracePeriodEditing = false;
+    _presenter.updateSettingValue(
+      EventSettings.kFieldAutoEndGracePeriodMinutes,
+      corrected,
+    );
+    setState(() {
+      _gracePeriodInvalid = false;
+    });
   }
 
   @override
@@ -133,6 +227,72 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           SizedBox(height: 16),
           _SwitchAndTooltip(
             onUpdate: (isSelected) => _presenter.updateSetting(
+              EventSettings.kFieldAutoEndMeeting,
+              isSelected,
+            ),
+            text: context.l10n.autoEndMeeting,
+            val: _model.eventSettings.autoEndMeeting ?? false,
+            isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
+              (settings) => settings.autoEndMeeting,
+            ),
+          ),
+          if (_model.eventSettings.autoEndMeeting == true) ...[
+            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: HeightConstrainedText(
+                        context.l10n.gracePeriodMinutes,
+                      style: context.theme.textTheme.bodyMedium,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 64,
+                    child: TextFormField(
+                      controller: _gracePeriodController,
+                      focusNode: _gracePeriodFocusNode,
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      style: context.theme.textTheme.bodyMedium?.copyWith(
+                        color: _gracePeriodInvalid
+                            ? context.theme.colorScheme.error
+                            : null,
+                      ),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        border: OutlineInputBorder(),
+                        enabledBorder: _gracePeriodInvalid
+                            ? OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: context.theme.colorScheme.error,
+                                ),
+                              )
+                            : null,
+                        focusedBorder: _gracePeriodInvalid
+                            ? OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: context.theme.colorScheme.error,
+                                  width: 2,
+                                ),
+                              )
+                            : null,
+                      ),
+                      onChanged: _onGracePeriodChanged,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          SizedBox(height: 16),
+          _SwitchAndTooltip(
+            onUpdate: (isSelected) => _presenter.updateSetting(
               EventSettings.kFieldTalkingTimer,
               isSelected,
             ),
@@ -156,7 +316,10 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           ActionButton(
             expand: true,
             text: context.l10n.saveSettings,
-            onPressed: () => _presenter.saveSettings(),
+            onPressed: () {
+              _correctGracePeriodInput();
+              _presenter.saveSettings();
+            },
             color: context.theme.colorScheme.primary,
             textColor: context.theme.colorScheme.onPrimary,
           ),
@@ -178,12 +341,17 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
               style: context.theme.textTheme.headlineSmall!,
             ),
             SizedBox(height: 40),
-            for (final feature in _model.eventSettings.toJson().keys.toList())
+            for (final entry
+                in _model.eventSettings.toJson().entries.where(
+                      (e) =>
+                          e.key !=
+                          EventSettings.kFieldAutoEndGracePeriodMinutes,
+                    ))
               CustomSwitchTile(
                 onUpdate: (isSelected) =>
-                    _presenter.updateSetting(feature, isSelected),
-                text: feature,
-                val: _model.eventSettings.toJson()[feature] ?? false,
+                    _presenter.updateSetting(entry.key, isSelected),
+                text: entry.key,
+                val: (entry.value as bool?) ?? false,
                 style: context.theme.textTheme.bodyMedium,
               ),
           ],
@@ -204,6 +372,7 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
 
   @override
   void updateView() {
+    _syncGracePeriodController();
     setState(() {});
   }
 }
