@@ -770,6 +770,36 @@
   "participantActions": "参与者操作",
   "participantActionsForUserWithId": "ID为{userId}的用户的参与者操作",
   "participantCount": "{count}位参与者",
+  "registrationCountLabel": "{count}个注册",
+  "@registrationCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithActive": "{regCount}个注册（{activeCount}位活跃）",
+  "@registrationCountWithActive": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "activeCount": {
+        "type": "int"
+      }
+    }
+  },
+  "registrationCountWithAttended": "{regCount}个注册（{attendedCount}位出席）",
+  "@registrationCountWithAttended": {
+    "placeholders": {
+      "regCount": {
+        "type": "int"
+      },
+      "attendedCount": {
+        "type": "int"
+      }
+    }
+  },
   "participantReassigned": "参与者已重新分配",
   "participants": "参与者",
   "participantsLoadError": "加载参与者时出现问题。请刷新。",
