@@ -180,6 +180,90 @@ void main() {
     );
   });
 
+  test(
+      'Ghost participants (isPresent: false) are excluded from voting denominator',
+      () async {
+    // Set up a room with 2 present voters and 5 ghost participants.
+    // Before the isPresent filter was added to VoteToKick, ghost participants
+    // inflated the denominator, requiring 7+ votes to kick instead of 2.
+    // With the fix, only isPresent == true participants count, so 2 votes kick.
+    const voter1 = 'voter1';
+    const voter2 = 'voter2';
+
+    // Two present participants in the room (eligible voters).
+    await eventUtils.joinEvent(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: testEvent.id,
+      uid: voter1,
+      participantStatus: ParticipantStatus.active,
+      currentBreakoutRoomId: liveMeetingId,
+      isPresent: true,
+    );
+    await eventUtils.joinEvent(
+      communityId: communityId,
+      templateId: templateId,
+      eventId: testEvent.id,
+      uid: voter2,
+      participantStatus: ParticipantStatus.active,
+      currentBreakoutRoomId: liveMeetingId,
+      isPresent: true,
+    );
+
+    // Five ghost participants in the same room — should be invisible to the
+    // kick denominator because isPresent == false.
+    for (int i = 1; i <= 5; i++) {
+      await eventUtils.joinEvent(
+        communityId: communityId,
+        templateId: templateId,
+        eventId: testEvent.id,
+        uid: 'ghostUser$i',
+        participantStatus: ParticipantStatus.active,
+        currentBreakoutRoomId: liveMeetingId,
+        isPresent: false,
+      );
+    }
+
+    final voteToKick = VoteToKick(agoraUtils: mockAgoraUtils);
+    final req = VoteToKickRequest(
+      eventPath: testEvent.fullPath,
+      liveMeetingPath: '${testEvent.fullPath}/live-meetings/$liveMeetingId',
+      targetUserId: targetUserId,
+      inFavor: true,
+      reason: 'Test ghost exclusion',
+    );
+
+    // First in-favor vote from voter1.
+    await voteToKick.action(
+      req,
+      CallableContext(voter1, null, 'fakeInstanceId'),
+    );
+
+    // Second in-favor vote from voter2 — with ghosts excluded, denominator is
+    // 2 (voter1 + voter2), so 2 votes satisfies inFavorCount > 1 && >= 2.
+    await voteToKick.action(
+      req,
+      CallableContext(voter2, null, 'fakeInstanceId'),
+    );
+
+    final participantSnapshot = await firestore
+        .document('${testEvent.fullPath}/event-participants/$targetUserId')
+        .get();
+    final participant = Participant.fromJson(
+      firestoreUtils.fromFirestoreJson(participantSnapshot.data.toMap()),
+    );
+
+    // User should be kicked — ghost participants did not inflate the threshold.
+    expect(participant.status, equals(ParticipantStatus.banned));
+
+    verify(
+      () => mockAgoraUtils.kickParticipant(
+        roomId: any(named: 'roomId'),
+        userId: targetUserId,
+      ),
+    ).called(1);
+  });
+
   test('Proposal gets rejected when receiving sufficient opposing votes',
       () async {
     final req = VoteToKickRequest(

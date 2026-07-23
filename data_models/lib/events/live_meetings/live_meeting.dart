@@ -81,7 +81,7 @@ enum LiveMeetingEventType {
 class LiveMeetingEvent with _$LiveMeetingEvent {
   factory LiveMeetingEvent({
     @JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-    DateTime? timestamp,
+    @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
     String? agendaItem,
     @Default(false) bool? hostless,
   }) = _LiveMeetingEvent;

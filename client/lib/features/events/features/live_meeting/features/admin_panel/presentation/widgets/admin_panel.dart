@@ -896,7 +896,7 @@ class _BreakoutRoomButtonState extends State<BreakoutRoomButton> {
                         HeightConstrainedText(context.l10n.error)
                       else
                         HeightConstrainedText(
-                          '$participantCount people',
+                          '$participantCount ${participantCount == 1 ? context.l10n.person : context.l10n.people}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

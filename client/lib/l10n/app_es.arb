@@ -438,6 +438,7 @@
   "billing": "Facturación",
   "brandingAndTheme": "Marca y tema",
   "brandYourSpace": "Marcar tu espacio",
+  "breakoutRoomTransitionTimeout": "¡No se pudo encontrar esa sala de grupo! Regresando a la reunión principal.",
   "breakoutUpdated": "¡Sala de grupos actualizada!",
   "breakouts": "Grupos",
   "broadcast": "Transmisión",

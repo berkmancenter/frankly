@@ -370,6 +370,7 @@
   "billing": "Billing",
   "brandingAndTheme": "Branding & Theme",
   "brandYourSpace": "Brand your space",
+  "breakoutRoomTransitionTimeout": "Could not find that breakout room! This usually means a network error or that the host closed the room. Returning to the main meeting.",
   "breakoutUpdated": "Breakout Updated!",
   "breakouts": "Breakouts",
   "broadcast": "Broadcast",

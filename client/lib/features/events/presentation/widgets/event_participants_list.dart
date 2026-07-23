@@ -23,7 +23,13 @@ class EventPageParticipantsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventProvider = EventProvider.watch(context);
-    final participantCount = eventProvider.participantCount;
+
+    // When the meeting is live (any participant is present), show only
+    // present participants to match the in-meeting counts.
+    final isLive = eventProvider.hasPresentParticipants;
+    final participantCount = isLive
+        ? eventProvider.presentParticipantCount
+        : eventProvider.participantCount;
     final registrationCount = eventProvider.registrationCount;
     final maxNumberOfParticipantsToShow =
         responsiveLayoutService.isMobile(context) ? 4 : 6;
@@ -37,12 +43,16 @@ class EventPageParticipantsList extends StatelessWidget {
       builder: (context, participants) {
         final activeParticipants = (participants ?? [])
             .where((e) => e.status == ParticipantStatus.active);
+        final displayParticipants = isLive
+            ? activeParticipants.where((p) => p.isPresent)
+            : activeParticipants;
         return ParticipantsList(
-          key: Key('${activeParticipants.length}'),
+          key: Key('${displayParticipants.length}'),
           event: event,
-          participantIds: activeParticipants.map((e) => e.id).toList(),
+          participantIds: displayParticipants.map((e) => e.id).toList(),
           numberOfIconsToShow: numberOfParticipantsToShow,
           registrationCount: registrationCount,
+          participantCount: participantCount,
         );
       },
     );
