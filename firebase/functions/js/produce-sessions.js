@@ -37,7 +37,11 @@ const produceSessions = functions.firestore
                 console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
             } else {
                 console.log(
-                    `Found ${mp4Files.length} MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files.map((f) => f.name).join(', ')}`
+                    `Found ${
+                        mp4Files.length
+                    } MP4(s) under ${gcsPrefix}/ for session ${sessionId}: ${mp4Files
+                        .map((f) => f.name)
+                        .join(', ')}`
                 )
                 const updates = {}
                 mp4Files.forEach((f, i) => {
@@ -51,39 +55,29 @@ const produceSessions = functions.firestore
         }
 
         // --- Export transcript ---
+        // Agora STT writes .vtt files directly to GCS under the session's
+        // gcsPrefix. Register any VTT files found as artifacts.
         try {
-            const segmentsSnap = await change.after.ref
-                .collection('transcript-segments')
-                .orderBy('startMs')
-                .get()
+            const [allFiles] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
+            const vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
 
-            if (segmentsSnap.empty) {
-                console.log(`No transcript segments for session ${sessionId}, skipping export`)
-                return null
+            if (vttFiles.length === 0) {
+                console.log(`No VTT files found under ${gcsPrefix}/ for session ${sessionId}`)
+            } else {
+                console.log(
+                    `Found ${vttFiles.length} VTT file(s) for session ${sessionId}: ${vttFiles
+                        .map((f) => f.name)
+                        .join(', ')}`
+                )
+                const updates = {}
+                vttFiles.forEach((f, i) => {
+                    updates[`artifactPaths.transcript_vtt_${i}`] = f.name
+                })
+                await change.after.ref.update(updates)
+                console.log(`Registered ${vttFiles.length} VTT file(s) for session ${sessionId}`)
             }
-
-            const segments = segmentsSnap.docs.map((doc) => {
-                const d = doc.data()
-                return {
-                    text: d.text,
-                    startMs: d.startMs,
-                    durationMs: d.durationMs,
-                    speakerUid: d.speakerUid,
-                    language: d.language,
-                }
-            })
-
-            const transcriptPath = `${gcsPrefix}/transcript.json`
-            await bucket.file(transcriptPath).save(JSON.stringify(segments), {
-                contentType: 'application/json',
-            })
-
-            await change.after.ref.update({
-                'artifactPaths.transcript_json': transcriptPath,
-            })
-            console.log(`Exported transcript to ${transcriptPath} for session ${sessionId}`)
         } catch (err) {
-            console.error(`Error exporting transcript for session ${sessionId}:`, err)
+            console.error(`Error registering VTT for session ${sessionId}:`, err)
         }
 
         return null
