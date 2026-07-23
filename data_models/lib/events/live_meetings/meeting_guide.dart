@@ -9,6 +9,14 @@ part 'meeting_guide.g.dart';
 const startMeetingAgendaItemId = 'start';
 const startMeetingWaitingPeriod = Duration(minutes: 5);
 
+/// The number of participants who need to mark themselves ready to advance before the meeting
+/// guide moves on to the next agenda item.
+///
+/// Shared between the client (for display) and the backend (for the real trigger) so they can
+/// never disagree about what "majority" means.
+int readyToAdvanceThreshold(int presentParticipantCount) =>
+    presentParticipantCount ~/ 2 + 1;
+
 @Freezed(makeCollectionsUnmodifiable: false)
 class ParticipantAgendaItemDetails
     with _$ParticipantAgendaItemDetails

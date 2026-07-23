@@ -202,6 +202,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -259,6 +269,16 @@
     "placeholders": {
       "email": {
         "type": "Object"
+      }
+    }
+  },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -653,6 +673,7 @@
   "imageUrlIsNotSet": "(URL de imagen no establecida.)",
   "imageUrlIsRequired": "La URL de la imagen es obligatoria",
   "imageUrlNotSet": "(URL de imagen no establecida.)",
+  "imReadyToMoveOn": "Estoy listo para continuar",
   "incorrectEmailOrPassword": "Correo electrónico o contraseña incorrectos",
   "instagramUrl": "URL de Instagram",
   "instantMeeting": "Reunión instantánea",
@@ -691,6 +712,8 @@
   "logo": "Logotipo",
   "logout": "Cerrar sesión",
   "loopVideo": "Repetir video",
+  "majorityOfParticipants": "La mayoría de los participantes deben estar de acuerdo para avanzar a la siguiente actividad del evento.",
+  "majorityOfParticipantsExample": "En este evento, {count} de las {total} personas que participan deben indicar que están listas para continuar antes de comenzar el siguiente elemento.",
   "makeASuggestion": "Hacer una sugerencia",
   "makeThisSpacePrivate": "Hacer este espacio privado",
   "manageCommunity": "Administrar comunidad",
@@ -717,6 +740,7 @@
   "mins": "mins",
   "miscellaneous": "Misceláneo",
   "moderator": "Moderador",
+  "movingOntoNextAgendaItem": "Pasando al siguiente punto de la agenda",
   "mustAddAtLeastTwoCategories": "Debe añadir al menos dos (2) categorías.",
   "mustBeLoggedInToAccessThisSection": "Debe estar conectado para acceder a esta sección",
   "mustBeValidHexColor": "Debe ser un HEX válido",
@@ -821,6 +845,8 @@
   "pasteOrEnterAUrl": "Pegue o ingrese una URL",
   "pasteOrEnterUrl": "Pegar o ingresar URL",
   "people": "personas",
+  "peopleReady": "personas listas",
+  "peopleRequiredToMoveOn": "{count} de {total} personas necesarias para continuar",
   "permissionsAdminDescription": "Control total sobre la configuración de la comunidad, roles de miembros y todo el contenido.",
   "permissionsFacilitatorDescription": "Puede programar y organizar eventos basados en plantillas existentes.",
   "permissionsMemberDescription": "Alguien que se ha unido a la comunidad. Puede asistir a eventos, crear publicaciones y recibir anuncios de la comunidad.",
@@ -906,6 +932,7 @@
   "reorderingNotSavedUntilQuestionsCompleted": "El reordenamiento no se guardará hasta que se completen todas las preguntas.",
   "requestToFollow": "Solicitar seguir",
   "required": "Requerido",
+  "requiredToMoveOn": "requerido para continuar",
   "resendVerificationEmail": "Reenviar Correo",
   "resendVerificationEmailLink": "reenviar el correo.",
   "resources": "Recursos",
@@ -1006,6 +1033,7 @@
   "start": "Iniciar",
   "startCommunity": "Iniciar una comunidad",
   "startEvent": "Iniciar Evento",
+  "startingNextAgendaItem": "Iniciando el siguiente punto de la agenda",
   "startsTomorrow": "Comienza mañana",
   "startTime": "Hora de inicio",
   "submitChatButton": "Botón enviar chat",

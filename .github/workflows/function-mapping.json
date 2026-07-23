@@ -1,8 +1,12 @@
 {
   "files": {
-    "firebase/functions/js/agora-recording-webhook.js": ["agoraRecordingWebhook"],
+    "firebase/functions/js/agora-recording-webhook.js": [
+      "agoraRecordingWebhook"
+    ],
     "firebase/functions/js/download-recordings.js": ["downloadRecording"],
-    "firebase/functions/js/get-session-download-url.js": ["getSessionDownloadUrl"],
+    "firebase/functions/js/get-session-download-url.js": [
+      "getSessionDownloadUrl"
+    ],
     "firebase/functions/js/image-proxy.js": ["imageProxy"],
     "firebase/functions/js/produce-sessions.js": ["produceSessions"],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
@@ -188,6 +192,12 @@
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/check_assign_to_breakouts_server.dart": [
       "CheckAssignToBreakoutsServer"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay.dart": [
+      "AdvanceMeetingGuideAfterDelay"
+    ],
+    "firebase/functions/lib/events/live_meetings/breakouts/advance_meeting_guide_after_delay_server.dart": [
+      "AdvanceMeetingGuideAfterDelayServer"
     ],
     "firebase/functions/lib/events/live_meetings/breakouts/assign_to_breakouts.dart": [
       "CheckAssignToBreakouts",

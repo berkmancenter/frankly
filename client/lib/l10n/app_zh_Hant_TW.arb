@@ -203,6 +203,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -260,6 +270,16 @@
     "placeholders": {
       "email": {
         "type": "Object"
+      }
+    }
+  },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -638,6 +658,7 @@
   "imageUrlIsNotSet": "（圖片URL未設置。）",
   "imageUrlIsRequired": "圖片網址為必填項",
   "imageUrlNotSet": "(圖片URL未設置。)",
+  "imReadyToMoveOn": "我已準備好繼續",
   "instagramUrl": "Instagram連結",
   "instantMeeting": "即時會議",
   "instead": "反而",
@@ -676,6 +697,8 @@
   "logo": "標誌",
   "logout": "登出",
   "loopVideo": "循環播放影片",
+  "majorityOfParticipants": "大多數參與者必須同意才能進入下一項活動。",
+  "majorityOfParticipantsExample": "在此活動中，參與的 {count} 人中有 {total} 人必須表示他們已準備好才能開始下一項內容。",
   "makeASuggestion": "提出建議",
   "makeThisSpacePrivate": "設此為私密空間",
   "manageCommunity": "管理社群",
@@ -702,6 +725,7 @@
   "mins": "分鐘",
   "miscellaneous": "其他",
   "moderator": "版主",
+  "movingOntoNextAgendaItem": "進入下一個議程項目",
   "mustBeLoggedInToAccessThisSection": "必須登錄才能訪問此部分。",
   "mustBeValidHexColor": "必須是有效的十六進制顏色值。",
   "muteAll": "全部靜音",
@@ -805,6 +829,8 @@
   "pasteOrEnterAUrl": "貼上或輸入URL",
   "pasteOrEnterUrl": "貼上或輸入URL",
   "people": "人",
+  "peopleReady": "人已準備好",
+  "peopleRequiredToMoveOn": "{count} / {total} 人需要繼續",
   "permissionsAdminDescription": "對社區設置、成員角色和所有內容的完全控制。",
   "permissionsFacilitatorDescription": "可以根據現有模板安排和主持活動。",
   "permissionsMemberDescription": "已加入社區的人。可以參加活動、創建帖子並接收社區公告。",
@@ -886,6 +912,7 @@
   "reorderingNotSavedUntilQuestionsCompleted": "在所有問題完成之前，重新排序不會被儲存。",
   "requestToFollow": "請求追蹤",
   "required": "必填",
+  "requiredToMoveOn": "必填以繼續",
   "resendVerificationEmail": "重新發送郵件",
   "resendVerificationEmailLink": "重新發送郵件",
   "resources": "資源",
@@ -985,6 +1012,7 @@
   "start": "開始",
   "startCommunity": "創建社區",
   "startEvent": "開始活動",
+  "startingNextAgendaItem": "開始下一個議程項目",
   "startsTomorrow": "明天開始",
   "startTime": "開始時間",
   "submitChatButton": "提交聊天按鈕",

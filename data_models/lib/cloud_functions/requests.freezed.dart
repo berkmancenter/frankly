@@ -9113,6 +9113,7 @@ mixin _$CheckAdvanceMeetingGuideRequest {
   String? get breakoutRoomId => throw _privateConstructorUsedError;
   List<String> get presentIds => throw _privateConstructorUsedError;
   String? get userReadyAgendaId => throw _privateConstructorUsedError;
+  bool get ready => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -9133,7 +9134,8 @@ abstract class $CheckAdvanceMeetingGuideRequestCopyWith<$Res> {
       String? breakoutSessionId,
       String? breakoutRoomId,
       List<String> presentIds,
-      String? userReadyAgendaId});
+      String? userReadyAgendaId,
+      bool ready});
 }
 
 /// @nodoc
@@ -9155,6 +9157,7 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
     Object? breakoutRoomId = freezed,
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
+    Object? ready = null,
   }) {
     return _then(_value.copyWith(
       eventPath: null == eventPath
@@ -9177,6 +9180,10 @@ class _$CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res,
           ? _value.userReadyAgendaId
           : userReadyAgendaId // ignore: cast_nullable_to_non_nullable
               as String?,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -9195,7 +9202,8 @@ abstract class _$$_CheckAdvanceMeetingGuideRequestCopyWith<$Res>
       String? breakoutSessionId,
       String? breakoutRoomId,
       List<String> presentIds,
-      String? userReadyAgendaId});
+      String? userReadyAgendaId,
+      bool ready});
 }
 
 /// @nodoc
@@ -9216,6 +9224,7 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
     Object? breakoutRoomId = freezed,
     Object? presentIds = null,
     Object? userReadyAgendaId = freezed,
+    Object? ready = null,
   }) {
     return _then(_$_CheckAdvanceMeetingGuideRequest(
       eventPath: null == eventPath
@@ -9238,6 +9247,10 @@ class __$$_CheckAdvanceMeetingGuideRequestCopyWithImpl<$Res>
           ? _value.userReadyAgendaId
           : userReadyAgendaId // ignore: cast_nullable_to_non_nullable
               as String?,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -9251,7 +9264,8 @@ class _$_CheckAdvanceMeetingGuideRequest
       this.breakoutSessionId,
       this.breakoutRoomId,
       required this.presentIds,
-      this.userReadyAgendaId});
+      this.userReadyAgendaId,
+      this.ready = true});
 
   factory _$_CheckAdvanceMeetingGuideRequest.fromJson(
           Map<String, dynamic> json) =>
@@ -9267,10 +9281,13 @@ class _$_CheckAdvanceMeetingGuideRequest
   final List<String> presentIds;
   @override
   final String? userReadyAgendaId;
+  @override
+  @JsonKey()
+  final bool ready;
 
   @override
   String toString() {
-    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId)';
+    return 'CheckAdvanceMeetingGuideRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, presentIds: $presentIds, userReadyAgendaId: $userReadyAgendaId, ready: $ready)';
   }
 
   @override
@@ -9287,7 +9304,8 @@ class _$_CheckAdvanceMeetingGuideRequest
             const DeepCollectionEquality()
                 .equals(other.presentIds, presentIds) &&
             (identical(other.userReadyAgendaId, userReadyAgendaId) ||
-                other.userReadyAgendaId == userReadyAgendaId));
+                other.userReadyAgendaId == userReadyAgendaId) &&
+            (identical(other.ready, ready) || other.ready == ready));
   }
 
   @JsonKey(ignore: true)
@@ -9298,7 +9316,8 @@ class _$_CheckAdvanceMeetingGuideRequest
       breakoutSessionId,
       breakoutRoomId,
       const DeepCollectionEquality().hash(presentIds),
-      userReadyAgendaId);
+      userReadyAgendaId,
+      ready);
 
   @JsonKey(ignore: true)
   @override
@@ -9323,7 +9342,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
       final String? breakoutSessionId,
       final String? breakoutRoomId,
       required final List<String> presentIds,
-      final String? userReadyAgendaId}) = _$_CheckAdvanceMeetingGuideRequest;
+      final String? userReadyAgendaId,
+      final bool ready}) = _$_CheckAdvanceMeetingGuideRequest;
 
   factory _CheckAdvanceMeetingGuideRequest.fromJson(Map<String, dynamic> json) =
       _$_CheckAdvanceMeetingGuideRequest.fromJson;
@@ -9338,6 +9358,8 @@ abstract class _CheckAdvanceMeetingGuideRequest
   List<String> get presentIds;
   @override
   String? get userReadyAgendaId;
+  @override
+  bool get ready;
   @override
   @JsonKey(ignore: true)
   _$$_CheckAdvanceMeetingGuideRequestCopyWith<
@@ -9494,6 +9516,232 @@ abstract class _CheckHostlessGoToBreakoutsRequest
   @JsonKey(ignore: true)
   _$$_CheckHostlessGoToBreakoutsRequestCopyWith<
           _$_CheckHostlessGoToBreakoutsRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+AdvanceMeetingGuideAfterDelayRequest
+    _$AdvanceMeetingGuideAfterDelayRequestFromJson(Map<String, dynamic> json) {
+  return _AdvanceMeetingGuideAfterDelayRequest.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AdvanceMeetingGuideAfterDelayRequest {
+  String get eventPath => throw _privateConstructorUsedError;
+  String? get breakoutSessionId => throw _privateConstructorUsedError;
+  String? get breakoutRoomId =>
+      throw _privateConstructorUsedError; // The agenda item that was current when the countdown was scheduled, used to verify the
+// pending advance is still valid by the time this call fires.
+  String get agendaItemId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AdvanceMeetingGuideAfterDelayRequestCopyWith<
+          AdvanceMeetingGuideAfterDelayRequest>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  factory $AdvanceMeetingGuideAfterDelayRequestCopyWith(
+          AdvanceMeetingGuideAfterDelayRequest value,
+          $Res Function(AdvanceMeetingGuideAfterDelayRequest) then) =
+      _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res,
+          AdvanceMeetingGuideAfterDelayRequest>;
+  @useResult
+  $Res call(
+      {String eventPath,
+      String? breakoutSessionId,
+      String? breakoutRoomId,
+      String agendaItemId});
+}
+
+/// @nodoc
+class _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res,
+        $Val extends AdvanceMeetingGuideAfterDelayRequest>
+    implements $AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+    Object? breakoutSessionId = freezed,
+    Object? breakoutRoomId = freezed,
+    Object? agendaItemId = null,
+  }) {
+    return _then(_value.copyWith(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      breakoutSessionId: freezed == breakoutSessionId
+          ? _value.breakoutSessionId
+          : breakoutSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      breakoutRoomId: freezed == breakoutRoomId
+          ? _value.breakoutRoomId
+          : breakoutRoomId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      agendaItemId: null == agendaItemId
+          ? _value.agendaItemId
+          : agendaItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res>
+    implements $AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  factory _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith(
+          _$_AdvanceMeetingGuideAfterDelayRequest value,
+          $Res Function(_$_AdvanceMeetingGuideAfterDelayRequest) then) =
+      __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String eventPath,
+      String? breakoutSessionId,
+      String? breakoutRoomId,
+      String agendaItemId});
+}
+
+/// @nodoc
+class __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res>
+    extends _$AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<$Res,
+        _$_AdvanceMeetingGuideAfterDelayRequest>
+    implements _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<$Res> {
+  __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl(
+      _$_AdvanceMeetingGuideAfterDelayRequest _value,
+      $Res Function(_$_AdvanceMeetingGuideAfterDelayRequest) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventPath = null,
+    Object? breakoutSessionId = freezed,
+    Object? breakoutRoomId = freezed,
+    Object? agendaItemId = null,
+  }) {
+    return _then(_$_AdvanceMeetingGuideAfterDelayRequest(
+      eventPath: null == eventPath
+          ? _value.eventPath
+          : eventPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      breakoutSessionId: freezed == breakoutSessionId
+          ? _value.breakoutSessionId
+          : breakoutSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      breakoutRoomId: freezed == breakoutRoomId
+          ? _value.breakoutRoomId
+          : breakoutRoomId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      agendaItemId: null == agendaItemId
+          ? _value.agendaItemId
+          : agendaItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_AdvanceMeetingGuideAfterDelayRequest
+    implements _AdvanceMeetingGuideAfterDelayRequest {
+  _$_AdvanceMeetingGuideAfterDelayRequest(
+      {required this.eventPath,
+      this.breakoutSessionId,
+      this.breakoutRoomId,
+      required this.agendaItemId});
+
+  factory _$_AdvanceMeetingGuideAfterDelayRequest.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_AdvanceMeetingGuideAfterDelayRequestFromJson(json);
+
+  @override
+  final String eventPath;
+  @override
+  final String? breakoutSessionId;
+  @override
+  final String? breakoutRoomId;
+// The agenda item that was current when the countdown was scheduled, used to verify the
+// pending advance is still valid by the time this call fires.
+  @override
+  final String agendaItemId;
+
+  @override
+  String toString() {
+    return 'AdvanceMeetingGuideAfterDelayRequest(eventPath: $eventPath, breakoutSessionId: $breakoutSessionId, breakoutRoomId: $breakoutRoomId, agendaItemId: $agendaItemId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_AdvanceMeetingGuideAfterDelayRequest &&
+            (identical(other.eventPath, eventPath) ||
+                other.eventPath == eventPath) &&
+            (identical(other.breakoutSessionId, breakoutSessionId) ||
+                other.breakoutSessionId == breakoutSessionId) &&
+            (identical(other.breakoutRoomId, breakoutRoomId) ||
+                other.breakoutRoomId == breakoutRoomId) &&
+            (identical(other.agendaItemId, agendaItemId) ||
+                other.agendaItemId == agendaItemId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, eventPath, breakoutSessionId, breakoutRoomId, agendaItemId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<
+          _$_AdvanceMeetingGuideAfterDelayRequest>
+      get copyWith => __$$_AdvanceMeetingGuideAfterDelayRequestCopyWithImpl<
+          _$_AdvanceMeetingGuideAfterDelayRequest>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_AdvanceMeetingGuideAfterDelayRequestToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AdvanceMeetingGuideAfterDelayRequest
+    implements AdvanceMeetingGuideAfterDelayRequest {
+  factory _AdvanceMeetingGuideAfterDelayRequest(
+          {required final String eventPath,
+          final String? breakoutSessionId,
+          final String? breakoutRoomId,
+          required final String agendaItemId}) =
+      _$_AdvanceMeetingGuideAfterDelayRequest;
+
+  factory _AdvanceMeetingGuideAfterDelayRequest.fromJson(
+          Map<String, dynamic> json) =
+      _$_AdvanceMeetingGuideAfterDelayRequest.fromJson;
+
+  @override
+  String get eventPath;
+  @override
+  String? get breakoutSessionId;
+  @override
+  String? get breakoutRoomId;
+  @override // The agenda item that was current when the countdown was scheduled, used to verify the
+// pending advance is still valid by the time this call fires.
+  String get agendaItemId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_AdvanceMeetingGuideAfterDelayRequestCopyWith<
+          _$_AdvanceMeetingGuideAfterDelayRequest>
       get copyWith => throw _privateConstructorUsedError;
 }
 

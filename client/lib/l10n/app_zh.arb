@@ -203,6 +203,16 @@
       }
     }
   },
+  "@majorityOfParticipantsExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "@manageJoinRequests": {
     "placeholders": {
       "count": {
@@ -260,6 +270,16 @@
     "placeholders": {
       "email": {
         "type": "Object"
+      }
+    }
+  },
+  "@peopleRequiredToMoveOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
     }
   },
@@ -641,6 +661,7 @@
   "imageUrlIsNotSet": "（图片URL未设置。）",
   "imageUrlIsRequired": "图片网址为必填项",
   "imageUrlNotSet": "(图片URL未设置。)",
+  "imReadyToMoveOn": "我已准备好继续",
   "incorrectEmailOrPassword": "电子邮件或密码不正确",
   "instagramUrl": "Instagram链接",
   "instantMeeting": "即时会议",
@@ -680,6 +701,8 @@
   "logo": "标志",
   "logout": "退出登录",
   "loopVideo": "循环播放视频",
+  "majorityOfParticipants": "大多数参与者必须同意才能进入下一项活动。",
+  "majorityOfParticipantsExample": "在此活动中，参与的 {count} 人中有 {total} 人必须表示他们已准备好才能开始下一项内容。",
   "makeASuggestion": "提出建议",
   "makeThisSpacePrivate": "设此为私密空间",
   "manageCommunity": "管理社区",
@@ -706,6 +729,7 @@
   "mins": "分钟",
   "miscellaneous": "其他",
   "moderator": "版主",
+  "movingOntoNextAgendaItem": "进入下一项议程",
   "mustBeLoggedInToAccessThisSection": "必须登录才能访问此部分。",
   "mustBeValidHexColor": "必须是有效的十六进制颜色值。",
   "muteAll": "全部静音",
@@ -809,6 +833,8 @@
   "pasteOrEnterAUrl": "粘贴或输入URL",
   "pasteOrEnterUrl": "粘贴或输入URL",
   "people": "人",
+  "peopleReady": "人已准备好",
+  "peopleRequiredToMoveOn": "{count} / {total} 人需要继续",
   "permissionsAdminDescription": "对社区设置、成员角色和所有内容的完全控制。",
   "permissionsFacilitatorDescription": "可以根据现有模板安排和主持活动。",
   "permissionsMemberDescription": "已加入社区的人。可以参加活动、创建帖子并接收社区公告。",
@@ -891,6 +917,7 @@
   "reorderingNotSavedUntilQuestionsCompleted": "在所有问题完成之前，重新排序不会被保存。",
   "requestToFollow": "请求关注",
   "required": "必填",
+  "requiredToMoveOn": "必填以继续",
   "resendVerificationEmail": "重新发送邮件",
   "resendVerificationEmailLink": "重新发送邮件",
   "resources": "资源",
@@ -990,6 +1017,7 @@
   "start": "开始",
   "startCommunity": "创建社区",
   "startEvent": "开始活动",
+  "startingNextAgendaItem": "开始下一项议程",
   "startsTomorrow": "明天开始",
   "startTime": "开始时间",
   "submitChatButton": "提交聊天按钮",
