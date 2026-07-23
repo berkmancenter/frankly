@@ -76,6 +76,7 @@ class CleanupStaleParticipants implements CloudFunction {
           Participant.kFieldMostRecentPresentTime,
           isLessThan: Timestamp.fromDateTime(cutoff),
         )
+        .limit(50)
         .get();
 
     if (staleParticipants.documents.isEmpty) {
@@ -144,7 +145,7 @@ class CleanupStaleParticipants implements CloudFunction {
   void register(FirebaseFunctions functions) {
     functions[functionName] = functions
         .runWith(
-          RuntimeOptions(timeoutSeconds: 60, memory: '256MB', minInstances: 0),
+          RuntimeOptions(timeoutSeconds: 120, memory: '256MB', minInstances: 0),
         )
         .pubsub
         .schedule('every 1 minutes')
