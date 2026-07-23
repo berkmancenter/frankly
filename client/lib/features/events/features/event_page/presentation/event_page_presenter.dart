@@ -141,6 +141,14 @@ class EventPagePresenter {
     );
   }
 
+  Future<GetMeetingPollDataResponse> getPollData() {
+    return _cloudFunctionsLiveMeetingService.getMeetingPollData(
+      request: GetMeetingPollDataRequest(
+        eventPath: eventPath,
+      ),
+    );
+  }
+
   Future<List<MemberDetails>> getMembersData(List<String> userIds) async {
     return await _userService.getMemberDetails(
       membersList: userIds,
@@ -171,7 +179,7 @@ class EventPagePresenter {
     );
     _view.updateView();
     _view.showMessage(
-      'Agenda items were removed',
+      appLocalizationService.getLocalization().agendaItemsWereRemoved,
       toastType: ToastType.success,
     );
   }

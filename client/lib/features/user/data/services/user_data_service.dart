@@ -12,9 +12,7 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/community/community.dart';
 import 'package:data_models/community/membership.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:client/core/localization/localization_helper.dart';
 
 class UserDataService with ChangeNotifier {
   String? _currentUserId;
@@ -30,9 +28,8 @@ class UserDataService with ChangeNotifier {
   static bool usingEmulator = false;
 
   Future<void> initialize() async {
-    if (usingEmulator) {
-      FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
-    }
+    // RTDB emulator wiring is done once in dev_emulators_main.dart before
+    // Firebase is first used. Do not call useDatabaseEmulator() here.
     userService.addListener(() {
       if (_currentUserId != userService.currentUserId) {
         _currentUserId = userService.currentUserId;

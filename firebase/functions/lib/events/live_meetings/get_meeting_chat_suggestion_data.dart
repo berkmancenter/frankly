@@ -8,12 +8,14 @@ import '../../utils/infra/firebase_auth_utils.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
-import 'package:data_models/chat/chat.dart';
-import 'package:data_models/chat/chat_suggestion_data.dart';
+import 'package:data_models/user_input/chat.dart';
+import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/user/public_user_info.dart';
+
+const bool kDebugMode = bool.fromEnvironment('dart.vm.product') == false;
 
 class GetMeetingChatSuggestionData
     extends OnCallMethod<GetMeetingChatsSuggestionsDataRequest> {
@@ -60,12 +62,16 @@ class GetMeetingChatSuggestionData
 
     final liveMeetingPath = '${request.eventPath}/live-meetings/$eventId';
     final breakoutRoomSessions = '$liveMeetingPath/breakout-room-sessions';
-    print(breakoutRoomSessions);
+    if (kDebugMode) {
+      print(breakoutRoomSessions);
+    }
     final sessionDocs = await firestore.collection(breakoutRoomSessions).get();
     final roomDocQueries = await Future.wait(
       sessionDocs.documents.map((session) {
         final collectionPath = '${session.reference.path}/breakout-rooms';
-        print(collectionPath);
+        if (kDebugMode) {
+          print(collectionPath);
+        }
         return firestore.collection(collectionPath).get();
       }),
     );
@@ -118,16 +124,14 @@ class GetMeetingChatSuggestionData
       );
       final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
-      String memberName;
-      if (isNullOrEmpty(memberInfo.displayName)) {
-        final memberDoc =
-            await firestore.document('publicUser/${memberInfo.uid}').get();
-        var info = PublicUserInfo.fromJson(
+      String memberName = '';
+      final memberDoc =
+          await firestore.document('publicUser/${doc.creatorId}').get();
+      if (memberDoc.exists) {
+        final publicUserInfo = PublicUserInfo.fromJson(
           firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
         );
-        memberName = info.displayName ?? '';
-      } else {
-        memberName = memberInfo.displayName;
+        memberName = publicUserInfo.displayName ?? '';
       }
 
       chatSuggestions.add(
@@ -163,16 +167,14 @@ class GetMeetingChatSuggestionData
       );
       final memberInfo = await firebaseAuthUtils.getUser(doc.creatorId!);
 
-      String memberName;
-      if (isNullOrEmpty(memberInfo.displayName)) {
-        final memberDoc =
-            await firestore.document('publicUser/${memberInfo.uid}').get();
+      final memberDoc =
+          await firestore.document('publicUser/${doc.creatorId}').get();
+      String memberName = '';
+      if (memberDoc.exists) {
         final publicUserInfo = PublicUserInfo.fromJson(
           firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
         );
         memberName = publicUserInfo.displayName ?? '';
-      } else {
-        memberName = memberInfo.displayName;
       }
 
       chatSuggestionDataList.add(
@@ -212,7 +214,9 @@ class GetMeetingChatSuggestionData
         )
         .expand((element) => element);
 
-    print(participantDetailsCollections);
+    if (kDebugMode) {
+      print(participantDetailsCollections);
+    }
     final participantAgendaItemDetails = await Future.wait(
       participantDetailsCollections
           .map((collection) => _getParticipantAgendaItemDetails(collection)),
@@ -248,16 +252,14 @@ class GetMeetingChatSuggestionData
   ) async {
     final memberInfo = await firebaseAuthUtils.getUser(details.userId!);
 
-    String memberName;
-    if (isNullOrEmpty(memberInfo.displayName)) {
-      final memberDoc =
-          await firestore.document('publicUser/${memberInfo.uid}').get();
+    final memberDoc =
+        await firestore.document('publicUser/${details.userId}').get();
+    String memberName = '';
+    if (memberDoc.exists) {
       final publicUserInfo = PublicUserInfo.fromJson(
         firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
       );
       memberName = publicUserInfo.displayName ?? '';
-    } else {
-      memberName = memberInfo.displayName;
     }
 
     return details.suggestions

@@ -561,7 +561,7 @@ class _ParticipantOptionsMenuState extends State<_ParticipantOptionsMenu> {
             .any((id) => id == widget.userId) ??
         false;
     return Semantics(
-      label: context.l10n.participantActionsForUserWithId(widget.userId ?? ''),
+      label: context.l10n.participantActionsForUserWithId(widget.userId),
       child: CustomInkWell(
         onTap: widget.isVisible
             ? () => _showMoreMenu(_getMenuItems(context: context))
