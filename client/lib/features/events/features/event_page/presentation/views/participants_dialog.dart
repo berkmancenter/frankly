@@ -196,7 +196,8 @@ class ParticipantsDialog extends StatelessWidget {
     // When the meeting is live, show only present participants to match
     // the in-meeting counts. Otherwise show all registered participants.
     final allParticipants = eventProvider.eventParticipants;
-    final isLive = allParticipants.any((p) => p.isPresent);
+    final isLive = eventProvider.hasPresentParticipants &&
+        !eventProvider.useParticipantCountEstimate;
     final participantsList = isLive
         ? allParticipants.where((p) => p.isPresent).toList()
         : allParticipants.toList();
