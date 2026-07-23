@@ -6622,6 +6622,7 @@ mixin _$ResolveJoinRequestRequest {
   String get communityId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   bool get approve => throw _privateConstructorUsedError;
+  MembershipStatus? get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6635,7 +6636,11 @@ abstract class $ResolveJoinRequestRequestCopyWith<$Res> {
           $Res Function(ResolveJoinRequestRequest) then) =
       _$ResolveJoinRequestRequestCopyWithImpl<$Res, ResolveJoinRequestRequest>;
   @useResult
-  $Res call({String communityId, String userId, bool approve});
+  $Res call(
+      {String communityId,
+      String userId,
+      bool approve,
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -6655,6 +6660,7 @@ class _$ResolveJoinRequestRequestCopyWithImpl<$Res,
     Object? communityId = null,
     Object? userId = null,
     Object? approve = null,
+    Object? role = freezed,
   }) {
     return _then(_value.copyWith(
       communityId: null == communityId
@@ -6669,6 +6675,10 @@ class _$ResolveJoinRequestRequestCopyWithImpl<$Res,
           ? _value.approve
           : approve // ignore: cast_nullable_to_non_nullable
               as bool,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ) as $Val);
   }
 }
@@ -6682,7 +6692,11 @@ abstract class _$$_ResolveJoinRequestRequestCopyWith<$Res>
       __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String communityId, String userId, bool approve});
+  $Res call(
+      {String communityId,
+      String userId,
+      bool approve,
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -6701,6 +6715,7 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
     Object? communityId = null,
     Object? userId = null,
     Object? approve = null,
+    Object? role = freezed,
   }) {
     return _then(_$_ResolveJoinRequestRequest(
       communityId: null == communityId
@@ -6715,6 +6730,10 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
           ? _value.approve
           : approve // ignore: cast_nullable_to_non_nullable
               as bool,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ));
   }
 }
@@ -6723,7 +6742,10 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
   _$_ResolveJoinRequestRequest(
-      {required this.communityId, required this.userId, required this.approve});
+      {required this.communityId,
+      required this.userId,
+      required this.approve,
+      this.role});
 
   factory _$_ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =>
       _$$_ResolveJoinRequestRequestFromJson(json);
@@ -6734,10 +6756,12 @@ class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
   final String userId;
   @override
   final bool approve;
+  @override
+  final MembershipStatus? role;
 
   @override
   String toString() {
-    return 'ResolveJoinRequestRequest(communityId: $communityId, userId: $userId, approve: $approve)';
+    return 'ResolveJoinRequestRequest(communityId: $communityId, userId: $userId, approve: $approve, role: $role)';
   }
 
   @override
@@ -6748,12 +6772,14 @@ class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
             (identical(other.communityId, communityId) ||
                 other.communityId == communityId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.approve, approve) || other.approve == approve));
+            (identical(other.approve, approve) || other.approve == approve) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId, userId, approve);
+  int get hashCode =>
+      Object.hash(runtimeType, communityId, userId, approve, role);
 
   @JsonKey(ignore: true)
   @override
@@ -6774,7 +6800,8 @@ abstract class _ResolveJoinRequestRequest implements ResolveJoinRequestRequest {
   factory _ResolveJoinRequestRequest(
       {required final String communityId,
       required final String userId,
-      required final bool approve}) = _$_ResolveJoinRequestRequest;
+      required final bool approve,
+      final MembershipStatus? role}) = _$_ResolveJoinRequestRequest;
 
   factory _ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =
       _$_ResolveJoinRequestRequest.fromJson;
@@ -6785,6 +6812,8 @@ abstract class _ResolveJoinRequestRequest implements ResolveJoinRequestRequest {
   String get userId;
   @override
   bool get approve;
+  @override
+  MembershipStatus? get role;
   @override
   @JsonKey(ignore: true)
   _$$_ResolveJoinRequestRequestCopyWith<_$_ResolveJoinRequestRequest>

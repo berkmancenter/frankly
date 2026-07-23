@@ -5,7 +5,12 @@ import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/features/admin/utils/member_data.dart';
+import 'package:client/features/community/presentation/views/app_share.dart';
+import 'package:client/features/community/presentation/widgets/share_section.dart';
+import 'package:data_models/analytics/analytics_entities.dart';
+import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/user/public_user_info.dart';
+import 'package:data_models/utils/share_type.dart';
 import 'package:flutter/material.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
@@ -80,8 +85,9 @@ class MembershipDataSource extends DataTableSource {
           ),
         ),
         DataCell(
-          ChangeMembershipDropdown(
+          MembershipDropdown(
             membership: membership,
+            updateMembership: true,
           ),
         ),
       ],
@@ -101,14 +107,143 @@ class MembershipDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-class MembersTabState extends State<MembersTab> {
-  final whiteBackground = Colors.white70;
+class MembershipRequestDataSource extends DataTableSource {
+  BuildContext context;
+  final Future<void> Function({
+    required MembershipRequest request,
+    required bool approve,
+    MembershipStatus? role,
+  }) onResolve;
+  final Map<String, MembershipStatus> _selectedMemberships = {};
 
+  MembershipRequestDataSource(
+    List<MembershipRequest>? requestList,
+    this.context,
+    this.onResolve,
+  ) : _requestList = requestList ?? [];
+
+  final List<MembershipRequest> _requestList;
+
+  @override
+  int get rowCount => _requestList.length;
+
+  DataRow _buildRequestRow(int index, MembershipRequest request) {
+    PublicUserInfo? userInfo = UserInfoProvider.forUser(request.userId).info;
+
+    final requestKey = '${request.userId}_${request.communityId}';
+
+    return DataRow(
+      color: WidgetStateProperty.all(Colors.white70),
+      cells: <DataCell>[
+        DataCell(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: userInfo?.imageUrl != null && userInfo!.imageUrl!.isNotEmpty == true
+                      ? NetworkImage(userInfo.imageUrl!)
+                      : null,
+                  child: userInfo?.imageUrl != null && userInfo?.imageUrl!.isNotEmpty == true
+                      ? null
+                      : const Icon(Icons.person_outline),
+                ),
+                SizedBox(width: 8),
+                userInfo?.displayName == null
+                    ? Text(context.l10n.unknownUser)
+                    : Text(userInfo?.displayName ?? context.l10n.unknownUser),
+              ],
+            ),
+          ),
+        ),
+        DataCell(
+          MembershipDropdown(
+            membership: Membership(
+              userId: request.userId,
+              communityId: request.communityId,
+              status: MembershipStatus.member,
+            ),
+            // We don't want to update the membership here, we just want to select the role for approval
+            onRoleChanged: (newStatus) {
+              _selectedMemberships[requestKey] = newStatus;
+            },
+          ),
+        ),
+        DataCell(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: ActionButton(
+                  height: 48,
+                  minWidth: 48,
+                  padding: EdgeInsets.zero,
+                  color: context.theme.colorScheme.primary,
+                  shape: CircleBorder(),
+                  onPressed: () => alertOnError(
+                    context,
+                    () => onResolve(
+                      request: request,
+                      approve: true,
+                      role: _selectedMemberships[requestKey],
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.check,
+                    color: context.theme.colorScheme.tertiaryFixed,
+                    size: 24,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: ActionButton(
+                  height: 48,
+                  minWidth: 48,
+                  padding: EdgeInsets.zero,
+                  type: ActionButtonType.outline,
+                  shape: CircleBorder(),
+                  onPressed: () => alertOnError(
+                    context,
+                    () => onResolve(request: request, approve: false),
+                  ),
+                  icon: Icon(
+                    Icons.close,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  DataRow? getRow(int index) {
+    final request = _requestList[index];
+    return _buildRequestRow(index, request);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
+class MembersTabState extends State<MembersTab>
+    with SingleTickerProviderStateMixin {
   late Stream<List<Membership>> _memberships;
   late BehaviorSubjectWrapper<List<MembershipRequest>> _requests;
+  late TabController _tabController;
 
   Future<void>? _loadUsersFuture;
+  Future<void>? _loadRequestsFuture;
   String? _currentSearch;
+  List<MembershipRequest>? _lastRequestsCached;
 
   int _sortMemberships(Membership a, Membership b) {
     const membershipOrder = [
@@ -151,8 +286,24 @@ class MembersTabState extends State<MembersTab> {
     return members;
   }
 
+  Future<void> _resolveRequest({
+    required MembershipRequest request,
+    required bool approve,
+    MembershipStatus? role,
+  }) async {
+    await cloudFunctionsCommunityService.resolveJoinRequest(
+      ResolveJoinRequestRequest(
+        communityId: request.communityId,
+        userId: request.userId,
+        approve: approve,
+        role: role,
+      ),
+    );
+  }
+
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     final communityId =
         Provider.of<CommunityProvider>(context, listen: false).community.id;
     _memberships = firestoreMembershipService
@@ -172,6 +323,7 @@ class MembersTabState extends State<MembersTab> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _requests.dispose();
     super.dispose();
   }
@@ -183,6 +335,20 @@ class MembersTabState extends State<MembersTab> {
     for (final batch in batches) {
       await Future.wait(
         batch.map((m) => UserInfoProvider.forUser(m.userId).infoFuture),
+      );
+
+      await Future.microtask(() => Future.value());
+    }
+  }
+
+  Future<void> _loadAllRequestUserInfo(
+    List<MembershipRequest> requests,
+  ) async {
+    final batches = partition(requests, 500);
+
+    for (final batch in batches) {
+      await Future.wait(
+        batch.map((r) => UserInfoProvider.forUser(r.userId).infoFuture),
       );
 
       await Future.microtask(() => Future.value());
@@ -230,73 +396,76 @@ class MembersTabState extends State<MembersTab> {
     );
   }
 
+  Widget _buildRoleTooltip() {
+    return Tooltip(
+      enableTapToDismiss: false,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.24),
+            blurRadius: 8,
+            spreadRadius: 2,
+            offset: Offset(
+              2,
+              2,
+            ),
+          ),
+        ],
+        color: context.theme.colorScheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      richMessage: TextSpan(
+        children: <InlineSpan>[
+          WidgetSpan(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    context.l10n.rolesTooltip,
+                    style: TextStyle(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => launch(
+                    Environment.helpCenterManagingCommunityUrl,
+                  ),
+                  child: Text(
+                    context.l10n.seeManagingYourCommunity,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      // The child widget that triggers the tooltip
+      child: IconButton(
+        icon: Icon(Icons.info_outline),
+        onPressed: () {},
+      ),
+    );
+  }
+
   Widget _buildTable(DataTableSource dataSource) {
     return PaginatedDataTable(
       headingRowColor:
           WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
       columns: <DataColumn>[
-        DataColumn(label: Text('Member')),
+        DataColumn(label: Text(context.l10n.member)),
         DataColumn(
           label: Row(
             children: [
               Text(context.l10n.role),
-              Tooltip(
-                enableTapToDismiss: false,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.24),
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                      offset: Offset(
-                        2,
-                        2,
-                      ),
-                    ),
-                  ],
-                  color: context.theme.colorScheme.surfaceContainerLowest,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                richMessage: TextSpan(
-                  children: <InlineSpan>[
-                    WidgetSpan(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              context.l10n.rolesTooltip,
-                              style: TextStyle(
-                                color:
-                                    context.theme.colorScheme.onSurfaceVariant,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          TextButton(
-                            onPressed: () => launch(
-                              Environment.helpCenterManagingCommunityUrl,
-                            ),
-                            child: Text(
-                              context.l10n.seeManagingYourCommunity,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                // The child widget that triggers the tooltip
-                child: IconButton(
-                  icon: Icon(Icons.info_outline),
-                  onPressed: () {},
-                ),
-              ),
+              _buildRoleTooltip(),
             ],
           ),
         ),
@@ -362,6 +531,123 @@ class MembersTabState extends State<MembersTab> {
     );
   }
 
+  Widget _buildRequestList(List<MembershipRequest> requestList) {
+    return PaginatedDataTable(
+      headingRowColor:
+          WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
+      columns: <DataColumn>[
+        DataColumn(label: Text(context.l10n.followerRequest)),
+        DataColumn(
+          label: Row(
+            children: [
+              Text(context.l10n.role),
+              _buildRoleTooltip(),
+            ],
+          ),
+        ),
+        DataColumn(
+          label: ActionButton(
+            text: context.l10n.approveAll,
+            icon: Icon(Icons.check),
+            onPressed: () async {
+              for (final request in requestList) {
+                await alertOnError(
+                  context,
+                  () => _resolveRequest(request: request, approve: true),
+                );
+              }
+            },
+          ),
+        ),
+      ],
+      source:
+          MembershipRequestDataSource(requestList, context, _resolveRequest),
+    );
+  }
+
+  Widget _buildRequestsSection() {
+    return CustomStreamBuilder<List<MembershipRequest>>(
+      entryFrom: '_MembersTabState._buildRequestsSection',
+      stream: _requests,
+      errorMessage: context.l10n.errorLoadingRequests,
+      showLoading: false,
+      builder: (context, requestList) {
+        if (requestList!.isEmpty) {
+          final community = Provider.of<CommunityProvider>(context).community;
+          final subject = 'Join ${community.name} on ${Environment.appName}';
+          final body =
+              'Hey, check out ${community.name} on ${Environment.appName}!';
+          final shareData = AppShareData(subject: subject, body: body);
+
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    context.l10n.noFollowRequestsCurrently,
+                    style: context.theme.textTheme.headlineSmall,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    context.l10n.shareYourCommunityWithOthers,
+                    style: context.theme.textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 350,
+                    ),
+                    child: ShareSection(
+                      iconColor: Theme.of(context).colorScheme.primary,
+                      iconBackgroundColor: null,
+                      url: shareData.pathToPage,
+                      body: body,
+                      subject: subject,
+                      wrapIcons: false,
+                      buttonPadding: 0,
+                      size: 39,
+                      iconSize: 16,
+                      shareCallback: (ShareType type) {
+                        analytics.logEvent(
+                          AnalyticsPressShareCommunityLinkEvent(
+                            communityId: community.id,
+                            shareType: type,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        // If there are requests, load user info for all requests in batches
+        if (_lastRequestsCached != requestList) {
+          _lastRequestsCached = requestList;
+           // Reset the future to allow reloading
+          _loadRequestsFuture = null;
+        }
+        _loadRequestsFuture ??= _loadAllRequestUserInfo(requestList);
+        _lastRequestsCached = requestList;
+
+        return FutureBuilder(
+          future: _loadRequestsFuture,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CustomLoadingIndicator());
+            }
+            return _buildRequestList(requestList);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = responsiveLayoutService.isMobile(context);
@@ -393,11 +679,44 @@ class MembersTabState extends State<MembersTab> {
               );
             },
           ),
+          SizedBox(height: 12),
+          // We have to stream in the requests here, so the count updates in real time
+          CustomStreamBuilder<List<MembershipRequest>>(
+            entryFrom: '_MembersTabState._buildRequestsSection',
+            stream: _requests,
+            errorMessage: context.l10n.errorLoadingRequests,
+            showLoading: true,
+            builder: (context, requestList) {
+              return TabBar(
+                controller: _tabController,
+                onTap: (_) => setState(() {}),
+                indicatorSize: TabBarIndicatorSize.tab,
+                tabs: [
+                  Tab(text: context.l10n.members),
+                  Tab(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                      Text('${context.l10n.requests} (${requestList?.length ?? 0})'),
+                        SizedBox(width: 4),
+                        if (requestList != null && requestList.isNotEmpty)
+                          Badge(
+                            backgroundColor: context.theme.colorScheme.error,
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
           SizedBox(height: 20),
           Row(
             children: [
               Expanded(
-                child: _buildMembersSection(),
+                child: _tabController.index == 0
+                    ? _buildMembersSection()
+                    : _buildRequestsSection(),
               ),
             ],
           ),
@@ -462,20 +781,25 @@ class RolePermissionListTile extends StatelessWidget {
   }
 }
 
-class ChangeMembershipDropdown extends StatefulWidget {
+class MembershipDropdown extends StatefulWidget {
   final Membership membership;
+  final bool updateMembership;
+  final Function(MembershipStatus)? onRoleChanged;
 
-  const ChangeMembershipDropdown({
+  const MembershipDropdown({
     required this.membership,
+    this.updateMembership = false,
+    this.onRoleChanged,
   });
 
   @override
-  _ChangeMembershipDropdownState createState() =>
-      _ChangeMembershipDropdownState();
+  MembershipDropdownState createState() => MembershipDropdownState();
 }
 
-class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
+class MembershipDropdownState extends State<MembershipDropdown> {
   bool _isLoading = false;
+  // Store the selected status for pending requests
+  MembershipStatus? _selectedStatus;
 
   bool get _isCurrentOwner =>
       widget.membership.status == MembershipStatus.owner;
@@ -544,6 +868,19 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
     }
   }
 
+  void _handleRoleChanged(MembershipStatus? status) {
+    if (widget.updateMembership) {
+      _updateMembership(status);
+    } else {
+      setState(() {
+        _selectedStatus = status;
+      });
+      if (status != null) {
+        widget.onRoleChanged?.call(status);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final disableDropdown = _isLoading;
@@ -564,8 +901,9 @@ class _ChangeMembershipDropdownState extends State<ChangeMembershipDropdown> {
       height: 100,
       constraints: BoxConstraints(maxWidth: 280, maxHeight: 400),
       child: DropdownButton<MembershipStatus>(
-        value: widget.membership.status,
-        onChanged: disableDropdown ? null : _updateMembership,
+        // Use the selected status if it's set
+        value: _selectedStatus ?? widget.membership.status,
+        onChanged: disableDropdown ? null : _handleRoleChanged,
         itemHeight: null,
         selectedItemBuilder: (context) => _isCurrentOwner
             ? [

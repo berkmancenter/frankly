@@ -6,6 +6,10 @@
         },
         "debug.internalConsoleOptions": "neverOpen",
         "dart.flutterSdkPath": "~/.dev/flutter",
+        "dart.env": {
+            "GCLOUD_PROJECT": "dev",
+            "FIRESTORE_EMULATOR_HOST": "localhost:8080",
+        },
     },
     "folders": [
         {
