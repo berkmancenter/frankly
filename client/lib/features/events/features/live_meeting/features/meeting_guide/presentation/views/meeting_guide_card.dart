@@ -851,9 +851,7 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
               child: AnimatedBuilder(
                 animation: controller,
                 builder: (context, child) {
-                  return CircularProgressIndicator(
-                    // The countdown is reversed from the starting pending advance time, so we need to divide by 1 to get the correct value.f
-                    value: controller.value,
+                    // controller.value represents the remaining fraction of the countdown (1.0 → 0.0).
                     strokeWidth: 5.0,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       widget.isMobile
