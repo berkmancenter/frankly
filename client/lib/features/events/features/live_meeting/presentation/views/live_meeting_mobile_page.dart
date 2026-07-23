@@ -711,9 +711,18 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         constraints:
                             BoxConstraints(maxWidth: 36, maxHeight: 36),
                         child: Countdown(
-                          startingPendingAdvanceTime: Duration(
-                            seconds: 10,
-                          ),
+                          startingPendingAdvanceTime: () {
+                            final pendingAdvanceTime =
+                                agendaProvider.pendingAdvanceTime?.toUtc();
+                            if (pendingAdvanceTime == null) {
+                              return const Duration(seconds: 10);
+                            }
+                            final remaining = pendingAdvanceTime
+                                .difference(DateTime.now().toUtc());
+                            return remaining.isNegative
+                                ? Duration.zero
+                                : remaining;
+                          }(),
                           isMobile: true,
                         ),
                       ),
