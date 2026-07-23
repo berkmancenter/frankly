@@ -16,16 +16,16 @@ class ScheduledFunctions {
   tasks.CloudTasksClient get client =>
       _client ??= tasks.createCloudTasksClient();
 
-  ScheduledFunctions() {
-    // Check if app.project_id is set in the functions config, and throw an error if not.
+  String get _projectId {
     final projectId = functions.config.get('app.project_id') as String?;
     if (projectId == null || projectId.isEmpty) {
       throw StateError('app.project_id must be set in the functions config');
     }
+    return projectId;
   }
 
   String get parentPath => client.queuePath(
-        functions.config.get('app.project_id') as String,
+        _projectId,
         'us-east4',
         'scheduled-functions',
       );
