@@ -143,8 +143,8 @@ void main() {
       'Counts participants for a currently-running event (scheduledTime in the past)',
       () async {
     // In this case, an event whose scheduledTime has passed is actively
-    // running, but the old pre-check (scheduledTime >= now) so it's included
-    // in counts.
+    // running, but the old pre-check (scheduledTime >= now) excluded it
+    // from counts.
     var runningEvent = Event(
       id: '7777',
       status: EventStatus.active,
