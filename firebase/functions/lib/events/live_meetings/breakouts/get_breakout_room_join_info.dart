@@ -75,6 +75,7 @@ class GetBreakoutRoomJoinInfo
 
     final joinInfo = await liveMeetingUtils.getBreakoutRoomJoinInfo(
       communityId: event.communityId,
+      eventId: event.id,
       meetingId: breakoutRoom.roomId,
       userId: context.authUid!,
       record: breakoutRoom.record,

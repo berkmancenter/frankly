@@ -1,18 +1,22 @@
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'agora_api.dart';
+import 'agora_stt_api.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/utils/utils.dart';
 
 class LiveMeetingUtils {
   bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;
   AgoraUtils agoraUtils;
+  AgoraSttApi sttApi;
 
-  LiveMeetingUtils({AgoraUtils? agoraUtils})
-      : agoraUtils = agoraUtils ?? AgoraUtils();
+  LiveMeetingUtils({AgoraUtils? agoraUtils, AgoraSttApi? sttApi})
+      : agoraUtils = agoraUtils ?? AgoraUtils(),
+        sttApi = sttApi ?? AgoraSttApi();
 
   Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo({
     required Transaction transaction,
@@ -41,6 +45,12 @@ class LiveMeetingUtils {
     final shouldRecord = _shouldRecord(event) || (liveMeeting.record);
     if (shouldRecord) {
       await agoraUtils.recordRoom(roomId: meetingId);
+      await _startTranscription(
+        roomId: meetingId,
+        eventId: event.id,
+        communityId: communityId,
+        roomType: RecordingRoomType.main,
+      );
     }
 
     if (liveMeetingSnapshot.exists && fieldsToUpdate.isNotEmpty) {
@@ -74,6 +84,7 @@ class LiveMeetingUtils {
 
   Future<GetMeetingJoinInfoResponse> getBreakoutRoomJoinInfo({
     required String communityId,
+    required String eventId,
     required String meetingId,
     required String userId,
     required bool record,
@@ -82,6 +93,12 @@ class LiveMeetingUtils {
         agoraUtils.createToken(uid: uidToInt(userId), roomId: meetingId);
     if (record) {
       await agoraUtils.recordRoom(roomId: meetingId);
+      await _startTranscription(
+        roomId: meetingId,
+        eventId: eventId,
+        communityId: communityId,
+        roomType: RecordingRoomType.breakout,
+      );
     }
 
     final meetingInfo = GetMeetingJoinInfoResponse(
@@ -91,5 +108,55 @@ class LiveMeetingUtils {
     );
 
     return meetingInfo;
+  }
+
+  Future<void> _startTranscription({
+    required String roomId,
+    required String eventId,
+    required String communityId,
+    required RecordingRoomType roomType,
+  }) async {
+    // Check if an active transcription session already exists for this room.
+    final existing = await firestore
+        .collection(RecordingSession.kCollection)
+        .where(RecordingSession.kFieldRoomId, isEqualTo: roomId)
+        .where(RecordingSession.kFieldEventId, isEqualTo: eventId)
+        .where(RecordingSession.kFieldStatus, isEqualTo: 'recording')
+        .get();
+
+    if (existing.isNotEmpty) {
+      print('Transcription already active for room $roomId, skipping');
+      return;
+    }
+
+    const language = 'en-US';
+    try {
+      final agentId = await sttApi.startTranscription(
+        channelName: roomId,
+        language: language,
+      );
+
+      final sessionRef =
+          firestore.collection(RecordingSession.kCollection).document();
+      final session = RecordingSession(
+        sessionId: sessionRef.documentID,
+        communityId: communityId,
+        eventId: eventId,
+        roomId: roomId,
+        roomType: roomType,
+        status: RecordingSessionStatus.recording,
+        agoraRttAgentId: agentId,
+        rttLanguage: language,
+        gcsPrefix: '$roomId/transcripts',
+      );
+
+      await sessionRef.setData(
+        DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(session.toJson()),
+        ),
+      );
+    } catch (e) {
+      print('Failed to start transcription for room $roomId: $e');
+    }
   }
 }
