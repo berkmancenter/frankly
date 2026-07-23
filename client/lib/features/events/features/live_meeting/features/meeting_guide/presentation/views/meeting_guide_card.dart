@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -615,8 +613,6 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
                 children: [
                   _buildReadyCountText(context, true),
                   _buildInfoTooltip(context),
-                  SizedBox(width: 20),
-                  _buildInfoButton(context),
                 ],
               ),
             ),
@@ -634,8 +630,6 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
               children: [
                 _buildReadyCountText(context),
                 _buildInfoTooltip(context),
-                SizedBox(width: 10),
-                _buildInfoButton(context),
               ],
             ),
             _buildThresholdText(context),
@@ -695,7 +689,7 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
           ),
         ],
       ),
-      child: SizedBox.shrink(),
+      child: _buildInfoButton(context),
     );
   }
 
