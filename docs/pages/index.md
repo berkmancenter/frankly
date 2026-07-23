@@ -37,7 +37,3 @@ This subsection provides a description of the contents of major directories in t
 
 - `firestore/firestore.rules`
   This is a Firestore security rules file which defines which Firestore documents are readable by which users.
-
-- `matching`
-  Contains `lib/matching.dart`, which is the logic for matching participants into breakout rooms. See the README in this directory for links to helpful documentation on matching.
-

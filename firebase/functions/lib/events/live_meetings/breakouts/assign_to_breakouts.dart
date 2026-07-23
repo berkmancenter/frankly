@@ -5,7 +5,7 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import 'package:get_it/get_it.dart';
-import 'package:frankly_matching/matching.dart' as matching;
+import 'package:frankly_match/frankly_match.dart' as frankly_match;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
@@ -238,14 +238,14 @@ class AssignToBreakouts {
     if (targetParticipantsPerRoom <= 2 ||
         participantSurveyResponsesLookup.length <= 2) {
       smartMatches =
-          matching.bucketMatch(samples: participantSurveyResponsesLookup);
+          frankly_match.bucketMatch(samples: participantSurveyResponsesLookup);
     } else {
       final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
         participantSurveyResponsesLookup.length,
         targetParticipantsPerRoom,
       );
 
-      smartMatches = matching.groupMatch(
+      smartMatches = frankly_match.groupMatch(
         participantResponses: participantSurveyResponsesLookup,
         targetGroupSize: adjustedTargetParticipants,
       );
@@ -689,7 +689,8 @@ class AssignToBreakouts {
           .map((r) => r.roomId)
           .toList();
       print(
-          'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',);
+        'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',
+      );
       for (final room in breakoutRooms) {
         if (room.roomId == breakoutsWaitingRoomId) continue;
         final newSessionId = firestore
@@ -699,7 +700,8 @@ class AssignToBreakouts {
         final roomPath = '${breakoutRoomsCollection.path}/${room.roomId}';
         await firestore.document(roomPath).updateData(
               UpdateData.fromMap(
-                  {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
+                {BreakoutRoom.kFieldRecordingSessionId: newSessionId},
+              ),
             );
         try {
           await agoraUtils.recordRoom(
@@ -714,7 +716,8 @@ class AssignToBreakouts {
           );
         } catch (e) {
           print(
-              'Error starting recording for breakout room ${room.roomId}: $e',);
+            'Error starting recording for breakout room ${room.roomId}: $e',
+          );
         }
       }
     }
