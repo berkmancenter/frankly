@@ -35,7 +35,7 @@ class AgoraUtils {
       roomId,
       uid,
       1 /** Publisher */,
-      60 * 10,
+      60 * 60 * 24,
     );
   }
 
@@ -101,6 +101,7 @@ class AgoraUtils {
       "clientRequest": {
         "token": token,
         "recordingConfig": {
+          "channelType": 1,
           "transcodingConfig": {
             "height": 360,
             "width": 640,
