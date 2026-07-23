@@ -50,8 +50,12 @@ class LiveMeetingUtils {
         eventId: event.id,
         communityId: communityId,
         roomType: RecordingRoomType.main,
-      );
-    }
+      );      await _recordUidMapping(
+        eventId: event.id!,
+        roomId: meetingId,
+        agoraUid: uidToInt(userId),
+        userId: userId,
+      );    }
 
     if (liveMeetingSnapshot.exists && fieldsToUpdate.isNotEmpty) {
       transaction.update(
@@ -98,6 +102,12 @@ class LiveMeetingUtils {
         eventId: eventId,
         communityId: communityId,
         roomType: RecordingRoomType.breakout,
+      );
+      await _recordUidMapping(
+        eventId: eventId,
+        roomId: meetingId,
+        agoraUid: uidToInt(userId),
+        userId: userId,
       );
     }
 
@@ -157,6 +167,35 @@ class LiveMeetingUtils {
       );
     } catch (e) {
       print('Failed to start transcription for room $roomId: $e');
+    }
+  }
+
+  /// Records the Agora UID to Firebase user ID mapping on the active session
+  /// for this room, so transcripts can resolve speaker names at export time.
+  Future<void> _recordUidMapping({
+    required String eventId,
+    required String roomId,
+    required int agoraUid,
+    required String userId,
+  }) async {
+    try {
+      final sessions = await firestore
+          .collection(RecordingSession.kCollection)
+          .where(RecordingSession.kFieldRoomId, isEqualTo: roomId)
+          .where(RecordingSession.kFieldEventId, isEqualTo: eventId)
+          .where(RecordingSession.kFieldStatus, isEqualTo: 'recording')
+          .get();
+
+      if (sessions.isEmpty) return;
+
+      final sessionRef = sessions.first.reference;
+      await sessionRef.updateData(
+        UpdateData.fromMap({
+          'uidToDisplayName.$agoraUid': userId,
+        }),
+      );
+    } catch (e) {
+      print('Failed to record UID mapping for $userId in room $roomId: $e');
     }
   }
 }
