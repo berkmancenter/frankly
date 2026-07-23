@@ -1600,6 +1600,10 @@ second command safely appends to it.</p>
 <p>You can follow the official <a href="https://firebase.google.com/docs/functions/get-started?gen=1st#initialize-your-project_1">documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 2.25a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V4.06l-6.22 6.22a.75.75 0 1 1-1.06-1.06L19.94 3h-3.69a.75.75 0 0 1-.75-.75"/><path d="M2.5 4.25c0-.966.784-1.75 1.75-1.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.25.25 0 0 0-.25.25v15.5c0 .138.112.25.25.25h15.5a.25.25 0 0 0 .25-.25v-8.5a.75.75 0 0 1 1.5 0v8.5a1.75 1.75 0 0 1-1.75 1.75H4.25a1.75 1.75 0 0 1-1.75-1.75z"/></svg></span></a> to find out how to deploy, but you might use a command like this: <code>firebase deploy --only functions</code>.</p>
 <h2 id="third-party-services">🔌 Third Party Services</h2>
 <p>The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.</p>
+<div class="admonition warning">
+<p class="admonition-title">CSP Whitelist</p>
+</div>
+<p>When adding a new external service, you must also add its domains to the Content Security Policy in <code>firebase/functions/js/serve-index.js</code>. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both <code>https://</code> and <code>wss://</code> schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and <code>Hosting &gt; Content Security Policy</code> in <code>hosting.md</code> for the directive reference.</p>
 <h3 id="agora">Agora</h3>
 <p>Sign up for Agora and open the <a href="https://console.agora.io/v2/">Agora console</a>. The following instructions are geared towards using V2 of the Agora console.</p>
 <p>The following instructions will guide you through retrieving the values to fill in the following command for setting Agora-related values in your Functions configuration:</p>
@@ -1793,13 +1797,13 @@ CLOUDINARY_CLOUD_NAME=&lt;value&gt;
 <h3 id="supported-browsers">Supported browsers</h3>
 <p>The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production <a href="https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter">Web FAQ | Flutter</a>; Chrome, Firefox, Safari, Edge.</p>
 <h3 id="running-client-in-an-android-virtual-device">Running Client in an Android Virtual Device</h3>
-<p>This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web. </p>
+<p>This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web.</p>
 <p>Install <a href="https://developer.android.com/studio">Android Studio</a> and <a href="https://developer.android.com/tools/releases/platform-tools">Android SDK Platform-Tools</a>.</p>
 <p>Set up reverse port forwarding for client and emulator open ports using Android Debug Bridge:</p>
 <p><code>adb reverse tcp:5000 tcp:5000 &amp;&amp; adb reverse tcp:5001 tcp:5001 &amp;&amp; adb reverse tcp:9099 tcp:9099 &amp;&amp; adb reverse tcp:9000 tcp:9000 &amp;&amp; adb reverse tcp:8080 tcp:8080</code></p>
 <p>Run client with a wildcard IP as hostname:</p>
 <p><code>flutter run -d web-server --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env --web-port=5000 --web-hostname=0.0.0.0</code></p>
-<p>You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at http://localhost:5000.</p>
+<p>You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at <a href="http://localhost:5000">http://localhost:5000</a>.</p>
 <p>Within a Webkit browser, access the Devtools Device Inspector, e.g. <code>chrome://inspect/#devices</code>. You should be able to inspect the running app within the AVD, as shown here:
 <img alt="A mobile app interface is shown on the left, alongside a web performance report with load metrics and console output on the right, inside chrome dev tools." src="https://res.cloudinary.com/dh0vegjku/image/upload/dpr_auto,f_auto,q_50/frankly_assets/adb.png" /></p>
 <h1 id="testing">Testing</h1>
