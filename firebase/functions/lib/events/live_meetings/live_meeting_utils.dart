@@ -219,23 +219,24 @@ class LiveMeetingUtils {
       participantIds: participantIds,
     );
 
-    // Fire-and-forget: STT start is an external network call and handles its
-    // own errors internally, so no need to block the join path on it.
-    unawaited(startTranscription(
+    await startTranscription(
       roomId: meetingId,
       sessionId: newSessionId,
-    ),);
+      gcsPrefix: [eventId, breakoutSessionId, meetingId, newSessionId],
+    );
   }
 
   Future<void> startTranscription({
     required String roomId,
     required String sessionId,
+    required List<String> gcsPrefix,
   }) async {
     const language = 'en-US';
     try {
       final agentId = await sttApi.startTranscription(
         channelName: roomId,
         language: language,
+        fileNamePrefix: gcsPrefix,
       );
       await firestore
           .collection(RecordingSession.kCollection)

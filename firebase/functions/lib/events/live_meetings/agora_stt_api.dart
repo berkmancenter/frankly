@@ -44,6 +44,7 @@ class AgoraSttApi {
   Future<String> startTranscription({
     required String channelName,
     required String language,
+    required List<String> fileNamePrefix,
   }) async {
     final subBotToken =
         _agoraUtils.createToken(uid: sttSubBotUid, roomId: channelName);
@@ -68,7 +69,7 @@ class AgoraSttApi {
           "bucket": _agoraStorageBucketName,
           "accessKey": _agoraStorageAccessKey,
           "secretKey": _agoraStorageSecretKey,
-          "fileNamePrefix": [channelName, "transcripts"],
+          "fileNamePrefix": fileNamePrefix,
         },
       },
     });
