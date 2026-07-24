@@ -280,8 +280,8 @@ void main() {
             case OnboardingStep.brandSpace:
               expectedResult = 'brandSpace';
               break;
-            case OnboardingStep.createGuide:
-              expectedResult = 'createGuide';
+            case OnboardingStep.createTemplate:
+              expectedResult = 'createTemplate';
               break;
             case OnboardingStep.hostEvent:
               expectedResult = 'hostEvent';
@@ -313,7 +313,7 @@ void main() {
             case OnboardingStep.brandSpace:
               expectedResult = 1;
               break;
-            case OnboardingStep.createGuide:
+            case OnboardingStep.createTemplate:
               expectedResult = 2;
               break;
             case OnboardingStep.hostEvent:
@@ -346,7 +346,7 @@ void main() {
             case OnboardingStep.brandSpace:
               expectedResult = AppAsset.kEmojiSparklePng;
               break;
-            case OnboardingStep.createGuide:
+            case OnboardingStep.createTemplate:
               expectedResult = AppAsset.kEmojiNotepadPng;
               break;
             case OnboardingStep.hostEvent:
@@ -379,7 +379,7 @@ void main() {
             case OnboardingStep.brandSpace:
               expectedResult = 'Looking good';
               break;
-            case OnboardingStep.createGuide:
+            case OnboardingStep.createTemplate:
               expectedResult = 'Looking good';
               break;
             case OnboardingStep.hostEvent:
@@ -412,7 +412,7 @@ void main() {
             case OnboardingStep.brandSpace:
               expectedResult = 'Brand your space';
               break;
-            case OnboardingStep.createGuide:
+            case OnboardingStep.createTemplate:
               expectedResult = 'Create a template';
               break;
             case OnboardingStep.hostEvent:

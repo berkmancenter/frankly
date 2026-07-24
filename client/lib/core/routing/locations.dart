@@ -83,12 +83,16 @@ class HomeLocation extends BeamLocation<BeamState> {
   @override
   List<String> get pathPatterns => ['/home'];
 
+  final bool showLoginByDefault;
+
+  HomeLocation({this.showLoginByDefault = false});
+
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         _buildBeamPage(
           key: ValueKey('home'),
           title: context.l10n.appNameHome(Environment.appName),
-          child: HomePage(),
+          child: HomePage(showLoginByDefault: showLoginByDefault),
         ),
       ];
 }
@@ -183,7 +187,7 @@ class CommunityLocation extends BeamLocation<BeamState> {
       '/challenge',
       '/instant',
       '/admin',
-      '/admin/overview',
+      '/admin/profile',
       '/admin/members',
       '/admin/data',
       '/admin/settings',
@@ -342,7 +346,7 @@ class CommunityPageRoutes {
       _getLocation(path: '$prefix/discuss');
 
   CommunityLocation communityAdmin({String? tab}) => _getLocation(
-        path: '$prefix/admin',
+        path: '$prefix/admin/${tab ?? 'profile'}',
         queryParameters: tab != null ? {'tab': tab} : null,
       );
 

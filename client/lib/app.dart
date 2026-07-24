@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
-import 'package:client/styles/theme.dart';
+import 'package:client/styles/material_theme.dart';
+import 'package:client/styles/text_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:client/features/user/data/services/user_data_service.dart';
@@ -53,6 +54,8 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
   }
 }
 
+var _databaseEmulatorConfigured = false;
+
 Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   setURLPathStrategy();
 
@@ -63,8 +66,9 @@ Future<void> runClient({FirebaseOptions? firebaseOptions}) async {
   // Wire emulators immediately after Firebase.initializeApp, before any
   // service can touch Firebase instances. useDatabaseEmulator() throws a
   // fatal error if called after the RTDB instance is already in use.
-  if (UserDataService.usingEmulator) {
+  if (UserDataService.usingEmulator && !_databaseEmulatorConfigured) {
     FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
+    _databaseEmulatorConfigured = true;
   }
 
   if (enableSentry) {
@@ -149,7 +153,8 @@ class _AppState extends State<App> {
               backButtonDispatcher:
                   BeamerBackButtonDispatcher(delegate: routerDelegate),
               routeInformationParser: BeamerParser(),
-              theme: appTheme,
+              theme:
+                  MaterialTheme(textTheme).theme(MaterialTheme.lightScheme()),
             ),
           );
         },

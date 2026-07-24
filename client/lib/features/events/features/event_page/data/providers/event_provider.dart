@@ -222,6 +222,13 @@ class EventProvider with ChangeNotifier {
       ? max(1, event.participantCountEstimate ?? 0)
       : eventParticipants.length;
 
+  // Count of signed-up (active) participants. For hosted events this is the
+  // live participant stream length; for non-hosted it is read from the
+  // server-maintained registrationCount field on the event document.
+  int get registrationCount => useParticipantCountEstimate
+      ? (event.registrationCount ?? 0)
+      : eventParticipants.length;
+
   int get presentParticipantCount => useParticipantCountEstimate
       ? max(1, event.presentParticipantCountEstimate ?? 0)
       : eventParticipants.where((p) => p.isPresent).length;
@@ -368,8 +375,9 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateRegistrationDataCsvFile({
     required List<MemberDetails> registrationData,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required List<Participant> participantData,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -379,7 +387,7 @@ class EventProvider with ChangeNotifier {
     firstRow.add('Email');
     firstRow.add('Member Status');
     firstRow.add('RSVP Time');
-    firstRow.add('Join Time');
+    firstRow.add('Last Active Time');
     firstRow.add('Room Assigned');
     rows.add(firstRow);
 
@@ -401,46 +409,34 @@ class EventProvider with ChangeNotifier {
       row.add(
         EnumToString.convertToString(registrationData[i].membership?.status),
       );
+      final createdDate =
+          registrationData[i].memberEvent?.participant?.createdDate;
       row.add(
-        registrationData[i].memberEvent?.participant?.createdDate?.toUtc(),
+        createdDate != null ? dateTimeFormat(date: createdDate.toLocal()) : '',
+      );
+      final mostRecentPresentTime = participantData
+          .firstWhereOrNull((p) => p.id == registrationData[i].id)
+          ?.mostRecentPresentTime;
+      row.add(
+        mostRecentPresentTime != null
+            ? dateTimeFormat(date: mostRecentPresentTime.toLocal())
+            : '',
       );
 
-      // Derive Join Time field from Participant.mostRecentPresentTime
-      row.add(
-        registrationData[i]
-            .memberEvent
-            ?.participant
-            ?.mostRecentPresentTime
-            ?.toUtc(),
+      // Look up the participant's breakout room within the breakout info. We
+      // can't rely on the breakoutRoomId in Participant because it is a live
+      // value that is cleared when users leave the event.
+      final participantId = registrationData[i].id;
+      final assignedRoom = breakoutRooms.firstWhereOrNull(
+        (room) => room.participantIds.contains(participantId),
       );
-
-      // Derive Room Assigned field from Participant.currentBreakoutRoomId
-      // Convert room ID to room name for readability
-      String roomAssigned = '';
-      final currentRoomId =
-          registrationData[i].memberEvent?.participant?.currentBreakoutRoomId;
-      if (currentRoomId != null && currentRoomId.isNotEmpty) {
-        if (currentRoomId == 'waiting-room') {
-          // Special case: breakout room waiting room
-          roomAssigned = 'Waiting room';
-        } else if (breakoutRooms != null) {
-          // Find room name from breakout rooms data
-          final room = breakoutRooms
-              .firstWhereOrNull((room) => room.roomId == currentRoomId);
-          if (room != null) {
-            roomAssigned = room.roomName;
-          } else {
-            roomAssigned =
-                currentRoomId; // Fallback to room ID if room not found
-          }
-        } else {
-          roomAssigned =
-              currentRoomId; // Fallback to room ID if no room data available
-        }
-      } else {
-        // If currentRoomId is null or empty, user is likely in main waiting room
-        roomAssigned = 'Waiting room';
-      }
+      final roomAssigned = assignedRoom != null
+          ? _getRoomName(
+              roomId: assignedRoom.roomId,
+              eventId: eventId,
+              breakoutRooms: breakoutRooms,
+            )
+          : 'Main room';
       row.add(roomAssigned);
 
       final event = registrationData[i].memberEvent;
@@ -505,8 +501,8 @@ class EventProvider with ChangeNotifier {
 
   Future<void> generateChatDataCsv({
     required GetMeetingChatsSuggestionsDataResponse response,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -525,13 +521,15 @@ class EventProvider with ChangeNotifier {
 
     for (int i = 0; i < chatsData.length; i++) {
       List<dynamic> row = [];
+      // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: chatsData[i].createdDate!));
+      // Added "User ID" field
       row.add(chatsData[i].creatorId ?? '');
       row.add(chatsData[i].message ?? chatsData[i].emotionType?.stringEmoji);
 
       // Convert room ID to room name for better readability using shared helper
       final roomName = _getRoomName(
-        roomId: chatsData[i].roomId,
+        roomId: chatsData[i].roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -558,8 +556,8 @@ class EventProvider with ChangeNotifier {
   Future<void> generatePollsSuggestionsDataCsv({
     required List<ChatSuggestionData> suggestionData,
     required List<PollData> pollData,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) async {
     List<List<dynamic>> rows = [];
 
@@ -587,14 +585,20 @@ class EventProvider with ChangeNotifier {
       );
 
       final promptText = suggestionItem?.title ?? suggestionItem?.content ?? '';
+      // Add Type field
       row.add('Suggestion');
+      // Changed "Created" to "Time"
       row.add(dateTimeFormat(date: suggestionData[i].createdDate!));
+      // Added "User ID" field instead of Name, Email
       row.add(suggestionData[i].creatorId ?? '');
+      // Add Prompt field
       row.add(promptText);
+      // Add Response field
       row.add(suggestionData[i].message ?? '');
 
+      // Convert room ID to room name for better readability
       String roomName = _getRoomName(
-        roomId: suggestionData[i].roomId,
+        roomId: suggestionData[i].roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -612,16 +616,19 @@ class EventProvider with ChangeNotifier {
 
       final poll = pollData[i];
 
+      // Add Type field
       row.add('Poll');
-      row.add(poll.answeredDate != null
-          ? dateTimeFormat(date: poll.answeredDate!)
-          : '');
+      // Add Time field
+      row.add(dateTimeFormat(date: poll.answeredDate!));
+      // Add User ID field
       row.add(poll.userId ?? '');
+      // Add Prompt field (poll question)
       row.add(poll.pollQuestion ?? '');
+      // Add Response field
       row.add(poll.pollResponse ?? '');
 
       String roomName = _getRoomName(
-        roomId: poll.roomId,
+        roomId: poll.roomId ?? '',
         eventId: eventId,
         breakoutRooms: breakoutRooms,
       );
@@ -650,11 +657,11 @@ class EventProvider with ChangeNotifier {
   }
 
   String _getRoomName({
-    required String? roomId,
-    required String? eventId,
-    List<BreakoutRoom>? breakoutRooms,
+    required String roomId,
+    required String eventId,
+    required List<BreakoutRoom> breakoutRooms,
   }) {
-    if (roomId == null || roomId.isEmpty) {
+    if (roomId.isEmpty || roomId == eventId) {
       return 'Main room';
     }
 
@@ -662,18 +669,14 @@ class EventProvider with ChangeNotifier {
       return 'Waiting room';
     }
 
-    if (roomId == eventId) {
-      return 'Main room';
-    }
-
-    if (breakoutRooms != null && breakoutRooms.isNotEmpty) {
+    if (breakoutRooms.isNotEmpty) {
       final room =
           breakoutRooms.firstWhereOrNull((room) => room.roomId == roomId);
       if (room != null) {
         return room.roomName;
       }
     }
-
+    // Fallback for empty breakout rooms.
     return 'Main room';
   }
 }

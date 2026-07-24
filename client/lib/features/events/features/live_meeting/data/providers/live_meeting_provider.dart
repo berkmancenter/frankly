@@ -28,6 +28,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/event_proposal.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/recording/recording_session.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
@@ -302,13 +303,6 @@ class LiveMeetingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _resetAudioVideoOn() {
-    shouldStartLocalAudioOn =
-        shouldStartLocalAudioOn && eventProvider.event.isHosted;
-    shouldStartLocalVideoOn =
-        shouldStartLocalVideoOn && eventProvider.event.isHosted;
-  }
-
   Stream<List<EventProposal>> get proposals {
     final path =
         firestoreLiveMeetingService.getLiveMeetingPath(eventProvider.event);
@@ -326,8 +320,6 @@ class LiveMeetingProvider with ChangeNotifier {
 
     shouldStartLocalAudioOn = audioDefaultOn;
     shouldStartLocalVideoOn = videoDefaultOn;
-
-    _resetAudioVideoOn();
 
     _liveMeetingStream = firestoreLiveMeetingService.liveMeetingStream(
       parentDoc: eventPath,
@@ -476,6 +468,7 @@ class LiveMeetingProvider with ChangeNotifier {
     if (!breakoutsActive && !isNullOrEmpty(_activeBreakoutRoomId)) {
       leaveBreakoutRoom();
       _userLeftBreakouts = false;
+      _restartMainRoomRecordingIfNeeded();
     }
 
     if (_isMeetingCardMinimized != liveMeeting.isMeetingCardMinimized &&
@@ -597,8 +590,8 @@ class LiveMeetingProvider with ChangeNotifier {
           final confirmJoiningBreakouts = await ConfirmDialog(
             mainText:
                 'Would you like to participate in breakout room assignments?',
-            confirmText: 'Yes, join',
-            cancelText: 'No, skip',
+            confirmText: appLocalizationService.getLocalization().yesJoin,
+            cancelText: appLocalizationService.getLocalization().noSkip,
           ).show();
 
           if (!confirmJoiningBreakouts) {
@@ -620,7 +613,7 @@ class LiveMeetingProvider with ChangeNotifier {
         await ConfirmDialog(
           mainText:
               'Host is sending you to a breakout room. Join breakout room?',
-          confirmText: 'Yes, join',
+          confirmText: appLocalizationService.getLocalization().yesJoin,
           cancelText: appLocalizationService.getLocalization().cancel,
           onConfirm: (context) => alertOnError(context, () async {
             await firestoreLiveMeetingService
@@ -630,6 +623,7 @@ class LiveMeetingProvider with ChangeNotifier {
                       .currentBreakoutSession?.breakoutRoomSessionId ??
                   '',
             );
+            if (!context.mounted) return;
             Navigator.of(context).pop(true);
           }),
         ).show();
@@ -706,16 +700,23 @@ class LiveMeetingProvider with ChangeNotifier {
       final timeNow = clockService.now();
       final event = eventProvider.event;
 
-      if (prePostEnabled && postEventCardData != null) {
-        if (timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
-            _postEventEmailThresholdInMinutes) {
-          unawaited(
-            cloudFunctionsEventService.eventEnded(
-              EventEndedRequest(eventPath: eventPath),
-            ),
-          );
-        }
+      // Call eventEnded whenever the event is past its scheduled time by the
+      // email threshold, OR whenever the event had recording enabled (to ensure
+      // the recording is always stopped regardless of email threshold).
+      final pastThreshold =
+          timeNow.difference(event.scheduledTime ?? timeNow).inMinutes >
+              _postEventEmailThresholdInMinutes;
+      final hadRecording = (event.eventSettings?.alwaysRecord ?? false) ||
+          liveMeeting?.record == true;
+      if (pastThreshold || hadRecording) {
+        unawaited(
+          cloudFunctionsEventService.eventEnded(
+            EventEndedRequest(eventPath: eventPath),
+          ),
+        );
+      }
 
+      if (prePostEnabled && postEventCardData != null) {
         if (postEventCardData.hasData) {
           await PrePostEventDialogPage.show(
             prePostCardData: postEventCardData,
@@ -781,6 +782,31 @@ class LiveMeetingProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> _restartMainRoomRecordingIfNeeded() async {
+    final event = eventProvider.event;
+    final shouldRecord = (event.eventSettings?.alwaysRecord ?? false) ||
+        (liveMeeting?.record ?? false);
+    if (!shouldRecord) return;
+
+    final sessionId = liveMeeting?.recordingSessionId;
+    if (sessionId == null) return;
+
+    final session = await firestoreLiveMeetingService
+        .recordingSessionStream(sessionId)
+        .first;
+
+    final isTerminal = session == null ||
+        session.status == RecordingSessionStatus.stopped ||
+        session.status == RecordingSessionStatus.failed;
+    if (!isTerminal) return;
+
+    await firestoreLiveMeetingService.update(
+      liveMeetingPath: firestoreLiveMeetingService.getLiveMeetingPath(event),
+      liveMeeting: LiveMeeting(recordingSessionId: null),
+      keys: [LiveMeeting.kFieldRecordingSessionId],
+    );
+  }
+
   void leaveBreakoutRoom() {
     _userLeftBreakouts = true;
 
@@ -795,8 +821,6 @@ class LiveMeetingProvider with ChangeNotifier {
       event: eventProvider.event,
       isPresent: true,
     );
-
-    _resetAudioVideoOn();
 
     notifyListeners();
   }
@@ -936,7 +960,7 @@ class LiveMeetingProvider with ChangeNotifier {
         textLabel: 'Enter reason',
         textHint: 'e.g. They are trying to sabotage the event',
         cancelText: 'No, cancel',
-        confirmText: 'Yes, poll participants',
+        confirmText: l10n.yesPollParticipants,
       ),
     );
     if (reason != null) {

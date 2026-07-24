@@ -118,7 +118,7 @@ void main() {
 
       // Error messages should be translated
       expect(l10n.avErrorNotFound,
-          isNot('Audio/video devices not found. Please check permissions.'));
+          isNot('Audio/video devices not found. Please check permissions.'),);
     });
 
     testWidgets(

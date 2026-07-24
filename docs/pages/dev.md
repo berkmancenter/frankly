@@ -218,18 +218,20 @@ Steps 1–4 use stamp files in `.local/dev-stamps/` to skip unnecessary work.
 
 **Optional environment variables:**
 
-| Variable | Effect |
-|---|---|
-| `SKIP_DART_BUILD=1` | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
-| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging |
+| Variable                    | Effect                                                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `SKIP_DART_BUILD=1`         | Skip the `build_runner` step in `emulators.sh` (set automatically by `run-dev.sh` since it handles the build itself) |
+| `FRANKLY_DEBUG_FUNCTIONS=1` | Start functions with `--inspect-functions`, allowing you to attach a Node.js debugger for breakpoint debugging       |
 
 These are set inline before the command, for example:
 
 ```
 FRANKLY_DEBUG_FUNCTIONS=1 npm run dev
 ```
+
 **Troubleshooting:**
-* If you encounter the error "Could not find `bin/build_runner.dart` in package `build_runner`", navigate to the directory where the build command failed and run `flutter pub get` manually.
+
+- If you encounter the error "Could not find `bin/build_runner.dart` in package `build_runner`", navigate to the directory where the build command failed and run `flutter pub get` manually.
 
 ---
 
@@ -387,6 +389,9 @@ You can follow the official [documentation :octicons-link-external-24:](https://
 
 The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.
 
+!!! warning "CSP Whitelist"
+When adding a new external service, you must also add its domains to the Content Security Policy in `firebase/functions/js/serve-index.js`. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both `https://` and `wss://` schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and `Hosting > Content Security Policy` in `hosting.md` for the directive reference.
+
 ### Agora
 
 Sign up for Agora and open the [Agora console](https://console.agora.io/v2/). The following instructions are geared towards using V2 of the Agora console.
@@ -401,6 +406,7 @@ agora.rest_secret="<YOUR_VALUE_HERE>"
 agora.storage_bucket_name="<YOUR_VALUE_HERE>"
 agora.storage_access_key="<YOUR_VALUE_HERE>"
 agora.storage_secret_key="<YOUR_VALUE_HERE>"
+agora.webhook_secret="<YOUR_VALUE_HERE>"
 ```
 
 #### **🔧 Setting up the integration**
@@ -417,8 +423,13 @@ agora.storage_secret_key="<YOUR_VALUE_HERE>"
   - `storage_bucket_name`: Enter the bucket name you selected.
   - `storage_access_key`: Select **Settings** under the Cloud Storage left-side settings panel. Click on the **Interopability** tab. You may choose to either create an access key for a service account, or create a key for your user account. For whichever method you have opted to use, select **Create a Key**. Then, paste the generated **Access key** here.
   - `storage_secret_key`: From the generated key, paste the **Secret**.
-- **In the codebase**
+- **Update client-side environment variables**
   - In `client/.env`, change `FUNCTIONS_URL_PREFIX` to reflect your Google Cloud Run Functions prefix.
+  - In `client/.env`, set `AGORA_APP_ID` to the App ID copied from the Agora console (the same value as `agora.app_id` above). This is used by the Flutter client to initialize the Agora RTC engine.
+- **Agora recording webhook**
+  - Deploy the `AgoraRecordingWebhook` Cloud Function and note its URL.
+  - In the Agora console, go to **Notifications** (under Developer Toolkit / Developer Resources). Add a new rule targeting **Cloud Recording** events, set the callback URL to the deployed function URL, and choose a secret string.
+  - `webhook_secret`: Set this to the secret string you chose above so the function can verify Agora's HMAC-SHA1 signature on each notification. If omitted, signature verification is skipped (acceptable for local development, not for production).
 
 #### 👾 Testing the integration
 
@@ -537,8 +548,9 @@ CLOUDINARY_CLOUD_NAME=<value>
 
 ### SendGrid
 
-- Uses a Firestore extension. Emails definitions are written to the firestore collection sendgridemail.
-- Configure the firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your sendgrid info
+- Uses a Firestore extension. Email definitions are written to the Firestore collection `sendgridmail`.
+- Configure the Firestore extension "Trigger Email" firebase/firestore-send-email@0.1.9 with your SendGrid info
+- Set up SPF, DKIM, and DMARC DNS records for your sender domain. See the [Hosting guide](hosting.md#email-authentication-dns-records) for details.
 
 ### Stripe
 
@@ -593,6 +605,25 @@ flutter run -d chrome --release --web-renderer html -t lib/dev_emulators_main.da
 ### Supported browsers
 
 The client app runs only on the Flutter web platform. Flutter uses Chrome for debugging web apps, but it does support all major browsers in production [Web FAQ | Flutter](https://docs.flutter.dev/platform-integration/web/faq#which-web-browsers-are-supported-by-flutter); Chrome, Firefox, Safari, Edge.
+
+### Running Client in an Android Virtual Device
+
+This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web.
+
+Install [Android Studio](https://developer.android.com/studio) and [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools).
+
+Set up reverse port forwarding for client and emulator open ports using Android Debug Bridge:
+
+`adb reverse tcp:5000 tcp:5000 && adb reverse tcp:5001 tcp:5001 && adb reverse tcp:9099 tcp:9099 && adb reverse tcp:9000 tcp:9000 && adb reverse tcp:8080 tcp:8080`
+
+Run client with a wildcard IP as hostname:
+
+`flutter run -d web-server --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env --web-port=5000 --web-hostname=0.0.0.0`
+
+You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at <http://localhost:5000>.
+
+Within a Webkit browser, access the Devtools Device Inspector, e.g. `chrome://inspect/#devices`. You should be able to inspect the running app within the AVD, as shown here:
+![A mobile app interface is shown on the left, alongside a web performance report with load metrics and console output on the right, inside chrome dev tools.](https://res.cloudinary.com/dh0vegjku/image/upload/dpr_auto,f_auto,q_50/frankly_assets/adb.png)
 
 # Testing
 

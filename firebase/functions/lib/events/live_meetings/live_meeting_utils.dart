@@ -9,6 +9,33 @@ import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/utils/utils.dart';
 
+class PendingRecording {
+  final String roomId;
+  final String sessionId;
+  final String eventId;
+  final String communityId;
+  final RecordingRoomType roomType;
+  final String chatPath;
+  final List<String> participantIds;
+
+  PendingRecording({
+    required this.roomId,
+    required this.sessionId,
+    required this.eventId,
+    required this.communityId,
+    required this.roomType,
+    required this.chatPath,
+    required this.participantIds,
+  });
+}
+
+class MeetingJoinResult {
+  final GetMeetingJoinInfoResponse response;
+  final PendingRecording? pendingRecording;
+
+  MeetingJoinResult({required this.response, this.pendingRecording});
+}
+
 class LiveMeetingUtils {
   bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;
   AgoraUtils agoraUtils;
@@ -18,7 +45,7 @@ class LiveMeetingUtils {
       : agoraUtils = agoraUtils ?? AgoraUtils(),
         sttApi = sttApi ?? AgoraSttApi();
 
-  Future<GetMeetingJoinInfoResponse> getMeetingJoinInfo({
+  Future<MeetingJoinResult> getMeetingJoinInfo({
     required Transaction transaction,
     required String communityId,
     required String liveMeetingCollectionPath,
@@ -28,7 +55,6 @@ class LiveMeetingUtils {
   }) async {
     final fieldsToUpdate = <String>[];
 
-    // Look up live meeting
     final liveMeetingSnapshot = await transaction.get(
       firestore.document('$liveMeetingCollectionPath/$meetingId'),
     );
@@ -42,20 +68,16 @@ class LiveMeetingUtils {
       meetingId: liveMeeting.meetingId ?? meetingId,
     );
 
-    final shouldRecord = _shouldRecord(event) || (liveMeeting.record);
-    if (shouldRecord) {
-      await agoraUtils.recordRoom(roomId: meetingId);
-      await _startTranscription(
-        roomId: meetingId,
-        eventId: event.id,
-        communityId: communityId,
-        roomType: RecordingRoomType.main,
-      );      await _recordUidMapping(
-        eventId: event.id!,
-        roomId: meetingId,
-        agoraUid: uidToInt(userId),
-        userId: userId,
-      );    }
+    final shouldRecord = _shouldRecord(event) || liveMeeting.record;
+    String? newSessionId;
+    if (shouldRecord && liveMeeting.recordingSessionId == null) {
+      newSessionId = firestore
+          .collection(RecordingSession.kCollection)
+          .document()
+          .documentID;
+      fieldsToUpdate.add(LiveMeeting.kFieldRecordingSessionId);
+      liveMeeting = liveMeeting.copyWith(recordingSessionId: newSessionId);
+    }
 
     if (liveMeetingSnapshot.exists && fieldsToUpdate.isNotEmpty) {
       transaction.update(
@@ -76,8 +98,87 @@ class LiveMeetingUtils {
       );
     }
 
+    PendingRecording? pendingRecording;
+    if (newSessionId != null) {
+      final chatPath =
+          '$liveMeetingCollectionPath/$meetingId/chats/community_chat/messages';
+      final participantIds = liveMeeting.participants
+          .map((p) => p.communityId)
+          .whereType<String>()
+          .toList();
+      pendingRecording = PendingRecording(
+        roomId: meetingId,
+        sessionId: newSessionId,
+        eventId: event.id,
+        communityId: communityId,
+        roomType: RecordingRoomType.main,
+        chatPath: chatPath,
+        participantIds: participantIds,
+      );
+    }
+
     final token =
         agoraUtils.createToken(uid: uidToInt(userId), roomId: meetingId);
+
+    return MeetingJoinResult(
+      response: GetMeetingJoinInfoResponse(
+        identity: userId,
+        meetingToken: token,
+        meetingId: meetingId,
+      ),
+      pendingRecording: pendingRecording,
+    );
+  }
+
+  Future<GetMeetingJoinInfoResponse> getBreakoutRoomJoinInfo({
+    required String communityId,
+    required String eventId,
+    required String breakoutSessionId,
+    required String breakoutRoomPath,
+    required String meetingId,
+    required String userId,
+    required bool record,
+    required String? existingRecordingSessionId,
+    required List<String> participantIds,
+  }) async {
+    final token =
+        agoraUtils.createToken(uid: uidToInt(userId), roomId: meetingId);
+
+    if (record && existingRecordingSessionId == null) {
+      await _startBreakoutRecording(
+        communityId: communityId,
+        eventId: eventId,
+        breakoutSessionId: breakoutSessionId,
+        breakoutRoomPath: breakoutRoomPath,
+        meetingId: meetingId,
+        participantIds: participantIds,
+      );
+    } else if (record && existingRecordingSessionId != null) {
+      // If the session exists but has reached a terminal state (Agora idled out
+      // while the room was empty), clear recordingSessionId and start fresh so
+      // re-entry gets its own recording.
+      final sessionSnap = await firestore
+          .collection(RecordingSession.kCollection)
+          .document(existingRecordingSessionId)
+          .get();
+      if (sessionSnap.exists) {
+        final session = RecordingSession.fromJson(
+          firestoreUtils.fromFirestoreJson(sessionSnap.data.toMap()),
+        );
+        final isTerminal = session.status == RecordingSessionStatus.stopped ||
+            session.status == RecordingSessionStatus.failed;
+        if (isTerminal) {
+          await _startBreakoutRecording(
+            communityId: communityId,
+            eventId: eventId,
+            breakoutSessionId: breakoutSessionId,
+            breakoutRoomPath: breakoutRoomPath,
+            meetingId: meetingId,
+            participantIds: participantIds,
+          );
+        }
+      }
+    }
 
     return GetMeetingJoinInfoResponse(
       identity: userId,
@@ -86,116 +187,78 @@ class LiveMeetingUtils {
     );
   }
 
-  Future<GetMeetingJoinInfoResponse> getBreakoutRoomJoinInfo({
+  Future<void> _startBreakoutRecording({
     required String communityId,
     required String eventId,
+    required String breakoutSessionId,
+    required String breakoutRoomPath,
     required String meetingId,
-    required String userId,
-    required bool record,
+    required List<String> participantIds,
   }) async {
-    final token =
-        agoraUtils.createToken(uid: uidToInt(userId), roomId: meetingId);
-    if (record) {
-      await agoraUtils.recordRoom(roomId: meetingId);
-      await _startTranscription(
-        roomId: meetingId,
-        eventId: eventId,
-        communityId: communityId,
-        roomType: RecordingRoomType.breakout,
-      );
-      await _recordUidMapping(
-        eventId: eventId,
-        roomId: meetingId,
-        agoraUid: uidToInt(userId),
-        userId: userId,
-      );
-    }
+    final newSessionId = firestore
+        .collection(RecordingSession.kCollection)
+        .document()
+        .documentID;
 
-    final meetingInfo = GetMeetingJoinInfoResponse(
-      identity: userId,
-      meetingToken: token,
-      meetingId: meetingId,
+    await firestore.document(breakoutRoomPath).updateData(
+          UpdateData.fromMap(
+              {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
+        );
+
+    final chatPath = '$breakoutRoomPath/chats/community_chat/messages';
+    await agoraUtils.recordRoom(
+      roomId: meetingId,
+      sessionId: newSessionId,
+      eventId: eventId,
+      communityId: communityId,
+      roomType: RecordingRoomType.breakout,
+      breakoutSessionId: breakoutSessionId,
+      chatPath: chatPath,
+      participantIds: participantIds,
     );
 
-    return meetingInfo;
+    await _startTranscription(
+      roomId: meetingId,
+      sessionId: newSessionId,
+    );
   }
 
   Future<void> _startTranscription({
     required String roomId,
-    required String eventId,
-    required String communityId,
-    required RecordingRoomType roomType,
+    required String sessionId,
   }) async {
-    // Check if an active transcription session already exists for this room.
-    final existing = await firestore
-        .collection(RecordingSession.kCollection)
-        .where(RecordingSession.kFieldRoomId, isEqualTo: roomId)
-        .where(RecordingSession.kFieldEventId, isEqualTo: eventId)
-        .where(RecordingSession.kFieldStatus, isEqualTo: 'recording')
-        .get();
-
-    if (existing.isNotEmpty) {
-      print('Transcription already active for room $roomId, skipping');
-      return;
-    }
-
     const language = 'en-US';
     try {
       final agentId = await sttApi.startTranscription(
         channelName: roomId,
         language: language,
       );
-
-      final sessionRef =
-          firestore.collection(RecordingSession.kCollection).document();
-      final session = RecordingSession(
-        sessionId: sessionRef.documentID,
-        communityId: communityId,
-        eventId: eventId,
-        roomId: roomId,
-        roomType: roomType,
-        status: RecordingSessionStatus.recording,
-        agoraRttAgentId: agentId,
-        rttLanguage: language,
-        gcsPrefix: '$roomId/transcripts',
-      );
-
-      await sessionRef.setData(
-        DocumentData.fromMap(
-          firestoreUtils.toFirestoreJson(session.toJson()),
-        ),
-      );
+      await firestore
+          .collection(RecordingSession.kCollection)
+          .document(sessionId)
+          .updateData(UpdateData.fromMap({
+        'agoraRttAgentId': agentId,
+        'rttLanguage': language,
+      }),);
     } catch (e) {
       print('Failed to start transcription for room $roomId: $e');
     }
   }
 
-  /// Records the Agora UID to Firebase user ID mapping on the active session
-  /// for this room, so transcripts can resolve speaker names at export time.
-  Future<void> _recordUidMapping({
-    required String eventId,
-    required String roomId,
+  Future<void> recordUidMapping({
+    required String sessionId,
     required int agoraUid,
     required String userId,
   }) async {
     try {
-      final sessions = await firestore
+      await firestore
           .collection(RecordingSession.kCollection)
-          .where(RecordingSession.kFieldRoomId, isEqualTo: roomId)
-          .where(RecordingSession.kFieldEventId, isEqualTo: eventId)
-          .where(RecordingSession.kFieldStatus, isEqualTo: 'recording')
-          .get();
-
-      if (sessions.isEmpty) return;
-
-      final sessionRef = sessions.first.reference;
-      await sessionRef.updateData(
-        UpdateData.fromMap({
-          'uidToDisplayName.$agoraUid': userId,
-        }),
-      );
+          .document(sessionId)
+          .updateData(UpdateData.fromMap({
+        'uidToDisplayName.$agoraUid': userId,
+      }),);
     } catch (e) {
-      print('Failed to record UID mapping for $userId in room $roomId: $e');
+      print('Failed to record UID mapping for $userId: $e');
     }
   }
 }

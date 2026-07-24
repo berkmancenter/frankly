@@ -72,11 +72,11 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
 
   String? validator(String? value) {
     if (value == null) return value;
-    if (value.contains(' ')) return 'Space not allowed';
-    if (value.length > 20) return 'Exceeds 20 characters limit';
+    if (value.contains(' ')) return context.l10n.spaceNotAllowed;
+    if (value.length > 20) return context.l10n.exceedsTwentyCharacterLimit;
     final regex = RegExp(r'[^A-Za-z0-9]');
     if (regex.hasMatch(value)) {
-      return 'Invalid characters(s)';
+      return context.l10n.invalidCharacters;
     }
     return null;
   }
@@ -239,7 +239,7 @@ class _CreateTagWidgetState extends State<CreateTagWidget> {
             color: context.theme.colorScheme.primary,
             textColor: context.theme.colorScheme.primary,
             onPressed: () => _onTapAddButton(),
-            text: 'Add tag',
+            text: context.l10n.addTag,
           ),
         ],
       ),

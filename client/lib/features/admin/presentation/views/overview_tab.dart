@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 
 class OverviewTab extends StatefulWidget {
   const OverviewTab({super.key});
-  
+
   @override
   State<OverviewTab> createState() => _OverviewTabState();
 }
@@ -68,7 +68,7 @@ class _OverviewTabState extends State<OverviewTab> {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20, left: 8),
               child: Text(
                 label,
                 style: context.theme.textTheme.titleLarge,
@@ -87,7 +87,7 @@ class _OverviewTabState extends State<OverviewTab> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(50, 30, 0, 0),
+                padding: const EdgeInsets.fromLTRB(50, 30, 0, 0),
                 child: Text(
                   label,
                   style: context.theme.textTheme.titleLarge,
@@ -108,7 +108,7 @@ class _OverviewTabState extends State<OverviewTab> {
   @override
   Widget build(BuildContext context) {
     final mobile = responsiveLayoutService.isMobile(context);
-    
+
     context.watch<CommunityProvider>();
 
     return Scaffold(
@@ -167,40 +167,45 @@ class _OverviewTabState extends State<OverviewTab> {
                   ),
                   _buildSection(
                     context.l10n.links,
-                    CreateCommunityTextFields(
-                      fieldsView: FieldsView.links,
-                      borderType: BorderType.outline,
-                      // Catch form errors from child widget
-                      onFieldsHaveErrors: (hasErrors) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          if (!mounted) return;
-                          setState(() {
-                            _formHasErrors = hasErrors;
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: CreateCommunityTextFields(
+                        fieldsView: FieldsView.links,
+                        borderType: BorderType.outline,
+                        // Catch form errors from child widget
+                        onFieldsHaveErrors: (hasErrors) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (!mounted) return;
+                            setState(() {
+                              _formHasErrors = hasErrors;
+                            });
                           });
-                        });
-                      },
-                      onWebsiteUrlChanged: (value) => {
-                        _community = _community.copyWith(websiteUrl: value),
-                      },
-                      onFacebookUrlChanged: (value) => {
-                        _community = _community.copyWith(facebookUrl: value),
-                      },
-                      onLinkedinUrlChanged: (value) => {
-                        _community = _community.copyWith(linkedinUrl: value),
-                      },
-                      onTwitterUrlChanged: (value) => {
-                        _community = _community.copyWith(twitterUrl: value),
-                      },
-                      onBlueskyUrlChanged: (value) => {
-                        _community = _community.copyWith(blueskyUrl: value),
-                      },
-                      onYoutubeUrlChanged: (value) => {
-                        _community = _community.copyWith(youtubeUrl: value),
-                      },
-                      onInstagramUrlChanged: (value) => {
-                        _community = _community.copyWith(instagramUrl: value),
-                      },
-                      community: _community,
+                        },
+                        onWebsiteUrlChanged: (value) => {
+                          _community = _community.copyWith(websiteUrl: value),
+                        },
+                        onFacebookUrlChanged: (value) => {
+                          _community = _community.copyWith(facebookUrl: value),
+                        },
+                        onLinkedinUrlChanged: (value) => {
+                          _community = _community.copyWith(linkedinUrl: value),
+                        },
+                        onTwitterUrlChanged: (value) => {
+                          _community = _community.copyWith(twitterUrl: value),
+                        },
+                        onBlueskyUrlChanged: (value) => {
+                          _community = _community.copyWith(blueskyUrl: value),
+                        },
+                        onYoutubeUrlChanged: (value) => {
+                          _community = _community.copyWith(youtubeUrl: value),
+                        },
+                        onInstagramUrlChanged: (value) => {
+                          _community = _community.copyWith(instagramUrl: value),
+                        },
+                        community: _community,
+                      ),
                     ),
                     mobile,
                   ),
@@ -214,6 +219,7 @@ class _OverviewTabState extends State<OverviewTab> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 18.0,
+                        horizontal: 8.0,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,7 +394,12 @@ class _OverviewTabState extends State<OverviewTab> {
 
   Future<void> _removeImage() async {
     setState(() {
-      _community = _community.copyWith(profileImageUrl: generateRandomImageUrl(seed: _community.id.hashCode, resolution: 160));
+      _community = _community.copyWith(
+        profileImageUrl: generateRandomImageUrl(
+          seed: _community.id.hashCode,
+          resolution: 160,
+        ),
+      );
     });
     await cloudFunctionsCommunityService.removeImage(
       community: _community,

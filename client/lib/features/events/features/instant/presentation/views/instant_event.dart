@@ -52,6 +52,8 @@ class _InstantEventState extends State<InstantEvent> {
   Future<Event> _createEventIfNotExists(
     TemplateProvider templateProvider,
   ) async {
+    final instantMeetingTitle = context.l10n.instantMeeting;
+
     if (!userService.isSignedIn) {
       await userService.updateCurrentUserInfo(
         PublicUserInfo(
@@ -80,7 +82,7 @@ class _InstantEventState extends State<InstantEvent> {
         communityId: communityId,
         templateId: templateId,
         nullableEventType: EventType.hosted,
-        title: context.l10n.instantMeeting,
+        title: instantMeetingTitle,
         scheduledTime: clockService.now(),
         isPublic: false,
         minParticipants: Event.defaultMinParticipants,

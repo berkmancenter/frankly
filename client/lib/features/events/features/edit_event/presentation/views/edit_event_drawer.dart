@@ -201,7 +201,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
 
   Widget _buildTitleSection() {
     return CustomTextField(
-      labelText: 'Title',
+      labelText: context.l10n.title,
       initialValue: _model.event.title,
       maxLines: 2,
       maxLength: 60,
@@ -212,7 +212,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
 
   Widget _buildDescriptionSection() {
     return CustomTextField(
-      labelText: 'Description',
+      labelText: context.l10n.description,
       initialValue: _model.event.description,
       onChanged: (value) => _presenter.updateDescription(value),
     );
@@ -239,7 +239,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
 
     return CustomTextField(
       key: Key(dateString),
-      labelText: 'Date',
+      labelText: context.l10n.date,
       initialValue: dateString,
       maxLength: null,
       onTap: () async {
@@ -269,7 +269,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     }
     return CustomTextField(
       key: Key(timeString),
-      labelText: 'Time',
+      labelText: context.l10n.time,
       initialValue: timeString,
       onTap: () async {
         final now = clock.now();
@@ -296,7 +296,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       isExpanded: true,
       isDense: true,
       hint: HeightConstrainedText(
-        'Choose duration',
+        context.l10n.chooseDuration,
         style: context.theme.textTheme.bodySmall,
       ),
       icon: Icon(
@@ -309,7 +309,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
         fillColor: context.theme.colorScheme.surfaceContainerLowest,
         filled: true,
         label: HeightConstrainedText(
-          'Length',
+          context.l10n.length,
           style: context.theme.textTheme.bodySmall!.copyWith(
             color: context.theme.colorScheme.onSurfaceVariant,
           ),
@@ -367,7 +367,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
           minNumber: 2,
           maxNumber: 50,
           currentNumber: maxParticipants.toDouble(),
-          buttonText: 'Update',
+          buttonText: context.l10n.updateButton,
         );
 
         if (selectedNumber != null) {
@@ -386,7 +386,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
       children: [
         ActionButton(
           expand: true,
-          text: 'Save Event',
+          text: context.l10n.saveEvent,
           onPressed: () => alertOnError(
             context,
             () => _presenter.saveChanges(),

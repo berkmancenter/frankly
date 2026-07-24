@@ -56,8 +56,8 @@ class OverviewPresenter {
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
         return l10n.onboardingBrandSpaceSubtitle;
-      case OnboardingStep.createGuide:
-        return l10n.onboardingCreateGuideSubtitle;
+      case OnboardingStep.createTemplate:
+        return l10n.onboardingCreateTemplateSubtitle;
       case OnboardingStep.hostEvent:
         return l10n.onboardingHostEventSubtitle;
       case OnboardingStep.inviteSomeone:
@@ -71,7 +71,7 @@ class OverviewPresenter {
     switch (onboardingStep) {
       case OnboardingStep.brandSpace:
         return null;
-      case OnboardingStep.createGuide:
+      case OnboardingStep.createTemplate:
         return Environment.createTemplateHelpUrl;
       case OnboardingStep.hostEvent:
         return Environment.createEventHelpUrl;

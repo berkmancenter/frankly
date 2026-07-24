@@ -58,3 +58,23 @@ class RecordingSession with _$RecordingSession {
   factory RecordingSession.fromJson(Map<String, dynamic> json) =>
       _$RecordingSessionFromJson(json);
 }
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class TranscriptSegment with _$TranscriptSegment {
+  static const String kSubcollection = 'transcript-segments';
+
+  factory TranscriptSegment({
+    String? segmentId,
+    required String text,
+    required int startMs,
+    required int durationMs,
+    required String speakerUid,
+    required String language,
+    double? confidence,
+    @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+    DateTime? receivedAt,
+  }) = _TranscriptSegment;
+
+  factory TranscriptSegment.fromJson(Map<String, dynamic> json) =>
+      _$TranscriptSegmentFromJson(json);
+}

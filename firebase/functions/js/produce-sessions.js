@@ -1,15 +1,13 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
-const { Storage } = require('@google-cloud/storage')
 
 const firestore = admin.firestore()
-const storage = new Storage()
+const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
 // Triggered when a recording session transitions to 'stopped'.
-// Locates the MP4 Agora deposited under gcsPrefix, registers its path on the
-// session document, then assembles any available transcript segments into a
-// JSON file and registers that path too.
+// Locates the MP4 Agora deposited under gcsPrefix and registers its path on
+// the session document.
 const produceSessions = functions.firestore
     .document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
@@ -54,9 +52,7 @@ const produceSessions = functions.firestore
             console.error(`Error registering MP4 for session ${sessionId}:`, err)
         }
 
-        // --- Export transcript ---
-        // Agora STT writes .vtt files directly to GCS under the session's
-        // gcsPrefix. Register any VTT files found as artifacts.
+        // --- Register VTT transcript files ---
         try {
             const [allFiles] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
             const vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))

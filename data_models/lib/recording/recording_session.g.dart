@@ -78,3 +78,28 @@ const _$RecordingSessionStatusEnumMap = {
   RecordingSessionStatus.stopped: 'stopped',
   RecordingSessionStatus.failed: 'failed',
 };
+
+_$_TranscriptSegment _$$_TranscriptSegmentFromJson(Map<String, dynamic> json) =>
+    _$_TranscriptSegment(
+      segmentId: json['segmentId'] as String?,
+      text: json['text'] as String,
+      startMs: json['startMs'] as int,
+      durationMs: json['durationMs'] as int,
+      speakerUid: json['speakerUid'] as String,
+      language: json['language'] as String,
+      confidence: (json['confidence'] as num?)?.toDouble(),
+      receivedAt: dateTimeFromTimestamp(json['receivedAt']),
+    );
+
+Map<String, dynamic> _$$_TranscriptSegmentToJson(
+        _$_TranscriptSegment instance) =>
+    <String, dynamic>{
+      'segmentId': instance.segmentId,
+      'text': instance.text,
+      'startMs': instance.startMs,
+      'durationMs': instance.durationMs,
+      'speakerUid': instance.speakerUid,
+      'language': instance.language,
+      'confidence': instance.confidence,
+      'receivedAt': serverTimestampOrNull(instance.receivedAt),
+    };

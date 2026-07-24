@@ -1,10 +1,12 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/utils/agenda_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_agenda/data/models/agenda_item_text_data.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
+import 'package:markdown_editor_plus/markdown_editor_plus.dart';
 
 class AgendaItemText extends StatelessWidget {
   final bool isEditMode;
@@ -25,7 +27,7 @@ class AgendaItemText extends StatelessWidget {
         children: [
           CustomTextField(
             initialValue: agendaItemTextData.title,
-            labelText: 'Title',
+            labelText: context.l10n.title,
             maxLength: agendaTitleCharactersLength,
             maxLines: 1,
             counterStyle: context.theme.textTheme.labelMedium,
@@ -37,7 +39,8 @@ class AgendaItemText extends StatelessWidget {
           SizedBox(height: 20),
           CustomTextField(
             initialValue: agendaItemTextData.content,
-            labelText: 'Content',
+            markdownEditor: true,
+            labelText: context.l10n.content,
             hintText:
                 'Keep it short! You don’t want people to spend time reading.',
             maxLines: null,

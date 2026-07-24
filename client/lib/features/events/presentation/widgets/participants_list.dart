@@ -10,6 +10,7 @@ import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/events/event.dart';
 import 'package:provider/src/provider.dart';
+import 'package:client/core/localization/localization_helper.dart';
 
 /// This is a list indicating the number of users registered for an event.
 /// The profile icons are arranged in a stack next to text with a description
@@ -20,6 +21,7 @@ class ParticipantsList extends StatefulWidget {
   final int numberOfIconsToShow;
   final double iconSize;
   final int? participantCount;
+  final int? registrationCount;
 
   const ParticipantsList({
     required this.event,
@@ -27,6 +29,7 @@ class ParticipantsList extends StatefulWidget {
     required this.numberOfIconsToShow,
     this.iconSize = 40,
     this.participantCount,
+    this.registrationCount,
     Key? key,
   }) : super(key: key);
 
@@ -128,8 +131,22 @@ class _ParticipantsListState extends State<ParticipantsList> {
   }
 
   Widget _buildParticipantCount() {
+    final regCount = widget.registrationCount;
+    if (widget.event.useParticipantCountEstimate && regCount != null && regCount > 0) {
+      return HeightConstrainedText(
+        context.l10n.registrationCountLabel(regCount),
+        style: context.theme.textTheme.bodyMedium!
+            .copyWith(color: context.theme.colorScheme.onSurface),
+      );
+    }
+
+    // For non-hosted events without a populated registrationCount, don't show
+    // the misleading "1 Person" fallback from participantCountEstimate.
+    if (widget.event.useParticipantCountEstimate) {
+      return SizedBox.shrink();
+    }
+
     if (_participantCount == 1 &&
-        !widget.event.useParticipantCountEstimate &&
         !isParticipant) {
       return _buildSingleParticipantName();
     } else {
@@ -138,9 +155,6 @@ class _ParticipantsListState extends State<ParticipantsList> {
       if (isParticipant) {
         text =
             'You ${_participantCount > 1 ? '+ ${_participantCount - 1}' : ''}';
-      } else if (widget.event.useParticipantCountEstimate) {
-        text =
-            '$_participantCount ${_participantCount == 1 ? 'Person' : 'People'}';
       } else if (_participantCount > widget.numberOfIconsToShow) {
         text = '+${_participantCount - widget.numberOfIconsToShow}';
       } else if (_participantCount > 1) {

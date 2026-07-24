@@ -37,6 +37,7 @@ mixin _$LiveMeeting {
   bool get record => throw _privateConstructorUsedError;
   bool get isMeetingCardMinimized => throw _privateConstructorUsedError;
   List<String> get pinnedUserIds => throw _privateConstructorUsedError;
+  String? get recordingSessionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,7 +58,8 @@ abstract class $LiveMeetingCopyWith<$Res> {
       BreakoutRoomSession? currentBreakoutSession,
       bool record,
       bool isMeetingCardMinimized,
-      List<String> pinnedUserIds});
+      List<String> pinnedUserIds,
+      String? recordingSessionId});
 
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
 }
@@ -82,6 +84,7 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
     Object? record = null,
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
+    Object? recordingSessionId = freezed,
   }) {
     return _then(_value.copyWith(
       meetingId: freezed == meetingId
@@ -112,6 +115,10 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
           ? _value.pinnedUserIds
           : pinnedUserIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      recordingSessionId: freezed == recordingSessionId
+          ? _value.recordingSessionId
+          : recordingSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -144,7 +151,8 @@ abstract class _$$_LiveMeetingCopyWith<$Res>
       BreakoutRoomSession? currentBreakoutSession,
       bool record,
       bool isMeetingCardMinimized,
-      List<String> pinnedUserIds});
+      List<String> pinnedUserIds,
+      String? recordingSessionId});
 
   @override
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
@@ -168,6 +176,7 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
     Object? record = null,
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
+    Object? recordingSessionId = freezed,
   }) {
     return _then(_$_LiveMeeting(
       meetingId: freezed == meetingId
@@ -198,6 +207,10 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
           ? _value.pinnedUserIds
           : pinnedUserIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      recordingSessionId: freezed == recordingSessionId
+          ? _value.recordingSessionId
+          : recordingSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -212,7 +225,8 @@ class _$_LiveMeeting implements _LiveMeeting {
       this.currentBreakoutSession,
       this.record = false,
       this.isMeetingCardMinimized = false,
-      this.pinnedUserIds = const []});
+      this.pinnedUserIds = const [],
+      this.recordingSessionId});
 
   factory _$_LiveMeeting.fromJson(Map<String, dynamic> json) =>
       _$$_LiveMeetingFromJson(json);
@@ -244,10 +258,12 @@ class _$_LiveMeeting implements _LiveMeeting {
   @override
   @JsonKey()
   final List<String> pinnedUserIds;
+  @override
+  final String? recordingSessionId;
 
   @override
   String toString() {
-    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds)';
+    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId)';
   }
 
   @override
@@ -266,7 +282,9 @@ class _$_LiveMeeting implements _LiveMeeting {
             (identical(other.isMeetingCardMinimized, isMeetingCardMinimized) ||
                 other.isMeetingCardMinimized == isMeetingCardMinimized) &&
             const DeepCollectionEquality()
-                .equals(other.pinnedUserIds, pinnedUserIds));
+                .equals(other.pinnedUserIds, pinnedUserIds) &&
+            (identical(other.recordingSessionId, recordingSessionId) ||
+                other.recordingSessionId == recordingSessionId));
   }
 
   @JsonKey(ignore: true)
@@ -279,7 +297,8 @@ class _$_LiveMeeting implements _LiveMeeting {
       currentBreakoutSession,
       record,
       isMeetingCardMinimized,
-      const DeepCollectionEquality().hash(pinnedUserIds));
+      const DeepCollectionEquality().hash(pinnedUserIds),
+      recordingSessionId);
 
   @JsonKey(ignore: true)
   @override
@@ -303,7 +322,8 @@ abstract class _LiveMeeting implements LiveMeeting {
       final BreakoutRoomSession? currentBreakoutSession,
       final bool record,
       final bool isMeetingCardMinimized,
-      final List<String> pinnedUserIds}) = _$_LiveMeeting;
+      final List<String> pinnedUserIds,
+      final String? recordingSessionId}) = _$_LiveMeeting;
 
   factory _LiveMeeting.fromJson(Map<String, dynamic> json) =
       _$_LiveMeeting.fromJson;
@@ -329,6 +349,8 @@ abstract class _LiveMeeting implements LiveMeeting {
   bool get isMeetingCardMinimized;
   @override
   List<String> get pinnedUserIds;
+  @override
+  String? get recordingSessionId;
   @override
   @JsonKey(ignore: true)
   _$$_LiveMeetingCopyWith<_$_LiveMeeting> get copyWith =>
@@ -908,6 +930,7 @@ mixin _$BreakoutRoom {
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
   DateTime? get createdDate => throw _privateConstructorUsedError;
   bool get record => throw _privateConstructorUsedError;
+  String? get recordingSessionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -934,7 +957,8 @@ abstract class $BreakoutRoomCopyWith<$Res> {
       BreakoutRoomFlagStatus flagStatus,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
-      bool record});
+      bool record,
+      String? recordingSessionId});
 }
 
 /// @nodoc
@@ -959,6 +983,7 @@ class _$BreakoutRoomCopyWithImpl<$Res, $Val extends BreakoutRoom>
     Object? flagStatus = null,
     Object? createdDate = freezed,
     Object? record = null,
+    Object? recordingSessionId = freezed,
   }) {
     return _then(_value.copyWith(
       roomId: null == roomId
@@ -997,6 +1022,10 @@ class _$BreakoutRoomCopyWithImpl<$Res, $Val extends BreakoutRoom>
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
               as bool,
+      recordingSessionId: freezed == recordingSessionId
+          ? _value.recordingSessionId
+          : recordingSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -1022,7 +1051,8 @@ abstract class _$$_BreakoutRoomCopyWith<$Res>
       BreakoutRoomFlagStatus flagStatus,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
-      bool record});
+      bool record,
+      String? recordingSessionId});
 }
 
 /// @nodoc
@@ -1045,6 +1075,7 @@ class __$$_BreakoutRoomCopyWithImpl<$Res>
     Object? flagStatus = null,
     Object? createdDate = freezed,
     Object? record = null,
+    Object? recordingSessionId = freezed,
   }) {
     return _then(_$_BreakoutRoom(
       roomId: null == roomId
@@ -1083,6 +1114,10 @@ class __$$_BreakoutRoomCopyWithImpl<$Res>
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
               as bool,
+      recordingSessionId: freezed == recordingSessionId
+          ? _value.recordingSessionId
+          : recordingSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1103,7 +1138,8 @@ class _$_BreakoutRoom implements _BreakoutRoom {
       this.flagStatus = BreakoutRoomFlagStatus.unflagged,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       this.createdDate,
-      this.record = false});
+      this.record = false,
+      this.recordingSessionId});
 
   factory _$_BreakoutRoom.fromJson(Map<String, dynamic> json) =>
       _$$_BreakoutRoomFromJson(json);
@@ -1136,10 +1172,12 @@ class _$_BreakoutRoom implements _BreakoutRoom {
   @override
   @JsonKey()
   final bool record;
+  @override
+  final String? recordingSessionId;
 
   @override
   String toString() {
-    return 'BreakoutRoom(roomId: $roomId, roomName: $roomName, orderingPriority: $orderingPriority, creatorId: $creatorId, participantIds: $participantIds, originalParticipantIdsAssignment: $originalParticipantIdsAssignment, flagStatus: $flagStatus, createdDate: $createdDate, record: $record)';
+    return 'BreakoutRoom(roomId: $roomId, roomName: $roomName, orderingPriority: $orderingPriority, creatorId: $creatorId, participantIds: $participantIds, originalParticipantIdsAssignment: $originalParticipantIdsAssignment, flagStatus: $flagStatus, createdDate: $createdDate, record: $record, recordingSessionId: $recordingSessionId)';
   }
 
   @override
@@ -1163,7 +1201,9 @@ class _$_BreakoutRoom implements _BreakoutRoom {
                 other.flagStatus == flagStatus) &&
             (identical(other.createdDate, createdDate) ||
                 other.createdDate == createdDate) &&
-            (identical(other.record, record) || other.record == record));
+            (identical(other.record, record) || other.record == record) &&
+            (identical(other.recordingSessionId, recordingSessionId) ||
+                other.recordingSessionId == recordingSessionId));
   }
 
   @JsonKey(ignore: true)
@@ -1178,7 +1218,8 @@ class _$_BreakoutRoom implements _BreakoutRoom {
       const DeepCollectionEquality().hash(originalParticipantIdsAssignment),
       flagStatus,
       createdDate,
-      record);
+      record,
+      recordingSessionId);
 
   @JsonKey(ignore: true)
   @override
@@ -1208,7 +1249,8 @@ abstract class _BreakoutRoom implements BreakoutRoom {
       final BreakoutRoomFlagStatus flagStatus,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       final DateTime? createdDate,
-      final bool record}) = _$_BreakoutRoom;
+      final bool record,
+      final String? recordingSessionId}) = _$_BreakoutRoom;
 
   factory _BreakoutRoom.fromJson(Map<String, dynamic> json) =
       _$_BreakoutRoom.fromJson;
@@ -1238,6 +1280,8 @@ abstract class _BreakoutRoom implements BreakoutRoom {
   DateTime? get createdDate;
   @override
   bool get record;
+  @override
+  String? get recordingSessionId;
   @override
   @JsonKey(ignore: true)
   _$$_BreakoutRoomCopyWith<_$_BreakoutRoom> get copyWith =>

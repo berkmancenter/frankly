@@ -96,6 +96,8 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
             if (localAfterSubmit != null) {
               await localAfterSubmit(newTemplate);
             }
+            
+            if (!mounted) return;
             Navigator.of(context).pop(newTemplate);
           }),
         );
@@ -119,6 +121,8 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
               context, templatePresenter.communityProvider.community, () async {
             final newTemplate = await templatePresenter.createTemplate();
             await tagPresenter.submit();
+            
+            if (!mounted) return;
             Navigator.of(context).pop(newTemplate);
           }),
         );
@@ -231,7 +235,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
     final templatePresenter = context.watch<CreateTemplatePresenter>();
     return [
       CustomTextField(
-        labelText: 'Template name',
+        labelText: context.l10n.templateName,
         maxLines: 1,
         maxLength: titleMaxCharactersLength,
         initialValue: !isNullOrEmpty(templatePresenter.updatedTemplate.title)
@@ -241,7 +245,7 @@ class __CreateCustomTemplatePageState extends State<_CreateCustomTemplatePage> {
       ),
       SizedBox(height: 10),
       CustomTextField(
-        labelText: 'Description',
+        labelText: context.l10n.description,
         keyboardType: TextInputType.multiline,
         minLines: 4,
         maxLines: 4,

@@ -1,4 +1,5 @@
 import 'package:client/core/utils/date_utils.dart';
+import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:data_models/user_input/chat_suggestion_data.dart';
@@ -197,7 +198,7 @@ class _EventInfoState extends State<EventInfo> {
     return shareLink;
   }
 
-  Future<void> _showCreateGuideFromEventDialog(
+  Future<void> _showCreateTemplateFromEventDialog(
     CommunityProvider communityProvider,
   ) async {
     final template = _presenter.getCombinedTemplateFromEvent();
@@ -215,6 +216,40 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
+  Future<void> _showDuplicateTemplateDialog(
+    CommunityProvider communityProvider,
+  ) async {
+    final template = context.read<TemplateProvider>().template;
+    final newId = firestoreDatabase.generateNewDocId(
+      collectionPath: firestoreDatabase
+          .templatesCollection(communityProvider.community.id)
+          .path,
+    );
+
+    // Get existing templates to check for duplicate titles
+    final templates = await firestoreDatabase
+        .communityTemplatesStream(communityProvider.community.id)
+        .first;
+    final existingTitles = templates.map((t) => t.title).toSet();
+    final newTitle = generateUniqueCopyTitle(
+      template.title ?? '',
+      existingTitles,
+    );
+
+    if (!mounted) return;
+
+    await CreateTemplateDialog.show(
+      communityPermissionsProvider:
+          Provider.of<CommunityPermissionsProvider>(context, listen: false),
+      communityProvider: communityProvider,
+      template: template.copyWith(
+        id: newId,
+        title: newTitle,
+      ),
+      templateActionType: TemplateActionType.duplicate,
+    );
+  }
+
   Future<void> _showDuplicateEventDialog() async {
     final template = context.read<TemplateProvider>().template;
     final event = EventProvider.read(context).event;
@@ -226,146 +261,21 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
-  Future<void> _showRefreshGuideDialog() async {
+  Future<void> _showRefreshTemplateDialog() async {
     await ConfirmDialog(
-      title: context.l10n.confirmRefreshGuide,
+      title: context.l10n.confirmRefreshTemplate,
       subText: 'Your event will be reset to the original template. '
           'The list of attendees will not be affected.',
-      confirmText: 'Yes, refresh',
+      confirmText: context.l10n.yesRefresh,
       onConfirm: (context) async {
         await alertOnError(context, () async {
           await _presenter.refreshEvent();
+          if (!context.mounted) return;
           Navigator.pop(context);
         });
       },
       cancelText: context.l10n.cancel,
     ).show();
-  }
-
-  /// Gets breakout room data for the current event's active breakout session.
-  /// Returns null if no breakout session is active or if data cannot be fetched.
-  Future<List<BreakoutRoom>?> _getBreakoutRoomData() async {
-    try {
-      final liveMeeting = await firestoreLiveMeetingService
-          .liveMeetingStream(
-            parentDoc:
-                'communities/${widget.event.communityId}/templates/${widget.event.templateId}/events/${widget.event.id}',
-            id: 'live-meeting',
-          )
-          .stream
-          .first;
-
-      if (liveMeeting.currentBreakoutSession != null) {
-        final breakoutRoomsWrapper =
-            firestoreLiveMeetingService.breakoutRoomsStream(
-          event: widget.event,
-          breakoutRoomSessionId:
-              liveMeeting.currentBreakoutSession!.breakoutRoomSessionId,
-        );
-        final breakoutRooms = await breakoutRoomsWrapper.stream.first;
-        await breakoutRoomsWrapper.dispose();
-        return breakoutRooms;
-      }
-    } catch (e) {
-      // If breakout rooms data is not available, continue without it
-      loggingService.log('Could not fetch breakout rooms data: $e');
-    }
-    return null;
-  }
-
-  Future<void> _downloadRegistrationData() async {
-    final eventProvider = EventProvider.read(context);
-    await alertOnError(context, () async {
-      // Open new stream to ensure we always get data (even in the case of 'livestream' event type)
-      final participantsWrapper = firestoreEventService.eventParticipantsStream(
-        communityId: widget.event.communityId,
-        templateId: widget.event.templateId,
-        eventId: widget.event.id,
-      );
-      final participants = await participantsWrapper.stream
-          .map((s) => s.where((p) => p.status == ParticipantStatus.active))
-          .first;
-      final List<String> userIds = participants.map((p) => p.id).toList();
-      await participantsWrapper.dispose();
-
-      // Get breakout rooms data for room name mapping
-      List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
-
-      final members = await _presenter.getMembersData(userIds);
-      if (members.isNotEmpty) {
-        await eventProvider.generateRegistrationDataCsvFile(
-          registrationData: members,
-          eventId: eventProvider.eventId,
-          breakoutRooms: breakoutRooms,
-        );
-      } else {
-        showRegularToast(
-          context,
-          'No members data',
-          toastType: ToastType.neutral,
-        );
-      }
-    });
-  }
-
-  Future<void> _downloadChatData() async {
-    final eventProvider = EventProvider.read(context);
-    await alertOnError(context, () async {
-      final response = await _presenter.getChatsAndSuggestions();
-      final chatsData = response.chatsSuggestionsList
-              ?.where((e) => e.type == ChatSuggestionType.chat)
-              .toList() ??
-          [];
-
-      if (chatsData.isNotEmpty) {
-        // Get breakout rooms data for room name mapping
-        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
-
-        await eventProvider.generateChatDataCsv(
-          response: response,
-          eventId: eventProvider.eventId,
-          breakoutRooms: breakoutRooms,
-        );
-      } else {
-        showRegularToast(
-          context,
-          'No chat data',
-          toastType: ToastType.neutral,
-        );
-      }
-    });
-  }
-
-  Future<void> _downloadPollsSuggestionsData() async {
-    final eventProvider = EventProvider.read(context);
-    await alertOnError(context, () async {
-      final response = await _presenter.getChatsAndSuggestions();
-      final suggestionData = response.chatsSuggestionsList
-              ?.where((e) => e.type == ChatSuggestionType.suggestion)
-              .toList() ??
-          [];
-
-      final pollResponse = await _presenter.getPollData();
-      final pollData = pollResponse.polls ?? [];
-
-      if (suggestionData.isNotEmpty || pollData.isNotEmpty) {
-        // Get breakout rooms data for room name mapping
-        List<BreakoutRoom>? breakoutRooms = await _getBreakoutRoomData();
-
-        await eventProvider.generatePollsSuggestionsDataCsv(
-          suggestionData: suggestionData,
-          pollData: pollData,
-          eventId: eventProvider.eventId,
-          breakoutRooms: breakoutRooms,
-        );
-      } else {
-        showRegularToast(
-          context,
-          'No polls or suggestions data',
-          toastType: ToastType.neutral,
-        );
-      }
-    });
   }
 
   Widget _buildOptionsIcon() {
@@ -375,11 +285,16 @@ class _EventInfoState extends State<EventInfo> {
       event: _eventProvider.event,
       onSelected: (value) {
         switch (value) {
-          case EventPopUpMenuSelection.refreshGuide:
-            _showRefreshGuideDialog();
+          case EventPopUpMenuSelection.refreshTemplate:
+            _showRefreshTemplateDialog();
             break;
-          case EventPopUpMenuSelection.createGuideFromEvent:
-            _showCreateGuideFromEventDialog(
+          case EventPopUpMenuSelection.duplicateTemplate:
+            _showDuplicateTemplateDialog(
+              Provider.of<CommunityProvider>(context, listen: false),
+            );
+            break;
+          case EventPopUpMenuSelection.createTemplateFromEvent:
+            _showCreateTemplateFromEventDialog(
               Provider.of<CommunityProvider>(context, listen: false),
             );
             break;
@@ -388,15 +303,6 @@ class _EventInfoState extends State<EventInfo> {
             break;
           case EventPopUpMenuSelection.cancelEvent:
             _cancelEvent();
-            break;
-          case EventPopUpMenuSelection.downloadRegistrationData:
-            _downloadRegistrationData();
-            break;
-          case EventPopUpMenuSelection.downloadChatData:
-            _downloadChatData();
-            break;
-          case EventPopUpMenuSelection.downloadPollsSuggestionsData:
-            _downloadPollsSuggestionsData();
             break;
         }
       },
@@ -429,7 +335,7 @@ class _EventInfoState extends State<EventInfo> {
           child: EditEventDrawer(),
         ),
       ),
-      toolTipText: 'Edit event',
+      toolTipText: context.l10n.editEvent,
       icon: Icons.edit_outlined,
     );
   }
@@ -461,7 +367,7 @@ class _EventInfoState extends State<EventInfo> {
   }
 
   ActionButton _buildEnterEvent(DateTime scheduled) {
-    const kEventOpenText = 'Enter Event';
+    final kEventOpenText = context.l10n.enterEvent;
     final now = clockService.now();
     final daysDifference = differenceInDays(scheduled, now);
     final difference = scheduled.difference(now);
@@ -470,12 +376,12 @@ class _EventInfoState extends State<EventInfo> {
     if (daysDifference > 1) {
       text = 'Starts in $daysDifference Days';
     } else if (daysDifference == 1) {
-      text = 'Starts Tomorrow';
+      text = context.l10n.startsTomorrow;
     } else if (daysDifference == 0 &&
         difference.inMinutes > kMinutesBeforeEventToJoin) {
       text = 'Starts in ${durationString(difference)}';
     } else if (daysDifference < 0) {
-      text = 'Event Ended';
+      text = context.l10n.eventEnded;
     } else {
       text = kEventOpenText;
     }
@@ -497,14 +403,14 @@ class _EventInfoState extends State<EventInfo> {
           if (daysDifference >= 0) {
             await showAlert(
               context,
-              'The event has not started yet. We\'ll see you soon!',
+              context.l10n.eventHasNotStartedYet,
             );
           }
           return;
         } else if (!successfullyJoined) {
           showRegularToast(
             context,
-            'Event was not entered.',
+            context.l10n.eventWasNotEntered,
             toastType: ToastType.neutral,
           );
         }
@@ -573,7 +479,7 @@ class _EventInfoState extends State<EventInfo> {
     } else if (_status == _ParticipantStatus.full) {
       return ActionButton(
         height: 64,
-        text: 'FULL',
+        text: context.l10n.eventFull,
         expand: true,
       );
     } else if (showJoinButton) {
@@ -590,7 +496,7 @@ class _EventInfoState extends State<EventInfo> {
               );
             }),
             expand: true,
-            text: 'RSVP',
+            text: context.l10n.rsvp,
           ),
           if (canShowFollowCommunity) ...[
             SizedBox(height: 10),
@@ -699,14 +605,14 @@ class _EventInfoState extends State<EventInfo> {
         if (isPublic) {
           if (_canEditEvent) {
             text =
-                'Public${featuredItems!.any((f) => f.documentPath == docPath) && _canModerateEvent ? ', Featured' : ''}';
+                '${context.l10n.publicVisibility}${featuredItems!.any((f) => f.documentPath == docPath) && _canModerateEvent ? ', Featured' : ''}';
             appAsset = AppAsset.kGlobePng;
           } else {
             text = null;
             appAsset = null;
           }
         } else {
-          text = 'Private';
+          text = context.l10n.privateVisibility;
           appAsset = AppAsset.kLockPng;
         }
 
@@ -719,7 +625,7 @@ class _EventInfoState extends State<EventInfo> {
         return Row(
           children: [
             Tooltip(
-              message: isPublic ? 'Public' : 'Private',
+              message: isPublic ? context.l10n.publicVisibility : context.l10n.privateVisibility,
               child: ProxiedImage(null, asset: appAsset, width: 20, height: 20),
             ),
             SizedBox(width: 6),
@@ -1017,5 +923,47 @@ class _EventInfoState extends State<EventInfo> {
         ),
       ],
     );
+  }
+}
+
+/// Gets breakout room data for the current event's active breakout session.
+/// Returns empty if no breakout session is active or if data cannot be fetched.
+Future<List<BreakoutRoom>> getBreakoutRoomData({required Event event}) async {
+  try {
+    final liveMeetingPath =
+        firestoreLiveMeetingService.getLiveMeetingPath(event);
+
+    // Get all breakout room sessions for this event
+    final sessionsSnapshot = await firestoreDatabase.firestore
+        .collection('$liveMeetingPath/breakout-room-sessions')
+        .get();
+
+    if (sessionsSnapshot.docs.isEmpty) return [];
+
+    // Get breakout rooms from all sessions
+    final List<BreakoutRoom> allRooms = [];
+
+    for (final sessionDoc in sessionsSnapshot.docs) {
+      final breakoutRoomCollection =
+          firestoreLiveMeetingService.getBreakoutRoomsCollection(
+        event: event,
+        breakoutSessionId: sessionDoc.id,
+      );
+
+      final roomsSnapshot = await firestoreDatabase.firestore
+          .collection(breakoutRoomCollection)
+          .get();
+
+      final rooms = roomsSnapshot.docs
+          .map((doc) => BreakoutRoom.fromJson(doc.data()))
+          .toList();
+
+      allRooms.addAll(rooms);
+    }
+
+    return allRooms;
+  } catch (e) {
+    loggingService.log('Failed to fetch breakout rooms: $e');
+    return [];
   }
 }

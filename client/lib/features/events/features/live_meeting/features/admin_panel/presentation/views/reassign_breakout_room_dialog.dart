@@ -90,7 +90,6 @@ class _ReassignBreakoutRoomDialogState
           onPressed: () => Navigator.of(context)
               .pop(ReassignResult(reassignId: _roomAssignment)),
           text: context.l10n.reassign,
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -260,10 +259,6 @@ class _ReassignBreakoutRoomDialogState
     return Dialog(
       backgroundColor: context.theme.colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Color(0xFF5568FF),
-          width: 2,
-        ),
         borderRadius: BorderRadius.circular(6),
       ),
       child: ConstrainedBox(

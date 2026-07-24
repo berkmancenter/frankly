@@ -153,8 +153,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       _connectToRoom();
 
       _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
-        final conferenceRoom = ConferenceRoom.read(context);
-        conferenceRoom?.room?.dispose();
+        conferenceRoom.room?.dispose();
       });
     }
   }
@@ -164,6 +163,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     _onConferenceRoomException =
         conferenceRoom?.onException.listen((err) async {
       loggingService.log('showing alert in listener');
+      if (!mounted) return;
       await showAlert(
         context,
         err is PlatformException ? err.details : err.toString(),
@@ -501,7 +501,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                           width: recordingPulseSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: context.theme.colorScheme.errorContainer,
+                            color: context.theme.colorScheme.error,
                           ),
                         ),
                         SizedBox(width: 8),
@@ -709,7 +709,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             : Icons.videocam_off_outlined,
                         color: isVideoOn
                             ? context.theme.colorScheme.onPrimary
-                            : context.theme.colorScheme.errorContainer,
+                            : context.theme.colorScheme.error,
                         size: kIconSize,
                       ),
                       onTap: () async => await alertOnError(
@@ -734,7 +734,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         size: kIconSize,
                         color: isMicOn
                             ? context.theme.colorScheme.onPrimary
-                            : context.theme.colorScheme.errorContainer,
+                            : context.theme.colorScheme.error,
                       ),
                     ),
                     SizedBox(width: 10),

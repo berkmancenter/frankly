@@ -604,3 +604,298 @@ abstract class _RecordingSession implements RecordingSession {
   _$$_RecordingSessionCopyWith<_$_RecordingSession> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+TranscriptSegment _$TranscriptSegmentFromJson(Map<String, dynamic> json) {
+  return _TranscriptSegment.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TranscriptSegment {
+  String? get segmentId => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  int get startMs => throw _privateConstructorUsedError;
+  int get durationMs => throw _privateConstructorUsedError;
+  String get speakerUid => throw _privateConstructorUsedError;
+  String get language => throw _privateConstructorUsedError;
+  double? get confidence => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  DateTime? get receivedAt => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TranscriptSegmentCopyWith<TranscriptSegment> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TranscriptSegmentCopyWith<$Res> {
+  factory $TranscriptSegmentCopyWith(
+          TranscriptSegment value, $Res Function(TranscriptSegment) then) =
+      _$TranscriptSegmentCopyWithImpl<$Res, TranscriptSegment>;
+  @useResult
+  $Res call(
+      {String? segmentId,
+      String text,
+      int startMs,
+      int durationMs,
+      String speakerUid,
+      String language,
+      double? confidence,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      DateTime? receivedAt});
+}
+
+/// @nodoc
+class _$TranscriptSegmentCopyWithImpl<$Res, $Val extends TranscriptSegment>
+    implements $TranscriptSegmentCopyWith<$Res> {
+  _$TranscriptSegmentCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? segmentId = freezed,
+    Object? text = null,
+    Object? startMs = null,
+    Object? durationMs = null,
+    Object? speakerUid = null,
+    Object? language = null,
+    Object? confidence = freezed,
+    Object? receivedAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      segmentId: freezed == segmentId
+          ? _value.segmentId
+          : segmentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      startMs: null == startMs
+          ? _value.startMs
+          : startMs // ignore: cast_nullable_to_non_nullable
+              as int,
+      durationMs: null == durationMs
+          ? _value.durationMs
+          : durationMs // ignore: cast_nullable_to_non_nullable
+              as int,
+      speakerUid: null == speakerUid
+          ? _value.speakerUid
+          : speakerUid // ignore: cast_nullable_to_non_nullable
+              as String,
+      language: null == language
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String,
+      confidence: freezed == confidence
+          ? _value.confidence
+          : confidence // ignore: cast_nullable_to_non_nullable
+              as double?,
+      receivedAt: freezed == receivedAt
+          ? _value.receivedAt
+          : receivedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_TranscriptSegmentCopyWith<$Res>
+    implements $TranscriptSegmentCopyWith<$Res> {
+  factory _$$_TranscriptSegmentCopyWith(_$_TranscriptSegment value,
+          $Res Function(_$_TranscriptSegment) then) =
+      __$$_TranscriptSegmentCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? segmentId,
+      String text,
+      int startMs,
+      int durationMs,
+      String speakerUid,
+      String language,
+      double? confidence,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      DateTime? receivedAt});
+}
+
+/// @nodoc
+class __$$_TranscriptSegmentCopyWithImpl<$Res>
+    extends _$TranscriptSegmentCopyWithImpl<$Res, _$_TranscriptSegment>
+    implements _$$_TranscriptSegmentCopyWith<$Res> {
+  __$$_TranscriptSegmentCopyWithImpl(
+      _$_TranscriptSegment _value, $Res Function(_$_TranscriptSegment) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? segmentId = freezed,
+    Object? text = null,
+    Object? startMs = null,
+    Object? durationMs = null,
+    Object? speakerUid = null,
+    Object? language = null,
+    Object? confidence = freezed,
+    Object? receivedAt = freezed,
+  }) {
+    return _then(_$_TranscriptSegment(
+      segmentId: freezed == segmentId
+          ? _value.segmentId
+          : segmentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      startMs: null == startMs
+          ? _value.startMs
+          : startMs // ignore: cast_nullable_to_non_nullable
+              as int,
+      durationMs: null == durationMs
+          ? _value.durationMs
+          : durationMs // ignore: cast_nullable_to_non_nullable
+              as int,
+      speakerUid: null == speakerUid
+          ? _value.speakerUid
+          : speakerUid // ignore: cast_nullable_to_non_nullable
+              as String,
+      language: null == language
+          ? _value.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String,
+      confidence: freezed == confidence
+          ? _value.confidence
+          : confidence // ignore: cast_nullable_to_non_nullable
+              as double?,
+      receivedAt: freezed == receivedAt
+          ? _value.receivedAt
+          : receivedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_TranscriptSegment implements _TranscriptSegment {
+  _$_TranscriptSegment(
+      {this.segmentId,
+      required this.text,
+      required this.startMs,
+      required this.durationMs,
+      required this.speakerUid,
+      required this.language,
+      this.confidence,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      this.receivedAt});
+
+  factory _$_TranscriptSegment.fromJson(Map<String, dynamic> json) =>
+      _$$_TranscriptSegmentFromJson(json);
+
+  @override
+  final String? segmentId;
+  @override
+  final String text;
+  @override
+  final int startMs;
+  @override
+  final int durationMs;
+  @override
+  final String speakerUid;
+  @override
+  final String language;
+  @override
+  final double? confidence;
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  final DateTime? receivedAt;
+
+  @override
+  String toString() {
+    return 'TranscriptSegment(segmentId: $segmentId, text: $text, startMs: $startMs, durationMs: $durationMs, speakerUid: $speakerUid, language: $language, confidence: $confidence, receivedAt: $receivedAt)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_TranscriptSegment &&
+            (identical(other.segmentId, segmentId) ||
+                other.segmentId == segmentId) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.startMs, startMs) || other.startMs == startMs) &&
+            (identical(other.durationMs, durationMs) ||
+                other.durationMs == durationMs) &&
+            (identical(other.speakerUid, speakerUid) ||
+                other.speakerUid == speakerUid) &&
+            (identical(other.language, language) ||
+                other.language == language) &&
+            (identical(other.confidence, confidence) ||
+                other.confidence == confidence) &&
+            (identical(other.receivedAt, receivedAt) ||
+                other.receivedAt == receivedAt));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, segmentId, text, startMs,
+      durationMs, speakerUid, language, confidence, receivedAt);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_TranscriptSegmentCopyWith<_$_TranscriptSegment> get copyWith =>
+      __$$_TranscriptSegmentCopyWithImpl<_$_TranscriptSegment>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_TranscriptSegmentToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TranscriptSegment implements TranscriptSegment {
+  factory _TranscriptSegment(
+      {final String? segmentId,
+      required final String text,
+      required final int startMs,
+      required final int durationMs,
+      required final String speakerUid,
+      required final String language,
+      final double? confidence,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+      final DateTime? receivedAt}) = _$_TranscriptSegment;
+
+  factory _TranscriptSegment.fromJson(Map<String, dynamic> json) =
+      _$_TranscriptSegment.fromJson;
+
+  @override
+  String? get segmentId;
+  @override
+  String get text;
+  @override
+  int get startMs;
+  @override
+  int get durationMs;
+  @override
+  String get speakerUid;
+  @override
+  String get language;
+  @override
+  double? get confidence;
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
+  DateTime? get receivedAt;
+  @override
+  @JsonKey(ignore: true)
+  _$$_TranscriptSegmentCopyWith<_$_TranscriptSegment> get copyWith =>
+      throw _privateConstructorUsedError;
+}
