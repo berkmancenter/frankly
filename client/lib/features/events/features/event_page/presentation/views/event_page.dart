@@ -270,6 +270,7 @@ class EventPageState extends State<EventPage> implements EventPageView {
     );
   }
 
+
   Widget _buildGuide() {
     return Column(
       mainAxisSize: MainAxisSize.min,
