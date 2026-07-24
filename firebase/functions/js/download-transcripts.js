@@ -45,21 +45,23 @@ function parseVtt(vttText) {
 
 /// Converts VTT cues to CSV format with speaker name resolution.
 function cuesToCsv(cues, uidMap) {
-    const header = 'Start,End,Speaker,Text'
+    const header = 'Start,End,Speaker,Speaker ID,Text'
     const rows = cues.map((cue) => {
         // VTT may include speaker label as "<v SpeakerUid>text"
         let speaker = ''
+        let speakerId = ''
         let text = cue.text
         const match = text.match(/^<v\s+(\d+)>(.*)$/)
         if (match) {
             const uid = match[1]
             speaker = uidMap[uid] || `Speaker ${uid}`
+            speakerId = uid
             text = match[2]
         }
         // Escape CSV fields
         const escaped = text.replace(/"/g, '""')
         const speakerEscaped = speaker.replace(/"/g, '""')
-        return `${cue.start},${cue.end},"${speakerEscaped}","${escaped}"`
+        return `${cue.start},${cue.end},"${speakerEscaped}","${speakerId}","${escaped}"`
     })
     return [header, ...rows].join('\n')
 }
@@ -147,9 +149,21 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
             for (const sessionDoc of sessionsSnap.docs) {
                 const session = sessionDoc.data()
                 const artifactPaths = session.artifactPaths || {}
-                const uidMap = session.uidToDisplayName || {}
+                const rawUidMap = session.uidToDisplayName || {}
                 const roomId = session.roomId || 'unknown'
                 const roomType = session.roomType || 'main'
+
+                // Resolve Firebase userIds to display names.
+                const uidMap = {}
+                for (const [agoraUid, userId] of Object.entries(rawUidMap)) {
+                    try {
+                        const userDoc = await firestore.doc(`publicUser/${userId}`).get()
+                        const displayName = userDoc.exists ? userDoc.data().displayName : null
+                        uidMap[agoraUid] = displayName || userId
+                    } catch (_) {
+                        uidMap[agoraUid] = userId
+                    }
+                }
 
                 // Collect all VTT artifact paths for this session.
                 const vttPaths = Object.entries(artifactPaths)
