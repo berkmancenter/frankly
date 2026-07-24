@@ -596,25 +596,31 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isMobile) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ReadyButton(
-              currentAgendaItemId: currentAgendaItemId ?? '',
-              userIsReady: userIsReady,
-              isMobile: isMobile,
-            ),
-            SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildReadyCountText(context, true),
-                  _buildInfoTooltip(context),
-                ],
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ReadyButton(
+                  currentAgendaItemId: currentAgendaItemId ?? '',
+                  userIsReady: userIsReady,
+                  isMobile: isMobile,
+                ),
+                SizedBox(height: 12),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildReadyCountText(context, true),
+                    SizedBox(width: 10),
+                    _buildInfoTooltip(context),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -629,6 +635,7 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
             Row(
               children: [
                 _buildReadyCountText(context),
+                SizedBox(width: 5),
                 _buildInfoTooltip(context),
               ],
             ),
@@ -656,7 +663,7 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
       style: AppTextStyle.body.copyWith(
         color: isMobile
             ? context.theme.colorScheme.onPrimary
-            : context.theme.colorScheme.onSurface,
+            : context.theme.colorScheme.secondary,
         fontWeight: FontWeight.bold,
       ),
     );
@@ -761,8 +768,8 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
 
   Widget _buildInfoButton(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.question_mark),
-      iconSize: 17,
+      icon: Icon(Icons.help_outline),
+      iconSize: 20,
       padding: EdgeInsets.zero,
       constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
       onPressed: () {
@@ -771,13 +778,13 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
       color: isMobile
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.onSurfaceVariant,
-      style: IconButton.styleFrom(
-        side: BorderSide(
-          color: isMobile
-              ? context.theme.colorScheme.onPrimary
-              : context.theme.colorScheme.outline,
-        ),
-      ),
+      // style: IconButton.styleFrom(
+      //   side: BorderSide(
+      //     color: isMobile
+      //         ? context.theme.colorScheme.onPrimary
+      //         : context.theme.colorScheme.outline,
+      //   ),
+      // ),
     );
   }
 
@@ -847,7 +854,8 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
                 builder: (context, child) {
                   return CircularProgressIndicator(
                     // controller.value represents the remaining fraction of the countdown (1.0 → 0.0).
-                    value: controller.value,
+                    // We want the progress indicator to show the elapsed fraction, so we use (1.0 - controller.value).
+                    value: 1.0 - controller.value,
                     strokeWidth: 5.0,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       widget.isMobile
@@ -864,18 +872,34 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
             AnimatedBuilder(
               animation: controller,
               builder: (context, child) {
-                return Text(
-                  '${(controller.value * widget.startingPendingAdvanceTime.inSeconds).ceil()}',
-                  style: TextStyle(
-                    fontSize: widget.isMobile
-                        ? context.theme.textTheme.titleMedium?.fontSize
-                        : context.theme.textTheme.titleLarge?.fontSize,
-                    fontWeight: FontWeight.bold,
-                    color: widget.isMobile
-                        ? context.theme.colorScheme.onPrimary
-                        : context.theme.colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.center,
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${(controller.value * widget.startingPendingAdvanceTime.inSeconds).ceil()}',
+                      style: TextStyle(
+                        fontSize: widget.isMobile
+                            ? context.theme.textTheme.titleMedium?.fontSize
+                            : context.theme.textTheme.titleLarge?.fontSize,
+                        fontWeight: FontWeight.bold,
+                        color: widget.isMobile
+                            ? context.theme.colorScheme.onPrimary
+                            : context.theme.colorScheme.primary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    if (!widget.isMobile)
+                      Text(
+                        context.l10n.sec,
+                        style: TextStyle(
+                          fontSize:
+                              context.theme.textTheme.titleSmall?.fontSize,
+                          color: context.theme.colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                  ],
                 );
               },
             ),
@@ -903,7 +927,7 @@ class ReadyButton extends HookWidget {
   Widget build(BuildContext context) {
     final agendaProvider = AgendaProvider.watch(context);
     return ActionButton(
-      minWidth: isMobile ? 350 : null,
+      minWidth: isMobile ? 350 : 150,
       color: isMobile
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.outline,
@@ -918,7 +942,7 @@ class ReadyButton extends HookWidget {
         );
       }),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Checkbox(
             value: userIsReady,
@@ -930,11 +954,13 @@ class ReadyButton extends HookWidget {
             checkColor: isMobile
                 ? context.theme.colorScheme.onPrimary
                 : context.theme.colorScheme.primary,
-            side: BorderSide(
-              width: 2,
-              color: isMobile
-                  ? context.theme.colorScheme.onPrimary
-                  : context.theme.colorScheme.primary,
+            side: WidgetStateBorderSide.resolveWith(
+              (states) => BorderSide(
+                width: 2,
+                color: isMobile
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.primary,
+              ),
             ),
             semanticLabel: context.l10n.imReadyToMoveOn,
           ),

@@ -21,11 +21,11 @@ import '../meeting_guide_card_item_video_presenter.dart';
 
 class MeetingGuideCardItemVideo extends StatefulWidget {
   @override
-  _MeetingGuideCardItemVideoState createState() =>
-      _MeetingGuideCardItemVideoState();
+  MeetingGuideCardItemVideoState createState() =>
+      MeetingGuideCardItemVideoState();
 }
 
-class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
+class MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
     implements MeetingGuideCardItemVideoView {
   late YoutubePlayerController _youtubePlayerController;
   late final MeetingGuideCardItemVideoModel _model;
