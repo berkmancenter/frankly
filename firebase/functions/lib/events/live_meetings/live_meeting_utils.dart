@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'agora_api.dart';
 import 'agora_stt_api.dart';
@@ -219,10 +221,10 @@ class LiveMeetingUtils {
 
     // Fire-and-forget: STT start is an external network call and handles its
     // own errors internally, so no need to block the join path on it.
-    startTranscription(
+    unawaited(startTranscription(
       roomId: meetingId,
       sessionId: newSessionId,
-    );
+    ),);
   }
 
   Future<void> startTranscription({

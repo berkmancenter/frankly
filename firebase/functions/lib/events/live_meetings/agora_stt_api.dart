@@ -51,6 +51,7 @@ class AgoraSttApi {
         _agoraUtils.createToken(uid: sttPubBotUid, roomId: channelName);
 
     final body = convert.json.encode({
+      "name": channelName,
       "languages": [language],
       "maxIdleTime": 300,
       "rtcConfig": {
@@ -83,7 +84,7 @@ class AgoraSttApi {
     if (result.statusCode < 200 || result.statusCode > 299) {
       print('STT start failed (${result.statusCode}): ${result.body}');
       throw HttpsError(
-          HttpsError.internal, 'STT start failed: ${result.body}', null);
+          HttpsError.internal, 'STT start failed: ${result.body}', null,);
     }
 
     final decoded = convert.jsonDecode(result.body);
@@ -104,7 +105,7 @@ class AgoraSttApi {
     if (result.statusCode < 200 || result.statusCode > 299) {
       print('STT query failed (${result.statusCode}): ${result.body}');
       throw HttpsError(
-          HttpsError.internal, 'STT query failed: ${result.body}', null);
+          HttpsError.internal, 'STT query failed: ${result.body}', null,);
     }
 
     final decoded = convert.jsonDecode(result.body);
@@ -124,7 +125,7 @@ class AgoraSttApi {
     if (result.statusCode < 200 || result.statusCode > 299) {
       print('STT stop failed (${result.statusCode}): ${result.body}');
       throw HttpsError(
-          HttpsError.internal, 'STT stop failed: ${result.body}', null);
+          HttpsError.internal, 'STT stop failed: ${result.body}', null,);
     }
 
     print('STT agent stopped: $agentId');

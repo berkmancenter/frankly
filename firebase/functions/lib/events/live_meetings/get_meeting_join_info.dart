@@ -80,10 +80,10 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
         chatPath: pending.chatPath,
         participantIds: pending.participantIds,
       );
-      liveMeetingUtils.startTranscription(
+      unawaited(liveMeetingUtils.startTranscription(
         roomId: pending.roomId,
         sessionId: pending.sessionId,
-      );
+      ),);
     }
 
     return result.response.toJson();
