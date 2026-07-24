@@ -6,8 +6,8 @@ const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
 // Triggered when a recording session transitions to 'stopped'.
-// Locates the MP4 Agora deposited under gcsPrefix and registers its path on
-// the session document.
+// Locates artifacts Agora deposited under gcsPrefix (MP4 recordings, VTT
+// transcripts) and registers their paths on the session document.
 const produceSessions = functions.firestore
     .document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
@@ -26,10 +26,19 @@ const produceSessions = functions.firestore
 
         const bucket = storage.bucket(bucketName)
 
-        // --- Register MP4 ---
+        // List all files under the session prefix once.
+        let allFiles
         try {
             const [files] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
-            const mp4Files = files.filter((f) => f.name.endsWith('.mp4'))
+            allFiles = files
+        } catch (err) {
+            console.error(`Error listing files for session ${sessionId}:`, err)
+            return null
+        }
+
+        // --- Register MP4 ---
+        try {
+            const mp4Files = allFiles.filter((f) => f.name.endsWith('.mp4'))
 
             if (mp4Files.length === 0) {
                 console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
@@ -50,6 +59,29 @@ const produceSessions = functions.firestore
             }
         } catch (err) {
             console.error(`Error registering MP4 for session ${sessionId}:`, err)
+        }
+
+        // --- Register VTT transcript files ---
+        try {
+            const vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
+
+            if (vttFiles.length === 0) {
+                console.log(`No VTT files found under ${gcsPrefix}/ for session ${sessionId}`)
+            } else {
+                console.log(
+                    `Found ${vttFiles.length} VTT file(s) for session ${sessionId}: ${vttFiles
+                        .map((f) => f.name)
+                        .join(', ')}`
+                )
+                const updates = {}
+                vttFiles.forEach((f, i) => {
+                    updates[`artifactPaths.transcript_vtt_${i}`] = f.name
+                })
+                await change.after.ref.update(updates)
+                console.log(`Registered ${vttFiles.length} VTT file(s) for session ${sessionId}`)
+            }
+        } catch (err) {
+            console.error(`Error registering VTT for session ${sessionId}:`, err)
         }
 
         return null

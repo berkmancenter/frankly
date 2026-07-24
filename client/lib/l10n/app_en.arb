@@ -975,6 +975,8 @@
   "titleIsRequired": "Title is required",
   "tooManyRequests": "Too many failed requests. Please try again later.",
   "troubleshoot": "Troubleshoot",
+  "transcriptsCsv": "Transcripts (CSV)",
+  "transcriptsNotAvailable": "No transcripts available yet.",
   "troubleshootingGuide": "Troubleshooting Guide",
   "tryAgain": "Please try again",
   "tryAgainLater": " and try again later",

@@ -1,8 +1,49 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const crypto = require('crypto')
+const https = require('https')
 
 const firestore = admin.firestore()
+
+const agoraAppId = functions.config().agora.app_id
+const agoraRestKey = functions.config().agora.rest_key
+const agoraRestSecret = functions.config().agora.rest_secret
+
+function getAuthHeader() {
+    const credentials = Buffer.from(`${agoraRestKey}:${agoraRestSecret}`).toString('base64')
+    return `Basic ${credentials}`
+}
+
+function stopSttAgent(agentId) {
+    const url = `https://api.agora.io/api/speech-to-text/v1/projects/${agoraAppId}/agents/${agentId}/leave`
+    return new Promise((resolve, reject) => {
+        const req = https.request(
+            url,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: getAuthHeader(),
+                    'Content-Type': 'application/json',
+                },
+            },
+            (res) => {
+                let data = ''
+                res.on('data', (chunk) => {
+                    data += chunk
+                })
+                res.on('end', () => {
+                    if (res.statusCode >= 200 && res.statusCode < 300) {
+                        resolve(data)
+                    } else {
+                        reject(new Error(`STT stop failed (${res.statusCode}): ${data}`))
+                    }
+                })
+            }
+        )
+        req.on('error', reject)
+        req.end('')
+    })
+}
 
 // Agora cloud recording event types
 // https://docs.agora.io/en/cloud-recording/develop/receive-notifications
@@ -79,6 +120,18 @@ const agoraRecordingWebhook = functions.https.onRequest(async (req, res) => {
         }
 
         const sessionDoc = snap.docs[0]
+        const sessionData = sessionDoc.data()
+
+        // Stop the STT agent if one is running for this session.
+        if (sessionData.agoraRttAgentId) {
+            try {
+                await stopSttAgent(sessionData.agoraRttAgentId)
+                console.log(`recorder_leave: stopped STT agent ${sessionData.agoraRttAgentId}`)
+            } catch (sttErr) {
+                console.error(`recorder_leave: failed to stop STT agent: ${sttErr.message}`)
+            }
+        }
+
         await sessionDoc.ref.update({
             status: 'stopped',
             stoppedAt: admin.firestore.FieldValue.serverTimestamp(),

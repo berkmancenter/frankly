@@ -15,6 +15,8 @@ import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/community/membership.dart';
 import 'package:data_models/user/public_user_info.dart';
 
+const bool kDebugMode = bool.fromEnvironment('dart.vm.product') == false;
+
 class GetMeetingChatSuggestionData
     extends OnCallMethod<GetMeetingChatsSuggestionsDataRequest> {
   GetMeetingChatSuggestionData()
@@ -60,12 +62,16 @@ class GetMeetingChatSuggestionData
 
     final liveMeetingPath = '${request.eventPath}/live-meetings/$eventId';
     final breakoutRoomSessions = '$liveMeetingPath/breakout-room-sessions';
-    print(breakoutRoomSessions);
+    if (kDebugMode) {
+      print(breakoutRoomSessions);
+    }
     final sessionDocs = await firestore.collection(breakoutRoomSessions).get();
     final roomDocQueries = await Future.wait(
       sessionDocs.documents.map((session) {
         final collectionPath = '${session.reference.path}/breakout-rooms';
-        print(collectionPath);
+        if (kDebugMode) {
+          print(collectionPath);
+        }
         return firestore.collection(collectionPath).get();
       }),
     );
@@ -163,10 +169,13 @@ class GetMeetingChatSuggestionData
 
       final memberDoc =
           await firestore.document('publicUser/${doc.creatorId}').get();
-      final publicUserInfo = PublicUserInfo.fromJson(
-        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-      );
-      final memberName = publicUserInfo.displayName ?? '';
+      String memberName = '';
+      if (memberDoc.exists) {
+        final publicUserInfo = PublicUserInfo.fromJson(
+          firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+        );
+        memberName = publicUserInfo.displayName ?? '';
+      }
 
       chatSuggestionDataList.add(
         ChatSuggestionData(
@@ -205,7 +214,9 @@ class GetMeetingChatSuggestionData
         )
         .expand((element) => element);
 
-    print(participantDetailsCollections);
+    if (kDebugMode) {
+      print(participantDetailsCollections);
+    }
     final participantAgendaItemDetails = await Future.wait(
       participantDetailsCollections
           .map((collection) => _getParticipantAgendaItemDetails(collection)),
@@ -243,10 +254,13 @@ class GetMeetingChatSuggestionData
 
     final memberDoc =
         await firestore.document('publicUser/${details.userId}').get();
-    final publicUserInfo = PublicUserInfo.fromJson(
-      firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
-    );
-    final memberName = publicUserInfo.displayName ?? '';
+    String memberName = '';
+    if (memberDoc.exists) {
+      final publicUserInfo = PublicUserInfo.fromJson(
+        firestoreUtils.fromFirestoreJson(memberDoc.data.toMap()),
+      );
+      memberName = publicUserInfo.displayName ?? '';
+    }
 
     return details.suggestions
         .map(

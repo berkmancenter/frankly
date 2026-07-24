@@ -8,6 +8,7 @@ import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/membership.dart';
+import 'package:data_models/utils/utils.dart';
 
 class GetBreakoutRoomJoinInfo
     extends OnCallMethod<GetBreakoutRoomJoinInfoRequest> {
@@ -96,6 +97,31 @@ class GetBreakoutRoomJoinInfo
       existingRecordingSessionId: breakoutRoom.recordingSessionId,
       participantIds: breakoutRoom.participantIds,
     );
+
+    // Map this user's Agora numeric UID to their Firebase user ID on the
+    // recording session doc. The download-transcripts function uses this map
+    // to replace raw Agora UIDs with display names in exported transcripts.
+    //
+    // We re-read the breakout room doc here because the local `breakoutRoom`
+    // variable was fetched before `getBreakoutRoomJoinInfo` ran. If this is
+    // the first user to join, `_startBreakoutRecording` will have created a
+    // new recording session and written its ID to this doc in Firestore, but
+    // our local snapshot still has the old (null) value.
+    final updatedBreakoutSnap =
+        await firestore.document(breakoutRoomPath).get();
+    if (updatedBreakoutSnap.exists) {
+      final updatedRoom = BreakoutRoom.fromJson(
+        firestoreUtils.fromFirestoreJson(updatedBreakoutSnap.data.toMap()),
+      );
+      final sessionId = updatedRoom.recordingSessionId;
+      if (sessionId != null) {
+        await liveMeetingUtils.recordUidMapping(
+          sessionId: sessionId,
+          agoraUid: uidToInt(context.authUid!),
+          userId: context.authUid!,
+        );
+      }
+    }
 
     return joinInfo.toJson();
   }

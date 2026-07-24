@@ -164,6 +164,7 @@ void _registerServices() {
 
 void _registerJsFunctions() {
   functions['downloadRecording'] = require('../js/download-recordings.js');
+  functions['downloadTranscripts'] = require('../js/download-transcripts.js');
   functions['getSessionDownloadUrl'] =
       require('../js/get-session-download-url.js');
   functions['produceSessions'] = require('../js/produce-sessions.js');
