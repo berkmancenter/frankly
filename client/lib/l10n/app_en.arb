@@ -768,6 +768,8 @@
   "titleCannotBeEmpty": "Title cannot be empty",
   "titleIsRequired": "Title is required",
   "troubleshoot": "Troubleshoot",
+  "transcriptsCsv": "Transcripts (CSV)",
+  "transcriptsNotAvailable": "No transcripts available yet.",
   "tryAgain": "Please try again",
   "turnOnAudioVideo": "Turn on Audio/Video?",
   "twitterUrl": "Twitter URL",

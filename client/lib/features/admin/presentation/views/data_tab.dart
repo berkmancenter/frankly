@@ -266,7 +266,7 @@ class _DataTabState extends State<DataTab> {
       final body = jsonDecode(response.body) as Map<String, dynamic>;
       final rawList = body['transcripts'];
       if (rawList is! List || rawList.isEmpty) {
-        throw Exception('No transcripts available yet.');
+        throw Exception(context.l10n.transcriptsNotAvailable);
       }
       final urls = rawList
           .whereType<Map<String, dynamic>>()
@@ -357,7 +357,7 @@ class _DataTabState extends State<DataTab> {
                         onChanged: (value) => setDialogState(
                             () => transcriptSelected = value ?? false,
                           ),
-                        title: const Text('Transcripts (CSV)'),
+                        title: Text(context.l10n.transcriptsCsv),
                       ),
                     if (showRegistrant)
                       CheckboxListTile(
