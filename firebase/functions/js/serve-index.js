@@ -45,6 +45,7 @@ function buildCsp(nonce) {
             ` https://*.firebaseio.com wss://*.firebaseio.com` +
             ` https://*.googleapis.com https://*.cloudfunctions.net` +
             ` https://api.agora.io https://*.agora.io wss://*.agora.io` +
+            ` https://*.sd-rtn.com wss://*.sd-rtn.com` +
             ` https://*.twiliocdn.com https://*.twilio.com` +
             ` https://api.mux.com https://stream.mux.com` +
             ` https://res.cloudinary.com https://api.cloudinary.com` +
