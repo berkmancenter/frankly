@@ -247,6 +247,15 @@ class LiveMeetingUtils {
       }),);
     } catch (e) {
       print('Failed to start transcription for room $roomId: $e');
+      // Write the error to Firestore so it's visible without log access.
+      try {
+        await firestore
+            .collection(RecordingSession.kCollection)
+            .document(sessionId)
+            .updateData(UpdateData.fromMap({
+          'rttError': e.toString(),
+        }),);
+      } catch (_) {}
     }
   }
 
