@@ -244,6 +244,47 @@ class _DataTabState extends State<DataTab> {
     });
   }
 
+  Future<void> _downloadTranscripts(Event event) async {
+    final errorMsg = context.l10n.errorOccurred;
+    await alertOnError(context, () async {
+      final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+      if (idToken == null) throw Exception(errorMsg);
+      final response = await http.post(
+        Uri.parse('${Environment.functionsUrlPrefix}/downloadTranscripts'),
+        headers: {
+          'Authorization': 'Bearer $idToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'eventPath': event.fullPath,
+          'format': 'csv',
+        }),
+      );
+      if (response.statusCode != 200) {
+        throw Exception(errorMsg);
+      }
+      final body = jsonDecode(response.body) as Map<String, dynamic>;
+      final rawList = body['transcripts'];
+      if (rawList is! List || rawList.isEmpty) {
+        throw Exception('No transcripts available yet.');
+      }
+      final urls = rawList
+          .whereType<Map<String, dynamic>>()
+          .map((r) => r['url'] as String? ?? '')
+          .where((url) => url.isNotEmpty)
+          .toList();
+      for (int i = 0; i < urls.length; i++) {
+        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
+        html.document.body!.append(anchor);
+        anchor.click();
+        anchor.remove();
+        if (i < urls.length - 1) {
+          await Future.delayed(const Duration(milliseconds: 300));
+        }
+      }
+    });
+  }
+
   String _recordingAnnotation(BuildContext context, int? parts) {
     if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
     if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
@@ -261,6 +302,7 @@ class _DataTabState extends State<DataTab> {
         showRecording && (_recordingParts[event.id] ?? 0) > 0;
     bool recordingAutoChecked = recordingSelected;
     bool registrantListSelected = showRegistrant;
+    bool transcriptSelected = showRecording;
 
     showDialog<void>(
       context: context,
@@ -269,6 +311,9 @@ class _DataTabState extends State<DataTab> {
           void pressedHandler() async {
             if (showRecording && recordingSelected) {
               await _downloadAllRecordings(event);
+            }
+            if (transcriptSelected) {
+              await _downloadTranscripts(event);
             }
             if (showRegistrant && registrantListSelected) {
               await alertOnError(context, () async {
@@ -281,7 +326,8 @@ class _DataTabState extends State<DataTab> {
           final recordingReady = showRecording && (parts ?? 0) > 0;
           final downloadEnabled =
               (showRecording && recordingSelected && recordingReady) ||
-                  (showRegistrant && registrantListSelected);
+                  (showRegistrant && registrantListSelected) ||
+                  transcriptSelected;
 
           return AlertDialog(
             title: Text(context.l10n.selectData),
@@ -304,6 +350,14 @@ class _DataTabState extends State<DataTab> {
                         title: Text(
                           '${context.l10n.recording}${_recordingAnnotation(context, parts)}',
                         ),
+                      ),
+                    if (showRecording)
+                      CheckboxListTile(
+                        value: transcriptSelected,
+                        onChanged: (value) => setDialogState(
+                            () => transcriptSelected = value ?? false,
+                          ),
+                        title: const Text('Transcripts (CSV)'),
                       ),
                     if (showRegistrant)
                       CheckboxListTile(
