@@ -91,7 +91,7 @@ class UpdatePresenceStatus implements CloudFunction {
                   participant
                       .copyWith(
                         isPresent: false,
-                        currentBreakoutRoomId: '',
+                        currentBreakoutRoomId: null,
                       )
                       .toJson()
                     ..[Participant.kFieldLastUpdatedTime] =
