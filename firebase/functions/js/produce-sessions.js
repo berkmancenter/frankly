@@ -26,10 +26,19 @@ const produceSessions = functions.firestore
 
         const bucket = storage.bucket(bucketName)
 
-        // --- Register MP4 ---
+        // List all files under the session prefix once.
+        let allFiles
         try {
             const [files] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
-            const mp4Files = files.filter((f) => f.name.endsWith('.mp4'))
+            allFiles = files
+        } catch (err) {
+            console.error(`Error listing files for session ${sessionId}:`, err)
+            return null
+        }
+
+        // --- Register MP4 ---
+        try {
+            const mp4Files = allFiles.filter((f) => f.name.endsWith('.mp4'))
 
             if (mp4Files.length === 0) {
                 console.warn(`No MP4 found under ${gcsPrefix}/ for session ${sessionId}`)
@@ -54,7 +63,6 @@ const produceSessions = functions.firestore
 
         // --- Register VTT transcript files ---
         try {
-            const [allFiles] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
             const vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
 
             if (vttFiles.length === 0) {

@@ -135,6 +135,7 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
             const sessionsSnap = await firestore
                 .collection('recording-sessions')
                 .where('eventId', '==', event.id)
+                .where('communityId', '==', event.communityId)
                 .where('status', '==', 'stopped')
                 .get()
 
@@ -153,17 +154,22 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
                 const roomId = session.roomId || 'unknown'
                 const roomType = session.roomType || 'main'
 
-                // Resolve Firebase userIds to display names.
+                // Resolve Firebase userIds to display names in parallel.
                 const uidMap = {}
-                for (const [agoraUid, userId] of Object.entries(rawUidMap)) {
-                    try {
-                        const userDoc = await firestore.doc(`publicUser/${userId}`).get()
-                        const displayName = userDoc.exists ? userDoc.data().displayName : null
-                        uidMap[agoraUid] = displayName || userId
-                    } catch (_) {
-                        uidMap[agoraUid] = userId
-                    }
-                }
+                const uidEntries = Object.entries(rawUidMap)
+                const resolved = await Promise.all(
+                    uidEntries.map(async ([, userId]) => {
+                        try {
+                            const userDoc = await firestore.doc(`publicUser/${userId}`).get()
+                            return userDoc.exists ? userDoc.data().displayName : null
+                        } catch (_) {
+                            return null
+                        }
+                    })
+                )
+                uidEntries.forEach(([agoraUid, userId], i) => {
+                    uidMap[agoraUid] = resolved[i] || userId
+                })
 
                 // Collect all VTT artifact paths for this session.
                 const vttPaths = Object.entries(artifactPaths)
@@ -179,10 +185,11 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
 
                         if (exportFormat === 'vtt') {
                             // Return signed URL for raw VTT download
+                            const vttFilename = vttPath.split('/').pop() || `${roomId}.vtt`
                             const [url] = await bucket.file(vttPath).getSignedUrl({
                                 action: 'read',
                                 expires: Date.now() + signedUrlExpiration,
-                                responseDisposition: `attachment; filename="${roomId}.vtt"`,
+                                responseDisposition: `attachment; filename="${vttFilename}"`,
                             })
                             transcripts.push({ roomId, roomType, format: 'vtt', url })
                         } else {
@@ -198,11 +205,14 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
                             }
 
                             // Write converted file to GCS and return signed URL.
+                            // Derive output path from the VTT source path to
+                            // avoid issues if gcsPrefix is missing.
                             const vttBase = (vttPath.split('/').pop() || 'transcript').replace(
                                 /\.vtt$/i,
                                 ''
                             )
-                            const outPath = `${session.gcsPrefix}/${vttBase}.${ext}`
+                            const outDir = vttPath.substring(0, vttPath.lastIndexOf('/'))
+                            const outPath = `${outDir}/${vttBase}.${ext}`
                             await bucket.file(outPath).save(converted, {
                                 contentType: ext === 'csv' ? 'text/csv' : 'text/plain',
                             })
