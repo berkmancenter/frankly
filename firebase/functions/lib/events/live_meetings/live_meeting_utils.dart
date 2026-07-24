@@ -219,13 +219,13 @@ class LiveMeetingUtils {
 
     // Fire-and-forget: STT start is an external network call and handles its
     // own errors internally, so no need to block the join path on it.
-    _startTranscription(
+    startTranscription(
       roomId: meetingId,
       sessionId: newSessionId,
     );
   }
 
-  Future<void> _startTranscription({
+  Future<void> startTranscription({
     required String roomId,
     required String sessionId,
   }) async {
