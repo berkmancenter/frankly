@@ -1,8 +1,13 @@
 {
   "files": {
-    "firebase/functions/js/agora-recording-webhook.js": ["agoraRecordingWebhook"],
+    "firebase/functions/js/agora-recording-webhook.js": [
+      "agoraRecordingWebhook"
+    ],
     "firebase/functions/js/download-recordings.js": ["downloadRecording"],
-    "firebase/functions/js/get-session-download-url.js": ["getSessionDownloadUrl"],
+    "firebase/functions/js/download-transcripts.js": ["downloadTranscripts"],
+    "firebase/functions/js/get-session-download-url.js": [
+      "getSessionDownloadUrl"
+    ],
     "firebase/functions/js/image-proxy.js": ["imageProxy"],
     "firebase/functions/js/produce-sessions.js": ["produceSessions"],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],

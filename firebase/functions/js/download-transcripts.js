@@ -66,17 +66,19 @@ function cuesToCsv(cues, uidMap) {
 
 /// Converts VTT cues to plain text format.
 function cuesToPlainText(cues, uidMap) {
-    return cues.map((cue) => {
-        let speaker = ''
-        let text = cue.text
-        const match = text.match(/^<v\s+(\d+)>(.*)$/)
-        if (match) {
-            const uid = match[1]
-            speaker = uidMap[uid] || `Speaker ${uid}`
-            text = match[2]
-        }
-        return speaker ? `[${cue.start}] ${speaker}: ${text}` : `[${cue.start}] ${text}`
-    }).join('\n')
+    return cues
+        .map((cue) => {
+            let speaker = ''
+            let text = cue.text
+            const match = text.match(/^<v\s+(\d+)>(.*)$/)
+            if (match) {
+                const uid = match[1]
+                speaker = uidMap[uid] || `Speaker ${uid}`
+                text = match[2]
+            }
+            return speaker ? `[${cue.start}] ${speaker}: ${text}` : `[${cue.start}] ${text}`
+        })
+        .join('\n')
 }
 
 const downloadTranscripts = functions.https.onRequest((req, res) => {
@@ -182,14 +184,18 @@ const downloadTranscripts = functions.https.onRequest((req, res) => {
                             }
 
                             // Write converted file to GCS and return signed URL.
-                            const outPath = `${session.gcsPrefix}/transcript.${ext}`
+                            const vttBase = (vttPath.split('/').pop() || 'transcript').replace(
+                                /\.vtt$/i,
+                                ''
+                            )
+                            const outPath = `${session.gcsPrefix}/${vttBase}.${ext}`
                             await bucket.file(outPath).save(converted, {
                                 contentType: ext === 'csv' ? 'text/csv' : 'text/plain',
                             })
                             const [url] = await bucket.file(outPath).getSignedUrl({
                                 action: 'read',
                                 expires: Date.now() + signedUrlExpiration,
-                                responseDisposition: `attachment; filename="${roomId}.${ext}"`,
+                                responseDisposition: `attachment; filename="${roomId}-${vttBase}.${ext}"`,
                             })
                             transcripts.push({ roomId, roomType, format: exportFormat, url })
                         }

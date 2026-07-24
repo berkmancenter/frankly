@@ -98,7 +98,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           .where((url) => url.isNotEmpty)
           .toList();
       for (int i = 0; i < urls.length; i++) {
-        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
+        final anchor = html.AnchorElement(href: urls[i])
+          ..target = '_blank'
+          ..rel = 'noopener noreferrer';
         html.document.body!.append(anchor);
         anchor.click();
         anchor.remove();
@@ -295,7 +297,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
         .where((url) => url.isNotEmpty)
         .toList();
     for (int i = 0; i < urls.length; i++) {
-      final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
+      final anchor = html.AnchorElement(href: urls[i])
+        ..target = '_blank'
+        ..rel = 'noopener noreferrer';
       html.document.body!.append(anchor);
       anchor.click();
       anchor.remove();

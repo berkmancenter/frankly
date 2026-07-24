@@ -6,8 +6,8 @@ const storage = admin.storage()
 const bucketName = functions.config().agora.storage_bucket_name
 
 // Triggered when a recording session transitions to 'stopped'.
-// Locates the MP4 Agora deposited under gcsPrefix and registers its path on
-// the session document.
+// Locates artifacts Agora deposited under gcsPrefix (MP4 recordings, VTT
+// transcripts) and registers their paths on the session document.
 const produceSessions = functions.firestore
     .document('recording-sessions/{sessionId}')
     .onUpdate(async (change, context) => {
