@@ -238,6 +238,12 @@ class LiveMeetingUtils {
     required List<String> gcsPrefix,
   }) async {
     const language = 'en-US';
+    // Write a breadcrumb so we can confirm the call was reached even if it
+    // hangs or the function times out before completing.
+    await firestore
+        .collection(RecordingSession.kCollection)
+        .document(sessionId)
+        .updateData(UpdateData.fromMap({'rttStatus': 'starting'}));
     try {
       final agentId = await sttApi.startTranscription(
         channelName: roomId,
