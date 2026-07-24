@@ -34,8 +34,13 @@ class PendingRecording {
 class MeetingJoinResult {
   final GetMeetingJoinInfoResponse response;
   final PendingRecording? pendingRecording;
+  final String? recordingSessionId;
 
-  MeetingJoinResult({required this.response, this.pendingRecording});
+  MeetingJoinResult({
+    required this.response,
+    this.pendingRecording,
+    this.recordingSessionId,
+  });
 }
 
 class LiveMeetingUtils {
@@ -129,6 +134,7 @@ class LiveMeetingUtils {
         meetingId: meetingId,
       ),
       pendingRecording: pendingRecording,
+      recordingSessionId: liveMeeting.recordingSessionId,
     );
   }
 

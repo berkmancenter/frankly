@@ -69,6 +69,15 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       );
     });
 
+    // Record the Agora UID to user ID mapping for transcript speaker labels.
+    if (result.recordingSessionId != null) {
+      await liveMeetingUtils.recordUidMapping(
+        sessionId: result.recordingSessionId!,
+        agoraUid: uidToInt(context.authUid!),
+        userId: context.authUid!,
+      );
+    }
+
     final pending = result.pendingRecording;
     if (pending != null) {
       await liveMeetingUtils.agoraUtils.recordRoom(
