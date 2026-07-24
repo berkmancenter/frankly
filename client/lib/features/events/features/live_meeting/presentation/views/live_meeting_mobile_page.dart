@@ -153,8 +153,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
       _connectToRoom();
 
       _onUnloadSubscription = html.window.onBeforeUnload.listen((event) {
-        final conferenceRoom = ConferenceRoom.read(context);
-        conferenceRoom?.room?.dispose();
+        conferenceRoom.room?.dispose();
       });
     }
   }
@@ -164,6 +163,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
     _onConferenceRoomException =
         conferenceRoom?.onException.listen((err) async {
       loggingService.log('showing alert in listener');
+      if (!mounted) return;
       await showAlert(
         context,
         err is PlatformException ? err.details : err.toString(),
