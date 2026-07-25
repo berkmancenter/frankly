@@ -75,7 +75,30 @@ const produceSessions = functions.firestore
 
         // --- Register VTT transcript files ---
         try {
-            const vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
+            let vttFiles = allFiles.filter((f) => f.name.endsWith('.vtt'))
+
+            // If STT was enabled but VTTs aren't found yet, the agent may still
+            // be flushing files to storage. Retry after a delay.
+            const hasSTT = after.agoraRttAgentId != null
+            if (vttFiles.length === 0 && hasSTT) {
+                console.log(
+                    `No VTT files yet for STT-enabled session ${sessionId}, waiting 15s for agent flush...`
+                )
+                await new Promise((resolve) => setTimeout(resolve, 15000))
+
+                // Re-scan both paths
+                const [retryFiles] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
+                let retryAll = retryFiles
+                const sanitizedRetry = gcsPrefix
+                    .split('/')
+                    .map((s) => s.replace(/[^a-zA-Z0-9]/g, ''))
+                    .join('/')
+                if (sanitizedRetry !== gcsPrefix) {
+                    const [extraRetry] = await bucket.getFiles({ prefix: `${sanitizedRetry}/` })
+                    retryAll = [...retryAll, ...extraRetry]
+                }
+                vttFiles = retryAll.filter((f) => f.name.endsWith('.vtt'))
+            }
 
             if (vttFiles.length === 0) {
                 console.log(`No VTT files found under ${gcsPrefix}/ for session ${sessionId}`)
