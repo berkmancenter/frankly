@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:frankly_matching/matching.dart' as matching;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
+import '../agora_stt_api.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -715,6 +716,30 @@ class AssignToBreakouts {
         } catch (e) {
           print(
               'Error starting recording for breakout room ${room.roomId}: $e',);
+        }
+        // Start STT for this breakout room.
+        try {
+          final sttApi = AgoraSttApi();
+          final agentId = await sttApi.startTranscription(
+            channelName: room.roomId,
+            language: 'en-US',
+            fileNamePrefix: [event.id, breakoutSessionId, room.roomId, newSessionId],
+          );
+          await firestore
+              .collection(RecordingSession.kCollection)
+              .document(newSessionId)
+              .updateData(UpdateData.fromMap({
+            'agoraRttAgentId': agentId,
+            'rttLanguage': 'en-US',
+          }),);
+        } catch (e) {
+          print('Error starting STT for breakout room ${room.roomId}: $e');
+          try {
+            await firestore
+                .collection(RecordingSession.kCollection)
+                .document(newSessionId)
+                .updateData(UpdateData.fromMap({'rttError': e.toString()}));
+          } catch (_) {}
         }
       }
     }
