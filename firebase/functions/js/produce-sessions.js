@@ -31,6 +31,18 @@ const produceSessions = functions.firestore
         try {
             const [files] = await bucket.getFiles({ prefix: `${gcsPrefix}/` })
             allFiles = files
+
+            // STT strips non-alphanumeric chars from fileNamePrefix segments
+            // (Agora rejects them in STT but not Cloud Recording). Check the
+            // sanitized prefix too so VTT files are discovered.
+            const sanitizedPrefix = gcsPrefix
+                .split('/')
+                .map((s) => s.replace(/[^a-zA-Z0-9]/g, ''))
+                .join('/')
+            if (sanitizedPrefix !== gcsPrefix) {
+                const [extraFiles] = await bucket.getFiles({ prefix: `${sanitizedPrefix}/` })
+                allFiles = [...allFiles, ...extraFiles]
+            }
         } catch (err) {
             console.error(`Error listing files for session ${sessionId}:`, err)
             return null

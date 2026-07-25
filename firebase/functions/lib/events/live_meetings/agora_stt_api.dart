@@ -69,7 +69,11 @@ class AgoraSttApi {
           "bucket": _agoraStorageBucketName,
           "accessKey": _agoraStorageAccessKey,
           "secretKey": _agoraStorageSecretKey,
-          "fileNamePrefix": fileNamePrefix,
+          // Agora STT rejects non-alphanumeric chars in fileNamePrefix
+          // (unlike Cloud Recording which allows hyphens).
+          "fileNamePrefix": fileNamePrefix
+              .map((s) => s.replaceAll(RegExp(r'[^a-zA-Z0-9]'), ''))
+              .toList(),
         },
       },
     });
@@ -83,9 +87,9 @@ class AgoraSttApi {
     );
 
     if (result.statusCode < 200 || result.statusCode > 299) {
-      print('STT start failed (${result.statusCode}): ${result.body}');
-      throw HttpsError(
-          HttpsError.internal, 'STT start failed: ${result.body}', null,);
+      final msg = 'STT start failed (${result.statusCode}): ${result.body}';
+      print(msg);
+      throw Exception(msg);
     }
 
     final decoded = convert.jsonDecode(result.body);
