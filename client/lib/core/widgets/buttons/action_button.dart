@@ -47,6 +47,7 @@ class ActionButton extends StatefulWidget {
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final bool expand;
+  final bool hideLoadingIndicator;
   final FutureOr<dynamic> Function()? onPressed;
   final String? eventName;
   final Map<String, dynamic>? eventParameters;
@@ -83,6 +84,7 @@ class ActionButton extends StatefulWidget {
     this.padding,
     this.margin,
     this.expand = false,
+    this.hideLoadingIndicator = false,
     this.onPressed,
     this.eventName,
     this.eventParameters,
@@ -154,10 +156,10 @@ class _ActionButtonState extends State<ActionButton> {
 
   Widget _buildLoading() {
     // If color is either black, or button is filled, ensure that indicator is on primary color
-    Color loadingColor =
-        (widget.type == ActionButtonType.filled || widget.color == context.theme.colorScheme.primary)
-            ? context.theme.colorScheme.onPrimary
-            : context.theme.colorScheme.primary;
+    Color loadingColor = (widget.type == ActionButtonType.filled ||
+            widget.color == context.theme.colorScheme.primary)
+        ? context.theme.colorScheme.onPrimary
+        : context.theme.colorScheme.primary;
     return SizedBox(
       height: widget.loadingHeight ?? 24,
       width: widget.loadingHeight ?? 24,
@@ -186,8 +188,8 @@ class _ActionButtonState extends State<ActionButton> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: mainAxisAlignment,
         children: [
-          // Show loading indicator only if waiting for action
-          if (_waiting)
+          // Show loading indicator only if waiting for action and not hidden
+          if (_waiting && !widget.hideLoadingIndicator)
             Padding(
               padding: prefixPadding,
               child: _buildLoading(),
