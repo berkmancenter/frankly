@@ -627,6 +627,7 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
       );
     }
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Column(
           mainAxisSize: MainAxisSize.min,
