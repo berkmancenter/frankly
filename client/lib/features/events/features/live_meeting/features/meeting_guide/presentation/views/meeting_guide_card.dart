@@ -532,6 +532,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                 if (meetingFinished) {
                   return SizedBox.shrink();
                 }
+                // If the card is pending,
+                if (isCardPending) {}
                 return ReadyToMoveOnBuilder(
                   isMobile: responsiveLayoutService.isMobile(context),
                   readyToMoveOnCount: readyToMoveOnCount,
@@ -779,13 +781,6 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
       color: isMobile
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.onSurfaceVariant,
-      // style: IconButton.styleFrom(
-      //   side: BorderSide(
-      //     color: isMobile
-      //         ? context.theme.colorScheme.onPrimary
-      //         : context.theme.colorScheme.outline,
-      //   ),
-      // ),
     );
   }
 
@@ -936,12 +931,16 @@ class ReadyButton extends HookWidget {
       textColor: isMobile
           ? context.theme.colorScheme.onPrimary
           : context.theme.colorScheme.primary,
-      onPressed: () => alertOnError(context, () async {
-        await agendaProvider.toggleMoveForward(
-          currentAgendaItemId: currentAgendaItemId,
-          ready: !userIsReady,
-        );
-      }),
+      // Disallow undo
+      onPressed: userIsReady
+          ? null
+          : () => alertOnError(context, () async {
+                await agendaProvider.toggleMoveForward(
+                  currentAgendaItemId: currentAgendaItemId,
+                  ready: !userIsReady,
+                );
+              }),
+      hideLoadingIndicator: true,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
