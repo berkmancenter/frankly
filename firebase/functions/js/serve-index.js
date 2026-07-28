@@ -44,7 +44,7 @@ function buildCsp(nonce) {
         `connect-src 'self'` +
             ` https://*.firebaseio.com wss://*.firebaseio.com` +
             ` https://*.googleapis.com https://*.cloudfunctions.net` +
-            ` https://api.agora.io https://*.agora.io` +
+            ` https://api.agora.io https://*.agora.io wss://*.agora.io` +
             ` https://*.twiliocdn.com https://*.twilio.com` +
             ` https://api.mux.com https://stream.mux.com` +
             ` https://res.cloudinary.com https://api.cloudinary.com` +
@@ -52,7 +52,8 @@ function buildCsp(nonce) {
             ` https://api.linkpreview.net https://*.stripe.com` +
             ` https://frankly.org https://fonts.gstatic.com https://www.gstatic.com`,
         `img-src 'self' data: blob:` +
-            ` https://res.cloudinary.com https://*.googleusercontent.com`,
+            ` https://res.cloudinary.com https://*.googleusercontent.com` +
+            ` https://picsum.photos https://fastly.picsum.photos`,
         `media-src 'self' blob: https://res.cloudinary.com https://*.mux.com`,
         `frame-src 'self'` +
             ` https://player.vimeo.com https://*.stripe.com https://*.firebaseapp.com`,
