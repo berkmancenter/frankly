@@ -114,12 +114,13 @@ class MembershipRequestDataSource extends DataTableSource {
     required bool approve,
     MembershipStatus? role,
   }) onResolve;
-  final Map<String, MembershipStatus> _selectedMemberships = {};
+  final Map<String, MembershipStatus> selectedMemberships;
 
   MembershipRequestDataSource(
     List<MembershipRequest>? requestList,
     this.context,
     this.onResolve,
+    this.selectedMemberships,
   ) : _requestList = requestList ?? [];
 
   final List<MembershipRequest> _requestList;
@@ -141,10 +142,12 @@ class MembershipRequestDataSource extends DataTableSource {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: userInfo?.imageUrl != null && userInfo!.imageUrl!.isNotEmpty == true
+                  backgroundImage: userInfo?.imageUrl != null &&
+                          userInfo!.imageUrl!.isNotEmpty == true
                       ? NetworkImage(userInfo.imageUrl!)
                       : null,
-                  child: userInfo?.imageUrl != null && userInfo?.imageUrl!.isNotEmpty == true
+                  child: userInfo?.imageUrl != null &&
+                          userInfo?.imageUrl!.isNotEmpty == true
                       ? null
                       : const Icon(Icons.person_outline),
                 ),
@@ -165,7 +168,7 @@ class MembershipRequestDataSource extends DataTableSource {
             ),
             // We don't want to update the membership here, we just want to select the role for approval
             onRoleChanged: (newStatus) {
-              _selectedMemberships[requestKey] = newStatus;
+              selectedMemberships[requestKey] = newStatus;
             },
           ),
         ),
@@ -186,7 +189,7 @@ class MembershipRequestDataSource extends DataTableSource {
                     () => onResolve(
                       request: request,
                       approve: true,
-                      role: _selectedMemberships[requestKey],
+                      role: selectedMemberships[requestKey],
                     ),
                   ),
                   icon: Icon(
@@ -532,6 +535,7 @@ class MembersTabState extends State<MembersTab>
   }
 
   Widget _buildRequestList(List<MembershipRequest> requestList) {
+    final selectedMemberships = <String, MembershipStatus>{};
     return PaginatedDataTable(
       headingRowColor:
           WidgetStateProperty.all(context.theme.colorScheme.surfaceContainer),
@@ -553,15 +557,25 @@ class MembersTabState extends State<MembersTab>
               for (final request in requestList) {
                 await alertOnError(
                   context,
-                  () => _resolveRequest(request: request, approve: true),
+                  () => _resolveRequest(
+                    request: request,
+                    approve: true,
+                    role: selectedMemberships[
+                            '${request.userId}_${request.communityId}'] ??
+                        MembershipStatus.member,
+                  ),
                 );
               }
             },
           ),
         ),
       ],
-      source:
-          MembershipRequestDataSource(requestList, context, _resolveRequest),
+      source: MembershipRequestDataSource(
+        requestList,
+        context,
+        _resolveRequest,
+        selectedMemberships,
+      ),
     );
   }
 
@@ -629,7 +643,7 @@ class MembersTabState extends State<MembersTab>
         // If there are requests, load user info for all requests in batches
         if (_lastRequestsCached != requestList) {
           _lastRequestsCached = requestList;
-           // Reset the future to allow reloading
+          // Reset the future to allow reloading
           _loadRequestsFuture = null;
         }
         _loadRequestsFuture ??= _loadAllRequestUserInfo(requestList);
@@ -697,7 +711,9 @@ class MembersTabState extends State<MembersTab>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                      Text('${context.l10n.requests} (${requestList?.length ?? 0})'),
+                        Text(
+                          '${context.l10n.requests} (${requestList?.length ?? 0})',
+                        ),
                         SizedBox(width: 4),
                         if (requestList != null && requestList.isNotEmpty)
                           Badge(
@@ -804,6 +820,9 @@ class MembershipDropdownState extends State<MembershipDropdown> {
   bool get _isCurrentOwner =>
       widget.membership.status == MembershipStatus.owner;
 
+  bool isMobile(BuildContext context) =>
+      responsiveLayoutService.isMobile(context);
+
   Future<bool> confirmOwnerDialog(String communityName) async {
     return await showDialog(
       context: context,
@@ -897,10 +916,14 @@ class MembershipDropdownState extends State<MembershipDropdown> {
     }
 
     return Container(
-      width: double.infinity,
       height: 100,
-      constraints: BoxConstraints(maxWidth: 280, maxHeight: 400),
+      constraints: BoxConstraints(
+        minWidth: isMobile(context) ? 150 : 280,
+        maxWidth: isMobile(context) ? double.infinity : 300,
+        maxHeight: 400,
+      ),
       child: DropdownButton<MembershipStatus>(
+        isExpanded: isMobile(context),
         // Use the selected status if it's set
         value: _selectedStatus ?? widget.membership.status,
         onChanged: disableDropdown ? null : _handleRoleChanged,
