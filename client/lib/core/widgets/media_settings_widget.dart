@@ -37,6 +37,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   bool isLoading = true;
   bool isLoadingCameraChange = false;
+  bool _disposed = false;
 
   @override
   void initState() {
@@ -84,6 +85,15 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     if (!widget.shouldShowVideoPreview) return;
     try {
       await _mediaService.getUserMedia();
+      // The widget may have been disposed while getUserMedia() was in
+      // flight (e.g. the dialog was closed while switching devices). In
+      // that case the stream we just got is already orphaned - dispose()
+      // already ran and won't stop it, so stop it here instead of handing
+      // it to a video element that no longer exists.
+      if (_disposed) {
+        _mediaService.stopPreviewMediaStream();
+        return;
+      }
       _videoElement.srcObject = _mediaService.previewMediaStream;
     } catch (e) {
       _videoElement.srcObject = null;
@@ -92,16 +102,19 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   @override
   void dispose() async {
+    _disposed = true;
     super.dispose();
     if (!widget.shouldShowVideoPreview) return;
     _mediaService.stopPreviewMediaStream();
-    // If user doesn't save, we need to reset the video preview device.
-    // getUserMedia is called in updatePreview.
+    // If user doesn't save, reset the selected video device back to its
+    // initial value. Don't call getUserMedia here (e.g. via
+    // updatePreviewWidget) - that would open a new camera stream that never
+    // gets stopped, leaving the camera active after this widget is gone.
     await _mediaService.selectVideoDevice(
       deviceId: initialVideoDeviceId ?? '',
       shouldUpdatePreview: false,
     );
-    await updatePreviewWidget();
+
     _videoElement.srcObject = null;
     _videoElement.remove();
   }
@@ -350,11 +363,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           );
 
                           if (widget.isMirrorCheck) {
-                              AVDeviceChangedEvent(
-                                changes: [AVDeviceChange.updateVideoDevice],
-                              );
+                            AVDeviceChangedEvent(
+                              changes: [AVDeviceChange.updateVideoDevice],
+                            );
                           }
-                          
+
                           appEventBus.emit(
                             AVDeviceChangedEvent(
                               changes: [AVDeviceChange.enableVideo],
@@ -383,6 +396,11 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                             deviceId: _mediaService.selectedAudioInputId!,
                             shouldUpdatePreview: widget.shouldShowVideoPreview,
                           );
+                          // For mirror-check flow, the dialog was already popped above before this runs, so any
+                          // stream just opened for the preview has nowhere to go - stop it so it doesn't leak/retain the camera stream
+                          if (_disposed) {
+                            _mediaService.stopPreviewMediaStream();
+                          }
                           appEventBus.emit(
                             AVDeviceChangedEvent(
                               changes: [AVDeviceChange.disableAudio],
@@ -447,7 +465,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           await updatePreviewWidget();
                         }
                       }
-                      
+
                       if (!mounted) return;
                       setState(() {
                         isLoadingCameraChange = false;

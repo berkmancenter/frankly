@@ -57,7 +57,7 @@ class AgoraRoom with ChangeNotifier {
   final Map<int, bool> _videoMutedState = {};
 
   final MediaDeviceService mediaDeviceService = MediaDeviceService();
-  
+
   final _dominantSpeakerStream = BehaviorSubject<AgoraParticipant?>();
   BehaviorSubject<AgoraParticipant?> get dominantSpeakerStream =>
       _dominantSpeakerStream;
@@ -417,7 +417,6 @@ class AgoraParticipant with ChangeNotifier {
   bool audioIsStreaming = false;
   bool videoIsStreaming = false;
 
-
   // This local preview is used for displaying user's video to self.
   bool videoLocalPreviewStarted = false;
 
@@ -444,7 +443,7 @@ class AgoraParticipant with ChangeNotifier {
       if (deviceId == null) {
         throw Exception('No video devices found.');
       }
-      await _rtcEngine.getVideoDeviceManager().setDevice(deviceId); 
+      await _rtcEngine.getVideoDeviceManager().setDevice(deviceId);
     } catch (e) {
       print('Error setting device ID $deviceId. $e');
     }
@@ -491,6 +490,14 @@ class AgoraParticipant with ChangeNotifier {
           publishCameraTrack: false,
         ),
       );
+      // enableLocalVideo(false)/publishCameraTrack:false only stop
+      // publishing to the channel - startPreview() above keeps its own
+      // camera capture alive independently, so it must be stopped
+      // explicitly or the camera stays active until the whole room disposes.
+      if (videoLocalPreviewStarted) {
+        videoLocalPreviewStarted = false;
+        await _rtcEngine.stopPreview();
+      }
     }
 
     videoTrackEnabled = setEnabled;

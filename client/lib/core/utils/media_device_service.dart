@@ -22,7 +22,7 @@ class MediaDeviceService {
 
   String? selectedAudioInputId;
   String? selectedVideoInputId;
-  
+
   Future<PermissionStatus> requestPermissions(Permission permission) async {
     try {
       // The ".status" call does not work on all platforms - catch the exception.
@@ -113,6 +113,10 @@ class MediaDeviceService {
 
   /// HTML method for getting a MediaStream based on selected devices and permissions.
   Future<void> getUserMedia() async {
+    // Stop any existing preview stream first - otherwise its tracks
+    // are orphaned once we overwrite _previewMediaStream below.
+    stopPreviewMediaStream();
+
     Map<String, dynamic>? audioConstraint;
 
     if (!micPermissionStatus.isGranted) {
