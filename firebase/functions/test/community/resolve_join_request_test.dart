@@ -181,17 +181,18 @@ void main() {
         );
       },
       throwsA(
-        predicate(
-          (e) =>
-              e is HttpsError &&
-              e.code == HttpsError.failedPrecondition &&
-              e.message == 'unauthorized',
-        ),
+        isA<HttpsError>()
+            .having((e) => e.code, 'code', HttpsError.failedPrecondition)
+            .having(
+              (e) => e.message,
+              'message',
+              'Unauthorized to resolve join request.',
+            ),
       ),
     );
   });
 
-  test('Should throw error when non-admin tries to resolve request', () async {
+  test('Should throw error when non-mod tries to resolve request', () async {
     // Add join request
     await communityTestUtils.addJoinRequest(
       request: MembershipRequest(
@@ -216,12 +217,59 @@ void main() {
         );
       },
       throwsA(
-        predicate(
-          (e) =>
-              e is HttpsError &&
-              e.code == HttpsError.failedPrecondition &&
-              e.message == 'unauthorized',
-        ),
+        isA<HttpsError>()
+            .having((e) => e.code, 'code', HttpsError.failedPrecondition)
+            .having(
+              (e) => e.message,
+              'message',
+              'Unauthorized to resolve join request.',
+            ),
+      ),
+    );
+  });
+
+  test(
+      'Should throw error when moderator tries to approve join request as admin',
+      () async {
+    const moderatorUserId = 'moderatorUser';
+    await communityTestUtils.addCommunityMember(
+      communityId: communityId,
+      userId: moderatorUserId,
+      status: MembershipStatus.moderator,
+    );
+
+    // Add join request
+    await communityTestUtils.addJoinRequest(
+      request: MembershipRequest(
+        communityId: communityId,
+        userId: requesterUserId,
+        status: MembershipRequestStatus.requested,
+      ),
+    );
+
+    final resolveJoinRequest = ResolveJoinRequest();
+    final req = ResolveJoinRequestRequest(
+      communityId: communityId,
+      userId: requesterUserId,
+      approve: true,
+      role: MembershipStatus.admin,
+    );
+
+    expect(
+      () async {
+        await resolveJoinRequest.action(
+          req,
+          CallableContext(moderatorUserId, null, 'fakeInstanceId'),
+        );
+      },
+      throwsA(
+        isA<HttpsError>()
+            .having((e) => e.code, 'code', HttpsError.failedPrecondition)
+            .having(
+              (e) => e.message,
+              'message',
+              'Unauthorized to approve as admin. Only admins or owners can approve as admin.',
+            ),
       ),
     );
   });
