@@ -5,6 +5,7 @@ environment:
 
 dependencies:
   freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
   json_serializable: ^6.6.2
   firebase_admin_interop:
     git:
