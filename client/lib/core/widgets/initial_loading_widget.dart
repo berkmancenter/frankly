@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:client/app.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/data/services/logging_service.dart';
@@ -100,7 +101,9 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
     final userService = context.watch<UserService>();
 
     if (userService.signInState == SignInState.signedIn && _initialized) {
-      if (userService.isSignedIn && !userService.isCurrentUserEmailVerified) {
+      if (userService.isSignedIn &&
+          !userService.isCurrentUserEmailVerified &&
+          !kDebugMode) {
         return VerifyEmailPage(
           email: userService.firebaseAuth.currentUser?.email ?? '',
         );
