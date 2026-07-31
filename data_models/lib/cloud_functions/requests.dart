@@ -538,6 +538,7 @@ class ResolveJoinRequestRequest
     required String communityId,
     required String userId,
     required bool approve,
+    MembershipStatus? role,
   }) = _ResolveJoinRequestRequest;
 
   factory ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =>

@@ -55,6 +55,10 @@ Future<bool> verifyAvailableForEvent(Event event) async {
 }
 
 class EventPageProvider with ChangeNotifier {
+  // Short delay to allow Firebase Auth state to propagate before attempting to
+  // register and enter the meeting with a newly created guest account.
+  static const Duration _guestAccountSetupDelay = Duration(seconds: 5);
+
   final EventProvider eventProvider;
   final CommunityProvider communityProvider;
   final NavBarProvider navBarProvider;
@@ -283,7 +287,7 @@ class EventPageProvider with ChangeNotifier {
       password: 'password',
     );
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(_guestAccountSetupDelay);
 
     // Register
     await joinEvent(showConfirm: false);

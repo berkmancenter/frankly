@@ -6669,6 +6669,13 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
       ) as int);
 
   @override
+  int get registrationCount => (super.noSuchMethod(
+        Invocation.getter(#registrationCount),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
   int get presentParticipantCount => (super.noSuchMethod(
         Invocation.getter(#presentParticipantCount),
         returnValue: 0,
@@ -6743,6 +6750,7 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
   @override
   _i38.Future<void> generateRegistrationDataCsvFile({
     required List<_i78.MemberDetails>? registrationData,
+    required List<_i2.Participant>? participantData,
     required String? eventId,
     required List<_i20.BreakoutRoom>? breakoutRooms,
   }) =>
@@ -6752,6 +6760,7 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
           [],
           {
             #registrationData: registrationData,
+            #participantData: participantData,
             #eventId: eventId,
             #breakoutRooms: breakoutRooms,
           },
@@ -15813,27 +15822,6 @@ class MockSharedPreferencesService extends _i1.Mock
       ) as _i38.Future<bool>);
 
   @override
-  _i38.Future<void> setPendingEmailVerification(String? email) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #setPendingEmailVerification,
-          [email],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
-  _i38.Future<void> clearPendingEmailVerification() => (super.noSuchMethod(
-        Invocation.method(
-          #clearPendingEmailVerification,
-          [],
-        ),
-        returnValue: _i38.Future<void>.value(),
-        returnValueForMissingStub: _i38.Future<void>.value(),
-      ) as _i38.Future<void>);
-
-  @override
   _i38.Future<void> setLastQueryParameters(String? lastQueryParameters) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -17048,6 +17036,13 @@ class MockUserService extends _i1.Mock implements _i113.UserService {
       ) as _i36.FirebaseAuth);
 
   @override
+  bool get isCurrentUserEmailVerified => (super.noSuchMethod(
+        Invocation.getter(#isCurrentUserEmailVerified),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get isSignedIn => (super.noSuchMethod(
         Invocation.getter(#isSignedIn),
         returnValue: false,
@@ -17069,11 +17064,20 @@ class MockUserService extends _i1.Mock implements _i113.UserService {
       ) as bool);
 
   @override
-  _i38.Future<void> sendMagicVerificationLink(String? email) =>
-      (super.noSuchMethod(
+  _i38.Future<void> verifyEmail() => (super.noSuchMethod(
         Invocation.method(
-          #sendMagicVerificationLink,
-          [email],
+          #verifyEmail,
+          [],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> refreshEmailVerificationStatus() => (super.noSuchMethod(
+        Invocation.method(
+          #refreshEmailVerificationStatus,
+          [],
         ),
         returnValue: _i38.Future<void>.value(),
         returnValueForMissingStub: _i38.Future<void>.value(),
@@ -17582,6 +17586,13 @@ class MockUserServiceNullable extends _i1.Mock implements _i113.UserService {
       ) as _i36.FirebaseAuth);
 
   @override
+  bool get isCurrentUserEmailVerified => (super.noSuchMethod(
+        Invocation.getter(#isCurrentUserEmailVerified),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get isSignedIn => (super.noSuchMethod(
         Invocation.getter(#isSignedIn),
         returnValue: false,
@@ -17603,11 +17614,20 @@ class MockUserServiceNullable extends _i1.Mock implements _i113.UserService {
       ) as bool);
 
   @override
-  _i38.Future<void> sendMagicVerificationLink(String? email) =>
-      (super.noSuchMethod(
+  _i38.Future<void> verifyEmail() => (super.noSuchMethod(
         Invocation.method(
-          #sendMagicVerificationLink,
-          [email],
+          #verifyEmail,
+          [],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> refreshEmailVerificationStatus() => (super.noSuchMethod(
+        Invocation.method(
+          #refreshEmailVerificationStatus,
+          [],
         ),
         returnValue: _i38.Future<void>.value(),
         returnValueForMissingStub: _i38.Future<void>.value(),
