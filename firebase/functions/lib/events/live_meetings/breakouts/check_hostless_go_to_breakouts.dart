@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
+import 'package:functions/events/live_meetings/breakouts/assign_to_breakouts.dart';
 import 'initiate_breakouts.dart';
 import '../../../on_call_function.dart';
 import 'check_hostless_go_to_breakouts_server.dart';
@@ -89,7 +90,7 @@ class CheckHostlessGoToBreakouts
             event.breakoutRoomDefinition?.targetParticipants ??
                 defaultTargetParticipants,
         includeWaitingRoom: true,
-        useHostedApi: false,
+        useHostedApi: kShouldUseHostedMatchApiFunctions,
       ),
       creatorId: userId,
     );

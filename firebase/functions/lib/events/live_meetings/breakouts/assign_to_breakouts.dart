@@ -21,6 +21,8 @@ import 'package:uuid/uuid.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/iterables.dart';
 
+const kShouldUseHostedMatchApiFunctions = false;
+
 /// A utility class for handling assignments to breakouts.
 class AssignToBreakouts {
   @visibleForTesting
@@ -545,7 +547,7 @@ class AssignToBreakouts {
                     hasWaitingRoom: includeWaitingRoom,
                     breakoutRoomSessionId: breakoutSessionId,
                     targetParticipantsPerRoom: targetParticipantsPerRoom,
-                    useHostedApi: false,
+                    useHostedApi: kShouldUseHostedMatchApiFunctions,
                   ),
                 ).toJson(),
               ),
