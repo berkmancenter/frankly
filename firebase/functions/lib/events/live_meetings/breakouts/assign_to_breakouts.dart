@@ -178,7 +178,7 @@ class AssignToBreakouts {
     required String creatorId,
     required Event event,
     required CollectionReference breakoutRoomsCollection,
-    bool useHostedApi = false,
+    required bool useHostedApi,
   }) async {
     profile('starting smart match with authUid: $creatorId');
 
@@ -549,8 +549,8 @@ class AssignToBreakouts {
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
     required String processingId,
+    required bool useHostedApi,
     bool includeWaitingRoom = false,
-    bool useHostedApi = false,
   }) async {
     profile('getting participants');
     final participantSnapshots = (await getParticipantSnapshots(
@@ -766,8 +766,8 @@ class AssignToBreakouts {
     required String creatorId,
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
+    required bool useHostedApi,
     bool includeWaitingRoom = false,
-    bool useHostedApi = false,
   }) async {
     final liveMeetingPath = '${event.fullPath}/live-meetings/${event.id}';
 
