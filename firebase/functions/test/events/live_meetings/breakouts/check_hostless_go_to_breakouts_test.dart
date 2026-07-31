@@ -82,7 +82,7 @@ void main() {
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,
       createdDate: meeting.currentBreakoutSession!.createdDate,
       scheduledTime: meeting.currentBreakoutSession!.scheduledTime,
-      useHostedApi: false,
+      useHostedApi: meeting.currentBreakoutSession!.useHostedApi,
     );
 
     expect(meeting.currentBreakoutSession, equals(expectedBreakout));

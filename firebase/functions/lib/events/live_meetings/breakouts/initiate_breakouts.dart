@@ -132,7 +132,7 @@ class InitiateBreakouts extends OnCallMethod<InitiateBreakoutsRequest> {
         targetParticipantsPerRoom: request.targetParticipantsPerRoom,
         hasWaitingRoom: request.includeWaitingRoom,
         scheduledTime: scheduledTime,
-        useHostedApi: false,
+        useHostedApi: request.useHostedApi,
       );
       transaction.set(
         liveMeetingDocRef,
