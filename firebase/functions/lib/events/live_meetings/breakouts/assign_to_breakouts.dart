@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
+import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:get_it/get_it.dart';
 import 'package:frankly_match/frankly_match.dart' as frankly_match;
+import 'package:node_http/node_http.dart' as http;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
@@ -831,4 +834,49 @@ class AssignToBreakouts {
       rethrow;
     }
   }
+}
+
+/// Call the hosted Frankly Match API to return matched groups.
+Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
+  required Map<String, String> participantSurveyResponsesLookup,
+  required int targetParticipantsPerRoom,
+}) async {
+  final apiKey = functions.config.get('frankly_match.api_key') as String;
+  final uri = Uri.parse(
+    functions.config.get('frankly_match.api_url') as String,
+  );
+  final response = await http.post(
+    uri,
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+    },
+    body: jsonEncode({
+      // The algorithm parameter should become dynamic once more options
+      // are added to the API.
+      'algorithm': 'binaryGroupMatch',
+      'targetGroupSize': targetParticipantsPerRoom,
+      'participants': {
+        for (final entry in participantSurveyResponsesLookup.entries)
+          entry.key: {'binaryAnswerMask': entry.value},
+      },
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception(
+      'Frankly Match API error ${response.statusCode}: ${response.body}',
+    );
+  }
+
+  final body = jsonDecode(response.body) as Map<String, dynamic>;
+  final results = body['results'] as List<dynamic>;
+  return results
+      .map(
+        (g) => frankly_match.MatchGroup(
+          g['groupId'] as String,
+          (g['participantIds'] as List<dynamic>).cast<String>(),
+        ),
+      )
+      .toList();
 }
