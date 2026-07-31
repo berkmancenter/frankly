@@ -234,7 +234,7 @@ class AssignToBreakouts {
 
     // Smart match users who had valid survey responses
     profile('smart matching');
-    List<List<String>> smartMatches;
+    List<frankly_match.MatchGroup> smartMatches;
     if (targetParticipantsPerRoom <= 2 ||
         participantSurveyResponsesLookup.length <= 2) {
       smartMatches =
@@ -251,12 +251,13 @@ class AssignToBreakouts {
       );
     }
 
-    print('Total smart matches before filtering: ${smartMatches.length}');
+    print('Total smart match groups before filtering: ${smartMatches.length}');
     if (smartMatches.isNotEmpty &&
-        smartMatches.last.length < targetParticipantsPerRoom) {
+        smartMatches.last.participantIds.length < targetParticipantsPerRoom) {
       smartMatches.removeLast();
     }
-    final smartMatchedIds = smartMatches.expand((p) => p).toSet();
+    final smartMatchedIds =
+        smartMatches.expand((p) => p.participantIds).toSet();
     unmatchedParticipants.removeWhere((p) => smartMatchedIds.contains(p.id));
     print('smartMatches: ${smartMatches.length}');
 
@@ -266,20 +267,26 @@ class AssignToBreakouts {
     final leftoverMatches = partition(
       unmatchedParticipants.map((e) => e.id),
       targetParticipantsPerRoom,
-    );
+    )
+        .mapIndexed(
+          (index, ids) => frankly_match.MatchGroup(
+            index.toString(),
+            ids.toList(),
+          ),
+        )
+        .toList();
     print('leftovermatches: ${leftoverMatches.length}');
 
-    List<List<String>> matches = [
+    final List<frankly_match.MatchGroup> allMatches = [
       ...smartMatches,
       ...leftoverMatches,
     ];
 
-    if (matches.length > 1 && matches.last.length == 1) {
-      final loneUser = matches.last.single;
-      matches.removeLast();
-      matches.last.add(loneUser);
+    if (allMatches.length > 1 && allMatches.last.participantIds.length == 1) {
+      final loneUser = allMatches.removeLast().participantIds.single;
+      allMatches.last.participantIds.add(loneUser);
     }
-    profile('total matches: ${prematches.length + matches.length}');
+    profile('total matches: ${prematches.length + allMatches.length}');
 
     final breakoutMatchIdsToRecord = event.breakoutMatchIdsToRecord.toSet();
     final prematchEntries = prematches.entries.toList();
@@ -298,14 +305,14 @@ class AssignToBreakouts {
           record: (event.eventSettings?.alwaysRecord ?? false) ||
               breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
         ),
-      for (var j = 0; j < matches.length; j++)
+      for (var j = 0; j < allMatches.length; j++)
         BreakoutRoom(
           roomId: breakoutRoomsCollection.document().documentID,
           creatorId: creatorId,
           roomName: (j + i + 1).toString(),
           orderingPriority: j + i,
-          participantIds: matches[j],
-          originalParticipantIdsAssignment: matches[j],
+          participantIds: allMatches[j].participantIds,
+          originalParticipantIdsAssignment: allMatches[j].participantIds,
           record: event.eventSettings?.alwaysRecord ?? false,
         ),
     ];
