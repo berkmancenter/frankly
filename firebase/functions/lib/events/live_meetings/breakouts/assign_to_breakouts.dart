@@ -241,7 +241,7 @@ class AssignToBreakouts {
     // Smart match users who had valid survey responses
     profile('smart matching');
     List<frankly_match.MatchGroup>? smartMatches;
-    if (useHostedApi) {
+    if (useHostedApi && participantSurveyResponsesLookup.isNotEmpty) {
       print('Calling hosted Frankly Match API for smart matching');
       try {
         smartMatches = await createFranklyMatchApiGroups(
