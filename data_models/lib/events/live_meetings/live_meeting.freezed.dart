@@ -1525,7 +1525,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
       required this.assignmentMethod,
       required this.targetParticipantsPerRoom,
       required this.hasWaitingRoom,
-      required this.useHostedApi,
+      this.useHostedApi = false,
       this.maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       this.createdDate,
@@ -1551,6 +1551,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
   @override
   final bool hasWaitingRoom;
   @override
+  @JsonKey()
   final bool useHostedApi;
   @override
   final int? maxRoomNumber;
@@ -1641,7 +1642,7 @@ abstract class _BreakoutRoomSession implements BreakoutRoomSession {
       required final BreakoutAssignmentMethod assignmentMethod,
       required final int targetParticipantsPerRoom,
       required final bool hasWaitingRoom,
-      required final bool useHostedApi,
+      final bool useHostedApi,
       final int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       final DateTime? createdDate,
