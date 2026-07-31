@@ -620,7 +620,7 @@ _$_InitiateBreakoutsRequest _$$_InitiateBreakoutsRequestFromJson(
       assignmentMethod: $enumDecodeNullable(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       includeWaitingRoom: json['includeWaitingRoom'] as bool? ?? false,
-      useHostedApi: json['useHostedApi'] as bool? ?? false,
+      useHostedApi: json['useHostedApi'] as bool,
     );
 
 Map<String, dynamic> _$$_InitiateBreakoutsRequestToJson(
