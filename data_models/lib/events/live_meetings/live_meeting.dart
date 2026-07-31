@@ -158,7 +158,7 @@ class BreakoutRoomSession with _$BreakoutRoomSession {
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
     required bool hasWaitingRoom,
-    required bool useHostedApi,
+    @Default(false) bool useHostedApi,
     int? maxRoomNumber,
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
     DateTime? createdDate,
