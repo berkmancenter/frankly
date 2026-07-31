@@ -238,12 +238,17 @@ class AssignToBreakouts {
 
     // Smart match users who had valid survey responses
     profile('smart matching');
-    List<frankly_match.MatchGroup> smartMatches;
+    List<frankly_match.MatchGroup>? smartMatches;
     if (useHostedApi) {
-      smartMatches = await createFranklyMatchApiGroups(
-        participantSurveyResponsesLookup: participantSurveyResponsesLookup,
-        targetParticipantsPerRoom: targetParticipantsPerRoom,
-      );
+      try {
+        smartMatches = await createFranklyMatchApiGroups(
+          participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+          targetParticipantsPerRoom: targetParticipantsPerRoom,
+        );
+      } catch (e) {
+        // smartMatches will remain null if an exception is thrown.
+        print('Error creating smart matches: $e');
+      }
     }
     if (targetParticipantsPerRoom <= 2 ||
         participantSurveyResponsesLookup.length <= 2) {
