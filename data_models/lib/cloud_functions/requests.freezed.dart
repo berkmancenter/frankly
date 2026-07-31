@@ -6805,6 +6805,7 @@ mixin _$InitiateBreakoutsRequest {
   BreakoutAssignmentMethod? get assignmentMethod =>
       throw _privateConstructorUsedError;
   bool get includeWaitingRoom => throw _privateConstructorUsedError;
+  bool get useHostedApi => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6824,7 +6825,8 @@ abstract class $InitiateBreakoutsRequestCopyWith<$Res> {
       String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       BreakoutAssignmentMethod? assignmentMethod,
-      bool includeWaitingRoom});
+      bool includeWaitingRoom,
+      bool useHostedApi});
 }
 
 /// @nodoc
@@ -6846,6 +6848,7 @@ class _$InitiateBreakoutsRequestCopyWithImpl<$Res,
     Object? breakoutSessionId = null,
     Object? assignmentMethod = freezed,
     Object? includeWaitingRoom = null,
+    Object? useHostedApi = null,
   }) {
     return _then(_value.copyWith(
       eventPath: null == eventPath
@@ -6868,6 +6871,10 @@ class _$InitiateBreakoutsRequestCopyWithImpl<$Res,
           ? _value.includeWaitingRoom
           : includeWaitingRoom // ignore: cast_nullable_to_non_nullable
               as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -6887,7 +6894,8 @@ abstract class _$$_InitiateBreakoutsRequestCopyWith<$Res>
       String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       BreakoutAssignmentMethod? assignmentMethod,
-      bool includeWaitingRoom});
+      bool includeWaitingRoom,
+      bool useHostedApi});
 }
 
 /// @nodoc
@@ -6907,6 +6915,7 @@ class __$$_InitiateBreakoutsRequestCopyWithImpl<$Res>
     Object? breakoutSessionId = null,
     Object? assignmentMethod = freezed,
     Object? includeWaitingRoom = null,
+    Object? useHostedApi = null,
   }) {
     return _then(_$_InitiateBreakoutsRequest(
       eventPath: null == eventPath
@@ -6929,6 +6938,10 @@ class __$$_InitiateBreakoutsRequestCopyWithImpl<$Res>
           ? _value.includeWaitingRoom
           : includeWaitingRoom // ignore: cast_nullable_to_non_nullable
               as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -6941,7 +6954,8 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       required this.targetParticipantsPerRoom,
       required this.breakoutSessionId,
       @JsonKey(unknownEnumValue: null) this.assignmentMethod,
-      this.includeWaitingRoom = false});
+      this.includeWaitingRoom = false,
+      this.useHostedApi = false});
 
   factory _$_InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>
       _$$_InitiateBreakoutsRequestFromJson(json);
@@ -6958,10 +6972,13 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
   @override
   @JsonKey()
   final bool includeWaitingRoom;
+  @override
+  @JsonKey()
+  final bool useHostedApi;
 
   @override
   String toString() {
-    return 'InitiateBreakoutsRequest(eventPath: $eventPath, targetParticipantsPerRoom: $targetParticipantsPerRoom, breakoutSessionId: $breakoutSessionId, assignmentMethod: $assignmentMethod, includeWaitingRoom: $includeWaitingRoom)';
+    return 'InitiateBreakoutsRequest(eventPath: $eventPath, targetParticipantsPerRoom: $targetParticipantsPerRoom, breakoutSessionId: $breakoutSessionId, assignmentMethod: $assignmentMethod, includeWaitingRoom: $includeWaitingRoom, useHostedApi: $useHostedApi)';
   }
 
   @override
@@ -6979,7 +6996,9 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
             (identical(other.assignmentMethod, assignmentMethod) ||
                 other.assignmentMethod == assignmentMethod) &&
             (identical(other.includeWaitingRoom, includeWaitingRoom) ||
-                other.includeWaitingRoom == includeWaitingRoom));
+                other.includeWaitingRoom == includeWaitingRoom) &&
+            (identical(other.useHostedApi, useHostedApi) ||
+                other.useHostedApi == useHostedApi));
   }
 
   @JsonKey(ignore: true)
@@ -6990,7 +7009,8 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       targetParticipantsPerRoom,
       breakoutSessionId,
       assignmentMethod,
-      includeWaitingRoom);
+      includeWaitingRoom,
+      useHostedApi);
 
   @JsonKey(ignore: true)
   @override
@@ -7014,7 +7034,8 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
       required final String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       final BreakoutAssignmentMethod? assignmentMethod,
-      final bool includeWaitingRoom}) = _$_InitiateBreakoutsRequest;
+      final bool includeWaitingRoom,
+      final bool useHostedApi}) = _$_InitiateBreakoutsRequest;
 
   factory _InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =
       _$_InitiateBreakoutsRequest.fromJson;
@@ -7030,6 +7051,8 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
   BreakoutAssignmentMethod? get assignmentMethod;
   @override
   bool get includeWaitingRoom;
+  @override
+  bool get useHostedApi;
   @override
   @JsonKey(ignore: true)
   _$$_InitiateBreakoutsRequestCopyWith<_$_InitiateBreakoutsRequest>

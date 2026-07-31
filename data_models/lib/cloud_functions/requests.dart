@@ -556,6 +556,7 @@ class InitiateBreakoutsRequest
     required String breakoutSessionId,
     @JsonKey(unknownEnumValue: null) BreakoutAssignmentMethod? assignmentMethod,
     @Default(false) bool includeWaitingRoom,
+    required bool useHostedApi,
   }) = _InitiateBreakoutsRequest;
 
   factory InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>
