@@ -250,20 +250,22 @@ class AssignToBreakouts {
         print('Error creating smart matches: $e');
       }
     }
-    if (targetParticipantsPerRoom <= 2 ||
-        participantSurveyResponsesLookup.length <= 2) {
-      smartMatches =
-          frankly_match.bucketMatch(samples: participantSurveyResponsesLookup);
-    } else {
-      final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
-        participantSurveyResponsesLookup.length,
-        targetParticipantsPerRoom,
-      );
-
-      smartMatches = frankly_match.groupMatch(
-        participantResponses: participantSurveyResponsesLookup,
-        targetGroupSize: adjustedTargetParticipants,
-      );
+    if (smartMatches == null) {
+      if (targetParticipantsPerRoom <= 2 ||
+          participantSurveyResponsesLookup.length <= 2) {
+        smartMatches = frankly_match.bucketMatch(
+          samples: participantSurveyResponsesLookup,
+        );
+      } else {
+        final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
+          participantSurveyResponsesLookup.length,
+          targetParticipantsPerRoom,
+        );
+        smartMatches = frankly_match.groupMatch(
+          participantResponses: participantSurveyResponsesLookup,
+          targetGroupSize: adjustedTargetParticipants,
+        );
+      }
     }
 
     print('Total smart match groups before filtering: ${smartMatches.length}');
