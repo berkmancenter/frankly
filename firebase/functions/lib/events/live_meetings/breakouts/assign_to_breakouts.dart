@@ -528,6 +528,7 @@ class AssignToBreakouts {
                     hasWaitingRoom: includeWaitingRoom,
                     breakoutRoomSessionId: breakoutSessionId,
                     targetParticipantsPerRoom: targetParticipantsPerRoom,
+                    useHostedApi: false,
                   ),
                 ).toJson(),
               ),
@@ -741,6 +742,7 @@ class AssignToBreakouts {
       targetParticipantsPerRoom: targetParticipantsPerRoom,
       maxRoomNumber: maxBreakoutRoomNumber,
       assignmentMethod: assignmentMethod,
+      useHostedApi: false,
     );
     await breakoutRoomsSessionDoc.setData(
       DocumentData.fromMap(

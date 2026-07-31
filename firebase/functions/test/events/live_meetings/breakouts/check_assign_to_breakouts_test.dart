@@ -104,6 +104,7 @@ void main() {
       statusUpdatedTime: createdBreakoutSession.statusUpdatedTime,
       maxRoomNumber: 2,
       createdDate: createdBreakoutSession.createdDate,
+      useHostedApi: false,
     );
 
     expect(createdBreakoutSession, equals(expectedBreakout));
@@ -233,6 +234,7 @@ void main() {
       statusUpdatedTime: createdBreakoutSession.statusUpdatedTime,
       maxRoomNumber: 2,
       createdDate: createdBreakoutSession.createdDate,
+      useHostedApi: false,
     );
 
     expect(createdBreakoutSession, equals(expectedBreakout));

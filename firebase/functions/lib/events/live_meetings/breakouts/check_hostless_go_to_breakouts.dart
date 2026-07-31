@@ -89,6 +89,7 @@ class CheckHostlessGoToBreakouts
             event.breakoutRoomDefinition?.targetParticipants ??
                 defaultTargetParticipants,
         includeWaitingRoom: true,
+        useHostedApi: false,
       ),
       creatorId: userId,
     );

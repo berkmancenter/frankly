@@ -990,6 +990,7 @@ class LiveMeetingProvider with ChangeNotifier {
         targetParticipantsPerRoom: numPerRoom,
         assignmentMethod: assignmentMethod,
         includeWaitingRoom: !eventProvider.event.isHosted,
+        useHostedApi: false,
       ),
     );
   }
