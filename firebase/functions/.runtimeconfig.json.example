@@ -40,7 +40,7 @@
   "frankly_match": {
     "api_url": "<value>",
     "api_key": "<value>"
-  }
+  },
   "ics": {
     "prod_id": "Frankly"
   },
