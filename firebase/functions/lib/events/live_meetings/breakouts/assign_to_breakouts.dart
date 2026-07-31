@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
-import 'package:collection/src/iterable_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
+import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import 'package:get_it/get_it.dart';
 import 'package:frankly_match/frankly_match.dart' as frankly_match;
+import 'package:node_http/node_http.dart' as http;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
@@ -17,6 +20,8 @@ import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/iterables.dart';
+
+const kShouldUseHostedMatchApiFunctions = false;
 
 /// A utility class for handling assignments to breakouts.
 class AssignToBreakouts {
@@ -178,6 +183,7 @@ class AssignToBreakouts {
     required String creatorId,
     required Event event,
     required CollectionReference breakoutRoomsCollection,
+    required bool useHostedApi,
   }) async {
     profile('starting smart match with authUid: $creatorId');
 
@@ -234,21 +240,35 @@ class AssignToBreakouts {
 
     // Smart match users who had valid survey responses
     profile('smart matching');
-    List<frankly_match.MatchGroup> smartMatches;
-    if (targetParticipantsPerRoom <= 2 ||
-        participantSurveyResponsesLookup.length <= 2) {
-      smartMatches =
-          frankly_match.bucketMatch(samples: participantSurveyResponsesLookup);
-    } else {
-      final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
-        participantSurveyResponsesLookup.length,
-        targetParticipantsPerRoom,
-      );
-
-      smartMatches = frankly_match.groupMatch(
-        participantResponses: participantSurveyResponsesLookup,
-        targetGroupSize: adjustedTargetParticipants,
-      );
+    List<frankly_match.MatchGroup>? smartMatches;
+    if (useHostedApi && participantSurveyResponsesLookup.isNotEmpty) {
+      print('Calling hosted Frankly Match API for smart matching');
+      try {
+        smartMatches = await createFranklyMatchApiGroups(
+          participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+          targetParticipantsPerRoom: targetParticipantsPerRoom,
+        );
+      } catch (e) {
+        // smartMatches will remain null if an exception is thrown.
+        print('Error creating smart matches: $e');
+      }
+    }
+    if (smartMatches == null) {
+      if (targetParticipantsPerRoom <= 2 ||
+          participantSurveyResponsesLookup.length <= 2) {
+        smartMatches = frankly_match.bucketMatch(
+          samples: participantSurveyResponsesLookup,
+        );
+      } else {
+        final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
+          participantSurveyResponsesLookup.length,
+          targetParticipantsPerRoom,
+        );
+        smartMatches = frankly_match.groupMatch(
+          participantResponses: participantSurveyResponsesLookup,
+          targetGroupSize: adjustedTargetParticipants,
+        );
+      }
     }
 
     print('Total smart match groups before filtering: ${smartMatches.length}');
@@ -527,6 +547,7 @@ class AssignToBreakouts {
                     hasWaitingRoom: includeWaitingRoom,
                     breakoutRoomSessionId: breakoutSessionId,
                     targetParticipantsPerRoom: targetParticipantsPerRoom,
+                    useHostedApi: kShouldUseHostedMatchApiFunctions,
                   ),
                 ).toJson(),
               ),
@@ -547,8 +568,9 @@ class AssignToBreakouts {
     required String creatorId,
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
-    bool includeWaitingRoom = false,
     required String processingId,
+    required bool useHostedApi,
+    bool includeWaitingRoom = false,
   }) async {
     profile('getting participants');
     final participantSnapshots = (await getParticipantSnapshots(
@@ -601,6 +623,7 @@ class AssignToBreakouts {
         creatorId: creatorId,
         event: event,
         breakoutRoomsCollection: breakoutRoomsCollection,
+        useHostedApi: useHostedApi,
       );
     } else {
       throw Exception(
@@ -738,6 +761,7 @@ class AssignToBreakouts {
       targetParticipantsPerRoom: targetParticipantsPerRoom,
       maxRoomNumber: maxBreakoutRoomNumber,
       assignmentMethod: assignmentMethod,
+      useHostedApi: useHostedApi,
     );
     await breakoutRoomsSessionDoc.setData(
       DocumentData.fromMap(
@@ -763,6 +787,7 @@ class AssignToBreakouts {
     required String creatorId,
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
+    required bool useHostedApi,
     bool includeWaitingRoom = false,
   }) async {
     final liveMeetingPath = '${event.fullPath}/live-meetings/${event.id}';
@@ -795,6 +820,7 @@ class AssignToBreakouts {
         includeWaitingRoom: includeWaitingRoom,
         creatorId: creatorId,
         processingId: processingId,
+        useHostedApi: useHostedApi,
       );
     } catch (e) {
       /// If there was a failure, update the processingID to null so that future callers know
@@ -824,4 +850,53 @@ class AssignToBreakouts {
       rethrow;
     }
   }
+}
+
+/// Call the hosted Frankly Match API to return matched groups.
+Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
+  required Map<String, String> participantSurveyResponsesLookup,
+  required int targetParticipantsPerRoom,
+}) async {
+  final apiKey = functions.config.get('frankly_match.api_key') as String;
+  final uri = Uri.parse(
+    functions.config.get('frankly_match.api_url') as String,
+  );
+  final payload = {
+    // The algorithm parameter should become dynamic once more options
+    // are added to the API.
+    'algorithm': 'binaryGroupMatch',
+    'targetGroupSize': targetParticipantsPerRoom,
+    'participants': {
+      for (final entry in participantSurveyResponsesLookup.entries)
+        entry.key: {'binaryAnswerMask': entry.value},
+    },
+  };
+  print('Calling Frankly Match API with payload: $payload');
+
+  final response = await http.post(
+    uri,
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+    },
+    body: jsonEncode(payload),
+  );
+  print('Frankly Match API response: ${response.statusCode} ${response.body}');
+
+  if (response.statusCode != 200) {
+    throw Exception(
+      'Frankly Match API error ${response.statusCode}: ${response.body}',
+    );
+  }
+
+  final body = jsonDecode(response.body) as Map<String, dynamic>;
+  final results = body['results'] as List<dynamic>;
+  return results
+      .map(
+        (g) => frankly_match.MatchGroup(
+          g['groupId'] as String,
+          (g['participantIds'] as List<dynamic>).cast<String>(),
+        ),
+      )
+      .toList();
 }

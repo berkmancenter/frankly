@@ -35,6 +35,8 @@ import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart';
 import 'package:client/core/localization/localization_helper.dart';
 
+const kShouldUseHostedMatchApiClient = false;
+
 abstract class MeetingProviderParticipant {
   String get userId;
 
@@ -1132,6 +1134,7 @@ class LiveMeetingProvider with ChangeNotifier {
         targetParticipantsPerRoom: numPerRoom,
         assignmentMethod: assignmentMethod,
         includeWaitingRoom: !eventProvider.event.isHosted,
+        useHostedApi: kShouldUseHostedMatchApiClient,
       ),
     );
   }

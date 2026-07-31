@@ -84,6 +84,7 @@ class InitiateBreakouts extends OnCallMethod<InitiateBreakoutsRequest> {
         includeWaitingRoom: request.includeWaitingRoom,
         event: event,
         creatorId: creatorId,
+        useHostedApi: request.useHostedApi,
       );
     } else {
       print('Pinging breakout availability.');
@@ -131,6 +132,7 @@ class InitiateBreakouts extends OnCallMethod<InitiateBreakoutsRequest> {
         targetParticipantsPerRoom: request.targetParticipantsPerRoom,
         hasWaitingRoom: request.includeWaitingRoom,
         scheduledTime: scheduledTime,
+        useHostedApi: request.useHostedApi,
       );
       transaction.set(
         liveMeetingDocRef,
