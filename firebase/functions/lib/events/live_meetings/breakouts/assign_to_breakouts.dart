@@ -861,25 +861,25 @@ Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
   final uri = Uri.parse(
     functions.config.get('frankly_match.api_url') as String,
   );
-  print(
-    'Calling Frankly Match API with ${participantSurveyResponsesLookup.length} participants and target group size of $targetParticipantsPerRoom',
-  );
+  final payload = {
+    // The algorithm parameter should become dynamic once more options
+    // are added to the API.
+    'algorithm': 'binaryGroupMatch',
+    'targetGroupSize': targetParticipantsPerRoom,
+    'participants': {
+      for (final entry in participantSurveyResponsesLookup.entries)
+        entry.key: {'binaryAnswerMask': entry.value},
+    },
+  };
+  print('Calling Frankly Match API with payload: $payload');
+
   final response = await http.post(
     uri,
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
     },
-    body: jsonEncode({
-      // The algorithm parameter should become dynamic once more options
-      // are added to the API.
-      'algorithm': 'binaryGroupMatch',
-      'targetGroupSize': targetParticipantsPerRoom,
-      'participants': {
-        for (final entry in participantSurveyResponsesLookup.entries)
-          entry.key: {'binaryAnswerMask': entry.value},
-      },
-    }),
+    body: jsonEncode(payload),
   );
   print('Frankly Match API response: ${response.statusCode} ${response.body}');
 
