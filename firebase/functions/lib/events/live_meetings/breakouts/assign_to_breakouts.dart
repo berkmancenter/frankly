@@ -240,6 +240,7 @@ class AssignToBreakouts {
     profile('smart matching');
     List<frankly_match.MatchGroup>? smartMatches;
     if (useHostedApi) {
+      print('Calling hosted Frankly Match API for smart matching');
       try {
         smartMatches = await createFranklyMatchApiGroups(
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
@@ -858,6 +859,9 @@ Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
   final uri = Uri.parse(
     functions.config.get('frankly_match.api_url') as String,
   );
+  print(
+    'Calling Frankly Match API with ${participantSurveyResponsesLookup.length} participants and target group size of $targetParticipantsPerRoom',
+  );
   final response = await http.post(
     uri,
     headers: {
@@ -875,6 +879,7 @@ Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
       },
     }),
   );
+  print('Frankly Match API response: ${response.statusCode} ${response.body}');
 
   if (response.statusCode != 200) {
     throw Exception(
