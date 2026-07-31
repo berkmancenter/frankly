@@ -153,7 +153,7 @@ _$_BreakoutRoomSession _$$_BreakoutRoomSessionFromJson(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       targetParticipantsPerRoom: json['targetParticipantsPerRoom'] as int,
       hasWaitingRoom: json['hasWaitingRoom'] as bool,
-      useHostedApi: json['useHostedApi'] as bool,
+      useHostedApi: json['useHostedApi'] as bool? ?? false,
       maxRoomNumber: json['maxRoomNumber'] as int?,
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       scheduledTime: dateTimeFromTimestamp(json['scheduledTime']),

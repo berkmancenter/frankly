@@ -6955,7 +6955,7 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       required this.breakoutSessionId,
       @JsonKey(unknownEnumValue: null) this.assignmentMethod,
       this.includeWaitingRoom = false,
-      required this.useHostedApi});
+      this.useHostedApi = false});
 
   factory _$_InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>
       _$$_InitiateBreakoutsRequestFromJson(json);
@@ -6973,6 +6973,7 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
   @JsonKey()
   final bool includeWaitingRoom;
   @override
+  @JsonKey()
   final bool useHostedApi;
 
   @override
@@ -7034,7 +7035,7 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
       @JsonKey(unknownEnumValue: null)
       final BreakoutAssignmentMethod? assignmentMethod,
       final bool includeWaitingRoom,
-      required final bool useHostedApi}) = _$_InitiateBreakoutsRequest;
+      final bool useHostedApi}) = _$_InitiateBreakoutsRequest;
 
   factory _InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =
       _$_InitiateBreakoutsRequest.fromJson;
