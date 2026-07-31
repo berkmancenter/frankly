@@ -5,7 +5,7 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart'
     hide EventType;
 import 'package:get_it/get_it.dart';
-import 'package:frankly_matching/matching.dart' as matching;
+import 'package:frankly_match/frankly_match.dart' as frankly_match;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
@@ -234,29 +234,30 @@ class AssignToBreakouts {
 
     // Smart match users who had valid survey responses
     profile('smart matching');
-    List<List<String>> smartMatches;
+    List<frankly_match.MatchGroup> smartMatches;
     if (targetParticipantsPerRoom <= 2 ||
         participantSurveyResponsesLookup.length <= 2) {
       smartMatches =
-          matching.bucketMatch(samples: participantSurveyResponsesLookup);
+          frankly_match.bucketMatch(samples: participantSurveyResponsesLookup);
     } else {
       final adjustedTargetParticipants = calculateAdjustedTargetParticipants(
         participantSurveyResponsesLookup.length,
         targetParticipantsPerRoom,
       );
 
-      smartMatches = matching.groupMatch(
+      smartMatches = frankly_match.groupMatch(
         participantResponses: participantSurveyResponsesLookup,
         targetGroupSize: adjustedTargetParticipants,
       );
     }
 
-    print('Total smart matches before filtering: ${smartMatches.length}');
+    print('Total smart match groups before filtering: ${smartMatches.length}');
     if (smartMatches.isNotEmpty &&
-        smartMatches.last.length < targetParticipantsPerRoom) {
+        smartMatches.last.participantIds.length < targetParticipantsPerRoom) {
       smartMatches.removeLast();
     }
-    final smartMatchedIds = smartMatches.expand((p) => p).toSet();
+    final smartMatchedIds =
+        smartMatches.expand((p) => p.participantIds).toSet();
     unmatchedParticipants.removeWhere((p) => smartMatchedIds.contains(p.id));
     print('smartMatches: ${smartMatches.length}');
 
@@ -266,20 +267,26 @@ class AssignToBreakouts {
     final leftoverMatches = partition(
       unmatchedParticipants.map((e) => e.id),
       targetParticipantsPerRoom,
-    );
+    )
+        .mapIndexed(
+          (index, ids) => frankly_match.MatchGroup(
+            index.toString(),
+            ids.toList(),
+          ),
+        )
+        .toList();
     print('leftovermatches: ${leftoverMatches.length}');
 
-    List<List<String>> matches = [
+    final List<frankly_match.MatchGroup> allMatches = [
       ...smartMatches,
       ...leftoverMatches,
     ];
 
-    if (matches.length > 1 && matches.last.length == 1) {
-      final loneUser = matches.last.single;
-      matches.removeLast();
-      matches.last.add(loneUser);
+    if (allMatches.length > 1 && allMatches.last.participantIds.length == 1) {
+      final loneUser = allMatches.removeLast().participantIds.single;
+      allMatches.last.participantIds.add(loneUser);
     }
-    profile('total matches: ${prematches.length + matches.length}');
+    profile('total matches: ${prematches.length + allMatches.length}');
 
     final breakoutMatchIdsToRecord = event.breakoutMatchIdsToRecord.toSet();
     final prematchEntries = prematches.entries.toList();
@@ -298,14 +305,14 @@ class AssignToBreakouts {
           record: (event.eventSettings?.alwaysRecord ?? false) ||
               breakoutMatchIdsToRecord.contains(prematchEntries[i].key),
         ),
-      for (var j = 0; j < matches.length; j++)
+      for (var j = 0; j < allMatches.length; j++)
         BreakoutRoom(
           roomId: breakoutRoomsCollection.document().documentID,
           creatorId: creatorId,
           roomName: (j + i + 1).toString(),
           orderingPriority: j + i,
-          participantIds: matches[j],
-          originalParticipantIdsAssignment: matches[j],
+          participantIds: allMatches[j].participantIds,
+          originalParticipantIdsAssignment: allMatches[j].participantIds,
           record: event.eventSettings?.alwaysRecord ?? false,
         ),
     ];
@@ -689,7 +696,8 @@ class AssignToBreakouts {
           .map((r) => r.roomId)
           .toList();
       print(
-          'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',);
+        'breakout_recording_start: eventId=${event.id} breakoutSessionId=$breakoutSessionId roomIds=$recordingRoomIds',
+      );
       for (final room in breakoutRooms) {
         if (room.roomId == breakoutsWaitingRoomId) continue;
         final newSessionId = firestore
@@ -699,7 +707,8 @@ class AssignToBreakouts {
         final roomPath = '${breakoutRoomsCollection.path}/${room.roomId}';
         await firestore.document(roomPath).updateData(
               UpdateData.fromMap(
-                  {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
+                {BreakoutRoom.kFieldRecordingSessionId: newSessionId},
+              ),
             );
         try {
           await agoraUtils.recordRoom(
@@ -714,7 +723,8 @@ class AssignToBreakouts {
           );
         } catch (e) {
           print(
-              'Error starting recording for breakout room ${room.roomId}: $e',);
+            'Error starting recording for breakout room ${room.roomId}: $e',
+          );
         }
       }
     }
