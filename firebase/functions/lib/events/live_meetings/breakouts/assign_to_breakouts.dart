@@ -178,6 +178,7 @@ class AssignToBreakouts {
     required String creatorId,
     required Event event,
     required CollectionReference breakoutRoomsCollection,
+    bool useHostedApi = false,
   }) async {
     profile('starting smart match with authUid: $creatorId');
 
@@ -547,8 +548,9 @@ class AssignToBreakouts {
     required String creatorId,
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
-    bool includeWaitingRoom = false,
     required String processingId,
+    bool includeWaitingRoom = false,
+    bool useHostedApi = false,
   }) async {
     profile('getting participants');
     final participantSnapshots = (await getParticipantSnapshots(
@@ -601,6 +603,7 @@ class AssignToBreakouts {
         creatorId: creatorId,
         event: event,
         breakoutRoomsCollection: breakoutRoomsCollection,
+        useHostedApi: useHostedApi,
       );
     } else {
       throw Exception(
@@ -764,6 +767,7 @@ class AssignToBreakouts {
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
     bool includeWaitingRoom = false,
+    bool useHostedApi = false,
   }) async {
     final liveMeetingPath = '${event.fullPath}/live-meetings/${event.id}';
 
@@ -795,6 +799,7 @@ class AssignToBreakouts {
         includeWaitingRoom: includeWaitingRoom,
         creatorId: creatorId,
         processingId: processingId,
+        useHostedApi: useHostedApi,
       );
     } catch (e) {
       /// If there was a failure, update the processingID to null so that future callers know
