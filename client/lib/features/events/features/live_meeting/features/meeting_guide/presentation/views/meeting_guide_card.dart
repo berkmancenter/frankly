@@ -529,7 +529,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   );
                 }
                 // If the meeting is finished or the card is pending, we don't want to show the ready button/count of participants ready
-                if (meetingFinished || isCardPending) {
+                if (meetingFinished) {
                   return SizedBox.shrink();
                 }
                 return ReadyToMoveOnBuilder(
