@@ -198,8 +198,9 @@ class MeetingGuideCardPresenter {
   /// Whether a synchronized countdown to advance past [currentAgendaItemId] is currently running.
   bool isPendingAdvance(String? currentAgendaItemId) {
     final pendingAgendaItemId = _agendaProvider.pendingAdvanceAgendaItemId;
-    return pendingAgendaItemId != null &&
-        pendingAgendaItemId == currentAgendaItemId;
+    return (pendingAgendaItemId != null &&
+            pendingAgendaItemId == currentAgendaItemId) ||
+        _meetingGuideCardStore.isHoldingPendingAdvanceTransition;
   }
 
   /// The server-computed time at which the pending advance will actually occur.
