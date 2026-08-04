@@ -37,7 +37,50 @@ WidgetSpan buildActionText(
   );
 }
 
-// Create a widget containing information about account error messages received from our backend
+/// Build a widget containing the forgot password message with links to enter email and reset password
+/// [context] The build context.
+/// [showEmailLink] Whether to show the link to enter email.
+/// [onForgotPassword] Callback to trigger the forgot password flow.
+Widget buildForgotPasswordMessage(
+  BuildContext context, {
+  bool showEmailLink = true,
+  VoidCallback? onForgotPassword,
+}) {
+  return Text.rich(
+    TextSpan(
+      children: [
+        TextSpan(
+          text: context.l10n.forgotPasswordPrefix,
+        ),
+        if (showEmailLink)
+          buildActionText(
+            context,
+            context.l10n.forgotPasswordEnterEmail,
+            onTap: () => _emailFocusNode.requestFocus(),
+          ),
+        if (showEmailLink)
+          TextSpan(
+            text: ', ${context.l10n.forgotPasswordThen}',
+          ),
+        if (!showEmailLink)
+          TextSpan(
+            text: ' ${context.l10n.forgotPasswordEnterEmail}',
+          ),
+        buildActionText(
+          context,
+          context.l10n.forgotPasswordSuffix,
+          onTap: () => onForgotPassword?.call(),
+        ),
+        TextSpan(text: '.'),
+      ],
+    ),
+  );
+}
+
+/// Create a widget containing information about account error messages received from our backend
+/// [errorCode] The error code received from the backend.
+/// [onSwitchView] Callback to switch between sign up and login views when the user clicks on the link in the error message.
+/// [onForgotPassword] Callback to trigger the forgot password flow when the user clicks on the link in the error message.
 class AccountErrorMessage extends StatelessWidget {
   final String errorCode;
   final Function(bool)? onSwitchView;
@@ -48,33 +91,6 @@ class AccountErrorMessage extends StatelessWidget {
     this.onSwitchView,
     this.onForgotPassword,
   });
-
-  Widget buildForgotPasswordMessage(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: context.l10n.forgotPasswordPrefix,
-          ),
-          buildActionText(
-            context,
-            context.l10n.forgotPasswordEnterEmail,
-            onTap: () => _emailFocusNode.requestFocus(),
-          ),
-          TextSpan(
-            text: ', ${context.l10n.forgotPasswordThen}',
-          ),
-          buildActionText(
-            context,
-            context.l10n.forgotPasswordSuffix,
-            onTap: () => onForgotPassword?.call(),
-          ),
-          TextSpan(text: '.'),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     boxedErrorText({required message}) {
@@ -531,6 +547,13 @@ class _SignInOptionsContentState extends State<SignInOptionsContent> {
                 context.l10n.passwordRequirements,
               ),
             SizedBox(height: 9),
+            if (!_showSignup)
+              buildForgotPasswordMessage(
+                context,
+                showEmailLink: false,
+                onForgotPassword: _resetPassword,
+              ),
+            SizedBox(height: 20),
             ActionButton(
               key: SignInOptionsContent.buttonSubmitKey,
               onPressed: () => authMessageOnError(
