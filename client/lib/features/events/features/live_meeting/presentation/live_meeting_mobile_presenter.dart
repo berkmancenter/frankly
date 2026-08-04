@@ -202,8 +202,9 @@ class LiveMeetingMobilePresenter {
   /// Whether a synchronized countdown to advance past [currentAgendaItemId] is currently running.
   bool isPendingAdvance(String? currentAgendaItemId) {
     final pendingAgendaItemId = _agendaProvider.pendingAdvanceAgendaItemId;
-    return pendingAgendaItemId != null &&
-        pendingAgendaItemId == currentAgendaItemId;
+    return (pendingAgendaItemId != null &&
+            pendingAgendaItemId == currentAgendaItemId) ||
+        _meetingGuideCardStore.isHoldingPendingAdvanceTransition;
   }
 
   /// The number of ready votes required to advance, kept in sync with the backend's real trigger

@@ -476,6 +476,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               );
               final isMeetingStarted = _presenter.isMeetingStarted();
               final isCardPending = _presenter.isCardPending();
+              final isPendingAdvance =
+                  _presenter.isPendingAdvance(currentAgendaItemId);
               final meetingFinished =
                   currentItem == null && isMeetingStarted && !isCardPending;
               final isHosted = _presenter.isHosted();
@@ -505,7 +507,12 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   ],
                 );
               } else {
-                if (_presenter.isPendingAdvance(currentAgendaItemId)) {
+                // If the meeting is finished or the card is pending and not advancing,
+                // we don't want to show the ready button/count of participants ready or countdown
+                if (meetingFinished || (isCardPending && !isPendingAdvance)) {
+                  return SizedBox.shrink();
+                }
+                if (isPendingAdvance) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -520,17 +527,24 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         constraints:
                             BoxConstraints(maxWidth: 64, maxHeight: 64),
                         child: Countdown(
-                          startingPendingAdvanceTime: Duration(
-                            seconds: 10,
-                          ),
+                          startingPendingAdvanceTime: () {
+                            final pendingAdvanceTime = _presenter
+                                .getPendingAdvanceTime(currentAgendaItemId)
+                                ?.toUtc();
+                            if (pendingAdvanceTime == null) {
+                              return const Duration(seconds: 10);
+                            }
+                            final remaining = pendingAdvanceTime
+                                    .difference(DateTime.now().toUtc()) +
+                                MeetingGuideCardStore.advanceCountdownBuffer;
+                            return remaining.isNegative
+                                ? Duration.zero
+                                : remaining;
+                          }(),
                         ),
                       ),
                     ],
                   );
-                }
-                // If the meeting is finished or the card is pending, we don't want to show the ready button/count of participants ready
-                if (meetingFinished || isCardPending) {
-                  return SizedBox.shrink();
                 }
                 return ReadyToMoveOnBuilder(
                   isMobile: responsiveLayoutService.isMobile(context),
@@ -817,12 +831,24 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
+  // Captured once at first build so the ring's animation duration stays fixed,
+  // even if `widget.startingPendingAdvanceTime` (recomputed by the parent from
+  // the current time on every rebuild) changes.
+  late final Duration _totalDuration;
+
+  // The displayed number is derived from wall-clock time (ticked once per
+  // second by the PeriodicBuilder below) rather than from `controller.value`
+  // sampled on every animation frame
+  late final DateTime _endTime;
+
   @override
   void initState() {
     super.initState();
+    _totalDuration = widget.startingPendingAdvanceTime;
+    _endTime = DateTime.now().add(_totalDuration);
     controller = AnimationController(
       vsync: this,
-      duration: widget.startingPendingAdvanceTime,
+      duration: _totalDuration,
     )..reverse(from: 1.0);
   }
 
@@ -837,6 +863,10 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
     return PeriodicBuilder(
       period: Duration(seconds: 1),
       builder: (context) {
+        final remaining = _endTime.difference(DateTime.now());
+        final remainingSeconds =
+            remaining.isNegative ? 0 : (remaining.inMilliseconds / 1000).ceil();
+
         return Stack(
           alignment: Alignment.center,
           children: [
@@ -863,39 +893,33 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
                 },
               ),
             ),
-            AnimatedBuilder(
-              animation: controller,
-              builder: (context, child) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '${(controller.value * widget.startingPendingAdvanceTime.inSeconds).ceil()}',
-                      style: TextStyle(
-                        fontSize: widget.isMobile
-                            ? context.theme.textTheme.titleMedium?.fontSize
-                            : context.theme.textTheme.titleLarge?.fontSize,
-                        fontWeight: FontWeight.bold,
-                        color: widget.isMobile
-                            ? context.theme.colorScheme.onPrimary
-                            : context.theme.colorScheme.primary,
-                      ),
-                      textAlign: TextAlign.center,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '$remainingSeconds',
+                  style: TextStyle(
+                    fontSize: widget.isMobile
+                        ? context.theme.textTheme.titleMedium?.fontSize
+                        : context.theme.textTheme.titleLarge?.fontSize,
+                    fontWeight: FontWeight.bold,
+                    color: widget.isMobile
+                        ? context.theme.colorScheme.onPrimary
+                        : context.theme.colorScheme.primary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (!widget.isMobile)
+                  Text(
+                    context.l10n.sec,
+                    style: TextStyle(
+                      fontSize: context.theme.textTheme.titleSmall?.fontSize,
+                      color: context.theme.colorScheme.primary,
+                      fontWeight: FontWeight.bold,
                     ),
-                    if (!widget.isMobile)
-                      Text(
-                        context.l10n.sec,
-                        style: TextStyle(
-                          fontSize:
-                              context.theme.textTheme.titleSmall?.fontSize,
-                          color: context.theme.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                  ],
-                );
-              },
+                    textAlign: TextAlign.center,
+                  ),
+              ],
             ),
           ],
         );

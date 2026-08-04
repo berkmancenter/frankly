@@ -718,7 +718,8 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                               return const Duration(seconds: 10);
                             }
                             final remaining = pendingAdvanceTime
-                                .difference(DateTime.now().toUtc());
+                                    .difference(DateTime.now().toUtc()) +
+                                MeetingGuideCardStore.advanceCountdownBuffer;
                             return remaining.isNegative
                                 ? Duration.zero
                                 : remaining;
