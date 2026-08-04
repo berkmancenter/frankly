@@ -15,10 +15,6 @@ import 'package:provider/provider.dart';
 
 class MeetingGuideCardStore with ChangeNotifier {
   static const String startAgendaItemId = 'start';
-  // Delay before the guide card reflects a new agenda item, giving participants
-  // a brief countdown before the card transitions.
-  static const Duration _agendaItemTransitionDelay = Duration(seconds: 3);
-
   // Padding added on top of the server's `pendingAdvanceTime` for both the
   // displayed Countdown widget and this store's hold-until calculation below,
   // so the two stay in sync and typical server/propagation latency is
@@ -209,18 +205,13 @@ class MeetingGuideCardStore with ChangeNotifier {
       _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
       _pendingAdvanceHoldUntil = null;
     } else if (!meetingGuideMatchesLiveMeeting && !isAgendaItemTimerActive) {
-      // The current agenda item has changed. If we captured a buffered ready-vote
-      // deadline for it, hold until exactly that time so the next item can never
-      // appear before the countdown participants are watching finishes, even if
-      // the server actually advanced early. Otherwise fall back to the previous
-      // behavior: a fixed transition delay in breakouts, or immediate (e.g. a
-      // host-driven "Next" click, which never sets `pendingAdvanceTime`).
+      // The current agenda item has changed.
+      // Start a timer to delay the transition to the new agenda item, giving participants a countdown.
+      // This is to ensure that the countdown is visible to participants before the card transitions.
       final holdUntil = _pendingAdvanceHoldUntil;
       final delay = holdUntil != null
           ? holdUntil.difference(DateTime.now().toUtc())
-          : (agendaProvider.isInBreakouts
-              ? _agendaItemTransitionDelay
-              : Duration.zero);
+          : Duration.zero;
 
       _pendingMeetingGuideAgendaItemTimer?.cancel();
       if (delay <= Duration.zero) {
