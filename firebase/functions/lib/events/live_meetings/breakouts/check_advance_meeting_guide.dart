@@ -40,7 +40,7 @@ class AdvanceCheckResult {
 
 class CheckAdvanceMeetingGuide
     extends OnCallMethod<CheckAdvanceMeetingGuideRequest> {
-  static const _advanceDelay = Duration(seconds: 10);
+  static const _advanceDelay = Duration(seconds: 8);
 
   CheckAdvanceMeetingGuide()
       : super(
