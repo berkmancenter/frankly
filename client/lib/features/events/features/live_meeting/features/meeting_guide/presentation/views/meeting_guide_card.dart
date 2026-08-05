@@ -508,9 +508,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                   ],
                 );
               } else {
-                // If the meeting is finished or the card is pending and not advancing,
+                // If the meeting is finished
                 // we don't want to show the ready button/count of participants ready or countdown
-                if (meetingFinished || (isCardPending && !isPendingAdvance)) {
+                if (meetingFinished) {
                   return SizedBox.shrink();
                 }
                 if (isPendingAdvance) {
@@ -880,7 +880,8 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
                   return CircularProgressIndicator(
                     // controller.value represents the remaining fraction of the countdown (1.0 → 0.0).
                     // We want the progress indicator to show the elapsed fraction, so we use (1.0 - controller.value).
-                    value: 1.0 - controller.value,
+                    // If 0 seconds remain, we want the progress indicator to be indeterminate, to account for potential pause before next item is visible
+                    value: remainingSeconds > 0 ? 1.0 - controller.value : null,
                     strokeWidth: 5.0,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       widget.isMobile
@@ -894,34 +895,35 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
                 },
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '$remainingSeconds',
-                  style: TextStyle(
-                    fontSize: widget.isMobile
-                        ? context.theme.textTheme.titleMedium?.fontSize
-                        : context.theme.textTheme.titleLarge?.fontSize,
-                    fontWeight: FontWeight.bold,
-                    color: widget.isMobile
-                        ? context.theme.colorScheme.onPrimary
-                        : context.theme.colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                if (!widget.isMobile)
+            if (remainingSeconds > 0)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Text(
-                    context.l10n.sec,
+                    '$remainingSeconds',
                     style: TextStyle(
-                      fontSize: context.theme.textTheme.titleSmall?.fontSize,
-                      color: context.theme.colorScheme.primary,
+                      fontSize: widget.isMobile
+                          ? context.theme.textTheme.titleMedium?.fontSize
+                          : context.theme.textTheme.titleLarge?.fontSize,
                       fontWeight: FontWeight.bold,
+                      color: widget.isMobile
+                          ? context.theme.colorScheme.onPrimary
+                          : context.theme.colorScheme.primary,
                     ),
                     textAlign: TextAlign.center,
                   ),
-              ],
-            ),
+                  if (!widget.isMobile)
+                    Text(
+                      context.l10n.sec,
+                      style: TextStyle(
+                        fontSize: context.theme.textTheme.titleSmall?.fontSize,
+                        color: context.theme.colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                ],
+              ),
           ],
         );
       },
