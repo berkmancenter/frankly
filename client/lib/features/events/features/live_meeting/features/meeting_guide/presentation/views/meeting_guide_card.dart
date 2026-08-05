@@ -452,8 +452,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
           thickness: 1,
           color: context.theme.colorScheme.onPrimaryContainer,
         ),
-        SizedBox(height: 6),
+        SizedBox(height: 16),
         Container(
+          height: 64,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: context.theme.colorScheme.surfaceContainerLowest,
@@ -567,7 +568,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             },
           ),
         ),
-        SizedBox(height: 6),
+        SizedBox(height: 16),
       ],
     );
   }
