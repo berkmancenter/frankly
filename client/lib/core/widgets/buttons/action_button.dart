@@ -169,7 +169,7 @@ class _ActionButtonState extends State<ActionButton> {
     );
   }
 
-  Widget _buildButtonContents() {
+  Widget _buildButtonContents({required bool isDisabled}) {
     final text = widget.text;
     final mainAxisAlignment =
         widget.contentAlign == ActionButtonContentAlignment.center
@@ -182,36 +182,42 @@ class _ActionButtonState extends State<ActionButton> {
         ? const EdgeInsets.only(right: 14)
         : EdgeInsets.zero;
 
-    return Padding(
-      padding: widget.padding ?? EdgeInsets.zero,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: mainAxisAlignment,
-        children: [
-          // Show loading indicator only if waiting for action and not hidden
-          if (_waiting && !widget.hideLoadingIndicator)
-            Padding(
-              padding: prefixPadding,
-              child: _buildLoading(),
-            ),
-          if (!_waiting && widget.icon != null)
-            Padding(
-              padding: prefixPadding,
-              child: _buildIcon(),
-            ),
+    return Opacity(
+      // The button's own disabled styling only affects text/icons it
+      // renders itself. Custom [child] content (eg. a Checkbox with
+      // explicit colors) doesn't respond to that, so dim it manually.
+      opacity: isDisabled ? 0.4 : 1.0,
+      child: Padding(
+        padding: widget.padding ?? EdgeInsets.zero,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: mainAxisAlignment,
+          children: [
+            // Show loading indicator only if waiting for action and not hidden
+            if (_waiting && !widget.hideLoadingIndicator)
+              Padding(
+                padding: prefixPadding,
+                child: _buildLoading(),
+              ),
+            if (!_waiting && widget.icon != null)
+              Padding(
+                padding: prefixPadding,
+                child: _buildIcon(),
+              ),
 
-          if (text != null)
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: widget.maxTextWidth ?? double.infinity,
+            if (text != null)
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: widget.maxTextWidth ?? double.infinity,
+                ),
+                child: HeightConstrainedText(
+                  text,
+                  maxLines: widget.maxLines,
+                ),
               ),
-              child: HeightConstrainedText(
-                text,
-                maxLines: widget.maxLines,
-              ),
-            ),
-          if (text == null && child != null) child,
-        ],
+            if (text == null && child != null) child,
+          ],
+        ),
       ),
     );
   }
@@ -224,6 +230,7 @@ class _ActionButtonState extends State<ActionButton> {
     final minimumSize = Size(widget.minWidth ?? 96, widget.height ?? 50);
 
     final onPressed = widget.onPressed != null && !_waiting ? _runAction : null;
+    final isDisabled = onPressed == null;
 
     final Widget button;
     switch (widget.type) {
@@ -240,7 +247,7 @@ class _ActionButtonState extends State<ActionButton> {
             minimumSize: minimumSize,
             shape: shape,
           ),
-          child: _buildButtonContents(),
+          child: _buildButtonContents(isDisabled: isDisabled),
         );
         break;
       case ActionButtonType.outline:
@@ -259,7 +266,7 @@ class _ActionButtonState extends State<ActionButton> {
             shape: shape,
           ),
           onPressed: onPressed,
-          child: _buildButtonContents(),
+          child: _buildButtonContents(isDisabled: isDisabled),
         );
         break;
       case ActionButtonType.text:
@@ -274,7 +281,7 @@ class _ActionButtonState extends State<ActionButton> {
             minimumSize: minimumSize,
             shape: shape,
           ),
-          child: _buildButtonContents(),
+          child: _buildButtonContents(isDisabled: isDisabled),
         );
         break;
     }
