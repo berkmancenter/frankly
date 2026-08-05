@@ -31,6 +31,9 @@ _$_Community _$$_CommunityFromJson(Map<String, dynamic> json) => _$_Community(
       enabledFeatureFlags: json['enabledFeatureFlags'] == null
           ? const []
           : communityFeatureFlagsFromJson(json['enabledFeatureFlags']),
+      internalFlags: json['internalFlags'] == null
+          ? const []
+          : communityInternalFlagsFromJson(json['internalFlags']),
       communitySettings: json['communitySettings'] == null
           ? null
           : CommunitySettings.fromJson(
@@ -73,6 +76,9 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) =>
       'tagLine': instance.tagLine,
       'enabledFeatureFlags': instance.enabledFeatureFlags
           .map((e) => _$CommunityFeatureFlagsEnumMap[e]!)
+          .toList(),
+      'internalFlags': instance.internalFlags
+          .map((e) => _$CommunityInternalFlagsEnumMap[e]!)
           .toList(),
       'communitySettings': instance.communitySettings?.toJson(),
       'eventSettings': instance.eventSettings?.toJson(),
@@ -117,6 +123,12 @@ const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.showSmartMatchingForBreakouts:
       'showSmartMatchingForBreakouts',
   CommunityFeatureFlags.suppressJoinEventEmails: 'suppressJoinEventEmails',
+};
+
+const _$CommunityInternalFlagsEnumMap = {
+  CommunityInternalFlags.useMatchApi: 'useMatchApi',
+  CommunityInternalFlags.allowAdditionalRegistrationField:
+      'allowAdditionalRegistrationField',
 };
 
 _$_Featured _$$_FeaturedFromJson(Map<String, dynamic> json) => _$_Featured(
