@@ -35,7 +35,8 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
   Widget _buildBreakoutsSection() {
     final eventProvider = EventProvider.watch(context);
     final event = eventProvider.event;
-    if (event.eventType == EventType.hostless ||
+    if (event.eventType == EventType.hosted ||
+        event.eventType == EventType.hostless ||
         event.breakoutRoomDefinition != null) {
       return Container(
         padding: const EdgeInsets.all(20),
@@ -90,7 +91,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
     final canEdit = context.watch<EventPermissionsProvider>().canEditEvent;
 
     final allowBreakoutsDefinition =
-        !EventProvider.watch(context).event.isHosted ||
+        !EventProvider.watch(context).event.isLiveStream ||
             eventProvider.allowPredefineBreakoutsOnHosted;
 
     return MeetingAgendaWrapper(
