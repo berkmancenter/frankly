@@ -228,6 +228,18 @@ class AssignToBreakouts {
       event,
     );
 
+    // Build free-text responses lookup for unmatched users who answered the
+    // event's free-text registration question. This is only ever sent to the
+    // hosted match API below -- the local frankly_match package only
+    // understands binary answer masks, so it has no way to factor free-text
+    // responses into local bucketMatch/groupMatch matching.
+    final participantFreeTextResponsesLookup = <String, String>{
+      for (final participant in unmatchedParticipants)
+        if (participant.freeTextResponse != null &&
+            participant.freeTextResponse!.isNotEmpty)
+          participant.id: participant.freeTextResponse!,
+    };
+
     final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
         .entries
         .where((e) => e.value.isNotEmpty)
@@ -241,11 +253,15 @@ class AssignToBreakouts {
     // Smart match users who had valid survey responses
     profile('smart matching');
     List<frankly_match.MatchGroup>? smartMatches;
-    if (useHostedApi && participantSurveyResponsesLookup.isNotEmpty) {
+    if (useHostedApi &&
+        (participantSurveyResponsesLookup.isNotEmpty ||
+            participantFreeTextResponsesLookup.isNotEmpty)) {
       print('Calling hosted Frankly Match API for smart matching');
       try {
         smartMatches = await createFranklyMatchApiGroups(
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+          participantFreeTextResponsesLookup:
+              participantFreeTextResponsesLookup,
           targetParticipantsPerRoom: targetParticipantsPerRoom,
         );
       } catch (e) {
@@ -456,6 +472,7 @@ class AssignToBreakouts {
           Participant.kFieldIsPresent,
           Participant.kAvailableForBreakoutSessionId,
           Participant.kFieldBreakoutRoomSurveyQuestions,
+          Participant.kFieldFreeTextResponse,
           'joinParameters.participant_id',
           'joinParameters.match_id',
           'joinParameters.eventId',
@@ -852,25 +869,53 @@ class AssignToBreakouts {
   }
 }
 
+/// Builds the request payload for the hosted Frankly Match API.
+///
+/// Each participant contributes a `binaryAnswerMask` (if they answered the
+/// boolean survey questions), a `freeTextResponse` (if they answered the
+/// event's free-text registration question), or both.
+@visibleForTesting
+Map<String, dynamic> buildFranklyMatchApiPayload({
+  required Map<String, String> participantSurveyResponsesLookup,
+  required Map<String, String> participantFreeTextResponsesLookup,
+  required int targetParticipantsPerRoom,
+}) {
+  final participantIds = {
+    ...participantSurveyResponsesLookup.keys,
+    ...participantFreeTextResponsesLookup.keys,
+  };
+  return {
+    // The algorithm parameter should become dynamic once more options
+    // are added to the API.
+    'algorithm': 'binaryGroupMatch',
+    'targetGroupSize': targetParticipantsPerRoom,
+    'participants': {
+      for (final id in participantIds)
+        id: {
+          if (participantSurveyResponsesLookup.containsKey(id))
+            'binaryAnswerMask': participantSurveyResponsesLookup[id],
+          if (participantFreeTextResponsesLookup.containsKey(id))
+            'freeTextResponse': participantFreeTextResponsesLookup[id],
+        },
+    },
+  };
+}
+
 /// Call the hosted Frankly Match API to return matched groups.
 Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
   required Map<String, String> participantSurveyResponsesLookup,
+  required Map<String, String> participantFreeTextResponsesLookup,
   required int targetParticipantsPerRoom,
 }) async {
   final apiKey = functions.config.get('frankly_match.api_key') as String;
   final uri = Uri.parse(
     functions.config.get('frankly_match.api_url') as String,
   );
-  final payload = {
-    // The algorithm parameter should become dynamic once more options
-    // are added to the API.
-    'algorithm': 'binaryGroupMatch',
-    'targetGroupSize': targetParticipantsPerRoom,
-    'participants': {
-      for (final entry in participantSurveyResponsesLookup.entries)
-        entry.key: {'binaryAnswerMask': entry.value},
-    },
-  };
+  final payload = buildFranklyMatchApiPayload(
+    participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+    participantFreeTextResponsesLookup: participantFreeTextResponsesLookup,
+    targetParticipantsPerRoom: targetParticipantsPerRoom,
+  );
   print('Calling Frankly Match API with payload: $payload');
 
   final response = await http.post(
