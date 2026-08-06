@@ -1,3 +1,4 @@
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
@@ -17,10 +18,12 @@ import 'package:provider/provider.dart';
 class SurveyDialogResult {
   final List<BreakoutQuestion> questions;
   final String? zipCode;
+  final String? freeTextResponse;
 
   SurveyDialogResult({
     required this.questions,
     this.zipCode,
+    this.freeTextResponse,
   });
 }
 
@@ -32,9 +35,10 @@ class SurveyDialog extends StatelessWidget {
     required EventProvider eventProvider,
   }) async {
     if (useBotControls) {
-      final breakoutQuestions =
-          eventProvider.event.breakoutRoomDefinition?.breakoutQuestions;
+      final breakoutRoomDefinition = eventProvider.event.breakoutRoomDefinition;
+      final breakoutQuestions = breakoutRoomDefinition?.breakoutQuestions;
       if (breakoutQuestions == null) return null;
+      final freeTextQuestionTitle = breakoutRoomDefinition?.freeTextQuestionTitle;
       return SurveyDialogResult(
         questions: breakoutQuestions.map((q) {
           final answerOptions = q.answers.expand((a) => a.options).toList();
@@ -44,6 +48,9 @@ class SurveyDialog extends StatelessWidget {
           return q.copyWith(answerOptionId: answerOptionId);
         }).toList(),
         zipCode: random.nextInt(100000).toString().padLeft(5, '0'),
+        freeTextResponse: isNullOrEmpty(freeTextQuestionTitle)
+            ? null
+            : 'Random response ${random.nextInt(100000)}',
       );
     }
 
@@ -87,6 +94,8 @@ class SurveyDialog extends StatelessWidget {
           SizedBox(height: spacerHeight),
           for (var questionData in surveyPresenter.surveyQuestions)
             _buildQuestionInfo(context, questionData),
+          if (!isNullOrEmpty(surveyPresenter.freeTextQuestionTitle))
+            _buildFreeTextQuestionInfo(context, surveyPresenter),
           SizedBox(height: spacerHeight),
           Align(
             alignment: Alignment.centerRight,
@@ -96,6 +105,8 @@ class SurveyDialog extends StatelessWidget {
                         SurveyDialogResult(
                           questions: surveyPresenter.surveyQuestions,
                           zipCode: surveyPresenter.zipCodeController.text,
+                          freeTextResponse:
+                              surveyPresenter.freeTextResponseController.text,
                         ),
                       )
                   : null,
@@ -105,6 +116,28 @@ class SurveyDialog extends StatelessWidget {
           SizedBox(height: spacerHeight),
         ],
       ),
+    );
+  }
+
+  Widget _buildFreeTextQuestionInfo(
+    BuildContext context,
+    SurveyPresenter surveyPresenter,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10),
+        HeightConstrainedText(
+          surveyPresenter.freeTextQuestionTitle!,
+          style: AppTextStyle.headline4,
+        ),
+        SizedBox(height: 5),
+        TextField(
+          controller: surveyPresenter.freeTextResponseController,
+          maxLines: 1,
+        ),
+        SizedBox(height: 10),
+      ],
     );
   }
 

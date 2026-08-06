@@ -122,12 +122,17 @@ class EventPageProvider with ChangeNotifier {
             }
           }
 
-          final hasSurveyQuestions = eventProvider
-                  .event.breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ??
-              false;
-          final showSurveyDialog = hasSurveyQuestions &&
-              (!eventProvider.event.isHosted ||
-                  eventProvider.allowPredefineBreakoutsOnHosted);
+          final breakoutRoomDefinition =
+              eventProvider.event.breakoutRoomDefinition;
+          final hasSurveyQuestions =
+              breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ?? false;
+          final hasRequiredFreeTextQuestion =
+              !isNullOrEmpty(breakoutRoomDefinition?.freeTextQuestionTitle) &&
+                  (breakoutRoomDefinition?.freeTextQuestionRequired ?? false);
+          final showSurveyDialog =
+              (hasSurveyQuestions || hasRequiredFreeTextQuestion) &&
+                  (!eventProvider.event.isLiveStream ||
+                      eventProvider.allowPredefineBreakoutsOnHosted);
           SurveyDialogResult? surveyDialogResult;
           if (showSurveyDialog) {
             surveyDialogResult = await SurveyDialog.show(
@@ -214,8 +219,15 @@ class EventPageProvider with ChangeNotifier {
     final answeredAllQuestions =
         participantAnswers.every((q) => q.answerOptionId.isNotEmpty);
 
-    final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
-        (currentSurveyQuestions.isNotEmpty) &&
+    final breakoutRoomDefinition = eventProvider.event.breakoutRoomDefinition;
+    final hasRequiredFreeTextQuestion =
+        !isNullOrEmpty(breakoutRoomDefinition?.freeTextQuestionTitle) &&
+            (breakoutRoomDefinition?.freeTextQuestionRequired ?? false);
+    final freeTextUnanswered = isNullOrEmpty(participant.freeTextResponse);
+
+    final showSurveyDialog = (((!questionsMatch || !answeredAllQuestions) &&
+                currentSurveyQuestions.isNotEmpty) ||
+            (hasRequiredFreeTextQuestion && freeTextUnanswered)) &&
         (!eventProvider.event.isHosted ||
             eventProvider.allowPredefineBreakoutsOnHosted);
     if (showSurveyDialog) {
@@ -338,7 +350,8 @@ class EventPageProvider with ChangeNotifier {
       final context = navigatorState.context;
       final cancelParticipation = await ConfirmDialog(
         title: appLocalizationService.getLocalization().cancelParticipation,
-        mainText: appLocalizationService.getLocalization().confirmCancelQuestion,
+        mainText:
+            appLocalizationService.getLocalization().confirmCancelQuestion,
         confirmText: appLocalizationService.getLocalization().yes,
         cancelText: appLocalizationService.getLocalization().no,
       ).show();

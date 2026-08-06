@@ -55,6 +55,9 @@ class BreakoutRoomPresenter extends ChangeNotifier {
   final List<BreakoutCategory> _unsavedCategories = [];
   bool get isCategoryNotSaved => _unsavedCategories.isNotEmpty;
 
+  bool _isFreeTextQuestionTitleUnsaved = false;
+  bool get isFreeTextQuestionTitleUnsaved => _isFreeTextQuestionTitleUnsaved;
+
   final void Function(String message, ToastType toastType) showRegularToast;
   final EventProvider eventProvider;
 
@@ -271,6 +274,24 @@ class BreakoutRoomPresenter extends ChangeNotifier {
         ToastType.failed,
       );
     }
+  }
+
+  void updateFreeTextQuestionTitle(String title) {
+    _breakoutRoomDefinition =
+        _breakoutRoomDefinition.copyWith(freeTextQuestionTitle: title);
+    _isFreeTextQuestionTitleUnsaved = true;
+    notifyListeners();
+  }
+
+  Future<void> saveFreeTextQuestionTitle() async {
+    _isFreeTextQuestionTitleUnsaved = false;
+    await _updateEventDetails();
+  }
+
+  Future<void> updateFreeTextQuestionRequired(bool required) async {
+    _breakoutRoomDefinition =
+        _breakoutRoomDefinition.copyWith(freeTextQuestionRequired: required);
+    await _updateEventDetails();
   }
 
   void addCategory() {

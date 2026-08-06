@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:intl/intl.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/breakout_room_definition/presentation/breakout_room_presenter.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
@@ -246,7 +247,60 @@ class _BreakoutRoomDefinitionCardState
                 context.read<BreakoutRoomPresenter>().addQuestion(),
             label: context.l10n.addQuestion,
           ),
+        if (context
+            .watch<CommunityProvider>()
+            .community
+            .allowAdditionalRegistrationField) ...[
+          SizedBox(height: 20),
+          _buildFreeTextQuestionCard(),
+        ],
       ],
+    );
+  }
+
+  Widget _buildFreeTextQuestionCard() {
+    final freeTextQuestionTitle =
+        _presenter.breakoutRoomDefinitionDetails.freeTextQuestionTitle;
+    final freeTextQuestionRequired =
+        _presenter.breakoutRoomDefinitionDetails.freeTextQuestionRequired;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: context.theme.colorScheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      padding: EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomTextField(
+            labelText: context.l10n.freeTextRegistrationQuestion,
+            maxLines: 1,
+            initialValue: freeTextQuestionTitle,
+            onChanged: (value) => _presenter.updateFreeTextQuestionTitle(value),
+          ),
+          SizedBox(height: 10),
+          FormBuilderCheckbox(
+            name: 'free_text_question_required',
+            title: HeightConstrainedText(
+              context.l10n.freeTextRegistrationQuestionRequired,
+              style: AppTextStyle.body,
+            ),
+            contentPadding: EdgeInsets.zero,
+            initialValue: freeTextQuestionRequired,
+            onChanged: (value) =>
+                _presenter.updateFreeTextQuestionRequired(value ?? false),
+          ),
+          SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: CircleSaveCheckButton(
+              isEnabled: _presenter.isFreeTextQuestionTitleUnsaved,
+              onPressed: () => _presenter.saveFreeTextQuestionTitle(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

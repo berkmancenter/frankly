@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/services.dart';
@@ -16,8 +17,16 @@ class SurveyPresenter extends ChangeNotifier {
   late List<BreakoutQuestion> _surveyQuestions;
 
   final zipCodeController = TextEditingController();
+  final freeTextResponseController = TextEditingController();
 
   List<BreakoutQuestion> get surveyQuestions => _surveyQuestions;
+
+  String? get freeTextQuestionTitle =>
+      eventProvider.event.breakoutRoomDefinition?.freeTextQuestionTitle;
+
+  bool get freeTextQuestionRequired =>
+      eventProvider.event.breakoutRoomDefinition?.freeTextQuestionRequired ??
+      false;
 
   void initialize() {
     final breakoutQuestions =
@@ -25,11 +34,15 @@ class SurveyPresenter extends ChangeNotifier {
 
     _surveyQuestions = breakoutQuestions.map((b) => b.copyWith()).toList();
     zipCodeController.addListener(notifyListeners);
+    freeTextResponseController.addListener(notifyListeners);
   }
 
   @override
   void dispose() {
     zipCodeController.removeListener(notifyListeners);
+    freeTextResponseController.removeListener(notifyListeners);
+    zipCodeController.dispose();
+    freeTextResponseController.dispose();
     super.dispose();
   }
 
@@ -53,6 +66,10 @@ class SurveyPresenter extends ChangeNotifier {
     final surveyCompleted =
         !surveyQuestions.any((q) => q.answerOptionId.isEmpty);
 
-    return surveyCompleted;
+    final freeTextCompleted = isNullOrEmpty(freeTextQuestionTitle) ||
+        !freeTextQuestionRequired ||
+        freeTextResponseController.text.isNotEmpty;
+
+    return surveyCompleted && freeTextCompleted;
   }
 }
