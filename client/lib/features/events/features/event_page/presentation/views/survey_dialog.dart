@@ -1,3 +1,4 @@
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
 import 'package:client/styles/styles.dart';
@@ -38,7 +39,8 @@ class SurveyDialog extends StatelessWidget {
       final breakoutRoomDefinition = eventProvider.event.breakoutRoomDefinition;
       final breakoutQuestions = breakoutRoomDefinition?.breakoutQuestions;
       if (breakoutQuestions == null) return null;
-      final freeTextQuestionTitle = breakoutRoomDefinition?.freeTextQuestionTitle;
+      final freeTextQuestionTitle =
+          breakoutRoomDefinition?.freeTextQuestionTitle;
       return SurveyDialogResult(
         questions: breakoutQuestions.map((q) {
           final answerOptions = q.answers.expand((a) => a.options).toList();
@@ -73,9 +75,6 @@ class SurveyDialog extends StatelessWidget {
 
     const spacerHeight = 20.0;
 
-    const String description =
-        'Please answer a few questions so we can match you with the right group.';
-
     return Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(
@@ -83,12 +82,12 @@ class SurveyDialog extends StatelessWidget {
         children: [
           SizedBox(height: 40),
           HeightConstrainedText(
-            'Finish RSVP',
+            context.l10n.finishRsvp,
             style: AppTextStyle.headline1,
           ),
           SizedBox(height: spacerHeight),
           HeightConstrainedText(
-            description,
+            context.l10n.pleaseAnswerQuestions,
             style: AppTextStyle.bodyMedium,
           ),
           SizedBox(height: spacerHeight),
@@ -110,7 +109,7 @@ class SurveyDialog extends StatelessWidget {
                         ),
                       )
                   : null,
-              text: 'Finish',
+              text: context.l10n.finish,
             ),
           ),
           SizedBox(height: spacerHeight),
