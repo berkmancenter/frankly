@@ -278,6 +278,7 @@ class Participant with _$Participant implements SerializeableRequest {
   static const String kFieldBreakoutRoomSurveyQuestions =
       'breakoutRoomSurveyQuestions';
   static const String kFieldZipCode = 'zipCode';
+  static const String kFieldFreeTextResponse = 'freeTextResponse';
   static const String kAvailableForBreakoutSessionId =
       'availableForBreakoutSessionId';
   static const String kFieldMuteOverride = 'muteOverride';
@@ -311,6 +312,7 @@ class Participant with _$Participant implements SerializeableRequest {
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? mostRecentPresentTime,
     String? zipCode,
+    String? freeTextResponse,
   }) = _Participant;
 
   factory Participant.fromJson(Map<String, dynamic> json) =>
@@ -461,6 +463,14 @@ class BreakoutRoomDefinition with _$BreakoutRoomDefinition {
         defaultValue: BreakoutAssignmentMethod.targetPerRoom,
         unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
     BreakoutAssignmentMethod assignmentMethod,
+
+    /// Title of an additional free-text registration question. Null/empty
+    /// means the event has no free-text question.
+    String? freeTextQuestionTitle,
+
+    /// Whether registrants must answer [freeTextQuestionTitle] in order to
+    /// RSVP. Has no effect if [freeTextQuestionTitle] is null/empty.
+    @Default(false) bool freeTextQuestionRequired,
   }) = _BreakoutRoomDefinition;
 
   @Deprecated('Use fromJsonMigration instead')

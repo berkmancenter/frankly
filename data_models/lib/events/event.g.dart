@@ -197,6 +197,7 @@ _$_Participant _$$_ParticipantFromJson(Map<String, dynamic> json) =>
       mostRecentPresentTime:
           dateTimeFromTimestamp(json['mostRecentPresentTime']),
       zipCode: json['zipCode'] as String?,
+      freeTextResponse: json['freeTextResponse'] as String?,
     );
 
 Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
@@ -220,6 +221,7 @@ Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
       'mostRecentPresentTime':
           serverTimestampOrNull(instance.mostRecentPresentTime),
       'zipCode': instance.zipCode,
+      'freeTextResponse': instance.freeTextResponse,
     };
 
 const _$ParticipantStatusEnumMap = {
@@ -380,6 +382,9 @@ _$_BreakoutRoomDefinition _$$_BreakoutRoomDefinitionFromJson(
               _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod'],
               unknownValue: BreakoutAssignmentMethod.targetPerRoom) ??
           BreakoutAssignmentMethod.targetPerRoom,
+      freeTextQuestionTitle: json['freeTextQuestionTitle'] as String?,
+      freeTextQuestionRequired:
+          json['freeTextQuestionRequired'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomDefinitionToJson(
@@ -393,6 +398,8 @@ Map<String, dynamic> _$$_BreakoutRoomDefinitionToJson(
       'categories': instance.categories.map((e) => e.toJson()).toList(),
       'assignmentMethod':
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod]!,
+      'freeTextQuestionTitle': instance.freeTextQuestionTitle,
+      'freeTextQuestionRequired': instance.freeTextQuestionRequired,
     };
 
 const _$BreakoutAssignmentMethodEnumMap = {
