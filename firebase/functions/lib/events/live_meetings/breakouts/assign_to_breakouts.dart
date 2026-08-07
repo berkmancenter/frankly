@@ -115,10 +115,13 @@ class AssignToBreakouts {
     Event event,
   ) {
     String? surveyAnswers;
-    final allQuestionsAnswered = participant.breakoutRoomSurveyQuestions
-        .every((q) => q.answerOptionId.isNotEmpty);
+    final multipleChoiceQuestions = participant.breakoutRoomSurveyQuestions
+        .where((q) => q.type == BreakoutQuestionType.multipleChoice)
+        .toList();
+    final allQuestionsAnswered =
+        multipleChoiceQuestions.every((q) => q.answerOptionId.isNotEmpty);
     if (allQuestionsAnswered) {
-      final surveyResponses = participant.breakoutRoomSurveyQuestions.map((q) {
+      final surveyResponses = multipleChoiceQuestions.map((q) {
         final answerId = q.answerOptionId;
         final answerIndex = q.answers.indexWhere(
           (answer) => answer.options.any((option) => option.id == answerId),
@@ -146,8 +149,10 @@ class AssignToBreakouts {
     Map<String, String> participantSurveyResponsesLookup,
     Event event,
   ) {
-    int numberOfQuestions =
-        event.breakoutRoomDefinition?.breakoutQuestions.length ?? 0;
+    int numberOfQuestions = event.breakoutRoomDefinition?.breakoutQuestions
+            .where((q) => q.type == BreakoutQuestionType.multipleChoice)
+            .length ??
+        0;
 
     final hasQuestions = numberOfQuestions > 0;
     if (!hasQuestions && participantSurveyResponsesLookup.values.isNotEmpty) {
@@ -229,15 +234,18 @@ class AssignToBreakouts {
     );
 
     // Build free-text responses lookup for unmatched users who answered the
-    // event's free-text registration question. This is only ever sent to the
-    // hosted match API below -- the local frankly_match package only
-    // understands binary answer masks, so it has no way to factor free-text
-    // responses into local bucketMatch/groupMatch matching.
+    // event's free-text registration question (at most one such question is
+    // allowed per event). This is only ever sent to the hosted match API
+    // below -- the local frankly_match package only understands binary
+    // answer masks, so it has no way to factor free-text responses into
+    // local bucketMatch/groupMatch matching.
     final participantFreeTextResponsesLookup = <String, String>{
       for (final participant in unmatchedParticipants)
-        if (participant.freeTextResponse != null &&
-            participant.freeTextResponse!.isNotEmpty)
-          participant.id: participant.freeTextResponse!,
+        for (final question in participant.breakoutRoomSurveyQuestions)
+          if (question.type == BreakoutQuestionType.freeText &&
+              question.freeTextAnswer != null &&
+              question.freeTextAnswer!.isNotEmpty)
+            participant.id: question.freeTextAnswer!,
     };
 
     final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
@@ -472,7 +480,6 @@ class AssignToBreakouts {
           Participant.kFieldIsPresent,
           Participant.kAvailableForBreakoutSessionId,
           Participant.kFieldBreakoutRoomSurveyQuestions,
-          Participant.kFieldFreeTextResponse,
           'joinParameters.participant_id',
           'joinParameters.match_id',
           'joinParameters.eventId',
