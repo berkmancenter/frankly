@@ -197,7 +197,6 @@ _$_Participant _$$_ParticipantFromJson(Map<String, dynamic> json) =>
       mostRecentPresentTime:
           dateTimeFromTimestamp(json['mostRecentPresentTime']),
       zipCode: json['zipCode'] as String?,
-      freeTextResponse: json['freeTextResponse'] as String?,
     );
 
 Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
@@ -221,7 +220,6 @@ Map<String, dynamic> _$$_ParticipantToJson(_$_Participant instance) =>
       'mostRecentPresentTime':
           serverTimestampOrNull(instance.mostRecentPresentTime),
       'zipCode': instance.zipCode,
-      'freeTextResponse': instance.freeTextResponse,
     };
 
 const _$ParticipantStatusEnumMap = {
@@ -382,9 +380,6 @@ _$_BreakoutRoomDefinition _$$_BreakoutRoomDefinitionFromJson(
               _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod'],
               unknownValue: BreakoutAssignmentMethod.targetPerRoom) ??
           BreakoutAssignmentMethod.targetPerRoom,
-      freeTextQuestionTitle: json['freeTextQuestionTitle'] as String?,
-      freeTextQuestionRequired:
-          json['freeTextQuestionRequired'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomDefinitionToJson(
@@ -398,14 +393,11 @@ Map<String, dynamic> _$$_BreakoutRoomDefinitionToJson(
       'categories': instance.categories.map((e) => e.toJson()).toList(),
       'assignmentMethod':
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod]!,
-      'freeTextQuestionTitle': instance.freeTextQuestionTitle,
-      'freeTextQuestionRequired': instance.freeTextQuestionRequired,
     };
 
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };
 
 _$_SurveyQuestion _$$_SurveyQuestionFromJson(Map<String, dynamic> json) =>
@@ -430,19 +422,31 @@ _$_BreakoutQuestion _$$_BreakoutQuestionFromJson(Map<String, dynamic> json) =>
     _$_BreakoutQuestion(
       id: json['id'] as String,
       title: json['title'] as String,
-      answerOptionId: json['answerOptionId'] as String,
-      answers: (json['answers'] as List<dynamic>)
-          .map((e) => BreakoutAnswer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      type: $enumDecodeNullable(_$BreakoutQuestionTypeEnumMap, json['type'],
+              unknownValue: BreakoutQuestionType.multipleChoice) ??
+          BreakoutQuestionType.multipleChoice,
+      answerOptionId: json['answerOptionId'] as String? ?? '',
+      answers: (json['answers'] as List<dynamic>?)
+              ?.map((e) => BreakoutAnswer.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      freeTextAnswer: json['freeTextAnswer'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutQuestionToJson(_$_BreakoutQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'type': _$BreakoutQuestionTypeEnumMap[instance.type]!,
       'answerOptionId': instance.answerOptionId,
       'answers': instance.answers.map((e) => e.toJson()).toList(),
+      'freeTextAnswer': instance.freeTextAnswer,
     };
+
+const _$BreakoutQuestionTypeEnumMap = {
+  BreakoutQuestionType.multipleChoice: 'multipleChoice',
+  BreakoutQuestionType.freeText: 'freeText',
+};
 
 _$_BreakoutAnswer _$$_BreakoutAnswerFromJson(Map<String, dynamic> json) =>
     _$_BreakoutAnswer(

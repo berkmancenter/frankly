@@ -1759,7 +1759,6 @@ mixin _$Participant {
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
   DateTime? get mostRecentPresentTime => throw _privateConstructorUsedError;
   String? get zipCode => throw _privateConstructorUsedError;
-  String? get freeTextResponse => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1793,8 +1792,7 @@ abstract class $ParticipantCopyWith<$Res> {
       List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       DateTime? mostRecentPresentTime,
-      String? zipCode,
-      String? freeTextResponse});
+      String? zipCode});
 }
 
 /// @nodoc
@@ -1827,7 +1825,6 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
     Object? breakoutRoomSurveyQuestions = null,
     Object? mostRecentPresentTime = freezed,
     Object? zipCode = freezed,
-    Object? freeTextResponse = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1898,10 +1895,6 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
               as String?,
-      freeTextResponse: freezed == freeTextResponse
-          ? _value.freeTextResponse
-          : freeTextResponse // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -1934,8 +1927,7 @@ abstract class _$$_ParticipantCopyWith<$Res>
       List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       DateTime? mostRecentPresentTime,
-      String? zipCode,
-      String? freeTextResponse});
+      String? zipCode});
 }
 
 /// @nodoc
@@ -1966,7 +1958,6 @@ class __$$_ParticipantCopyWithImpl<$Res>
     Object? breakoutRoomSurveyQuestions = null,
     Object? mostRecentPresentTime = freezed,
     Object? zipCode = freezed,
-    Object? freeTextResponse = freezed,
   }) {
     return _then(_$_Participant(
       id: null == id
@@ -2037,10 +2028,6 @@ class __$$_ParticipantCopyWithImpl<$Res>
           ? _value.zipCode
           : zipCode // ignore: cast_nullable_to_non_nullable
               as String?,
-      freeTextResponse: freezed == freeTextResponse
-          ? _value.freeTextResponse
-          : freeTextResponse // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -2068,8 +2055,7 @@ class _$_Participant implements _Participant {
       this.breakoutRoomSurveyQuestions = const [],
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       this.mostRecentPresentTime,
-      this.zipCode,
-      this.freeTextResponse});
+      this.zipCode});
 
   factory _$_Participant.fromJson(Map<String, dynamic> json) =>
       _$$_ParticipantFromJson(json);
@@ -2123,12 +2109,10 @@ class _$_Participant implements _Participant {
   final DateTime? mostRecentPresentTime;
   @override
   final String? zipCode;
-  @override
-  final String? freeTextResponse;
 
   @override
   String toString() {
-    return 'Participant(id: $id, communityId: $communityId, externalCommunityId: $externalCommunityId, templateId: $templateId, lastUpdatedTime: $lastUpdatedTime, createdDate: $createdDate, scheduledTime: $scheduledTime, status: $status, isPresent: $isPresent, availableForBreakoutSessionId: $availableForBreakoutSessionId, membershipStatus: $membershipStatus, currentBreakoutRoomId: $currentBreakoutRoomId, muteOverride: $muteOverride, joinParameters: $joinParameters, breakoutRoomSurveyQuestions: $breakoutRoomSurveyQuestions, mostRecentPresentTime: $mostRecentPresentTime, zipCode: $zipCode, freeTextResponse: $freeTextResponse)';
+    return 'Participant(id: $id, communityId: $communityId, externalCommunityId: $externalCommunityId, templateId: $templateId, lastUpdatedTime: $lastUpdatedTime, createdDate: $createdDate, scheduledTime: $scheduledTime, status: $status, isPresent: $isPresent, availableForBreakoutSessionId: $availableForBreakoutSessionId, membershipStatus: $membershipStatus, currentBreakoutRoomId: $currentBreakoutRoomId, muteOverride: $muteOverride, joinParameters: $joinParameters, breakoutRoomSurveyQuestions: $breakoutRoomSurveyQuestions, mostRecentPresentTime: $mostRecentPresentTime, zipCode: $zipCode)';
   }
 
   @override
@@ -2169,9 +2153,7 @@ class _$_Participant implements _Participant {
                 breakoutRoomSurveyQuestions) &&
             (identical(other.mostRecentPresentTime, mostRecentPresentTime) ||
                 other.mostRecentPresentTime == mostRecentPresentTime) &&
-            (identical(other.zipCode, zipCode) || other.zipCode == zipCode) &&
-            (identical(other.freeTextResponse, freeTextResponse) ||
-                other.freeTextResponse == freeTextResponse));
+            (identical(other.zipCode, zipCode) || other.zipCode == zipCode));
   }
 
   @JsonKey(ignore: true)
@@ -2194,8 +2176,7 @@ class _$_Participant implements _Participant {
       const DeepCollectionEquality().hash(joinParameters),
       const DeepCollectionEquality().hash(breakoutRoomSurveyQuestions),
       mostRecentPresentTime,
-      zipCode,
-      freeTextResponse);
+      zipCode);
 
   @JsonKey(ignore: true)
   @override
@@ -2232,8 +2213,7 @@ abstract class _Participant implements Participant {
       final List<BreakoutQuestion> breakoutRoomSurveyQuestions,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
       final DateTime? mostRecentPresentTime,
-      final String? zipCode,
-      final String? freeTextResponse}) = _$_Participant;
+      final String? zipCode}) = _$_Participant;
 
   factory _Participant.fromJson(Map<String, dynamic> json) =
       _$_Participant.fromJson;
@@ -2283,8 +2263,6 @@ abstract class _Participant implements Participant {
   DateTime? get mostRecentPresentTime;
   @override
   String? get zipCode;
-  @override
-  String? get freeTextResponse;
   @override
   @JsonKey(ignore: true)
   _$$_ParticipantCopyWith<_$_Participant> get copyWith =>
@@ -3347,14 +3325,6 @@ mixin _$BreakoutRoomDefinition {
   BreakoutAssignmentMethod get assignmentMethod =>
       throw _privateConstructorUsedError;
 
-  /// Title of an additional free-text registration question. Null/empty
-  /// means the event has no free-text question.
-  String? get freeTextQuestionTitle => throw _privateConstructorUsedError;
-
-  /// Whether registrants must answer [freeTextQuestionTitle] in order to
-  /// RSVP. Has no effect if [freeTextQuestionTitle] is null/empty.
-  bool get freeTextQuestionRequired => throw _privateConstructorUsedError;
-
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $BreakoutRoomDefinitionCopyWith<BreakoutRoomDefinition> get copyWith =>
@@ -3377,9 +3347,7 @@ abstract class $BreakoutRoomDefinitionCopyWith<$Res> {
       @JsonKey(
           defaultValue: BreakoutAssignmentMethod.targetPerRoom,
           unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
-      BreakoutAssignmentMethod assignmentMethod,
-      String? freeTextQuestionTitle,
-      bool freeTextQuestionRequired});
+      BreakoutAssignmentMethod assignmentMethod});
 }
 
 /// @nodoc
@@ -3402,8 +3370,6 @@ class _$BreakoutRoomDefinitionCopyWithImpl<$Res,
     Object? breakoutQuestions = null,
     Object? categories = null,
     Object? assignmentMethod = null,
-    Object? freeTextQuestionTitle = freezed,
-    Object? freeTextQuestionRequired = null,
   }) {
     return _then(_value.copyWith(
       creatorId: freezed == creatorId
@@ -3430,14 +3396,6 @@ class _$BreakoutRoomDefinitionCopyWithImpl<$Res,
           ? _value.assignmentMethod
           : assignmentMethod // ignore: cast_nullable_to_non_nullable
               as BreakoutAssignmentMethod,
-      freeTextQuestionTitle: freezed == freeTextQuestionTitle
-          ? _value.freeTextQuestionTitle
-          : freeTextQuestionTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
-      freeTextQuestionRequired: null == freeTextQuestionRequired
-          ? _value.freeTextQuestionRequired
-          : freeTextQuestionRequired // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -3460,9 +3418,7 @@ abstract class _$$_BreakoutRoomDefinitionCopyWith<$Res>
       @JsonKey(
           defaultValue: BreakoutAssignmentMethod.targetPerRoom,
           unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
-      BreakoutAssignmentMethod assignmentMethod,
-      String? freeTextQuestionTitle,
-      bool freeTextQuestionRequired});
+      BreakoutAssignmentMethod assignmentMethod});
 }
 
 /// @nodoc
@@ -3483,8 +3439,6 @@ class __$$_BreakoutRoomDefinitionCopyWithImpl<$Res>
     Object? breakoutQuestions = null,
     Object? categories = null,
     Object? assignmentMethod = null,
-    Object? freeTextQuestionTitle = freezed,
-    Object? freeTextQuestionRequired = null,
   }) {
     return _then(_$_BreakoutRoomDefinition(
       creatorId: freezed == creatorId
@@ -3511,14 +3465,6 @@ class __$$_BreakoutRoomDefinitionCopyWithImpl<$Res>
           ? _value.assignmentMethod
           : assignmentMethod // ignore: cast_nullable_to_non_nullable
               as BreakoutAssignmentMethod,
-      freeTextQuestionTitle: freezed == freeTextQuestionTitle
-          ? _value.freeTextQuestionTitle
-          : freeTextQuestionTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
-      freeTextQuestionRequired: null == freeTextQuestionRequired
-          ? _value.freeTextQuestionRequired
-          : freeTextQuestionRequired // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -3535,9 +3481,7 @@ class _$_BreakoutRoomDefinition implements _BreakoutRoomDefinition {
       @JsonKey(
           defaultValue: BreakoutAssignmentMethod.targetPerRoom,
           unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
-      this.assignmentMethod = BreakoutAssignmentMethod.targetPerRoom,
-      this.freeTextQuestionTitle,
-      this.freeTextQuestionRequired = false});
+      this.assignmentMethod = BreakoutAssignmentMethod.targetPerRoom});
 
   factory _$_BreakoutRoomDefinition.fromJson(Map<String, dynamic> json) =>
       _$$_BreakoutRoomDefinitionFromJson(json);
@@ -3562,20 +3506,9 @@ class _$_BreakoutRoomDefinition implements _BreakoutRoomDefinition {
       unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
   final BreakoutAssignmentMethod assignmentMethod;
 
-  /// Title of an additional free-text registration question. Null/empty
-  /// means the event has no free-text question.
-  @override
-  final String? freeTextQuestionTitle;
-
-  /// Whether registrants must answer [freeTextQuestionTitle] in order to
-  /// RSVP. Has no effect if [freeTextQuestionTitle] is null/empty.
-  @override
-  @JsonKey()
-  final bool freeTextQuestionRequired;
-
   @override
   String toString() {
-    return 'BreakoutRoomDefinition(creatorId: $creatorId, targetParticipants: $targetParticipants, questions: $questions, breakoutQuestions: $breakoutQuestions, categories: $categories, assignmentMethod: $assignmentMethod, freeTextQuestionTitle: $freeTextQuestionTitle, freeTextQuestionRequired: $freeTextQuestionRequired)';
+    return 'BreakoutRoomDefinition(creatorId: $creatorId, targetParticipants: $targetParticipants, questions: $questions, breakoutQuestions: $breakoutQuestions, categories: $categories, assignmentMethod: $assignmentMethod)';
   }
 
   @override
@@ -3593,12 +3526,7 @@ class _$_BreakoutRoomDefinition implements _BreakoutRoomDefinition {
             const DeepCollectionEquality()
                 .equals(other.categories, categories) &&
             (identical(other.assignmentMethod, assignmentMethod) ||
-                other.assignmentMethod == assignmentMethod) &&
-            (identical(other.freeTextQuestionTitle, freeTextQuestionTitle) ||
-                other.freeTextQuestionTitle == freeTextQuestionTitle) &&
-            (identical(
-                    other.freeTextQuestionRequired, freeTextQuestionRequired) ||
-                other.freeTextQuestionRequired == freeTextQuestionRequired));
+                other.assignmentMethod == assignmentMethod));
   }
 
   @JsonKey(ignore: true)
@@ -3610,9 +3538,7 @@ class _$_BreakoutRoomDefinition implements _BreakoutRoomDefinition {
       const DeepCollectionEquality().hash(questions),
       const DeepCollectionEquality().hash(breakoutQuestions),
       const DeepCollectionEquality().hash(categories),
-      assignmentMethod,
-      freeTextQuestionTitle,
-      freeTextQuestionRequired);
+      assignmentMethod);
 
   @JsonKey(ignore: true)
   @override
@@ -3631,18 +3557,17 @@ class _$_BreakoutRoomDefinition implements _BreakoutRoomDefinition {
 
 abstract class _BreakoutRoomDefinition implements BreakoutRoomDefinition {
   factory _BreakoutRoomDefinition(
-      {final String? creatorId,
-      final int? targetParticipants,
-      @Deprecated('use breakoutQuestions instead')
-      final List<SurveyQuestion> questions,
-      final List<BreakoutQuestion> breakoutQuestions,
-      final List<BreakoutCategory> categories,
-      @JsonKey(
-          defaultValue: BreakoutAssignmentMethod.targetPerRoom,
-          unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
-      final BreakoutAssignmentMethod assignmentMethod,
-      final String? freeTextQuestionTitle,
-      final bool freeTextQuestionRequired}) = _$_BreakoutRoomDefinition;
+          {final String? creatorId,
+          final int? targetParticipants,
+          @Deprecated('use breakoutQuestions instead')
+          final List<SurveyQuestion> questions,
+          final List<BreakoutQuestion> breakoutQuestions,
+          final List<BreakoutCategory> categories,
+          @JsonKey(
+              defaultValue: BreakoutAssignmentMethod.targetPerRoom,
+              unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
+          final BreakoutAssignmentMethod assignmentMethod}) =
+      _$_BreakoutRoomDefinition;
 
   factory _BreakoutRoomDefinition.fromJson(Map<String, dynamic> json) =
       _$_BreakoutRoomDefinition.fromJson;
@@ -3663,16 +3588,6 @@ abstract class _BreakoutRoomDefinition implements BreakoutRoomDefinition {
       defaultValue: BreakoutAssignmentMethod.targetPerRoom,
       unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
   BreakoutAssignmentMethod get assignmentMethod;
-  @override
-
-  /// Title of an additional free-text registration question. Null/empty
-  /// means the event has no free-text question.
-  String? get freeTextQuestionTitle;
-  @override
-
-  /// Whether registrants must answer [freeTextQuestionTitle] in order to
-  /// RSVP. Has no effect if [freeTextQuestionTitle] is null/empty.
-  bool get freeTextQuestionRequired;
   @override
   @JsonKey(ignore: true)
   _$$_BreakoutRoomDefinitionCopyWith<_$_BreakoutRoomDefinition> get copyWith =>
@@ -3902,10 +3817,18 @@ BreakoutQuestion _$BreakoutQuestionFromJson(Map<String, dynamic> json) {
 mixin _$BreakoutQuestion {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(
+      defaultValue: BreakoutQuestionType.multipleChoice,
+      unknownEnumValue: BreakoutQuestionType.multipleChoice)
+  BreakoutQuestionType get type => throw _privateConstructorUsedError;
 
-  /// ID of selected answer from Finish RSVP page
+  /// ID of selected answer from Finish RSVP page. Only used when [type] is
+  /// [BreakoutQuestionType.multipleChoice].
   String get answerOptionId => throw _privateConstructorUsedError;
   List<BreakoutAnswer> get answers => throw _privateConstructorUsedError;
+
+  /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+  String? get freeTextAnswer => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3922,8 +3845,13 @@ abstract class $BreakoutQuestionCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      BreakoutQuestionType type,
       String answerOptionId,
-      List<BreakoutAnswer> answers});
+      List<BreakoutAnswer> answers,
+      String? freeTextAnswer});
 }
 
 /// @nodoc
@@ -3941,8 +3869,10 @@ class _$BreakoutQuestionCopyWithImpl<$Res, $Val extends BreakoutQuestion>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? type = null,
     Object? answerOptionId = null,
     Object? answers = null,
+    Object? freeTextAnswer = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -3953,6 +3883,10 @@ class _$BreakoutQuestionCopyWithImpl<$Res, $Val extends BreakoutQuestion>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as BreakoutQuestionType,
       answerOptionId: null == answerOptionId
           ? _value.answerOptionId
           : answerOptionId // ignore: cast_nullable_to_non_nullable
@@ -3961,6 +3895,10 @@ class _$BreakoutQuestionCopyWithImpl<$Res, $Val extends BreakoutQuestion>
           ? _value.answers
           : answers // ignore: cast_nullable_to_non_nullable
               as List<BreakoutAnswer>,
+      freeTextAnswer: freezed == freeTextAnswer
+          ? _value.freeTextAnswer
+          : freeTextAnswer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -3976,8 +3914,13 @@ abstract class _$$_BreakoutQuestionCopyWith<$Res>
   $Res call(
       {String id,
       String title,
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      BreakoutQuestionType type,
       String answerOptionId,
-      List<BreakoutAnswer> answers});
+      List<BreakoutAnswer> answers,
+      String? freeTextAnswer});
 }
 
 /// @nodoc
@@ -3993,8 +3936,10 @@ class __$$_BreakoutQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? type = null,
     Object? answerOptionId = null,
     Object? answers = null,
+    Object? freeTextAnswer = freezed,
   }) {
     return _then(_$_BreakoutQuestion(
       id: null == id
@@ -4005,6 +3950,10 @@ class __$$_BreakoutQuestionCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as BreakoutQuestionType,
       answerOptionId: null == answerOptionId
           ? _value.answerOptionId
           : answerOptionId // ignore: cast_nullable_to_non_nullable
@@ -4013,6 +3962,10 @@ class __$$_BreakoutQuestionCopyWithImpl<$Res>
           ? _value.answers
           : answers // ignore: cast_nullable_to_non_nullable
               as List<BreakoutAnswer>,
+      freeTextAnswer: freezed == freeTextAnswer
+          ? _value.freeTextAnswer
+          : freeTextAnswer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -4023,8 +3976,13 @@ class _$_BreakoutQuestion implements _BreakoutQuestion {
   _$_BreakoutQuestion(
       {required this.id,
       required this.title,
-      required this.answerOptionId,
-      required this.answers});
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      this.type = BreakoutQuestionType.multipleChoice,
+      this.answerOptionId = '',
+      this.answers = const [],
+      this.freeTextAnswer});
 
   factory _$_BreakoutQuestion.fromJson(Map<String, dynamic> json) =>
       _$$_BreakoutQuestionFromJson(json);
@@ -4033,16 +3991,28 @@ class _$_BreakoutQuestion implements _BreakoutQuestion {
   final String id;
   @override
   final String title;
-
-  /// ID of selected answer from Finish RSVP page
   @override
+  @JsonKey(
+      defaultValue: BreakoutQuestionType.multipleChoice,
+      unknownEnumValue: BreakoutQuestionType.multipleChoice)
+  final BreakoutQuestionType type;
+
+  /// ID of selected answer from Finish RSVP page. Only used when [type] is
+  /// [BreakoutQuestionType.multipleChoice].
+  @override
+  @JsonKey()
   final String answerOptionId;
   @override
+  @JsonKey()
   final List<BreakoutAnswer> answers;
+
+  /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+  @override
+  final String? freeTextAnswer;
 
   @override
   String toString() {
-    return 'BreakoutQuestion(id: $id, title: $title, answerOptionId: $answerOptionId, answers: $answers)';
+    return 'BreakoutQuestion(id: $id, title: $title, type: $type, answerOptionId: $answerOptionId, answers: $answers, freeTextAnswer: $freeTextAnswer)';
   }
 
   @override
@@ -4052,15 +4022,18 @@ class _$_BreakoutQuestion implements _BreakoutQuestion {
             other is _$_BreakoutQuestion &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.answerOptionId, answerOptionId) ||
                 other.answerOptionId == answerOptionId) &&
-            const DeepCollectionEquality().equals(other.answers, answers));
+            const DeepCollectionEquality().equals(other.answers, answers) &&
+            (identical(other.freeTextAnswer, freeTextAnswer) ||
+                other.freeTextAnswer == freeTextAnswer));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, answerOptionId,
-      const DeepCollectionEquality().hash(answers));
+  int get hashCode => Object.hash(runtimeType, id, title, type, answerOptionId,
+      const DeepCollectionEquality().hash(answers), freeTextAnswer);
 
   @JsonKey(ignore: true)
   @override
@@ -4080,8 +4053,13 @@ abstract class _BreakoutQuestion implements BreakoutQuestion {
   factory _BreakoutQuestion(
       {required final String id,
       required final String title,
-      required final String answerOptionId,
-      required final List<BreakoutAnswer> answers}) = _$_BreakoutQuestion;
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      final BreakoutQuestionType type,
+      final String answerOptionId,
+      final List<BreakoutAnswer> answers,
+      final String? freeTextAnswer}) = _$_BreakoutQuestion;
 
   factory _BreakoutQuestion.fromJson(Map<String, dynamic> json) =
       _$_BreakoutQuestion.fromJson;
@@ -4091,11 +4069,21 @@ abstract class _BreakoutQuestion implements BreakoutQuestion {
   @override
   String get title;
   @override
+  @JsonKey(
+      defaultValue: BreakoutQuestionType.multipleChoice,
+      unknownEnumValue: BreakoutQuestionType.multipleChoice)
+  BreakoutQuestionType get type;
+  @override
 
-  /// ID of selected answer from Finish RSVP page
+  /// ID of selected answer from Finish RSVP page. Only used when [type] is
+  /// [BreakoutQuestionType.multipleChoice].
   String get answerOptionId;
   @override
   List<BreakoutAnswer> get answers;
+  @override
+
+  /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+  String? get freeTextAnswer;
   @override
   @JsonKey(ignore: true)
   _$$_BreakoutQuestionCopyWith<_$_BreakoutQuestion> get copyWith =>

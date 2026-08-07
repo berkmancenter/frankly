@@ -278,7 +278,6 @@ class Participant with _$Participant implements SerializeableRequest {
   static const String kFieldBreakoutRoomSurveyQuestions =
       'breakoutRoomSurveyQuestions';
   static const String kFieldZipCode = 'zipCode';
-  static const String kFieldFreeTextResponse = 'freeTextResponse';
   static const String kAvailableForBreakoutSessionId =
       'availableForBreakoutSessionId';
   static const String kFieldMuteOverride = 'muteOverride';
@@ -312,7 +311,6 @@ class Participant with _$Participant implements SerializeableRequest {
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestampOrNull)
     DateTime? mostRecentPresentTime,
     String? zipCode,
-    String? freeTextResponse,
   }) = _Participant;
 
   factory Participant.fromJson(Map<String, dynamic> json) =>
@@ -442,9 +440,6 @@ enum BreakoutAssignmentMethod {
 
   /// Algorithm for matching by answers to survey questions
   smartMatch,
-
-  /// Assign Participants based on category
-  category
 }
 
 /// Defines the breakout room size and matching strategy to be used during this meeting.
@@ -463,14 +458,6 @@ class BreakoutRoomDefinition with _$BreakoutRoomDefinition {
         defaultValue: BreakoutAssignmentMethod.targetPerRoom,
         unknownEnumValue: BreakoutAssignmentMethod.targetPerRoom)
     BreakoutAssignmentMethod assignmentMethod,
-
-    /// Title of an additional free-text registration question. Null/empty
-    /// means the event has no free-text question.
-    String? freeTextQuestionTitle,
-
-    /// Whether registrants must answer [freeTextQuestionTitle] in order to
-    /// RSVP. Has no effect if [freeTextQuestionTitle] is null/empty.
-    @Default(false) bool freeTextQuestionRequired,
   }) = _BreakoutRoomDefinition;
 
   @Deprecated('Use fromJsonMigration instead')
@@ -549,15 +536,29 @@ class SurveyQuestion with _$SurveyQuestion {
       _$SurveyQuestionFromJson(json);
 }
 
+enum BreakoutQuestionType {
+  multipleChoice,
+  freeText,
+}
+
 @Freezed(makeCollectionsUnmodifiable: false)
 class BreakoutQuestion with _$BreakoutQuestion {
   factory BreakoutQuestion({
     required String id,
     required String title,
+    @Default(BreakoutQuestionType.multipleChoice)
+    @JsonKey(
+        defaultValue: BreakoutQuestionType.multipleChoice,
+        unknownEnumValue: BreakoutQuestionType.multipleChoice)
+    BreakoutQuestionType type,
 
-    /// ID of selected answer from Finish RSVP page
-    required String answerOptionId,
-    required List<BreakoutAnswer> answers,
+    /// ID of selected answer from Finish RSVP page. Only used when [type] is
+    /// [BreakoutQuestionType.multipleChoice].
+    @Default('') String answerOptionId,
+    @Default([]) List<BreakoutAnswer> answers,
+
+    /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+    String? freeTextAnswer,
   }) = _BreakoutQuestion;
 
   factory BreakoutQuestion.fromJson(Map<String, dynamic> json) =>
