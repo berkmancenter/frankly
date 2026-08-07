@@ -122,17 +122,12 @@ class EventPageProvider with ChangeNotifier {
             }
           }
 
-          final breakoutRoomDefinition =
-              eventProvider.event.breakoutRoomDefinition;
-          final hasSurveyQuestions =
-              breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ?? false;
-          final hasRequiredFreeTextQuestion =
-              !isNullOrEmpty(breakoutRoomDefinition?.freeTextQuestionTitle) &&
-                  (breakoutRoomDefinition?.freeTextQuestionRequired ?? false);
-          final showSurveyDialog =
-              (hasSurveyQuestions || hasRequiredFreeTextQuestion) &&
-                  (!eventProvider.event.isLiveStream ||
-                      eventProvider.allowPredefineBreakoutsOnHosted);
+          final hasSurveyQuestions = eventProvider
+                  .event.breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ??
+              false;
+          final showSurveyDialog = hasSurveyQuestions &&
+              (!eventProvider.event.isLiveStream ||
+                  eventProvider.allowPredefineBreakoutsOnHosted);
           SurveyDialogResult? surveyDialogResult;
           if (showSurveyDialog) {
             surveyDialogResult = await SurveyDialog.show(
@@ -200,6 +195,7 @@ class EventPageProvider with ChangeNotifier {
             (q) => BreakoutQuestion(
               id: q.id,
               title: q.title,
+              type: q.type,
               answerOptionId: '',
               answers: q.answers,
             ),
@@ -210,24 +206,22 @@ class EventPageProvider with ChangeNotifier {
             (q) => BreakoutQuestion(
               id: q.id,
               title: q.title,
+              type: q.type,
               answerOptionId: '',
               answers: q.answers,
             ),
           )
           .toList(),
     );
-    final answeredAllQuestions =
-        participantAnswers.every((q) => q.answerOptionId.isNotEmpty);
+    final answeredAllQuestions = participantAnswers.every((q) {
+      if (q.type == BreakoutQuestionType.freeText) {
+        return !isNullOrEmpty(q.freeTextAnswer);
+      }
+      return q.answerOptionId.isNotEmpty;
+    });
 
-    final breakoutRoomDefinition = eventProvider.event.breakoutRoomDefinition;
-    final hasRequiredFreeTextQuestion =
-        !isNullOrEmpty(breakoutRoomDefinition?.freeTextQuestionTitle) &&
-            (breakoutRoomDefinition?.freeTextQuestionRequired ?? false);
-    final freeTextUnanswered = isNullOrEmpty(participant.freeTextResponse);
-
-    final showSurveyDialog = (((!questionsMatch || !answeredAllQuestions) &&
-                currentSurveyQuestions.isNotEmpty) ||
-            (hasRequiredFreeTextQuestion && freeTextUnanswered)) &&
+    final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
+        (currentSurveyQuestions.isNotEmpty) &&
         (!eventProvider.event.isHosted ||
             eventProvider.allowPredefineBreakoutsOnHosted);
     if (showSurveyDialog) {

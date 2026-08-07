@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -21,26 +22,23 @@ class SurveyPresenter extends ChangeNotifier {
 
   List<BreakoutQuestion> get surveyQuestions => _surveyQuestions;
 
-  String? get freeTextQuestionTitle =>
-      eventProvider.event.breakoutRoomDefinition?.freeTextQuestionTitle;
-
-  bool get freeTextQuestionRequired =>
-      eventProvider.event.breakoutRoomDefinition?.freeTextQuestionRequired ??
-      false;
+  BreakoutQuestion? get freeTextQuestion => _surveyQuestions
+      .firstWhereOrNull((q) => q.type == BreakoutQuestionType.freeText);
 
   void initialize() {
     final breakoutQuestions =
         eventProvider.event.breakoutRoomDefinition?.breakoutQuestions ?? [];
 
     _surveyQuestions = breakoutQuestions.map((b) => b.copyWith()).toList();
+    freeTextResponseController.text = freeTextQuestion?.freeTextAnswer ?? '';
     zipCodeController.addListener(notifyListeners);
-    freeTextResponseController.addListener(notifyListeners);
+    freeTextResponseController.addListener(_onFreeTextResponseChanged);
   }
 
   @override
   void dispose() {
     zipCodeController.removeListener(notifyListeners);
-    freeTextResponseController.removeListener(notifyListeners);
+    freeTextResponseController.removeListener(_onFreeTextResponseChanged);
     zipCodeController.dispose();
     freeTextResponseController.dispose();
     super.dispose();
@@ -62,14 +60,25 @@ class SurveyPresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void _onFreeTextResponseChanged() {
+    final question = freeTextQuestion;
+    if (question == null) return;
+
+    final questionIndex = _surveyQuestions.indexWhere(
+      (q) => q.id == question.id,
+    );
+    _surveyQuestions[questionIndex] = _surveyQuestions[questionIndex]
+        .copyWith(freeTextAnswer: freeTextResponseController.text);
+
+    notifyListeners();
+  }
+
   bool checkSurveyCompleted() {
-    final surveyCompleted =
-        !surveyQuestions.any((q) => q.answerOptionId.isEmpty);
-
-    final freeTextCompleted = isNullOrEmpty(freeTextQuestionTitle) ||
-        !freeTextQuestionRequired ||
-        freeTextResponseController.text.isNotEmpty;
-
-    return surveyCompleted && freeTextCompleted;
+    return surveyQuestions.every((q) {
+      if (q.type == BreakoutQuestionType.freeText) {
+        return !isNullOrEmpty(q.freeTextAnswer);
+      }
+      return q.answerOptionId.isNotEmpty;
+    });
   }
 }

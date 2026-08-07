@@ -1,6 +1,6 @@
 import 'package:client/core/localization/localization_helper.dart';
-import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/utils/random_utils.dart';
+import 'package:client/core/widgets/custom_text_field.dart';
 import 'package:client/styles/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +19,10 @@ import 'package:provider/provider.dart';
 class SurveyDialogResult {
   final List<BreakoutQuestion> questions;
   final String? zipCode;
-  final String? freeTextResponse;
 
   SurveyDialogResult({
     required this.questions,
     this.zipCode,
-    this.freeTextResponse,
   });
 }
 
@@ -36,13 +34,16 @@ class SurveyDialog extends StatelessWidget {
     required EventProvider eventProvider,
   }) async {
     if (useBotControls) {
-      final breakoutRoomDefinition = eventProvider.event.breakoutRoomDefinition;
-      final breakoutQuestions = breakoutRoomDefinition?.breakoutQuestions;
+      final breakoutQuestions =
+          eventProvider.event.breakoutRoomDefinition?.breakoutQuestions;
       if (breakoutQuestions == null) return null;
-      final freeTextQuestionTitle =
-          breakoutRoomDefinition?.freeTextQuestionTitle;
       return SurveyDialogResult(
         questions: breakoutQuestions.map((q) {
+          if (q.type == BreakoutQuestionType.freeText) {
+            return q.copyWith(
+              freeTextAnswer: 'Random response ${random.nextInt(100000)}',
+            );
+          }
           final answerOptions = q.answers.expand((a) => a.options).toList();
           final answerOptionId = answerOptions.isEmpty
               ? ''
@@ -50,9 +51,6 @@ class SurveyDialog extends StatelessWidget {
           return q.copyWith(answerOptionId: answerOptionId);
         }).toList(),
         zipCode: random.nextInt(100000).toString().padLeft(5, '0'),
-        freeTextResponse: isNullOrEmpty(freeTextQuestionTitle)
-            ? null
-            : 'Random response ${random.nextInt(100000)}',
       );
     }
 
@@ -92,9 +90,7 @@ class SurveyDialog extends StatelessWidget {
           ),
           SizedBox(height: spacerHeight),
           for (var questionData in surveyPresenter.surveyQuestions)
-            _buildQuestionInfo(context, questionData),
-          if (!isNullOrEmpty(surveyPresenter.freeTextQuestionTitle))
-            _buildFreeTextQuestionInfo(context, surveyPresenter),
+            _buildQuestionInfo(context, surveyPresenter, questionData),
           SizedBox(height: spacerHeight),
           Align(
             alignment: Alignment.centerRight,
@@ -104,8 +100,6 @@ class SurveyDialog extends StatelessWidget {
                         SurveyDialogResult(
                           questions: surveyPresenter.surveyQuestions,
                           zipCode: surveyPresenter.zipCodeController.text,
-                          freeTextResponse:
-                              surveyPresenter.freeTextResponseController.text,
                         ),
                       )
                   : null,
@@ -118,35 +112,35 @@ class SurveyDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildFreeTextQuestionInfo(
-    BuildContext context,
-    SurveyPresenter surveyPresenter,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 10),
-        HeightConstrainedText(
-          surveyPresenter.freeTextQuestionTitle!,
-          style: AppTextStyle.headline4,
-        ),
-        SizedBox(height: 5),
-        TextField(
-          controller: surveyPresenter.freeTextResponseController,
-          maxLines: 1,
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
   Widget _buildQuestionInfo(
     BuildContext context,
+    SurveyPresenter surveyPresenter,
     BreakoutQuestion questionData,
   ) {
+    final isMobile = responsiveLayoutService.isMobile(context);
+
+    if (questionData.type == BreakoutQuestionType.freeText) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10),
+          HeightConstrainedText(
+            questionData.title,
+            style: AppTextStyle.headline4,
+          ),
+          SizedBox(height: 5),
+          CustomTextField(
+            controller: surveyPresenter.freeTextResponseController,
+            maxLines: 3,
+            maxLength: 270,
+          ),
+          SizedBox(height: 10),
+        ],
+      );
+    }
+
     final answerOptions =
         questionData.answers.map((e) => e.options).flattened.toList();
-    final isMobile = responsiveLayoutService.isMobile(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
