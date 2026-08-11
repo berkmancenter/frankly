@@ -220,9 +220,12 @@ class EventPageProvider with ChangeNotifier {
       return q.answerOptionId.isNotEmpty;
     });
 
+    /// Show survey dialog if the participant's answers don't match the current
+    /// survey questions or if the participant hasn't answered all questions,
+    /// and if the event is not a livestream or if predefine breakouts is allowed on hosted events.
     final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
         (currentSurveyQuestions.isNotEmpty) &&
-        (!eventProvider.event.isHosted ||
+        (!eventProvider.event.isLiveStream ||
             eventProvider.allowPredefineBreakoutsOnHosted);
     if (showSurveyDialog) {
       final surveyDialogResult = await SurveyDialog.show(
