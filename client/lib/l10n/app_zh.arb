@@ -867,7 +867,7 @@
   "questionIsRequired": "问题为必填项",
   "questionSaved": "问题已保存！",
   "questionTypeFreeText": "自由文字",
-  "questionTypeMultipleChoice": "多項選擇",
+  "questionTypeMultipleChoice": "多项选择",
   "questionWithNumber": "问题 {number}",
   "raiseHandJoinSpeakerQueue": "举手加入发言队列",
   "raiseHandToJoin": "举手加入发言队列",
