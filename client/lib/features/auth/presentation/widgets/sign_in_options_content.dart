@@ -52,16 +52,16 @@ Widget buildForgotPasswordMessage(
         TextSpan(
           text: context.l10n.forgotPasswordPrefix,
         ),
-        if (showEmailLink)
+        if (showEmailLink) ...[
           buildActionText(
             context,
             context.l10n.forgotPasswordEnterEmail,
             onTap: () => _emailFocusNode.requestFocus(),
           ),
-        if (showEmailLink)
           TextSpan(
             text: ', ${context.l10n.forgotPasswordThen}',
           ),
+        ],
         if (!showEmailLink)
           TextSpan(
             text: ' ${context.l10n.forgotPasswordEnterEmail}',
