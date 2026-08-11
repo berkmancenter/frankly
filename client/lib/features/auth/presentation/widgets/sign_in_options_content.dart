@@ -38,9 +38,9 @@ WidgetSpan buildActionText(
 }
 
 /// Build a widget containing the forgot password message with links to enter email and reset password
-/// [context] The build context.
-/// [showEmailLink] Whether to show the link to enter email.
-/// [onForgotPassword] Callback to trigger the forgot password flow.
+/// The [showEmailLink] controls whether to show the link to enter email.
+/// The [onForgotPassword] callback triggers the forgot password flow when the user clicks on the link in the message.
+/// Returns a [Text.rich] widget containing the message and links.
 Widget buildForgotPasswordMessage(
   BuildContext context, {
   bool showEmailLink = true,
@@ -184,8 +184,10 @@ class AccountErrorMessage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15),
-              buildForgotPasswordMessage(context,
-                  onForgotPassword: onForgotPassword ?? () {}),
+              buildForgotPasswordMessage(
+                context,
+                onForgotPassword: onForgotPassword ?? () {},
+              ),
             ],
           ),
         );
