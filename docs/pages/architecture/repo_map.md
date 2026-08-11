@@ -57,7 +57,7 @@ graph TD
 | ---------------------- | ------------------------------- | -------------------------- | --------------------------------------------------- |
 | Flutter client         | Browser (Flutter Web)           | `client/`                  | User-facing app                                     |
 | Cloud Functions (Dart) | Node.js (dart2js)               | `firebase/functions/`      | Business logic, Firestore triggers, scheduled tasks |
-| Cloud Functions (JS)   | Node.js                         | `firebase/functions/node/` | Recording, transcription, SSR                       |
+| Cloud Functions (JS)   | Node.js                         | `firebase/functions/js/`   | Recording, transcription, SSR                       |
 | Matching service       | Dart HTTP (functions_framework) | `matching/`                | Survey-based participant matching                   |
 | Shared data models     | Library (no runtime)            | `data_models/`             | Freezed types shared between client and functions   |
 
