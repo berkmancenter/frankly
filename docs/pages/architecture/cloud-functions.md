@@ -114,4 +114,6 @@ Three functions use an idempotent convergent pattern for hostless meetings where
 - `CheckHostlessGoToBreakouts`
 - `CheckAdvanceMeetingGuide`
 
-**How it works:** Multiple clients call simultaneously (via `HostlessActionFallbackController` with probabilistic timer). Server inspects current state -- if already done, returns success (no-op). If not, performs action atomically. `processingId` prevents duplicate breakout assignment processing.\n\nSafe to call redundantly. Client doesn't need to know if it "won".
+**How it works:** Multiple clients call simultaneously (via `HostlessActionFallbackController` with probabilistic timer). Server inspects current state -- if already done, returns success (no-op). If not, performs action atomically. `processingId` prevents duplicate breakout assignment processing.
+
+Safe to call redundantly. Client doesn't need to know if it "won".
