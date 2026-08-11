@@ -44,7 +44,7 @@ WidgetSpan buildActionText(
 Widget buildForgotPasswordMessage(
   BuildContext context, {
   bool showEmailLink = true,
-  VoidCallback? onForgotPassword,
+  required VoidCallback onForgotPassword,
 }) {
   return Text.rich(
     TextSpan(
@@ -69,7 +69,7 @@ Widget buildForgotPasswordMessage(
         buildActionText(
           context,
           context.l10n.forgotPasswordSuffix,
-          onTap: () => onForgotPassword?.call(),
+          onTap: () => onForgotPassword.call(),
         ),
         TextSpan(text: '.'),
       ],
@@ -184,7 +184,8 @@ class AccountErrorMessage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15),
-              buildForgotPasswordMessage(context),
+              buildForgotPasswordMessage(context,
+                  onForgotPassword: onForgotPassword ?? () {}),
             ],
           ),
         );
