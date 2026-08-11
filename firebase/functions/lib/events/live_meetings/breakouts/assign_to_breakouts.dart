@@ -923,7 +923,12 @@ Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
     participantFreeTextResponsesLookup: participantFreeTextResponsesLookup,
     targetParticipantsPerRoom: targetParticipantsPerRoom,
   );
-  print('Calling Frankly Match API with payload: $payload');
+  print(
+    'Calling Frankly Match API with '
+    '${participantSurveyResponsesLookup.length} binary responses and '
+    '${participantFreeTextResponsesLookup.length} free-text responses; '
+    'targetGroupSize=$targetParticipantsPerRoom',
+  );
 
   final response = await http.post(
     uri,
