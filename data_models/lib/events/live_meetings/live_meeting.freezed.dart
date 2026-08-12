@@ -552,6 +552,7 @@ LiveMeetingEvent _$LiveMeetingEventFromJson(Map<String, dynamic> json) {
 mixin _$LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   LiveMeetingEventType? get event => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   DateTime? get timestamp => throw _privateConstructorUsedError;
   String? get agendaItem => throw _privateConstructorUsedError;
   bool? get hostless => throw _privateConstructorUsedError;
@@ -570,7 +571,7 @@ abstract class $LiveMeetingEventCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-      DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
       String? agendaItem,
       bool? hostless});
 }
@@ -624,7 +625,7 @@ abstract class _$$_LiveMeetingEventCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-      DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
       String? agendaItem,
       bool? hostless});
 }
@@ -671,7 +672,7 @@ class __$$_LiveMeetingEventCopyWithImpl<$Res>
 class _$_LiveMeetingEvent implements _LiveMeetingEvent {
   _$_LiveMeetingEvent(
       {@JsonKey(unknownEnumValue: null) this.event,
-      this.timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) this.timestamp,
       this.agendaItem,
       this.hostless = false});
 
@@ -682,6 +683,7 @@ class _$_LiveMeetingEvent implements _LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   final LiveMeetingEventType? event;
   @override
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   final DateTime? timestamp;
   @override
   final String? agendaItem;
@@ -730,7 +732,7 @@ class _$_LiveMeetingEvent implements _LiveMeetingEvent {
 abstract class _LiveMeetingEvent implements LiveMeetingEvent {
   factory _LiveMeetingEvent(
       {@JsonKey(unknownEnumValue: null) final LiveMeetingEventType? event,
-      final DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) final DateTime? timestamp,
       final String? agendaItem,
       final bool? hostless}) = _$_LiveMeetingEvent;
 
@@ -741,6 +743,7 @@ abstract class _LiveMeetingEvent implements LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   LiveMeetingEventType? get event;
   @override
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   DateTime? get timestamp;
   @override
   String? get agendaItem;
@@ -932,6 +935,10 @@ mixin _$BreakoutRoom {
   bool get record => throw _privateConstructorUsedError;
   String? get recordingSessionId => throw _privateConstructorUsedError;
 
+  /// A per-group statement/prompt generated for this specific breakout
+  /// room, shown as the room's first agenda item when present.
+  String? get diffusionStatement => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $BreakoutRoomCopyWith<BreakoutRoom> get copyWith =>
@@ -958,7 +965,8 @@ abstract class $BreakoutRoomCopyWith<$Res> {
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
       bool record,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? diffusionStatement});
 }
 
 /// @nodoc
@@ -984,6 +992,7 @@ class _$BreakoutRoomCopyWithImpl<$Res, $Val extends BreakoutRoom>
     Object? createdDate = freezed,
     Object? record = null,
     Object? recordingSessionId = freezed,
+    Object? diffusionStatement = freezed,
   }) {
     return _then(_value.copyWith(
       roomId: null == roomId
@@ -1026,6 +1035,10 @@ class _$BreakoutRoomCopyWithImpl<$Res, $Val extends BreakoutRoom>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      diffusionStatement: freezed == diffusionStatement
+          ? _value.diffusionStatement
+          : diffusionStatement // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -1052,7 +1065,8 @@ abstract class _$$_BreakoutRoomCopyWith<$Res>
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
       bool record,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? diffusionStatement});
 }
 
 /// @nodoc
@@ -1076,6 +1090,7 @@ class __$$_BreakoutRoomCopyWithImpl<$Res>
     Object? createdDate = freezed,
     Object? record = null,
     Object? recordingSessionId = freezed,
+    Object? diffusionStatement = freezed,
   }) {
     return _then(_$_BreakoutRoom(
       roomId: null == roomId
@@ -1118,6 +1133,10 @@ class __$$_BreakoutRoomCopyWithImpl<$Res>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      diffusionStatement: freezed == diffusionStatement
+          ? _value.diffusionStatement
+          : diffusionStatement // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1139,7 +1158,8 @@ class _$_BreakoutRoom implements _BreakoutRoom {
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       this.createdDate,
       this.record = false,
-      this.recordingSessionId});
+      this.recordingSessionId,
+      this.diffusionStatement});
 
   factory _$_BreakoutRoom.fromJson(Map<String, dynamic> json) =>
       _$$_BreakoutRoomFromJson(json);
@@ -1175,9 +1195,14 @@ class _$_BreakoutRoom implements _BreakoutRoom {
   @override
   final String? recordingSessionId;
 
+  /// A per-group statement/prompt generated for this specific breakout
+  /// room, shown as the room's first agenda item when present.
+  @override
+  final String? diffusionStatement;
+
   @override
   String toString() {
-    return 'BreakoutRoom(roomId: $roomId, roomName: $roomName, orderingPriority: $orderingPriority, creatorId: $creatorId, participantIds: $participantIds, originalParticipantIdsAssignment: $originalParticipantIdsAssignment, flagStatus: $flagStatus, createdDate: $createdDate, record: $record, recordingSessionId: $recordingSessionId)';
+    return 'BreakoutRoom(roomId: $roomId, roomName: $roomName, orderingPriority: $orderingPriority, creatorId: $creatorId, participantIds: $participantIds, originalParticipantIdsAssignment: $originalParticipantIdsAssignment, flagStatus: $flagStatus, createdDate: $createdDate, record: $record, recordingSessionId: $recordingSessionId, diffusionStatement: $diffusionStatement)';
   }
 
   @override
@@ -1203,7 +1228,9 @@ class _$_BreakoutRoom implements _BreakoutRoom {
                 other.createdDate == createdDate) &&
             (identical(other.record, record) || other.record == record) &&
             (identical(other.recordingSessionId, recordingSessionId) ||
-                other.recordingSessionId == recordingSessionId));
+                other.recordingSessionId == recordingSessionId) &&
+            (identical(other.diffusionStatement, diffusionStatement) ||
+                other.diffusionStatement == diffusionStatement));
   }
 
   @JsonKey(ignore: true)
@@ -1219,7 +1246,8 @@ class _$_BreakoutRoom implements _BreakoutRoom {
       flagStatus,
       createdDate,
       record,
-      recordingSessionId);
+      recordingSessionId,
+      diffusionStatement);
 
   @JsonKey(ignore: true)
   @override
@@ -1250,7 +1278,8 @@ abstract class _BreakoutRoom implements BreakoutRoom {
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       final DateTime? createdDate,
       final bool record,
-      final String? recordingSessionId}) = _$_BreakoutRoom;
+      final String? recordingSessionId,
+      final String? diffusionStatement}) = _$_BreakoutRoom;
 
   factory _BreakoutRoom.fromJson(Map<String, dynamic> json) =
       _$_BreakoutRoom.fromJson;
@@ -1282,6 +1311,11 @@ abstract class _BreakoutRoom implements BreakoutRoom {
   bool get record;
   @override
   String? get recordingSessionId;
+  @override
+
+  /// A per-group statement/prompt generated for this specific breakout
+  /// room, shown as the room's first agenda item when present.
+  String? get diffusionStatement;
   @override
   @JsonKey(ignore: true)
   _$$_BreakoutRoomCopyWith<_$_BreakoutRoom> get copyWith =>

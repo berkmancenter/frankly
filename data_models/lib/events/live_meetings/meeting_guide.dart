@@ -9,6 +9,11 @@ part 'meeting_guide.g.dart';
 const startMeetingAgendaItemId = 'start';
 const startMeetingWaitingPeriod = Duration(minutes: 5);
 
+/// Sentinel agenda item ID written as a breakout room's initial
+/// `agendaItemStarted` event when the room has a per-group diffusion
+/// statement to show before its normal first agenda item.
+const diffusionStatementAgendaItemId = 'diffusion-statement';
+
 @Freezed(makeCollectionsUnmodifiable: false)
 class ParticipantAgendaItemDetails
     with _$ParticipantAgendaItemDetails
