@@ -230,9 +230,11 @@ class CheckAdvanceMeetingGuide
           ? agendaItems[agendaItemIndex + 1]
           : null;
 
-      // If we are at the start of a breakout room set the next agenda item to match the parent
-      // meeting's current agenda item.
-      if (currentAgendaItemId == startMeetingAgendaItemId &&
+      // If we are at the start of a breakout room (either the generic start
+      // card or a room-specific diffusion statement) set the next agenda
+      // item to match the parent meeting's current agenda item.
+      if ((currentAgendaItemId == startMeetingAgendaItemId ||
+              currentAgendaItemId == diffusionStatementAgendaItemId) &&
           parentLiveMeetingPath != null) {
         final parentLiveMeeting = await firestoreUtils.getFirestoreObject(
           path: parentLiveMeetingPath,
