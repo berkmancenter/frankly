@@ -272,6 +272,9 @@ class LiveMeetingProvider with ChangeNotifier {
   String? get assignedBreakoutRoomId =>
       _assignedBreakoutRoomStream?.stream.valueOrNull?.firstOrNull?.roomId;
 
+  BreakoutRoom? get assignedBreakoutRoom =>
+      _assignedBreakoutRoomStream?.stream.valueOrNull?.firstOrNull;
+
   bool get assignedBreakoutRoomIsLoading =>
       _assignedBreakoutRoomStream?.stream.valueOrNull == null;
 

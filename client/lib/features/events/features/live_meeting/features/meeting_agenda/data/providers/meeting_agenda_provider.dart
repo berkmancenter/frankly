@@ -15,6 +15,7 @@ import 'package:data_models/analytics/analytics_entities.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
+import 'package:data_models/events/live_meetings/meeting_guide.dart';
 import 'package:data_models/templates/template.dart';
 import 'package:provider/provider.dart';
 
@@ -115,7 +116,35 @@ class AgendaProvider with ChangeNotifier {
       _params.allowButtonForUserSubmittedAgenda;
 
   AgendaItem? get currentAgendaItem =>
+      _currentDiffusionStatementCard ??
       _currentAgendaItemForLiveMeeting(currentLiveMeeting);
+
+  /// A synthetic agenda item for this breakout room's diffusion statement,
+  /// shown before the room's normal first agenda item.
+  ///
+  /// This never lives in [event]'s real agenda item list -- the room's
+  /// initial live-meeting event points at the [diffusionStatementAgendaItemId]
+  /// sentinel, which check_advance_meeting_guide.dart resolves the same way
+  /// as [startMeetingAgendaItemId].
+  AgendaItem? get _currentDiffusionStatementCard {
+    if (!isInBreakouts) return null;
+
+    final diffusionStatement =
+        liveMeetingProvider?.assignedBreakoutRoom?.diffusionStatement;
+    if (diffusionStatement == null || diffusionStatement.isEmpty) return null;
+
+    final rawCurrentAgendaItemId = currentLiveMeeting?.events
+        .lastWhereOrNull(
+          (e) => e.event == LiveMeetingEventType.agendaItemStarted,
+        )
+        ?.agendaItem;
+    if (rawCurrentAgendaItemId != diffusionStatementAgendaItemId) return null;
+
+    return AgendaItem(
+      id: diffusionStatementAgendaItemId,
+      content: diffusionStatement,
+    );
+  }
 
   void initialize() {
     liveMeetingProvider?.addListener(onLiveMeetingUpdate);
@@ -633,6 +662,9 @@ class AgendaProvider with ChangeNotifier {
   }
 
   AgendaItem? getHostlessStartCard() {
+    final diffusionStatementCard = _currentDiffusionStatementCard;
+    if (diffusionStatementCard != null) return diffusionStatementCard;
+
     final outerMeetingCurrentAgendaItem =
         _currentAgendaItemForLiveMeeting(liveMeetingProvider?.liveMeeting);
     if (liveMeetingProvider?.isInBreakout == true &&
