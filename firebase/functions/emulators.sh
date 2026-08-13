@@ -41,6 +41,9 @@ if [[ ! -d "$DATA_DIR" ]]; then
   DATA_DIR=""
 fi
 
+# Start with the FUNCTIONS_EMULATOR environment variable so functions know they are running in the emulator.
+export FUNCTIONS_EMULATOR=true
+
 exec firebase emulators:start \
   --only firestore,functions,auth,pubsub,database \
   --project "$PROJECT_ID" \

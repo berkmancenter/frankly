@@ -5,7 +5,6 @@ import 'package:firebase_functions_interop/firebase_functions_interop.dart';
 import '../../../on_call_function.dart';
 import '../../../utils/infra/firestore_utils.dart';
 import '../../../utils/utils.dart';
-import 'advance_meeting_guide_after_delay.dart';
 import 'advance_meeting_guide_after_delay_server.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
@@ -145,22 +144,10 @@ class CheckAdvanceMeetingGuide
         agendaItemId: newlyPendingAgendaItemId,
       );
 
-      final functionsUrlPrefix =
-          functions.config.get('app.functions_url_prefix').toString();
-      if (functionsUrlPrefix.startsWith('http://localhost') ||
-          functionsUrlPrefix.startsWith('http://127.0.0.1')) {
-        print('Running on localhost, skipping scheduling and running after '
-            '${_advanceDelay.inSeconds} seconds');
-        await Future.delayed(_advanceDelay, () async {
-          await AdvanceMeetingGuideAfterDelay()
-              .advanceMeetingGuideAfterDelay(advanceRequest);
-        });
-      } else {
-        await AdvanceMeetingGuideAfterDelayServer().schedule(
-          advanceRequest,
-          checkResult.pendingAdvanceTime!,
-        );
-      }
+      await AdvanceMeetingGuideAfterDelayServer().schedule(
+        advanceRequest,
+        checkResult.pendingAdvanceTime!,
+      );
     }
 
     if (checkResult.isPendingOrAdvancing) {
