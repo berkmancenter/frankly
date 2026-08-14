@@ -10,6 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:frankly_match/frankly_match.dart' as frankly_match;
 import 'package:node_http/node_http.dart' as http;
 import '../../../utils/infra/firestore_utils.dart';
+import '../../../utils/utils.dart';
 import '../agora_api.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/recording/recording_session.dart';
@@ -387,7 +388,8 @@ class AssignToBreakouts {
   Future<void> writeDocumentsToCollection({
     required CollectionReference breakoutSessionCollection,
     required List<BreakoutRoom> rooms,
-    String? firstAgendaItemId,
+    required List<AgendaItem> agendaItems,
+    String? parentMirroredAgendaItemId,
   }) {
     return Future.wait(
       partition(rooms, 249).map((sublist) {
@@ -401,14 +403,16 @@ class AssignToBreakouts {
               firestoreUtils.toFirestoreJson(room.toJson()),
             ),
           );
-          // Rooms with their own diffusion statement start on that statement
-          // instead of the shared first agenda item; the advance logic in
-          // check_advance_meeting_guide.dart moves the room to the shared
-          // first agenda item once the statement is dismissed.
-          final roomAgendaItemId =
-              (room.diffusionStatement?.isNotEmpty ?? false)
-                  ? diffusionStatementAgendaItemId
-                  : firstAgendaItemId;
+          // Hosted breakouts mirror the parent meeting's current item;
+          // otherwise each room starts on its own resolved first item (which
+          // may substitute or skip a {diffusionStatement} token depending on
+          // this room's diffusionStatement).
+          final roomAgendaItemId = parentMirroredAgendaItemId ??
+              resolveAgendaItemsForDiffusionStatement(
+                agendaItems,
+                room.diffusionStatement,
+                showUnresolvedAsError: !isProductionEnvironment,
+              ).firstOrNull?.id;
           if (roomAgendaItemId != null) {
             final liveMeetingDoc = roomDocumentRef
                 .collection('live-meetings')
@@ -703,23 +707,19 @@ class AssignToBreakouts {
 
     profile('writing rooms ${breakoutRooms.length}');
 
-    String? firstAgendaItemId;
+    String? parentMirroredAgendaItemId;
     if (event.eventType == EventType.hosted) {
-      final parentAgendaItemId = currentLiveMeeting.events
+      parentMirroredAgendaItemId = currentLiveMeeting.events
           .where((e) => LiveMeetingEventType.agendaItemStarted == e.event)
           .lastOrNull
           ?.agendaItem;
-
-      firstAgendaItemId =
-          parentAgendaItemId ?? event.agendaItems.firstOrNull?.id;
-    } else {
-      firstAgendaItemId = event.agendaItems.firstOrNull?.id;
     }
 
     await writeDocumentsToCollection(
       breakoutSessionCollection: breakoutRoomsCollection,
       rooms: breakoutRooms,
-      firstAgendaItemId: firstAgendaItemId,
+      agendaItems: event.agendaItems,
+      parentMirroredAgendaItemId: parentMirroredAgendaItemId,
     );
 
     // Start recordings immediately after room assignment so there is exactly
