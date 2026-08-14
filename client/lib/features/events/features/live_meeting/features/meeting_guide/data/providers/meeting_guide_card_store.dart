@@ -70,7 +70,7 @@ class MeetingGuideCardStore with ChangeNotifier {
     }
 
     return meetingGuideCardAgendaItem?.id ??
-        agendaProvider.agendaItems.firstOrNull?.id;
+        agendaProvider.resolvedAgendaItems.firstOrNull?.id;
   }
 
   String? get _agendaProviderCurrentItemId {
@@ -81,12 +81,13 @@ class MeetingGuideCardStore with ChangeNotifier {
     }
 
     return agendaProvider.currentAgendaItem?.id ??
-        agendaProvider.agendaItems.firstOrNull?.id;
+        agendaProvider.resolvedAgendaItems.firstOrNull?.id;
   }
 
-  AgendaItem? get meetingGuideCardAgendaItem => agendaProvider.agendaItems
-      .where((i) => i.id == _currentMeetingGuideAgendaItemId)
-      .firstOrNull;
+  AgendaItem? get meetingGuideCardAgendaItem =>
+      agendaProvider.resolvedAgendaItems
+          .where((i) => i.id == _currentMeetingGuideAgendaItemId)
+          .firstOrNull;
 
   bool get meetingGuideCardIsPending =>
       _pendingMeetingGuideAgendaItemTimer?.isActive ?? false;
@@ -244,17 +245,18 @@ class MeetingGuideCardStore with ChangeNotifier {
 
   Future<void> goToPreviousAgendaItem() async {
     final currentAgendaItemId = meetingGuideCardAgendaItem?.id;
-    final currentAgendaItemIndex = agendaProvider.agendaItems
+    final currentAgendaItemIndex = agendaProvider.resolvedAgendaItems
         .indexWhere((a) => a.id == currentAgendaItemId);
 
     final AgendaItem prevAgendaItem;
     if (currentAgendaItemIndex < 0 && agendaProvider.isMeetingFinished) {
-      prevAgendaItem = agendaProvider.agendaItems.last;
+      prevAgendaItem = agendaProvider.resolvedAgendaItems.last;
     } else if (currentAgendaItemIndex < 0) {
       throw VisibleException('Meeting Guide entry not found.');
     } else {
-      prevAgendaItem =
-          agendaProvider.agendaItems.skip(currentAgendaItemIndex - 1).first;
+      prevAgendaItem = agendaProvider.resolvedAgendaItems
+          .skip(currentAgendaItemIndex - 1)
+          .first;
     }
 
     await agendaProvider.goToPreviousAgendaItem(prevAgendaItem.id);
