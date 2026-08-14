@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:client/config/environment.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/event_tabs.dart';
 import 'package:client/features/events/features/event_page/presentation/event_tabs_model.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
@@ -81,6 +82,22 @@ class AgendaProvider with ChangeNotifier {
 
   List<AgendaItem> get agendaItems => _agendaItems;
 
+  /// [agendaItems] resolved for the current live-meeting context: a
+  /// `{diffusionStatement}` token in a text item's content is substituted
+  /// with this breakout room's diffusion statement when present, or the item
+  /// is skipped (or kept with an error, outside production) when absent.
+  ///
+  /// Used for live navigation/rendering only -- editing operations
+  /// (upsert/delete/reorder) always operate on the raw [agendaItems].
+  List<AgendaItem> get resolvedAgendaItems =>
+      resolveAgendaItemsForDiffusionStatement(
+        _agendaItems,
+        isInBreakouts
+            ? liveMeetingProvider?.assignedBreakoutRoom?.diffusionStatement
+            : null,
+        showUnresolvedAsError: Environment.enableDevEventSettings,
+      );
+
   List<AgendaItem> get unsavedItems => _unsavedItems;
 
   LiveMeeting? get currentLiveMeeting =>
@@ -116,35 +133,7 @@ class AgendaProvider with ChangeNotifier {
       _params.allowButtonForUserSubmittedAgenda;
 
   AgendaItem? get currentAgendaItem =>
-      _currentDiffusionStatementCard ??
       _currentAgendaItemForLiveMeeting(currentLiveMeeting);
-
-  /// A synthetic agenda item for this breakout room's diffusion statement,
-  /// shown before the room's normal first agenda item.
-  ///
-  /// This never lives in [event]'s real agenda item list -- the room's
-  /// initial live-meeting event points at the [diffusionStatementAgendaItemId]
-  /// sentinel, which check_advance_meeting_guide.dart resolves the same way
-  /// as [startMeetingAgendaItemId].
-  AgendaItem? get _currentDiffusionStatementCard {
-    if (!isInBreakouts) return null;
-
-    final diffusionStatement =
-        liveMeetingProvider?.assignedBreakoutRoom?.diffusionStatement;
-    if (diffusionStatement == null || diffusionStatement.isEmpty) return null;
-
-    final rawCurrentAgendaItemId = currentLiveMeeting?.events
-        .lastWhereOrNull(
-          (e) => e.event == LiveMeetingEventType.agendaItemStarted,
-        )
-        ?.agendaItem;
-    if (rawCurrentAgendaItemId != diffusionStatementAgendaItemId) return null;
-
-    return AgendaItem(
-      id: diffusionStatementAgendaItemId,
-      content: diffusionStatement,
-    );
-  }
 
   void initialize() {
     liveMeetingProvider?.addListener(onLiveMeetingUpdate);
@@ -364,7 +353,7 @@ class AgendaProvider with ChangeNotifier {
   }
 
   Future<void> startMeeting() async {
-    var firstAgendaItem = (agendaItems).firstOrNull;
+    var firstAgendaItem = resolvedAgendaItems.firstOrNull;
 
     final outerMeetingCurrentAgendaItem =
         _currentAgendaItemForLiveMeeting(liveMeetingProvider?.liveMeeting);
@@ -390,13 +379,13 @@ class AgendaProvider with ChangeNotifier {
 
   Future<void> finishAgendaItem(String agendaItemId) async {
     final currentAgendaItemIndex =
-        agendaItems.indexWhere((a) => a.id == agendaItemId);
+        resolvedAgendaItems.indexWhere((a) => a.id == agendaItemId);
     if (currentAgendaItemIndex < 0) {
       throw VisibleException('Meeting Guide entry not found.');
     }
 
     final nextAgendaItem =
-        agendaItems.skip(currentAgendaItemIndex + 1).firstOrNull;
+        resolvedAgendaItems.skip(currentAgendaItemIndex + 1).firstOrNull;
 
     final serverTime = clockService.now();
     await firestoreLiveMeetingService.addMeetingEvent(
@@ -476,7 +465,7 @@ class AgendaProvider with ChangeNotifier {
         )
         ?.agendaItem;
 
-    return agendaItems.firstWhereOrNull((a) => a.id == currentAgendaItem);
+    return resolvedAgendaItems.firstWhereOrNull((a) => a.id == currentAgendaItem);
   }
 
   bool isCurrentAgendaItem(String agendaItemId) {
@@ -662,15 +651,12 @@ class AgendaProvider with ChangeNotifier {
   }
 
   AgendaItem? getHostlessStartCard() {
-    final diffusionStatementCard = _currentDiffusionStatementCard;
-    if (diffusionStatementCard != null) return diffusionStatementCard;
-
     final outerMeetingCurrentAgendaItem =
         _currentAgendaItemForLiveMeeting(liveMeetingProvider?.liveMeeting);
     if (liveMeetingProvider?.isInBreakout == true &&
         outerMeetingCurrentAgendaItem != null) {
       return outerMeetingCurrentAgendaItem;
     }
-    return agendaItems.firstOrNull;
+    return resolvedAgendaItems.firstOrNull;
   }
 }
