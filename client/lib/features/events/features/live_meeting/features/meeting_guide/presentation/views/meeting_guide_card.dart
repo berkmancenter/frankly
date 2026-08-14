@@ -129,14 +129,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
     final isMeetingStarted = _presenter.isMeetingStarted();
     final isCardPending = _presenter.isCardPending();
 
-    // currentItem is also null while showing a breakout room's diffusion
-    // statement (its id is a sentinel that never resolves against the real
-    // agenda item list), so we can't infer "finished" from nullness alone --
-    // check the actual finished signal too.
-    final meetingFinished = currentItem == null &&
-        isMeetingStarted &&
-        !isCardPending &&
-        _presenter.isMeetingFinished();
+    final meetingFinished =
+        currentItem == null && isMeetingStarted && !isCardPending;
 
     final isInBreakout = agendaProvider.isInBreakouts;
     final canUserControlMeeting = _presenter.canUserControlMeeting;

@@ -122,7 +122,7 @@ class MeetingGuideCardPresenter {
   }
 
   List<AgendaItem> getAgendaItems() {
-    return _agendaProvider.agendaItems;
+    return _agendaProvider.resolvedAgendaItems;
   }
 
   bool isHost() {
