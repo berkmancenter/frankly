@@ -323,7 +323,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   Color _getBorderColor({bool isError = false}) {
     return isError
-        ? context.theme.colorScheme.errorContainer
+        ? context.theme.colorScheme.error
         : _focusNode.hasFocus || _hasMouseHover
             ? context.theme.colorScheme.primary
             : context.theme.colorScheme.onPrimaryContainer;

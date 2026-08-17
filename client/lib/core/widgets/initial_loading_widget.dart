@@ -2,10 +2,12 @@ import 'package:beamer/beamer.dart';
 import 'package:client/app.dart';
 import 'package:client/core/utils/error_utils.dart';
 import 'package:client/core/widgets/custom_loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client/core/routing/locations.dart';
 import 'package:client/core/data/services/logging_service.dart';
 import 'package:client/services.dart';
+import 'package:client/features/auth/presentation/views/verify_email_page.dart';
 import 'package:client/features/user/data/services/user_service.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
@@ -24,6 +26,7 @@ class InitialLoadingWidget extends StatefulWidget {
 class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
   bool _initialized = false;
   bool _showedRedirectSignInError = false;
+  bool _showedEmailActionCodeError = false;
   Object? _initializationError;
 
   @override
@@ -45,6 +48,14 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
           context,
           sanitizeError(userService.redirectErrorMessage!),
         ),
+      );
+    }
+
+    if (userService.emailActionCodeError != null &&
+        !_showedEmailActionCodeError) {
+      _showedEmailActionCodeError = true;
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => showAlert(context, userService.emailActionCodeError!),
       );
     }
   }
@@ -87,11 +98,18 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.watch<UserService>().signInState == SignInState.signedIn &&
-        _initialized) {
+    final userService = context.watch<UserService>();
+
+    if (userService.signInState == SignInState.signedIn && _initialized) {
+      if (userService.isSignedIn &&
+          !userService.isCurrentUserEmailVerified &&
+          !kDebugMode) {
+        return VerifyEmailPage(
+          email: userService.firebaseAuth.currentUser?.email ?? '',
+        );
+      }
       return widget.child;
-    } else if (context.watch<UserService>().signInState ==
-        SignInState.signedOut) {
+    } else if (userService.signInState == SignInState.signedOut) {
       return Scaffold(
         body: Center(
           child: HeightConstrainedText(

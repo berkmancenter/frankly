@@ -182,12 +182,20 @@ class UserDataService with ChangeNotifier {
 
       final wasMember = membership?.isMember ?? false;
       final isNowMember = newStatus.isMember;
+
       if (!wasMember && isNowMember) {
         analytics
             .logEvent(AnalyticsJoinCommunityEvent(communityId: communityId));
       } else if (wasMember && !isNowMember) {
         analytics
             .logEvent(AnalyticsLeaveCommunityEvent(communityId: communityId));
+
+        // Clear any leftover (e.g. approved) membership request so that
+        // communities requiring approval can be requested again in the future.
+        await firestoreCommunityJoinRequestsService.deleteRequest(
+          communityId: communityId,
+          userId: userId,
+        );
       }
     }
   }

@@ -63,6 +63,8 @@ class ActionButton extends StatefulWidget {
 
   final Widget? child;
 
+  final FocusNode? focusNode;
+
   const ActionButton({
     Key? key,
     this.icon,
@@ -90,6 +92,7 @@ class ActionButton extends StatefulWidget {
     this.height,
     this.tooltipText,
     this.child,
+    this.focusNode,
   })  : assert(child == null || text == null, 'Cannot specify child and text'),
         super(key: key);
 
@@ -224,6 +227,7 @@ class _ActionButtonState extends State<ActionButton> {
     switch (widget.type) {
       case ActionButtonType.filled:
         button = FilledButton(
+          focusNode: widget.focusNode,
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: widget.color,
@@ -239,6 +243,7 @@ class _ActionButtonState extends State<ActionButton> {
         break;
       case ActionButtonType.outline:
         button = OutlinedButton(
+          focusNode: widget.focusNode,
           style: OutlinedButton.styleFrom(
             side: widget.borderSide ??
                 BorderSide(
@@ -257,6 +262,7 @@ class _ActionButtonState extends State<ActionButton> {
         break;
       case ActionButtonType.text:
         button = TextButton(
+          focusNode: widget.focusNode,
           onPressed: onPressed,
           style: TextButton.styleFrom(
             textStyle: widget.textStyle,

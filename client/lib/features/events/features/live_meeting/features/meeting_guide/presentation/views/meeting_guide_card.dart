@@ -50,7 +50,7 @@ class MeetingGuideCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MeetingGuideCardState createState() => _MeetingGuideCardState();
+  State<MeetingGuideCard> createState() => _MeetingGuideCardState();
 }
 
 class _MeetingGuideCardState extends State<MeetingGuideCard> {
@@ -103,7 +103,7 @@ class MeetingGuideCardContent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MeetingGuideCardContentState createState() =>
+  State<MeetingGuideCardContent> createState() =>
       _MeetingGuideCardContentState();
 }
 
@@ -496,7 +496,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         color: Colors.transparent,
                         textColor: context.theme.colorScheme.primary,
                         icon: Icons.arrow_back_ios,
-                        text: 'Back',
+                        text: context.l10n.back,
                         onPressed: () => _presenter.goToPreviousAgendaItem(),
                       ),
                     Spacer(),
@@ -531,7 +531,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       ActionButton(
                         type: ActionButtonType.outline,
                         textColor: context.theme.colorScheme.primary,
-                        text: 'Ready',
+                        text: context.l10n.ready,
                         icon: Icons.check_circle_outline,
                       )
                     else

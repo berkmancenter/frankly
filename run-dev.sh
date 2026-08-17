@@ -202,6 +202,9 @@ else
   log "Functions Dart dependencies unchanged; skipping flutter pub get."
 fi
 
+log "Syncing index.html template for ServeIndex..."
+cp "$REPO_ROOT/client/web/index.html" web/index.html
+
 if need_functions_build; then
   log "Rebuilding firebase/functions..."
   "$DART_CMD" run build_runner build --output=build

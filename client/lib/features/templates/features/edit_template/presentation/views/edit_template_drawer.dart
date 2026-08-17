@@ -1,6 +1,8 @@
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:client/features/templates/features/create_template/presentation/create_template_tag_presenter.dart';
 import 'package:client/core/utils/error_utils.dart';
@@ -151,7 +153,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildTitleSection() {
     return CustomTextField(
-      labelText: 'Title',
+      labelText: context.l10n.title,
       initialValue: _model.template.title,
       maxLines: 2,
       maxLength: 80,
@@ -162,7 +164,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
 
   Widget _buildDescriptionSection() {
     return CustomTextField(
-      labelText: 'Description',
+      labelText: context.l10n.description,
       initialValue: _model.template.description,
       onChanged: (value) => _presenter.updateDescription(value),
     );
@@ -195,7 +197,7 @@ class _EditTemplateDrawerState extends State<EditTemplateDrawer>
       children: [
         ActionButton(
           expand: true,
-          text: 'Save template',
+          text: context.l10n.saveTemplate,
           color: context.theme.colorScheme.primary,
           onPressed: () => alertOnError(
             context,

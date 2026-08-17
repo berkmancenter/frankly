@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:client/features/events/features/create_event/data/providers/create_event_dialog_model.dart';
 import 'package:client/features/events/features/create_event/presentation/widgets/event_dialog_buttons.dart';
 import 'package:client/core/widgets/custom_text_field.dart';
@@ -35,7 +36,7 @@ class _SelectTitlePageState extends State<SelectTitlePage> {
         CustomTextField(
           maxLines: 1,
           maxLength: titleMaxCharactersLength,
-          labelText: 'Title',
+          labelText: context.l10n.title,
           initialValue: editProvider.event.title,
           onChanged: (value) => editProviderRead.setEvent(
             editProviderRead.event.copyWith(title: value),

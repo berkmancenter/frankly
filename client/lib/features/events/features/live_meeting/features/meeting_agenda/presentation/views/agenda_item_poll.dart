@@ -65,7 +65,7 @@ class _AgendaItemPollState extends State<AgendaItemPoll>
         children: [
           CustomTextField(
             initialValue: _model.agendaItemPollData.question,
-            labelText: 'Poll Question',
+            labelText: context.l10n.pollQuestion,
             hintText: context.l10n.questionGoesHere,
             onChanged: (value) => _presenter.updatePollQuestion(value),
           ),

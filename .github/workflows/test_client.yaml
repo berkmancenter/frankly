@@ -25,6 +25,11 @@ jobs:
           filters: |
             client:
               - 'client/**'
+      - name: Set up Node.js
+        if: steps.changes.outputs.client == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.23.1"
 
       - name: Set Up Flutter
         if: steps.changes.outputs.client == 'true'
@@ -79,6 +84,7 @@ jobs:
           envkey_ENABLE_DEV_EVENT_SETTINGS: true
           envkey_ENABLE_DEV_ADMIN_SETTINGS: true
           envkey_ENABLE_TRACE_LOG: true
+          envkey_AGORA_APP_ID: ${{ secrets.AGORA_APP_ID }}
           envkey_APP_NAME: Frankly
           envkey_APP_URL: https://app.frankly.org
           envkey_TERMS_URL: https://frankly.org/terms
@@ -103,7 +109,7 @@ jobs:
       - name: Build App
         if: steps.changes.outputs.client == 'true' && steps.test.outcome == 'success'
         id: build_app
-        run: flutter build web --release web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
+        run: flutter build web --release --web-renderer html -t lib/main.dart --dart-define-from-file=${{ github.workspace }}/.env
 
       - name: Deploy to Preview Channel
         if: steps.changes.outputs.client == 'true' && steps.build_app.outcome == 'success' &&  github.event.pull_request.head.repo.full_name == github.repository

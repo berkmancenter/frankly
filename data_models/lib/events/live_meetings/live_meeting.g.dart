@@ -62,9 +62,7 @@ Map<String, dynamic> _$$_LiveMeetingParticipantToJson(
 _$_LiveMeetingEvent _$$_LiveMeetingEventFromJson(Map<String, dynamic> json) =>
     _$_LiveMeetingEvent(
       event: $enumDecodeNullable(_$LiveMeetingEventTypeEnumMap, json['event']),
-      timestamp: json['timestamp'] == null
-          ? null
-          : DateTime.parse(json['timestamp'] as String),
+      timestamp: dateTimeFromTimestamp(json['timestamp']),
       agendaItem: json['agendaItem'] as String?,
       hostless: json['hostless'] as bool? ?? false,
     );
@@ -153,6 +151,7 @@ _$_BreakoutRoomSession _$$_BreakoutRoomSessionFromJson(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       targetParticipantsPerRoom: json['targetParticipantsPerRoom'] as int,
       hasWaitingRoom: json['hasWaitingRoom'] as bool,
+      useHostedApi: json['useHostedApi'] as bool? ?? false,
       maxRoomNumber: json['maxRoomNumber'] as int?,
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       scheduledTime: dateTimeFromTimestamp(json['scheduledTime']),
@@ -170,6 +169,7 @@ Map<String, dynamic> _$$_BreakoutRoomSessionToJson(
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod]!,
       'targetParticipantsPerRoom': instance.targetParticipantsPerRoom,
       'hasWaitingRoom': instance.hasWaitingRoom,
+      'useHostedApi': instance.useHostedApi,
       'maxRoomNumber': instance.maxRoomNumber,
       'createdDate': serverTimestamp(instance.createdDate),
       'scheduledTime': timestampFromDateTime(instance.scheduledTime),

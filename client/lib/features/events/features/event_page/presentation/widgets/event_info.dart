@@ -367,6 +367,8 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
+  /// Builds the "Enter Event" button with dynamic text based on the event's scheduled time.
+  /// [scheduled] is the scheduled time of the event.
   ActionButton _buildEnterEvent(DateTime scheduled) {
     final kEventOpenText = context.l10n.enterEvent;
     final now = clockService.now();
@@ -450,13 +452,18 @@ class _EventInfoState extends State<EventInfo> {
     final showJoinButton = !isBanned &&
         context.read<EventPermissionsProvider>().canJoinEvent &&
         _status != _ParticipantStatus.full;
+    final eventAlmostStarted = showJoinButton &&
+        clockService.now().isAfter(
+              startTime.subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
+            );
+    final eventHasStarted =
+        showJoinButton && clockService.now().isAfter(startTime);
 
-    final showEnterEventButton = _isParticipant ||
-        (showJoinButton &&
-            clockService.now().isAfter(
-                  startTime
-                      .subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
-                ));
+    // Show the "Enter Event" button if the user already RSVP'd/joined
+    // or if the event is within 15 minutes of starting,
+    // or if the event has already started
+    final showEnterEventButton =
+        _isParticipant || (eventAlmostStarted || eventHasStarted);
     if (showPrerequisiteWarning) {
       return WarningInfo(
         icon: CircleAvatar(
@@ -645,7 +652,9 @@ class _EventInfoState extends State<EventInfo> {
         return Row(
           children: [
             Tooltip(
-              message: isPublic ? context.l10n.publicVisibility : context.l10n.privateVisibility,
+              message: isPublic
+                  ? context.l10n.publicVisibility
+                  : context.l10n.privateVisibility,
               child: ProxiedImage(null, asset: appAsset, width: 20, height: 20),
             ),
             SizedBox(width: 6),

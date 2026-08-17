@@ -74,7 +74,7 @@ class _AgendaItemUserSuggestionsState extends State<AgendaItemUserSuggestions>
         children: [
           CustomTextField(
             initialValue: _model.agendaItemUserSuggestionsData.headline,
-            labelText: 'Headline',
+            labelText: context.l10n.headline,
             hintText: context.l10n.suggestions,
             maxLength: agendaSuggestionCharactersLength,
             maxLines: 1,

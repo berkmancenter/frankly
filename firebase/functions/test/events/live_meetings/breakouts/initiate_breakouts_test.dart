@@ -71,6 +71,7 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -98,6 +99,7 @@ void main() {
       statusUpdatedTime: createdBreakoutSession.statusUpdatedTime,
       maxRoomNumber: 2,
       createdDate: createdBreakoutSession.createdDate,
+      useHostedApi: false,
     );
 
     expect(createdBreakoutSession, equals(expectedBreakout));
@@ -184,6 +186,7 @@ void main() {
       breakoutSessionId: breakoutSessionId,
       assignmentMethod: BreakoutAssignmentMethod.category,
       includeWaitingRoom: true,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -214,6 +217,7 @@ void main() {
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,
       createdDate: meeting.currentBreakoutSession!.createdDate,
       scheduledTime: meeting.currentBreakoutSession!.scheduledTime,
+      useHostedApi: false,
     );
 
     expect(meeting.currentBreakoutSession, equals(expectedBreakout));
@@ -249,6 +253,7 @@ void main() {
       assignmentMethod: BreakoutAssignmentMethod.category,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
+      useHostedApi: false,
     );
 
     await liveMeetingTestUtils.addMeetingEvent(
@@ -266,6 +271,7 @@ void main() {
       breakoutSessionId: breakoutSessionId,
       assignmentMethod: BreakoutAssignmentMethod.category,
       includeWaitingRoom: true,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -306,6 +312,7 @@ void main() {
       assignmentMethod: BreakoutAssignmentMethod.category,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
+      useHostedApi: false,
     );
 
     await liveMeetingTestUtils.addMeetingEvent(
@@ -323,6 +330,7 @@ void main() {
       breakoutSessionId: breakoutSessionId,
       assignmentMethod: BreakoutAssignmentMethod.category,
       includeWaitingRoom: true,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -354,6 +362,7 @@ void main() {
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,
       createdDate: meeting.currentBreakoutSession!.createdDate,
       scheduledTime: meeting.currentBreakoutSession!.scheduledTime,
+      useHostedApi: false,
     );
 
     expect(meeting.currentBreakoutSession, equals(expectedBreakout));

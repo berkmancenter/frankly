@@ -95,7 +95,7 @@ class _MeetingGuideCardItemWordCloudState
                       child: CustomTextField(
                         padding: EdgeInsets.zero,
                         borderRadius: 10,
-                        labelText: 'Enter word',
+                        labelText: context.l10n.enterWord,
                         maxLines: 1,
                         maxLength: 30,
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,

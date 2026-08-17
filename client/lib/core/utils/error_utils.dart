@@ -10,6 +10,15 @@ import 'package:client/core/localization/localization_helper.dart';
 
 import 'dart:async';
 
+String? _firebaseAuthCodeMessage(String code) {
+  switch (code) {
+    case 'too-many-requests':
+      return appLocalizationService.getLocalization().tooManyRequests;
+    default:
+      return null;
+  }
+}
+
 String sanitizeError(String error) {
   error = error
       .replaceAll('FirebaseError: ', '')
@@ -89,7 +98,8 @@ Future<void> authMessageOnError<T>(
     final sanitizedError = sanitizeError(e.toString());
 
     if (e is FirebaseAuthException) {
-      errorCallback(sanitizedError, e.code);
+      final message = _firebaseAuthCodeMessage(e.code) ?? sanitizedError;
+      errorCallback(message, e.code);
     } else if (e is VisibleException) {
       errorCallback(sanitizedError, e.msg);
     } else {

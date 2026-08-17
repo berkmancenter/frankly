@@ -132,7 +132,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
         children: [
           CustomTextField(
             initialValue: _model.agendaItemVideoData.title,
-            labelText: 'Title',
+            labelText: context.l10n.title,
             hintText: context.l10n.enterVideoTitle,
             maxLines: 1,
             maxLength: agendaTitleCharactersLength,
@@ -304,7 +304,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               child: CustomTextField(
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
-                labelText: 'YouTube URL',
+                labelText: context.l10n.youtubeUrl,
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),
@@ -356,7 +356,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               child: CustomTextField(
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
-                labelText: 'Vimeo URL',
+                labelText: context.l10n.vimeoUrl,
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),
@@ -399,7 +399,7 @@ class _AgendaItemVideoState extends State<AgendaItemVideo>
               child: CustomTextField(
                 padding: EdgeInsets.zero,
                 controller: _textEditingController,
-                labelText: 'Link must be MP4',
+                labelText: context.l10n.linkMustBeMp4,
                 onChanged: (value) => _presenter.updateVideoUrl(value),
               ),
             ),

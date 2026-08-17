@@ -3,6 +3,8 @@ import 'package:client/styles/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:client/core/localization/localization_helper.dart';
+
 import 'package:client/features/events/features/create_event/presentation/views/create_event_dialog.dart';
 import 'package:client/features/templates/data/providers/template_page_provider.dart';
 import 'package:client/features/community/data/providers/community_provider.dart';
@@ -172,7 +174,7 @@ class _NewEventCardState extends State<NewEventCard> {
                   style: AppTextStyle.body,
                   children: [
                     TextSpan(
-                      text: 'Learn more',
+                      text: context.l10n.learnMore,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => launch(helpDocLink),
                       style: AppTextStyle.body.copyWith(

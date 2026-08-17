@@ -81,7 +81,7 @@ enum LiveMeetingEventType {
 class LiveMeetingEvent with _$LiveMeetingEvent {
   factory LiveMeetingEvent({
     @JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-    DateTime? timestamp,
+    @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
     String? agendaItem,
     @Default(false) bool? hostless,
   }) = _LiveMeetingEvent;
@@ -158,6 +158,7 @@ class BreakoutRoomSession with _$BreakoutRoomSession {
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
     required bool hasWaitingRoom,
+    @Default(false) bool useHostedApi,
     int? maxRoomNumber,
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
     DateTime? createdDate,
