@@ -1394,7 +1394,7 @@ the project, not artifacts of your operating system. Adding OS-specific files th
 it for contributors on other platforms (Linux, Windows).</p>
 <p>Instead, exclude them once globally on your machine so they're silently ignored in every repo:</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.excludesfile<span class="w"> </span>~/.gitignore_global
-<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;.DS_Store&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.gitignore_global
+<span class="nb">echo</span><span class="w"> </span><span class="s1">'.DS_Store'</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.gitignore_global
 </code></pre></div>
 <p>This only needs to be done once per machine. If your <code>~/.gitignore_global</code> already exists, the
 second command safely appends to it.</p>
@@ -1607,14 +1607,14 @@ second command safely appends to it.</p>
 <h3 id="agora">Agora</h3>
 <p>Sign up for Agora and open the <a href="https://console.agora.io/v2/">Agora console</a>. The following instructions are geared towards using V2 of the Agora console.</p>
 <p>The following instructions will guide you through retrieving the values to fill in the following command for setting Agora-related values in your Functions configuration:</p>
-<div class="highlight"><pre><span></span><code>agora.app_id=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.app_certificate=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.rest_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.rest_secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.storage_bucket_name=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.storage_access_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.storage_secret_key=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
-agora.webhook_secret=&quot;&lt;YOUR_VALUE_HERE&gt;&quot;
+<div class="highlight"><pre><span></span><code>agora.app_id="&lt;YOUR_VALUE_HERE&gt;"
+agora.app_certificate="&lt;YOUR_VALUE_HERE&gt;"
+agora.rest_key="&lt;YOUR_VALUE_HERE&gt;"
+agora.rest_secret="&lt;YOUR_VALUE_HERE&gt;"
+agora.storage_bucket_name="&lt;YOUR_VALUE_HERE&gt;"
+agora.storage_access_key="&lt;YOUR_VALUE_HERE&gt;"
+agora.storage_secret_key="&lt;YOUR_VALUE_HERE&gt;"
+agora.webhook_secret="&lt;YOUR_VALUE_HERE&gt;"
 </code></pre></div>
 <h4 id="setting-up-the-integration"><strong>🔧 Setting up the integration</strong></h4>
 <ul>
@@ -1733,10 +1733,10 @@ The logs displayed on the Logging page should indicate that the MuxWebhook Fireb
 <ol>
 <li>
 <p>On the <em>General</em> panel, use this configuration for videos:</p>
-<div class="highlight"><pre><span></span><code>- Name: &quot;frankly-video-default&quot; (or whatever you&#39;d like)
+<div class="highlight"><pre><span></span><code>- Name: "frankly-video-default" (or whatever you'd like)
 - Signing mode: Unsigned
 - Disallow public ID: ✔️
-- Asset folder: &quot;videos/uploads&quot; (this value doesn&#39;t matter, just somewhere unique to store your videos)
+- Asset folder: "videos/uploads" (this value doesn't matter, just somewhere unique to store your videos)
 - Generated public ID: Auto-generate
 - Generated display name: Use the last segment of the public ID
 </code></pre></div>
@@ -1766,7 +1766,7 @@ CLOUDINARY_CLOUD_NAME=&lt;value&gt;
 <ul>
 <li>Set your Stripe secret key in functions config by replacing placeholder values in the following command:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>firebase functions:config:set stripe.connected_account_webhook_key=&quot;&lt;YOUR_CONNECTED_ACCOUNT_WEBHOOK_SECRET_KEY&gt;&quot; stripe.pub_key=&quot;&lt;YOUR_STRIPE_PUBLISHABLE_KEY&gt;&quot; stripe.secret_key=&quot;&lt;YOUR_STRIPE_SECRET_KEY&gt;&quot; stripe.webhook_key=&quot;&lt;YOUR_WEBHOOK_SECRET_KEY&gt;&quot;
+<div class="highlight"><pre><span></span><code>firebase functions:config:set stripe.connected_account_webhook_key="&lt;YOUR_CONNECTED_ACCOUNT_WEBHOOK_SECRET_KEY&gt;" stripe.pub_key="&lt;YOUR_STRIPE_PUBLISHABLE_KEY&gt;" stripe.secret_key="&lt;YOUR_STRIPE_SECRET_KEY&gt;" stripe.webhook_key="&lt;YOUR_WEBHOOK_SECRET_KEY&gt;"
 </code></pre></div>
 <ul>
 <li>Set up products for each type with a metadata field "plan_type" of individual, club, pro and prices for each one</li>

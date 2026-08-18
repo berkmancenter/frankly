@@ -507,7 +507,7 @@
 <li>If you install Android and you see this output when running <code>flutter doctor</code>:
   <div class="highlight"><pre><span></span><code>[!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
 ✗ cmdline-tools component is missing
-Run path/to/sdkmanager --install &quot;cmdline-tools;latest 
+Run path/to/sdkmanager --install "cmdline-tools;latest 
 </code></pre></div>
   Run the following steps: <ol>
 <li>Open <strong>Android Studio</strong> </li>
@@ -520,7 +520,7 @@ Run path/to/sdkmanager --install &quot;cmdline-tools;latest
   <div class="highlight"><pre><span></span><code>Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
 </code></pre></div>
   You can fix that by adding this to your shell's config file (.zshrc, .bashrc, .bash_profile, etc.):
-  <div class="highlight"><pre><span></span><code>export PATH=&quot;$PATH&quot;:&quot;$HOME/.pub-cache/bin&quot;
+  <div class="highlight"><pre><span></span><code>export PATH="$PATH":"$HOME/.pub-cache/bin"
 </code></pre></div>
   After adding the recommended export to your <strong>~/.zshrc</strong> file, restart all terminal windows.</li>
 </ul>
@@ -544,10 +544,10 @@ i  Skipping write of functions/.gitignore
 ⚠  pubsub: To select a different host/port, specify that host/port in a firebase.json config file:
       {
         // ...
-        &quot;emulators&quot;: {
-          &quot;pubsub&quot;: {
-            &quot;host&quot;: &quot;HOST&quot;,
-            &quot;port&quot;: &quot;PORT&quot;
+        "emulators": {
+          "pubsub": {
+            "host": "HOST",
+            "port": "PORT"
           }
         }
       }

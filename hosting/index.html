@@ -1754,10 +1754,10 @@
 <p>Update <code>.firebaserc</code> at the repo root to point at your Firebase project IDs.</p>
 <p>Example structure:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-staging-project-id&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;staging&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-staging-project-id&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;prod&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-production-project-id&quot;</span>
+<span class="w">  </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-staging-project-id"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"staging"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-staging-project-id"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"prod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-production-project-id"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1792,8 +1792,8 @@
 <p>All HTML page requests are routed through the <code>ServeIndex</code> Cloud Function, which injects a per-request Content Security Policy (CSP) nonce. A nonce is a random, single-use token generated fresh for each page load. The server includes the same nonce value in both the CSP header and on each trusted <code>&lt;script&gt;</code> tag. The browser only executes scripts whose nonce attribute matches the one in the CSP header. Because an attacker cannot predict the nonce for a given request, injected scripts will not have the correct nonce and will be blocked. Static assets (JS, CSS, images, fonts) are served directly by Firebase Hosting without going through the function.</p>
 <p>This is configured by the catch-all rewrite in <code>firebase.json</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;**&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;function&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ServeIndex&quot;</span>
+<span class="w">  </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"**"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"function"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ServeIndex"</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="content-security-policy-csp">Content Security Policy (CSP)</h3>
@@ -1859,26 +1859,26 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
 <p>A sample configuration file is at <code>firebase/functions/.runtimeconfig.json.example</code>. Copy it to <code>firebase/functions/.runtimeconfig.json</code> for local development.</p>
 <p>For production, set values using the Firebase CLI:</p>
 <div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>functions:config:set<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.domain<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.legal_entity_name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.alt_email_domain<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.no_reply_email<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.unsubscribe_encryption_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.full_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.privacy_policy_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.mailing_address<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.banner_image_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.functions_url_prefix<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.project_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.copyright<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.google_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>app.version<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>ics.prod_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>xmlns.url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>xmlns.media_url<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>functions.on_firestore.min_instances<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>functions.update_live_stream_participant_count.min_instances<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+<span class="w">  </span>app.domain<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.legal_entity_name<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.alt_email_domain<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.no_reply_email<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.unsubscribe_encryption_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.name<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.full_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.privacy_policy_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.mailing_address<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.banner_image_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.functions_url_prefix<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.project_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.copyright<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.google_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>app.version<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ics.prod_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>xmlns.url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>xmlns.media_url<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>functions.on_firestore.min_instances<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>functions.update_live_stream_participant_count.min_instances<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
 </code></pre></div>
 <h3 id="what-these-values-are-for">What these values are for</h3>
 <p><strong>Application settings</strong></p>
@@ -1964,14 +1964,14 @@ AGORA_APP_ID=<value>           # For client-side connections to Agora.</p>
 <p>You only need to configure the services your instance will use.</p>
 <h3 id="agora">Agora</h3>
 <p>Agora powers video functionality. Set these values via <code>firebase functions:config:set</code>:</p>
-<div class="highlight"><pre><span></span><code>agora.app_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.app_certificate<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.rest_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.rest_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.storage_bucket_name<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.storage_access_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.storage_secret_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-agora.webhook_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code>agora.app_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.app_certificate<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.rest_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.rest_secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.storage_bucket_name<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.storage_access_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.storage_secret_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+agora.webhook_secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
 </code></pre></div>
 <p>Setup summary:</p>
 <ul>
@@ -1983,18 +1983,18 @@ agora.webhook_secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALU
 </ul>
 <h3 id="mux">Mux</h3>
 <p>Mux supports livestream workflows. Set via <code>firebase functions:config:set</code>:</p>
-<div class="highlight"><pre><span></span><code>mux.token_id<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-mux.secret<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code>mux.token_id<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+mux.secret<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
 </code></pre></div>
 <p>Also configure Mux webhooks in the Mux dashboard to POST to your deployed <code>MuxWebhooks</code> function URL.</p>
 <h3 id="cloudinary">Cloudinary</h3>
 <p>Cloudinary is used for media uploads. Configuration is done entirely via <code>client/.env</code> (see step 9). No source files need to be edited.</p>
 <h3 id="stripe">Stripe</h3>
 <p>Stripe is currently disabled by default. If you enable it, set via <code>firebase functions:config:set</code>:</p>
-<div class="highlight"><pre><span></span><code>stripe.connected_account_webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-stripe.pub_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-stripe.secret_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
-stripe.webhook_key<span class="o">=</span><span class="s2">&quot;&lt;YOUR_VALUE_HERE&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code>stripe.connected_account_webhook_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+stripe.pub_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+stripe.secret_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
+stripe.webhook_key<span class="o">=</span><span class="s2">"&lt;YOUR_VALUE_HERE&gt;"</span>
 </code></pre></div>
 <p>Also create products and pricing with a <code>plan_type</code> metadata field (<code>individual</code>, <code>club</code>, or <code>pro</code>) and configure prices for each.</p>
 <h3 id="sendgrid">SendGrid</h3>
@@ -2164,7 +2164,7 @@ firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class=
 
 <span class="c1"># Inspect / set runtime config</span>
 firebase<span class="w"> </span>functions:config:get
-firebase<span class="w"> </span>functions:config:set<span class="w"> </span>app.name<span class="o">=</span><span class="s2">&quot;Your App Name&quot;</span>
+firebase<span class="w"> </span>functions:config:set<span class="w"> </span>app.name<span class="o">=</span><span class="s2">"Your App Name"</span>
 
 <span class="c1"># Create Cloud Tasks queue</span>
 gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>YOUR-FIREBASE-PROJECT-ID

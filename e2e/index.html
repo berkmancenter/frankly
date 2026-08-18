@@ -770,9 +770,9 @@ TEST_MEMBER_PASSWORD=anotherpassword
 <li>It creates the community <code>ASML Testing-[random number]</code>, which many of the tests use, and sets environment variables for test interaction. The community will not be created if the following variables are set to point to an existing community in <code>.env</code>. These values can be set to any existing community. <strong>Each developer should use a unique community URL</strong>.</li>
 </ol>
 <h4 id="env_1"><em><code>.env</code></em></h4>
-<div class="highlight"><pre><span></span><code>TEST_COMMUNITY_NAME=&#39;ASML Testing&#39;
-TEST_COMMUNITY_TAGLINE=&#39;Doing all the testing&#39;
-TEST_COMMUNITY_URL=&#39;http://localhost:5000/space/1qOsSScDzRy51tvwmjKS&#39;
+<div class="highlight"><pre><span></span><code>TEST_COMMUNITY_NAME='ASML Testing'
+TEST_COMMUNITY_TAGLINE='Doing all the testing'
+TEST_COMMUNITY_URL='http://localhost:5000/space/1qOsSScDzRy51tvwmjKS'
 </code></pre></div>
 <h3 id="running-tests-from-vscode">Running Tests from VSCode</h3>
 <p>The Playwright extension for VSCode adds a handy testing panel that allows you to select the devices/browsers to use for text execution, as well as whether to show the browser during text execution, which is good for debugging and fun for demos. Note that the above-mentioned Global setup script will only run if the "setup" box under Projects is checked. If you have run once to generate a <code>.auth/user.json</code> file and you have the test community environment variables set to some community you want to use, you should not need to run setup.</p>
@@ -790,7 +790,7 @@ TEST_COMMUNITY_URL=&#39;http://localhost:5000/space/1qOsSScDzRy51tvwmjKS&#39;
 </code></pre></div>
 <p><strong>Run a single test within a file:</strong>
 The -g command line option matches individual tests within a file by regular expression</p>
-<div class="highlight"><pre><span></span><code><span class="gp">foo@e2e:~$ </span>npx<span class="w"> </span>playwright<span class="w"> </span><span class="nb">test</span><span class="w"> </span>tests/event/rsvp-event.spec.ts<span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;RSVP to a public event&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">foo@e2e:~$ </span>npx<span class="w"> </span>playwright<span class="w"> </span><span class="nb">test</span><span class="w"> </span>tests/event/rsvp-event.spec.ts<span class="w"> </span>-g<span class="w"> </span><span class="s2">"RSVP to a public event"</span>
 </code></pre></div>
 <h3 id="viewing-test-results">Viewing Test Results</h3>
 <p>A test report will be generated at the end of test execution and displayed in a browser. <em>Only the most recent test results are stored in the <code>test-results</code> folder</em> and can be accessed by running:</p>
@@ -824,7 +824,7 @@ The -g command line option matches individual tests within a file by regular exp
 <p>Some UI elements are still not identifiable by the default Semantics tree. You may need to modify the code you are testing to add semantic labels. Many Flutter widgets have a semanticsLabel property, but if not, you can modify build methods to wrap widgets in a Semantics object as in the following example:</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>    child: Semantics(label:&#39;Submit Chat Button&#39;,button: true,
+<div class="highlight"><pre><span></span><code>    child: Semantics(label:'Submit Chat Button',button: true,
               child: ActionButton(
                 minWidth: 20,
                 color: context.theme.colorScheme.primary,
