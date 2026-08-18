@@ -54,14 +54,14 @@ sequenceDiagram
 
 ## Event Timing
 
-| Datum | Source |
-|-------|--------|
-| Scheduled start | `Event.scheduledTime` |
-| Planned duration | `Event.durationInMinutes` |
-| Scheduled end | Computed: `scheduledTime + durationInMinutes` |
-| Actual end | `LiveMeeting.events.last.timestamp` where `.event == finishMeeting` |
-| Waiting room end | `scheduledTime` (meeting starts at scheduled time; waiting room is pre-start) |
-| Breakout duration | Not time-bounded -- host or hostless logic ends them |
+| Datum                | Source                                                                        |
+| -------------------- | ----------------------------------------------------------------------------- |
+| Scheduled start      | `Event.scheduledTime`                                                         |
+| Planned duration     | `Event.durationInMinutes`                                                     |
+| Scheduled end        | Computed: `scheduledTime + durationInMinutes`                                 |
+| Actual end           | `LiveMeeting.events.last.timestamp` where `.event == finishMeeting`           |
+| Waiting room end     | `scheduledTime` (meeting starts at scheduled time; waiting room is pre-start) |
+| Breakout duration    | Not time-bounded -- host or hostless logic ends them                          |
 | Agenda item duration | `AgendaItem.durationInSeconds` (drives `_pendingMeetingGuideAgendaItemTimer`) |
 
 **Clock sync:** `ClockService` calls `GetServerTimestamp` on app start, computes offset between client and server. All time comparisons use `clockService.now()` (adjusted) rather than `DateTime.now()`.
@@ -73,23 +73,23 @@ sequenceDiagram
     participant Host
     participant Server
     participant Firestore
-    participant Participant
+    participant P as Participant
     participant AgoraRoom
 
     Host->>Server: InitiateBreakouts(numPerRoom, method)
     Server->>Firestore: Set breakoutRoomStatus=pending
-    Firestore-->>Participant: LiveMeeting snapshot (pending)
-    Participant->>Participant: Show breakout confirmation dialog
-    Participant->>Firestore: Write availableForBreakoutSessionId
-    Note over Participant: HostlessFallbackController starts timer
-    Participant->>Server: CheckAssignToBreakouts (probabilistic)
+    Firestore-->>P: LiveMeeting snapshot (pending)
+    P->>P: Show breakout confirmation dialog
+    P->>Firestore: Write availableForBreakoutSessionId
+    Note over P: HostlessFallbackController starts timer
+    P->>Server: CheckAssignToBreakouts (probabilistic)
     Server->>Server: Assign rooms (Hamming distance or target-per-room)
     Server->>Firestore: Write BreakoutRoom docs, status=active
-    Firestore-->>Participant: Snapshot: breakout assigned
-    Participant->>Participant: Disconnect main AgoraRoom
-    Participant->>Server: GetBreakoutRoomJoinInfo(roomId)
-    Server-->>Participant: {breakout token, channel}
-    Participant->>AgoraRoom: connect(breakoutChannel, token)
+    Firestore-->>P: Snapshot: breakout assigned
+    P->>P: Disconnect main AgoraRoom
+    P->>Server: GetBreakoutRoomJoinInfo(roomId)
+    Server-->>P: {breakout token, channel}
+    P->>AgoraRoom: connect(breakoutChannel, token)
 ```
 
 ## Agora Connection Lifecycle
@@ -151,12 +151,12 @@ Recording uses a separate Agora channel subscription (cloud recording UID joins 
 
 These dimensions change independently during a meeting:
 
-| Axis | Values | Owner |
-|------|--------|-------|
-| Meeting phase | prescreen / inMeeting / breakout / left | LiveMeetingProvider |
-| Audio | muted / unmuted / disabled | AgoraParticipant |
-| Video | off / on / disabled | AgoraParticipant |
-| Network quality | good / degraded / poor | AgoraParticipant (5s poll) |
-| Recording | off / starting / recording / stopping | RecordingSession doc |
-| Hand raised | yes / no | ConferenceRoom |
-| Dominant speaker | speaking / not | ConferenceRoom (debounced 500ms) |
+| Axis             | Values                                  | Owner                            |
+| ---------------- | --------------------------------------- | -------------------------------- |
+| Meeting phase    | prescreen / inMeeting / breakout / left | LiveMeetingProvider              |
+| Audio            | muted / unmuted / disabled              | AgoraParticipant                 |
+| Video            | off / on / disabled                     | AgoraParticipant                 |
+| Network quality  | good / degraded / poor                  | AgoraParticipant (5s poll)       |
+| Recording        | off / starting / recording / stopping   | RecordingSession doc             |
+| Hand raised      | yes / no                                | ConferenceRoom                   |
+| Dominant speaker | speaking / not                          | ConferenceRoom (debounced 500ms) |
