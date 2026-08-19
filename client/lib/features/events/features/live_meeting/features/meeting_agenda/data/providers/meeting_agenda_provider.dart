@@ -614,11 +614,11 @@ class AgendaProvider with ChangeNotifier {
 
   Future<void> toggleMoveForward({
     required String currentAgendaItemId,
-    bool ready = true,
+    bool userIsReady = true,
   }) async {
     // Undoing a ready-to-move-on vote never advances the meeting, so it
     // never needs the "just started" double-check.
-    if (ready) {
+    if (userIsReady) {
       final timeInState = timeInSection(currentAgendaItemId);
       final doubleCheckDuration =
           currentAgendaItemId == MeetingGuideCardStore.startAgendaItemId
@@ -647,7 +647,7 @@ class AgendaProvider with ChangeNotifier {
     } else {
       await checkReadyToAdvance(
         agendaItemId: currentAgendaItemId,
-        ready: ready,
+        ready: userIsReady,
       );
     }
   }

@@ -962,7 +962,7 @@ class ReadyButton extends HookWidget {
           : () => alertOnError(context, () async {
                 await agendaProvider.toggleMoveForward(
                   currentAgendaItemId: currentAgendaItemId,
-                  ready: !userIsReady,
+                  userIsReady: !userIsReady,
                 );
               }),
       hideLoadingIndicator: true,

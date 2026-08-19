@@ -225,6 +225,7 @@ class MeetingGuideCardPresenter {
 
   Future<void> moveForward(String currentAgendaItemId) async {
     await _agendaProvider.toggleMoveForward(
-        currentAgendaItemId: currentAgendaItemId);
+      currentAgendaItemId: currentAgendaItemId,
+    );
   }
 }
