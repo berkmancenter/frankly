@@ -32,7 +32,17 @@ if [[ -f "$SERVICE_ACCOUNT_KEY" && -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; 
   export GOOGLE_APPLICATION_CREDENTIALS="$SERVICE_ACCOUNT_KEY"
 fi
 
+# Start the Firebase emulators with the specified services and project ID. If the inspect flag is set, it will be included in the command.
+# Also check for a data folder and import that data if found
+DATA_DIR="$SCRIPT_DIR/data"
+
+if [[ ! -d "$DATA_DIR" ]]; then
+  echo "No data folder found at $DATA_DIR, skipping import."
+  DATA_DIR=""
+fi
+
 exec firebase emulators:start \
   --only firestore,functions,auth,pubsub,database \
   --project "$PROJECT_ID" \
-  ${inspect_flag:+"${inspect_flag[@]}"}
+  ${inspect_flag:+"${inspect_flag[@]}"} \
+  ${DATA_DIR:+"--import=$DATA_DIR"}

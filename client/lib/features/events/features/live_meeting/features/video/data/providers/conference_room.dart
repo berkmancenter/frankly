@@ -540,8 +540,6 @@ class ConferenceRoom with ChangeNotifier {
   }) async {
     Debug.log('ConferenceRoom._onConnected => state: ${room.state}');
 
-    String eventId = liveMeetingProvider.eventProvider.eventId;
-
     _debouncedDominantSpeakerStream = BehaviorSubjectWrapper(
       room.dominantSpeakerStream
           .distinct()

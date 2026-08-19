@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
-import 'package:client/features/community/presentation/widgets/community_tag_builder.dart';
 import 'package:client/features/community/utils/guard_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -45,10 +44,12 @@ class _ControlBarState extends State<ControlBar> {
   Widget _buildVideoToggle({required bool enabled}) {
     Future<void> handleVideoToggle() async {
       // Edge case: If user has managed to enter event without completing the mirror check, pop it now
-      final eventId = Provider.of<LiveMeetingProvider>(context, listen: false).eventProvider.eventId;
+      final eventId = Provider.of<LiveMeetingProvider>(context, listen: false)
+          .eventProvider
+          .eventId;
       final mirrorCheckCompleted =
-          sharedPreferencesService.hasMirrorCheckCompletedForEvent(eventId,
-         
+          sharedPreferencesService.hasMirrorCheckCompletedForEvent(
+        eventId,
       );
 
       if (!mirrorCheckCompleted) {
@@ -66,19 +67,19 @@ class _ControlBarState extends State<ControlBar> {
           );
         }
 
-        await sharedPreferencesService
-            .setMirrorCheckCompleteForEvent(eventId);
+        await sharedPreferencesService.setMirrorCheckCompleteForEvent(eventId);
 
         // We can bail here because the media settings widget dispatches an event to update the video device
         return;
       }
-      
+
       if (mounted) {
         // TODO: this can be handled by the event bus
         await AudioVideoErrorDialog.showOnError(
           context,
           () => _conferenceRoomRead.toggleVideoEnabled(
-              setEnabled: !_conferenceRoomRead.videoIsStreaming,),
+            setEnabled: !_conferenceRoomRead.videoIsStreaming,
+          ),
         );
       }
     }
