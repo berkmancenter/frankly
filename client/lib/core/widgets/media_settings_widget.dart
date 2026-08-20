@@ -339,6 +339,12 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   ActionButton(
                     text: context.l10n.saveAndClose,
                     onPressed: () async {
+                      // Bail if no devices were detected/selected, as the user can't save anything in that case
+                      if (_mediaService.selectedVideoInputId == null ||
+                          _mediaService.selectedAudioInputId == null) {
+                        return;
+                      }
+
                       if (widget.isMirrorCheck) {
                         await sharedPreferencesService.setDefaultCameraId(
                           _mediaService.selectedVideoInputId!,
