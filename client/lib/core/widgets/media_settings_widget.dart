@@ -363,8 +363,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                           );
 
                           if (widget.isMirrorCheck) {
-                            AVDeviceChangedEvent(
-                              changes: [AVDeviceChange.updateVideoDevice],
+                            appEventBus.emit(
+                              AVDeviceChangedEvent(
+                                changes: [AVDeviceChange.updateVideoDevice],
+                              ),
                             );
                           }
 
