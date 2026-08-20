@@ -3,7 +3,6 @@ import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
 import 'package:client/core/widgets/media_settings_widget.dart';
-import 'package:data_models/user_input/chat_suggestion_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -405,7 +404,7 @@ class _EventInfoState extends State<EventInfo> {
             context: navigatorState.context,
             builder: (context) {
               return MediaSettingsWidget(
-                shouldShowVideoPreview:true,
+                shouldShowVideoPreview: true,
                 isMirrorCheck: true,
               );
             },
@@ -414,7 +413,6 @@ class _EventInfoState extends State<EventInfo> {
           await sharedPreferencesService
               .setMirrorCheckCompleteForEvent(widget.event.id);
         }
-
 
         final successfullyJoined =
             await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
