@@ -268,7 +268,7 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                 ),
           const SizedBox(height: 24),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Column(
                 children: [
@@ -276,10 +276,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                       _mediaService.videoInputs.isNotEmpty)
                     Column(
                       children: [
-                        Text(
-                          context.l10n.videoPreview,
-                          style: context.theme.textTheme.titleMedium,
-                        ),
+                        if (widget.isMirrorCheck)
+                          Text(
+                            context.l10n.micAndCameraEnabled,
+                            style: context.theme.textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         const SizedBox(height: 8),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
@@ -335,157 +338,167 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                         ),
                       ],
                     ),
-                  const SizedBox(height: 16),
-                  ActionButton(
-                    text: context.l10n.saveAndClose,
-                    onPressed: () async {
-                      // Bail if no devices were detected/selected, as the user can't save anything in that case
-                      if (_mediaService.selectedVideoInputId == null ||
-                          _mediaService.selectedAudioInputId == null) {
-                        return;
-                      }
-
-                      if (widget.isMirrorCheck) {
-                        await sharedPreferencesService.setDefaultCameraId(
-                          _mediaService.selectedVideoInputId!,
-                        );
-                        if (context.mounted) Navigator.of(context).pop();
-                      }
-
-                      final savedInitialVideoDeviceId = initialVideoDeviceId;
-                      final savedInitialAudioId = initialAudioDeviceId;
-
-                      try {
-                        if (_mediaService.selectedVideoInputId !=
-                            initialVideoDeviceId) {
-                          setState(() {
-                            isLoadingCameraChange = true;
-                          });
-
-                          appEventBus.emit(
-                            AVDeviceChangedEvent(
-                              changes: [AVDeviceChange.disableVideo],
-                            ),
-                          );
-
-                          if (widget.isMirrorCheck) {
-                            appEventBus.emit(
-                              AVDeviceChangedEvent(
-                                changes: [AVDeviceChange.updateVideoDevice],
-                              ),
-                            );
-                          }
-
-                          appEventBus.emit(
-                            AVDeviceChangedEvent(
-                              changes: [AVDeviceChange.enableVideo],
-                            ),
-                          );
-
-                          initialVideoDeviceId =
-                              _mediaService.selectedVideoInputId;
-
-                          if (widget.shouldShowVideoPreview) {
-                            // Re-enable the preview after the update.
-                            await updatePreviewWidget();
-                          }
-                          if (context.mounted) {
-                            showRegularToast(
-                              context,
-                              context.l10n.videoDeviceUpdated,
-                              toastType: ToastType.success,
-                            );
-                          }
-                        }
-                        if (widget.isMirrorCheck ||
-                            _mediaService.selectedAudioInputId !=
-                                initialAudioDeviceId) {
-                          await _mediaService.selectAudioDevice(
-                            deviceId: _mediaService.selectedAudioInputId!,
-                            shouldUpdatePreview: widget.shouldShowVideoPreview,
-                          );
-                          // For mirror-check flow, the dialog was already popped above before this runs, so any
-                          // stream just opened for the preview has nowhere to go - stop it so it doesn't leak/retain the camera stream
-                          if (_disposed) {
-                            _mediaService.stopPreviewMediaStream();
-                          }
-                          appEventBus.emit(
-                            AVDeviceChangedEvent(
-                              changes: [AVDeviceChange.disableAudio],
-                            ),
-                          );
-
-                          if (!widget.isMirrorCheck) {
-                            appEventBus.emit(
-                              AVDeviceChangedEvent(
-                                changes: [AVDeviceChange.enableAudio],
-                              ),
-                            );
-                          } else {
-                            // Still need to attempt to update the Agora
-                            // device to catch any errors.
-                            appEventBus.emit(
-                              AVDeviceChangedEvent(
-                                changes: [AVDeviceChange.updateAudioDevice],
-                              ),
-                            );
-                          }
-                          initialAudioDeviceId =
-                              _mediaService.selectedAudioInputId;
-                          if (context.mounted) {
-                            showRegularToast(
-                              context,
-                              context.l10n.audioDeviceUpdated,
-                              toastType: ToastType.success,
-                            );
-                          }
-                        }
-
-                        if (!context.mounted) return;
-                        Navigator.of(context).pop();
-                      } catch (e) {
-                        Debug.log('Error saving device settings: $e');
-                        if (!context.mounted) return;
-                        // Reset to initial values if save fails
-                        _mediaService.selectedVideoInputId =
-                            savedInitialVideoDeviceId;
-                        initialVideoDeviceId = savedInitialVideoDeviceId;
-                        initialAudioDeviceId = savedInitialAudioId;
-
-                        appEventBus.emit(
-                          AVDeviceChangedEvent(
-                            changes: [
-                              AVDeviceChange.enableAudio,
-                              AVDeviceChange.enableVideo,
-                            ],
-                          ),
-                        );
-
-                        if (context.mounted) {
-                          showRegularToast(
-                            context,
-                            context.l10n.avErrorSaveDeviceSettings,
-                            toastType: ToastType.failed,
-                          );
-                        }
-                        if (widget.shouldShowVideoPreview) {
-                          // Re-enable the preview.
-                          await updatePreviewWidget();
-                        }
-                      }
-
-                      if (!mounted) return;
-                      setState(() {
-                        isLoadingCameraChange = false;
-                      });
-                    },
-                  ),
                 ],
               ),
             ],
           ),
         ],
       ),
+      actions: [
+        ActionButton(
+          type: ActionButtonType.text,
+          text: context.l10n.cancel,
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        const SizedBox(width: 16),
+        ActionButton(
+          text: widget.isMirrorCheck
+              ? context.l10n.saveAndJoin
+              : context.l10n.save,
+          onPressed: () async {
+            // Bail if no devices were detected/selected, as the user can't save anything in that case
+            if (_mediaService.selectedVideoInputId == null ||
+                _mediaService.selectedAudioInputId == null) {
+              return;
+            }
+
+            if (widget.isMirrorCheck) {
+              await sharedPreferencesService.setDefaultCameraId(
+                _mediaService.selectedVideoInputId!,
+              );
+              // Caller expects the dialog to be popped with true if the user saved their settings
+              if (context.mounted) Navigator.of(context).pop(true);
+            }
+
+            final savedInitialVideoDeviceId = initialVideoDeviceId;
+            final savedInitialAudioId = initialAudioDeviceId;
+
+            try {
+              if (_mediaService.selectedVideoInputId != initialVideoDeviceId) {
+                setState(() {
+                  isLoadingCameraChange = true;
+                });
+
+                appEventBus.emit(
+                  AVDeviceChangedEvent(
+                    changes: [AVDeviceChange.disableVideo],
+                  ),
+                );
+
+                if (widget.isMirrorCheck) {
+                  appEventBus.emit(
+                    AVDeviceChangedEvent(
+                      changes: [AVDeviceChange.updateVideoDevice],
+                    ),
+                  );
+                }
+
+                appEventBus.emit(
+                  AVDeviceChangedEvent(
+                    changes: [AVDeviceChange.enableVideo],
+                  ),
+                );
+
+                initialVideoDeviceId = _mediaService.selectedVideoInputId;
+
+                if (widget.shouldShowVideoPreview) {
+                  // Re-enable the preview after the update.
+                  await updatePreviewWidget();
+                }
+                if (context.mounted) {
+                  showRegularToast(
+                    context,
+                    context.l10n.videoDeviceUpdated,
+                    toastType: ToastType.success,
+                  );
+                }
+              }
+              if (widget.isMirrorCheck ||
+                  _mediaService.selectedAudioInputId != initialAudioDeviceId) {
+                await _mediaService.selectAudioDevice(
+                  deviceId: _mediaService.selectedAudioInputId!,
+                  shouldUpdatePreview: widget.shouldShowVideoPreview,
+                );
+                // For mirror-check flow, the dialog was already popped above before this runs, so any
+                // stream just opened for the preview has nowhere to go - stop it so it doesn't leak/retain the camera stream
+                if (_disposed) {
+                  _mediaService.stopPreviewMediaStream();
+                }
+                appEventBus.emit(
+                  AVDeviceChangedEvent(
+                    changes: [AVDeviceChange.disableAudio],
+                  ),
+                );
+
+                if (!widget.isMirrorCheck) {
+                  appEventBus.emit(
+                    AVDeviceChangedEvent(
+                      changes: [AVDeviceChange.enableAudio],
+                    ),
+                  );
+                } else {
+                  // Still need to attempt to update the Agora
+                  // device to catch any errors.
+                  appEventBus.emit(
+                    AVDeviceChangedEvent(
+                      changes: [AVDeviceChange.updateAudioDevice],
+                    ),
+                  );
+                }
+                initialAudioDeviceId = _mediaService.selectedAudioInputId;
+                if (context.mounted) {
+                  showRegularToast(
+                    context,
+                    context.l10n.audioDeviceUpdated,
+                    toastType: ToastType.success,
+                  );
+                }
+              }
+
+              if (!context.mounted) return;
+              Navigator.of(context).pop();
+            } catch (e) {
+              Debug.log('Error saving device settings: $e');
+              if (!context.mounted) return;
+              // Reset to initial values if save fails
+              _mediaService.selectedVideoInputId = savedInitialVideoDeviceId;
+              initialVideoDeviceId = savedInitialVideoDeviceId;
+              initialAudioDeviceId = savedInitialAudioId;
+
+              appEventBus.emit(
+                AVDeviceChangedEvent(
+                  changes: [
+                    AVDeviceChange.enableAudio,
+                    AVDeviceChange.enableVideo,
+                  ],
+                ),
+              );
+
+              if (context.mounted) {
+                showRegularToast(
+                  context,
+                  context.l10n.avErrorSaveDeviceSettings,
+                  toastType: ToastType.failed,
+                );
+              }
+              if (widget.shouldShowVideoPreview) {
+                // Re-enable the preview.
+                await updatePreviewWidget();
+              }
+              if (context.mounted) {
+                Navigator.of(context).pop(true);
+              }
+            }
+
+            if (!mounted) return;
+            setState(() {
+              isLoadingCameraChange = false;
+            });
+          },
+        ),
+      ],
     );
   }
 }

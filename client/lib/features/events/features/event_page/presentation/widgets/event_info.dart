@@ -389,6 +389,9 @@ class _EventInfoState extends State<EventInfo> {
     }
 
     final isEventOpen = text == kEventOpenText;
+    // Default mirror check to be completed;
+    // Otherwise, an event cannot be joined if one has already been completed for this event
+    bool? hasCompletedMirrorCheck = true;
 
     return ActionButton(
       height: 64,
@@ -399,7 +402,7 @@ class _EventInfoState extends State<EventInfo> {
         // Show mirror check if not completed before in this event
         if (!sharedPreferencesService
             .hasMirrorCheckCompletedForEvent(widget.event.id)) {
-          await showDialog(
+          hasCompletedMirrorCheck = await showDialog(
             barrierDismissible: false,
             context: navigatorState.context,
             builder: (context) {
@@ -410,8 +413,19 @@ class _EventInfoState extends State<EventInfo> {
             },
           );
 
+          // If the user cancels the mirror check, do not set the mirror check as completed and bail
+          if (hasCompletedMirrorCheck == null ||
+              hasCompletedMirrorCheck == false) {
+            return;
+          }
           await sharedPreferencesService
               .setMirrorCheckCompleteForEvent(widget.event.id);
+        }
+
+        // If the user cancels the mirror check, do not join the event and bail
+        if (hasCompletedMirrorCheck == null ||
+            hasCompletedMirrorCheck == false) {
+          return;
         }
 
         final successfullyJoined =
