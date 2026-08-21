@@ -205,6 +205,11 @@ class MeetingGuideCardPresenter {
 
   /// The server-computed time at which the pending advance will actually occur.
   DateTime? getPendingAdvanceTime(String? currentAgendaItemId) {
+    // If the pending agenda item ID doesn't match the current agenda item ID, return null.
+    final pendingAgendaItemId = _agendaProvider.pendingAdvanceAgendaItemId;
+    if (pendingAgendaItemId != currentAgendaItemId) {
+      return null;
+    }
     return _agendaProvider.pendingAdvanceTime;
   }
 

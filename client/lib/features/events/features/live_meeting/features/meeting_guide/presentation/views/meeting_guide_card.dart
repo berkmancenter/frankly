@@ -112,6 +112,11 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
 
   final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
 
+  // The delay before the meeting guide automatically advances to the next agenda item.
+  final meetingGuideAdvanceDelay = const Duration(seconds: 8);
+  // The buffer time added to the meeting guide advance countdown to account for typical server/propagation latency, so the two stay in sync.
+  final meetingGuideAdvanceCountdownBuffer = const Duration(seconds: 2);
+
   @override
   void initState() {
     super.initState();
@@ -524,25 +529,24 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                         ),
                       ),
                       SizedBox(width: 10),
-                      ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxWidth: 64, maxHeight: 64),
-                        child: Countdown(
-                          startingPendingAdvanceTime: () {
-                            final pendingAdvanceTime = _presenter
-                                .getPendingAdvanceTime(currentAgendaItemId)
-                                ?.toUtc();
-                            if (pendingAdvanceTime == null) {
-                              return const Duration(seconds: 10);
-                            }
-                            final remaining = pendingAdvanceTime
-                                    .difference(DateTime.now().toUtc()) +
-                                MeetingGuideCardStore.advanceCountdownBuffer;
-                            return remaining.isNegative
-                                ? Duration.zero
-                                : remaining;
-                          }(),
-                        ),
+                      Countdown(
+                        startingPendingAdvanceTime: () {
+                          final pendingAdvanceTime = _presenter
+                              .getPendingAdvanceTime(currentAgendaItemId)
+                              ?.toUtc();
+                          if (pendingAdvanceTime == null) {
+                            return Duration(
+                              seconds: meetingGuideAdvanceDelay.inSeconds +
+                                  meetingGuideAdvanceCountdownBuffer.inSeconds,
+                            );
+                          }
+                          final remaining = pendingAdvanceTime
+                                  .difference(DateTime.now().toUtc()) +
+                              MeetingGuideCardStore.advanceCountdownBuffer;
+                          return remaining.isNegative
+                              ? Duration.zero
+                              : remaining;
+                        }(),
                       ),
                     ],
                   );
@@ -630,7 +634,7 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildReadyCountText(context, true),
+                    _buildReadyCountText(context),
                     SizedBox(width: 10),
                     _buildInfoTooltip(context),
                   ],
@@ -668,7 +672,7 @@ class ReadyToMoveOnBuilder extends StatelessWidget {
     );
   }
 
-  Widget _buildReadyCountText(BuildContext context, [bool isMobile = false]) {
+  Widget _buildReadyCountText(BuildContext context) {
     return Text(
       isMobile
           ? context.l10n.peopleRequiredToMoveOn(
@@ -872,8 +876,8 @@ class SyncedAdvanceCountdownWidget extends State<Countdown>
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 150,
-              height: 150,
+              width: 64,
+              height: 64,
               child: AnimatedBuilder(
                 animation: controller,
                 builder: (context, child) {
