@@ -61,11 +61,11 @@ Widget buildForgotPasswordMessage(
           TextSpan(
             text: ', ${context.l10n.forgotPasswordThen}',
           ),
-        ],
-        if (!showEmailLink)
+        ] else ...[
           TextSpan(
             text: ' ${context.l10n.forgotPasswordEnterEmail}',
           ),
+        ],
         buildActionText(
           context,
           context.l10n.forgotPasswordSuffix,
@@ -91,6 +91,7 @@ class AccountErrorMessage extends StatelessWidget {
     this.onSwitchView,
     this.onForgotPassword,
   });
+
   @override
   Widget build(BuildContext context) {
     boxedErrorText({required message}) {
