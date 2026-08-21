@@ -125,224 +125,275 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       insetPadding: responsiveLayoutService.isMobile(context)
           ? EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0)
           : null,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.l10n.audiovisualSettings,
-            style: context.theme.textTheme.headlineSmall,
-          ),
-          SizedBox(height: 10),
-          Text(
-            context.l10n.microphoneInput,
-            style: context.theme.textTheme.titleMedium,
-          ),
-          _mediaService.audioInputs.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.l10n.audiovisualSettings,
+              style: context.theme.textTheme.headlineSmall,
+            ),
+            SizedBox(height: 10),
+            Text(
+              context.l10n.microphoneInput,
+              style: context.theme.textTheme.titleMedium,
+            ),
+            DropdownButton<String>(
+              // Prevent dropdown errors by first checking that the selected
+              // device still exists in available inputs.
+              value: _mediaService.audioInputs.any(
+                (device) =>
+                    device.deviceId == _mediaService.selectedAudioInputId,
+              )
+                  ? _mediaService.selectedAudioInputId
+                  : null,
+              items: _mediaService.audioInputs.map((device) {
+                return DropdownMenuItem<String>(
+                  value: device.deviceId,
                   child: Text(
-                    context.l10n.avAudioErrorNotFound,
-                    style: context.theme.textTheme.bodyMedium!.copyWith(
-                      color: context.theme.colorScheme.onSurfaceVariant,
-                    ),
+                    device.label!,
+                    style: context.theme.textTheme.titleMedium,
                   ),
-                )
-              : DropdownButton<String>(
-                  // Prevent dropdown errors by first checking that the selected
-                  // device still exists in available inputs.
-                  value: _mediaService.audioInputs.any(
-                    (device) =>
-                        device.deviceId == _mediaService.selectedAudioInputId,
-                  )
-                      ? _mediaService.selectedAudioInputId
-                      : null,
-                  items: _mediaService.audioInputs.map((device) {
-                    return DropdownMenuItem<String>(
-                      value: device.deviceId,
-                      child: Text(
-                        device.label!,
-                        style: context.theme.textTheme.titleMedium,
-                      ),
-                    );
-                  }).toList(),
-                  selectedItemBuilder: (BuildContext context) {
-                    return _mediaService.audioInputs.map<Widget>((device) {
-                      return Container(
-                        alignment: Alignment.centerLeft,
-                        constraints: BoxConstraints(
-                          maxWidth: 320,
-                        ),
-                        // 24px for the dropdown arrow
-                        width: MediaQuery.of(context).size.width -
-                            _kTotalDialogContentPadding -
-                            24,
-                        child: Text(
-                          device.label!,
-                          style: context.theme.textTheme.titleMedium,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                      );
-                    }).toList();
-                  },
-                  onChanged: (val) async {
-                    if (val == null) return;
-                    // No need to update preview as audio preview isn't shown.
-                    await _mediaService.selectAudioDevice(
-                      deviceId: val,
-                      shouldUpdatePreview: false,
-                    );
-                    setState(() {});
-                  },
-                  hint: Text(context.l10n.selectAudioInputDevice),
-                ),
-          const SizedBox(height: 24),
-          Text(
-            context.l10n.cameraInput,
-            style: context.theme.textTheme.titleMedium,
-          ),
-          _mediaService.videoInputs.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Text(
-                    context.l10n.avVideoErrorNotFound,
-                    style: context.theme.textTheme.bodyMedium!.copyWith(
-                      color: context.theme.colorScheme.onSurfaceVariant,
+                );
+              }).toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return _mediaService.audioInputs.map<Widget>((device) {
+                  return Container(
+                    alignment: Alignment.centerLeft,
+                    constraints: BoxConstraints(
+                      maxWidth: 320,
                     ),
-                  ),
-                )
-              : DropdownButton<String>(
-                  // Prevent dropdown errors by first checking that the selected
-                  // device still exists in available inputs.
-                  value: _mediaService.videoInputs.any(
-                    (device) =>
-                        device.deviceId == _mediaService.selectedVideoInputId,
-                  )
-                      ? _mediaService.selectedVideoInputId
-                      : null,
-                  items: _mediaService.videoInputs.map((device) {
-                    return DropdownMenuItem<String>(
-                      value: device.deviceId,
-                      child: Text(
-                        device.label!,
-                        style: context.theme.textTheme.titleMedium,
-                      ),
-                    );
-                  }).toList(),
-                  selectedItemBuilder: (BuildContext context) {
-                    return _mediaService.videoInputs.map<Widget>((device) {
-                      return Container(
-                        alignment: Alignment.centerLeft,
-                        constraints: BoxConstraints(
-                          maxWidth: 320,
-                        ),
-                        // 24px for the dropdown arrow
-                        width: MediaQuery.of(context).size.width -
-                            _kTotalDialogContentPadding -
-                            24,
-                        child: Text(
-                          device.label!,
-                          style: context.theme.textTheme.titleMedium,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                      );
-                    }).toList();
-                  },
-                  onChanged: (val) async {
-                    if (val == null) return;
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await _mediaService.selectVideoDevice(
-                      deviceId: val,
-                      shouldUpdatePreview: widget.shouldShowVideoPreview,
-                    );
-                    await updatePreviewWidget();
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                  hint: Text(context.l10n.selectVideoInput),
-                ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  if (widget.shouldShowVideoPreview &&
-                      _mediaService.videoInputs.isNotEmpty)
-                    Column(
-                      children: [
-                        if (widget.isMirrorCheck)
-                          Text(
-                            context.l10n.micAndCameraEnabled,
-                            style: context.theme.textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        const SizedBox(height: 8),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            constraints: const BoxConstraints(
-                              maxHeight: 240,
-                              maxWidth: 320,
-                            ),
-                            width: MediaQuery.of(context).size.width -
-                                _kTotalDialogContentPadding,
-                            decoration: BoxDecoration(
-                              color: context
-                                  .theme.colorScheme.surfaceContainerHighest,
-                            ),
-                            child: Stack(
-                              children: [
-                                HtmlElementView(viewType: _viewType),
-                                isLoadingCameraChange
-                                    ?
-                                    // Cover the video element while setting video source
-                                    Container(
-                                        color: context.theme.colorScheme
-                                            .surfaceContainerHighest,
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            CircularProgressIndicator(
-                                              color: context.theme.colorScheme
-                                                  .onSurfaceVariant,
-                                            ),
-                                            const SizedBox(height: 16),
-                                            Text(
-                                              context.l10n.videoUpdating,
-                                              style: context
-                                                  .theme.textTheme.bodyMedium,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : isLoading
-                                        ? Center(
-                                            child: CircularProgressIndicator(
-                                              color: context
-                                                  .theme.colorScheme.onPrimary,
-                                            ),
-                                          )
-                                        : const SizedBox.shrink(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                    // 24px for the dropdown arrow
+                    width: MediaQuery.of(context).size.width -
+                        _kTotalDialogContentPadding -
+                        24,
+                    child: Text(
+                      device.label!,
+                      style: context.theme.textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
                     ),
-                ],
+                  );
+                }).toList();
+              },
+              onChanged: _mediaService.audioInputs.isEmpty
+                  ? null
+                  : (val) async {
+                      if (val == null) return;
+                      // No need to update preview as audio preview isn't shown.
+                      await _mediaService.selectAudioDevice(
+                        deviceId: val,
+                        shouldUpdatePreview: false,
+                      );
+                      setState(() {});
+                    },
+              hint: Text(
+                _mediaService.audioInputs.isEmpty
+                    ? context.l10n.noMicrophoneAvailable
+                    : context.l10n.selectAudioInputDevice,
               ),
-            ],
-          ),
-        ],
+            ),
+            if (_mediaService.audioInputs.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  context.l10n.avAudioErrorNotFound,
+                  style: context.theme.textTheme.labelMedium!.copyWith(
+                    color: context.theme.colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
+                ),
+              ),
+            const SizedBox(height: 24),
+            Text(
+              context.l10n.cameraInput,
+              style: context.theme.textTheme.titleMedium,
+            ),
+            DropdownButton<String>(
+              // Prevent dropdown errors by first checking that the selected
+              // device still exists in available inputs.
+              value: _mediaService.videoInputs.any(
+                (device) =>
+                    device.deviceId == _mediaService.selectedVideoInputId,
+              )
+                  ? _mediaService.selectedVideoInputId
+                  : null,
+              items: _mediaService.videoInputs.map((device) {
+                return DropdownMenuItem<String>(
+                  value: device.deviceId,
+                  child: Text(
+                    device.label!,
+                    style: context.theme.textTheme.titleMedium,
+                  ),
+                );
+              }).toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return _mediaService.videoInputs.map<Widget>((device) {
+                  return Container(
+                    alignment: Alignment.centerLeft,
+                    constraints: BoxConstraints(
+                      maxWidth: 320,
+                    ),
+                    // 24px for the dropdown arrow
+                    width: MediaQuery.of(context).size.width -
+                        _kTotalDialogContentPadding -
+                        24,
+                    child: Text(
+                      device.label!,
+                      style: context.theme.textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                    ),
+                  );
+                }).toList();
+              },
+              onChanged: _mediaService.videoInputs.isEmpty
+                  ? null
+                  : (val) async {
+                      if (val == null) return;
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await _mediaService.selectVideoDevice(
+                        deviceId: val,
+                        shouldUpdatePreview: widget.shouldShowVideoPreview,
+                      );
+                      await updatePreviewWidget();
+                      setState(() {
+                        isLoading = false;
+                      });
+                    },
+              hint: Text(
+                _mediaService.videoInputs.isEmpty
+                    ? context.l10n.noCameraAvailable
+                    : context.l10n.selectVideoInput,
+              ),
+            ),
+            if (_mediaService.videoInputs.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  context.l10n.avVideoErrorNotFound,
+                  style: context.theme.textTheme.labelMedium!.copyWith(
+                    color: context.theme.colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
+                ),
+              ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    if (widget.shouldShowVideoPreview)
+                      Column(
+                        children: [
+                          if (widget.isMirrorCheck)
+                            Text(
+                              context.l10n.micAndCameraEnabled,
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          const SizedBox(height: 8),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                maxHeight: 240,
+                                maxWidth: 320,
+                              ),
+                              width: MediaQuery.of(context).size.width -
+                                  _kTotalDialogContentPadding,
+                              decoration: BoxDecoration(
+                                color: context
+                                    .theme.colorScheme.surfaceContainerHighest,
+                              ),
+                              child: _mediaService.videoInputs.isEmpty
+                                  ? Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.error,
+                                            color: context.theme.colorScheme
+                                                .onSurfaceVariant,
+                                            size: 40,
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            context.l10n.noCameraDetected,
+                                            style: context
+                                                .theme.textTheme.bodyMedium!
+                                                .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Stack(
+                                      children: [
+                                        HtmlElementView(viewType: _viewType),
+                                        isLoadingCameraChange
+                                            ?
+                                            // Cover the video element while setting video source
+                                            Container(
+                                                color: context.theme.colorScheme
+                                                    .surfaceContainerHighest,
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    CircularProgressIndicator(
+                                                      color: context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onSurfaceVariant,
+                                                    ),
+                                                    const SizedBox(height: 16),
+                                                    Text(
+                                                      context
+                                                          .l10n.videoUpdating,
+                                                      style: context.theme
+                                                          .textTheme.bodyMedium,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : isLoading
+                                                ? Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onPrimary,
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                      ],
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       actions: [
         ActionButton(
