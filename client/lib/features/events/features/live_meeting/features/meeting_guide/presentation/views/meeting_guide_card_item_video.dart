@@ -21,11 +21,11 @@ import '../meeting_guide_card_item_video_presenter.dart';
 
 class MeetingGuideCardItemVideo extends StatefulWidget {
   @override
-  MeetingGuideCardItemVideoState createState() =>
-      MeetingGuideCardItemVideoState();
+  State<MeetingGuideCardItemVideo> createState() =>
+      _MeetingGuideCardItemVideoState();
 }
 
-class MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
+class _MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
     implements MeetingGuideCardItemVideoView {
   late YoutubePlayerController _youtubePlayerController;
   late final MeetingGuideCardItemVideoModel _model;
@@ -41,6 +41,7 @@ class MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
 
   @override
   void dispose() {
+    _youtubePlayerController.close();
     super.dispose();
   }
 
@@ -210,12 +211,14 @@ class MeetingGuideCardItemVideoState extends State<MeetingGuideCardItemVideo>
                       HeightConstrainedText(
                         'We\'ll be ready in:',
                         style: AppTextStyle.subhead.copyWith(
-                            color: context.theme.colorScheme.onPrimary),
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
                       ),
                       HeightConstrainedText(
                         '$minutes:$secondsFormatted',
                         style: AppTextStyle.timeLarge.copyWith(
-                            color: context.theme.colorScheme.onPrimary),
+                          color: context.theme.colorScheme.onPrimary,
+                        ),
                       ),
                     ],
                   ],
