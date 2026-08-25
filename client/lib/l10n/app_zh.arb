@@ -382,6 +382,47 @@
       }
     }
   },
+  "@adminEventPagination": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@followCommunityAccess": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@reassignUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@takeRateDescription": {
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "@whatMessageToShowParticipants": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "about": "关于",
   "aboutHint": "添加更多关于此社区目标的详细信息",
   "aboutMe": "关于我",
@@ -409,6 +450,7 @@
   "addTag": "添加标签",
   "addToCalendar": "添加到日历",
   "admin": "管理员",
+  "adminEventPagination": "{start} - {end}，共 {total}",
   "agendaItemsWereRemoved": "议程项已移除",
   "adminBilling": "管理员账单",
   "agendaItemWasDeleted": "议程项已删除",
@@ -459,10 +501,12 @@
   "backgroundColor": "背景颜色",
   "banned": "已禁止",
   "basicInformation": "基本信息",
+  "beta": "BETA",
   "billing": "账单",
   "brandingAndTheme": "品牌和主题",
   "brandYourSpace": "打造您的空间品牌",
   "breakoutRoomTransitionTimeout": "找不到该分组讨论室！返回主会议。",
+  "breakoutRooms": "分组讨论室",
   "breakoutUpdated": "分组讨论已更新！",
   "breakouts": "分组讨论",
   "broadcast": "广播",
@@ -525,6 +569,7 @@
   "confirmRemoveAllAgendaItems": "确定要从分组讨论室中移除所有议程项吗？您将无法撤销此操作。",
   "confirmRemoveParticipant": "您确定要从此活动中移除{name}吗？",
   "congratulations": "恭喜",
+  "contact": "联系方式",
   "contactEmail": "联系邮箱",
   "continueAfterVerification": "我已验证我的电子邮件",
   "contactUs": "联系我们",
@@ -576,6 +621,10 @@
   "editEvent": "编辑活动",
   "editImage": "编辑图片",
   "editItem": "编辑项目",
+  "editingEventNotice": "您正在编辑活动。 \n",
+  "editingFutureInstancesNotice": "如果您想编辑未来的实例， ",
+  "editTemplate": "编辑模板",
+  "editTheTemplate": "编辑模板。",
   "email": "电子邮箱",
   "emailAddressAlreadyInUse": "您已经创建了一个与此电子邮件地址关联的帐户。请使用电子邮件登录，如果不知道密码请点击忘记密码。或者，使用其他电子邮件重新注册。",
   "emailAddressAlreadyInUseLoginError": "此邮箱已被使用。请尝试",
@@ -651,6 +700,7 @@
   "finish": "完成",
   "floatingChat": "浮动聊天",
   "follow": "关注",
+  "followCommunityAccess": "关注{communityName}即可访问所有活动和资源。",
   "followCommunityButton": "关注社区按钮",
   "followerRequest": "追踪请求",
   "followRequestSent": "关注请求已发送",
@@ -689,7 +739,9 @@
   "instagramUrl": "Instagram链接",
   "instantMeeting": "即时会议",
   "insteadSuffix": "替代",
+  "interactiveEventsWithTemplates": "使用模板快速创建互动活动。 ",
   "introBeforeBreakouts": "分组讨论前约{duration}的介绍时间",
+  "introImageVideo": "介绍图片/视频",
   "introductionContent": "_介绍一下自己！每个人花一分钟回答下列问题之一。_\n\n* 最近做了什么有趣的事情？\n* 你最喜欢的动画角色是谁，为什么？\n* 在你离开这个世界之前，有什么事情想要完成？\n* 你不喜欢哪部电影？\n",
   "introductions": "介绍",
   "invalidCharacters": "无效字符",
@@ -699,6 +751,7 @@
   "joinEvent": "加入活动",
   "joinNow": "立即加入",
   "jumpTo": "跳转至",
+  "jumpToRoom": "跳转至房间",
   "kickOutUser": "踢出{displayName}？",
   "keepItShortHint": "简短一点！您不会希望人们花时间阅读。",
   "language": "语言",
@@ -724,6 +777,8 @@
   "logo": "标志",
   "logout": "退出登录",
   "loopVideo": "循环播放视频",
+  "lowBandwidth": "低带宽",
+  "lowBandwidthExplanation": "尝试关闭摄像头，让体验更流畅",
   "makeASuggestion": "提出建议",
   "makeThisSpacePrivate": "设此为私密空间",
   "manageCommunity": "管理社区",
@@ -736,6 +791,7 @@
   "meetingEndMessage": "会议已结束。您可以关闭此窗口。",
   "meetingEndWithFollowMessage": "会议已结束。您可以关闭此窗口或访问{name}继续对话。",
   "meetingGuideCard": "会议指南卡",
+  "meetingGuideTutorial": "准备好时\n点击这里\n开始使用",
   "member": "成员",
   "memberRolesHelpMessage": "查看帮助中心以获取按角色划分的权限详细信息。",
   "members": "成员",
@@ -856,6 +912,7 @@
   "passwordResetLinkSent": "密码重置链接已发送至 {email}",
   "pasteOrEnterAUrl": "粘贴或输入URL",
   "pasteOrEnterUrl": "粘贴或输入URL",
+  "paymentTerms": "付款条款",
   "people": "人",
   "permissionsAdminDescription": "对社区设置、成员角色和所有内容的完全控制。",
   "permissionsFacilitatorDescription": "可以根据现有模板安排和主持活动。",
@@ -889,6 +946,7 @@
   "preEvent": "活动前",
   "prereqRequired": "需要先决条件",
   "prerequisiteRequired": "需要先决条件",
+  "prerequisiteTemplate": "先决条件模板",
   "presets": "预设",
   "pressToPromote": "点击推广",
   "preview": "预览",
@@ -916,9 +974,11 @@
   "reactivate": "重新激活",
   "ready": "准备就绪",
   "reassign": "重新分配",
+  "reassignUser": "重新分配{displayName}",
   "recentRooms": "最近的房间",
   "record": "录制",
   "recording": "录制中  ",
+  "recordingIndicator": "正在录制",
   "recordingPreparing": "正在准备录制...",
   "recordingStatusChecking": "(检查中...)",
   "recordingStatusFailed": "(失败)",
@@ -941,6 +1001,7 @@
   "removeSuggestion": "删除建议",
   "removeTemplate": "删除模板",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有问题完成之前，重新排序不会被保存。",
+  "reply": "回复",
   "requestToFollow": "请求关注",
   "requests": "请求",
   "required": "必填",
@@ -972,6 +1033,7 @@
   "searchTemplates": "搜索模板",
   "sectionNotFilledYet": "该部分尚未填写。",
   "seeManagingYourCommunity": "查看管理您的社区以获取详细信息。",
+  "seeMore": "查看更多",
   "selectADay": "选择日期",
   "selectATime": "选择时间",
   "selectAudioInputDevice": "选择音频输入设备",
@@ -1059,6 +1121,7 @@
   "tag": "标签",
   "tagline": "标语",
   "taglineHint": "例：保护地球免受所有入侵者的侵害",
+  "takeRateDescription": "在我们的免费方案中，任何终端用户付款都将产生 {percentage}% 的佣金。升级方案以享受更低费率。",
   "targetParticipantsPerRoom": "每个分组的\n目标参与者",
   "targetSize": "目标大小",
   "targetSizeQuestion": "目标大小？",
@@ -1101,6 +1164,7 @@
   "updateEmail": "更新邮箱",
   "sendVerification": "发送验证",
   "updatePlan": "更新方案",
+  "updatePost": "更新帖子",
   "updateProfile": "更新个人资料",
   "updateTemplate": "更新模板",
   "updateToPlan": "更新到{name}计划",
@@ -1144,9 +1208,11 @@
   "vimeoUrl": "Vimeo链接",
   "vimeoVideoLookupFailed": "抱歉，Vimeo 视频查找失败。",
   "waitingRoom": "等候室",
+  "waitingRoomImageVideo": "等候室图片/视频",
   "welcome": "欢迎来到 Frankly",
   "welcomeName": "您好，{name}",
   "welcomeToApp": "欢迎来到 {appName}",
+  "whatMessageToShowParticipants": "您想在活动{beforeAfter}向参与者显示什么消息？",
   "whenNewItemsAdded": "当添加新的{name}时，您将在此处看到它们。",
   "whenYouUpgrade": "当您升级时",
   "wordCloud": "词云",

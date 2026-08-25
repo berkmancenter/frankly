@@ -308,6 +308,47 @@
       "name": {}
     }
   },
+  "@adminEventPagination": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@followCommunityAccess": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@reassignUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@takeRateDescription": {
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "@whatMessageToShowParticipants": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "about": "About",
   "aboutHint": "Add more detail as to the goals of this community",
   "aboutMe": "About me",
@@ -335,6 +376,7 @@
   "addTag": "Add tag",
   "addToCalendar": "Add to calendar",
   "admin": "Admin",
+  "adminEventPagination": "{start} - {end} of {total}",
   "agendaItemsWereRemoved": "Agenda items were removed",
   "adminBilling": "Admin Billing",
   "agendaItemWasDeleted": "Agenda item was deleted",
@@ -385,10 +427,12 @@
   "backgroundColor": "Background Color",
   "banned": "Banned",
   "basicInformation": "Basic Information",
+  "beta": "BETA",
   "billing": "Billing",
   "brandingAndTheme": "Branding & Theme",
   "brandYourSpace": "Brand your space",
   "breakoutRoomTransitionTimeout": "Could not find that breakout room! This usually means a network error or that the host closed the room. Returning to the main meeting.",
+  "breakoutRooms": "Breakout Rooms",
   "breakoutUpdated": "Breakout Updated!",
   "breakouts": "Breakouts",
   "broadcast": "Broadcast",
@@ -451,6 +495,7 @@
   "confirmRemoveAllAgendaItems": "Are you sure you want to remove all agenda items from the breakout rooms? You won't be able to undo this.",
   "confirmRemoveParticipant": "Are you sure you want to remove {name} from this event?",
   "congratulations": "Congratulations!",
+  "contact": "Contact",
   "contactEmail": "Contact email",
   "continueAfterVerification": "I've Verified My Email",
   "contactUs": "Contact us",
@@ -502,6 +547,10 @@
   "editEvent": "Edit event",
   "editImage": "Edit Image",
   "editItem": "Edit Item",
+  "editingEventNotice": "You are editing an event. \n",
+  "editingFutureInstancesNotice": "If you want to edit future instances, ",
+  "editTemplate": "Edit template",
+  "editTheTemplate": "edit the template.",
   "email": "Email",
   "emailAddressAlreadyInUse": "You already created an account tied to this email address. Use Sign in with Email and click Forgot Password if you don't know it. Or, Sign Up again using a different email.",
   "emailAddressAlreadyInUseLoginError": "This email is already in use. Try ",
@@ -576,6 +625,7 @@
   "finish": "Finish",
   "floatingChat": "Floating Chat",
   "follow": "Follow",
+  "followCommunityAccess": "Follow {communityName} for access to all events and resources.",
   "followCommunityButton": "Follow Community Button",
   "followerRequest": "Follower Request",
   "followRequestSent": "Follow Request Sent",
@@ -614,7 +664,9 @@
   "instagramUrl": "Instagram URL",
   "instantMeeting": "Instant Meeting",
   "insteadSuffix": " instead.",
+  "interactiveEventsWithTemplates": "Quickly create interactive events using templates. ",
   "introBeforeBreakouts": "About {duration} of intro before breakout rooms",
+  "introImageVideo": "Intro Image/Video",
   "introductionContent": "_Introduce yourselves!  Each take one minute to answer one of the following questions._\n\n* What's something you did recently that was a lot of fun?\n* Who is your favorite cartoon character and why?\n* What's one thing you wish to accomplish before you die?\n* What movie did you NOT like?\n",
   "introductions": "Introductions",
   "invalidCharacters": "Invalid characters(s)",
@@ -624,6 +676,7 @@
   "joinEvent": "Join Event",
   "joinNow": "Join Now",
   "jumpTo": "Jump To",
+  "jumpToRoom": "Jump To Room",
   "kickOutUser": "Kick out {displayName}?",
   "keepItShortHint": "Keep it short! You don’t want people to spend time reading.",
   "language": "Language",
@@ -649,6 +702,8 @@
   "logo": "Logo",
   "logout": "Log out",
   "loopVideo": "Loop Video",
+  "lowBandwidth": "Low Bandwidth",
+  "lowBandwidthExplanation": "Try turning off your camera for a smoother experience",
   "makeASuggestion": "Make a suggestion",
   "makeThisSpacePrivate": "Make this space private",
   "manageCommunity": "Manage Community",
@@ -661,6 +716,7 @@
   "meetingEndMessage": "This meeting has ended. You may close this window.",
   "meetingEndWithFollowMessage": "This meeting has ended. You may close this window or visit {name} to continue the conversation.",
   "meetingGuideCard": "meeting-guide-card",
+  "meetingGuideTutorial": "Click here when\nyou’re ready to\nget started",
   "member": "Member",
   "memberRolesHelpMessage": "Check the Help Center for permission details by role.",
   "members": "Members",
@@ -781,6 +837,7 @@
   "passwordResetLinkSent": "Password reset link sent to {email}",
   "pasteOrEnterAUrl": "Paste or enter a URL",
   "pasteOrEnterUrl": "Paste or enter URL",
+  "paymentTerms": "Payment terms",
   "people": "people",
   "permissionsAdminDescription": "Full control over community settings, member roles, and all content.",
   "permissionsFacilitatorDescription": "Can schedule and host events based on existing templates.",
@@ -813,6 +870,7 @@
   "preEvent": "Pre-event",
   "prereqRequired": "Prerequisite required",
   "prerequisiteRequired": "Prerequisite Required",
+  "prerequisiteTemplate": "Prerequisite Template",
   "presets": "Presets",
   "pressToPromote": "Press to promote",
   "preview": "Preview",
@@ -840,9 +898,11 @@
   "reactivate": "Reactivate",
   "ready": "Ready",
   "reassign": "Reassign",
+  "reassignUser": "Reassign {displayName}",
   "recentRooms": "Recent Rooms",
   "record": "Record",
   "recording": "Recordings",
+  "recordingIndicator": "Recording",
   "recordingPreparing": "Preparing recording...",
   "recordingStatusChecking": "(checking...)",
   "recordingStatusFailed": "(failed)",
@@ -865,6 +925,7 @@
   "removeSuggestion": "Remove Suggestion",
   "removeTemplate": "Remove Template",
   "reorderingNotSavedUntilQuestionsCompleted": "Reordering not saved until all questions are completed.",
+  "reply": "Reply",
   "requestToFollow": "Request To Follow",
   "requests": "Requests",
   "required": "Required",
@@ -896,6 +957,7 @@
   "searchTemplates": "Search templates",
   "sectionNotFilledYet": "This section hasn't been filled in yet.",
   "seeManagingYourCommunity": "See Managing Your Community for details.",
+  "seeMore": "See more",
   "selectADay": "Select a day",
   "selectATime": "Select a time",
   "selectAudioInputDevice": "Select audio input device",
@@ -983,6 +1045,7 @@
   "tag": "Tag",
   "tagline": "Tagline",
   "taglineHint": "Ex: Protecting the earth from all invaders",
+  "takeRateDescription": "On our free plan, any end user payments will incur a {percentage}% commission. Upgrade your plan for a lower rate.",
   "targetParticipantsPerRoom": "Target Participants\nPer Room",
   "targetSize": "Target size",
   "targetSizeQuestion": "Target Size?",
@@ -1025,6 +1088,7 @@
   "updateEmail": "Update Email",
   "sendVerification": "Send verification",
   "updatePlan": "Update Plan",
+  "updatePost": "Update post",
   "updateProfile": "Update Profile",
   "updateTemplate": "Update template",
   "updateToPlan": "Update to {name} plan",
@@ -1068,9 +1132,11 @@
   "vimeoUrl": "Vimeo URL",
   "vimeoVideoLookupFailed": "Sorry, vimeo video lookup failed.",
   "waitingRoom": "Waiting Room",
+  "waitingRoomImageVideo": "Waiting Room Image/Video",
   "welcome": "Welcome to Frankly",
   "welcomeName": "Welcome, {name}",
   "welcomeToApp": "Welcome to {appName}",
+  "whatMessageToShowParticipants": "What message do you want to show participants {beforeAfter} the event?",
   "whenNewItemsAdded": "When new {name} are added, you'll see them here.",
   "whenYouUpgrade": "when you upgrade",
   "wordCloud": "Word Cloud",

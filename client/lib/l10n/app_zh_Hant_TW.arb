@@ -378,6 +378,47 @@
       }
     }
   },
+  "@adminEventPagination": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@followCommunityAccess": {
+    "placeholders": {
+      "communityName": {
+        "type": "String"
+      }
+    }
+  },
+  "@reassignUser": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "@takeRateDescription": {
+    "placeholders": {
+      "percentage": {
+        "type": "String"
+      }
+    }
+  },
+  "@whatMessageToShowParticipants": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "about": "關於",
   "aboutHint": "新增更多關於此社群目標的詳細資訊",
   "aboutMe": "關於我",
@@ -405,6 +446,7 @@
   "addTag": "新增標籤",
   "addToCalendar": "新增至日曆",
   "admin": "管理員",
+  "adminEventPagination": "{start} - {end}，共 {total}",
   "agendaItemsWereRemoved": "議程項目已移除",
   "adminBilling": "管理員帳單",
   "agendaItemWasDeleted": "議程項已刪除",
@@ -455,10 +497,12 @@
   "backgroundColor": "背景顏色",
   "banned": "已禁止",
   "basicInformation": "基本信息",
+  "beta": "BETA",
   "billing": "帳單",
   "brandingAndTheme": "品牌和主題",
   "brandYourSpace": "打造您的空間品牌",
   "breakoutRoomTransitionTimeout": "找不到該分組討論室！返回主會議。",
+  "breakoutRooms": "分組討論室",
   "breakoutUpdated": "分組討論已更新！",
   "breakouts": "分組討論",
   "broadcast": "廣播",
@@ -521,6 +565,7 @@
   "confirmRemoveAllAgendaItems": "您確定要從分組討論室移除所有議程項目嗎？此操作無法復原。",
   "confirmRemoveParticipant": "您確定要將 {name} 從此活動中移除嗎？",
   "congratulations": "恭喜！",
+  "contact": "聯絡方式",
   "contactEmail": "聯絡電郵",
   "continueAfterVerification": "我已驗證我的電子郵件",
   "contactUs": "聯絡我們",
@@ -572,6 +617,10 @@
   "editEvent": "編輯活動",
   "editImage": "編輯圖片",
   "editItem": "編輯項目",
+  "editingEventNotice": "您正在編輯活動。 \n",
+  "editingFutureInstancesNotice": "如果您想編輯未來的執行個體， ",
+  "editTemplate": "編輯範本",
+  "editTheTemplate": "編輯範本。",
   "email": "電子郵件",
   "emailAddressAlreadyInUse": "您已經創建了一個與此電子郵件地址關聯的帳戶。請使用電子郵件登入，如果不知道密碼請點擊忘記密碼。或者，使用其他電子郵件重新註冊。",
   "emailAddressAlreadyInUseLoginError": "此電子郵件已被使用。請嘗試 ",
@@ -647,6 +696,7 @@
   "finish": "完成",
   "floatingChat": "浮動聊天",
   "follow": "追蹤",
+  "followCommunityAccess": "追蹤 {communityName} 以存取所有活動和資源。",
   "followCommunityButton": "追蹤社群按鈕",
   "followerRequest": "追蹤請求",
   "followRequestSent": "追蹤請求已送出",
@@ -685,7 +735,9 @@
   "instagramUrl": "Instagram連結",
   "instantMeeting": "即時會議",
   "insteadSuffix": "替代",
+  "interactiveEventsWithTemplates": "使用範本快速建立互動活動。 ",
   "introBeforeBreakouts": "分組討論前約{duration}的介紹時間",
+  "introImageVideo": "介紹圖片／影片",
   "introductionContent": "_介紹一下自己！每位花一分鐘回答下列問題之一。_\n\n* 最近做了什麼有趣的事情？\n* 你最喜歡的動畫角色是誰，為什麼？\n* 在你離開這個世界之前，有什麼事情想要完成？\n* 你不喜歡哪部電影？\n",
   "introductions": "介紹",
   "invalidCharacters": "無效字元",
@@ -695,6 +747,7 @@
   "joinEvent": "加入活動",
   "joinNow": "立即加入",
   "jumpTo": "跳轉至",
+  "jumpToRoom": "跳至房間",
   "kickOutUser": "踢出{displayName}？",
   "keepItShortHint": "請保持簡短！您不會希望人們花時間閱讀。",
   "language": "語言",
@@ -720,6 +773,8 @@
   "logo": "標誌",
   "logout": "登出",
   "loopVideo": "循環播放影片",
+  "lowBandwidth": "頻寬不足",
+  "lowBandwidthExplanation": "請嘗試關閉攝影機，讓體驗更順暢",
   "makeASuggestion": "提出建議",
   "makeThisSpacePrivate": "設此為私密空間",
   "manageCommunity": "管理社群",
@@ -732,6 +787,7 @@
   "meetingEndMessage": "會議已結束。您可以關閉此視窗。",
   "meetingEndWithFollowMessage": "會議已結束。您可以關閉此視窗或訪問{name}繼續對話。",
   "meetingGuideCard": "會議指南卡",
+  "meetingGuideTutorial": "準備好時\n點擊這裡\n開始使用",
   "member": "成員",
   "memberRolesHelpMessage": "查看幫助中心以獲取按角色劃分的權限詳細信息。",
   "members": "成員",
@@ -852,6 +908,7 @@
   "passwordResetLinkSent": "密碼重設連結已發送至 {email}",
   "pasteOrEnterAUrl": "貼上或輸入URL",
   "pasteOrEnterUrl": "貼上或輸入URL",
+  "paymentTerms": "付款條款",
   "people": "人",
   "permissionsAdminDescription": "對社區設置、成員角色和所有內容的完全控制。",
   "permissionsFacilitatorDescription": "可以根據現有模板安排和主持活動。",
@@ -884,6 +941,7 @@
   "preEvent": "活動前",
   "prereqRequired": "需要先決條件",
   "prerequisiteRequired": "需要先決條件",
+  "prerequisiteTemplate": "先決條件範本",
   "presets": "預設",
   "pressToPromote": "點擊推廣",
   "preview": "預覽",
@@ -911,9 +969,11 @@
   "reactivate": "重新啟用",
   "ready": "準備就緒",
   "reassign": "重新分配",
+  "reassignUser": "重新指派 {displayName}",
   "recentRooms": "最近的房間",
   "record": "錄製",
   "recording": "錄製中",
+  "recordingIndicator": "正在錄製",
   "recordingPreparing": "正在準備錄製...",
   "recordingStatusChecking": "(檢查中...)",
   "recordingStatusFailed": "(失敗)",
@@ -936,6 +996,7 @@
   "removeSuggestion": "刪除建議",
   "removeTemplate": "移除範本",
   "reorderingNotSavedUntilQuestionsCompleted": "在所有問題完成之前，重新排序不會被儲存。",
+  "reply": "回覆",
   "requests": "請求",
   "requestToFollow": "請求追蹤",
   "required": "必填",
@@ -967,6 +1028,7 @@
   "searchTemplates": "搜尋模板",
   "sectionNotFilledYet": "此部分尚未填寫。",
   "seeManagingYourCommunity": "查看管理您的社區以獲取詳細信息。",
+  "seeMore": "查看更多",
   "selectADay": "選擇日期",
   "selectATime": "選擇時間",
   "selectAudioInputDevice": "選擇音訊輸入裝置",
@@ -1054,6 +1116,7 @@
   "tag": "標籤",
   "tagline": "標語",
   "taglineHint": "例：保護地球免受所有入侵者的侵害",
+  "takeRateDescription": "在我們的免費方案中，任何終端使用者付款都將產生 {percentage}% 的佣金。升級您的方案以享有更低的費率。",
   "targetParticipantsPerRoom": "每個分組的\n目標參與者",
   "targetSize": "目標大小",
   "targetSizeQuestion": "目標大小？",
@@ -1096,6 +1159,7 @@
   "updateEmail": "更新電子郵件",
   "sendVerification": "發送驗證",
   "updatePlan": "更新方案",
+  "updatePost": "更新貼文",
   "updateProfile": "更新個人檔案",
   "updateTemplate": "更新範本",
   "updateToPlan": "更新至{name}方案",
@@ -1139,9 +1203,11 @@
   "vimeoUrl": "Vimeo連結",
   "vimeoVideoLookupFailed": "抱歉，Vimeo 影片查找失敗。",
   "waitingRoom": "等候室",
+  "waitingRoomImageVideo": "等候室圖片／影片",
   "welcome": "歡迎來到 Frankly",
   "welcomeName": "您好，{name}",
   "welcomeToApp": "歡迎來到 {appName}",
+  "whatMessageToShowParticipants": "您想在活動{beforeAfter}向參與者顯示什麼訊息？",
   "whenNewItemsAdded": "當新增{name}時，您將在此處看到它們。",
   "whenYouUpgrade": "當您升級時",
   "wordCloud": "詞雲",
