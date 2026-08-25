@@ -69,7 +69,7 @@ class _Finding {
 
   String get key => '$path\t${_findingDigest(value)}';
 
-  String get baselineEntry => '$key\t${_baselineDisplay(value)}';
+  String get baselineDisplay => _baselineDisplay(value);
 }
 
 const _baselineFile = 'tool/hardcoded_strings_baseline.txt';
@@ -393,7 +393,9 @@ Iterable<File> _dartFiles(String root) sync* {
   }
   if (entity is Directory && entity.existsSync()) {
     for (final child in entity.listSync(recursive: true, followLinks: false)) {
-      if (child is File && child.path.endsWith('.dart') && !_isSkippable(child)) {
+      if (child is File &&
+          child.path.endsWith('.dart') &&
+          !_isSkippable(child)) {
         yield child;
       }
     }
@@ -410,7 +412,7 @@ String _relativePath(String path) {
   return path.replaceAll('\\', '/');
 }
 
-Set<String> _readBaseline() {
+Map<String, int> _readBaseline() {
   final file = File(_baselineFile);
   if (!file.existsSync()) {
     throw StateError(
@@ -419,28 +421,46 @@ Set<String> _readBaseline() {
     );
   }
 
-  final entries = <String>{};
+  final entries = <String, int>{};
   for (final line in file.readAsLinesSync()) {
     if (line.trim().isEmpty || line.startsWith('#')) {
       continue;
     }
     final columns = line.split('\t');
-    if (columns.length < 2 ||
+    final count = columns.length == 4 ? int.tryParse(columns[2]) : null;
+    if (columns.length != 4 ||
         columns[0].isEmpty ||
         columns[1].isEmpty ||
-        columns[1].length != 12) {
+        columns[1].length != 12 ||
+        !RegExp(r'^[0-9a-f]{12}$').hasMatch(columns[1]) ||
+        count == null ||
+        count < 1 ||
+        columns[3].contains('\n')) {
       throw FormatException(
-        'Invalid baseline entry (expected path<TAB>digest<TAB>text): $line',
+        'Invalid baseline entry '
+        '(expected path<TAB>digest<TAB>count<TAB>text): $line',
       );
     }
-    entries.add('${columns[0]}\t${columns[1]}');
+    final key = '${columns[0]}\t${columns[1]}';
+    if (entries.containsKey(key)) {
+      throw FormatException('Duplicate baseline key: $key');
+    }
+    entries[key] = count;
   }
   return entries;
 }
 
 void _writeBaseline(Iterable<_Finding> findings) {
-  final entries =
-      findings.map((finding) => finding.baselineEntry).toSet().toList()..sort();
+  final grouped = <String, List<_Finding>>{};
+  for (final finding in findings) {
+    grouped.putIfAbsent(finding.key, () => <_Finding>[]).add(finding);
+  }
+  final keys = grouped.keys.toList()..sort();
+  final entries = keys.map((key) {
+    final matchingFindings = grouped[key]!;
+    return '$key\t${matchingFindings.length}\t'
+        '${matchingFindings.first.baselineDisplay}';
+  }).toList();
   final file = File(_baselineFile);
   file.parent.createSync(recursive: true);
   file.writeAsStringSync('${entries.join('\n')}\n');
@@ -456,10 +476,11 @@ void _printFinding(_Finding finding, {required bool newFinding}) {
 }
 
 void _printHelp() {
-  stdout.writeln('''Usage: dart run tool/check_hardcoded_strings.dart [OPTIONS] [PATH ...]
+  stdout.writeln(
+      '''Usage: dart run tool/check_hardcoded_strings.dart [OPTIONS] [PATH ...]
 
 Scan lib/ (or supplied files/directories) for hardcoded user-facing strings.
-By default, only findings not present in tool/hardcoded_strings_baseline.txt fail.
+By default, only findings exceeding the counts in tool/hardcoded_strings_baseline.txt fail.
 
 Options:
   --all, --no-baseline  Print and fail on every finding (burn-down mode).
@@ -549,10 +570,9 @@ void main(List<String> arguments) {
     _writeBaseline(findings);
     return;
   }
-
   var reportFindings = findings;
   if (!allMode) {
-    Set<String> baseline;
+    Map<String, int> baseline;
     try {
       baseline = _readBaseline();
     } on Object catch (error) {
@@ -561,23 +581,39 @@ void main(List<String> arguments) {
       return;
     }
 
-    final currentKeys = findings.map((finding) => finding.key).toSet();
-    final staleCount = baseline.difference(currentKeys).length;
+    final currentByKey = <String, List<_Finding>>{};
+    for (final finding in findings) {
+      currentByKey.putIfAbsent(finding.key, () => <_Finding>[]).add(finding);
+    }
+    final staleCount = baseline.keys
+        .where(
+          (key) => (currentByKey[key]?.length ?? 0) < baseline[key]!,
+        )
+        .length;
     if (staleCount > 0) {
       stdout.writeln(
-        '$staleCount stale baseline entries; '
+        '$staleCount stale baseline entr${staleCount == 1 ? 'y' : 'ies'}; '
         'run --update-baseline to remove them.',
       );
     }
-    reportFindings =
-        findings.where((finding) => !baseline.contains(finding.key)).toList();
+    final seenByKey = <String, int>{};
+    reportFindings = findings.where((finding) {
+      final seen = seenByKey.update(
+        finding.key,
+        (count) => count + 1,
+        ifAbsent: () => 1,
+      );
+      return seen > (baseline[finding.key] ?? 0);
+    }).toList();
   }
 
   for (final finding in reportFindings) {
     _printFinding(finding, newFinding: !allMode);
   }
   if (allMode) {
-    stdout.writeln('Found ${reportFindings.length} hardcoded user-facing string(s).');
+    stdout.writeln(
+      'Found ${reportFindings.length} hardcoded user-facing string(s).',
+    );
   } else {
     stdout.writeln(
       'Found ${reportFindings.length} new hardcoded user-facing string(s) '
