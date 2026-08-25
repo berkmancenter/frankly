@@ -1033,6 +1033,7 @@
   "titleCannotBeEmpty": "标题不能为空",
   "titleIsRequired": "标题为必填项",
   "tooManyRequests": "请求失败次数过多。请稍后再试。",
+  "transcription": "转录",
   "troubleshoot": "故障排除",
   "troubleshootingGuide": "故障排除指南",
   "tryAgain": "请再试一次",

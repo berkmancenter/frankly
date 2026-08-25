@@ -1049,6 +1049,7 @@
   "titleCannotBeEmpty": "El título no puede estar vacío",
   "titleIsRequired": "El título es obligatorio",
   "tooManyRequests": "Demasiadas solicitudes fallidas. Por favor, inténtelo de nuevo más tarde.",
+  "transcription": "Transcripción",
   "troubleshoot": "Solucionar problemas",
   "troubleshootingGuide": "Guía de solución de problemas",
   "tryAgain": "Por favor, inténtelo de nuevo",
