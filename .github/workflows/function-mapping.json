@@ -10,6 +10,9 @@
     ],
     "firebase/functions/js/image-proxy.js": ["imageProxy"],
     "firebase/functions/js/produce-sessions.js": ["produceSessions"],
+    "firebase/functions/js/repair-session-artifacts.js": [
+      "repairSessionArtifacts"
+    ],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
