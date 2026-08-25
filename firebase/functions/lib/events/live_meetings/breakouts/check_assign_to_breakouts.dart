@@ -97,6 +97,7 @@ class CheckAssignToBreakouts
       includeWaitingRoom: breakoutSession.hasWaitingRoom,
       event: event,
       creatorId: userId,
+      useHostedApi: breakoutSession.useHostedApi,
     );
   }
 }

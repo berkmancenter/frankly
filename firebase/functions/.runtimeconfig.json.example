@@ -37,6 +37,10 @@
     "storage_access_key": "<value>",
     "storage_bucket_name": "<value>"
   },
+  "frankly_match": {
+    "api_url": "<value>",
+    "api_key": "<value>"
+  },
   "ics": {
     "prod_id": "Frankly"
   },
