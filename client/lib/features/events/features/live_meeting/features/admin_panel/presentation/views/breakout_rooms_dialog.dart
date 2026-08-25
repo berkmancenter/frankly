@@ -242,7 +242,7 @@ class __BreakoutRoomsDialogState extends State<BreakoutRoomsDialog> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: Text(
-                      'Breakout Rooms',
+                      context.l10n.breakoutRooms,
                       style: TextStyle(
                         color: context.theme.colorScheme.onPrimary,
                         fontSize: 16,

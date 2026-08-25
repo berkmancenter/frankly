@@ -588,7 +588,7 @@ class _EventInfoState extends State<EventInfo> {
           SizedBox(width: 10),
           Flexible(
             child: Text(
-              'Cancel',
+              context.l10n.cancel,
               style: context.theme.textTheme.bodyMedium!.copyWith(
                 color: context.theme.colorScheme.onSurfaceVariant,
               ),
@@ -673,7 +673,9 @@ class _EventInfoState extends State<EventInfo> {
         SizedBox(width: 5),
         Flexible(
           child: Text(
-            'Follow ${Provider.of<CommunityProvider>(context).community.name} for access to all events and resources.',
+            context.l10n.followCommunityAccess(
+              Provider.of<CommunityProvider>(context).community.name.toString(),
+            ),
             style: context.theme.textTheme.bodyMedium,
           ),
         ),

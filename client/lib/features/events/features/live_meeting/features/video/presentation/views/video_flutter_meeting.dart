@@ -25,6 +25,7 @@ import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:client/core/widgets/height_constained_text.dart';
 import 'package:data_models/analytics/analytics_entities.dart';
+import 'package:client/core/localization/localization_helper.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart' as event;
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -269,7 +270,7 @@ class _RecordingBadgePill extends StatelessWidget {
             ),
             SizedBox(width: 8),
             Text(
-              'Recording',
+              context.l10n.recordingIndicator,
               style: TextStyle(
                 color: context.theme.colorScheme.onPrimary,
               ),

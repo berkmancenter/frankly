@@ -170,7 +170,7 @@ class _NewEventCardState extends State<NewEventCard> {
               ),
               child: RichText(
                 text: TextSpan(
-                  text: 'Quickly create interactive events using templates. ',
+                  text: context.l10n.interactiveEventsWithTemplates,
                   style: AppTextStyle.body,
                   children: [
                     TextSpan(

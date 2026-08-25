@@ -506,7 +506,7 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Recording',
+                          context.l10n.recordingIndicator,
                           style: TextStyle(
                             color: context.theme.colorScheme.onPrimary,
                           ),

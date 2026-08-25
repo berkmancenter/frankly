@@ -416,7 +416,13 @@ class _DataTabState extends State<DataTab> {
                         icon: Icon(Icons.arrow_back_rounded),
                       ),
                       Text(
-                        '${_currentStartIndex + 1} - ${events.length > 5 ? min(_currentStartIndex + 5, events.length) : events.length} of ${events.length}',
+                        context.l10n.adminEventPagination(
+                          _currentStartIndex + 1,
+                          events.length > 5
+                              ? min(_currentStartIndex + 5, events.length)
+                              : events.length,
+                          events.length,
+                        ),
                         style: context.theme.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

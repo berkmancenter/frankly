@@ -208,7 +208,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'What message do you want to show participants $beforeAfter the event?',
+              context.l10n.whatMessageToShowParticipants(beforeAfter),
               style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(height: 30),
@@ -225,7 +225,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
             SizedBox(height: 14),
             CustomTextField(
               hintText:
-                  'Enter message (e.g. "Take this survey $beforeAfter the event")',
+                  context.l10n.enterMessageExample(beforeAfter),
               initialValue: _model.prePostCard.message,
               borderType: BorderType.outline,
               borderRadius: 10,
@@ -455,7 +455,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return CustomTextField(
-      labelText: 'Button Text',
+      labelText: context.l10n.buttonText,
       initialValue: buttonText,
       borderType: BorderType.outline,
       borderRadius: 10,
@@ -475,7 +475,7 @@ class _PrePostCardWidgetPageState extends State<PrePostCardWidgetPage>
     }
 
     return CustomTextField(
-      labelText: 'Enter URL',
+      labelText: context.l10n.enterUrl,
       initialValue: surveyUrl,
       borderType: BorderType.outline,
       borderRadius: 10,
