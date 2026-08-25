@@ -1,159 +1,159 @@
-lib/core/widgets/initial_loading_widget.dart	102ea8003f80
-lib/core/widgets/initial_loading_widget.dart	86c2bbdd5d36
-lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	56b564b75c7f
-lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	778d568e8819
-lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	8d14f6e72de8
-lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	a80811cf6889
-lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	c1c224b03cd9
-lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	e89b30aa1dc3
-lib/core/widgets/navbar/sidebar/sidebar.dart	3a78695388b3
-lib/features/admin/presentation/accept_take_rate_presenter.dart	a52b321e566a
-lib/features/admin/presentation/views/community_admin.dart	e600eebd596a
-lib/features/admin/presentation/views/settings_tab.dart	0543ed2dfee6
-lib/features/admin/presentation/widgets/upgrade_tooltip.dart	ffaebc07151c
-lib/features/announcements/presentation/views/announcments.dart	931df5eca004
-lib/features/announcements/presentation/views/announcments.dart	fe02680f2479
-lib/features/announcements/presentation/views/create_announcement_dialog.dart	4759498ac2a7
-lib/features/chat/presentation/widgets/message_display.dart	e1043e2c626a
-lib/features/community/features/create_community/presentation/widgets/upgrade_perks.dart	091ccc78fe1d
-lib/features/community/features/create_community/presentation/widgets/upgrade_perks.dart	0dfa4d319743
-lib/features/community/features/create_community/presentation/widgets/upgrade_perks.dart	7ec0261b8e8a
-lib/features/community/presentation/views/app_share.dart	29887a5ff984
-lib/features/community/presentation/views/community_home.dart	5ff0930c077a
-lib/features/community/presentation/views/community_home.dart	e938bbbbbeab
-lib/features/community/presentation/widgets/about_section.dart	ae5239ec63f2
-lib/features/community/presentation/widgets/about_section.dart	c29602f47757
-lib/features/community/presentation/widgets/create_tag_widget.dart	e541b008f25d
-lib/features/community/presentation/widgets/donate_widget.dart	28d03596d24e
-lib/features/community/presentation/widgets/donate_widget.dart	f97e9da0e3b8
-lib/features/community/presentation/widgets/event_card.dart	9d4e6fe6676d
-lib/features/community/utils/guard_utils.dart	df445685df6d
-lib/features/discussion_threads/presentation/views/discussion_thread_comment_card.dart	a27e86027934
-lib/features/discussion_threads/presentation/views/discussion_thread_page.dart	4ea1885778d3
-lib/features/discussion_threads/presentation/views/discussion_thread_preview_card.dart	c253f451bdd5
-lib/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart	1aa4cb0bcca7
-lib/features/events/features/create_event/presentation/views/create_event_dialog.dart	84360aa1414a
-lib/features/events/features/create_event/presentation/views/select_hosting_option_page.dart	88314662b445
-lib/features/events/features/create_event/presentation/views/select_participants_number_page.dart	71721281f242
-lib/features/events/features/create_event/presentation/views/select_template_page.dart	1ff57a29d7c9
-lib/features/events/features/create_event/presentation/views/select_title_page.dart	8831f73da773
-lib/features/events/features/create_event/presentation/views/select_visibility_page.dart	9228fb4c6c99
-lib/features/events/features/create_event/presentation/widgets/select_template.dart	0fd8c1d52992
-lib/features/events/features/create_event/presentation/widgets/select_template.dart	7d1dfb866294
-lib/features/events/features/create_event/presentation/widgets/select_template.dart	821a89da9a7f
-lib/features/events/features/edit_event/presentation/views/edit_event_drawer.dart	e437654aaf02
-lib/features/events/features/event_page/data/providers/event_provider.dart	3a4454427b86
-lib/features/events/features/event_page/data/providers/event_provider.dart	f5029827512c
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	3f58bb8faf48
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	41e584f0d92d
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	526e0087cc3f
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	8efd614333de
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	bdbc65f6f2e3
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	d7a8c446069a
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	f91dc7846a92
-lib/features/events/features/event_page/presentation/event_tab_controller.dart	fe02680f2479
-lib/features/events/features/event_page/presentation/views/category_card.dart	48f819378c0a
-lib/features/events/features/event_page/presentation/views/event_page.dart	aa878b5056d3
-lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	271862a4d469
-lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	7daeecf53093
-lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	adbcdeb0057b
-lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	fea78047be3e
-lib/features/events/features/event_page/presentation/views/pre_post_event_dialog_page.dart	1ff57a29d7c9
-lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	0575f29df888
-lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	271862a4d469
-lib/features/events/features/event_page/presentation/views/survey_dialog.dart	176a793fc409
-lib/features/events/features/event_page/presentation/views/survey_dialog.dart	a6c7a84baa67
-lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	05d581d3caeb
-lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	1509f561f241
-lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	2d8bb2d5d25f
-lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	73ed8e9295db
-lib/features/events/features/event_page/presentation/widgets/event_info.dart	e0857cea348a
-lib/features/events/features/event_page/presentation/widgets/event_info.dart	e437654aaf02
-lib/features/events/features/event_page/presentation/widgets/event_page_meeting_agenda.dart	9d4e6fe6676d
-lib/features/events/features/event_page/presentation/widgets/event_page_meeting_agenda.dart	efb96e4d959b
-lib/features/events/features/event_page/presentation/widgets/media_item_section.dart	ee335cc1ed0a
-lib/features/events/features/live_meeting/data/providers/live_meeting_provider.dart	9522b36f56cb
-lib/features/events/features/live_meeting/data/providers/live_meeting_provider.dart	b0e5feb343b7
-lib/features/events/features/live_meeting/data/providers/live_meeting_provider.dart	c82a65620b24
-lib/features/events/features/live_meeting/features/admin_panel/presentation/views/kick_dialog.dart	f0d76583aa98
-lib/features/events/features/live_meeting/features/admin_panel/presentation/views/reassign_breakout_room_dialog.dart	0bd45fcd6093
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	00048bc6b712
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	0e27279b3302
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	2b05b33a183c
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	31fbef162594
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	37ca3cfb5d85
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	4591c339cfa6
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	4ea212bcc453
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	64e584d53bcf
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	7d9af80896f6
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	8dd6857baf02
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	a77e88d8e1f8
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	a8760c5dafc6
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	b5a02a38cdf7
-lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	c9022680f888
-lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	8ce2e5759c23
-lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	b765bb77ac91
-lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	c075e1db21a9
-lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	ef6050ae9df7
-lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	fc34cee49701
-lib/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart	3400934c1710
-lib/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_card.dart	48f819378c0a
-lib/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_user_suggestions.dart	f06da98ce34f
-lib/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/agenda_item_word_cloud.dart	d8360e7ab86d
-lib/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart	7afc7b8b9c56
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart	1ff57a29d7c9
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart	28715b281ef7
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	32265d8c245e
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a4fd010af9d3
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a95ee2f8f340
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	1ff57a29d7c9
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	48a80d59b7fe
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	5f2b441bbf67
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	843f8ff2cfa9
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	bb0d08d37412
-lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	e3e701351a63
-lib/features/events/features/live_meeting/features/video/presentation/views/fake_participants_dialog.dart	1509f561f241
-lib/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart	5c799f5aa8a7
-lib/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart	c224b2af45ba
-lib/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart	fc6e4a408d56
-lib/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart	8dd6857baf02
-lib/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart	e6b93086b5c3
-lib/features/events/features/live_meeting/presentation/views/leave_regular_dialog.dart	71c238d0d7db
-lib/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart	c224b2af45ba
-lib/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart	dc42b8ff7b3f
-lib/features/events/features/live_meeting/presentation/views/meeting_dialog.dart	af127fd2ab4c
-lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	a9e153ee4bba
-lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	dc42b8ff7b3f
-lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	dcc3d2dfe30a
-lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	1b189aa757d1
-lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	1f85f0beeb77
-lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	1ff57a29d7c9
-lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	23ebd008b745
-lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	49780701dc2d
-lib/features/events/presentation/widgets/event_button.dart	9d4e6fe6676d
-lib/features/home/presentation/views/home_page_event_card.dart	9d4e6fe6676d
-lib/features/resources/presentation/views/community_resources.dart	c477d8584f90
-lib/features/resources/presentation/views/create_community_resource_modal.dart	a5554622c655
-lib/features/templates/presentation/views/new_event_card.dart	946cbe2dbbe3
-lib/features/templates/presentation/views/new_event_card.dart	f5ec099f3ed4
-lib/features/templates/presentation/views/template_page.dart	41e584f0d92d
-lib/features/templates/presentation/views/template_page.dart	526e0087cc3f
-lib/features/templates/presentation/views/template_page.dart	9bfea61884ae
-lib/features/templates/presentation/views/template_page.dart	bdbc65f6f2e3
-lib/features/templates/presentation/views/template_page.dart	d7a8c446069a
-lib/features/templates/presentation/views/template_page.dart	e938bbbbbeab
-lib/features/templates/presentation/widgets/prerequisite_badge.dart	fe8327580101
-lib/features/templates/presentation/widgets/prerequisite_template_widget.dart	9ce2ea87f7aa
-lib/features/templates/presentation/widgets/prerequisite_template_widget.dart	e4910f213dee
-lib/features/templates/presentation/widgets/select_template.dart	c1dc92c680d9
-lib/features/templates/presentation/widgets/template_fab.dart	5651faee9626
-lib/features/user/data/services/user_data_service.dart	1ea442a134b2
-lib/features/user/data/services/user_data_service.dart	85a39ab345d6
-lib/features/user/data/services/user_data_service.dart	994e2adc1bb4
-lib/features/user/presentation/views/email_unsubscribe.dart	7f1a527f3a94
-lib/features/user/presentation/views/email_unsubscribe.dart	b908a44798f4
-lib/features/user/presentation/views/events_tab.dart	23e04084df12
-lib/features/user/presentation/views/events_tab.dart	f2148727d350
-lib/features/user/presentation/views/profile_tab.dart	1331275bc537
-lib/features/user/presentation/views/subscriptions_tab.dart	a2bf66b2e413
-lib/features/user/presentation/views/subscriptions_tab.dart	c864f329f5dd
+lib/core/widgets/initial_loading_widget.dart	102ea8003f80	You have been signed out. Please refresh to sign back in
+lib/core/widgets/initial_loading_widget.dart	86c2bbdd5d36	There was an unexpected error during initialization.
+lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	56b564b75c7f	Templates
+lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	778d568e8819	Unfollow
+lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	8d14f6e72de8	Events
+lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	a80811cf6889	Posts
+lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	c1c224b03cd9	Admin
+lib/core/widgets/navbar/sidebar/community_side_bar_navigation.dart	e89b30aa1dc3	Resources
+lib/core/widgets/navbar/sidebar/sidebar.dart	3a78695388b3	Home
+lib/features/admin/presentation/accept_take_rate_presenter.dart	a52b321e566a	Agree and continue
+lib/features/admin/presentation/views/community_admin.dart	e600eebd596a	Must be logged in and an admin to access this section
+lib/features/admin/presentation/views/settings_tab.dart	0543ed2dfee6	Linked Payee Account
+lib/features/admin/presentation/widgets/upgrade_tooltip.dart	ffaebc07151c	Upgrade for access
+lib/features/announcements/presentation/views/announcments.dart	931df5eca004	Are you sure you want to delete this announcement?
+lib/features/announcements/presentation/views/announcments.dart	fe02680f2479	Announcements
+lib/features/announcements/presentation/views/create_announcement_dialog.dart	4759498ac2a7	Create
+lib/features/chat/presentation/widgets/message_display.dart	e1043e2c626a	This message was removed.
+lib/features/community/features/create_community/presentation/widgets/upgrade_perks.dart	091ccc78fe1d	Upgrade for more
+lib/features/community/features/create_community/presentation/widgets/upgrade_perks.dart	0dfa4d319743	Explore plans
+lib/features/community/features/create_community/presentation/widgets/upgrade_perks.dart	7ec0261b8e8a	Upgrade
+lib/features/community/presentation/views/app_share.dart	29887a5ff984	Share
+lib/features/community/presentation/views/community_home.dart	5ff0930c077a	See More Events
+lib/features/community/presentation/views/community_home.dart	e938bbbbbeab	Upcoming Events
+lib/features/community/presentation/widgets/about_section.dart	ae5239ec63f2	Less
+lib/features/community/presentation/widgets/about_section.dart	c29602f47757	Read More
+lib/features/community/presentation/widgets/create_tag_widget.dart	e541b008f25d	Add a new tag
+lib/features/community/presentation/widgets/donate_widget.dart	28d03596d24e	Skip
+lib/features/community/presentation/widgets/donate_widget.dart	f97e9da0e3b8	Other
+lib/features/community/presentation/widgets/event_card.dart	9d4e6fe6676d	Livestream
+lib/features/community/utils/guard_utils.dart	df445685df6d	You must be a member of this space to participate. Would you like to join?
+lib/features/discussion_threads/presentation/views/discussion_thread_comment_card.dart	a27e86027934	Comment Deleted
+lib/features/discussion_threads/presentation/views/discussion_thread_page.dart	4ea1885778d3	Newest First
+lib/features/discussion_threads/presentation/views/discussion_thread_preview_card.dart	c253f451bdd5	Reply
+lib/features/discussion_threads/presentation/views/manipulate_discussion_thread_page.dart	1aa4cb0bcca7	Image
+lib/features/events/features/create_event/presentation/views/create_event_dialog.dart	84360aa1414a	STEP OF
+lib/features/events/features/create_event/presentation/views/select_hosting_option_page.dart	88314662b445	Hosting option
+lib/features/events/features/create_event/presentation/views/select_participants_number_page.dart	71721281f242	How many people
+lib/features/events/features/create_event/presentation/views/select_template_page.dart	1ff57a29d7c9	Next
+lib/features/events/features/create_event/presentation/views/select_title_page.dart	8831f73da773	Enter a title
+lib/features/events/features/create_event/presentation/views/select_visibility_page.dart	9228fb4c6c99	Public or private?
+lib/features/events/features/create_event/presentation/widgets/select_template.dart	0fd8c1d52992	View more templates
+lib/features/events/features/create_event/presentation/widgets/select_template.dart	7d1dfb866294	Create a new template
+lib/features/events/features/create_event/presentation/widgets/select_template.dart	821a89da9a7f	No templates found.
+lib/features/events/features/edit_event/presentation/views/edit_event_drawer.dart	e437654aaf02	Cancel event
+lib/features/events/features/event_page/data/providers/event_provider.dart	3a4454427b86	Yes, cancel
+lib/features/events/features/event_page/data/providers/event_provider.dart	f5029827512c	Are you sure you want to cancel participation in this event?
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	3f58bb8faf48	More Upcoming Events
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	41e584f0d92d	More from
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	526e0087cc3f	Description
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	8efd614333de	There was an error while loading Announcements
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	bdbc65f6f2e3	No upcoming events.
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	d7a8c446069a	See all
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	f91dc7846a92	No announcements sent yet
+lib/features/events/features/event_page/presentation/event_tab_controller.dart	fe02680f2479	Announcements
+lib/features/events/features/event_page/presentation/views/category_card.dart	48f819378c0a	Are you sure you want to delete?
+lib/features/events/features/event_page/presentation/views/event_page.dart	aa878b5056d3	Are you sure you want to remove this message?
+lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	271862a4d469	Are you sure want to delete?
+lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	7daeecf53093	Add action links participants should visit the event
+lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	adbcdeb0057b	Add URL Parameter
+lib/features/events/features/event_page/presentation/views/pre_post_card_widget_page.dart	fea78047be3e	URL Preview
+lib/features/events/features/event_page/presentation/views/pre_post_event_dialog_page.dart	1ff57a29d7c9	Next
+lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	0575f29df888	Template
+lib/features/events/features/event_page/presentation/views/prerequisite_template_widget_page.dart	271862a4d469	Are you sure want to delete?
+lib/features/events/features/event_page/presentation/views/survey_dialog.dart	176a793fc409	Finish RSVP
+lib/features/events/features/event_page/presentation/views/survey_dialog.dart	a6c7a84baa67	Finish
+lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	05d581d3caeb	Participants will be sent into rooms at . .
+lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	1509f561f241	Save
+lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	2d8bb2d5d25f	Intro Length
+lib/features/events/features/event_page/presentation/views/waiting_room_widget.dart	73ed8e9295db	Intro Text
+lib/features/events/features/event_page/presentation/widgets/event_info.dart	e0857cea348a	Your event will be reset to the original template. The list of attendees will not be affected.
+lib/features/events/features/event_page/presentation/widgets/event_info.dart	e437654aaf02	Cancel event
+lib/features/events/features/event_page/presentation/widgets/event_page_meeting_agenda.dart	9d4e6fe6676d	Livestream
+lib/features/events/features/event_page/presentation/widgets/event_page_meeting_agenda.dart	efb96e4d959b	Waiting Room
+lib/features/events/features/event_page/presentation/widgets/media_item_section.dart	ee335cc1ed0a	Add video or image
+lib/features/events/features/live_meeting/data/providers/live_meeting_provider.dart	9522b36f56cb	Would you like to participate in breakout room assignments?
+lib/features/events/features/live_meeting/data/providers/live_meeting_provider.dart	b0e5feb343b7	Host is sending you to a breakout room. Join breakout room?
+lib/features/events/features/live_meeting/data/providers/live_meeting_provider.dart	c82a65620b24	Are you sure you want to end breakout rooms for all participants? This will send all participants back to the main room …
+lib/features/events/features/live_meeting/features/admin_panel/presentation/views/kick_dialog.dart	f0d76583aa98	Lock room to prevent any new registrants from joining?
+lib/features/events/features/live_meeting/features/admin_panel/presentation/views/reassign_breakout_room_dialog.dart	0bd45fcd6093	Add Room
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	00048bc6b712	Something went wrong loading participants. Please refreh.
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	0e27279b3302	Participants
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	2b05b33a183c	This will delete all existing meeting data. Are you sure you want to reset?
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	31fbef162594	Continue
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	37ca3cfb5d85	Kick
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	4591c339cfa6	Reassign
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	4ea212bcc453	Reset Guide
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	64e584d53bcf	All rooms
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	7d9af80896f6	Alerts only
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	8dd6857baf02	Mute
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	a77e88d8e1f8	Something went wrong loading breakout rooms. Please refresh
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	a8760c5dafc6	Breakouts
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	b5a02a38cdf7	Reassigned to Room
+lib/features/events/features/live_meeting/features/admin_panel/presentation/widgets/admin_panel.dart	c9022680f888	people
+lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	8ce2e5759c23	When you are ready to start streaming, enter the Stream URL and Stream Key into the stream settings of your streaming ap…
+lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	b765bb77ac91	Stream URL:
+lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	c075e1db21a9	Stream Key:
+lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	ef6050ae9df7	WARNING: Anyone with this stream key can stream content on your stream. Keep it secret.
+lib/features/events/features/live_meeting/features/live_stream/presentation/widgets/live_stream_instructions.dart	fc34cee49701	Admin Live Stream Setup
+lib/features/events/features/live_meeting/features/meeting_agenda/data/providers/meeting_agenda_provider.dart	3400934c1710	This agenda item just started! Are you sure you want to move on?
+lib/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_card.dart	48f819378c0a	Are you sure you want to delete?
+lib/features/events/features/live_meeting/features/meeting_agenda/presentation/views/agenda_item_user_suggestions.dart	f06da98ce34f	Let participants suggest agenda items and then upvote or downvote.
+lib/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/agenda_item_word_cloud.dart	d8360e7ab86d	Participants will be asked to respond with a list of words or short phrases.
+lib/features/events/features/live_meeting/features/meeting_agenda/presentation/widgets/meeting_agenda.dart	7afc7b8b9c56	There is no agenda for this event.
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart	1ff57a29d7c9	Next
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card.dart	28715b281ef7	Moving to the next agenda item...
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	32265d8c245e	Some people are still finishing the video.
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a4fd010af9d3	We'll be ready in:
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_video.dart	a95ee2f8f340	Everyone is ready to move on.
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	1ff57a29d7c9	Next
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	48a80d59b7fe	2 of 3 are ready
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	5f2b441bbf67	Prompts will appear here. Once most people have clicked “Next”, we’ll move on to the next agenda item.
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	843f8ff2cfa9	This is your agenda.
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	bb0d08d37412	Ready to move on?
+lib/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_tutorial.dart	e3e701351a63	Agenda Item 1 of 10
+lib/features/events/features/live_meeting/features/video/presentation/views/fake_participants_dialog.dart	1509f561f241	Save
+lib/features/events/features/live_meeting/features/video/presentation/views/video_flutter_meeting.dart	5c799f5aa8a7	Need Help?
+lib/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart	c224b2af45ba	Audio/Video Settings
+lib/features/events/features/live_meeting/features/video/presentation/widgets/control_bar.dart	fc6e4a408d56	Leave
+lib/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart	8dd6857baf02	Mute
+lib/features/events/features/live_meeting/features/video/presentation/widgets/participant_widget.dart	e6b93086b5c3	Propose to remove user
+lib/features/events/features/live_meeting/presentation/views/leave_regular_dialog.dart	71c238d0d7db	That's it!
+lib/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart	c224b2af45ba	Audio/Video Settings
+lib/features/events/features/live_meeting/presentation/views/live_meeting_mobile_page.dart	dc42b8ff7b3f	You are in the waiting room.
+lib/features/events/features/live_meeting/presentation/views/meeting_dialog.dart	af127fd2ab4c	There was an error connecting to the room.
+lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	a9e153ee4bba	JOIN
+lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	dc42b8ff7b3f	You are in the waiting room.
+lib/features/events/features/live_meeting/presentation/widgets/live_meeting_desktop.dart	dcc3d2dfe30a	Welcome! Click here to enter the event:
+lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	1b189aa757d1	Please provide additional feedback for here.
+lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	1f85f0beeb77	You left the event.
+lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	1ff57a29d7c9	Next
+lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	23ebd008b745	Please take a moment to provide feedback for .
+lib/features/events/features/live_meeting/presentation/widgets/meeting_rating.dart	49780701dc2d	No thanks
+lib/features/events/presentation/widgets/event_button.dart	9d4e6fe6676d	Livestream
+lib/features/home/presentation/views/home_page_event_card.dart	9d4e6fe6676d	Livestream
+lib/features/resources/presentation/views/community_resources.dart	c477d8584f90	Are you sure you want to delete this resource?
+lib/features/resources/presentation/views/create_community_resource_modal.dart	a5554622c655	Post
+lib/features/templates/presentation/views/new_event_card.dart	946cbe2dbbe3	Create event
+lib/features/templates/presentation/views/new_event_card.dart	f5ec099f3ed4	Create an event from this template
+lib/features/templates/presentation/views/template_page.dart	41e584f0d92d	More from
+lib/features/templates/presentation/views/template_page.dart	526e0087cc3f	Description
+lib/features/templates/presentation/views/template_page.dart	9bfea61884ae	There was an error loading templates.
+lib/features/templates/presentation/views/template_page.dart	bdbc65f6f2e3	No upcoming events.
+lib/features/templates/presentation/views/template_page.dart	d7a8c446069a	See all
+lib/features/templates/presentation/views/template_page.dart	e938bbbbbeab	Upcoming Events
+lib/features/templates/presentation/widgets/prerequisite_badge.dart	fe8327580101	Prerequisite Required
+lib/features/templates/presentation/widgets/prerequisite_template_widget.dart	9ce2ea87f7aa	Attend this first:
+lib/features/templates/presentation/widgets/prerequisite_template_widget.dart	e4910f213dee	Find an event with this template.
+lib/features/templates/presentation/widgets/select_template.dart	c1dc92c680d9	Add New
+lib/features/templates/presentation/widgets/template_fab.dart	5651faee9626	Create an event
+lib/features/user/data/services/user_data_service.dart	1ea442a134b2	No
+lib/features/user/data/services/user_data_service.dart	85a39ab345d6	Yes
+lib/features/user/data/services/user_data_service.dart	994e2adc1bb4	Are you sure you want to unsubscribe from ?
+lib/features/user/presentation/views/email_unsubscribe.dart	7f1a527f3a94	You have unsubscribed from updates.
+lib/features/user/presentation/views/email_unsubscribe.dart	b908a44798f4	This will unsubscribe from updates:
+lib/features/user/presentation/views/events_tab.dart	23e04084df12	HISTORY
+lib/features/user/presentation/views/events_tab.dart	f2148727d350	UPCOMING
+lib/features/user/presentation/views/profile_tab.dart	1331275bc537	Tags
+lib/features/user/presentation/views/subscriptions_tab.dart	a2bf66b2e413	You are not the billing manager for any communities
+lib/features/user/presentation/views/subscriptions_tab.dart	c864f329f5dd	Communities

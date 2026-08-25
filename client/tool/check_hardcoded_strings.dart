@@ -68,12 +68,21 @@ class _Finding {
   final String value;
 
   String get key => '$path\t${_findingDigest(value)}';
+
+  String get baselineEntry => '$key\t${_baselineDisplay(value)}';
 }
 
 const _baselineFile = 'tool/hardcoded_strings_baseline.txt';
 
 String _normalizeString(String value) {
   return value.replaceAll(RegExp(r'\s+'), ' ').trim();
+}
+
+String _baselineDisplay(String value) {
+  final normalized = _normalizeString(value);
+  return normalized.length > 120
+      ? '${normalized.substring(0, 120)}…'
+      : normalized;
 }
 
 String _findingDigest(String value) {
@@ -415,20 +424,23 @@ Set<String> _readBaseline() {
     if (line.trim().isEmpty || line.startsWith('#')) {
       continue;
     }
-    final separator = line.indexOf('\t');
-    if (separator <= 0 || separator == line.length - 1) {
+    final columns = line.split('\t');
+    if (columns.length < 2 ||
+        columns[0].isEmpty ||
+        columns[1].isEmpty ||
+        columns[1].length != 12) {
       throw FormatException(
-        'Invalid baseline entry (expected path<TAB>digest): $line',
+        'Invalid baseline entry (expected path<TAB>digest<TAB>text): $line',
       );
     }
-    entries.add(line);
+    entries.add('${columns[0]}\t${columns[1]}');
   }
   return entries;
 }
 
 void _writeBaseline(Iterable<_Finding> findings) {
-  final entries = findings.map((finding) => finding.key).toSet().toList()
-    ..sort();
+  final entries =
+      findings.map((finding) => finding.baselineEntry).toSet().toList()..sort();
   final file = File(_baselineFile);
   file.parent.createSync(recursive: true);
   file.writeAsStringSync('${entries.join('\n')}\n');
