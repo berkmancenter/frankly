@@ -153,6 +153,13 @@
       }
     }
   },
+  "@enterMessageExample": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "@enterQuestionWithNumber": {
     "placeholders": {
       "number": {}
@@ -252,6 +259,16 @@
     "placeholders": {
       "count": {
         "example": "5",
+        "type": "int"
+      }
+    }
+  },
+  "@participantsReadyToMoveOn": {
+    "placeholders": {
+      "readyCount": {
+        "type": "int"
+      },
+      "participantCount": {
         "type": "int"
       }
     }
@@ -449,6 +466,7 @@
   "bufferTimeDescription": "活動開始前約{duration}的緩衝時間",
   "buildCommunitySpace": "建立您的社區空間",
   "buildYourCommunitySpace": "構建您的社區空間",
+  "buttonText": "按鈕文字",
   "buttonTextCannotBeEmpty": "按鈕文字不能為空",
   "byCategory": "按類別",
   "bySigningInRegisteringOrUsing": "通過登錄、註冊或使用 {appName}，我同意遵守",
@@ -574,9 +592,11 @@
   "enterHeadline": "輸入標題",
   "enterImageTitle": "輸入圖片標題",
   "enterMessage": "輸入訊息",
+  "enterMessageExample": "輸入訊息（例如：「在活動{beforeAfter}進行此調查」）",
   "enterQuestionWithNumber": "輸入問題 {number}",
   "enterRoom": "進入房間",
   "enterRoomNumber": "輸入房間號碼",
+  "enterUrl": "輸入 URL",
   "enterValidCommunityUrl": "請輸入有效的社區 URL",
   "enterValidName": "请输入有效的名称",
   "enterValidSocialUrl": "請輸入包含“{url}”的有效{platform}網址",
@@ -621,6 +641,7 @@
   "facebookUrl": "Facebook連結",
   "facilitator": "引導者",
   "fakeParticipantCount": "假參與者數量",
+  "featuredTemplatesAndEventsHint": "精選範本與活動會顯示在首頁頂端。",
   "filter": "篩選",
   "filterMemberListByName": "依姓名篩選成員清單",
   "finish": "完成",
@@ -675,6 +696,7 @@
   "joinNow": "立即加入",
   "jumpTo": "跳轉至",
   "kickOutUser": "踢出{displayName}？",
+  "keepItShortHint": "請保持簡短！您不會希望人們花時間閱讀。",
   "language": "語言",
   "languageSelector": "語言選擇器",
   "lastSession": "上次會議",
@@ -735,6 +757,7 @@
   "myResponses": "我的回應",
   "myUpcomingEvents": "我的即將舉行的活動",
   "name": "名稱",
+  "nameHintExample": "例如：Jane Doe",
   "needMoreHelp": "需要更多幫助？ ",
   "newAnnouncement": "新公告",
   "newRoomNumber": "新房間號碼：",
@@ -822,6 +845,7 @@
   "participantReassigned": "參與者已重新分配",
   "participants": "參與者",
   "participantsLoadError": "載入參與者時出現問題。請刷新。",
+  "participantsReadyToMoveOn": "共有 {readyCount} 位（共 {participantCount} 位）參與者準備繼續。",
   "password": "密碼",
   "passwordInvalid": "密碼無效。點擊忘記密碼進行重置。或者，使用其他電子郵件重新註冊。",
   "passwordRequirements": "长度必须至少为 12 个字符，并且包含一个小写字母和一个大写字母。",
@@ -952,6 +976,7 @@
   "selectMaxParticipantCount": "選擇最大參與者數量",
   "selectSpace": "選擇空間：",
   "selectVideoInput": "選擇視訊輸入",
+  "send": "傳送",
   "sendMessage": "發送訊息",
   "setPayeeAccountDetails": "設定您的收款帳戶詳細資料",
   "settingAgendaPreview": "議程預覽",

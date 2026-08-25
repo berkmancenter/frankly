@@ -113,6 +113,13 @@
       }
     }
   },
+  "@enterMessageExample": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "@enterQuestionWithNumber": {
     "placeholders": {
       "number": {}
@@ -194,6 +201,16 @@
     "placeholders": {
       "count": {
         "example": "5",
+        "type": "int"
+      }
+    }
+  },
+  "@participantsReadyToMoveOn": {
+    "placeholders": {
+      "readyCount": {
+        "type": "int"
+      },
+      "participantCount": {
         "type": "int"
       }
     }
@@ -379,6 +396,7 @@
   "bufferTimeDescription": "About {duration} of buffer time before event begins",
   "buildCommunitySpace": "Build your community space",
   "buildYourCommunitySpace": "Build your community space",
+  "buttonText": "Button Text",
   "buttonTextCannotBeEmpty": "Button text cannot be empty",
   "byCategory": "By Category",
   "bySigningInRegisteringOrUsing": "By signing in, registering, or using {appName}, I agree to be bound by the ",
@@ -504,9 +522,11 @@
   "enterHeadline": "Enter Headline",
   "enterImageTitle": "Enter Image title",
   "enterMessage": "Enter message",
+  "enterMessageExample": "Enter message (e.g. \"Take this survey {beforeAfter} the event\")",
   "enterQuestionWithNumber": "Enter Question {number}",
   "enterRoom": "Enter Room",
   "enterRoomNumber": "Ex: 2",
+  "enterUrl": "Enter URL",
   "enterValidCommunityUrl": "Please enter a valid community URL",
   "enterValidName": "Please enter a valid name",
   "enterValidSocialUrl": "Enter a valid {platform} web address that includes “{url}”",
@@ -550,6 +570,7 @@
   "facebookUrl": "Facebook URL",
   "facilitator": "Facilitator",
   "fakeParticipantCount": "Fake Participant Count",
+  "featuredTemplatesAndEventsHint": "Featured Templates and Events will show up at the top of the Home page.",
   "filter": "filter",
   "filterMemberListByName": "Filter member list by name",
   "finish": "Finish",
@@ -604,6 +625,7 @@
   "joinNow": "Join Now",
   "jumpTo": "Jump To",
   "kickOutUser": "Kick out {displayName}?",
+  "keepItShortHint": "Keep it short! You don’t want people to spend time reading.",
   "language": "Language",
   "languageSelector": "Language Selector",
   "lastSession": "Last session",
@@ -664,6 +686,7 @@
   "myResponses": "My Responses",
   "myUpcomingEvents": "My Upcoming Events",
   "name": "Name",
+  "nameHintExample": "e.g. Jane Doe",
   "needMoreHelp": "Need more help? ",
   "newAnnouncement": "New Announcement",
   "newRoomNumber": "New Room Number:",
@@ -751,6 +774,7 @@
   "participantReassigned": "Participant Reassigned",
   "participants": "Participants",
   "participantsLoadError": "Something went wrong loading participants. Please refresh.",
+  "participantsReadyToMoveOn": "{readyCount} out of {participantCount} participants are ready to move on.",
   "password": "Password",
   "passwordInvalid": "Password is invalid. Click Forgot Password to reset it. Or, Sign Up again using a different email.",
   "passwordRequirements": "Must be at least 12 characters long, and contain one lowercase and one uppercase letter.",
@@ -881,6 +905,7 @@
   "selectMaxParticipantCount": "Select max. participant count",
   "selectSpace": "Select space:",
   "selectVideoInput": "Select video input",
+  "send": "Send",
   "sendMessage": "Send message",
   "setPayeeAccountDetails": "Set your payee account details",
   "settingAgendaPreview": "Agenda Preview",

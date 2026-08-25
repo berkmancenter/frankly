@@ -152,6 +152,13 @@
       }
     }
   },
+  "@enterMessageExample": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "@enterQuestionWithNumber": {
     "placeholders": {
       "number": {}
@@ -251,6 +258,16 @@
     "placeholders": {
       "count": {
         "example": "5",
+        "type": "int"
+      }
+    }
+  },
+  "@participantsReadyToMoveOn": {
+    "placeholders": {
+      "readyCount": {
+        "type": "int"
+      },
+      "participantCount": {
         "type": "int"
       }
     }
@@ -447,6 +464,7 @@
   "bufferTimeDescription": "Aproximadamente {duration} de tiempo de espera antes de que comience el evento",
   "buildCommunitySpace": "Construir tu espacio comunitario",
   "buildYourCommunitySpace": "Construya su espacio de comunidad",
+  "buttonText": "Texto del botón",
   "buttonTextCannotBeEmpty": "El texto del botón no puede estar vacío",
   "byCategory": "Por categoría",
   "bySigningInRegisteringOrUsing": "Al iniciar sesión, registrarse o usar {appName}, acepto estar sujeto a los ",
@@ -572,9 +590,11 @@
   "enterHeadline": "Introducir título",
   "enterImageTitle": "Introducir título de la imagen",
   "enterMessage": "Ingrese un mensaje",
+  "enterMessageExample": "Ingrese un mensaje (p. ej., \"Realiza esta encuesta {beforeAfter} del evento\")",
   "enterQuestionWithNumber": "Ingrese la pregunta {number}",
   "enterRoom": "Entrar a la sala",
   "enterRoomNumber": "Ej: 2",
+  "enterUrl": "Ingrese URL",
   "enterValidCommunityUrl": "Por favor, introduzca una URL de comunidad válida",
   "enterValidName": "Por favor, introduzca un nombre válido",
   "enterValidSocialUrl": "Ingrese una dirección web válida de {platform} que incluya “{url}”",
@@ -618,6 +638,7 @@
   "facebookUrl": "URL de Facebook",
   "facilitator": "Facilitador",
   "fakeParticipantCount": "Recuento de participantes falsos",
+  "featuredTemplatesAndEventsHint": "Las plantillas y eventos destacados aparecerán en la parte superior de la página de inicio.",
   "filter": "filtrar",
   "filterMemberListByName": "Filtrar lista de miembros por nombre",
   "finish": "Finalizar",
@@ -672,6 +693,7 @@
   "joinNow": "Unirse ahora",
   "jumpTo": "Saltar a",
   "kickOutUser": "¿Expulsar a {displayName}?",
+  "keepItShortHint": "¡Hazlo breve! No querrás que la gente pase tiempo leyendo.",
   "language": "Idioma",
   "languageSelector": "Selector de idioma",
   "lastSession": "Última sesión",
@@ -732,6 +754,7 @@
   "myResponses": "Mis respuestas",
   "myUpcomingEvents": "Mis próximos eventos",
   "name": "Nombre",
+  "nameHintExample": "p. ej., Jane Doe",
   "needMoreHelp": "¿Necesitas más ayuda? ",
   "newAnnouncement": "Nuevo anuncio",
   "newRoomNumber": "Número de sala nueva:",
@@ -819,6 +842,7 @@
   "participantReassigned": "Participante reasignado",
   "participants": "Participantes",
   "participantsLoadError": "Algo salió mal al cargar los participantes. Por favor, actualice.",
+  "participantsReadyToMoveOn": "{readyCount} de {participantCount} participantes están listos para continuar.",
   "password": "Contraseña",
   "passwordInvalid": "La contraseña no es válida. Haga clic en Olvidé mi contraseña para restablecerla. O regístrese de nuevo con un email diferente.",
   "passwordRequirements": "Debe tener al menos 12 caracteres y contener una letra minúscula y una mayúscula.",
@@ -949,6 +973,7 @@
   "selectMaxParticipantCount": "Seleccionar número máximo de participantes",
   "selectSpace": "Seleccionar espacio:",
   "selectVideoInput": "Seleccionar entrada de video",
+  "send": "Enviar",
   "sendMessage": "Enviar mensaje",
   "setPayeeAccountDetails": "Establecer los detalles de tu cuenta de beneficiario",
   "settingAgendaPreview": "Vista previa de la agenda",

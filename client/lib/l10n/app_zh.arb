@@ -153,6 +153,13 @@
       }
     }
   },
+  "@enterMessageExample": {
+    "placeholders": {
+      "beforeAfter": {
+        "type": "String"
+      }
+    }
+  },
   "@enterQuestionWithNumber": {
     "placeholders": {
       "number": {}
@@ -252,6 +259,16 @@
     "placeholders": {
       "count": {
         "example": "5",
+        "type": "int"
+      }
+    }
+  },
+  "@participantsReadyToMoveOn": {
+    "placeholders": {
+      "readyCount": {
+        "type": "int"
+      },
+      "participantCount": {
         "type": "int"
       }
     }
@@ -453,6 +470,7 @@
   "bufferTimeDescription": "事件开始前约{duration}的缓冲时间",
   "buildCommunitySpace": "构建您的社区空间",
   "buildYourCommunitySpace": "构建您的社区空间",
+  "buttonText": "按钮文字",
   "buttonTextCannotBeEmpty": "按钮文字不能为空",
   "byCategory": "按类别",
   "bySigningInRegisteringOrUsing": "通过登录、注册或使用 {appName}，我同意遵守",
@@ -578,9 +596,11 @@
   "enterHeadline": "输入标题",
   "enterImageTitle": "输入图片标题",
   "enterMessage": "输入消息",
+  "enterMessageExample": "输入消息（例如：“在活动{beforeAfter}进行此调查”）",
   "enterQuestionWithNumber": "输入问题 {number}",
   "enterRoom": "进入房间",
   "enterRoomNumber": "例如：2",
+  "enterUrl": "输入 URL",
   "enterValidCommunityUrl": "请输入有效的社区URL",
   "enterValidName": "請輸入有效的名稱",
   "enterValidSocialUrl": "请输入包含“{url}”的有效{platform}网址",
@@ -625,6 +645,7 @@
   "facebookUrl": "Facebook链接",
   "facilitator": "引导者",
   "fakeParticipantCount": "虚拟参与者数量",
+  "featuredTemplatesAndEventsHint": "精选模板和活动将显示在主页顶部。",
   "filter": "筛选",
   "filterMemberListByName": "按姓名筛选成员列表",
   "finish": "完成",
@@ -679,6 +700,7 @@
   "joinNow": "立即加入",
   "jumpTo": "跳转至",
   "kickOutUser": "踢出{displayName}？",
+  "keepItShortHint": "简短一点！您不会希望人们花时间阅读。",
   "language": "语言",
   "languageSelector": "语言选择器",
   "lastSession": "上次会话",
@@ -739,6 +761,7 @@
   "myResponses": "我的回应",
   "myUpcomingEvents": "我的即将举行的活动",
   "name": "名称",
+  "nameHintExample": "例如：Jane Doe",
   "needMoreHelp": "需要更多帮助？ ",
   "newAnnouncement": "新公告",
   "newRoomNumber": "新房间号码：",
@@ -826,6 +849,7 @@
   "participantReassigned": "参与者已重新分配",
   "participants": "参与者",
   "participantsLoadError": "加载参与者时出现问题。请刷新。",
+  "participantsReadyToMoveOn": "共有 {readyCount} 位（共 {participantCount} 位）参与者准备继续。",
   "password": "密码",
   "passwordInvalid": "密码无效。点击忘记密码进行重置。或者，使用其他电子邮件重新注册。",
   "passwordRequirements": "長度必須至少為 12 個字符，並且包含一個小寫字母和一個大寫字母。",
@@ -957,6 +981,7 @@
   "selectMaxParticipantCount": "选择最大参与者数量",
   "selectSpace": "选择空间：",
   "selectVideoInput": "选择视频输入",
+  "send": "发送",
   "sendMessage": "发送消息",
   "setPayeeAccountDetails": "设置您的收款账户详细信息",
   "settingAgendaPreview": "议程预览",
