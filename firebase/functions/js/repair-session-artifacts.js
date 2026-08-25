@@ -32,10 +32,7 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
                 return
             }
 
-            const sessionDoc = await firestore
-                .collection('recording-sessions')
-                .doc(sessionId)
-                .get()
+            const sessionDoc = await firestore.collection('recording-sessions').doc(sessionId).get()
             if (!sessionDoc.exists) {
                 res.status(404).json({ error: 'Session not found' })
                 return
@@ -98,7 +95,9 @@ const repairSessionArtifacts = functions.https.onRequest((req, res) => {
             await sessionDoc.ref.update(updates)
 
             console.log(
-                `Repaired session ${sessionId}: registered ${vttFiles.length} VTT file(s): ${vttFiles.map((f) => f.name).join(', ')}`
+                `Repaired session ${sessionId}: registered ${
+                    vttFiles.length
+                } VTT file(s): ${vttFiles.map((f) => f.name).join(', ')}`
             )
 
             res.status(200).json({
