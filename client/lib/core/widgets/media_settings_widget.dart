@@ -140,67 +140,13 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
               context.l10n.microphoneInput,
               style: context.theme.textTheme.titleMedium,
             ),
-            DropdownButton<String>(
-              // Prevent dropdown errors by first checking that the selected
-              // device still exists in available inputs.
-              value: _mediaService.audioInputs.any(
-                (device) =>
-                    device.deviceId == _mediaService.selectedAudioInputId,
-              )
-                  ? _mediaService.selectedAudioInputId
-                  : null,
-              items: _mediaService.audioInputs.map((device) {
-                return DropdownMenuItem<String>(
-                  value: device.deviceId,
-                  child: Text(
-                    device.label!,
-                    style: context.theme.textTheme.titleMedium,
-                  ),
-                );
-              }).toList(),
-              selectedItemBuilder: (BuildContext context) {
-                return _mediaService.audioInputs.map<Widget>((device) {
-                  return Container(
-                    alignment: Alignment.centerLeft,
-                    constraints: BoxConstraints(
-                      maxWidth: 320,
-                    ),
-                    // 24px for the dropdown arrow
-                    width: MediaQuery.of(context).size.width -
-                        _kTotalDialogContentPadding -
-                        24,
-                    child: Text(
-                      device.label!,
-                      style: context.theme.textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                    ),
-                  );
-                }).toList();
-              },
-              onChanged: _mediaService.audioInputs.isEmpty
-                  ? null
-                  : (val) async {
-                      if (val == null) return;
-                      // No need to update preview as audio preview isn't shown.
-                      await _mediaService.selectAudioDevice(
-                        deviceId: val,
-                        shouldUpdatePreview: false,
-                      );
-                      setState(() {});
-                    },
-              hint: Text(
-                _mediaService.audioInputs.isEmpty
-                    ? context.l10n.noMicrophoneAvailable
-                    : context.l10n.selectAudioInputDevice,
-              ),
-            ),
-            if (_mediaService.audioInputs.isEmpty)
+            // If no audio inputs are available, show an error message instead of a dropdown.
+            if (_mediaService.audioInputs.isEmpty) ...[
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Text(
                   context.l10n.avAudioErrorNotFound,
-                  style: context.theme.textTheme.labelMedium!.copyWith(
+                  style: context.theme.textTheme.bodySmall!.copyWith(
                     color: context.theme.colorScheme.error,
                     fontWeight: FontWeight.bold,
                   ),
@@ -208,77 +154,71 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   softWrap: true,
                 ),
               ),
+            ] else ...[
+              DropdownButton<String>(
+                // Prevent dropdown errors by first checking that the selected
+                // device still exists in available inputs.
+                value: _mediaService.audioInputs.any(
+                  (device) =>
+                      device.deviceId == _mediaService.selectedAudioInputId,
+                )
+                    ? _mediaService.selectedAudioInputId
+                    : null,
+                items: _mediaService.audioInputs.map((device) {
+                  return DropdownMenuItem<String>(
+                    value: device.deviceId,
+                    child: Text(
+                      device.label!,
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                  );
+                }).toList(),
+                selectedItemBuilder: (BuildContext context) {
+                  return _mediaService.audioInputs.map<Widget>((device) {
+                    return Container(
+                      alignment: Alignment.centerLeft,
+                      constraints: BoxConstraints(
+                        maxWidth: 320,
+                      ),
+                      // 24px for the dropdown arrow
+                      width: MediaQuery.of(context).size.width -
+                          _kTotalDialogContentPadding -
+                          24,
+                      child: Text(
+                        device.label!,
+                        style: context.theme.textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
+                    );
+                  }).toList();
+                },
+                onChanged: (val) async {
+                  if (val == null) return;
+                  // No need to update preview as audio preview isn't shown.
+                  await _mediaService.selectAudioDevice(
+                    deviceId: val,
+                    shouldUpdatePreview: false,
+                  );
+                  setState(() {});
+                },
+                hint: Text(
+                  context.l10n.selectAudioInputDevice,
+                ),
+              ),
+            ],
             const SizedBox(height: 24),
             Text(
               context.l10n.cameraInput,
               style: context.theme.textTheme.titleMedium,
             ),
-            DropdownButton<String>(
-              // Prevent dropdown errors by first checking that the selected
-              // device still exists in available inputs.
-              value: _mediaService.videoInputs.any(
-                (device) =>
-                    device.deviceId == _mediaService.selectedVideoInputId,
-              )
-                  ? _mediaService.selectedVideoInputId
-                  : null,
-              items: _mediaService.videoInputs.map((device) {
-                return DropdownMenuItem<String>(
-                  value: device.deviceId,
-                  child: Text(
-                    device.label!,
-                    style: context.theme.textTheme.titleMedium,
-                  ),
-                );
-              }).toList(),
-              selectedItemBuilder: (BuildContext context) {
-                return _mediaService.videoInputs.map<Widget>((device) {
-                  return Container(
-                    alignment: Alignment.centerLeft,
-                    constraints: BoxConstraints(
-                      maxWidth: 320,
-                    ),
-                    // 24px for the dropdown arrow
-                    width: MediaQuery.of(context).size.width -
-                        _kTotalDialogContentPadding -
-                        24,
-                    child: Text(
-                      device.label!,
-                      style: context.theme.textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                    ),
-                  );
-                }).toList();
-              },
-              onChanged: _mediaService.videoInputs.isEmpty
-                  ? null
-                  : (val) async {
-                      if (val == null) return;
-                      setState(() {
-                        isLoading = true;
-                      });
-                      await _mediaService.selectVideoDevice(
-                        deviceId: val,
-                        shouldUpdatePreview: widget.shouldShowVideoPreview,
-                      );
-                      await updatePreviewWidget();
-                      setState(() {
-                        isLoading = false;
-                      });
-                    },
-              hint: Text(
-                _mediaService.videoInputs.isEmpty
-                    ? context.l10n.noCameraAvailable
-                    : context.l10n.selectVideoInput,
-              ),
-            ),
-            if (_mediaService.videoInputs.isEmpty)
+            // If no video inputs are available, show an error message instead of a dropdown.
+            if (_mediaService.videoInputs.isEmpty) ...[
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Text(
                   context.l10n.avVideoErrorNotFound,
-                  style: context.theme.textTheme.labelMedium!.copyWith(
+                  style: context.theme.textTheme.bodySmall!.copyWith(
                     color: context.theme.colorScheme.error,
                     fontWeight: FontWeight.bold,
                   ),
@@ -286,6 +226,62 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
                   softWrap: true,
                 ),
               ),
+            ] else ...[
+              DropdownButton<String>(
+                value: _mediaService.videoInputs.any(
+                  (device) =>
+                      device.deviceId == _mediaService.selectedVideoInputId,
+                )
+                    ? _mediaService.selectedVideoInputId
+                    : null,
+                items: _mediaService.videoInputs.map((device) {
+                  return DropdownMenuItem<String>(
+                    value: device.deviceId,
+                    child: Text(
+                      device.label!,
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                  );
+                }).toList(),
+                selectedItemBuilder: (BuildContext context) {
+                  return _mediaService.videoInputs.map<Widget>((device) {
+                    return Container(
+                      alignment: Alignment.centerLeft,
+                      constraints: BoxConstraints(
+                        maxWidth: 320,
+                      ),
+                      // 24px for the dropdown arrow
+                      width: MediaQuery.of(context).size.width -
+                          _kTotalDialogContentPadding -
+                          24,
+                      child: Text(
+                        device.label!,
+                        style: context.theme.textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
+                    );
+                  }).toList();
+                },
+                onChanged: (val) async {
+                  if (val == null) return;
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await _mediaService.selectVideoDevice(
+                    deviceId: val,
+                    shouldUpdatePreview: widget.shouldShowVideoPreview,
+                  );
+                  await updatePreviewWidget();
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                hint: Text(
+                  context.l10n.selectVideoInput,
+                ),
+              ),
+            ],
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
