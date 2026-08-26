@@ -228,6 +228,7 @@ class _DataTabState extends State<DataTab> {
 
     final eventInPast = event.scheduledTime!.isBefore(DateTime.now());
     final hasRecording = event.eventSettings?.alwaysRecord ?? false;
+    final hasTranscript = event.eventSettings?.alwaysTranscribe ?? false;
 
     if (!context.mounted) return SizedBox.shrink();
 
@@ -365,6 +366,7 @@ class _DataTabState extends State<DataTab> {
                         participants: participants,
                         eventInPast: eventInPast,
                         hasRecording: hasRecording,
+                        hasTranscript: hasTranscript,
                         recordingParts: _recordingParts,
                         recordingNotifiers: _recordingNotifiers,
                       ),
@@ -381,6 +383,7 @@ class _DataTabState extends State<DataTab> {
                       participants: participants,
                       eventInPast: eventInPast,
                       hasRecording: hasRecording,
+                      hasTranscript: hasTranscript,
                       recordingParts: _recordingParts,
                       recordingNotifiers: _recordingNotifiers,
                     ),
@@ -519,6 +522,7 @@ class _DownloadDataButton extends StatelessWidget {
     required this.event,
     required this.participants,
     required this.hasRecording,
+    required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifiers,
     required this.eventInPast,
@@ -527,6 +531,7 @@ class _DownloadDataButton extends StatelessWidget {
   final Event event;
   final Iterable<Participant> participants;
   final bool hasRecording;
+  final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final Map<String, ValueNotifier<int?>> recordingNotifiers;
   final bool eventInPast;
@@ -553,6 +558,7 @@ class _DownloadDataButton extends StatelessWidget {
             event: event,
             participants: participants,
             hasRecording: hasRecording,
+            hasTranscript: hasTranscript,
             recordingParts: recordingParts,
             recordingNotifier: recordingNotifiers[event.id],
             eventInPast: eventInPast,

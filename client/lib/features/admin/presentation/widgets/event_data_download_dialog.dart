@@ -26,6 +26,7 @@ class EventDataDownloadDialog extends StatefulWidget {
     required this.event,
     required this.participants,
     required this.hasRecording,
+    required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifier,
     required this.eventInPast,
@@ -35,6 +36,7 @@ class EventDataDownloadDialog extends StatefulWidget {
   final Event event;
   final Iterable<Participant> participants;
   final bool hasRecording;
+  final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final ValueNotifier<int?>? recordingNotifier;
   final bool eventInPast;
@@ -47,6 +49,7 @@ class EventDataDownloadDialog extends StatefulWidget {
 
 class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   late bool showRecording;
+  late bool showTranscript;
   late bool showRegistrant;
 
   late bool recordingSelected;
@@ -365,6 +368,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     super.initState();
     final recordingParts = widget.recordingNotifier?.value ?? 0;
     showRecording = widget.eventInPast && widget.hasRecording;
+    showTranscript = widget.eventInPast && widget.hasTranscript;
     showRegistrant = widget.participants.isNotEmpty;
     recordingSelected = showRecording && recordingParts > 0;
     recordingAutoChecked = recordingSelected;
@@ -495,7 +499,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                   '${context.l10n.pollsSuggestionsData} ${isLoadingPollsSuggestions ? '(${context.l10n.loading}...)' : '(${pollsSuggestionsLength > 0 ? '$pollsSuggestionsLength ${context.l10n.items}' : context.l10n.none})'}',
                 ),
               ),
-              if (showRecording)
+              if (showTranscript)
                 CheckboxListTile(
                   value: transcriptSelected,
                   onChanged: (value) => setState(
