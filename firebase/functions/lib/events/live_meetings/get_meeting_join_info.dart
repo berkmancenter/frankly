@@ -90,6 +90,10 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
           chatPath: pending.chatPath,
           participantIds: pending.participantIds,
         );
+      } else if (result.shouldTranscribe) {
+        // recordRoom creates the session doc; when recording is off we must
+        // create it here so startTranscription can update it.
+        await liveMeetingUtils.createRecordingSessionDoc(pending);
       }
       if (result.shouldTranscribe) {
         await liveMeetingUtils.startTranscription(

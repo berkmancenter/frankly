@@ -243,6 +243,33 @@ class LiveMeetingUtils {
     );
   }
 
+  /// Creates the RecordingSession Firestore document for a pending recording.
+  /// Called when transcription is enabled without recording so that
+  /// [startTranscription] can update the document.  When recording IS enabled,
+  /// [AgoraUtils.recordRoom] creates the document instead.
+  Future<void> createRecordingSessionDoc(PendingRecording pending) async {
+    final gcsPrefix =
+        '${pending.eventId}/main/${pending.roomId}/${pending.sessionId}';
+    await firestore
+        .collection(RecordingSession.kCollection)
+        .document(pending.sessionId)
+        .setData(DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            RecordingSession(
+              sessionId: pending.sessionId,
+              communityId: pending.communityId,
+              eventId: pending.eventId,
+              roomId: pending.roomId,
+              roomType: pending.roomType,
+              status: RecordingSessionStatus.starting,
+              gcsPrefix: gcsPrefix,
+              chatPath: pending.chatPath,
+              participantIds: pending.participantIds,
+            ).toJson(),
+          ),
+        ),);
+  }
+
   Future<void> startTranscription({
     required String roomId,
     required String sessionId,
