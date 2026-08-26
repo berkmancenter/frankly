@@ -92,6 +92,7 @@ class AgoraSttApi {
       throw Exception(msg);
     }
 
+    print('STT start response (${result.statusCode}): ${result.body}');
     final decoded = convert.jsonDecode(result.body);
     final agentId = decoded['agent_id'] as String;
     print('STT agent started for channel $channelName: $agentId');
@@ -119,6 +120,14 @@ class AgoraSttApi {
 
   /// Stops a running STT agent.
   Future<void> stopTranscription({required String agentId}) async {
+    // Query agent status before stopping to capture final state.
+    try {
+      final status = await queryTranscription(agentId: agentId);
+      print('STT agent status before stop ($agentId): $status');
+    } catch (e) {
+      print('STT agent query before stop failed ($agentId): $e');
+    }
+
     final result = await http.post(
       Uri.parse(
         'https://api.agora.io/api/speech-to-text/v1/projects/$_agoraAppId/agents/$agentId/leave',
@@ -133,6 +142,7 @@ class AgoraSttApi {
           HttpsError.internal, 'STT stop failed: ${result.body}', null,);
     }
 
+    print('STT stop response (${result.statusCode}): ${result.body}');
     print('STT agent stopped: $agentId');
   }
 }
