@@ -389,6 +389,9 @@ You can follow the official [documentation :octicons-link-external-24:](https://
 
 The Firebase Functions and/or Flutter client app connect to the following third party services, which must be set up and configured for local development.
 
+!!! warning "CSP Whitelist"
+When adding a new external service, you must also add its domains to the Content Security Policy in `firebase/functions/js/serve-index.js`. The CSP is only enforced in deployed environments (not locally), so missing entries will silently break features in staging/production. Be sure to include both `https://` and `wss://` schemes if the service uses WebSockets. Internal contributors can see the 'Managing External Connections' working note for the full maintenance guide and `Hosting > Content Security Policy` in `hosting.md` for the directive reference.
+
 ### Agora
 
 Sign up for Agora and open the [Agora console](https://console.agora.io/v2/). The following instructions are geared towards using V2 of the Agora console.
@@ -605,7 +608,7 @@ The client app runs only on the Flutter web platform. Flutter uses Chrome for de
 
 ### Running Client in an Android Virtual Device
 
-This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web. 
+This is useful for testing on Android mobile devices using your local instance of the client. It is helpful for debugging or finding issues specific to Android mobile web.
 
 Install [Android Studio](https://developer.android.com/studio) and [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools).
 
@@ -617,7 +620,7 @@ Run client with a wildcard IP as hostname:
 
 `flutter run -d web-server --web-renderer html -t lib/dev_emulators_main.dart --dart-define-from-file=.env --web-port=5000 --web-hostname=0.0.0.0`
 
-You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at http://localhost:5000.
+You should now be able to access the client inside of an Android Virtual Device, such as within Android Studio, at <http://localhost:5000>.
 
 Within a Webkit browser, access the Devtools Device Inspector, e.g. `chrome://inspect/#devices`. You should be able to inspect the running app within the AVD, as shown here:
 ![A mobile app interface is shown on the left, alongside a web performance report with load metrics and console output on the right, inside chrome dev tools.](https://res.cloudinary.com/dh0vegjku/image/upload/dpr_auto,f_auto,q_50/frankly_assets/adb.png)
