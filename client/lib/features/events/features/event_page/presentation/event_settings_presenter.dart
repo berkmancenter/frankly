@@ -103,7 +103,7 @@ class EventSettingsPresenter {
   ) {
     final defaultSettingsLocal = _model.defaultSettings;
     final defaultValue = getSetting(defaultSettingsLocal) ?? false;
-    return defaultValue != getSetting(_model.eventSettings);
+    return defaultValue != (getSetting(_model.eventSettings) ?? false);
   }
 
   void updateSetting(String setting, bool isSelected) async {
