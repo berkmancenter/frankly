@@ -48,6 +48,7 @@ import 'package:functions/community/update_membership.dart';
 import 'package:functions/admin/payments/update_stripe_subscription_plan.dart';
 import 'package:functions/events/live_meetings/vote_to_kick.dart';
 import 'package:functions/events/live_meetings/update_presence_status.dart';
+import 'package:functions/events/live_meetings/cleanup_stale_participants.dart';
 import 'package:functions/events/on_event.dart';
 import 'package:functions/events/on_event_participant.dart';
 import 'package:functions/discussion_threads/on_discussion_thread.dart';
@@ -141,6 +142,7 @@ final _cloudFunctions = <CloudFunction>[
   // On PubSub functions
   TriggerEmailDigests(),
   UpdateLiveStreamParticipantCount(),
+  CleanupStaleParticipants(),
 ];
 
 final _eventFunctions = <FirestoreEventFunction>[
