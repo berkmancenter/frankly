@@ -1192,10 +1192,10 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
       alwaysRecord: freezed == alwaysRecord
           ? _value.alwaysRecord
           : alwaysRecord // ignore: cast_nullable_to_non_nullable
+              as bool?,
       alwaysTranscribe: freezed == alwaysTranscribe
           ? _value.alwaysTranscribe
           : alwaysTranscribe // ignore: cast_nullable_to_non_nullable
-              as bool?,
               as bool?,
       enablePrerequisites: freezed == enablePrerequisites
           ? _value.enablePrerequisites
@@ -1299,10 +1299,10 @@ class __$$_EventSettingsCopyWithImpl<$Res>
       alwaysRecord: freezed == alwaysRecord
           ? _value.alwaysRecord
           : alwaysRecord // ignore: cast_nullable_to_non_nullable
+              as bool?,
       alwaysTranscribe: freezed == alwaysTranscribe
           ? _value.alwaysTranscribe
           : alwaysTranscribe // ignore: cast_nullable_to_non_nullable
-              as bool?,
               as bool?,
       enablePrerequisites: freezed == enablePrerequisites
           ? _value.enablePrerequisites
@@ -1379,8 +1379,7 @@ class _$_EventSettings implements _EventSettings {
             (identical(other.reminderEmails, reminderEmails) ||
                 other.reminderEmails == reminderEmails) &&
             (identical(other.chat, chat) || other.chat == chat) &&
-            (identical(other.showChatMessagesInRealTime,
-                    showChatMessagesInRealTime) ||
+            (identical(other.showChatMessagesInRealTime, showChatMessagesInRealTime) ||
                 other.showChatMessagesInRealTime ==
                     showChatMessagesInRealTime) &&
             (identical(other.talkingTimer, talkingTimer) ||
