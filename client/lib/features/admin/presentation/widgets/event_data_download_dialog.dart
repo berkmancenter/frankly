@@ -111,8 +111,10 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           await Future.delayed(const Duration(milliseconds: 300));
         }
       }
-      setState(() => widget.recordingParts[event.id] = urls.length);
-      widget.recordingNotifier?.value = urls.length;
+      if (mounted) {
+        setState(() => widget.recordingParts[event.id] = urls.length);
+        widget.recordingNotifier?.value = urls.length;
+      }
     });
   }
 
@@ -273,6 +275,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   }
 
   Future<void> downloadTranscripts(Event event) async {
+    final errorMsg = context.l10n.errorOccurred;
+    final notAvailableMsg = context.l10n.transcriptsNotAvailable;
     final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
     if (idToken == null) throw Exception('Not authenticated');
     final response = await http.post(
@@ -287,12 +291,12 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
       }),
     );
     if (response.statusCode != 200) {
-      throw Exception(context.l10n.errorOccurred);
+      throw Exception(errorMsg);
     }
     final body = jsonDecode(response.body) as Map<String, dynamic>;
     final rawList = body['transcripts'];
     if (rawList is! List || rawList.isEmpty) {
-      throw Exception(context.l10n.transcriptsNotAvailable);
+      throw Exception(notAvailableMsg);
     }
     final urls = rawList
         .whereType<Map<String, dynamic>>()
