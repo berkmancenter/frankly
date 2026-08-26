@@ -51,10 +51,11 @@ class _ControlBarState extends State<ControlBar> {
           sharedPreferencesService.hasMirrorCheckCompletedForEvent(
         eventId,
       );
+      bool? hasCompletedMirrorCheck = true;
 
       if (!mirrorCheckCompleted) {
         if (mounted) {
-          await showDialog(
+          hasCompletedMirrorCheck = await showDialog(
             context: context,
             builder: (context) {
               return MediaSettingsWidget(
@@ -65,6 +66,12 @@ class _ControlBarState extends State<ControlBar> {
               );
             },
           );
+        }
+
+        // If the user cancels the mirror check, do not set the mirror check as completed and bail
+        if (hasCompletedMirrorCheck == null ||
+            hasCompletedMirrorCheck == false) {
+          return;
         }
 
         await sharedPreferencesService.setMirrorCheckCompleteForEvent(eventId);
