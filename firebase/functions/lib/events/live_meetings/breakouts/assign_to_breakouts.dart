@@ -797,10 +797,12 @@ class AssignToBreakouts {
         await firestore
             .collection(RecordingSession.kCollection)
             .document(task.value)
-            .updateData(UpdateData.fromMap({
-          'agoraRttAgentId': agentId,
-          'rttLanguage': 'en-US',
-        }),);
+            .updateData(
+              UpdateData.fromMap({
+                'agoraRttAgentId': agentId,
+                'rttLanguage': 'en-US',
+              }),
+            );
       } catch (e) {
         print('Error starting STT for breakout room ${task.key}: $e');
         try {

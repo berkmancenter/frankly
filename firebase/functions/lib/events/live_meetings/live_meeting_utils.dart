@@ -35,16 +35,22 @@ class MeetingJoinResult {
   final GetMeetingJoinInfoResponse response;
   final PendingRecording? pendingRecording;
   final String? recordingSessionId;
+  final bool shouldRecord;
+  final bool shouldTranscribe;
 
   MeetingJoinResult({
     required this.response,
     this.pendingRecording,
     this.recordingSessionId,
+    this.shouldRecord = false,
+    this.shouldTranscribe = false,
   });
 }
 
 class LiveMeetingUtils {
   bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;
+  bool _shouldTranscribe(Event event) =>
+      event.eventSettings?.alwaysTranscribe ?? false;
   AgoraUtils agoraUtils;
   AgoraSttApi sttApi;
 
@@ -76,8 +82,10 @@ class LiveMeetingUtils {
     );
 
     final shouldRecord = _shouldRecord(event) || liveMeeting.record;
+    final shouldTranscribe = _shouldTranscribe(event);
     String? newSessionId;
-    if (shouldRecord && liveMeeting.recordingSessionId == null) {
+    if ((shouldRecord || shouldTranscribe) &&
+        liveMeeting.recordingSessionId == null) {
       newSessionId = firestore
           .collection(RecordingSession.kCollection)
           .document()
@@ -135,6 +143,8 @@ class LiveMeetingUtils {
       ),
       pendingRecording: pendingRecording,
       recordingSessionId: liveMeeting.recordingSessionId,
+      shouldRecord: shouldRecord,
+      shouldTranscribe: shouldTranscribe,
     );
   }
 
@@ -210,7 +220,8 @@ class LiveMeetingUtils {
 
     await firestore.document(breakoutRoomPath).updateData(
           UpdateData.fromMap(
-              {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
+            {BreakoutRoom.kFieldRecordingSessionId: newSessionId},
+          ),
         );
 
     final chatPath = '$breakoutRoomPath/chats/community_chat/messages';
@@ -253,10 +264,12 @@ class LiveMeetingUtils {
       await firestore
           .collection(RecordingSession.kCollection)
           .document(sessionId)
-          .updateData(UpdateData.fromMap({
-        'agoraRttAgentId': agentId,
-        'rttLanguage': language,
-      }),);
+          .updateData(
+            UpdateData.fromMap({
+              'agoraRttAgentId': agentId,
+              'rttLanguage': language,
+            }),
+          );
     } catch (e) {
       print('Failed to start transcription for room $roomId: $e');
       // Write the error to Firestore so it's visible without log access.
@@ -264,9 +277,11 @@ class LiveMeetingUtils {
         await firestore
             .collection(RecordingSession.kCollection)
             .document(sessionId)
-            .updateData(UpdateData.fromMap({
-          'rttError': e.toString(),
-        }),);
+            .updateData(
+              UpdateData.fromMap({
+                'rttError': e.toString(),
+              }),
+            );
       } catch (_) {}
     }
   }
@@ -280,9 +295,11 @@ class LiveMeetingUtils {
       await firestore
           .collection(RecordingSession.kCollection)
           .document(sessionId)
-          .updateData(UpdateData.fromMap({
-        'uidToDisplayName.$agoraUid': userId,
-      }),);
+          .updateData(
+            UpdateData.fromMap({
+              'uidToDisplayName.$agoraUid': userId,
+            }),
+          );
     } catch (e) {
       print('Failed to record UID mapping for $userId: $e');
     }

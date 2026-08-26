@@ -107,19 +107,9 @@ class EventSettingsPresenter {
   }
 
   void updateSetting(String setting, bool isSelected) async {
-    final updates = <MapEntry<String, dynamic>>[
-      MapEntry(setting, isSelected),
-    ];
-
-    // When recording is enabled, also enable transcription.
-    if (setting == EventSettings.kFieldAlwaysRecord && isSelected) {
-      updates.add(
-        MapEntry(EventSettings.kFieldAlwaysTranscribe, true),
-      );
-    }
-
     final settings = EventSettings.fromJson(
-      _model.eventSettings.toJson()..addEntries(updates),
+      _model.eventSettings.toJson()
+        ..addEntries([MapEntry(setting, isSelected)]),
     );
     _model.eventSettings = settings;
     _appDrawerProvider.setUnsavedChanges(_helper.wereChangesMade(_model));

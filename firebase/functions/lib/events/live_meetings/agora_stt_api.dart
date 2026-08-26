@@ -1,8 +1,4 @@
-@JS()
-library agora_stt_api;
-
 import 'package:firebase_functions_interop/firebase_functions_interop.dart';
-import 'package:js/js.dart';
 import 'package:node_http/node_http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -111,7 +107,10 @@ class AgoraSttApi {
     if (result.statusCode < 200 || result.statusCode > 299) {
       print('STT query failed (${result.statusCode}): ${result.body}');
       throw HttpsError(
-          HttpsError.internal, 'STT query failed: ${result.body}', null,);
+        HttpsError.internal,
+        'STT query failed: ${result.body}',
+        null,
+      );
     }
 
     final decoded = convert.jsonDecode(result.body);
@@ -139,7 +138,10 @@ class AgoraSttApi {
     if (result.statusCode < 200 || result.statusCode > 299) {
       print('STT stop failed (${result.statusCode}): ${result.body}');
       throw HttpsError(
-          HttpsError.internal, 'STT stop failed: ${result.body}', null,);
+        HttpsError.internal,
+        'STT stop failed: ${result.body}',
+        null,
+      );
     }
 
     print('STT stop response (${result.statusCode}): ${result.body}');

@@ -80,20 +80,29 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
 
     final pending = result.pendingRecording;
     if (pending != null) {
-      await liveMeetingUtils.agoraUtils.recordRoom(
-        roomId: pending.roomId,
-        sessionId: pending.sessionId,
-        eventId: pending.eventId,
-        communityId: pending.communityId,
-        roomType: pending.roomType,
-        chatPath: pending.chatPath,
-        participantIds: pending.participantIds,
-      );
-      await liveMeetingUtils.startTranscription(
-        roomId: pending.roomId,
-        sessionId: pending.sessionId,
-        gcsPrefix: [pending.eventId, 'main', pending.roomId, pending.sessionId],
-      );
+      if (result.shouldRecord) {
+        await liveMeetingUtils.agoraUtils.recordRoom(
+          roomId: pending.roomId,
+          sessionId: pending.sessionId,
+          eventId: pending.eventId,
+          communityId: pending.communityId,
+          roomType: pending.roomType,
+          chatPath: pending.chatPath,
+          participantIds: pending.participantIds,
+        );
+      }
+      if (result.shouldTranscribe) {
+        await liveMeetingUtils.startTranscription(
+          roomId: pending.roomId,
+          sessionId: pending.sessionId,
+          gcsPrefix: [
+            pending.eventId,
+            'main',
+            pending.roomId,
+            pending.sessionId,
+          ],
+        );
+      }
     }
 
     return result.response.toJson();
