@@ -337,7 +337,7 @@ class _PrerequisiteTemplateWidgetPageState
                       children: [
                         Expanded(
                           child: Text(
-                            'Prerequisite Template',
+                            context.l10n.prerequisiteTemplate,
                             style:
                                 context.theme.textTheme.titleMedium!.copyWith(
                               color: widget.isWhiteBackground

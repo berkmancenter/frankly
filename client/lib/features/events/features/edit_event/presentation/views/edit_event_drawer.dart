@@ -83,7 +83,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Edit event',
+                context.l10n.editEvent,
                 style: context.theme.textTheme.headlineSmall,
               ),
               Semantics(
@@ -175,7 +175,7 @@ class EditEventDrawerState extends State<EditEventDrawer>
     return Row(
       children: [
         Text(
-          'Image',
+          context.l10n.image,
           style: context.theme.textTheme.bodyLarge!
               .copyWith(color: context.theme.colorScheme.onSurfaceVariant),
         ),

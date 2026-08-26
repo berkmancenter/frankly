@@ -516,9 +516,10 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Tooltip(
-                        message:
-                            '$readyToMoveOnCount out of ${presentParticipantIds.length} participants '
-                            'are ready to move on.',
+                        message: context.l10n.participantsReadyToMoveOn(
+                          readyToMoveOnCount,
+                          presentParticipantIds.length,
+                        ),
                         child: Text(
                           '$readyToMoveOnCount/${presentParticipantIds.length}',
                           style: AppTextStyle.body.copyWith(

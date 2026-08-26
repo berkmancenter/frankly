@@ -1,0 +1,88 @@
+name: Localization Check
+on:
+  pull_request:
+    branches:
+      - '**'
+permissions:
+  contents: read
+jobs:
+  check_localizations:
+    name: Check Localization
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            client:
+              - 'client/**'
+
+      - name: Set Up Flutter
+        if: steps.changes.outputs.client == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.2'
+          channel: 'stable'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+          pub-cache-key: 'flutter-pub-:os:-:channel:-:version:-:arch:-:hash:'
+          pub-cache-path: '/home/runner/.pub-cache'
+
+      - name: Install Dependencies
+        if: steps.changes.outputs.client == 'true'
+        run: flutter pub get
+
+      - name: Generate Localizations
+        if: steps.changes.outputs.client == 'true'
+        run: flutter gen-l10n
+
+      - name: Check Translation Completeness
+        if: steps.changes.outputs.client == 'true'
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          path = pathlib.Path('missing.json')
+          if not path.is_file():
+              print('ERROR: missing.json was not generated.')
+              print('       Check client/l10n.yaml still contains untranslated-messages-file.')
+              sys.exit(1)
+
+          try:
+              missing = json.loads(path.read_text())
+          except (OSError, json.JSONDecodeError) as error:
+              print(f'ERROR: could not parse missing.json: {error}')
+              sys.exit(1)
+
+          if not isinstance(missing, dict):
+              print('ERROR: missing.json must contain a JSON object.')
+              sys.exit(1)
+
+          if not missing:
+              print('Translation completeness check passed: missing.json is empty.')
+              sys.exit(0)
+
+          print('ERROR: translations are missing:')
+          for locale, keys in missing.items():
+              print(f'Locale: {locale}')
+              if isinstance(keys, list):
+                  for key in keys:
+                      print(f'  - {key}')
+              else:
+                  print(f'  {json.dumps(keys, ensure_ascii=False)}')
+              print()
+          sys.exit(1)
+          PY
+
+      - name: Check Hardcoded User-Facing Strings
+        if: steps.changes.outputs.client == 'true'
+        run: dart run tool/check_hardcoded_strings.dart

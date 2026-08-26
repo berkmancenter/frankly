@@ -32,3 +32,15 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+
+nav:
+  - Home: index.md
+  - Development: dev.md
+  - Hosting: hosting.md
+  - End-to-end testing: e2e.md
+  - FAQ: faq.md
+  - Architecture:
+      - Repository map: architecture/repo_map.md
+      - Cloud Functions: architecture/cloud-functions.md
+      - Meeting lifecycle: architecture/meeting-lifecycle.md
+  - Localization: l10n.md

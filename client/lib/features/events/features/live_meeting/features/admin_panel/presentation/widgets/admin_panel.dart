@@ -598,6 +598,7 @@ class _MeetingControlsMenuState extends State<_MeetingControlsMenu> {
                 ?.numFakeParticipants = countValue;
           }),
           child: HeightConstrainedText(
+            // ignore: hardcoded_string -- dev-only, gated by Environment.enableFakeParticipants / ENABLE_FAKE_PARTICIPANTS.
             'Add Fake Participants',
             style: TextStyle(
               fontSize: 12,
