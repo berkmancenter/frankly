@@ -12,6 +12,7 @@ class SharedPreferencesService {
   static const _kCameraOnByDefault = 'camera-on-by-default';
   static const _kMicOnByDefault = 'mic-on-by-default';
   static const _kIsEditTemplateTooltipShown = 'is-edit-template-tooltip-shown';
+  static const _kMirrorCheckCompletedEventIds = 'mirror-check-completed-event-ids';
 
   late SharedPreferences _preferences;
   Future<SharedPreferences>? _loadingPreferencesFuture;
@@ -53,6 +54,19 @@ class SharedPreferencesService {
     final result =
         await _preferences.setBool(_kIsEditTemplateTooltipShown, isShown);
     return result;
+  }
+
+  bool hasMirrorCheckCompletedForEvent(String eventId) {
+    final completedEventIds = _preferences.getStringList(_kMirrorCheckCompletedEventIds) ?? [];
+    return completedEventIds.contains(eventId);
+  }
+
+  Future<void> setMirrorCheckCompleteForEvent(String eventId) async {
+    final completedEventIds = _preferences.getStringList(_kMirrorCheckCompletedEventIds) ?? [];
+    if (!completedEventIds.contains(eventId)) {
+      completedEventIds.add(eventId);
+      await _preferences.setStringList(_kMirrorCheckCompletedEventIds, completedEventIds);
+    }
   }
 
   String? getLastQueryParams() => _preferences.getString(_lastQueryParameters);

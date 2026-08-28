@@ -538,6 +538,7 @@ class ResolveJoinRequestRequest
     required String communityId,
     required String userId,
     required bool approve,
+    MembershipStatus? role,
   }) = _ResolveJoinRequestRequest;
 
   factory ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =>
@@ -556,6 +557,7 @@ class InitiateBreakoutsRequest
     required String breakoutSessionId,
     @JsonKey(unknownEnumValue: null) BreakoutAssignmentMethod? assignmentMethod,
     @Default(false) bool includeWaitingRoom,
+    @Default(false) bool useHostedApi,
   }) = _InitiateBreakoutsRequest;
 
   factory InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>

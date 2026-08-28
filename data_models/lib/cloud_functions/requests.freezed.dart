@@ -6622,6 +6622,7 @@ mixin _$ResolveJoinRequestRequest {
   String get communityId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   bool get approve => throw _privateConstructorUsedError;
+  MembershipStatus? get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6635,7 +6636,11 @@ abstract class $ResolveJoinRequestRequestCopyWith<$Res> {
           $Res Function(ResolveJoinRequestRequest) then) =
       _$ResolveJoinRequestRequestCopyWithImpl<$Res, ResolveJoinRequestRequest>;
   @useResult
-  $Res call({String communityId, String userId, bool approve});
+  $Res call(
+      {String communityId,
+      String userId,
+      bool approve,
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -6655,6 +6660,7 @@ class _$ResolveJoinRequestRequestCopyWithImpl<$Res,
     Object? communityId = null,
     Object? userId = null,
     Object? approve = null,
+    Object? role = freezed,
   }) {
     return _then(_value.copyWith(
       communityId: null == communityId
@@ -6669,6 +6675,10 @@ class _$ResolveJoinRequestRequestCopyWithImpl<$Res,
           ? _value.approve
           : approve // ignore: cast_nullable_to_non_nullable
               as bool,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ) as $Val);
   }
 }
@@ -6682,7 +6692,11 @@ abstract class _$$_ResolveJoinRequestRequestCopyWith<$Res>
       __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String communityId, String userId, bool approve});
+  $Res call(
+      {String communityId,
+      String userId,
+      bool approve,
+      MembershipStatus? role});
 }
 
 /// @nodoc
@@ -6701,6 +6715,7 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
     Object? communityId = null,
     Object? userId = null,
     Object? approve = null,
+    Object? role = freezed,
   }) {
     return _then(_$_ResolveJoinRequestRequest(
       communityId: null == communityId
@@ -6715,6 +6730,10 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
           ? _value.approve
           : approve // ignore: cast_nullable_to_non_nullable
               as bool,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as MembershipStatus?,
     ));
   }
 }
@@ -6723,7 +6742,10 @@ class __$$_ResolveJoinRequestRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
   _$_ResolveJoinRequestRequest(
-      {required this.communityId, required this.userId, required this.approve});
+      {required this.communityId,
+      required this.userId,
+      required this.approve,
+      this.role});
 
   factory _$_ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =>
       _$$_ResolveJoinRequestRequestFromJson(json);
@@ -6734,10 +6756,12 @@ class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
   final String userId;
   @override
   final bool approve;
+  @override
+  final MembershipStatus? role;
 
   @override
   String toString() {
-    return 'ResolveJoinRequestRequest(communityId: $communityId, userId: $userId, approve: $approve)';
+    return 'ResolveJoinRequestRequest(communityId: $communityId, userId: $userId, approve: $approve, role: $role)';
   }
 
   @override
@@ -6748,12 +6772,14 @@ class _$_ResolveJoinRequestRequest implements _ResolveJoinRequestRequest {
             (identical(other.communityId, communityId) ||
                 other.communityId == communityId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.approve, approve) || other.approve == approve));
+            (identical(other.approve, approve) || other.approve == approve) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId, userId, approve);
+  int get hashCode =>
+      Object.hash(runtimeType, communityId, userId, approve, role);
 
   @JsonKey(ignore: true)
   @override
@@ -6774,7 +6800,8 @@ abstract class _ResolveJoinRequestRequest implements ResolveJoinRequestRequest {
   factory _ResolveJoinRequestRequest(
       {required final String communityId,
       required final String userId,
-      required final bool approve}) = _$_ResolveJoinRequestRequest;
+      required final bool approve,
+      final MembershipStatus? role}) = _$_ResolveJoinRequestRequest;
 
   factory _ResolveJoinRequestRequest.fromJson(Map<String, dynamic> json) =
       _$_ResolveJoinRequestRequest.fromJson;
@@ -6785,6 +6812,8 @@ abstract class _ResolveJoinRequestRequest implements ResolveJoinRequestRequest {
   String get userId;
   @override
   bool get approve;
+  @override
+  MembershipStatus? get role;
   @override
   @JsonKey(ignore: true)
   _$$_ResolveJoinRequestRequestCopyWith<_$_ResolveJoinRequestRequest>
@@ -6805,6 +6834,7 @@ mixin _$InitiateBreakoutsRequest {
   BreakoutAssignmentMethod? get assignmentMethod =>
       throw _privateConstructorUsedError;
   bool get includeWaitingRoom => throw _privateConstructorUsedError;
+  bool get useHostedApi => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6824,7 +6854,8 @@ abstract class $InitiateBreakoutsRequestCopyWith<$Res> {
       String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       BreakoutAssignmentMethod? assignmentMethod,
-      bool includeWaitingRoom});
+      bool includeWaitingRoom,
+      bool useHostedApi});
 }
 
 /// @nodoc
@@ -6846,6 +6877,7 @@ class _$InitiateBreakoutsRequestCopyWithImpl<$Res,
     Object? breakoutSessionId = null,
     Object? assignmentMethod = freezed,
     Object? includeWaitingRoom = null,
+    Object? useHostedApi = null,
   }) {
     return _then(_value.copyWith(
       eventPath: null == eventPath
@@ -6868,6 +6900,10 @@ class _$InitiateBreakoutsRequestCopyWithImpl<$Res,
           ? _value.includeWaitingRoom
           : includeWaitingRoom // ignore: cast_nullable_to_non_nullable
               as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -6887,7 +6923,8 @@ abstract class _$$_InitiateBreakoutsRequestCopyWith<$Res>
       String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       BreakoutAssignmentMethod? assignmentMethod,
-      bool includeWaitingRoom});
+      bool includeWaitingRoom,
+      bool useHostedApi});
 }
 
 /// @nodoc
@@ -6907,6 +6944,7 @@ class __$$_InitiateBreakoutsRequestCopyWithImpl<$Res>
     Object? breakoutSessionId = null,
     Object? assignmentMethod = freezed,
     Object? includeWaitingRoom = null,
+    Object? useHostedApi = null,
   }) {
     return _then(_$_InitiateBreakoutsRequest(
       eventPath: null == eventPath
@@ -6929,6 +6967,10 @@ class __$$_InitiateBreakoutsRequestCopyWithImpl<$Res>
           ? _value.includeWaitingRoom
           : includeWaitingRoom // ignore: cast_nullable_to_non_nullable
               as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -6941,7 +6983,8 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       required this.targetParticipantsPerRoom,
       required this.breakoutSessionId,
       @JsonKey(unknownEnumValue: null) this.assignmentMethod,
-      this.includeWaitingRoom = false});
+      this.includeWaitingRoom = false,
+      this.useHostedApi = false});
 
   factory _$_InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =>
       _$$_InitiateBreakoutsRequestFromJson(json);
@@ -6958,10 +7001,13 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
   @override
   @JsonKey()
   final bool includeWaitingRoom;
+  @override
+  @JsonKey()
+  final bool useHostedApi;
 
   @override
   String toString() {
-    return 'InitiateBreakoutsRequest(eventPath: $eventPath, targetParticipantsPerRoom: $targetParticipantsPerRoom, breakoutSessionId: $breakoutSessionId, assignmentMethod: $assignmentMethod, includeWaitingRoom: $includeWaitingRoom)';
+    return 'InitiateBreakoutsRequest(eventPath: $eventPath, targetParticipantsPerRoom: $targetParticipantsPerRoom, breakoutSessionId: $breakoutSessionId, assignmentMethod: $assignmentMethod, includeWaitingRoom: $includeWaitingRoom, useHostedApi: $useHostedApi)';
   }
 
   @override
@@ -6979,7 +7025,9 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
             (identical(other.assignmentMethod, assignmentMethod) ||
                 other.assignmentMethod == assignmentMethod) &&
             (identical(other.includeWaitingRoom, includeWaitingRoom) ||
-                other.includeWaitingRoom == includeWaitingRoom));
+                other.includeWaitingRoom == includeWaitingRoom) &&
+            (identical(other.useHostedApi, useHostedApi) ||
+                other.useHostedApi == useHostedApi));
   }
 
   @JsonKey(ignore: true)
@@ -6990,7 +7038,8 @@ class _$_InitiateBreakoutsRequest implements _InitiateBreakoutsRequest {
       targetParticipantsPerRoom,
       breakoutSessionId,
       assignmentMethod,
-      includeWaitingRoom);
+      includeWaitingRoom,
+      useHostedApi);
 
   @JsonKey(ignore: true)
   @override
@@ -7014,7 +7063,8 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
       required final String breakoutSessionId,
       @JsonKey(unknownEnumValue: null)
       final BreakoutAssignmentMethod? assignmentMethod,
-      final bool includeWaitingRoom}) = _$_InitiateBreakoutsRequest;
+      final bool includeWaitingRoom,
+      final bool useHostedApi}) = _$_InitiateBreakoutsRequest;
 
   factory _InitiateBreakoutsRequest.fromJson(Map<String, dynamic> json) =
       _$_InitiateBreakoutsRequest.fromJson;
@@ -7030,6 +7080,8 @@ abstract class _InitiateBreakoutsRequest implements InitiateBreakoutsRequest {
   BreakoutAssignmentMethod? get assignmentMethod;
   @override
   bool get includeWaitingRoom;
+  @override
+  bool get useHostedApi;
   @override
   @JsonKey(ignore: true)
   _$$_InitiateBreakoutsRequestCopyWith<_$_InitiateBreakoutsRequest>

@@ -1333,6 +1333,7 @@ mixin _$BreakoutRoomSession {
       throw _privateConstructorUsedError;
   int get targetParticipantsPerRoom => throw _privateConstructorUsedError;
   bool get hasWaitingRoom => throw _privateConstructorUsedError;
+  bool get useHostedApi => throw _privateConstructorUsedError;
   int? get maxRoomNumber => throw _privateConstructorUsedError;
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
   DateTime? get createdDate => throw _privateConstructorUsedError;
@@ -1362,6 +1363,7 @@ abstract class $BreakoutRoomSessionCopyWith<$Res> {
       BreakoutAssignmentMethod assignmentMethod,
       int targetParticipantsPerRoom,
       bool hasWaitingRoom,
+      bool useHostedApi,
       int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
@@ -1389,6 +1391,7 @@ class _$BreakoutRoomSessionCopyWithImpl<$Res, $Val extends BreakoutRoomSession>
     Object? assignmentMethod = null,
     Object? targetParticipantsPerRoom = null,
     Object? hasWaitingRoom = null,
+    Object? useHostedApi = null,
     Object? maxRoomNumber = freezed,
     Object? createdDate = freezed,
     Object? scheduledTime = freezed,
@@ -1418,6 +1421,10 @@ class _$BreakoutRoomSessionCopyWithImpl<$Res, $Val extends BreakoutRoomSession>
       hasWaitingRoom: null == hasWaitingRoom
           ? _value.hasWaitingRoom
           : hasWaitingRoom // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
               as bool,
       maxRoomNumber: freezed == maxRoomNumber
           ? _value.maxRoomNumber
@@ -1455,6 +1462,7 @@ abstract class _$$_BreakoutRoomSessionCopyWith<$Res>
       BreakoutAssignmentMethod assignmentMethod,
       int targetParticipantsPerRoom,
       bool hasWaitingRoom,
+      bool useHostedApi,
       int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       DateTime? createdDate,
@@ -1480,6 +1488,7 @@ class __$$_BreakoutRoomSessionCopyWithImpl<$Res>
     Object? assignmentMethod = null,
     Object? targetParticipantsPerRoom = null,
     Object? hasWaitingRoom = null,
+    Object? useHostedApi = null,
     Object? maxRoomNumber = freezed,
     Object? createdDate = freezed,
     Object? scheduledTime = freezed,
@@ -1509,6 +1518,10 @@ class __$$_BreakoutRoomSessionCopyWithImpl<$Res>
       hasWaitingRoom: null == hasWaitingRoom
           ? _value.hasWaitingRoom
           : hasWaitingRoom // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useHostedApi: null == useHostedApi
+          ? _value.useHostedApi
+          : useHostedApi // ignore: cast_nullable_to_non_nullable
               as bool,
       maxRoomNumber: freezed == maxRoomNumber
           ? _value.maxRoomNumber
@@ -1541,6 +1554,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
       required this.assignmentMethod,
       required this.targetParticipantsPerRoom,
       required this.hasWaitingRoom,
+      this.useHostedApi = false,
       this.maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       this.createdDate,
@@ -1566,6 +1580,9 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
   @override
   final bool hasWaitingRoom;
   @override
+  @JsonKey()
+  final bool useHostedApi;
+  @override
   final int? maxRoomNumber;
   @override
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
@@ -1580,7 +1597,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
 
   @override
   String toString() {
-    return 'BreakoutRoomSession(breakoutRoomSessionId: $breakoutRoomSessionId, breakoutRoomStatus: $breakoutRoomStatus, statusUpdatedTime: $statusUpdatedTime, assignmentMethod: $assignmentMethod, targetParticipantsPerRoom: $targetParticipantsPerRoom, hasWaitingRoom: $hasWaitingRoom, maxRoomNumber: $maxRoomNumber, createdDate: $createdDate, scheduledTime: $scheduledTime, processingId: $processingId)';
+    return 'BreakoutRoomSession(breakoutRoomSessionId: $breakoutRoomSessionId, breakoutRoomStatus: $breakoutRoomStatus, statusUpdatedTime: $statusUpdatedTime, assignmentMethod: $assignmentMethod, targetParticipantsPerRoom: $targetParticipantsPerRoom, hasWaitingRoom: $hasWaitingRoom, useHostedApi: $useHostedApi, maxRoomNumber: $maxRoomNumber, createdDate: $createdDate, scheduledTime: $scheduledTime, processingId: $processingId)';
   }
 
   @override
@@ -1601,6 +1618,8 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
                 other.targetParticipantsPerRoom == targetParticipantsPerRoom) &&
             (identical(other.hasWaitingRoom, hasWaitingRoom) ||
                 other.hasWaitingRoom == hasWaitingRoom) &&
+            (identical(other.useHostedApi, useHostedApi) ||
+                other.useHostedApi == useHostedApi) &&
             (identical(other.maxRoomNumber, maxRoomNumber) ||
                 other.maxRoomNumber == maxRoomNumber) &&
             (identical(other.createdDate, createdDate) ||
@@ -1621,6 +1640,7 @@ class _$_BreakoutRoomSession implements _BreakoutRoomSession {
       assignmentMethod,
       targetParticipantsPerRoom,
       hasWaitingRoom,
+      useHostedApi,
       maxRoomNumber,
       createdDate,
       scheduledTime,
@@ -1651,6 +1671,7 @@ abstract class _BreakoutRoomSession implements BreakoutRoomSession {
       required final BreakoutAssignmentMethod assignmentMethod,
       required final int targetParticipantsPerRoom,
       required final bool hasWaitingRoom,
+      final bool useHostedApi,
       final int? maxRoomNumber,
       @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
       final DateTime? createdDate,
@@ -1675,6 +1696,8 @@ abstract class _BreakoutRoomSession implements BreakoutRoomSession {
   int get targetParticipantsPerRoom;
   @override
   bool get hasWaitingRoom;
+  @override
+  bool get useHostedApi;
   @override
   int? get maxRoomNumber;
   @override

@@ -142,7 +142,9 @@ class ParticipantsDialog extends StatelessWidget {
     final String titleText;
     if (eventProvider.useParticipantCountEstimate) {
       final regCount = eventProvider.registrationCount;
-      final attendedCount = eventProvider.participantCount;
+      final attendedCount = eventProvider.hasPresentParticipants
+          ? eventProvider.presentParticipantCount
+          : eventProvider.participantCount;
       final endTime = event.scheduledTime
           ?.add(Duration(minutes: event.durationInMinutes));
       final hasEnded =
@@ -191,7 +193,15 @@ class ParticipantsDialog extends StatelessWidget {
   }
 
   List<Widget> _buildEventParticipants(BuildContext context) {
-    final participantsList = eventProvider.eventParticipants.toList();
+    // When the meeting is live, show only present participants to match
+    // the in-meeting counts. Otherwise show all registered participants.
+    final allParticipants = eventProvider.eventParticipants;
+    final isLive = eventProvider.hasPresentParticipants &&
+        !eventProvider.useParticipantCountEstimate;
+    final participantsList = isLive
+        ? allParticipants.where((p) => p.isPresent).toList()
+        : allParticipants.toList();
+
     final creator =
         participantsList.firstWhereOrNull((p) => p.id == event.creatorId);
     final self = participantsList.firstWhereOrNull(
