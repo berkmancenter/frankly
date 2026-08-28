@@ -183,7 +183,8 @@ class MeetingGuideCardStore with ChangeNotifier {
       // [_currentMeetingGuideAgendaItemId] to match. During this time a timer is shown counting
       // down to the new agenda item.
       _pendingMeetingGuideAgendaItemTimer?.cancel();
-      _pendingMeetingGuideAgendaItemTimer = Timer(_agendaItemTransitionDelay, () {
+      _pendingMeetingGuideAgendaItemTimer =
+          Timer(_agendaItemTransitionDelay, () {
         _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
 
         liveMeetingProvider.setAudioTemporarilyDisabled(
@@ -253,6 +254,8 @@ class MeetingGuideCardStore with ChangeNotifier {
       prevAgendaItem = agendaProvider.resolvedAgendaItems.last;
     } else if (currentAgendaItemIndex < 0) {
       throw VisibleException('Meeting Guide entry not found.');
+    } else if (currentAgendaItemIndex == 0) {
+      throw VisibleException('Already at the first Meeting Guide entry.');
     } else {
       prevAgendaItem = agendaProvider.resolvedAgendaItems
           .skip(currentAgendaItemIndex - 1)
