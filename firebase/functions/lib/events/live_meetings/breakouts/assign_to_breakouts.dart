@@ -11,6 +11,7 @@ import 'package:frankly_match/frankly_match.dart' as frankly_match;
 import 'package:node_http/node_http.dart' as http;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
+import '../agora_stt_api.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -712,6 +713,7 @@ class AssignToBreakouts {
     // one writer and no risk of concurrent joins racing on the same room.
     // Check both eventSettings.alwaysRecord and liveMeeting.record -- the
     // latter is set when the event is created via the ?record=true URL param.
+    final sttTasks = <MapEntry<String, String>>[];
     if (alwaysRecord || currentLiveMeeting.record) {
       final agoraUtils = AgoraUtils();
       final recordingRoomIds = breakoutRooms
@@ -749,6 +751,9 @@ class AssignToBreakouts {
             'Error starting recording for breakout room ${room.roomId}: $e',
           );
         }
+        // Defer STT start until after the session doc is written so that slow
+        // Agora API responses cannot block users from joining breakout rooms.
+        sttTasks.add(MapEntry(room.roomId, newSessionId));
       }
     }
 
@@ -778,6 +783,37 @@ class AssignToBreakouts {
           ),
           SetOptions(merge: true),
         );
+
+    // Start STT after the session doc is written. Users can join now; STT may
+    // miss a few seconds of early audio but won't block room assignment.
+    for (final task in sttTasks) {
+      try {
+        final sttApi = AgoraSttApi();
+        final agentId = await sttApi.startTranscription(
+          channelName: task.key,
+          language: 'en-US',
+          fileNamePrefix: [event.id, breakoutSessionId, task.key, task.value],
+        );
+        await firestore
+            .collection(RecordingSession.kCollection)
+            .document(task.value)
+            .updateData(
+              UpdateData.fromMap({
+                'agoraRttAgentId': agentId,
+                'rttLanguage': 'en-US',
+              }),
+            );
+      } catch (e) {
+        print('Error starting STT for breakout room ${task.key}: $e');
+        try {
+          await firestore
+              .collection(RecordingSession.kCollection)
+              .document(task.value)
+              .updateData(UpdateData.fromMap({'rttError': e.toString()}));
+        } catch (_) {}
+      }
+    }
+
     profile('done writing');
   }
 
