@@ -65,7 +65,8 @@ class LiveMeetingUtils {
     var liveMeeting = LiveMeeting.fromJson(
       firestoreUtils.fromFirestoreJson(liveMeetingSnapshot.data.toMap()),
     );
-    if (isNullOrEmpty(liveMeeting.meetingId)) {
+    final isFirstJoin = isNullOrEmpty(liveMeeting.meetingId);
+    if (isFirstJoin) {
       fieldsToUpdate.add(LiveMeeting.kFieldMeetingId);
     }
     liveMeeting = liveMeeting.copyWith(
@@ -101,8 +102,6 @@ class LiveMeetingUtils {
         ),
       );
     }
-
-    final isFirstJoin = !liveMeetingSnapshot.exists;
 
     PendingRecording? pendingRecording;
     if (newSessionId != null) {
