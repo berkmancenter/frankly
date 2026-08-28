@@ -1154,7 +1154,10 @@ class LiveMeetingProvider with ChangeNotifier {
         targetParticipantsPerRoom: numPerRoom,
         assignmentMethod: assignmentMethod,
         includeWaitingRoom: !eventProvider.event.isHosted,
-        useHostedApi: kShouldUseHostedMatchApiClient,
+        // We want to use the hosted API if the community has it enabled,
+        // or if the app is configured to use it for testing
+        useHostedApi: communityProvider.community.useMatchApi ||
+            kShouldUseHostedMatchApiClient,
       ),
     );
   }

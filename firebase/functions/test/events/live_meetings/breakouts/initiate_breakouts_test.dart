@@ -184,7 +184,7 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       includeWaitingRoom: true,
       useHostedApi: false,
     );
@@ -211,7 +211,7 @@ void main() {
     final expectedBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: breakoutSessionId,
       breakoutRoomStatus: BreakoutRoomStatus.pending,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,
@@ -250,7 +250,7 @@ void main() {
     final expectedBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: breakoutSessionId,
       breakoutRoomStatus: BreakoutRoomStatus.pending,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
       useHostedApi: false,
@@ -269,7 +269,7 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       includeWaitingRoom: true,
       useHostedApi: false,
     );
@@ -309,7 +309,7 @@ void main() {
     final currentBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: 'notTheRightOne',
       breakoutRoomStatus: BreakoutRoomStatus.inactive,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
       useHostedApi: false,
@@ -328,7 +328,7 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       includeWaitingRoom: true,
       useHostedApi: false,
     );
@@ -356,7 +356,7 @@ void main() {
     final expectedBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: breakoutSessionId,
       breakoutRoomStatus: BreakoutRoomStatus.pending,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,

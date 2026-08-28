@@ -184,9 +184,6 @@ class EventProvider with ChangeNotifier {
   bool get enableFloatingChat =>
       _settingsValue((settings) => settings.showChatMessagesInRealTime);
 
-  bool get allowPredefineBreakoutsOnHosted =>
-      _settingsValue((settings) => settings.allowPredefineBreakoutsOnHosted);
-
   bool get enableScreenshare =>
       false; //_settingsValue((settings) => settings.allowScreenshare);
 
