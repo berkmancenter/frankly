@@ -1085,8 +1085,6 @@ mixin _$EventSettings {
   bool? get talkingTimer =>
       throw _privateConstructorUsedError; // Reenable if screensharing is implemented
 //bool? allowScreenshare,
-  bool? get allowPredefineBreakoutsOnHosted =>
-      throw _privateConstructorUsedError;
   bool? get defaultStageView => throw _privateConstructorUsedError;
   bool? get enableBreakoutsByCategory => throw _privateConstructorUsedError;
   bool? get allowMultiplePeopleOnStage => throw _privateConstructorUsedError;
@@ -1112,7 +1110,6 @@ abstract class $EventSettingsCopyWith<$Res> {
       bool? chat,
       bool? showChatMessagesInRealTime,
       bool? talkingTimer,
-      bool? allowPredefineBreakoutsOnHosted,
       bool? defaultStageView,
       bool? enableBreakoutsByCategory,
       bool? allowMultiplePeopleOnStage,
@@ -1139,7 +1136,6 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
     Object? chat = freezed,
     Object? showChatMessagesInRealTime = freezed,
     Object? talkingTimer = freezed,
-    Object? allowPredefineBreakoutsOnHosted = freezed,
     Object? defaultStageView = freezed,
     Object? enableBreakoutsByCategory = freezed,
     Object? allowMultiplePeopleOnStage = freezed,
@@ -1164,11 +1160,6 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
       talkingTimer: freezed == talkingTimer
           ? _value.talkingTimer
           : talkingTimer // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      allowPredefineBreakoutsOnHosted: freezed ==
-              allowPredefineBreakoutsOnHosted
-          ? _value.allowPredefineBreakoutsOnHosted
-          : allowPredefineBreakoutsOnHosted // ignore: cast_nullable_to_non_nullable
               as bool?,
       defaultStageView: freezed == defaultStageView
           ? _value.defaultStageView
@@ -1215,7 +1206,6 @@ abstract class _$$_EventSettingsCopyWith<$Res>
       bool? chat,
       bool? showChatMessagesInRealTime,
       bool? talkingTimer,
-      bool? allowPredefineBreakoutsOnHosted,
       bool? defaultStageView,
       bool? enableBreakoutsByCategory,
       bool? allowMultiplePeopleOnStage,
@@ -1240,7 +1230,6 @@ class __$$_EventSettingsCopyWithImpl<$Res>
     Object? chat = freezed,
     Object? showChatMessagesInRealTime = freezed,
     Object? talkingTimer = freezed,
-    Object? allowPredefineBreakoutsOnHosted = freezed,
     Object? defaultStageView = freezed,
     Object? enableBreakoutsByCategory = freezed,
     Object? allowMultiplePeopleOnStage = freezed,
@@ -1265,11 +1254,6 @@ class __$$_EventSettingsCopyWithImpl<$Res>
       talkingTimer: freezed == talkingTimer
           ? _value.talkingTimer
           : talkingTimer // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      allowPredefineBreakoutsOnHosted: freezed ==
-              allowPredefineBreakoutsOnHosted
-          ? _value.allowPredefineBreakoutsOnHosted
-          : allowPredefineBreakoutsOnHosted // ignore: cast_nullable_to_non_nullable
               as bool?,
       defaultStageView: freezed == defaultStageView
           ? _value.defaultStageView
@@ -1311,7 +1295,6 @@ class _$_EventSettings implements _EventSettings {
       this.chat,
       this.showChatMessagesInRealTime,
       this.talkingTimer,
-      this.allowPredefineBreakoutsOnHosted,
       this.defaultStageView,
       this.enableBreakoutsByCategory,
       this.allowMultiplePeopleOnStage,
@@ -1334,8 +1317,6 @@ class _$_EventSettings implements _EventSettings {
 // Reenable if screensharing is implemented
 //bool? allowScreenshare,
   @override
-  final bool? allowPredefineBreakoutsOnHosted;
-  @override
   final bool? defaultStageView;
   @override
   final bool? enableBreakoutsByCategory;
@@ -1352,7 +1333,7 @@ class _$_EventSettings implements _EventSettings {
 
   @override
   String toString() {
-    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, allowPredefineBreakoutsOnHosted: $allowPredefineBreakoutsOnHosted, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
+    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
   }
 
   @override
@@ -1369,13 +1350,10 @@ class _$_EventSettings implements _EventSettings {
                     showChatMessagesInRealTime) &&
             (identical(other.talkingTimer, talkingTimer) ||
                 other.talkingTimer == talkingTimer) &&
-            (identical(other.allowPredefineBreakoutsOnHosted,
-                    allowPredefineBreakoutsOnHosted) ||
-                other.allowPredefineBreakoutsOnHosted ==
-                    allowPredefineBreakoutsOnHosted) &&
             (identical(other.defaultStageView, defaultStageView) ||
                 other.defaultStageView == defaultStageView) &&
-            (identical(other.enableBreakoutsByCategory, enableBreakoutsByCategory) ||
+            (identical(other.enableBreakoutsByCategory,
+                    enableBreakoutsByCategory) ||
                 other.enableBreakoutsByCategory == enableBreakoutsByCategory) &&
             (identical(other.allowMultiplePeopleOnStage,
                     allowMultiplePeopleOnStage) ||
@@ -1401,7 +1379,6 @@ class _$_EventSettings implements _EventSettings {
       chat,
       showChatMessagesInRealTime,
       talkingTimer,
-      allowPredefineBreakoutsOnHosted,
       defaultStageView,
       enableBreakoutsByCategory,
       allowMultiplePeopleOnStage,
@@ -1430,7 +1407,6 @@ abstract class _EventSettings implements EventSettings {
       final bool? chat,
       final bool? showChatMessagesInRealTime,
       final bool? talkingTimer,
-      final bool? allowPredefineBreakoutsOnHosted,
       final bool? defaultStageView,
       final bool? enableBreakoutsByCategory,
       final bool? allowMultiplePeopleOnStage,
@@ -1452,8 +1428,6 @@ abstract class _EventSettings implements EventSettings {
   bool? get talkingTimer;
   @override // Reenable if screensharing is implemented
 //bool? allowScreenshare,
-  bool? get allowPredefineBreakoutsOnHosted;
-  @override
   bool? get defaultStageView;
   @override
   bool? get enableBreakoutsByCategory;

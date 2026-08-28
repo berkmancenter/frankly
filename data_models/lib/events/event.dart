@@ -196,8 +196,6 @@ class Event with _$Event implements SerializeableRequest {
 class EventSettings with _$EventSettings {
   static const kFieldTalkingTimer = 'talkingTimer';
   static const kFieldAlwaysRecord = 'alwaysRecord';
-  static const kFieldAllowPredefineBreakoutsOnHosted =
-      'allowPredefineBreakoutsOnHosted';
   static const kFieldDefaultStageView = 'defaultStageView';
   static const kFieldAllowScreenShare = 'allowScreenshare';
   static const kFieldShowSmartMatchingForBreakouts =
@@ -213,7 +211,6 @@ class EventSettings with _$EventSettings {
     chat: true,
     showChatMessagesInRealTime: true,
     talkingTimer: true,
-    allowPredefineBreakoutsOnHosted: false,
     defaultStageView: false,
     enableBreakoutsByCategory: false,
     allowMultiplePeopleOnStage: false,
@@ -230,7 +227,6 @@ class EventSettings with _$EventSettings {
     bool? talkingTimer,
     // Reenable if screensharing is implemented
     //bool? allowScreenshare,
-    bool? allowPredefineBreakoutsOnHosted,
     bool? defaultStageView,
     bool? enableBreakoutsByCategory,
     bool? allowMultiplePeopleOnStage,

@@ -119,8 +119,6 @@ _$_EventSettings _$$_EventSettingsFromJson(Map<String, dynamic> json) =>
       chat: json['chat'] as bool?,
       showChatMessagesInRealTime: json['showChatMessagesInRealTime'] as bool?,
       talkingTimer: json['talkingTimer'] as bool?,
-      allowPredefineBreakoutsOnHosted:
-          json['allowPredefineBreakoutsOnHosted'] as bool?,
       defaultStageView: json['defaultStageView'] as bool?,
       enableBreakoutsByCategory: json['enableBreakoutsByCategory'] as bool?,
       allowMultiplePeopleOnStage: json['allowMultiplePeopleOnStage'] as bool?,
@@ -137,8 +135,6 @@ Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
       'chat': instance.chat,
       'showChatMessagesInRealTime': instance.showChatMessagesInRealTime,
       'talkingTimer': instance.talkingTimer,
-      'allowPredefineBreakoutsOnHosted':
-          instance.allowPredefineBreakoutsOnHosted,
       'defaultStageView': instance.defaultStageView,
       'enableBreakoutsByCategory': instance.enableBreakoutsByCategory,
       'allowMultiplePeopleOnStage': instance.allowMultiplePeopleOnStage,
