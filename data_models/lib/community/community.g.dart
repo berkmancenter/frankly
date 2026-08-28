@@ -104,8 +104,6 @@ const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.allowDonations: 'allowDonations',
   CommunityFeatureFlags.alwaysRecord: 'alwaysRecord',
   CommunityFeatureFlags.allowUnofficialTemplates: 'allowUnofficialTemplates',
-  CommunityFeatureFlags.allowPredefineBreakoutsOnHosted:
-      'allowPredefineBreakoutsOnHosted',
   CommunityFeatureFlags.chat: 'chat',
   CommunityFeatureFlags.defaultStageView: 'defaultStageView',
   CommunityFeatureFlags.disableScreenShare: 'disableScreenShare',

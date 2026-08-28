@@ -24,7 +24,6 @@ enum CommunityFeatureFlags {
   allowDonations,
   alwaysRecord,
   allowUnofficialTemplates,
-  allowPredefineBreakoutsOnHosted,
   chat,
   defaultStageView,
   disableScreenShare,
@@ -187,8 +186,6 @@ class Community with _$Community implements SerializeableRequest {
       final flags = enabledFeatureFlags;
       return EventSettings(
         alwaysRecord: flags.contains(CommunityFeatureFlags.alwaysRecord),
-        allowPredefineBreakoutsOnHosted: flags
-            .contains(CommunityFeatureFlags.allowPredefineBreakoutsOnHosted),
         chat: flags.contains(CommunityFeatureFlags.chat),
         defaultStageView:
             flags.contains(CommunityFeatureFlags.defaultStageView),
