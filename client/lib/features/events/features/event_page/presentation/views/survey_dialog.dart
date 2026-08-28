@@ -43,7 +43,11 @@ class SurveyDialog extends StatelessWidget {
             return q.copyWith(
               freeTextAnswer: 'Random response ${random.nextInt(100000)}',
             );
+          } else if (q.answers.isEmpty) {
+            // Edge case: clear the freeTextAnswer if the question is not a free text question
+            return q.copyWith(freeTextAnswer: null);
           }
+
           final answerOptions = q.answers.expand((a) => a.options).toList();
           final answerOptionId = answerOptions.isEmpty
               ? ''

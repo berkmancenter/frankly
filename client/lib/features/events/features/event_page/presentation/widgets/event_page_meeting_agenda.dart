@@ -91,8 +91,7 @@ class _EventPageMeetingAgendaState extends State<EventPageMeetingAgenda>
     final canEdit = context.watch<EventPermissionsProvider>().canEditEvent;
 
     final allowBreakoutsDefinition =
-        !EventProvider.watch(context).event.isLiveStream ||
-            eventProvider.allowPredefineBreakoutsOnHosted;
+        !EventProvider.watch(context).event.isLiveStream;
 
     return MeetingAgendaWrapper(
       allowButtonForUserSubmittedAgenda:
