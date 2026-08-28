@@ -196,6 +196,7 @@ class Event with _$Event implements SerializeableRequest {
 class EventSettings with _$EventSettings {
   static const kFieldTalkingTimer = 'talkingTimer';
   static const kFieldAlwaysRecord = 'alwaysRecord';
+  static const kFieldAlwaysTranscribe = 'alwaysTranscribe';
   static const kFieldDefaultStageView = 'defaultStageView';
   static const kFieldAllowScreenShare = 'allowScreenshare';
   static const kFieldShowSmartMatchingForBreakouts =
@@ -216,6 +217,7 @@ class EventSettings with _$EventSettings {
     allowMultiplePeopleOnStage: false,
     showSmartMatchingForBreakouts: false,
     alwaysRecord: false,
+    alwaysTranscribe: false,
     enablePrerequisites: false,
     agendaPreview: true,
   );
@@ -232,6 +234,7 @@ class EventSettings with _$EventSettings {
     bool? allowMultiplePeopleOnStage,
     bool? showSmartMatchingForBreakouts,
     bool? alwaysRecord,
+    bool? alwaysTranscribe,
     bool? enablePrerequisites,
     bool? agendaPreview,
   }) = _EventSettings;

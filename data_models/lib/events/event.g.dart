@@ -125,6 +125,7 @@ _$_EventSettings _$$_EventSettingsFromJson(Map<String, dynamic> json) =>
       showSmartMatchingForBreakouts:
           json['showSmartMatchingForBreakouts'] as bool?,
       alwaysRecord: json['alwaysRecord'] as bool?,
+      alwaysTranscribe: json['alwaysTranscribe'] as bool?,
       enablePrerequisites: json['enablePrerequisites'] as bool?,
       agendaPreview: json['agendaPreview'] as bool?,
     );
@@ -140,6 +141,7 @@ Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
       'allowMultiplePeopleOnStage': instance.allowMultiplePeopleOnStage,
       'showSmartMatchingForBreakouts': instance.showSmartMatchingForBreakouts,
       'alwaysRecord': instance.alwaysRecord,
+      'alwaysTranscribe': instance.alwaysTranscribe,
       'enablePrerequisites': instance.enablePrerequisites,
       'agendaPreview': instance.agendaPreview,
     };

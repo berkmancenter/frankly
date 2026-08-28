@@ -1090,6 +1090,7 @@ mixin _$EventSettings {
   bool? get allowMultiplePeopleOnStage => throw _privateConstructorUsedError;
   bool? get showSmartMatchingForBreakouts => throw _privateConstructorUsedError;
   bool? get alwaysRecord => throw _privateConstructorUsedError;
+  bool? get alwaysTranscribe => throw _privateConstructorUsedError;
   bool? get enablePrerequisites => throw _privateConstructorUsedError;
   bool? get agendaPreview => throw _privateConstructorUsedError;
 
@@ -1115,6 +1116,7 @@ abstract class $EventSettingsCopyWith<$Res> {
       bool? allowMultiplePeopleOnStage,
       bool? showSmartMatchingForBreakouts,
       bool? alwaysRecord,
+      bool? alwaysTranscribe,
       bool? enablePrerequisites,
       bool? agendaPreview});
 }
@@ -1141,6 +1143,7 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
     Object? allowMultiplePeopleOnStage = freezed,
     Object? showSmartMatchingForBreakouts = freezed,
     Object? alwaysRecord = freezed,
+    Object? alwaysTranscribe = freezed,
     Object? enablePrerequisites = freezed,
     Object? agendaPreview = freezed,
   }) {
@@ -1181,6 +1184,10 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
           ? _value.alwaysRecord
           : alwaysRecord // ignore: cast_nullable_to_non_nullable
               as bool?,
+      alwaysTranscribe: freezed == alwaysTranscribe
+          ? _value.alwaysTranscribe
+          : alwaysTranscribe // ignore: cast_nullable_to_non_nullable
+              as bool?,
       enablePrerequisites: freezed == enablePrerequisites
           ? _value.enablePrerequisites
           : enablePrerequisites // ignore: cast_nullable_to_non_nullable
@@ -1211,6 +1218,7 @@ abstract class _$$_EventSettingsCopyWith<$Res>
       bool? allowMultiplePeopleOnStage,
       bool? showSmartMatchingForBreakouts,
       bool? alwaysRecord,
+      bool? alwaysTranscribe,
       bool? enablePrerequisites,
       bool? agendaPreview});
 }
@@ -1235,6 +1243,7 @@ class __$$_EventSettingsCopyWithImpl<$Res>
     Object? allowMultiplePeopleOnStage = freezed,
     Object? showSmartMatchingForBreakouts = freezed,
     Object? alwaysRecord = freezed,
+    Object? alwaysTranscribe = freezed,
     Object? enablePrerequisites = freezed,
     Object? agendaPreview = freezed,
   }) {
@@ -1275,6 +1284,10 @@ class __$$_EventSettingsCopyWithImpl<$Res>
           ? _value.alwaysRecord
           : alwaysRecord // ignore: cast_nullable_to_non_nullable
               as bool?,
+      alwaysTranscribe: freezed == alwaysTranscribe
+          ? _value.alwaysTranscribe
+          : alwaysTranscribe // ignore: cast_nullable_to_non_nullable
+              as bool?,
       enablePrerequisites: freezed == enablePrerequisites
           ? _value.enablePrerequisites
           : enablePrerequisites // ignore: cast_nullable_to_non_nullable
@@ -1300,6 +1313,7 @@ class _$_EventSettings implements _EventSettings {
       this.allowMultiplePeopleOnStage,
       this.showSmartMatchingForBreakouts,
       this.alwaysRecord,
+      this.alwaysTranscribe,
       this.enablePrerequisites,
       this.agendaPreview});
 
@@ -1327,13 +1341,15 @@ class _$_EventSettings implements _EventSettings {
   @override
   final bool? alwaysRecord;
   @override
+  final bool? alwaysTranscribe;
+  @override
   final bool? enablePrerequisites;
   @override
   final bool? agendaPreview;
 
   @override
   String toString() {
-    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
+    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
   }
 
   @override
@@ -1365,6 +1381,8 @@ class _$_EventSettings implements _EventSettings {
                     showSmartMatchingForBreakouts) &&
             (identical(other.alwaysRecord, alwaysRecord) ||
                 other.alwaysRecord == alwaysRecord) &&
+            (identical(other.alwaysTranscribe, alwaysTranscribe) ||
+                other.alwaysTranscribe == alwaysTranscribe) &&
             (identical(other.enablePrerequisites, enablePrerequisites) ||
                 other.enablePrerequisites == enablePrerequisites) &&
             (identical(other.agendaPreview, agendaPreview) ||
@@ -1384,6 +1402,7 @@ class _$_EventSettings implements _EventSettings {
       allowMultiplePeopleOnStage,
       showSmartMatchingForBreakouts,
       alwaysRecord,
+      alwaysTranscribe,
       enablePrerequisites,
       agendaPreview);
 
@@ -1412,6 +1431,7 @@ abstract class _EventSettings implements EventSettings {
       final bool? allowMultiplePeopleOnStage,
       final bool? showSmartMatchingForBreakouts,
       final bool? alwaysRecord,
+      final bool? alwaysTranscribe,
       final bool? enablePrerequisites,
       final bool? agendaPreview}) = _$_EventSettings;
 
@@ -1437,6 +1457,8 @@ abstract class _EventSettings implements EventSettings {
   bool? get showSmartMatchingForBreakouts;
   @override
   bool? get alwaysRecord;
+  @override
+  bool? get alwaysTranscribe;
   @override
   bool? get enablePrerequisites;
   @override

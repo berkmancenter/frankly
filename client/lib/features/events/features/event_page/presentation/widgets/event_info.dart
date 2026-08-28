@@ -2,7 +2,7 @@ import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:data_models/user_input/chat_suggestion_data.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -366,6 +366,8 @@ class _EventInfoState extends State<EventInfo> {
     );
   }
 
+  /// Builds the "Enter Event" button with dynamic text based on the event's scheduled time.
+  /// [scheduled] is the scheduled time of the event.
   ActionButton _buildEnterEvent(DateTime scheduled) {
     final kEventOpenText = context.l10n.enterEvent;
     final now = clockService.now();
@@ -387,6 +389,9 @@ class _EventInfoState extends State<EventInfo> {
     }
 
     final isEventOpen = text == kEventOpenText;
+    // Default mirror check to be completed;
+    // Otherwise, an event cannot be joined if one has already been completed for this event
+    bool? hasCompletedMirrorCheck = true;
 
     return ActionButton(
       height: 64,
@@ -394,6 +399,35 @@ class _EventInfoState extends State<EventInfo> {
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () async {
+        // Show mirror check if not completed before in this event
+        if (!sharedPreferencesService
+            .hasMirrorCheckCompletedForEvent(widget.event.id)) {
+          hasCompletedMirrorCheck = await showDialog(
+            barrierDismissible: false,
+            context: navigatorState.context,
+            builder: (context) {
+              return MediaSettingsWidget(
+                shouldShowVideoPreview: true,
+                isMirrorCheck: true,
+              );
+            },
+          );
+
+          // If the user cancels the mirror check, do not set the mirror check as completed and bail
+          if (hasCompletedMirrorCheck == null ||
+              hasCompletedMirrorCheck == false) {
+            return;
+          }
+          await sharedPreferencesService
+              .setMirrorCheckCompleteForEvent(widget.event.id);
+        }
+
+        // If the user cancels the mirror check, do not join the event and bail
+        if (hasCompletedMirrorCheck == null ||
+            hasCompletedMirrorCheck == false) {
+          return;
+        }
+
         final successfullyJoined =
             await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
         if (!mounted) return;
@@ -430,13 +464,18 @@ class _EventInfoState extends State<EventInfo> {
     final showJoinButton = !isBanned &&
         context.read<EventPermissionsProvider>().canJoinEvent &&
         _status != _ParticipantStatus.full;
+    final eventAlmostStarted = showJoinButton &&
+        clockService.now().isAfter(
+              startTime.subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
+            );
+    final eventHasStarted =
+        showJoinButton && clockService.now().isAfter(startTime);
 
-    final showEnterEventButton = _isParticipant ||
-        (showJoinButton &&
-            clockService.now().isAfter(
-                  startTime
-                      .subtract(Duration(minutes: kMinutesBeforeEventToJoin)),
-                ));
+    // Show the "Enter Event" button if the user already RSVP'd/joined
+    // or if the event is within 15 minutes of starting,
+    // or if the event has already started
+    final showEnterEventButton =
+        _isParticipant || (eventAlmostStarted || eventHasStarted);
     if (showPrerequisiteWarning) {
       return WarningInfo(
         icon: CircleAvatar(
@@ -625,7 +664,9 @@ class _EventInfoState extends State<EventInfo> {
         return Row(
           children: [
             Tooltip(
-              message: isPublic ? context.l10n.publicVisibility : context.l10n.privateVisibility,
+              message: isPublic
+                  ? context.l10n.publicVisibility
+                  : context.l10n.privateVisibility,
               child: ProxiedImage(null, asset: appAsset, width: 20, height: 20),
             ),
             SizedBox(width: 6),
