@@ -15,10 +15,48 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
   final Duration _updateInterval =
       Duration(seconds: (60.0 / _timesPerMinute).round());
 
+  // Conservative upper bound on event duration used to derive the pre-check
+  // Firestore query window. The precise per-event filter in
+  // _updateEventParticipantCount uses the actual durationInMinutes from each
+  // event document; this constant just needs to be >= the longest plausible
+  // event so the pre-check doesn't exclude currently-running events.
+  static const int _maxEventDurationMinutes = 240; // 4 hours
+
+  // The per-event active window: [scheduledTime - _preEventWindowHours,
+  //                                scheduledTime + durationInMinutes * _postEventDurationMultiplier]
+  static const int _preEventWindowHours = 1;
+  static const double _postEventDurationMultiplier = 1.5;
+
   FutureOr<void> action(EventContext context) async {
     try {
-      // Do a first pass to only check for active livestreams in the next day.
-      // If not, we can skip the rest of this action.
+      // Fast early-exit: check whether any non-hosted event could currently
+      // be in its active window, using the same constants as the precise
+      // per-event filter in _updateEventParticipantCount:
+      //
+      //   active window = [scheduledTime - _preEventWindowHours,
+      //                    scheduledTime + durationInMinutes * _postEventDurationMultiplier]
+      //
+      // Since Firestore can't do per-doc arithmetic, we invert the bounds
+      // around `now` using _maxEventDurationMinutes as a conservative ceiling:
+      //
+      //   scheduledTime >= now - (_maxEventDurationMinutes * _postEventDurationMultiplier)
+      //     -> catches events that started at most (maxDuration * 1.5) minutes ago
+      //       (i.e. whose window end hasn't passed yet)
+      //   scheduledTime < (now + _preEventWindowHours)
+      //     -> catches events whose pre-event window has already begun
+      //
+      // The per-event filter then applies the exact formula using real
+      // durationInMinutes, so any events the pre-check admits that are
+      // actually outside their window are cheaply skipped there.
+      final preCheckLowerBound = DateTime.now().subtract(
+        Duration(
+          minutes:
+              (_maxEventDurationMinutes * _postEventDurationMultiplier).round(),
+        ),
+      );
+      final preCheckUpperBound = DateTime.now().add(
+        const Duration(hours: _preEventWindowHours),
+      );
       final activeLivestreams = await firestore
           .collectionGroup('events')
           .whereNotEqual(
@@ -27,17 +65,18 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
           )
           .where(
             $models.Event.kFieldScheduledTime,
-            isGreaterThanOrEqualTo: Timestamp.fromDateTime(DateTime.now()),
+            isGreaterThanOrEqualTo: Timestamp.fromDateTime(preCheckLowerBound),
           )
           .where(
             $models.Event.kFieldScheduledTime,
-            isLessThan: Timestamp.fromDateTime(
-              DateTime.now().add(const Duration(days: 1)),
-            ),
+            isLessThan: Timestamp.fromDateTime(preCheckUpperBound),
           )
           .select([]).get();
       if (activeLivestreams.documents.isEmpty) {
-        print('No active/upcoming livestreams found.');
+        print(
+          'No active/upcoming livestreams found in pre-check window '
+          '[$preCheckLowerBound, $preCheckUpperBound].',
+        );
         return;
       }
 
@@ -72,10 +111,12 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
 
   Future<void> _updateAllLivestreamCounts() async {
     // Get all events that have a event participant that has been
-    // updated in the last duration + buffer seconds (limit 1)
+    // updated in the last heartbeat interval + buffer seconds.
+    // The heartbeat interval is 20s; we add a generous buffer to account
+    // for network latency and clock skew.
     final updateWindow = DateTime.now()
         .subtract(_updateInterval)
-        .subtract(const Duration(seconds: 4));
+        .subtract(const Duration(seconds: 25));
     print('Checking last update time greater than: $updateWindow');
     final eventParticipants = await firestore
         .collectionGroup('event-participants')
@@ -96,6 +137,37 @@ class UpdateLiveStreamParticipantCount implements CloudFunction {
 
   Future<void> _updateEventParticipantCount(String eventPath) async {
     print('updating event count for $eventPath');
+
+    // Read the event document to apply the precise time-window filter.
+    // Only update events where now falls within:
+    //   [scheduledTime - _preEventWindowHours,
+    //    scheduledTime + durationInMinutes * _postEventDurationMultiplier]
+    // This prevents stale isPresent flags (e.g. from missed RTDB disconnect
+    // callbacks) from driving unnecessary writes for long-finished events.
+    final event = await firestoreUtils.getFirestoreObject(
+      path: eventPath,
+      constructor: (map) => $models.Event.fromJson(map),
+    );
+    final scheduledTime = event.scheduledTime;
+    if (scheduledTime != null) {
+      final now = DateTime.now();
+      final windowStart =
+          scheduledTime.subtract(Duration(hours: _preEventWindowHours));
+      final windowEnd = scheduledTime.add(
+        Duration(
+          minutes:
+              (event.durationInMinutes * _postEventDurationMultiplier).round(),
+        ),
+      );
+      if (now.isBefore(windowStart) || now.isAfter(windowEnd)) {
+        print(
+          'Skipping $eventPath: now ($now) is outside active window '
+          '[$windowStart, $windowEnd]',
+        );
+        return;
+      }
+    }
+
     final participantDocs =
         await firestore.collection('$eventPath/event-participants').get();
     final participants = participantDocs.documents

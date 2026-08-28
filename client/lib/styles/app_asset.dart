@@ -38,7 +38,7 @@ class AppAsset {
       AppAsset._raw('media/dislike.png');
   static const AppAsset kArrowBackPng = AppAsset._raw('media/arrow-back.png');
   static const AppAsset kArrowLeftThinSvg =
-      AppAsset._raw('media/arrow-left-thin.svg');
+      AppAsset._raw('media/arrow-left-thin.svg', true);
   static const AppAsset kMorePng = AppAsset._raw('media/more-gray.png');
   static const AppAsset kHomePng = AppAsset._raw('media/home.png');
   static const AppAsset kChatBubblePng = AppAsset._raw('media/chatBubble.png');

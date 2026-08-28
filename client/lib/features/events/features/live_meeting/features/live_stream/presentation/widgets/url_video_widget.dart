@@ -130,7 +130,8 @@ class _UrlVideoWidgetState extends State<UrlVideoWidget> {
     useEffect(
       () {
         final subscription = html.window.onMessage.listen((event) {
-          if (event.origin != html.window.location!.origin) return;
+          // Only process messages from our own origin to prevent cross-origin spoofing.
+          if (event.origin != html.window.location.origin) return;
 
           final messageObj = event.data;
 

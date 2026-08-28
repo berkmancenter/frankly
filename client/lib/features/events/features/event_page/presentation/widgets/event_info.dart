@@ -2,7 +2,7 @@ import 'package:client/core/utils/date_utils.dart';
 import 'package:client/core/utils/template_utils.dart';
 import 'package:client/core/utils/navigation_utils.dart';
 import 'package:client/core/utils/toast_utils.dart';
-import 'package:data_models/user_input/chat_suggestion_data.dart';
+import 'package:client/core/widgets/media_settings_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -389,6 +389,9 @@ class _EventInfoState extends State<EventInfo> {
     }
 
     final isEventOpen = text == kEventOpenText;
+    // Default mirror check to be completed;
+    // Otherwise, an event cannot be joined if one has already been completed for this event
+    bool? hasCompletedMirrorCheck = true;
 
     return ActionButton(
       height: 64,
@@ -396,11 +399,37 @@ class _EventInfoState extends State<EventInfo> {
       key: EventInfo.enterEventButtonKey,
       expand: true,
       onPressed: () async {
-        // Show confirmation dialog if the event is not open yet, otherwise join the event directly
-        final successfullyJoined = await widget.onJoinEvent(
-          enterMeeting: isEventOpen || kDebugMode,
-          showConfirm: !isEventOpen,
-        );
+        // Show mirror check if not completed before in this event
+        if (!sharedPreferencesService
+            .hasMirrorCheckCompletedForEvent(widget.event.id)) {
+          hasCompletedMirrorCheck = await showDialog(
+            barrierDismissible: false,
+            context: navigatorState.context,
+            builder: (context) {
+              return MediaSettingsWidget(
+                shouldShowVideoPreview: true,
+                isMirrorCheck: true,
+              );
+            },
+          );
+
+          // If the user cancels the mirror check, do not set the mirror check as completed and bail
+          if (hasCompletedMirrorCheck == null ||
+              hasCompletedMirrorCheck == false) {
+            return;
+          }
+          await sharedPreferencesService
+              .setMirrorCheckCompleteForEvent(widget.event.id);
+        }
+
+        // If the user cancels the mirror check, do not join the event and bail
+        if (hasCompletedMirrorCheck == null ||
+            hasCompletedMirrorCheck == false) {
+          return;
+        }
+
+        final successfullyJoined =
+            await widget.onJoinEvent(enterMeeting: isEventOpen || kDebugMode);
         if (!mounted) return;
         if (!isEventOpen && !successfullyJoined) {
           // If the event is not open yet, we expect user not to be able to join.
