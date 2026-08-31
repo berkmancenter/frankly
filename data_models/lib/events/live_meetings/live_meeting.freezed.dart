@@ -581,6 +581,7 @@ LiveMeetingEvent _$LiveMeetingEventFromJson(Map<String, dynamic> json) {
 mixin _$LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   LiveMeetingEventType? get event => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   DateTime? get timestamp => throw _privateConstructorUsedError;
   String? get agendaItem => throw _privateConstructorUsedError;
   bool? get hostless => throw _privateConstructorUsedError;
@@ -599,7 +600,7 @@ abstract class $LiveMeetingEventCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-      DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
       String? agendaItem,
       bool? hostless});
 }
@@ -653,7 +654,7 @@ abstract class _$$_LiveMeetingEventCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(unknownEnumValue: null) LiveMeetingEventType? event,
-      DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) DateTime? timestamp,
       String? agendaItem,
       bool? hostless});
 }
@@ -700,7 +701,7 @@ class __$$_LiveMeetingEventCopyWithImpl<$Res>
 class _$_LiveMeetingEvent implements _LiveMeetingEvent {
   _$_LiveMeetingEvent(
       {@JsonKey(unknownEnumValue: null) this.event,
-      this.timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) this.timestamp,
       this.agendaItem,
       this.hostless = false});
 
@@ -711,6 +712,7 @@ class _$_LiveMeetingEvent implements _LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   final LiveMeetingEventType? event;
   @override
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   final DateTime? timestamp;
   @override
   final String? agendaItem;
@@ -759,7 +761,7 @@ class _$_LiveMeetingEvent implements _LiveMeetingEvent {
 abstract class _LiveMeetingEvent implements LiveMeetingEvent {
   factory _LiveMeetingEvent(
       {@JsonKey(unknownEnumValue: null) final LiveMeetingEventType? event,
-      final DateTime? timestamp,
+      @JsonKey(fromJson: dateTimeFromTimestamp) final DateTime? timestamp,
       final String? agendaItem,
       final bool? hostless}) = _$_LiveMeetingEvent;
 
@@ -770,6 +772,7 @@ abstract class _LiveMeetingEvent implements LiveMeetingEvent {
   @JsonKey(unknownEnumValue: null)
   LiveMeetingEventType? get event;
   @override
+  @JsonKey(fromJson: dateTimeFromTimestamp)
   DateTime? get timestamp;
   @override
   String? get agendaItem;

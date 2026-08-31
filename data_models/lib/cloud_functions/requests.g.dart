@@ -651,7 +651,6 @@ Map<String, dynamic> _$$_InitiateBreakoutsRequestToJson(
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };
 
 _$_InitiateBreakoutsResponse _$$_InitiateBreakoutsResponseFromJson(

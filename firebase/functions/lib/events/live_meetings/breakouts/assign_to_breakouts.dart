@@ -11,6 +11,7 @@ import 'package:frankly_match/frankly_match.dart' as frankly_match;
 import 'package:node_http/node_http.dart' as http;
 import '../../../utils/infra/firestore_utils.dart';
 import '../agora_api.dart';
+import '../agora_stt_api.dart';
 import 'package:data_models/events/event.dart';
 import 'package:data_models/recording/recording_session.dart';
 import 'package:data_models/events/live_meetings/live_meeting.dart';
@@ -115,10 +116,13 @@ class AssignToBreakouts {
     Event event,
   ) {
     String? surveyAnswers;
-    final allQuestionsAnswered = participant.breakoutRoomSurveyQuestions
-        .every((q) => q.answerOptionId.isNotEmpty);
+    final multipleChoiceQuestions = participant.breakoutRoomSurveyQuestions
+        .where((q) => q.type == BreakoutQuestionType.multipleChoice)
+        .toList();
+    final allQuestionsAnswered =
+        multipleChoiceQuestions.every((q) => q.answerOptionId.isNotEmpty);
     if (allQuestionsAnswered) {
-      final surveyResponses = participant.breakoutRoomSurveyQuestions.map((q) {
+      final surveyResponses = multipleChoiceQuestions.map((q) {
         final answerId = q.answerOptionId;
         final answerIndex = q.answers.indexWhere(
           (answer) => answer.options.any((option) => option.id == answerId),
@@ -146,8 +150,10 @@ class AssignToBreakouts {
     Map<String, String> participantSurveyResponsesLookup,
     Event event,
   ) {
-    int numberOfQuestions =
-        event.breakoutRoomDefinition?.breakoutQuestions.length ?? 0;
+    int numberOfQuestions = event.breakoutRoomDefinition?.breakoutQuestions
+            .where((q) => q.type == BreakoutQuestionType.multipleChoice)
+            .length ??
+        0;
 
     final hasQuestions = numberOfQuestions > 0;
     if (!hasQuestions && participantSurveyResponsesLookup.values.isNotEmpty) {
@@ -228,6 +234,21 @@ class AssignToBreakouts {
       event,
     );
 
+    // Build free-text responses lookup for unmatched users who answered the
+    // event's free-text registration question (at most one such question is
+    // allowed per event). This is only ever sent to the hosted match API
+    // below -- the local frankly_match package only understands binary
+    // answer masks, so it has no way to factor free-text responses into
+    // local bucketMatch/groupMatch matching.
+    final participantFreeTextResponsesLookup = <String, String>{
+      for (final participant in unmatchedParticipants)
+        for (final question in participant.breakoutRoomSurveyQuestions)
+          if (question.type == BreakoutQuestionType.freeText &&
+              question.freeTextAnswer != null &&
+              question.freeTextAnswer!.isNotEmpty)
+            participant.id: question.freeTextAnswer!,
+    };
+
     final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
         .entries
         .where((e) => e.value.isNotEmpty)
@@ -241,11 +262,15 @@ class AssignToBreakouts {
     // Smart match users who had valid survey responses
     profile('smart matching');
     List<frankly_match.MatchGroup>? smartMatches;
-    if (useHostedApi && participantSurveyResponsesLookup.isNotEmpty) {
+    if (useHostedApi &&
+        (participantSurveyResponsesLookup.isNotEmpty ||
+            participantFreeTextResponsesLookup.isNotEmpty)) {
       print('Calling hosted Frankly Match API for smart matching');
       try {
         smartMatches = await createFranklyMatchApiGroups(
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+          participantFreeTextResponsesLookup:
+              participantFreeTextResponsesLookup,
           targetParticipantsPerRoom: targetParticipantsPerRoom,
         );
       } catch (e) {
@@ -712,6 +737,7 @@ class AssignToBreakouts {
     // one writer and no risk of concurrent joins racing on the same room.
     // Check both eventSettings.alwaysRecord and liveMeeting.record -- the
     // latter is set when the event is created via the ?record=true URL param.
+    final sttTasks = <MapEntry<String, String>>[];
     if (alwaysRecord || currentLiveMeeting.record) {
       final agoraUtils = AgoraUtils();
       final recordingRoomIds = breakoutRooms
@@ -749,6 +775,9 @@ class AssignToBreakouts {
             'Error starting recording for breakout room ${room.roomId}: $e',
           );
         }
+        // Defer STT start until after the session doc is written so that slow
+        // Agora API responses cannot block users from joining breakout rooms.
+        sttTasks.add(MapEntry(room.roomId, newSessionId));
       }
     }
 
@@ -778,6 +807,37 @@ class AssignToBreakouts {
           ),
           SetOptions(merge: true),
         );
+
+    // Start STT after the session doc is written. Users can join now; STT may
+    // miss a few seconds of early audio but won't block room assignment.
+    for (final task in sttTasks) {
+      try {
+        final sttApi = AgoraSttApi();
+        final agentId = await sttApi.startTranscription(
+          channelName: task.key,
+          language: 'en-US',
+          fileNamePrefix: [event.id, breakoutSessionId, task.key, task.value],
+        );
+        await firestore
+            .collection(RecordingSession.kCollection)
+            .document(task.value)
+            .updateData(
+              UpdateData.fromMap({
+                'agoraRttAgentId': agentId,
+                'rttLanguage': 'en-US',
+              }),
+            );
+      } catch (e) {
+        print('Error starting STT for breakout room ${task.key}: $e');
+        try {
+          await firestore
+              .collection(RecordingSession.kCollection)
+              .document(task.value)
+              .updateData(UpdateData.fromMap({'rttError': e.toString()}));
+        } catch (_) {}
+      }
+    }
+
     profile('done writing');
   }
 
@@ -852,26 +912,59 @@ class AssignToBreakouts {
   }
 }
 
+/// Builds the request payload for the hosted Frankly Match API.
+///
+/// Each participant contributes a `binaryAnswerMask` (if they answered the
+/// boolean survey questions), a `freeTextResponse` (if they answered the
+/// event's free-text registration question), or both.
+@visibleForTesting
+Map<String, dynamic> buildFranklyMatchApiPayload({
+  required Map<String, String> participantSurveyResponsesLookup,
+  required Map<String, String> participantFreeTextResponsesLookup,
+  required int targetParticipantsPerRoom,
+}) {
+  final participantIds = {
+    ...participantSurveyResponsesLookup.keys,
+    ...participantFreeTextResponsesLookup.keys,
+  };
+  return {
+    // The algorithm parameter should become dynamic once more options
+    // are added to the API.
+    'algorithm': 'binaryGroupMatch',
+    'targetGroupSize': targetParticipantsPerRoom,
+    'participants': {
+      for (final id in participantIds)
+        id: {
+          if (participantSurveyResponsesLookup.containsKey(id))
+            'binaryAnswerMask': participantSurveyResponsesLookup[id],
+          if (participantFreeTextResponsesLookup.containsKey(id))
+            'freeTextResponse': participantFreeTextResponsesLookup[id],
+        },
+    },
+  };
+}
+
 /// Call the hosted Frankly Match API to return matched groups.
 Future<List<frankly_match.MatchGroup>> createFranklyMatchApiGroups({
   required Map<String, String> participantSurveyResponsesLookup,
+  required Map<String, String> participantFreeTextResponsesLookup,
   required int targetParticipantsPerRoom,
 }) async {
   final apiKey = functions.config.get('frankly_match.api_key') as String;
   final uri = Uri.parse(
     functions.config.get('frankly_match.api_url') as String,
   );
-  final payload = {
-    // The algorithm parameter should become dynamic once more options
-    // are added to the API.
-    'algorithm': 'binaryGroupMatch',
-    'targetGroupSize': targetParticipantsPerRoom,
-    'participants': {
-      for (final entry in participantSurveyResponsesLookup.entries)
-        entry.key: {'binaryAnswerMask': entry.value},
-    },
-  };
-  print('Calling Frankly Match API with payload: $payload');
+  final payload = buildFranklyMatchApiPayload(
+    participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+    participantFreeTextResponsesLookup: participantFreeTextResponsesLookup,
+    targetParticipantsPerRoom: targetParticipantsPerRoom,
+  );
+  print(
+    'Calling Frankly Match API with '
+    '${participantSurveyResponsesLookup.length} binary responses and '
+    '${participantFreeTextResponsesLookup.length} free-text responses; '
+    'targetGroupSize=$targetParticipantsPerRoom',
+  );
 
   final response = await http.post(
     uri,

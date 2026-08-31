@@ -66,17 +66,44 @@ class GetMeetingJoinInfo extends OnCallMethod<GetMeetingJoinInfoRequest> {
       );
     });
 
+    // Record the Agora UID to user ID mapping for transcript speaker labels.
+    if (result.recordingSessionId != null) {
+      await liveMeetingUtils.recordUidMapping(
+        sessionId: result.recordingSessionId!,
+        agoraUid: uidToInt(context.authUid!),
+        userId: context.authUid!,
+      );
+    }
+
     final pending = result.pendingRecording;
     if (pending != null) {
-      await liveMeetingUtils.agoraUtils.recordRoom(
-        roomId: pending.roomId,
-        sessionId: pending.sessionId,
-        eventId: pending.eventId,
-        communityId: pending.communityId,
-        roomType: pending.roomType,
-        chatPath: pending.chatPath,
-        participantIds: pending.participantIds,
-      );
+      if (result.shouldRecord) {
+        await liveMeetingUtils.agoraUtils.recordRoom(
+          roomId: pending.roomId,
+          sessionId: pending.sessionId,
+          eventId: pending.eventId,
+          communityId: pending.communityId,
+          roomType: pending.roomType,
+          chatPath: pending.chatPath,
+          participantIds: pending.participantIds,
+        );
+      } else if (result.shouldTranscribe) {
+        // recordRoom creates the session doc; when recording is off we must
+        // create it here so startTranscription can update it.
+        await liveMeetingUtils.createRecordingSessionDoc(pending);
+      }
+      if (result.shouldTranscribe) {
+        await liveMeetingUtils.startTranscription(
+          roomId: pending.roomId,
+          sessionId: pending.sessionId,
+          gcsPrefix: [
+            pending.eventId,
+            'main',
+            pending.roomId,
+            pending.sessionId,
+          ],
+        );
+      }
     }
 
     // On first join, schedule automatic meeting end if the event has

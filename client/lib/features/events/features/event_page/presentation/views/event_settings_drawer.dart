@@ -227,6 +227,18 @@ class _EventSettingsDrawerState extends State<EventSettingsDrawer>
           SizedBox(height: 16),
           _SwitchAndTooltip(
             onUpdate: (isSelected) => _presenter.updateSetting(
+              EventSettings.kFieldAlwaysTranscribe,
+              isSelected,
+            ),
+            text: context.l10n.transcription,
+            val: _model.eventSettings.alwaysTranscribe ?? false,
+            isIndicatorShown: _presenter.isSettingNotDefaultIndicatorShown(
+              (settings) => settings.alwaysTranscribe,
+            ),
+          ),
+          SizedBox(height: 16),
+          _SwitchAndTooltip(
+            onUpdate: (isSelected) => _presenter.updateSetting(
               EventSettings.kFieldAutoEndMeeting,
               isSelected,
             ),

@@ -24,7 +24,6 @@ enum CommunityFeatureFlags {
   allowDonations,
   alwaysRecord,
   allowUnofficialTemplates,
-  allowPredefineBreakoutsOnHosted,
   chat,
   defaultStageView,
   disableScreenShare,
@@ -40,6 +39,26 @@ enum CommunityFeatureFlags {
   requireApprovalToJoin,
   showSmartMatchingForBreakouts,
   suppressJoinEventEmails,
+}
+
+List<CommunityInternalFlags> communityInternalFlagsFromJson(dynamic enumList) {
+  final isStringList = enumList is List<dynamic>;
+  if (!isStringList) {
+    return [];
+  }
+  final List<String> nonNullEnumList =
+      (enumList).whereNotNull().whereType<String>().toList();
+  final internalFlags =
+      EnumToString.fromList(CommunityInternalFlags.values, nonNullEnumList);
+  return internalFlags.whereNotNull().toList();
+}
+
+/// Internal-only flags for a community. Unlike [CommunityFeatureFlags],
+/// these are not exposed in any community settings UI and can only be
+/// enabled by editing the community document directly in the database.
+enum CommunityInternalFlags {
+  useMatchApi,
+  allowAdditionalRegistrationField,
 }
 
 enum OnboardingStep {
@@ -104,6 +123,9 @@ class Community with _$Community implements SerializeableRequest {
     @Default([])
     @JsonKey(fromJson: communityFeatureFlagsFromJson)
     List<CommunityFeatureFlags> enabledFeatureFlags,
+    @Default([])
+    @JsonKey(fromJson: communityInternalFlagsFromJson)
+    List<CommunityInternalFlags> internalFlags,
     CommunitySettings? communitySettings,
     EventSettings? eventSettings,
     String? donationDialogText,
@@ -124,6 +146,12 @@ class Community with _$Community implements SerializeableRequest {
   }
 
   String get displayId => displayIds.firstOrNull ?? id;
+
+  bool get useMatchApi =>
+      internalFlags.contains(CommunityInternalFlags.useMatchApi);
+
+  bool get allowAdditionalRegistrationField => internalFlags
+      .contains(CommunityInternalFlags.allowAdditionalRegistrationField);
 
   CommunitySettings get settingsMigration {
     final localSettings = communitySettings;
@@ -158,8 +186,6 @@ class Community with _$Community implements SerializeableRequest {
       final flags = enabledFeatureFlags;
       return EventSettings(
         alwaysRecord: flags.contains(CommunityFeatureFlags.alwaysRecord),
-        allowPredefineBreakoutsOnHosted: flags
-            .contains(CommunityFeatureFlags.allowPredefineBreakoutsOnHosted),
         chat: flags.contains(CommunityFeatureFlags.chat),
         defaultStageView:
             flags.contains(CommunityFeatureFlags.defaultStageView),

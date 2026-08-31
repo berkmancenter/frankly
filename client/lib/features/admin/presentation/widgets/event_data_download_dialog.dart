@@ -26,6 +26,7 @@ class EventDataDownloadDialog extends StatefulWidget {
     required this.event,
     required this.participants,
     required this.hasRecording,
+    required this.hasTranscript,
     required this.recordingParts,
     required this.recordingNotifier,
     required this.eventInPast,
@@ -35,6 +36,7 @@ class EventDataDownloadDialog extends StatefulWidget {
   final Event event;
   final Iterable<Participant> participants;
   final bool hasRecording;
+  final bool hasTranscript;
   final Map<String, int?> recordingParts;
   final ValueNotifier<int?>? recordingNotifier;
   final bool eventInPast;
@@ -47,12 +49,14 @@ class EventDataDownloadDialog extends StatefulWidget {
 
 class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
   late bool showRecording;
+  late bool showTranscript;
   late bool showRegistrant;
 
   late bool recordingSelected;
   late bool registrantListSelected;
   bool chatDataSelected = false;
   bool pollsSuggestionsDataSelected = false;
+  bool transcriptSelected = false;
 
   bool recordingAutoChecked = false;
   bool isDownloading = false;
@@ -97,7 +101,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           .where((url) => url.isNotEmpty)
           .toList();
       for (int i = 0; i < urls.length; i++) {
-        final anchor = html.AnchorElement(href: urls[i])..target = '_blank';
+        final anchor = html.AnchorElement(href: urls[i])
+          ..target = '_blank'
+          ..rel = 'noopener noreferrer';
         html.document.body!.append(anchor);
         anchor.click();
         anchor.remove();
@@ -105,8 +111,10 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
           await Future.delayed(const Duration(milliseconds: 300));
         }
       }
-      setState(() => widget.recordingParts[event.id] = urls.length);
-      widget.recordingNotifier?.value = urls.length;
+      if (mounted) {
+        setState(() => widget.recordingParts[event.id] = urls.length);
+        widget.recordingNotifier?.value = urls.length;
+      }
     });
   }
 
@@ -266,6 +274,48 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     }
   }
 
+  Future<void> downloadTranscripts(Event event) async {
+    final errorMsg = context.l10n.errorOccurred;
+    final notAvailableMsg = context.l10n.transcriptsNotAvailable;
+    final idToken = await userService.firebaseAuth.currentUser?.getIdToken();
+    if (idToken == null) throw Exception('Not authenticated');
+    final response = await http.post(
+      Uri.parse('${Environment.functionsUrlPrefix}/downloadTranscripts'),
+      headers: {
+        'Authorization': 'Bearer $idToken',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'eventPath': event.fullPath,
+        'format': 'csv',
+      }),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(errorMsg);
+    }
+    final body = jsonDecode(response.body) as Map<String, dynamic>;
+    final rawList = body['transcripts'];
+    if (rawList is! List || rawList.isEmpty) {
+      throw Exception(notAvailableMsg);
+    }
+    final urls = rawList
+        .whereType<Map<String, dynamic>>()
+        .map((r) => r['url'] as String? ?? '')
+        .where((url) => url.isNotEmpty)
+        .toList();
+    for (int i = 0; i < urls.length; i++) {
+      final anchor = html.AnchorElement(href: urls[i])
+        ..target = '_blank'
+        ..rel = 'noopener noreferrer';
+      html.document.body!.append(anchor);
+      anchor.click();
+      anchor.remove();
+      if (i < urls.length - 1) {
+        await Future.delayed(const Duration(milliseconds: 300));
+      }
+    }
+  }
+
   String _recordingAnnotation(BuildContext context, int? parts) {
     if (parts == null) return ' ${context.l10n.recordingStatusChecking}';
     if (parts == 0) return ' ${context.l10n.recordingStatusPreparing}';
@@ -290,6 +340,9 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
         if (pollsSuggestionsDataSelected) {
           await downloadPollsSuggestionsData(widget.event);
         }
+        if (transcriptSelected) {
+          await downloadTranscripts(widget.event);
+        }
       },
       errorMessage: context.l10n.errorOccurred,
     );
@@ -310,7 +363,8 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     return (showRecording && recordingSelected && recordingReady) ||
         (showRegistrant && registrantListSelected) ||
         chatDataSelected ||
-        pollsSuggestionsDataSelected;
+        pollsSuggestionsDataSelected ||
+        transcriptSelected;
   }
 
   @override
@@ -318,6 +372,7 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
     super.initState();
     final recordingParts = widget.recordingNotifier?.value ?? 0;
     showRecording = widget.eventInPast && widget.hasRecording;
+    showTranscript = widget.eventInPast && widget.hasTranscript;
     showRegistrant = widget.participants.isNotEmpty;
     recordingSelected = showRecording && recordingParts > 0;
     recordingAutoChecked = recordingSelected;
@@ -448,6 +503,14 @@ class _EventDataDownloadDialogState extends State<EventDataDownloadDialog> {
                   '${context.l10n.pollsSuggestionsData} ${isLoadingPollsSuggestions ? '(${context.l10n.loading}...)' : '(${pollsSuggestionsLength > 0 ? '$pollsSuggestionsLength ${context.l10n.items}' : context.l10n.none})'}',
                 ),
               ),
+              if (showTranscript)
+                CheckboxListTile(
+                  value: transcriptSelected,
+                  onChanged: (value) => setState(
+                    () => transcriptSelected = value ?? false,
+                  ),
+                  title: Text(context.l10n.transcriptsCsv),
+                ),
             ],
           ),
         ),

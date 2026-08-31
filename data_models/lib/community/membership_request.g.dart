@@ -11,9 +11,11 @@ _$_MembershipRequest _$$_MembershipRequestFromJson(Map<String, dynamic> json) =>
       userId: json['userId'] as String,
       communityId: json['communityId'] as String,
       status: $enumDecodeNullable(
-              _$MembershipRequestStatusEnumMap, json['status']) ??
+              _$MembershipRequestStatusEnumMap, json['status'],
+              unknownValue: MembershipRequestStatus.requested) ??
           MembershipRequestStatus.requested,
-      role: $enumDecodeNullable(_$MembershipStatusEnumMap, json['role']),
+      role: $enumDecodeNullable(_$MembershipStatusEnumMap, json['role'],
+          unknownValue: MembershipStatus.member),
     );
 
 Map<String, dynamic> _$$_MembershipRequestToJson(

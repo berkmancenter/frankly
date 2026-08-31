@@ -119,14 +119,13 @@ _$_EventSettings _$$_EventSettingsFromJson(Map<String, dynamic> json) =>
       chat: json['chat'] as bool?,
       showChatMessagesInRealTime: json['showChatMessagesInRealTime'] as bool?,
       talkingTimer: json['talkingTimer'] as bool?,
-      allowPredefineBreakoutsOnHosted:
-          json['allowPredefineBreakoutsOnHosted'] as bool?,
       defaultStageView: json['defaultStageView'] as bool?,
       enableBreakoutsByCategory: json['enableBreakoutsByCategory'] as bool?,
       allowMultiplePeopleOnStage: json['allowMultiplePeopleOnStage'] as bool?,
       showSmartMatchingForBreakouts:
           json['showSmartMatchingForBreakouts'] as bool?,
       alwaysRecord: json['alwaysRecord'] as bool?,
+      alwaysTranscribe: json['alwaysTranscribe'] as bool?,
       enablePrerequisites: json['enablePrerequisites'] as bool?,
       agendaPreview: json['agendaPreview'] as bool?,
       autoEndMeeting: json['autoEndMeeting'] as bool?,
@@ -139,13 +138,12 @@ Map<String, dynamic> _$$_EventSettingsToJson(_$_EventSettings instance) =>
       'chat': instance.chat,
       'showChatMessagesInRealTime': instance.showChatMessagesInRealTime,
       'talkingTimer': instance.talkingTimer,
-      'allowPredefineBreakoutsOnHosted':
-          instance.allowPredefineBreakoutsOnHosted,
       'defaultStageView': instance.defaultStageView,
       'enableBreakoutsByCategory': instance.enableBreakoutsByCategory,
       'allowMultiplePeopleOnStage': instance.allowMultiplePeopleOnStage,
       'showSmartMatchingForBreakouts': instance.showSmartMatchingForBreakouts,
       'alwaysRecord': instance.alwaysRecord,
+      'alwaysTranscribe': instance.alwaysTranscribe,
       'enablePrerequisites': instance.enablePrerequisites,
       'agendaPreview': instance.agendaPreview,
       'autoEndMeeting': instance.autoEndMeeting,
@@ -402,7 +400,6 @@ Map<String, dynamic> _$$_BreakoutRoomDefinitionToJson(
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };
 
 _$_SurveyQuestion _$$_SurveyQuestionFromJson(Map<String, dynamic> json) =>
@@ -427,19 +424,31 @@ _$_BreakoutQuestion _$$_BreakoutQuestionFromJson(Map<String, dynamic> json) =>
     _$_BreakoutQuestion(
       id: json['id'] as String,
       title: json['title'] as String,
-      answerOptionId: json['answerOptionId'] as String,
-      answers: (json['answers'] as List<dynamic>)
-          .map((e) => BreakoutAnswer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      type: $enumDecodeNullable(_$BreakoutQuestionTypeEnumMap, json['type'],
+              unknownValue: BreakoutQuestionType.multipleChoice) ??
+          BreakoutQuestionType.multipleChoice,
+      answerOptionId: json['answerOptionId'] as String? ?? '',
+      answers: (json['answers'] as List<dynamic>?)
+              ?.map((e) => BreakoutAnswer.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      freeTextAnswer: json['freeTextAnswer'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutQuestionToJson(_$_BreakoutQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'type': _$BreakoutQuestionTypeEnumMap[instance.type]!,
       'answerOptionId': instance.answerOptionId,
       'answers': instance.answers.map((e) => e.toJson()).toList(),
+      'freeTextAnswer': instance.freeTextAnswer,
     };
+
+const _$BreakoutQuestionTypeEnumMap = {
+  BreakoutQuestionType.multipleChoice: 'multipleChoice',
+  BreakoutQuestionType.freeText: 'freeText',
+};
 
 _$_BreakoutAnswer _$$_BreakoutAnswerFromJson(Map<String, dynamic> json) =>
     _$_BreakoutAnswer(

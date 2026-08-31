@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'agora_api.dart';
+import 'agora_stt_api.dart';
 import '../../utils/infra/firestore_utils.dart';
 import '../../utils/utils.dart';
 import 'package:data_models/cloud_functions/requests.dart';
@@ -33,21 +36,31 @@ class MeetingJoinResult {
   final PendingRecording? pendingRecording;
   final bool isFirstJoin;
   final Event event;
+  final String? recordingSessionId;
+  final bool shouldRecord;
+  final bool shouldTranscribe;
 
   MeetingJoinResult({
     required this.response,
     required this.event,
     this.pendingRecording,
     this.isFirstJoin = false,
+    this.recordingSessionId,
+    this.shouldRecord = false,
+    this.shouldTranscribe = false,
   });
 }
 
 class LiveMeetingUtils {
   bool _shouldRecord(Event event) => event.eventSettings?.alwaysRecord ?? false;
+  bool _shouldTranscribe(Event event) =>
+      event.eventSettings?.alwaysTranscribe ?? false;
   AgoraUtils agoraUtils;
+  AgoraSttApi sttApi;
 
-  LiveMeetingUtils({AgoraUtils? agoraUtils})
-      : agoraUtils = agoraUtils ?? AgoraUtils();
+  LiveMeetingUtils({AgoraUtils? agoraUtils, AgoraSttApi? sttApi})
+      : agoraUtils = agoraUtils ?? AgoraUtils(),
+        sttApi = sttApi ?? AgoraSttApi();
 
   Future<MeetingJoinResult> getMeetingJoinInfo({
     required Transaction transaction,
@@ -74,8 +87,10 @@ class LiveMeetingUtils {
     );
 
     final shouldRecord = _shouldRecord(event) || liveMeeting.record;
+    final shouldTranscribe = _shouldTranscribe(event);
     String? newSessionId;
-    if (shouldRecord && liveMeeting.recordingSessionId == null) {
+    if ((shouldRecord || shouldTranscribe) &&
+        liveMeeting.recordingSessionId == null) {
       newSessionId = firestore
           .collection(RecordingSession.kCollection)
           .document()
@@ -134,6 +149,9 @@ class LiveMeetingUtils {
       event: event,
       pendingRecording: pendingRecording,
       isFirstJoin: isFirstJoin,
+      recordingSessionId: liveMeeting.recordingSessionId,
+      shouldRecord: shouldRecord,
+      shouldTranscribe: shouldTranscribe,
     );
   }
 
@@ -209,7 +227,8 @@ class LiveMeetingUtils {
 
     await firestore.document(breakoutRoomPath).updateData(
           UpdateData.fromMap(
-              {BreakoutRoom.kFieldRecordingSessionId: newSessionId},),
+            {BreakoutRoom.kFieldRecordingSessionId: newSessionId},
+          ),
         );
 
     final chatPath = '$breakoutRoomPath/chats/community_chat/messages';
@@ -223,5 +242,100 @@ class LiveMeetingUtils {
       chatPath: chatPath,
       participantIds: participantIds,
     );
+
+    await startTranscription(
+      roomId: meetingId,
+      sessionId: newSessionId,
+      gcsPrefix: [eventId, breakoutSessionId, meetingId, newSessionId],
+    );
+  }
+
+  /// Creates the RecordingSession Firestore document for a pending recording.
+  /// Called when transcription is enabled without recording so that
+  /// [startTranscription] can update the document.  When recording IS enabled,
+  /// [AgoraUtils.recordRoom] creates the document instead.
+  Future<void> createRecordingSessionDoc(PendingRecording pending) async {
+    final gcsPrefix =
+        '${pending.eventId}/main/${pending.roomId}/${pending.sessionId}';
+    await firestore
+        .collection(RecordingSession.kCollection)
+        .document(pending.sessionId)
+        .setData(DocumentData.fromMap(
+          firestoreUtils.toFirestoreJson(
+            RecordingSession(
+              sessionId: pending.sessionId,
+              communityId: pending.communityId,
+              eventId: pending.eventId,
+              roomId: pending.roomId,
+              roomType: pending.roomType,
+              status: RecordingSessionStatus.starting,
+              gcsPrefix: gcsPrefix,
+              chatPath: pending.chatPath,
+              participantIds: pending.participantIds,
+            ).toJson(),
+          ),
+        ),);
+  }
+
+  Future<void> startTranscription({
+    required String roomId,
+    required String sessionId,
+    required List<String> gcsPrefix,
+  }) async {
+    const language = 'en-US';
+    // Write a breadcrumb so we can confirm the call was reached even if it
+    // hangs or the function times out before completing.
+    await firestore
+        .collection(RecordingSession.kCollection)
+        .document(sessionId)
+        .updateData(UpdateData.fromMap({'rttStatus': 'starting'}));
+    try {
+      final agentId = await sttApi.startTranscription(
+        channelName: roomId,
+        language: language,
+        fileNamePrefix: gcsPrefix,
+      );
+      await firestore
+          .collection(RecordingSession.kCollection)
+          .document(sessionId)
+          .updateData(
+            UpdateData.fromMap({
+              'agoraRttAgentId': agentId,
+              'rttLanguage': language,
+            }),
+          );
+    } catch (e) {
+      print('Failed to start transcription for room $roomId: $e');
+      // Write the error to Firestore so it's visible without log access.
+      try {
+        await firestore
+            .collection(RecordingSession.kCollection)
+            .document(sessionId)
+            .updateData(
+              UpdateData.fromMap({
+                'rttError': e.toString(),
+              }),
+            );
+      } catch (_) {}
+    }
+  }
+
+  Future<void> recordUidMapping({
+    required String sessionId,
+    required int agoraUid,
+    required String userId,
+  }) async {
+    try {
+      await firestore
+          .collection(RecordingSession.kCollection)
+          .document(sessionId)
+          .updateData(
+            UpdateData.fromMap({
+              'uidToDisplayName.$agoraUid': userId,
+            }),
+          );
+    } catch (e) {
+      print('Failed to record UID mapping for $userId: $e');
+    }
   }
 }

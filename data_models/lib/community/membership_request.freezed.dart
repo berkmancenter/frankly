@@ -22,7 +22,9 @@ MembershipRequest _$MembershipRequestFromJson(Map<String, dynamic> json) {
 mixin _$MembershipRequest {
   String get userId => throw _privateConstructorUsedError;
   String get communityId => throw _privateConstructorUsedError;
+  @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
   MembershipRequestStatus? get status => throw _privateConstructorUsedError;
+  @JsonKey(unknownEnumValue: MembershipStatus.member)
   MembershipStatus? get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +42,9 @@ abstract class $MembershipRequestCopyWith<$Res> {
   $Res call(
       {String userId,
       String communityId,
+      @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
       MembershipRequestStatus? status,
+      @JsonKey(unknownEnumValue: MembershipStatus.member)
       MembershipStatus? role});
 }
 
@@ -94,7 +98,9 @@ abstract class _$$_MembershipRequestCopyWith<$Res>
   $Res call(
       {String userId,
       String communityId,
+      @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
       MembershipRequestStatus? status,
+      @JsonKey(unknownEnumValue: MembershipStatus.member)
       MembershipStatus? role});
 }
 
@@ -141,8 +147,9 @@ class _$_MembershipRequest implements _MembershipRequest {
   _$_MembershipRequest(
       {required this.userId,
       required this.communityId,
+      @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
       this.status = MembershipRequestStatus.requested,
-      this.role});
+      @JsonKey(unknownEnumValue: MembershipStatus.member) this.role});
 
   factory _$_MembershipRequest.fromJson(Map<String, dynamic> json) =>
       _$$_MembershipRequestFromJson(json);
@@ -152,9 +159,10 @@ class _$_MembershipRequest implements _MembershipRequest {
   @override
   final String communityId;
   @override
-  @JsonKey()
+  @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
   final MembershipRequestStatus? status;
   @override
+  @JsonKey(unknownEnumValue: MembershipStatus.member)
   final MembershipStatus? role;
 
   @override
@@ -198,7 +206,9 @@ abstract class _MembershipRequest implements MembershipRequest {
   factory _MembershipRequest(
       {required final String userId,
       required final String communityId,
+      @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
       final MembershipRequestStatus? status,
+      @JsonKey(unknownEnumValue: MembershipStatus.member)
       final MembershipStatus? role}) = _$_MembershipRequest;
 
   factory _MembershipRequest.fromJson(Map<String, dynamic> json) =
@@ -209,8 +219,10 @@ abstract class _MembershipRequest implements MembershipRequest {
   @override
   String get communityId;
   @override
+  @JsonKey(unknownEnumValue: MembershipRequestStatus.requested)
   MembershipRequestStatus? get status;
   @override
+  @JsonKey(unknownEnumValue: MembershipStatus.member)
   MembershipStatus? get role;
   @override
   @JsonKey(ignore: true)

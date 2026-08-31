@@ -172,6 +172,9 @@ class AgoraRoom with ChangeNotifier {
           '[onUserJoined] connection: ${connection.toJson()} remoteUid: $rUid elapsed: $elapsed',
         );
 
+        // Agora STT bots (sub=457, pub=458) and Cloud Recording bot (uid=1)
+        // join the channel but are not real participants.
+        if (rUid == 457 || rUid == 458 || rUid == 1) return;
         String? userId;
         try {
           final user = await cloudFunctionsLiveMeetingService
@@ -203,6 +206,7 @@ class AgoraRoom with ChangeNotifier {
         print(
           '[onUserOffline] connection: ${connection.toJson()}  rUid: $rUid reason: $reason',
         );
+        if (rUid == 457 || rUid == 458 || rUid == 1) return;
         _remoteParticipants.removeWhere((a) => a.agoraUid == rUid);
         _videoMutedState.remove(rUid);
         _audioMutedState.remove(rUid);
