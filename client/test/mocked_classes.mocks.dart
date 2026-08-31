@@ -2469,6 +2469,54 @@ class MockAgoraParticipant extends _i1.Mock implements _i27.AgoraParticipant {
       );
 
   @override
+  bool get videoTrackEnabled => (super.noSuchMethod(
+        Invocation.getter(#videoTrackEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set videoTrackEnabled(bool? _videoTrackEnabled) => super.noSuchMethod(
+        Invocation.setter(
+          #videoTrackEnabled,
+          _videoTrackEnabled,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get audioIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#audioIsStreaming),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set audioIsStreaming(bool? _audioIsStreaming) => super.noSuchMethod(
+        Invocation.setter(
+          #audioIsStreaming,
+          _audioIsStreaming,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get videoIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#videoIsStreaming),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set videoIsStreaming(bool? _videoIsStreaming) => super.noSuchMethod(
+        Invocation.setter(
+          #videoIsStreaming,
+          _videoIsStreaming,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   bool get videoLocalPreviewStarted => (super.noSuchMethod(
         Invocation.getter(#videoLocalPreviewStarted),
         returnValue: false,
@@ -2481,22 +2529,6 @@ class MockAgoraParticipant extends _i1.Mock implements _i27.AgoraParticipant {
         Invocation.setter(
           #videoLocalPreviewStarted,
           _videoLocalPreviewStarted,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  bool get videoTrackEnabled => (super.noSuchMethod(
-        Invocation.getter(#videoTrackEnabled),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  set videoTrackEnabled(bool? _videoTrackEnabled) => super.noSuchMethod(
-        Invocation.setter(
-          #videoTrackEnabled,
-          _videoTrackEnabled,
         ),
         returnValueForMissingStub: null,
       );
@@ -3493,6 +3525,17 @@ class MockCloudFunctionsEventService extends _i1.Mock
       (super.noSuchMethod(
         Invocation.method(
           #eventEnded,
+          [request],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
+
+  @override
+  _i38.Future<void> endMeetingForAll(_i18.EndMeetingForAllRequest? request) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #endMeetingForAll,
           [request],
         ),
         returnValue: _i38.Future<void>.value(),
@@ -5535,8 +5578,22 @@ class MockConferenceRoom extends _i1.Mock implements _i13.ConferenceRoom {
       ) as bool);
 
   @override
+  bool get audioIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#audioIsStreaming),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get videoEnabled => (super.noSuchMethod(
         Invocation.getter(#videoEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get videoIsStreaming => (super.noSuchMethod(
+        Invocation.getter(#videoIsStreaming),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -6541,6 +6598,20 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
       ) as List<_i2.Participant>);
 
   @override
+  List<_i2.Participant> get presentParticipants => (super.noSuchMethod(
+        Invocation.getter(#presentParticipants),
+        returnValue: <_i2.Participant>[],
+        returnValueForMissingStub: <_i2.Participant>[],
+      ) as List<_i2.Participant>);
+
+  @override
+  bool get hasPresentParticipants => (super.noSuchMethod(
+        Invocation.getter(#hasPresentParticipants),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get isParticipant => (super.noSuchMethod(
         Invocation.getter(#isParticipant),
         returnValue: false,
@@ -6615,13 +6686,6 @@ class MockEventProvider extends _i1.Mock implements _i11.EventProvider {
   @override
   bool get enableFloatingChat => (super.noSuchMethod(
         Invocation.getter(#enableFloatingChat),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  bool get allowPredefineBreakoutsOnHosted => (super.noSuchMethod(
-        Invocation.getter(#allowPredefineBreakoutsOnHosted),
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
@@ -11395,6 +11459,13 @@ class MockLiveMeetingProvider extends _i1.Mock
       ) as bool);
 
   @override
+  bool get isInBreakoutTransition => (super.noSuchMethod(
+        Invocation.getter(#isInBreakoutTransition),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get isHost => (super.noSuchMethod(
         Invocation.getter(#isHost),
         returnValue: false,
@@ -11549,6 +11620,15 @@ class MockLiveMeetingProvider extends _i1.Mock
   void dispose() => super.noSuchMethod(
         Invocation.method(
           #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void clearBreakoutRoomTransition() => super.noSuchMethod(
+        Invocation.method(
+          #clearBreakoutRoomTransition,
           [],
         ),
         returnValueForMissingStub: null,
@@ -15820,6 +15900,27 @@ class MockSharedPreferencesService extends _i1.Mock
         returnValue: _i38.Future<bool>.value(false),
         returnValueForMissingStub: _i38.Future<bool>.value(false),
       ) as _i38.Future<bool>);
+
+  @override
+  bool hasMirrorCheckCompletedForEvent(String? eventId) => (super.noSuchMethod(
+        Invocation.method(
+          #hasMirrorCheckCompletedForEvent,
+          [eventId],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i38.Future<void> setMirrorCheckCompleteForEvent(String? eventId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setMirrorCheckCompleteForEvent,
+          [eventId],
+        ),
+        returnValue: _i38.Future<void>.value(),
+        returnValueForMissingStub: _i38.Future<void>.value(),
+      ) as _i38.Future<void>);
 
   @override
   _i38.Future<void> setLastQueryParameters(String? lastQueryParameters) =>

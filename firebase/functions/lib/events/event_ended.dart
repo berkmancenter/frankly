@@ -12,6 +12,7 @@ import 'live_meetings/agora_api.dart';
 import 'live_meetings/agora_stt_api.dart';
 import 'package:data_models/cloud_functions/requests.dart';
 import 'package:data_models/events/event.dart';
+import 'package:data_models/events/live_meetings/live_meeting.dart';
 import 'package:data_models/community/community.dart';
 
 /// This function handles events after event ends

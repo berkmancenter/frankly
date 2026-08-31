@@ -1381,7 +1381,7 @@ class _$_EventSettings implements _EventSettings {
 
   @override
   String toString() {
-    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, allowPredefineBreakoutsOnHosted: $allowPredefineBreakoutsOnHosted, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview, autoEndMeeting: $autoEndMeeting, autoEndGracePeriodMinutes: $autoEndGracePeriodMinutes)';
+    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview, autoEndMeeting: $autoEndMeeting, autoEndGracePeriodMinutes: $autoEndGracePeriodMinutes)';
   }
 
   @override
@@ -1392,15 +1392,15 @@ class _$_EventSettings implements _EventSettings {
             (identical(other.reminderEmails, reminderEmails) ||
                 other.reminderEmails == reminderEmails) &&
             (identical(other.chat, chat) || other.chat == chat) &&
-            (identical(other.showChatMessagesInRealTime, showChatMessagesInRealTime) ||
+            (identical(other.showChatMessagesInRealTime,
+                    showChatMessagesInRealTime) ||
                 other.showChatMessagesInRealTime ==
                     showChatMessagesInRealTime) &&
             (identical(other.talkingTimer, talkingTimer) ||
                 other.talkingTimer == talkingTimer) &&
             (identical(other.defaultStageView, defaultStageView) ||
                 other.defaultStageView == defaultStageView) &&
-            (identical(other.enableBreakoutsByCategory,
-                    enableBreakoutsByCategory) ||
+            (identical(other.enableBreakoutsByCategory, enableBreakoutsByCategory) ||
                 other.enableBreakoutsByCategory == enableBreakoutsByCategory) &&
             (identical(other.allowMultiplePeopleOnStage,
                     allowMultiplePeopleOnStage) ||
@@ -1420,7 +1420,8 @@ class _$_EventSettings implements _EventSettings {
                 other.agendaPreview == agendaPreview) &&
             (identical(other.autoEndMeeting, autoEndMeeting) ||
                 other.autoEndMeeting == autoEndMeeting) &&
-            (identical(other.autoEndGracePeriodMinutes, autoEndGracePeriodMinutes) ||
+            (identical(other.autoEndGracePeriodMinutes,
+                    autoEndGracePeriodMinutes) ||
                 other.autoEndGracePeriodMinutes == autoEndGracePeriodMinutes));
   }
 
