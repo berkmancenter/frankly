@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/live_meeting/presentation/views/leave_regular_dialog.dart';
 import 'package:client/features/events/features/live_meeting/data/providers/live_meeting_provider.dart';
+import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/agenda_item_timer.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_item_image.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/views/meeting_guide_card_item_poll.dart';
 import 'package:client/features/events/features/live_meeting/features/meeting_guide/presentation/widgets/meeting_guide_card_item_text.dart';
@@ -220,33 +221,25 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
               ),
             ),
             if (agendaItem.timeInSeconds != null)
-              Container(
-                width: 120,
-                alignment: Alignment.centerRight,
-                child: PeriodicBuilder(
-                  period: const Duration(seconds: 1),
-                  builder: (context) {
-                    final timeRemaining = _presenter.getTimeRemainingInCard();
-                    final bool negativeTimeRemaining;
-                    final String formattedTime;
-                    if (timeRemaining == null) {
-                      negativeTimeRemaining = false;
-                      formattedTime = context.l10n.start;
-                    } else {
-                      negativeTimeRemaining = timeRemaining.isNegative;
-                      formattedTime =
-                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours.abs() > 0);
-                    }
-                    return HeightConstrainedText(
-                      formattedTime,
-                      style: AppTextStyle.body.copyWith(
-                        color: negativeTimeRemaining
-                            ? context.theme.colorScheme.error
-                            : context.theme.colorScheme.onSurface,
-                      ),
-                    );
-                  },
-                ),
+              PeriodicBuilder(
+                period: const Duration(seconds: 1),
+                builder: (context) {
+                  final timeRemaining = _presenter.getTimeRemainingInCard();
+                  final bool negativeTimeRemaining;
+                  final String formattedTime;
+                  if (timeRemaining == null) {
+                    negativeTimeRemaining = false;
+                    formattedTime = context.l10n.start;
+                  } else {
+                    negativeTimeRemaining = timeRemaining.isNegative;
+                    formattedTime =
+                        timeRemaining.getFormattedTime(showHours: timeRemaining.inHours.abs() > 0);
+                  }
+                  return AgendaItemTimer(
+                    formattedTime: formattedTime,
+                    negative: negativeTimeRemaining,
+                  );
+                },
               ),
             SizedBox(width: 10),
             ProxiedImage(null, asset: AppAsset.clock(), width: 20, height: 20),
