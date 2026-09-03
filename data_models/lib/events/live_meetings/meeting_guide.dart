@@ -17,6 +17,13 @@ const startMeetingWaitingPeriod = Duration(minutes: 5);
 int readyToAdvanceThreshold(int presentParticipantCount) =>
     presentParticipantCount ~/ 2 + 1;
 
+/// Server-side delay before the scheduled advance fires after majority vote.
+const meetingGuideAdvanceDelay = Duration(seconds: 8);
+
+/// Client-side padding on top of the server's pendingAdvanceTime to absorb
+/// typical Firestore propagation latency.
+const meetingGuideAdvanceCountdownBuffer = Duration(seconds: 2);
+
 @Freezed(makeCollectionsUnmodifiable: false)
 class ParticipantAgendaItemDetails
     with _$ParticipantAgendaItemDetails
