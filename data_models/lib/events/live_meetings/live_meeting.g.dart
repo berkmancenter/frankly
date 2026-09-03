@@ -118,6 +118,7 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       record: json['record'] as bool? ?? false,
       recordingSessionId: json['recordingSessionId'] as String?,
+      diffusionStatement: json['diffusionStatement'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
@@ -133,6 +134,7 @@ Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
       'createdDate': serverTimestamp(instance.createdDate),
       'record': instance.record,
       'recordingSessionId': instance.recordingSessionId,
+      'diffusionStatement': instance.diffusionStatement,
     };
 
 const _$BreakoutRoomFlagStatusEnumMap = {
