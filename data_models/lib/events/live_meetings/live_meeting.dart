@@ -130,6 +130,7 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
   static const String kFieldRoomName = 'roomName';
   static const String kFieldRoomId = 'roomId';
   static const String kFieldRecordingSessionId = 'recordingSessionId';
+  static const String kFieldDiffusionStatement = 'diffusionStatement';
 
   factory BreakoutRoom({
     required String roomId,
@@ -150,6 +151,10 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
     DateTime? createdDate,
     @Default(false) bool record,
     String? recordingSessionId,
+
+    /// A per-group statement/prompt generated for this specific breakout
+    /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
+    String? diffusionStatement,
   }) = _BreakoutRoom;
 
   factory BreakoutRoom.fromJson(Map<String, dynamic> json) =>
@@ -170,6 +175,7 @@ class BreakoutRoomSession with _$BreakoutRoomSession {
     required BreakoutAssignmentMethod assignmentMethod,
     required int targetParticipantsPerRoom,
     required bool hasWaitingRoom,
+    @Default(false) bool useHostedApi,
     int? maxRoomNumber,
     @JsonKey(fromJson: dateTimeFromTimestamp, toJson: serverTimestamp)
     DateTime? createdDate,

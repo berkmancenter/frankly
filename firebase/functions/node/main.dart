@@ -49,6 +49,7 @@ import 'package:functions/community/update_membership.dart';
 import 'package:functions/admin/payments/update_stripe_subscription_plan.dart';
 import 'package:functions/events/live_meetings/vote_to_kick.dart';
 import 'package:functions/events/live_meetings/update_presence_status.dart';
+import 'package:functions/events/live_meetings/cleanup_stale_participants.dart';
 import 'package:functions/events/on_event.dart';
 import 'package:functions/events/on_event_participant.dart';
 import 'package:functions/discussion_threads/on_discussion_thread.dart';
@@ -143,6 +144,7 @@ final _cloudFunctions = <CloudFunction>[
   // On PubSub functions
   TriggerEmailDigests(),
   UpdateLiveStreamParticipantCount(),
+  CleanupStaleParticipants(),
 ];
 
 final _eventFunctions = <FirestoreEventFunction>[
@@ -166,9 +168,12 @@ void _registerServices() {
 
 void _registerJsFunctions() {
   functions['downloadRecording'] = require('../js/download-recordings.js');
+  functions['downloadTranscripts'] = require('../js/download-transcripts.js');
   functions['getSessionDownloadUrl'] =
       require('../js/get-session-download-url.js');
   functions['produceSessions'] = require('../js/produce-sessions.js');
+  functions['repairSessionArtifacts'] =
+      require('../js/repair-session-artifacts.js');
   functions['agoraRecordingWebhook'] =
       require('../js/agora-recording-webhook.js');
   functions['imageProxy'] = require('../js/image-proxy.js');

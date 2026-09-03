@@ -71,6 +71,7 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -98,6 +99,7 @@ void main() {
       statusUpdatedTime: createdBreakoutSession.statusUpdatedTime,
       maxRoomNumber: 2,
       createdDate: createdBreakoutSession.createdDate,
+      useHostedApi: false,
     );
 
     expect(createdBreakoutSession, equals(expectedBreakout));
@@ -182,8 +184,9 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       includeWaitingRoom: true,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -208,12 +211,13 @@ void main() {
     final expectedBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: breakoutSessionId,
       breakoutRoomStatus: BreakoutRoomStatus.pending,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,
       createdDate: meeting.currentBreakoutSession!.createdDate,
       scheduledTime: meeting.currentBreakoutSession!.scheduledTime,
+      useHostedApi: false,
     );
 
     expect(meeting.currentBreakoutSession, equals(expectedBreakout));
@@ -246,9 +250,10 @@ void main() {
     final expectedBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: breakoutSessionId,
       breakoutRoomStatus: BreakoutRoomStatus.pending,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
+      useHostedApi: false,
     );
 
     await liveMeetingTestUtils.addMeetingEvent(
@@ -264,8 +269,9 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       includeWaitingRoom: true,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -303,9 +309,10 @@ void main() {
     final currentBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: 'notTheRightOne',
       breakoutRoomStatus: BreakoutRoomStatus.inactive,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
+      useHostedApi: false,
     );
 
     await liveMeetingTestUtils.addMeetingEvent(
@@ -321,8 +328,9 @@ void main() {
       eventPath: event.fullPath,
       targetParticipantsPerRoom: 2,
       breakoutSessionId: breakoutSessionId,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       includeWaitingRoom: true,
+      useHostedApi: false,
     );
     final assigner = InitiateBreakouts();
 
@@ -348,12 +356,13 @@ void main() {
     final expectedBreakout = BreakoutRoomSession(
       breakoutRoomSessionId: breakoutSessionId,
       breakoutRoomStatus: BreakoutRoomStatus.pending,
-      assignmentMethod: BreakoutAssignmentMethod.category,
+      assignmentMethod: BreakoutAssignmentMethod.targetPerRoom,
       targetParticipantsPerRoom: 2,
       hasWaitingRoom: true,
       statusUpdatedTime: meeting.currentBreakoutSession!.statusUpdatedTime,
       createdDate: meeting.currentBreakoutSession!.createdDate,
       scheduledTime: meeting.currentBreakoutSession!.scheduledTime,
+      useHostedApi: false,
     );
 
     expect(meeting.currentBreakoutSession, equals(expectedBreakout));

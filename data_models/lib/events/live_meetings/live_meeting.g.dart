@@ -122,6 +122,7 @@ _$_BreakoutRoom _$$_BreakoutRoomFromJson(Map<String, dynamic> json) =>
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       record: json['record'] as bool? ?? false,
       recordingSessionId: json['recordingSessionId'] as String?,
+      diffusionStatement: json['diffusionStatement'] as String?,
     );
 
 Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
@@ -137,6 +138,7 @@ Map<String, dynamic> _$$_BreakoutRoomToJson(_$_BreakoutRoom instance) =>
       'createdDate': serverTimestamp(instance.createdDate),
       'record': instance.record,
       'recordingSessionId': instance.recordingSessionId,
+      'diffusionStatement': instance.diffusionStatement,
     };
 
 const _$BreakoutRoomFlagStatusEnumMap = {
@@ -155,6 +157,7 @@ _$_BreakoutRoomSession _$$_BreakoutRoomSessionFromJson(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       targetParticipantsPerRoom: json['targetParticipantsPerRoom'] as int,
       hasWaitingRoom: json['hasWaitingRoom'] as bool,
+      useHostedApi: json['useHostedApi'] as bool? ?? false,
       maxRoomNumber: json['maxRoomNumber'] as int?,
       createdDate: dateTimeFromTimestamp(json['createdDate']),
       scheduledTime: dateTimeFromTimestamp(json['scheduledTime']),
@@ -172,6 +175,7 @@ Map<String, dynamic> _$$_BreakoutRoomSessionToJson(
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod]!,
       'targetParticipantsPerRoom': instance.targetParticipantsPerRoom,
       'hasWaitingRoom': instance.hasWaitingRoom,
+      'useHostedApi': instance.useHostedApi,
       'maxRoomNumber': instance.maxRoomNumber,
       'createdDate': serverTimestamp(instance.createdDate),
       'scheduledTime': timestampFromDateTime(instance.scheduledTime),
@@ -188,5 +192,4 @@ const _$BreakoutRoomStatusEnumMap = {
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };

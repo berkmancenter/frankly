@@ -633,6 +633,7 @@ _$_InitiateBreakoutsRequest _$$_InitiateBreakoutsRequestFromJson(
       assignmentMethod: $enumDecodeNullable(
           _$BreakoutAssignmentMethodEnumMap, json['assignmentMethod']),
       includeWaitingRoom: json['includeWaitingRoom'] as bool? ?? false,
+      useHostedApi: json['useHostedApi'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_InitiateBreakoutsRequestToJson(
@@ -644,12 +645,12 @@ Map<String, dynamic> _$$_InitiateBreakoutsRequestToJson(
       'assignmentMethod':
           _$BreakoutAssignmentMethodEnumMap[instance.assignmentMethod],
       'includeWaitingRoom': instance.includeWaitingRoom,
+      'useHostedApi': instance.useHostedApi,
     };
 
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };
 
 _$_InitiateBreakoutsResponse _$$_InitiateBreakoutsResponseFromJson(

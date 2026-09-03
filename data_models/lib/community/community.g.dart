@@ -31,6 +31,9 @@ _$_Community _$$_CommunityFromJson(Map<String, dynamic> json) => _$_Community(
       enabledFeatureFlags: json['enabledFeatureFlags'] == null
           ? const []
           : communityFeatureFlagsFromJson(json['enabledFeatureFlags']),
+      internalFlags: json['internalFlags'] == null
+          ? const []
+          : communityInternalFlagsFromJson(json['internalFlags']),
       communitySettings: json['communitySettings'] == null
           ? null
           : CommunitySettings.fromJson(
@@ -74,6 +77,9 @@ Map<String, dynamic> _$$_CommunityToJson(_$_Community instance) =>
       'enabledFeatureFlags': instance.enabledFeatureFlags
           .map((e) => _$CommunityFeatureFlagsEnumMap[e]!)
           .toList(),
+      'internalFlags': instance.internalFlags
+          .map((e) => _$CommunityInternalFlagsEnumMap[e]!)
+          .toList(),
       'communitySettings': instance.communitySettings?.toJson(),
       'eventSettings': instance.eventSettings?.toJson(),
       'donationDialogText': instance.donationDialogText,
@@ -98,8 +104,6 @@ const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.allowDonations: 'allowDonations',
   CommunityFeatureFlags.alwaysRecord: 'alwaysRecord',
   CommunityFeatureFlags.allowUnofficialTemplates: 'allowUnofficialTemplates',
-  CommunityFeatureFlags.allowPredefineBreakoutsOnHosted:
-      'allowPredefineBreakoutsOnHosted',
   CommunityFeatureFlags.chat: 'chat',
   CommunityFeatureFlags.defaultStageView: 'defaultStageView',
   CommunityFeatureFlags.disableScreenShare: 'disableScreenShare',
@@ -117,6 +121,12 @@ const _$CommunityFeatureFlagsEnumMap = {
   CommunityFeatureFlags.showSmartMatchingForBreakouts:
       'showSmartMatchingForBreakouts',
   CommunityFeatureFlags.suppressJoinEventEmails: 'suppressJoinEventEmails',
+};
+
+const _$CommunityInternalFlagsEnumMap = {
+  CommunityInternalFlags.useMatchApi: 'useMatchApi',
+  CommunityInternalFlags.allowAdditionalRegistrationField:
+      'allowAdditionalRegistrationField',
 };
 
 _$_Featured _$$_FeaturedFromJson(Map<String, dynamic> json) => _$_Featured(

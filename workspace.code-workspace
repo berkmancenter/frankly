@@ -1,40 +1,51 @@
 {
-    "settings": {
-        "editor.formatOnSave": true,
-        "[dart]": {
-            "editor.defaultFormatter": "Dart-Code.dart-code",
-        },
-        "debug.internalConsoleOptions": "neverOpen",
-        "dart.flutterSdkPath": "~/.dev/flutter",
-        "dart.env": {
-            "GCLOUD_PROJECT": "dev",
-            "FIRESTORE_EMULATOR_HOST": "localhost:8080",
-        },
+  "settings": {
+    "editor.formatOnSave": true,
+    "[dart]": {
+      "editor.defaultFormatter": "Dart-Code.dart-code",
     },
-    "folders": [
-        {
-            "name": "Client",
-            "path": "./client"
-        },
-        {
-            "name": "Functions",
-            "path": "./firebase/functions"
-        },
-        {
-            "name": "Models",
-            "path": "./data_models"
-        },
-        {
-            "name": "Rules",
-            "path": "./firebase/firestore/firestore.rules"
-        },
-        {
-            "name": "Matching",
-            "path": "./matching"
-        },
-        {
-            "path": ".",
-            "name": "./"
-        }
+    "debug.internalConsoleOptions": "neverOpen",
+    "dart.flutterSdkPath": "~/.dev/flutter",
+    "dart.env": {
+      "GCLOUD_PROJECT": "dev",
+      "FIRESTORE_EMULATOR_HOST": "localhost:8080",
+    },
+    "folder-path-color.folders": [
+      { "path": "client", "symbol": "🖥️", "tooltip": "Client" },
+      {
+        "path": "firebase/functions",
+        "color": "green",
+        "symbol": "🧨",
+        "tooltip": "Functions",
+      },
+      {
+        "path": "data_models",
+        "color": "orange",
+        "symbol": "📦",
+        "tooltip": "Data Models",
+      },
     ],
+  },
+  "folders": [
+    {
+      "name": "Client",
+      "path": "./client",
+    },
+    {
+      "name": "Functions",
+      "path": "./firebase/functions",
+    },
+    {
+      "name": "Models",
+      "path": "./data_models",
+    },
+    {
+      "name": "Rules",
+      "path": "./firebase/firestore/firestore.rules",
+    },
+    {
+      "path": ".",
+      "name": "./",
+    },
+  ],
 }

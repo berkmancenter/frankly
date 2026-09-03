@@ -1,26 +1,26 @@
 import 'dart:async';
 import 'package:client/core/localization/localization_helper.dart';
+import 'package:client/core/data/services/event_bus.dart';
 import 'package:client/core/utils/toast_utils.dart';
+import 'package:client/core/utils/media_device_service.dart';
 import 'package:client/core/widgets/buttons/action_button.dart';
-import 'package:client/features/events/features/live_meeting/features/video/data/providers/conference_room.dart';
+import 'package:client/features/events/features/live_meeting/features/video/utils/debug.dart';
 import 'package:client/services.dart';
 import 'package:client/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:ui_web' as ui_web;
-import 'package:client/core/utils/media_device_service.dart';
 
 const _kTotalDialogContentPadding = 88.0;
 
 class MediaSettingsWidget extends StatefulWidget {
   const MediaSettingsWidget({
     super.key,
-    required this.conferenceRoom,
     required this.shouldShowVideoPreview,
+    this.isMirrorCheck = false,
   });
-
-  final ConferenceRoom conferenceRoom;
   final bool shouldShowVideoPreview;
+  final bool isMirrorCheck;
 
   @override
   State<MediaSettingsWidget> createState() => _MediaSettingsWidgetState();
@@ -34,13 +34,10 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   String? initialAudioDeviceId;
   String? initialVideoDeviceId;
-  // Used to ensure A/V maintains the same state (e.g. person stays muted even if
-  // they change devices).
-  bool userVideoEnabled = false;
-  bool userAudioEnabled = false;
 
   bool isLoading = true;
   bool isLoadingCameraChange = false;
+  bool _disposed = false;
 
   @override
   void initState() {
@@ -77,9 +74,6 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     initialAudioDeviceId = _mediaService.selectedAudioInputId;
     initialVideoDeviceId = _mediaService.selectedVideoInputId;
 
-    userAudioEnabled = widget.conferenceRoom.audioEnabled;
-    userVideoEnabled = widget.conferenceRoom.videoEnabled;
-
     await updatePreviewWidget();
     if (!mounted) return;
     setState(() {
@@ -91,6 +85,15 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
     if (!widget.shouldShowVideoPreview) return;
     try {
       await _mediaService.getUserMedia();
+      // The widget may have been disposed while getUserMedia() was in
+      // flight (e.g. the dialog was closed while switching devices). In
+      // that case the stream we just got is already orphaned - dispose()
+      // already ran and won't stop it, so stop it here instead of handing
+      // it to a video element that no longer exists.
+      if (_disposed) {
+        _mediaService.stopPreviewMediaStream();
+        return;
+      }
       _videoElement.srcObject = _mediaService.previewMediaStream;
     } catch (e) {
       _videoElement.srcObject = null;
@@ -99,16 +102,19 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
 
   @override
   void dispose() async {
+    _disposed = true;
     super.dispose();
     if (!widget.shouldShowVideoPreview) return;
     _mediaService.stopPreviewMediaStream();
-    // If user doesn't save, we need to reset the video preview device.
-    // getUserMedia is called in updatePreview.
+    // If user doesn't save, reset the selected video device back to its
+    // initial value. Don't call getUserMedia here (e.g. via
+    // updatePreviewWidget) - that would open a new camera stream that never
+    // gets stopped, leaving the camera active after this widget is gone.
     await _mediaService.selectVideoDevice(
       deviceId: initialVideoDeviceId ?? '',
       shouldUpdatePreview: false,
     );
-    await updatePreviewWidget();
+
     _videoElement.srcObject = null;
     _videoElement.remove();
   }
@@ -119,354 +125,427 @@ class _MediaSettingsWidgetState extends State<MediaSettingsWidget> {
       insetPadding: responsiveLayoutService.isMobile(context)
           ? EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0)
           : null,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.l10n.audioInputDevice,
-            style: context.theme.textTheme.titleMedium,
-          ),
-          _mediaService.audioInputs.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Text(
-                    context.l10n.avErrorNotFound,
-                    style: context.theme.textTheme.bodyMedium!.copyWith(
-                      color: context.theme.colorScheme.onSurfaceVariant,
-                    ),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.l10n.audiovisualSettings,
+              style: context.theme.textTheme.headlineSmall,
+            ),
+            SizedBox(height: 10),
+            Text(
+              context.l10n.microphoneInput,
+              style: context.theme.textTheme.titleMedium,
+            ),
+            // If no audio inputs are available, show an error message instead of a dropdown.
+            if (_mediaService.audioInputs.isEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  context.l10n.avAudioErrorNotFound,
+                  style: context.theme.textTheme.bodySmall!.copyWith(
+                    color: context.theme.colorScheme.error,
+                    fontWeight: FontWeight.bold,
                   ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
+                ),
+              ),
+            ] else ...[
+              DropdownButton<String>(
+                // Prevent dropdown errors by first checking that the selected
+                // device still exists in available inputs.
+                value: _mediaService.audioInputs.any(
+                  (device) =>
+                      device.deviceId == _mediaService.selectedAudioInputId,
                 )
-              : DropdownButton<String>(
-                  // Prevent dropdown errors by first checking that the selected
-                  // device still exists in available inputs.
-                  value: _mediaService.audioInputs.any(
-                    (device) =>
-                        device.deviceId == _mediaService.selectedAudioInputId,
-                  )
-                      ? _mediaService.selectedAudioInputId
-                      : null,
-                  items: _mediaService.audioInputs.map((device) {
-                    return DropdownMenuItem<String>(
-                      value: device.deviceId,
+                    ? _mediaService.selectedAudioInputId
+                    : null,
+                items: _mediaService.audioInputs.map((device) {
+                  return DropdownMenuItem<String>(
+                    value: device.deviceId,
+                    child: Text(
+                      device.label!,
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                  );
+                }).toList(),
+                selectedItemBuilder: (BuildContext context) {
+                  return _mediaService.audioInputs.map<Widget>((device) {
+                    return Container(
+                      alignment: Alignment.centerLeft,
+                      constraints: BoxConstraints(
+                        maxWidth: 320,
+                      ),
+                      // 24px for the dropdown arrow
+                      width: MediaQuery.of(context).size.width -
+                          _kTotalDialogContentPadding -
+                          24,
                       child: Text(
                         device.label!,
                         style: context.theme.textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
                       ),
                     );
-                  }).toList(),
-                  selectedItemBuilder: (BuildContext context) {
-                    return _mediaService.audioInputs.map<Widget>((device) {
-                      return Container(
-                        alignment: Alignment.centerLeft,
-                        constraints: BoxConstraints(
-                          maxWidth: 320,
-                        ),
-                        // 24px for the dropdown arrow
-                        width: MediaQuery.of(context).size.width -
-                            _kTotalDialogContentPadding -
-                            24,
-                        child: Text(
-                          device.label!,
-                          style: context.theme.textTheme.titleMedium,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                      );
-                    }).toList();
-                  },
-                  onChanged: (val) async {
-                    if (val == null) return;
-                    // No need to update preview as audio preview isn't shown.
-                    await _mediaService.selectAudioDevice(
-                      deviceId: val,
-                      shouldUpdatePreview: false,
-                    );
-                    setState(() {});
-                  },
-                  hint: Text(context.l10n.selectAudioInputDevice),
+                  }).toList();
+                },
+                onChanged: (val) async {
+                  if (val == null) return;
+                  // No need to update preview as audio preview isn't shown.
+                  await _mediaService.selectAudioDevice(
+                    deviceId: val,
+                    shouldUpdatePreview: false,
+                  );
+                  setState(() {});
+                },
+                hint: Text(
+                  context.l10n.selectAudioInputDevice,
                 ),
-          const SizedBox(height: 24),
-          Text(
-            context.l10n.videoInputDevice,
-            style: context.theme.textTheme.titleMedium,
-          ),
-          _mediaService.videoInputs.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Text(
-                    context.l10n.avErrorNotFound,
-                    style: context.theme.textTheme.bodyMedium!.copyWith(
-                      color: context.theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                )
-              : DropdownButton<String>(
-                  // Prevent dropdown errors by first checking that the selected
-                  // device still exists in available inputs.
-                  value: _mediaService.videoInputs.any(
-                    (device) =>
-                        device.deviceId == _mediaService.selectedVideoInputId,
-                  )
-                      ? _mediaService.selectedVideoInputId
-                      : null,
-                  items: _mediaService.videoInputs.map((device) {
-                    return DropdownMenuItem<String>(
-                      value: device.deviceId,
-                      child: Text(
-                        device.label!,
-                        style: context.theme.textTheme.titleMedium,
-                      ),
-                    );
-                  }).toList(),
-                  selectedItemBuilder: (BuildContext context) {
-                    return _mediaService.videoInputs.map<Widget>((device) {
-                      return Container(
-                        alignment: Alignment.centerLeft,
-                        constraints: BoxConstraints(
-                          maxWidth: 320,
-                        ),
-                        // 24px for the dropdown arrow
-                        width: MediaQuery.of(context).size.width -
-                            _kTotalDialogContentPadding -
-                            24,
-                        child: Text(
-                          device.label!,
-                          style: context.theme.textTheme.titleMedium,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                      );
-                    }).toList();
-                  },
-                  onChanged: (val) async {
-                    if (val == null) return;
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await _mediaService.selectVideoDevice(
-                      deviceId: val,
-                      shouldUpdatePreview: widget.shouldShowVideoPreview,
-                    );
-                    await updatePreviewWidget();
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                  hint: Text(context.l10n.selectVideoInput),
-                ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  if (widget.shouldShowVideoPreview)
-                    Column(
-                      children: [
-                        Text(
-                          context.l10n.videoPreview,
-                          style: context.theme.textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 8),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            constraints: const BoxConstraints(
-                              maxHeight: 240,
-                              maxWidth: 320,
-                            ),
-                            width: MediaQuery.of(context).size.width -
-                                _kTotalDialogContentPadding,
-                            decoration: BoxDecoration(
-                              color: context
-                                  .theme.colorScheme.surfaceContainerHighest,
-                            ),
-                            child: _mediaService.videoInputs.isEmpty
-                                ? Center(
-                                    child: Text(
-                                      context.l10n.avErrorNotFound,
-                                      style: context.theme.textTheme.bodyMedium!
-                                          .copyWith(
-                                        color: context
-                                            .theme.colorScheme.onSurfaceVariant,
-                                      ),
-                                    ),
-                                  )
-                                : Stack(
-                                    children: [
-                                      HtmlElementView(viewType: _viewType),
-                                      isLoadingCameraChange
-                                          ?
-                                          // Cover the video element while setting video source
-                                          Container(
-                                              color: context.theme.colorScheme
-                                                  .surfaceContainerHighest,
-                                              alignment: Alignment.center,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  CircularProgressIndicator(
-                                                    color: context
-                                                        .theme
-                                                        .colorScheme
-                                                        .onSurfaceVariant,
-                                                  ),
-                                                  const SizedBox(height: 16),
-                                                  Text(
-                                                    context.l10n.videoUpdating,
-                                                    style: context.theme
-                                                        .textTheme.bodyMedium,
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          : isLoading
-                                              ? Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: context.theme
-                                                        .colorScheme.onPrimary,
-                                                  ),
-                                                )
-                                              : const SizedBox.shrink(),
-                                    ],
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  const SizedBox(height: 16),
-                  ActionButton(
-                    text: context.l10n.save,
-                    onPressed: (_mediaService.selectedVideoInputId ==
-                                initialVideoDeviceId &&
-                            _mediaService.selectedAudioInputId ==
-                                initialAudioDeviceId)
-                        ? null
-                        : () async {
-                            final savedInitialVideoDeviceId =
-                                initialVideoDeviceId;
-                            final savedInitialAudioId = initialAudioDeviceId;
-
-                            try {
-                              if (_mediaService.selectedVideoInputId !=
-                                  initialVideoDeviceId) {
-                                setState(() {
-                                  isLoadingCameraChange = true;
-                                });
-
-                                // Turn the video off and on again to ensure a successful device update.
-                                await widget.conferenceRoom.toggleVideoEnabled(
-                                  setEnabled: false,
-                                );
-
-                                if (!userVideoEnabled ||
-                                    !widget.shouldShowVideoPreview) {
-                                  // If user's video isn't on or we don't show
-                                  // a video preview, we still need to attempt
-                                  // an Agora device update to catch any errors.
-                                  // Attempt to update the Agora
-                                  // device to catch any errors.
-                                  await widget
-                                      .conferenceRoom.room?.localParticipant
-                                      ?.updateAgoraVideoDevice();
-                                }
-
-                                if (userVideoEnabled) {
-                                  await widget.conferenceRoom
-                                      .toggleVideoEnabled(
-                                    setEnabled: true,
-                                  );
-                                }
-                                initialVideoDeviceId =
-                                    _mediaService.selectedVideoInputId;
-
-                                if (widget.shouldShowVideoPreview) {
-                                  // Re-enable the preview after the update.
-                                  await updatePreviewWidget();
-                                }
-                                if (context.mounted) {
-                                  showRegularToast(
-                                    context,
-                                    context.l10n.videoDeviceUpdated,
-                                    toastType: ToastType.success,
-                                  );
-                                }
-                              }
-                              if (_mediaService.selectedAudioInputId !=
-                                  initialAudioDeviceId) {
-                                await _mediaService.selectAudioDevice(
-                                  deviceId: _mediaService.selectedAudioInputId!,
-                                  shouldUpdatePreview:
-                                      widget.shouldShowVideoPreview,
-                                );
-                                await widget.conferenceRoom.toggleAudioEnabled(
-                                  setEnabled: false,
-                                );
-                                if (userAudioEnabled) {
-                                  await widget.conferenceRoom
-                                      .toggleAudioEnabled(
-                                    setEnabled: true,
-                                  );
-                                } else {
-                                  // Still need to attempt to update the Agora
-                                  // device to catch any errors.
-                                  await widget
-                                      .conferenceRoom.room?.localParticipant
-                                      ?.updateAgoraAudioDevice();
-                                }
-                                initialAudioDeviceId =
-                                    _mediaService.selectedAudioInputId;
-                                if (context.mounted) {
-                                  showRegularToast(
-                                    context,
-                                    context.l10n.audioDeviceUpdated,
-                                    toastType: ToastType.success,
-                                  );
-                                }
-                              }
-                            } catch (e) {
-                              if (!context.mounted) return;
-                              // Reset to initial values if save fails
-                              _mediaService.selectedVideoInputId =
-                                  savedInitialVideoDeviceId;
-                              initialAudioDeviceId = savedInitialVideoDeviceId;
-                              initialAudioDeviceId = savedInitialAudioId;
-                              if (userAudioEnabled) {
-                                await widget.conferenceRoom.toggleAudioEnabled(
-                                  setEnabled: true,
-                                );
-                              }
-                              if (userVideoEnabled) {
-                                await widget.conferenceRoom.toggleVideoEnabled(
-                                  setEnabled: true,
-                                );
-                              }
-                              if (context.mounted) {
-                                showRegularToast(
-                                  context,
-                                  context.l10n.avErrorSaveDeviceSettings,
-                                  toastType: ToastType.failed,
-                                );
-                              }
-                              if (widget.shouldShowVideoPreview) {
-                                // Re-enable the preview.
-                                await updatePreviewWidget();
-                              }
-                            }
-                            setState(() {
-                              isLoadingCameraChange = false;
-                            });
-                          },
-                  ),
-                ],
               ),
             ],
-          ),
-        ],
+            const SizedBox(height: 24),
+            Text(
+              context.l10n.cameraInput,
+              style: context.theme.textTheme.titleMedium,
+            ),
+            // If no video inputs are available, show an error message instead of a dropdown.
+            if (_mediaService.videoInputs.isEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  context.l10n.avVideoErrorNotFound,
+                  style: context.theme.textTheme.bodySmall!.copyWith(
+                    color: context.theme.colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
+                ),
+              ),
+            ] else ...[
+              DropdownButton<String>(
+                value: _mediaService.videoInputs.any(
+                  (device) =>
+                      device.deviceId == _mediaService.selectedVideoInputId,
+                )
+                    ? _mediaService.selectedVideoInputId
+                    : null,
+                items: _mediaService.videoInputs.map((device) {
+                  return DropdownMenuItem<String>(
+                    value: device.deviceId,
+                    child: Text(
+                      device.label!,
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                  );
+                }).toList(),
+                selectedItemBuilder: (BuildContext context) {
+                  return _mediaService.videoInputs.map<Widget>((device) {
+                    return Container(
+                      alignment: Alignment.centerLeft,
+                      constraints: BoxConstraints(
+                        maxWidth: 320,
+                      ),
+                      // 24px for the dropdown arrow
+                      width: MediaQuery.of(context).size.width -
+                          _kTotalDialogContentPadding -
+                          24,
+                      child: Text(
+                        device.label!,
+                        style: context.theme.textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
+                    );
+                  }).toList();
+                },
+                onChanged: (val) async {
+                  if (val == null) return;
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await _mediaService.selectVideoDevice(
+                    deviceId: val,
+                    shouldUpdatePreview: widget.shouldShowVideoPreview,
+                  );
+                  await updatePreviewWidget();
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                hint: Text(
+                  context.l10n.selectVideoInput,
+                ),
+              ),
+            ],
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    if (widget.shouldShowVideoPreview)
+                      Column(
+                        children: [
+                          if (widget.isMirrorCheck)
+                            Text(
+                              context.l10n.micAndCameraEnabled,
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          const SizedBox(height: 8),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                maxHeight: 240,
+                                maxWidth: 320,
+                              ),
+                              width: MediaQuery.of(context).size.width -
+                                  _kTotalDialogContentPadding,
+                              decoration: BoxDecoration(
+                                color: context
+                                    .theme.colorScheme.surfaceContainerHighest,
+                              ),
+                              child: _mediaService.videoInputs.isEmpty
+                                  ? Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.error,
+                                            color: context.theme.colorScheme
+                                                .onSurfaceVariant,
+                                            size: 40,
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            context.l10n.noCameraDetected,
+                                            style: context
+                                                .theme.textTheme.bodyMedium!
+                                                .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Stack(
+                                      children: [
+                                        HtmlElementView(viewType: _viewType),
+                                        isLoadingCameraChange
+                                            ?
+                                            // Cover the video element while setting video source
+                                            Container(
+                                                color: context.theme.colorScheme
+                                                    .surfaceContainerHighest,
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    CircularProgressIndicator(
+                                                      color: context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onSurfaceVariant,
+                                                    ),
+                                                    const SizedBox(height: 16),
+                                                    Text(
+                                                      context
+                                                          .l10n.videoUpdating,
+                                                      style: context.theme
+                                                          .textTheme.bodyMedium,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : isLoading
+                                                ? Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: context
+                                                          .theme
+                                                          .colorScheme
+                                                          .onPrimary,
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                      ],
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
+      actions: [
+        ActionButton(
+          type: ActionButtonType.text,
+          text: context.l10n.cancel,
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        const SizedBox(width: 16),
+        ActionButton(
+          text: widget.isMirrorCheck
+              ? context.l10n.saveAndJoin
+              : context.l10n.save,
+          onPressed: () async {
+            // Bail if no devices were detected/selected, as the user can't save anything in that case
+            if (_mediaService.selectedVideoInputId == null ||
+                _mediaService.selectedAudioInputId == null) {
+              return;
+            }
+
+            if (widget.isMirrorCheck) {
+              await sharedPreferencesService.setDefaultCameraId(
+                _mediaService.selectedVideoInputId!,
+              );
+              // Caller expects the dialog to be popped with true if the user saved their settings
+              if (context.mounted) Navigator.of(context).pop(true);
+            }
+
+            final savedInitialVideoDeviceId = initialVideoDeviceId;
+            final savedInitialAudioId = initialAudioDeviceId;
+
+            try {
+              if (_mediaService.selectedVideoInputId != initialVideoDeviceId) {
+                setState(() {
+                  isLoadingCameraChange = true;
+                });
+
+                appEventBus.emit(
+                  AVDeviceChangedEvent(
+                    changes: [AVDeviceChange.disableVideo],
+                  ),
+                );
+
+                if (widget.isMirrorCheck) {
+                  appEventBus.emit(
+                    AVDeviceChangedEvent(
+                      changes: [AVDeviceChange.updateVideoDevice],
+                    ),
+                  );
+                }
+
+                appEventBus.emit(
+                  AVDeviceChangedEvent(
+                    changes: [AVDeviceChange.enableVideo],
+                  ),
+                );
+
+                initialVideoDeviceId = _mediaService.selectedVideoInputId;
+
+                if (widget.shouldShowVideoPreview) {
+                  // Re-enable the preview after the update.
+                  await updatePreviewWidget();
+                }
+                if (context.mounted) {
+                  showRegularToast(
+                    context,
+                    context.l10n.videoDeviceUpdated,
+                    toastType: ToastType.success,
+                  );
+                }
+              }
+              if (widget.isMirrorCheck ||
+                  _mediaService.selectedAudioInputId != initialAudioDeviceId) {
+                await _mediaService.selectAudioDevice(
+                  deviceId: _mediaService.selectedAudioInputId!,
+                  shouldUpdatePreview: widget.shouldShowVideoPreview,
+                );
+                // For mirror-check flow, the dialog was already popped above before this runs, so any
+                // stream just opened for the preview has nowhere to go - stop it so it doesn't leak/retain the camera stream
+                if (_disposed) {
+                  _mediaService.stopPreviewMediaStream();
+                }
+                appEventBus.emit(
+                  AVDeviceChangedEvent(
+                    changes: [AVDeviceChange.disableAudio],
+                  ),
+                );
+
+                if (!widget.isMirrorCheck) {
+                  appEventBus.emit(
+                    AVDeviceChangedEvent(
+                      changes: [AVDeviceChange.enableAudio],
+                    ),
+                  );
+                } else {
+                  // Still need to attempt to update the Agora
+                  // device to catch any errors.
+                  appEventBus.emit(
+                    AVDeviceChangedEvent(
+                      changes: [AVDeviceChange.updateAudioDevice],
+                    ),
+                  );
+                }
+                initialAudioDeviceId = _mediaService.selectedAudioInputId;
+                if (context.mounted) {
+                  showRegularToast(
+                    context,
+                    context.l10n.audioDeviceUpdated,
+                    toastType: ToastType.success,
+                  );
+                }
+              }
+
+              if (!context.mounted) return;
+              Navigator.of(context).pop();
+            } catch (e) {
+              Debug.log('Error saving device settings: $e');
+              if (!context.mounted) return;
+              // Reset to initial values if save fails
+              _mediaService.selectedVideoInputId = savedInitialVideoDeviceId;
+              initialVideoDeviceId = savedInitialVideoDeviceId;
+              initialAudioDeviceId = savedInitialAudioId;
+
+              appEventBus.emit(
+                AVDeviceChangedEvent(
+                  changes: [
+                    AVDeviceChange.enableAudio,
+                    AVDeviceChange.enableVideo,
+                  ],
+                ),
+              );
+
+              if (context.mounted) {
+                showRegularToast(
+                  context,
+                  context.l10n.avErrorSaveDeviceSettings,
+                  toastType: ToastType.failed,
+                );
+              }
+              if (widget.shouldShowVideoPreview) {
+                // Re-enable the preview.
+                await updatePreviewWidget();
+              }
+              if (context.mounted) {
+                Navigator.of(context).pop(true);
+              }
+            }
+
+            if (!mounted) return;
+            setState(() {
+              isLoadingCameraChange = false;
+            });
+          },
+        ),
+      ],
     );
   }
 }

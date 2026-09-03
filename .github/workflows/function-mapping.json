@@ -4,11 +4,18 @@
       "agoraRecordingWebhook"
     ],
     "firebase/functions/js/download-recordings.js": ["downloadRecording"],
+    "firebase/functions/js/download-transcripts.js": ["downloadTranscripts"],
+    "firebase/functions/js/get-session-download-url.js": [
+      "getSessionDownloadUrl"
+    ],
     "firebase/functions/js/get-session-download-url.js": [
       "getSessionDownloadUrl"
     ],
     "firebase/functions/js/image-proxy.js": ["imageProxy"],
     "firebase/functions/js/produce-sessions.js": ["produceSessions"],
+    "firebase/functions/js/repair-session-artifacts.js": [
+      "repairSessionArtifacts"
+    ],
     "firebase/functions/js/serve-index.js": ["ServeIndex"],
     "firebase/functions/lib/admin/partner_agreements/on_partner_agreements.dart": [
       "PartnerAgreementOnCreate",
@@ -368,10 +375,6 @@
       "TemplateOnCreate",
       "ShareLink",
       "TriggerEmailDigests"
-    ],
-    "matching/lib/matching.dart": [
-      "CheckAssignToBreakouts",
-      "InitiateBreakouts"
     ]
   },
   "groups": {

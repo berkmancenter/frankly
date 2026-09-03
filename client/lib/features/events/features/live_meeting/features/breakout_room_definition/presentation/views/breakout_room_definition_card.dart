@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:intl/intl.dart';
 import 'package:client/features/community/data/providers/community_permissions_provider.dart';
+import 'package:client/features/community/data/providers/community_provider.dart';
 import 'package:client/features/events/features/live_meeting/features/breakout_room_definition/presentation/breakout_room_presenter.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
 import 'package:client/features/events/features/event_page/presentation/widgets/add_more_button.dart';
@@ -42,13 +43,9 @@ class _BreakoutRoomDefinitionCardState
   late BreakoutAssignmentMethod _assignmentMethod;
   late BreakoutRoomPresenter _presenter;
   late List<BreakoutQuestion> _questions = [];
-  late bool _enableBreakoutCategory;
 
   @override
   void initState() {
-    _enableBreakoutCategory =
-        context.read<EventProvider>().enableBreakoutsByCategory;
-
     super.initState();
   }
 
@@ -109,21 +106,6 @@ class _BreakoutRoomDefinitionCardState
                               )
                             : null,
                   ),
-                  if (_enableBreakoutCategory)
-                    ActionButton(
-                      text: context.l10n.byCategory,
-                      type:
-                          _assignmentMethod == BreakoutAssignmentMethod.category
-                              ? ActionButtonType.filled
-                              : ActionButtonType.outline,
-                      onPressed: () =>
-                          _assignmentMethod != BreakoutAssignmentMethod.category
-                              ? _presenter.updateAssignmentMethod(
-                                  assignmentMethod:
-                                      BreakoutAssignmentMethod.category,
-                                )
-                              : null,
-                    ),
                 ],
               ),
               SizedBox(height: 30),
@@ -136,22 +118,16 @@ class _BreakoutRoomDefinitionCardState
   }
 
   Widget _buildCardFields() {
-    switch (_assignmentMethod) {
-      case BreakoutAssignmentMethod.smartMatch:
-        return Column(
-          children: [
-            _buildSizeCard(),
-            SizedBox(height: 10),
-            _buildQuestionsList(),
-          ],
-        );
-      case BreakoutAssignmentMethod.category:
-        return _enableBreakoutCategory
-            ? _buildCategoryCard()
-            : _buildSizeCard();
-      case BreakoutAssignmentMethod.targetPerRoom:
-      default:
-        return _buildSizeCard();
+    if (_assignmentMethod == BreakoutAssignmentMethod.smartMatch) {
+      return Column(
+        children: [
+          _buildSizeCard(),
+          SizedBox(height: 10),
+          _buildQuestionsList(),
+        ],
+      );
+    } else {
+      return _buildSizeCard();
     }
   }
 
@@ -211,6 +187,11 @@ class _BreakoutRoomDefinitionCardState
   }
 
   Widget _buildSmartMatchCard() {
+    final allowAdditionalRegistrationField = context
+        .watch<CommunityProvider>()
+        .community
+        .allowAdditionalRegistrationField;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -220,6 +201,15 @@ class _BreakoutRoomDefinitionCardState
           style: AppTextStyle.subhead
               .copyWith(color: context.theme.colorScheme.primary),
         ),
+        if (allowAdditionalRegistrationField) ...[
+          SizedBox(height: 5),
+          HeightConstrainedText(
+            context.l10n.onlyOneFreeTextQuestionNotice,
+            style: AppTextStyle.body.copyWith(
+              color: context.theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
         SizedBox(height: 20),
         ListView.builder(
           shrinkWrap: true,
@@ -368,6 +358,13 @@ class _QuestionCardState extends State<QuestionCard> {
     final questionText = surveyQuestion.title.isEmpty
         ? context.l10n.questionWithNumber(questionPosition + 1)
         : surveyQuestion.title;
+    final allowAdditionalRegistrationField = context
+        .watch<CommunityProvider>()
+        .community
+        .allowAdditionalRegistrationField;
+    final isFreeText = surveyQuestion.type == BreakoutQuestionType.freeText;
+    final isFreeTextTypeAvailable =
+        _presenter.isFreeTextTypeAvailable(widget.questionId);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -426,6 +423,13 @@ class _QuestionCardState extends State<QuestionCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (allowAdditionalRegistrationField) ...[
+                    _buildQuestionTypeDropdown(
+                      surveyQuestion: surveyQuestion,
+                      isFreeTextTypeAvailable: isFreeTextTypeAvailable,
+                    ),
+                    SizedBox(height: 10),
+                  ],
                   CustomTextField(
                     readOnly:
                         _breakoutCardViewType == BreakoutCardViewType.overview,
@@ -442,10 +446,11 @@ class _QuestionCardState extends State<QuestionCard> {
                     ),
                   ),
                   SizedBox(height: 30),
-                  for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
-                    _builderAnswerTextField(surveyQuestion.answers[i], i),
-                    SizedBox(height: 6),
-                  ],
+                  if (!isFreeText)
+                    for (var i = 0; i < surveyQuestion.answers.length; i++) ...[
+                      _builderAnswerTextField(surveyQuestion.answers[i], i),
+                      SizedBox(height: 6),
+                    ],
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -498,6 +503,70 @@ class _QuestionCardState extends State<QuestionCard> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  String _questionTypeLabel(BreakoutQuestionType type) {
+    switch (type) {
+      case BreakoutQuestionType.freeText:
+        return context.l10n.questionTypeFreeText;
+      case BreakoutQuestionType.multipleChoice:
+        return context.l10n.questionTypeMultipleChoice;
+    }
+  }
+
+  Widget _buildQuestionTypeDropdown({
+    required BreakoutQuestion surveyQuestion,
+    required bool isFreeTextTypeAvailable,
+  }) {
+    final isReadOnly = _breakoutCardViewType == BreakoutCardViewType.overview;
+
+    return IgnorePointer(
+      ignoring: isReadOnly,
+      child: DropdownButton<BreakoutQuestionType>(
+        alignment: Alignment.centerLeft,
+        isExpanded: false,
+        underline: SizedBox.shrink(),
+        value: surveyQuestion.type,
+        icon: Icon(Icons.keyboard_arrow_down, size: 24),
+        selectedItemBuilder: (context) {
+          return [
+            for (final type in BreakoutQuestionType.values)
+              Container(
+                alignment: Alignment.centerLeft,
+                child: HeightConstrainedText(
+                  _questionTypeLabel(type),
+                  style: context.theme.textTheme.bodyMedium,
+                ),
+              ),
+          ];
+        },
+        items: [
+          for (final type in BreakoutQuestionType.values)
+            DropdownMenuItem<BreakoutQuestionType>(
+              value: type,
+              enabled: type != BreakoutQuestionType.freeText ||
+                  isFreeTextTypeAvailable,
+              child: HeightConstrainedText(
+                _questionTypeLabel(type),
+                style: context.theme.textTheme.bodyMedium!.copyWith(
+                  color: type == BreakoutQuestionType.freeText &&
+                          !isFreeTextTypeAvailable
+                      ? context.theme.disabledColor
+                      : null,
+                ),
+              ),
+            ),
+        ],
+        onChanged: (type) {
+          if (type != null && type != surveyQuestion.type) {
+            _presenter.updateQuestionType(
+              questionId: widget.questionId,
+              type: type,
+            );
+          }
+        },
       ),
     );
   }

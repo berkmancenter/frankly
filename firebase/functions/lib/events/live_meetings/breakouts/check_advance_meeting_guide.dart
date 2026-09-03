@@ -98,9 +98,11 @@ class CheckAdvanceMeetingGuide
 
     // Determine the current agenda item
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
-    final breakoutLiveMeetingPath =
+    final breakoutRoomPath =
         '$liveMeetingPath/breakout-room-sessions/${request.breakoutSessionId}'
-        '/breakout-rooms/${request.breakoutRoomId}/live-meetings/${request.breakoutRoomId}';
+        '/breakout-rooms/${request.breakoutRoomId}';
+    final breakoutLiveMeetingPath =
+        '$breakoutRoomPath/live-meetings/${request.breakoutRoomId}';
 
     final activeLiveMeetingPath =
         isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
@@ -115,6 +117,18 @@ class CheckAdvanceMeetingGuide
         meetingId: activeLiveMeetingPath.split('/').last,
         ready: false,
       );
+    }
+    String? diffusionStatement;
+    if (isBreakout) {
+      final breakoutRoom = await firestoreUtils.getFirestoreObject(
+        path: breakoutRoomPath,
+        constructor: (map) => BreakoutRoom.fromJson(map),
+      );
+      diffusionStatement = breakoutRoom.diffusionStatement;
+    }
+
+    if (isNullOrEmpty(request.userReadyAgendaId)) {
+      print('No agenda ID passed in so not marking user ready.');
       return;
     }
 
@@ -122,6 +136,7 @@ class CheckAdvanceMeetingGuide
       final checkResult = await _checkAdvanceMeetingGuide(
         liveMeetingPath: activeLiveMeetingPath,
         parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
+        diffusionStatement: diffusionStatement,
         isBreakout: isBreakout,
         request: request,
         userId: context.authUid!,
@@ -147,6 +162,7 @@ class CheckAdvanceMeetingGuide
         await advanceMeetingGuide(
           event: event,
           liveMeetingPath: activeLiveMeetingPath,
+          diffusionStatement: diffusionStatement,
           currentAgendaItemId: checkResult.newlyPendingAgendaItemId!,
           parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
         );
@@ -195,6 +211,7 @@ class CheckAdvanceMeetingGuide
     required String userId,
     required String liveMeetingPath,
     required String? parentLiveMeetingPath,
+    required String? diffusionStatement,
     required CheckAdvanceMeetingGuideRequest request,
     required Event event,
   }) async {
@@ -287,7 +304,6 @@ class CheckAdvanceMeetingGuide
     print('ready to move on: $readyToMoveOnIds');
     print('present: $presentParticipantIds');
     print('registered: $registeredParticipantIds');
-
     final threshold = readyToAdvanceThreshold(presentParticipantIds.length);
     if (readyToMoveOnIds.length < threshold) {
       print(
@@ -370,6 +386,7 @@ class CheckAdvanceMeetingGuide
     required String liveMeetingPath,
     required String currentAgendaItemId,
     required String? parentLiveMeetingPath,
+    required String? diffusionStatement,
   }) async {
     await firestore.runTransaction((transaction) async {
       // Get current live meeting
@@ -388,7 +405,11 @@ class CheckAdvanceMeetingGuide
         return;
       }
       // Determine next agenda item or final
-      final agendaItems = event.agendaItems;
+      final agendaItems = resolveAgendaItemsForDiffusionStatement(
+        event.agendaItems,
+        diffusionStatement,
+        showUnresolvedAsError: !isProductionEnvironment,
+      );
       final agendaItemIndex =
           agendaItems.indexWhere((a) => a.id == currentAgendaItemId);
 
@@ -396,8 +417,8 @@ class CheckAdvanceMeetingGuide
           ? agendaItems[agendaItemIndex + 1]
           : null;
 
-      // If we are at the start of a breakout room set the next agenda item to match the parent
-      // meeting's current agenda item.
+      // If we are at the start of a breakout room set the next agenda item to
+      // match the parent meeting's current agenda item.
       if (currentAgendaItemId == startMeetingAgendaItemId &&
           parentLiveMeetingPath != null) {
         final parentLiveMeeting = await firestoreUtils.getFirestoreObject(
