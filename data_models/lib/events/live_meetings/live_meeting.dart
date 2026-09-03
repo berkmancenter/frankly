@@ -141,7 +141,7 @@ class BreakoutRoom with _$BreakoutRoom implements SerializeableRequest {
     String? recordingSessionId,
 
     /// A per-group statement/prompt generated for this specific breakout
-    /// room, shown as the room's first agenda item when present.
+    /// room, shown whereever the placeholder {diffusionStatement} is used in agenda item content.
     String? diffusionStatement,
   }) = _BreakoutRoom;
 
