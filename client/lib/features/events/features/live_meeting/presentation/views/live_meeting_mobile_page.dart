@@ -715,11 +715,15 @@ class _LiveMeetingMobilePageState extends State<LiveMeetingMobilePage>
                             final pendingAdvanceTime =
                                 agendaProvider.pendingAdvanceTime?.toUtc();
                             if (pendingAdvanceTime == null) {
-                              return const Duration(seconds: 10);
+                              return Duration(
+                                seconds: meetingGuideAdvanceDelay.inSeconds +
+                                    meetingGuideAdvanceCountdownBuffer
+                                        .inSeconds,
+                              );
                             }
                             final remaining = pendingAdvanceTime
                                     .difference(DateTime.now().toUtc()) +
-                                MeetingGuideCardStore.advanceCountdownBuffer;
+                                meetingGuideAdvanceCountdownBuffer;
                             return remaining.isNegative
                                 ? Duration.zero
                                 : remaining;

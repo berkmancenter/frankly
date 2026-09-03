@@ -112,11 +112,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
 
   final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
 
-  // The delay before the meeting guide automatically advances to the next agenda item.
-  final meetingGuideAdvanceDelay = const Duration(seconds: 8);
-  // The buffer time added to the meeting guide advance countdown to account for typical server/propagation latency, so the two stay in sync.
-  final meetingGuideAdvanceCountdownBuffer = const Duration(seconds: 2);
-
   @override
   void initState() {
     super.initState();
@@ -542,7 +537,7 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                           }
                           final remaining = pendingAdvanceTime
                                   .difference(DateTime.now().toUtc()) +
-                              MeetingGuideCardStore.advanceCountdownBuffer;
+                              meetingGuideAdvanceCountdownBuffer;
                           return remaining.isNegative
                               ? Duration.zero
                               : remaining;

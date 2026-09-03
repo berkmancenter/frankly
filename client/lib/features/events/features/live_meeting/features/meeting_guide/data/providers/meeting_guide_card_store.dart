@@ -15,11 +15,6 @@ import 'package:provider/provider.dart';
 
 class MeetingGuideCardStore with ChangeNotifier {
   static const String startAgendaItemId = 'start';
-  // Padding added on top of the server's `pendingAdvanceTime` for both the
-  // displayed Countdown widget and this store's hold-until calculation below,
-  // so the two stay in sync and typical server/propagation latency is
-  // absorbed inside a still-running countdown instead of appearing after it.
-  static const Duration advanceCountdownBuffer = Duration(seconds: 2);
 
   final CommunityProvider communityProvider;
   final LiveMeetingProvider liveMeetingProvider;
@@ -193,7 +188,7 @@ class MeetingGuideCardStore with ChangeNotifier {
             _currentMeetingGuideAgendaItemId &&
         pendingAdvanceTime != null) {
       _pendingAdvanceHoldUntil =
-          pendingAdvanceTime.toUtc().add(advanceCountdownBuffer);
+          pendingAdvanceTime.toUtc().add(meetingGuideAdvanceCountdownBuffer);
     }
 
     if (agendaProvider.isMeetingFinished ||
