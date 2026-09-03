@@ -136,7 +136,6 @@ class CheckAdvanceMeetingGuide
       final checkResult = await _checkAdvanceMeetingGuide(
         liveMeetingPath: activeLiveMeetingPath,
         parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
-        diffusionStatement: diffusionStatement,
         isBreakout: isBreakout,
         request: request,
         userId: context.authUid!,
@@ -211,7 +210,6 @@ class CheckAdvanceMeetingGuide
     required String userId,
     required String liveMeetingPath,
     required String? parentLiveMeetingPath,
-    required String? diffusionStatement,
     required CheckAdvanceMeetingGuideRequest request,
     required Event event,
   }) async {

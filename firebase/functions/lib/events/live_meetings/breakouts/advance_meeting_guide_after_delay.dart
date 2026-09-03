@@ -56,8 +56,19 @@ class AdvanceMeetingGuideAfterDelay
       return;
     }
 
+    // Retrieve the diffusion statement for the breakout room if this is a breakout session.
+    String? diffusionStatement;
+    if (isBreakout) {
+      final breakoutRoom = await firestoreUtils.getFirestoreObject(
+        path: activeLiveMeetingPath,
+        constructor: (map) => BreakoutRoom.fromJson(map),
+      );
+      diffusionStatement = breakoutRoom.diffusionStatement;
+    }
+
     await CheckAdvanceMeetingGuide().advanceMeetingGuide(
       event: event,
+      diffusionStatement: diffusionStatement,
       liveMeetingPath: activeLiveMeetingPath,
       currentAgendaItemId: request.agendaItemId,
       parentLiveMeetingPath: isBreakout ? liveMeetingPath : null,
