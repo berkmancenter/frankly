@@ -125,9 +125,8 @@ class EventPageProvider with ChangeNotifier {
           final hasSurveyQuestions = eventProvider
                   .event.breakoutRoomDefinition?.breakoutQuestions.isNotEmpty ??
               false;
-          final showSurveyDialog = hasSurveyQuestions &&
-              (!eventProvider.event.isHosted ||
-                  eventProvider.allowPredefineBreakoutsOnHosted);
+          final showSurveyDialog =
+              hasSurveyQuestions && !eventProvider.event.isLiveStream;
           SurveyDialogResult? surveyDialogResult;
           if (showSurveyDialog) {
             surveyDialogResult = await SurveyDialog.show(
@@ -195,6 +194,7 @@ class EventPageProvider with ChangeNotifier {
             (q) => BreakoutQuestion(
               id: q.id,
               title: q.title,
+              type: q.type,
               answerOptionId: '',
               answers: q.answers,
             ),
@@ -205,19 +205,26 @@ class EventPageProvider with ChangeNotifier {
             (q) => BreakoutQuestion(
               id: q.id,
               title: q.title,
+              type: q.type,
               answerOptionId: '',
               answers: q.answers,
             ),
           )
           .toList(),
     );
-    final answeredAllQuestions =
-        participantAnswers.every((q) => q.answerOptionId.isNotEmpty);
+    final answeredAllQuestions = participantAnswers.every((q) {
+      if (q.type == BreakoutQuestionType.freeText) {
+        return !isNullOrEmpty(q.freeTextAnswer);
+      }
+      return q.answerOptionId.isNotEmpty;
+    });
 
+    /// Show survey dialog if the participant's answers don't match the current
+    /// survey questions or if the participant hasn't answered all questions,
+    /// and if the event is not a livestream.
     final showSurveyDialog = (!questionsMatch || !answeredAllQuestions) &&
-        (currentSurveyQuestions.isNotEmpty) &&
-        (!eventProvider.event.isHosted ||
-            eventProvider.allowPredefineBreakoutsOnHosted);
+        currentSurveyQuestions.isNotEmpty &&
+        !eventProvider.event.isLiveStream;
     if (showSurveyDialog) {
       final surveyDialogResult = await SurveyDialog.show(
         communityProvider: communityProvider,
@@ -338,7 +345,8 @@ class EventPageProvider with ChangeNotifier {
       final context = navigatorState.context;
       final cancelParticipation = await ConfirmDialog(
         title: appLocalizationService.getLocalization().cancelParticipation,
-        mainText: appLocalizationService.getLocalization().confirmCancelQuestion,
+        mainText:
+            appLocalizationService.getLocalization().confirmCancelQuestion,
         confirmText: appLocalizationService.getLocalization().yes,
         cancelText: appLocalizationService.getLocalization().no,
       ).show();

@@ -188,5 +188,4 @@ const _$BreakoutRoomStatusEnumMap = {
 const _$BreakoutAssignmentMethodEnumMap = {
   BreakoutAssignmentMethod.targetPerRoom: 'targetPerRoom',
   BreakoutAssignmentMethod.smartMatch: 'smartMatch',
-  BreakoutAssignmentMethod.category: 'category',
 };

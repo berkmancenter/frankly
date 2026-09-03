@@ -197,8 +197,6 @@ class EventSettings with _$EventSettings {
   static const kFieldTalkingTimer = 'talkingTimer';
   static const kFieldAlwaysRecord = 'alwaysRecord';
   static const kFieldAlwaysTranscribe = 'alwaysTranscribe';
-  static const kFieldAllowPredefineBreakoutsOnHosted =
-      'allowPredefineBreakoutsOnHosted';
   static const kFieldDefaultStageView = 'defaultStageView';
   static const kFieldAllowScreenShare = 'allowScreenshare';
   static const kFieldShowSmartMatchingForBreakouts =
@@ -214,7 +212,6 @@ class EventSettings with _$EventSettings {
     chat: true,
     showChatMessagesInRealTime: true,
     talkingTimer: true,
-    allowPredefineBreakoutsOnHosted: false,
     defaultStageView: false,
     enableBreakoutsByCategory: false,
     allowMultiplePeopleOnStage: false,
@@ -232,7 +229,6 @@ class EventSettings with _$EventSettings {
     bool? talkingTimer,
     // Reenable if screensharing is implemented
     //bool? allowScreenshare,
-    bool? allowPredefineBreakoutsOnHosted,
     bool? defaultStageView,
     bool? enableBreakoutsByCategory,
     bool? allowMultiplePeopleOnStage,
@@ -443,9 +439,6 @@ enum BreakoutAssignmentMethod {
 
   /// Algorithm for matching by answers to survey questions
   smartMatch,
-
-  /// Assign Participants based on category
-  category
 }
 
 /// Defines the breakout room size and matching strategy to be used during this meeting.
@@ -542,15 +535,29 @@ class SurveyQuestion with _$SurveyQuestion {
       _$SurveyQuestionFromJson(json);
 }
 
+enum BreakoutQuestionType {
+  multipleChoice,
+  freeText,
+}
+
 @Freezed(makeCollectionsUnmodifiable: false)
 class BreakoutQuestion with _$BreakoutQuestion {
   factory BreakoutQuestion({
     required String id,
     required String title,
+    @Default(BreakoutQuestionType.multipleChoice)
+    @JsonKey(
+        defaultValue: BreakoutQuestionType.multipleChoice,
+        unknownEnumValue: BreakoutQuestionType.multipleChoice)
+    BreakoutQuestionType type,
 
-    /// ID of selected answer from Finish RSVP page
-    required String answerOptionId,
-    required List<BreakoutAnswer> answers,
+    /// ID of selected answer from Finish RSVP page. Only used when [type] is
+    /// [BreakoutQuestionType.multipleChoice].
+    @Default('') String answerOptionId,
+    @Default([]) List<BreakoutAnswer> answers,
+
+    /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+    String? freeTextAnswer,
   }) = _BreakoutQuestion;
 
   factory BreakoutQuestion.fromJson(Map<String, dynamic> json) =>

@@ -1085,8 +1085,6 @@ mixin _$EventSettings {
   bool? get talkingTimer =>
       throw _privateConstructorUsedError; // Reenable if screensharing is implemented
 //bool? allowScreenshare,
-  bool? get allowPredefineBreakoutsOnHosted =>
-      throw _privateConstructorUsedError;
   bool? get defaultStageView => throw _privateConstructorUsedError;
   bool? get enableBreakoutsByCategory => throw _privateConstructorUsedError;
   bool? get allowMultiplePeopleOnStage => throw _privateConstructorUsedError;
@@ -1113,7 +1111,6 @@ abstract class $EventSettingsCopyWith<$Res> {
       bool? chat,
       bool? showChatMessagesInRealTime,
       bool? talkingTimer,
-      bool? allowPredefineBreakoutsOnHosted,
       bool? defaultStageView,
       bool? enableBreakoutsByCategory,
       bool? allowMultiplePeopleOnStage,
@@ -1141,7 +1138,6 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
     Object? chat = freezed,
     Object? showChatMessagesInRealTime = freezed,
     Object? talkingTimer = freezed,
-    Object? allowPredefineBreakoutsOnHosted = freezed,
     Object? defaultStageView = freezed,
     Object? enableBreakoutsByCategory = freezed,
     Object? allowMultiplePeopleOnStage = freezed,
@@ -1167,11 +1163,6 @@ class _$EventSettingsCopyWithImpl<$Res, $Val extends EventSettings>
       talkingTimer: freezed == talkingTimer
           ? _value.talkingTimer
           : talkingTimer // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      allowPredefineBreakoutsOnHosted: freezed ==
-              allowPredefineBreakoutsOnHosted
-          ? _value.allowPredefineBreakoutsOnHosted
-          : allowPredefineBreakoutsOnHosted // ignore: cast_nullable_to_non_nullable
               as bool?,
       defaultStageView: freezed == defaultStageView
           ? _value.defaultStageView
@@ -1222,7 +1213,6 @@ abstract class _$$_EventSettingsCopyWith<$Res>
       bool? chat,
       bool? showChatMessagesInRealTime,
       bool? talkingTimer,
-      bool? allowPredefineBreakoutsOnHosted,
       bool? defaultStageView,
       bool? enableBreakoutsByCategory,
       bool? allowMultiplePeopleOnStage,
@@ -1248,7 +1238,6 @@ class __$$_EventSettingsCopyWithImpl<$Res>
     Object? chat = freezed,
     Object? showChatMessagesInRealTime = freezed,
     Object? talkingTimer = freezed,
-    Object? allowPredefineBreakoutsOnHosted = freezed,
     Object? defaultStageView = freezed,
     Object? enableBreakoutsByCategory = freezed,
     Object? allowMultiplePeopleOnStage = freezed,
@@ -1274,11 +1263,6 @@ class __$$_EventSettingsCopyWithImpl<$Res>
       talkingTimer: freezed == talkingTimer
           ? _value.talkingTimer
           : talkingTimer // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      allowPredefineBreakoutsOnHosted: freezed ==
-              allowPredefineBreakoutsOnHosted
-          ? _value.allowPredefineBreakoutsOnHosted
-          : allowPredefineBreakoutsOnHosted // ignore: cast_nullable_to_non_nullable
               as bool?,
       defaultStageView: freezed == defaultStageView
           ? _value.defaultStageView
@@ -1324,7 +1308,6 @@ class _$_EventSettings implements _EventSettings {
       this.chat,
       this.showChatMessagesInRealTime,
       this.talkingTimer,
-      this.allowPredefineBreakoutsOnHosted,
       this.defaultStageView,
       this.enableBreakoutsByCategory,
       this.allowMultiplePeopleOnStage,
@@ -1348,8 +1331,6 @@ class _$_EventSettings implements _EventSettings {
 // Reenable if screensharing is implemented
 //bool? allowScreenshare,
   @override
-  final bool? allowPredefineBreakoutsOnHosted;
-  @override
   final bool? defaultStageView;
   @override
   final bool? enableBreakoutsByCategory;
@@ -1368,7 +1349,7 @@ class _$_EventSettings implements _EventSettings {
 
   @override
   String toString() {
-    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, allowPredefineBreakoutsOnHosted: $allowPredefineBreakoutsOnHosted, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
+    return 'EventSettings(reminderEmails: $reminderEmails, chat: $chat, showChatMessagesInRealTime: $showChatMessagesInRealTime, talkingTimer: $talkingTimer, defaultStageView: $defaultStageView, enableBreakoutsByCategory: $enableBreakoutsByCategory, allowMultiplePeopleOnStage: $allowMultiplePeopleOnStage, showSmartMatchingForBreakouts: $showSmartMatchingForBreakouts, alwaysRecord: $alwaysRecord, alwaysTranscribe: $alwaysTranscribe, enablePrerequisites: $enablePrerequisites, agendaPreview: $agendaPreview)';
   }
 
   @override
@@ -1379,18 +1360,16 @@ class _$_EventSettings implements _EventSettings {
             (identical(other.reminderEmails, reminderEmails) ||
                 other.reminderEmails == reminderEmails) &&
             (identical(other.chat, chat) || other.chat == chat) &&
-            (identical(other.showChatMessagesInRealTime, showChatMessagesInRealTime) ||
+            (identical(other.showChatMessagesInRealTime,
+                    showChatMessagesInRealTime) ||
                 other.showChatMessagesInRealTime ==
                     showChatMessagesInRealTime) &&
             (identical(other.talkingTimer, talkingTimer) ||
                 other.talkingTimer == talkingTimer) &&
-            (identical(other.allowPredefineBreakoutsOnHosted,
-                    allowPredefineBreakoutsOnHosted) ||
-                other.allowPredefineBreakoutsOnHosted ==
-                    allowPredefineBreakoutsOnHosted) &&
             (identical(other.defaultStageView, defaultStageView) ||
                 other.defaultStageView == defaultStageView) &&
-            (identical(other.enableBreakoutsByCategory, enableBreakoutsByCategory) ||
+            (identical(other.enableBreakoutsByCategory,
+                    enableBreakoutsByCategory) ||
                 other.enableBreakoutsByCategory == enableBreakoutsByCategory) &&
             (identical(other.allowMultiplePeopleOnStage,
                     allowMultiplePeopleOnStage) ||
@@ -1418,7 +1397,6 @@ class _$_EventSettings implements _EventSettings {
       chat,
       showChatMessagesInRealTime,
       talkingTimer,
-      allowPredefineBreakoutsOnHosted,
       defaultStageView,
       enableBreakoutsByCategory,
       allowMultiplePeopleOnStage,
@@ -1448,7 +1426,6 @@ abstract class _EventSettings implements EventSettings {
       final bool? chat,
       final bool? showChatMessagesInRealTime,
       final bool? talkingTimer,
-      final bool? allowPredefineBreakoutsOnHosted,
       final bool? defaultStageView,
       final bool? enableBreakoutsByCategory,
       final bool? allowMultiplePeopleOnStage,
@@ -1471,8 +1448,6 @@ abstract class _EventSettings implements EventSettings {
   bool? get talkingTimer;
   @override // Reenable if screensharing is implemented
 //bool? allowScreenshare,
-  bool? get allowPredefineBreakoutsOnHosted;
-  @override
   bool? get defaultStageView;
   @override
   bool? get enableBreakoutsByCategory;
@@ -3838,10 +3813,18 @@ BreakoutQuestion _$BreakoutQuestionFromJson(Map<String, dynamic> json) {
 mixin _$BreakoutQuestion {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(
+      defaultValue: BreakoutQuestionType.multipleChoice,
+      unknownEnumValue: BreakoutQuestionType.multipleChoice)
+  BreakoutQuestionType get type => throw _privateConstructorUsedError;
 
-  /// ID of selected answer from Finish RSVP page
+  /// ID of selected answer from Finish RSVP page. Only used when [type] is
+  /// [BreakoutQuestionType.multipleChoice].
   String get answerOptionId => throw _privateConstructorUsedError;
   List<BreakoutAnswer> get answers => throw _privateConstructorUsedError;
+
+  /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+  String? get freeTextAnswer => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3858,8 +3841,13 @@ abstract class $BreakoutQuestionCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      BreakoutQuestionType type,
       String answerOptionId,
-      List<BreakoutAnswer> answers});
+      List<BreakoutAnswer> answers,
+      String? freeTextAnswer});
 }
 
 /// @nodoc
@@ -3877,8 +3865,10 @@ class _$BreakoutQuestionCopyWithImpl<$Res, $Val extends BreakoutQuestion>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? type = null,
     Object? answerOptionId = null,
     Object? answers = null,
+    Object? freeTextAnswer = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -3889,6 +3879,10 @@ class _$BreakoutQuestionCopyWithImpl<$Res, $Val extends BreakoutQuestion>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as BreakoutQuestionType,
       answerOptionId: null == answerOptionId
           ? _value.answerOptionId
           : answerOptionId // ignore: cast_nullable_to_non_nullable
@@ -3897,6 +3891,10 @@ class _$BreakoutQuestionCopyWithImpl<$Res, $Val extends BreakoutQuestion>
           ? _value.answers
           : answers // ignore: cast_nullable_to_non_nullable
               as List<BreakoutAnswer>,
+      freeTextAnswer: freezed == freeTextAnswer
+          ? _value.freeTextAnswer
+          : freeTextAnswer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -3912,8 +3910,13 @@ abstract class _$$_BreakoutQuestionCopyWith<$Res>
   $Res call(
       {String id,
       String title,
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      BreakoutQuestionType type,
       String answerOptionId,
-      List<BreakoutAnswer> answers});
+      List<BreakoutAnswer> answers,
+      String? freeTextAnswer});
 }
 
 /// @nodoc
@@ -3929,8 +3932,10 @@ class __$$_BreakoutQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? type = null,
     Object? answerOptionId = null,
     Object? answers = null,
+    Object? freeTextAnswer = freezed,
   }) {
     return _then(_$_BreakoutQuestion(
       id: null == id
@@ -3941,6 +3946,10 @@ class __$$_BreakoutQuestionCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as BreakoutQuestionType,
       answerOptionId: null == answerOptionId
           ? _value.answerOptionId
           : answerOptionId // ignore: cast_nullable_to_non_nullable
@@ -3949,6 +3958,10 @@ class __$$_BreakoutQuestionCopyWithImpl<$Res>
           ? _value.answers
           : answers // ignore: cast_nullable_to_non_nullable
               as List<BreakoutAnswer>,
+      freeTextAnswer: freezed == freeTextAnswer
+          ? _value.freeTextAnswer
+          : freeTextAnswer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -3959,8 +3972,13 @@ class _$_BreakoutQuestion implements _BreakoutQuestion {
   _$_BreakoutQuestion(
       {required this.id,
       required this.title,
-      required this.answerOptionId,
-      required this.answers});
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      this.type = BreakoutQuestionType.multipleChoice,
+      this.answerOptionId = '',
+      this.answers = const [],
+      this.freeTextAnswer});
 
   factory _$_BreakoutQuestion.fromJson(Map<String, dynamic> json) =>
       _$$_BreakoutQuestionFromJson(json);
@@ -3969,16 +3987,28 @@ class _$_BreakoutQuestion implements _BreakoutQuestion {
   final String id;
   @override
   final String title;
-
-  /// ID of selected answer from Finish RSVP page
   @override
+  @JsonKey(
+      defaultValue: BreakoutQuestionType.multipleChoice,
+      unknownEnumValue: BreakoutQuestionType.multipleChoice)
+  final BreakoutQuestionType type;
+
+  /// ID of selected answer from Finish RSVP page. Only used when [type] is
+  /// [BreakoutQuestionType.multipleChoice].
+  @override
+  @JsonKey()
   final String answerOptionId;
   @override
+  @JsonKey()
   final List<BreakoutAnswer> answers;
+
+  /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+  @override
+  final String? freeTextAnswer;
 
   @override
   String toString() {
-    return 'BreakoutQuestion(id: $id, title: $title, answerOptionId: $answerOptionId, answers: $answers)';
+    return 'BreakoutQuestion(id: $id, title: $title, type: $type, answerOptionId: $answerOptionId, answers: $answers, freeTextAnswer: $freeTextAnswer)';
   }
 
   @override
@@ -3988,15 +4018,18 @@ class _$_BreakoutQuestion implements _BreakoutQuestion {
             other is _$_BreakoutQuestion &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.answerOptionId, answerOptionId) ||
                 other.answerOptionId == answerOptionId) &&
-            const DeepCollectionEquality().equals(other.answers, answers));
+            const DeepCollectionEquality().equals(other.answers, answers) &&
+            (identical(other.freeTextAnswer, freeTextAnswer) ||
+                other.freeTextAnswer == freeTextAnswer));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, answerOptionId,
-      const DeepCollectionEquality().hash(answers));
+  int get hashCode => Object.hash(runtimeType, id, title, type, answerOptionId,
+      const DeepCollectionEquality().hash(answers), freeTextAnswer);
 
   @JsonKey(ignore: true)
   @override
@@ -4016,8 +4049,13 @@ abstract class _BreakoutQuestion implements BreakoutQuestion {
   factory _BreakoutQuestion(
       {required final String id,
       required final String title,
-      required final String answerOptionId,
-      required final List<BreakoutAnswer> answers}) = _$_BreakoutQuestion;
+      @JsonKey(
+          defaultValue: BreakoutQuestionType.multipleChoice,
+          unknownEnumValue: BreakoutQuestionType.multipleChoice)
+      final BreakoutQuestionType type,
+      final String answerOptionId,
+      final List<BreakoutAnswer> answers,
+      final String? freeTextAnswer}) = _$_BreakoutQuestion;
 
   factory _BreakoutQuestion.fromJson(Map<String, dynamic> json) =
       _$_BreakoutQuestion.fromJson;
@@ -4027,11 +4065,21 @@ abstract class _BreakoutQuestion implements BreakoutQuestion {
   @override
   String get title;
   @override
+  @JsonKey(
+      defaultValue: BreakoutQuestionType.multipleChoice,
+      unknownEnumValue: BreakoutQuestionType.multipleChoice)
+  BreakoutQuestionType get type;
+  @override
 
-  /// ID of selected answer from Finish RSVP page
+  /// ID of selected answer from Finish RSVP page. Only used when [type] is
+  /// [BreakoutQuestionType.multipleChoice].
   String get answerOptionId;
   @override
   List<BreakoutAnswer> get answers;
+  @override
+
+  /// The registrant's answer to a [BreakoutQuestionType.freeText] question.
+  String? get freeTextAnswer;
   @override
   @JsonKey(ignore: true)
   _$$_BreakoutQuestionCopyWith<_$_BreakoutQuestion> get copyWith =>

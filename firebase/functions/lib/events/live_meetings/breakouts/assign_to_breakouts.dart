@@ -118,10 +118,13 @@ class AssignToBreakouts {
     Event event,
   ) {
     String? surveyAnswers;
-    final allQuestionsAnswered = participant.breakoutRoomSurveyQuestions
-        .every((q) => q.answerOptionId.isNotEmpty);
+    final multipleChoiceQuestions = participant.breakoutRoomSurveyQuestions
+        .where((q) => q.type == BreakoutQuestionType.multipleChoice)
+        .toList();
+    final allQuestionsAnswered =
+        multipleChoiceQuestions.every((q) => q.answerOptionId.isNotEmpty);
     if (allQuestionsAnswered) {
-      final surveyResponses = participant.breakoutRoomSurveyQuestions.map((q) {
+      final surveyResponses = multipleChoiceQuestions.map((q) {
         final answerId = q.answerOptionId;
         final answerIndex = q.answers.indexWhere(
           (answer) => answer.options.any((option) => option.id == answerId),
@@ -149,8 +152,10 @@ class AssignToBreakouts {
     Map<String, String> participantSurveyResponsesLookup,
     Event event,
   ) {
-    int numberOfQuestions =
-        event.breakoutRoomDefinition?.breakoutQuestions.length ?? 0;
+    int numberOfQuestions = event.breakoutRoomDefinition?.breakoutQuestions
+            .where((q) => q.type == BreakoutQuestionType.multipleChoice)
+            .length ??
+        0;
 
     final hasQuestions = numberOfQuestions > 0;
     if (!hasQuestions && participantSurveyResponsesLookup.values.isNotEmpty) {
@@ -231,6 +236,21 @@ class AssignToBreakouts {
       event,
     );
 
+    // Build free-text responses lookup for unmatched users who answered the
+    // event's free-text registration question (at most one such question is
+    // allowed per event). This is only ever sent to the hosted match API
+    // below -- the local frankly_match package only understands binary
+    // answer masks, so it has no way to factor free-text responses into
+    // local bucketMatch/groupMatch matching.
+    final participantFreeTextResponsesLookup = <String, String>{
+      for (final participant in unmatchedParticipants)
+        for (final question in participant.breakoutRoomSurveyQuestions)
+          if (question.type == BreakoutQuestionType.freeText &&
+              question.freeTextAnswer != null &&
+              question.freeTextAnswer!.isNotEmpty)
+            participant.id: question.freeTextAnswer!,
+    };
+
     final nonNullSurveyResponsesLength = participantSurveyResponsesLookup
         .entries
         .where((e) => e.value.isNotEmpty)
@@ -245,11 +265,15 @@ class AssignToBreakouts {
     profile('smart matching');
     List<frankly_match.MatchGroup>? smartMatches;
     var diffusionStatementsByGroupId = <String, String>{};
-    if (useHostedApi && participantSurveyResponsesLookup.isNotEmpty) {
+    if (useHostedApi &&
+        (participantSurveyResponsesLookup.isNotEmpty ||
+            participantFreeTextResponsesLookup.isNotEmpty)) {
       print('Calling hosted Frankly Match API for smart matching');
       try {
         final smartMatchApiResult = await createFranklyMatchApiGroups(
           participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+          participantFreeTextResponsesLookup:
+              participantFreeTextResponsesLookup,
           targetParticipantsPerRoom: targetParticipantsPerRoom,
         );
         smartMatches = smartMatchApiResult.groups;
@@ -912,26 +936,59 @@ class SmartMatchApiResult {
   SmartMatchApiResult(this.groups, this.diffusionStatementsByGroupId);
 }
 
+/// Builds the request payload for the hosted Frankly Match API.
+///
+/// Each participant contributes a `binaryAnswerMask` (if they answered the
+/// boolean survey questions), a `freeTextResponse` (if they answered the
+/// event's free-text registration question), or both.
+@visibleForTesting
+Map<String, dynamic> buildFranklyMatchApiPayload({
+  required Map<String, String> participantSurveyResponsesLookup,
+  required Map<String, String> participantFreeTextResponsesLookup,
+  required int targetParticipantsPerRoom,
+}) {
+  final participantIds = {
+    ...participantSurveyResponsesLookup.keys,
+    ...participantFreeTextResponsesLookup.keys,
+  };
+  return {
+    // The algorithm parameter should become dynamic once more options
+    // are added to the API.
+    'algorithm': 'binaryGroupMatch',
+    'targetGroupSize': targetParticipantsPerRoom,
+    'participants': {
+      for (final id in participantIds)
+        id: {
+          if (participantSurveyResponsesLookup.containsKey(id))
+            'binaryAnswerMask': participantSurveyResponsesLookup[id],
+          if (participantFreeTextResponsesLookup.containsKey(id))
+            'freeTextResponse': participantFreeTextResponsesLookup[id],
+        },
+    },
+  };
+}
+
 /// Call the hosted Frankly Match API to return matched groups.
 Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   required Map<String, String> participantSurveyResponsesLookup,
+  required Map<String, String> participantFreeTextResponsesLookup,
   required int targetParticipantsPerRoom,
 }) async {
   final apiKey = functions.config.get('frankly_match.api_key') as String;
   final uri = Uri.parse(
     functions.config.get('frankly_match.api_url') as String,
   );
-  final payload = {
-    // The algorithm parameter should become dynamic once more options
-    // are added to the API.
-    'algorithm': 'binaryGroupMatch',
-    'targetGroupSize': targetParticipantsPerRoom,
-    'participants': {
-      for (final entry in participantSurveyResponsesLookup.entries)
-        entry.key: {'binaryAnswerMask': entry.value},
-    },
-  };
-  print('Calling Frankly Match API with payload: $payload');
+  final payload = buildFranklyMatchApiPayload(
+    participantSurveyResponsesLookup: participantSurveyResponsesLookup,
+    participantFreeTextResponsesLookup: participantFreeTextResponsesLookup,
+    targetParticipantsPerRoom: targetParticipantsPerRoom,
+  );
+  print(
+    'Calling Frankly Match API with '
+    '${participantSurveyResponsesLookup.length} binary responses and '
+    '${participantFreeTextResponsesLookup.length} free-text responses; '
+    'targetGroupSize=$targetParticipantsPerRoom',
+  );
 
   final response = await http.post(
     uri,
@@ -950,7 +1007,8 @@ Future<SmartMatchApiResult> createFranklyMatchApiGroups({
   }
 
   final body = jsonDecode(response.body) as Map<String, dynamic>;
-  final results = (body['results'] as List<dynamic>).cast<Map<String, dynamic>>();
+  final results =
+      (body['results'] as List<dynamic>).cast<Map<String, dynamic>>();
   final groups = results
       .map(
         (g) => frankly_match.MatchGroup(
