@@ -38,9 +38,10 @@ class AdvanceMeetingGuideAfterDelay
     final isBreakout = !isNullOrEmpty(request.breakoutRoomId);
 
     final liveMeetingPath = '${request.eventPath}/live-meetings/${event.id}';
+    final breakoutRoomPath = '$liveMeetingPath/breakout-room-sessions/'
+        '${request.breakoutSessionId}/breakout-rooms/${request.breakoutRoomId}';
     final breakoutLiveMeetingPath =
-        '$liveMeetingPath/breakout-room-sessions/${request.breakoutSessionId}'
-        '/breakout-rooms/${request.breakoutRoomId}/live-meetings/${request.breakoutRoomId}';
+        '$breakoutRoomPath/live-meetings/${request.breakoutRoomId}';
 
     final activeLiveMeetingPath =
         isBreakout ? breakoutLiveMeetingPath : liveMeetingPath;
@@ -59,11 +60,15 @@ class AdvanceMeetingGuideAfterDelay
     // Retrieve the diffusion statement for the breakout room if this is a breakout session.
     String? diffusionStatement;
     if (isBreakout) {
-      final breakoutRoom = await firestoreUtils.getFirestoreObject(
-        path: activeLiveMeetingPath,
-        constructor: (map) => BreakoutRoom.fromJson(map),
-      );
-      diffusionStatement = breakoutRoom.diffusionStatement;
+      try {
+        final breakoutRoom = await firestoreUtils.getFirestoreObject(
+          path: breakoutRoomPath,
+          constructor: (map) => BreakoutRoom.fromJson(map),
+        );
+        diffusionStatement = breakoutRoom.diffusionStatement;
+      } catch (e) {
+        print('Failed to retrieve breakout room diffusion statement: $e');
+      }
     }
 
     await CheckAdvanceMeetingGuide().advanceMeetingGuide(
