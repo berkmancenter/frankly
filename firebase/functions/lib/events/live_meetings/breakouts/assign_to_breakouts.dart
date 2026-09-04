@@ -938,28 +938,29 @@ class SmartMatchApiResult {
 
 /// Builds the request payload for the hosted Frankly Match API.
 ///
-/// Each participant contributes a `binaryAnswerMask` (if they answered the
-/// boolean survey questions), a `freeTextResponse` (if they answered the
-/// event's free-text registration question), or both.
+/// If any participant has a free-text response, the request uses the
+/// `textGroupMatch` algorithm and omits `binaryAnswerMask` entirely (it is
+/// not required/used by textGroupMatch). Otherwise it uses `binaryGroupMatch`
+/// and sends only `binaryAnswerMask`, as before.
 @visibleForTesting
 Map<String, dynamic> buildFranklyMatchApiPayload({
   required Map<String, String> participantSurveyResponsesLookup,
   required Map<String, String> participantFreeTextResponsesLookup,
   required int targetParticipantsPerRoom,
 }) {
+  final useTextGroupMatch = participantFreeTextResponsesLookup.isNotEmpty;
   final participantIds = {
     ...participantSurveyResponsesLookup.keys,
     ...participantFreeTextResponsesLookup.keys,
   };
   return {
-    // The algorithm parameter should become dynamic once more options
-    // are added to the API.
-    'algorithm': 'binaryGroupMatch',
+    'algorithm': useTextGroupMatch ? 'textGroupMatch' : 'binaryGroupMatch',
     'targetGroupSize': targetParticipantsPerRoom,
     'participants': {
       for (final id in participantIds)
         id: {
-          if (participantSurveyResponsesLookup.containsKey(id))
+          if (!useTextGroupMatch &&
+              participantSurveyResponsesLookup.containsKey(id))
             'binaryAnswerMask': participantSurveyResponsesLookup[id],
           if (participantFreeTextResponsesLookup.containsKey(id))
             'freeTextResponse': participantFreeTextResponsesLookup[id],

@@ -121,14 +121,28 @@ void main() {
       );
     });
 
-    test('includes freeTextResponse for participants with a free-text answer',
-        () {
+    test('uses binaryGroupMatch when there is no free-text data at all', () {
+      final payload = buildFranklyMatchApiPayload(
+        participantSurveyResponsesLookup: {},
+        participantFreeTextResponsesLookup: {},
+        targetParticipantsPerRoom: 2,
+      );
+
+      expect(payload['algorithm'], 'binaryGroupMatch');
+      expect(payload['targetGroupSize'], 2);
+      expect(payload['participants'], <String, dynamic>{});
+    });
+
+    test(
+        'uses textGroupMatch and includes freeTextResponse for participants '
+        'with a free-text answer', () {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {},
         participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
         targetParticipantsPerRoom: 2,
       );
 
+      expect(payload['algorithm'], 'textGroupMatch');
       expect(
         payload['participants'],
         {
@@ -137,37 +151,39 @@ void main() {
       );
     });
 
-    test('merges both keys for a participant who answered both', () {
+    test(
+        'omits binaryAnswerMask and uses textGroupMatch when a participant '
+        'has both a survey answer and a free-text answer', () {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {'p1': '010'},
         participantFreeTextResponsesLookup: {'p1': 'I like hiking'},
         targetParticipantsPerRoom: 2,
       );
 
+      expect(payload['algorithm'], 'textGroupMatch');
       expect(
         payload['participants'],
         {
-          'p1': {
-            'binaryAnswerMask': '010',
-            'freeTextResponse': 'I like hiking'
-          },
+          'p1': {'freeTextResponse': 'I like hiking'},
         },
       );
     });
 
     test(
-        'includes a participant present only in the free-text lookup with no '
-        'survey answer', () {
+        'omits binaryAnswerMask for a survey-only participant when '
+        'textGroupMatch is selected because free-text data exists elsewhere',
+        () {
       final payload = buildFranklyMatchApiPayload(
         participantSurveyResponsesLookup: {'p1': '010'},
         participantFreeTextResponsesLookup: {'p2': 'I like hiking'},
         targetParticipantsPerRoom: 2,
       );
 
+      expect(payload['algorithm'], 'textGroupMatch');
       expect(
         payload['participants'],
         {
-          'p1': {'binaryAnswerMask': '010'},
+          'p1': <String, dynamic>{},
           'p2': {'freeTextResponse': 'I like hiking'},
         },
       );
