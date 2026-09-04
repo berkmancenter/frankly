@@ -39,6 +39,15 @@ mixin _$LiveMeeting {
   List<String> get pinnedUserIds => throw _privateConstructorUsedError;
   String? get recordingSessionId => throw _privateConstructorUsedError;
 
+  /// The agenda item that was current when a majority of participants marked themselves ready
+  /// to advance. While this is set, a countdown is shown to all participants and no further
+  /// ready/unready votes can change the outcome.
+  String? get pendingAdvanceAgendaItemId => throw _privateConstructorUsedError;
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get pendingAdvanceTime => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $LiveMeetingCopyWith<LiveMeeting> get copyWith =>
@@ -59,7 +68,10 @@ abstract class $LiveMeetingCopyWith<$Res> {
       bool record,
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? pendingAdvanceTime});
 
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
 }
@@ -85,6 +97,8 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? pendingAdvanceAgendaItemId = freezed,
+    Object? pendingAdvanceTime = freezed,
   }) {
     return _then(_value.copyWith(
       meetingId: freezed == meetingId
@@ -119,6 +133,14 @@ class _$LiveMeetingCopyWithImpl<$Res, $Val extends LiveMeeting>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      pendingAdvanceAgendaItemId: freezed == pendingAdvanceAgendaItemId
+          ? _value.pendingAdvanceAgendaItemId
+          : pendingAdvanceAgendaItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pendingAdvanceTime: freezed == pendingAdvanceTime
+          ? _value.pendingAdvanceTime
+          : pendingAdvanceTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -152,7 +174,10 @@ abstract class _$$_LiveMeetingCopyWith<$Res>
       bool record,
       bool isMeetingCardMinimized,
       List<String> pinnedUserIds,
-      String? recordingSessionId});
+      String? recordingSessionId,
+      String? pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      DateTime? pendingAdvanceTime});
 
   @override
   $BreakoutRoomSessionCopyWith<$Res>? get currentBreakoutSession;
@@ -177,6 +202,8 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
     Object? isMeetingCardMinimized = null,
     Object? pinnedUserIds = null,
     Object? recordingSessionId = freezed,
+    Object? pendingAdvanceAgendaItemId = freezed,
+    Object? pendingAdvanceTime = freezed,
   }) {
     return _then(_$_LiveMeeting(
       meetingId: freezed == meetingId
@@ -211,6 +238,14 @@ class __$$_LiveMeetingCopyWithImpl<$Res>
           ? _value.recordingSessionId
           : recordingSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      pendingAdvanceAgendaItemId: freezed == pendingAdvanceAgendaItemId
+          ? _value.pendingAdvanceAgendaItemId
+          : pendingAdvanceAgendaItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pendingAdvanceTime: freezed == pendingAdvanceTime
+          ? _value.pendingAdvanceTime
+          : pendingAdvanceTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -226,7 +261,10 @@ class _$_LiveMeeting implements _LiveMeeting {
       this.record = false,
       this.isMeetingCardMinimized = false,
       this.pinnedUserIds = const [],
-      this.recordingSessionId});
+      this.recordingSessionId,
+      this.pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      this.pendingAdvanceTime});
 
   factory _$_LiveMeeting.fromJson(Map<String, dynamic> json) =>
       _$$_LiveMeetingFromJson(json);
@@ -261,9 +299,20 @@ class _$_LiveMeeting implements _LiveMeeting {
   @override
   final String? recordingSessionId;
 
+  /// The agenda item that was current when a majority of participants marked themselves ready
+  /// to advance. While this is set, a countdown is shown to all participants and no further
+  /// ready/unready votes can change the outcome.
+  @override
+  final String? pendingAdvanceAgendaItemId;
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  @override
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  final DateTime? pendingAdvanceTime;
+
   @override
   String toString() {
-    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId)';
+    return 'LiveMeeting(meetingId: $meetingId, participants: $participants, events: $events, currentBreakoutSession: $currentBreakoutSession, record: $record, isMeetingCardMinimized: $isMeetingCardMinimized, pinnedUserIds: $pinnedUserIds, recordingSessionId: $recordingSessionId, pendingAdvanceAgendaItemId: $pendingAdvanceAgendaItemId, pendingAdvanceTime: $pendingAdvanceTime)';
   }
 
   @override
@@ -284,7 +333,13 @@ class _$_LiveMeeting implements _LiveMeeting {
             const DeepCollectionEquality()
                 .equals(other.pinnedUserIds, pinnedUserIds) &&
             (identical(other.recordingSessionId, recordingSessionId) ||
-                other.recordingSessionId == recordingSessionId));
+                other.recordingSessionId == recordingSessionId) &&
+            (identical(other.pendingAdvanceAgendaItemId,
+                    pendingAdvanceAgendaItemId) ||
+                other.pendingAdvanceAgendaItemId ==
+                    pendingAdvanceAgendaItemId) &&
+            (identical(other.pendingAdvanceTime, pendingAdvanceTime) ||
+                other.pendingAdvanceTime == pendingAdvanceTime));
   }
 
   @JsonKey(ignore: true)
@@ -298,7 +353,9 @@ class _$_LiveMeeting implements _LiveMeeting {
       record,
       isMeetingCardMinimized,
       const DeepCollectionEquality().hash(pinnedUserIds),
-      recordingSessionId);
+      recordingSessionId,
+      pendingAdvanceAgendaItemId,
+      pendingAdvanceTime);
 
   @JsonKey(ignore: true)
   @override
@@ -323,7 +380,10 @@ abstract class _LiveMeeting implements LiveMeeting {
       final bool record,
       final bool isMeetingCardMinimized,
       final List<String> pinnedUserIds,
-      final String? recordingSessionId}) = _$_LiveMeeting;
+      final String? recordingSessionId,
+      final String? pendingAdvanceAgendaItemId,
+      @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+      final DateTime? pendingAdvanceTime}) = _$_LiveMeeting;
 
   factory _LiveMeeting.fromJson(Map<String, dynamic> json) =
       _$_LiveMeeting.fromJson;
@@ -351,6 +411,17 @@ abstract class _LiveMeeting implements LiveMeeting {
   List<String> get pinnedUserIds;
   @override
   String? get recordingSessionId;
+  @override
+
+  /// The agenda item that was current when a majority of participants marked themselves ready
+  /// to advance. While this is set, a countdown is shown to all participants and no further
+  /// ready/unready votes can change the outcome.
+  String? get pendingAdvanceAgendaItemId;
+  @override
+
+  /// The server-computed time at which [pendingAdvanceAgendaItemId] will actually be advanced.
+  @JsonKey(fromJson: dateTimeFromTimestamp, toJson: timestampFromDateTime)
+  DateTime? get pendingAdvanceTime;
   @override
   @JsonKey(ignore: true)
   _$$_LiveMeetingCopyWith<_$_LiveMeeting> get copyWith =>

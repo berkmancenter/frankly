@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:client/features/events/features/event_page/data/providers/event_provider.dart';
@@ -111,6 +109,8 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
     implements MeetingGuideCardView {
   late final MeetingGuideCardModel _model;
   late final MeetingGuideCardPresenter _presenter;
+
+  final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
 
   @override
   void initState() {
@@ -234,8 +234,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                       formattedTime = context.l10n.start;
                     } else {
                       negativeTimeRemaining = timeRemaining.isNegative;
-                      formattedTime =
-                          timeRemaining.getFormattedTime(showHours: timeRemaining.inHours.abs() > 0);
+                      formattedTime = timeRemaining.getFormattedTime(
+                        showHours: timeRemaining.inHours.abs() > 0,
+                      );
                     }
                     return HeightConstrainedText(
                       formattedTime,
@@ -434,12 +435,6 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
   Widget _buildBottomSection() {
     context.watch<AgendaProvider>();
     context.watch<MeetingGuideCardStore>();
-
-    final isCardPending = _presenter.isCardPending();
-    if (isCardPending) {
-      return CountdownWidget();
-    }
-
     context.watch<LiveMeetingProvider>();
     context.watch<UserService>();
     context.watch<CommunityProvider>();
@@ -457,8 +452,9 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
           thickness: 1,
           color: context.theme.colorScheme.onPrimaryContainer,
         ),
-        SizedBox(height: 6),
+        SizedBox(height: 16),
         Container(
+          height: 64,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: context.theme.colorScheme.surfaceContainerLowest,
@@ -468,19 +464,21 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
             stream: participantAgendaItemDetailsStream,
             height: 100,
             builder: (context, participantAgendaItemDetailsList) {
-              final readyToAdvance =
-                  _presenter.isReadyToAdvance(participantAgendaItemDetailsList);
               final canUserControlMeeting = _presenter.canUserControlMeeting;
               final currentAgendaItemId = _presenter.getCurrentAgendaItemId();
               final currentItem = _presenter.getCurrentAgendaItem();
               final presentParticipantIds =
                   _presenter.getPresentParticipantIds().toSet();
+              final readyThreshold =
+                  _presenter.getReadyThreshold(presentParticipantIds);
               final readyToMoveOnCount = _presenter.readyToMoveOnCount(
                 participantAgendaItemDetailsList,
                 presentParticipantIds,
               );
               final isMeetingStarted = _presenter.isMeetingStarted();
               final isCardPending = _presenter.isCardPending();
+              final isPendingAdvance =
+                  _presenter.isPendingAdvance(currentAgendaItemId);
               final meetingFinished =
                   currentItem == null && isMeetingStarted && !isCardPending;
               final isHosted = _presenter.isHosted();
@@ -503,48 +501,73 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
                     if (!meetingFinished)
                       Align(
                         alignment: Alignment.centerRight,
-                        child: _ReadyButton(
+                        child: NextButton(
                           currentAgendaItemId: currentAgendaItemId ?? '',
                         ),
                       ),
                   ],
                 );
               } else {
-                return Row(
-                  children: [
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Tooltip(
-                        message:
-                            '$readyToMoveOnCount out of ${presentParticipantIds.length} participants '
-                            'are ready to move on.',
-                        child: Text(
-                          '$readyToMoveOnCount/${presentParticipantIds.length}',
-                          style: AppTextStyle.body.copyWith(
-                            color: context.theme.colorScheme.primary,
-                          ),
+                // If the meeting is finished
+                // we don't want to show the ready button/count of participants ready or countdown
+                if (meetingFinished) {
+                  return SizedBox.shrink();
+                }
+                if (isPendingAdvance) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        context.l10n.movingOntoNextAgendaItem,
+                        style: AppTextStyle.body.copyWith(
+                          color: context.theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                    ),
-                    if (readyToAdvance)
-                      ActionButton(
-                        type: ActionButtonType.outline,
-                        textColor: context.theme.colorScheme.primary,
-                        text: context.l10n.ready,
-                        icon: Icons.check_circle_outline,
-                      )
-                    else
-                      _ReadyButton(
-                        currentAgendaItemId: currentAgendaItemId ?? '',
+                      SizedBox(width: 10),
+                      Countdown(
+                        startingPendingAdvanceTime: () {
+                          final pendingAdvanceTime = _presenter
+                              .getPendingAdvanceTime(currentAgendaItemId)
+                              ?.toUtc();
+                          if (pendingAdvanceTime == null) {
+                            return Duration(
+                              seconds: meetingGuideAdvanceDelay.inSeconds +
+                                  meetingGuideAdvanceCountdownBuffer.inSeconds,
+                            );
+                          }
+                          final remaining = pendingAdvanceTime
+                                  .difference(DateTime.now().toUtc()) +
+                              meetingGuideAdvanceCountdownBuffer;
+                          return remaining.isNegative
+                              ? Duration.zero
+                              : remaining;
+                        }(),
                       ),
-                  ],
+                    ],
+                  );
+                }
+                return ReadyToMoveOnBuilder(
+                  isMobile: responsiveLayoutService.isMobile(context),
+                  readyToMoveOnCount: readyToMoveOnCount,
+                  tooltipKey: tooltipKey,
+                  readyThreshold: readyThreshold,
+                  presentParticipantIds: presentParticipantIds,
+                  userIsReady: participantAgendaItemDetailsList
+                          ?.firstWhere(
+                            (p) => p.userId == _presenter.getUserId(),
+                            orElse: () => ParticipantAgendaItemDetails(
+                              readyToAdvance: false,
+                            ),
+                          )
+                          .readyToAdvance ??
+                      false,
+                  currentAgendaItemId: currentAgendaItemId,
                 );
               }
             },
           ),
         ),
-        SizedBox(height: 6),
+        SizedBox(height: 16),
       ],
     );
   }
@@ -555,39 +578,351 @@ class _MeetingGuideCardContentState extends State<MeetingGuideCardContent>
   }
 }
 
-class CountdownWidget extends StatelessWidget {
-  const CountdownWidget({Key? key}) : super(key: key);
+/// Information about how many participants are ready to move on to the next agenda item.
+/// [isMobile] Whether the user is on a mobile device.
+/// [userIsReady] Whether the current user has marked themselves as ready to move on.
+/// [readyToMoveOnCount] The number of participants ready to move on.
+/// [readyThreshold] The number of participants required to be ready to move on.
+/// [currentAgendaItemId] The ID of the current agenda item.
+/// [tooltipKey] The key for the tooltip widget.
+/// [presentParticipantIds] The set of participant IDs who are present.
+class ReadyToMoveOnBuilder extends StatelessWidget {
+  final bool isMobile;
+  final bool userIsReady;
+  final int readyToMoveOnCount;
+  final int readyThreshold;
+  final String? currentAgendaItemId;
+  final GlobalKey<TooltipState> tooltipKey;
+  final Set<String> presentParticipantIds;
+
+  const ReadyToMoveOnBuilder({
+    Key? key,
+    required this.isMobile,
+    required this.userIsReady,
+    required this.currentAgendaItemId,
+    required this.readyToMoveOnCount,
+    required this.tooltipKey,
+    required this.readyThreshold,
+    required this.presentParticipantIds,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (isMobile) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ReadyButton(
+                  currentAgendaItemId: currentAgendaItemId ?? '',
+                  userIsReady: userIsReady,
+                  isMobile: isMobile,
+                ),
+                SizedBox(height: 12),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildReadyCountText(context),
+                    SizedBox(width: 10),
+                    _buildInfoTooltip(context),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _buildReadyCountText(context),
+                SizedBox(width: 5),
+                _buildInfoTooltip(context),
+              ],
+            ),
+            _buildThresholdText(context),
+          ],
+        ),
+        SizedBox(width: 20),
+        ReadyButton(
+          currentAgendaItemId: currentAgendaItemId ?? '',
+          userIsReady: userIsReady,
+          isMobile: isMobile,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReadyCountText(BuildContext context) {
+    return Text(
+      isMobile
+          ? context.l10n.peopleRequiredToMoveOn(
+              readyToMoveOnCount,
+              presentParticipantIds.length,
+            )
+          : '$readyToMoveOnCount ${context.l10n.peopleReady}',
+      style: AppTextStyle.body.copyWith(
+        color: isMobile
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.secondary,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildInfoTooltip(BuildContext context) {
+    return Tooltip(
+      key: tooltipKey,
+      enableTapToDismiss: false,
+      triggerMode: TooltipTriggerMode.manual,
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.24),
+            blurRadius: 8,
+            spreadRadius: 2,
+            offset: Offset(
+              2,
+              2,
+            ),
+          ),
+        ],
+        color: context.theme.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      richMessage: TextSpan(
+        children: <InlineSpan>[
+          WidgetSpan(
+            child: _buildTooltipContent(context),
+          ),
+        ],
+      ),
+      child: _buildInfoButton(context),
+    );
+  }
+
+  Widget _buildTooltipContent(BuildContext context) {
+    return Container(
+      // Apply your size constraints here instead
+      constraints: BoxConstraints(
+        maxWidth: 315,
+        maxHeight: 250,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.startingNextAgendaItem,
+                  style: TextStyle(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                    fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                // Description
+                Text(
+                  '${context.l10n.majorityOfParticipants}\n\n'
+                  '${context.l10n.majorityOfParticipantsExample(readyThreshold, presentParticipantIds.length)}',
+                  style: TextStyle(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                    fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 8),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+              ),
+              child: ActionButton(
+                type: ActionButtonType.text,
+                text: context.l10n.close,
+                textStyle: TextStyle(
+                  color: context.theme.colorScheme.onSurfaceVariant,
+                  fontSize: context.theme.textTheme.bodySmall?.fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                onPressed: () {
+                  Tooltip.dismissAllToolTips();
+                },
+                minWidth: 0,
+                height: 40,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.help_outline),
+      iconSize: 20,
+      padding: EdgeInsets.zero,
+      constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
+      onPressed: () {
+        tooltipKey.currentState?.ensureTooltipVisible();
+      },
+      color: isMobile
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.onSurfaceVariant,
+    );
+  }
+
+  Widget _buildThresholdText(BuildContext context) {
+    // Majority (51%) required to move on
+    return Text(
+      '$readyThreshold ${context.l10n.requiredToMoveOn}',
+      style: AppTextStyle.body.copyWith(
+        color: isMobile
+            ? context.theme.colorScheme.onPrimary
+            : context.theme.colorScheme.secondary,
+      ),
+    );
+  }
+}
+
+/// Countdown timer shown to all participants once a majority have voted to move on, counting down to the moment
+/// [startingPendingAdvanceTime] The duration for which the countdown should run.
+/// [isMobile] Whether the user is on a mobile device.
+class Countdown extends StatefulWidget {
+  final Duration startingPendingAdvanceTime;
+  final bool isMobile;
+
+  const Countdown({
+    required this.startingPendingAdvanceTime,
+    this.isMobile = false,
+  });
+
+  @override
+  SyncedAdvanceCountdownWidget createState() => SyncedAdvanceCountdownWidget();
+}
+
+/// Shown to all participants once a majority have voted to move on, counting down to the moment
+/// the meeting guide actually advances.
+class SyncedAdvanceCountdownWidget extends State<Countdown>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  // Captured once at first build so the ring's animation duration stays fixed,
+  // even if `widget.startingPendingAdvanceTime` (recomputed by the parent from
+  // the current time on every rebuild) changes.
+  late final Duration _totalDuration;
+
+  // The displayed number is derived from wall-clock time (ticked once per
+  // second by the PeriodicBuilder below) rather than from `controller.value`
+  // sampled on every animation frame
+  late final DateTime _endTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _totalDuration = widget.startingPendingAdvanceTime;
+    _endTime = DateTime.now().add(_totalDuration);
+    controller = AnimationController(
+      vsync: this,
+      duration: _totalDuration,
+    )..reverse(from: 1.0);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PeriodicBuilder(
       period: Duration(seconds: 1),
       builder: (context) {
-        final countdownSeconds = 3 -
-            Provider.of<MeetingGuideCardStore>(context)
-                .pendingMeetingGuideAgendaItemElapsed
-                .elapsed
-                .inSeconds;
-        final isMobile = responsiveLayoutService.isMobile(context);
-        return Row(
+        final remaining = _endTime.difference(DateTime.now());
+        final remainingSeconds =
+            remaining.isNegative ? 0 : (remaining.inMilliseconds / 1000).ceil();
+
+        return Stack(
+          alignment: Alignment.center,
           children: [
-            if (!isMobile) ...[
-              Expanded(
-                child: HeightConstrainedText(
-                  'Moving to the next agenda item...',
-                  style: AppTextStyle.subhead
-                      .copyWith(color: context.theme.colorScheme.onPrimary),
-                ),
-              ),
-              SizedBox(width: 10),
-            ],
-            HeightConstrainedText(
-              math.max(1, countdownSeconds).toString(),
-              style: TextStyle(
-                fontSize: isMobile ? 24 : 38,
-                color: context.theme.colorScheme.onPrimary,
+            SizedBox(
+              width: 64,
+              height: 64,
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (context, child) {
+                  return CircularProgressIndicator(
+                    // controller.value represents the remaining fraction of the countdown (1.0 → 0.0).
+                    // We want the progress indicator to show the elapsed fraction, so we use (1.0 - controller.value).
+                    // If 0 seconds remain, we want the progress indicator to be indeterminate, to account for potential pause before next item is visible
+                    value: remainingSeconds > 0 ? 1.0 - controller.value : null,
+                    strokeWidth: 5.0,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      widget.isMobile
+                          ? context.theme.colorScheme.onPrimary
+                          : context.theme.colorScheme.primary,
+                    ),
+                    backgroundColor: widget.isMobile
+                        ? context.theme.colorScheme.secondary
+                        : context.theme.colorScheme.onPrimaryContainer,
+                  );
+                },
               ),
             ),
+            if (remainingSeconds > 0)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '$remainingSeconds',
+                    style: TextStyle(
+                      fontSize: widget.isMobile
+                          ? context.theme.textTheme.titleMedium?.fontSize
+                          : context.theme.textTheme.titleLarge?.fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: widget.isMobile
+                          ? context.theme.colorScheme.onPrimary
+                          : context.theme.colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (!widget.isMobile)
+                    Text(
+                      context.l10n.sec,
+                      style: TextStyle(
+                        fontSize: context.theme.textTheme.titleSmall?.fontSize,
+                        color: context.theme.colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                ],
+              ),
           ],
         );
       },
@@ -595,10 +930,84 @@ class CountdownWidget extends StatelessWidget {
   }
 }
 
-class _ReadyButton extends HookWidget {
+// Button for participants to indicate they are ready to move on to the next agenda item.
+class ReadyButton extends HookWidget {
+  final String currentAgendaItemId;
+  final bool userIsReady;
+  final bool isMobile;
+
+  const ReadyButton({
+    Key? key,
+    required this.currentAgendaItemId,
+    required this.userIsReady,
+    this.isMobile = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final agendaProvider = AgendaProvider.watch(context);
+    return ActionButton(
+      minWidth: isMobile ? 350 : 150,
+      color: isMobile
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.outline,
+      type: ActionButtonType.outline,
+      textColor: isMobile
+          ? context.theme.colorScheme.onPrimary
+          : context.theme.colorScheme.primary,
+      // Disallow undo
+      onPressed: userIsReady
+          ? null
+          : () => alertOnError(context, () async {
+                await agendaProvider.toggleMoveForward(
+                  currentAgendaItemId: currentAgendaItemId,
+                  userIsReady: !userIsReady,
+                );
+              }),
+      hideLoadingIndicator: true,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Checkbox(
+            value: userIsReady,
+            onChanged: null,
+            activeColor: isMobile
+                ? context.theme.colorScheme.onPrimary
+                : context.theme.colorScheme.primary,
+            fillColor: WidgetStateProperty.all(Colors.transparent),
+            checkColor: isMobile
+                ? context.theme.colorScheme.onPrimary
+                : context.theme.colorScheme.primary,
+            side: WidgetStateBorderSide.resolveWith(
+              (states) => BorderSide(
+                width: 2,
+                color: isMobile
+                    ? context.theme.colorScheme.onPrimary
+                    : context.theme.colorScheme.primary,
+              ),
+            ),
+            semanticLabel: context.l10n.imReadyToMoveOn,
+          ),
+          SizedBox(width: 8),
+          Text(
+            context.l10n.imReadyToMoveOn,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isMobile
+                  ? context.theme.colorScheme.onPrimary
+                  : context.theme.colorScheme.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NextButton extends HookWidget {
   final String currentAgendaItemId;
 
-  const _ReadyButton({
+  const NextButton({
     Key? key,
     required this.currentAgendaItemId,
   }) : super(key: key);
@@ -613,11 +1022,11 @@ class _ReadyButton extends HookWidget {
       textColor: context.theme.colorScheme.primary,
       icon: Icons.arrow_forward_ios,
       onPressed: () => alertOnError(context, () async {
-        await agendaProvider.moveForward(
+        await agendaProvider.toggleMoveForward(
           currentAgendaItemId: currentAgendaItemId,
         );
       }),
-      text: 'Next',
+      text: context.l10n.next,
     );
   }
 }

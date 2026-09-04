@@ -15,9 +15,6 @@ import 'package:provider/provider.dart';
 
 class MeetingGuideCardStore with ChangeNotifier {
   static const String startAgendaItemId = 'start';
-  // Delay before the guide card reflects a new agenda item, giving participants
-  // a brief countdown before the card transitions.
-  static const Duration _agendaItemTransitionDelay = Duration(seconds: 3);
 
   final CommunityProvider communityProvider;
   final LiveMeetingProvider liveMeetingProvider;
@@ -42,6 +39,19 @@ class MeetingGuideCardStore with ChangeNotifier {
   ///
   /// This should not be set directly but should be set using [_setCurrentMeetingGuideAgendaItemId].
   String? _currentMeetingGuideAgendaItemId;
+
+  /// The buffered deadline (server `pendingAdvanceTime` + [advanceCountdownBuffer])
+  /// for the ready-vote countdown currently running against
+  /// [_currentMeetingGuideAgendaItemId], captured while it's still available so it
+  /// can still be honored after the server clears `pendingAdvanceTime` upon
+  /// actually advancing.
+  DateTime? _pendingAdvanceHoldUntil;
+
+  /// Whether we're currently holding the displayed agenda item past a server-side
+  /// advance because the buffered ready-vote countdown hasn't finished yet.
+  bool get isHoldingPendingAdvanceTransition =>
+      _pendingAdvanceHoldUntil != null &&
+      (_pendingMeetingGuideAgendaItemTimer?.isActive ?? false);
 
   /// The current agenda item that we have loaded participant item details for.
   String? _participantAgendaItemDetailsId;
@@ -169,30 +179,52 @@ class MeetingGuideCardStore with ChangeNotifier {
     final meetingGuideMatchesLiveMeeting =
         _currentMeetingGuideAgendaItemId == _agendaProviderCurrentItemId;
 
-    if (!agendaProvider.isInBreakouts ||
-        agendaProvider.isMeetingFinished ||
+    // While a ready-vote countdown is running for the item we're currently
+    // showing, remember its buffered deadline. This is captured proactively
+    // so it's still available below even after the server clears
+    // `pendingAdvanceAgendaItemId`/`pendingAdvanceTime` the moment it actually
+    // advances.
+    final pendingAdvanceTime = agendaProvider.pendingAdvanceTime;
+    if (agendaProvider.pendingAdvanceAgendaItemId ==
+            _currentMeetingGuideAgendaItemId &&
+        pendingAdvanceTime != null) {
+      _pendingAdvanceHoldUntil =
+          pendingAdvanceTime.toUtc().add(meetingGuideAdvanceCountdownBuffer);
+    }
+
+    if (agendaProvider.isMeetingFinished ||
         _currentMeetingGuideAgendaItemId == null ||
         _agendaProviderCurrentItemId ==
             MeetingGuideCardStore.startAgendaItemId) {
-      // Skip the timer if we are at the beginning, end, if the meeting is hosted, or if we haven't
-      // seen a card yet.
+      // Skip the timer if we are at the beginning, end, or if we haven't seen a card yet.
       _pendingMeetingGuideAgendaItemTimer?.cancel();
       _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+      _pendingAdvanceHoldUntil = null;
     } else if (!meetingGuideMatchesLiveMeeting && !isAgendaItemTimerActive) {
-      // If the current agenda item has changed, it waits 3 seconds and updates
-      // [_currentMeetingGuideAgendaItemId] to match. During this time a timer is shown counting
-      // down to the new agenda item.
-      _pendingMeetingGuideAgendaItemTimer?.cancel();
-      _pendingMeetingGuideAgendaItemTimer =
-          Timer(_agendaItemTransitionDelay, () {
-        _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+      // The current agenda item has changed.
+      // Start a timer to delay the transition to the new agenda item, giving participants a countdown.
+      // This is to ensure that the countdown is visible to participants before the card transitions.
+      final holdUntil = _pendingAdvanceHoldUntil;
+      final delay = holdUntil != null
+          ? holdUntil.difference(DateTime.now().toUtc())
+          : Duration.zero;
 
-        liveMeetingProvider.setAudioTemporarilyDisabled(
-          disabled: isPlayingVideo,
-        );
-        notifyListeners();
-      });
-      pendingMeetingGuideAgendaItemElapsed.reset();
+      _pendingMeetingGuideAgendaItemTimer?.cancel();
+      if (delay <= Duration.zero) {
+        _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+        _pendingAdvanceHoldUntil = null;
+      } else {
+        _pendingMeetingGuideAgendaItemTimer = Timer(delay, () {
+          _setCurrentMeetingGuideAgendaItemId(_agendaProviderCurrentItemId);
+          _pendingAdvanceHoldUntil = null;
+
+          liveMeetingProvider.setAudioTemporarilyDisabled(
+            disabled: isPlayingVideo,
+          );
+          notifyListeners();
+        });
+        pendingMeetingGuideAgendaItemElapsed.reset();
+      }
     }
 
     // If the meeting agenda item is or was playing a video, we need to update everyone to be muted

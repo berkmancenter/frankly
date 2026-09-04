@@ -10,6 +10,21 @@ part 'meeting_guide.g.dart';
 const startMeetingAgendaItemId = 'start';
 const startMeetingWaitingPeriod = Duration(minutes: 5);
 
+/// The number of participants who need to mark themselves ready to advance before the meeting
+/// guide moves on to the next agenda item.
+///
+/// Shared between the client (for display) and the backend (for the real trigger) so they can
+/// never disagree about what "majority" means.
+int readyToAdvanceThreshold(int presentParticipantCount) =>
+    presentParticipantCount ~/ 2 + 1;
+
+/// Server-side delay before the scheduled advance fires after majority vote.
+const meetingGuideAdvanceDelay = Duration(seconds: 8);
+
+/// Client-side padding on top of the server's pendingAdvanceTime to absorb
+/// typical Firestore propagation latency.
+const meetingGuideAdvanceCountdownBuffer = Duration(seconds: 2);
+
 /// Placeholder token an organizer can put in a text agenda item's `content`
 /// to have it replaced with a breakout room's diffusion statement.
 const diffusionStatementToken = '{diffusionStatement}';
